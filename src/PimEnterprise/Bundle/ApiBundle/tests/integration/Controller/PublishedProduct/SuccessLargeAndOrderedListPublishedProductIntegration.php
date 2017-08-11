@@ -56,7 +56,6 @@ class SuccessLargeAndOrderedListPublishedProductIntegration extends AbstractPubl
         "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=100"},
         "next" : {"href": "http://localhost/api/rest/v1/published-products?limit=100&search_after={$lastEncryptedId}"}
     },
-    "current_page" : null,
     "_embedded"    : {
 		"items": [
             {$standardizedPublishedProducts}
@@ -86,16 +85,12 @@ JSON;
     "identifier": "{$identifier}",
     "family": null,
     "groups": [],
-    "variant_group": null,
     "categories": [],
     "enabled": true,
     "values": {},
     "created": "2017-05-12T16:46:14+02:00",
     "updated": "2017-05-12T16:46:14+02:00",
-    "associations": {},
-    "metadata": {
-        "workflow_status": "working_copy"
-    }
+    "associations": {}
 }
 JSON;
 

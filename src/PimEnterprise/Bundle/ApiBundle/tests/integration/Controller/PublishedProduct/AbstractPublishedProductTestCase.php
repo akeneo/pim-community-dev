@@ -43,7 +43,6 @@ abstract class AbstractPublishedProductTestCase extends AbstractProductTestCase
     "identifier": "product_viewable_by_everybody_1",
     "family": null,
     "groups": [],
-    "variant_group": null,
     "categories": ["categoryA2"],
     "enabled": true,
     "values": {
@@ -96,10 +95,7 @@ abstract class AbstractPublishedProductTestCase extends AbstractProductTestCase
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
-    "metadata": {
-        "workflow_status": "working_copy"
-    }
+    "associations": {}
 }
 JSON;
 
@@ -113,16 +109,12 @@ JSON;
     "identifier": "product_viewable_by_everybody_2",
     "family": null,
     "groups": [],
-    "variant_group": null,
     "categories": ["categoryA2","categoryB"],
     "enabled": true,
     "values": {},
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
-    "metadata": {
-        "workflow_status": "working_copy"
-    }
+    "associations": {}
 }
 JSON;
 
@@ -136,16 +128,12 @@ JSON;
     "identifier": "product_not_viewable_by_redactor",
     "family": null,
     "groups": [],
-    "variant_group": null,
     "categories": ["categoryB"],
     "enabled": true,
     "values": {},
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
-    "metadata": {
-        "workflow_status": "working_copy"
-    }
+    "associations": {}
 }
 JSON;
 
@@ -159,7 +147,6 @@ JSON;
     "identifier": "product_without_category",
     "family": null,
     "groups": [],
-    "variant_group": null,
     "categories": [],
     "enabled": true,
     "values": {},
@@ -170,9 +157,6 @@ JSON;
             "products": ["product_viewable_by_everybody_2", "product_not_viewable_by_redactor"],
             "groups": []
         }
-    },
-    "metadata": {
-        "workflow_status": "working_copy"
     }
 }
 JSON;

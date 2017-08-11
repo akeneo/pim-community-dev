@@ -16,8 +16,6 @@ namespace PimEnterprise\Bundle\ApiBundle\Controller;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
-use Pim\Component\Api\Exception\PaginationParametersException;
-use Pim\Component\Api\Pagination\PaginationTypes;
 use Pim\Component\Api\Pagination\PaginatorInterface;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\AttributeRepositoryInterface;
@@ -123,15 +121,6 @@ class PublishedProductController
      */
     public function listAction(Request $request): JsonResponse
     {
-        try {
-            $this->parameterValidator->validate(
-                array_merge($request->query->all(), [PaginationTypes::SEARCH_AFTER]),
-                ['support_search_after' => true]
-            );
-        } catch (PaginationParametersException $e) {
-            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
-        }
-
         $channel = null;
         if ($request->query->has('scope')) {
             $channel = $this->channelRepository->findOneByIdentifier($request->query->get('scope'));
@@ -195,12 +184,12 @@ class PublishedProductController
      */
     public function getAction(string $code): JsonResponse
     {
-        $product = $this->publishedProductRepository->findOneByIdentifier($code);
-        if (null === $product) {
+        $publishedProduct = $this->publishedProductRepository->findOneByIdentifier($code);
+        if (null === $publishedProduct) {
             throw new NotFoundHttpException(sprintf('Published product "%s" does not exist.', $code));
         }
 
-        $productApi = $this->normalizer->normalize($product, 'external_api');
+        $productApi = $this->normalizer->normalize($publishedProduct, 'external_api');
 
         return new JsonResponse($productApi);
     }
@@ -285,6 +274,7 @@ class PublishedProductController
         ];
 
         $parameters['search_after']['self'] = $searchParameter;
+        $parameters['current_page'] = false;
         $parameters['search_after']['next'] = !empty($publishedProducts) ? $this->primaryKeyEncrypter->encrypt(end($publishedProducts)->getId()) : '';
         $parameters['search_after']['previous'] = !empty($publishedProducts) ? $this->primaryKeyEncrypter->encrypt(reset($publishedProducts)->getId()) : '';
 

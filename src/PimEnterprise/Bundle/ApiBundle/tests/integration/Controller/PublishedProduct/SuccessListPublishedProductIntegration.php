@@ -118,7 +118,6 @@ class SuccessListPublishedProductIntegration extends AbstractPublishedProductTes
         "self"  : {"href": "http://localhost/api/rest/v1/published-products?limit=10"},
         "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=10"}
     },
-    "current_page" : null,
     "_embedded"    : {
 		"items": [
             {$standardizedPublishedProducts['simple']},
@@ -140,7 +139,7 @@ JSON;
         $standardizedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $nextId = urlencode($this->getEncryptedId('scopable'));
+        $nextId = rawurlencode($this->getEncryptedId('scopable'));
 
         $client->request('GET', 'api/rest/v1/published-products?with_count=true&limit=3');
         $expected = <<<JSON
@@ -150,7 +149,6 @@ JSON;
         "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=3&with_count=true"},
         "next"  : {"href": "http://localhost/api/rest/v1/published-products?limit=3&with_count=true&search_after={$nextId}"}
     },
-    "current_page" : null,
     "items_count"  : 6,
     "_embedded"    : {
 		"items": [
@@ -174,9 +172,9 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $ids = [
-            'localizable'              => urlencode($this->getEncryptedId('localizable')),
-            'localizable_and_scopable' => urlencode($this->getEncryptedId('localizable_and_scopable')),
-            'scopable'                 => urlencode($this->getEncryptedId('scopable')),
+            'localizable'              => rawurlencode($this->getEncryptedId('localizable')),
+            'localizable_and_scopable' => rawurlencode($this->getEncryptedId('localizable_and_scopable')),
+            'scopable'                 => rawurlencode($this->getEncryptedId('scopable')),
         ];
 
         $client->request('GET', sprintf('api/rest/v1/published-products?search_before=%s&limit=2', $ids['localizable_and_scopable']));
@@ -188,7 +186,6 @@ JSON;
         "next": {"href": "http://localhost/api/rest/v1/published-products?limit=2&search_after={$ids['scopable']}"},
         "previous": {"href": "http://localhost/api/rest/v1/published-products?limit=2&search_before={$ids['localizable']}"}
     },
-    "current_page" : null,
     "_embedded"    : {
 		"items": [
             {$standardizedProducts['localizable']},
@@ -210,8 +207,8 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $ids = [
-            'product_china'             => urlencode($this->getEncryptedId('product_china')),
-            'product_without_category2' => urlencode($this->getEncryptedId('product_without_category2'))
+            'product_china'             => rawurlencode($this->getEncryptedId('product_china')),
+            'product_without_category2' => rawurlencode($this->getEncryptedId('product_without_category2'))
         ];
 
         $client->request('GET', 'api/rest/v1/published-products?search_before=&limit=2');
@@ -223,7 +220,6 @@ JSON;
         "next": {"href": "http://localhost/api/rest/v1/published-products?limit=2&search_after={$ids['product_without_category2']}"},
         "previous": {"href": "http://localhost/api/rest/v1/published-products?limit=2&search_before={$ids['product_china']}"}
     },
-    "current_page" : null,
     "_embedded"    : {
 		"items": [
             {$standardizedProducts['product_china']},
@@ -255,7 +251,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=ecommerce"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=ecommerce"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {$standardizedProducts['simple']},
@@ -266,7 +261,6 @@ JSON;
                 "identifier"    : "localizable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : {
@@ -285,10 +279,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -297,7 +288,6 @@ JSON;
                 "identifier"    : "scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {
@@ -315,10 +305,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -327,7 +314,6 @@ JSON;
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
@@ -337,10 +323,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             }
         ]
     }
@@ -369,7 +352,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {$standardizedProducts['simple']},
@@ -380,7 +362,6 @@ JSON;
                 "identifier"    : "localizable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : {
@@ -419,10 +400,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -431,7 +409,6 @@ JSON;
                 "identifier"    : "scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {
@@ -449,10 +426,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -461,7 +435,6 @@ JSON;
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
@@ -472,10 +445,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             }
         ]
     }
@@ -504,7 +474,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet&locales=fr_FR"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet&locales=fr_FR"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {$standardizedProducts['simple']},
@@ -515,7 +484,6 @@ JSON;
                 "identifier"    : "localizable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : {
@@ -534,10 +502,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -546,7 +511,6 @@ JSON;
                 "identifier"    : "scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {
@@ -564,10 +528,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -576,7 +537,6 @@ JSON;
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
@@ -586,10 +546,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             }
         ]
     }
@@ -617,7 +574,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&locales=en_US%2Cfr_FR"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&locales=en_US%2Cfr_FR"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {$standardizedProducts['simple']},
@@ -628,7 +584,6 @@ JSON;
                 "identifier"    : "localizable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : {
@@ -657,10 +612,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -669,7 +621,6 @@ JSON;
                 "identifier"    : "scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {
@@ -696,10 +647,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -708,7 +656,6 @@ JSON;
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
@@ -721,10 +668,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : [],
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : []
             },
             {$standardizedProducts['product_china']},
             {$standardizedProducts['product_without_category2']}
@@ -747,7 +691,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&attributes=a_text"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&attributes=a_text"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {
@@ -757,7 +700,6 @@ JSON;
                 "identifier"    : "simple",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master"],
                 "enabled"       : true,
                 "values"        : {
@@ -771,10 +713,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -783,16 +722,12 @@ JSON;
                 "identifier"    : "localizable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -801,16 +736,12 @@ JSON;
                 "identifier"    : "scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -819,16 +750,12 @@ JSON;
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -837,16 +764,12 @@ JSON;
                 "identifier"    : "product_china",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master_china"],
                 "enabled"       : true,
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -855,16 +778,12 @@ JSON;
                 "identifier"    : "product_without_category2",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : [],
                 "enabled"       : true,
                 "values"        : [],
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             }
         ]
     }
@@ -885,7 +804,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {
@@ -895,7 +813,6 @@ JSON;
                 "identifier"    : "simple",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master"],
                 "enabled"       : true,
                 "values"        : {
@@ -912,10 +829,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -924,16 +838,12 @@ JSON;
                 "identifier"    : "localizable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB"],
                 "enabled"       : true,
                 "values"        : [],
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -942,7 +852,6 @@ JSON;
                 "identifier"    : "scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {
@@ -960,10 +869,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -972,7 +878,6 @@ JSON;
                 "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
@@ -982,10 +887,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             }
         ]
     }
@@ -1000,9 +902,9 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $ids = [
-            'localizable_and_scopable' => urlencode($this->getEncryptedId('localizable_and_scopable')),
-            'product_china'            => urlencode($this->getEncryptedId('product_china')),
-            'product_without_category2' => urlencode($this->getEncryptedId('product_without_category2')),
+            'localizable_and_scopable' => rawurlencode($this->getEncryptedId('localizable_and_scopable')),
+            'product_china'            => rawurlencode($this->getEncryptedId('product_china')),
+            'product_without_category2' => rawurlencode($this->getEncryptedId('product_without_category2')),
         ];
 
         $client->request('GET', sprintf('api/rest/v1/published-products?attributes=a_text&search_after=%s&limit=2&with_count=false', $ids['localizable_and_scopable']));
@@ -1014,7 +916,6 @@ JSON;
         "previous" : {"href" : "http://localhost/api/rest/v1/published-products?limit=2&attributes=a_text&with_count=false&search_before={$ids['product_china']}"},
         "next"     : {"href" : "http://localhost/api/rest/v1/published-products?limit=2&attributes=a_text&search_after={$ids['product_without_category2']}&with_count=false"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {
@@ -1024,16 +925,12 @@ JSON;
                 "identifier"    : "product_china",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master_china"],
                 "enabled"       : true,
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             },
             {
                 "_links" : {
@@ -1042,16 +939,12 @@ JSON;
                 "identifier"    : "product_without_category2",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : [],
                 "enabled"       : true,
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             }
         ]
     }
@@ -1075,7 +968,6 @@ JSON;
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&with_count=true"},
         "previous": {"href" : "http://localhost/api/rest/v1/published-products?limit=10&with_count=true&search_before="}
     },
-    "current_page" : null,
     "items_count"  : 6,
     "_embedded"    : {
         "items" : []
@@ -1099,7 +991,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {
@@ -1109,7 +1000,6 @@ JSON;
                 "identifier"    : "simple",
                 "family"        : null,
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master"],
                 "enabled"       : true,
                 "values"        : {
@@ -1133,10 +1023,7 @@ JSON;
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {},
-                "metadata"      : {
-                    "workflow_status": "working_copy"
-                }
+                "associations"  : {}
             }
         ]
     }
@@ -1159,7 +1046,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : []
     }
@@ -1182,7 +1068,6 @@ JSON;
         "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"},
         "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : []
     }
@@ -1210,7 +1095,6 @@ JSON;
         "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=4"},
         "previous": {"href": "http://localhost/api/rest/v1/published-products?limit=4&search_before={$ids['product_china']}"}
     },
-    "current_page" : null,
     "_embedded"    : {
         "items" : [
             {$standardizedProducts['product_china']},
@@ -1252,8 +1136,7 @@ JSON;
             {$standardizedProducts['scopable']},
             {$standardizedProducts['localizable_and_scopable']}
         ]
-    },
-    "current_page": null
+    }
 }
 JSON;
 
@@ -1274,7 +1157,7 @@ JSON;
     "_links": {
         "self"  : {"href": "http://localhost/api/rest/v1/published-products?limit=4&pagination_type=search_after&search_after={$scopableEncryptedId}"},
         "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=4&pagination_type=search_after"},
-        "previous"  : {"href": "http://localhost/api/rest/v1/published-products?limit=4&pagination_type=search_after&search_before={$localizableAndScopableEncryptedId}"}
+        "previous" : {"href": "http://localhost/api/rest/v1/published-products?limit=4&pagination_type=search_after&search_before={$localizableAndScopableEncryptedId}"}
     },
     "_embedded"    : {
         "items" : [
@@ -1282,8 +1165,7 @@ JSON;
             {$standardizedProducts['product_china']},
             {$standardizedProducts['product_without_category2']}
         ]
-    },
-    "current_page": null
+    }
 }
 JSON;
 
@@ -1305,7 +1187,6 @@ JSON;
     "identifier": "simple",
     "family": null,
     "groups": [],
-    "variant_group": null,
     "categories": ["master"],
     "enabled": true,
     "values": {
@@ -1325,10 +1206,7 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
-    "metadata": {
-        "workflow_status": "working_copy"
-    }
+    "associations": {}
 }
 JSON;
 
@@ -1342,7 +1220,6 @@ JSON;
     "identifier": "localizable",
     "family": null,
     "groups": [],
-    "variant_group": null,
     "categories": ["categoryB"],
     "enabled": true,
     "values": {
@@ -1377,10 +1254,7 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
-    "metadata": {
-        "workflow_status": "working_copy"
-    }
+    "associations": {}
 }
 JSON;
 
@@ -1394,7 +1268,6 @@ JSON;
     "identifier": "scopable",
     "family": null,
     "groups": [],
-    "variant_group": null,
     "categories": ["categoryA1", "categoryA2"],
     "enabled": true,
     "values": {
@@ -1428,10 +1301,7 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
-    "metadata": {
-        "workflow_status": "working_copy"
-    }
+    "associations": {}
 }
 JSON;
 
@@ -1445,7 +1315,6 @@ JSON;
     "identifier": "localizable_and_scopable",
     "family": null,
     "groups": [],
-    "variant_group": null,
     "categories": ["categoryA", "master_china"],
     "enabled": true,
     "values": {
@@ -1469,10 +1338,7 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
-    "metadata": {
-        "workflow_status": "working_copy"
-    }
+    "associations": {}
 }
 JSON;
 
@@ -1486,16 +1352,12 @@ JSON;
    "identifier": "product_china",
    "family": null,
    "groups": [],
-   "variant_group": null,
    "categories": ["master_china"],
    "enabled": true,
    "values": {},
    "created": "2017-03-11T10:39:38+01:00",
    "updated": "2017-03-11T10:39:38+01:00",
-   "associations": {},
-    "metadata": {
-        "workflow_status": "working_copy"
-    }
+   "associations": {}
 }
 JSON;
 
@@ -1509,7 +1371,6 @@ JSON;
     "identifier": "product_without_category2",
     "family": null,
     "groups": [],
-    "variant_group": null,
     "categories": [],
     "enabled": true,
     "values": {
@@ -1521,10 +1382,7 @@ JSON;
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",
-    "associations": {},
-    "metadata": {
-        "workflow_status": "working_copy"
-    }
+    "associations": {}
 }
 JSON;
 

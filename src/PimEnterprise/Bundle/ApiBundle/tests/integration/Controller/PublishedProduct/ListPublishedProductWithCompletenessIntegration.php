@@ -81,7 +81,6 @@ class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedP
         "first": {"href": "http://localhost/api/rest/v1/published-products?limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
         "next": {"href": "http://localhost/api/rest/v1/published-products?limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}&search_after=${encryptedId}"}
     },
-    "current_page" : null,
     "_embedded"    : {
 		"items": [
 		    {
@@ -93,7 +92,6 @@ class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedP
 		        "identifier": "product_complete",
 		        "family": "familyA2",
 		        "groups": [],
-		        "variant_group": null,
 		        "categories": ["categoryA","categoryB","master"],
 		        "enabled": true,
 		        "values": {
@@ -106,10 +104,7 @@ class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedP
 		        },
 		        "created": "2017-03-17T16:11:46+01:00",
 		        "updated": "2017-03-17T16:11:46+01:00",
-		        "associations": {},
-                "metadata": {
-                    "workflow_status": "working_copy"
-                }
+		        "associations": {}
 		    },
 		    {
 		        "_links": {
@@ -118,7 +113,6 @@ class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedP
 		        "identifier": "product_complete_en_locale",
 		        "family": "familyA1",
 		        "groups": [],
-		        "variant_group": null,
 		        "categories": ["categoryA","master","master_china"],
 		        "enabled": true,
 		        "values": {
@@ -152,10 +146,7 @@ class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedP
 		        },
                 "created": "2017-03-17T16:11:46+01:00",
                 "updated": "2017-03-17T16:11:46+01:00",
-                "associations": [],
-                "metadata": {
-                    "workflow_status": "working_copy"
-                }
+                "associations": []
 		    }
 		]
     }

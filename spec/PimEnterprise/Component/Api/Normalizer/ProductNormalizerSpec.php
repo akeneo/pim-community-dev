@@ -29,11 +29,15 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType(ProductNormalizer::class);
     }
 
+    function it_should_implement()
+    {
+        $this->shouldImplement(NormalizerInterface::class);
+    }
+
     function it_supports_product_normalization($productNormalizer, ProductInterface $product)
     {
         $productNormalizer
             ->supportsNormalization($product, 'external_api')
-            ->shouldBeCalled()
             ->willReturn(true);
 
         $this->supportsNormalization($product, 'external_api')->shouldReturn(true);
