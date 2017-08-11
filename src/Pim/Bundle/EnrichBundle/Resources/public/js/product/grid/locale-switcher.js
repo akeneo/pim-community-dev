@@ -71,7 +71,10 @@ define([
              * @return {Array} An array of activated locales
              */
             fetchLocales() {
-                return FetcherRegistry.getFetcher('locale').fetchActivated();
+                const localeFetcher = FetcherRegistry.getFetcher('locale');
+                localeFetcher.clear();
+
+                return localeFetcher.fetchActivated();
             },
 
             /**
