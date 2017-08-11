@@ -113,7 +113,6 @@ class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedP
 		        "identifier": "product_complete_en_locale",
 		        "family": "familyA1",
 		        "groups": [],
-		        "variant_group": null,
 		        "categories": ["categoryA","master","master_china"],
 		        "enabled": true,
 		        "values": {

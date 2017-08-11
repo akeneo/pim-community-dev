@@ -15,13 +15,13 @@ class ErrorListPublishedProductIntegration extends AbstractPublishedProductTestC
         $this->assert($client, 'Scope "not_found" does not exist.');
     }
 
-    public function testUnknownPaginationType()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', 'api/rest/v1/published-products?pagination_type=unknown');
-        $this->assert($client, 'Pagination type does not exist.');
-    }
+//    public function testUnknownPaginationType()
+//    {
+//        $client = $this->createAuthenticatedClient();
+//
+//        $client->request('GET', 'api/rest/v1/published-products?pagination_type=unknown');
+//        $this->assert($client, 'Pagination type does not exist.');
+//    }
 
     public function testNotFoundLocale()
     {
@@ -71,21 +71,21 @@ class ErrorListPublishedProductIntegration extends AbstractPublishedProductTestC
         $this->assert($client, 'Attributes "not_found, jambon" do not exist.');
     }
 
-    public function testPaginationWherePageIsNotAnInteger()
-    {
-        $client = $this->createAuthenticatedClient();
+//    public function testPaginationWherePageIsNotAnInteger()
+//    {
+//        $client = $this->createAuthenticatedClient();
+//
+//        $client->request('GET', 'api/rest/v1/published-products?page=string');
+//        $this->assert($client, '"string" is not a valid page number.');
+//    }
 
-        $client->request('GET', 'api/rest/v1/published-products?page=string');
-        $this->assert($client, '"string" is not a valid page number.');
-    }
-
-    public function testPaginationWhereLimitIsTooBig()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $client->request('GET', 'api/rest/v1/published-products?limit=101');
-        $this->assert($client, 'You cannot request more than 100 items.');
-    }
+//    public function testPaginationWhereLimitIsTooBig()
+//    {
+//        $client = $this->createAuthenticatedClient();
+//
+//        $client->request('GET', 'api/rest/v1/published-products?limit=101');
+//        $this->assert($client, 'You cannot request more than 100 items.');
+//    }
 
     public function testSearchFormatIsNotValid()
     {
