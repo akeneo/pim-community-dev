@@ -42,7 +42,7 @@ Feature: Create product through CSV import
     And I should see the text "The product model code must not be empty"
     And I should see the text "Property \"family_variant\" expects a valid family variant code. The family variant does not exist, \"\" given"
 
-  Scenario: Skip a product model if the parent does not exist or it is not a root product model
+  Scenario: Skip a product model if the parent does not exist or is not a root product model
     Given the following CSV file to import:
       """
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;EAN;sku;weight
@@ -93,7 +93,7 @@ Feature: Create product through CSV import
     Then I should see the text "skipped 1"
     And I should see the text "Attribute \"color\" cannot be empty, as it is defined as an axis for this entity: Pim\Component\Catalog\Model\ProductModel"
 
-  Scenario: Only the attributes with values defined as "common attributes" in the variant of the family are updated.
+  Scenario: Only the attributes with values defined as "common attributes" in the family variant are updated.
     Given the following CSV file to import:
       """
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;EAN;sku;weight
@@ -107,7 +107,7 @@ Feature: Create product through CSV import
     Then the product model "code-001" should not have the following values "composition, name-en_US, color"
 
   @skip
-  Scenario: Only the attributes with values defined as variant attributes level 1 in the variant of the family are updated.
+  Scenario: Only the attributes with values defined as variant attributes level 1 in the family variant are updated.
     Given the following CSV file to import:
       """
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;EAN;sku;weight

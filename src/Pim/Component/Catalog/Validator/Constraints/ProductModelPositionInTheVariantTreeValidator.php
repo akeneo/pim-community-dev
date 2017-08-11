@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class HasARootProductModelAsParentValidator extends ConstraintValidator
+class ProductModelPositionInTheVariantTreeValidator extends ConstraintValidator
 {
     /**
      * {@inheritdoc}
@@ -28,8 +28,8 @@ class HasARootProductModelAsParentValidator extends ConstraintValidator
             throw new UnexpectedTypeException($productModel, ProductModelInterface::class);
         }
 
-        if (!$constraint instanceof HasARootProductModelAsParent) {
-            throw new UnexpectedTypeException($constraint, HasARootProductModelAsParent::class);
+        if (!$constraint instanceof ProductModelPositionInTheVariantTree) {
+            throw new UnexpectedTypeException($constraint, ProductModelPositionInTheVariantTree::class);
         }
 
         if ($productModel->isRootProductModel()) {
@@ -37,14 +37,14 @@ class HasARootProductModelAsParentValidator extends ConstraintValidator
         }
 
         if (false === $productModel->getParent()->isRootProductModel()) {
-            $this->context->buildViolation(HasARootProductModelAsParent::INVALID_PARENT)->addViolation();
+            $this->context->buildViolation(ProductModelPositionInTheVariantTree::INVALID_PARENT)->addViolation();
         }
 
         $productModelPosition = $productModel->getVariationLevel();
         $numberOfLevel = $productModel->getFamilyVariant()->getNumberOfLevel();
 
         if ($numberOfLevel === $productModelPosition) {
-            $this->context->buildViolation(HasARootProductModelAsParent::INVALID_PARENT)->addViolation();
+            $this->context->buildViolation(ProductModelPositionInTheVariantTree::INVALID_PARENT)->addViolation();
         }
     }
 }

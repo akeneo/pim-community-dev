@@ -12,7 +12,9 @@ use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 
 /**
- * Filter the attribute depending on the variant family, we will remove all attributes that don't belong to your level
+ * Filter the attribute depending on the variant family, we will remove all attributes that don't belong to your level.
+ * This is because when product models are exported, they gather the values of their parent.
+ * And we should be able to import those export files.
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

@@ -2,16 +2,16 @@
 
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
-use Pim\Component\Catalog\Validator\Constraints\HasARootProductModelAsParent;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Validator\Constraints\ProductModelPositionInTheVariantTree;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 
-class HasARootProductModelAsParentSpec extends ObjectBehavior
+class ProductModelPositionInTheVariantTreeSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(HasARootProductModelAsParent::class);
+        $this->shouldHaveType(ProductModelPositionInTheVariantTree::class);
     }
 
     function it_is_a_validator_constraint()
