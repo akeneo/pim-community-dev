@@ -18,7 +18,7 @@ Feature: Filter products by date field
       | book   |            |
       | mug    |            |
     And the "book" product has the "release" attribute
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
@@ -34,7 +34,7 @@ Feature: Filter products by date field
       | mug    | 2014-05-03 |
       | tshirt | 2014-05-03 |
       | pen    | 2014-05-06 |
-    When I am on the products page
+    When I am on the products grid
     Then the grid should contain 5 elements
     And I should see products postit, book, mug, tshirt and pen
     And I should be able to use the following filters:
@@ -49,14 +49,14 @@ Feature: Filter products by date field
       | sku  | release    |
       | book | 2014-05-02 |
       | pen  | 2014-05-06 |
-    And I am on the products page
+    And I am on the products grid
     And I show the filter "release"
     When I filter by "release" with operator "between" and value "05/01/2014 and 05/03/2014"
     Then the filter "release" should be set to operator "between" and value "05/01/2014 and 05/03/2014"
     And I filter by "created" with operator "" and value ""
     When I click on the "book" row
     And I should be on the product "book" edit page
-    And I am on the products page
+    And I am on the products grid
     Then the filter "release" should be set to operator "between" and value "05/01/2014 and 05/03/2014"
     And I filter by "created" with operator "" and value ""
     When I refresh current page

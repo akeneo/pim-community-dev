@@ -11,7 +11,7 @@ Feature: Choose and order product grids columns
       | sandals |
       | basket  |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully display default columns
     Then I should see the columns Sku, Image, Label, Family, Status, Complete, Created At, Updated At, Groups
@@ -29,7 +29,7 @@ Feature: Choose and order product grids columns
   Scenario: Successfully hide removed attribute column that was previously selected to be displayed
     Given I display the columns SKU, Family and Name
     When I've removed the "name" attribute
-    And I am on the products page
+    And I am on the products grid
     Then I should see the columns Sku and Family
 
   @jira https://akeneo.atlassian.net/browse/PIM-4861
@@ -39,7 +39,7 @@ Feature: Choose and order product grids columns
       | sandal1 | sandal one | summer_collection |
       | sandal2 | sandal two | summer_collection |
     And I display the columns SKU, Family and Name
-    And I am on the products page
+    And I am on the products grid
     Then I should see the columns SKU, Family and Name
     And I should be able to use the following filters:
       | filter   | operator | value             | result                 |

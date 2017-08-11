@@ -11,7 +11,7 @@ Feature: Create product and save a new product value
       | code      | label-en_US | type                         | group     | decimals_allowed |
       | tmp_price | Tmp Price   | pim_catalog_price_collection | marketing | 0                |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU             | gladiator |

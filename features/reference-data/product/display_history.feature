@@ -13,7 +13,7 @@ Feature: Display the product history
     And the following "color" attribute reference data: Red, Green, Blue
     And the following "fabrics" attribute reference data: Cashmerewool, Neoprene and Silk
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU | sandals |

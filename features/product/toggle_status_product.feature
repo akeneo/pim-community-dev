@@ -10,7 +10,7 @@ Feature: Toggle status of a product
     And I am logged in as "Julia"
 
   Scenario: Disable product from grid
-    Given I am on the products page
+    Given I am on the products grid
     And I should see product CD player
     And the row "CD player" should contain:
       | column | value   |

@@ -74,7 +74,7 @@ Feature: Import families
     When I am on the "csv_footwear_family_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_family_import" job to finish
-    And I am on the products page
+    And I am on the products grid
     Then the row "pretty-shoe" should contain:
       | column | value   |
       | Family | [heels] |

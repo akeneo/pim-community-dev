@@ -16,7 +16,7 @@ Feature: Change family of many products at once
       | hamburger |          |
       | jeans     | Clothing |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Change the family of many products at once
     Given I select rows coffee and hamburger

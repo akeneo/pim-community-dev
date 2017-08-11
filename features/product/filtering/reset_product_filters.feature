@@ -15,7 +15,7 @@ Feature: Reset product grid filters
       | sandal-red-38   | sandals | summer_collection | 38   | red   |               |
       | sandal-red-39   | sandals | summer_collection | 39   | red   |               |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: I successfully reset attribute filters on the defaut view
     When I show the filter "color"
