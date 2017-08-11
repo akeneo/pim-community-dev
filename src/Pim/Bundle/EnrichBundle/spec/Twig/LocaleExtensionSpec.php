@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\EnrichBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Model\LocaleInterface;
 
