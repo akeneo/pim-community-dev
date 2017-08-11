@@ -152,6 +152,14 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_variant_group_product }
 
+    pim_datagrid.datasource.api_connection:
+        class: '%pim_datagrid.datasource.repository.class%'
+        arguments:
+            - '@pim_enrich.repository.client'
+            - '@pim_datagrid.datasource.result_record.hydrator.default'
+        tags:
+            - { name: oro_datagrid.datasource, type: pim_datasource_api_connection }
+
     pim_datagrid.datasource.adapter_resolver:
         class: '%pim_datagrid.datasource.adapter_resolver.class%'
         arguments:

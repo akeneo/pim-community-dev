@@ -90,6 +90,10 @@ job_tracker:
     resource: '@PimEnrichBundle/Resources/config/routing/job_tracker.yml'
     prefix: /job
 
+api_connection:
+    resource: '@PimEnrichBundle/Resources/config/routing/api_connection.yml'
+    prefix: /client
+
 measures:
     resource: '@PimEnrichBundle/Resources/config/routing/measures.yml'
     prefix: /configuration/measures

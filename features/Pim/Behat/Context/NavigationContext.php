@@ -57,6 +57,7 @@ class NavigationContext extends PimContext implements PageObjectAware
         'search'                   => 'Search index',
         'job tracker'              => 'JobTracker index',
         'my account'               => 'User profile',
+        'clients'                  => 'Client index',
     ];
 
     /** @var array */
