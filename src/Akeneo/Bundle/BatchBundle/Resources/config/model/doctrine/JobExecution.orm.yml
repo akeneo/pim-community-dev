@@ -6,6 +6,7 @@ Akeneo\Component\Batch\Model\JobExecution:
     embedded:
         jobParameters:
             class: Akeneo\Component\Batch\Model\JobParameters
+            columnPrefix: false
     fields:
         id:
             type: integer
