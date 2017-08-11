@@ -31,7 +31,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
         );
 
         $expected = [
-            'id'             => '150',
+            'id'             => 'product_model_150',
             'identifier'     => 'qux',
             'created'        => $date->format('c'),
             'updated'        => $date->format('c'),
@@ -67,7 +67,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
         );
 
         $expected = [
-            'id'             => '151',
+            'id'             => 'product_model_151',
             'identifier'     => 'quux',
             'created'        => $date->format('c'),
             'updated'        => $date->format('c'),
@@ -108,7 +108,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
         );
 
         $expected = [
-            'id'             => '50',
+            'id'             => 'product_50',
             'identifier'     => 'qux',
             'created'        => $date->format('c'),
             'updated'        => $date->format('c'),
@@ -120,11 +120,11 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     'fr_FR' => 'Une famille A',
                 ],
             ],
-            'family_variant' => 'familyVariantA1',
             'enabled'        => true,
             'categories'     => [],
             'groups'         => [],
             'completeness'   => [],
+            'family_variant' => 'familyVariantA1',
             'values'         => [
                 'a_text-text'            => [
                     '<all_channels>' => [
@@ -158,18 +158,17 @@ class ProductAndProductModelIndexingIntegration extends TestCase
         );
 
         $expected = [
-            'id'                        => '47',
+            'id'                        => 'product_47',
             'identifier'                => 'bar',
             'created'                   => $date->format('c'),
             'updated'                   => $date->format('c'),
             'family'                    => null,
-            'family_variant'            => null,
             'enabled'                   => false,
             'categories'                => [],
             'groups'                    => [],
             'completeness'              => [],
-            'values'                    => [],
             'family_variant'            => null,
+            'values'                    => [],
             'product_type'              => 'PimCatalogProduct',
             'attributes_for_this_level' => ['sku'],
         ];
@@ -186,7 +185,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
         );
 
         $expected = [
-            'id'             => '49',
+            'id'             => 'product_49',
             'identifier'     => 'foo',
             'created'        => $date->format('c'),
             'updated'        => $date->format('c'),
@@ -198,7 +197,6 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     'fr_FR' => 'Une famille A',
                 ],
             ],
-            'family_variant' => null,
             'enabled'        => true,
             'categories'     => ['categoryA1', 'categoryB'],
             'groups'         => ['groupA', 'groupB', 'variantA'],
@@ -211,6 +209,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 'ecommerce' => ['en_US' => 100],
                 'tablet'    => ['de_DE' => 89, 'en_US' => 100, 'fr_FR' => 100],
             ],
+            'family_variant' => null,
             'values'         => [
                 'a_date-date'                                    => [
                     '<all_channels>' => [

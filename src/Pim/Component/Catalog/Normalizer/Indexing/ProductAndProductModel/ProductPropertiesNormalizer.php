@@ -85,7 +85,12 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
             $familyVariant = $product->getFamilyVariant();
             $familyVariantCode = null !== $familyVariant ? $familyVariant->getCode() : null;
 
-            $parentValues = $this->getAllParentsValues($product->getParent(), $context);
+            $parentValues = !$product->getParent()->getValues()->isEmpty()
+                ? $this->serializer->normalize(
+                    $product->getParent()->getValues(),
+                    ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+                    $context
+                ) : [];
         }
 
         $data[self::FIELD_FAMILY_VARIANT] = $familyVariantCode;

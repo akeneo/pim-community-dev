@@ -90,7 +90,6 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         ProductModelInterface $productModel,
         ValueCollectionInterface $productValueCollection,
-        Collection $completenessCollection,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant
     ) {
@@ -170,11 +169,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         ProductModelInterface $productModel,
         ProductModelInterface $parentProductModel,
-        ProductModelInterface $grandParentProductModel,
         ValueCollectionInterface $valueCollection1,
         ValueCollectionInterface $valueCollection2,
-        ValueCollectionInterface $valueCollection3,
-        Collection $completenessCollection,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant
     ) {
@@ -226,8 +222,6 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
         $parentProductModel->getValues()->willReturn($valueCollection2);
         $valueCollection2->isEmpty()->willReturn(false);
-        $parentProductModel->getParent()->willReturn($grandParentProductModel);
-
         $serializer->normalize($valueCollection2, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
             ->willReturn(
                 [
@@ -236,16 +230,6 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                             '<all_locales>' => '2017-05-05',
                         ],
                     ],
-                ]
-            );
-
-        $grandParentProductModel->getValues()->willReturn($valueCollection3);
-        $valueCollection3->isEmpty()->willReturn(false);
-        $grandParentProductModel->getParent()->willReturn(null);
-
-        $serializer->normalize($valueCollection3, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
-            ->willReturn(
-                [
                     'a_simple_select-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'OPTION_A',

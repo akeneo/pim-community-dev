@@ -60,7 +60,15 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
                 $context
             ) : [];
 
-        $parentValues = $this->getAllParentsValues($productModel->getParent(), $context);
+        $parentValues = [];
+        if (null !== $productModel->getParent() && !$productModel->getParent()->getValues()->isEmpty()) {
+            $parentValues = $this->serializer->normalize(
+                $productModel->getParent()->getValues(),
+                ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
+                $context
+            );
+        }
+
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = array_merge($productModelValues, $parentValues);
 
         return $data;
@@ -73,31 +81,5 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
     {
         return $data instanceof ProductModelInterface
             && ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format;
-    }
-
-    /**
-     * Normalizes all the values of a product model and its parents.
-     *
-     * @param null|ProductModelInterface $productModel
-     * @param array                      $context
-     *
-     * @return mixed
-     */
-    private function getAllParentsValues($productModel, array $context): array
-    {
-        if (null === $productModel || $productModel->getValues()->isEmpty()) {
-            return [];
-        }
-
-        $productModelNormalizedValues = $this->serializer->normalize(
-            $productModel->getValues(),
-            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
-            $context
-        );
-
-        return array_merge(
-            $productModelNormalizedValues,
-            $this->getAllParentsValues($productModel->getParent(), $context)
-        );
     }
 }

@@ -294,10 +294,8 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $serializer,
         VariantProductInterface $variantProduct,
         ProductModelInterface $parentProductModel,
-        ProductModelInterface $grandParentProductModel,
         ValueCollectionInterface $valueCollection1,
         ValueCollectionInterface $valueCollection2,
-        ValueCollectionInterface $valueCollection3,
         Collection $completenesses,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant
@@ -381,17 +379,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                             '<all_locales>' => '2017-05-05',
                         ],
                     ],
-                ]
-            );
-
-        $parentProductModel->getParent()->willReturn($grandParentProductModel);
-
-        $grandParentProductModel->getValues()->willReturn($valueCollection3);
-        $valueCollection3->isEmpty()->willReturn(false);
-
-        $serializer->normalize($valueCollection3, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
-            ->willReturn(
-                [
                     'a_simple_select-option' => [
                         '<all_channels>' => [
                             '<all_locales>' => 'OPTION_A',
@@ -400,7 +387,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                 ]
             );
 
-        $grandParentProductModel->getParent()->willReturn(null);
 
         $this->normalize($variantProduct, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
