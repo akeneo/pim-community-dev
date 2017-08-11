@@ -18,31 +18,9 @@ class LocaleHelperSpec extends ObjectBehavior
         $this->beConstructedWith($userContext, $localeRepository);
     }
 
-    function it_provides_current_locale()
-    {
-        $this->getCurrentLocaleCode()->shouldReturn('en_US');
-    }
-
     function it_provides_translated_locale_label()
     {
         $this->getLocaleLabel('en_US')->shouldReturn('English (United States)');
         $this->getLocaleLabel('en_US', 'fr_FR')->shouldReturn('anglais (États-Unis)');
-    }
-
-    function it_returns_the_original_label_if_a_translation_does_not_exist()
-    {
-        $this->getLocaleLabel('foo')->shouldReturn('foo');
-    }
-
-    function it_provides_a_currency_symbol_for_the_specified_currency_and_locale()
-    {
-        $this->getCurrencySymbol('USD')->shouldReturn('$');
-        $this->getCurrencySymbol('USD', 'fr_FR')->shouldReturn('$US');
-    }
-
-    function it_provides_a_currency_label_for_the_specified_currency_and_locale()
-    {
-        $this->getCurrencyLabel('USD')->shouldReturn('US Dollar');
-        $this->getCurrencyLabel('USD', 'fr_FR')->shouldReturn('dollar des États-Unis');
     }
 }

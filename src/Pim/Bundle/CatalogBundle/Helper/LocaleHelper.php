@@ -38,16 +38,6 @@ class LocaleHelper
     }
 
     /**
-     * Returns the current locale code
-     *
-     * @return string
-     */
-    public function getCurrentLocaleCode()
-    {
-        return $this->userContext->getCurrentLocale()->getCode();
-    }
-
-    /**
      * Returns the label of a locale in the specified language
      *
      * @param string $code        the code of the locale to translate
@@ -57,40 +47,8 @@ class LocaleHelper
      */
     public function getLocaleLabel($code, $translateIn = null)
     {
-        $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
+        $translateIn = $translateIn ?: $this->userContext->getCurrentLocale()->getCode();
 
         return \Locale::getDisplayName($code, $translateIn);
-    }
-
-    /**
-     * Returns the symbol for a currency
-     *
-     * @param string $currency
-     * @param string $translateIn
-     *
-     * @return string
-     */
-    public function getCurrencySymbol($currency, $translateIn = null)
-    {
-        $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
-        $language = \Locale::getPrimaryLanguage($translateIn);
-
-        return Intl\Intl::getCurrencyBundle()->getCurrencySymbol($currency, $language);
-    }
-
-    /**
-     * Returns the label for a currency
-     *
-     * @param string $currency
-     * @param string $translateIn
-     *
-     * @return string
-     */
-    public function getCurrencyLabel($currency, $translateIn = null)
-    {
-        $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
-        $language = \Locale::getPrimaryLanguage($translateIn);
-
-        return Intl\Intl::getCurrencyBundle()->getCurrencyName($currency, $language);
     }
 }
