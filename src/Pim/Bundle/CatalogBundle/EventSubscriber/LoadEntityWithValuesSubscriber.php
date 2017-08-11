@@ -71,7 +71,10 @@ class LoadEntityWithValuesSubscriber implements EventSubscriber
 
         $rawValues = $entity->getRawValues();
         if ($entity instanceof EntityWithFamilyVariantInterface) {
-            $rawValues = array_merge($rawValues, $this->getAncestryRawValues($entity));
+            $ancestryRawValues = $this->getAncestryRawValues($entity);
+            foreach ($ancestryRawValues as $attributeCode => $value) {
+                $rawValues[$attributeCode] = $value;
+            }
         }
 
         $values = $this->getProductValueCollectionFactory()->createFromStorageFormat($rawValues);
