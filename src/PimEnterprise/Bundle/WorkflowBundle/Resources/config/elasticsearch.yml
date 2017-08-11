@@ -4,4 +4,5 @@ services:
         arguments:
             - '@pim_serializer'
             - '@akeneo_elasticsearch.client.product'
+            - '@akeneo_elasticsearch.client.product_and_product_model'
             - 'pimee_workflow_published_product'
