@@ -312,3 +312,8 @@ pim_enrich_job_tracker_index:
     type: action
     label: pim_enrich.acl.job_tracker.index
     group_name: pim_enrich.acl_group.job_tracker
+
+# API connection
+pim_enrich_api_connection_manage:
+    type: action
+    label: pim_enrich.acl.api_connection.manage

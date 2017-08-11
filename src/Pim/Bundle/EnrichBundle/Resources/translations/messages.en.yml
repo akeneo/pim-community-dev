@@ -274,6 +274,8 @@ pim_enrich:
             history: View association type history
         job_tracker:
             index: View process tracker
+        api_connection:
+            manage: Manage the API connections
 
     acl_group:
         association_type: Association types
@@ -605,6 +607,7 @@ Create:               Create
 Category tree: Category tree
 Completeness: Completeness
 Attribute used as label: Attribute used as label
+Credentials: Credentials
 
 # Scopes
 Global:  Global
