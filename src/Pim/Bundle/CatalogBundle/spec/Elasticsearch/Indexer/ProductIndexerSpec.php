@@ -136,7 +136,7 @@ class ProductIndexerSpec extends ObjectBehavior
     function it_deletes_products_from_elasticsearch_index($productIndexer, $productModelIndexer)
     {
         $productIndexer->delete('an_index_type_for_test_purpose', 40)->shouldBeCalled();
-        $productModelIndexer->delete('an_index_type_for_test_purpose', 40)->shouldBeCalled();
+        $productModelIndexer->delete('an_index_type_for_test_purpose', 'product_40')->shouldBeCalled();
 
         $this->remove(40)->shouldReturn(null);
     }
@@ -144,7 +144,7 @@ class ProductIndexerSpec extends ObjectBehavior
     function it_bulk_deletes_products_from_elasticsearch_index($productIndexer, $productModelIndexer)
     {
         $productIndexer->bulkDelete('an_index_type_for_test_purpose', [40, 33])->shouldBeCalled();
-        $productModelIndexer->bulkDelete('an_index_type_for_test_purpose', [40, 33])->shouldBeCalled();
+        $productModelIndexer->bulkDelete('an_index_type_for_test_purpose', ['product_40', 'product_33'])->shouldBeCalled();
 
         $this->removeAll([40, 33])->shouldReturn(null);
     }

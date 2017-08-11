@@ -215,9 +215,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_variant_product_properties_with_minimum_filled_fields_and_values(
         $serializer,
         VariantProductInterface $variantProduct,
-        ProductModelInterface $parentProductModel,
-        ValueCollectionInterface $valueCollection1,
-        ValueCollectionInterface $valueCollection2,
+        ValueCollectionInterface $valueCollection,
         Collection $completenesses,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant
@@ -243,10 +241,10 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $variantProduct->getFamily()->willReturn($family);
         $variantProduct->getFamilyVariant()->willReturn($familyVariant);
         $variantProduct->isEnabled()->willReturn(false);
-        $variantProduct->getValues()->willReturn($valueCollection1);
+        $variantProduct->getValues()->willReturn($valueCollection);
         $variantProduct->getGroupCodes()->willReturn([]);
         $variantProduct->getCategoryCodes()->willReturn([]);
-        $valueCollection1->isEmpty()->willReturn(true);
+        $valueCollection->isEmpty()->willReturn(true);
 
         $serializer->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->willReturn(
             [
@@ -260,13 +258,8 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $variantProduct->getCompletenesses()->willReturn($completenesses);
         $completenesses->isEmpty()->willReturn(false);
-
-        $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])->willReturn(['the completenesses']);
-
-        $variantProduct->getParent()->willReturn($parentProductModel);
-        $parentProductModel->getValues()->willReturn($valueCollection2);
-        $valueCollection2->isEmpty()->willReturn(true);
-        $parentProductModel->getParent()->willReturn(null);
+        $serializer->normalize($completenesses, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
+            ->willReturn(['the completenesses']);
 
         $this->normalize($variantProduct, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
                 'id'            => 'product_67',
@@ -293,9 +286,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_variant_product_properties_with_fields_and_values_and_its_parents_values(
         $serializer,
         VariantProductInterface $variantProduct,
-        ProductModelInterface $parentProductModel,
-        ValueCollectionInterface $valueCollection1,
-        ValueCollectionInterface $valueCollection2,
+        ValueCollectionInterface $valueCollection,
         Collection $completenesses,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant
@@ -354,9 +345,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $variantProduct->getValues()
             ->shouldBeCalledTimes(2)
-            ->willReturn($valueCollection1);
-        $valueCollection1->isEmpty()->willReturn(false);
-        $serializer->normalize($valueCollection1, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
+            ->willReturn($valueCollection);
+        $valueCollection->isEmpty()->willReturn(false);
+        $serializer->normalize($valueCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
             ->willReturn(
                 [
                     'a_size-decimal' => [
@@ -364,16 +355,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                             '<all_locales>' => '10.51',
                         ],
                     ],
-                ]
-            );
-
-        $variantProduct->getParent()->willReturn($parentProductModel);
-        $parentProductModel->getValues()->willReturn($valueCollection2);
-        $valueCollection2->isEmpty()->willReturn(false);
-
-        $serializer->normalize($valueCollection2, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
-            ->willReturn(
-                [
                     'a_date-date' => [
                         '<all_channels>' => [
                             '<all_locales>' => '2017-05-05',
@@ -386,7 +367,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                     ],
                 ]
             );
-
 
         $this->normalize($variantProduct, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [

@@ -46,30 +46,25 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
             $productModel->getUpdated(),
             $format
         );
-        $data[StandardPropertiesNormalizer::FIELD_FAMILY] = $this->serializer->normalize(
-            $productModel->getFamilyVariant()->getFamily(),
-            $format
-        );
 
-        $data[self::FIELD_FAMILY_VARIANT] = $productModel->getFamilyVariant()->getCode();
+        $family = null;
+        $familyVariant = null;
+        if (null !== $productModel->getFamilyVariant()) {
+            $family = $this->serializer->normalize(
+                $productModel->getFamilyVariant()->getFamily(),
+                $format
+            );
+            $familyVariant = $productModel->getFamilyVariant()->getCode();
+        }
+        $data[StandardPropertiesNormalizer::FIELD_FAMILY] = $family;
+        $data[self::FIELD_FAMILY_VARIANT] = $familyVariant;
 
-        $productModelValues = !$productModel->getValues()->isEmpty()
+        $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$productModel->getValues()->isEmpty()
             ? $this->serializer->normalize(
                 $productModel->getValues(),
                 ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
                 $context
             ) : [];
-
-        $parentValues = [];
-        if (null !== $productModel->getParent() && !$productModel->getParent()->getValues()->isEmpty()) {
-            $parentValues = $this->serializer->normalize(
-                $productModel->getParent()->getValues(),
-                ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
-                $context
-            );
-        }
-
-        $data[StandardPropertiesNormalizer::FIELD_VALUES] = array_merge($productModelValues, $parentValues);
 
         return $data;
     }

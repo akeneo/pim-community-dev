@@ -22,6 +22,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, RemoverInterface, BulkRemoverInterface
 {
+    private const PRODUCT_MODEL_IDENTIFIER_PREFIX = 'product_model_';
     /** @var NormalizerInterface */
     protected $normalizer;
 
@@ -98,7 +99,10 @@ class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, Rem
      */
     public function remove($objectId, array $options = []) : void
     {
-        $this->productAndProductModelClient->delete($this->indexType, $objectId);
+        $this->productAndProductModelClient->delete(
+            $this->indexType,
+            self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $objectId
+        );
     }
 
     /**
@@ -108,7 +112,11 @@ class ProductModelIndexer implements IndexerInterface, BulkIndexerInterface, Rem
      */
     public function removeAll(array $objects, array $options = []) : void
     {
-        $this->productAndProductModelClient->bulkDelete($this->indexType, $objects);
+        $objectIds = [];
+        foreach ($objects as $objectId) {
+            $objectIds[]  = self::PRODUCT_MODEL_IDENTIFIER_PREFIX . (string) $objectId;
+        }
+        $this->productAndProductModelClient->bulkDelete($this->indexType, $objectIds);
     }
 
     /**

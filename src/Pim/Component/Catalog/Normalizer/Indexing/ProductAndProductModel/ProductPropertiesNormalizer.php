@@ -71,30 +71,20 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
                 $context
             ) : [];
 
-        $productValues = !$product->getValues()->isEmpty()
+
+        $familyVariantCode = null;
+        if ($product instanceof VariantProductInterface) {
+            $familyVariant = $product->getFamilyVariant();
+            $familyVariantCode = null !== $familyVariant ? $familyVariant->getCode() : null;
+        }
+        $data[self::FIELD_FAMILY_VARIANT] = $familyVariantCode;
+
+        $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$product->getValues()->isEmpty()
             ? $this->serializer->normalize(
                 $product->getValues(),
                 ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
                 $context
             ) : [];
-
-        $familyVariantCode = null;
-        $parentValues = [];
-
-        if ($product instanceof VariantProductInterface) {
-            $familyVariant = $product->getFamilyVariant();
-            $familyVariantCode = null !== $familyVariant ? $familyVariant->getCode() : null;
-
-            $parentValues = !$product->getParent()->getValues()->isEmpty()
-                ? $this->serializer->normalize(
-                    $product->getParent()->getValues(),
-                    ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
-                    $context
-                ) : [];
-        }
-
-        $data[self::FIELD_FAMILY_VARIANT] = $familyVariantCode;
-        $data[StandardPropertiesNormalizer::FIELD_VALUES] = array_merge($productValues, $parentValues);
 
         return $data;
     }

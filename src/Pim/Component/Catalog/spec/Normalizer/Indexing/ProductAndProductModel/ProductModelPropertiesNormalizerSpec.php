@@ -71,7 +71,6 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
             ->willReturn('family_A');
 
         $productValueCollection->isEmpty()->willReturn(true);
-        $productModel->getParent()->willReturn(null);
 
         $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
@@ -138,8 +137,6 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                 ]
             );
 
-        $productModel->getParent()->willReturn(null);
-
         $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
                 'id'             => 'product_model_67',
@@ -168,9 +165,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_product_model_fields_and_values_with_its_parents_values(
         $serializer,
         ProductModelInterface $productModel,
-        ProductModelInterface $parentProductModel,
-        ValueCollectionInterface $valueCollection1,
-        ValueCollectionInterface $valueCollection2,
+        ValueCollectionInterface $valueCollection,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant
     ) {
@@ -204,28 +199,18 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                 ],
             ]);
 
-        $productModel->getValues()->shouldBeCalledTimes(2)->willReturn($valueCollection1);
-        $valueCollection1->isEmpty()->willReturn(false);
+        $productModel->getValues()->shouldBeCalledTimes(2)->willReturn($valueCollection);
+        $valueCollection->isEmpty()->willReturn(false);
 
-        $serializer->normalize($valueCollection1, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
+        $serializer->normalize($valueCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
             ->willReturn(
                 [
-                    'a_size-decimal' => [
+                    'a_size-decimal'         => [
                         '<all_channels>' => [
                             '<all_locales>' => '10.51',
                         ],
                     ],
-                ]
-            );
-
-        $productModel->getParent()->willReturn($parentProductModel);
-
-        $parentProductModel->getValues()->willReturn($valueCollection2);
-        $valueCollection2->isEmpty()->willReturn(false);
-        $serializer->normalize($valueCollection2, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX, [])
-            ->willReturn(
-                [
-                    'a_date-date' => [
+                    'a_date-date'            => [
                         '<all_channels>' => [
                             '<all_locales>' => '2017-05-05',
                         ],
