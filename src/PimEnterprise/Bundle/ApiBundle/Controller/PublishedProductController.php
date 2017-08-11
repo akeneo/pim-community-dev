@@ -17,8 +17,6 @@ use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Pim\Bundle\ApiBundle\Validator\SearchCriteriasValidator;
-use Pim\Component\Api\Exception\PaginationParametersException;
-use Pim\Component\Api\Pagination\PaginationTypes;
 use Pim\Component\Api\Pagination\PaginatorInterface;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\AttributeRepositoryInterface;
