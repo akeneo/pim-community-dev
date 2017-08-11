@@ -9,7 +9,8 @@ define(
         'oro/datafilter/product_category-filter',
         'require-context',
         'pim/form',
-        'pim/user-context'
+        'pim/user-context',
+        'pim/fetcher-registry'
     ],
     function (
         _,
@@ -21,7 +22,8 @@ define(
         CategoryFilter,
         requireContext,
         BaseForm,
-        UserContext
+        UserContext,
+        FetcherRegistry
     ) {
         // Copied from macros renderStatefulGrid
         // @TODO - Totally rewrite with proper functions
@@ -32,6 +34,12 @@ define(
                 this.config = options.config;
 
                 BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            getDefaultView() {
+                return FetcherRegistry.getFetcher('datagrid-view')
+                .defaultUserView('product-grid')
+                .then(defaultUserView => defaultUserView.view);
             },
 
             render() {
@@ -48,11 +56,14 @@ define(
                     }
                 );
 
-                $.get(defaultColumnsRoute, function (defaultColumns) {
-                    initDatagrid(defaultColumns);
+                const getDefaultColumns = $.get(defaultColumnsRoute);
+                const getDefaultView = this.getDefaultView();
+
+                $.when(getDefaultColumns, getDefaultView).then((defaultColumns, defaultView) => {
+                    initDatagrid(defaultColumns, defaultView);
                 });
 
-                var initDatagrid = function (defaultColumns) {
+                var initDatagrid = function (defaultColumns, defaultView) {
                     var urlParams    = {[ localeParamName ]: locale};
                     urlParams.alias  = gridName;
                     urlParams.params = {[ localeParamName ]: locale};
@@ -62,7 +73,6 @@ define(
                         DatagridState.refreshFiltersFromUrl(gridName);
                     }
 
-                    var hasDefaultView = false;
                     var state          = DatagridState.get(gridName, ['view', 'filters', 'columns']);
 
                     var applyView = function (viewId) {
@@ -117,7 +127,11 @@ define(
                         });
                     };
 
-                    if (hasDefaultView && ('0' === state.view || null === state.view)) {
+                    if (defaultView && ('0' === state.view || null === state.view)) {
+                        applyView(defaultView.id);
+                        applyFilters(defaultView.filters);
+                        applyColumns(defaultView.columns);
+
                     } else {
                         if (state.view) {
                             applyView(state.view);
