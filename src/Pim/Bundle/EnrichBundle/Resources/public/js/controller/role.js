@@ -14,7 +14,7 @@ define([
              * {@inheritdoc}
              */
             afterSubmit: function () {
-                securityContext.fetch();
+                securityContext.initialize();
                 configProvider.clear();
 
                 FormController.prototype.afterSubmit.apply(this, arguments);
