@@ -34,6 +34,9 @@ class SimpleXlsxExport implements DefaultValuesProviderInterface
             'filePath'     => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.xlsx',
             'withHeader'   => true,
             'linesPerFile' => 10000,
+            'email'        => null,
+            'no_log'       => false,
+            'no_lock'      => false,
         ];
     }
 

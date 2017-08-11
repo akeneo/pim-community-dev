@@ -35,6 +35,9 @@ class SimpleXlsxImport implements DefaultValuesProviderInterface
             'withHeader'                => true,
             'uploadAllowed'             => true,
             'invalid_items_file_format' => 'xlsx',
+            'email'                     => null,
+            'no_log'                    => false,
+            'no_lock'                   => false,
         ];
     }
 

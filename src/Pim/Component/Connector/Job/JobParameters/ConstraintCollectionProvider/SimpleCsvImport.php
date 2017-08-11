@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterfa
 use Pim\Component\Catalog\Validator\Constraints\FileExtension;
 use Symfony\Component\Validator\Constraints\Choice;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
@@ -75,6 +76,9 @@ class SimpleCsvImport implements ConstraintCollectionProviderInterface
                         new IsTrue(['groups' => 'UploadExecution']),
                     ],
                     'invalid_items_file_format' => new NotBlank(),
+                    'email'                     => new Email(),
+                    'no_log'                    => new Type('bool'),
+                    'no_lock'                   => new Type('bool'),
                 ]
             ]
         );
