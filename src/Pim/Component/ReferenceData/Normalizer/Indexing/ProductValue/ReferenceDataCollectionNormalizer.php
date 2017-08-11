@@ -24,7 +24,6 @@ class ReferenceDataCollectionNormalizer extends AbstractProductValueNormalizer
             ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX === $format ||
             ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format
         );
-;
     }
 
     /**
