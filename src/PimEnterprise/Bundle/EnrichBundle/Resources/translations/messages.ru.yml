@@ -111,8 +111,8 @@ pimee_enrich:
     resize:
       title: Изменение размера
       options:
-        width: Ширина %value%px 
-        height: Высота %value%px
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
     resolution:
       title: Разрешение
       options:
@@ -121,14 +121,14 @@ pimee_enrich:
     scale:
       title: Маштабирование
       options:
-        width: Ширина %value%px 
-        height: Высота %value%px
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
         ratio: '%value%% соотношение'
     thumbnail:
       title: Миниатюра изображения
       options:
-        width: Ширина %value%px 
-        height: Высота %value%px
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
 add_product_value_with_permission_and_rules:
   steps.perform: Добавить значение продукта
 update_product_value_with_permission_and_rules:

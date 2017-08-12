@@ -107,7 +107,7 @@ pimee_enrich:
     colorspace:
       title: Espace colorimétrique
       options:
-        colorspace: espace colorimétrique %value%
+        colorspace: 'espace colorimétrique %value%'
     resize:
       title: Redimensionner
       options:
@@ -123,7 +123,7 @@ pimee_enrich:
       options:
         width: '%value%px de largeur'
         height: '%value%px de hauteur'
-        ratio: ratio %value%%
+        ratio: 'ratio %value%%'
     thumbnail:
       title: Miniature
       options:
