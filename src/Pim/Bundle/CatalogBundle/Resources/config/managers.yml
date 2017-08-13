@@ -1,6 +1,5 @@
 parameters:
     pim_catalog.manager.attribute_options_sorter.class: Pim\Component\Catalog\Manager\AttributeOptionsSorter
-    pim_catalog.manager.attribute_group.class:     Pim\Component\Catalog\Manager\AttributeGroupManager
     pim_catalog.manager.completeness.class:        Pim\Component\Catalog\Manager\CompletenessManager
     pim_catalog.manager.product_template_media.class:    Pim\Component\Catalog\Manager\ProductTemplateMediaManager
     pim_catalog.applier.product_template.class:          Pim\Component\Catalog\Manager\ProductTemplateApplier
@@ -13,13 +12,6 @@ services:
         class: '%pim_catalog.manager.attribute_options_sorter.class%'
         arguments:
             - '@pim_catalog.saver.attribute_option'
-
-    pim_catalog.manager.attribute_group:
-        class: '%pim_catalog.manager.attribute_group.class%'
-        arguments:
-            - '@pim_catalog.repository.attribute_group'
-            - '@pim_catalog.saver.attribute_group'
-            - '@pim_catalog.saver.attribute'
 
     pim_catalog.manager.completeness:
         class: '%pim_catalog.manager.completeness.class%'
