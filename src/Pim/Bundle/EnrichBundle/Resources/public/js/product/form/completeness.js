@@ -69,8 +69,6 @@ define(
                             this.initialFamily = this.getFormData().family;
                         }
 
-                        console.log(this.sortCompleteness(this.getFormData().meta.completenesses));
-
                         this.$el.html(
                             this.template({
                                 __: __,
