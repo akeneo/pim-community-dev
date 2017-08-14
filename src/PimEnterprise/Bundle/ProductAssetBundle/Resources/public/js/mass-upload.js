@@ -10,7 +10,8 @@ define(
         'oro/messenger',
         'pimee/template/asset/mass-upload',
         'pimee/template/asset/mass-upload-row',
-        'pim/form-builder'
+        'pim/form-builder',
+        'pim/common/breadcrumbs'
     ],
     function (
         $,
@@ -22,7 +23,8 @@ define(
         messenger,
         pageTemplate,
         rowTemplate,
-        formBuilder
+        formBuilder,
+        Breadcrumbs
     ) {
         /**
          * Override to be able to use template root different other than 'div'
@@ -59,6 +61,17 @@ define(
              */
             render: function () {
                 this.$el.html(this.pageTemplate({__: __}));
+
+                var breadcrumbs = new Breadcrumbs({
+                    config: {
+                        tab: 'pim-menu-settings',
+                        item: 'pim-menu-collect-upload-asset'
+                    }
+                });
+                breadcrumbs.configure().then(function () {
+                    breadcrumbs.render();
+                    $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                });
 
                 formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
                     form.setElement('.user-menu').render();
