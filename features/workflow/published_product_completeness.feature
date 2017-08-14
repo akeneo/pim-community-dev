@@ -29,16 +29,16 @@ Feature: View the completeness of a published product
     Given I am on the "sneakers" published product show page
     When I visit the "Completeness" column tab
     And I should see the completeness:
-      | channel | locale | state   | missing_values         | ratio |
-      | mobile  | en_US  | success |                        | 100%  |
-      | tablet  | en_US  | warning | Side view              | 88%   |
-      | mobile  | fr_FR  | success |                        | 100%  |
-      | tablet  | fr_FR  | warning | Description, Side view | 77%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 1              | 88%   |
+      | tablet  | fr_FR  | warning | 2              | 77%   |
+      | mobile  | en_US  | success | 0              | 100%  |
+      | mobile  | fr_FR  | success | 0              | 100%  |
     When I am on the "sandals" published product show page
     And I visit the "Completeness" column tab
     And I should see the completeness:
-      | channel | locale | state   | missing_values                                    | ratio |
-      | mobile  | en_US  | warning | Name, Price, Size                                 | 40%   |
-      | tablet  | en_US  | warning | Name, Description, Price, Rating, Side view, Size | 25%   |
-      | mobile  | fr_FR  | warning | Price, Size                                       | 60%   |
-      | tablet  | fr_FR  | warning | Price, Rating, Side view, Size                    | 50%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 6              | 25%   |
+      | tablet  | fr_FR  | warning | 4              | 50%   |
+      | mobile  | en_US  | warning | 3              | 40%   |
+      | mobile  | fr_FR  | warning | 2              | 60%   |

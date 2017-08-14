@@ -595,13 +595,13 @@ Feature: Read a single product by applying rules
     And I am on the "my-jacket" product page
     When I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel | locale | state   | missing_values                                                                             | ratio |
-      | mobile  | en_US  | warning | Price, Size, Main color, gallery                                                           | 33%   |
-      | tablet  | en_US  | warning | Weather conditions, Description, Price, Rating, Side view, Size, Main color, gallery       | 20%   |
-      | mobile  | de_DE  | warning | Name, Price, Size, Main color, gallery                                                     | 16%   |
-      | tablet  | de_DE  | warning | Name, Weather conditions, Description, Price, Rating, Side view, Size, Main color, gallery | 10%   |
-      | mobile  | fr_FR  | warning | Price, Size, Main color, gallery                                                           | 33%   |
-      | tablet  | fr_FR  | warning | Weather conditions, Description, Price, Rating, Side view, Size, Main color, gallery       | 20%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | de_DE  | warning | 9              | 10%   |
+      | tablet  | en_US  | warning | 8              | 20%   |
+      | tablet  | fr_FR  | warning | 8              | 20%   |
+      | mobile  | de_DE  | warning | 5              | 16%   |
+      | mobile  | en_US  | warning | 4              | 33%   |
+      | mobile  | fr_FR  | warning | 4              | 33%   |
     And the following product rule definitions:
       """
       set_name:
@@ -622,10 +622,10 @@ Feature: Read a single product by applying rules
     When I am on the "my-jacket" product page
     When I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel | locale | state   | missing_values                                                                             | ratio |
-      | mobile  | en_US  | warning | Price, Size, Main color, gallery                                                           | 33%   |
-      | tablet  | en_US  | warning | Weather conditions, Price, Rating, Side view, Size, Main color, gallery                    | 30%   |
-      | mobile  | de_DE  | warning | Name, Price, Size, Main color, gallery                                                     | 16%   |
-      | tablet  | de_DE  | warning | Name, Weather conditions, Description, Price, Rating, Side view, Size, Main color, gallery | 10%   |
-      | mobile  | fr_FR  | warning | Price, Size, Main color, gallery                                                           | 33%   |
-      | tablet  | fr_FR  | warning | Weather conditions, Description, Price, Rating, Side view, Size, Main color, gallery       | 20%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | de_DE  | warning | 9              | 10%   |
+      | tablet  | en_US  | warning | 7              | 30%   |
+      | tablet  | fr_FR  | warning | 8              | 20%   |
+      | mobile  | de_DE  | warning | 5              | 16%   |
+      | mobile  | en_US  | warning | 4              | 33%   |
+      | mobile  | fr_FR  | warning | 4              | 33%   |
