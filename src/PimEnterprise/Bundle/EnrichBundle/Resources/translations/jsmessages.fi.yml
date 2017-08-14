@@ -70,9 +70,6 @@ pimee_enrich:
           messages:
             approve:
               success: Ehdotus on otettu käyttöön onnistuneesti.
-              error:
-                The proposal can't be applied due to the following error:
-                  - virhe
             reject:
               success: Ehdotus on hylätty.
             remove:
@@ -149,6 +146,29 @@ pimee_enrich:
       options:
         width: '%value%px leveys'
         height: '%value%px korkeus'
+  mass_edit:
+    next: Seuraava
+    cancel: Peruuta
+    confirm: Vahvista
+    product:
+      operation:
+        publish:
+          label: Julkaise tuotteet
+        unpublish:
+          label: Muuta tuote tilaan "Julkaisematon"
+    asset:
+      step:
+        choose:
+          label: Valitse toiminto
+        configure:
+          label: Konfiguroi
+        confirm:
+          label: Vahvista
+      operation:
+        add_tag:
+          field: Asiasanat
+        add_to_category:
+          field: Kategoriat
 pim_menu:
   tab:
     asset: Resurssit

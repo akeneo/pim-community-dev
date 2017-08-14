@@ -76,9 +76,6 @@ pimee_enrich:
           messages:
             approve:
               success: 该提案已被应用
-              error:
-                The proposal can't be applied due to the following error:
-                  - 错误
             reject:
               success: 该提案已被拒绝。
             remove:
@@ -155,6 +152,32 @@ pimee_enrich:
       options:
         width: '%value%px 宽度'
         height: '%value%px 高度'
+  mass_edit:
+    next: 下一页
+    cancel: 取消
+    confirm: 确认
+    product:
+      operation:
+        publish:
+          label: 发布产品
+        unpublish:
+          label: 取消发布产品
+    asset:
+      step:
+        select:
+          label: 选择资产
+        choose:
+          label: 选择操作
+        configure:
+          label: 配置
+        confirm:
+          label: 确认
+      operation:
+        add_tag:
+          label: 将标签添加到资源
+          field: 标签
+        add_to_category:
+          field: 分类
 pim_menu:
   tab:
     asset: 资产

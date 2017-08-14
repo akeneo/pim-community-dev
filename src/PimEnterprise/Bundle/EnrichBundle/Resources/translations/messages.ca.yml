@@ -107,7 +107,7 @@ pimee_enrich:
     colorspace:
       title: Espai de color
       options:
-        colorspace: Espai de color %value%
+        colorspace: 'Espai de color %value%'
     resize:
       title: Redimensiona
       options:
