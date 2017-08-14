@@ -472,7 +472,7 @@ info:
     select products: Por favor selecione produtos que devem pertencer a este grupo.
     selectable products: Os seguintes produtos selecionáveis têm um valor definido para cada eixo.
     no group types: Não há tipos de grupo existentes, clique aqui para criar um
-    more products: mais %count% produtos...
+    more products: 'mais %count% produtos...'
   association type:
     show products: Mostrar produtos
     show groups: Mostrar grupos

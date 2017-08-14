@@ -14,6 +14,7 @@ Option code may contain only letters (at least one), numbers and underscores: El
 This value should not be a decimal.: Este valor no debe ser un decimal.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'La extensión del fichero no está permitida (las extensiones permitidas son: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": El valor %value% ya es usado en otro producto por el atributo único %attribute%
+The same identifier is already set on another product: El mismo identificador se encuentra ya en otro producto
 regex.comma_or_semicolon.message: Este campo no debería contener comas o punto y comas.
 file.extensions.message: 'La extensión del fichero no está permitida (las extensiones permitidas son: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Se espera el uso de {{ decimal_separator }} para separar los decimales.
@@ -21,3 +22,8 @@ file.extensions.message: 'La extensión del fichero no está permitida (las exte
 "This type of value expects the use of comma (,) to separate decimals.": Este valor debería usar una coma (,) como separación de decimales.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Este valor debería usar un separador decimal arábigo (٫) como separación de decimales.
 "This type of value expects the use of the format {{ date_format }} for dates.": Se espera el uso del formato {{ date_format }} para las fechas.
+"The category \"%category%\" has to be a root category.": La categoría "%category%" tiene que ser una categoría raiz.
+"The attribute \"%attributeCode%\" does not exist.": No existe el atributo "%attributeCode%".
+"The attribute \"%attributeCode%\" is not a metric attribute.": El atributo "%attributeCode%" no es un atributo métrico.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": La unidad "%unitCode%" no existe o no pertenece a la familia métrica por defecto del atributo dado "%attributeCode%".
+"The currency \"%currency%\" has to be activated.": La moneda "%currency%" tiene que ser activada.
