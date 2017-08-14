@@ -51,7 +51,7 @@ class ContextSwitcherDecorator extends ElementDecorator
             $option->click();
 
             return $this->getSelectedLocale() === $localeCode;
-        }, sprintf('Could switch locale to "%s"', $localeCode));
+        }, sprintf('Could not switch locale to "%s"', $localeCode));
     }
 
     /**
