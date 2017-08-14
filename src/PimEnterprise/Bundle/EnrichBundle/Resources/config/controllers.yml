@@ -119,6 +119,7 @@ services:
             - '@pim_catalog.factory.attribute'
             - '@pim_user.context.user'
             - '@pim_catalog.localization.localizer.number'
+            - '@pim_enrich.normalizer.attribute'
 
     pim_enrich.controller.rest.job_instance:
         class: '%pim_enrich.controller.rest.job_instance.class%'
