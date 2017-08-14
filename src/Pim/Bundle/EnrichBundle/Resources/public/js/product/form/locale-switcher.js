@@ -54,7 +54,7 @@ define(
                             localeCode: _.first(locales).code,
                             context: this.config.context
                         };
-                        this.getRoot().trigger('pim_enrich:form:locale_switcher:pre_render', params);
+                        this.getRoot().trigger('pim_enrich:form:locale_switcher:pre_render', _.clone(params));
 
                         this.$el.html(
                             this.template({
