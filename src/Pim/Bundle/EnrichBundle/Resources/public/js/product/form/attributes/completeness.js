@@ -38,19 +38,19 @@ define(
                         return $.Deferred().resolve([]);
                     }
 
-                    var localeCompleteness = _.findWhere(
+                    var channelCompletenesses = _.findWhere(
                         completenesses.completenesses,
-                        {locale: UserContext.get('catalogLocale')}
+                        {channel: UserContext.get('catalogScope')}
                     );
 
-                    if (undefined === localeCompleteness ||
-                        undefined === localeCompleteness.channels[UserContext.get('catalogScope')]
+                    if (undefined === channelCompletenesses ||
+                        undefined === channelCompletenesses.locales[UserContext.get('catalogLocale')]
                     ) {
                         return $.Deferred().resolve([]);
                     }
 
                     var missingAttributeCodes = _.pluck(
-                        localeCompleteness.channels[UserContext.get('catalogScope')].missing,
+                        channelCompletenesses.locales[UserContext.get('catalogLocale')].missing,
                         'code'
                     );
 
