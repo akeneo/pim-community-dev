@@ -4,12 +4,6 @@
   padding: 10px 20px;
 
   &-content {
-    border-left: 1px solid @AknBorderColor;
-    border-right: 1px solid @AknBorderColor;
-    border-bottom: 1px solid @AknBorderColor;
-    border-bottom-left-radius: 2px;
-    border-bottom-right-radius: 2px;
-
     &--fullWidth {
       width: 100%;
     }
@@ -18,5 +12,8 @@
   &-contentThreeColumns {
     display: flex;
     align-items: stretch;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 }

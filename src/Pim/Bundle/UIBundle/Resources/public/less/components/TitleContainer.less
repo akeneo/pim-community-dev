@@ -7,6 +7,7 @@
   display: flex;
   flex-wrap: wrap-reverse;
   align-items: stretch;
+  min-height: 64px;
 
   &-imageContainer:not(:empty) {
     width: @imageSize + 2px;
@@ -59,12 +60,13 @@
     display: flex;
     justify-content: flex-end;
     flex-grow: 1;
+    align-items: flex-start;
   }
 
   &-rightButtons {
     order: 10;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-start;
   }
 
   &-state {
