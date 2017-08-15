@@ -22,6 +22,7 @@ Feature: Edit common localized attributes of many products at once
       | sandals | sandals |
     And I am logged in as "Julien"
     And I am on the products grid
+    And I switch the locale to "en_US"
 
   Scenario: Successfully update many price values at once
     Given I select rows boots and sandals
