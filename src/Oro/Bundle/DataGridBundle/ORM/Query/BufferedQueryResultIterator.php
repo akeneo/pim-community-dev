@@ -229,7 +229,6 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
         }
     }
 
-
     /**
      * {@inheritDoc}
      */

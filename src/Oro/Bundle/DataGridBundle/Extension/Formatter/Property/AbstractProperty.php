@@ -93,7 +93,6 @@ abstract class AbstractProperty implements PropertyInterface
         return $result;
     }
 
-
     /**
      * Format raw value.
      *

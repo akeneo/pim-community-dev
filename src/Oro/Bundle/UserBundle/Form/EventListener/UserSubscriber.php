@@ -22,7 +22,6 @@ class UserSubscriber implements EventSubscriberInterface
      */
     protected $tokenStorage;
 
-
     /**
      * @param FormFactoryInterface  $factory      Factory to add new form children
      * @param TokenStorageInterface $tokenStorage Token storage

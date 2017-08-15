@@ -26,7 +26,6 @@ class AttributeSelectorDecorator extends ElementDecorator
                 return $this->find('css', sprintf('li[data-attribute-code="%s"]', $attribute));
             }, sprintf('Cannot find the attribute %s in the list', $attribute));
 
-
             $dropZone = $this->spin(function () {
                 return $this->find('css', '.selected-attributes ul');
             }, sprintf('Cannot find the drop zone', $attribute));

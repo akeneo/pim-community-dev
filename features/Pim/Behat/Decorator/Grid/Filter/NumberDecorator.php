@@ -23,7 +23,6 @@ class NumberDecorator extends ElementDecorator
         );
         $operatorDropdown->setValue($operator);
 
-
         if (!in_array($operator, ['is empty', 'is not empty'])) {
             $this->find('css', 'input[name="value"]')->setValue($value);
         }

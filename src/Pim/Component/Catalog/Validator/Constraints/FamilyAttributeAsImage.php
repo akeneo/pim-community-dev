@@ -24,7 +24,6 @@ class FamilyAttributeAsImage extends Constraint
     public $messageAttributeGlobal = 'Property "attribute_as_image" must not be scopable nor localizable '.
         'for this family';
 
-
     /** @var string */
     public $propertyPath = 'attribute_as_image';
 

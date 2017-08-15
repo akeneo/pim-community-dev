@@ -45,7 +45,6 @@ class ProductAnalyzer implements AnalyzerInterface
                 $lineNumber
             );
 
-
             $lineNumber++;
         }
 

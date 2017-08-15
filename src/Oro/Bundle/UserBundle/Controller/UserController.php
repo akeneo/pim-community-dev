@@ -96,7 +96,6 @@ class UserController extends Controller
         }
     }
 
-
     /**
      * @param mixed  $user
      * @param string $updateRoute

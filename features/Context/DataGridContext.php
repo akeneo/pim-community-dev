@@ -151,7 +151,6 @@ class DataGridContext extends PimContext implements PageObjectAware
         }, sprintf('Cannot find the filter "%s" in the filter list', $text));
     }
 
-
     /**
      * @param string $title
      *

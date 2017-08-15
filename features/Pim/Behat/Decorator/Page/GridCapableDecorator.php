@@ -213,7 +213,6 @@ class GridCapableDecorator extends ElementDecorator
             return true;
         }, 'Cannot click the View Type Switcher.');
 
-
         $this->spin(function () use ($type) {
             $viewType = $this->find('css', sprintf('.view-type-item[title="%s"]', $type));
             if (null == $viewType) {

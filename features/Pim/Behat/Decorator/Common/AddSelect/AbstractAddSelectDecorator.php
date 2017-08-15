@@ -159,7 +159,6 @@ abstract class AbstractAddSelectDecorator extends ElementDecorator implements Ad
             return null;
         }, 'Can not find any multiselect apply button')->press();
 
-
         return $this;
     }
 

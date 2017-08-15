@@ -81,7 +81,6 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
             $localeCodes = (null !== $locale) ? [$locale] : $this->getChannelByCode($channel)->getLocaleCodes();
         }
 
-
         /**
          * Example: product "SKU-001", for the channel "tablet", has the following complete ratios:
          *      50% for "en_US"

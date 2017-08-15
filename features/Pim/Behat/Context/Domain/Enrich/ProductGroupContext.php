@@ -108,7 +108,6 @@ class ProductGroupContext extends PimContext
         $this->findPropertyFieldByLabel($label)->setValue($value);
     }
 
-
     /**
      * @param string $field
      *

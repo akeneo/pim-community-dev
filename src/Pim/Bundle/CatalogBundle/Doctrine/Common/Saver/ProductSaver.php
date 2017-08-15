@@ -89,7 +89,6 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
 
         $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE_ALL, new GenericEvent($products, $options));
 
-
         foreach ($products as $product) {
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
             $this->completenessManager->schedule($product);

@@ -121,7 +121,6 @@ class FeatureContext extends PimContext implements KernelAwareContext
         return static::$timeout;
     }
 
-
     /**
      * Sets Kernel instance.
      *
