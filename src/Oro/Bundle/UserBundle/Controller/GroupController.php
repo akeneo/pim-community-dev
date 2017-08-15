@@ -22,6 +22,7 @@ class GroupController extends Controller
     public function createAction()
     {
         $this->dispatchGroupEvent(OroUserEvents::PRE_CREATE_GROUP);
+
         return $this->update(new Group());
     }
 
@@ -34,6 +35,7 @@ class GroupController extends Controller
     public function updateAction(Group $entity)
     {
         $this->dispatchGroupEvent(OroUserEvents::PRE_UPDATE_GROUP, $entity);
+
         return $this->update($entity);
     }
 

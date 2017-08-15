@@ -228,6 +228,7 @@ class ProductNormalizer implements NormalizerInterface
                 $completenessCollection->add($completeness);
             }
         }
+
         return $this->completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api');
     }
 

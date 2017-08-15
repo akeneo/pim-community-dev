@@ -23,6 +23,7 @@ class QueryCountCalculator
     {
         /** @var QueryCountCalculator $instance */
         $instance = new static();
+
         return $instance->getCount($query, $parameters);
     }
 

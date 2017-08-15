@@ -102,6 +102,7 @@ class FileWriterArchiver extends AbstractFilesystemArchiver
                     return false;
                 }
             }
+
             return true;
         }
 

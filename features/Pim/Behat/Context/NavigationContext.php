@@ -401,6 +401,7 @@ class NavigationContext extends PimContext implements PageObjectAware
             $node = $this->getSession()
                 ->getPage()
                 ->find('css', $this->elements['Loading message']['css']);
+
             return ($node === null);
         }, 'Found the loading message');
 

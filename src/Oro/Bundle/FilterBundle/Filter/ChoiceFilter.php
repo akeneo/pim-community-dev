@@ -84,6 +84,7 @@ class ChoiceFilter extends AbstractFilter
         if ($fieldView->vars['multiple']) {
             $metadata[FilterUtility::TYPE_KEY] = 'multichoice';
         }
+
         return $metadata;
     }
 

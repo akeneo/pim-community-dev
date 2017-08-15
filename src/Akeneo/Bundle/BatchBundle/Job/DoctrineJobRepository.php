@@ -225,6 +225,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
         $connection->connect();
         try {
             $connection->query($connection->getDatabasePlatform()->getDummySelectSQL());
+
             return true;
         } catch (DBALException $e) {
             return false;

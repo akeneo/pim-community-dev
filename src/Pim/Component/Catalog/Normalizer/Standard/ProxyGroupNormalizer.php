@@ -58,6 +58,7 @@ class ProxyGroupNormalizer implements NormalizerInterface
         if ($group->getType()->isVariant()) {
             return $this->variantGroupNormalizer->normalize($group, $format, $context);
         }
+
         return $this->groupNormalizer->normalize($group, $format, $context);
     }
 

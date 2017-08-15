@@ -243,6 +243,7 @@ class Base extends Page
             // Use Mink search, which use "contains" xpath condition
             $button = $this->findButton($locator);
         }
+
         return $button;
     }
 

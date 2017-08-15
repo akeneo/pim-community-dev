@@ -117,6 +117,7 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
             $this->initBufferSize();
             unset($this->source);
         }
+
         return $this->query;
     }
 
@@ -128,6 +129,7 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
         if (null === $this->firstResult) {
             $this->firstResult = (int)$this->getQuery()->getFirstResult();
         }
+
         return $this->firstResult;
     }
 
@@ -169,6 +171,7 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
             throw new \InvalidArgumentException('$bufferSize must be greater than 0');
         }
         $this->initBufferSize();
+
         return $this;
     }
 
@@ -202,6 +205,7 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
                 )
             );
         }
+
         return $this;
     }
 
@@ -213,6 +217,7 @@ class BufferedQueryResultIterator implements \Iterator, \Countable
     {
         $this->assertQueryWasNotExecuted('hydration mode');
         $this->hydrationMode = $hydrationMode;
+
         return $this;
     }
 

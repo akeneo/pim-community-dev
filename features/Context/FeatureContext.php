@@ -290,6 +290,7 @@ class FeatureContext extends PimContext implements KernelAwareContext
 
         $this->spin(function () use ($link) {
             $this->getSession()->getPage()->clickLink($link);
+
             return true;
         }, sprintf('Link %s is not present on the page', $link));
     }

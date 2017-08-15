@@ -6,6 +6,9 @@ return PhpCsFixer\Config::create()
         'linebreak_after_opening_tag' => true,
         'ordered_imports' => true,
         'no_extra_consecutive_blank_lines' => true,
+        'blank_line_before_statement' => [
+            'statements' => ['return']
+        ],
         'method_argument_space' => [
             'ensure_fully_multiline' => false
         ],

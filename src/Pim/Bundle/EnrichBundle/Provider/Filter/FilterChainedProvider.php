@@ -25,6 +25,7 @@ class FilterChainedProvider implements FilterProviderInterface
                 $filters = array_merge($filters, $provider->getFilters($element));
             }
         }
+
         return $filters;
     }
 

@@ -50,6 +50,7 @@ class RenderHeaderExtension extends AbstractExtension
     {
         /** @var $template \Twig_Template */
         $template = $environment->loadTemplate($this->templateName);
+
         return $template->renderBlock($blockName, $context);
     }
 

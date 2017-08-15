@@ -22,6 +22,7 @@ class UserController extends Controller
     public function viewAction($id)
     {
         $user = $this->get('pim_user.repository.user')->find($id);
+
         return $this->view($user);
     }
 

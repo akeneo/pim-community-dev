@@ -135,6 +135,7 @@ class AsyncSelectType extends AbstractType
         $transformerOptions = [
             'multiple' => $options['multiple']
         ];
+
         return $this->transformerFactory->create($repository, $transformerOptions);
     }
 }
