@@ -93,7 +93,7 @@ Feature: List attribute groups
     And I should see the text "There are unsaved changes"
     And I save the family
     And I should not see the text "There are unsaved changes"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | a_boot       |

@@ -16,7 +16,7 @@ Feature: Sort products per attributes
     And I am logged in as "Mary"
 
   Scenario: Successfully sort products by sku
-    Given I am on the products page
+    Given I am on the products grid
     And the grid should contain 5 elements
     And I should be able to sort the rows by SKU
 
@@ -31,7 +31,7 @@ Feature: Sort products per attributes
     When I check the "Handmade" switch
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
-    When I am on the products page
+    When I am on the products grid
     Then the grid should contain 5 elements
     When I display the columns SKU, Label, Family, Status, Complete, Created at, Updated at, Groups and Handmade
     Then I should be able to sort the rows by Handmade

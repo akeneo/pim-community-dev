@@ -10,7 +10,7 @@ Feature: Product edition clicking on another action
       | sku    | family  |
       | sandal | sandals |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I display the columns SKU, Name, Description and Family
 
   @skip-nav

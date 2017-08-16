@@ -26,7 +26,7 @@ Feature: Filter products with multiples metrics filters
       | POST-2 | furniture | 50 GRAM   |          |
       | POST-3 | furniture | 20 GRAM   |          |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully filter products with the sames attributes
     Given I show the filter "packaging"

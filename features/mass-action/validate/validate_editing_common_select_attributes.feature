@@ -38,7 +38,7 @@ Feature: Validate editing common select attributes of multiple products
       | sneakers | master_family |
       | sandals  | master_family |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully mass edit a multi select attribute
     Given I select rows boots and sneakers
@@ -52,7 +52,7 @@ Feature: Validate editing common select attributes of multiple products
       | value |
       | dry   |
       | hot   |
-    When I am on the products page
+    When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -72,7 +72,7 @@ Feature: Validate editing common select attributes of multiple products
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
     Then the option "manufacturer" of products boots and sneakers should be "Converse"
-    When I am on the products page
+    When I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation

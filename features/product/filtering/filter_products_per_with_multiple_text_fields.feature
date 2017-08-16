@@ -26,7 +26,7 @@ Feature: Filter products with multiples text fields filters
       | POST-2 | furniture | red color      |        |
       | POST-3 | furniture | black color    | indigo |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I show the filter "description"
     And I show the filter "name"
 

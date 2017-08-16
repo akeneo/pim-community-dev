@@ -155,6 +155,32 @@ class NavigationContext extends PimContext implements PageObjectAware
     }
 
     /**
+     * @param array $options
+     *
+     * @Given /^I am on the products grid$/
+     * @Given /^I go to the products grid$/
+     */
+    public function iAmOnTheProductsGrid(array $options = [])
+    {
+        $page = $this->getPageMapping()['products'];
+
+        $this->spin(function () use ($page, $options) {
+            $this->openPage($page, $options);
+            $expectedFullUrl = $this->getCurrentPage()->getUrl();
+            $actualFullUrl = $this->getSession()->getCurrentUrl();
+            $expectedUrl = $this->sanitizeUrl($expectedFullUrl);
+            $actualUrl = $this->sanitizeUrl($actualFullUrl);
+
+            $result = $expectedUrl === $actualUrl;
+            assertTrue($result, sprintf('Expecting to be on the page %s, not %s', $expectedUrl, $actualUrl));
+
+            return $this->getCurrentPage()->find('css', '.AknGridToolbar-center');
+        }, sprintf('You are not on the products grid', $page));
+
+        $this->wait();
+    }
+
+    /**
      * @param string $not
      * @param string $page
      *

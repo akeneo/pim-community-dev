@@ -15,7 +15,7 @@ Feature: Add products to a variant group
       | SANDAL | name         | EN name     | en_US  |       |
       | SANDAL | comment      | New comment |        |       |
     And I am logged in as "admin"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | sandal-white-37 |
