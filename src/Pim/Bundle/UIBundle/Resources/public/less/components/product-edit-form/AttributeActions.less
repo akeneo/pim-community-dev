@@ -8,12 +8,13 @@
   &-editActions {
     @verticalPadding: ((@AknTabHeight - @AknDefaultButtonSize - 1px) / 2); // To have the same size than tab
 
-    padding: @verticalPadding 10px @verticalPadding 0;
+    padding: @verticalPadding 0px @verticalPadding 0;
     display: flex;
     justify-content: space-between;
     flex-grow: 1;
     align-items: center;
-    margin-right: 10px;
+    margin-right: 30px;
+    border-bottom: 1px solid @AknBorderColor;
   }
 
   &-copyActions {
@@ -21,6 +22,9 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    align-items: center;
+    border-bottom: 1px solid @AknBorderColor;
+    min-height: @AknTabHeight + 7px;
   }
 
   &-otherActions {
@@ -32,10 +36,14 @@
     display: flex;
   }
 
+  &--comparisonMode {
+    border-bottom: none;
+  }
+
   &--comparisonMode &-editActions {
-    border-right: 1px solid @AknBorderColor;
-    flex-basis: @AknMaxFormWidth + 20px;
+    flex-basis: @AknMaxFormWidth;
     flex-grow: 0;
+    flex-shrink: 0;
   }
 
   &--comparisonMode &-copyActions {
