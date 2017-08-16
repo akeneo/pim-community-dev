@@ -4,6 +4,14 @@ extensions:
         config:
             title: pim_enrich.index.attribute_group.title
 
+    pim-attribute-group-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-attribute-group-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-attribute-group
+
     pim-attribute-group-index-list:
         module: pim/attribute-group-edit-form/list
         parent: pim-attribute-group-index

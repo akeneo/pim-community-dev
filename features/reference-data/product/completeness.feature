@@ -32,31 +32,31 @@ Feature: Display the completeness of a product with reference data
     When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | ratio |
-      | mobile  | en_US  | warning | 50%   |
       | tablet  | en_US  | warning | 50%   |
-      | mobile  | fr_FR  | success | 100%  |
       | tablet  | fr_FR  | warning | 75%   |
+      | mobile  | en_US  | warning | 50%   |
+      | mobile  | fr_FR  | success | 100%  |
     When I am on the "black-heels" product page
     And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | ratio |
-      | mobile  | en_US  | warning | 50%   |
       | tablet  | en_US  | success | 100%  |
-      | mobile  | fr_FR  | warning | 25%   |
       | tablet  | fr_FR  | warning | 75%   |
+      | mobile  | en_US  | warning | 50%   |
+      | mobile  | fr_FR  | warning | 25%   |
     When I am on the "green-heels" product page
     And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | ratio |
-      | mobile  | en_US  | warning | 50%   |
       | tablet  | en_US  | success | 100%  |
-      | mobile  | fr_FR  | warning | 50%   |
       | tablet  | fr_FR  | success | 100%  |
+      | mobile  | en_US  | warning | 50%   |
+      | mobile  | fr_FR  | warning | 50%   |
     When I am on the "high-heels" product page
     And I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | ratio |
-      | mobile  | en_US  | warning | 25%   |
       | tablet  | en_US  | warning | 25%   |
-      | mobile  | fr_FR  | warning | 25%   |
       | tablet  | fr_FR  | warning | 25%   |
+      | mobile  | en_US  | warning | 25%   |
+      | mobile  | fr_FR  | warning | 25%   |

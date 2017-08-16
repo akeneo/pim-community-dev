@@ -16,6 +16,7 @@ use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
 use Doctrine\Common\Util\ClassUtils;
 use League\Flysystem\MountManager;
+use OAuth2\OAuth2;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
@@ -1690,6 +1691,23 @@ class FixturesContext extends BaseFixturesContext
         }
 
         $this->getProductSaver()->save($owner);
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following clients?:$/
+     */
+    public function theFollowingClients(TableNode $table)
+    {
+        $clientManager = $this->getContainer()->get('fos_oauth_server.client_manager.default');
+        foreach ($table->getHash() as $data) {
+            $client = $clientManager->createClient();
+            $client->setLabel($data['label']);
+            $client->setAllowedGrantTypes([OAuth2::GRANT_TYPE_USER_CREDENTIALS, OAuth2::GRANT_TYPE_REFRESH_TOKEN]);
+
+            $clientManager->updateClient($client);
+        }
     }
 
     /**

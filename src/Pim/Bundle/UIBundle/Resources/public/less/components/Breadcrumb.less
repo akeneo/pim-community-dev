@@ -1,8 +1,10 @@
 @import '../base/variables';
 
 .AknBreadcrumb {
-  color: @AknDefaultFontColor;
+  color: lighter(@AknDefaultFontColor, 10%);
   font-size: @AknFontSizeBig;
+  text-transform: uppercase;
+  transition: color 0.2s ease-in;
 
   &-item {
     display: inline;
@@ -13,6 +15,10 @@
 
     &:after {
       content: ' / ';
+    }
+
+    &:hover {
+      color: @AknDefaultFontColor;
     }
   }
 }

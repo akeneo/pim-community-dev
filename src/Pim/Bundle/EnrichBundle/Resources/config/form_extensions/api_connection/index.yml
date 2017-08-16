@@ -1,0 +1,31 @@
+extensions:
+    pim-api-connection-index:
+        module: pim/form/common/index/index
+        config:
+            title: pim_enrich.index.api_connection.title
+
+    pim-api-connection-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-api-connection-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-system
+            item: pim-menu-system-api-connection
+
+    pim-api-connection-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-api-connection-index
+        position: 1000
+        targetZone: content
+        config:
+            alias: api-connection-grid
+
+    pim-api-connection-index-create-button:
+        module: pim/form/common/index/create-button
+        parent: pim-api-connection-index
+        targetZone: buttons
+        position: 100
+        config:
+           iconName:  plus
+           title:     pim_enrich.index.api_connection.create_btn
+           modalForm: pim-api-connection-create-modal

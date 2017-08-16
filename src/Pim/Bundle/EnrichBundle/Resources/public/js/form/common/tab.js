@@ -11,8 +11,6 @@ define([
 ],
 function (__, BaseForm) {
     return BaseForm.extend({
-        className: 'AknTabContainer-content',
-
         /**
          * {@inheritdoc}
          */

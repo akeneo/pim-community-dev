@@ -4,22 +4,21 @@ define(
         'jquery',
         'pim/controller/base',
         'pim/form-builder',
-        'pim/user-context'
+        'pim/user-context',
+        'oro/mediator'
     ],
-    function (_, $, BaseController, FormBuilder, UserContext) {
+    function (_, $, BaseController, FormBuilder, UserContext, mediator) {
         return BaseController.extend({
             /**
             * {@inheritdoc}
             */
             renderRoute() {
+                this.selectMenuTab();
+
                 return FormBuilder.build('pim-product-index').then((form) => {
                     this.setupLocale();
-
                     // Move somewhere else
                     this.setupMassEditAttributes();
-                    // return $.get(path)
-                    // .then(this.renderTemplate.bind(this))
-                    // .promise();
                     form.setElement(this.$el).render();
                 });
             },
@@ -36,6 +35,10 @@ define(
 
             setupMassEditAttributes() {
                 sessionStorage.setItem('mass_edit_selected_attributes', JSON.stringify([]));
+            },
+
+            selectMenuTab() {
+                mediator.trigger('pim_menu:highlight:tab', { extension: 'pim-menu-products' });
             }
         });
     }
