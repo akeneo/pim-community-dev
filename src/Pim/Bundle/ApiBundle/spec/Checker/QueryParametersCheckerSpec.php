@@ -10,6 +10,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Bundle\ApiBundle\Checker\QueryParametersChecker;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class QueryParametersCheckerSpec extends ObjectBehavior
@@ -187,5 +188,43 @@ class QueryParametersCheckerSpec extends ObjectBehavior
 
         $this->shouldNotThrow('UnprocessableEntityHttpException')
             ->during('checkCategoriesParameters', [$categories]);
+    }
+
+    function it_should_throw_an_exception_if_json_is_null()
+    {
+        $this->shouldThrow(new BadRequestHttpException('Search query parameter should be valid JSON.'))
+            ->during('checkCriterionParameters', ['']);
+    }
+
+    function it_should_throw_an_exception_if_it_is_not_an_array()
+    {
+        $this->shouldThrow(
+            new UnprocessableEntityHttpException('Search query parameter has to be an array, "string" given.')
+        )
+            ->during('checkCriterionParameters', ['"string"']);
+    }
+
+    function it_should_throw_an_exception_if_it_is_not_correctly_structured()
+    {
+        $this->shouldThrow(
+            new UnprocessableEntityHttpException('Structure of filter "categories" should respect this structure: {"categories":[{"operator": "my_operator", "value": "my_value"}]}.')
+        )
+            ->during('checkCriterionParameters', ['{"categories":[]}']);
+    }
+
+    function it_should_throw_an_exception_if_operator_is_missing()
+    {
+        $this->shouldThrow(
+            new UnprocessableEntityHttpException('Operator is missing for the property "categories".')
+        )
+            ->during('checkCriterionParameters', ['{"categories":[{"value": "my_value"}]}']);
+    }
+
+    function it_should_throw_an_exception_if_value_is_missing()
+    {
+        $this->shouldThrow(
+            new UnprocessableEntityHttpException('Value is missing for the property "categories".')
+        )
+            ->during('checkCriterionParameters', ['{"categories":[{"operator": "my_operator"}]}']);
     }
 }

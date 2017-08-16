@@ -13,7 +13,6 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Pim\Bundle\ApiBundle\Documentation;
 use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
-use Pim\Bundle\ApiBundle\Validator\SearchCriteriasValidator;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
@@ -107,9 +106,6 @@ class ProductController
     /** @var QueryParametersCheckerInterface */
     protected $queryParametersChecker;
 
-    /** @var SearchCriteriasValidator */
-    protected $searchCriteriasValidator;
-
     /**
      * @param ProductQueryBuilderFactoryInterface   $pqbFactory
      * @param NormalizerInterface                   $normalizer
@@ -128,7 +124,6 @@ class ProductController
      * @param ProductFilterInterface                $emptyValuesFilter
      * @param StreamResourceResponse                $partialUpdateStreamResource
      * @param PrimaryKeyEncrypter                   $primaryKeyEncrypter
-     * @param SearchCriteriasValidator              $searchCriteriasValidator
      * @param array                                 $apiConfiguration
      */
     public function __construct(
@@ -149,7 +144,6 @@ class ProductController
         ProductFilterInterface $emptyValuesFilter,
         StreamResourceResponse $partialUpdateStreamResource,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
-        SearchCriteriasValidator $searchCriteriasValidator,
         array $apiConfiguration
     ) {
         $this->pqbFactory = $pqbFactory;
@@ -170,7 +164,6 @@ class ProductController
         $this->partialUpdateStreamResource = $partialUpdateStreamResource;
         $this->primaryKeyEncrypter = $primaryKeyEncrypter;
         $this->apiConfiguration = $apiConfiguration;
-        $this->searchCriteriasValidator = $searchCriteriasValidator;
     }
 
     /**
@@ -270,7 +263,7 @@ class ProductController
      *
      * @return Response
      */
-    public function deleteAction($code): JsonResponse
+    public function deleteAction($code): Response
     {
         $product = $this->productRepository->findOneByIdentifier($code);
         if (null === $product) {
@@ -289,7 +282,7 @@ class ProductController
      *
      * @return Response
      */
-    public function createAction(Request $request): JsonResponse
+    public function createAction(Request $request): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -314,7 +307,7 @@ class ProductController
      *
      * @return Response
      */
-    public function partialUpdateAction(Request $request, $code): JsonResponse
+    public function partialUpdateAction(Request $request, $code): Response
     {
         $data = $this->getDecodedContent($request->getContent());
 
@@ -494,7 +487,7 @@ class ProductController
 
         if ($request->query->has('search')) {
             $searchString = $request->query->get('search', '');
-            $searchParameters = $this->searchCriteriasValidator->validate($searchString);
+            $searchParameters = $this->queryParametersChecker->checkCriterionParameters($searchString);
 
             if (isset($searchParameters['categories'])) {
                 $this->queryParametersChecker->checkCategoriesParameters($searchParameters['categories']);
@@ -512,12 +505,6 @@ class ProductController
 
         foreach ($searchParameters as $propertyCode => $filters) {
             foreach ($filters as $filter) {
-                if (!is_string($filter['operator'])) {
-                    throw new UnprocessableEntityHttpException(
-                        sprintf('Operator has to be a string, "%s" given.', gettype($filter['operator']))
-                    );
-                }
-
                 $searchLocale = $request->query->get('search_locale');
                 $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $searchLocale;
 

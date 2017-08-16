@@ -4,6 +4,7 @@ namespace Pim\Bundle\ApiBundle\Checker;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
@@ -106,5 +107,57 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
             $plural = count($errors) > 1 ? 'Categories "%s" do not exist.' : 'Category "%s" does not exist.';
             throw new UnprocessableEntityHttpException(sprintf($plural, implode(', ', $errors)));
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function checkCriterionParameters(string $searchString): array
+    {
+        $searchParameters = json_decode($searchString, true);
+
+        if (null === $searchParameters) {
+            throw new BadRequestHttpException('Search query parameter should be valid JSON.');
+        }
+
+        if (!is_array($searchParameters)) {
+            throw new UnprocessableEntityHttpException(
+                sprintf('Search query parameter has to be an array, "%s" given.', gettype($searchParameters))
+            );
+        }
+
+        foreach ($searchParameters as $searchKey => $searchParameter) {
+            if (!is_array($searchParameters) || !isset($searchParameter[0])) {
+                throw new UnprocessableEntityHttpException(
+                    sprintf(
+                        'Structure of filter "%s" should respect this structure: %s',
+                        $searchKey,
+                        sprintf('{"%s":[{"operator": "my_operator", "value": "my_value"}]}', $searchKey)
+                    )
+                );
+            }
+
+            foreach ($searchParameter as $searchFilter) {
+                if (!isset($searchFilter['operator'])) {
+                    throw new UnprocessableEntityHttpException(
+                        sprintf('Operator is missing for the property "%s".', $searchKey)
+                    );
+                }
+
+                if (!isset($searchFilter['value'])) {
+                    throw new UnprocessableEntityHttpException(
+                        sprintf('Value is missing for the property "%s".', $searchKey)
+                    );
+                }
+
+                if (!is_string($searchFilter['operator'])) {
+                    throw new UnprocessableEntityHttpException(
+                        sprintf('Operator has to be a string, "%s" given.', gettype($searchFilter['operator']))
+                    );
+                }
+            }
+        }
+
+        return $searchParameters;
     }
 }

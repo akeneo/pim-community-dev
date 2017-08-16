@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\ApiBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\ApiBundle\Validator\SearchCriteriasValidator;
+use Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Pagination\PaginatorInterface;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
@@ -43,31 +43,31 @@ class LocaleController
     /** @var string[] */
     protected $authorizedFieldFilters = ['enabled'];
 
-    /** @var SearchCriteriasValidator */
-    protected $searchCriteriasValidator;
+    /** @var QueryParametersCheckerInterface */
+    protected $queryParametersChecker;
 
     /**
-     * @param ApiResourceRepositoryInterface $repository
-     * @param NormalizerInterface            $normalizer
-     * @param PaginatorInterface             $paginator
-     * @param ParameterValidatorInterface    $parameterValidator
-     * @param SearchCriteriasValidator       $searchCriteriasValidator
-     * @param array                          $apiConfiguration
+     * @param ApiResourceRepositoryInterface  $repository
+     * @param NormalizerInterface             $normalizer
+     * @param PaginatorInterface              $paginator
+     * @param ParameterValidatorInterface     $parameterValidator
+     * @param QueryParametersCheckerInterface $queryParametersChecker
+     * @param array                           $apiConfiguration
      */
     public function __construct(
         ApiResourceRepositoryInterface $repository,
         NormalizerInterface $normalizer,
         PaginatorInterface $paginator,
         ParameterValidatorInterface $parameterValidator,
-        SearchCriteriasValidator $searchCriteriasValidator,
+        QueryParametersCheckerInterface $queryParametersChecker,
         array $apiConfiguration
     ) {
         $this->repository = $repository;
         $this->normalizer = $normalizer;
         $this->paginator = $paginator;
         $this->parameterValidator = $parameterValidator;
+        $this->queryParametersChecker = $queryParametersChecker;
         $this->apiConfiguration = $apiConfiguration;
-        $this->searchCriteriasValidator = $searchCriteriasValidator;
     }
 
     /**
@@ -163,7 +163,7 @@ class LocaleController
         }
 
         $searchString = $request->query->get('search', '');
-        $searchParameters = $this->searchCriteriasValidator->validate($searchString);
+        $searchParameters = $this->queryParametersChecker->checkCriterionParameters($searchString);
 
         foreach ($searchParameters as $searchKey => $searchParameter) {
             foreach ($searchParameter as $searchOperator) {
