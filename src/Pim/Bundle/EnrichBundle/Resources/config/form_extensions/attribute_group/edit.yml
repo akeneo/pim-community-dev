@@ -2,6 +2,14 @@ extensions:
     pim-attribute-group-edit-form:
         module: pim/form/common/edit-form
 
+    pim-attribute-group-edit-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-attribute-group-edit-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-settings
+            item: pim-menu-settings-attribute-group
+
     pim-attribute-group-edit-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-attribute-group-edit-form
@@ -19,10 +27,16 @@ extensions:
         targetZone: title
         position: 110
 
-    pim-attribute-group-edit-form-delete:
-        module: pim/attribute-group-edit-form/delete
+    pim-attribute-group-edit-form-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-attribute-group-edit-form
         targetZone: buttons
+        position: 50
+
+    pim-attribute-group-edit-form-delete:
+        module: pim/attribute-group-edit-form/delete
+        parent: pim-attribute-group-edit-form-secondary-actions
+        targetZone: secondary-actions
         aclResourceId: pim_enrich_attributegroup_remove
         position: 100
         config:

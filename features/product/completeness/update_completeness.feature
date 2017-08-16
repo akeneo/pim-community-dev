@@ -26,11 +26,11 @@ Feature: Display the completeness of a product
     Given I am on the "sneakers" product page
     When I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel | locale | state   | missing_values         | ratio |
-      | mobile  | en_US  | success |                        | 100%  |
-      | tablet  | en_US  | warning | Side view              | 88%   |
-      | mobile  | fr_FR  | success |                        | 100%  |
-      | tablet  | fr_FR  | warning | Description, Side view | 77%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 1              | 88%   |
+      | tablet  | fr_FR  | warning | 2              | 77%   |
+      | mobile  | en_US  | success | 0              | 100%  |
+      | mobile  | fr_FR  | success | 0              | 100%  |
     When I visit the "Attributes" column tab
     And I visit the "Media" group
     And I attach file "SNKRS-1C-s.png" to "Side view"
@@ -39,7 +39,7 @@ Feature: Display the completeness of a product
     When I visit the "Completeness" column tab
     Then I should see the completeness:
       | channel | locale | state   | missing_values | ratio |
-      | mobile  | en_US  | success |                | 100%  |
-      | tablet  | en_US  | success |                | 100%  |
-      | mobile  | fr_FR  | success |                | 100%  |
-      | tablet  | fr_FR  | warning | Description    | 88%   |
+      | tablet  | en_US  | success | 0              | 100%  |
+      | tablet  | fr_FR  | warning | 1              | 88%   |
+      | mobile  | en_US  | success | 0              | 100%  |
+      | mobile  | fr_FR  | success | 0              | 100%  |

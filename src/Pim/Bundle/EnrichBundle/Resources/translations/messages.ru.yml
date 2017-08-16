@@ -472,7 +472,7 @@ info:
     select products: Пожалуйста, выберите продукты, которые должны принадлежать этой группе.
     selectable products: Следующие выбираемые продукты имеют определенное значение для каждой оси.
     no group types: Типы групп отсутствуют, нажмите здесь, чтобы создать
-    more products: Ещё %count% продуктов...
+    more products: 'Ещё %count% продуктов...'
   association type:
     show products: Показать продукты
     show groups: Показать группы

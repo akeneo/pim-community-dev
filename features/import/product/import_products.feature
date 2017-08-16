@@ -317,15 +317,15 @@ Feature: Execute a job
     And I am on the "SKU-001" product page
     When I visit the "Completeness" column tab
     And I should see the completeness:
-      | channel | locale | state   | missing_values                               | ratio |
-      | mobile  | en_US  | warning | Color                                        | 80%   |
-      | tablet  | en_US  | warning | Weather conditions, Rating, Side view, Color | 55%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 4              | 55%   |
+      | mobile  | en_US  | warning | 1              | 80%   |
     And I am on the "SKU-002" product page
     When I visit the "Completeness" column tab
     And I should see the completeness:
-      | channel | locale | state   | missing_values                        | ratio |
-      | mobile  | en_US  | success |                                       | 100%  |
-      | tablet  | en_US  | warning | Weather conditions, Rating, Side view | 66%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 3              | 66%   |
+      | mobile  | en_US  | success | 0              | 100%  |
 
   @jira https://akeneo.atlassian.net/browse/PIM-6085
   Scenario: Successfully import product associations with modified column name

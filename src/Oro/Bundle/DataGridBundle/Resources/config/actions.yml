@@ -21,3 +21,9 @@ services:
         shared: false
         tags:
             - { name: oro_datagrid.extension.action.type, type: delete }
+
+    oro_datagrid.extension.action.type.revoke:
+        class: '%oro_datagrid.extension.action.type.delete.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: revoke }

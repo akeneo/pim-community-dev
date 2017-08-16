@@ -21,7 +21,7 @@ class PermissionDecorator extends ElementDecorator
         'Group'           => '.AknVerticalNavtab .tab:contains("%s") a span',
         'Group toggle'    => '.AknVerticalNavtab .tab:contains("%s") a .acl-group-permission-toggle',
         'Resource'        => '.acl-permission',
-        'Resource Toggle' => '.acl-permission-toggle.granted, .acl-permission-toggle.non-granted'
+        'Resource Toggle' => '.acl-permission-toggle'
     ];
 
     /**

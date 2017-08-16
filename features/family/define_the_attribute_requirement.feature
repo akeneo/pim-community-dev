@@ -42,9 +42,9 @@ Feature: Define the attribute requirement
     When I am on the "BIGBOOTS" product page
     And I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel | locale | state   | missing_values                                     | ratio |
-      | mobile  | en_US  | success |                                                    | 100%  |
-      | tablet  | en_US  | warning | Weather conditions, Description, Rating, Side view | 55%   |
+      | channel | locale | state   | missing_values | ratio |
+      | mobile  | en_US  | success | 0              | 100%  |
+      | tablet  | en_US  | warning | 4              | 55%   |
     And I am on the "Boots" family page
     And I visit the "Attributes" tab
     And I switch the attribute "rating" requirement in channel "mobile"
@@ -59,6 +59,6 @@ Feature: Define the attribute requirement
     When I am on the "BIGBOOTS" product page
     And I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel | locale | state   | missing_values                             | ratio |
-      | mobile  | en_US  | success |                                            | 100%  |
-      | tablet  | en_US  | warning | Description, Weather conditions, Side view | 62%   |
+      | channel | locale | state   | missing_values | ratio |
+      | mobile  | en_US  | success | 0              | 100%  |
+      | tablet  | en_US  | warning | 3              | 62%   |

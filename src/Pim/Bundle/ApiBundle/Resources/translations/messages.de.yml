@@ -1,6 +1,5 @@
 pim_api:
   acl:
-    rights: Web-API Berechtigungen
     attribute:
       edit: Erstellen und Aktualisieren von Attributen
       list: Attribute auflisten

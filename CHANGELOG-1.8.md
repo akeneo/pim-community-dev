@@ -2,6 +2,7 @@
 
 ## Functional improvements
 
+- API-312: Add UI to manage (create/revoke) API connections
 - TIP-718: Update group types form
 - PIM-6291: Adds attribute used as the main picture in the UI for each family (attribute_as_image)
 - GITHUB-4877: Update some tooltips messages of the export builder, Cheers @Milie44!
@@ -392,6 +393,8 @@
 - Remove OroNavigationBundle
 - Remove OroNotificationBundle
 - Remove `Pim\Bundle\EnrichBundle\Controller\FamilyController.php`
+- Remove unused `Pim\Component\Catalog\Manager\AttributeGroupManager`
+- Remove unused `Pim\Bundle\CatalogBundle\ProductQueryUtility`
 
 ### Methods
 

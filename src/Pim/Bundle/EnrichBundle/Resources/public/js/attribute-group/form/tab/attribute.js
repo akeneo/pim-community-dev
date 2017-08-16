@@ -34,7 +34,7 @@ define(
         template
     ) {
         return BaseForm.extend({
-            className: 'AknTabContainer-content tabbable tabs-left',
+            className: 'tabbable tabs-left',
             template: _.template(template),
             otherAttributes: [],
             attributeSortOrderKey: 'attributes_sort_order',

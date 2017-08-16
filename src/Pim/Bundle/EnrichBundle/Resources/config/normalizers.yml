@@ -137,7 +137,7 @@ services:
     pim_enrich.normalizer.locale:
         class: '%pim_enrich.normalizer.locale.class%'
         arguments:
-            - '@pim_catalog.helper.locale'
+            - '@pim_user.context.user'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddTranslatableFieldSubscriber;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Form\AbstractType;
@@ -32,20 +31,13 @@ class TranslatableFieldType extends AbstractType
     protected $userContext;
 
     /**
-     * @var LocaleHelper
-     */
-    protected $localeHelper;
-
-    /**
      * @param ValidatorInterface $validator
      * @param UserContext        $userContext
-     * @param LocaleHelper       $localeHelper
      */
-    public function __construct(ValidatorInterface $validator, UserContext $userContext, LocaleHelper $localeHelper)
+    public function __construct(ValidatorInterface $validator, UserContext $userContext)
     {
         $this->validator = $validator;
         $this->userContext = $userContext;
-        $this->localeHelper = $localeHelper;
     }
 
     /**
@@ -74,7 +66,6 @@ class TranslatableFieldType extends AbstractType
             $builder->getFormFactory(),
             $this->validator,
             $this->userContext,
-            $this->localeHelper,
             $options
         );
         $builder->addEventSubscriber($subscriber);
