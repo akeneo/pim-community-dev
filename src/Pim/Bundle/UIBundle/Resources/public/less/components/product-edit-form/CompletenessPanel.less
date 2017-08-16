@@ -1,54 +1,44 @@
 @import '../../base/variables';
 
-.AknCompletenessBlock {
-  &-header {
+.AknCompletenessPanel {
+  @width: 310px;
+  @margin: 15px;
+
+  display: flex;
+  margin: -@margin;
+  flex-wrap: wrap;
+
+  &-block {
+    width: @width;
+    margin: @margin;
+    padding: 8px 20px 20px 20px;
     border: 1px solid @AknBorderColor;
+  }
+
+  &-header {
+    border-bottom: 1px solid @AknBorderColor;
     height: @AknTabHeight;
     line-height: @AknTabHeight;
     font-size: @AknFontSizeBig;
     display: flex;
+    color: @AknDarkBlue;
   }
 
   &-headerLocale {
+    text-transform: uppercase;
     flex-grow: 1;
-    padding: 0 5px 0 10px;
   }
 
   &-headerStats {
-    flex-basis: 50%;
-    padding: 0 10px 0 5px;
-    display: flex;
-    align-items: center;
-  }
-
-  &-headerButton {
-    flex-basis: @AknTabHeight;
-    border-left: 1px solid @AknBorderColor;
-    font-size: @AknTitleFontSize;
-    text-align: center;
-    cursor: pointer;
-
-    &:hover {
-      background: @AknDefaultHoverBackground;
-    }
   }
 
   &-content {
-    border-left: 1px solid @AknBorderColor;
-    border-right: 1px solid @AknBorderColor;
-    border-bottom: 1px solid @AknBorderColor;
-    padding: 20px;
   }
 
   &-channel {
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
-
-    & + & {
-      border-top: 1px solid @AknBorderColor;
-      padding-top: 10px;
-      margin-top: 10px;
-    }
   }
 
   &-channelTitle {
@@ -59,6 +49,7 @@
   &-missing {
     color: @AknLightFontColor;
     font-size: @AknFontSizeSmall;
+    padding-top: 6px;
   }
 
   &-progressContainer {
@@ -84,9 +75,5 @@
 
   &[data-closed="true"] &-arrow:before {
     transform: rotate(90deg);
-  }
-
-  & + & {
-    margin-top: 10px;
   }
 }

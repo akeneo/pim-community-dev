@@ -44,14 +44,7 @@ class JobTrackerRepository extends EntityRepository implements DatagridRepositor
             ->innerJoin('e.jobInstance', 'j')
             ->leftJoin('e.stepExecutions', 's')
             ->leftJoin('s.warnings', 'w')
-            ->groupBy('e')
-            ->addGroupBy('e.id')
-            ->addGroupBy('type')
-            ->addGroupBy('status')
-            ->addGroupBy('statusLabel')
-            ->addGroupBy('startTime')
-            ->addGroupBy('jobLabel')
-            ->addGroupBy('user');
+            ->groupBy('e.id');
 
         return $qb;
     }

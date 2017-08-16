@@ -1,0 +1,17 @@
+extensions:
+    pim-api-connection-create-modal:
+       module: pim/form/common/creation/modal/client
+       config:
+           labels:
+               title: pim_enrich.entity.api_connection.create_popin.title
+           successMessage: pim_enrich.entity.api_connection.message.created
+           postUrl: pim_enrich_api_connection_rest_create
+           editRoute: pim_enrich_api_connection_index
+           gridName: api-connection-grid
+
+    pim-api-connection-create-form:
+        module: pim/form/common/creation/field
+        parent: pim-api-connection-create-modal
+        config:
+            identifier: label
+            label: pim_enrich.entity.create_popin.label

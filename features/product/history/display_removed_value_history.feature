@@ -121,7 +121,7 @@ Feature: Display the product history
       | version | property     | value    |
       | 2       | Manufacturer | Converse |
     When I am on the "manufacturer" attribute page
-    And I press the "Delete" button and wait for modal
+    And I press the secondary action "Delete"
     And I confirm the deletion
     And I edit the "boots" product
     And the history of the product "boots" has been built
@@ -154,10 +154,10 @@ Feature: Display the product history
       | 2       | Weather conditions | cold,snowy |
       | 2       | Comment            | nice boots |
     When I am on the "weather_conditions" attribute page
-    And I press the "Delete" button and wait for modal
+    And I press the secondary action "Delete"
     And I confirm the deletion
     And I am on the "comment" attribute page
-    And I press the "Delete" button and wait for modal
+    And I press the secondary action "Delete"
     And I confirm the deletion
     And I edit the "boots" product
     And the history of the product "boots" has been built

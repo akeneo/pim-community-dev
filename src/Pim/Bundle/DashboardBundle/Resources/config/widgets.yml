@@ -43,7 +43,6 @@ services:
         class: '%pim_dashboard.widget.completeness.class%'
         arguments:
             - '@pim_catalog.repository.completeness'
-            - '@pim_catalog.helper.locale'
             - '@pim_user.context.user'
             - '@pim_catalog.filter.chained'
             - '@pim_catalog.repository.locale'

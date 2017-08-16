@@ -45,6 +45,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $product->getIdentifier()->willReturn('sku-001');
+        $product->getLabel()->willReturn('sku-001');
         $product->getCreated()->willReturn($now);
         $serializer
             ->normalize($family, 'indexing')
@@ -71,6 +72,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             [
                 'id'            => '67',
                 'identifier'    => 'sku-001',
+                'label'         => 'sku-001',
                 'created'       => $now->format('c'),
                 'updated'       => $now->format('c'),
                 'family'        => null,
@@ -95,6 +97,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $product->getIdentifier()->willReturn('sku-001');
+        $product->getLabel()->willReturn('sku-001');
 
         $product->getFamily()->willReturn($family);
         $serializer->normalize($family, 'indexing')->willReturn($family);
@@ -128,6 +131,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             [
                 'id'            => '67',
                 'identifier'    => 'sku-001',
+                'label'         => 'sku-001',
                 'created'       => $now->format('c'),
                 'updated'       => $now->format('c'),
                 'family'        => null,
@@ -153,6 +157,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $product->getId()->willReturn(67);
         $product->getIdentifier()->willReturn('sku-001');
+        $product->getLabel()->willReturn('sku-001');
 
         $product->getCreated()->willReturn($now);
         $serializer->normalize(
@@ -220,6 +225,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             [
                 'id'            => '67',
                 'identifier'    => 'sku-001',
+                'label'         => 'sku-001',
                 'created'       => $now->format('c'),
                 'updated'       => $now->format('c'),
                 'family' => [

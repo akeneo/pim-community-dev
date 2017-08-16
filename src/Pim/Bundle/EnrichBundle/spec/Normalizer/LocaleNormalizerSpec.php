@@ -3,14 +3,14 @@
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Model\LocaleInterface;
 
 class LocaleNormalizerSpec extends ObjectBehavior
 {
-    function let(LocaleHelper $localeHelper)
+    function let(UserContext $userContext)
     {
-        $this->beConstructedWith($localeHelper);
+        $this->beConstructedWith($userContext);
     }
 
     function it_supports_locales(LocaleInterface $en)
@@ -18,17 +18,15 @@ class LocaleNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($en, 'internal_api')->shouldReturn(true);
     }
 
-    function it_normalizes_locales($localeHelper, LocaleInterface $en)
+    function it_normalizes_locales($userContext, LocaleInterface $en)
     {
         $en->getCode()->willReturn('en_US');
-        $localeHelper->getLocaleLabel('en_US')->willReturn('English (America)');
-        $localeHelper->getDisplayRegion('en_US')->willReturn('America');
-        $localeHelper->getDisplayLanguage('en_US')->willReturn('English');
+        $userContext->getCurrentLocaleCode()->willReturn('en_US');
 
         $this->normalize($en, 'internal_api')->shouldReturn([
             'code'     => 'en_US',
-            'label'    => 'English (America)',
-            'region'   => 'America',
+            'label'    => 'English (United States)',
+            'region'   => 'United States',
             'language' => 'English'
         ]);
     }

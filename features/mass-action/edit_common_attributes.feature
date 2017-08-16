@@ -193,15 +193,15 @@ Feature: Edit common attributes of many products at once
     Given I am on the "sneakers" product page
     When I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel | locale | state   | missing_values                                                               | ratio |
-      | mobile  | en_US  | warning | Name, Price, Size, Color                                                     | 20%   |
-      | tablet  | en_US  | warning | Name, Weather conditions, Description, Price, Rating, Side view, Size, Color | 11%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 8              | 11%   |
+      | mobile  | en_US  | warning | 4              | 20%   |
     And I am on the "sandals" product page
     When I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel | locale | state   | missing_values                                           | ratio |
-      | mobile  | en_US  | warning | Name, Price, Size, Color                                 | 20%   |
-      | tablet  | en_US  | warning | Name, Description, Price, Rating, Side view, Size, Color | 12%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 7              | 12%   |
+      | mobile  | en_US  | warning | 4              | 20%   |
     Then I am on the products page
     And I select rows sandals, sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
@@ -221,15 +221,15 @@ Feature: Edit common attributes of many products at once
     Then I am on the "sneakers" product page
     When I visit the "Completeness" column tab
     And I should see the completeness:
-      | channel | locale | state   | missing_values                                            | ratio |
-      | mobile  | en_US  | warning | Color                                                     | 80%   |
-      | tablet  | en_US  | warning | Weather conditions, Description, Rating, Side view, Color | 44%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 5              | 44%   |
+      | mobile  | en_US  | warning | 1              | 80%   |
     And I am on the "sandals" product page
     When I visit the "Completeness" column tab
     And I should see the completeness:
-      | channel | locale | state   | missing_values                        | ratio |
-      | mobile  | en_US  | warning | Color                                 | 80%   |
-      | tablet  | en_US  | warning | Description, Rating, Side view, Color | 50%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | en_US  | warning | 4              | 50%   |
+      | mobile  | en_US  | warning | 1              | 80%   |
 
   @jira https://akeneo.atlassian.net/browse/PIM-6022
   Scenario: Successfully mass edit product values preventing Shell Command Injection

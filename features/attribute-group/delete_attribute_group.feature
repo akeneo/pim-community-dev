@@ -17,7 +17,7 @@ Feature: Attribute group creation
 
   Scenario: Successfully delete an attribute group
     Given I am on the "sizes" attribute group page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should see the flash message "Attribute group successfully removed"
 
