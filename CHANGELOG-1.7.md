@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug Fixes
+
+- PIM-6568: Fix import items invalid data that were no longer saved
+
 # 1.7.7 (2017-08-03)
 
 ## Bug Fixes

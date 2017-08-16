@@ -101,7 +101,7 @@ class ItemStepSpec extends ObjectBehavior
         );
 
         $repository
-            ->insertWarning(Argument::cetera())
+            ->insertWarning($execution, 'my msg', [], ['r4'])
             ->shouldBeCalled();
         $dispatcher->dispatch(Argument::any(), Argument::any())->shouldBeCalled();
 
