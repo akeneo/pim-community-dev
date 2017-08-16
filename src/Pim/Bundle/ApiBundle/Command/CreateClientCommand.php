@@ -59,10 +59,7 @@ class CreateClientCommand extends ContainerAwareCommand
 
         $client->setRedirectUris($input->getOption('redirect_uri'));
         $client->setAllowedGrantTypes($input->getOption('grant_type'));
-
-        if ($input->hasArgument('label')) {
-            $client->setLabel($input->getArgument('label'));
-        }
+        $client->setLabel($input->getArgument('label'));
 
         $clientManager->updateClient($client);
 
