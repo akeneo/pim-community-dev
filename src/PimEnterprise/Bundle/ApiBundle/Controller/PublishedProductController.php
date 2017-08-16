@@ -74,9 +74,6 @@ class PublishedProductController
     /** @var QueryParametersCheckerInterface */
     protected $queryParametersChecker;
 
-    /** @var SearchCriteriasValidator */
-    protected $searchCriteriasValidator;
-
     /**
      * @param ProductQueryBuilderFactoryInterface   $publishedPqbFactory
      * @param QueryParametersCheckerInterface       $queryParametersChecker
@@ -88,7 +85,6 @@ class PublishedProductController
      * @param PaginatorInterface                    $searchAfterPaginator
      * @param ParameterValidatorInterface           $parameterValidator
      * @param PrimaryKeyEncrypter                   $primaryKeyEncrypter
-     * @param SearchCriteriasValidator              $searchCriteriasValidator
      * @param array                                 $apiConfiguration
      */
     public function __construct(
@@ -102,7 +98,6 @@ class PublishedProductController
         PaginatorInterface $searchAfterPaginator,
         ParameterValidatorInterface $parameterValidator,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
-        SearchCriteriasValidator $searchCriteriasValidator,
         array $apiConfiguration
     ) {
         $this->publishedPqbFactory = $publishedPqbFactory;
@@ -116,7 +111,6 @@ class PublishedProductController
         $this->primaryKeyEncrypter = $primaryKeyEncrypter;
         $this->apiConfiguration = $apiConfiguration;
         $this->queryParametersChecker = $queryParametersChecker;
-        $this->searchCriteriasValidator = $searchCriteriasValidator;
     }
 
     /**
@@ -313,7 +307,7 @@ class PublishedProductController
 
         if ($request->query->has('search')) {
             $searchString = $request->query->get('search', '');
-            $searchParameters = $this->searchCriteriasValidator->validate($searchString);
+            $searchParameters = $this->queryParametersChecker->checkCriterionParameters($searchString);
 
             if (isset($searchParameters['categories'])) {
                 $this->queryParametersChecker->checkCategoriesParameters($searchParameters['categories']);
@@ -331,12 +325,6 @@ class PublishedProductController
 
         foreach ($searchParameters as $propertyCode => $filters) {
             foreach ($filters as $filter) {
-                if (!is_string($filter['operator'])) {
-                    throw new UnprocessableEntityHttpException(
-                        sprintf('Operator has to be a string, "%s" given.', gettype($filter['operator']))
-                    );
-                }
-
                 $context['locale'] = isset($filter['locale']) ? $filter['locale'] : $request->query->get('search_locale');
 
                 if (null !== $context['locale']) {

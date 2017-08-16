@@ -133,4 +133,12 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
             throw new UnprocessableEntityHttpException(sprintf($plural, implode(', ', $errors)));
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function checkCriterionParameters(string $searchString): array
+    {
+        return $this->queryParametersChecker->checkCriterionParameters($searchString);
+    }
 }
