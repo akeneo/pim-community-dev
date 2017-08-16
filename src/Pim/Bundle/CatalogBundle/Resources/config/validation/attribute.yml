@@ -453,8 +453,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
 Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue:
     properties:
         value:
-            - Length:
-                max: 100
+            - Pim\Component\Catalog\Validator\Constraints\MetadataLength:
                 payload:
                   standardPropertyName: labels
         locale:
