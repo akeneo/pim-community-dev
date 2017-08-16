@@ -207,6 +207,8 @@ void runIntegrationTest(String phpVersion, testFiles) {
                         sh "sed -i \"s#database_host: .*#database_host: mysql#g\" app/config/parameters_test.yml"
                         sh "sed -i \"s#index_hosts: .*#index_hosts: 'elasticsearch:9200'#g\" app/config/parameters_test.yml"
 
+                        sh "sleep 20"
+
                         sh "./bin/console --env=test pim:install --force"
 
                         sh "mkdir -p app/build/logs/"
@@ -217,8 +219,6 @@ void runIntegrationTest(String phpVersion, testFiles) {
                         }
 
                         sh "sed -i \"s#<file></file>#${testSuiteFiles}#\" app/phpunit.xml.dist"
-
-                        sh "sleep 20"
 
                         sh "php -d error_reporting='E_ALL' ./vendor/bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
                     }
