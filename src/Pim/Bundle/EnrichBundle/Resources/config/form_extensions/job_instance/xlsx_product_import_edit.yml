@@ -83,7 +83,7 @@ extensions:
         targetZone: global-settings
         config:
             fieldCode: configuration.dateFormat
-            readOnly: true
+            readOnly: false
             label: pim_enrich.form.job_instance.tab.properties.date_format.title
             tooltip: pim_enrich.form.job_instance.tab.properties.date_format.help
 
