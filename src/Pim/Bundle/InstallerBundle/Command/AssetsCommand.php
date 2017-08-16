@@ -51,7 +51,7 @@ class AssetsCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Akeneo PIM assets</info>');
 
-        if (null !== $input->getOption('clean')) {
+        if (true === $input->getOption('clean')) {
             try {
                 $webDir = $this->getWebDir();
 
@@ -74,7 +74,7 @@ class AssetsCommand extends ContainerAwareCommand
         $defaultLocales = ['en', 'fr', 'nl', 'de', 'ru', 'ja', 'pt', 'it'];
         $this->commandExecutor->runCommand('oro:translation:dump', ['locale' => $defaultLocales]);
 
-        if (null !== $input->getOption('symlink')) {
+        if (true === $input->getOption('symlink')) {
             $this->commandExecutor->runCommand('assets:install', ['--relative' => true, '--symlink' => true]);
         }
 
