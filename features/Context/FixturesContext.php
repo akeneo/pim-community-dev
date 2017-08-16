@@ -19,7 +19,6 @@ use League\Flysystem\MountManager;
 use OAuth2\OAuth2;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\EntityWithValuesSaver;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -40,6 +39,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Value\OptionValueInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
+use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
@@ -194,16 +194,51 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following family variants:$/
+     * @Given /^the following family variants?:$/
      */
     public function theFollowingFamilyVariants(TableNode $table)
     {
         $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.family_variant');
         $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family_variant');
-        $saver     = $this->getContainer()->get('pim_catalog.saver.family_variant');
+        $saver = $this->getContainer()->get('pim_catalog.saver.family_variant');
 
         foreach ($table->getHash() as $data) {
             $saver->save($processor->process($converter->convert($data)));
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following product models?:$/
+     */
+    public function theFollowingProductModels(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->replacePlaceholders($value);
+            }
+
+            $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product_model');
+            $processor = $this->getContainer()->get('pim_connector.processor.denormalization.product_model');
+
+            $jobExecution = new JobExecution();
+            $provider = new ProductModelCsvImport(new SimpleCsvExport([]), []);
+            $params = $provider->getDefaultValues();
+            $params['enabledComparison'] = false;
+            $params['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
+            $params['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+            $jobParameters = new JobParameters($params);
+            $jobExecution->setJobParameters($jobParameters);
+            $stepExecution = new StepExecution('processor', $jobExecution);
+            $processor->setStepExecution($stepExecution);
+
+            $convertedData = $converter->convert($data);
+            $productModel = $processor->process($convertedData);
+            $this->getProductModelSaver()->save($productModel);
+
+            $this->refresh($productModel);
+            $this->getElasticsearchProductAndProductModelClient()->refreshIndex();
         }
     }
 
@@ -2103,11 +2138,19 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return EntityWithValuesSaver
+     * @return SaverInterface
      */
     protected function getProductSaver()
     {
         return $this->getContainer()->get('pim_catalog.saver.product');
+    }
+
+    /**
+     * @return SaverInterface
+     */
+    protected function getProductModelSaver()
+    {
+        return $this->getContainer()->get('pim_catalog.saver.product_model');
     }
 
     /**
@@ -2199,5 +2242,13 @@ class FixturesContext extends BaseFixturesContext
     protected function getElasticsearchProductClient()
     {
         return $this->getContainer()->get('akeneo_elasticsearch.client.product');
+    }
+
+    /**
+     * @return Client
+     */
+    protected function getElasticsearchProductAndProductModelClient()
+    {
+        return $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model');
     }
 }

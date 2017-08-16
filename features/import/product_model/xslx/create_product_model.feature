@@ -1,5 +1,5 @@
 @javascript
-Feature: Create product through XLSX import
+Feature: Create product models through XLSX import
   In order to setup my application
   As a product manager
   I need to be able to import new product model
@@ -8,7 +8,7 @@ Feature: Create product through XLSX import
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
 
-  Scenario: Julia imports new root products models
+  Scenario: Julia imports new root products models in XLSX
     Given the following XLSX file to import:
       """
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;name-en_US;composition;size;ean;sku;weight
@@ -23,7 +23,7 @@ Feature: Create product through XLSX import
       | code     | categories | family_variant     | collection   | description-en_US-ecommerce | erp_name-en_US | price      |
       | code-001 | master_men | clothing_colorsize | [Spring2017] | description                 | Blazers_1654   | 100.00 EUR |
 
-  Scenario: Julia imports new products sub-models
+  Scenario: Julia imports new products sub-models in XLSX
     Given the following XLSX file to import:
       """
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight

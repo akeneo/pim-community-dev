@@ -65,7 +65,9 @@ class ProductModel implements ArrayConverterInterface
     public function convert(array $flatProductModel, array $options = []): array
     {
         $convertedValues = $convertedFlatProductModel = [];
-        $flatProductModel = $this->columnsMapper->map($flatProductModel, $options['mapping']);
+        if (isset($options['mapping'])) {
+            $flatProductModel = $this->columnsMapper->map($flatProductModel, $options['mapping']);
+        }
         $flatProductModel = $this->columnsMerger->merge($flatProductModel);
 
         $this->fieldsRequirementChecker->checkFieldsPresence($flatProductModel, ['code']);

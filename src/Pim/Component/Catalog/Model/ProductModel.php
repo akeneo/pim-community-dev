@@ -410,7 +410,7 @@ class ProductModel implements ProductModelInterface
     public function addProductModel(ProductModelInterface $child): ProductModelInterface
     {
         $child->setParent($this);
-        if (!$this->productModelss->contains($child)) {
+        if (!$this->productModels->contains($child)) {
             $this->productModels->add($child);
         }
 
@@ -475,6 +475,8 @@ class ProductModel implements ProductModelInterface
 
             $level++;
         }
+
+        return $level;
     }
 
     /**
