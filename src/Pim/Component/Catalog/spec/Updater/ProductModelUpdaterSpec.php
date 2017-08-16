@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -51,6 +52,8 @@ class ProductModelUpdaterSpec extends ObjectBehavior
         ProductModelInterface $parentProductModel,
         FamilyVariantInterface $familyVariant
     ) {
+        $productModel->getId()->willReturn(null);
+
         $propertySetter->setData($productModel, 'categories', ['tshirt'])->shouldBeCalled();
         $productModel->setCode('product_model_code')->shouldBeCalled();
         $productModelRepository->findOneByIdentifier('product_model_parent')->willreturn($parentProductModel);
@@ -90,6 +93,28 @@ class ProductModelUpdaterSpec extends ObjectBehavior
             'family_variant' => 'clothing_color_size',
             'parent' => 'product_model_parent'
         ])->shouldReturn($this);
+    }
+
+    function it_throws_an_exception_if_a_parent_is_set_to_a_root_product_model(ProductModelInterface $productModel)
+    {
+        $productModel->getId()->willReturn(42);
+        $productModel->isRootProductModel()->willReturn(true);
+
+        $this->shouldThrow(ImmutablePropertyException::class)->during('update', [$productModel, [
+            'parent' => 'parent'
+        ]]);
+    }
+
+    function it_throws_an_exception_if_a_non_existing_parent_is_set_to_a_product_model(
+        $productModelRepository,
+        ProductModelInterface $productModel
+    ) {
+        $productModel->getId()->willReturn(null);
+        $productModelRepository->findOneByIdentifier('wrong_code')->willreturn(null);
+
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [$productModel, [
+            'parent' => 'wrong_code'
+        ]]);
     }
 
     function it_throws_an_exception_if_the_family_variant_code_is_invalid(

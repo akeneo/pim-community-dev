@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
@@ -79,6 +80,14 @@ class ProductModelUpdater implements ObjectUpdaterInterface
                 $productModel->setCode($value);
             } elseif ('parent' === $code) {
                 if (!empty($value)) {
+                    if (null !== $productModel->getId() && $productModel->isRootProductModel()) {
+                        throw ImmutablePropertyException::immutableProperty(
+                            'parent',
+                            $value,
+                            static::class
+                        );
+                    }
+
                     if (null === $parentProductModel = $this->productModelRepository->findOneByIdentifier($value)) {
                         throw InvalidPropertyException::validEntityCodeExpected(
                             'parent',
