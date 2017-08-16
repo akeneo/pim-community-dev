@@ -53,5 +53,6 @@ extensions:
             gridName: 'product-grid'
             localeParamName: dataLocale
             defaultColumnsUrl: pim_datagrid_view_rest_default_columns
+            datagridLoadUrl: pim_datagrid_load
 
 

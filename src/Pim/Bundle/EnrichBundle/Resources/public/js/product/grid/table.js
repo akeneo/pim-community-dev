@@ -53,12 +53,15 @@ define(
                 const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
 
                 if (state.columns) {
-                    resp.metadata.state.parameters = _.extend({}, resp.metadata.state.parameters, {
-                        view: {
-                            columns: state.columns,
-                            id: state.view
+                    resp.metadata.state.parameters = _.extend({},
+                        resp.metadata.state.parameters,
+                        {
+                            view: {
+                                columns: state.columns,
+                                id: state.view
+                            }
                         }
-                    });
+                    );
                 }
 
                 $(`#grid-${gridName}`).data({
@@ -66,34 +69,31 @@ define(
                     'data': JSON.parse(resp.data)
                 });
 
-                var modules = resp.metadata.requireJSModules;
+                const modules = resp.metadata.requireJSModules;
                 modules.push('pim/datagrid/state-listener');
 
-                var resolvedModules = [];
+                const resolvedModules = [];
+
                 _.each(modules, function(module) {
-                    var resolvedModule = requireContext(module);
+                    const resolvedModule = requireContext(module);
                     resolvedModules.push(resolvedModule);
                 });
 
                 datagridBuilder(resolvedModules);
             },
 
-            refreshGridFilters() {
-                DatagridState.refreshFiltersFromUrl(this.config.gridName);
-            },
-
             getInitialParams() {
                 const { localeParamName, gridName } = this.config;
                 const locale = UserContext.get('catalogLocale');
-                var urlParams = { [localeParamName]: locale, alias: gridName };
-                urlParams.params = _.clone(urlParams);
+                const urlParams = { [localeParamName]: locale, alias: gridName };
+                urlParams.params = {[ localeParamName ]: locale}
 
                 return urlParams;
             },
 
             applyColumns(columns, urlParams) {
                 const { gridName } = this.config;
-                if (_.isArray(columns))  columns = columns.join();
+                if (_.isArray(columns)) columns = columns.join();
 
                 urlParams[`${gridName}[_parameters][view][columns]`] = columns;
 
@@ -105,6 +105,7 @@ define(
             applyView(viewId, urlParams) {
                 const { gridName } = this.config;
                 urlParams[`${gridName}[_parameters][view][id]`] = viewId;
+
                 DatagridState.set(gridName, {  view: viewId });
 
                 return urlParams;
@@ -133,11 +134,11 @@ define(
                     'ASC';
                 }
 
-                if (undefined !== filters.pageSize) {
+                if (filters.pageSize) {
                     urlParams[`${gridName}[_pager][_per_page]`] = filters.pageSize;
                 }
 
-                if (undefined !== filters.currentPage) {
+                if (filters.currentPage) {
                     urlParams[`${gridName}[_pager][_page]`] = filters.currentPage;
                 }
 
@@ -149,38 +150,37 @@ define(
             },
 
             setDatagridState(defaultColumns, defaultView) {
-                const { gridName } = this.config;
-                const root = this.getRoot();
-                var urlParams = this.getInitialParams();
+                const { gridName, datagridLoadUrl} = this.config;
+                let params = this.getInitialParams();
 
-                if (!DatagridState.get(gridName, ['view'])) this.refreshGridFilters();
-
-                var state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
-
-                if (defaultView && ('0' === state.view || null === state.view)) {
-                    urlParams = this.applyView(defaultView.id, urlParams);
-                    urlParams = this.applyFilters(defaultView.filters, urlParams);
-                    urlParams = this.applyColumns(defaultView.columns, urlParams);
-                } else {
-                    if (state.view) urlParams = this.applyView(state.view, urlParams);
-                    if (state.filters) urlParams = this.applyFilters(state.filters, urlParams);
-
-                    if (state.columns) {
-                        urlParams = this.applyColumns(state.columns, urlParams);
-                    } else {
-                        urlParams = this.applyColumns(defaultColumns, urlParams);
-                    }
+                if (!DatagridState.get(gridName, ['view'])) {
+                    DatagridState.refreshFiltersFromUrl(gridName);
                 }
 
-                root.trigger('datagrid:getParams', urlParams);
-                $.get(Routing.generate('pim_datagrid_load', urlParams), this.loadDataGrid.bind(this));
+                const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
+
+                if (defaultView && ('0' === state.view || null === state.view)) {
+                    this.applyView(defaultView.id, params);
+                    this.applyFilters(defaultView.filters, params);
+                    this.applyColumns(defaultView.columns, params);
+                } else {
+                    if (state.view) this.applyView(state.view, params);
+                    if (state.filters) this.applyFilters(state.filters, params);
+                    this.applyColumns(state.columns || defaultColumns, params);
+                }
+
+                this.getRoot().trigger('datagrid:getParams', params);
+
+                return $.get(
+                    Routing.generate(datagridLoadUrl, params),
+                    this.loadDataGrid.bind(this)
+                );
             },
 
             render() {
                 $.when(this.getDefaultColumns(), this.getDefaultView())
                 .then((defaultColumns, defaultView) => this.setDatagridState(defaultColumns, defaultView));
             }
-
         });
     }
 );
