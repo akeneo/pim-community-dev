@@ -34,10 +34,10 @@ extensions:
         targetZone: tree
         aclResourceId: pim_enrich_product_category_list
 
-    # pim-product-index-grid-filters
-    #     module: pim/grid/filters
-    #     parent: pim-product-index
-    #     targetZone: grid
+    pim-product-index-grid-filters:
+        module: oro/datafilter-builder
+        parent: pim-product-index
+        targetZone: grid
 
     # pim-product-index-grid-toolbar
     #     module: pim/grid/toolbar

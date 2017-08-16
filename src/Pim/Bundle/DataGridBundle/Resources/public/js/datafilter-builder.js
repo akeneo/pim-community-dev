@@ -1,42 +1,65 @@
-define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/collection-filters-manager'],
-function($, _, tools,  mediator, FiltersManager) {
-    'use strict';
+define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/collection-filters-manager', 'pim/form'],
+    function($, _, tools, mediator, FiltersManager, BaseForm) {
+        'use strict';
 
-    var initialized = false,
-        filterModuleName = 'oro/datafilter/{{type}}-filter',
-        filterTypes = {
-            string:      'choice',
-            choice:      'select',
-            selectrow:   'select-row',
-            multichoice: 'multiselect',
-            boolean:     'select'
-        },
-        methods = {
-            initBuilder: function () {
-                this.metadata = _.extend({filters: {}, options: {}}, this.$el.data('metadata'));
+        return BaseForm.extend({
+            initialized: false,
+            filterModuleName: 'oro/datafilter/{{type}}-filter',
+            filterTypes: {
+                string: 'choice',
+                choice: 'select',
+                selectrow: 'select-row',
+                multichoice: 'multiselect',
+                boolean: 'select'
+            },
+
+            initialize() {
+                mediator.once('datagrid_collection_set_after', this.initHandler.bind(this));
+                mediator.once('hash_navigation_request:start', function() {
+                    if (!this.initialized) {
+                        mediator.off('datagrid_collection_set_after', this.initHandler.bind(this));
+                    }
+                });
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            initHandler: function(collection, $el) {
+                this.collection = collection;
+                this.$el = $el;
+                this.initBuilder();
+                this.initialized = true;
+            },
+
+            initBuilder: function() {
+                this.metadata = _.extend({
+                    filters: {},
+                    options: {}
+                }, this.$el.data('metadata'));
                 this.modules = {};
-                methods.collectModules.call(this);
-                tools.loadModules(this.modules, _.bind(methods.build, this));
+                this.collectModules.call(this);
+                tools.loadModules(this.modules, _.bind(this.build, this));
             },
 
             /**
              * Collects required modules
              */
-            collectModules: function () {
+            collectModules: function() {
                 var modules = this.modules;
-                _.each((this.metadata.filters || {}) || {}, function (filter) {
+                _.each((this.metadata.filters || {}), (filter) => {
                     var type = filter.type;
-                    modules[type] = filterModuleName.replace('{{type}}', filterTypes[type] || type);
+                    modules[type] = this.filterModuleName.replace('{{type}}', this.filterTypes[type] || type);
                 });
             },
 
-            build: function () {
+            build: function() {
                 var displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
-                var options = methods.combineOptions.call(this);
+                var options = this.combineOptions.call(this);
                 options.collection = this.collection;
                 options.displayManageFilters = displayManageFilters;
                 var filtersList = new FiltersManager(options);
                 this.$el.prepend(filtersList.render().$el);
+
                 mediator.trigger('datagrid_filters:rendered', this.collection);
                 if (this.collection.length === 0) {
                     filtersList.$el.hide();
@@ -49,36 +72,23 @@ function($, _, tools,  mediator, FiltersManager) {
              *
              * @returns {Object}
              */
-            combineOptions: function () {
-                var filters= {},
+            combineOptions: function() {
+                var filters = {},
                     modules = this.modules,
                     collection = this.collection;
-                _.each(this.metadata.filters, function (options) {
+                _.each(this.metadata.filters, function(options) {
                     if (_.has(options, 'name') && _.has(options, 'type')) {
                         // @TODO pass collection only for specific filters
                         if (options.type == 'selectrow') {
                             options.collection = collection
                         }
-                        filters[options.name] = new (modules[options.type].extend(options))(options);
+                        filters[options.name] = new(modules[options.type].extend(options))(options);
                     }
                 });
-                return {filters: filters};
-            }
-        },
-        initHandler = function (collection, $el) {
-            methods.initBuilder.call({$el: $el, collection: collection});
-            initialized = true;
-        };
 
-    return {
-        init: function () {
-            initialized = false;
-            mediator.once('datagrid_collection_set_after', initHandler);
-            mediator.once('hash_navigation_request:start', function() {
-                if (!initialized) {
-                    mediator.off('datagrid_collection_set_after', initHandler);
-                }
-            });
-        }
-    };
-});
+                return {
+                    filters: filters
+                };
+            }
+        });
+    })
