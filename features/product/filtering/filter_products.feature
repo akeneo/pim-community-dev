@@ -27,7 +27,7 @@ Feature: Filter products
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products
-    Given I am on the products page
+    Given I am on the products grid
     Then the grid should contain 6 elements
     And I should see products postit, book, book2, ebook, chair and 01234
     And I should be able to use the following filters:
@@ -47,7 +47,7 @@ Feature: Filter products
       | name    | is not empty     |               | postit, book, ebook, book2, chair and 01234 |
 
   Scenario: Successfully hide/show filters
-    Given I am on the products page
+    Given I am on the products grid
     Then I should see the filters sku, family and enabled
     Then I should not see the filters name, image and info
     When I show the filter "name"
@@ -57,19 +57,19 @@ Feature: Filter products
     And I should not see the filters Image, sku
 
   Scenario: Successfully order available filters
-    Given I am on the products page
+    Given I am on the products grid
     And I should not see the filters name, image and info
     Then I should see available filters in the following order "sku,name,info,image"
 
   Scenario: Successfully reset the filters
-    Given I am on the products page
+    Given I am on the products grid
     Then I filter by "enabled" with operator "" and value "Enabled"
     And the grid should contain 5 elements
     When I reset the grid
     Then the grid should contain 6 elements
 
   Scenario: Successfully refresh the grid
-    Given I am on the products page
+    Given I am on the products grid
     Then I filter by "enabled" with operator "" and value "Enabled"
     And the grid should contain 5 elements
     When I refresh the grid
@@ -77,7 +77,7 @@ Feature: Filter products
 
   @jira https://akeneo.atlassian.net/browse/PIM-5208
   Scenario: View only attribute filters that are usable as grid filters
-    Given I am on the products page
+    Given I am on the products grid
     Then I should see the available filters sku, family, enabled
     And I should see the available filters name, image, info
     And I should not see the available filters description

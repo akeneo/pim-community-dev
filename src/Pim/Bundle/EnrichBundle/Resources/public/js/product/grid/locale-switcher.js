@@ -14,7 +14,8 @@ define([
         'pim/template/product/grid/locale-switcher',
         'pim/fetcher-registry',
         'pim/i18n',
-        'pim/router'
+        'pim/router',
+        'pim/user-context'
     ],
     function (
         $,
@@ -23,7 +24,8 @@ define([
         template,
         FetcherRegistry,
         i18n,
-        router
+        router,
+        UserContext
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -54,7 +56,7 @@ define([
              * {@inheritdoc}
              */
             render() {
-                const currentLocaleCode = this.getCurrentLocale() || _.first(this.locales).code;
+                const currentLocaleCode = UserContext.get('catalogLocale');
 
                 this.$el.empty().append(this.template({
                     locales: this.locales,
@@ -69,7 +71,10 @@ define([
              * @return {Array} An array of activated locales
              */
             fetchLocales() {
-                return FetcherRegistry.getFetcher('locale').fetchActivated();
+                const localeFetcher = FetcherRegistry.getFetcher('locale');
+                localeFetcher.clear();
+
+                return localeFetcher.fetchActivated();
             },
 
             /**
@@ -79,14 +84,6 @@ define([
              */
             getDisplayName(localeCode) {
                 return localeCode.split('_')[0];
-            },
-
-            /**
-             * @TODO - Get this information elsewhere
-             * @return {String} Returns a string with the locale code e.g. en_US
-             */
-            getCurrentLocale() {
-                return window.location.hash.split(`?${this.config.localeParamName}=`)[1];
             },
 
             /**

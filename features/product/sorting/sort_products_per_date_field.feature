@@ -23,11 +23,11 @@ Feature: Sort products per date field
     And I am logged in as "Mary"
 
   Scenario: Successfully sort products by created at
-    Given I am on the products page
+    Given I am on the products grid
     And the grid should contain 7 elements
     And I should be able to sort the rows by Created at
 
   Scenario: Successfully sort products by updated at
-    Given I am on the products page
+    Given I am on the products grid
     And the grid should contain 7 elements
     And I should be able to sort the rows by Updated at

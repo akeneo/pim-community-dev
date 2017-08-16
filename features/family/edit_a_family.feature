@@ -33,7 +33,7 @@ Feature: Edit a family
       | Attribute used as label | String |
     And I save the family
     And I should not see the text "There are unsaved changes."
-    When I am on the products page
+    When I am on the products grid
     And I should see the text "Elixir"
 
   Scenario: Successfully set the translations of the name

@@ -9,12 +9,12 @@ Feature: Products back to the grid
     And a "sneakers_1" product
     And a "boots_1" product
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully restore filters without hashnav
     Given I filter by "sku" with operator "contains" and value "boots_1"
     And the grid should contain 1 element
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 1 element
     And the criteria of "sku" filter should be "contains "boots_1""
     And I should see product boots_1
@@ -25,7 +25,7 @@ Feature: Products back to the grid
     And the grid should contain 1 element
     And I click on the "sneakers_1" row
     And I should be on the product "sneakers_1" edit page
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 1 element
     And the criteria of "sku" filter should be "contains "sneakers_1""
     And I should see product sneakers_1
@@ -48,7 +48,7 @@ Feature: Products back to the grid
     When I change the page number to 2
     And I click on the "boots_1" row
     And I should be on the product "boots_1" edit page
-    And I am on the products page
+    And I am on the products grid
     Then the page number should be 2
 
   Scenario: Successfully restore the scope dropdown

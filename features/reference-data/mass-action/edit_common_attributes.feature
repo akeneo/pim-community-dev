@@ -19,7 +19,7 @@ Feature: Mass edit common attributes for reference data
       | platform_shoes | platform_shoes |
       | heels          | heels          |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully update single-valued reference data at once
     Given I select rows heels and platform_shoes

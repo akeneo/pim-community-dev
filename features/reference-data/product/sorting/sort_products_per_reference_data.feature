@@ -21,7 +21,7 @@ Feature: Sort products
     And I am logged in as "Mary"
 
   Scenario: Successfully sort products by simple reference data
-    Given I am on the products page
+    Given I am on the products grid
     And the grid should contain 2 elements
     And I display the columns SKU, Sole color, Heel color and Sole fabric
     And I sort by "Sole color" value ascending
