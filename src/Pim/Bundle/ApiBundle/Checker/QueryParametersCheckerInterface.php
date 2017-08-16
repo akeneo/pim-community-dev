@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ApiBundle\Checker;
 
 use Pim\Component\Catalog\Model\ChannelInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 /**
@@ -40,4 +41,17 @@ interface QueryParametersCheckerInterface
      * @throws UnprocessableEntityHttpException
      */
     public function checkCategoriesParameters(array $categories);
+
+    /**
+     * Prepares criterias from search parameters
+     * It throws exceptions if search parameters are not correctly filled
+     *
+     * @param string $searchString
+     *
+     * @throws UnprocessableEntityHttpException
+     * @throws BadRequestHttpException
+     *
+     * @return array
+     */
+    public function checkCriterionParameters(string $searchString);
 }

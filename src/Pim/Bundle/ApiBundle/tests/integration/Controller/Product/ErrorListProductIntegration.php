@@ -13,7 +13,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?scope=not_found');
-        $this->assert($client, 'Scope "not_found" does not exist.');
+        $this->assert($client, 'Scope "not_found" does not exist.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testUnknownPaginationType()
@@ -21,7 +21,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?pagination_type=unknown');
-        $this->assert($client, 'Pagination type does not exist.');
+        $this->assert($client, 'Pagination type does not exist.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testNotFoundLocale()
@@ -29,7 +29,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?locales=not_found');
-        $this->assert($client, 'Locale "not_found" does not exist or is not activated.');
+        $this->assert($client, 'Locale "not_found" does not exist or is not activated.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testNotFoundLocales()
@@ -37,7 +37,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?locales=not_found, jambon');
-        $this->assert($client, 'Locales "not_found, jambon" do not exist or are not activated.');
+        $this->assert($client, 'Locales "not_found, jambon" do not exist or are not activated.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testInactiveLocale()
@@ -45,7 +45,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?scope=ecommerce&locales=de_DE');
-        $this->assert($client, 'Locale "de_DE" is not activated for the scope "ecommerce".');
+        $this->assert($client, 'Locale "de_DE" is not activated for the scope "ecommerce".', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testInactiveLocales()
@@ -53,7 +53,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?scope=ecommerce&locales=de_DE, fr_FR');
-        $this->assert($client, 'Locales "de_DE, fr_FR" are not activated for the scope "ecommerce".');
+        $this->assert($client, 'Locales "de_DE, fr_FR" are not activated for the scope "ecommerce".', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testNotFoundAttribute()
@@ -61,7 +61,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?attributes=not_found');
-        $this->assert($client, 'Attribute "not_found" does not exist.');
+        $this->assert($client, 'Attribute "not_found" does not exist.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testNotFoundAttributes()
@@ -69,7 +69,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?attributes=not_found,jambon');
-        $this->assert($client, 'Attributes "not_found, jambon" do not exist.');
+        $this->assert($client, 'Attributes "not_found, jambon" do not exist.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testPaginationWherePageIsNotAnInteger()
@@ -77,7 +77,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?page=string');
-        $this->assert($client, '"string" is not a valid page number.');
+        $this->assert($client, '"string" is not a valid page number.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testPaginationWhereLimitIsTooBig()
@@ -85,7 +85,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products?limit=101');
-        $this->assert($client, 'You cannot request more than 100 items.');
+        $this->assert($client, 'You cannot request more than 100 items.',Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testSearchFormatIsNotValid()
@@ -93,13 +93,13 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search=string');
-        $this->assert($client, 'Search query parameter should be valid JSON.');
+        $this->assert($client, 'Search query parameter should be valid JSON.', Response::HTTP_BAD_REQUEST);
 
         $client->request('GET', '/api/rest/v1/products?search={"a_localized_and_scopable_text_area":{"key"}}');
-        $this->assert($client, 'Search query parameter should be valid JSON.');
+        $this->assert($client, 'Search query parameter should be valid JSON.', Response::HTTP_BAD_REQUEST);
 
         $client->request('GET', '/api/rest/v1/products?search={"a_localized_and_scopable_text_area":{"operator": "="}}');
-        $this->assert($client, 'Structure of filter "a_localized_and_scopable_text_area" should respect this structure: {"a_localized_and_scopable_text_area":[{"operator": "my_operator", "value": "my_value"}]}');
+        $this->assert($client, 'Structure of filter "a_localized_and_scopable_text_area" should respect this structure: {"a_localized_and_scopable_text_area":[{"operator": "my_operator", "value": "my_value"}]}', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testSearchWithMissingOperator()
@@ -107,7 +107,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"a_localized_and_scopable_text_area":[{"value":"text"}]}');
-        $this->assert($client, 'Operator is missing for the property "a_localized_and_scopable_text_area".');
+        $this->assert($client, 'Operator is missing for the property "a_localized_and_scopable_text_area".', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testSearchWithWrongOperator()
@@ -115,7 +115,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"a_localized_and_scopable_text_area":[{"operator":"BETWEEN", "value":"text"}]}');
-        $this->assert($client, 'Filter on property "a_localized_and_scopable_text_area" is not supported or does not support operator "BETWEEN"');
+        $this->assert($client, 'Filter on property "a_localized_and_scopable_text_area" is not supported or does not support operator "BETWEEN"', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testSearchWithMissingLocale()
@@ -123,7 +123,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"a_localizable_image":[{"operator":"CONTAINS", "value":"text"}]}');
-        $this->assert($client, 'Attribute "a_localizable_image" expects a locale, none given.');
+        $this->assert($client, 'Attribute "a_localizable_image" expects a locale, none given.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testSearchWithMissingLocales()
@@ -131,7 +131,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"completeness":[{"operator":"GREATER THAN ON ALL LOCALES", "scope":"ecommerce", "value":100}]}');
-        $this->assert($client, 'Property "completeness" expects an array with the key "locales".');
+        $this->assert($client, 'Property "completeness" expects an array with the key "locales".', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testSearchWithLocalesAsAString()
@@ -139,7 +139,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"completeness":[{"operator":"GREATER THAN ON ALL LOCALES", "scope":"ecommerce", "value":100, "locales":"fr_FR"}]}');
-        $this->assert($client, 'Property "completeness" expects an array of arrays as data.');
+        $this->assert($client, 'Property "completeness" expects an array of arrays as data.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testSearchWithEmptyLocales()
@@ -147,7 +147,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"completeness":[{"operator":"GREATER THAN ON ALL LOCALES", "scope":"ecommerce", "value":100, "locales":""}]}');
-        $this->assert($client, 'Property "completeness" expects an array with the key "locales".');
+        $this->assert($client, 'Property "completeness" expects an array with the key "locales".', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testSearchWithEmptyLocaleAsArray()
@@ -155,7 +155,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"completeness":[{"operator":"GREATER THAN ON ALL LOCALES", "scope":"ecommerce", "value":100, "locale":["fr_FR"]}]}');
-        $this->assert($client, 'Property "completeness" expects an array with the key "locales".');
+        $this->assert($client, 'Property "completeness" expects an array with the key "locales".', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testSearchWithMissingScope()
@@ -163,7 +163,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"a_scopable_image":[{"operator":"CONTAINS", "value":"text"}]}');
-        $this->assert($client, 'Attribute "a_scopable_image" expects a scope, none given.');
+        $this->assert($client, 'Attribute "a_scopable_image" expects a scope, none given.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testSearchWithNotFoundLocale()
@@ -176,7 +176,8 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         );
         $this->assert(
             $client,
-            'Locale "not_found" does not exist or is not activated.'
+            'Locale "not_found" does not exist or is not activated.',
+            Response::HTTP_UNPROCESSABLE_ENTITY
         );
 
         $client->request(
@@ -185,7 +186,8 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         );
         $this->assert(
             $client,
-            'Locale "not_found" does not exist or is not activated.'
+            'Locale "not_found" does not exist or is not activated.',
+            Response::HTTP_UNPROCESSABLE_ENTITY
         );
     }
 
@@ -194,7 +196,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search_locale=zh_HK&search={"a_localizable_image":[{"operator":"CONTAINS", "value":"text"}]}');
-        $this->assert($client, 'Locale "zh_HK" does not exist or is not activated.');
+        $this->assert($client, 'Locale "zh_HK" does not exist or is not activated.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testSearchWithNotFoundScope()
@@ -202,10 +204,10 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"a_scopable_image":[{"operator":"CONTAINS", "value":"text", "scope":"not_found"}]}');
-        $this->assert($client, 'Attribute "a_scopable_image" expects an existing scope, "not_found" given.');
+        $this->assert($client, 'Attribute "a_scopable_image" expects an existing scope, "not_found" given.', Response::HTTP_UNPROCESSABLE_ENTITY);
 
         $client->request('GET', '/api/rest/v1/products?search_scope=not_found&search={"a_scopable_image":[{"operator":"CONTAINS", "value":"text"}]}');
-        $this->assert($client, 'Attribute "a_scopable_image" expects an existing scope, "not_found" given.');
+        $this->assert($client, 'Attribute "a_scopable_image" expects an existing scope, "not_found" given.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testSearchWithObjectNotFound()
@@ -213,7 +215,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"categories":[{"operator":"IN","value":["not_found"]}]}');
-        $this->assert($client, 'Category "not_found" does not exist.');
+        $this->assert($client, 'Category "not_found" does not exist.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testSearchIsNotAnArray()
@@ -221,7 +223,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search="not_an_array"');
-        $this->assert($client, 'Search query parameter has to be an array, "string" given.');
+        $this->assert($client, 'Search query parameter has to be an array, "string" given.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     public function testOperatorIsAnArray()
@@ -229,20 +231,21 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', '/api/rest/v1/products?search={"a_text":[{"operator":["="], "value":"text"}]}');
-        $this->assert($client, 'Operator has to be a string, "array" given.');
+        $this->assert($client, 'Operator has to be a string, "array" given.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
     /**
      * @param Client $client
      * @param string $message
+     * @param int    $code
      */
-    private function assert(Client $client, $message)
+    private function assert(Client $client, $message, int $code)
     {
         $response = $client->getResponse();
 
-        $expected = sprintf('{"code":%d,"message":"%s"}', Response::HTTP_UNPROCESSABLE_ENTITY, addslashes($message));
+        $expected = sprintf('{"code":%d,"message":"%s"}', $code, addslashes($message));
 
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame($code, $response->getStatusCode());
         $this->assertSame($expected, $response->getContent());
     }
 
