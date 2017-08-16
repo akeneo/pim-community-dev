@@ -24,7 +24,7 @@ build/
 vendor
 composer.phar
 /cov
-bin/*
+/bin/*
 !/bin/docker
 /bin/docker/*
 !/bin/docker/pim-initialize.sh
