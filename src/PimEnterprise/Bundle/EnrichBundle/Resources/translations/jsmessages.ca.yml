@@ -76,9 +76,6 @@ pimee_enrich:
           messages:
             approve:
               success: La proposta s'ha aplicat amb èxit.
-              error:
-                The proposal can't be applied due to the following error:
-                  - error
             reject:
               success: La proposta ha estat rebutjada.
             remove:
@@ -133,7 +130,7 @@ pimee_enrich:
     colorspace:
       title: Espai de color
       options:
-        colorspace: Espai de color %value%
+        colorspace: 'Espai de color %value%'
     resize:
       title: Redimensiona
       options:
@@ -155,6 +152,32 @@ pimee_enrich:
       options:
         width: '% value%px d''amplada'
         height: '% value%px d''alçada'
+  mass_edit:
+    next: Següent
+    cancel: Cancelar
+    confirm: Confirmar
+    product:
+      operation:
+        publish:
+          label: Publicar productes
+        unpublish:
+          label: Anul·lar la publicació de productes
+    asset:
+      step:
+        select:
+          label: Triar recursos
+        choose:
+          label: Trieu l'operació
+        configure:
+          label: Configurar
+        confirm:
+          label: Confirmar
+      operation:
+        add_tag:
+          label: Afegir etiquetes als recursos
+          field: Etiquetes
+        add_to_category:
+          field: Categories
 pim_menu:
   tab:
     asset: Recursos

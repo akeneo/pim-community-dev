@@ -40,11 +40,13 @@ Feature: Display the completeness of a product with assets
     And I save the product
     When I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel | locale | state   | missing_values                      | ratio |
-      | mobile  | en_US  | warning | gallery                             | 83%   |
-      | tablet  | en_US  | warning | Weather conditions, Rating, gallery | 70%   |
-      | mobile  | de_DE  | warning | gallery                             | 83%   |
-      | tablet  | de_DE  | warning | Weather conditions, Rating, gallery | 70%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | de_DE  | warning | 3              | 70%   |
+      | tablet  | en_US  | warning | 3              | 70%   |
+      | tablet  | fr_FR  | warning | 3              | 70%   |
+      | mobile  | de_DE  | warning | 1              | 83%   |
+      | mobile  | en_US  | warning | 1              | 83%   |
+      | mobile  | fr_FR  | warning | 1              | 83%   |
     And I visit the "Attributes" column tab
     When I visit the "Media" group
     And I start to manage assets for "gallery"
@@ -53,21 +55,25 @@ Feature: Display the completeness of a product with assets
     And I save the product
     When I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel | locale | state   | missing_values             | ratio |
-      | mobile  | en_US  | success |                            | 100%  |
-      | tablet  | en_US  | warning | Weather conditions, Rating | 80%   |
-      | mobile  | de_DE  | success |                            | 100%  |
-      | tablet  | de_DE  | warning | Weather conditions, Rating | 80%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | de_DE  | warning | 2              | 80%   |
+      | tablet  | en_US  | warning | 2              | 80%   |
+      | tablet  | fr_FR  | warning | 2              | 80%   |
+      | mobile  | de_DE  | success | 0              | 100%  |
+      | mobile  | en_US  | success | 0              | 100%  |
+      | mobile  | fr_FR  | success | 0              | 100%  |
     And I visit the "Attributes" column tab
     Given I delete the paint variation for channel mobile and locale ""
     And I save the product
     When I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel | locale | state   | missing_values             | ratio |
-      | mobile  | en_US  | warning | gallery                    | 83%   |
-      | tablet  | en_US  | warning | Weather conditions, Rating | 80%   |
-      | mobile  | de_DE  | warning | gallery                    | 83%   |
-      | tablet  | de_DE  | warning | Weather conditions, Rating | 80%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | de_DE  | warning | 2              | 80%   |
+      | tablet  | en_US  | warning | 2              | 80%   |
+      | tablet  | fr_FR  | warning | 2              | 80%   |
+      | mobile  | de_DE  | warning | 1              | 83%   |
+      | mobile  | en_US  | warning | 1              | 83%   |
+      | mobile  | fr_FR  | warning | 1              | 83%   |
 
   Scenario: Successfully update the completeness for a product with localized asset
     Given I am on the "jacket-white" product page
@@ -76,11 +82,13 @@ Feature: Display the completeness of a product with assets
     And I save the product
     When I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel | locale | state   | missing_values                      | ratio |
-      | mobile  | en_US  | warning | gallery                             | 83%   |
-      | tablet  | en_US  | warning | Weather conditions, Rating, gallery | 70%   |
-      | mobile  | de_DE  | warning | gallery                             | 83%   |
-      | tablet  | de_DE  | warning | Weather conditions, Rating, gallery | 70%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | de_DE  | warning | 3              | 70%   |
+      | tablet  | en_US  | warning | 3              | 70%   |
+      | tablet  | fr_FR  | warning | 3              | 70%   |
+      | mobile  | de_DE  | warning | 1              | 83%   |
+      | mobile  | en_US  | warning | 1              | 83%   |
+      | mobile  | fr_FR  | warning | 1              | 83%   |
     And I visit the "Attributes" column tab
     When I visit the "Media" group
     And I start to manage assets for "gallery"
@@ -90,19 +98,23 @@ Feature: Display the completeness of a product with assets
     And I save the product
     When I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel | locale | state   | missing_values             | ratio |
-      | mobile  | en_US  | success |                            | 100%  |
-      | tablet  | en_US  | warning | Weather conditions, Rating | 80%   |
-      | mobile  | de_DE  | success |                            | 100%  |
-      | tablet  | de_DE  | warning | Weather conditions, Rating | 80%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | de_DE  | warning | 2              | 80%   |
+      | tablet  | en_US  | warning | 2              | 80%   |
+      | tablet  | fr_FR  | warning | 2              | 80%   |
+      | mobile  | de_DE  | success | 0              | 100%  |
+      | mobile  | en_US  | success | 0              | 100%  |
+      | mobile  | fr_FR  | success | 0              | 100%  |
     And I visit the "Attributes" column tab
     And I delete the paint variation for channel mobile and locale ""
     When I am on the "jacket-white" product page
     And I save the product
     And I visit the "Completeness" column tab
     Then I should see the completeness:
-      | channel | locale | state   | missing_values             | ratio |
-      | mobile  | en_US  | warning | gallery                    | 83%   |
-      | tablet  | en_US  | warning | Weather conditions, Rating | 80%   |
-      | mobile  | de_DE  | success |                            | 100%  |
-      | tablet  | de_DE  | warning | Weather conditions, Rating | 80%   |
+      | channel | locale | state   | missing_values | ratio |
+      | tablet  | de_DE  | warning | 2              | 80%   |
+      | tablet  | en_US  | warning | 2              | 80%   |
+      | tablet  | fr_FR  | warning | 2              | 80%   |
+      | mobile  | de_DE  | success | 0              | 100%  |
+      | mobile  | en_US  | warning | 1              | 83%   |
+      | mobile  | fr_FR  | warning | 1              | 83%   |

@@ -78,9 +78,6 @@ pimee_enrich:
           messages:
             approve:
               success: Der Vorschlag wurde erfolgreich freigegeben.
-              error:
-                The proposal can't be applied due to the following error:
-                  - Fehler
             reject:
               success: Der Vorschlag wurde abgelehnt.
             remove:
@@ -151,12 +148,38 @@ pimee_enrich:
       options:
         width: '%value%px Breite'
         height: '%value%px Höhe'
-        ratio: Verhältnis %value%%
+        ratio: 'Verhältnis %value%%'
     thumbnail:
       title: Miniaturansicht
       options:
         width: '%value%px Breite'
         height: '%value%px Höhe'
+  mass_edit:
+    next: Vor
+    cancel: Abbrechen
+    confirm: Bestätigen
+    product:
+      operation:
+        publish:
+          label: Produkte veröffentlichen
+        unpublish:
+          label: Produktveröffentlichungen entziehen
+    asset:
+      step:
+        select:
+          label: Asset auswählen
+        choose:
+          label: Aktion auswählen
+        configure:
+          label: Konfigurieren
+        confirm:
+          label: Bestätigen
+      operation:
+        add_tag:
+          label: Stichworte zu Assets hinzufügen
+          field: Stichworte
+        add_to_category:
+          field: Kategorien
 pim_menu:
   tab:
     asset: Assets

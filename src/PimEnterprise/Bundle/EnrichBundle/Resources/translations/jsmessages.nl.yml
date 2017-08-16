@@ -56,10 +56,6 @@ pimee_enrich:
         proposals:
           title: Voorstellen
           messages:
-            approve:
-              error:
-                The proposal can't be applied due to the following error:
-                  - fout
             remove:
               success: Het voorstel is verwijderd.
       confirmation:
@@ -88,6 +84,22 @@ pimee_enrich:
       options: Opties
     resolution:
       title: Resolutie
+  mass_edit:
+    next: Volgende
+    cancel: Annuleren
+    product:
+      operation:
+        publish:
+          label: Product publiceren
+        unpublish:
+          label: Depubliceer producten
+    asset:
+      step:
+        choose:
+          label: Kies bewerking
+      operation:
+        add_to_category:
+          field: Categorieën
 pim_menu:
   tab:
     asset: Kenmerken

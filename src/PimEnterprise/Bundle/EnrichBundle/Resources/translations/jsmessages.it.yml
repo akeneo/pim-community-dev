@@ -78,9 +78,6 @@ pimee_enrich:
           messages:
             approve:
               success: La proposta è stata applicata con successo.
-              error:
-                The proposal can't be applied due to the following error:
-                  - errore
             reject:
               success: La proposta non è stata accettata.
             remove:
@@ -135,7 +132,7 @@ pimee_enrich:
     colorspace:
       title: Spazio colori
       options:
-        colorspace: spazio colore %value%
+        colorspace: 'spazio colore %value%'
     resize:
       title: Ridimensiona
       options:
@@ -157,6 +154,32 @@ pimee_enrich:
       options:
         width: '%value%px di larghezza'
         height: '%value%px di altezza'
+  mass_edit:
+    next: Successivo
+    cancel: Cancella
+    confirm: Conferma
+    product:
+      operation:
+        publish:
+          label: Pubblica i prodotti
+        unpublish:
+          label: Annulla la pubblicazione dei prodotti
+    asset:
+      step:
+        select:
+          label: Scegli gli asset
+        choose:
+          label: Scegli l'operazione
+        configure:
+          label: Configura
+        confirm:
+          label: Conferma
+      operation:
+        add_tag:
+          label: Aggiungi tag agli asset
+          field: Tag
+        add_to_category:
+          field: Categorie
 pim_menu:
   tab:
     asset: Asset
