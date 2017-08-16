@@ -4,7 +4,7 @@
   line-height: @AknDefaultFontSize + 4px;
   height: @AknDefaultFontSize + 4px;
   font-size: @AknDefaultFontSize;
-  background: @AknLightGray;
+  background: @AknMediumGrey;
   color: @AknDefaultFontColor;
   display: inline-block;
   border-radius: 100px;
@@ -81,6 +81,15 @@
     }
   }
 
+  &--active {
+    background: @AknLightPurple;
+    color: white;
+
+    &:hover {
+      background: darken(@AknLightPurple, 10%);
+    }
+  }
+
   &--highlight {
     background: @AknOrange;
   }
@@ -90,7 +99,7 @@
   }
 
   &--round {
-    border-radius: 10px;
+    border-radius: 100px;
     padding: 0 6px;
     height: @AknDefaultFontSize;
     line-height: @AknDefaultFontSize;
@@ -109,10 +118,23 @@
     display: none;
   }
 
+  &--medium {
+    height: @AknSmallProgressBarHeight;
+    width: @AknSmallProgressBarHeight;
+    line-height: @AknSmallProgressBarHeight;
+    font-size: @AknDefaultFontSize;
+    padding: 0 8px;
+  }
+
   &--big {
     height: @AknMicroButtonSize;
+    width: @AknMicroButtonSize;
     line-height: @AknMicroButtonSize;
     font-size: @AknDefaultFontSize;
     padding: 0 8px;
+  }
+
+  &--large {
+    padding: 0 20px;
   }
 }

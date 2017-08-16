@@ -73,11 +73,7 @@ define(
                     label: step.getLabel(),
                     description: step.getDescription(),
                     title: __(this.config.title, {itemsCount: this.getFormData().itemsCount}),
-                    __: __,
-                    selectLabel: __(this.config.selectLabel),
-                    chooseLabel: __(this.config.chooseLabel),
-                    configureLabel: __(this.config.configureLabel),
-                    confirmLabel: __(this.config.confirmLabel)
+                    __: __
                 }));
 
                 this.$('.step').empty().append(step.render().$el);

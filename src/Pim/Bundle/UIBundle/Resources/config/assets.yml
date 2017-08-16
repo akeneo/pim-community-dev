@@ -97,4 +97,5 @@ css:
         - bundles/pimui/less/components/Widget.less
 
         - bundles/pimui/less/pages/Default.less
+        - bundles/pimui/less/pages/FullPage.less
         - bundles/pimui/less/pages/Login.less
