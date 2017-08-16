@@ -17,7 +17,7 @@ Feature: Filter products by reference data
       | postit  | sole_color  | Red               |
       | postit  | sole_fabric | Cashmerewool,Silk |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully filter products by reference data
     Given I should not see the filter sole_color

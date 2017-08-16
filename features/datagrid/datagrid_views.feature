@@ -14,11 +14,11 @@ Feature: Datagrid views
     And I am logged in as "Mary"
 
   Scenario: Successfully display the default view
-    Given I am on the products page
+    Given I am on the products grid
     Then I should see the text "Default view"
 
   Scenario: Successfully create a new view
-    Given I am on the products page
+    Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Sneakers"
     And I create the view:
       | new-view-label | Sneakers only |
@@ -29,7 +29,7 @@ Feature: Datagrid views
     But I should not see product black-boots
 
   Scenario: Successfully apply a view
-    Given I am on the products page
+    Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Boots"
     Then I should see product black-boots
     But I should not see products purple-sneakers and black-sneakers
@@ -38,7 +38,7 @@ Feature: Datagrid views
     And I should see products black-boots, purple-sneakers and black-sneakers
 
   Scenario: Successfully update a view
-    Given I am on the products page
+    Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Boots"
     And I create the view:
       | new-view-label | Some shoes |
@@ -58,7 +58,7 @@ Feature: Datagrid views
     But I should not see product black-boots
 
   Scenario: Successfully update columns of a view
-    Given I am on the products page
+    Given I am on the products grid
     When I filter by "family" with operator "in list" and value "Sneakers"
     And I create the view:
       | new-view-label | Some shoes |
@@ -75,7 +75,7 @@ Feature: Datagrid views
     And I should see the text "Nike"
 
   Scenario: Successfully delete a view
-    Given I am on the products page
+    Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Boots"
     And I create the view:
       | new-view-label | Boots only |
@@ -93,7 +93,7 @@ Feature: Datagrid views
     And I should see products black-boots, purple-sneakers and black-sneakers
 
   Scenario: Can not delete nor save a view that is not mine
-    Given I am on the products page
+    Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Boots"
     And I create the view:
       | new-view-label | Boots only |
@@ -104,7 +104,7 @@ Feature: Datagrid views
     But I should not see products purple-sneakers and black-sneakers
     When I logout
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I apply the "Boots only" view
     Then I should be on the products page
     And I should not be able to remove the view
@@ -112,17 +112,17 @@ Feature: Datagrid views
     Then I should not be able to save the view
 
   Scenario: Keep view per page
-    Given I am on the products page
+    Given I am on the products grid
     When I change the page size to 25
     And I am on the attributes page
     And I change the page size to 50
-    When I am on the products page
+    When I am on the products grid
     Then the page size should be 25
     When I am on the attributes page
     Then the page size should be 50
 
   Scenario: Successfully choose my default view
-    Given I am on the products page
+    Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Sneakers"
     And I create the view:
       | new-view-label | Sneakers only |
@@ -139,7 +139,7 @@ Feature: Datagrid views
     Then I should not see the text "There are unsaved changes."
     When I logout
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     Then I should see products black-boots, purple-sneakers and black-sneakers
     When I am on the User profile show page
     And I press the "Edit" button
@@ -150,18 +150,18 @@ Feature: Datagrid views
       | Default product grid view | Sneakers only |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
-    When I am on the products page
+    When I am on the products grid
     Then I should see the text "Sneakers only"
     And the grid should contain 2 elements
     When I logout
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     Then I should see the text "Sneakers only"
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
 
   Scenario: Successfully remove my default view
-    Given I am on the products page
+    Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Sneakers"
     And I create the view:
       | new-view-label | Sneakers only |
@@ -176,7 +176,7 @@ Feature: Datagrid views
       | Default product grid view | Sneakers only |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
-    When I am on the products page
+    When I am on the products grid
     Then I should see the text "Sneakers only"
     When I delete the view
     And I confirm the deletion
@@ -186,7 +186,7 @@ Feature: Datagrid views
     And I should not see the text "Sneakers only"
 
   Scenario: Successfully display values in grid when using a custom default view
-    Given I am on the products page
+    Given I am on the products grid
     And I display the columns SKU, Name, Family and Manufacturer
     Then I should see the text "Nike"
     When I create the view:
@@ -200,10 +200,10 @@ Feature: Datagrid views
     When I fill in the following information:
       | Default product grid view | With name |
     And I press the "Save" button
-    And I am on the products page
+    And I am on the products grid
     And I logout
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I filter by "category" with operator "unclassified" and value ""
     Then the row "purple-sneakers" should contain:
       | column | value           |
@@ -219,7 +219,7 @@ Feature: Datagrid views
       | Family | Boots       |
 
   Scenario: Successfully change grid channel
-    Given I am on the products page
+    Given I am on the products grid
     Then I should see the text "Tablet"
     When I filter by "scope" with operator "" and value "Mobile"
     And I create the view:
@@ -230,7 +230,7 @@ Feature: Datagrid views
     And I should see the text "Mobile"
 
   Scenario: Successfully display the default view if my custom default view has been deleted
-    Given I am on the products page
+    Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Boots"
     And I create the view:
       | new-view-label | Boots only |
@@ -245,11 +245,11 @@ Feature: Datagrid views
     When I fill in the following information:
       | Default product grid view | Boots only |
     And I press the "Save" button
-    And I am on the products page
+    And I am on the products grid
     Then I should see the text "Boots only"
     When I logout
     And I am logged in as "Mary"
-    When I am on the products page
+    When I am on the products grid
     And I apply the "Boots only" view
     And I delete the view
     And I confirm the deletion
@@ -258,11 +258,11 @@ Feature: Datagrid views
     And I should see the text "Default view"
     When I logout
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I should see the text "Default view"
     But I should not see the text "Boots only"
 
   @ce
   Scenario: Don't display view type switcher if there is only one view type
-    Given I am on the products page
+    Given I am on the products grid
     Then I should not see the text "Views"

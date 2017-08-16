@@ -7,7 +7,8 @@ extensions:
     pim-product-index-create-button:
         module: pim/form/common/index/create-button
         parent: pim-product-index
-        targetZone: buttons-right
+        targetZone: buttons
+        aclResourceId: pim_enrich_product_create
         config:
            title:     Create product
            modalForm: pim-product-create-modal
@@ -27,10 +28,11 @@ extensions:
         targetZone: title-buttons
         position: 20
 
-    # pim-product-index-category-tree:
-    #     module: pim/grid/category-tree
-    #     parent: pim-product-index
-    #     targetZone: tree
+    pim-product-index-category-tree:
+        module: pim/grid/category-tree
+        parent: pim-product-index
+        targetZone: tree
+        aclResourceId: pim_enrich_product_category_list
 
     # pim-product-index-grid-filters
     #     module: pim/grid/filters
@@ -47,4 +49,10 @@ extensions:
         module: pim/grid/table
         parent: pim-product-index
         targetZone: grid
+        config:
+            gridName: 'product-grid'
+            localeParamName: dataLocale
+            defaultColumnsUrl: pim_datagrid_view_rest_default_columns
+            datagridLoadUrl: pim_datagrid_load
+
 

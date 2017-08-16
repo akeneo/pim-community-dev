@@ -11,7 +11,7 @@ Feature: Product creation
     | sandals | sandals |
     | boots   |         |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully create a product without family
     Given I create a new product

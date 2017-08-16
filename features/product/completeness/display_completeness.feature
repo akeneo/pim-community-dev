@@ -33,7 +33,7 @@ Feature: Display the completeness of a product
       | tablet  | fr_FR  | warning | 2              | 77%   |
       | mobile  | en_US  | success | 0              | 100%  |
       | mobile  | fr_FR  | success | 0              | 100%  |
-    When I am on the products page
+    When I am on the products grid
     Then I am on the "sandals" product page
     And I visit the "Attributes" column tab
     And the Name, Description fields should be highlighted
@@ -52,7 +52,7 @@ Feature: Display the completeness of a product
       | mobile  | fr_FR  | warning | 2              | 60%   |
 
   Scenario: Successfully display the completeness of the products in the grid
-    Given I am on the products page
+    Given I am on the products grid
     When I switch the locale to "en_US"
     And I filter by "scope" with operator "equals" and value "Mobile"
     Then the row "sneakers" should contain:
@@ -90,7 +90,7 @@ Feature: Display the completeness of a product
     And I visit the "Media" group
     And I attach file "SNKRS-1C-s.png" to "Side view"
     And I save the product
-    And I am on the products page
+    And I am on the products grid
     And I switch the locale to "en_US"
     When I filter by "scope" with operator "equals" and value "Mobile"
     Then the row "sneakers" should contain:

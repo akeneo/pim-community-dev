@@ -16,7 +16,7 @@ Feature: Display product attributes in the grid
       | gray-boots  | no_label              |
       | white-boots | boots_akeneo,no_label |
     When I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     Then the row "black-boots" should contain:
       | column | value        |
       | Groups | Akeneo Boots |

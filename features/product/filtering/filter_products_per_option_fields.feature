@@ -21,7 +21,7 @@ Feature: Filter products per option
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products by a simple option
-    Given I am on the products page
+    Given I am on the products grid
     And the grid should contain 3 elements
     Then I should be able to use the following filters:
       | filter | operator     | value | result          |
@@ -30,7 +30,7 @@ Feature: Filter products per option
       | size   | is not empty |       | Sweat           |
 
   Scenario: Successfully filter products by a multi option
-    Given I am on the products page
+    Given I am on the products grid
     And the grid should contain 3 elements
     Then I should be able to use the following filters:
       | filter | operator     | value | result          |
@@ -40,7 +40,7 @@ Feature: Filter products per option
 
   @jira https://akeneo.atlassian.net/browse/PIM-5802
   Scenario: Successfully keep data previously filled on a simple option
-    Given I am on the products page
+    Given I am on the products grid
     And the grid should contain 3 elements
     When I show the filter "size"
     And I filter by "size" with operator "in list" and value "M"
@@ -49,7 +49,7 @@ Feature: Filter products per option
 
   @jira https://akeneo.atlassian.net/browse/PIM-5802
   Scenario: Successfully keep data previously filled on a multi option
-    Given I am on the products page
+    Given I am on the products grid
     And the grid should contain 3 elements
     When I show the filter "color"
     And I filter by "color" with operator "in list" and value "Black, White"
@@ -58,7 +58,7 @@ Feature: Filter products per option
 
   @jira https://akeneo.atlassian.net/browse/PIM-6150
   Scenario: Successfully keep the option filter on page reload
-    Given I am on the products page
+    Given I am on the products grid
     And the grid should contain 3 elements
     When I show the filter "color"
     And I filter by "color" with operator "in list" and value "Black, White"

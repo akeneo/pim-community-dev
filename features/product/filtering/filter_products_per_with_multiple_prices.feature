@@ -26,7 +26,7 @@ Feature: Filter products with multiples prices filters
       | POST-2 | furniture | 15 EUR    |        |
       | POST-3 | furniture | 30 EUR    |        |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I show the filter "transport"
     And I show the filter "margin"
 

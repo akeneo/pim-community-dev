@@ -24,10 +24,6 @@ define(
             /**
             * {@inheritdoc}
             */
-            configure() {
-                return BaseForm.prototype.configure.apply(this, arguments);
-            },
-
             render: function () {
                 if (!this.configured) {
                     return this;

@@ -18,7 +18,7 @@ Feature: Display product attributes in the grid
       | sandals  | adidas       | dry, hot            |
       | boots    | lacoste      | cloudy              |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     When I display the columns SKU, Manufacturer and Weather conditions
     Then the row "sneakers" should contain:
       | column             | value                     |
@@ -44,7 +44,7 @@ Feature: Display product attributes in the grid
       | sneakers | %fixtures%/akeneo.jpg |                        |
       | sandals  |                       | %fixtures%/akeneo2.jpg |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     When I display the columns SKU, Side view and Top view
     Then the row "sneakers" should contain the images:
       | column    | title      |

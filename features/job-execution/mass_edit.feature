@@ -12,7 +12,7 @@ Feature: Mass edit jobs
   Scenario: Go to the job execution page for a "mass edit" (by clicking on the notifications) and then check buttons status on the header
     Given a disabled "boat" product
     And a disabled "jet-ski" product
-    And I am on the products page
+    And I am on the products grid
     When I select rows boat and jet-ski
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Change status (enable / disable)" operation

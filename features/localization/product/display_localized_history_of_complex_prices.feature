@@ -12,7 +12,7 @@ Feature: Display the localized product history for complex prices
       | scoped_price    | scoped_price    | scoped_price    | pim_catalog_price_collection | 1                | other |                   | 0           | 1        |
       | complex_price   | complex_price   | complex_price   | pim_catalog_price_collection | 1                | other | fr_FR,en_US       | 1           | 1        |
     And I am logged in as "admin"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU | sandal |

@@ -24,6 +24,6 @@ Feature: Sort products per completeness field
 
   # TODO : calculate completeness
   Scenario: Successfully sort products by complete
-    Given I am on the products page
+    Given I am on the products grid
     And the grid should contain 7 elements
     And I should be able to sort the rows by Status

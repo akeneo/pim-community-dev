@@ -8,7 +8,7 @@ Feature: Update the product history
   Scenario: Update product history when updating product prices
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU | boots |
@@ -51,7 +51,7 @@ Feature: Update the product history
   Scenario: Update product history when updating product metric
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU | boots |
@@ -91,7 +91,7 @@ Feature: Update the product history
   Scenario: Update product history when updating product media
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU | boots |

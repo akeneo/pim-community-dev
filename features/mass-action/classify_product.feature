@@ -12,7 +12,7 @@ Feature: Classify many products at once
       | horseshoe | summer_collection |
     And a "horseshoe" product
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Add several products to categories at once
     Given I select rows bigfoot and horseshoe
@@ -25,7 +25,7 @@ Feature: Classify many products at once
     And I click on the "winter_collection" category
     And I confirm mass edit
     And I wait for the "add_product_value" job to finish
-    When I am on the products page
+    When I am on the products grid
     And I select the "2014 collection" tree
     Then I should see the text "Summer collection (2)"
     And I should see the text "Winter collection (2)"
@@ -41,7 +41,7 @@ Feature: Classify many products at once
     And I click on the "winter_collection" category
     And I confirm mass edit
     And I wait for the "update_product_value" job to finish
-    When I am on the products page
+    When I am on the products grid
     And I select the "2014 collection" tree
     Then I should see the text "Summer collection (0)"
     And I should see the text "Winter collection (2)"

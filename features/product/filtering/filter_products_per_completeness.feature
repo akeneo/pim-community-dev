@@ -15,7 +15,7 @@ Feature: Filter products
       | BOOTRXS | boots  | Boot 42 Red   |                   |      |       |
     And I launched the completeness calculator
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully filter uncomplete products
     And I filter by "completeness" with operator "" and value "no"

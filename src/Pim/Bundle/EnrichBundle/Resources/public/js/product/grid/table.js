@@ -8,9 +8,11 @@ define(
         'pim/datagrid/state',
         'oro/datafilter/product_category-filter',
         'require-context',
-        'pim/form'
+        'pim/form',
+        'pim/user-context',
+        'pim/fetcher-registry'
     ],
-    function (
+    function(
         _,
         $,
         Routing,
@@ -19,140 +21,166 @@ define(
         DatagridState,
         CategoryFilter,
         requireContext,
-        BaseForm
+        BaseForm,
+        UserContext,
+        FetcherRegistry
     ) {
-
-        // @TODO - Totally rewrite with proper functions
         return BaseForm.extend({
+            config: {},
 
-            render() {
-                var defaultColumnsRoute = Routing.generate(
-                    'pim_datagrid_view_rest_default_columns',
-                    {alias: 'product-grid' }
+            initialize(options) {
+                this.config = options.config;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            getDefaultView() {
+                return FetcherRegistry.getFetcher('datagrid-view')
+                    .defaultUserView('product-grid')
+                    .then(defaultUserView => defaultUserView.view);
+            },
+
+            getDefaultColumns() {
+                return $.get(Routing.generate(
+                    this.config.defaultColumnsUrl, {
+                        alias: this.config.gridName
+                    }
+                ));
+            },
+
+            loadDataGrid(resp) {
+                const { gridName } = this.config;
+                const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
+
+                if (state.columns) {
+                    resp.metadata.state.parameters = _.extend({},
+                        resp.metadata.state.parameters,
+                        {
+                            view: {
+                                columns: state.columns,
+                                id: state.view
+                            }
+                        }
                     );
+                }
 
-                $.get(defaultColumnsRoute, function (defaultColumns) {
-                    initDatagrid(defaultColumns);
+                $(`#grid-${gridName}`).data({
+                    'metadata': resp.metadata,
+                    'data': JSON.parse(resp.data)
                 });
 
-                var initDatagrid = function (defaultColumns) {
-                    var urlParams    = {'dataLocale':'en_US'};
-                    urlParams.alias  = 'product-grid';
-                    urlParams.params = {'dataLocale':'en_US'};
+                const modules = resp.metadata.requireJSModules;
+                modules.push('pim/datagrid/state-listener');
 
-                    var viewStored = DatagridState.get('product-grid', ['view']);
-                    if (!viewStored.view) {
-                        DatagridState.refreshFiltersFromUrl('product-grid');
-                    }
+                const resolvedModules = [];
 
-                    var hasDefaultView = false;
-                    var state          = DatagridState.get('product-grid', ['view', 'filters', 'columns']);
+                _.each(modules, function(module) {
+                    const resolvedModule = requireContext(module);
+                    resolvedModules.push(resolvedModule);
+                });
 
-                    var applyView = function (viewId) {
-                        urlParams['product-grid[_parameters][view][id]'] = viewId;
+                datagridBuilder(resolvedModules);
+            },
 
-                        DatagridState.set('product-grid', {
-                            view: viewId
-                        });
+            getInitialParams() {
+                const { localeParamName, gridName } = this.config;
+                const locale = UserContext.get('catalogLocale');
+                const urlParams = { [localeParamName]: locale, alias: gridName };
+                urlParams.params = {[ localeParamName ]: locale}
+
+                return urlParams;
+            },
+
+            applyColumns(columns, urlParams) {
+                const { gridName } = this.config;
+                if (_.isArray(columns)) columns = columns.join();
+
+                urlParams[`${gridName}[_parameters][view][columns]`] = columns;
+
+                DatagridState.set(gridName, { columns: columns });
+
+                return urlParams;
+            },
+
+            applyView(viewId, urlParams) {
+                const { gridName } = this.config;
+                urlParams[`${gridName}[_parameters][view][id]`] = viewId;
+
+                DatagridState.set(gridName, {  view: viewId });
+
+                return urlParams;
+            },
+
+            applyFilters(rawFilters, urlParams) {
+                const { gridName } = this.config;
+                var filters = PageableCollection.prototype.decodeStateData(rawFilters);
+                var options = {};
+
+                if (!_.isEmpty(filters.filters)) {
+                    options = {
+                        state: {
+                            filters: _.omit(filters.filters, 'scope')
+                        }
                     };
+                }
 
-                    var applyFilters = function (rawFilters) {
-                        var filters = PageableCollection.prototype.decodeStateData(rawFilters);
-                        var options = {};
+                var collection = new PageableCollection(null, options);
+                collection.processFiltersParams(urlParams, filters, `${gridName}[_filter]`);
 
-                        if (!_.isEmpty(filters.filters)) {
-                            options = {
-                                state: {
-                                    filters: _.omit(filters.filters, 'scope')
-                                }
-                            };
-                        }
+                for (var column in filters.sorters) {
+                    urlParams[`${gridName}[_sort_by][' + column + ']`] =
+                    1 === parseInt(filters.sorters[column]) ?
+                    'DESC' :
+                    'ASC';
+                }
 
-                        var collection = new PageableCollection(null, options);
-                        collection.processFiltersParams(urlParams, filters, 'product-grid[_filter]');
+                if (filters.pageSize) {
+                    urlParams[`${gridName}[_pager][_per_page]`] = filters.pageSize;
+                }
 
-                        for (var column in filters.sorters) {
-                            urlParams['product-grid[_sort_by][' + column + ']'] =
-                                1 === parseInt(filters.sorters[column]) ?
-                                        'DESC' :
-                                        'ASC';
-                        }
+                if (filters.currentPage) {
+                    urlParams[`${gridName}[_pager][_page]`] = filters.currentPage;
+                }
 
-                        if (undefined !== filters.pageSize) {
-                            urlParams['product-grid[_pager][_per_page]'] = filters.pageSize;
-                        }
+                DatagridState.set(gridName, {
+                    filters: rawFilters
+                });
 
-                        if (undefined !== filters.currentPage) {
-                            urlParams['product-grid[_pager][_page]'] = filters.currentPage;
-                        }
+                return urlParams;
+            },
 
-                        DatagridState.set('product-grid', {
-                            filters: rawFilters
-                        });
-                    };
+            setDatagridState(defaultColumns, defaultView) {
+                const { gridName, datagridLoadUrl} = this.config;
+                let params = this.getInitialParams();
 
-                    var applyColumns = function (columns) {
-                        if (_.isArray(columns)) {
-                            columns = columns.join();
-                        }
-                        urlParams['product-grid[_parameters][view][columns]'] = columns;
+                if (!DatagridState.get(gridName, ['view'])) {
+                    DatagridState.refreshFiltersFromUrl(gridName);
+                }
 
-                        DatagridState.set('product-grid', {
-                            columns: columns
-                        });
-                    };
+                const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
 
-                    if (hasDefaultView && ('0' === state.view || null === state.view)) {
-                    } else {
-                        if (state.view) {
-                            applyView(state.view);
-                        }
+                if (defaultView && ('0' === state.view || null === state.view)) {
+                    this.applyView(defaultView.id, params);
+                    this.applyFilters(defaultView.filters, params);
+                    this.applyColumns(defaultView.columns, params);
+                } else {
+                    if (state.view) this.applyView(state.view, params);
+                    if (state.filters) this.applyFilters(state.filters, params);
+                    this.applyColumns(state.columns || defaultColumns, params);
+                }
 
-                        if (state.filters) {
-                            applyFilters(state.filters);
-                        }
+                this.getRoot().trigger('datagrid:getParams', params);
 
-                        if (state.columns) {
-                            applyColumns(state.columns);
-                        } else {
-                            applyColumns(defaultColumns);
-                        }
-                    }
-
-                    var categoryFilter = new CategoryFilter(
-                    urlParams,
-                    'product-grid',
-                    'pim_enrich_categorytree',
-                    '#tree'
+                return $.get(
+                    Routing.generate(datagridLoadUrl, params),
+                    this.loadDataGrid.bind(this)
                 );
+            },
 
-                    state = DatagridState.get('product-grid', ['view', 'filters', 'columns']);
-
-                    $.get(Routing.generate('pim_datagrid_load', urlParams), function(resp) {
-                        if (state.columns) {
-                            resp.metadata.state.parameters = _.extend({}, resp.metadata.state.parameters, {
-                                view: {
-                                    columns: state.columns,
-                                    id: state.view
-                                }
-                            });
-                        }
-
-                        $('#grid-product-grid').data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
-
-                        var modules = resp.metadata.requireJSModules;
-                        modules.push('pim/datagrid/state-listener');
-                        var resolvedModules = [];
-                        _.each(modules, function(module) {
-                            var resolvedModule = requireContext(module);
-                            resolvedModules.push(resolvedModule);
-                        });
-
-                        datagridBuilder(resolvedModules);
-                    });
-                };
+            render() {
+                $.when(this.getDefaultColumns(), this.getDefaultView())
+                .then((defaultColumns, defaultView) => this.setDatagridState(defaultColumns, defaultView));
             }
-
         });
     }
 );

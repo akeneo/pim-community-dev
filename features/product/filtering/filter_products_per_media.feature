@@ -26,7 +26,7 @@ Feature: Filter products per media
       | shirt-one   | attachment | %fixtures%/akeneo.txt              |
       | shirt-two   | attachment | %fixtures%/fanatic-freewave-76.txt |
     And I am logged in as "Mary"
-    When I am on the products page
+    When I am on the products grid
     Then the grid should contain 3 elements
     And I should see products shirt-one, shirt-two and shirt-three
     And I should be able to use the following filters:

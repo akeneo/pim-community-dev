@@ -11,7 +11,7 @@ Feature: Configure action to change status of many products at once
   Scenario: Configure the operation to enable many products at once
     Given a disabled "boat" product
     And a disabled "jet-ski" product
-    And I am on the products page
+    And I am on the products grid
     When I select rows boat and jet-ski
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Change status (enable / disable)" operation
@@ -23,7 +23,7 @@ Feature: Configure action to change status of many products at once
   Scenario: Configure the operation to disable many products at once
     Given an enabled "boat" product
     And an enabled "jet-ski" product
-    And I am on the products page
+    And I am on the products grid
     When I select rows boat and jet-ski
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Change status (enable / disable)" operation
