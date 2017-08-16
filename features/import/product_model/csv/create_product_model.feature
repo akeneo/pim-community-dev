@@ -23,7 +23,7 @@ Feature: Create product models through CSV import
       | code     | categories | family_variant     | collection   | description-en_US-ecommerce | erp_name-en_US | price      |
       | code-001 | master_men | clothing_colorsize | [Spring2017] | description                 | Blazers_1654   | 100.00 EUR |
 
-  Scenario: Julia imports new products sub-models in CSV
+  Scenario: Julia imports new products sub product models in CSV
     Given the following CSV file to import:
       """
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight

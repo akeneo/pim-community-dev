@@ -11,6 +11,7 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
@@ -235,10 +236,16 @@ class FixturesContext extends BaseFixturesContext
 
             $convertedData = $converter->convert($data);
             $productModel = $processor->process($convertedData);
-            $this->getProductModelSaver()->save($productModel);
+
+            $errors = $this->getContainer()->get('validator')->validate($productModel);
+            if (0 !== $errors->count()) {
+                throw new \LogicException('Product model could not be updated, invalid data provided.');
+            }
+
+            $this->getContainer()->get('pim_catalog.saver.product_model')->save($productModel);
 
             $this->refresh($productModel);
-            $this->getElasticsearchProductAndProductModelClient()->refreshIndex();
+            $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         }
     }
 
@@ -2148,14 +2155,6 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @return SaverInterface
      */
-    protected function getProductModelSaver()
-    {
-        return $this->getContainer()->get('pim_catalog.saver.product_model');
-    }
-
-    /**
-     * @return SaverInterface
-     */
     protected function getFamilySaver()
     {
         return $this->getContainer()->get('pim_catalog.saver.family');
@@ -2242,13 +2241,5 @@ class FixturesContext extends BaseFixturesContext
     protected function getElasticsearchProductClient()
     {
         return $this->getContainer()->get('akeneo_elasticsearch.client.product');
-    }
-
-    /**
-     * @return Client
-     */
-    protected function getElasticsearchProductAndProductModelClient()
-    {
-        return $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model');
     }
 }
