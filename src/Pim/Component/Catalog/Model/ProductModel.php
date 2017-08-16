@@ -120,6 +120,16 @@ class ProductModel implements ProductModelInterface
      */
     public function getValues(): ValueCollectionInterface
     {
+        $values = ValueCollection::fromCollection($this->values);
+
+        return $this->getAllValues($this, $values);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValuesForVariation(): ValueCollectionInterface
+    {
         return $this->values;
     }
 
@@ -138,7 +148,7 @@ class ProductModel implements ProductModelInterface
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null): ?ValueInterface
     {
-        return $this->values->getByCodes($attributeCode, $scopeCode, $localeCode);
+        return $this->getValues()->getByCodes($attributeCode, $scopeCode, $localeCode);
     }
 
     /**
@@ -166,7 +176,7 @@ class ProductModel implements ProductModelInterface
      */
     public function getAttributes(): array
     {
-        return $this->values->getAttributes();
+        return $this->getValues()->getAttributes();
     }
 
     /**
@@ -174,7 +184,7 @@ class ProductModel implements ProductModelInterface
      */
     public function hasAttribute(AttributeInterface $attribute): bool
     {
-        return in_array($attribute, $this->values->getAttributes(), true);
+        return in_array($attribute, $this->getValues()->getAttributes(), true);
     }
 
     /**
@@ -182,7 +192,7 @@ class ProductModel implements ProductModelInterface
      */
     public function getUsedAttributeCodes(): array
     {
-        return $this->values->getAttributesKeys();
+        return $this->getValues()->getAttributesKeys();
     }
 
     /**
@@ -515,5 +525,28 @@ class ProductModel implements ProductModelInterface
         }
 
         return $this->getValue($attributeAsImage->getCode());
+    }
+
+    /**
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param ValueCollectionInterface         $valueCollection
+     *
+     * @return ValueCollectionInterface
+     */
+    private function getAllValues(
+        EntityWithFamilyVariantInterface $entity,
+        ValueCollectionInterface $valueCollection
+    ) {
+        $parent = $entity->getParent();
+
+        if (null === $parent) {
+            return $valueCollection;
+        }
+
+        foreach ($parent->getValuesForVariation() as $value) {
+            $valueCollection->add($value);
+        }
+
+        return $this->getAllValues($parent, $valueCollection);
     }
 }

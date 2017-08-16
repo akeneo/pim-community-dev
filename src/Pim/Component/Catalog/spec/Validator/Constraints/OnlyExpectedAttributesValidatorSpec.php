@@ -9,6 +9,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributes;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
@@ -65,10 +66,12 @@ class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
         OnlyExpectedAttributes $constraint,
         AttributeInterface $color,
         FamilyInterface $family,
-        Collection $attributes
+        Collection $attributes,
+        ValueCollection $valuesForVariation
     ) {
         $entity->getFamilyVariant()->willReturn($familyVariant);
-        $entity->getAttributes()->willReturn([]);
+        $entity->getValuesForVariation()->willReturn($valuesForVariation);
+        $valuesForVariation->getAttributes()->willReturn([]);
         $attributesProvider->getAttributes($entity)->willReturn([$color]);
 
         $familyVariant->getFamily()->willReturn($family);
@@ -91,10 +94,12 @@ class OnlyExpectedAttributesValidatorSpec extends ObjectBehavior
         AttributeInterface $price,
         ConstraintViolationBuilderInterface $violation,
         FamilyInterface $family,
-        Collection $attributes
+        Collection $attributes,
+        ValueCollection $valuesForVariation
     ) {
         $entity->getFamilyVariant()->willReturn($familyVariant);
-        $entity->getAttributes()->willReturn([$color, $sku, $price]);
+        $entity->getValuesForVariation()->willReturn($valuesForVariation);
+        $valuesForVariation->getAttributes()->willReturn([$color, $sku, $price]);
 
         $familyVariant->getFamily()->willReturn($family);
         $family->getAttributes()->willReturn($attributes);

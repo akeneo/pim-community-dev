@@ -46,7 +46,7 @@ class OnlyExpectedAttributesValidator extends ConstraintValidator
         $familyAttributes = $family->getAttributes();
         $levelAttributes = $this->attributesProvider->getAttributes($entity);
 
-        foreach ($entity->getAttributes() as $modelAttribute) {
+        foreach ($entity->getValuesForVariation()->getAttributes() as $modelAttribute) {
             if (!$familyAttributes->contains($modelAttribute)) {
                 $this->context->buildViolation(
                     OnlyExpectedAttributes::ATTRIBUTE_DOES_NOT_BELONG_TO_FAMILY, [

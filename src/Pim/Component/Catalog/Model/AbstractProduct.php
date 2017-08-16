@@ -218,7 +218,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
-        return $this->values->getByCodes($attributeCode, $scopeCode, $localeCode);
+        return $this->getValues()->getByCodes($attributeCode, $scopeCode, $localeCode);
     }
 
     /**
@@ -244,7 +244,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function hasAttribute(AttributeInterface $attribute)
     {
-        return in_array($attribute, $this->values->getAttributes(), true);
+        return in_array($attribute, $this->getValues()->getAttributes(), true);
     }
 
     /**
@@ -312,7 +312,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getAttributes()
     {
-        return $this->values->getAttributes();
+        return $this->getValues()->getAttributes();
     }
 
     /**

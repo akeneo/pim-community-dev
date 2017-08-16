@@ -5,8 +5,6 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\ValueCollection;
-use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -61,53 +59,13 @@ class ComputeEntityRawValuesSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $values = $subject->getValues();
         if ($subject instanceof EntityWithFamilyVariantInterface) {
-            $values = $this->removeAncestryValues($subject);
+            $values = $subject->getValuesForVariation();
+        } else {
+            $values = $subject->getValues();
         }
 
         $rawValues = $this->normalizer->normalize($values, 'storage');
         $subject->setRawValues($rawValues);
-    }
-
-    /**
-     * Remove all the parent values of an entity.
-     * Here we copy the values here so that we don't touch the initial values collection.
-     *
-     * @param EntityWithFamilyVariantInterface $entity
-     *
-     * @return ValueCollectionInterface
-     */
-    private function removeAncestryValues(EntityWithFamilyVariantInterface $entity): ValueCollectionInterface
-    {
-        $values = ValueCollection::fromCollection($entity->getValues());
-
-        $ancestryAttributeCodes = array_keys($this->getAncestryRawValues($entity));
-        foreach ($values as $value) {
-            if (in_array($value->getAttribute()->getCode(), $ancestryAttributeCodes)) {
-                $values->remove($value);
-            }
-        }
-
-        return $values;
-    }
-
-    /**
-     * Recursively get  the raw values of all the parents of an entity.
-     *
-     * @param EntityWithFamilyVariantInterface $entity
-     * @param array                            $ancestryRawValues
-     *
-     * @return array
-     */
-    private function getAncestryRawValues(EntityWithFamilyVariantInterface $entity, array $ancestryRawValues = []): array
-    {
-        $parent = $entity->getParent();
-
-        if (null === $parent) {
-            return $ancestryRawValues;
-        }
-
-        return $this->getAncestryRawValues($parent, array_merge($ancestryRawValues, $parent->getRawValues()));
     }
 }
