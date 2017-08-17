@@ -27,6 +27,15 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
     /** @var ProductQueryBuilderFactoryInterface */
     protected $pqbFactory;
 
+    /** @var string */
+    protected $entityVersionClass;
+
+    /** @var string */
+    protected $publishedProductValueClass;
+
+    /** @var PublishProductMemoryCleaner */
+    protected $publishedProductMemoryCleaner;
+
     /**
      * @param PublishedProductManager             $manager
      * @param PaginatorFactoryInterface           $paginatorFactory
@@ -36,6 +45,7 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
      * @param TokenStorageInterface               $tokenStorage
      * @param AuthorizationCheckerInterface       $authorizationChecker
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
+     * @param PublishProductMemoryCleaner         $publishedProductMemoryCleaner
      */
     public function __construct(
         PublishedProductManager $manager,
@@ -45,7 +55,8 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
         AuthorizationCheckerInterface $authorizationChecker,
-        ProductQueryBuilderFactoryInterface $pqbFactory
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        PublishProductMemoryCleaner $publishedProductMemoryCleaner = null
     ) {
         parent::__construct(
             $manager,
@@ -56,8 +67,9 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
             $tokenStorage
         );
 
-        $this->authorizationChecker = $authorizationChecker;
-        $this->pqbFactory           = $pqbFactory;
+        $this->authorizationChecker          = $authorizationChecker;
+        $this->pqbFactory                    = $pqbFactory;
+        $this->publishedProductMemoryCleaner = $publishedProductMemoryCleaner;
     }
 
     /**
@@ -100,6 +112,10 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
             $this->detachProducts($invalidProducts);
             $this->manager->publishAll($productsPage);
             $this->detachProducts($productsPage);
+
+            if (null !== $this->publishedProductMemoryCleaner) {
+                $this->publishedProductMemoryCleaner->cleanupMemory();
+            }
         }
     }
 
