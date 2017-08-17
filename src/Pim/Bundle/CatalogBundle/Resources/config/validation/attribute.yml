@@ -454,7 +454,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue:
     properties:
         value:
             - Length:
-                max: 100
+                max: 255
                 payload:
                   standardPropertyName: labels
         locale:
