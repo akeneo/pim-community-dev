@@ -1,6 +1,8 @@
 @import '../base/variables';
 
 .AknFullPage {
+  @insidePadding: 24px;
+
   position: absolute;
   width: 100%;
   height: 100%;
@@ -22,7 +24,12 @@
     padding: 40px;
 
     &--right {
-      background-color: @AknLightGray;
+      background-color: lighten(@AknLightGray, 5%);
+    }
+
+    &--topAlign {
+      justify-content: flex-start;
+      padding-top: 40px + @insidePadding;
     }
   }
 
@@ -60,12 +67,18 @@
 
   &-cancel {
     position: fixed;
-    top: 16px;
-    left: 16px;
+    top: @insidePadding;
+    left: @insidePadding;
     width: 32px;
     height: 32px;
     background: url("../../images/icon-delete-slategrey.svg") no-repeat 50% 50%;
     cursor: pointer;
+  }
+
+  &-buttons {
+    position: fixed;
+    top: @insidePadding;
+    right: @insidePadding;
   }
 
   &-steps {
