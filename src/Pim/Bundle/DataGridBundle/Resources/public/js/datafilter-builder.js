@@ -2,7 +2,7 @@ define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/col
     function($, _, tools, mediator, FiltersManager, BaseForm) {
         'use strict';
 
-        return BaseForm.extend({
+        const DataFilterBuilder = BaseForm.extend({
             initialized: false,
             filterModuleName: 'oro/datafilter/{{type}}-filter',
             filterTypes: {
@@ -91,4 +91,9 @@ define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/col
                 };
             }
         });
-    })
+
+        // This is for the grids that don't yet use form extensions
+        DataFilterBuilder.init = () => new DataFilterBuilder();
+
+        return DataFilterBuilder;
+    });
