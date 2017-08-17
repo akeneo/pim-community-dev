@@ -2,12 +2,43 @@
 
 namespace Pim\Behat\Context\Storage;
 
+use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Pim\Behat\Context\PimContext;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
 
-class ProductStorage extends PimContext
+class ProductStorage implements Context
 {
+    /** @var AttributeColumnInfoExtractor */
+    private $attributeColumnInfoExtractor;
+
+    /** @var ProductRepositoryInterface */
+    private $productRepository;
+
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
+    /**
+     * @param AttributeColumnInfoExtractor $attributeColumnInfoExtractor
+     * @param ProductRepositoryInterface   $productRepository
+     * @param EntityManagerInterface       $entityManager
+     */
+    public function __construct(
+        AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
+        ProductRepositoryInterface $productRepository,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
+        $this->productRepository = $productRepository;
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * @param string    $identifier
      * @param TableNode $table
@@ -18,11 +49,13 @@ class ProductStorage extends PimContext
      */
     public function theProductShouldNotHaveTheFollowingValues($identifier, TableNode $table)
     {
-        $this->getMainContext()->getSubcontext('hook')->clearUOW();
-        $product = $this->getFixturesContext()->getEntity('Product', $identifier);
+        $this->entityManager->clear();
+
+        /** @var ProductInterface $product */
+        $product = $this->productRepository->findOneByIdentifier($identifier);
 
         foreach ($table->getRowsHash() as $rawCode => $value) {
-            $infos = $this->getFieldExtractor()->extractColumnInfo($rawCode);
+            $infos = $this->attributeColumnInfoExtractor->extractColumnInfo($rawCode);
 
             $attribute     = $infos['attribute'];
             $attributeCode = $attribute->getCode();
@@ -41,17 +74,39 @@ class ProductStorage extends PimContext
      */
     public function productHaveParent(string $productIdentifier, string $parentCode)
     {
-        $this->getMainContext()->getSubcontext('hook')->clearUOW();
-        $product = $this->getFixturesContext()->getEntity('Product', $productIdentifier);
+        $this->entityManager->clear();
+
+        /** @var VariantProductInterface $product */
+        $product = $this->productRepository->findOneByIdentifier($productIdentifier);
 
         assertEquals($product->getParent()->getCode(), $parentCode);
     }
 
     /**
-     * @return AttributeColumnInfoExtractor
+     * @param string    $identifier
+     * @param TableNode $table
+     *
+     * @throws \Exception
+     *
+     * @Given /^the variant product "([^"]*)" should not have the following values?:$/
      */
-    private function getFieldExtractor()
+    public function theVariantProductShouldNotHaveTheFollowingValues(string $identifier, TableNode $table)
     {
-        return $this->getService('pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor');
+        $this->entityManager->clear();
+
+        /** @var VariantProductInterface $product */
+        $product = $this->productRepository->findOneByIdentifier($identifier);
+
+        foreach ($table->getRowsHash() as $rawCode => $value) {
+            $infos = $this->attributeColumnInfoExtractor->extractColumnInfo($rawCode);
+
+            $attribute = $infos['attribute'];
+            $attributeCode = $attribute->getCode();
+            $productValue = $product->getValuesForVariation()->getByCodes($attributeCode, $infos['locale_code'], $infos['scope_code']);
+
+            if (null !== $productValue) {
+                throw new \Exception(sprintf('Product value for product "%s" exists', $identifier));
+            }
+        }
     }
 }

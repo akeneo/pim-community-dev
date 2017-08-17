@@ -11,7 +11,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Connector\Processor\AttributeFilter;
+use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductModel;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -49,7 +49,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
     /** @var ObjectDetacherInterface */
     private $objectDetacher;
 
-    /** @var AttributeFilter */
+    /** @var AttributeFilter\ProductModel */
     private $attributeFilter;
 
     /** @var string */
@@ -62,7 +62,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
      * @param ValidatorInterface                    $validator
      * @param FilterInterface                       $productModelFilter
      * @param ObjectDetacherInterface               $objectDetacher
-     * @param AttributeFilter                       $attributeFilter
+     * @param AttributeFilter\ProductModel          $attributeFilter
      * @param string                                $importType
      */
     public function __construct(
@@ -72,7 +72,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         ValidatorInterface $validator,
         FilterInterface $productModelFilter,
         ObjectDetacherInterface $objectDetacher,
-        AttributeFilter $attributeFilter,
+        AttributeFilter\ProductModel $attributeFilter,
         string $importType
     ) {
         $this->productModelFactory = $productModelFactory;

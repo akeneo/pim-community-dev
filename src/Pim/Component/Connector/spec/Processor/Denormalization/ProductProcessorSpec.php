@@ -12,6 +12,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilter;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -28,7 +29,8 @@ class ProductProcessorSpec extends ObjectBehavior
         ValidatorInterface $productValidator,
         StepExecution $stepExecution,
         ObjectDetacherInterface $productDetacher,
-        FilterInterface $productFilter
+        FilterInterface $productFilter,
+        AttributeFilter $productAttributeFilter
     ) {
         $this->beConstructedWith(
             $productRepository,
@@ -37,7 +39,8 @@ class ProductProcessorSpec extends ObjectBehavior
             $productUpdater,
             $productValidator,
             $productDetacher,
-            $productFilter
+            $productFilter,
+            $productAttributeFilter
         );
         $this->setStepExecution($stepExecution);
     }
@@ -54,6 +57,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -104,6 +108,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
+
         $filteredData = [
             'family' => 'Summer Tshirt',
             'values' => [
@@ -150,6 +156,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -200,6 +207,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
+
         $preFilteredData = $filteredData = [
             'family' => 'Tshirt',
             'values' => [
@@ -247,6 +256,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -297,6 +307,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
+
         $filteredData = [
             'family' => 'Tshirt',
             'values' => [
@@ -344,6 +356,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -396,6 +409,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
+
         $filteredData = [
             'family' => 'Tshirt',
             'values' => [
@@ -444,6 +459,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -524,6 +540,7 @@ class ProductProcessorSpec extends ObjectBehavior
             'enabled' => true
         ];
 
+        $productAttributeFilter->filter($convertedData)->willReturn($convertedData);
         $productFilter->filter($product, $filteredData)->willReturn($filteredData);
 
         $productUpdater
@@ -582,6 +599,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productDetacher,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -633,6 +651,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ],
             'enabled' => true
         ];
+
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -685,6 +705,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productDetacher,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -737,6 +758,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ],
             'enabled' => true
         ];
+
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',
@@ -792,6 +815,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productDetacher,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
         ProductInterface $product,
         JobParameters $jobParameters
     ) {
@@ -841,6 +865,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ]
         ];
 
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
+
         $filteredData = [
             'family' => 'Tshirt',
             'values' => [
@@ -885,6 +911,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -936,6 +963,8 @@ class ProductProcessorSpec extends ObjectBehavior
             'enabled' => false,
         ];
 
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
+
         $filteredData = [
             'family' => 'Summer Tshirt',
             'values' => [
@@ -984,6 +1013,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator,
         $productFilter,
         $stepExecution,
+        $productAttributeFilter,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList,
         JobParameters $jobParameters
@@ -1016,6 +1046,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ],
             'enabled' => true
         ];
+
+        $productAttributeFilter->filter(Argument::type('array'))->willReturn($convertedData);
 
         $filteredData = [
             'family' => 'Tshirt',

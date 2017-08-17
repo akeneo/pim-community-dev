@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Component\Connector\Processor;
+namespace Pim\Component\Connector\Processor\Denormalization\AttributeFilter;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
@@ -20,7 +20,7 @@ use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeFilter
+class ProductModel implements AttributeFilter
 {
     /** @var FamilyVariantRepositoryInterface */
     private $familyVariantRepository;

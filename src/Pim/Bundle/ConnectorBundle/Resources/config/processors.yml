@@ -12,7 +12,8 @@ parameters:
     pim_connector.processor.normalization.variant_group.class: Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor
 
     pim_connector.processor.bulk_media_fetcher.class: Pim\Component\Connector\Processor\BulkMediaFetcher
-    pim_connector.processor.product_model.attribute_filter.class: Pim\Component\Connector\Processor\AttributeFilter
+    pim_connector.processor.product_model.attribute_filter.class: Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductModel
+    pim_connector.processor.product.attribute_filter.class: Pim\Component\Connector\Processor\Denormalization\AttributeFilter\Product
 
 
 services:
@@ -58,6 +59,7 @@ services:
             - '@pim_catalog.validator.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_catalog.comparator.filter.product'
+            - '@pim_connector.processor.product.attribute_filter'
 
     pim_connector.processor.denormalization.root_product_model:
         class: '%pim_connector.processor.denormalization.product_model.class%'
@@ -323,3 +325,10 @@ services:
         arguments:
             - '@pim_catalog.repository.family_variant'
             - '@pim_catalog.repository.product_model'
+
+    pim_connector.processor.product.attribute_filter:
+        class: '%pim_connector.processor.product.attribute_filter.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.family'
+
