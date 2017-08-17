@@ -1,0 +1,84 @@
+<?php
+
+namespace PimEnterprise\Component\Catalog\tests\integration\Security\Product;
+
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\TestEnterprise\Integration\TestCase;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+
+class AbstractSecurityTestCase extends TestCase
+{
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+        return new Configuration(
+            [
+                Configuration::getTechnicalCatalogPath(),
+                $rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'technical'
+            ]
+        );
+    }
+
+    /**
+     * @param string $username
+     */
+    protected function generateToken($username)
+    {
+        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return ProductInterface
+     */
+    protected function createProduct(array $data)
+    {
+        $product = $this->get('pim_catalog.builder.product')->createProduct('product');
+        $this->get('pim_catalog.updater.product')->update($product, $data);
+
+        return $product;
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array            $data
+     *
+     * @return ProductInterface
+     */
+    protected function updateProduct(ProductInterface $product, array $data)
+    {
+        $this->get('pim_catalog.updater.product')->update($product, $data);
+
+        return $product;
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return ProductInterface
+     */
+    protected function getProduct(string $identifier)
+    {
+        return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return ProductInterface
+     */
+    protected function saveProduct(array $data)
+    {
+        $product = $this->createProduct($data);
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        return $product;
+    }
+}

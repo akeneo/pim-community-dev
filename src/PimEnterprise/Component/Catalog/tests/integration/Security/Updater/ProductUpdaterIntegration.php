@@ -2,12 +2,9 @@
 
 namespace PimEnterprise\Component\Catalog\tests\integration\Security\Updater;
 
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\TestEnterprise\Integration\TestCase;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use PimEnterprise\Component\Catalog\tests\integration\Security\Product\AbstractSecurityTestCase;
 
-class ProductUpdaterIntegration extends TestCase
+class ProductUpdaterIntegration extends AbstractSecurityTestCase
 {
     /**
      * @expectedException \Akeneo\Component\StorageUtils\Exception\UnknownPropertyException
@@ -184,141 +181,5 @@ class ProductUpdaterIntegration extends TestCase
 
         $this->updateProduct($product, ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text EN', 'locale' => 'en_US', 'scope' => 'ecommerce']]]]);
         $this->assertSame($product->getValue('a_localized_and_scopable_text_area', 'en_US', 'ecommerce')->getData(), 'text EN');
-    }
-
-    /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "categories" expects a valid category code. The category does not exist, "categoryB" given.
-     */
-    public function testCreateAProductWithCategoryNotViewable()
-    {
-        $this->generateToken('mary');
-        $this->createProduct(['categories' => ['categoryB']]);
-    }
-
-    public function testCreateAProductWithCategoryViewable()
-    {
-        $this->generateToken('mary');
-        $product = $this->createProduct(['categories' => ['categoryA2']]);
-
-        $this->assertSame($product->getCategoryCodes(), ['categoryA2']);
-    }
-
-    public function testCreateAProductWithCategoryEditable()
-    {
-        $this->generateToken('mary');
-        $product = $this->createProduct(['categories' => ['categoryA']]);
-
-        $this->assertSame($product->getCategoryCodes(), ['categoryA']);
-    }
-
-    public function testCreateAProductWithOwnCategory()
-    {
-        $this->generateToken('mary');
-        $product = $this->createProduct(['categories' => ['master']]);
-
-        $this->assertSame($product->getCategoryCodes(), ['master']);
-    }
-
-    /**
-     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
-     * @expectedExceptionMessage Property "categories" expects a valid category code. The category does not exist, "categoryB" given.
-     */
-    public function testUpdateAProductWithCategoryNotViewable()
-    {
-        $product = $this->saveProduct(['categories' => ['categoryA2']]);
-        $this->generateToken('mary');
-
-        $this->updateProduct($product, ['categories' => ['categoryB']]);
-    }
-
-    public function testUpdateAProductWithCategoryViewable()
-    {
-        $product = $this->saveProduct(['categories' => ['master']]);
-        $this->generateToken('mary');
-
-        $this->updateProduct($product, ['categories' => ['categoryA2', 'master']]);
-        $this->assertSame($product->getCategoryCodes(), ['categoryA2', 'master']);
-    }
-
-    public function testUpdateAProductWithCategoryEditable()
-    {
-        $product = $this->saveProduct(['categories' => ['master']]);
-        $this->generateToken('mary');
-
-        $this->updateProduct($product, ['categories' => ['categoryA', 'master']]);
-        $this->assertSame($product->getCategoryCodes(), ['categoryA', 'master']);
-    }
-
-    public function testUpdateAProductWithOwnCategory()
-    {
-        $product = $this->saveProduct(['categories' => ['master']]);
-        $this->generateToken('mary');
-
-        $this->updateProduct($product, ['categories' => ['master_china', 'master']]);
-        $this->assertSame($product->getCategoryCodes(), ['master', 'master_china']);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
-        return new Configuration(
-            [
-                Configuration::getTechnicalCatalogPath(),
-                $rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'technical'
-            ]
-        );
-    }
-
-    /**
-     * @param string $username
-     */
-    private function generateToken($username)
-    {
-        $user = $this->get('pim_user.repository.user')->findOneByIdentifier($username);
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return ProductInterface
-     */
-    private function createProduct(array $data)
-    {
-        $product = $this->get('pim_catalog.builder.product')->createProduct('product');
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-
-        return $product;
-    }
-
-    /**
-     * @param ProductInterface $product
-     * @param array            $data
-     *
-     * @return ProductInterface
-     */
-    private function updateProduct(ProductInterface $product, array $data)
-    {
-        $this->get('pim_catalog.updater.product')->update($product, $data);
-
-        return $product;
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return ProductInterface
-     */
-    private function saveProduct(array $data)
-    {
-        $product = $this->createProduct($data);
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        return $product;
     }
 }
