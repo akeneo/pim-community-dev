@@ -966,7 +966,8 @@ pim_enrich:
         cancel: Cancel
         confirm: Confirm
         product:
-            title: Product / Mass Edit ({{ itemsCount }} products)
+            title: "{1} Product / Mass Edit (1 product)|] 1, Inf [Product / Mass Edit ({{ itemsCount }} products)"
+            confirm: "{1} You are about to update a product with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} products with the following information, please confirm."
             step:
                 select:
                     label: Choose products

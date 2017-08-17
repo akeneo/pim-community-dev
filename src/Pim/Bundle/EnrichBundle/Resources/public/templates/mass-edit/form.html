@@ -37,15 +37,19 @@
             </div>
         <% } else if (currentStep !== 'choose') { %>
             <div class="<%- currentStep %>">
-                <span class="AknButton AknButton--glued wizard-action" data-action-target="configure">
+                <span class="AknButton wizard-action" data-action-target="configure">
                     <%- __('pim_enrich.mass_edit.previous') %>
-                </span><span class="AknButton AknButton--glued AknButton--apply wizard-action" data-action-target="validate">
-                    <%- __('pim_enrich.mass_edit.confirm') %>
                 </span>
             </div>
         <% } %>
     </div>
     <div class="AknWidget-content AknWidget-content--withPadding">
+        <% if (currentStep === 'confirm') { %>
+            <div class="AknFullPage-confirm"><%- confirm %></div>
+            <div class="AknButton AknButton--apply wizard-action" data-action-target="validate">
+                <%- __('pim_enrich.mass_edit.confirm') %>
+            </div>
+        <% } %>
         <div class="step">
         </div>
     </div>

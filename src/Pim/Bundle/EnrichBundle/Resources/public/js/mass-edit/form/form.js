@@ -72,7 +72,8 @@ define(
                     currentOperation: this.getCurrentOperation(),
                     label: step.getLabel(),
                     description: step.getDescription(),
-                    title: __(this.config.title, {itemsCount: this.getFormData().itemsCount}),
+                    title: __(this.config.title, {itemsCount: this.getFormData().itemsCount}, this.getFormData().itemsCount),
+                    confirm: __(this.config.confirm, {itemsCount: this.getFormData().itemsCount}, this.getFormData().itemsCount),
                     __: __
                 }));
 
