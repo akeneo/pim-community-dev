@@ -73,7 +73,7 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 pattern: /^[a-zA-Z0-9_]+$/
                 message: Attribute code may contain only letters, numbers and underscores
             - Length:
-                max: 255
+                max: 100
             - Regex:
                 pattern: /^(?!(id|associationTypes|categories|categoryId|completeness|enabled|family|groups|associations|products|scope|treeId|values|category|(.)*_(products|groups))$)/
                 message: This code is not available
@@ -433,7 +433,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
     properties:
         label:
             - Length:
-                max: 100
+                max: 255
                 payload:
                     standardPropertyName: labels
         locale:
@@ -460,7 +460,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
                 pattern: /^[a-zA-Z0-9_]+$/
                 message: Option code may contain only letters, numbers and underscores
             - Length:
-                max: 255
+                max: 100
         attribute:
             - NotBlank: ~
             - Valid: ~
@@ -471,7 +471,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue:
     properties:
         value:
             - Length:
-                max: 100
+                max: 255
                 payload:
                   standardPropertyName: labels
         locale:

@@ -25,7 +25,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation:
     properties:
         label:
             - Length:
-                max: 100
+                max: 255
         locale:
             - Pim\Component\Catalog\Validator\Constraints\Locale:
                 payload:

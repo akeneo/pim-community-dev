@@ -19,7 +19,7 @@ Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation:
     properties:
         label:
             - Length:
-                max: 100
+                max: 255
         locale:
              - Pim\Component\Catalog\Validator\Constraints\Locale:
                 payload:

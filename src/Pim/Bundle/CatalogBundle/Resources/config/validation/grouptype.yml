@@ -20,4 +20,4 @@ Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation:
     properties:
         label:
             - Length:
-                max: 100
+                max: 255

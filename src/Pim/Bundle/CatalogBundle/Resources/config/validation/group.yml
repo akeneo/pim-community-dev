@@ -28,7 +28,7 @@ Pim\Bundle\CatalogBundle\Entity\GroupTranslation:
     properties:
         label:
             - Length:
-                max: 100
+                max: 255
 
 Pim\Bundle\CatalogBundle\Entity\ProductTemplate:
     getters:

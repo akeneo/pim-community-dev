@@ -22,7 +22,7 @@ Pim\Bundle\CatalogBundle\Entity\FamilyTranslation:
     properties:
         label:
             - Length:
-                max: 100
+                max: 255
         locale:
             - Pim\Component\Catalog\Validator\Constraints\Locale:
                 payload:

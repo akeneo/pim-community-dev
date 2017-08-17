@@ -36,7 +36,7 @@ Pim\Bundle\CatalogBundle\Entity\ChannelTranslation:
     properties:
         label:
             - Length:
-                max: 100
+                max: 255
         locale:
             - Pim\Component\Catalog\Validator\Constraints\Locale:
                 payload:

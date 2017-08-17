@@ -20,7 +20,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue:
         value:
             type: string
             nullable: true
-            length: 100
+            length: 255
     manyToOne:
         option:
             targetEntity: Pim\Component\Catalog\Model\AttributeOptionInterface
