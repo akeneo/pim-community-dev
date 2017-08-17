@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Catalog\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
@@ -25,4 +27,19 @@ interface ProductModelRepositoryInterface extends
      * @return ProductModelInterface[]
      */
     public function findSiblingsProductModels(ProductModelInterface $productModel): array;
+
+    /**
+     * Return the number of existing root product models
+     *
+     * @return int
+     */
+    public function countRootProductModels(): int;
+
+    /**
+     * @param int $offset
+     * @param int $size
+     *
+     * @return array
+     */
+    public function findRootProductModelsWithOffsetAndSize($offset = 0, $size = 100): array;
 }

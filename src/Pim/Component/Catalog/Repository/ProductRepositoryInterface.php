@@ -108,4 +108,12 @@ interface ProductRepositoryInterface extends ObjectRepository
      * @return array
      */
     public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = []);
+
+    /**
+     * @param int $offset
+     * @param int $size
+     *
+     * @return array
+     */
+    public function findAllWithOffsetAndSize($offset = 0, $size = 100);
 }

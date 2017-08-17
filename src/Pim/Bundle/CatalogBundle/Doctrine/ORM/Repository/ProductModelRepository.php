@@ -60,4 +60,31 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
 
         return $qb->getQuery()->execute();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countRootProductModels(): int
+    {
+        $count = $this->createQueryBuilder('pm')
+            ->select('COUNT(pm.id)')
+            ->andWhere('pm.parent IS NULL')
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $count;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findRootProductModelsWithOffsetAndSize($offset = 0, $size = 100): array
+    {
+        $queryBuilder = $this->createQueryBuilder('pm')
+            ->andWhere('pm.parent IS NULL')
+            ->setFirstResult($offset)
+            ->setMaxResults($size);
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }
