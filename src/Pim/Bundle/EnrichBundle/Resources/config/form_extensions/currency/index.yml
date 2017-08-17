@@ -14,7 +14,7 @@ extensions:
 
     pim-currency-index-filters:
         module: oro/datafilter-builder
-        parent: pim-channel-index
+        parent: pim-currency-index
         targetZone: content
 
     pim-currency-index-grid:
