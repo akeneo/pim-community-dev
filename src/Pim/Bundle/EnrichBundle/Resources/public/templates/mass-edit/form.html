@@ -30,29 +30,34 @@
         <div class="step">
         </div>
     </div>
-    <div class="AknButtonList AknButtonList--right <%- currentStep %>">
-        <% if (currentStep === 'choose') { %>
-            <% if (currentOperation) { %>
+    <% if (currentStep === 'choose') { %>
+        <% if (currentOperation) { %>
+            <div class="AknButtonList AknButtonList--centered <%- currentStep %>">
                 <span class="AknButton AknButtonList-item AknButton--apply wizard-action AknButton--withIcon" data-action-target="configure">
                     <%- __('pim_enrich.mass_edit.next') %>
                 </span>
-            <% } %>
-        <% } else if (currentStep === 'configure') { %>
+            </div>
+        <% } %>
+    <% } else if (currentStep === 'configure') { %>
+        <div class="AknButtonList AknButtonList--right <%- currentStep %>">
             <span class="AknButton AknButtonList-item wizard-action AknButton--withIcon" data-action-target="choose">
                 <%- __('pim_enrich.mass_edit.previous') %>
             </span>
             <span class="AknButton AknButtonList-item AknButton--apply wizard-action AknButton--withIcon" data-action-target="confirm">
                 <%- __('pim_enrich.mass_edit.next') %>
             </span>
-        <% } else { %>
+        </div>
+    <% } else { %>
+        <div class="AknButtonList AknButtonList--right <%- currentStep %>">
             <span class="AknButton AknButtonList-item wizard-action AknButton--withIcon" data-action-target="configure">
                 <%- __('pim_enrich.mass_edit.previous') %>
             </span>
             <span class="AknButton AknButtonList-item AknButton--apply wizard-action AknButton--withIcon" data-action-target="validate">
                 <%- __('pim_enrich.mass_edit.confirm') %>
             </span>
-        <% }%>
-    </div>
+        </div>
+    <% }%>
+
     <% if (columnDisplay) { %>
         </div>
     <% } %>

@@ -93,7 +93,8 @@ define(
                     }).map(function (extension) {
                         return {
                             code: extension.getCode(),
-                            label: extension.getLabel()
+                            label: extension.getLabel(),
+                            icon: extension.getIcon()
                         };
                     }).value();
             },

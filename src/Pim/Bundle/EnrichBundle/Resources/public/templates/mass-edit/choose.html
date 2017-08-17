@@ -1,8 +1,7 @@
 <% _.each(operations, function (operation) { %>
-    <div class="AknChoicesField-choiceItem">
-        <input type="radio" name="pim_enrich_mass_edit_choose_action" id="pim_enrich_mass_edit_choose_action_<%- operation.code %>" class="operation" value="<%- operation.code %>" <%- operation.code === currentOperation ? 'checked' : '' %>>
-        <label class="AknFieldContainer-label required" for="pim_enrich_mass_edit_choose_action_<%- operation.code %>">
-            <%- __(operation.label) %>
-        </label>
+    <div class="AknSquareList-item<%- (operation.code === currentOperation) ? ' AknSquareList-item--selected' : '' %> operation" data-code="<%- operation.code %>">
+        <img src="/bundles/pimui/images/bulk/<%- operation.icon %>.svg" class="AknSquareList-icon">
+        <img src="/bundles/pimui/images/bulk/<%- operation.icon %>_selected.svg" class="AknSquareList-icon AknSquareList-icon--selected">
+        <div><%- __(operation.label) %></div>
     </div>
 <% }); %>

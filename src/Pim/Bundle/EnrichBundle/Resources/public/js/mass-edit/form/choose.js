@@ -21,9 +21,9 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'AknChoicesField',
+            className: 'AknSquareList',
             events: {
-                'change .operation': 'updateOperation'
+                'click .operation': 'updateOperation'
             },
 
             /**
@@ -56,7 +56,9 @@ define(
              * @param {Event} event
              */
             updateOperation: function (event) {
-                this.getParent().setCurrentOperation(event.target.value)
+                console.log($(event.target).closest('.operation'));
+                this.getParent().setCurrentOperation($(event.target).closest('.operation').data('code'));
+                this.render();
             },
 
             /**
