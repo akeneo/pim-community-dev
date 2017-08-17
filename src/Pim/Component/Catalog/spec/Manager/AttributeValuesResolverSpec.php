@@ -59,7 +59,7 @@ class AttributeValuesResolverSpec extends ObjectBehavior
         $tax->isLocalizable()->willReturn(true);
         $tax->isScopable()->willReturn(false);
         $tax->isLocaleSpecific()->willReturn(true);
-        $tax->getLocaleSpecificCodes()->willReturn(['fr_FR']);
+        $tax->getAvailableLocaleCodes()->willReturn(['fr_FR']);
 
         $fr->getCode()->willReturn('fr_FR');
         $en->getCode()->willReturn('en_US');

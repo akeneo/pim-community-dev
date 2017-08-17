@@ -34,6 +34,7 @@ Feature: Execute an import with scopable or localizable data
     Then the field Description for locale "en_US" and scope "tablet" should contain "new description tablet"
     And the field Description for locale "en_US" and scope "print" should contain "original description print"
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Have coherent values when importing new variant group with localizable/scopable attributes
     Given the following attributes:
       | code             | label-en_US      | label-fr_FR      | type               | localizable | scopable | group   | metric_family | default_metric_unit | decimals_allowed | negative_allowed |

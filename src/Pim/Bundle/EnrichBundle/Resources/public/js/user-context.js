@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['backbone', 'routing'],
-    (Backbone, Routing) => {
+    ['jquery', 'backbone', 'underscore', 'routing'],
+    ($, Backbone, _, Routing) => {
         var contextData = {};
 
         return _.extend({

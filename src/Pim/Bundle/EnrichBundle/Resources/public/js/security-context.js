@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['routing'],
-    (Routing) => {
+    ['jquery', 'routing'],
+    ($, Routing) => {
         var contextData = {};
 
         return {

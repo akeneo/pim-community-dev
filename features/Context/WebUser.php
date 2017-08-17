@@ -51,10 +51,13 @@ class WebUser extends PimContext
     public function iCreateANew($entity)
     {
         $entity = implode('', array_map('ucfirst', explode(' ', $entity)));
-
         $this->spin(function () use ($entity) {
             $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
 
+            return true;
+        }, sprintf('Cannot create a new %s', $entity));
+
+        $this->spin(function () {
             return null !== $this->getCurrentPage()->find('css', '.modal, .ui-dialog');
         }, sprintf('Cannot create a new %s', $entity));
 

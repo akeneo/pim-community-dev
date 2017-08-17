@@ -97,8 +97,8 @@ class GetProductIntegration extends AbstractProductTestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
+                            ['amount' => '56.53', 'currency' => 'EUR'],
                             ['amount' => '45.00', 'currency' => 'USD'],
-                            ['amount' => '56.53', 'currency' => 'EUR']
                         ],
                     ],
                 ],
@@ -107,8 +107,8 @@ class GetProductIntegration extends AbstractProductTestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
+                            ['amount' => 56, 'currency' => 'EUR'],
                             ['amount' => -45, 'currency' => 'USD'],
-                            ['amount' => 56, 'currency' => 'EUR']
                         ],
                     ],
                 ],
