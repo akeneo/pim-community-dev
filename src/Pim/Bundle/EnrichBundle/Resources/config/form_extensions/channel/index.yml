@@ -12,6 +12,11 @@ extensions:
             tab: pim-menu-settings
             item: pim-menu-settings-channel
 
+    pim-channel-index-filters:
+        module: oro/datafilter-builder
+        parent: pim-channel-index
+        targetZone: content
+
     pim-channel-index-grid:
         module: pim/form/common/index/grid
         parent: pim-channel-index

@@ -12,6 +12,11 @@ extensions:
             tab: pim-menu-system
             item: pim-menu-system-job-tracker
 
+    pim-process-index-filters:
+        module: oro/datafilter-builder
+        parent: pim-process-index
+        targetZone: content
+
     pim-process-index-grid:
         module: pim/form/common/index/grid
         parent: pim-process-index

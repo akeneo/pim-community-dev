@@ -11,6 +11,11 @@ extensions:
         config:
             tab: pim-menu-imports
 
+    pim-import-execution-index-filters:
+        module: oro/datafilter-builder
+        parent: pim-import-execution-index
+        targetZone: content
+
     pim-import-execution-index-grid:
         module: pim/form/common/index/grid
         parent: pim-import-execution-index
