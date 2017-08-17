@@ -65,7 +65,7 @@ stage("Checkout") {
             docker.image('node:8').inside {
                 unstash "pim_community_dev_full"
 
-                sh "npm install"
+                sh "yarn install"
                 sh "npm run webpack"
 
                 stash "pim_community_dev_full"
@@ -110,7 +110,7 @@ stage("Checkout") {
                 docker.image('node:8').inside {
                     unstash "pim_enterprise_dev_full"
 
-                    sh "npm install"
+                    sh "yarn install"
                     sh "npm run webpack"
 
                     stash "pim_enterprise_dev_full"
