@@ -69,6 +69,9 @@ default:
                     - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
                     - '@pim_catalog.repository.product_model'
                     - '@pim_catalog.repository.family_variant'
+                    - '@pim_catalog.factory.product_model'
+                    - '@pim_catalog.updater.product_model'
+                    - '@pim_catalog.saver.product_model'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:

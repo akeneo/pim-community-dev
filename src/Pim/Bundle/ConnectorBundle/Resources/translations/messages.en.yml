@@ -86,7 +86,8 @@ batch_jobs:
     csv_product_model_import:
         label: Product model import in CSV
         validation.label: File validation
-        import.label: Product model import
+        import_root_product_model.label: Root product model import
+        import_sub_product_model.label: Sub product model import
     csv_category_import:
         label: Category import in CSV
         validation.label: File validation
@@ -189,7 +190,8 @@ batch_jobs:
     xlsx_product_model_import:
         label: Product model import in XSLX
         validation.label: File validation
-        import.label: Product model import
+        import_root_product_model.label: Root product model import
+        import_sub_product_model.label: Sub product model import
     xlsx_group_export:
         label: Group export in XLSX
         export.label: Group export
