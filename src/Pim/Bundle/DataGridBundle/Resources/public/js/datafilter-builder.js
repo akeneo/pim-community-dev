@@ -13,7 +13,9 @@ define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/col
                 boolean: 'select'
             },
 
-            initialize() {
+            initialize(config) {
+                this.filterTypes = Object.assign(this.filterTypes, config.config.filterTypes || {});
+
                 mediator.once('datagrid_collection_set_after', this.initHandler.bind(this));
                 mediator.once('hash_navigation_request:start', function() {
                     if (!this.initialized) {
