@@ -7,6 +7,7 @@
 - PIM-6291: Adds attribute used as the main picture in the UI for each family (attribute_as_image)
 - GITHUB-4877: Update some tooltips messages of the export builder, Cheers @Milie44!
 - GITHUB-5949: Fix the deletion of a job instance (import\export) from the job edit page, cheers @BatsaxIV !
+- Make translation labels longer
 
 ## Technical improvements
 
