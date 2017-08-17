@@ -55,7 +55,7 @@ class AssetsCommand extends ContainerAwareCommand
 
         $this->getEventDispatcher()->dispatch(InstallerEvents::PRE_ASSETS_DUMP);
 
-        if (null !== $input->getOption('clean')) {
+        if (true === $input->getOption('clean')) {
             try {
                 $webDir = $this->getWebDir();
 
@@ -79,6 +79,10 @@ class AssetsCommand extends ContainerAwareCommand
         $this->commandExecutor->runCommand('oro:translation:dump', ['locale' => implode(', ', $defaultLocales)]);
 
         if (null !== $input->getOption('symlink')) {
+            $this->commandExecutor->runCommand('assets:install', ['--relative' => true, '--symlink' => true]);
+        }
+
+        if (true === $input->getOption('symlink')) {
             $this->commandExecutor->runCommand('assets:install', ['--relative' => true, '--symlink' => true]);
         }
 

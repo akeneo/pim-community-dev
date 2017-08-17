@@ -74,7 +74,7 @@ class InstallCommand extends ContainerAwareCommand
                 ->prepareRequiredDirectoriesStep()
                 ->checkStep()
                 ->databaseStep()
-                ->assetsStep();
+                ->assetsStep($input);
         } catch (\Exception $e) {
             $output->writeln(sprintf('<error>Error during PIM installation. %s</error>', $e->getMessage()));
             $output->writeln('');
@@ -135,10 +135,10 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @return InstallCommand
      */
-    protected function assetsStep()
+    protected function assetsStep(InputInterface $input)
     {
-        $options = null === $input->getOption('symlink') ? [] : ['--symlink' => true];
-        $options = null === $input->getOption('clean') ? $options : array_merge($options, ['--clean' => true]);
+        $options = false === $input->getOption('symlink') ? [] : ['--symlink' => true];
+        $options = false === $input->getOption('clean') ? $options : array_merge($options, ['--clean' => true]);
 
         $this->commandExecutor->runCommand('pim:installer:assets', $options);
 

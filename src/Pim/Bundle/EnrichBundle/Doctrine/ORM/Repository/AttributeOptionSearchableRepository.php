@@ -66,7 +66,7 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
                 ->addSelect('v.value AS HIDDEN')
                 ->andWhere('v.locale = :localeCode')
                 ->setParameter('localeCode', $options['catalogLocale'])
-                ->orderBy('o.code');
+                ->orderBy('v.value, o.code');
         } else {
             $qb->orderBy('o.sortOrder');
         }

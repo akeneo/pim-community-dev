@@ -75,8 +75,9 @@ class EntitySorter implements AttributeSorterInterface
         $condition = $joinAliasOptVal.'.locale = '.$this->qb->expr()->literal($locale);
         $this->qb->leftJoin($joinAliasOpt.'.optionValues', $joinAliasOptVal, 'WITH', $condition);
 
-        $this->qb->addOrderBy($joinAliasOpt.'.code', $direction);
+        $this->qb->addSelect($joinAliasOptVal.'.value AS HIDDEN');
         $this->qb->addOrderBy($joinAliasOptVal.'.value', $direction);
+        $this->qb->addOrderBy($joinAliasOpt.'.code', $direction);
 
         $idField = $this->qb->getRootAlias().'.id';
         $this->qb->addOrderBy($idField);
