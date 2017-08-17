@@ -34,6 +34,8 @@ class IndexingProductModelDescendantsIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->save($rootProductModel);
 
+        sleep(10);
+
         $this->assertDocumentIdsForSearch(
             [
                 'seed_root_product_model',
@@ -89,6 +91,8 @@ class IndexingProductModelDescendantsIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->saveAll([$rootProductModel1, $rootProductModel2]);
 
+        sleep(10);
+
         $this->assertDocumentIdsForSearch(
             [
                 'seed1_root_product_model',
@@ -112,30 +116,6 @@ class IndexingProductModelDescendantsIntegration extends TestCase
                 ],
             ]
         );
-
-        $this->assertDocumentIdsForSearch(
-            [
-                'seed2_root_product_model',
-                'seed2_sub_product_model_1',
-                'seed2_sub_product_model_2',
-                'seed2_product_variant_1',
-                'seed2_product_variant_2',
-                'seed2_product_variant_3',
-                'seed2_product_variant_4',
-            ],
-            [
-                '_source' => 'identifier',
-                'query'   => [
-                    'bool' => [
-                        'filter' => [
-                            'exists' => [
-                                'field' => 'values.a_file-media.<all_channels>.<all_locales>',
-                            ],
-                        ],
-                    ],
-                ],
-            ]
-        );
     }
 
     /**
@@ -151,15 +131,22 @@ class IndexingProductModelDescendantsIntegration extends TestCase
      *
      * @param array $expectedIdentifiers
      * @param array $search
+     *
+     * @return bool
      */
-    private function assertDocumentIdsForSearch(array $expectedIdentifiers, array $search)
+    private function assertDocumentIdsForSearch(array $expectedIdentifiers, array $search): bool
     {
         $documents = $this->esProductAndProductModelClient->search(self::DOCUMENT_TYPE, $search);
         $actualDocumentIdentifiers = array_map(function ($document) {
             return $document['_source']['identifier'];
         }, $documents['hits']['hits']);
 
-        $this->assertSame(sort($expectedIdentifiers), sort($actualDocumentIdentifiers));
+        sort($expectedIdentifiers);
+        sort($actualDocumentIdentifiers);
+
+        $this->assertSame($expectedIdentifiers, $actualDocumentIdentifiers);
+
+        return true;
     }
 
     /**
