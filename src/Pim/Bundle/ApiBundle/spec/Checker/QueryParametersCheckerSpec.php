@@ -23,7 +23,8 @@ class QueryParametersCheckerSpec extends ObjectBehavior
         $this->beConstructedWith(
             $localeRepository,
             $attributeRepository,
-            $categoryRepository
+            $categoryRepository,
+            ['family', 'enabled', 'groups', 'variant_group', 'categories', 'completeness']
         );
     }
 
@@ -207,7 +208,7 @@ class QueryParametersCheckerSpec extends ObjectBehavior
     function it_should_throw_an_exception_if_it_is_not_correctly_structured()
     {
         $this->shouldThrow(
-            new UnprocessableEntityHttpException('Structure of filter "categories" should respect this structure: {"categories":[{"operator": "my_operator", "value": "my_value"}]}.')
+            new UnprocessableEntityHttpException('Structure of filter "categories" should respect this structure: {"categories":[{"operator": "my_operator", "value": "my_value"}]}')
         )
             ->during('checkCriterionParameters', ['{"categories":[]}']);
     }
@@ -220,11 +221,11 @@ class QueryParametersCheckerSpec extends ObjectBehavior
             ->during('checkCriterionParameters', ['{"categories":[{"value": "my_value"}]}']);
     }
 
-    function it_should_throw_an_exception_if_value_is_missing()
+    function it_should_throw_an_exception_if_property_is_not_a_product_filter_or_an_attribute()
     {
         $this->shouldThrow(
-            new UnprocessableEntityHttpException('Value is missing for the property "categories".')
+            new UnprocessableEntityHttpException('Filter on property "wrong_attribute" is not supported or does not support operator "my_operator"')
         )
-            ->during('checkCriterionParameters', ['{"categories":[{"operator": "my_operator"}]}']);
+            ->during('checkPropertyParameters', ['wrong_attribute', 'my_operator']);
     }
 }
