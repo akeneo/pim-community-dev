@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -51,6 +52,9 @@ class PublishedProductManager
     /** @var ObjectManager */
     protected $objectManager;
 
+    /** @var BulkObjectDetacherInterface */
+    protected $objectDetacher;
+
     /**
      * @param ProductRepositoryInterface          $productRepository   the product repository
      * @param PublishedProductRepositoryInterface $repository          the published repository
@@ -59,6 +63,7 @@ class PublishedProductManager
      * @param PublisherInterface                  $publisher           the product publisher
      * @param UnpublisherInterface                $unpublisher         the product unpublisher
      * @param ObjectManager                       $objectManager       the object manager
+     * @param BulkObjectDetacherInterface         $objectDetacher      the object detacher
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -67,7 +72,8 @@ class PublishedProductManager
         EventDispatcherInterface $eventDispatcher,
         PublisherInterface $publisher,
         UnpublisherInterface $unpublisher,
-        ObjectManager $objectManager
+        ObjectManager $objectManager,
+        BulkObjectDetacherInterface $objectDetacher = null
     ) {
         $this->productRepository = $productRepository;
         $this->repository = $repository;
@@ -76,6 +82,7 @@ class PublishedProductManager
         $this->publisher = $publisher;
         $this->unpublisher = $unpublisher;
         $this->objectManager = $objectManager;
+        $this->objectDetacher      = $objectDetacher;
     }
 
     /**
@@ -244,15 +251,22 @@ class PublishedProductManager
      */
     protected function publishAssociations(array $products)
     {
+        $publishedProducts = [];
         foreach ($products as $product) {
             $published = $this->findPublishedProductByOriginal($product);
             foreach ($product->getAssociations() as $association) {
                 $copiedAssociation = $this->publisher->publish($association, ['published' => $published]);
                 $published->addAssociation($copiedAssociation);
                 $this->getObjectManager()->persist($published);
+                $publishedProducts[] = $published;
             }
         }
+
         $this->getObjectManager()->flush();
+
+        if (null !== $this->objectDetacher) {
+            $this->objectDetacher->detachAll($publishedProducts);
+        }
     }
 
     /**
