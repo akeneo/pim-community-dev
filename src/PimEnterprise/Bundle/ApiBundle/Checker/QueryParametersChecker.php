@@ -137,6 +137,31 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     /**
      * {@inheritdoc}
      */
+    public function checkPropertyParameters(string $property, string $operator)
+    {
+        $this->queryParametersChecker->checkPropertyParameters($property, $operator);
+
+        $property = trim($property);
+        $attribute = $this->attributeRepository->findOneByIdentifier($property);
+
+        if (null !== $attribute) {
+            $group = $attribute->getGroup();
+
+            if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $group)) {
+                throw new UnprocessableEntityHttpException(
+                    sprintf(
+                        'Filter on property "%s" is not supported or does not support operator "%s"',
+                        $property,
+                        $operator
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function checkCriterionParameters(string $searchString): array
     {
         return $this->queryParametersChecker->checkCriterionParameters($searchString);

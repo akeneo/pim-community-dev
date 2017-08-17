@@ -103,6 +103,14 @@ class ErrorListProductWithPermissionsIntegration extends AbstractProductTestCase
         $this->assert($client, 'Locale "de_DE" does not exist or is not activated.');
     }
 
+    public function testSearchProductAttributeNotViewableByRedactor()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', 'api/rest/v1/products?search={"a_metric_without_decimal_negative":[{"operator":"EMPTY"}]}');
+        $this->assert($client, 'Filter on property "a_metric_without_decimal_negative" is not supported or does not support operator "EMPTY"');
+    }
+
     /**
      * @param Client $client
      * @param string $message
