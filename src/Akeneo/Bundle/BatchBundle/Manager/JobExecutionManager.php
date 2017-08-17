@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Bundle\BatchBundle\Manager;
 
+use Akeneo\Bundle\BatchBundle\Command\JobQueueConsumerCommand;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Model\JobExecution;
@@ -30,12 +33,13 @@ class JobExecutionManager
     }
 
     /**
-     * Check if the given JoExecution is still running using his PID
+     * Check if the given JoExecution is still running based on the last health check.
+     *
      * @param JobExecution $jobExecution
      *
      * @return bool
      */
-    public function checkRunningStatus(JobExecution $jobExecution)
+    public function checkRunningStatus(JobExecution $jobExecution): bool
     {
         if (BatchStatus::STARTING !== $jobExecution->getStatus()->getValue() &&
             (ExitStatus::UNKNOWN === $jobExecution->getExitStatus()->getExitCode() ||
@@ -48,29 +52,34 @@ class JobExecutionManager
     }
 
     /**
-     * Test if the process is still running
+     * Test if the process is still running.
+     *
      * @param JobExecution $jobExecution
+     *
+     * @throws \InvalidArgumentException
      *
      * @return bool
      */
-    protected function processIsRunning(JobExecution $jobExecution)
+    protected function processIsRunning(JobExecution $jobExecution): bool
     {
-        $pid = intval($jobExecution->getPid());
+        $healthCheck = $jobExecution->getHealthcheckTime();
 
-        if ($pid <= 0) {
-            throw new \InvalidArgumentException('The job execution PID is not valid');
+        if (null === $healthCheck) {
+            return false;
         }
 
-        exec(sprintf('ps -p %s', $pid), $output, $returnCode);
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        $diffInSeconds = $now->getTimestamp() - $healthCheck->getTimestamp();
 
-        return 0 === $returnCode;
+        return $diffInSeconds < JobQueueConsumerCommand::HEALTH_CHECK_INTERVAL + 10;
     }
 
     /**
      * Mark a job execution as failed
+     *
      * @param JobExecution $jobExecution
      */
-    public function markAsFailed(JobExecution $jobExecution)
+    public function markAsFailed(JobExecution $jobExecution): void
     {
         $jobExecution->setStatus(new BatchStatus(BatchStatus::FAILED));
         $jobExecution->setExitStatus(new ExitStatus(ExitStatus::FAILED));

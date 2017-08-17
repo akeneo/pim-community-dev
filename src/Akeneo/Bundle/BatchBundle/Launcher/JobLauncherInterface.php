@@ -16,7 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 interface JobLauncherInterface
 {
     /**
-     * Launch a job with command
+     * Launch a job
      *
      * @param JobInstance   $jobInstance
      * @param UserInterface $user

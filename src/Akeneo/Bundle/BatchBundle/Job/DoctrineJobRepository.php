@@ -3,14 +3,14 @@
 namespace Akeneo\Bundle\BatchBundle\Job;
 
 use Akeneo\Component\Batch\Job\BatchStatus;
-use Akeneo\Component\Batch\Model\JobParameters;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\Batch\Model\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\PersistentCollection;
 
 /**
@@ -31,7 +31,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
 {
     const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
-    /* @var EntityManager */
+    /* @var EntityManagerInterface */
     protected $jobManager = null;
 
     /* @var string */
@@ -40,13 +40,13 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /**
      * Provides the doctrine entity manager
      *
-     * @param EntityManager $entityManager
-     * @param string        $jobExecutionClass
-     * @param string        $jobInstanceClass
-     * @param string        $jobInstanceRepoClass
+     * @param EntityManagerInterface $entityManager
+     * @param string                 $jobExecutionClass
+     * @param string                 $jobInstanceClass
+     * @param string                 $jobInstanceRepoClass
      */
     public function __construct(
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         $jobExecutionClass,
         $jobInstanceClass,
         $jobInstanceRepoClass
@@ -92,7 +92,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /**
      * Get the specific Job entityManager
      *
-     * @return EntityManager
+     * @return EntityManagerInterface
      */
     public function getJobManager()
     {
@@ -199,35 +199,31 @@ class DoctrineJobRepository implements JobRepositoryInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function updateHealthCheck(string $jobExecutionId)
+    {
+        $queryBuilder = $this->jobManager->getConnection()->createQueryBuilder();
+        $queryBuilder
+            ->update('akeneo_batch_job_execution', 'je')
+            ->set('je.healthcheck_time', ':healthcheck_time')
+            ->where($queryBuilder->expr()->eq('je.id', ':id'))
+            ->setParameter('id', $jobExecutionId)
+            ->setParameter('healthcheck_time', new \DateTime('now', new \DateTimeZone('UTC')), 'datetime');
+
+        $queryBuilder->execute();
+    }
+
+    /**
      * Ping the Server, if not available then reset the connection.
      * @author Cristian Quiroz <cq@amp.co>
      */
     protected function checkConnection()
     {
         $connection = $this->jobManager->getConnection();
-        if ($this->pingConnection() === false) {
+        if (!$connection->ping()) {
             $connection->close();
             $connection->connect();
-        }
-    }
-
-    /**
-     * Pings the server, returns false if it's not available.
-     * There is a ping() method in Doctrine\DBAL\Connection in the doctrine/dbal package
-     * as of 2.5.0, but  we are currently on 2.4.x
-     * @author Cristian Quiroz <cq@amp.co>
-     *
-     * @return bool
-     */
-    protected function pingConnection()
-    {
-        $connection = $this->jobManager->getConnection();
-        $connection->connect();
-        try {
-            $connection->query($connection->getDatabasePlatform()->getDummySelectSQL());
-            return true;
-        } catch (DBALException $e) {
-            return false;
         }
     }
 

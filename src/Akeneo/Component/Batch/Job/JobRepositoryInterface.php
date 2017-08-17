@@ -72,4 +72,13 @@ interface JobRepositoryInterface
      * @param array $jobsExecutions
      */
     public function remove(array $jobsExecutions);
+
+    /**
+     * Update the healthcheck date of the job execution, in order to know if a process is still up and running.
+     *
+     * @param string $job_execution_id
+     *
+     * @return void
+     */
+    public function updateHealthCheck(string $job_execution_id);
 }

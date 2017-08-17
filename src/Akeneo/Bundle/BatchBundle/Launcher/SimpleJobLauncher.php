@@ -6,11 +6,15 @@ use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobExecutionMessage;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\Batch\Queue\JobExecutionQueueInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ *  Launch a job by putting it in the queue in order to be processed asynchronously.
+ *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
@@ -26,6 +30,9 @@ class SimpleJobLauncher implements JobLauncherInterface
     /** @var JobRegistry */
     protected $jobRegistry;
 
+    /** @var JobExecutionQueueInterface */
+    protected $jobExecutionQueue;
+
     /** @var string */
     protected $rootDir;
 
@@ -38,17 +45,19 @@ class SimpleJobLauncher implements JobLauncherInterface
     /**
      * Constructor
      *
-     * @param JobRepositoryInterface $jobRepository
-     * @param JobParametersFactory   $jobParametersFactory
-     * @param JobRegistry            $jobRegistry
-     * @param string                 $rootDir
-     * @param string                 $environment
-     * @param string                 $logDir
+     * @param JobRepositoryInterface     $jobRepository
+     * @param JobParametersFactory       $jobParametersFactory
+     * @param JobRegistry                $jobRegistry
+     * @param JobExecutionQueueInterface $jobExecutionQueue
+     * @param string                     $rootDir
+     * @param string                     $environment
+     * @param string                     $logDir
      */
     public function __construct(
         JobRepositoryInterface $jobRepository,
         JobParametersFactory $jobParametersFactory,
         JobRegistry $jobRegistry,
+        JobExecutionQueueInterface $jobExecutionQueue,
         $rootDir,
         $environment,
         $logDir
@@ -56,6 +65,7 @@ class SimpleJobLauncher implements JobLauncherInterface
         $this->jobRepository = $jobRepository;
         $this->jobParametersFactory = $jobParametersFactory;
         $this->jobRegistry = $jobRegistry;
+        $this->jobExecutionQueue = $jobExecutionQueue;
         $this->rootDir = $rootDir;
         $this->environment = $environment;
         $this->logDir = $logDir;
@@ -66,49 +76,26 @@ class SimpleJobLauncher implements JobLauncherInterface
      */
     public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = [])
     {
-        $jobExecution = $this->createJobExecution($jobInstance, $user);
-        $executionId = $jobExecution->getId();
-        $pathFinder = new PhpExecutableFinder();
+        $options = [
+            'env' => $this->environment,
+        ];
 
-        $emailParameter = '';
         if (isset($configuration['send_email']) && method_exists($user, 'getEmail')) {
-            $emailParameter = sprintf('--email=%s', escapeshellarg($user->getEmail()));
+            $options['email'] = $user->getEmail();
             unset($configuration['send_email']);
         }
 
-        $encodedConfiguration = json_encode($configuration, JSON_HEX_APOS);
-        $cmd = sprintf(
-            '%s %s%sconsole akeneo:batch:job --env=%s %s %s %s %s >> %s%sbatch_execute.log 2>&1',
-            $pathFinder->find(),
-            sprintf('%s%s..%sbin', $this->rootDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR),
-            DIRECTORY_SEPARATOR,
-            $this->environment,
-            $emailParameter,
-            escapeshellarg($jobInstance->getCode()),
-            $executionId,
-            !empty($configuration) ? sprintf('--config=%s', escapeshellarg($encodedConfiguration)) : '',
-            $this->logDir,
-            DIRECTORY_SEPARATOR
+        $jobExecution = $this->createJobExecution($jobInstance, $user, $configuration);
+
+        $jobExecutionMessage = new JobExecutionMessage(
+            $jobExecution,
+            'akeneo:batch:job',
+            $options
         );
 
-        $this->launchInBackground($cmd);
+        $this->jobExecutionQueue->publish($jobExecutionMessage);
 
         return $jobExecution;
-    }
-
-    /**
-     * Launch command in background
-     *
-     * Please note we do not use Symfony Process as it has some problem
-     * when executed from HTTP request that stop fast (race condition that makes
-     * the process cloning fail when the parent process, i.e. HTTP request, stops
-     * at the same time)
-     *
-     * @param string $cmd
-     */
-    protected function launchInBackground($cmd)
-    {
-        exec($cmd . ' &');
     }
 
     /**
@@ -116,13 +103,15 @@ class SimpleJobLauncher implements JobLauncherInterface
      *
      * @param JobInstance   $jobInstance
      * @param UserInterface $user
+     * @param array         $configuration
      *
      * @return JobExecution
      */
-    protected function createJobExecution(JobInstance $jobInstance, UserInterface $user)
+    protected function createJobExecution(JobInstance $jobInstance, UserInterface $user, array $configuration)
     {
         $job = $this->jobRegistry->get($jobInstance->getJobName());
-        $jobParameters = $this->jobParametersFactory->create($job, $jobInstance->getRawParameters());
+        $configuration = array_merge($jobInstance->getRawParameters(), $configuration);
+        $jobParameters = $this->jobParametersFactory->create($job, $configuration);
         $jobExecution = $this->jobRepository->createJobExecution($jobInstance, $jobParameters);
         $jobExecution->setUser($user->getUsername());
         $this->jobRepository->updateJobExecution($jobExecution);

@@ -40,6 +40,14 @@ Akeneo\Component\Batch\Model\JobExecution:
             type: datetime
             column: updated_time
             nullable: true
+        updatedTime:
+            type: datetime
+            column: updated_time
+            nullable: true
+        healthcheckTime:
+            type: datetime
+            column: healthcheck_time
+            nullable: true
         exitCode:
             type: string
             length: 255

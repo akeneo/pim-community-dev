@@ -183,10 +183,11 @@ class DatabaseCommand extends ContainerAwareCommand
         $jobInstances = $this->getFixtureJobLoader()->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
             $params = [
-                'code'       => $jobInstance->getCode(),
-                '--no-debug' => true,
-                '--no-log'   => true,
-                '-v'         => true
+                'code'          => $jobInstance->getCode(),
+                '--no-debug'    => true,
+                '--no-log'      => true,
+                '-v'            => true,
+                '--synchronous' => true,
             ];
 
             $this->getEventDispatcher()->dispatch(

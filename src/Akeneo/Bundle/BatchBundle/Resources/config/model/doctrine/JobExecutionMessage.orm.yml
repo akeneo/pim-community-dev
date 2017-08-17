@@ -1,0 +1,38 @@
+Akeneo\Component\Batch\Model\JobExecutionMessage:
+    type: entity
+    table: akeneo_batch_job_execution_queue
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        commandName:
+            type: string
+            column: command_name
+            nullable: true
+        options:
+            type: json_array
+            column: options
+            nullable: true
+        consumer:
+            type: string
+            column: consumer
+            nullable: true
+        createTime:
+            type: datetime
+            column: create_time
+            nullable: true
+        updatedTime:
+            type: datetime
+            column: updated_time
+            nullable: true
+    oneToOne:
+        jobExecution:
+            targetEntity: Akeneo\Component\Batch\Model\JobExecution
+            joinColumn:
+                name: job_execution_id
+                referencedColumnName: id
+                onDelete: 'CASCADE'
+                nullable: false
