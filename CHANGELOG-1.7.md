@@ -4,6 +4,10 @@
 
 - PIM-6568: Fix import items invalid data that were no longer saved
 
+## Improvements
+
+- Make Attribute option labels longer
+
 # 1.7.7 (2017-08-03)
 
 ## Bug Fixes
