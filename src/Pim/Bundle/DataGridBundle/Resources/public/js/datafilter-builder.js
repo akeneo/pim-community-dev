@@ -13,8 +13,10 @@ define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/col
                 boolean: 'select'
             },
 
-            initialize(config) {
-                this.filterTypes = Object.assign(this.filterTypes, config.config.filterTypes || {});
+            initialize(config = {}) {
+                if (config.config) {
+                    this.filterTypes = Object.assign(this.filterTypes, config.config.filterTypes || {});
+                }
 
                 mediator.once('datagrid_collection_set_after', this.initHandler.bind(this));
                 mediator.once('hash_navigation_request:start', function() {
@@ -26,18 +28,19 @@ define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/col
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
 
-            initHandler: function(collection, $el) {
+            initHandler(collection, $el) {
                 this.collection = collection;
                 this.$el = $el;
                 this.initBuilder();
                 this.initialized = true;
             },
 
-            initBuilder: function() {
+            initBuilder() {
                 this.metadata = _.extend({
                     filters: {},
                     options: {}
                 }, this.$el.data('metadata'));
+
                 this.modules = {};
                 this.collectModules.call(this);
                 tools.loadModules(this.modules, _.bind(this.build, this));
@@ -46,7 +49,7 @@ define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/col
             /**
              * Collects required modules
              */
-            collectModules: function() {
+            collectModules() {
                 var modules = this.modules;
                 _.each((this.metadata.filters || {}), (filter) => {
                     var type = filter.type;
@@ -54,7 +57,7 @@ define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/col
                 });
             },
 
-            build: function() {
+            build() {
                 var displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
                 var options = this.combineOptions.call(this);
                 options.collection = this.collection;
@@ -74,15 +77,16 @@ define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/col
              *
              * @returns {Object}
              */
-            combineOptions: function() {
-                var filters = {},
-                    modules = this.modules,
-                    collection = this.collection;
+            combineOptions() {
+                const filters = {};
+                const modules = this.modules;
+                const collection = this.collection;
+
                 _.each(this.metadata.filters, function(options) {
                     if (_.has(options, 'name') && _.has(options, 'type')) {
                         // @TODO pass collection only for specific filters
-                        if (options.type == 'selectrow') {
-                            options.collection = collection
+                        if (options.type === 'selectrow') {
+                            options.collection = collection;
                         }
                         filters[options.name] = new(modules[options.type].extend(options))(options);
                     }
