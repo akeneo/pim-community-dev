@@ -46,7 +46,7 @@ Feature: Mass Edit Families
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     And I am on the families page
-    When I select rows Boots, Sneakers and Sandals
+    When I select rows Boots and Sneakers
     And I press the "Change product information" button
     And I click on the cancel button of the mass edit
     Then I should be on the families page

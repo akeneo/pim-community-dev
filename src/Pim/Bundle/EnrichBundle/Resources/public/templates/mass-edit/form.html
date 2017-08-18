@@ -22,10 +22,10 @@
     </div>
     <% if (columnDisplay) { %>
         </div>
-        <div class="AknFullPage-column AknFullPage-column--right AknFullPage-column--topAlign">
+        <div class="AknFullPage-column AknFullPage-column--right">
     <% } %>
-    <div class="AknFullPage-buttons">
-        <% if (currentStep === 'configure') { %>
+    <% if (currentStep === 'configure') { %>
+        <div class="AknFullPage-buttons">
             <div class="<%- currentStep %>">
                 <span class="AknButton AknButton--glued wizard-action" data-action-target="choose">
                     <%- __('pim_enrich.mass_edit.previous') %>
@@ -33,14 +33,16 @@
                     <%- __('pim_enrich.mass_edit.next') %>
                 </span>
             </div>
-        <% } else if (currentStep !== 'choose') { %>
+        </div>
+    <% } else if (currentStep !== 'choose') { %>
+        <div class="AknFullPage-buttons">
             <div class="<%- currentStep %>">
                 <span class="AknButton wizard-action" data-action-target="configure">
                     <%- __('pim_enrich.mass_edit.previous') %>
                 </span>
             </div>
-        <% } %>
-    </div>
+        </div>
+    <% } %>
     <div class="AknWidget-content AknWidget-content--withPadding">
         <% if (currentStep === 'confirm') { %>
             <div class="AknFullPage-confirm"><%- confirm %></div>
@@ -53,11 +55,9 @@
     </div>
     <% if (currentStep === 'choose') { %>
         <div class="AknButtonList AknButtonList--centered <%- currentStep %>">
-            <% if (currentOperation) { %>
-                <span class="AknButton AknButtonList-item AknButton--apply wizard-action" data-action-target="configure">
-                    <%- __('pim_enrich.mass_edit.next') %>
-                </span>
-            <% } %>
+            <span class="AknButton AknButtonList-item AknButton--apply<% if (!currentOperation) { %> AknButton--disabled<% } %> wizard-action" data-action-target="configure">
+                <%- __('pim_enrich.mass_edit.next') %>
+            </span>
         </div>
     <% }%>
     <% if (columnDisplay) { %>

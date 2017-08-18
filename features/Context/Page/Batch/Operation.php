@@ -39,11 +39,13 @@ class Operation extends Wizard
     {
         $choice = $this->spin(function () use ($operation) {
             $choices = $this->findAll('css', '.operation');
-            $choices = array_filter($choices, function ($domChoice) use ($operation) {
-                return trim($domChoice->getText()) === $operation;
-            });
+            foreach ($choices as $choice) {
+                if (trim($choice->getText()) === $operation) {
+                    return $choice;
+                }
+            }
 
-            return $choices[0];
+            return null;
         }, sprintf('Cannot find operation "%s"', $operation));
 
         $choice->click();
