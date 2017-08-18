@@ -49,3 +49,4 @@ npm-debug.log
 !/docker/akeneo-behat.conf
 !/docker/httpd.conf
 docker-compose.yml
+package-lock.json

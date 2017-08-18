@@ -27,5 +27,5 @@ echo "Install the assets"
 
 docker-compose exec fpm bin/console --env=prod assets:install --symlink
 
-docker-compose run node npm install
+docker-compose run node yarn install
 docker-compose run node npm run webpack
