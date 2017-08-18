@@ -20,8 +20,8 @@ Feature: Export products according to their families
   Scenario: View families already selected
     Given I am on the "csv_footwear_product_export" export job edit page
     When I visit the "Content" tab
-    And I filter by "family" with operator "" and value "rangers,star,snake"
+    And I filter by "family" with operator "" and value "Boots,Heels,Sneakers"
     When I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And I press the "Edit" button
-    And I should see the text "[rangers] [star] [snake]"
+    And I should see the text "Boots Heels Sneakers"
