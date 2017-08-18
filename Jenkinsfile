@@ -75,7 +75,7 @@ stage("Checkout") {
 
             def output = sh (
                 returnStdout: true,
-                script: 'find src -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"'
+                script: 'find src tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"'
             )
             def files = output.tokenize('\n')
             for (file in files) {

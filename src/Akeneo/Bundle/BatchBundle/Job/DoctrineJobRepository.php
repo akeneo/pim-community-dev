@@ -202,32 +202,12 @@ class DoctrineJobRepository implements JobRepositoryInterface
      * Ping the Server, if not available then reset the connection.
      * @author Cristian Quiroz <cq@amp.co>
      */
-    protected function checkConnection()
+    protected function checkConnection(): void
     {
         $connection = $this->jobManager->getConnection();
-        if ($this->pingConnection() === false) {
+        if (false === $connection->ping()) {
             $connection->close();
             $connection->connect();
-        }
-    }
-
-    /**
-     * Pings the server, returns false if it's not available.
-     * There is a ping() method in Doctrine\DBAL\Connection in the doctrine/dbal package
-     * as of 2.5.0, but  we are currently on 2.4.x
-     * @author Cristian Quiroz <cq@amp.co>
-     *
-     * @return bool
-     */
-    protected function pingConnection()
-    {
-        $connection = $this->jobManager->getConnection();
-        $connection->connect();
-        try {
-            $connection->query($connection->getDatabasePlatform()->getDummySelectSQL());
-            return true;
-        } catch (DBALException $e) {
-            return false;
         }
     }
 
