@@ -30,7 +30,7 @@ class CreateClientIntegration extends KernelTestCase
         $this->assertContains('secret:', $output);
         $this->assertContains('label: Magento connector', $output);
 
-        $this->assertSame( 0, $commandTester->getStatusCode());
+        $this->assertSame(0, $commandTester->getStatusCode());
     }
 
     /**
