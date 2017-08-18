@@ -8,7 +8,7 @@ parameters:
 
     oro_datagrid.provider.resolver.class:            Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver
 
-    oro_datagrid.twig.metadata.class:                Oro\Bundle\DataGridBundle\Twig\MetadataExtension
+    oro_datagrid.datagrid.metadata.class:                Oro\Bundle\DataGridBundle\Datagrid\Metadata
     oro_datagrid.event_listener.base_orm_relation.class: Oro\Bundle\DataGridBundle\EventListener\BaseOrmRelationDatagridListener
     oro_datagrid.configuration.provider.class:       Oro\Bundle\DataGridBundle\Provider\ConfigurationProvider
     oro_datagrid.configuration.provider.chain.class: Oro\Bundle\DataGridBundle\Provider\ChainConfigurationProvider
@@ -48,9 +48,7 @@ services:
     oro_datagrid.configuration.provider.chain:
         class: '%oro_datagrid.configuration.provider.chain.class%'
 
-    oro_datagrid.twig.metadata:
-        class: '%oro_datagrid.twig.metadata.class%'
+    oro_datagrid.datagrid.metadata:
+        class: '%oro_datagrid.datagrid.metadata.class%'
         arguments:
             - '@service_container'
-        tags:
-            - { name: twig.extension }
