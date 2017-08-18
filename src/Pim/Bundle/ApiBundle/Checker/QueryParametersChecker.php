@@ -99,16 +99,14 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
      */
     public function checkPropertyParameters(string $property, string $operator)
     {
-        if (!in_array($property, $this->productFields)) {
-            if (null === $this->attributeRepository->findOneByIdentifier($property)) {
-                throw new UnprocessableEntityHttpException(
-                    sprintf(
-                        'Filter on property "%s" is not supported or does not support operator "%s"',
-                        $property,
-                        $operator
-                    )
-                );
-            }
+        if (!in_array($property, $this->productFields) && null === $this->attributeRepository->findOneByIdentifier($property)) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'Filter on property "%s" is not supported or does not support operator "%s"',
+                    $property,
+                    $operator
+                )
+            );
         }
     }
 

@@ -56,10 +56,12 @@ interface QueryParametersCheckerInterface
     public function checkCriterionParameters(string $searchString);
 
     /**
-     * Checks if the property exists, and if the property is an attribute it checks if the user has the view right on it.
+     * Checks if the property is valid.
      *
      * @param string $property
      * @param string $operator
+     *
+     * @throws UnprocessableEntityHttpException
      */
     public function checkPropertyParameters(string $property, string $operator);
 }
