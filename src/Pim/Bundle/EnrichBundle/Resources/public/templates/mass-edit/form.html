@@ -3,9 +3,7 @@
     <% if (columnDisplay) { %>
         <div class="AknFullPage-column">
     <% } %>
-    <% if (currentStep === 'choose') { %>
-        <div class="AknFullPage-cancel wizard-action" data-action-target="grid"></div>
-    <% } %>
+    <div class="AknFullPage-cancel wizard-action" data-action-target="grid"></div>
     <div>
         <div class="AknFullPage-subTitle"><%- title %></div>
         <div class="AknFullPage-title"><%- label %></div>
@@ -50,7 +48,7 @@
                 <%- __('pim_enrich.mass_edit.confirm') %>
             </div>
         <% } %>
-        <div class="step">
+        <div class="AknFullPage-content step">
         </div>
     </div>
     <% if (currentStep === 'choose') { %>
