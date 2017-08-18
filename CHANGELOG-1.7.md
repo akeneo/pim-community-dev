@@ -4,9 +4,9 @@
 
 - PIM-6568: Fix import items invalid data that were no longer saved
 
-## Improvements
+## Improvements
 
-- Make Attribute option labels longer
+- GITHUB-6570: Make Attribute option labels longer, cheers @fitn!
 
 # 1.7.7 (2017-08-03)
 
