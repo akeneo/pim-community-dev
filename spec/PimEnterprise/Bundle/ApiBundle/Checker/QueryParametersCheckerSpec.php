@@ -242,4 +242,23 @@ class QueryParametersCheckerSpec extends ObjectBehavior
         $this->shouldNotThrow('UnprocessableEntityHttpException')
             ->during('checkCategoriesParameters', [$categories]);
     }
+
+    function it_should_throw_an_exception_if_property_is_an_attribute_and_the_user_has_no_rights_on_it(
+        $attributeRepository,
+        $authorizationChecker,
+        AttributeInterface $attribute,
+        AttributeGroupInterface $attributeGroup,
+        QueryParametersCheckerInterface $queryParametersChecker
+    ) {
+        $queryParametersChecker->checkPropertyParameters('wrong_attribute', 'my_operator')->shouldBeCalled();
+
+        $attributeRepository->findOneByIdentifier('wrong_attribute')->willReturn($attribute);
+        $attribute->getGroup()->willReturn($attributeGroup);
+        $authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup)->willReturn(false);
+
+        $this->shouldThrow(
+            new UnprocessableEntityHttpException('Filter on property "wrong_attribute" is not supported or does not support operator "my_operator"')
+        )
+            ->during('checkPropertyParameters', ['wrong_attribute', 'my_operator']);
+    }
 }

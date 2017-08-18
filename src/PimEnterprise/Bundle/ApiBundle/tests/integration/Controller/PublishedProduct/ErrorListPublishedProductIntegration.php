@@ -217,6 +217,111 @@ class ErrorListPublishedProductIntegration extends AbstractPublishedProductTestC
         $this->assert($client, 'Operator has to be a string, "array" given.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
+    public function testPublishedProductAttributeNotViewableByRedactor()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', 'api/rest/v1/published-products?attributes=a_metric_without_decimal_negative');
+        $this->assert($client, 'Attribute "a_metric_without_decimal_negative" does not exist.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function testSearchPublishedProductAttributeNotViewableByRedactor()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', 'api/rest/v1/published-products?search={"a_metric_without_decimal_negative":[{"operator":"EMPTY"}]}');
+        $this->assert($client, 'Filter on property "a_metric_without_decimal_negative" is not supported or does not support operator "EMPTY"', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function testPublishedProductAttributesNotViewableByRedactor()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', 'api/rest/v1/published-products?attributes=a_metric_without_decimal_negative,a_localized_and_scopable_text_area');
+        $this->assert($client, 'Attribute "a_metric_without_decimal_negative" does not exist.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function testPublishedProductOneAttributeNotViewableByRedactor()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', 'api/rest/v1/published-products?attributes=a_multi_select,a_metric_without_decimal_negative,a_localized_and_scopable_text_area');
+        $this->assert($client, 'Attributes "a_multi_select, a_metric_without_decimal_negative" do not exist.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function testPublishedProductLocaleNotViewableByRedactor()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', 'api/rest/v1/published-products?locales=de_DE');
+        $this->assert($client, 'Locale "de_DE" does not exist or is not activated.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function testPublishedProductOneLocaleNotViewableByRedactor()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', 'api/rest/v1/published-products?locales=de_DE,en_US');
+        $this->assert($client, 'Locale "de_DE" does not exist or is not activated.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function testPublishedProductSearchCategoryNotViewableByRedactor()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', '/api/rest/v1/published-products?search={"categories":[{"operator":"IN","value":["categoryB"]}]}');
+        $this->assert($client, 'Category "categoryB" does not exist.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function testPublishedProductSearchCategoriesNotViewableByRedactor()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', '/api/rest/v1/published-products?search={"categories":[{"operator":"IN","value":["categoryB", "categoryC"]}]}');
+        $this->assert($client, 'Categories "categoryB, categoryC" do not exist.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function testPublishedProductSearchOneCategoryNotViewableByRedactor()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', '/api/rest/v1/published-products?search={"categories":[{"operator":"IN","value":["categoryB", "categoryA2"]}]}');
+        $this->assert($client, 'Category "categoryB" does not exist.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function testPublishedProductSearchLocaleNotViewableByRedactor()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', '/api/rest/v1/published-products?search_locale=de_DE&search={"a_localized_and_scopable_text_area":[{"operator":"CONTAINS", "value":"text"}]}');
+        $this->assert($client, 'Locale "de_DE" does not exist or is not activated.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function testPublishedProductSearchOneLocaleNotViewableByRedactor()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', '/api/rest/v1/published-products?search_locale=de_DE,fr_FR&search={"a_localized_and_scopable_text_area":[{"operator":"CONTAINS", "value":"text"}]}');
+        $this->assert($client, 'Locale "de_DE" does not exist or is not activated.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function testPublishedProductSearchOneLocalesNotViewableByRedactor()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', '/api/rest/v1/published-products?search={"completeness":[{"operator":"GREATER OR EQUALS THAN ON ALL LOCALES","value":40,"locales":["de_DE"],"scope":"ecommerce"}]}');
+        $this->assert($client, 'Locale "de_DE" does not exist or is not activated.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+    public function testPublishedProductSearchLocalesNotViewableByRedactor()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', '/api/rest/v1/published-products?search={"completeness":[{"operator":"GREATER OR EQUALS THAN ON ALL LOCALES","value":40,"locales":["fr_FR","de_DE"],"scope":"ecommerce"}]}');
+        $this->assert($client, 'Locale "de_DE" does not exist or is not activated.', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
+
     /**
      * @param Client $client
      * @param string $message
