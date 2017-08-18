@@ -14,12 +14,9 @@ Feature: Sort attribute options
     And I fill in the following information:
       | Code            | size  |
       | Attribute group | Other |
-    And I visit the "Values" tab
-    Then I should see the "Options" section
-    And I should see "To manage options, please save the attribute first"
-    When I save the attribute
-    Then I should see the flash message "Attribute successfully created"
-    When I check the "Automatic option sorting" switch
+    And I save the attribute
+    And I visit the "Options" tab
+    When I check the "Sort automatically options by alphabetical order" switch
     And I create the following attribute options:
       | Code        |
       | small_size  |
@@ -36,12 +33,9 @@ Feature: Sort attribute options
     And I fill in the following information:
       | Code            | size  |
       | Attribute group | Other |
-    And I visit the "Values" tab
-    Then I should see the "Options" section
-    And I should see "To manage options, please save the attribute first"
-    When I save the attribute
-    Then I should see the flash message "Attribute successfully created"
-    When I check the "Sort automatically options by alphabetical order" switch
+    And I save the attribute
+    And I visit the "Options" tab
+    And I check the "Sort automatically options by alphabetical order" switch
     And I create the following attribute options:
       | Code        |
       | small_size  |
@@ -63,17 +57,15 @@ Feature: Sort attribute options
     And I fill in the following information:
       | Code            | size  |
       | Attribute group | Other |
-    And I visit the "Values" tab
-    Then I should see the "Options" section
-    And I should see "To manage options, please save the attribute first"
-    When I save the attribute
-    Then I should see the flash message "Attribute successfully created"
-    When I check the "Automatic option sorting" switch
+    And I save the attribute
+    And I visit the "Options" tab
+    And I check the "Sort automatically options by alphabetical order" switch
     And I create the following attribute options:
-      | Code        | en_US  | fr_FR  |
-      | small_size  | Csmall | Apetit |
-      | medium_size | Bmedium|        |
-      | large_size  | Alarge | Cgrand |
+      | Code         | en_US  | fr_FR  |
+      | small_size   | Csmall | Apetit |
+      | medium_size  | Bmedium|        |
+      | large_size   | Alarge | Cgrand |
+      | elarge_size  | Xlarge |        |
     And I save the attribute
     Then I should not see the text "There are unsaved changes"
     When I am on the products page
@@ -84,6 +76,6 @@ Feature: Sort attribute options
     When I am on the "a_product" product page
     And I switch the locale to "en_US"
     And I add available attributes size
-    Then I should see the ordered choices Alarge, Bmedium, Csmall in size
+    Then I should see the ordered choices Alarge, Bmedium, Csmall, Xlarge in size
     And I switch the locale to "fr_FR"
-    Then I should see the ordered choices [medium_size], Apetit, Cgrand in size
+    Then I should see the ordered choices [elarge_size], [medium_size], Apetit, Cgrand in size
