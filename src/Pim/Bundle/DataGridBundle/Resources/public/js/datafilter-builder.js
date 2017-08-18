@@ -1,6 +1,5 @@
 define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/collection-filters-manager', 'pim/form'],
     function($, _, tools, mediator, FiltersManager, BaseForm) {
-        'use strict';
 
         const DataFilterBuilder = BaseForm.extend({
             initialized: false,
@@ -36,14 +35,14 @@ define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/col
             },
 
             initBuilder() {
-                this.metadata = _.extend({
+                this.metadata = Object.assign({
                     filters: {},
                     options: {}
                 }, this.$el.data('metadata'));
 
                 this.modules = {};
                 this.collectModules.call(this);
-                tools.loadModules(this.modules, _.bind(this.build, this));
+                tools.loadModules(this.modules, this.build.bind(this));
             },
 
             /**
@@ -51,12 +50,15 @@ define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/col
              */
             collectModules() {
                 var modules = this.modules;
-                _.each((this.metadata.filters || {}), (filter) => {
+                this.metadata.filters.forEach(filter => {
                     var type = filter.type;
                     modules[type] = this.filterModuleName.replace('{{type}}', this.filterTypes[type] || type);
                 });
             },
 
+            /**
+             * Renders the filters
+             */
             build() {
                 var displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
                 var options = this.combineOptions.call(this);
