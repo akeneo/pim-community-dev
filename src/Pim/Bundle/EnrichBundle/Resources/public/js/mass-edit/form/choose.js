@@ -56,7 +56,6 @@ define(
              * @param {Event} event
              */
             updateOperation: function (event) {
-                console.log($(event.target).closest('.operation'));
                 this.getParent().setCurrentOperation($(event.target).closest('.operation').data('code'));
                 this.render();
             },

@@ -1,8 +1,6 @@
 @import '../base/variables';
 
 .AknFullPage {
-  @insidePadding: 24px;
-
   position: absolute;
   width: 100%;
   height: 100%;
@@ -24,17 +22,12 @@
     padding: 40px;
 
     &--right {
-      background-color: lighten(@AknLightGray, 5%);
-    }
-
-    &--topAlign {
-      justify-content: flex-start;
-      padding-top: 40px + @insidePadding;
+      background-color: @AknLightGray;
     }
   }
 
   &-subTitle {
-    color: #9452BA;
+    color: @AknLightPurple;
     text-transform: uppercase;
     font-size: @AknFontSizeBigger;
     margin:auto;
@@ -46,7 +39,7 @@
   }
 
   &-title {
-    font-size: @AknTitleFontSize2;
+    font-size: @AknAltTitleFontSize;
     line-height: 46px;
     text-align: center;
     color: @AknDarkBlue;
@@ -67,33 +60,16 @@
 
   &-cancel {
     position: fixed;
-    top: @insidePadding;
-    left: @insidePadding;
+    top: 16px;
+    left: 16px;
     width: 32px;
     height: 32px;
     background: url("../../images/icon-delete-slategrey.svg") no-repeat 50% 50%;
     cursor: pointer;
   }
 
-  &-buttons {
-    position: fixed;
-    top: @insidePadding;
-    right: @insidePadding;
-  }
-
   &-steps {
     text-align: right;
     margin-top: 60px;
-  }
-
-  &-confirm {
-    color: @AknRed;
-    font-weight: bold;
-    font-size: @AknFontSizeBigger;
-    margin-bottom: 20px;
-  }
-
-  &-content {
-    margin: 20px 0 0 0;
   }
 }
