@@ -49,7 +49,7 @@ class Metadata
      */
     public function getGridData(string $name, array $params = []): string
     {
-        return $this->container->get('fragment.handler')->render($this->generateUrl($name, $params, true));
+        return $this->container->get('fragment.handler')->render($this->generateUrl($name, $params));
     }
 
     /**
@@ -59,9 +59,10 @@ class Metadata
      *
      * @return string
      */
-    protected function generateUrl(string $name, array $params, bool $mixRequest = false): string
+    protected function generateUrl(string $name, array $params): string
     {
-        $additional = $mixRequest ? $this->getRequestParameters()->getRootParameterValue() : [];
+        $additional = $this->getRequestParameters()->getRootParameterValue();
+
         $params = [
             $name      => array_merge($params, $additional),
             'gridName' => $name
