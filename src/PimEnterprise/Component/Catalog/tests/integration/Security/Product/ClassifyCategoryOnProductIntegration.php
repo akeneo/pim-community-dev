@@ -18,7 +18,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
     {
         parent::setUp();
 
-        $this->saveProduct([
+        $this->saveProduct('product_a', [
             'categories' => ['master', 'categoryA', 'categoryA1', 'categoryB'],
         ]);
     }
@@ -69,13 +69,13 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
     public function testCreateAProductWithCategoryNotViewable()
     {
         $this->generateToken('mary');
-        $this->createProduct(['categories' => ['categoryB']]);
+        $this->createProduct('product', ['categories' => ['categoryB']]);
     }
 
     public function testCreateAProductWithCategoryViewable()
     {
         $this->generateToken('mary');
-        $product = $this->createProduct(['categories' => ['categoryA2']]);
+        $product = $this->createProduct('product', ['categories' => ['categoryA2']]);
 
         $this->assertSame($product->getCategoryCodes(), ['categoryA2']);
     }
@@ -83,7 +83,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
     public function testCreateAProductWithCategoryEditable()
     {
         $this->generateToken('mary');
-        $product = $this->createProduct(['categories' => ['categoryA']]);
+        $product = $this->createProduct('product', ['categories' => ['categoryA']]);
 
         $this->assertSame($product->getCategoryCodes(), ['categoryA']);
     }
@@ -91,7 +91,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
     public function testCreateAProductWithOwnCategory()
     {
         $this->generateToken('mary');
-        $product = $this->createProduct(['categories' => ['master']]);
+        $product = $this->createProduct('product', ['categories' => ['master']]);
 
         $this->assertSame($product->getCategoryCodes(), ['master']);
     }
@@ -102,7 +102,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
      */
     public function testUpdateAProductWithCategoryNotViewable()
     {
-        $product = $this->saveProduct(['categories' => ['categoryA2']]);
+        $product = $this->saveProduct('product', ['categories' => ['categoryA2']]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, ['categories' => ['categoryB']]);
@@ -110,7 +110,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
 
     public function testUpdateAProductWithCategoryViewable()
     {
-        $product = $this->saveProduct(['categories' => ['master']]);
+        $product = $this->saveProduct('product', ['categories' => ['master']]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, ['categories' => ['categoryA2', 'master']]);
@@ -119,7 +119,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
 
     public function testUpdateAProductWithCategoryEditable()
     {
-        $product = $this->saveProduct(['categories' => ['master']]);
+        $product = $this->saveProduct('product', ['categories' => ['master']]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, ['categories' => ['categoryA', 'master']]);
@@ -128,7 +128,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
 
     public function testUpdateAProductWithOwnCategory()
     {
-        $product = $this->saveProduct(['categories' => ['master']]);
+        $product = $this->saveProduct('product', ['categories' => ['master']]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, ['categories' => ['master_china', 'master']]);

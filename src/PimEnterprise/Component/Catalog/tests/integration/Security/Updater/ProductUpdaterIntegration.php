@@ -13,7 +13,7 @@ class ProductUpdaterIntegration extends AbstractSecurityTestCase
     public function testCreateAProductWithAttributeGroupNotFound()
     {
         $this->generateToken('mary');
-        $this->createProduct(['values' => ['not_found' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
+        $this->createProduct('product', ['values' => ['not_found' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
     }
 
     /**
@@ -23,7 +23,7 @@ class ProductUpdaterIntegration extends AbstractSecurityTestCase
     public function testCreateAProductWithAttributeGroupNotViewable()
     {
         $this->generateToken('mary');
-        $this->createProduct(['values' => ['a_multi_select' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
+        $this->createProduct('product', ['values' => ['a_multi_select' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
     }
 
     /**
@@ -33,13 +33,13 @@ class ProductUpdaterIntegration extends AbstractSecurityTestCase
     public function testCreateAProductWithAttributeGroupOnlyViewable()
     {
         $this->generateToken('mary');
-        $this->createProduct(['values' => ['a_number_float' => [['data' => 12.05, 'locale' => null, 'scope' => null]]]]);
+        $this->createProduct('product', ['values' => ['a_number_float' => [['data' => 12.05, 'locale' => null, 'scope' => null]]]]);
     }
 
     public function testCreateAProductWithAttributeGroupEditable()
     {
         $this->generateToken('mary');
-        $product = $this->createProduct(['values' => ['a_text' => [['data' => 'The text', 'locale' => null, 'scope' => null]]]]);
+        $product = $this->createProduct('product', ['values' => ['a_text' => [['data' => 'The text', 'locale' => null, 'scope' => null]]]]);
 
         $this->assertSame($product->getValue('a_text')->getData(), 'The text');
     }
@@ -50,7 +50,7 @@ class ProductUpdaterIntegration extends AbstractSecurityTestCase
      */
     public function testUpdateAProductWithAttributeGroupNotViewable()
     {
-        $product = $this->saveProduct(['values' => ['a_multi_select' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
+        $product = $this->saveProduct('product', ['values' => ['a_multi_select' => [['data' => ['optionB'], 'locale' => null, 'scope' => null]]]]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, [
@@ -66,7 +66,7 @@ class ProductUpdaterIntegration extends AbstractSecurityTestCase
      */
     public function testUpdateAProductWithAttributeGroupOnlyViewableWithChange()
     {
-        $product = $this->saveProduct(['values' => ['a_number_float' => [['data' => 12, 'locale' => null, 'scope' => null]]]]);
+        $product = $this->saveProduct('product', ['values' => ['a_number_float' => [['data' => 12, 'locale' => null, 'scope' => null]]]]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, [
@@ -78,7 +78,7 @@ class ProductUpdaterIntegration extends AbstractSecurityTestCase
 
     public function testUpdateAProductWithAttributeGroupOnlyViewableWithoutChange()
     {
-        $product = $this->saveProduct(['values' => ['a_number_float' => [['data' => 12, 'locale' => null, 'scope' => null]]]]);
+        $product = $this->saveProduct('product', ['values' => ['a_number_float' => [['data' => 12, 'locale' => null, 'scope' => null]]]]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, [
@@ -92,7 +92,7 @@ class ProductUpdaterIntegration extends AbstractSecurityTestCase
 
     public function testUpdateAProductWithAttributeGroupEditable()
     {
-        $product = $this->saveProduct(['values' => ['a_text' => [['data' => 'The text', 'locale' => null, 'scope' => null]]]]);
+        $product = $this->saveProduct('product', ['values' => ['a_text' => [['data' => 'The text', 'locale' => null, 'scope' => null]]]]);
         $this->generateToken('mary');
         $this->updateProduct($product, [
             'values' => [
@@ -110,7 +110,7 @@ class ProductUpdaterIntegration extends AbstractSecurityTestCase
     public function testCreateAProductWithLocaleNotFound()
     {
         $this->generateToken('mary');
-        $this->createProduct(['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'not_found', 'scope' => 'ecommerce']]]]);
+        $this->createProduct('product', ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'not_found', 'scope' => 'ecommerce']]]]);
     }
 
     /**
@@ -120,7 +120,7 @@ class ProductUpdaterIntegration extends AbstractSecurityTestCase
     public function testCreateAProductWithLocaleNotViewable()
     {
         $this->generateToken('mary');
-        $this->createProduct(['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'de_DE', 'scope' => 'ecommerce']]]]);
+        $this->createProduct('product', ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'de_DE', 'scope' => 'ecommerce']]]]);
     }
 
     /**
@@ -130,13 +130,13 @@ class ProductUpdaterIntegration extends AbstractSecurityTestCase
     public function testCreateAProductWithLocaleOnlyViewable()
     {
         $this->generateToken('mary');
-        $this->createProduct(['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'fr_FR', 'scope' => 'ecommerce']]]]);
+        $this->createProduct('product', ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'fr_FR', 'scope' => 'ecommerce']]]]);
     }
 
     public function testCreateAProductWithLocaleEditable()
     {
         $this->generateToken('mary');
-        $product = $this->createProduct(['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'en_US', 'scope' => 'ecommerce']]]]);
+        $product = $this->createProduct('product', ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'en_US', 'scope' => 'ecommerce']]]]);
 
         $this->assertSame($product->getValue('a_localized_and_scopable_text_area', 'en_US', 'ecommerce')->getData(), 'text');
     }
@@ -147,7 +147,7 @@ class ProductUpdaterIntegration extends AbstractSecurityTestCase
      */
     public function testUpdateAProductWithLocaleNotViewable()
     {
-        $product = $this->saveProduct(['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'de_DE', 'scope' => 'ecommerce']]]]);
+        $product = $this->saveProduct('product', ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'de_DE', 'scope' => 'ecommerce']]]]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'de_DE', 'scope' => 'ecommerce']]]]);
@@ -159,7 +159,7 @@ class ProductUpdaterIntegration extends AbstractSecurityTestCase
      */
     public function testUpdateAProductWithLocaleOnlyViewableWithChange()
     {
-        $product = $this->saveProduct(['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'fr_FR', 'scope' => 'ecommerce']]]]);
+        $product = $this->saveProduct('product', ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'fr_FR', 'scope' => 'ecommerce']]]]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text FR', 'locale' => 'fr_FR', 'scope' => 'ecommerce']]]]);
@@ -167,7 +167,7 @@ class ProductUpdaterIntegration extends AbstractSecurityTestCase
 
     public function testUpdateAProductWithLocaleOnlyViewableWithoutChange()
     {
-        $product = $this->saveProduct(['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'fr_FR', 'scope' => 'ecommerce']]]]);
+        $product = $this->saveProduct('product', ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'fr_FR', 'scope' => 'ecommerce']]]]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'fr_FR', 'scope' => 'ecommerce']]]]);
@@ -176,7 +176,7 @@ class ProductUpdaterIntegration extends AbstractSecurityTestCase
 
     public function testUpdateAProductWithLocaleEditable()
     {
-        $product = $this->saveProduct(['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'en_US', 'scope' => 'ecommerce']]]]);
+        $product = $this->saveProduct('product', ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'en_US', 'scope' => 'ecommerce']]]]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text EN', 'locale' => 'en_US', 'scope' => 'ecommerce']]]]);
