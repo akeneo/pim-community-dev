@@ -14,7 +14,7 @@ extensions:
     pim-mass-product-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector
         parent: pim-mass-product-edit-form-attributes
-        targetZone: attribute-group-selector
+        targetZone: other-actions
         position: 100
 
     pim-mass-product-edit-form-add-attribute:
