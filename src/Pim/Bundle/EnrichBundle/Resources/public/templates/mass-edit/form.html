@@ -28,9 +28,9 @@
         <div class="AknFullPage-buttons">
             <div class="<%- currentStep %>">
                 <span class="AknButton AknButton--glued wizard-action" data-action-target="choose">
-                    <%- __('pim_enrich.mass_edit.previous') %>
+                    <%- previousLabel %>
                 </span><span class="AknButton AknButton--glued AknButton--apply wizard-action" data-action-target="confirm">
-                    <%- __('pim_enrich.mass_edit.next') %>
+                    <%- nextLabel %>
                 </span>
             </div>
         </div>
@@ -38,7 +38,7 @@
         <div class="AknFullPage-buttons">
             <div class="<%- currentStep %>">
                 <span class="AknButton wizard-action" data-action-target="configure">
-                    <%- __('pim_enrich.mass_edit.previous') %>
+                    <%- previousLabel %>
                 </span>
             </div>
         </div>
@@ -47,7 +47,7 @@
         <% if (currentStep === 'confirm') { %>
             <div class="AknFullPage-confirm"><%- confirm %></div>
             <div class="AknButton AknButton--apply wizard-action" data-action-target="validate">
-                <%- __('pim_enrich.mass_edit.confirm') %>
+                <%- confirmLabel %>
             </div>
         <% } %>
         <div class="AknFullPage-content step">
@@ -56,7 +56,7 @@
     <% if (currentStep === 'choose') { %>
         <div class="AknButtonList AknButtonList--centered <%- currentStep %>">
             <span class="AknButton AknButtonList-item AknButton--apply<% if (!currentOperation) { %> AknButton--disabled<% } %> wizard-action" data-action-target="configure">
-                <%- __('pim_enrich.mass_edit.next') %>
+                <%- nextLabel %>
             </span>
         </div>
     <% }%>

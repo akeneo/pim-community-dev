@@ -8,12 +8,14 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'oro/translator',
         'pim/form',
         'pim/template/mass-edit/choose'
     ],
     function (
+        $,
         _,
         __,
         BaseForm,

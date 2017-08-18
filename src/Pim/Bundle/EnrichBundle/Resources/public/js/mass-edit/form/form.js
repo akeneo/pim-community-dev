@@ -75,6 +75,9 @@ define(
                     description: step.getDescription(),
                     title: __(this.config.title, {itemsCount: itemsCount}, itemsCount),
                     confirm: __(this.config.confirm, {itemsCount: itemsCount}, itemsCount),
+                    previousLabel: __('pim_enrich.mass_edit.previous'),
+                    nextLabel: __('pim_enrich.mass_edit.next'),
+                    confirmLabel: __('pim_enrich.mass_edit.confirm'),
                     __: __
                 }));
 
