@@ -17,6 +17,7 @@ datagrid:
                 label:         Label
                 data_name:     label
                 type:          field
+                frontend_type: label
             family:
                 label:         Family
                 data_name:     family

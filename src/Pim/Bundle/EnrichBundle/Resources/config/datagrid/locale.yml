@@ -9,6 +9,7 @@ datagrid:
         columns:
             code:
                 label: Code
+                frontend_type: label
             activated:
                 label: Activated
                 type: twig
