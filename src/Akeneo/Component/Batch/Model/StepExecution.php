@@ -6,7 +6,6 @@ use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
-use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\RuntimeErrorException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;

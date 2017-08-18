@@ -6,7 +6,9 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Pim\Component\Catalog\Validator\Constraints\FileExtension;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Constraints for simple Yaml export
@@ -41,10 +43,13 @@ class SimpleYamlExport implements ConstraintCollectionProviderInterface
                         new FileExtension(
                             [
                                 'allowedExtensions' => ['yml', 'yaml'],
-                                'groups'            => ['Execution']
+                                'groups'            => ['Execution'],
                             ]
-                        )
+                        ),
                     ],
+                    'email'    => new Email(),
+                    'no_log'   => new Type('bool'),
+                    'no_lock'  => new Type('bool'),
                 ]
             ]
         );

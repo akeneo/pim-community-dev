@@ -35,6 +35,9 @@ class SimpleCsvExport implements DefaultValuesProviderInterface
             'delimiter'  => ';',
             'enclosure'  => '"',
             'withHeader' => true,
+            'email'      => null,
+            'no_log'     => false,
+            'no_lock'    => false,
         ];
     }
 

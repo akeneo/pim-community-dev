@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor;
-use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;

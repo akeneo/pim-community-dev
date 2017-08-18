@@ -1,0 +1,6 @@
+Akeneo\Component\Batch\Model\JobParameters:
+    type: embeddable
+    fields:
+        parameters:
+            type: json_array
+            column: raw_parameters

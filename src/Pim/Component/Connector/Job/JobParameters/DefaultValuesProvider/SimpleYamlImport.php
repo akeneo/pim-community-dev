@@ -34,6 +34,9 @@ class SimpleYamlImport implements DefaultValuesProviderInterface
             'filePath'                  => null,
             'uploadAllowed'             => true,
             'invalid_items_file_format' => 'yaml',
+            'email'                     => null,
+            'no_log'                    => false,
+            'no_lock'                   => false,
         ];
     }
 
