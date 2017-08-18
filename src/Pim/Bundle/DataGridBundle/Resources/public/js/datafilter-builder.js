@@ -1,6 +1,20 @@
-define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/collection-filters-manager', 'pim/form'],
-    function($, _, tools, mediator, FiltersManager, BaseForm) {
-
+define(
+    [
+        'jquery',
+        'underscore',
+        'oro/tools',
+        'oro/mediator',
+        'oro/datafilter/collection-filters-manager',
+        'pim/form'
+    ],
+    function(
+        $,
+        _,
+        tools,
+        mediator,
+        FiltersManager,
+        BaseForm
+     ) {
         const DataFilterBuilder = BaseForm.extend({
             initialized: false,
             filterModuleName: 'oro/datafilter/{{type}}-filter',
@@ -12,6 +26,9 @@ define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/col
                 boolean: 'select'
             },
 
+            /**
+             * {@inheritdoc}
+             */
             initialize(config = {}) {
                 if (config.config) {
                     this.filterTypes = Object.assign(this.filterTypes, config.config.filterTypes || {});
@@ -27,13 +44,22 @@ define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/col
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
 
+            /**
+             * Sets the element and collection, starts the builder
+             * @param  {Object} collection Data collection
+             * @param  {Object} $el        Element
+             */
             initHandler(collection, $el) {
+                console.log(typeof collection, typeof $el)
                 this.collection = collection;
                 this.$el = $el;
                 this.initBuilder();
                 this.initialized = true;
             },
 
+            /**
+             * Collect and load the filter modules
+             */
             initBuilder() {
                 this.metadata = Object.assign({
                     filters: {},
