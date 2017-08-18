@@ -6,6 +6,7 @@ extensions:
             launchedLabel: pim_enrich.mass_edit.product.step.launched.label
             launchErrorLabel: pim_enrich.mass_edit.product.step.launch_error.label
             title: pim_enrich.mass_edit.product.title
+            confirm: pim_enrich.mass_edit.product.confirm
 
     pim-mass-published-product-edit-choose:
         module: pim/mass-edit-form/choose
@@ -26,3 +27,4 @@ extensions:
             code: unpublish
             jobInstanceCode: unpublish_product
             warning: pimee_enrich.mass_edit.product.operation.unpublish.warning
+            icon: icon-unpublish
