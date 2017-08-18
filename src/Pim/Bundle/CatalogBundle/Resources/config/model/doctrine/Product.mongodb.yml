@@ -34,6 +34,11 @@ Pim\Component\Catalog\Model\Product:
                 background: true
             keys:
                 normalizedData.updated: 1
+        associations_products:
+            options:
+                background: true
+            keys:
+                associations.products: 1
     fields:
         id:
             id: true
