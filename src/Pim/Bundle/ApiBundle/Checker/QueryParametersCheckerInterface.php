@@ -54,4 +54,14 @@ interface QueryParametersCheckerInterface
      * @return array
      */
     public function checkCriterionParameters(string $searchString);
+
+    /**
+     * Checks if the property is valid.
+     *
+     * @param string $property
+     * @param string $operator
+     *
+     * @throws UnprocessableEntityHttpException
+     */
+    public function checkPropertyParameters(string $property, string $operator);
 }

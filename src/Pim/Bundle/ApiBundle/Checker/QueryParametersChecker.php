@@ -23,19 +23,25 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
     /** @var IdentifiableObjectRepositoryInterface */
     private $categoryRepository;
 
+    /** @var array */
+    private $productFields;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $localeRepository
      * @param IdentifiableObjectRepositoryInterface $attributeRepository
      * @param IdentifiableObjectRepositoryInterface $categoryRepository
+     * @param array                                 $productFields
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $localeRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        IdentifiableObjectRepositoryInterface $categoryRepository
+        IdentifiableObjectRepositoryInterface $categoryRepository,
+        array $productFields
     ) {
         $this->localeRepository = $localeRepository;
         $this->attributeRepository = $attributeRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->productFields = $productFields;
     }
 
     /**
@@ -85,6 +91,22 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
         if (!empty($errors)) {
             $plural = count($errors) > 1 ? 'Attributes "%s" do not exist.' : 'Attribute "%s" does not exist.';
             throw new UnprocessableEntityHttpException(sprintf($plural, implode(', ', $errors)));
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function checkPropertyParameters(string $property, string $operator)
+    {
+        if (!in_array($property, $this->productFields) && null === $this->attributeRepository->findOneByIdentifier($property)) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'Filter on property "%s" is not supported or does not support operator "%s"',
+                    $property,
+                    $operator
+                )
+            );
         }
     }
 
@@ -141,12 +163,6 @@ class QueryParametersChecker implements QueryParametersCheckerInterface
                 if (!isset($searchFilter['operator'])) {
                     throw new UnprocessableEntityHttpException(
                         sprintf('Operator is missing for the property "%s".', $searchKey)
-                    );
-                }
-
-                if (!isset($searchFilter['value'])) {
-                    throw new UnprocessableEntityHttpException(
-                        sprintf('Value is missing for the property "%s".', $searchKey)
                     );
                 }
 

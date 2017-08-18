@@ -178,6 +178,12 @@ class LocaleController
                     );
                 }
 
+                if (!isset($searchOperator['value'])) {
+                    throw new UnprocessableEntityHttpException(
+                        sprintf('Value is missing for the property "%s".', $searchKey)
+                    );
+                }
+
                 if (!is_bool($searchOperator['value'])) {
                     throw new UnprocessableEntityHttpException(
                         sprintf(

@@ -234,6 +234,14 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $this->assert($client, 'Operator has to be a string, "array" given.', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
+    public function testSearchProductAttributeDoesNotExist()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', 'api/rest/v1/products?search={"wrong_attribute":[{"operator":"EMPTY"}]}');
+        $this->assert($client, 'Filter on property "wrong_attribute" is not supported or does not support operator "EMPTY"', Response::HTTP_UNPROCESSABLE_ENTITY);
+    }
+
     /**
      * @param Client $client
      * @param string $message

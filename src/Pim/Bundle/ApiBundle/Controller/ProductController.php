@@ -525,6 +525,8 @@ class ProductController
 
                 $value = isset($filter['value']) ? $filter['value'] : null;
 
+                $this->queryParametersChecker->checkPropertyParameters($propertyCode, $filter['operator']);
+
                 $pqb->addFilter($propertyCode, $filter['operator'], $value, $context);
             }
         }
