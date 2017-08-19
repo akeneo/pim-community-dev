@@ -14,6 +14,7 @@ Option code may contain only letters (at least one), numbers and underscores: Il
 This value should not be a decimal.: Questo valore non può essere un decimale.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Questa estensione del file non è consentita (estensioni consentite: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": Il valore %value% è già impostato su un altro prodotto per l'attributo univoco "%attribute%"
+The same identifier is already set on another product: Lo stesso identificatore è già impostato su un altro prodotto
 regex.comma_or_semicolon.message: Questo campo non deve contenere virgola o punto e virgola.
 file.extensions.message: 'Questa estensione del file non è consentita (estensioni consentite: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Questo tipo di valore prevede l'uso di {{ decimal_separator }} per separare i decimali.
@@ -21,3 +22,8 @@ file.extensions.message: 'Questa estensione del file non è consentita (estensio
 "This type of value expects the use of comma (,) to separate decimals.": Questo tipo di valore prevede l'uso della virgola (,) per separare i decimali.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Questo tipo di valore prevede l'uso del separatore decimale arabo (,) per separare i decimali.
 "This type of value expects the use of the format {{ date_format }} for dates.": Questo tipo di valore prevede l'uso del formato {{ date_format }} per le date.
+"The category \"%category%\" has to be a root category.": La categoria "%category%" deve essere una categoria principale.
+"The attribute \"%attributeCode%\" does not exist.": L'attributo "%attributeCode%" non esiste.
+"The attribute \"%attributeCode%\" is not a metric attribute.": L'attributo "%attributeCode%" non è un attributo di metrica.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": L'unità "%unitCode%" non esiste o non appartiene alla famiglia metrica predefinita per l'attributo specificato "%attributeCode%".
+"The currency \"%currency%\" has to be activated.": La valuta "%currency%" deve essere attivata.

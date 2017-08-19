@@ -418,7 +418,6 @@ pim_enrich:
           info:
             no_family: Aucune famille définie. Merci de définir une famille pour calculer la complétude de ce produit.
             no_completeness: Vous venez de modifier la famille du produit. Merci de l'enregistrer en premier pour calculer la complétude de la nouvelle famille.
-          missing_values: Valeurs manquantes
         history:
           title: Historique
       switch:
@@ -908,6 +907,8 @@ pim_enrich:
       modal_title: Choisir le type d'attribut
     attribute_group:
       title: Vue d'ensemble des groupes d'attributs
+      create_btn: Créer
+    api_connection:
       create_btn: Créer
   mass_edit:
     next: Suivant
