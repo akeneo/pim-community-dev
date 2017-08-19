@@ -157,7 +157,7 @@ pim_enrich:
             close: Chiudi
       copy:
         select: Selezionare
-        all: Tutto
+        all: Tutti
         all_visible: Tutti visibili
         none: Nessun
       variant_group:
