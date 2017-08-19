@@ -34,7 +34,7 @@ pimee_catalog_rule:
       "=": è uguale a
       ">": più grande di
       ">=": è uguale o maggiore di
-      "<": meno di
+      "<": dopo il
       "<=": è uguale o inferiore a
   acl_group:
     rule: Regole
