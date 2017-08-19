@@ -10,7 +10,7 @@ user:
   asset_delay_reminder: Promemoria di ritardo dell'asset (in giorni)
   default_published_product_grid_view:
     label: Visualizzazione predefinita griglia dei prodotti pubblicati
-Default asset tree: Struttura ad albero di asset predefinita
+Default asset tree: Struttura predefinita per gli asset
 pimee_user:
   user:
     tab:
