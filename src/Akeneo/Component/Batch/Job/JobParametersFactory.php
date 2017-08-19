@@ -3,6 +3,7 @@
 namespace Akeneo\Component\Batch\Job;
 
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderRegistry;
+use Akeneo\Component\Batch\Model\JobParameters;
 
 /**
  * Allow to create immutable JobParameters with passed parameters completed by default values

@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Writer\File;
 
-use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\Writer\File\ColumnSorterInterface;

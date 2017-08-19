@@ -4,9 +4,9 @@ namespace Pim\Component\Connector\Archiver;
 
 use Akeneo\Component\Batch\Item\InvalidItemInterface;
 use Akeneo\Component\Batch\Item\ItemWriterInterface;
-use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobParameters;
 use Doctrine\Common\Collections\ArrayCollection;
 use League\Flysystem\Filesystem;
 use Pim\Bundle\ConnectorBundle\EventListener\InvalidItemsCollector;

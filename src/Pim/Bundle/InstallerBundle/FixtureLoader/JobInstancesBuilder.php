@@ -3,9 +3,9 @@
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
 use Akeneo\Component\Batch\Item\ItemProcessorInterface;
-use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\Batch\Model\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Pim\Component\Connector\Reader\File\Yaml\Reader;
 use Symfony\Component\Config\FileLocator;

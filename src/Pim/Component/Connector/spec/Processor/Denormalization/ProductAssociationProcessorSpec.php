@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
-use Akeneo\Component\Batch\Job\JobParameters;
+use Akeneo\Component\Batch\Model\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;

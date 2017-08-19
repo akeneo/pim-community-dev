@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Component\Batch\Job;
+namespace Akeneo\Component\Batch\Model;
 
 /**
  * Value object representing runtime parameters to a batch job. Because the parameters have no individual meaning

@@ -160,10 +160,11 @@ class FixturesLoader
         $jobInstances = $jobLoader->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
             $input = new ArrayInput([
-                'command'  => 'akeneo:batch:job',
-                'code'     => $jobInstance->getCode(),
-                '--no-log' => true,
-                '-v'       => true
+                'command'       => 'akeneo:batch:job',
+                'code'          => $jobInstance->getCode(),
+                '--no-log'      => true,
+                '-v'            => true,
+                '--synchronous' => true,
             ]);
             $output = new BufferedOutput();
             $exitCode = $this->cli->run($input, $output);

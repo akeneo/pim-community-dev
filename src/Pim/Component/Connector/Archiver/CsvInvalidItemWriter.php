@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\Archiver;
 
-use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 
 /**

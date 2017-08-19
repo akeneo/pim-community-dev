@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Bundle\BatchBundle\Command;
 
+use Akeneo\Bundle\BatchBundle\Notification\Notifier;
 use Akeneo\Component\Batch\Event\BatchCommandEvent;
 use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Item\ExecutionContext;
@@ -9,7 +12,12 @@ use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
+use Akeneo\Component\Batch\Model\JobExecution;
+use Akeneo\Component\Batch\Model\JobExecutionMessage;
+use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\Batch\Model\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
+use Akeneo\Component\Batch\Queue\JobExecutionQueueInterface;
 use Doctrine\ORM\EntityManager;
 use Monolog\Handler\StreamHandler;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -19,7 +27,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\Validator;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Batch command
@@ -55,7 +63,8 @@ class BatchCommand extends ContainerAwareCommand
                 'email',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'The email to notify at the end of the job execution'
+                'The email to notify at the end of the job execution',
+                null
             )
             ->addOption(
                 'no-log',
@@ -68,6 +77,12 @@ class BatchCommand extends ContainerAwareCommand
                 null,
                 InputOption::VALUE_NONE,
                 'Don\'t lock command (if command is lockable)'
+            )
+            ->addOption(
+                'synchronous',
+                null,
+                InputOption::VALUE_NONE,
+                'Run the job synchronously, without publishing it to the queue.'
             );
     }
 
@@ -76,20 +91,39 @@ class BatchCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $noLog = $input->getOption('no-log');
-
-        if (!$noLog) {
-            $logger = $this->getContainer()->get('monolog.logger.batch');
-            // Fixme: Use ConsoleHandler available on next Symfony version (2.4 ?)
-            $logger->pushHandler(new StreamHandler('php://stdout'));
-        }
-
         $code = $input->getArgument('code');
         $jobInstanceClass = $this->getContainer()->getParameter('akeneo_batch.entity.job_instance.class');
-        $jobInstance = $this
-            ->getJobManager()
-            ->getRepository($jobInstanceClass)
-            ->findOneByCode($code);
+        $jobInstance = $this->getJobManager()->getRepository($jobInstanceClass)->findOneByCode($code);
+
+        if (!$jobInstance) {
+            throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
+        }
+
+        $job = $this->getJobRegistry()->get($jobInstance->getJobName());
+        $executionId = $input->getArgument('execution');
+
+        if (null !== $executionId && null !== $input->getOption('config')) {
+            throw new \InvalidArgumentException('Configuration option cannot be specified when launching a job execution.');
+        }
+
+        if (null === $executionId) {
+            $jobParameters = $this->createJobParameters($jobInstance, $input);
+            $this->validateJobParameters($jobInstance, $jobParameters, $code);
+            $jobExecution = $job->getJobRepository()->createJobExecution($jobInstance, $jobParameters);
+
+            $executionId = $jobExecution->getId();
+
+            $options = $this->getProvidedOptions($input->getOptions());
+            unset($options['config']);
+
+            $jobExecutionMessage = new JobExecutionMessage($jobExecution, $this->getName(), $options);
+
+            if (!true === $input->getOption('synchronous')) {
+                $this->getJobExecutionQueue()->publish($jobExecutionMessage);
+
+                return;
+            }
+        }
 
         $event = new BatchCommandEvent($this, $input, $output, $jobInstance);
         $this->getContainer()->get('event_dispatcher')->dispatch(EventInterface::BATCH_COMMAND_START, $event);
@@ -97,73 +131,29 @@ class BatchCommand extends ContainerAwareCommand
             return self::EXIT_ERROR_CODE;
         }
 
-        if (!$jobInstance) {
-            throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
+        $jobExecution = $this->getJobManager()->getRepository(JobExecution::class)->find($executionId);
+        if (!$jobExecution) {
+            throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $executionId));
         }
-
-        $job = $this->getJobRegistry()->get($jobInstance->getJobName());
-        $jobParamsFactory = $this->getJobParametersFactory();
-        $rawParameters = $jobInstance->getRawParameters();
-        if ($config = $input->getOption('config')) {
-            $rawParameters = array_merge($rawParameters, $this->decodeConfiguration($config));
-        }
-        $jobParameters = $jobParamsFactory->create($job, $rawParameters);
-        $validator = $this->getValidator();
-
-        // Override mail notifier recipient email
-        if ($email = $input->getOption('email')) {
-            $errors = $validator->validate($email, new Assert\Email());
-            if (count($errors) > 0) {
-                throw new \RuntimeException(
-                    sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
-                );
-            }
-            $this
-                ->getMailNotifier()
-                ->setRecipientEmail($email);
-        }
-
-        // We merge the JobInstance from the JobManager EntityManager to the DefaultEntityManager
-        // in order to be able to have a working UniqueEntity validation
-        $defaultJobInstance = $this->getDefaultEntityManager()->merge($jobInstance);
-        $paramsValidator = $this->getJobParametersValidator();
-        $errors = $paramsValidator->validate($job, $jobParameters, ['Default', 'Execution']);
-        if (count($errors) > 0) {
+        if (!$jobExecution->getStatus()->isStarting()) {
             throw new \RuntimeException(
-                sprintf(
-                    'Job instance "%s" running the job "%s" with parameters "%s" is invalid because of "%s"',
-                    $code,
-                    $job->getName(),
-                    print_r($jobParameters->all(), true),
-                    $this->getErrorMessages($errors)
-                )
+                sprintf('Job execution "%s" has invalid status: %s', $executionId, $jobExecution->getStatus())
             );
         }
-
-        $this->getDefaultEntityManager()->clear(get_class($jobInstance));
-
-        $executionId = $input->getArgument('execution');
-        if ($executionId) {
-            $jobExecution = $this->getJobManager()->getRepository('Akeneo\Component\Batch\Model\JobExecution')
-                ->find($executionId);
-            $jobExecution->setJobParameters($jobParameters);
-            if (!$jobExecution) {
-                throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $executionId));
-            }
-            if (!$jobExecution->getStatus()->isStarting()) {
-                throw new \RuntimeException(
-                    sprintf('Job execution "%s" has invalid status: %s', $executionId, $jobExecution->getStatus())
-                );
-            }
-            if (null === $jobExecution->getExecutionContext()) {
-                $jobExecution->setExecutionContext(new ExecutionContext());
-            }
-        } else {
-            $jobExecution = $job->getJobRepository()->createJobExecution($jobInstance, $jobParameters);
+        if (null === $jobExecution->getExecutionContext()) {
+            $jobExecution->setExecutionContext(new ExecutionContext());
         }
-        $jobExecution->setJobInstance($jobInstance);
 
-        $jobExecution->setPid(getmypid());
+        $email = $input->getOption('email');
+        if (null !== $email) {
+            $this->getMailNotifier()->setRecipientEmail($email);
+        }
+
+        if (false === $input->getOption('no-log')) {
+            $logger = $this->getContainer()->get('monolog.logger.batch');
+            // Fixme: Use ConsoleHandler available on next Symfony version (2.4 ?)
+            $logger->pushHandler(new StreamHandler('php://stdout'));
+        }
 
         $this
             ->getContainer()
@@ -237,7 +227,7 @@ class BatchCommand extends ContainerAwareCommand
      * @param array[]         $exceptions
      * @param boolean         $verbose
      */
-    protected function writeExceptions(OutputInterface $output, array $exceptions, $verbose)
+    protected function writeExceptions(OutputInterface $output, array $exceptions, $verbose) : void
     {
         foreach ($exceptions as $exception) {
             $output->write(
@@ -258,7 +248,7 @@ class BatchCommand extends ContainerAwareCommand
     /**
      * @return EntityManager
      */
-    protected function getJobManager()
+    protected function getJobManager() : EntityManager
     {
         return $this->getContainer()->get('akeneo_batch.job_repository')->getJobManager();
     }
@@ -266,23 +256,23 @@ class BatchCommand extends ContainerAwareCommand
     /**
      * @return EntityManager
      */
-    protected function getDefaultEntityManager()
+    protected function getDefaultEntityManager() : EntityManager
     {
         return $this->getContainer()->get('doctrine')->getManager();
     }
 
     /**
-     * @return Validator
+     * @return ValidatorInterface
      */
-    protected function getValidator()
+    protected function getValidator() : ValidatorInterface
     {
         return $this->getContainer()->get('validator');
     }
 
     /**
-     * @return Validator
+     * @return Notifier
      */
-    protected function getMailNotifier()
+    protected function getMailNotifier() : Notifier
     {
         return $this->getContainer()->get('akeneo_batch.mail_notifier');
     }
@@ -290,7 +280,7 @@ class BatchCommand extends ContainerAwareCommand
     /**
      * @return JobRegistry
      */
-    protected function getJobRegistry()
+    protected function getJobRegistry() : JobRegistry
     {
         return $this->getContainer()->get('akeneo_batch.job.job_registry');
     }
@@ -298,7 +288,7 @@ class BatchCommand extends ContainerAwareCommand
     /**
      * @return JobParametersFactory
      */
-    protected function getJobParametersFactory()
+    protected function getJobParametersFactory() : JobParametersFactory
     {
         return $this->getContainer()->get('akeneo_batch.job_parameters_factory');
     }
@@ -306,9 +296,17 @@ class BatchCommand extends ContainerAwareCommand
     /**
      * @return JobParametersValidator
      */
-    protected function getJobParametersValidator()
+    protected function getJobParametersValidator() : JobParametersValidator
     {
         return $this->getContainer()->get('akeneo_batch.job.job_parameters_validator');
+    }
+
+    /**
+     * @return JobExecutionQueueInterface
+     */
+    protected function getJobExecutionQueue() : JobExecutionQueueInterface
+    {
+        return $this->getContainer()->get('akeneo_batch.queue.database_job_execution_queue');
     }
 
     /**
@@ -316,7 +314,7 @@ class BatchCommand extends ContainerAwareCommand
      *
      * @return string
      */
-    private function getErrorMessages(ConstraintViolationList $errors)
+    private function getErrorMessages(ConstraintViolationList $errors) : string
     {
         $errorsStr = '';
 
@@ -330,9 +328,11 @@ class BatchCommand extends ContainerAwareCommand
     /**
      * @param string $data
      *
+     * @throws \InvalidArgumentException
+     *
      * @return array
      */
-    private function decodeConfiguration($data)
+    private function decodeConfiguration($data) : array
     {
         $config = json_decode($data, true);
 
@@ -357,5 +357,72 @@ class BatchCommand extends ContainerAwareCommand
         }
 
         throw new \InvalidArgumentException($error);
+    }
+
+    /**
+     * @param JobInstance    $jobInstance
+     * @param InputInterface $input
+     *
+     * @return JobParameters
+     */
+    private function createJobParameters(JobInstance $jobInstance, InputInterface $input) : JobParameters
+    {
+        $job = $this->getJobRegistry()->get($jobInstance->getJobName());
+        $jobParamsFactory = $this->getJobParametersFactory();
+        $rawParameters = $jobInstance->getRawParameters();
+
+        $config = $input->getOption('config') ? $this->decodeConfiguration($input->getOption('config')) : [];
+
+        $rawParameters = array_merge($rawParameters, $config);
+        $jobParameters = $jobParamsFactory->create($job, $rawParameters);
+
+        return $jobParameters;
+    }
+
+    /**
+     * @param JobInstance   $jobInstance
+     * @param JobParameters $jobParameters
+     * @param string        $code
+     *
+     * @throws \RuntimeException
+     */
+    private function validateJobParameters(JobInstance $jobInstance, JobParameters $jobParameters, string $code) : void
+    {
+        // We merge the JobInstance from the JobManager EntityManager to the DefaultEntityManager
+        // in order to be able to have a working UniqueEntity validation
+        $defaultJobInstance = $this->getDefaultEntityManager()->merge($jobInstance);
+        $job = $this->getJobRegistry()->get($jobInstance->getJobName());
+        $paramsValidator = $this->getJobParametersValidator();
+        $errors = $paramsValidator->validate($job, $jobParameters, ['Default', 'Execution']);
+
+        if (count($errors) > 0) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Job instance "%s" running the job "%s" with parameters "%s" is invalid because of "%s"',
+                    $code,
+                    $job->getName(),
+                    print_r($jobParameters->all(), true),
+                    $this->getErrorMessages($errors)
+                )
+            );
+        }
+
+        $this->getDefaultEntityManager()->clear(get_class($jobInstance));
+    }
+
+    /**
+     * Get the options provided by the user in the command line.
+     *
+     * @param $options
+     *
+     * @return array
+     */
+    private function getProvidedOptions(array $options) : array
+    {
+        $providedOptions = array_filter($options, function($optionValue) {
+            return null !== $optionValue && false !== $optionValue;
+        });
+
+        return $providedOptions;
     }
 }
