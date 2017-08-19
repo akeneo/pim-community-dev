@@ -55,7 +55,7 @@ export report:
 import profile:
   title: Profilo di importazione
   overview: Anteprima del profilo di importazione
-  create: crea il profilo di importazione
+  create: crea un profilo di importazione
   edit: modificare il profilo di importazione
 import report:
   overview: rapporti di importazione
