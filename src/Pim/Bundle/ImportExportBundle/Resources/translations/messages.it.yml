@@ -47,7 +47,7 @@ export report:
 import profile:
   title: Profilo di importazione
   overview: Anteprima del profilo di importazione
-  create: crea il profilo di importazione
+  create: crea un profilo di importazione
   edit: modificare il profilo di importazione
 import report:
   overview: rapporti di importazione
@@ -85,7 +85,7 @@ pim_importexport:
 btn:
   create:
     export profile: crea il profilo di esportazione
-    import profile: crea il profilo di importazione
+    import profile: crea un profilo di importazione
 Upload and import: Carica e importa
 Upload and import now: Carica e importa ora
 import now: Importa ora
