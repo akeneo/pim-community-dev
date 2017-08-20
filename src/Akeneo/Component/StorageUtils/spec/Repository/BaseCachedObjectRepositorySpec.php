@@ -53,4 +53,12 @@ class BaseCachedObjectRepositorySpec extends ObjectBehavior
         $this->clear();
         $this->findOneByIdentifier('objectidentifier1')->shouldReturn($object1);
     }
+
+    function it_returns_null_on_non_existing_object($repository)
+    {
+        $repository->findOneByIdentifier('objectidentifier1')
+            ->willReturn(null);
+
+        $this->findOneByIdentifier('objectidentifier1')->shouldReturn(null);
+    }
 }
