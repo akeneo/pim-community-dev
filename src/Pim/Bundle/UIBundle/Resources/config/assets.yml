@@ -51,7 +51,7 @@ css:
         - bundles/pimui/less/components/product-edit-form/AttributeActions.less
         - bundles/pimui/less/components/product-edit-form/ChoicesField.less
         - bundles/pimui/less/components/product-edit-form/CommentPanel.less
-        - bundles/pimui/less/components/product-edit-form/CompletenessBlock.less
+        - bundles/pimui/less/components/product-edit-form/CompletenessPanel.less
         - bundles/pimui/less/components/product-edit-form/ComparableFields.less
         - bundles/pimui/less/components/product-edit-form/FieldContainer.less
         - bundles/pimui/less/components/product-edit-form/FormContainer.less
@@ -89,6 +89,7 @@ css:
         - bundles/pimui/less/components/Rule.less
         - bundles/pimui/less/components/Search.less
         - bundles/pimui/less/components/SequentialEdit.less
+        - bundles/pimui/less/components/SquareList.less
         - bundles/pimui/less/components/Subsection.less
         - bundles/pimui/less/components/TabContainer.less
         - bundles/pimui/less/components/Thumbnail.less
@@ -97,4 +98,5 @@ css:
         - bundles/pimui/less/components/Widget.less
 
         - bundles/pimui/less/pages/Default.less
+        - bundles/pimui/less/pages/FullPage.less
         - bundles/pimui/less/pages/Login.less

@@ -180,6 +180,8 @@ pim_enrich:
             more_products: '{{ count }} više proizvoda...'
             close: Zatvori
         status: Status
+        scope: Kanal
+        locale: Postavke jezika i regije
       copy:
         select: Odaberi
         all: Sve
@@ -368,7 +370,6 @@ pim_enrich:
           info:
             no_family: Nijedna obitelj nije definirana. Definirajte obitelj kako bi se izračunala potpunost ovog proizvoda.
             no_completeness: Promijenili ste obitelj proizvoda. Prvo sačuvajte promjene da se izračuna potpunost za novu obitelj.
-          missing_values: Vrijednosti koje nedostaju
         history:
           title: Povijest
       switch:
@@ -805,6 +806,64 @@ pim_enrich:
       modal_title: Odaberi tip atributa
     attribute_group:
       create_btn: Kreiraj
+    api_connection:
+      create_btn: Kreiraj
+  mass_edit:
+    next: Sljedeća
+    cancel: Poništi
+    confirm: Potvrdi
+    product:
+      step:
+        select:
+          label: Odaberi proizvode
+        choose:
+          label: Odabiri operaciju
+        configure:
+          label: Konfiguriraj
+        confirm:
+          label: Potvrdi
+      operation:
+        change_status:
+          label: Promjeni status (Omogući / Onemogući)
+          description: Odabrani proizvodi će biti omogućeni ili onemogućeni.
+          field: Da se omogući
+        edit_common:
+          label: Uredi uobičajene atribute
+        change_family:
+          label: Promjeni obitelj proizvoda
+          description: Obitelj odabranih proizvoda će se promijeniti u odabranu obitelj
+          field: Obitelj
+        add_to_group:
+          label: Dodaj u grupe
+          description: Odaberi grupe u koju se dodaju odabrani proizvodi
+          field: Grupe
+        add_to_variant_group:
+          label: Dodaj u varijantu grupe
+          description: Odaberi varijantu grupe u koju će se dodati odabrani proizvodi
+          field: Grupa
+        add_to_category:
+          label: Klasificiraj proizvode u kategorije
+          description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
+        move_to_category:
+          label: Premjestiti proizvode u kategorije
+          description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
+        remove_from_category:
+          label: Uklanjanje proizvoda iz kategorija
+          description: Proizvodi će biti uklonjeni iz sljedećih kategorija.
+    family:
+      step:
+        select:
+          label: Odaberi obitelji
+        choose:
+          label: Odabiri operaciju
+        configure:
+          label: Konfiguriraj
+        confirm:
+          label: Potvrdi
+      operation:
+        set_requirements:
+          label: Postavi zahtjeve za atribute
+          description: Sljedeći zahtjevi atributa će se primijeniti na odabrane obitelji
 pim_enrich.error:
   exception.title: Ups! Pojavila se pogreška u {{ status_code }}...
 page_title:

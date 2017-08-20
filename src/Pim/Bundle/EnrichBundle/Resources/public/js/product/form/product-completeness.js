@@ -25,6 +25,19 @@ define(
         return BaseForm.extend({
             template: _.template(template),
 
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', this.render.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', this.render.bind(this));
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritDoc}
+             */
             render: function () {
                 this.$el.empty();
 
@@ -48,19 +61,19 @@ define(
             getRatio: function () {
                 var completeness = _.findWhere(
                     this.getFormData().meta.completenesses,
-                    { locale: UserContext.get('catalogLocale') }
+                    { channel: UserContext.get('catalogScope') }
                 );
 
                 if (undefined === completeness) {
                     return null;
                 }
 
-                completeness = completeness.channels[UserContext.get('catalogScope')];
+                completeness = completeness.locales[UserContext.get('catalogLocale')];
                 if (undefined === completeness) {
                     return null;
                 }
 
-                return parseInt(completeness.completeness.ratio);
+                return Math.round(completeness.completeness.ratio);
             },
 
             /**

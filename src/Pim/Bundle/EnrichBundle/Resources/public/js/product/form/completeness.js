@@ -21,10 +21,9 @@ define(
     function ($, _, __, BaseForm, template, FetcherRegistry, i18n, UserContext) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'panel-pane completeness-panel',
+            className: 'panel-pane completeness-panel AknCompletenessPanel',
             initialFamily: null,
             events: {
-                'click header': 'switchLocale',
                 'click .missing-attributes a': 'showAttribute'
             },
 
@@ -72,14 +71,18 @@ define(
 
                         this.$el.html(
                             this.template({
+                                __: __,
                                 hasFamily: this.getFormData().family !== null,
                                 completenesses: this.sortCompleteness(this.getFormData().meta.completenesses),
                                 i18n: i18n,
                                 channels: channels,
                                 locales: locales,
-                                uiLocale: UserContext.get('uiLocale'),
                                 catalogLocale: UserContext.get('catalogLocale'),
-                                hasFamilyChanged: this.getFormData().family !== this.initialFamily
+                                hasFamilyChanged: this.getFormData().family !== this.initialFamily,
+                                missingValuesKey: 'pim_enrich.form.product.panel.completeness.missing_values',
+                                noFamilyLabel: __('pim_enrich.form.product.panel.completeness.info.no_family'),
+                                noCompletenessLabel:
+                                    __('pim_enrich.form.product.panel.completeness.info.no_completeness')
                             })
                         );
                         this.delegateEvents();
@@ -90,7 +93,7 @@ define(
             },
 
             /**
-             * Sort completenesses. Put the user current catalog locale first.
+             * Sort completenesses. Put the user current catalog scope first.
              *
              * @param completenesses
              *
@@ -100,23 +103,9 @@ define(
                 if (_.isEmpty(completenesses)) {
                     return [];
                 }
-                var sortedCompleteness = [_.findWhere(completenesses, {locale: UserContext.get('catalogLocale')})];
+                var sortedCompleteness = [_.findWhere(completenesses, {channel: UserContext.get('catalogScope')})];
 
                 return _.union(sortedCompleteness, completenesses);
-            },
-
-            /**
-             * Toggle the current locale
-             *
-             * @param Event event
-             */
-            switchLocale: function (event) {
-                var $completenessBlock = $(event.currentTarget).parents('.completeness-block');
-                if ($completenessBlock.attr('data-closed') === 'false') {
-                    $completenessBlock.attr('data-closed', 'true');
-                } else {
-                    $completenessBlock.attr('data-closed', 'false');
-                }
             },
 
             /**

@@ -180,6 +180,8 @@ pim_enrich:
             more_products: '{{ count }} 更多产品...'
             close: 关闭
         status: 状态
+        scope: 通道
+        locale: 本地化语言
       copy:
         select: 选择
         all: 所有
@@ -361,7 +363,6 @@ pim_enrich:
           info:
             no_family: 没有定义品类。请定义一个品类来计算这个产品的完成度。
             no_completeness: 你只是改变了产品的品类。请先保存来计算在该品类下的数据完整性。
-          missing_values: 缺失的值
         history:
           title: 历史
       switch:
@@ -773,6 +774,64 @@ pim_enrich:
       modal_title: 选择属性类型
     attribute_group:
       create_btn: 创建
+    api_connection:
+      create_btn: 创建
+  mass_edit:
+    next: 下一页
+    cancel: 取消
+    confirm: 确认
+    product:
+      step:
+        select:
+          label: 选择产品
+        choose:
+          label: 选择操作
+        configure:
+          label: 配置
+        confirm:
+          label: 确认
+      operation:
+        change_status:
+          label: 更改状态 （启用 / 禁用）
+          description: 将启用或禁用选定的产品。
+          field: 启用
+        edit_common:
+          label: 编辑共同属性
+        change_family:
+          label: 更改产品品类
+          description: 选定产品的品类将更改为被选定的品类
+          field: 产品族
+        add_to_group:
+          label: 加入到组
+          description: 选择一个组，将所选定的产品加入其中
+          field: 分组
+        add_to_variant_group:
+          label: 添加到款式组
+          description: 选择一个款式组，将所选定的产品加入其中
+          field: 分组
+        add_to_category:
+          label: 在目录中为产品分类
+          description: 产品将被放入以下目录，现存的位置也会保留。
+        move_to_category:
+          label: 在目录中移动产品
+          description: 产品将被放入以下目录，现存的位置不会保留。
+        remove_from_category:
+          label: 在目录中移除产品
+          description: 产品将从以下目录中删除。
+    family:
+      step:
+        select:
+          label: 选择品类
+        choose:
+          label: 选择操作
+        configure:
+          label: 配置
+        confirm:
+          label: 确认
+      operation:
+        set_requirements:
+          label: 设置属性要求
+          description: 下列属性要求将应用于所选的品类中
 pim_enrich.error:
   exception.title: 我靠 ！{{ status_code }} 出错了...
 page_title:

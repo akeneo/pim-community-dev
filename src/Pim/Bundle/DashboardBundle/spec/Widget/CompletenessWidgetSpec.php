@@ -5,16 +5,15 @@ namespace spec\Pim\Bundle\DashboardBundle\Widget;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Repository\CompletenessRepositoryInterface;
 use Prophecy\Argument;
 
 class CompletenessWidgetSpec extends ObjectBehavior
 {
-    function let(CompletenessRepositoryInterface $completenessRepo, LocaleHelper $localeHelper, UserContext $userContext, ObjectFilterInterface $objectFilter, IdentifiableObjectRepositoryInterface $localeRepository)
+    function let(CompletenessRepositoryInterface $completenessRepo, UserContext $userContext, ObjectFilterInterface $objectFilter, IdentifiableObjectRepositoryInterface $localeRepository)
     {
-        $this->beConstructedWith($completenessRepo, $localeHelper, $userContext, $objectFilter, $localeRepository);
+        $this->beConstructedWith($completenessRepo, $userContext, $objectFilter, $localeRepository);
     }
 
     function it_is_a_widget()
@@ -37,7 +36,7 @@ class CompletenessWidgetSpec extends ObjectBehavior
         $this->getParameters()->shouldReturn([]);
     }
 
-    function it_exposes_the_completeness_data($completenessRepo, $localeHelper)
+    function it_exposes_the_completeness_data($completenessRepo, $userContext)
     {
         $completenessRepo->getProductsCountPerChannels(Argument::any())->willReturn(
             [
@@ -75,8 +74,7 @@ class CompletenessWidgetSpec extends ObjectBehavior
                 ],
             ]
         );
-        $localeHelper->getLocaleLabel('en_US')->willReturn('English');
-        $localeHelper->getLocaleLabel('fr_FR')->willReturn('French');
+        $userContext->getCurrentLocaleCode()->willReturn('en_US');
 
         $this->getData()->shouldReturn(
             [
@@ -84,16 +82,16 @@ class CompletenessWidgetSpec extends ObjectBehavior
                     'total'    => 40,
                     'complete' => 10,
                     'locales'  => [
-                        'English' => 10,
-                        'French'  => 0,
+                        'English (United States)' => 10,
+                        'French (France)'  => 0,
                     ],
                 ],
                 'E-Commerce' => [
                     'total' => 25,
                     'complete' => 30,
                     'locales' => [
-                        'English' => 25,
-                        'French'  => 5,
+                        'English (United States)' => 25,
+                        'French (France)'  => 5,
                     ]
                 ]
             ]

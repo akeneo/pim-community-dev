@@ -1,5 +1,10 @@
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+
 {% block content %}
-    {# This style is temporary and will be dropped on PEFization of this screen #}
+<div class="AknDefault-mainContent">
+    {% set title = ('category.overview')|trans %}
+    {{ elements.page_header(title) }}
+
     <div id="category-tree-container" style="display:flex; height:100%">
         <div id="tree" {% if resource_granted(acl ~ '_category_edit') %} data-editable="true"{% endif %}{% if resource_granted(acl ~ '_category_create') %} data-creatable="true"{% endif %}></div>
 
@@ -21,8 +26,43 @@
     </div>
 
     {% include "PimEnrichBundle:CategoryTree:_scripts.html.twig" %}
+</div>
 {% endblock %}
 
 <script type="text/javascript">
     window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+</script>
+
+<script>
+    require(
+        [
+            'pim/common/breadcrumbs',
+            'pim/fetcher-registry',
+            'pim/form-builder'
+        ],
+        function(
+            Breadcrumbs,
+            FetcherRegistry,
+            FormBuilder
+        ) {
+            $(function() {
+                var breadcrumbs = new Breadcrumbs({
+                    config: {
+                        tab: 'pim-menu-settings',
+                        item: 'pim-menu-settings-product-category'
+                    }
+                });
+                breadcrumbs.configure().then(function () {
+                    breadcrumbs.render();
+                    $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                });
+
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+                        form.setElement('.user-menu').render();
+                    }.bind(this));
+                });
+            });
+        }
+    );
 </script>

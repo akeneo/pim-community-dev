@@ -191,6 +191,8 @@ pim_enrich:
             more_products: '{{ count }} produits supplémentaires...'
             close: Fermer
         status: État
+        scope: Canal
+        locale: Locale
       copy:
         select: Sélectionner
         all: Tous
@@ -410,14 +412,12 @@ pim_enrich:
           attribute_group_selector: Groupe d'attributs
         categories:
           title: Catégories
-          catalog_selector: Catalogue
       panel:
         completeness:
           title: Complétude
           info:
             no_family: Aucune famille définie. Merci de définir une famille pour calculer la complétude de ce produit.
             no_completeness: Vous venez de modifier la famille du produit. Merci de l'enregistrer en premier pour calculer la complétude de la nouvelle famille.
-          missing_values: Valeurs manquantes
         history:
           title: Historique
       switch:
@@ -709,55 +709,6 @@ pim_enrich:
             select_attributes: Ajouter des attributs
             add: Ajouter
             attributes_groups_selected: '{{ itemsCount }} groupe(s) sélectionné(s)'
-  mass_edit:
-    next: Suivant
-    previous: Précédent
-    cancel: Annuler
-    confirm: Confirmer
-    product:
-      title: Produit / Édition en masse ({{ itemsCount }} produits)
-      step:
-          select:
-            label: Choisir des produits
-          choose:
-            label: Choisir une opération
-            title: Édition en masse ({{ itemsCount }} produits)
-          configure:
-            label: Configurer
-          confirm:
-            label: Confirmer
-      operation:
-          change_status:
-            label: Changer de statut (activé / désactivé)
-            description: Les produits sélectionnés vont être activés ou désactivés.
-            field: Activation
-          edit_common:
-            label: Modifier les attributs communs
-            description: Les attributs des produits sélectionnés vont être édités avec les données suivantes pour la locale {{ locale }} et le canal {{ scope }}, choisis sur la grille des produits.
-          change_family:
-            label: Changer la famille des produits
-            description: La famille des produits sélectionnés sera remplacée par la famille choisie
-            field: Famille
-          add_to_group:
-            label: Ajouter aux groupes
-            description: Sélectionnez les groupes dans lesquels ajouter les produits sélectionnés
-            field: Groupes
-          add_to_variant_group:
-            label: Ajouter à un groupe de variantes
-            description: Choisissez le groupe de variantes auquel associer les produits sélectionnés
-            field: Groupe
-    family:
-      title: Famille / Édition en masse (({{ itemsCount }} familles)
-      step:
-        select:
-          label: Choisir des familles
-        choose:
-          label: Choisir une opération
-          title: Édition en masse ({{ itemsCount }} familles)
-        configure:
-          label: Configurer
-        confirm:
-          label: Confirmer
   job:
     upload: Glissez et déposez un fichier ou cliquez ici
   export:
@@ -957,6 +908,64 @@ pim_enrich:
     attribute_group:
       title: Vue d'ensemble des groupes d'attributs
       create_btn: Créer
+    api_connection:
+      create_btn: Créer
+  mass_edit:
+    next: Suivant
+    cancel: Annuler
+    confirm: Confirmer
+    product:
+      step:
+        select:
+          label: Choisir des produits
+        choose:
+          label: Choisir une opération
+        configure:
+          label: Configurer
+        confirm:
+          label: Confirmer
+      operation:
+        change_status:
+          label: Changer de statut (activé / désactivé)
+          description: Les produits sélectionnés vont être activés ou désactivés.
+          field: Pour activer
+        edit_common:
+          label: Modifier les attributs communs
+        change_family:
+          label: Changer la famille des produits
+          description: La famille des produits sélectionnés sera remplacée par la famille choisie
+          field: Famille
+        add_to_group:
+          label: Ajouter aux groupes
+          description: Sélectionnez les groupes dans lesquels ajouter les produits sélectionnés
+          field: Groupes
+        add_to_variant_group:
+          label: Ajouter à un groupe de variantes
+          description: Choisissez le groupe de variantes auquel associer les produits sélectionnés
+          field: Groupe
+        add_to_category:
+          label: Classifier les produits dans des catégories
+          description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé.
+        move_to_category:
+          label: Déplacer des produits vers des catégories
+          description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera perdu.
+        remove_from_category:
+          label: Retirer des produits des catégories
+          description: Les produits seront retirés des catégories suivantes.
+    family:
+      step:
+        select:
+          label: Choisir des familles
+        choose:
+          label: Choisir une opération
+        configure:
+          label: Configurer
+        confirm:
+          label: Confirmer
+      operation:
+        set_requirements:
+          label: Choisir les attributs requis
+          description: Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées
 pim_enrich.error:
   exception.title: Oups! Une erreur {{ status_code }} s'est produite...
   http:

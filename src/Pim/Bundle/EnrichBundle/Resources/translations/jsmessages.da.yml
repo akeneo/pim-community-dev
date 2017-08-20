@@ -191,6 +191,8 @@ pim_enrich:
             more_products: '{{ count }} flere produkter...'
             close: Luk
         status: Status
+        scope: Kanal
+        locale: Landestandard
       copy:
         select: Vælg
         all: Alle
@@ -419,14 +421,12 @@ pim_enrich:
           attribute_group_selector: Attributgruppe
         categories:
           title: Kategorier
-          catalog_selector: Katalog
       panel:
         completeness:
           title: Fuldstændighed
           info:
             no_family: Ingen familie defineret. Definér venligst en familie for at beregne fuldstændigheden af dette produkt.
             no_completeness: Du har lige ændret familie af produktet. Gem det første for at beregne fuldstændighed for den nye familie.
-          missing_values: Manglende værdier
         history:
           title: Historik
       switch:
@@ -932,6 +932,76 @@ pim_enrich:
     attribute_group:
       title: attributgruppe oversigt
       create_btn: Opret
+    api_connection:
+      create_btn: Opret
+  mass_edit:
+    next: Næste
+    previous: Tilbage
+    cancel: Annuller
+    confirm: Bekræft
+    product:
+      title: Produkt / masse redigere ({{ itemsCount }} produkter)
+      step:
+        select:
+          label: Vælg produkter
+        choose:
+          label: Vælg handling
+          title: Masse redigere ({{ itemsCount }} produkter)
+        configure:
+          label: Konfigurér
+        confirm:
+          label: Bekræft
+        launch_error:
+          label: Der opstod en fejl under opstart af handlingen masse Rediger
+        launched:
+          label: Bulk-handlingen "{{ operation }}" er blevet igangsat. Du får besked, når den er afsluttet.
+      operation:
+        change_status:
+          label: Ændre status (aktiver / deaktiver)
+          description: De valgte produkter vil blive aktiveret eller deaktiveret.
+          field: At aktivere
+        edit_common:
+          label: Rediger fælles attributter
+          description: Den valgte produktattributter vil blive redigeret med følgende data for landestandard {{ locale }} og kanal {{ scope }}, valgt i gitteret produkter.
+        change_family:
+          label: Ændre familie af produkter
+          description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
+          field: Familie
+        add_to_group:
+          label: Tilføj til grupper
+          description: Vælg de grupper hvor de udvalgte produkter skal tilføjes til
+          field: Grupper
+        add_to_variant_group:
+          label: Tilføj en variant gruppe
+          description: Vælg variantgruppen hvor de valgte produkter skal tilføjes
+          field: Gruppe
+        add_to_category:
+          label: Klassificere produkter i kategorier
+          description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering bibeholdes.
+        move_to_category:
+          label: Flyt produkter til kategorier
+          description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
+        remove_from_category:
+          label: Fjern produkter fra kategorier
+          description: Produkterne vil blive fjernet fra følgende kategorier.
+    family:
+      title: Familie / masse redigere ({{ itemsCount }} familier)
+      step:
+        select:
+          label: Vælg familier
+        choose:
+          label: Vælg handling
+          title: Masse edit ({{ itemsCount }} familier)
+        configure:
+          label: Konfigurér
+        confirm:
+          label: Bekræft
+        launched:
+          label: Bulk-handlingen "{{ operation }}" er blevet igangsat. Du får besked, når den er afsluttet.
+      operation:
+        set_requirements:
+          label: Indstil attribut krav
+          description: Følgende attribut krav vil blive anvendt til de valgte familier
 pim_enrich.error:
   exception.title: Beklager! Der opstod en {{ status_code }}...
   http:

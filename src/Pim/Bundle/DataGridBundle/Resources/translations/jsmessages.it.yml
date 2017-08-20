@@ -15,7 +15,7 @@ edit: modifica
 copy: copia
 remove: rimuovi
 Status: Stato
-All: Tutto
+All: Tutti
 Per page: Per pagina
 Mass Action Confirmation: Conferma azione di massa
 Mass action performed.: Azione di massa eseguita.
@@ -28,6 +28,7 @@ Action is not performed.: Azione non eseguita.
 Please, select item to perform action.: Per favore, seleziona l'articolo per eseguire l'azione.
 View per page: Mostra per pagina
 Enabled: Abilitato
+Disabled: Disabilitato
 "Yes": true
 "No": false
 oro.datagrid.entityHint: Entità
@@ -39,7 +40,7 @@ oro.datagrid.pagination.totalPages: "di {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} record"
 oro.datagrid.action.reset: "Azzera"
 oro.datagrid.action.refresh: "Aggiorna"
-oro_datagrid.select.all: "Tutto"
+oro_datagrid.select.all: "Tutti"
 oro_datagrid.select.visible: "Tutti visibili"
 oro_datagrid.select.none: "Nessun"
 pim.grid.ajax_choice_filter.label_empty: è vuoto
@@ -60,7 +61,7 @@ pim_datagrid:
     clear: Ripulisci
     displayed_columns: Colonne Selezionate
     apply: Applica
-    cancel: Cancella
+    cancel: Annulla
     remove_column: Rimuovere
   mass_action:
     delete:

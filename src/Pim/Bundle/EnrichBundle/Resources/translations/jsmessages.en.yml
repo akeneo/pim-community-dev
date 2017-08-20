@@ -449,7 +449,7 @@ pim_enrich:
                     info:
                         no_family: No family defined. Please define a family to calculate the completeness of this product.
                         no_completeness: You just changed the family of the product. Please save it first to calculate the completeness for the new family.
-                    missing_values: Missing values
+                    missing_values: "{1} 1 missing value|] 1, Inf [{{ count }} missing values"
                 history:
                     title: History
             switch:
@@ -966,7 +966,8 @@ pim_enrich:
         cancel: Cancel
         confirm: Confirm
         product:
-            title: Product / Mass Edit ({{ itemsCount }} products)
+            title: "{1} Product / Mass Edit (1 product)|] 1, Inf [Product / Mass Edit ({{ itemsCount }} products)"
+            confirm: "{1} You are about to update a product with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} products with the following information, please confirm."
             step:
                 select:
                     label: Choose products
@@ -1011,7 +1012,8 @@ pim_enrich:
                     label: Remove products from categories
                     description: The products will be removed from the following categories.
         family:
-            title: Family / Mass Edit ({{ itemsCount }} families)
+            title: "{1} Product / Mass Edit (1 family)|] 1, Inf [Product / Mass Edit ({{ itemsCount }} families)"
+            confirm: "{1} You are about to update a family with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} families with the following information, please confirm."
             step:
                 select:
                     label: Choose families

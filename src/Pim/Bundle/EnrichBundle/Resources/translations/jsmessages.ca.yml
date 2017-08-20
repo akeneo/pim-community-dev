@@ -180,6 +180,8 @@ pim_enrich:
             more_products: '{{ count }} més productes...'
             close: Tancar
         status: Estat
+        scope: Canal
+        locale: Configuració Regional
       copy:
         select: Seleccionar
         all: Tots
@@ -368,7 +370,6 @@ pim_enrich:
           info:
             no_family: No hi ha cap família definida. Si us plau, defineixi una família per calcular la integritat d'aquest producte.
             no_completeness: Tot just ha canviat la família del producte. Deseu-lo per calcular la integritat de la nova família.
-          missing_values: Valors perduts
         history:
           title: Històric
       switch:
@@ -805,6 +806,64 @@ pim_enrich:
       modal_title: Trieu el tipus d'atribut
     attribute_group:
       create_btn: Crear
+    api_connection:
+      create_btn: Crear
+  mass_edit:
+    next: Següent
+    cancel: Cancelar
+    confirm: Confirmar
+    product:
+      step:
+        select:
+          label: Triar productes
+        choose:
+          label: Trieu l'operació
+        configure:
+          label: Configurar
+        confirm:
+          label: Confirmar
+      operation:
+        change_status:
+          label: Canviar l'estat (activar / desactivar)
+          description: Els productes seleccionats seran activats o desactivats.
+          field: Per activar
+        edit_common:
+          label: Editar atributs comuns
+        change_family:
+          label: Canviar la família de productes
+          description: La família dels productes seleccionats es canviarà per la família escollida
+          field: Família
+        add_to_group:
+          label: Afegir a grups
+          description: Seleccioneu els grups on volgueu afegir els productes seleccionats
+          field: Grups
+        add_to_variant_group:
+          label: Afegir a un grup de variants
+          description: Seleccioneu el grup de variants on afegir els productes seleccionats
+          field: Grup
+        add_to_category:
+          label: Classificar els productes en categories
+          description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
+        move_to_category:
+          label: Moure els productes a les categories
+          description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
+        remove_from_category:
+          label: Eliminar productes de les categories
+          description: Els productes s'eliminaran de les següents categories.
+    family:
+      step:
+        select:
+          label: Triar famílies
+        choose:
+          label: Trieu l'operació
+        configure:
+          label: Configurar
+        confirm:
+          label: Confirmar
+      operation:
+        set_requirements:
+          label: Establir els requeriments d'atribut
+          description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
 pim_enrich.error:
   exception.title: Oh no! S'ha produït un error de {{ status_code }}...
 page_title:

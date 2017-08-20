@@ -180,6 +180,8 @@ pim_enrich:
             more_products: '{{ count }} extra producten...'
             close: Sluiten
         status: Status
+        scope: Kanaal
+        locale: Lokalisatie
       copy:
         select: Selecteer
         all: Alle
@@ -379,7 +381,6 @@ pim_enrich:
           info:
             no_family: Geen familie gedefinieerd. Gelieve een familie te definiëren om de volledigheid van dit product te berekenen.
             no_completeness: Je hebt zonet de familie van dit product gewijzigd. Gelieve dit eerst te bewaren om de volledigheid van de nieuwe familie te berekenen.
-          missing_values: Ontbrekende waarden
         history:
           title: Geschiedenis
       switch:
@@ -805,6 +806,48 @@ pim_enrich:
       modal_title: Kies het attribuuttype
     attribute_group:
       create_btn: Aanmaken
+    api_connection:
+      create_btn: Aanmaken
+  mass_edit:
+    next: Volgende
+    cancel: Annuleren
+    product:
+      step:
+        choose:
+          label: Kies bewerking
+      operation:
+        change_status:
+          label: Status wijzigen (inschakelen / uitschakelen)
+          description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
+          field: Om in te schakelen
+        change_family:
+          label: Wijzigen van de productfamilie
+          description: De familie van de geselecteerde producten zal worden gewijzigd in de gekozen familie
+          field: Familie
+        add_to_group:
+          label: Toevoegen aan groepen
+          description: Selecteer de groepen waarin u de geselecteerde producten wilt toevoegen
+          field: Groepen
+        add_to_variant_group:
+          label: Voeg toe aan een variant groep
+          description: Selecteer de variant groep waarin u de geselecteerde producten wilt toevoegen
+          field: Groep
+        add_to_category:
+          label: Producten in categorieën indelen
+          description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing wordt behouden.
+        move_to_category:
+          label: Verplaats producten naar categorieën
+          description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing gaat verloren.
+        remove_from_category:
+          label: Verwijder producten van categorieën
+          description: De producten zullen worden verwijderd uit de volgende categorieën.
+    family:
+      step:
+        choose:
+          label: Kies bewerking
+      operation:
+        set_requirements:
+          description: De volgende attribuutvereisten zullen worden toegepast op de geselecteerde families
 pim_enrich.error:
   exception.title: Oh, nee! Een {{ status_code }} fout deed zich voor...
 page_title:

@@ -18,7 +18,7 @@ function (
     template
 ) {
     return BaseForm.extend({
-        className: 'AknTabContainer-content tab-content',
+        className: 'tab-content',
         template: _.template(template),
         config: {},
 

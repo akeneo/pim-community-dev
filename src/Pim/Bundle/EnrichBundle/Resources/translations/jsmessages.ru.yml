@@ -180,6 +180,8 @@ pim_enrich:
             more_products: '{{ count }} больше продуктов...'
             close: Закрыть
         status: Статус
+        scope: Канал
+        locale: Локаль
       copy:
         select: Выбрать
         all: Все
@@ -363,7 +365,6 @@ pim_enrich:
           info:
             no_family: Семейство не определено. Пожалуйста определите семейство для вычисления завершенности этого продукта.
             no_completeness: Вы только что изменили семейство продукта. Пожалуйста, сохраните его первым, чтобы вычислить завершенность для нового семейства.
-          missing_values: Отсутствующуют значения
         history:
           title: Журнал
       switch:
@@ -799,6 +800,64 @@ pim_enrich:
       modal_title: Выберите тип атрибута
     attribute_group:
       create_btn: Создать
+    api_connection:
+      create_btn: Создать
+  mass_edit:
+    next: Следующая
+    cancel: Отмена
+    confirm: Подтверждение
+    product:
+      step:
+        select:
+          label: Выберите продукты
+        choose:
+          label: Выберите операцию
+        configure:
+          label: Настройка
+        confirm:
+          label: Подтверждение
+      operation:
+        change_status:
+          label: Изменить статус (включить / выключить)
+          description: Выбранные продукты будут активированы или деактивированы.
+          field: Включить
+        edit_common:
+          label: Изменить общие атрибуты
+        change_family:
+          label: Изменить семейство продуктов
+          description: Семейство для выбранных продуктов будет изменено на выбранное семейство
+          field: Семейство
+        add_to_group:
+          label: Добавить в группы
+          description: Выберите группы, в которые нужно добавить выбранные продукты
+          field: Группы
+        add_to_variant_group:
+          label: Добавить в группу вариантов
+          description: Выберите группу вариантов для добавления выбранных продуктов
+          field: Группа
+        add_to_category:
+          label: Классифицировать товары в категориях
+          description: Продукты будут добавлены в следующие категории, исходное расположение сохраниться.
+        move_to_category:
+          label: Переместить продуты в категории
+          description: Продукты будут перемещены в следующие категории, существующее размещение потеряется.
+        remove_from_category:
+          label: Удалить продукты из категорий
+          description: Продукты будут удалены из следующих категорий.
+    family:
+      step:
+        select:
+          label: Выберите семейства
+        choose:
+          label: Выберите операцию
+        configure:
+          label: Настройка
+        confirm:
+          label: Подтверждение
+      operation:
+        set_requirements:
+          label: Установить требования к атрибутам
+          description: Следующие требования к атрибутам будут применены к выбранным семействам
 pim_enrich.error:
   exception.title: Ах, нет! Произошла ошибка {{ status_code }}...
 page_title:

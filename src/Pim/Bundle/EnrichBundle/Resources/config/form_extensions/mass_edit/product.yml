@@ -3,13 +3,10 @@ extensions:
         module: pim/mass-edit-form/form
         config:
             backRoute: pim_enrich_product_index
-            selectLabel: pim_enrich.mass_edit.product.step.select.label
-            chooseLabel: pim_enrich.mass_edit.product.step.choose.label
-            configureLabel: pim_enrich.mass_edit.product.step.configure.label
-            confirmLabel: pim_enrich.mass_edit.product.step.confirm.label
             launchedLabel: pim_enrich.mass_edit.product.step.launched.label
             launchErrorLabel: pim_enrich.mass_edit.product.step.launch_error.label
             title: pim_enrich.mass_edit.product.title
+            confirm: pim_enrich.mass_edit.product.confirm
 
     pim-mass-product-edit-choose:
         module: pim/mass-edit-form/choose
@@ -18,17 +15,6 @@ extensions:
         targetZone: choose
         config:
             title: pim_enrich.mass_edit.product.step.choose.title
-
-    pim-mass-product-edit-configure-change-status:
-        module: pim/mass-edit-form/product/change-status
-        parent: pim-mass-product-edit
-        aclResourceId: pim_enrich_product_change_state
-        position: 110
-        config:
-            label: pim_enrich.mass_edit.product.operation.change_status.label
-            description: pim_enrich.mass_edit.product.operation.change_status.description
-            code: change_status
-            jobInstanceCode: update_product_value
 
     pim-mass-product-edit-configure-edit-common:
         module: pim/mass-edit-form/product/edit-common-attributes
@@ -40,6 +26,7 @@ extensions:
             description: pim_enrich.mass_edit.product.operation.edit_common.description
             code: edit_common
             jobInstanceCode: edit_common_attributes
+            icon: icon-edit
 
     pim-mass-product-edit-configure-change-family:
         module: pim/mass-edit-form/product/change-family
@@ -51,6 +38,19 @@ extensions:
             description: pim_enrich.mass_edit.product.operation.change_family.description
             code: change_family
             jobInstanceCode: update_product_value
+            icon: icon-template
+
+    pim-mass-product-edit-configure-change-status:
+        module: pim/mass-edit-form/product/change-status
+        parent: pim-mass-product-edit
+        aclResourceId: pim_enrich_product_change_state
+        position: 110
+        config:
+            label: pim_enrich.mass_edit.product.operation.change_status.label
+            description: pim_enrich.mass_edit.product.operation.change_status.description
+            code: change_status
+            jobInstanceCode: update_product_value
+            icon: icon-enable
 
     pim-mass-product-edit-configure-add-to-group:
         module: pim/mass-edit-form/product/add-to-group
@@ -62,6 +62,7 @@ extensions:
             description: pim_enrich.mass_edit.product.operation.add_to_group.description
             code: add_to_group
             jobInstanceCode: add_product_value
+            icon: icon-groups
 
     pim-mass-product-edit-configure-add-to-variant-group:
         module: pim/mass-edit-form/product/add-to-variant-group
@@ -73,6 +74,7 @@ extensions:
             description: pim_enrich.mass_edit.product.operation.add_to_variant_group.description
             code: add_to_variant_group
             jobInstanceCode: add_to_variant_group
+            icon: icon-variant
 
     pim-mass-product-edit-configure-add-to-category:
         module: pim/mass-edit-form/product/category
@@ -86,6 +88,7 @@ extensions:
             jobInstanceCode: add_product_value
             listRoute: pim_enrich_product_listcategories
             childrenRoute: pim_enrich_categorytree_children
+            icon: icon-folders
 
     pim-mass-product-edit-configure-move-to-category:
         module: pim/mass-edit-form/product/category
@@ -99,6 +102,7 @@ extensions:
             jobInstanceCode: update_product_value
             listRoute: pim_enrich_product_listcategorieslue
             childrenRoute: pim_enrich_categorytree_children
+            icon: icon-compare
 
     pim-mass-product-edit-configure-remove-from-category:
         module: pim/mass-edit-form/product/category
@@ -112,3 +116,4 @@ extensions:
             jobInstanceCode: remove_product_value
             listRoute: pim_enrich_product_listcategorieslue
             childrenRoute: pim_enrich_categorytree_children
+            icon: icon-delete

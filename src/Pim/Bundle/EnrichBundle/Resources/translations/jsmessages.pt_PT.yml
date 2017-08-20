@@ -169,6 +169,8 @@ pim_enrich:
             more_products: '{{ count }} mais produtos...'
             close: Fechar
         status: Estado
+        scope: Canal
+        locale: Local
       copy:
         select: Selecionar
         all: Tudo
@@ -333,7 +335,6 @@ pim_enrich:
           info:
             no_family: Nenhuma família definida. Por favor defina uma família para calcular a integridade da informação deste produto.
             no_completeness: Alterou a família do produto. Por favor, grave-o primeiro para calcular a integridade dos dados para a nova família.
-          missing_values: Valores em falta
         history:
           title: Histórico
       switch:
@@ -700,6 +701,64 @@ pim_enrich:
       modal_title: Escolha o tipo de atributo
     attribute_group:
       create_btn: Criar
+    api_connection:
+      create_btn: Criar
+  mass_edit:
+    next: Seguinte
+    cancel: Cancelar
+    confirm: Confirmar
+    product:
+      step:
+        select:
+          label: Escolher produtos
+        choose:
+          label: Escolher operação
+        configure:
+          label: Configurar
+        confirm:
+          label: Confirmar
+      operation:
+        change_status:
+          label: Alterar estado (ativar / desativar)
+          description: Os produtos selecionados serão ativados ou desativados.
+          field: Para ativar
+        edit_common:
+          label: Editar atributos comuns
+        change_family:
+          label: Mudar a família de produtos
+          description: A família dos produtos seleccionados será alterada para a família escolhida
+          field: Família
+        add_to_group:
+          label: Adicionar a grupos
+          description: Selecione os grupos aos quais pretende adicionar os produtos selecionados
+          field: Grupos
+        add_to_variant_group:
+          label: Adicionar a um grupo variante
+          description: Selecione o grupo variante em qual quer adicionar os produtos selecionados
+          field: Grupo
+        add_to_category:
+          label: Classificar produtos em categorias
+          description: Os produtos serão posicionados nas categorias seguintes, o posicionamento existente será mantido também.
+        move_to_category:
+          label: Mover produtos para categorias
+          description: Os produtos serão colocados nas categorias seguintes, a sua localização atual será perdida.
+        remove_from_category:
+          label: Retirar produtos de categorias
+          description: Os produtos serão retirados das seguintes categorias.
+    family:
+      step:
+        select:
+          label: Escolher famílias
+        choose:
+          label: Escolher operação
+        configure:
+          label: Configurar
+        confirm:
+          label: Confirmar
+      operation:
+        set_requirements:
+          label: Estabelecer requisitos do atributo
+          description: Os seguintes requisitos de atributo serão aplicados às famílias selecionadas
 pim_enrich.error:
   exception.title: Ora bolas! Ocorreu o erro {{ status_code }}...
 page_title:

@@ -2121,7 +2121,6 @@ class WebUser extends PimContext
      */
     public function iCancelTheMassEdit()
     {
-        $this->scrollContainerTo(900);
         $this->getCurrentPage()->cancel();
     }
 

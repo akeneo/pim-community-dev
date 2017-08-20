@@ -8,12 +8,14 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'oro/translator',
         'pim/form',
         'pim/template/mass-edit/choose'
     ],
     function (
+        $,
         _,
         __,
         BaseForm,
@@ -21,9 +23,9 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'AknChoicesField',
+            className: 'AknSquareList',
             events: {
-                'change .operation': 'updateOperation'
+                'click .operation': 'updateOperation'
             },
 
             /**
@@ -56,7 +58,8 @@ define(
              * @param {Event} event
              */
             updateOperation: function (event) {
-                this.getParent().setCurrentOperation(event.target.value)
+                this.getParent().setCurrentOperation($(event.target).closest('.operation').data('code'));
+                this.render();
             },
 
             /**
