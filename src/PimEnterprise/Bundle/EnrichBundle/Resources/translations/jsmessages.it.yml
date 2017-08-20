@@ -26,6 +26,10 @@ pim_enrich:
         properties:
           label:
             is_read_only: Sola lettura
+pim:
+  grid:
+    mass_action:
+      asset_edit: Modifica di massa per gli asset
 pimee_enrich:
   form:
     job_instance:
@@ -46,6 +50,8 @@ pimee_enrich:
           title: Autorizzazioni
           view.label: Consentita la visualizzazione degli attributi
           edit.label: Consentita la modifica degli attributi
+          removed: Al gruppo {{ group }} non sarà concesso il permesso {{ permission }} sul gruppo attributi
+          added: Al gruppo {{ group }} sarà concesso il permesso {{ permission }} sul gruppo attributi
   entity:
     product:
       history:
@@ -78,9 +84,7 @@ pimee_enrich:
           messages:
             approve:
               success: La proposta è stata applicata con successo.
-              error:
-                The proposal can't be applied due to the following error:
-                  - errore
+              error: 'La proposta non può essere applicata a causa del seguente errore: {{ error }}'
             reject:
               success: La proposta non è stata accettata.
             remove:
@@ -120,7 +124,7 @@ pimee_enrich:
         reject_selected_proposal: Rifiuta la(e) proposta(e) selezionata(e)
         remove_proposal: Rimuovi la proposta
         send_for_approval: Invia per approvazione
-        cancel: Cancella
+        cancel: Annulla
         confirm: Invia
         title: Commenta la tua proposta (opzionale - 255 caratteri max.)
         characters: caratteri.
@@ -135,7 +139,7 @@ pimee_enrich:
     colorspace:
       title: Spazio colori
       options:
-        colorspace: spazio colore %value%
+        colorspace: 'spazio colore %value%'
     resize:
       title: Ridimensiona
       options:
@@ -157,6 +161,42 @@ pimee_enrich:
       options:
         width: '%value%px di larghezza'
         height: '%value%px di altezza'
+  mass_edit:
+    next: Successivo
+    previous: Indietro
+    cancel: Annulla
+    confirm: Conferma
+    product:
+      operation:
+        publish:
+          label: Pubblica i prodotti
+          description: I prodotti saranno pubblicati
+          warning: I {{ itemsCount }} prodotti selezionati saranno pubblicati.
+        unpublish:
+          label: Annulla la pubblicazione dei prodotti
+          description: I prodotti saranno ritirati
+          warning: I {{ itemsCount }} prodotti selezionati saranno ritirati.
+    asset:
+      title: Asset / Modifica di Massa ({{ itemsCount }} asset)
+      step:
+        select:
+          label: Scegli gli asset
+        choose:
+          label: Scegli l'operazione
+          title: Modifica di massa ({{ itemsCount }} asset)
+        configure:
+          label: Configura
+        confirm:
+          label: Conferma
+      operation:
+        add_tag:
+          label: Aggiungi tag agli asset
+          description: I tag saranno aggiunti all'asset.
+          field: Tag
+        add_to_category:
+          label: Classificare gli asset in categorie
+          description: Gli asset saranno posizionati nelle seguenti categorie, il posizionamento attuale sarà mantenuto.
+          field: Categorie
 pim_menu:
   tab:
     asset: Asset
@@ -165,3 +205,4 @@ pim_menu:
     proposal: Proposte
     published_product: Prodotti pubblicati
     rule: Regole
+    upload_asset: Carica asset

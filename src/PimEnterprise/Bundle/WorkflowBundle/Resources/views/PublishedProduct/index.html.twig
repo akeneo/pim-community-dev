@@ -36,4 +36,38 @@
         </div>
     </div>
 </div>
+
+<script>
+    require(
+        [
+            'pim/common/breadcrumbs',
+            'pim/fetcher-registry',
+            'pim/form-builder'
+        ],
+        function(
+            Breadcrumbs,
+            FetcherRegistry,
+            FormBuilder
+        ) {
+            $(function() {
+                var breadcrumbs = new Breadcrumbs({
+                    config: {
+                        tab: 'pim-menu-settings',
+                        item: 'pim-menu-enrich-published-product'
+                    }
+                });
+                breadcrumbs.configure().then(function () {
+                    breadcrumbs.render();
+                    $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                });
+
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+                        form.setElement('.user-menu').render();
+                    }.bind(this));
+                });
+            });
+        }
+    );
+</script>
 {% endblock %}

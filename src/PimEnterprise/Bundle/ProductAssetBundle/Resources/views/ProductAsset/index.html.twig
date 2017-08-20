@@ -7,27 +7,41 @@
 
 {% block content %}
 <script>
-        require(
-            [
-                'pim/fetcher-registry',
-                'pim/form-builder',
-                'oro/mediator'
-            ],
-            function(
-                FetcherRegistry,
-                FormBuilder,
-                mediator
-            ) {
-                $(function() {
-                    FetcherRegistry.initialize().done(function () {
-                        FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
-                            form.setElement('.user-menu').render();
-                        }.bind(this));
-                    });
-                    mediator.trigger('pim_menu:highlight:tab', { extension: 'pim-menu-asset' });
+    require(
+        [
+            'pim/common/breadcrumbs',
+            'pim/fetcher-registry',
+            'pim/form-builder',
+            'oro/mediator'
+        ],
+        function(
+            Breadcrumbs,
+            FetcherRegistry,
+            FormBuilder,
+            mediator
+        ) {
+            console.log('prout');
+            $(function() {
+                var breadcrumbs = new Breadcrumbs({
+                    config: {
+                        tab: 'pim-menu-asset'
+                    }
                 });
-            }
-        );
+                breadcrumbs.configure().then(function () {
+                    breadcrumbs.render();
+                    $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                });
+
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+                        form.setElement('.user-menu').render();
+                    }.bind(this));
+                });
+
+                mediator.trigger('pim_menu:highlight:tab', { extension: 'pim-menu-asset' });
+            });
+        }
+    );
 </script>
 
 <div class="AknDefault-mainContent">

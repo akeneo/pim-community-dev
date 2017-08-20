@@ -76,9 +76,6 @@ pimee_enrich:
           messages:
             approve:
               success: Предложение было успешно применено.
-              error:
-                The proposal can't be applied due to the following error:
-                  - ошибка
             reject:
               success: Это предложение было отклонено.
             remove:
@@ -137,8 +134,8 @@ pimee_enrich:
     resize:
       title: Изменение размера
       options:
-        width: Ширина %value%px 
-        height: Высота %value%px
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
     resolution:
       title: Разрешение
       options:
@@ -147,14 +144,40 @@ pimee_enrich:
     scale:
       title: Маштабирование
       options:
-        width: Ширина %value%px 
-        height: Высота %value%px
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
         ratio: '%value%% соотношение'
     thumbnail:
       title: Миниатюра изображения
       options:
-        width: Ширина %value%px 
-        height: Высота %value%px
+        width: 'Ширина %value%px '
+        height: 'Высота %value%px'
+  mass_edit:
+    next: Следующая
+    cancel: Отмена
+    confirm: Подтверждение
+    product:
+      operation:
+        publish:
+          label: Опубликовать продукты
+        unpublish:
+          label: Снять продукты с публикации
+    asset:
+      step:
+        select:
+          label: Выбор медиафайлов
+        choose:
+          label: Выберите операцию
+        configure:
+          label: Настройка
+        confirm:
+          label: Подтверждение
+      operation:
+        add_tag:
+          label: Добавление тегов к медиафайлам
+          field: Теги
+        add_to_category:
+          field: Категории
 pim_menu:
   tab:
     asset: Медиафайлы

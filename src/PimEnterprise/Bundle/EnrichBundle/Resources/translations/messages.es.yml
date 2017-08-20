@@ -107,12 +107,12 @@ pimee_enrich:
     colorspace:
       title: Espacio de color
       options:
-        colorspace: Espacio de color %value%
+        colorspace: 'Espacio de color %value%'
     resize:
       title: Redimensionar
       options:
-        width: Px ancho %value%
-        height: Alto px %value%
+        width: 'Px ancho %value%'
+        height: 'Alto px %value%'
     resolution:
       title: Resolución
       options:
@@ -121,14 +121,14 @@ pimee_enrich:
     scale:
       title: Escala
       options:
-        width: Px ancho %value%
-        height: Alto px %value%
-        ratio: Ratio %value%%
+        width: 'Px ancho %value%'
+        height: 'Alto px %value%'
+        ratio: 'Ratio %value%%'
     thumbnail:
       title: Miniatura
       options:
-        width: Px ancho %value%
-        height: Alto px %value%
+        width: 'Px ancho %value%'
+        height: 'Alto px %value%'
 add_product_value_with_permission_and_rules:
   steps.perform: Agregar un valor de producto
 update_product_value_with_permission_and_rules:

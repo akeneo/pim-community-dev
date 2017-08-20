@@ -26,6 +26,10 @@ pim_enrich:
         properties:
           label:
             is_read_only: Skrivebeskyttet
+pim:
+  grid:
+    mass_action:
+      asset_edit: Masse Rediger aktiver
 pimee_enrich:
   form:
     job_instance:
@@ -80,9 +84,7 @@ pimee_enrich:
           messages:
             approve:
               success: Forslaget er blevet anvendt.
-              error:
-                The proposal can't be applied due to the following error:
-                  - fejl
+              error: Dette forslag kan ikke anvendes på grund af følgende fejl. {{ error }}
             reject:
               success: Forslaget er blevet afvist.
             remove:
@@ -159,6 +161,42 @@ pimee_enrich:
       options:
         width: '%value%px bredde'
         height: '%value%px højde'
+  mass_edit:
+    next: Næste
+    previous: Tilbage
+    cancel: Annuller
+    confirm: Bekræft
+    product:
+      operation:
+        publish:
+          label: Udgiv produkter
+          description: Produkterne vil blive offentliggjort
+          warning: '{{ itemsCount }} udvalgte produkter vil blive offentliggjort.'
+        unpublish:
+          label: Af-publisering af produkter
+          description: Produkterne vil blive afpubliseret
+          warning: '{{ itemsCount }} udvalgte produkter vil blive afpubliseret.'
+    asset:
+      title: Asset / masse redigere ({{ itemsCount }} aktiver)
+      step:
+        select:
+          label: Vælg Aktiver
+        choose:
+          label: Vælg handling
+          title: Masse edit ({{ itemsCount }} aktiver)
+        configure:
+          label: Konfigurér
+        confirm:
+          label: Bekræft
+      operation:
+        add_tag:
+          label: Tilføj etiketter til aktiver
+          description: Tags vil blive tilføjet til aktiverne.
+          field: Tags
+        add_to_category:
+          label: Klassificere produkter i kategorier
+          description: Aktiver vil blive placeret i følgende kategorier, den nuværende placering er holdt.
+          field: Kategorier
 pim_menu:
   tab:
     asset: Aktiver
