@@ -301,8 +301,9 @@ class ProductRepository extends EntityRepository implements
     public function getAssociatedProductIds(ProductInterface $product)
     {
         $qb = $this->createQueryBuilder('p')
-            ->select('a.id AS association_id', 'pa.id AS product_id')
+            ->select('a.id AS association_id', 't.code AS association_type_code', 'pa.id AS product_id', 'pa.identifier AS product_identifier')
             ->innerJoin('p.associations', 'a')
+            ->innerJoin('a.associationType', 't')
             ->innerJoin('a.products', 'pa')
             ->where('p.id = :productId')
             ->setParameter(':productId', $product->getId());

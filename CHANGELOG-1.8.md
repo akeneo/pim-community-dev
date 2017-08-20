@@ -313,6 +313,7 @@
 
 ### Others
 
+- Add method `findCategoriesItem` to `Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface`
 - Add method `getAssociatedProductIds` to `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
 - Remove useless method `applyFilterByIds` of `Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface`
 - Remove useless method `getLocalesQB` of `Pim\Component\Catalog\Repository\LocaleRepositoryInterface`

@@ -37,6 +37,35 @@ abstract class AbstractItemCategoryRepository implements
     /**
      * {@inheritdoc}
      */
+    public function findCategoriesItem($item): array
+    {
+        $config = $this->getMappingConfig($item);
+
+        $sql = sprintf(
+            'SELECT DISTINCT(category.id) ' .
+            'FROM %s category ' .
+            'INNER JOIN %s category_item ON category_item.category_id = category.id ' .
+            'AND category_item.%s = :itemId ',
+            $config['categoryTable'],
+            $config['categoryAssocTable'],
+            $config['relation']
+        );
+
+        $stmt = $this->em->getConnection()->prepare($sql);
+        $stmt->bindValue('itemId', $item->getId());
+
+        $stmt->execute();
+        $categories = [];
+        foreach ($stmt->fetchAll() as $categoryId) {
+            $categories[] = $this->em->getRepository($config['categoryClass'])->find($categoryId['id']);
+        }
+
+        return $categories;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getItemCountByTree($item)
     {
         $config = $this->getMappingConfig($item);
