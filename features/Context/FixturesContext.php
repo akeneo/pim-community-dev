@@ -1150,8 +1150,6 @@ class FixturesContext extends BaseFixturesContext
     public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
     {
         $this->spin(function () use ($identifier, $table) {
-            $this->getMainContext()->getSubcontext('hook')->clearUOW();
-
             $product = $this->getProduct($identifier);
 
             foreach ($table->getRowsHash() as $rawCode => $value) {

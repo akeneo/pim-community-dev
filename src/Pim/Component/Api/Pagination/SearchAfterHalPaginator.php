@@ -34,6 +34,7 @@ class SearchAfterHalPaginator implements PaginatorInterface
         $this->resolver->setDefaults([
             'uri_parameters'      => [],
             'item_identifier_key' => 'code',
+            'current_page' => true,
         ]);
 
         $this->resolver->setRequired([
@@ -44,6 +45,7 @@ class SearchAfterHalPaginator implements PaginatorInterface
         ]);
 
         $this->resolver->setAllowedTypes('uri_parameters', 'array');
+        $this->resolver->setAllowedTypes('current_page', 'boolean');
         $this->resolver->setAllowedTypes('item_identifier_key', 'string');
         $this->resolver->setAllowedTypes('query_parameters', 'array');
         $this->resolver->setAllowedTypes('search_after', 'array');
@@ -105,7 +107,11 @@ class SearchAfterHalPaginator implements PaginatorInterface
             );
         }
 
-        $data = ['current_page' => null];
+        $data = [];
+        if ($parameters['current_page']) {
+            $data = ['current_page' => null];
+        }
+
         if (null !== $count) {
             $data['items_count'] = $count;
         }

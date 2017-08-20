@@ -35,6 +35,7 @@ Feature: Display the product history
       | version | property           | value      |
       | 2       | Weather conditions | cold,snowy |
 
+  @skip @info https://akeneo.atlassian.net/browse/TIP-233
   Scenario: Update product history when a linked category is removed
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -66,6 +67,7 @@ Feature: Display the product history
       | version | property   | value |
       | 3       | categories |       |
 
+  @skip @info https://akeneo.atlassian.net/browse/TIP-233
   Scenario: Update product history when multiple linked categories are removed
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"

@@ -56,13 +56,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_catalog.event_subscriber.product_category:
-        class: '%pim_catalog.event_subscriber.product_category.class%'
-        arguments:
-            - '@pim_catalog.saver.product'
-        tags:
-            - { name: kernel.event_subscriber }
-
     pim_catalog.event_subscriber.product_template_attribute:
         class: '%pim_catalog.event_subscriber.product_template_attribute.class%'
         arguments:
