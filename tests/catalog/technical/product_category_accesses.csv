@@ -1,2 +1,8 @@
 category;view_items;edit_items;own_items
 master;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager,Redactor
+categoryA;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager
+categoryA1;IT support,Manager,Redactor;IT support,Manager;IT support,Manager
+categoryA2;IT support,Manager,Redactor;IT support,Manager;IT support,Manager
+categoryB;IT support,Manager;IT support,Manager;IT support,Manager
+categoryC;IT support,Manager;IT support,Manager;IT support,Manager
+master_china;IT support,Manager,Redactor;IT support,Manager,Redactor;IT support,Manager,Redactor

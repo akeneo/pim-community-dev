@@ -15,8 +15,8 @@ class AttributeGroupIntegration extends AbstractFlatNormalizerTestCase
             'attributes'      => 'sku,a_date,a_file,a_price,a_price_without_decimal,a_ref_data_multi_select,a_ref_data_simple_select,a_text,a_regexp,a_text_area,a_yes_no,a_scopable_price,a_localized_and_scopable_text_area',
             'label-en_US'     => 'Attribute group A',
             'label-fr_FR'     => 'Groupe d\'attribut A',
-            'view_permission' => 'IT support,Manager',
-            'edit_permission' => 'IT support,Manager'
+            'view_permission' => 'IT support,Manager,Redactor',
+            'edit_permission' => 'IT support,Manager,Redactor'
         ], $flatAttributeGroup);
     }
 }

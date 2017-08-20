@@ -11,10 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Builder;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
-use Pim\Component\Catalog\Factory\ValueCollectionFactory;
+use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -46,7 +44,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     /** @var ProductDraftRepositoryInterface */
     protected $productDraftRepo;
 
-    /** @var ValueCollectionFactory */
+    /** @var ValueCollectionFactoryInterface */
     protected $valueCollectionFactory;
 
     /** @var ValueFactory */
@@ -58,7 +56,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      * @param AttributeRepositoryInterface    $attributeRepository
      * @param ProductDraftFactory             $factory
      * @param ProductDraftRepositoryInterface $productDraftRepo
-     * @param ValueCollectionFactory          $valueCollectionFactory
+     * @param ValueCollectionFactoryInterface $valueCollectionFactory
      * @param ValueFactory                    $valueFactory
      */
     public function __construct(
@@ -67,7 +65,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
         AttributeRepositoryInterface $attributeRepository,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $productDraftRepo,
-        ValueCollectionFactory $valueCollectionFactory,
+        ValueCollectionFactoryInterface $valueCollectionFactory,
         ValueFactory $valueFactory
     ) {
         $this->normalizer = $normalizer;

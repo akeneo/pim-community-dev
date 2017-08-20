@@ -1,0 +1,21 @@
+parameters:
+    pimee_api.normalizer.product.class: PimEnterprise\Component\Api\Normalizer\ProductNormalizer
+    pimee_api.normalizer.published_product.class: PimEnterprise\Component\Api\Normalizer\PublishedProductNormalizer
+
+services:
+    pimee_api.normalizer.product:
+        class: '%pimee_api.normalizer.product.class%'
+        decorates: pim_api.normalizer.product
+        decoration_inner_name: pim_api.normalizer.product.community
+        arguments:
+            - '@pim_api.normalizer.product.community'
+            - '@pimee_workflow.repository.product_draft'
+            - '@security.authorization_checker'
+            - '@security.token_storage'
+
+    pimee_api.normalizer.published_product:
+        class: '%pimee_api.normalizer.published_product.class%'
+        arguments:
+            - '@pim_api.normalizer.product.community'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }

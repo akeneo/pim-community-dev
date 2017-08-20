@@ -39,13 +39,13 @@ Feature: Enforce no permissions for a locale
       | German   | de_DE  | flag-de |
 
   Scenario: Display product view or edit page depending on user's rights
-    Given the following locale accesses:
+    Given the following product:
+      | sku | name-en_US | name-en_GB |
+      | bar | Name       | Name       |
+    And the following locale accesses:
       | locale | user group | access |
       | en_US  | Manager    | edit   |
       | en_GB  | Manager    | view   |
-    And the following product:
-      | sku | name-en_US | name-en_GB |
-      | bar | Name       | Name       |
     And I am logged in as "Julia"
     When I edit the "bar" product
     And I switch the locale to "en_GB"

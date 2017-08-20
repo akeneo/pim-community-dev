@@ -20,10 +20,10 @@ Feature: Remove a product
       | jean    | Mary     | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Jean"}]}, "review_statuses": {"name": [{"locale": "en_US", "scope": null, "status": "draft"}]}}         |
       | jean    | Sandra   | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Jean bootcut"}]}, "review_statuses": {"name": [{"locale": "en_US", "scope": null, "status": "draft"}]}} |
       | short   | Mary     | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Short"}]}, "review_statuses": {"name": [{"locale": "en_US", "scope": null, "status": "draft"}]}}        |
-    And I am logged in as "Julia"
 
   Scenario: Successfully mass delete a product and associated drafts
-    Given I am on the products page
+    Given I am logged in as "Julia"
+    And I am on the products page
     And I select row jean
     And I press "Delete" on the "Bulk Actions" dropdown button
     And I confirm the removal
@@ -33,7 +33,8 @@ Feature: Remove a product
       | short   | Mary     | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Short"}]}, "review_statuses": {"name": [{"locale": "en_US", "scope": null, "status": "draft"}]}} |
 
   Scenario: Successfully delete a product and associated drafts
-    Given I am on the "jean" product page
+    Given I am logged in as "Julia"
+    And I am on the "jean" product page
     And I press the secondary action "Delete"
     Then I should see the text "Confirm deletion"
     And I confirm the removal
@@ -43,10 +44,32 @@ Feature: Remove a product
       | short   | Mary     | {"values": {"name": [{"locale": "en_US", "scope": null, "data": "Short"}]}, "review_statuses": {"name": [{"locale": "en_US", "scope": null, "status": "draft"}]}} |
 
   Scenario: Not being able to delete a published product
-    Given I am on the "jean" product page
+    Given I am logged in as "Julia"
+    And I am on the "jean" product page
     And I publish the product "jean"
     When I press the secondary action "Delete"
     And I confirm the removal
     Then I should see the text "Impossible to remove a published product"
     When I am on the products page
     Then I should see product jean
+
+  Scenario: Not being able to delete a product from the edit form without having sufficient permissions
+    Given the following products:
+      | sku       | categories |
+      | edit_only | tees       |
+      | view_only | pants      |
+    And I am logged in as "Mary"
+    When I am on the "edit_only" product page
+    Then I should not see the secondary action "Delete"
+    When I am on the "view_only" product page
+    Then I should not see the secondary action "Delete"
+
+  Scenario: Not being able to delete a product from the grid without having sufficient permissions
+    Given the following products:
+      | sku       | categories |
+      | edit_only | tees       |
+      | view_only | pants      |
+    And I am logged in as "Mary"
+    When I am on the products page
+    Then I should not be able to view the "Delete the product" action of the row which contains "edit_only"
+    And I should not be able to view the "Delete the product" action of the row which contains "view_only"

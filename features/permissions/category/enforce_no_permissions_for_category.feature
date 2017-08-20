@@ -51,7 +51,9 @@ Feature: Enforce no permissions for a category
     And the following product category accesses:
       | product category | user group | access |
       | protected_tree   | Manager    | none   |
+      | protected_tree   | IT Support | view   |
       | protected_node   | Manager    | none   |
+      | protected_node   | IT Support | view   |
     And the following products:
       | sku             | categories     |
       | unclassifiedOne |                |

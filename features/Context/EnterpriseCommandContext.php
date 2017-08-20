@@ -16,6 +16,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Command\SendDraftForApprovalCommand;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * A context for commands
@@ -243,6 +244,12 @@ class EnterpriseCommandContext extends CommandContext
      */
     public function iApproveTheProposal($not, $product, $username)
     {
+        $userRepository = $this->getContainer()->get('pim_user.repository.user');
+        $user = $userRepository->findOneByIdentifier('admin');
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->getContainer()->get('security.token_storage')->setToken($token);
+
         $application = new Application();
         $application->add(new ApproveProposalCommand());
 

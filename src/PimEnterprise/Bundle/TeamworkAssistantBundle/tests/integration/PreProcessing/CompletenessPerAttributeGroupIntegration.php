@@ -239,16 +239,18 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
         $productIdentifier = 'full-technical-product';
 
         $this->updateProduct($productIdentifier, [
-            'simple_reference_data_attribute' => [[
-                'locale' => null,
-                'scope'  => null,
-                'data'   => 'red',
-            ]],
-            'multi_reference_data_attribute' => [[
-                'locale' => null,
-                'scope'  => null,
-                'data'   => ['latex'],
-            ]]
+            'values' => [
+                'simple_reference_data_attribute' => [[
+                    'locale' => null,
+                    'scope'  => null,
+                    'data'   => 'red',
+                ]],
+                'multi_reference_data_attribute' => [[
+                    'locale' => null,
+                    'scope'  => null,
+                    'data'   => ['latex'],
+                ]]
+            ]
         ]);
 
         /**
@@ -279,8 +281,11 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
         $this->get('pimee_security.manager.category_access')
             ->grantAccess($category, $userGroup, Attributes::OWN_PRODUCTS);
 
-        $productIdentifier = 'technical-product';
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier);
+        $productIdentifier = 'on-the-fly-product';
+        $product = $this->get('pim_catalog.builder.product')->createProduct($productIdentifier);
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        $this->updateProduct($productIdentifier, ['family' => 'technical_family', 'categories' => ['car']]);
 
         $project = $this->createProject('test-categ', 'Julia', 'en_US', 'ecommerce', [[
             'field'    => 'sku',
@@ -332,11 +337,13 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
          * Now a product has been update before a calculation
          */
         $this->updateProduct($productIdentifier, [
-            'name' => [[
-                'locale' => 'en_US',
-                'scope'  => null,
-                'data'   => 'Super poster',
-            ]]
+            'values' => [
+                'name' => [[
+                    'locale' => 'en_US',
+                    'scope'  => null,
+                    'data'   => 'Super poster',
+                ]]
+            ]
         ]);
         $this->checkSmartPreProcessingUpdate($posterEcommerceEn, $datetimeAfterCalculation, 3);
 
@@ -489,14 +496,12 @@ SQL
      * Update a product
      *
      * @param $productIdentifier
-     * @param array $values
+     * @param array $data
      */
-    private function updateProduct($productIdentifier, array $values)
+    private function updateProduct($productIdentifier, array $data)
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier);
-        $this->get('pim_catalog.updater.product')->update($product, [
-            'values' => $values
-        ]);
+        $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
     }
 }

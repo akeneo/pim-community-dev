@@ -12,6 +12,9 @@ Feature: Export published products
   @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Successfully export published products
     Given I add the "english UK" locale to the "mobile" channel
+    And the following locale accesses:
+      | locale | user group | access |
+      | en_GB  | Manager    | edit   |
     And the following job "csv_clothing_mobile_published_product_export" configuration:
       | filePath | %tmp%/ecommerce_product_export/csv_clothing_mobile_published_product_export.csv        |
       | filters  | {"structure":{"locales":["fr_FR","en_US","en_GB","de_DE"],"scope":"mobile"},"data":[]} |
@@ -54,7 +57,7 @@ Feature: Export published products
     Then exported file of "csv_clothing_mobile_published_product_export" should contain:
     """
     sku;categories;datasheet;description-de_DE-mobile;description-en_GB-mobile;description-en_US-mobile;description-fr_FR-mobile;enabled;family;gallery;groups;handmade;length;length-unit;main_color;manufacturer;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-mobile;price-EUR;price-USD;rating;release_date-mobile;secondary_color;side_view;size;top_view;weather_conditions
-    jacket-white;jackets,winter_collection;;"Ein sehr elegantes weißes Jacket";"An elegant white jacket";"A really stylish white jacket";"Un Jacket blanc élégant";1;jackets;paint;;0;;;white;Volcom;"Weißes Jacket";"White jacket";"White jacket";"Jacket blanc";;10.00;15.00;;;;;XL;;
+    jacket-white;jackets,winter_collection;;"Ein sehr elegantes weißes Jacket";;"A really stylish white jacket";"Un Jacket blanc élégant";1;jackets;paint;;0;;;white;Volcom;"Weißes Jacket";;"White jacket";"Jacket blanc";;10.00;15.00;;;;;XL;;
     jacket-black;jackets,winter_collection;;;;;;1;jackets;paint;;0;;;black;Volcom;"Weißes Jacket";"White jacket";"White jacket";"Jacket blanc";;10.00;15.00;;;;;XL;;
     """
 

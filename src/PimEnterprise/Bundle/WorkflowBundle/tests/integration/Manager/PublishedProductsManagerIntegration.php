@@ -54,7 +54,14 @@ class PublishedProductsManagerIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
+        $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+
+        return new Configuration(
+            [
+                Configuration::getTechnicalSqlCatalogPath(),
+                $rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'technical_sql'
+            ]
+        );
     }
 
     public function testPublishProduct()
