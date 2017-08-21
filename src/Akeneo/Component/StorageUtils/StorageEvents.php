@@ -70,4 +70,24 @@ final class StorageEvents
      * @staticvar string
      */
     const POST_SAVE_ALL = 'akeneo.storage.post_save_all';
+
+    /**
+     * This event is thrown before an object gets updated.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_UPDATE = 'akeneo.update.pre_update';
+
+    /**
+     * This event is thrown after an object gets updated.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_UPDATE = 'akeneo.update.post_update';
 }
