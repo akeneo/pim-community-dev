@@ -25,8 +25,8 @@ class MetadataExtension extends Twig_Extension
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction('oro_datagrid_data', [$this->metadataParser, 'getGridData'], ['needs_environment' => true]),
-            new Twig_SimpleFunction('oro_datagrid_metadata', [$this->metadataParser, 'getGridMetadata']),
+            new Twig_SimpleFunction('oro_datagrid_data', [$this->metadataParser, 'getGridData']),
+            new Twig_SimpleFunction('oro_datagrid_metadata', [$this->metadataParser, 'getGridMetadata'])
         ];
     }
 }
