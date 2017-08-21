@@ -54,12 +54,10 @@ class WebUser extends PimContext
         $this->spin(function () use ($entity) {
             $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
 
-            return true;
-        }, sprintf('Cannot create a new %s', $entity));
+            sleep(1);
 
-        $this->spin(function () {
             return null !== $this->getCurrentPage()->find('css', '.modal, .ui-dialog');
-        }, sprintf('Cannot create a new %s', $entity));
+        }, sprintf('Cannot create a new %s: cannot click on the creation link', $entity));
 
         $this->getNavigationContext()->currentPage = sprintf('%s creation', $entity);
     }
@@ -1175,18 +1173,22 @@ class WebUser extends PimContext
      */
     public function iRemoveTheAttribute($field)
     {
-        $removeLink = $this->getCurrentPage()->getRemoveLinkFor($field);
+        $this->spin(function () use ($field) {
+            $removeLink = $this->getCurrentPage()->getRemoveLinkFor($field);
 
-        if (null === $removeLink) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Remove link on field "%s" should be displayed.',
-                    $field
-                )
-            );
-        }
+            if (null === $removeLink) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Remove link on field "%s" should be displayed.',
+                        $field
+                    )
+                );
+            }
 
-        $removeLink->click();
+            $removeLink->click();
+
+            return true;
+        }, 'Cannot click on the remove attribute button');
     }
 
     /**
