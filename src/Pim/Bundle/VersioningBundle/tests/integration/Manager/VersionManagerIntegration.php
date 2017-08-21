@@ -77,10 +77,11 @@ class VersionManagerIntegration extends TestCase
         $this->assertEquals($version->getVersion(), 1);
         $this->assertEquals($version->getResourceName(), ClassUtils::getClass($product));
         $this->assertEquals($version->getResourceId(), $product->getId());
+
         $this->assertNotNull($version->getLoggedAt());
         $this->assertFalse($version->isPending());
         $this->assertNull($version->getContext());
-        $this->assertEquals($version->getAuthor(), 'admin');
+        $this->assertEquals($version->getAuthor(), 'system');
         $this->assertEquals($version->getSnapshot(), [
             'sku'        => 'versioned-product',
             'family'     => '',

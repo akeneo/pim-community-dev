@@ -402,7 +402,6 @@ pim_enrich:
           info:
             no_family: Keine Produktfamilie zugewiesen. Bitte wählen Sie eine Produktfamilie, um die Vollständigkeit dieses Produkts zu berechnen.
             no_completeness: Sie haben gerade die Produktfamilie geändert. Bitte speichern Sie zuerst, um die Vollständigkeit für die neue Produktfamilie zu berechnen.
-          missing_values: Fehlende Werte
         history:
           title: Historie
       switch:
@@ -887,6 +886,8 @@ pim_enrich:
       create_btn: Attribut anlegen
       modal_title: Wählen Sie den Attributtyp aus
     attribute_group:
+      create_btn: Anlegen
+    api_connection:
       create_btn: Anlegen
   mass_edit:
     next: Vor

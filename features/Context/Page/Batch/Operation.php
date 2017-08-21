@@ -37,18 +37,18 @@ class Operation extends Wizard
      */
     public function chooseOperation($operation)
     {
-        $choice = $this->findField($operation);
+        $choice = $this->spin(function () use ($operation) {
+            $choices = $this->findAll('css', '.operation');
+            foreach ($choices as $choice) {
+                if (trim($choice->getText()) === $operation) {
+                    return $choice;
+                }
+            }
 
-        if (null === $choice) {
-            throw new ElementNotFoundException(
-                $this->getSession(),
-                'form field',
-                'id|name|label|value',
-                $operation
-            );
-        }
+            return null;
+        }, sprintf('Cannot find operation "%s"', $operation));
 
-        $this->getSession()->getDriver()->click($choice->getXpath());
+        $choice->click();
 
         $this->currentStep = $this->getStep($operation);
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Bundle\BatchBundle\Launcher;
 
 use Akeneo\Component\Batch\Job\JobParametersFactory;
@@ -64,7 +66,7 @@ class SimpleJobLauncher implements JobLauncherInterface
     /**
      * {@inheritdoc}
      */
-    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = [])
+    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []) : JobExecution
     {
         $jobExecution = $this->createJobExecution($jobInstance, $user);
         $executionId = $jobExecution->getId();
@@ -106,7 +108,7 @@ class SimpleJobLauncher implements JobLauncherInterface
      *
      * @param string $cmd
      */
-    protected function launchInBackground($cmd)
+    protected function launchInBackground(string $cmd) : void
     {
         exec($cmd . ' &');
     }
@@ -119,7 +121,7 @@ class SimpleJobLauncher implements JobLauncherInterface
      *
      * @return JobExecution
      */
-    protected function createJobExecution(JobInstance $jobInstance, UserInterface $user)
+    protected function createJobExecution(JobInstance $jobInstance, UserInterface $user) : JobExecution
     {
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         $jobParameters = $this->jobParametersFactory->create($job, $jobInstance->getRawParameters());

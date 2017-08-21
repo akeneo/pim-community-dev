@@ -89,7 +89,7 @@ pim_importexport:
 btn:
   create:
     export profile: crea il profilo di esportazione
-    import profile: crea il profilo di importazione
+    import profile: crea un profilo di importazione
 Upload and import now: Carica e importa ora
 import now: Importa ora
 export now: Esporta ora
@@ -138,6 +138,7 @@ job_execution.summary:
     skipped: saltato, estensione nella white list
 Step: Passo
 Status: Stato
+Warnings: Avvisi
 Summary: Riepilogo
 Start: Inizio
 End: Fine

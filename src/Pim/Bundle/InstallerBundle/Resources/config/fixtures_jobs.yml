@@ -141,8 +141,17 @@ jobs:
         configuration:
             filePath: users.csv
 
+    fixtures_job_yml:
+        order: 100
+        connector: Data fixtures
+        alias:     fixtures_job_yml
+        label:     Jobs data fixtures
+        type:      fixtures
+        configuration:
+            filePath: jobs.yml
+
     fixtures_product_csv:
-        order: 80
+        order: 180
         connector: Data fixtures
         alias:     fixtures_product_csv
         label:     Product data fixtures
@@ -162,11 +171,3 @@ jobs:
             decimalSeparator: .
             dateFormat: yyyy-MM-dd
 
-    fixtures_job_yml:
-        order: 100
-        connector: Data fixtures
-        alias:     fixtures_job_yml
-        label:     Jobs data fixtures
-        type:      fixtures
-        configuration:
-            filePath: jobs.yml

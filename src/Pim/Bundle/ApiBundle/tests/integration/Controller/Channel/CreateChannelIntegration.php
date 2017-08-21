@@ -90,8 +90,8 @@ JSON;
 
         $channelStandard = [
             'code'             => 'international_channel',
-            'currencies'       => ['USD', 'EUR'],
-            'locales'          => ['en_US', 'fr_FR'],
+            'currencies'       => ['EUR', 'USD'],
+            'locales'          => ['fr_FR', 'en_US'],
             'category_tree'    => 'master',
             'conversion_units' => [
                 'a_metric_without_decimal' => 'METER',

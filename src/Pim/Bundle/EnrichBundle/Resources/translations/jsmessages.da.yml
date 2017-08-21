@@ -427,7 +427,6 @@ pim_enrich:
           info:
             no_family: Ingen familie defineret. Definér venligst en familie for at beregne fuldstændigheden af dette produkt.
             no_completeness: Du har lige ændret familie af produktet. Gem det første for at beregne fuldstændighed for den nye familie.
-          missing_values: Manglende værdier
         history:
           title: Historik
       switch:
@@ -932,6 +931,8 @@ pim_enrich:
       modal_title: Vælg attributtype
     attribute_group:
       title: attributgruppe oversigt
+      create_btn: Opret
+    api_connection:
       create_btn: Opret
   mass_edit:
     next: Næste
