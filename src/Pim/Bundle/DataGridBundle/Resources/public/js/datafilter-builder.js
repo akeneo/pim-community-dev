@@ -17,22 +17,22 @@ define(
      ) {
         const DataFilterBuilder = BaseForm.extend({
             initialized: false,
-            filterModuleName: 'oro/datafilter/{{type}}-filter',
-            filterTypes: {
-                string: 'choice',
-                choice: 'select',
-                selectrow: 'select-row',
-                multichoice: 'multiselect',
-                boolean: 'select'
+            config: {
+                filterModuleName: 'oro/datafilter/{{type}}-filter',
+                filterTypes: {
+                    string: 'choice',
+                    choice: 'select',
+                    selectrow: 'select-row',
+                    multichoice: 'multiselect',
+                    boolean: 'select'
+                }
             },
 
             /**
              * {@inheritdoc}
              */
-            initialize(config = {}) {
-                if (config.config) {
-                    this.filterTypes = Object.assign(this.filterTypes, config.config.filterTypes || {});
-                }
+            initialize(options = {}) {
+                this.config = Object.assign(this.config, options.config || {});
 
                 mediator.once('datagrid_collection_set_after', this.initHandler.bind(this));
                 mediator.once('hash_navigation_request:start', function() {
@@ -77,7 +77,10 @@ define(
                 var modules = this.modules;
                 this.metadata.filters.forEach(filter => {
                     var type = filter.type;
-                    modules[type] = this.filterModuleName.replace('{{type}}', this.filterTypes[type] || type);
+                    modules[type] = this.config.filterModuleName.replace(
+                        '{{type}}',
+                        this.config.filterTypes[type] || type
+                    );
                 });
             },
 
@@ -119,9 +122,7 @@ define(
                     }
                 });
 
-                return {
-                    filters: filters
-                };
+                return { filters };
             }
         });
 
