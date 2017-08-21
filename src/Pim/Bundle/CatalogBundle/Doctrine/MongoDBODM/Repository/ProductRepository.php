@@ -637,11 +637,7 @@ class ProductRepository extends DocumentRepository implements
 
         $collection = $this->dm->getDocumentCollection($this->documentName);
 
-        $findQuery = [
-            'associations.products' => [
-                '$elemMatch' => $mongoRef
-            ]
-        ];
+        $findQuery = ['associations.products' => $mongoRef];
 
         $updateQuery = [
             '$pull' => [
