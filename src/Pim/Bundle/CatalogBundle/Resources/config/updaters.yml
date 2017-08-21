@@ -27,6 +27,7 @@ parameters:
     pim_catalog.updater.setter.group_field.class:             Pim\Component\Catalog\Updater\Setter\GroupFieldSetter
     pim_catalog.updater.setter.variant_group_field.class:     Pim\Component\Catalog\Updater\Setter\VariantGroupFieldSetter
     pim_catalog.updater.setter.family_field.class:            Pim\Component\Catalog\Updater\Setter\FamilyFieldSetter
+    pim_catalog.updater.setter.parent_field.class:            Pim\Component\Catalog\Updater\Setter\ParentSetter
     pim_catalog.updater.setter.association_field.class:       Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter
     pim_catalog.updater.setter.enabled_field.class:           Pim\Component\Catalog\Updater\Setter\EnabledFieldSetter
     pim_catalog.updater.setter.media_value.class:             Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter
@@ -60,7 +61,7 @@ services:
             - '@pim_catalog.updater.product_template'
             - '@pim_catalog.updater.entity_with_values'
             - ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations']
-            - ['identifier', 'created', 'updated']
+            - ['identifier', 'created', 'updated', 'parent']
 
     pim_catalog.updater.product_model:
         class: '%pim_catalog.updater.product_model.class%'
@@ -286,6 +287,14 @@ services:
         arguments:
             - '@pim_catalog.repository.group'
             - ['variant_group']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.parent_field:
+        class: '%pim_catalog.updater.setter.parent_field.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - ['parent']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
