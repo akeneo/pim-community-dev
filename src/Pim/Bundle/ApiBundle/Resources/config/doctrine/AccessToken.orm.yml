@@ -14,3 +14,10 @@ Pim\Bundle\ApiBundle\Entity\AccessToken:
                 user:
                     referencedColumnName: id
                     onDelete: CASCADE
+        client:
+            targetEntity: Pim\Bundle\ApiBundle\Entity\Client
+            joinColumns:
+                client:
+                    referencedColumnName: id
+                    nullable: true
+                    onDelete: CASCADE
