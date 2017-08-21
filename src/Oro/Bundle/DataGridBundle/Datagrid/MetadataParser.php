@@ -17,9 +17,18 @@ class MetadataParser
     /**
      * @param ContainerInterface $container
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct
+    (
+        ContainerInterface $container,
+        Manager $manager,
+        RequestParameters $requestParams,
+        RouterInterface $router
+    )
     {
         $this->container = $container;
+        $this->manager = $manager;
+        $this->requestParams = $requestParams;
+        $this->router = $router;
     }
 
     /**
@@ -32,7 +41,7 @@ class MetadataParser
      */
     public function getGridMetadata(string $name, array $params = []): array
     {
-        $metaData = $this->getDatagridManager()->getDatagrid($name)->getMetadata();
+        $metaData = $this->manager->getDatagrid($name)->getMetadata();
         $metaData->offsetAddToArray('options', ['url' => $this->generateUrl($name, $params)]);
 
         return $metaData->toArray();
@@ -61,37 +70,14 @@ class MetadataParser
      */
     protected function generateUrl(string $name, array $params): string
     {
-        $additional = $this->getRequestParameters()->getRootParameterValue();
+        $additional = $this->requestParams->getRootParameterValue();
 
         $params = [
             $name      => array_merge($params, $additional),
             'gridName' => $name
         ];
 
-        return $this->getRouter()->generate(self::ROUTE, $params);
+        return $this->router->generate(self::ROUTE, $params);
     }
 
-    /**
-     * @return Manager
-     */
-    final protected function getDatagridManager(): Manager
-    {
-        return $this->container->get('oro_datagrid.datagrid.manager');
-    }
-
-    /**
-     * @return RequestParameters
-     */
-    final protected function getRequestParameters(): RequestParameters
-    {
-        return $this->container->get('oro_datagrid.datagrid.request_params');
-    }
-
-    /**
-     * @return RouterInterface
-     */
-    final protected function getRouter(): RouterInterface
-    {
-        return $this->container->get('router');
-    }
 }

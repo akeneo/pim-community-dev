@@ -53,10 +53,13 @@ services:
         class: '%oro_datagrid.datagrid.metadata_parser.class%'
         arguments:
             - '@service_container'
+            - '@oro_datagrid.datagrid.manager'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@router'
 
     oro_datagrid.twig.metadata:
         class: '%oro_datagrid.twig.metadata.class%'
         arguments:
-            - '@service_container'
+            - '@oro_datagrid.datagrid.metadata_parser'
         tags:
             { name: twig.extension }
