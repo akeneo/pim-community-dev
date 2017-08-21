@@ -19,7 +19,7 @@ services:
     volumes:
       - ./:/srv/pim
       - ./docker/akeneo.conf:/etc/apache2/sites-available/000-default.conf:ro
-      - ~/.config/composer:/home/docker/.composer
+      - ~/.composer:/home/docker/.composer
     working_dir: /srv/pim
     networks:
       - akeneo
@@ -44,7 +44,7 @@ services:
     volumes:
       - ./:/srv/pim
       - ./docker/akeneo-behat.conf:/etc/apache2/sites-available/000-default.conf:ro
-      - ~/.config/composer:/home/docker/.composer
+      - ~/.composer:/home/docker/.composer
       - /tmp/behat/screenshots:/tmp/behat/screenshots
     working_dir: /srv/pim
     networks:
