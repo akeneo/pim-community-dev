@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Catalog\Comparator\Filter;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Comparator\ComparatorInterface;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
+use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -14,9 +15,10 @@ class ProductFilterSpec extends ObjectBehavior
     function let(
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        ProductFilterInterface $productFieldFilter
     ) {
-        $this->beConstructedWith($normalizer, $comparatorRegistry, $attributeRepository, ['family', 'enabled']);
+        $this->beConstructedWith($normalizer, $comparatorRegistry, $attributeRepository, $productFieldFilter, ['family', 'enabled']);
     }
 
     function it_is_a_filter()
@@ -28,13 +30,12 @@ class ProductFilterSpec extends ObjectBehavior
         $normalizer,
         $comparatorRegistry,
         $attributeRepository,
+        $productFieldFilter,
         ProductInterface $product,
-        ComparatorInterface $familyComparator,
         ComparatorInterface $descriptionComparator
     ) {
         $originalValues = [];
         $newValues = [
-            'family' => 'tshirt',
             'values' => [
                 'description'   => [
                     [
@@ -48,7 +49,8 @@ class ProductFilterSpec extends ObjectBehavior
                         'value'  => 'My description'
                     ]
                 ]
-            ]
+            ],
+            'family' => 'tshirt'
         ];
 
         $attributeRepository->getAttributeTypeByCodes(array_keys($newValues['values']))->willReturn([
@@ -58,8 +60,7 @@ class ProductFilterSpec extends ObjectBehavior
         $normalizer->normalize($product, 'standard')
             ->willReturn($originalValues);
 
-        $comparatorRegistry->getFieldComparator('family')->willReturn($familyComparator);
-        $familyComparator->compare($newValues['family'], null)->willReturn($newValues['family']);
+        $productFieldFilter->filter($product, ['family' => 'tshirt'])->willReturn(['family' => 'tshirt']);
 
         $comparatorRegistry->getAttributeComparator('pim_catalog_textarea')->willReturn($descriptionComparator);
 
@@ -75,8 +76,8 @@ class ProductFilterSpec extends ObjectBehavior
         $normalizer,
         $comparatorRegistry,
         $attributeRepository,
+        $productFieldFilter,
         ProductInterface $product,
-        ComparatorInterface $familyComparator,
         ComparatorInterface $descriptionComparator
     ) {
         $originalValues = [
@@ -122,9 +123,7 @@ class ProductFilterSpec extends ObjectBehavior
         $normalizer->normalize($product, 'standard')
             ->willReturn($originalValues);
 
-        $comparatorRegistry->getFieldComparator('family')->willReturn($familyComparator);
-        $familyComparator->compare($newValues['family'], $originalValues['family'])->willReturn(null);
-
+        $productFieldFilter->filter($product, ['family' => 'tshirt'])->willReturn([]);
         $comparatorRegistry->getAttributeComparator('pim_catalog_textarea')->willReturn($descriptionComparator);
         $descriptionComparator
             ->compare($newValues['values']['description'][0], $originalValues['values']['description'][0])
@@ -150,8 +149,8 @@ class ProductFilterSpec extends ObjectBehavior
         $normalizer,
         $comparatorRegistry,
         $attributeRepository,
+        $productFieldFilter,
         ProductInterface $product,
-        ComparatorInterface $familyComparator,
         ComparatorInterface $descriptionComparator
     ) {
         $originalValues = [
@@ -196,9 +195,7 @@ class ProductFilterSpec extends ObjectBehavior
         $normalizer->normalize($product, 'standard')
             ->willReturn($originalValues);
 
-        $comparatorRegistry->getFieldComparator('family')->willReturn($familyComparator);
-        $familyComparator->compare($newValues['family'], $originalValues['family'])->willReturn(null);
-
+        $productFieldFilter->filter($product, ['family' => 'tshirt'])->willReturn([]);
         $comparatorRegistry->getAttributeComparator('pim_catalog_textarea')->willReturn($descriptionComparator);
         $descriptionComparator
             ->compare($newValues['values']['description'][0], $originalValues['values']['description'][0])
