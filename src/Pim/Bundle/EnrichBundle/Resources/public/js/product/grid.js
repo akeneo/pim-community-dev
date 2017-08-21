@@ -31,8 +31,6 @@ define(
 
                 const { title, gridName } = this.options.config;
 
-                console.log('render the grid', title, gridName)
-
                 this.$el.html(
                     this.template({ title, gridName })
                 );
