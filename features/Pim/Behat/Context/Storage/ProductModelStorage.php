@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace Pim\Behat\Context\Storage;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -10,6 +13,7 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnInfoExtractor;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProductModelStorage extends RawMinkContext
 {
@@ -25,19 +29,43 @@ class ProductModelStorage extends RawMinkContext
     /** @var FamilyVariantRepositoryInterface */
     private $familyVariantRepository;
 
+    /** @var SimpleFactoryInterface */
+    private $productModelFactory;
+
+    /** @var ObjectUpdaterInterface */
+    private $productModelUpdater;
+
+    /** @var ValidatorInterface */
+    private $validator;
+
+    /** @var SaverInterface */
+    private $productModelSaver;
+
     /**
      * @param AttributeColumnInfoExtractor     $attributeColumnInfoExtractor
      * @param ProductModelRepositoryInterface  $productModelRepository
      * @param FamilyVariantRepositoryInterface $familyVariantRepository
+     * @param SimpleFactoryInterface           $productModelFactory
+     * @param ObjectUpdaterInterface           $productModelUpdater
+     * @param ValidatorInterface               $validator
+     * @param SaverInterface                   $productModelSaver
      */
     public function __construct(
         AttributeColumnInfoExtractor $attributeColumnInfoExtractor,
         ProductModelRepositoryInterface $productModelRepository,
-        FamilyVariantRepositoryInterface $familyVariantRepository
+        FamilyVariantRepositoryInterface $familyVariantRepository,
+        SimpleFactoryInterface $productModelFactory,
+        ObjectUpdaterInterface $productModelUpdater,
+        ValidatorInterface $validator,
+        SaverInterface $productModelSaver
     ) {
         $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
         $this->productModelRepository = $productModelRepository;
         $this->familyVariantRepository = $familyVariantRepository;
+        $this->productModelFactory = $productModelFactory;
+        $this->productModelUpdater = $productModelUpdater;
+        $this->validator = $validator;
+        $this->productModelSaver = $productModelSaver;
     }
 
     /**
@@ -96,6 +124,40 @@ class ProductModelStorage extends RawMinkContext
                 );
             }
         }
+    }
+
+    /**
+     * @Given the following root product model :productModel with the variant family :variantFamily
+     */
+    public function createRootProductModel(string $productModelCode, string $variantFamilyCode)
+    {
+        $productModel = $this->productModelFactory->create();
+        $this->productModelUpdater->update($productModel, [
+            'code' => $productModelCode,
+            'parent' => '',
+            'family_variant' => $variantFamilyCode,
+        ]);
+
+        $this->validator->validate($productModel);
+        $this->productModelSaver->save($productModel);
+    }
+
+    /**
+     * @Given the following sub product model :productModel with :parent as parent
+     */
+    public function createSubProductModel(string $productModelCode, string $parentCode)
+    {
+        /** @var ProductModelInterface $parentProductModel */
+        $parentProductModel = $this->productModelRepository->findOneByIdentifier($parentCode);
+        $productModel = $this->productModelFactory->create();
+        $this->productModelUpdater->update($productModel, [
+            'code' => $productModelCode,
+            'parent' => $parentCode,
+            'family_variant' => $parentProductModel->getFamilyVariant()->getCode(),
+        ]);
+
+        $this->validator->validate($productModel);
+        $this->productModelSaver->save($productModel);
     }
 
     /**

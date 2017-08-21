@@ -38,7 +38,8 @@ class ProductModelProcessorSpec extends ObjectBehavior
             $validator,
             $productModelFilter,
             $objectDetacher,
-            $attributeFilter
+            $attributeFilter,
+            'root_product_model'
         );
     }
 
@@ -315,5 +316,59 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $this->shouldThrow(InvalidItemException::class)->during('process', [[
             'family_variant' => 'tshirt',
         ]]);
+    }
+
+    function it_only_processes_the_root_product_model(
+        $productModelFactory,
+        $productModelUpdater,
+        $productModelRepository,
+        $validator,
+        $productModelFilter,
+        $objectDetacher,
+        $attributeFilter
+    ) {
+        $this->beConstructedWith(
+            $productModelFactory,
+            $productModelUpdater,
+            $productModelRepository,
+            $validator,
+            $productModelFilter,
+            $objectDetacher,
+            $attributeFilter,
+            'root_product_model'
+        );
+
+        $this->process([
+            'code' => 'product_model_code',
+            'family_variant' => 'tshirt',
+            'parent' => 'parent'
+        ])->shouldReturn(null);
+    }
+
+    function it_only_processes_the_product_model(
+        $productModelFactory,
+        $productModelUpdater,
+        $productModelRepository,
+        $validator,
+        $productModelFilter,
+        $objectDetacher,
+        $attributeFilter
+    ) {
+        $this->beConstructedWith(
+            $productModelFactory,
+            $productModelUpdater,
+            $productModelRepository,
+            $validator,
+            $productModelFilter,
+            $objectDetacher,
+            $attributeFilter,
+            'sub_product_model'
+        );
+
+        $this->process([
+            'code' => 'product_model_code',
+            'family_variant' => 'tshirt',
+            'parent' => ''
+        ])->shouldReturn(null);
     }
 }

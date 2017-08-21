@@ -59,7 +59,7 @@ services:
             - '@pim_catalog.comparator.filter.product'
             - '@pim_catalog.localization.localizer.converter'
 
-    pim_connector.processor.denormalization.product_model:
+    pim_connector.processor.denormalization.root_product_model:
         class: '%pim_connector.processor.denormalization.product_model.class%'
         arguments:
             - '@pim_catalog.factory.product_model'
@@ -69,6 +69,19 @@ services:
             - '@pim_catalog.comparator.filter.product_model'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.processor.product_model.attribute_filter'
+            - 'root_product_model'
+
+    pim_connector.processor.denormalization.sub_product_model:
+        class: '%pim_connector.processor.denormalization.product_model.class%'
+        arguments:
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.repository.product_model'
+            - '@validator'
+            - '@pim_catalog.comparator.filter.product_model'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_connector.processor.product_model.attribute_filter'
+            - 'sub_product_model'
 
     pim_connector.processor.denormalization.product_association:
         class: '%pim_connector.processor.denormalization.product_association.class%'

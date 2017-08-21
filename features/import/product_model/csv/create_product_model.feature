@@ -20,7 +20,7 @@ Feature: Create product through CSV import
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
     Then there should be the following root product model:
-      | code     | categories | family_variant                  | collection   | description-en_US-ecommerce | erp_name-en_US | price      |
+      | code     | categories | family_variant     | collection   | description-en_US-ecommerce | erp_name-en_US | price      |
       | code-001 | master_men | clothing_colorsize | [Spring2017] | description                 | Blazers_1654   | 100.00 EUR |
 
   Scenario: Julia imports new products sub-models
@@ -36,8 +36,8 @@ Feature: Create product through CSV import
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
     Then there should be the following root product model:
-      | code     | categories | family_variant                  | collection   | description-en_US-ecommerce | erp_name-en_US | price      |
+      | code     | categories | family_variant      | collection   | description-en_US-ecommerce | erp_name-en_US | price      |
       | code-001 | master_men | clothing_color_size | [Spring2017] | description                 | Blazers_1654   | 100.00 EUR |
     And there should be the following product model:
-      | code     | color   | variation_name-en_US | composition |
-      | code-002 | [blue]  | Blazers               | composition |
+      | code     | color  | variation_name-en_US | composition |
+      | code-002 | [blue] | Blazers              | composition |

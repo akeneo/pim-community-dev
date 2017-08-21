@@ -28,6 +28,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class ProductModelProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
+    private const SUB_PRODUCT_MODEL = 'sub_product_model';
+    private const ROOT_PRODUCT_MODEL = 'root_product_model';
+
     /** @var SimpleFactoryInterface */
     private $productModelFactory;
 
@@ -49,6 +52,9 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
     /** @var AttributeFilter */
     private $attributeFilter;
 
+    /** @var string */
+    private $importType;
+
     /**
      * @param SimpleFactoryInterface                $productModelFactory
      * @param ObjectUpdaterInterface                $productModelUpdater
@@ -57,6 +63,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
      * @param FilterInterface                       $productModelFilter
      * @param ObjectDetacherInterface               $objectDetacher
      * @param AttributeFilter                       $attributeFilter
+     * @param string                                $importType
      */
     public function __construct(
         SimpleFactoryInterface $productModelFactory,
@@ -65,7 +72,8 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         ValidatorInterface $validator,
         FilterInterface $productModelFilter,
         ObjectDetacherInterface $objectDetacher,
-        AttributeFilter $attributeFilter
+        AttributeFilter $attributeFilter,
+        string $importType
     ) {
         $this->productModelFactory = $productModelFactory;
         $this->productModelUpdater = $productModelUpdater;
@@ -74,6 +82,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         $this->productModelFilter = $productModelFilter;
         $this->objectDetacher = $objectDetacher;
         $this->attributeFilter = $attributeFilter;
+        $this->importType = $importType;
     }
 
     /**
@@ -81,6 +90,13 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
      */
     public function process($flatProductModel): ?ProductModelInterface
     {
+        $parent = $flatProductModel['parent'] ?? '';
+        if ($this->importType === self::ROOT_PRODUCT_MODEL && !empty($parent) ||
+            $this->importType === self::SUB_PRODUCT_MODEL && empty($parent)
+        ) {
+            return null;
+        }
+
         if (!isset($flatProductModel['code'])) {
             $this->skipItemWithMessage($flatProductModel, 'The code must be filled');
         }

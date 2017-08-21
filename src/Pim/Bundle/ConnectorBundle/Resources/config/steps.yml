@@ -2,7 +2,7 @@ parameters:
     pim_connector.step.validator.class: Pim\Component\Connector\Step\ValidatorStep
     pim_connector.step.tasklet.class:   Pim\Component\Connector\Step\TaskletStep
     pim_connector.step.product.import.bulk_size: 1000
-    pim_connector.step.product_model.import.bulk_size: 1
+    pim_connector.step.product_model.import.bulk_size: 100
 
 services:
     # Validator steps -------------------------------------------------------------------------------------------------
@@ -86,14 +86,25 @@ services:
             - '@pim_connector.writer.database.product'
             - '%pim_connector.step.product.import.bulk_size%'
 
-    pim_connector.step.csv_product_model.import:
+    pim_connector.step.csv_root_product_model.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'import'
+            - 'import_root_product_model'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.file.csv_product_model'
-            - '@pim_connector.processor.denormalization.product_model'
+            - '@pim_connector.processor.denormalization.root_product_model'
+            - '@pim_connector.writer.database.product_model'
+            - '%pim_connector.step.product_model.import.bulk_size%'
+
+    pim_connector.step.csv_sub_product_model.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_sub_product_model'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.csv_product_model'
+            - '@pim_connector.processor.denormalization.sub_product_model'
             - '@pim_connector.writer.database.product_model'
             - '%pim_connector.step.product_model.import.bulk_size%'
 
@@ -394,14 +405,25 @@ services:
             - '@pim_connector.writer.database.product'
             - '%pim_connector.step.product.import.bulk_size%'
 
-    pim_connector.step.xlsx_product_model.import:
+    pim_connector.step.xlsx_root_product_model.import:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'import'
+            - 'import_root_product_model'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_connector.reader.file.xlsx_product_model'
-            - '@pim_connector.processor.denormalization.product_model'
+            - '@pim_connector.processor.denormalization.root_product_model'
+            - '@pim_connector.writer.database.product_model'
+            - '%pim_connector.step.product_model.import.bulk_size%'
+
+    pim_connector.step.xlsx_sub_product_model.import:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'import_sub_product_model'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.file.xlsx_product_model'
+            - '@pim_connector.processor.denormalization.sub_product_model'
             - '@pim_connector.writer.database.product_model'
             - '%pim_connector.step.product_model.import.bulk_size%'
 
