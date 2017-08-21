@@ -9,12 +9,12 @@
         <div class="AknSearch">
             <div class="AknSearch-selectors AknButtonList AknButtonList--right">
                 <div class="AknDropdown AknButtonList-item nav nav-tabs association-type-selector">
-                    <div class="AknActionButton" data-toggle="dropdown">
+                    <div class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
                         <%- label %>:
-                        <span class="AknActionButton-strong current-association-type">
+                        <span class="AknActionButton-highlight current-association-type">
                             <%- currentAssociationType.labels[locale] || '[' + currentAssociationType.code + ']' %>
                         </span>
-                        <span class="AknActionButton-caret AknCaret"></span>
+                        <span class="AknActionButton-caret"></span>
                     </div>
                     <ul class="AknDropdown-menu AknDropdown-menu--right associations-list">
                         <li class="AknDropdown-menuTitle"><%- label %></li>

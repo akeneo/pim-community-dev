@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Bundle\BatchBundle\Launcher;
 
 use Akeneo\Component\Batch\Model\JobExecution;
@@ -24,5 +26,5 @@ interface JobLauncherInterface
      *
      * @return JobExecution
      */
-    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []);
+    public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []) : JobExecution;
 }

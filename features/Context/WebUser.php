@@ -1773,7 +1773,6 @@ class WebUser extends PimContext
     public function theFamilyOfProductShouldBe($sku, $expectedFamily = '')
     {
         $this->spin(function () use ($sku, $expectedFamily) {
-            $this->clearUOW();
             $product      = $this->getFixturesContext()->getProduct($sku);
             $actualFamily = $product->getFamily() ? $product->getFamily()->getCode() : '';
 
@@ -1789,7 +1788,6 @@ class WebUser extends PimContext
      */
     public function theCategoryOfProductShouldBe($sku, $categoryCode)
     {
-        $this->clearUOW();
         $product = $this->getFixturesContext()->getProduct($sku);
 
         $categoryCodes = $product->getCategoryCodes();
@@ -2123,7 +2121,6 @@ class WebUser extends PimContext
      */
     public function iCancelTheMassEdit()
     {
-        $this->scrollContainerTo(900);
         $this->getCurrentPage()->cancel();
     }
 
