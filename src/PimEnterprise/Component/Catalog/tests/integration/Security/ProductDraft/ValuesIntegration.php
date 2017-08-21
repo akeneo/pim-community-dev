@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Component\Catalog\tests\integration\Security\Product;
+namespace PimEnterprise\Component\Catalog\tests\integration\Security\ProductDraft;
 
 use PimEnterprise\Component\Catalog\tests\integration\Security\AbstractSecurityTestCase;
 
@@ -151,6 +151,131 @@ class ValuesIntegration extends AbstractSecurityTestCase
 
         $this->updateProduct($product, ['values' => ['a_localized_and_scopable_text_area' => [['data' => 'text', 'locale' => 'fr_FR', 'scope' => 'ecommerce']]]]);
         $this->assertSame($product->getValue('a_localized_and_scopable_text_area', 'fr_FR', 'ecommerce')->getData(), 'text');
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\InvalidArgumentException
+     * @expectedExceptionMessage You cannot update the field "enabled". You should at least own this product to do it
+     */
+    public function testUpdateEnabledFieldOnProductDraft()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'enabled' => false]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['enabled' => true]);
+    }
+
+    public function testUpdateEnabledFieldOnProductDraftWithoutChange()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'enabled' => false]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['enabled' => false]);
+        $this->assertFalse($product->isEnabled());
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\InvalidArgumentException
+     * @expectedExceptionMessage You cannot update the field "family". You should at least own this product to do it
+     */
+    public function testUpdateFamilyFieldOnProductDraft()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'family' => 'familyA']);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['family' => 'familyB']);
+    }
+
+    public function testUpdateFamilyFieldOnProductDraftWithoutChange()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'family' => 'familyA']);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['family' => 'familyA']);
+        $this->assertSame('familyA', $product->getFamily()->getCode());
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\InvalidArgumentException
+     * @expectedExceptionMessage You cannot update the field "groups". You should at least own this product to do it
+     */
+    public function testUpdateGroupsFieldOnProductDraft()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'groups' => ['groupA']]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['groups' => ['groupB']]);
+    }
+
+    public function testUpdateGroupsFieldOnProductDraftWithoutChange()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'groups' => ['groupA']]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['groups' => ['groupA']]);
+        $this->assertSame('groupA', $product->getGroups()->first()->getCode());
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\InvalidArgumentException
+     * @expectedExceptionMessage You cannot update the field "categories". You should at least own this product to do it
+     */
+    public function testUpdateCategoriesFieldOnProductDraft()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA']]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['categories' => 'categoriesA1']);
+    }
+
+    public function testUpdateCategoriesFieldOnProductDraftWithoutChange()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA']]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['categories' => ['categoryA']]);
+        $this->assertSame('categoryA', $product->getCategories()->first()->getCode());
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\InvalidArgumentException
+     * @expectedExceptionMessage You cannot update the field "associations". You should at least own this product to do it
+     */
+    public function testUpdateAssociationsFieldOnProductDraft()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'associations' => [
+            'X_SELL' => [
+                'products' => ['product_a']
+            ]
+        ]]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['associations' => [
+            'X_SELL' => [
+                'products' => []
+            ]
+        ]]);
+    }
+
+    public function testUpdateAssociationsFieldOnProductDraftWithoutChange()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'associations' => [
+            'X_SELL' => [
+                'products' => ['product_a'],
+                'groups'   => ['groupA', 'groupB']
+            ]
+        ]]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['associations' => [
+            'X_SELL' => [
+                'products' => ['product_a'],
+            ]
+        ]]);
+        $this->assertSame('product_a', $product->getAssociationForTypeCode('X_SELL')->getProducts()->first()->getIdentifier());
+
+        $this->updateProduct($product, ['associations' => ['X_SELL' => ['products' => ['product_a'], 'groups' => ['groupB', 'groupA']]]]);
+        $this->assertSame('product_a', $product->getAssociationForTypeCode('X_SELL')->getProducts()->first()->getIdentifier());
     }
 
     /**
