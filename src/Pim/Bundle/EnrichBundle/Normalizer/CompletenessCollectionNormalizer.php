@@ -58,7 +58,10 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
      *                 'missing' => [
      *                     [
      *                         'code' = 'description',
-     *                         'label' = 'Description'
+     *                         'labels' = [
+     *                             'en_US' => 'Description',
+     *                             'fr_FR' => 'Description'
+     *                         ]
      *                     ],
      *                     ['...'],
      *                 ],
@@ -103,6 +106,7 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
                 'locales' => $this->normalizeChannelCompletenesses(
                     $localeCompletenesses,
                     $format,
+                    $locales,
                     $context
                 ),
             ];
@@ -144,6 +148,7 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
      *
      * @param CompletenessInterface[] $completenesses
      * @param string                  $format
+     * @param LocaleInterface[]       $locales
      * @param array                   $context
      *
      * @return array
@@ -151,6 +156,7 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     protected function normalizeChannelCompletenesses(
         array $completenesses,
         $format,
+        array $locales,
         array $context
     ) {
         $normalizedCompletenesses = [];
@@ -166,8 +172,8 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
 
             foreach ($completeness->getMissingAttributes() as $attribute) {
                 $normalizedCompleteness['missing'][] = [
-                    'code'  => $attribute->getCode(),
-                    'label' => $this->normalizeAttributeLabel($attribute),
+                    'code'   => $attribute->getCode(),
+                    'labels' => $this->normalizeAttributeLabels($attribute, $locales),
                 ];
             }
 
@@ -179,12 +185,18 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
 
     /**
      * @param AttributeInterface $attribute
+     * @param LocaleInterface[]  $locales
      *
-     * @return string
+     * @return array
      */
-    protected function normalizeAttributeLabel(AttributeInterface $attribute)
+    protected function normalizeAttributeLabels(AttributeInterface $attribute, $locales): array
     {
-        return $attribute->getTranslation();
+        $result = [];
+        foreach ($locales as $locale) {
+            $result[$locale->getCode()] = $attribute->getTranslation($locale)->getLabel();
+        }
+
+        return $result;
     }
 
     /**

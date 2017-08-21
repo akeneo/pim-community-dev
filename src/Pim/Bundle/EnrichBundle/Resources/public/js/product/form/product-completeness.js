@@ -23,7 +23,11 @@ define(
         template
     ) {
         return BaseForm.extend({
+            className: 'AknDropdown',
             template: _.template(template),
+            events: {
+                'click .missing-attribute': 'showAttribute'
+            },
 
             /**
              * {@inheritdoc}
@@ -31,22 +35,33 @@ define(
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', this.render.bind(this));
                 this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', this.render.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
+                    if ('base_product' === localeEvent.context) {
+                        this.render(localeEvent.localeCode);
+                    }
+                }.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
              * {@inheritDoc}
+             *
+             * @param localeCode String
              */
-            render: function () {
+            render: function (localeCode) {
                 this.$el.empty();
 
-                var ratio = this.getRatio();
+                var ratio = this.getCurrentRatio();
                 if (null !== ratio) {
                     this.$el.append(this.template({
+                        __: __,
                         label: __('pim_enrich.entity.product.completeness'),
-                        completeness: ratio,
-                        badgeClass: this.getBadgeClass()
+                        ratio: ratio,
+                        completenesses: this.getCurrentCompletenesses(),
+                        badgeClass: this.getBadgeClass(),
+                        currentLocale: undefined !== localeCode ? localeCode : UserContext.get('catalogLocale'),
+                        missingValues: 'pim_enrich.form.product.panel.completeness.missing_values'
                     }));
                 }
 
@@ -54,21 +69,27 @@ define(
             },
 
             /**
-             * Returns the ratio of the current locale and current scope
-             *
-             * @returns number|null
+             * Returns the completeness of the current scope
              */
-            getRatio: function () {
-                var completeness = _.findWhere(
+            getCurrentCompletenesses: function () {
+                return _.findWhere(
                     this.getFormData().meta.completenesses,
                     { channel: UserContext.get('catalogScope') }
                 );
+            },
 
-                if (undefined === completeness) {
+            /**
+             * Returns the ratio of the current scope and current locale
+             *
+             * @returns number|null
+             */
+            getCurrentRatio: function () {
+                var completenesses = this.getCurrentCompletenesses();
+                if (undefined === completenesses) {
                     return null;
                 }
 
-                completeness = completeness.locales[UserContext.get('catalogLocale')];
+                var completeness = completenesses.locales[UserContext.get('catalogLocale')];
                 if (undefined === completeness) {
                     return null;
                 }
@@ -82,8 +103,7 @@ define(
              * @returns string
              */
             getBadgeClass: function() {
-                var ratio = this.getRatio();
-
+                var ratio = this.getCurrentRatio();
                 if (ratio <= 0) {
                     return 'AknBadge--important';
                 }
@@ -93,6 +113,30 @@ define(
                 }
 
                 return 'AknBadge--warning';
+            },
+
+            /**
+             * Set focus to the attribute given by the event
+             *
+             * @param event Event
+             */
+            showAttribute: function (event) {
+                this.getRoot().trigger(
+                    'pim_enrich:form:locale_switcher:change',
+                    {
+                        localeCode: event.currentTarget.dataset.locale,
+                        context: 'base_product'
+                    }
+                );
+                this.getRoot().trigger(
+                    'pim_enrich:form:show_attribute',
+                    {
+                        attribute: event.currentTarget.dataset.attribute,
+                        locale: event.currentTarget.dataset.locale,
+                        scope: UserContext.get('catalogScope')
+                    }
+                );
+                this.render();
             }
         });
     }
