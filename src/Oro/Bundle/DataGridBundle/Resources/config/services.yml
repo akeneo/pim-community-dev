@@ -62,4 +62,4 @@ services:
         arguments:
             - '@oro_datagrid.datagrid.metadata_parser'
         tags:
-            { name: twig.extension }
+            - { name: twig.extension }
