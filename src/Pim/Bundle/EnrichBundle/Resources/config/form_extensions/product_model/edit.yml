@@ -58,7 +58,7 @@ extensions:
         position: 100
 
     pim-product-edit-form-product-model-label:
-        module: pim/product-edit-form/product-model-label
+        module: pim/product-model-edit-form/product-model-label
         parent: pim-product-model-edit-form
         targetZone: title
         position: 100
@@ -90,7 +90,7 @@ extensions:
         position: 120
 
     pim-product-model-edit-form-save:
-        module: pim/product-edit-form/save
+        module: pim/product-model-edit-form/save
         parent: pim-product-model-edit-form
         targetZone: buttons
         position: 0
@@ -110,7 +110,7 @@ extensions:
         position: 70
 
     pim-product-model-edit-form-family-variant:
-        module: pim/product-edit-form/meta/family-variant
+        module: pim/product-model-edit-form/meta/family-variant
         parent: pim-product-model-edit-form-meta
         targetZone: meta
         position: 80

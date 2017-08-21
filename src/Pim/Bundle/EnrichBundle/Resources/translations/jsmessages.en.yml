@@ -241,6 +241,11 @@ pim_enrich:
             message:
                 created: Product successfully created
             completeness: Complete
+        product_model:
+            info:
+                update_successful: Product model successfully updated.
+                update_failed: The product model could not be updated.
+                field_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
         association_type:
             info:
                 deletion_successful: Association type successfully deleted.
