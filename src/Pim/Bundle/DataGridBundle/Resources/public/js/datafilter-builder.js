@@ -50,7 +50,6 @@ define(
              * @param  {Object} $el        Element
              */
             initHandler(collection, $el) {
-                console.log(typeof collection, typeof $el)
                 this.collection = collection;
                 this.$el = $el;
                 this.initBuilder();

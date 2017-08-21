@@ -5,7 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Oro\Bundle\DataGridBundle\Datagrid\Metadata;
+use Oro\Bundle\DataGridBundle\Datagrid\MetadataParser;
 
 /**
  * Datagrid controller
@@ -24,7 +24,7 @@ class DatagridController
     /**
      * @param EngineInterface $templating
      */
-    public function __construct(EngineInterface $templating, Metadata $metadata)
+    public function __construct(EngineInterface $templating, MetadataParser $metadata)
     {
         $this->templating = $templating;
         $this->metadata   = $metadata;

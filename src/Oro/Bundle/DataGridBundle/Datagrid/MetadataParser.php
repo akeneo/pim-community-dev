@@ -7,7 +7,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-class Metadata
+class MetadataParser
 {
     const ROUTE = 'oro_datagrid_index';
 
