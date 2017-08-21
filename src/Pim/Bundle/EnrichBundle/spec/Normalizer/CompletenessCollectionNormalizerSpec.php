@@ -151,88 +151,89 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
         $normalizer
             ->normalize($completenessPrintFrFR, 'internal_api', ['a_context_key' => 'context_value'])
             ->willReturn([]);
-
+        
         $this
             ->normalize($completenessCollection, 'internal_api', ['a_context_key' => 'context_value'])
             ->shouldReturn([
             [
                 'channel' => "mobile",
-                    'labels'  => [
-                        'en_US' => "mobile",
-                        'fr_FR' => "mobile",
-                    ],
-                    'stats'   => [
-                        'total'    => 2,
-                        'complete' => 0,
-                    ],
-                    'locales' => [
-                        'en_US' => [
-                            'completeness' => [],
-                            'missing'      => [
-                                [
-                                    'code'   => "name",
-                                    'labels' => [
-                                        'en_US' => 'Name',
-                                        'fr_FR' => 'Nom'
-                                    ]
-                                ],
+                'labels'  => [
+                    'en_US' => "mobile",
+                    'fr_FR' => "mobile",
+                ],
+                'stats'   => [
+                    'total'    => 2,
+                    'complete' => 0,
+                    'average'  => 50,
+                ],
+                'locales' => [
+                    'en_US' => [
+                        'completeness' => [],
+                        'missing'      => [
+                            [
+                                'code'   => "name",
+                                'labels' => [
+                                    'en_US' => 'Name',
+                                    'fr_FR' => 'Nom'
+                                ]
                             ],
-                            'label'        => "English",
                         ],
-                        'fr_FR' => [
-                            'completeness' => [],
-                            'missing'      => [
-                                [
-                                    'code'  => "name",
-                                    'labels' => [
-                                        'en_US' => 'Name',
-                                        'fr_FR' => 'Nom'
-                                    ]
-                                ],
-                            ],
-                            'label'        => "French",
-                        ],
+                        'label'        => "English",
                     ],
-                ], [
+                    'fr_FR' => [
+                        'completeness' => [],
+                        'missing'      => [
+                            [
+                                'code'  => "name",
+                                'labels' => [
+                                    'en_US' => 'Name',
+                                    'fr_FR' => 'Nom'
+                                ]
+                            ],
+                        ],
+                        'label'        => "French",
+                    ],
+                ],
+            ], [
                 'channel' => "print",
-                    'labels'  => [
-                        'en_US' => "print",
-                        'fr_FR' => "impression",
-                    ],
-                    'stats'   => [
-                        'total'    => 2,
-                        'complete' => 0,
-                    ],
-                    'locales' => [
-                        'en_US' => [
-                            'completeness' => [],
-                            'missing'      => [
-                                [
-                                    'code'  => "name",
-                                    'labels' => [
-                                        'en_US' => 'Name',
-                                        'fr_FR' => 'Nom'
-                                    ]
-                                ],
+                'labels'  => [
+                    'en_US' => "print",
+                    'fr_FR' => "impression",
+                ],
+                'stats'   => [
+                    'total'    => 2,
+                    'complete' => 0,
+                    'average'  => 50,
+                ],
+                'locales' => [
+                    'en_US' => [
+                        'completeness' => [],
+                        'missing'      => [
+                            [
+                                'code'  => "name",
+                                'labels' => [
+                                    'en_US' => 'Name',
+                                    'fr_FR' => 'Nom'
+                                ]
                             ],
-                            'label'        => "English",
                         ],
-                        'fr_FR' => [
-                            'completeness' => [],
-                            'missing'      => [
-                                [
-                                    'code'  => "name",
-                                    'labels' => [
-                                        'en_US' => 'Name',
-                                        'fr_FR' => 'Nom'
-                                    ]
-                                ],
+                        'label'        => "English",
+                    ],
+                    'fr_FR' => [
+                        'completeness' => [],
+                        'missing'      => [
+                            [
+                                'code'  => "name",
+                                'labels' => [
+                                    'en_US' => 'Name',
+                                    'fr_FR' => 'Nom'
+                                ]
                             ],
-                            'label'        => "French",
-                        ]
+                        ],
+                        'label'        => "French",
                     ]
                 ]
             ]
-        );
+        ]);
     }
 }

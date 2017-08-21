@@ -95,16 +95,17 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
             $sortedCompletenesses[$channel->getCode()][$completeness->getLocale()->getCode()] = $completeness;
         }
 
-        foreach ($sortedCompletenesses as $channelCode => $localeCompletenesses) {
+        foreach ($sortedCompletenesses as $channelCode => $channelCompletenesses) {
             $normalizedCompletenesses[] = [
                 'channel'   => $channelCode,
                 'labels'    => $this->getChannelLabels($channels, $locales, $channelCode),
                 'stats'    => [
-                    'total'    => count($localeCompletenesses),
-                    'complete' => $this->countComplete($localeCompletenesses),
+                    'total'    => count($channelCompletenesses),
+                    'complete' => $this->countComplete($channelCompletenesses),
+                    'average'  => $this->average($channelCompletenesses),
                 ],
                 'locales' => $this->normalizeChannelCompletenesses(
-                    $localeCompletenesses,
+                    $channelCompletenesses,
                     $format,
                     $locales,
                     $context
@@ -133,7 +134,6 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     protected function countComplete(array $completenesses)
     {
         $complete = 0;
-
         foreach ($completenesses as $completeness) {
             if (100 <= $completeness->getRatio()) {
                 $complete++;
@@ -141,6 +141,23 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
         }
 
         return $complete;
+    }
+
+    /**
+     * Returns the average completeness of a specific channel
+     *
+     * @param CompletenessInterface[] $completenesses
+     *
+     * @return int
+     */
+    protected function average(array $completenesses)
+    {
+        $complete = 0;
+        foreach ($completenesses as $completeness) {
+            $complete += $completeness->getRatio();
+        }
+
+        return (int) round($complete / count($completenesses));
     }
 
     /**
