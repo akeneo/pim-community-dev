@@ -33,7 +33,6 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', this.render.bind(this));
                 this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', this.render.bind(this));
                 this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
                     if ('base_product' === localeEvent.context) {
@@ -52,7 +51,7 @@ define(
             render: function (localeCode) {
                 this.$el.empty();
 
-                var ratio = this.getCurrentRatio();
+                const ratio = this.getCurrentRatio();
                 if (null !== ratio) {
                     this.$el.append(this.template({
                         __: __,
@@ -84,12 +83,12 @@ define(
              * @returns number|null
              */
             getCurrentRatio: function () {
-                var completenesses = this.getCurrentCompletenesses();
+                const completenesses = this.getCurrentCompletenesses();
                 if (undefined === completenesses) {
                     return null;
                 }
 
-                var completeness = completenesses.locales[UserContext.get('catalogLocale')];
+                const completeness = completenesses.locales[UserContext.get('catalogLocale')];
                 if (undefined === completeness) {
                     return null;
                 }
@@ -103,7 +102,7 @@ define(
              * @returns string
              */
             getBadgeClass: function() {
-                var ratio = this.getCurrentRatio();
+                const ratio = this.getCurrentRatio();
                 if (ratio <= 0) {
                     return 'AknBadge--important';
                 }

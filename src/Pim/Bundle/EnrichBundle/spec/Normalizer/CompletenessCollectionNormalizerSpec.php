@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeTranslationInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ChannelTranslationInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
@@ -116,8 +117,6 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
         $completenessPrintFrFR->getMissingCount()->willReturn(1);
         $completenessPrintFrFR->getMissingAttributes()->willReturn($attributeCollectionPrintFrFR);
 
-
-
         $mobile->getCode()->willReturn('mobile');
         $print->getCode()->willReturn('print');
         $enUS->getCode()->willReturn('en_US');
@@ -134,7 +133,10 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
         $translationPrintFr->getLabel()->willReturn('impression');
 
         $attribute->getCode()->willReturn('name');
-        $attribute->getTranslation()->willReturn('Name');
+        $attribute->getTranslation('en_US')->willReturn($attributeTranslationEn);
+        $attribute->getTranslation('fr_FR')->willReturn($attributeTranslationFr);
+        $attributeTranslationEn->getLabel()->willReturn('Name');
+        $attributeTranslationFr->getLabel()->willReturn('Nom');
 
         $normalizer->normalize(Argument::cetera())->shouldBeCalledTimes(4);
         $normalizer
@@ -168,8 +170,11 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
                             'completeness' => [],
                             'missing'      => [
                                 [
-                                    'code'  => "name",
-                                    'label' => 'Name'
+                                    'code'   => "name",
+                                    'labels' => [
+                                        'en_US' => 'Name',
+                                        'fr_FR' => 'Nom'
+                                    ]
                                 ],
                             ],
                             'label'        => "English",
@@ -179,7 +184,10 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
                             'missing'      => [
                                 [
                                     'code'  => "name",
-                                    'label' => 'Name'
+                                    'labels' => [
+                                        'en_US' => 'Name',
+                                        'fr_FR' => 'Nom'
+                                    ]
                                 ],
                             ],
                             'label'        => "French",
@@ -201,7 +209,10 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
                             'missing'      => [
                                 [
                                     'code'  => "name",
-                                    'label' => 'Name'
+                                    'labels' => [
+                                        'en_US' => 'Name',
+                                        'fr_FR' => 'Nom'
+                                    ]
                                 ],
                             ],
                             'label'        => "English",
@@ -211,7 +222,10 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
                             'missing'      => [
                                 [
                                     'code'  => "name",
-                                    'label' => 'Name'
+                                    'labels' => [
+                                        'en_US' => 'Name',
+                                        'fr_FR' => 'Nom'
+                                    ]
                                 ],
                             ],
                             'label'        => "French",

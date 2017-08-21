@@ -193,7 +193,7 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     {
         $result = [];
         foreach ($locales as $locale) {
-            $result[$locale->getCode()] = $attribute->getTranslation($locale)->getLabel();
+            $result[$locale->getCode()] = $attribute->getTranslation($locale->getCode())->getLabel();
         }
 
         return $result;
