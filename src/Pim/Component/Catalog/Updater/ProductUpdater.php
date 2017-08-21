@@ -4,10 +4,12 @@ namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
  * Updates a product
@@ -32,24 +34,29 @@ class ProductUpdater implements ObjectUpdaterInterface
 
     /** @var array */
     protected $ignoredFields = [];
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $productModelRepository;
 
     /**
-     * @param PropertySetterInterface         $propertySetter
-     * @param ProductTemplateUpdaterInterface $templateUpdater
-     * @param ObjectUpdaterInterface          $valuesUpdater
-     * @param array                           $supportedFields
-     * @param array                           $ignoredFields
+     * @param PropertySetterInterface               $propertySetter
+     * @param ProductTemplateUpdaterInterface       $templateUpdater
+     * @param ObjectUpdaterInterface                $valuesUpdater
+     * @param IdentifiableObjectRepositoryInterface $productModelRepository
+     * @param array                                 $supportedFields
+     * @param array                                 $ignoredFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         ProductTemplateUpdaterInterface $templateUpdater,
         ObjectUpdaterInterface $valuesUpdater,
+        IdentifiableObjectRepositoryInterface $productModelRepository,
         array $supportedFields,
         array $ignoredFields
     ) {
         $this->propertySetter = $propertySetter;
         $this->templateUpdater = $templateUpdater;
         $this->valuesUpdater = $valuesUpdater;
+        $this->productModelRepository = $productModelRepository;
         $this->supportedFields = $supportedFields;
         $this->ignoredFields = $ignoredFields;
     }
@@ -135,6 +142,8 @@ class ProductUpdater implements ObjectUpdaterInterface
         foreach ($data as $code => $values) {
             if (in_array($code, $this->supportedFields)) {
                 $this->updateProductFields($product, $code, $values);
+            } elseif ('parent' === $code) {
+                $this->setParent($product, $values);
             } elseif ('values' === $code) {
                 $this->valuesUpdater->update($product, $values, $options);
                 $this->addEmptyValues($product, $values);
@@ -145,6 +154,19 @@ class ProductUpdater implements ObjectUpdaterInterface
         $this->updateProductVariantValues($product, $data);
 
         return $this;
+    }
+
+    private function setParent(ProductInterface $product, $values)
+    {
+        if ($product instanceof VariantProductInterface) {
+            return;
+        }
+
+        if (null !== $parent = $this->productModelRepository->findOneByIdentifier($values)) {
+            // Throw exception
+        }
+
+        $product->setParent($parent);
     }
 
     /**

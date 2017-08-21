@@ -49,7 +49,10 @@ class Product implements AttributeFilter
             return $this->removeUnknownAttributes($flatProduct, $attributes);
         }
 
-        $family = $this->familyRepository->findOneByIdentifier($flatProduct['family']);
+        if (null === $family = $this->familyRepository->findOneByIdentifier($flatProduct['family'])) {
+            return $flatProduct;
+        }
+
         $attributes = $family->getAttributes();
 
         return $this->removeUnknownAttributes($flatProduct, $attributes);
