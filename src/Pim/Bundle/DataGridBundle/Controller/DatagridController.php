@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
+use Oro\Bundle\DataGridBundle\Datagrid\MetadataParser;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Oro\Bundle\DataGridBundle\Datagrid\MetadataParser;
 
 /**
  * Datagrid controller
@@ -40,7 +40,6 @@ class DatagridController
      */
     public function loadAction(Request $request, $alias)
     {
-
         $params = $request->get('params', []);
 
         return new JsonResponse([

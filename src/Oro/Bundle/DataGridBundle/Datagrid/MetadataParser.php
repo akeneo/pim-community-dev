@@ -17,14 +17,12 @@ class MetadataParser
     /**
      * @param ContainerInterface $container
      */
-    public function __construct
-    (
+    public function __construct(
         ContainerInterface $container,
         Manager $manager,
         RequestParameters $requestParams,
         RouterInterface $router
-    )
-    {
+    ) {
         $this->container = $container;
         $this->manager = $manager;
         $this->requestParams = $requestParams;
@@ -79,5 +77,4 @@ class MetadataParser
 
         return $this->router->generate(self::ROUTE, $params);
     }
-
 }
