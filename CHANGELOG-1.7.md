@@ -3,6 +3,7 @@
 ## Bug Fixes
 
 - PIM-6568: Fix import items invalid data that were no longer saved
+- PIM-6744: Fix field configuration of xlsx product import job edit form
 
 ## Improvements
 
