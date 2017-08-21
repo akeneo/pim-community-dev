@@ -2,6 +2,8 @@
 
 namespace PimEnterprise\Component\Catalog\tests\integration\Security\Product;
 
+use PimEnterprise\Component\Catalog\tests\integration\Security\AbstractSecurityTestCase;
+
 /**
  * +----------+--------------------------------------------------------------------------+
  * |          |                             Categories                                   |
