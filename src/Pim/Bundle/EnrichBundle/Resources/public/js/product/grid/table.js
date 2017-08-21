@@ -35,8 +35,9 @@ define(
             },
 
             getDefaultView() {
+                const { gridName } = this.config;
                 return FetcherRegistry.getFetcher('datagrid-view')
-                    .defaultUserView('product-grid')
+                    .defaultUserView(gridName)
                     .then(defaultUserView => defaultUserView.view);
             },
 

@@ -29,10 +29,12 @@ define(
                     return this;
                 }
 
-                const { title } = this.options.config;
+                const { title, gridName } = this.options.config;
+
+                console.log('render the grid', title, gridName)
 
                 this.$el.html(
-                    this.template({ title })
+                    this.template({ title, gridName })
                 );
 
                 return this.renderExtensions();

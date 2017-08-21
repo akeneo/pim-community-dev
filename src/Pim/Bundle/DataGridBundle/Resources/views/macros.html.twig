@@ -1,4 +1,24 @@
 {#
+    Renders datagrid widget
+#}
+{% macro renderGrid(name, params = {}, renderParams = {}) %}
+    {% set metaData = oro_datagrid_metadata(name, params) %}
+
+    <div id="grid-{{ name }}" data-type="datagrid" data-data="{{ oro_datagrid_data(name, params)|escape }}"
+         {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}
+         data-metadata="{{ metaData|json_encode }}"></div>
+    <script type="text/javascript">
+        require(['jquery', 'oro/datagrid-builder', 'underscore'].concat({{ metaData.requireJSModules|json_encode|raw }}),
+        function ($, datagridBuilder, _) {
+            var builders = _.toArray(arguments).slice(3);
+            $(function () {
+                datagridBuilder(builders);
+            });
+        });
+    </script>
+{% endmacro %}
+
+{#
     Datagrid macro to load the grid asynchronously
 #}
 {% macro renderStatefulGrid(name, params = {}, renderParams = {}, defaultView = {}, categoryBaseRoute = null) %}

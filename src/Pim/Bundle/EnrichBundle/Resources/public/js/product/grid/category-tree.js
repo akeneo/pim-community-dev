@@ -21,6 +21,10 @@ define(
         CategoryFilter
     ) {
         return BaseForm.extend({
+            config: {
+                gridName: 'product-grid',
+                categoryTreeName: 'pim_enrich_categorytree'
+            },
             // The id is being used inside product_category-filter
             id: 'tree',
             className: 'filter-item',
@@ -28,6 +32,12 @@ define(
                 'data-name': 'category',
                 'data-type': 'tree',
                 'data-relatedentity': 'product'
+            },
+
+            initialize(options) {
+                this.config = Object.assign(this.config, options.config || {});
+
+                return BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**
@@ -45,8 +55,8 @@ define(
             setupCategoryTree(urlParams) {
                 return new CategoryFilter(
                     urlParams,
-                    'product-grid',
-                    'pim_enrich_categorytree',
+                    this.config.gridName,
+                    this.config.categoryTreeName,
                     '.filter-item'
                 );
             }

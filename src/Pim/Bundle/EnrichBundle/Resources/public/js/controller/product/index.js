@@ -9,17 +9,32 @@ define(
     ],
     function (_, $, BaseController, FormBuilder, UserContext, mediator) {
         return BaseController.extend({
+            config: {
+                gridExtension: 'pim-product-index',
+                gridName: 'product-grid'
+            },
+
+            /**
+            * {@inheritdoc}
+            */
+            initialize(options) {
+                this.config = Object.assign(this.config, options.config || {});
+
+                return BaseController.prototype.initialize.apply(this, arguments);
+            },
+
             /**
             * {@inheritdoc}
             */
             renderRoute() {
                 this.selectMenuTab();
 
-                return FormBuilder.build('pim-product-index').then((form) => {
+                const { gridName, gridExtension } = this.config;
+
+                return FormBuilder.build(gridExtension).then((form) => {
                     this.setupLocale();
-                    // Move somewhere else
                     this.setupMassEditAttributes();
-                    form.setElement(this.$el).render();
+                    form.setElement(this.$el).render({ gridName });
                 });
             },
 
