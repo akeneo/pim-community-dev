@@ -70,7 +70,6 @@ class AssetsCommand extends ContainerAwareCommand
 
         $this->commandExecutor
             ->runCommand('fos:js-routing:dump', ['--target' => 'web/js/routes.js'])
-            ->runCommand('oro:requirejs:generate-config')
             ->runCommand('assets:install')
             ->runCommand('assetic:dump')
             ->runCommand('oro:assetic:dump')
