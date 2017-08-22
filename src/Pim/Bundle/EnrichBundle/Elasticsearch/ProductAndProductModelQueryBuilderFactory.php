@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Elasticsearch;
 
 use Pim\Bundle\CatalogBundle\Elasticsearch\ProductQueryBuilderFactory;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 
 /**
  * Aims to wrap the creation and configuration of the product and product model query builder
@@ -15,7 +16,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
 {
     /** @var string */
-    protected $pqbClass;
+    private $pqbClass;
 
     /** @var ProductQueryBuilderFactory */
     private $factory;
@@ -24,7 +25,7 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
      * @param string                     $pqbClass
      * @param ProductQueryBuilderFactory $factory
      */
-    public function __construct($pqbClass, ProductQueryBuilderFactory $factory)
+    public function __construct(string $pqbClass, ProductQueryBuilderFactory $factory)
     {
         $this->pqbClass = $pqbClass;
         $this->factory = $factory;
@@ -33,7 +34,7 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
     /**
      * {@inheritdoc}
      */
-    public function create(array $options = [])
+    public function create(array $options = []): ProductQueryBuilderInterface
     {
         $basePqb = $this->factory->create($options);
 
