@@ -21,7 +21,7 @@ define(
              */
             getExtensionMap: function () {
                 return loadConfig().then(function (config) {
-                    return config.extensions;
+                    return Object.values(config.extensions);
                 });
             },
 

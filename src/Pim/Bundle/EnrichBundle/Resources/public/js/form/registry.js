@@ -1,45 +1,34 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'pim/form-config-provider', 'require-context'],
-    function ($, _, ConfigProvider, requireContext) {
-        var getForm = function (formName) {
-            return ConfigProvider.getExtensionMap().then(function (extensionMap) {
-                var form     = _.first(_.where(extensionMap, { code: formName }));
-                var deferred = new $.Deferred();
-
+    ['jquery', 'pim/form-config-provider', 'require-context'],
+    function ($, ConfigProvider, requireContext) {
+        const getFormExtensions = (formName) => {
+            return $.when(
+                ConfigProvider.getExtensionMap(),
+                getFormMeta(formName)
+            ).then((extensionMap, form) => {
                 if (undefined === form) {
                     throw new Error(
-                        'The form ' + formName + ' was not found. Are you sure you registered it properly?'
+                        `The form ${formName} was not found. Are you sure you registered it properly?`
                     );
                 }
 
-                var ResolvedModule = requireContext(form.module);
-                deferred.resolve(ResolvedModule);
-
-                return deferred.promise();
+                return extensionMap.filter(extension => extension.parent === form.code);
             });
         };
 
-        var getExtensionMeta = function (formName) {
-            return ConfigProvider.getExtensionMap().then(function (extensionMap) {
-                var form = _.findWhere(extensionMap, { code: formName });
-                var extensions = _.where(extensionMap, { parent: form.code });
+        const getFormMeta = (formName) => {
+            return ConfigProvider.getExtensionMap().then((extensionMap) => {
+                const form = extensionMap.find(extension => extension.code === formName);
 
-                return $.extend(true, {}, extensions);
-            });
-        };
-
-        var getFormMeta = function (formName) {
-            return ConfigProvider.getExtensionMap().then(function (extensionMap) {
-                return _.findWhere(extensionMap, { code: formName });
+                return form;
             });
         };
 
         return {
-            getForm: getForm,
-            getFormExtensions: getExtensionMeta,
-            getFormMeta: getFormMeta
+            getFormExtensions,
+            getFormMeta
         };
     }
 );

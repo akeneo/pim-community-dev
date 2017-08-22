@@ -12,18 +12,16 @@ define(
          * @return {Promise}
          */
         getAttributeGroupsForObject: function (object) {
-            return $.when(
-                FetcherRegistry.getFetcher('attribute-group').fetchAll(),
-                AttributeManager.getAttributes(object)
-            ).then(function (attributeGroups, ObjectAttributes) {
-                return _.reduce(attributeGroups, function (result, attributeGroup) {
-                    if (_.intersection(attributeGroup.attributes, ObjectAttributes).length > 0) {
-                        result[attributeGroup.code] = attributeGroup;
-                    }
+            return FetcherRegistry.getFetcher('attribute-group').fetchAll()
+                .then(function (attributeGroups) {
+                    return Object.values(attributeGroups).reduce((result, attributeGroup) => {
+                        if (_.intersection(attributeGroup.attributes, _.keys(object.values)).length > 0) {
+                            result[attributeGroup.code] = attributeGroup;
+                        }
 
-                    return result;
-                }, {});
-            });
+                        return result;
+                    }, {});
+                });
         },
 
         /**

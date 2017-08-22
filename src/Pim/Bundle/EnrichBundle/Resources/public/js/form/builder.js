@@ -1,29 +1,27 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'pim/form-registry'],
-    function ($, _, FormRegistry) {
+    ['jquery', 'underscore', 'pim/form-registry', 'require-context'],
+    function ($, _, FormRegistry, requireContext) {
         var buildForm = function (formName) {
             return $.when(
-                FormRegistry.getForm(formName),
                 FormRegistry.getFormMeta(formName),
                 FormRegistry.getFormExtensions(formName)
-            ).then(function (Form, formMeta, extensionMeta) {
-                var form = new Form(formMeta);
+            ).then(function (formMeta, extensionMeta) {
+                const Form = requireContext(formMeta.module);
+                const form = new Form(formMeta);
                 form.code = formName;
 
-                var extensionPromises = [];
-                _.each(extensionMeta, function (extension) {
-                    var extensionPromise = buildForm(extension.code);
-                    extensionPromise.done(function (loadedModule) {
+                const extensionPromises = extensionMeta.map((extension) => {
+                    return buildForm(extension.code).then(function (loadedModule) {
                         extension.loadedModule = loadedModule;
-                    });
 
-                    extensionPromises.push(extensionPromise);
+                        return extension;
+                    });
                 });
 
                 return $.when.apply($, extensionPromises).then(function () {
-                    _.each(extensionMeta, function (extension) {
+                    extensionMeta.forEach((extension) => {
                         form.addExtension(
                             extension.code,
                             extension.loadedModule,

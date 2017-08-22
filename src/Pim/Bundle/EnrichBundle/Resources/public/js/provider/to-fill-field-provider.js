@@ -37,10 +37,7 @@ define(
                     this.fieldsPromise = $.when.apply($, filterPromises).then(function () {
                         return arguments;
                     }).then(function (filters) {
-                        return attributeManager.getAttributes(product)
-                            .then(function (attributeCodes) {
-                                return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes);
-                            })
+                        return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(_.keys(product.values))
                             .then(function (attributesToFilter) {
                                 var filteredAttributes = _.reduce(filters, function (attributes, filter) {
                                     return filter(attributes);
