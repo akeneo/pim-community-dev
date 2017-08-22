@@ -7,14 +7,14 @@ Feature: Remove product assets
   Background:
     Given a "clothing" catalog configuration
     And the following products:
-      | sku   |
-      | shirt |
+      | sku   | family |
+      | shirt | tees   |
     And I am logged in as "Pamela"
 
   @skip @info To be fixed in TIP-684
   Scenario: Successfully delete product asset
     Given I am on the "shirt" product page
-    And I add available attributes Front view
+    And I visit the "Media" group
     And I start to manage assets for "Front view"
     And I change the page size to 100
     And I check the row "chicagoskyline"
@@ -33,7 +33,7 @@ Feature: Remove product assets
 
   Scenario: Remove an asset is forbidden if the asset is used in a published product
     Given I am on the "shirt" product page
-    And I add available attributes Front view
+    And I visit the "Media" group
     And I start to manage assets for "Front view"
     And I change the page size to 100
     And I check the row "chicagoskyline"

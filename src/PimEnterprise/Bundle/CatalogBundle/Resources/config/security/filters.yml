@@ -1,0 +1,14 @@
+parameters:
+    pimee_catalog.security.filter.not_granted_category.class: PimEnterprise\Component\Catalog\Security\Filter\NotGrantedCategoryFilter
+    pimee_catalog.security.filter.not_granted_associated_product.class: PimEnterprise\Component\Catalog\Security\Filter\NotGrantedAssociatedProductFilter
+
+services:
+    pimee_catalog.security.filter.not_granted_category:
+        class: '%pimee_catalog.security.filter.not_granted_category.class%'
+        arguments:
+            - '@security.authorization_checker'
+
+    pimee_catalog.security.filter.not_granted_associated_product:
+        class: '%pimee_catalog.security.filter.not_granted_associated_product.class%'
+        arguments:
+            - '@pim_catalog.repository.product'

@@ -7,7 +7,7 @@ Feature: Send a product draft with reference data for approval
   Background:
     Given a "clothing" catalog configuration
     And the product:
-      | family     | pants      |
+      | family     | hoodies    |
       | categories | winter_top |
       | sku        | my-jean    |
     And the following "sleeve_fabric" attribute reference data: PVC, Nylon, Neoprene, Lace, Rubber, Leather
@@ -17,8 +17,7 @@ Feature: Send a product draft with reference data for approval
 
   @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully create a new product draft with simple select reference data
-    Given I add available attribute Lace color
-    And I visit the "Other" group
+    Given I visit the "Other" group
     Then I fill in the following information:
       | Lace color | Red |
     And I save the product
@@ -26,8 +25,7 @@ Feature: Send a product draft with reference data for approval
 
   @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully send my product draft ith simple select reference data for approval
-    Given I add available attribute Lace color
-    And I visit the "Other" group
+    Given I visit the "Other" group
     Then I fill in the following information:
       | Lace color | Red |
     And I save the product
@@ -37,8 +35,7 @@ Feature: Send a product draft with reference data for approval
 
   @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully restore the product draft status when I modify a simple select after sending it for approval
-    Given I add available attribute Lace color
-    And I visit the "Other" group
+    Given I visit the "Other" group
     Then I fill in the following information:
       | Lace color | Red |
     And I save the product
@@ -52,8 +49,7 @@ Feature: Send a product draft with reference data for approval
 
   @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully create a new product draft with multi select reference data
-    Given I add available attribute Sleeve fabric
-    And I visit the "Other" group
+    Given I visit the "Other" group
     Then I fill in the following information:
       | Sleeve fabric | Leather, Neoprene |
     And I save the product
@@ -61,8 +57,7 @@ Feature: Send a product draft with reference data for approval
 
   @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully send my product draft ith simple multi select reference data for approval
-    Given I add available attribute Sleeve fabric
-    And I visit the "Other" group
+    Given I visit the "Other" group
     Then I fill in the following information:
       | Sleeve fabric | Leather, Neoprene |
     And I save the product
@@ -72,8 +67,7 @@ Feature: Send a product draft with reference data for approval
 
   @jira https://akeneo.atlassian.net/browse/PIM-4597
   Scenario: Successfully restore the product draft status when I modify a multi select after sending it for approval
-    Given I add available attribute Sleeve fabric
-    And I visit the "Other" group
+    Given I visit the "Other" group
     Then I fill in the following information:
       | Sleeve fabric | Leather, Neoprene |
     And I save the product

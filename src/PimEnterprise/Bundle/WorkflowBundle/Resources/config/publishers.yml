@@ -19,7 +19,7 @@ services:
             - '@pimee_workflow.publisher.product_related_association'
             - '@pim_versioning.manager.version'
             - '@pim_serializer'
-            - '@pim_catalog.updater.product'
+            - '@pim_catalog.updater.product_without_permission'
         tags:
             - { name: pimee_workflow.publisher }
 

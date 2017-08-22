@@ -7,14 +7,14 @@ Feature: Assign assets to a product
   Background:
     Given the "clothing" catalog configuration
     And the following products:
-      | sku   |
-      | shirt |
+      | sku   | family |
+      | shirt | tees   |
     And I generate missing variations
 
   Scenario: Succesfully assign assets to a product
     Given I am logged in as "Julia"
     And I am on the "shirt" product page
-    And I add available attributes Front view
+    And I visit the "Media" group
     And I start to manage assets for "Front view"
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
     And I change the page size to 100
@@ -60,7 +60,7 @@ Feature: Assign assets to a product
     And I should not see the text "There are unsaved changes."
     And I should see the text "akene.jpg"
     And I am on the "shirt" product page
-    And I add available attributes Front view
+    And I visit the "Media" group
     When I start to manage assets for "Front view"
     Then the row "paint" should contain the thumbnail for channel "tablet"
     And the row "chicagoskyline" should contain the thumbnail for channel "tablet" and locale "en_US"
@@ -104,7 +104,7 @@ Feature: Assign assets to a product
   Scenario: Do not show the category tree when the user has not the permission
     Given I am logged in as "Peter"
     And I am on the "shirt" product page
-    And I add available attributes Front view
+    And I visit the "Media" group
     And I start to manage assets for "Front view"
     Then I should see the text "Asset main catalog"
     And I confirm the asset modification
@@ -116,7 +116,6 @@ Feature: Assign assets to a product
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I am on the "shirt" product page
-    And I add available attributes Front view
     And I start to manage assets for "Front view"
     Then I should not see the text "Asset main catalog"
 
@@ -147,7 +146,7 @@ Feature: Assign assets to a product
       | video_21 | videos     |
     And I am logged in as "Julia"
     And I am on the "shirt" product page
-    And I add available attributes Front view
+    And I visit the "Media" group
     And I start to manage assets for "Front view"
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
     And I change the page size to 100

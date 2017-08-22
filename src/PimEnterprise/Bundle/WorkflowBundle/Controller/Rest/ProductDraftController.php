@@ -150,6 +150,7 @@ class ProductDraftController
             'disable_grouping_separator' => true
         ];
 
+
         return new JsonResponse($this->normalizer->normalize(
             $product,
             'internal_api',
@@ -209,8 +210,10 @@ class ProductDraftController
             'disable_grouping_separator' => true
         ];
 
+        $product = $productDraft->getProduct();
+
         return new JsonResponse($this->normalizer->normalize(
-            $productDraft->getProduct(),
+            $product,
             'internal_api',
             $normalizationContext
         ));
@@ -251,6 +254,8 @@ class ProductDraftController
             'disable_grouping_separator' => true
         ];
 
+        $product = $productDraft->getProduct();
+
         return new JsonResponse($this->normalizer->normalize(
             $productDraft->getProduct(),
             'internal_api',
@@ -286,8 +291,10 @@ class ProductDraftController
             'disable_grouping_separator' => true
         ];
 
+        $product = $productDraft->getProduct();
+
         return new JsonResponse($this->normalizer->normalize(
-            $productDraft->getProduct(),
+            $product,
             'internal_api',
             $normalizationContext
         ));

@@ -1,0 +1,4 @@
+pimee_api_product_proposal_create:
+    path: /products/{code}/proposal
+    defaults: { _controller: pimee_api.controller.product_proposal:createAction, _format: json }
+    methods: [POST]

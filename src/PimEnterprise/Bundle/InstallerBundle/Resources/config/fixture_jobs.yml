@@ -49,7 +49,7 @@ jobs:
             filePath: job_profile_accesses.csv
 
     fixtures_locale_access_csv:
-        order:     150
+        order:     30
         connector: Data fixtures
         alias:     fixtures_locale_access_csv
         label:     Locale accesses data fixtures

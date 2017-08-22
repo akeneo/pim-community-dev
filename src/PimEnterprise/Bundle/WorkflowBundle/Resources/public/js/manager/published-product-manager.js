@@ -4,14 +4,12 @@ define([
         'jquery',
         'routing',
         'oro/mediator',
-        'pim/cache-invalidator',
-        'pim/product-manager'
+        'pim/cache-invalidator'
     ], function (
         $,
         Routing,
         mediator,
-        CacheInvalidator,
-        ProductManager
+        CacheInvalidator
     ) {
         return {
             /**
@@ -27,9 +25,6 @@ define([
                         var cacheInvalidator = new CacheInvalidator();
                         cacheInvalidator.checkStructureVersion(product);
 
-                        return ProductManager.generateMissing(product);
-                    }.bind(this))
-                    .then(function (product) {
                         mediator.trigger('pim_enrich:form:product:post_fetch', product);
 
                         return product;

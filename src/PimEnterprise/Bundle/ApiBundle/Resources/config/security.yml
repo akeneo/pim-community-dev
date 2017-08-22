@@ -1,0 +1,10 @@
+parameters:
+    pimee_api.security.access_denied_handler.class: PimEnterprise\Bundle\ApiBundle\Security\AccessDeniedHandler
+
+services:
+    pimee_api.security.access_denied_handler:
+        class: '%pimee_api.security.access_denied_handler.class%'
+        decorates: pim_api.security.access_denied_handler
+        decoration_inner_name: pim_api.security.access_denied_handler.community
+        arguments:
+            - '@pim_api.security.access_denied_handler.community'

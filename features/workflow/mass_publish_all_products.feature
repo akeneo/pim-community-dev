@@ -31,6 +31,7 @@ Feature: Publish many products at once
     And I select rows unionjack and jackadi
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
+    And I move on to the next step
     Then I should see the text "The 2 selected products will be published"
     And I should see the text "Confirm"
 

@@ -36,6 +36,11 @@ class PimEnterpriseCatalogExtension extends Extension
         $loader->load('filters.yml');
         $loader->load('managers.yml');
         $loader->load('repositories.yml');
+        $loader->load('security/factories.yml');
+        $loader->load('security/filters.yml');
+        $loader->load('security/mergers.yml');
+        $loader->load('security/query_builders.yml');
+        $loader->load('security/updaters.yml');
         $loader->load('serializers.yml');
         $loader->load('serializers_standard.yml');
         $loader->load('updaters.yml');

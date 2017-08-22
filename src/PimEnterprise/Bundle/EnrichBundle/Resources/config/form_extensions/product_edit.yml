@@ -2,6 +2,9 @@ extensions:
     pim-product-edit-form-save:
         module: pimee/product-edit-form/save
 
+    pim-product-edit-form-delete:
+        module: pimee/product-edit-form/delete
+
     pim-product-edit-form-copy:
         module: pimee/product-edit-form/attributes/copy
 

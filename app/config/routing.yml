@@ -63,6 +63,10 @@ pim_api:
     resource: "@PimApiBundle/Resources/config/routing.yml"
     prefix: /api
 
+pimee_api:
+    resource: "@PimEnterpriseApiBundle/Resources/config/routing.yml"
+    prefix: /api
+
 # Oro platform
 
 oro_default:

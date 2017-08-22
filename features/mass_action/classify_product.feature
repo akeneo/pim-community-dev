@@ -7,18 +7,22 @@ Feature: Classify many products at once for the tree I have access
   Background:
     Given the "clothing" catalog configuration
     And the following categories:
-      | code    | label-en_US | parent |
-      | shoes   | Shoes       |        |
-      | vintage | Vintage     | shoes  |
-      | trendy  | Trendy      | shoes  |
-      | classy  | Classy      | shoes  |
-      | boots   | Boots       |        |
+      | code     | label-en_US | parent |
+      | shoes    | Shoes       |        |
+      | vintage  | Vintage     | shoes  |
+      | trendy   | Trendy      | shoes  |
+      | classy   | Classy      | shoes  |
+      | boots    | Boots       |        |
+      | sneakers | Sneakers    | shoes  |
+      | sandals  | Sandals     | shoes  |
     And the following product category accesses:
       | product category | user group | access |
       | shoes            | Manager    | view   |
       | vintage          | Manager    | view   |
       | trendy           | Manager    | view   |
       | classy           | Manager    | view   |
+      | sandals          | Manager    | own    |
+      | sneakers         | Manager    | own   |
       | boots            | IT support | none   |
       | 2014_collection  | Manager    | own    |
     And the following products:
@@ -54,13 +58,31 @@ Feature: Classify many products at once for the tree I have access
     And I should not see "Master catalog"
     When I select the "Shoes" tree
     And I expand the "shoes" category
+    And I click on the "sandals" category
+    And I click on the "sneakers" category
+    And I confirm mass edit
+    And I wait for the "update_product_value" job to finish
+    And I am on the products page
+    And I select the "Shoes" tree
+    Then I should see the text "2014 collection (0)"
+    Then I should see the text "Sandals (2)"
+    And I should see the text "Sneakers (2)"
+
+
+  Scenario: Failed to move several products to viewable categories
+    Given I select rows rangers and loafer
+    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I choose the "Move products to categories" operation
+    Then I should not see "Boots"
+    And I should not see "Master catalog"
+    When I select the "Shoes" tree
+    And I expand the "shoes" category
     And I click on the "vintage" category
     And I click on the "classy" category
     And I confirm mass edit
     And I wait for the "update_product_value" job to finish
     And I am on the products page
     And I select the "Shoes" tree
-    Then I should see the text "2014 collection (0)"
-    Then I should see the text "Vintage (2)"
-    And I should see the text "Classy (2)"
-
+    Then I should see the text "2014 collection (2)"
+    Then I should see the text "Vintage (0)"
+    And I should see the text "Classy (0)"

@@ -14,11 +14,10 @@ Feature: Revert product attributes to a previous version
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | t-shirt |
-      | family | Tees    |
+      | family | Jackets |
     And I press the "Save" button in the popin
     And I wait to be on the "t-shirt" product page
     And I am on the "t-shirt" product page
-    And I add available attribute Datasheet
     And I visit the "Media" group
     And I attach file "bic-core-148.txt" to "Datasheet"
     And I visit the "Product information" group

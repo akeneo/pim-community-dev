@@ -54,7 +54,14 @@ class PublishedProductsManagerIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
+        $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+
+        return new Configuration(
+            [
+                Configuration::getTechnicalSqlCatalogPath(),
+                $rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'technical_sql'
+            ]
+        );
     }
 
     public function testPublishProduct()
@@ -65,7 +72,7 @@ class PublishedProductsManagerIntegration extends TestCase
         $publishedProduct = $this->publishedProductRepository->findOneByOriginalProduct($product);
 
         $this->assertPublishedProductPropertiesEqual($product, $publishedProduct);
-        $this->assertSame($product->getRawValues(), $publishedProduct->getRawValues());
+        $this->assertEquals($product->getRawValues(), $publishedProduct->getRawValues(), '', 0.0, 10, true);
         $this->assertValuesEqual($product->getValues()->toArray(), $publishedProduct->getValues()->toArray());
         $this->assertProductAssociationsEqual($product, $publishedProduct);
 
