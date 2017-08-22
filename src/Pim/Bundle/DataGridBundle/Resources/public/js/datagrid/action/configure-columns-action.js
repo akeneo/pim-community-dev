@@ -1,5 +1,6 @@
 define(
     [
+        'oro/pageable-collection',
         'jquery',
         'underscore',
         'oro/translator',
@@ -10,8 +11,10 @@ define(
         'pim/common/column-list-view',
         'bootstrap-modal',
         'jquery-ui'
+
     ],
     function(
+        PageableCollection,
         $,
         _,
         __,
@@ -77,6 +80,9 @@ define(
                 this.$gridContainer = options.$gridContainer;
                 this.gridName = options.gridName;
                 this.locale = decodeURIComponent(options.url).split('dataLocale]=').pop();
+
+                const filters = PageableCollection.prototype.decodeStateData(options.url.split('?')[1]);
+                this.locale = filters[this.gridName]['dataLocale'];
 
                 Backbone.View.prototype.initialize.apply(this, arguments);
 
