@@ -8,5 +8,5 @@ docker-compose exec akeneo-behat app/console --env=test cache:clear --no-warmup
 docker-compose exec akeneo app/console --env=prod pim:install --force --symlink --clean
 docker-compose exec akeneo-behat app/console --env=behat pim:installer:db
 
-docker-compose run node npm install
-docker-compose run node npm run webpack
+docker-compose run --rm node npm install
+docker-compose run --rm node npm run webpack
