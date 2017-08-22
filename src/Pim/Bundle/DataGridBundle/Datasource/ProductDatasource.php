@@ -5,12 +5,13 @@ namespace Pim\Bundle\DataGridBundle\Datasource;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Product datasource, execute elasticsearch query
+ * Product datasource, executes elasticsearch query
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -30,16 +31,16 @@ class ProductDatasource extends Datasource
     /**
      * @param ObjectManager                       $om
      * @param ProductQueryBuilderFactoryInterface $factory
-     * @param NormalizerInterface                 $normalizer
+     * @param NormalizerInterface                 $serializer
      */
     public function __construct(
         ObjectManager $om,
         ProductQueryBuilderFactoryInterface $factory,
-        NormalizerInterface $normalizer
+        NormalizerInterface $serializer
     ) {
         $this->om = $om;
         $this->factory = $factory;
-        $this->normalizer = $normalizer;
+        $this->normalizer = $serializer;
     }
 
     /**
@@ -47,7 +48,7 @@ class ProductDatasource extends Datasource
      */
     public function getResults()
     {
-        $productCursor = $this->pqb->execute();
+        $entitiesWithValues = $this->pqb->execute();
         $context = [
             'locales'             => [$this->getConfiguration('locale_code')],
             'channels'            => [$this->getConfiguration('scope_code')],
@@ -55,14 +56,11 @@ class ProductDatasource extends Datasource
             'association_type_id' => $this->getConfiguration('association_type_id', false),
             'current_group_id'    => $this->getConfiguration('current_group_id', false),
         ];
-        $rows = ['totalRecords' => $productCursor->count(), 'data' => []];
+        $rows = ['totalRecords' => $entitiesWithValues->count(), 'data' => []];
 
-        foreach ($productCursor as $product) {
-            $normalizedProduct = array_merge(
-                $this->normalizer->normalize($product, 'datagrid', $context),
-                ['id' => $product->getId(), 'dataLocale' => $this->getParameters()['dataLocale']]
-            );
-            $rows['data'][] = new ResultRecord($normalizedProduct);
+        foreach ($entitiesWithValues as $entityWithValue) {
+            $normalizedItem = $this->normalizeEntityWithValues($entityWithValue, $context);
+            $rows['data'][] = new ResultRecord($normalizedItem);
         }
 
         return $rows;
@@ -88,13 +86,45 @@ class ProductDatasource extends Datasource
         $factoryConfig['repository_method'] = $method;
         $factoryConfig['default_locale'] = $this->getConfiguration('locale_code');
         $factoryConfig['default_scope'] = $this->getConfiguration('scope_code');
-        $factoryConfig['limit'] = (int)$this->getConfiguration(PagerExtension::PER_PAGE_PARAM);
+        $factoryConfig['limit'] = (int) $this->getConfiguration(PagerExtension::PER_PAGE_PARAM);
         $factoryConfig['from'] = null !== $this->getConfiguration('from', false) ?
-            (int)$this->getConfiguration('from', false) : 0;
+            (int) $this->getConfiguration('from', false) : 0;
 
         $this->pqb = $this->factory->create($factoryConfig);
         $this->qb = $this->pqb->getQueryBuilder();
 
         return $this;
+    }
+
+    /**
+     * Normalizes an entity with values with the complete set of fields required to show it.
+     *
+     * @param EntityWithValuesInterface $item
+     * @param array                     $context
+     *
+     * @return array
+     */
+    private function normalizeEntityWithValues(EntityWithValuesInterface $item, array $context): array
+    {
+        $defaultNormalizedItem = [
+            'id'           => $item->getId(),
+            'dataLocale'   => $this->getParameters()['dataLocale'],
+            'family'       => null,
+            'values'       => [],
+            'created'      => null,
+            'updated'      => null,
+            'label'        => null,
+            'image'        => null,
+            'groups'       => null,
+            'enabled'      => null,
+            'completeness' => null,
+        ];
+
+        $normalizedItem = array_merge(
+            $defaultNormalizedItem,
+            $this->normalizer->normalize($item, 'datagrid', $context)
+        );
+
+        return $normalizedItem;
     }
 }
