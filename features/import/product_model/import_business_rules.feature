@@ -138,7 +138,7 @@ Feature: Create product models through CSV import
       | code-002 | [blue] | Blazers              | composition |
 
   Scenario: A root product model cannot have a parent
-    Given the following product model:
+    Given the following root product models:
       | code     | parent | family_variant      | categories | collection | description-en_US-ecommerce | erp_name-en_US | price   |
       | code-001 |        | clothing_color_size | master_men | Spring2017 | A description for 001       | Blazers_1654   | 100 EUR |
       | code-002 |        | clothing_color_size | master_men | Spring2017 | A description for 002       | Blazers_1654   | 50 EUR  |
@@ -163,10 +163,12 @@ Feature: Create product models through CSV import
       """
 
   Scenario: The variant axis values of a product model are immutable
-    Given the following product model:
-      | code     | parent   | family_variant      | categories         | collection | description-en_US-ecommerce | erp_name-en_US | price   | color | variation_name-en_US | composition |
-      | code-001 |          | clothing_color_size | master_men         | Spring2017 | description                 | Blazers_1654   | 100 EUR |       |                      |             |
-      | code-002 | code-001 | clothing_color_size | master_men_blazers |            |                             |                |         | blue  | Blazers              | composition |
+    Given the following root product model:
+      | code     | parent   | family_variant      | categories         | collection | description-en_US-ecommerce | erp_name-en_US | price   |
+      | code-001 |          | clothing_color_size | master_men         | Spring2017 | description                 | Blazers_1654   | 100 EUR |
+    And the following sub product model:
+      | code     | parent   | family_variant      | categories         | color | variation_name-en_US | composition |
+      | code-002 | code-001 | clothing_color_size | master_men_blazers | blue  | Blazers              | composition |
     And the following CSV file to import:
       """
       code;parent;family_variant;color

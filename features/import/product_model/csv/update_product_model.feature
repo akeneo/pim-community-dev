@@ -9,7 +9,7 @@ Feature: Update product models through CSV import
     And I am logged in as "Julia"
 
   Scenario: Julia successfully updates an exiting root product model through CSV import
-    Given the following product model:
+    Given the following root product model:
       | code     | parent | family_variant      | categories | collection | description-en_US-ecommerce | erp_name-en_US | price   | color | variation_name-en_US | composition |
       | code-001 |        | clothing_color_size | master_men | Spring2017 | description                 | Blazers_1654   | 100 EUR |       |                      |             |
     And the following CSV file to import:
@@ -28,10 +28,12 @@ Feature: Update product models through CSV import
       | code-001 | master_men | clothing_colorsize | [Spring2017] | A new description           | Blazers_1654   | 50.00 EUR |
 
   Scenario: Julia successfully updates an exiting product sub product model through CSV import
-    Given the following product models:
-      | code     | parent   | family_variant      | categories         | collection | description-en_US-ecommerce | erp_name-en_US | price   | color | variation_name-en_US | composition |
-      | code-001 |          | clothing_color_size | master_men         | Spring2017 | description                 | Blazers_1654   | 100 EUR |       |                      |             |
-      | code-002 | code-001 | clothing_color_size | master_men_blazers |            |                             |                |         | blue  | Blazers              | composition |
+    Given the following root product model:
+      | code     | parent   | family_variant      | categories         | collection | description-en_US-ecommerce | erp_name-en_US | price   |
+      | code-001 |          | clothing_color_size | master_men         | Spring2017 | description                 | Blazers_1654   | 100 EUR |
+    And the following sub product model:
+      | code     | parent   | family_variant      | categories         | color | variation_name-en_US | composition |
+      | code-002 | code-001 | clothing_color_size | master_men_blazers | blue  | Blazers              | composition |
     And the following CSV file to import:
       """
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
@@ -51,10 +53,12 @@ Feature: Update product models through CSV import
       | code-002 | [blue] | Beautiful blazers    | composition |
 
   Scenario: Julia successfully updates exiting product models through CSV import with comparison enabled
-    Given the following product models:
-      | code     | parent   | family_variant      | categories         | collection | description-en_US-ecommerce | erp_name-en_US | price   | color | variation_name-en_US | composition |
-      | code-001 |          | clothing_color_size | master_men         | Spring2017 | description                 | Blazers_1654   | 100 EUR |       |                      |             |
-      | code-002 | code-001 | clothing_color_size | master_men_blazers |            |                             |                |         | blue  | Blazers              | composition |
+    Given the following root product model:
+      | code     | parent   | family_variant      | categories         | collection | description-en_US-ecommerce | erp_name-en_US | price   |
+      | code-001 |          | clothing_color_size | master_men         | Spring2017 | description                 | Blazers_1654   | 100 EUR |
+    And the following sub product model:
+      | code     | parent   | family_variant      | categories         | color | variation_name-en_US | composition |
+      | code-002 | code-001 | clothing_color_size | master_men_blazers | blue  | Blazers              | composition |
     And the following CSV file to import:
       """
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition

@@ -211,9 +211,9 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following product models?:$/
+     * @Given /^the following root product models?:$/
      */
-    public function theFollowingProductModels(TableNode $table)
+    public function theFollowingRootProductModels(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
             foreach ($data as $key => $value) {
@@ -221,7 +221,48 @@ class FixturesContext extends BaseFixturesContext
             }
 
             $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product_model');
-            $processor = $this->getContainer()->get('pim_connector.processor.denormalization.product_model');
+            $processor = $this->getContainer()->get('pim_connector.processor.denormalization.root_product_model');
+
+            $jobExecution = new JobExecution();
+            $provider = new ProductModelCsvImport(new SimpleCsvExport([]), []);
+            $params = $provider->getDefaultValues();
+            $params['enabledComparison'] = false;
+            $params['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
+            $params['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+            $jobParameters = new JobParameters($params);
+            $jobExecution->setJobParameters($jobParameters);
+            $stepExecution = new StepExecution('processor', $jobExecution);
+            $processor->setStepExecution($stepExecution);
+
+            $convertedData = $converter->convert($data);
+            $productModel = $processor->process($convertedData);
+
+            $errors = $this->getContainer()->get('validator')->validate($productModel);
+            if (0 !== $errors->count()) {
+                throw new \LogicException('Product model could not be updated, invalid data provided.');
+            }
+
+            $this->getContainer()->get('pim_catalog.saver.product_model')->save($productModel);
+
+            $this->refresh($productModel);
+            $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following sub product models?:$/
+     */
+    public function theFollowingSubProductModels(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->replacePlaceholders($value);
+            }
+
+            $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product_model');
+            $processor = $this->getContainer()->get('pim_connector.processor.denormalization.sub_product_model');
 
             $jobExecution = new JobExecution();
             $provider = new ProductModelCsvImport(new SimpleCsvExport([]), []);
