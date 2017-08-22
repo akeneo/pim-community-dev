@@ -59,3 +59,26 @@ define(
         };
     }
 );
+
+
+    var groupFieldsBySection = function groupFieldsBySection(attributeGroups, fieldsTofill) {
+        return function (fieldCollection, field) {
+            var newFieldCollection = Object.assign({}, fieldCollection);
+            var attributeGroupCode = AttributeGroupManager.getAttributeGroupForAttribute(attributeGroups, field.attribute.code);
+
+            if (!newFieldCollection[attributeGroupCode]) {
+                newFieldCollection[attributeGroupCode] = {
+                    attributeGroup: attributeGroups[attributeGroupCode],
+                    fields: [],
+                    toFill: 0
+                };
+            }
+
+            newFieldCollection[attributeGroupCode].fields.push(field);
+            if (-1 !== fieldsToFill.indexOf(field.attribute.code)) {
+                newFieldCollection[attributeGroupCode].toFill++;
+            }
+
+            return newFieldCollection;
+        };
+    };

@@ -24,6 +24,7 @@ define(
         'pim/security-context',
         'pim/template/form/tab/attributes',
         'pim/template/form/tab/attribute/attribute-group',
+        'pim/provider/to-fill-field-provider',
         'pim/dialog',
         'oro/messenger',
         'pim/i18n'
@@ -44,6 +45,7 @@ define(
         SecurityContext,
         formTemplate,
         attributeGroupTemplate,
+        toFillFieldProvider,
         Dialog,
         messenger,
         i18n
@@ -55,18 +57,22 @@ define(
          *
          * @return {object}
          */
-        const groupFieldsBySection = (attributeGroups) => (fieldCollection, field) => {
+        const groupFieldsBySection = (attributeGroups, fieldsTofill) => (fieldCollection, field) => {
             const newFieldCollection = Object.assign({}, fieldCollection);
             const attributeGroupCode = AttributeGroupManager.getAttributeGroupForAttribute(attributeGroups, field.attribute.code);
 
             if (!newFieldCollection[attributeGroupCode]) {
                 newFieldCollection[attributeGroupCode] = {
                     attributeGroup: attributeGroups[attributeGroupCode],
-                    fields: []
+                    fields: [],
+                    toFill: 0
                 };
             }
 
             newFieldCollection[attributeGroupCode].fields.push(field);
+            if (-1 !== fieldsTofill.indexOf(field.attribute.code)) {
+                newFieldCollection[attributeGroupCode].toFill++;
+            }
 
             return newFieldCollection;
         };
@@ -83,7 +89,9 @@ define(
         const createSectionView = (fieldCollection, template, label) => {
             const view = document.createElement('div');
             view.innerHTML = template({
-                label
+                label,
+                fieldCollection,
+                __
             });
 
             const container = fieldCollection.fields.reduce((container, field) => {
@@ -151,6 +159,7 @@ define(
                 this.onExtensions('copy:copy-fields:after', this.render.bind(this));
                 this.onExtensions('copy:select:after', this.render.bind(this));
                 this.onExtensions('copy:context:change', this.render.bind(this));
+                this.onExtensions('group:change', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -167,38 +176,46 @@ define(
                 this.$el.html(this.template({}));
 
                 var data = this.getFormData();
-                AttributeManager.getValues(data)
-                    .then((values) => {
-                        const fieldPromises = Object.keys(values).map((attributeCode) => {
-                            return this.renderField(data, attributeCode, values[attributeCode]);
-                        });
-                        this.rendering = false;
-
-                        return $.when.apply($, fieldPromises);
+                AttributeGroupManager.getAttributeGroupsForObject(data)
+                    .then((attributeGroups) => {
+                        this.getExtension('attribute-group-selector').setElements(
+                            _.indexBy(attributeGroups, 'code')
+                        );
+                    }).then(() => {
+                        return AttributeManager.getValues(data);
+                    }).then((values) => {
+                        return this.filterValues(values);
+                    }).then((values) => {
+                        return this.renderFields(data, values);
                     }).then(function () {
                         return Object.values(arguments).sort((firstField, secondField) => {
                             firstField.attribute.sort_order > secondField.attribute.sort_order
                         });
                     }).then(function (fields) {
-                        AttributeGroupManager.getAttributeGroupsForObject(data)
-                            .then((attributeGroups) => {
-                                const sections = Object.values(fields.reduce(groupFieldsBySection(attributeGroups), {}));
-                                const fieldView = document.createElement('div');
+                        this.rendering = false;
+                        $.when(
+                            AttributeGroupManager.getAttributeGroupsForObject(data),
+                            toFillFieldProvider.getFields(this.getRoot(), this.getFormData())
+                        ).then((attributeGroups, fieldsTofill) => {
+                            const sections = Object.values(
+                                fields.reduce(groupFieldsBySection(attributeGroups, fieldsTofill), {})
+                            );
+                            const fieldView = document.createElement('div');
 
-                                for (const section of sections) {
-                                    fieldView.appendChild(createSectionView(
-                                        section,
-                                        this.attributeGroupTemplate,
-                                        i18n.getLabel(
-                                            section.attributeGroup.labels,
-                                            UserContext.get('uiLocale'),
-                                            section.attributeGroup.code
-                                        )
-                                    ));
-                                }
+                            for (const section of sections) {
+                                fieldView.appendChild(createSectionView(
+                                    section,
+                                    this.attributeGroupTemplate,
+                                    i18n.getLabel(
+                                        section.attributeGroup.labels,
+                                        UserContext.get('uiLocale'),
+                                        section.attributeGroup.code
+                                    )
+                                ));
+                            }
 
-                                this.$('.object-values').empty().append(fieldView);
-                            });
+                            this.$('.object-values').empty().append(fieldView);
+                        });
                     }.bind(this));
                 this.delegateEvents();
 
@@ -459,6 +476,44 @@ define(
                 this.$el.find('.AknAttributeActions')[open ? 'addClass' : 'removeClass'](
                     'AknAttributeActions--comparisonMode'
                 );
+            },
+
+            /**
+             * Filter values
+             *
+             * @param {object} values
+             *
+             * @return {object}
+             */
+            filterValues: function (values) {
+                if (!this.getExtension('attribute-group-selector').isAll()) {
+                    const filteredValues = {};
+                    const attributeGroup = this.getExtension('attribute-group-selector').getCurrentElement();
+                    attributeGroup.attributes.forEach((attributeCode) => {
+                        if (undefined !== values[attributeCode]) {
+                            filteredValues[attributeCode] = values[attributeCode];
+                        }
+                    });
+                    values = filteredValues;
+                }
+
+                return values;
+            },
+
+            /**
+             * Render all fields and return a collection of promises
+             *
+             * @param {object} data
+             * @param {object} values
+             *
+             * @return {promise}
+             */
+            renderFields: function (data, values) {
+                const fieldPromises = Object.keys(values).map((attributeCode) => {
+                    return this.renderField(data, attributeCode, values[attributeCode]);
+                });
+
+                return $.when.apply($, fieldPromises);
             }
         });
     }
