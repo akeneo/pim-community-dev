@@ -107,7 +107,7 @@ extensions:
         position: 120
 
     pimee-product-view-attributes:
-        module: pimee/product-view-form/attributes
+        module: pim/product-edit-form/attributes
         parent: pimee-product-view-column-tabs
         targetZone: container
         position: 90
