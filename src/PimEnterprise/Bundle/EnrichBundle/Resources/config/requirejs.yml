@@ -73,7 +73,6 @@ config:
 
     map:
         '*':
-            pim/product-manager:             pimenterpriseenrich/js/manager/product-manager
             pim/job/common/edit/launch:      pimenterpriseenrich/js/job/common/edit/launch
 
     paths:
@@ -82,7 +81,6 @@ config:
 
         pimee/manage-permissions:        pimenterpriseenrich/js/manage-permissions
         pimee/rule-manager:              pimenterpriseenrich/js/product/rule-manager
-        pimee/product-manager:           pimenterpriseenrich/js/manager/product-manager
 
         # Form extensions
         pimee/product-edit-form/attributes/copy:                      pimenterpriseenrich/js/product/form/attributes/copy

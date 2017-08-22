@@ -72,7 +72,7 @@ class PublishedProductsManagerIntegration extends TestCase
         $publishedProduct = $this->publishedProductRepository->findOneByOriginalProduct($product);
 
         $this->assertPublishedProductPropertiesEqual($product, $publishedProduct);
-        $this->assertSame($product->getRawValues(), $publishedProduct->getRawValues());
+        $this->assertEquals($product->getRawValues(), $publishedProduct->getRawValues(), '', 0.0, 10, true);
         $this->assertValuesEqual($product->getValues()->toArray(), $publishedProduct->getValues()->toArray());
         $this->assertProductAssociationsEqual($product, $publishedProduct);
 

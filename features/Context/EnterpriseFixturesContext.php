@@ -184,6 +184,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
         $steps[] = new Step\Given('I save the product');
         if ($ready) {
+            $steps[] = new Step\Given('I should not see the text "There are unsaved changes."');
             $steps[] = new Step\Given('I press the "Send for approval" button');
 
             if (null !== $comment) {

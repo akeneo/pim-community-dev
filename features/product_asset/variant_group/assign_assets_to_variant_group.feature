@@ -15,6 +15,7 @@ Feature: Assign assets to a variant group
     And I generate missing variations
     And I am logged in as "Julia"
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Succesfully assign assets to a variant group
     Given I am on the "hh_jackets" variant group page
     And I visit the "Attribute" tab

@@ -89,7 +89,6 @@ class ProductPublisher implements PublisherInterface
         $familyCode = null !== $object->getFamily() ? $object->getFamily()->getCode() : null;
         $publishedProduct = $this->productBuilder->createProduct($object->getIdentifier(), $familyCode);
         $this->productUpdater->update($publishedProduct, $standardProduct);
-
         $publishedProduct->setOriginalProduct($object);
         $this->setVersion($object, $publishedProduct);
 

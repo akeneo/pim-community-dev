@@ -102,6 +102,18 @@ JSON;
                         'product_viewable_by_everybody_1', 'product_viewable_by_everybody_2', 'product_not_viewable_by_redactor'
                     ],
                     'groups'   => []
+                ],
+                'PACK' => [
+                    'products' => [],
+                    'groups'   => []
+                ],
+                'SUBSTITUTION' => [
+                    'products' => [],
+                    'groups'   => []
+                ],
+                'UPSELL' => [
+                    'products' => [],
+                    'groups'   => []
                 ]
             ]
         ];
