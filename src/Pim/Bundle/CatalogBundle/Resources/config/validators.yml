@@ -47,6 +47,7 @@ parameters:
     pim_catalog.validator.mapping.delegating_class_metadata_factory.class: Pim\Component\Catalog\Validator\Mapping\DelegatingClassMetadataFactory
     pim_catalog.validator.mapping.product_value_metadata_factory.class:    Pim\Component\Catalog\Validator\Mapping\ProductValueMetadataFactory
     pim_catalog.validator.unique_value_set.class:                          Pim\Component\Catalog\Validator\UniqueValuesSet
+    pim_catalog.validator.unique_axes_combination_set.class:               Pim\Component\Catalog\Validator\UniqueAxesCombinationSet
     pim_catalog.validator.constraint.family_variant_axes.class:            Pim\Component\Catalog\Validator\Constraints\FamilyVariantValidator
     pim_catalog.validator.constraint.only_expected_attributes.class:       Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributesValidator
     pim_catalog.validator.constraint.sibling_unique_variant_axes.class:    Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxesValidator
@@ -64,6 +65,10 @@ services:
 
     pim_catalog.validator.unique_value_set:
         class: '%pim_catalog.validator.unique_value_set.class%'
+        public: true
+
+    pim_catalog.validator.unique_axes_combination_set:
+        class: '%pim_catalog.validator.unique_axes_combination_set.class%'
         public: true
 
     # Validators
@@ -91,6 +96,7 @@ services:
         arguments:
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
             - '@pim_catalog.repository.entity_with_variant_family'
+            - '@pim_catalog.validator.unique_axes_combination_set'
         tags:
             - { name: validator.constraint_validator, alias: pim_sibling_unique_variant_axes_validator }
 
