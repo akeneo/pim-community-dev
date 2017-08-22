@@ -21,8 +21,9 @@ Feature: Execute a job
     When I am on the "csv_default_product_import" import job page
     And I launch the import job
     And I wait for the "csv_default_product_import" job to finish
+    And the parent of the product "SKU-001" should be "code-001"
     And the product "SKU-001" should have the following values:
       | ean    | EAN           |
       | sku    | SKU-001       |
       | weight | 100.0000 GRAM |
-      | size   | [m]             |
+      | size   | [m]           |

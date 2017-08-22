@@ -8,7 +8,6 @@
 - PIM-6291: Adds attribute used as the main picture in the UI for each family (attribute_as_image)
 - GITHUB-4877: Update some tooltips messages of the export builder, Cheers @Milie44!
 - GITHUB-5949: Fix the deletion of a job instance (import\export) from the job edit page, cheers @BatsaxIV !
-- PIM-6335: Import - As Julia, I would like to import variant products from my ERP
 
 ## Technical improvements
 
@@ -306,6 +305,8 @@
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` to add `Pim\Bundle\VersioningBundle\Manager\VersionManager`, `Symfony\Component\Serializer\Normalizer\NormalizerInterface`, `Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface`, `Akeneo\Component\Localization\Localizer\LocalizerInterface`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer` to add `Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `uploadTmpDir` (string)
+- Change the constructor of `Pim\Component\Connector\Processor\Denormalization\ProductProcessor` to add `Pim\Component\Catalog\Builder\ProductBuilderInterface` as the 3rd argument (variant product builder).
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `uploadTmpDir` (string)
 - Change the constructor of `Pim\Bundle\ApiBundle\Controller\ProductController` to remove `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository`
 - Change the constructor of `Pim\Bundle\ApiBundle\Controller\ProductController` to add `Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface`

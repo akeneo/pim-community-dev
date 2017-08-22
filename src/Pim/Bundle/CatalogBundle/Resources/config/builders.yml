@@ -29,7 +29,7 @@ services:
             - '@pim_catalog.resolver.attribute_values'
             - '@pim_catalog.factory.value'
             - '@pim_catalog.builder.entity_with_values'
-            - {'product': '%pim_catalog.entity.product.class%', 'association': '%pim_catalog.entity.association.class%'}
+            - {'product': '%pim_catalog.entity.variant_product.class%', 'association': '%pim_catalog.entity.association.class%'}
 
     pim_catalog.builder.entity_with_values:
         class: '%pim_catalog.builder.entity_with_values.class%'

@@ -6,7 +6,6 @@ use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
@@ -185,19 +184,19 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /**
      * @param string $identifier
      * @param string $familyCode
-     * @param string $parent
+     * @param string $parentCode
      *
      * @return ProductInterface
      */
-    protected function findOrCreateProduct(string $identifier, string $familyCode, string $parent)
+    protected function findOrCreateProduct(string $identifier, string $familyCode, string $parentCode)
     {
         $product = $this->repository->findOneByIdentifier($identifier);
 
-        if ('' !== $parent) {
+        if (null === $product && '' !== $parentCode) {
             $product = $this->variantProductBuilder->createProduct($identifier, $familyCode);
         }
 
-        if (!$product) {
+        if (null === $product) {
             $product = $this->productBuilder->createProduct($identifier, $familyCode);
         }
 

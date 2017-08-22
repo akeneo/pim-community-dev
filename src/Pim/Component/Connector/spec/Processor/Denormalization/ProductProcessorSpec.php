@@ -358,7 +358,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
+        $productRepository->findOneByIdentifier('tshirt')->willReturn(null);
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 
@@ -595,7 +595,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
+        $productRepository->findOneByIdentifier('tshirt')->willReturn(null);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
@@ -699,7 +699,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
+        $productRepository->findOneByIdentifier('tshirt')->willReturn(null);
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
@@ -998,7 +998,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
+        $productRepository->findOneByIdentifier('tshirt')->willReturn(null);
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 

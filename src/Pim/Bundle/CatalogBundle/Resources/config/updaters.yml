@@ -60,8 +60,8 @@ services:
             - '@pim_catalog.updater.property_setter'
             - '@pim_catalog.updater.product_template'
             - '@pim_catalog.updater.entity_with_values'
-            - ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations']
-            - ['identifier', 'created', 'updated', 'parent']
+            - ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations', 'parent']
+            - ['identifier', 'created', 'updated']
 
     pim_catalog.updater.product_model:
         class: '%pim_catalog.updater.product_model.class%'

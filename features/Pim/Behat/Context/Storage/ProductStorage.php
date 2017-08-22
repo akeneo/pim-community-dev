@@ -37,6 +37,17 @@ class ProductStorage extends PimContext
     }
 
     /**
+     * @Given the parent of the product :productIdentifier should be :parentCode
+     */
+    public function productHaveParent(string $productIdentifier, string $parentCode)
+    {
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
+        $product = $this->getFixturesContext()->getEntity('Product', $productIdentifier);
+
+        assertEquals($product->getParent()->getCode(), $parentCode);
+    }
+
+    /**
      * @return AttributeColumnInfoExtractor
      */
     private function getFieldExtractor()

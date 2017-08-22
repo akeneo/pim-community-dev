@@ -46,8 +46,8 @@ class ParentSetter extends AbstractFieldSetter
         if (null === $parent = $this->productModelRepository->findOneByIdentifier($data)) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 $field,
-                'family code',
-                'The family does not exist',
+                'parent code',
+                'The parent product model does not exist',
                 static::class,
                 $data
             );
