@@ -243,6 +243,18 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
+                "PACK"         => [
+                    "groups"   => [],
+                    "products" => [],
+                ],
+                "SUBSTITUTION" => [
+                    "groups"   => [],
+                    "products" => [],
+                ],
+                "UPSELL"       => [
+                    "groups"   => [],
+                    "products" => [],
+                ],
                 "X_SELL"       => [
                     "groups"   => ["groupA"],
                     "products" => ["simple"],
@@ -352,22 +364,24 @@ JSON;
                 "locale": null,
                 "scope": null,
                 "data": [{
-                    "amount": "45.00",
-                    "currency": "USD"
-                }, {
                     "amount": "56.53",
                     "currency": "EUR"
+                },
+                {
+                    "amount": "45.00",
+                    "currency": "USD"
                 }]
             }],
             "a_price_without_decimal": [{
                 "locale": null,
                 "scope": null,
                 "data": [{
-                    "amount": -45,
-                    "currency": "USD"
-                }, {
                     "amount": 56,
                     "currency": "EUR"
+                },
+                {
+                    "amount": -45,
+                    "currency": "USD"
                 }]
             }],
             "a_ref_data_multi_select": [{
@@ -525,8 +539,8 @@ JSON;
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
+                            ['amount' => '56.53', 'currency' => 'EUR'],
                             ['amount' => '45.00', 'currency' => 'USD'],
-                            ['amount' => '56.53', 'currency' => 'EUR']
                         ],
                     ],
                 ],
@@ -535,8 +549,8 @@ JSON;
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
+                            ['amount' => 56, 'currency' => 'EUR'],
                             ['amount' => -45, 'currency' => 'USD'],
-                            ['amount' => 56, 'currency' => 'EUR']
                         ],
                     ],
                 ],
@@ -967,9 +981,6 @@ JSON;
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
         $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
-
-        $standardizedProduct = static::sanitizeMediaAttributeData($standardizedProduct);
-        $expectedProduct = static::sanitizeMediaAttributeData($expectedProduct);
 
         NormalizedProductCleaner::clean($standardizedProduct);
         NormalizedProductCleaner::clean($expectedProduct);

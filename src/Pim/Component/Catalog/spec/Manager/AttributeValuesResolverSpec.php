@@ -3,6 +3,8 @@
 namespace spec\Pim\Component\Catalog\Manager;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Manager\AttributeValuesResolver;
+use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -18,7 +20,8 @@ class AttributeValuesResolverSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Manager\AttributeValuesResolver');
+        $this->shouldHaveType(AttributeValuesResolver::class);
+        $this->shouldImplement(AttributeValuesResolverInterface::class);
     }
 
     function it_resolves_eligible_values_for_a_set_of_attributes(
@@ -56,7 +59,7 @@ class AttributeValuesResolverSpec extends ObjectBehavior
         $tax->isLocalizable()->willReturn(true);
         $tax->isScopable()->willReturn(false);
         $tax->isLocaleSpecific()->willReturn(true);
-        $tax->getLocaleSpecificCodes()->willReturn(['fr_FR']);
+        $tax->getAvailableLocaleCodes()->willReturn(['fr_FR']);
 
         $fr->getCode()->willReturn('fr_FR');
         $en->getCode()->willReturn('en_US');

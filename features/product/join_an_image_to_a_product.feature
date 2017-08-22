@@ -64,8 +64,7 @@ Feature: Join an image to a product
     When I remove the "Visual" attribute
     And I confirm the deletion
     And I save the product
-    Then I should see available attribute Visual in group "Other"
-    And The file with original filename "akeneo.jpg" should exists in database
+    Then The file with original filename "akeneo.jpg" should exists in database
 
   @jira https://akeneo.atlassian.net/browse/PIM-5712
   Scenario: Successfully remove an image field containing an image and keep a reference to the file in database
@@ -74,5 +73,4 @@ Feature: Join an image to a product
     And I remove the "Visual" attribute
     And I confirm the deletion
     And I save the product
-    Then I should see available attribute Visual in group "Other"
-    And The file with original filename "akeneo.jpg" should exists in database
+    Then The file with original filename "akeneo.jpg" should exists in database

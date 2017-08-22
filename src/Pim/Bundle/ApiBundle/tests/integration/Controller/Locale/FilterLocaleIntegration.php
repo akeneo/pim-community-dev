@@ -218,7 +218,7 @@ class FilterLocaleIntegration extends ApiTestCase
         $this->assertCount(2, $content, 'response contains 2 items');
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $content['code']);
         $expectedErrorMessage = sprintf(
-            'Structure of filter "enabled" should respect this structure: %s.',
+            'Structure of filter "enabled" should respect this structure: %s',
             '{"enabled":[{"operator": "my_operator", "value": "my_value"}]}'
         );
         $this->assertSame($expectedErrorMessage, $content['message']);
@@ -238,7 +238,7 @@ class FilterLocaleIntegration extends ApiTestCase
         $this->assertCount(2, $content, 'response contains 2 items');
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $content['code']);
         $expectedErrorMessage = sprintf(
-            'Structure of filter "enabled" should respect this structure: %s.',
+            'Structure of filter "enabled" should respect this structure: %s',
             '{"enabled":[{"operator": "my_operator", "value": "my_value"}]}'
         );
         $this->assertSame($expectedErrorMessage, $content['message']);

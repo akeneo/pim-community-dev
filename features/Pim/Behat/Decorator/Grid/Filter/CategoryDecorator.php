@@ -18,16 +18,30 @@ class CategoryDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         if ('unclassified' === $operator) {
-            $node = $this->spin(function () {
-                return $this->find('css', '#node_-1 a');
-            }, 'Could not find unclassified category filter');
+            $this->spin(function () {
+                $node = $this->find('css', '#node_-1 a');
+                if (null === $node) {
+                    return false;
+                }
 
-            $node->click();
+                $node->click();
+
+                return true;
+            }, 'Could not click unclassified category filter');
         } else {
             $values = '' !== $value ? explode(', ', $value) : [];
 
             foreach ($values as $value) {
-                $this->findNodeInTree($value)->find('css', 'a')->click();
+                $this->spin(function () use ($value) {
+                    $nodeTree = $this->findNodeInTree($value)->find('css', 'a');
+                    if (null === $nodeTree) {
+                        return false;
+                    }
+
+                    $nodeTree->click();
+
+                    return true;
+                }, 'Could not click on node in category filter tree');
             }
         }
     }

@@ -61,7 +61,7 @@ class CreateMediaFileIntegration extends ApiTestCase
 
         $productValueFile = $product->getValues()->getByCodes('an_image');
         $this->assertInstanceOf(FileInfoInterface::class, $productValueFile->getData());
-        $this->assertSame($productValueFile->getData(), $fileInfo);
+        $this->assertEquals($productValueFile->getData(), $fileInfo);
 
         // check if file has been created on file system
         $this->assertTrue($this->doesFileExist($fileInfo->getKey()));

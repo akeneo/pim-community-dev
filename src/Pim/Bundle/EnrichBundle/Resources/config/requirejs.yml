@@ -283,6 +283,11 @@ config:
                 pim_enrich_variant_group_edit:
                     module: pim/controller/variant-group
                     aclResourceId: pim_enrich_variant_group_edit
+                pim_enrich_channel_index:
+                    module: pim/controller/common/index
+                    aclResourceId: pim_enrich_channel_index
+                    config:
+                        entity: channel
                 pim_importexport_export_profile_index:
                     module: pim/controller/common/index
                     aclResourceId: pim_importexport_export_profile_index
@@ -561,7 +566,6 @@ config:
         pim/security-context: pimenrich/js/security-context
 
         # Managers
-        pim/product-manager:         pimenrich/js/manager/product-manager
         pim/variant-group-manager:   pimenrich/js/manager/variant-group-manager
         pim/group-manager:           pimenrich/js/manager/group-manager
         pim/attribute-manager:       pimenrich/js/manager/attribute-manager
@@ -1121,7 +1125,6 @@ config:
         pim/form: pimenrich/js/product/form
 
         # Alias overrides
-        pimcommunity/product-manager:             pimenrich/js/manager/product-manager
         pimcommunity/job/common/edit/launch:      pimenrich/js/job/common/edit/launch
         pimcommunity/grid/view-selector/selector: pimenrich/js/grid/view-selector
         pimcommunity/grid/view-selector/line:     pimenrich/js/grid/view-selector-line

@@ -138,12 +138,15 @@ class Base extends Page
     public function toggleSwitch($locator, $on = true)
     {
         $field = $this->findField($locator);
-        if ($field->isChecked() != $on) {
-            $switch = $this->spin(function () use ($field) {
-                return $field->getParent()->find('css', 'label');
-            }, sprintf('Switch label "%s" not found.', $locator));
-            $switch->click();
-        }
+
+        $this->spin(function () use ($field, $on) {
+            $switch = $field->getParent()->find('css', 'label');
+            if ($on !== $field->isChecked()) {
+                $switch->click();
+            }
+
+            return $on === $field->isChecked();
+        }, sprintf('Switch label "%s" not found.', $locator));
     }
 
     /**

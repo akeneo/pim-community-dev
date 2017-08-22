@@ -370,7 +370,6 @@ pim_enrich:
           info:
             no_family: No hi ha cap família definida. Si us plau, defineixi una família per calcular la integritat d'aquest producte.
             no_completeness: Tot just ha canviat la família del producte. Deseu-lo per calcular la integritat de la nova família.
-          missing_values: Valors perduts
         history:
           title: Històric
       switch:
@@ -806,6 +805,8 @@ pim_enrich:
     attribute:
       modal_title: Trieu el tipus d'atribut
     attribute_group:
+      create_btn: Crear
+    api_connection:
       create_btn: Crear
   mass_edit:
     next: Següent

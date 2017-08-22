@@ -32,8 +32,9 @@ Feature: Export products according to a date
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
       """
-      sku;categories;enabled;family;groups;color;description-en_US-mobile;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
-      SNKRS-1B;summer_collection;1;sneakers;;black;;;;"Model 1";50.00;70.00;;;45;;hot
+      sku;categories;enabled;family;groups;color;description-en_US-mobile;lace_color;manufacturer;name-en_US;PACK-groups;PACK-products;price-EUR;price-USD;rating;side_view;size;SUBSTITUTION-groups;SUBSTITUTION-products;top_view;UPSELL-groups;UPSELL-products;weather_conditions;X_SELL-groups;X_SELL-products
+      SNKRS-1B;summer_collection;1;sneakers;;black;;;;"Model 1";;;50.00;70.00;;;45;;;;;;hot;;
+
       """
 
   Scenario: Update the updated time condition field
@@ -71,32 +72,6 @@ Feature: Export products according to a date
     And I press "Save"
     Then I should be on the "csv_footwear_product_export" export job edit page
     And I should see a validation error "This value should be 0 or more."
-
-  Scenario: Export only the products updated since a defined date
-    Given a "footwear" catalog configuration
-    And the following products:
-      | sku      | family   | categories        | price          | size | color | name-en_US |
-      | SNKRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black | Model 1    |
-      | SNKRS-1R | sneakers | summer_collection | 50 EUR, 70 USD | 45   | red   | Model 1    |
-    And the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv                                                                                             |
-      | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": ">", "value": "2016-04-25 00:00:00"}]} |
-    And I am logged in as "Julia"
-    When I am on the "csv_footwear_product_export" export job page
-    And I launch the export job
-    And I wait for the "csv_footwear_product_export" job to finish
-    Then exported file of "csv_footwear_product_export" should contain:
-      """
-      sku;categories;enabled;family;groups;color;description-en_US-mobile;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
-      SNKRS-1B;summer_collection;1;sneakers;;black;;;;"Model 1";50.00;70.00;;;45;;
-      SNKRS-1R;summer_collection;1;sneakers;;red;;;;"Model 1";50.00;70.00;;;45;;
-      """
-    When the following job "csv_footwear_product_export" configuration:
-      | filters | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "updated", "operator": "<", "value": "2016-04-25 00:00:00"}]} |
-    When I am on the "csv_footwear_product_export" export job page
-    And I launch the export job
-    And I wait for the "csv_footwear_product_export" job to finish
-    Then exported file of "csv_footwear_product_export" should be empty
 
   @jira https://akeneo.atlassian.net/browse/PIM-6038
   Scenario: Export only the products updated by an import since the last export
