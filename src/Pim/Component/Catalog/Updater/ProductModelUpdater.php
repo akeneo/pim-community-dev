@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Updater;
 
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
@@ -9,7 +10,10 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Comparator\ComparatorRegistryInterface;
+use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -36,19 +40,34 @@ class ProductModelUpdater implements ObjectUpdaterInterface
     /** @var IdentifiableObjectRepositoryInterface */
     private $productModelRepository;
 
+    /** @var NormalizerInterface */
+    private $valueNormalizer;
+
+    /** @var EntityWithFamilyVariantAttributesProvider */
+    private $attributesProvider;
+
+    /** @var ComparatorRegistryInterface */
+    private $comparatorRegistry;
+
     /**
-     * @param PropertySetterInterface               $propertySetter
-     * @param ObjectUpdaterInterface                $valuesUpdater
-     * @param IdentifiableObjectRepositoryInterface $familyVariantRepository
-     * @param IdentifiableObjectRepositoryInterface $productModelRepository
-     * @param array                                 $supportedFields
-     * @param array                                 $ignoredFields
+     * @param PropertySetterInterface                   $propertySetter
+     * @param ObjectUpdaterInterface                    $valuesUpdater
+     * @param IdentifiableObjectRepositoryInterface     $familyVariantRepository
+     * @param IdentifiableObjectRepositoryInterface     $productModelRepository
+     * @param NormalizerInterface                       $valueNormalizer
+     * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
+     * @param ComparatorRegistryInterface               $comparatorRegistry
+     * @param array                                     $supportedFields
+     * @param array                                     $ignoredFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
         ObjectUpdaterInterface $valuesUpdater,
         IdentifiableObjectRepositoryInterface $familyVariantRepository,
         IdentifiableObjectRepositoryInterface $productModelRepository,
+        NormalizerInterface $valueNormalizer,
+        EntityWithFamilyVariantAttributesProvider $attributesProvider,
+        ComparatorRegistryInterface $comparatorRegistry,
         array $supportedFields,
         array $ignoredFields
     ) {
@@ -56,6 +75,9 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         $this->valuesUpdater = $valuesUpdater;
         $this->familyVariantRepository = $familyVariantRepository;
         $this->productModelRepository = $productModelRepository;
+        $this->valueNormalizer = $valueNormalizer;
+        $this->attributesProvider = $attributesProvider;
+        $this->comparatorRegistry = $comparatorRegistry;
         $this->supportedFields = $supportedFields;
         $this->ignoredFields = $ignoredFields;
     }
@@ -74,35 +96,13 @@ class ProductModelUpdater implements ObjectUpdaterInterface
 
         foreach ($data as $code => $value) {
             if ('values' === $code) {
-                $this->valuesUpdater->update($productModel, $value, $options);
+                $this->updateValues($productModel, $value, $options);
             } elseif ('code' === $code) {
                 $productModel->setCode($value);
             } elseif ('parent' === $code) {
-                if (!empty($value)) {
-                    if (null === $parentProductModel = $this->productModelRepository->findOneByIdentifier($value)) {
-                        throw InvalidPropertyException::validEntityCodeExpected(
-                            'parent',
-                            'parent code',
-                            'The product model does not exist',
-                            static::class,
-                            $value
-                        );
-                    }
-
-                    $productModel->setParent($parentProductModel);
-                }
+                $this->updateParent($productModel, $value);
             } elseif ('family_variant' === $code) {
-                if (null === $familyVariant = $this->familyVariantRepository->findOneByIdentifier($value)) {
-                    throw InvalidPropertyException::validEntityCodeExpected(
-                        'family_variant',
-                        'family variant code',
-                        'The family variant does not exist',
-                        static::class,
-                        $value
-                    );
-                }
-
-                $productModel->setFamilyVariant($familyVariant);
+                $this->updateFamilyVariant($productModel, $value);
             } elseif (in_array($code, $this->supportedFields)) {
                 $this->propertySetter->setData($productModel, $code, $value);
             } elseif (!in_array($code, $this->ignoredFields)) {
@@ -111,5 +111,205 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Updates the values of the product model.
+     *
+     * If the product model already exists, we ensure we do not update variant
+     * axes values: provided values must be either missing, empty, or identical
+     * to the existing ones, or an exception will be thrown.
+     *
+     * @param ProductModelInterface $productModel
+     * @param array                 $values
+     * @param array                 $options
+     *
+     * @throws ImmutablePropertyException
+     */
+    private function updateValues(ProductModelInterface $productModel, array $values, array $options): void
+    {
+        if (null !== $productModel->getId()) {
+            $axesCodesAndTypes = $this->getProductModelAxesCodesAndTypes($productModel);
+            $newAxesValues = $this->getNewVariantAxesValues($values, array_keys($axesCodesAndTypes));
+
+            if (!empty($newAxesValues)) {
+                $currentAxesValues = $this->getCurrentVariantAxesValues($productModel, array_keys($axesCodesAndTypes));
+                $willBeUpdatedValues = $this->compareVariantAxesValues(
+                    $currentAxesValues,
+                    $newAxesValues,
+                    $axesCodesAndTypes
+                );
+
+                if (!empty($willBeUpdatedValues)) {
+                    throw ImmutablePropertyException::immutableProperty(
+                        implode(', ', array_keys($willBeUpdatedValues)),
+                        implode(', ', $willBeUpdatedValues),
+                        static::class
+                    );
+                }
+            }
+        }
+
+        $this->valuesUpdater->update($productModel, $values, $options);
+    }
+
+    /**
+     * Returns the list of the variant axes codes, associated to their attribute type:
+     *
+     * [
+     *     'attribute_code' => 'attribute_type',
+     * ]
+     *
+     * @param ProductModelInterface $productModel
+     *
+     * @return array
+     */
+    private function getProductModelAxesCodesAndTypes(ProductModelInterface $productModel): array
+    {
+        $productModelAxesCodesAndTypes = [];
+
+        foreach ($this->attributesProvider->getAxes($productModel) as $attribute) {
+            $productModelAxesCodesAndTypes[$attribute->getCode()] = $attribute->getType();
+        }
+
+        return $productModelAxesCodesAndTypes;
+    }
+
+    /**
+     * Removes all values except the ones of the variant axes.
+     *
+     * The provided values (and so the result) are in standard format.
+     *
+     * @param array $values
+     * @param array $axesCodes
+     *
+     * @return array
+     */
+    private function getNewVariantAxesValues(array $values, array $axesCodes): array
+    {
+        $attributeCodes = array_keys($values);
+        foreach ($attributeCodes as $attributeCode) {
+            if (!in_array($attributeCode, $axesCodes)) {
+                unset($values[$attributeCode]);
+            }
+        }
+
+        return $values;
+    }
+
+    /**
+     * Gets the current values of the product model variant axes.
+     *
+     * The returned result is in standard format.
+     *
+     * @param ProductModelInterface $productModel
+     * @param array                 $axesCodes
+     *
+     * @return array
+     */
+    private function getCurrentVariantAxesValues(ProductModelInterface $productModel, array $axesCodes): array
+    {
+        $currentAxesValues = [];
+        foreach ($axesCodes as $axisCode) {
+            $currentAxesValues[$axisCode] = [
+                $this->valueNormalizer->normalize($productModel->getValue($axisCode), 'standard'),
+            ];
+        };
+
+        return $currentAxesValues;
+    }
+
+    /**
+     * Compares the current values of the variant axes against the new ones we
+     * want to update the product model with.
+     *
+     * Returns the new values if they are different, and an empty array if there
+     * is no difference.
+     *
+     * @param array $currentAxesValues
+     * @param array $newAxesValues
+     * @param array $axesCodesAndTypes
+     *
+     * @return array
+     */
+    private function compareVariantAxesValues(
+        array $currentAxesValues,
+        array $newAxesValues,
+        array $axesCodesAndTypes
+    ): array {
+        $updateValues = [];
+
+        foreach (array_keys($axesCodesAndTypes) as $axisCode) {
+            if (array_key_exists($axisCode, $currentAxesValues) && array_key_exists($axisCode, $newAxesValues)) {
+                $comparator = $this->comparatorRegistry->getAttributeComparator($axesCodesAndTypes[$axisCode]);
+                $diff = $comparator->compare($newAxesValues[$axisCode][0], $currentAxesValues[$axisCode][0]);
+                if (null !== $diff) {
+                    $updateValues[$axisCode] = is_array($diff['data']) ? implode(' ', $diff['data']) : $diff['data'];
+                }
+            }
+        }
+
+        return $updateValues;
+    }
+
+    /**
+     * Updates the parent of the product model.
+     * If the product model is a root one, it cannot have a parent, so an
+     * exception will be thrown.
+     *
+     * @param ProductModelInterface $productModel
+     * @param mixed                 $value
+     *
+     * @throws ImmutablePropertyException
+     * @throws InvalidPropertyException
+     */
+    private function updateParent(ProductModelInterface $productModel, $value): void
+    {
+        if (empty($value)) {
+            return;
+        }
+
+        if (null !== $productModel->getId() && $productModel->isRootProductModel()) {
+            throw ImmutablePropertyException::immutableProperty(
+                'parent',
+                $value,
+                static::class
+            );
+        }
+
+        if (null === $parentProductModel = $this->productModelRepository->findOneByIdentifier($value)) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'parent',
+                'parent code',
+                'The product model does not exist',
+                static::class,
+                $value
+            );
+        }
+
+        $productModel->setParent($parentProductModel);
+    }
+
+    /**
+     * Updates the family variant of the family variant of the product model.
+     *
+     * @param ProductModelInterface $productModel
+     * @param mixed                 $value
+     *
+     * @throws InvalidPropertyException
+     */
+    private function updateFamilyVariant(ProductModelInterface $productModel, $value): void
+    {
+        if (null === $familyVariant = $this->familyVariantRepository->findOneByIdentifier($value)) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                'family_variant',
+                'family variant code',
+                'The family variant does not exist',
+                static::class,
+                $value
+            );
+        }
+
+        $productModel->setFamilyVariant($familyVariant);
     }
 }

@@ -1,5 +1,5 @@
 @javascript
-Feature: Create product through CSV import
+Feature: Create product models through CSV import
   In order to import product model
   As a catalog manager
   I need to be able to import product models with valid data
@@ -75,7 +75,7 @@ Feature: Create product through CSV import
     And I should see the text "skipped 1"
     And I should see the text "The sub product model parent must be a root product model"
 
-  Scenario: Skip the products sub-model if variant axes are empty
+  Scenario: Skip the products sub product model if variant axes are empty
     Given the following CSV file to import:
       """
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;EAN;sku;weight
@@ -136,3 +136,55 @@ Feature: Create product through CSV import
     And there should be the following product model:
       | code     | color  | variation_name-en_US | composition |
       | code-002 | [blue] | Blazers              | composition |
+
+  Scenario: A root product model cannot have a parent
+    Given the following root product models:
+      | code     | parent | family_variant      | categories | collection | description-en_US-ecommerce | erp_name-en_US | price   |
+      | code-001 |        | clothing_color_size | master_men | Spring2017 | A description for 001       | Blazers_1654   | 100 EUR |
+      | code-002 |        | clothing_color_size | master_men | Spring2017 | A description for 002       | Blazers_1654   | 50 EUR  |
+    And the following CSV file to import:
+      """
+      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;name-en_US;composition;size;ean;sku;weight
+      code-002;code-001;clothing_colorsize;master_men;Spring2017;A description for 002;Blazers_1654;50 EUR;;;;;;;
+      """
+    And the following job "csv_catalog_modeling_product_model_import" configuration:
+      | filePath          | %file to import% |
+      | enabledComparison | no               |
+    When I am on the "csv_catalog_modeling_product_model_import" import job page
+    And I launch the import job
+    And I wait for the "csv_catalog_modeling_product_model_import" job to finish
+    Then I should see the text "Status: Completed"
+    And I should see the text "skipped 1"
+    And I should see the text "parent: Property \"parent\" cannot be modified, \"code-001\" given."
+    And the invalid data file of "csv_catalog_modeling_product_model_import" should contain:
+      """
+      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;name-en_US;composition;size;ean;sku;weight
+      code-002;code-001;clothing_colorsize;master_men;Spring2017;A description for 002;Blazers_1654;50 EUR;;;;;;;
+      """
+
+  Scenario: The variant axis values of a product model are immutable
+    Given the following root product model:
+      | code     | parent   | family_variant      | categories         | collection | description-en_US-ecommerce | erp_name-en_US | price   |
+      | code-001 |          | clothing_color_size | master_men         | Spring2017 | description                 | Blazers_1654   | 100 EUR |
+    And the following sub product model:
+      | code     | parent   | family_variant      | categories         | color | variation_name-en_US | composition |
+      | code-002 | code-001 | clothing_color_size | master_men_blazers | blue  | Blazers              | composition |
+    And the following CSV file to import:
+      """
+      code;parent;family_variant;color
+      code-002;code-001;clothing_color_size;red
+      """
+    And the following job "csv_catalog_modeling_product_model_import" configuration:
+      | filePath          | %file to import% |
+      | enabledComparison | no               |
+    When I am on the "csv_catalog_modeling_product_model_import" import job page
+    And I launch the import job
+    And I wait for the "csv_catalog_modeling_product_model_import" job to finish
+    Then I should see the text "Status: Completed"
+    And I should see the text "skipped 1"
+    And I should see the text "Property \"color\" cannot be modified, \"red\" given."
+    And the invalid data file of "csv_catalog_modeling_product_model_import" should contain:
+      """
+      code;parent;family_variant;color
+      code-002;code-001;clothing_color_size;red
+      """

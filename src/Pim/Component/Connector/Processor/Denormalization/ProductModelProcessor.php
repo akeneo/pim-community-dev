@@ -109,7 +109,6 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
             // We don't compare immutable fields
             $flatProductModelToCompare = $flatProductModel;
             unset($flatProductModelToCompare['code']);
-            unset($flatProductModelToCompare['parent']);
 
             $flatProductModel = $this->productModelFilter->filter($productModel, $flatProductModelToCompare);
 

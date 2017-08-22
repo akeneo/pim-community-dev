@@ -11,6 +11,7 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
@@ -19,7 +20,6 @@ use League\Flysystem\MountManager;
 use OAuth2\OAuth2;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\EntityWithValuesSaver;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -40,6 +40,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Value\OptionValueInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
+use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
@@ -194,16 +195,98 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following family variants:$/
+     * @Given /^the following family variants?:$/
      */
     public function theFollowingFamilyVariants(TableNode $table)
     {
         $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.family_variant');
         $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family_variant');
-        $saver     = $this->getContainer()->get('pim_catalog.saver.family_variant');
+        $saver = $this->getContainer()->get('pim_catalog.saver.family_variant');
 
         foreach ($table->getHash() as $data) {
             $saver->save($processor->process($converter->convert($data)));
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following root product models?:$/
+     */
+    public function theFollowingRootProductModels(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->replacePlaceholders($value);
+            }
+
+            $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product_model');
+            $processor = $this->getContainer()->get('pim_connector.processor.denormalization.root_product_model');
+
+            $jobExecution = new JobExecution();
+            $provider = new ProductModelCsvImport(new SimpleCsvExport([]), []);
+            $params = $provider->getDefaultValues();
+            $params['enabledComparison'] = false;
+            $params['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
+            $params['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+            $jobParameters = new JobParameters($params);
+            $jobExecution->setJobParameters($jobParameters);
+            $stepExecution = new StepExecution('processor', $jobExecution);
+            $processor->setStepExecution($stepExecution);
+
+            $convertedData = $converter->convert($data);
+            $productModel = $processor->process($convertedData);
+
+            $errors = $this->getContainer()->get('validator')->validate($productModel);
+            if (0 !== $errors->count()) {
+                throw new \LogicException('Product model could not be updated, invalid data provided.');
+            }
+
+            $this->getContainer()->get('pim_catalog.saver.product_model')->save($productModel);
+
+            $this->refresh($productModel);
+            $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following sub product models?:$/
+     */
+    public function theFollowingSubProductModels(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->replacePlaceholders($value);
+            }
+
+            $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product_model');
+            $processor = $this->getContainer()->get('pim_connector.processor.denormalization.sub_product_model');
+
+            $jobExecution = new JobExecution();
+            $provider = new ProductModelCsvImport(new SimpleCsvExport([]), []);
+            $params = $provider->getDefaultValues();
+            $params['enabledComparison'] = false;
+            $params['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
+            $params['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+            $jobParameters = new JobParameters($params);
+            $jobExecution->setJobParameters($jobParameters);
+            $stepExecution = new StepExecution('processor', $jobExecution);
+            $processor->setStepExecution($stepExecution);
+
+            $convertedData = $converter->convert($data);
+            $productModel = $processor->process($convertedData);
+
+            $errors = $this->getContainer()->get('validator')->validate($productModel);
+            if (0 !== $errors->count()) {
+                throw new \LogicException('Product model could not be updated, invalid data provided.');
+            }
+
+            $this->getContainer()->get('pim_catalog.saver.product_model')->save($productModel);
+
+            $this->refresh($productModel);
+            $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         }
     }
 
@@ -2103,7 +2186,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return EntityWithValuesSaver
+     * @return SaverInterface
      */
     protected function getProductSaver()
     {
