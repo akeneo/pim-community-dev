@@ -522,8 +522,8 @@ class ProductSaverIntegration extends TestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
+                            ['amount' => '56.53', 'currency' => 'EUR'],
                             ['amount' => '45.00', 'currency' => 'USD'],
-                            ['amount' => '56.53', 'currency' => 'EUR']
                         ],
                     ],
                 ],
@@ -587,8 +587,8 @@ class ProductSaverIntegration extends TestCase
             'a_price' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
+                        ['amount' => '56.53', 'currency' => 'EUR'],
                         ['amount' => '45.00', 'currency' => 'USD'],
-                        ['amount' => '56.53', 'currency' => 'EUR']
                     ],
                 ],
             ],
