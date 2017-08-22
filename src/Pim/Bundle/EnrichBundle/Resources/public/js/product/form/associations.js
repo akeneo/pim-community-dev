@@ -156,8 +156,7 @@ define(
                             currentAssociationType: _.findWhere(
                                 associationTypes,
                                 {code: this.getCurrentAssociationType()}
-                            ),
-                            label: __('pim_enrich.form.product.tab.associations.association_type_selector')
+                            )
                         })
                     );
                     this.renderPanes();
@@ -182,10 +181,14 @@ define(
                     this.$('.tab-content > .association-type').remove();
                     this.$('.tab-content').prepend(
                         this.panesTemplate({
+                            __: __,
+                            label: __('pim_enrich.form.product.tab.associations.association_type_selector'),
                             locale: UserContext.get('catalogLocale'),
                             associationTypes: associationTypes,
                             currentAssociationType: this.getCurrentAssociationType(),
-                            currentAssociationTarget: this.getCurrentAssociationTarget()
+                            currentAssociationTarget: this.getCurrentAssociationTarget(),
+                            numberAssociationLabelKey:
+                                'pim_enrich.form.product.tab.associations.info.number_of_associations'
                         })
                     );
                 }.bind(this));
@@ -241,13 +244,8 @@ define(
             },
             changeAssociationType: function (event) {
                 event.preventDefault();
-                var associationType = event.currentTarget.dataset.associationType;
+                var associationType = event.currentTarget.dataset.associationtype;
                 this.setCurrentAssociationType(associationType);
-
-                this.$el.find('.current-association-type').html($(event.currentTarget).text());
-                this.$el.find('.association-type-selector .AknDropdown-menuLink--active')
-                    .removeClass('AknDropdown-menuLink--active');
-                $(event.currentTarget).find('.AknDropdown-menuLink ').addClass('AknDropdown-menuLink--active');
 
                 this.$('.AknTitleContainer.association-type[data-association-type="' + associationType + '"]')
                     .removeClass('AknTitleContainer--hidden')
