@@ -19,6 +19,10 @@ datagrid:
             is_associated:
                 label:         Is associated
                 frontend_type: boolean-label
+            image:
+                label:         Image
+                data_name:     image
+                frontend_type: image
             label:
                 label:         Label
                 type:          field
