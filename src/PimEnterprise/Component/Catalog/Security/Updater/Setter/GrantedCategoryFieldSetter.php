@@ -12,7 +12,6 @@
 namespace PimEnterprise\Component\Catalog\Security\Updater\Setter;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\AbstractFieldSetter;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Component\Security\Attributes;
@@ -50,7 +49,7 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
     /**
      * {@inheritdoc}
      */
-    public function setFieldData(ProductInterface $product, $field, $data, array $options = [])
+    public function setFieldData($product, $field, $data, array $options = [])
     {
         $wasOwner = $this->authorizationChecker->isGranted([Attributes::OWN], $product);
 
@@ -71,7 +70,9 @@ class GrantedCategoryFieldSetter extends AbstractFieldSetter implements FieldSet
         $isOwner = $this->authorizationChecker->isGranted([Attributes::OWN], $product);
 
         if ($wasOwner && !$isOwner && null !== $product->getId()) {
-            throw new InvalidArgumentException('You should at least keep your product in one category on which you have an own permission.');
+            throw new InvalidArgumentException(
+                'You should at least keep your product in one category on which you have an own permission.'
+            );
         }
     }
 }

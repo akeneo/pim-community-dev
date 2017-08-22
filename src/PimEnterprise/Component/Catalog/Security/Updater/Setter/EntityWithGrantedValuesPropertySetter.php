@@ -151,7 +151,10 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
             ));
         }
 
-        if (null !== $newValue->getLocale() && true === $permissions['view_locale'] && false === $permissions['edit_locale']) {
+        if (null !== $newValue->getLocale() &&
+            true === $permissions['view_locale'] &&
+            false === $permissions['edit_locale']
+        ) {
             throw new ResourceAccessDeniedException($newValue, sprintf(
                 'You only have a view permission on the locale "%s".',
                 $newValue->getLocale()
