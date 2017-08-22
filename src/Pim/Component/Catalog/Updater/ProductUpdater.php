@@ -3,14 +3,11 @@
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
  * Updates a product
@@ -37,12 +34,11 @@ class ProductUpdater implements ObjectUpdaterInterface
     protected $ignoredFields = [];
 
     /**
-     * @param PropertySetterInterface               $propertySetter
-     * @param ProductTemplateUpdaterInterface       $templateUpdater
-     * @param ObjectUpdaterInterface                $valuesUpdater
-     * @param IdentifiableObjectRepositoryInterface $productModelRepository
-     * @param array                                 $supportedFields
-     * @param array                                 $ignoredFields
+     * @param PropertySetterInterface         $propertySetter
+     * @param ProductTemplateUpdaterInterface $templateUpdater
+     * @param ObjectUpdaterInterface          $valuesUpdater
+     * @param array                           $supportedFields
+     * @param array                           $ignoredFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
