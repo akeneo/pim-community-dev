@@ -3,12 +3,10 @@
 namespace Pim\Bundle\InstallerBundle\Command;
 
 use Pim\Bundle\InstallerBundle\CommandExecutor;
-use Pim\Bundle\InstallerBundle\PimDirectoriesRegistry;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Installer command to add PIM custom rules
@@ -33,7 +31,9 @@ class InstallCommand extends ContainerAwareCommand
         $this
             ->setName('pim:install')
             ->setDescription(sprintf('%s Application Installer.', static::APP_NAME))
-            ->addOption('force', null, InputOption::VALUE_NONE, 'Force installation');
+            ->addOption('force', null, InputOption::VALUE_NONE, 'Force installation')
+            ->addOption('symlink', null, InputOption::VALUE_NONE, 'Install assets as symlinks')
+            ->addOption('clean', null, InputOption::VALUE_NONE, 'Clean previous install');
     }
 
     /**
@@ -72,7 +72,7 @@ class InstallCommand extends ContainerAwareCommand
                 ->prepareRequiredDirectoriesStep()
                 ->checkStep()
                 ->databaseStep()
-                ->assetsStep();
+                ->assetsStep($input);
         } catch (\Exception $e) {
             $output->writeln(sprintf('<error>Error during PIM installation. %s</error>', $e->getMessage()));
             $output->writeln('');
@@ -133,9 +133,12 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @return InstallCommand
      */
-    protected function assetsStep()
+    protected function assetsStep(InputInterface $input)
     {
-        $this->commandExecutor->runCommand('pim:installer:assets');
+        $options = false === $input->getOption('symlink') ? [] : ['--symlink' => true];
+        $options = false === $input->getOption('clean') ? $options : array_merge($options, ['--clean' => true]);
+
+        $this->commandExecutor->runCommand('pim:installer:assets', $options);
 
         return $this;
     }
