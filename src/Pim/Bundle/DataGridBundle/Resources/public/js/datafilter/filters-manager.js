@@ -281,7 +281,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
                 options.removeAttr('selected');
             }
 
-            if (optionsSelectors.length) {
+            if (this.displayManageFilters() && optionsSelectors.length) {
                 this.selectWidget.multiselect('refresh');
             }
 
