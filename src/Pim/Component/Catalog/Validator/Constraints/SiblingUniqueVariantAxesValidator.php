@@ -6,6 +6,7 @@ use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvide
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Repository\EntityWithVariantFamilyRepositoryInterface;
+use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -25,16 +26,22 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
     /** @var EntityWithVariantFamilyRepositoryInterface */
     private $repository;
 
+    /** @var UniqueAxesCombinationSet */
+    private $uniqueAxesCombinationSet;
+
     /**
      * @param EntityWithFamilyVariantAttributesProvider  $axesProvider
      * @param EntityWithVariantFamilyRepositoryInterface $repository
+     * @param UniqueAxesCombinationSet                   $uniqueAxesCombinationSet
      */
     public function __construct(
         EntityWithFamilyVariantAttributesProvider $axesProvider,
-        EntityWithVariantFamilyRepositoryInterface $repository
+        EntityWithVariantFamilyRepositoryInterface $repository,
+        UniqueAxesCombinationSet $uniqueAxesCombinationSet
     ) {
         $this->axesProvider = $axesProvider;
         $this->repository = $repository;
+        $this->uniqueAxesCombinationSet = $uniqueAxesCombinationSet;
     }
 
     /**
@@ -145,8 +152,14 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
      */
     private function hasAlreadyValidatedTheSameValue(EntityWithFamilyVariantInterface $entity): bool
     {
-        // TODO: this must be done in PIM-6333
+        $axes = $this->axesProvider->getAxes($entity);
 
-        return false;
+        if (empty($axes)) {
+            return false;
+        }
+
+        $combination = $this->buildAxesCombination($entity, $axes);
+
+        return false === $this->uniqueAxesCombinationSet->addCombination($entity, $combination);
     }
 }

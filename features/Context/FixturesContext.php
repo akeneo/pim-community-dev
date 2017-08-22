@@ -244,6 +244,9 @@ class FixturesContext extends BaseFixturesContext
 
             $this->getContainer()->get('pim_catalog.saver.product_model')->save($productModel);
 
+            $uniqueAxesCombinationSet = $this->getContainer()->get('pim_catalog.validator.unique_axes_combination_set');
+            $uniqueAxesCombinationSet->reset();
+
             $this->refresh($productModel);
             $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         }
@@ -284,6 +287,9 @@ class FixturesContext extends BaseFixturesContext
             }
 
             $this->getContainer()->get('pim_catalog.saver.product_model')->save($productModel);
+
+            $uniqueAxesCombinationSet = $this->getContainer()->get('pim_catalog.validator.unique_axes_combination_set');
+            $uniqueAxesCombinationSet->reset();
 
             $this->refresh($productModel);
             $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
