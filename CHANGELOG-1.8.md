@@ -2,6 +2,7 @@
 
 ## Functional improvements
 
+- API-324: Convert label option to mandatory argument in command `pim:oauth-server:create-client`
 - API-312: Add UI to manage (create/revoke) API connections
 - TIP-718: Update group types form
 - PIM-6291: Adds attribute used as the main picture in the UI for each family (attribute_as_image)
