@@ -285,8 +285,6 @@ class AssociatedProductDatasource extends ProductDatasource
                 ]
             );
 
-
-
             $data[] = new ResultRecord($normalizedProduct);
         }
 

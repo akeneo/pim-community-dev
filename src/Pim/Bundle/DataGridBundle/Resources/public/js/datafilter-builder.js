@@ -32,9 +32,11 @@ function($, _, tools,  mediator, FiltersManager) {
 
             build: function () {
                 var displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
+                var filtersAsColumn = _.result(this.metadata.options, 'filtersAsColumn', false);
                 var options = methods.combineOptions.call(this);
                 options.collection = this.collection;
                 options.displayManageFilters = displayManageFilters;
+                options.filtersAsColumn = filtersAsColumn;
                 var filtersList = new FiltersManager(options);
                 this.$el.prepend(filtersList.render().$el);
                 mediator.trigger('datagrid_filters:rendered', this.collection);
