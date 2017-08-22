@@ -40,7 +40,6 @@ class ProductUpdater implements ObjectUpdaterInterface
      * @param PropertySetterInterface               $propertySetter
      * @param ProductTemplateUpdaterInterface       $templateUpdater
      * @param ObjectUpdaterInterface                $valuesUpdater
-     * @param IdentifiableObjectRepositoryInterface $productModelRepository
      * @param array                                 $supportedFields
      * @param array                                 $ignoredFields
      */

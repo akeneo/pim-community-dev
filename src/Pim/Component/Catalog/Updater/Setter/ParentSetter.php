@@ -10,6 +10,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
+ * Set the parent to a variant product
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -41,6 +42,7 @@ class ParentSetter extends AbstractFieldSetter
             );
         }
 
+        /** @var $parent VariantProductInterface */
         if (null === $parent = $this->productModelRepository->findOneByIdentifier($data)) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 $field,
@@ -52,5 +54,6 @@ class ParentSetter extends AbstractFieldSetter
         }
 
         $product->setParent($parent);
+        $product->setFamilyVariant($parent->getFamilyVariant());
     }
 }

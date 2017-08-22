@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Catalog\Updater\Setter;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
@@ -38,10 +39,14 @@ class ParentSetterSpec extends ObjectBehavior
     function it_set_the_parent_to_a_variant_product(
         $productModelRepository,
         VariantProductInterface $product,
-        ProductModelInterface $productModel
+        ProductModelInterface $productModel,
+        FamilyVariantInterface $familyVariant
     ) {
         $productModelRepository->findOneByIdentifier('parent_code')->willReturn($productModel);
+        $productModel->getFamilyVariant()->willReturn($familyVariant);
+
         $product->setParent($productModel)->shouldBeCalled();
+        $product->setFamilyVariant($familyVariant)->shouldBeCalled();
 
         $this->setFieldData($product, 'parent', 'parent_code')->shouldReturn(null);
     }
