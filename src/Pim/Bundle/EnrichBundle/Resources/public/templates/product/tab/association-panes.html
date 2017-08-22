@@ -24,13 +24,26 @@
                 ) %>
             </div>
         </div>
-        <div>
-            <button type="button" class="AknButton AknButton--grey AknButton--small target-button target-button <% if ('products' === currentAssociationTarget) { %> AknButton--hidden<% } %>" data-association-target="products">
-                <%- _.__('pim_enrich.form.product.tab.associations.info.show_products') %>
-            </button>
-            <button type="button" class="AknButton AknButton--grey AknButton--small target-button target-button <% if ('groups' === currentAssociationTarget) { %> AknButton--hidden<% } %>" data-association-target="groups">
-                <%- _.__('pim_enrich.form.product.tab.associations.info.show_groups') %>
-            </button>
+        <div class="AknDropdown">
+            <a class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
+                <span class="AknActionButton-highlight">
+                    <% if ('products' === currentAssociationTarget) { %>
+                        <%- showProductsLabel %>
+                    <% } else { %>
+                        <%- showGroupsLabel %>
+                    <% } %>
+                </span>
+                <span class="AknActionButton-caret"></span>
+            </a>
+            <ul class="AknDropdown-menu">
+                <div class="AknDropdown-menuTitle"><%- targetLabel %></div>
+                <li class="target-button AknDropdown-menuLink<% if ('products' === currentAssociationTarget) { %> AknDropdown-menuLink--active<% } %>" data-association-target="products">
+                    <%- showProductsLabel %>
+                </li>
+                <li class="target-button AknDropdown-menuLink<% if ('groups' === currentAssociationTarget) { %> AknDropdown-menuLink--active<% } %>" data-association-target="groups">
+                    <%- showGroupsLabel %>
+                </li>
+            </ul>
         </div>
    </div>
 <% }); %>
