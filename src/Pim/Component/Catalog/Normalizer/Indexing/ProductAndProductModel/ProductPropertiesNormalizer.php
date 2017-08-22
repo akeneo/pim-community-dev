@@ -28,6 +28,7 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
     private const FIELD_FAMILY_VARIANT = 'family_variant';
     private const FIELD_IN_GROUP = 'in_group';
     private const FIELD_ID = 'id';
+    private const FIELD_PARENT = 'parent';
 
     /**
      * {@inheritdoc}
@@ -78,6 +79,12 @@ class ProductPropertiesNormalizer implements NormalizerInterface, SerializerAwar
             $familyVariantCode = null !== $familyVariant ? $familyVariant->getCode() : null;
         }
         $data[self::FIELD_FAMILY_VARIANT] = $familyVariantCode;
+
+        $parentCode = null;
+        if ($product instanceof VariantProductInterface && null !== $product->getParent()) {
+            $parentCode = $product->getParent()->getCode();
+        }
+        $data[self::FIELD_PARENT] = $parentCode;
 
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$product->getValues()->isEmpty()
             ? $this->serializer->normalize(

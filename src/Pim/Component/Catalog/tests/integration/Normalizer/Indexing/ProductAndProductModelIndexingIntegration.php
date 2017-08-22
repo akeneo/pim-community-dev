@@ -44,6 +44,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 ],
             ],
             'family_variant' => 'familyVariantA1',
+            'parent' => null,
             'values'         => [
                 'a_text-text'            => [
                     '<all_channels>' => [
@@ -80,6 +81,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 ],
             ],
             'family_variant' => 'familyVariantA1',
+            'parent' => 'qux',
             'values'         => [
                 'a_text-text'            => [
                     '<all_channels>' => [
@@ -125,6 +127,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             'groups'         => [],
             'completeness'   => [],
             'family_variant' => 'familyVariantA1',
+            'parent'         => 'quux',
             'values'         => [
                 'a_text-text'            => [
                     '<all_channels>' => [
@@ -168,6 +171,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             'groups'                    => [],
             'completeness'              => [],
             'family_variant'            => null,
+            'parent'                    => null,
             'values'                    => [],
             'product_type'              => 'PimCatalogProduct',
             'attributes_for_this_level' => ['sku'],
@@ -210,6 +214,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 'tablet'    => ['de_DE' => 89, 'en_US' => 100, 'fr_FR' => 100],
             ],
             'family_variant' => null,
+            'parent'         => null,
             'values'         => [
                 'a_date-date'                                    => [
                     '<all_channels>' => [
