@@ -113,12 +113,12 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_smart }
 
-    pim_datagrid.datasource.product:
+    pim_datagrid.datasource.product_and_product_model:
         class: '%pim_datagrid.datasource.product.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.query.product_query_builder_from_size_factory'
-            - '@pim_datagrid.normalizer.product'
+            - '@pim_enrich.query.product_and_product_model_query_builder_from_size_factory'
+            - '@pim_serializer'
         calls:
             - [ setMassActionRepository, ['@pim_catalog.repository.product_mass_action'] ]
         tags:
