@@ -122,17 +122,13 @@ Feature: Display the completeness of a product
 
   @jira https://akeneo.atlassian.net/browse/PIM-4489
   Scenario: Don't display the completeness if the family is not defined on product creation
-    Given the following products:
-      | sku              |
-      | my_nice_sneakers |
-    And I am on the "my_nice_sneakers" product page
+    Given I am on the "my_nice_sneakers" product page
     When I visit the "Completeness" column tab
     Given I am on the "my_nice_sneakers" product page
     When I visit the "Completeness" column tab
     Then I should see the text "No family defined. Please define a family to calculate the completeness of this product."
     And I change the family of the product to "Sneakers"
-    And I should see the text "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
-    And I should not see "No family defined. Please define a family to calculate the completeness of this product."
+    And I should not see the text "No family defined. Please define a family to calculate the completeness of this product."
 
   @jira https://akeneo.atlassian.net/browse/PIM-6277
   Scenario: Display the channel code in the completeness panel

@@ -73,7 +73,6 @@ define(
                 UserContext.off('change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute);
@@ -222,6 +221,8 @@ define(
              * Add an attribute to the current attribute list
              *
              * @param {Event} event
+             *
+             * // TODO: Move this to product/form/mass-edit/attributes when the variant groups will be dropped.
              */
             addAttributes: function (event) {
                 var attributeCodes = event.codes;
@@ -260,6 +261,8 @@ define(
              * Remove an attribute from the collection
              *
              * @param {Event} event
+             *
+             * // TODO: Move this to product/form/mass-edit/attributes when the variant groups will be dropped.
              */
             removeAttribute: function (event) {
                 if (!SecurityContext.isGranted(this.config.removeAttributeACL)) {
