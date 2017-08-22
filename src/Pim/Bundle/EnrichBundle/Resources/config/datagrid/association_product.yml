@@ -95,16 +95,6 @@ datagrid:
                     type:      product_completeness
                     label:     Complete
                     data_name: ratio
-                created:
-                    type:      product_date
-                    ftype:     date
-                    data_name: created
-                    label:     Created At
-                updated:
-                    type:      product_date
-                    ftype:     date
-                    data_name: updated
-                    label:     Updated At
                 scope:
                     type:      product_scope
                     label:     Scope
