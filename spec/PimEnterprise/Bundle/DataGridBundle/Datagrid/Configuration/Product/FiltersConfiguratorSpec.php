@@ -90,7 +90,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $configuration->offsetGet(FilterConfiguration::FILTERS_KEY)->willReturn([]);
 
         // and it adds the is owner filter
-        $columnConfPath = sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'permission');
+        $columnConfPath = sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'permissions');
         $expectedConf = [
             'type'      => 'product_permission',
             'ftype'     => 'choice',
