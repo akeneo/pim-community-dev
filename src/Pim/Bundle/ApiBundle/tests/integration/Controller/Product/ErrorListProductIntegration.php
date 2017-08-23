@@ -242,6 +242,38 @@ class ErrorListProductIntegration extends AbstractProductTestCase
         $this->assert($client, 'Filter on property "wrong_attribute" is not supported or does not support operator "EMPTY"', Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 
+    public function testMaxPageWithOffsetPaginationType()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $products = [];
+        for ($i = 0; $i<=10001; $i++) {
+            $products[] = $this->get('pim_catalog.builder.product')->createProduct('sku' . $i);
+        }
+
+        $this->get('pim_versioning.manager.version')->setRealTimeVersioning(false);
+        $this->get('pim_catalog.saver.product')->saveAll($products);
+        $this->get('akeneo_elasticsearch.client')->refreshIndex();
+
+        $client->request('GET', 'api/rest/v1/products?page=101&limit=100');
+
+        $message = addslashes('You have reached the maximum number of pages you can retrieve with the "page" pagination type. Please use the search after pagination type instead');
+        $expected = <<<JSON
+{
+    "code":422,
+    "message":"${message}",
+    "_links":{
+        "documentation":{
+            "href": "http:\/\/api.akeneo.com\/documentation\/pagination.html#search-after-type"
+        }
+    }
+}
+JSON;
+
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expected, $client->getResponse()->getContent());
+    }
+
     /**
      * @param Client $client
      * @param string $message
