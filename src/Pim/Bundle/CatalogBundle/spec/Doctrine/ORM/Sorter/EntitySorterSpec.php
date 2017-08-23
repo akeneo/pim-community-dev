@@ -68,8 +68,10 @@ class EntitySorterSpec extends ObjectBehavior
             )
             ->shouldBeCalled()
         ;
-        $qb->addOrderBy('sorterOentity_code.code', 'DESC')->shouldBeCalled();
+
+        $qb->addSelect('sorterOVentity_code.value AS HIDDEN')->shouldBeCalled();
         $qb->addOrderBy('sorterOVentity_code.value', 'DESC')->shouldBeCalled();
+        $qb->addOrderBy('sorterOentity_code.code', 'DESC')->shouldBeCalled();
         $qb->addOrderBy('r.id')->shouldBeCalled();
 
         $this->addAttributeSorter($attribute, 'DESC', 'en_US');
