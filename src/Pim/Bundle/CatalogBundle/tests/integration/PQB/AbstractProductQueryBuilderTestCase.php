@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB;
 
+use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -14,6 +15,19 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 abstract class AbstractProductQueryBuilderTestCase extends TestCase
 {
+    /** @var Client */
+    protected $esProductClient;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->esProductClient = $this->get('akeneo_elasticsearch.client.product');
+    }
+
     /**
      * {@inheritdoc}
      */

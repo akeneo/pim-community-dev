@@ -10,6 +10,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Query\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderOptionsResolverInterface;
 use Pim\Component\Catalog\Query\Sorter\AttributeSorterInterface;
 use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
@@ -42,7 +43,7 @@ class ProductQueryBuilderSpec extends ObjectBehavior
 
     function it_is_a_product_query_builder()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Query\ProductQueryBuilderInterface');
+        $this->shouldImplement(ProductQueryBuilderInterface::class);
     }
 
     function it_adds_a_field_filter($repository, $filterRegistry, FieldFilterInterface $filter)
@@ -151,4 +152,44 @@ class ProductQueryBuilderSpec extends ObjectBehavior
 
         $this->execute()->shouldReturn($cursor);
     }
+
+    function it_provides_the_raw_filters(
+        $repository,
+        $filterRegistry,
+        FieldFilterInterface $filterField,
+        AttributeFilterInterface $filterAttribute,
+        AttributeInterface $attribute
+    ) {
+        $repository->findOneByIdentifier('id')->willReturn(null);
+        $filterRegistry->getFieldFilter('id', '=')->willReturn($filterField);
+
+        $attribute->getCode()->willReturn('bar');
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $repository->findOneByIdentifier('bar')->willReturn($attribute);
+        $filterRegistry->getAttributeFilter($attribute, 'IN LIST')->willReturn($filterAttribute);
+
+        $this->addFilter('id', '=', '42', []);
+        $this->addFilter('bar', 'IN LIST', ['titi', 'tutu'], []);
+
+        $this->getRawFilters()->shouldReturn(
+            [
+                [
+                    'field'    => 'id',
+                    'operator' => '=',
+                    'value'    => '42',
+                    'context'  => ['locale' => 'en_US', 'scope' => 'print'],
+                    'type'     => 'field'
+                ],
+                [
+                    'field'    => 'bar',
+                    'operator' => 'IN LIST',
+                    'value'    => ['titi', 'tutu'],
+                    'context'  => ['locale' => 'en_US', 'scope' => 'print', 'field' => 'bar'],
+                    'type'     => 'attribute'
+                ],
+            ]
+        );
+    }
+
 }

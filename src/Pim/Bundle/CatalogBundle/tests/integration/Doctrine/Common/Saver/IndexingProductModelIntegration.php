@@ -2,6 +2,7 @@
 
 namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -12,6 +13,19 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 class IndexingProductModelIntegration extends TestCase
 {
     private const DOCUMENT_TYPE = 'pim_catalog_product';
+
+    /** @var Client */
+    private $esProductAndProductModelClient;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->esProductAndProductModelClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
+    }
 
     public function testIndexingProductModelsOnBulkSave()
     {

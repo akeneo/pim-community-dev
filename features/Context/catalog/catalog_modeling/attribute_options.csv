@@ -27,6 +27,9 @@ xs;XS;XS;XS;size;1
 m;M;M;M;size;1
 xl;XL;XL;XL;size;1
 s;S;S;S;size;1
+xxs;XXS;XXS;XXS;size;1
+xxxl;3XL;3XL;3XL;size;1
+u;U;U;U;size;1
 410;41;41;41;eu_shoes_size;1
 400;40;40;40;eu_shoes_size;1
 390;39;39;39;eu_shoes_size;1
@@ -44,3 +47,8 @@ cotton;cotton;cotton;coton;material;1
 polyester;polyester;polyester;polyester;material;1
 wool;wool;wool;laine;material;1
 metal;metal;metal;metal;material;1
+navy_blue;;Navy blue;;color;1
+battleship_grey;;Battleship grey;;color;2
+crimson_red;;Crimson red;;color;3
+electric_yellow;;Electric yellow;;color;4
+antique_white;;Antique white;;color;5

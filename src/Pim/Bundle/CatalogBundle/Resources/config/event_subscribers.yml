@@ -125,8 +125,7 @@ services:
     pim_catalog.event_subscriber.index_product_models_descendants:
         class: '%pim_catalog.event_subscriber.index_product_models_descendants.class%'
         arguments:
-              - '@pim_catalog.elasticsearch.indexer.product_model_descendance'
-              - '@pim_catalog.elasticsearch.indexer.product_model_descendance'
-              - '@pim_catalog.elasticsearch.indexer.product_model_descendance'
+            - '@pim_catalog.elasticsearch.indexer.product_model'
+            - '@pim_catalog.command_launcher'
         tags:
             - { name: kernel.event_subscriber }

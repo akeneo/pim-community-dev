@@ -151,7 +151,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
     protected function getConfiguration()
     {
         return new Configuration(
-            [Configuration::getFunctionalCatalog('footwear')],
+            [Configuration::getFunctionalCatalogPath('footwear')],
             [Configuration::getFunctionalFixtures()]
         );
     }

@@ -54,9 +54,10 @@ class CommandLauncher
     protected function buildCommandString($command)
     {
         return sprintf(
-            '%s %s/console --env=%s %s',
+            '%s %s%sconsole --env=%s %s',
             $this->getPhp(),
             sprintf('%s%s..%sbin', $this->rootDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR),
+            DIRECTORY_SEPARATOR,
             $this->environment,
             $command
         );

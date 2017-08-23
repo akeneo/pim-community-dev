@@ -518,7 +518,7 @@ class CreateFamilyVariantIntegration extends TestCase
      */
     protected function getConfiguration(): Configuration
     {
-        return new Configuration([Configuration::getFunctionalCatalog('footwear')]);
+        return new Configuration([Configuration::getFunctionalCatalogPath('footwear')]);
     }
 
     /**

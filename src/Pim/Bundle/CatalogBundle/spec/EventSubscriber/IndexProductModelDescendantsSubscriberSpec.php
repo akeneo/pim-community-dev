@@ -2,9 +2,8 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
+use Akeneo\Component\Console\CommandLauncher;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
-use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Bundle\CatalogBundle\EventSubscriber\IndexProductModelDescendantsSubscriber;
@@ -16,11 +15,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class IndexProductModelDescendantsSubscriberSpec extends ObjectBehavior
 {
     function let(
-        IndexerInterface $indexer,
-        BulkIndexerInterface $bulkIndexer,
-        RemoverInterface $remover
+        RemoverInterface $remover,
+        CommandLauncher $commandLauncher
     ) {
-        $this->beConstructedWith($indexer, $bulkIndexer, $remover);
+        $this->beConstructedWith($remover, $commandLauncher);
     }
 
     function it_is_initializable()
@@ -37,21 +35,24 @@ class IndexProductModelDescendantsSubscriberSpec extends ObjectBehavior
         ]);
     }
 
-    function it_indexes_a_single_product_model_descendants($indexer, GenericEvent $event, ProductModelInterface $productModel)
-    {
+    function it_indexes_a_single_product_model_descendants(
+        $commandLauncher,
+        GenericEvent $event,
+        ProductModelInterface $productModel
+    ) {
         $event->getSubject()->willReturn($productModel);
         $event->hasArgument('unitary')->willReturn(true);
         $event->getArgument('unitary')->willReturn(true);
 
         $productModel->getCode()->willReturn('identifier');
 
-        $indexer->index($productModel)->shouldBeCalled();
+        $commandLauncher->executeBackground('pim:product-model:index identifier')->shouldBeCalled();
 
         $this->indexProductModelDescendants($event);
     }
 
     function it_bulk_indexes_product_models_descendants(
-        $bulkIndexer,
+        $commandLauncher,
         GenericEvent $event,
         ProductModelInterface $productModel1,
         ProductModelInterface $productModel2
@@ -61,7 +62,7 @@ class IndexProductModelDescendantsSubscriberSpec extends ObjectBehavior
         $productModel1->getCode()->willReturn('identifier1');
         $productModel2->getCode()->willReturn('identifier2');
 
-        $bulkIndexer->indexAll([$productModel1, $productModel2])->shouldBeCalled();
+        $commandLauncher->executeBackground('pim:product-model:index identifier1 identifier2')->shouldBeCalled();
 
         $this->bulkIndexProductModelsDescendants($event);
     }
@@ -78,16 +79,19 @@ class IndexProductModelDescendantsSubscriberSpec extends ObjectBehavior
         $this->deleteProductModelDescendants($event)->shouldReturn(null);
     }
 
-    function it_does_not_index_the_descendances_of_a_non_product_model_entity($indexer, GenericEvent $event, \stdClass $subject)
-    {
+    function it_does_not_index_the_descendances_of_a_non_product_model_entity(
+        $commandLauncher,
+        GenericEvent $event,
+        \stdClass $subject
+    ) {
         $event->getSubject()->willReturn($subject);
-        $indexer->index(Argument::cetera())->shouldNotBeCalled();
+        $commandLauncher->executeBackground(Argument::cetera())->shouldNotBeCalled();
 
         $this->indexProductModelDescendants($event);
     }
 
     function it_does_not_index_the_descendants_of_a_non_unitary_save_of_a_product_model(
-        $indexer,
+        $commandLauncher,
         GenericEvent $event,
         ProductModelInterface $productModel
     ) {
@@ -95,41 +99,41 @@ class IndexProductModelDescendantsSubscriberSpec extends ObjectBehavior
         $event->hasArgument('unitary')->willReturn(true);
         $event->getArgument('unitary')->willReturn(false);
 
-        $indexer->index(Argument::any())->shouldNotBeCalled();
+        $commandLauncher->executeBackground(Argument::any())->shouldNotBeCalled();
 
         $this->indexProductModelDescendants($event);
     }
 
     function it_does_not_index_the_descendants_of_a_non_unitary_save_of_a_product_model_bis(
-        $indexer,
+        $commandLauncher,
         GenericEvent $event,
         ProductModelInterface $productModel
     ) {
         $event->getSubject()->willReturn($productModel);
         $event->hasArgument('unitary')->willReturn(false);
 
-        $indexer->index(Argument::any())->shouldNotBeCalled();
+        $commandLauncher->executeBackground(Argument::any())->shouldNotBeCalled();
 
         $this->indexProductModelDescendants($event);
     }
 
     function it_does_not_bulk_index_the_descendants_of_a_non_product_model_entities(
-        $bulkIndexer,
+        $commandLauncher,
         GenericEvent $event,
         \stdClass $subject1
     ) {
         $event->getSubject()->willReturn([$subject1]);
 
-        $bulkIndexer->indexAll(Argument::any())->shouldNotBeCalled();
+        $commandLauncher->executeBackground(Argument::any())->shouldNotBeCalled();
 
         $this->bulkIndexProductModelsDescendants($event);
     }
 
-    function it_does_not_bulk_index_non_collections($bulkIndexer, GenericEvent $event, \stdClass $subject1)
+    function it_does_not_bulk_index_non_collections($commandLauncher, GenericEvent $event, \stdClass $subject1)
     {
         $event->getSubject()->willReturn($subject1);
 
-        $bulkIndexer->indexAll(Argument::any())->shouldNotBeCalled();
+        $commandLauncher->executeBackground(Argument::any())->shouldNotBeCalled();
 
         $this->bulkIndexProductModelsDescendants($event);
     }

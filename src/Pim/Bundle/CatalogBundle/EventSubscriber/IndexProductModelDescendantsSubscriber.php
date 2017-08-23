@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
+use Akeneo\Component\Console\CommandLauncher;
 use Akeneo\Component\StorageUtils\Event\RemoveEvent;
-use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
-use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -14,7 +13,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * Index product models descendance in the search engine.
+ * Index product models descendants in the search engine.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -22,34 +21,28 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class IndexProductModelDescendantsSubscriber implements EventSubscriberInterface
 {
-    /** @var IndexerInterface */
-    private $productModelDescendantsIndexer;
-
-    /** @var BulkIndexerInterface */
-    private $productModelDescendantsBulkIndexer;
+    /** @var CommandLauncher */
+    private $commandLauncher;
 
     /** @var RemoverInterface */
     private $productModelDescendantsRemover;
 
     /**
-     * @param IndexerInterface     $productModelIndexer
-     * @param BulkIndexerInterface $ProductModelbulkIndexer
-     * @param RemoverInterface     $productModelRemover
+     * @param RemoverInterface $productModelDescendantsRemover
+     * @param CommandLauncher  $commandLauncher
      */
     public function __construct(
-        IndexerInterface $productModelIndexer,
-        BulkIndexerInterface $ProductModelbulkIndexer,
-        RemoverInterface $productModelRemover
+        RemoverInterface $productModelDescendantsRemover,
+        CommandLauncher $commandLauncher
     ) {
-        $this->productModelDescendantsIndexer = $productModelIndexer;
-        $this->productModelDescendantsBulkIndexer = $ProductModelbulkIndexer;
-        $this->productModelDescendantsRemover = $productModelRemover;
+        $this->productModelDescendantsRemover = $productModelDescendantsRemover;
+        $this->commandLauncher = $commandLauncher;
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents() : array
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::POST_SAVE     => 'indexProductModelDescendants',
@@ -63,7 +56,7 @@ class IndexProductModelDescendantsSubscriber implements EventSubscriberInterface
      *
      * @param GenericEvent $event
      */
-    public function indexProductModelDescendants(GenericEvent $event) : void
+    public function indexProductModelDescendants(GenericEvent $event): void
     {
         $productModel = $event->getSubject();
         if (!$productModel instanceof ProductModelInterface) {
@@ -74,7 +67,7 @@ class IndexProductModelDescendantsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->productModelDescendantsIndexer->index($productModel);
+        $this->indexProductModelsDescendantsInBackground([$productModel->getCode()]);
     }
 
     /**
@@ -82,7 +75,7 @@ class IndexProductModelDescendantsSubscriber implements EventSubscriberInterface
      *
      * @param GenericEvent $event
      */
-    public function bulkIndexProductModelsDescendants(GenericEvent $event) : void
+    public function bulkIndexProductModelsDescendants(GenericEvent $event): void
     {
         $productModels = $event->getSubject();
         if (!is_array($productModels)) {
@@ -93,7 +86,11 @@ class IndexProductModelDescendantsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->productModelDescendantsBulkIndexer->indexAll($productModels);
+        $productModelsCodes = array_map(function ($productModel) {
+            return $productModel->getCode();
+        }, $productModels);
+
+        $this->indexProductModelsDescendantsInBackground($productModelsCodes);
     }
 
     /**
@@ -101,7 +98,7 @@ class IndexProductModelDescendantsSubscriber implements EventSubscriberInterface
      *
      * @param RemoveEvent $event
      */
-    public function deleteProductModelDescendants(RemoveEvent $event) : void
+    public function deleteProductModelDescendants(RemoveEvent $event): void
     {
         $productModel = $event->getSubject();
         if (!$productModel instanceof ProductModelInterface) {
@@ -109,5 +106,17 @@ class IndexProductModelDescendantsSubscriber implements EventSubscriberInterface
         }
 
         $this->productModelDescendantsRemover->remove($productModel);
+    }
+
+    /**
+     * Run the indexing of the product model descendants in a background job by calling a command.
+     *
+     * @param array $productModelCodes
+     */
+    private function indexProductModelsDescendantsInBackground(array $productModelCodes): void
+    {
+        $this->commandLauncher->executeBackground(
+            'pim:product-model:index ' . implode(' ', $productModelCodes)
+        );
     }
 }
