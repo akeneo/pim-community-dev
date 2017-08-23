@@ -67,6 +67,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'locales' => ['en_US'], 'channels' => ['ecommerce']
         ];
 
+        $product->getId()->willReturn(78);
         $filter->filterCollection($values, 'pim.transform.product_value.structured', $context)
             ->willReturn($values);
 
@@ -138,7 +139,9 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'originalFileName' => 'all.png',
             ],
             'completeness' => 76,
-            'product_type' => 'product'
+            'product_type' => 'product',
+            'technical_id' => 78,
+            'search_id' => 'product_78',
         ];
 
         $this->normalize($product, 'datagrid', ['locales' => ['en_US'], 'channels' => ['ecommerce']])->shouldReturn($data);
@@ -163,6 +166,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'locales' => ['en_US'], 'channels' => ['ecommerce']
         ];
 
+        $product->getId()->willReturn(78);
         $filter->filterCollection($productValues, 'pim.transform.product_value.structured', $context)
             ->willReturn($productValues);
 
@@ -234,7 +238,9 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'originalFileName' => 'all.png',
             ],
             'completeness' => 76,
-            'product_type' => 'product'
+            'product_type' => 'product',
+            'technical_id' => 78,
+            'search_id' => 'product_78',
         ];
 
         $this->normalize($product, 'datagrid', ['locales' => ['en_US'], 'channels' => ['ecommerce']])->shouldReturn($data);

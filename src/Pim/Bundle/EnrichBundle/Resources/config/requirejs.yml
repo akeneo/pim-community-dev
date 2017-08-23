@@ -1146,3 +1146,5 @@ config:
         pimcommunity/grid/view-selector/selector: pimenrich/js/grid/view-selector
         pimcommunity/grid/view-selector/line:     pimenrich/js/grid/view-selector-line
         pimcommunity/grid/view-selector/current:  pimenrich/js/grid/view-selector-current
+
+        oro/datagrid/navigate-product-and-product-model-action: pimenrich/js/datagrid/action/navigate-product-and-product-model-action
