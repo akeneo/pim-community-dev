@@ -19,11 +19,7 @@ trait ClosestTrait
      */
     protected function getClosest($node, $class)
     {
-        $result = $node->getParent();
-        if (null === $result) {
-            throw new ElementNotFoundException($this->getSession());
-        }
-
+        $result = $node;
         while (!$result->hasClass($class)) {
             $result = $result->getParent();
 

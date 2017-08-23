@@ -1,7 +1,7 @@
 <% _.each(associationTypes, function (associationType) { %>
     <div class="AknTabHeader association-type<% if (associationType.code !== currentAssociationType) { %> AknTitleContainer--hidden<% } %>" data-association-type="<%- associationType.code %>">
         <div class="AknButtonList">
-            <div class="AknDropdown AknButtonList-item">
+            <div class="AknDropdown AknButtonList-item association-type-selector">
                 <a class="AknActionButton AknActionButton--important AknActionButton--withoutBorder" data-toggle="dropdown">
                     <span class="AknActionButton-highlight"><%- associationType.labels[locale] || '[' + associationType.code + ']'  %></span>
                     <span class="AknActionButton-caret"></span>
@@ -10,7 +10,7 @@
                     <div class="AknDropdown-menuTitle"><%- label %></div>
                     <% _.each(associationTypes, function (associationTypeSwitch) { %>
                         <li data-associationType="<%- associationTypeSwitch.code %>">
-                            <a class="AknDropdown-menuLink<% if (associationType === associationTypeSwitch) { %> AknDropdown-menuLink--active<% } %>">
+                            <a class="AknDropdown-menuLink<% if (associationType === associationTypeSwitch) { %> AknDropdown-menuLink--active<% } %> label">
                                 <%- associationTypeSwitch.labels[locale] || '[' + associationTypeSwitch.code + ']'  %>
                             </a>
                         </li>
@@ -24,7 +24,7 @@
                 ) %>
             </div>
         </div>
-        <div class="AknDropdown">
+        <div class="AknDropdown target-selector">
             <a class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
                 <span class="AknActionButton-highlight">
                     <% if ('products' === currentAssociationTarget) { %>
@@ -37,10 +37,10 @@
             </a>
             <ul class="AknDropdown-menu">
                 <div class="AknDropdown-menuTitle"><%- targetLabel %></div>
-                <li class="target-button AknDropdown-menuLink<% if ('products' === currentAssociationTarget) { %> AknDropdown-menuLink--active<% } %>" data-association-target="products">
+                <li class="label target-button AknDropdown-menuLink<% if ('products' === currentAssociationTarget) { %> AknDropdown-menuLink--active<% } %>" data-association-target="products">
                     <%- showProductsLabel %>
                 </li>
-                <li class="target-button AknDropdown-menuLink<% if ('groups' === currentAssociationTarget) { %> AknDropdown-menuLink--active<% } %>" data-association-target="groups">
+                <li class="label target-button AknDropdown-menuLink<% if ('groups' === currentAssociationTarget) { %> AknDropdown-menuLink--active<% } %>" data-association-target="groups">
                     <%- showGroupsLabel %>
                 </li>
             </ul>
