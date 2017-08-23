@@ -10,9 +10,10 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'pim/form'
     ],
-    function ($, _, BaseForm) {
+    function ($, _, __, BaseForm) {
         return BaseForm.extend({
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
@@ -47,7 +48,7 @@ define(
              * @param {Object} field
              */
             updateFieldElements: function (field) {
-                var message = _.__('pim_enrich.entity.product.locale_specific_attribute.unavailable');
+                var message = __('pim_enrich.entity.product.locale_specific_attribute.unavailable');
                 var element = '<span class="AknFieldContainer-unavailable">' + message + '</span>';
 
                 field.addElement(

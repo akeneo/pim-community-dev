@@ -119,8 +119,6 @@ class VersionManager
         }
 
         if ($this->realTimeVersioning) {
-            $this->objectManager->refresh($versionable);
-
             $createdVersions = $this->buildPendingVersions($versionable);
 
             $builtVersions = array_filter(

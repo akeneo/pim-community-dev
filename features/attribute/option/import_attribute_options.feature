@@ -15,8 +15,8 @@ Feature: Import attribute options
     Given the following CSV file to import:
       """
       code;attribute;sort_order;label-en_US
-      kiwi;fruit;0;
-      Converse;manufacturer;0;
+      red;color;0;
+      converse;manufacturer;0;
       """
     And the following job "csv_footwear_option_import" configuration:
       | filePath | %file to import% |
@@ -26,13 +26,14 @@ Feature: Import attribute options
     And I am on the products page
     And I create a new product
     And I fill in the following information in the popin:
-      | SKU | caterpillar |
+      | SKU    | caterpillar |
+      | family | Boots       |
     And I press the "Save" button in the popin
     And I should be on the product "caterpillar" edit page
     And I am on the "caterpillar" product page
-    When I add available attributes fruit
-    And I change the "[fruit]" to "[kiwi]"
-    Then I should see the text "[kiwi]"
-    When I add available attributes Manufacturer
+    And I visit the "Colors" group
+    And I change the "Color" to "[red]"
+    Then I should see the text "[red]"
+    When I visit the "Product information" group
     And I change the "Manufacturer" to "[Converse]"
     Then I should see the text "[Converse]"

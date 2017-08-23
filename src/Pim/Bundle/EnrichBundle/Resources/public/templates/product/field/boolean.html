@@ -1,3 +1,3 @@
 <div class="switch switch-small" data-on-label="<%- _.__('switch_on') %>" data-off-label="<%- _.__('switch_off') %>">
-    <input id="<%- fieldId %>" type="checkbox" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" <%- value.data ? 'checked' : '' %> <%- editMode === 'view' ? 'disabled' : '' %>>
+    <input id="<%- fieldId %>" type="checkbox" data-locale="<%- locale %>" data-scope="<%- scope %>" <%- value && value.data ? 'checked' : '' %> <%- editMode === 'view' ? 'disabled' : '' %>>
 </div>

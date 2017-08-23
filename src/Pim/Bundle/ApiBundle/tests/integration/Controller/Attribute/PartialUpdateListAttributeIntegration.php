@@ -53,7 +53,7 @@ JSON;
                 'negative_allowed'       => null,
                 'date_min'               => null,
                 'date_max'               => null,
-                'max_file_size'          => '800.00',
+                'max_file_size'          => '800',
                 'minimum_input_length'   => null,
                 'sort_order'             => 0,
                 'localizable'            => false,

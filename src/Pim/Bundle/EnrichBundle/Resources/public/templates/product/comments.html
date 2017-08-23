@@ -18,7 +18,7 @@
                                 <img class="AknCommentPanel-avatar" src="/<%- !_.isEmpty(comment.author.avatar) ? comment.author.avatar : 'bundles/pimui/images/info-user.png' %>" alt="<%- comment.author.username %>"/>
                                 <span class="AknCommentPanel-title">
                                     <%= __('comment.index.header_comment', { user: '<span class="AknCommentPanel-author author">' + comment.author.fullName + '</span>' }) %>
-                                    <% if (comment.author.username === currentUser.username) { %>
+                                    <% if (comment.author.username === username) { %>
                                         <span class="AknCommentPanel-icon AknIconButton remove-comment" title="Delete" data-comment-id="<%- comment.id %>">
                                             <i class="icon-trash"></i>
                                         </span>
@@ -43,7 +43,7 @@
                                     <img class="AknCommentPanel-avatar" src="/<%- !_.isEmpty(reply.author.avatar) ? reply.author.avatar : 'bundles/pimui/images/info-user.png' %>" alt="<%- reply.author.username %>"/>
                                     <span class="AknCommentPanel-title">
                                         <%= __('comment.index.header_reply', { user: '<span class="AknCommentPanel-author author">' + reply.author.fullName + '</span>' }) %>
-                                        <% if (reply.author.username === currentUser.username) { %>
+                                        <% if (reply.author.username === username) { %>
                                             <span class="AknCommentPanel-icon AknIconButton remove-comment" title="Delete" data-comment-id="<%- reply.id %>">
                                                 <i class="icon-trash"></i>
                                             </span>

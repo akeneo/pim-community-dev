@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\EventSubscriber\LoadEntityWithValuesSubscriber;
-use Pim\Component\Catalog\Factory\ValueCollectionFactory;
+use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Prophecy\Argument;
@@ -15,7 +15,7 @@ class LoadEntityWithValuesSubscriberSpec extends ObjectBehavior
 {
     function let(
         ContainerInterface $container,
-        ValueCollectionFactory $valueCollectionFactory
+        ValueCollectionFactoryInterface $valueCollectionFactory
     ) {
         $this->beConstructedWith($container);
 

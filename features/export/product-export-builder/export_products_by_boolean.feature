@@ -15,20 +15,7 @@ Feature: Export products according to boolean attribute filter
       | SNKRS-1R | 1       | rangers | summer_collection | 1        |
     And I am logged in as "Julia"
 
-  Scenario: Export products by boolean values without using the UI
-    Given the following job "csv_footwear_product_export" configuration:
-      | filePath | %tmp%/product_export/product_export.csv                                                                             |
-      | filters  | {"structure":{"locales":["en_US"],"scope":"mobile"},"data":[{"field": "handmade", "operator": "=", "value": true}]} |
-    When I am on the "csv_footwear_product_export" export job page
-    And I launch the export job
-    And I wait for the "csv_footwear_product_export" job to finish
-    Then exported file of "csv_footwear_product_export" should contain:
-    """
-    sku;categories;enabled;family;groups;handmade;name-en_US
-    SNKRS-1R;summer_collection;1;rangers;;1;
-    """
-
-  Scenario: Export products by boolean values using the UI
+  Scenario: Export products by boolean values
     Given the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
     When I am on the "csv_footwear_product_export" export job edit page

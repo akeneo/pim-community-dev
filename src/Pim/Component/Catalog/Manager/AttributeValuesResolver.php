@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Catalog\Manager;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -15,7 +17,7 @@ use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeValuesResolver
+class AttributeValuesResolver implements AttributeValuesResolverInterface
 {
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
@@ -51,7 +53,7 @@ class AttributeValuesResolver
      *
      * @return array:array
      */
-    public function resolveEligibleValues(array $attributes, array $channels = null, array $locales = null)
+    public function resolveEligibleValues(array $attributes, array $channels = null, array $locales = null) : array
     {
         $this->channels = $channels;
         $this->locales  = $locales;
@@ -90,10 +92,10 @@ class AttributeValuesResolver
      *
      * @return array
      */
-    protected function filterExpectedValues(AttributeInterface $attribute, array $values)
+    protected function filterExpectedValues(AttributeInterface $attribute, array $values) : array
     {
         if ($attribute->isLocaleSpecific()) {
-            $availableLocales = $attribute->getLocaleSpecificCodes();
+            $availableLocales = $attribute->getAvailableLocaleCodes();
             foreach ($values as $index => $value) {
                 if ($value['locale'] && !in_array($value['locale'], $availableLocales)) {
                     unset($values[$index]);
@@ -111,7 +113,7 @@ class AttributeValuesResolver
      *
      * @return array
      */
-    protected function getLocaleRows(AttributeInterface $attribute)
+    protected function getLocaleRows(AttributeInterface $attribute) : array
     {
         $locales = $this->getLocales();
         $localeRows = [];
@@ -134,7 +136,7 @@ class AttributeValuesResolver
      *
      * @return array
      */
-    protected function getScopeRows(AttributeInterface $attribute)
+    protected function getScopeRows(AttributeInterface $attribute) : array
     {
         $channels = $this->getChannels();
         $scopeRows = [];
@@ -157,7 +159,7 @@ class AttributeValuesResolver
      *
      * @return array
      */
-    protected function getScopeToLocaleRows(AttributeInterface $attribute)
+    protected function getScopeToLocaleRows(AttributeInterface $attribute) : array
     {
         $channels = $this->getChannels();
         $scopeToLocaleRows = [];
@@ -178,7 +180,7 @@ class AttributeValuesResolver
     /**
      * @return ChannelInterface[]
      */
-    protected function getChannels()
+    protected function getChannels() : array
     {
         if (null === $this->channels) {
             $this->channels = $this->channelRepository->findAll();
@@ -190,7 +192,7 @@ class AttributeValuesResolver
     /**
      * @return LocaleInterface[]
      */
-    protected function getLocales()
+    protected function getLocales() : array
     {
         if (null === $this->locales) {
             $this->locales = $this->localeRepository->getActivatedLocales();

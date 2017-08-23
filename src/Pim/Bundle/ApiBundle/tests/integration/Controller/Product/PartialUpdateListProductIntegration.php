@@ -313,11 +313,8 @@ JSON;
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
         $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
 
-        $standardizedProduct = static::sanitizeMediaAttributeData($standardizedProduct);
-        $expectedProduct = static::sanitizeMediaAttributeData($expectedProduct);
-
-        NormalizedProductCleaner::clean($standardizedProduct);
         NormalizedProductCleaner::clean($expectedProduct);
+        NormalizedProductCleaner::clean($standardizedProduct);
 
         $this->assertSame($expectedProduct, $standardizedProduct);
     }

@@ -116,4 +116,13 @@ interface ProductRepositoryInterface extends ObjectRepository
      * @return array
      */
     public function findAllWithOffsetAndSize($offset = 0, $size = 100);
+
+    /**
+     * Get all associated products ids
+     *
+     * @param ProductInterface $product
+     *
+     * @return string[]
+     */
+    public function getAssociatedProductIds(ProductInterface $product);
 }

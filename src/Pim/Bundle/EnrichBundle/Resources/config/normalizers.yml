@@ -63,6 +63,7 @@ services:
             - '@pim_user.context.user'
             - '@pim_catalog.completeness.calculator'
             - '@pim_enrich.normalizer.file'
+            - '@pim_catalog.builder.product'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

@@ -4,7 +4,7 @@ namespace Pim\Component\Catalog\Builder;
 
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\ValueFactory;
-use Pim\Component\Catalog\Manager\AttributeValuesResolver;
+use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -16,18 +16,18 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
 {
-    /** @var AttributeValuesResolver */
+    /** @var AttributeValuesResolverInterface */
     protected $valuesResolver;
 
     /** @var ValueFactory */
     protected $productValueFactory;
 
     /**
-     * @param AttributeValuesResolver $valuesResolver
-     * @param ValueFactory            $productValueFactory
+     * @param AttributeValuesResolverInterface $valuesResolver
+     * @param ValueFactory                     $productValueFactory
      */
     public function __construct(
-        AttributeValuesResolver $valuesResolver,
+        AttributeValuesResolverInterface $valuesResolver,
         ValueFactory $productValueFactory
     ) {
         $this->valuesResolver = $valuesResolver;

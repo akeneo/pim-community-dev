@@ -64,6 +64,20 @@ class PriceCollectionValue extends AbstractValue implements PriceCollectionValue
     /**
      * {@inheritdoc}
      */
+    public function hasData()
+    {
+        foreach ($this->data as $price) {
+            if (null !== $price->getData()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function __toString()
     {
         $options = [];

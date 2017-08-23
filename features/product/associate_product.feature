@@ -202,7 +202,8 @@ Feature: Associate a product
     And I check the row "gray-boots"
     And I save the product
     And I visit the "Attributes" column tab
-    And I add available attributes Name
+    Then I change the family of the product to "Boots"
+    And I should see the text "Name"
     And I fill in "Name" with "test"
     And I save the product
     And I visit the "Associations" column tab
