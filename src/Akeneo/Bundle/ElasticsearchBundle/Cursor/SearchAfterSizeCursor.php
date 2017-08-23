@@ -48,6 +48,7 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
         CursorableRepositoryInterface $repository,
         array $esQuery,
         array $searchAfter = [],
+        $indexName,
         $indexType,
         $pageSize,
         $limit,
@@ -56,6 +57,7 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
         $this->repository = $repository;
         $this->esClient = $esClient;
         $this->esQuery = $esQuery;
+        $this->indexName = $indexName;
         $this->indexType = $indexType;
         $this->pageSize = $pageSize;
         $this->limit = $limit;
@@ -106,7 +108,7 @@ class SearchAfterSizeCursor extends AbstractCursor implements CursorInterface
             $esQuery['search_after'] = $this->searchAfter;
         }
 
-        $response = $this->esClient->search($this->indexType, $esQuery);
+        $response = $this->esClient->search($this->indexName, $this->indexType, $esQuery);
         $this->count = $response['hits']['total'];
 
         $identifiers = [];

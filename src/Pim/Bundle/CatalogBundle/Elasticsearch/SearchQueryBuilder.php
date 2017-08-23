@@ -33,19 +33,19 @@ namespace Pim\Bundle\CatalogBundle\Elasticsearch;
  *
  * @internal This class is used by the ProductQueryBuilder to create an ES search query.
  */
-class SearchQueryBuilder
+abstract class SearchQueryBuilder
 {
     /** @var array */
-    private $mustNotClauses = [];
+    protected $mustNotClauses = [];
 
     /** @var array */
-    private $filterClauses = [];
+    protected $filterClauses = [];
 
     /** @var array */
-    private $shouldClauses = [];
+    protected $shouldClauses = [];
 
     /** @var array */
-    private $sortClauses = [];
+    protected $sortClauses = [];
 
     /**
      * Adds a must_not clause to the query
@@ -110,38 +110,5 @@ class SearchQueryBuilder
      *
      * @return array
      */
-    public function getQuery(array $source = [])
-    {
-        if (empty($source)) {
-            $source = ['identifier'];
-        }
-
-        $searchQuery = [
-            '_source' => $source,
-            'query'   => [],
-        ];
-
-        if (!empty($this->filterClauses)) {
-            $searchQuery['query']['bool']['filter'] = $this->filterClauses;
-        }
-
-        if (!empty($this->mustNotClauses)) {
-            $searchQuery['query']['bool']['must_not'] = $this->mustNotClauses;
-        }
-
-        if (!empty($this->shouldClauses)) {
-            $searchQuery['query']['bool']['should'] = $this->shouldClauses;
-            $searchQuery['query']['bool']['minimum_should_match'] = 1;
-        }
-
-        if (!empty($this->sortClauses)) {
-            $searchQuery['sort'] = $this->sortClauses;
-        }
-
-        if (empty($searchQuery['query'])) {
-            $searchQuery['query'] = new \stdClass();
-        }
-
-        return $searchQuery;
-    }
+    public abstract function getQuery(array $source = []);
 }

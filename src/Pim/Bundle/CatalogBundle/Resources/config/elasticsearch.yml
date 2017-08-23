@@ -1,7 +1,11 @@
 parameters:
     pim_catalog.elasticsearch.product_indexer.class: 'Pim\Bundle\CatalogBundle\Elasticsearch\ProductIndexer'
 
+    pim_catalog.elasticsearch.search_query_builder.product.class: 'Pim\Bundle\CatalogBundle\Elasticsearch\ProductSearchQueryBuilder'
+    pim_catalog.elasticsearch.search_query_builder.product_and_product_models.class: 'Pim\Bundle\CatalogBundle\Elasticsearch\ProductAndModelSearchQueryBuilder'
+
 services:
+
     pim_catalog.elasticsearch.product_indexer:
         class: '%pim_catalog.elasticsearch.product_indexer.class%'
         arguments:

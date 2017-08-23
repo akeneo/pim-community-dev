@@ -25,7 +25,11 @@ class AkeneoElasticsearchExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('akeneo_elasticsearch.index_configuration.files', $config['configuration_files']);
-        $container->setParameter('akeneo_elasticsearch.index_name', $config['index_name']);
+
+        // TODO: Check that $config['default_index_name'] and $config['product_and_model_index_name'] are different!
+        $container->setParameter('akeneo_elasticsearch.product_index_name', $config['default_index_name']);
+        $container->setParameter('akeneo_elasticsearch.product_and_model_index_name', $config['product_and_model_index_name']);
+
         $container->setParameter('akeneo_elasticsearch.hosts', $config['hosts']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

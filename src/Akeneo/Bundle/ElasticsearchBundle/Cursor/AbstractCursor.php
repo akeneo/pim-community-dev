@@ -27,6 +27,9 @@ abstract class AbstractCursor implements CursorInterface
     /** @var string */
     protected $indexType;
 
+    /** @var string */
+    protected $indexName;
+
     /** @var array */
     protected $items;
 

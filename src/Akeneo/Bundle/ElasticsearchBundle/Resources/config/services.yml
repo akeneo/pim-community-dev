@@ -17,4 +17,3 @@ services:
         arguments:
             - '@akeneo_elasticsearch.client_builder'
             - '%akeneo_elasticsearch.hosts%'
-            - '%akeneo_elasticsearch.index_name%'

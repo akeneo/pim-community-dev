@@ -16,6 +16,18 @@ services:
             - '%pim_catalog.entity.product.class%'
             - '%akeneo_elasticsearch.cursor.cursor.class%'
             - '%pim_catalog.factory.product_cursor.page_size%'
+            - '%akeneo_elasticsearch.product_index_name'
+            - 'pim_catalog_product'
+
+    pim_catalog.factory.product_and_model_cursor:
+        class: '%akeneo_elasticsearch.cursor.cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client'
+            - '@pim_catalog.object_manager.product'
+            - '%pim_catalog.entity.product.class%'
+            - '%akeneo_elasticsearch.cursor.cursor.class%'
+            - '%pim_catalog.factory.product_cursor.page_size%'
+            - '%akeneo_elasticsearch.product_and_model_index_name%'
             - 'pim_catalog_product'
 
     pim_catalog.factory.product_search_after_size_cursor:
@@ -26,6 +38,18 @@ services:
             - '%pim_catalog.entity.product.class%'
             - '%akeneo_elasticsearch.cursor.search_after_size_cursor.class%'
             - '%pim_catalog.factory.product_cursor.page_size%'
+            - '%akeneo_elasticsearch.product_index_name'
+            - 'pim_catalog_product'
+
+    pim_catalog.factory.product_and_model_search_after_size_cursor:
+        class: '%akeneo_elasticsearch.cursor.search_after_size_cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client'
+            - '@pim_catalog.object_manager.product'
+            - '%pim_catalog.entity.product.class%'
+            - '%akeneo_elasticsearch.cursor.search_after_size_cursor.class%'
+            - '%pim_catalog.factory.product_cursor.page_size%'
+            - '%akeneo_elasticsearch.product_and_model_index_name%'
             - 'pim_catalog_product'
 
     pim_catalog.factory.product_from_size_cursor:
@@ -36,4 +60,16 @@ services:
             - '%pim_catalog.entity.product.class%'
             - '%akeneo_elasticsearch.cursor.from_size_cursor.class%'
             - '%pim_catalog.factory.product_cursor.page_size%'
+            - '%akeneo_elasticsearch.product_index_name'
+            - 'pim_catalog_product'
+
+    pim_catalog.factory.product_and_model_from_size_cursor:
+        class: '%akeneo_elasticsearch.cursor.from_size_cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client'
+            - '@pim_catalog.object_manager.product'
+            - '%pim_catalog.entity.product.class%'
+            - '%akeneo_elasticsearch.cursor.from_size_cursor.class%'
+            - '%pim_catalog.factory.product_cursor.page_size%'
+            - '%akeneo_elasticsearch.product_and_model_index_name%'
             - 'pim_catalog_product'

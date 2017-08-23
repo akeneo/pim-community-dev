@@ -48,6 +48,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
      */
     public function __construct(
         $pqbClass,
+        $searchQueryBuilderClass,
         AttributeRepositoryInterface $attributeRepository,
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
@@ -60,6 +61,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
         $this->sorterRegistry = $sorterRegistry;
         $this->cursorFactory = $cursorFactory;
         $this->optionsResolver = $optionsResolver;
+        $this->searchQueryBuilderClass = $searchQueryBuilderClass;
     }
 
     /**
@@ -91,7 +93,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
         }
 
         $pqb = $this->createProductQueryBuilder($pqbOptions);
-        $pqb->setQueryBuilder(new SearchQueryBuilder());
+        $pqb->setQueryBuilder(new $this->searchQueryBuilderClass());
 
         foreach ($options['filters'] as $filter) {
             $pqb->addFilter($filter['field'], $filter['operator'], $filter['value'], $filter['context']);
