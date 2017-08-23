@@ -19,6 +19,7 @@
 - TIP-730: Reworking of the creation popin for basic entities
 - TIP-732: Rework the attribute form using the PEF architecture
 - TIP-747: Migrate to Symfony 3.3
+- PIM-6740: Separe installation state (installed) from config file 
 
 ## UI\UX Refactoring
 
@@ -214,6 +215,7 @@
 - PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue` to `Pim\Component\ReferenceData\Value\ReferenceDataValue`
 - PIM-6442: Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductValueValueFactoryPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterValueFactoryPass`
 - TIP-764: Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface` and all inherited classes
+- PIM-6740: Remove `Pim\Bundle\InstallerBundle\Persister\YamlPersister`
 
 ### Constructors
 

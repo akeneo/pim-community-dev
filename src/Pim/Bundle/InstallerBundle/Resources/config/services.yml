@@ -3,7 +3,6 @@ parameters:
     pim_installer.directories_registry.class: Pim\Bundle\InstallerBundle\PimDirectoriesRegistry
 
 services:
-
     pim_installer.install_status:
             class: '%pim_installer.install_status.class%'
             arguments:

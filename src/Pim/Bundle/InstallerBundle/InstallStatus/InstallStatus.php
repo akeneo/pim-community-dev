@@ -53,15 +53,6 @@ class InstallStatus
         $parameters = [];
 
         foreach ($data['install'] as $key => $value) {
-            // $section = explode('_', $key);
-            // $section = isset($section[1]) ? $section[0] : 'system';
-            //
-            // if (!isset($parameters[$section])) {
-            //     $parameters[$section] = [];
-            // }
-
-            //$parameters[$section]['pim_installer_' . $key] = $value;
-            //$parameters[$section][$key] = $value;
             $parameters[$key] = $value;
         }
 
@@ -114,23 +105,13 @@ class InstallStatus
       */
      public function isInstalled()
      {
-         if ( !file_exists($this->installStatusFile) ) // if PIM not installed, the file probably doesn't exist
+         $installed = $this->getInstalledFlag();
+         if ( $installed==='false' )
          {
              return false;
+         } else {
+             return true;
          }
-         $data = Yaml::parse(file_get_contents($this->installStatusFile));
-         if (!is_array($data) || !isset($data['install']) || !is_array($data['install']) ) {
-             return false;
-         }
-         if (array_key_exists('installed', $data['install'])) {
-             $installed = $data['install']['installed'];
-             if (empty($installed)||$installed==='false') {
-                 return false;
-             } else {
-                 return true;
-             }
-         }
-         return false;
      }
 
      /**

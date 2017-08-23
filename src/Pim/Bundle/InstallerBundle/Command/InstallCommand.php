@@ -56,15 +56,27 @@ class InstallCommand extends ContainerAwareCommand
     {
         $forceInstall = $input->getOption('force');
 
+        // if a parameter "installed" is defined and not false:
+        // the installation is <v1.8 so installed flag has to be migrated in the install status file:
+        if ($this->getContainer()->hasParameter('installed')
+            && $this->getContainer()->getParameter('installed'))
+        {
+            if ( !$this->checkInstalledFlag($output) )
+            {
+                $installed = $this->getContainer()->getParameter('installed');
+                $output->writeln(sprintf('<warn>Migrating installed flag in dedicated file.</warn>', $installed));
+                $this->setInstalledFlag($output, $installed );
+            }
+        }
+
         // if there is application is not installed or no --force option
-        //if ($this->getContainer()->hasParameter('installed') && $this->getContainer()->getParameter('installed')
         if ( $this->checkInstalledFlag($output)
             && !$forceInstall
         ) {
             throw new \RuntimeException('Akeneo PIM is already installed.');
         } elseif ($forceInstall) {
             // if --force option we have to clear cache and set installed to false
-            $this->updateInstalledFlag($output, false);
+            $this->setInstalledFlag($output, false);
         }
 
         $output->writeln(sprintf('<info>Installing %s Application.</info>', static::APP_NAME));
@@ -83,7 +95,7 @@ class InstallCommand extends ContainerAwareCommand
             return $e->getCode();
         }
 
-        $this->updateInstalledFlag($output, date('c'));
+        $this->setInstalledFlag($output, date('c'));
 
         $output->writeln('');
         $output->writeln(sprintf('<info>%s Application has been successfully installed.</info>', static::APP_NAME));
@@ -115,6 +127,7 @@ class InstallCommand extends ContainerAwareCommand
     protected function checkStep()
     {
         $this->commandExecutor->runCommand('pim:installer:check-requirements');
+
         return $this;
     }
 
@@ -159,6 +172,7 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln('<info>Check installed flag.</info>');
 
         $installStatus = $this->getContainer()->get('pim_installer.install_status');
+
         return $installStatus->isInstalled();
     }
 
@@ -170,9 +184,9 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @return InstallCommand
      */
-    protected function updateInstalledFlag(OutputInterface $output, $installed)
+    protected function setInstalledFlag(OutputInterface $output, $installed)
     {
-        $output->writeln('<info>Updating installed flag.</info>');
+        $output->writeln('<info>Setting installed flag.</info>');
 
         $installStatus = $this->getContainer()->get('pim_installer.install_status');
         $installStatus->setInstallStatus($installed);
