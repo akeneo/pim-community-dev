@@ -73,6 +73,20 @@ Feature: Execute a job
     And the english localizable value name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
 
+  Scenario: Import product without optional attributes, they are ignored
+    Given the following CSV file to import:
+      """
+      sku;family;groups;categories;name-en_US;description-en_US-tablet;comment
+      SKU-001;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est;This comment should not be imported
+      """
+    And the following job "csv_footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_footwear_product_import" job to finish
+    Then the product "SKU-001" should not have the following values:
+      | comment |
+
   Scenario: Successfully update an existing product
     Given the following product:
       | sku     | name-en_US |

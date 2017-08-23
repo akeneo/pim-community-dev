@@ -59,7 +59,7 @@ class FieldConverter implements FieldConverterInterface
             return $this->extractVariantGroup($value);
         } elseif ('enabled' === $fieldName) {
             return [new ConvertedField($fieldName, (bool) $value)];
-        } elseif ('family' === $fieldName) {
+        } elseif (in_array($fieldName, ['family', 'parent'])) {
             return [new ConvertedField($fieldName, $value)];
         }
 
@@ -75,7 +75,7 @@ class FieldConverter implements FieldConverterInterface
     {
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
 
-        $fields = array_merge(['categories', 'groups', 'enabled', 'family'], $associationFields);
+        $fields = array_merge(['categories', 'groups', 'enabled', 'family', 'parent'], $associationFields);
 
         return in_array($column, $fields);
     }
