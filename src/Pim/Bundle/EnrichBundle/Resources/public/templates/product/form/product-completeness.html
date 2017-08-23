@@ -1,3 +1,34 @@
-<div class="AknBadge AknBadge--big <%- badgeClass %>">
-    <%- label %>: <%- completeness %>%
+<div class="AknBadge AknBadge--big <%- badgeClass %>" data-toggle="dropdown">
+    <%- label %>: <%- ratio %>%
+</div>
+
+<div class="AknCompletenessPanel-block AknDropdown-menu">
+    <header class="AknCompletenessPanel-header">
+        <span class="AknCompletenessPanel-headerLocale"><%- label %></span>
+        <span class="AknCompletenessPanel-headerStats"><%- ratio %>%</span>
+    </header>
+    <div class="AknCompletenessPanel-content content">
+        <% _.each(completenesses.locales, function(completeness, locale) { %>
+            <div class="AknCompletenessPanel-channel">
+                <div class="AknCompletenessPanel-progressContainer">
+                    <span class="AknCompletenessPanel-channelTitle"><%- completeness.label %></span>
+                    <span class="AknCompletenessPanel-progressRatio literal-progress"><%- completeness.completeness.ratio %>%</span>
+                </div>
+                <div class="AknCompletenessPanel-progress AknProgress AknProgress--micro progress <%- completeness.completeness.ratio === 100 ? 'AknProgress--apply' : 'AknProgress--warning' %>">
+                    <div class="AknProgress-bar bar" style="width: <%- completeness.completeness.ratio %>%;"></div>
+                </div>
+                <% if (0 < completeness.missing.length) { %>
+                    <div class="AknCompletenessPanel-missing">
+                        <%- __(missingValues, {count: completeness.missing.length}, completeness.missing.length) %>:
+                        <% _.each(completeness.missing, function (attribute, i) { %>
+                            <% if (0 !== i) { %> | <% } %>
+                            <span class="AknCompletenessPanel-highlight missing-attribute" data-attribute="<%- attribute.code %>" data-locale="<%- locale %>">
+                                <%- attribute.labels[currentLocale] %>
+                            </span>
+                        <% }) %>
+                    </div>
+                <% } %>
+            </div>
+        <% }) %>
+    </div>
 </div>
