@@ -152,7 +152,9 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
      */
     private function hasAlreadyValidatedTheSameValue(EntityWithFamilyVariantInterface $entity): bool
     {
-        return false;
+        if (null === $entity->getParent()) {
+            return false;
+        }
 
         $axes = $this->axesProvider->getAxes($entity);
 
