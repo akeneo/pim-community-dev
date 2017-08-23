@@ -13,6 +13,8 @@
 - PIM-6470: Fix issue on Permission filter when added to the user default filters
 - PIM-6530: Fix pim:installer:grant-backend-processes-accesses command 
 
+# 1.7.5 (2017-06-02)
+
 # 1.7.4 (2017-05-10)
 
 ## Bug fixes
