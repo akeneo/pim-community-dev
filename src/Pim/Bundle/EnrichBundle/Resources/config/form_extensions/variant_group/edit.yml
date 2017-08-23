@@ -210,6 +210,11 @@ extensions:
             class: 'group'
             title: 'pim_enrich.form.variant_group.tab.history.title'
 
+    pim-variant-group-edit-form-filters:
+        module: oro/datafilter-builder
+        parent: pim-variant-group-edit-form-form-tabs
+        targetZone: container
+
     pim-variant-group-edit-form-products:
         module: pim/group-edit-form/products
         parent: pim-variant-group-edit-form-form-tabs

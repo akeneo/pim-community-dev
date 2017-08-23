@@ -35,8 +35,9 @@ define(
             },
 
             getDefaultView() {
+                const { gridName } = this.config;
                 return FetcherRegistry.getFetcher('datagrid-view')
-                    .defaultUserView('product-grid')
+                    .defaultUserView(gridName)
                     .then(defaultUserView => defaultUserView.view);
             },
 
@@ -128,7 +129,7 @@ define(
                 collection.processFiltersParams(urlParams, filters, `${gridName}[_filter]`);
 
                 for (var column in filters.sorters) {
-                    urlParams[`${gridName}[_sort_by][' + column + ']`] =
+                    urlParams[`${gridName}[_sort_by][${column}]`] =
                     1 === parseInt(filters.sorters[column]) ?
                     'DESC' :
                     'ASC';

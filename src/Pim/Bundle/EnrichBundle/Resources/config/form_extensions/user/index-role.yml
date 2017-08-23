@@ -12,6 +12,11 @@ extensions:
             tab: pim-menu-system
             item: pim-menu-system-user-role
 
+    pim-user-role-index-filters:
+        module: oro/datafilter-builder
+        parent: pim-user-role-index
+        targetZone: content
+
     pim-user-role-index-grid:
         module: pim/form/common/index/grid
         parent: pim-user-role-index

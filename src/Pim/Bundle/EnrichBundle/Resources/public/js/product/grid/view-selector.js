@@ -20,13 +20,22 @@ define(
     ) {
         return BaseForm.extend({
             className: 'view-selector pull-right',
+            config: {
+                gridName: 'product-grid'
+            },
+
+            initialize(options) {
+                this.config = Object.assign(this.config, options.config || {});
+
+                return BaseForm.prototype.initialize.apply(this, arguments);
+            },
 
             /**
              * {@inheritdoc}
              */
             render() {
                 FormBuilder.buildForm('pim-grid-view-selector').then(function (form) {
-                    return form.configure('product-grid').then(function () {
+                    return form.configure(this.config.gridName).then(function () {
                         form.setElement('.view-selector').render();
                     });
                 }.bind(this));

@@ -3,6 +3,7 @@ extensions:
         module: pim/grid
         config:
           title: Products
+          gridName: product-grid
 
     pim-product-index-create-button:
         module: pim/form/common/index/create-button
@@ -27,30 +28,33 @@ extensions:
         parent: pim-product-index
         targetZone: title-buttons
         position: 20
+        config:
+            gridName: product-grid
 
     pim-product-index-category-tree:
         module: pim/grid/category-tree
         parent: pim-product-index
         targetZone: tree
         aclResourceId: pim_enrich_product_category_list
+        config:
+            gridName: product-grid
 
-    # pim-product-index-grid-filters
-    #     module: pim/grid/filters
-    #     parent: pim-product-index
-    #     targetZone: grid
+    pim-product-index-grid-filters:
+        module: oro/datafilter-builder
+        parent: pim-product-index
+        targetZone: grid
 
     # pim-product-index-grid-toolbar
     #     module: pim/grid/toolbar
     #     parent: pim-product-index
     #     targetZone: grid
 
-    # @TODO - Pass the config correctly
     pim-product-index-grid:
         module: pim/grid/table
         parent: pim-product-index
         targetZone: grid
         config:
-            gridName: 'product-grid'
+            gridName: product-grid
             localeParamName: dataLocale
             defaultColumnsUrl: pim_datagrid_view_rest_default_columns
             datagridLoadUrl: pim_datagrid_load
