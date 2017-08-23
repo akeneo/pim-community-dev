@@ -28,6 +28,7 @@ class AttributeGroupIntegration extends AbstractNormalizerTestCase
                 'a_yes_no',
                 'a_scopable_price',
                 'a_localized_and_scopable_text_area',
+                'an_image',
             ],
             'labels'     => [
                 'en_US' => 'Attribute group A',
