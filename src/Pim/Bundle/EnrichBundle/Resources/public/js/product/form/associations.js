@@ -85,6 +85,7 @@ define(
                         getInitialParams: function (associationType) {
                             var params = {};
                             params[this.paramName] = this.getParamValue(associationType);
+                            params.dataLocale = UserContext.get('catalogLocale');
 
                             return params;
                         },
