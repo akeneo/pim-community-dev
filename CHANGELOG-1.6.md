@@ -1,7 +1,15 @@
-# 1.6.x
+# 1.6.18 (2017-07-17)
 
 ## Bug fixes
 
+- PIM-6529: allow more than 100 elements to be exported with YAML export
+- PIM-6526: Prevent MySQL exclusive locks on completeness calculation requests
+
+# 1.6.17 (2017-06-30)
+
+## Bug fixes
+
+- PIM-6473: Fix not visible attributes in the attribute popin on export builder (firefox only)
 - PIM-6433: Fix product import reference data multi with duplicate code options
 
 # 1.6.16 (2017-05-24)

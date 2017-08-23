@@ -19,7 +19,7 @@ services:
     user: docker
     volumes:
       - ./:/srv/pim
-      - ~/.config/composer:/home/docker/.composer
+      - ~/.composer:/home/docker/.composer
       - /tmp/behat/screenshots:/tmp/behat/screenshots
     working_dir: /srv/pim
     networks:
