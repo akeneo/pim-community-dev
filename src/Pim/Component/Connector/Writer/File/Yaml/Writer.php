@@ -63,7 +63,7 @@ class Writer extends AbstractFileWriter implements
 
         $yaml = Yaml::dump($data, self::INLINE_ARRAY_LEVEL);
 
-        if (false === file_put_contents($path, $yaml)) {
+        if (false === file_put_contents($path, $yaml, FILE_APPEND)) {
             throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
         }
 

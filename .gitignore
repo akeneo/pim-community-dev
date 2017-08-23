@@ -26,6 +26,9 @@ app/file_storage/*
 app/bootstrap.php.cache
 app/phpunit.xml
 build/
+/docker/*
+!/docker/akeneo.conf
+!/docker/akeneo-behat.conf
 vendor
 composer.phar
 /cov

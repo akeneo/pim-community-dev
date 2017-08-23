@@ -23,13 +23,9 @@ Feature: Import attribute options
     And I am on the "csv_footwear_option_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_option_import" job to finish
-    And I am on the products grid
-    And I create a new product
-    And I fill in the following information in the popin:
-      | SKU    | caterpillar |
-      | family | Boots       |
-    And I press the "Save" button in the popin
-    And I should be on the product "caterpillar" edit page
+    And the following product:
+      | sku         | family |
+      | caterpillar | Boots  |
     And I am on the "caterpillar" product page
     And I visit the "Colors" group
     And I change the "Color" to "[red]"

@@ -33,7 +33,9 @@ class InstallCommand extends ContainerAwareCommand
         $this
             ->setName('pim:install')
             ->setDescription(sprintf('%s Application Installer.', static::APP_NAME))
-            ->addOption('force', null, InputOption::VALUE_NONE, 'Force installation');
+            ->addOption('force', null, InputOption::VALUE_NONE, 'Force installation')
+            ->addOption('symlink', null, InputOption::VALUE_NONE, 'Install assets as symlinks')
+            ->addOption('clean', null, InputOption::VALUE_NONE, 'Clean previous install');
     }
 
     /**
@@ -72,7 +74,7 @@ class InstallCommand extends ContainerAwareCommand
                 ->prepareRequiredDirectoriesStep()
                 ->checkStep()
                 ->databaseStep()
-                ->assetsStep();
+                ->assetsStep($input);
         } catch (\Exception $e) {
             $output->writeln(sprintf('<error>Error during PIM installation. %s</error>', $e->getMessage()));
             $output->writeln('');
@@ -131,11 +133,16 @@ class InstallCommand extends ContainerAwareCommand
     /**
      * Load only assets
      *
+     * @param InputInterface $input
+     *
      * @return InstallCommand
      */
-    protected function assetsStep()
+    protected function assetsStep(InputInterface $input)
     {
-        $this->commandExecutor->runCommand('pim:installer:assets');
+        $options = false === $input->getOption('symlink') ? [] : ['--symlink' => true];
+        $options = false === $input->getOption('clean') ? $options : array_merge($options, ['--clean' => true]);
+
+        $this->commandExecutor->runCommand('pim:installer:assets', $options);
 
         return $this;
     }
