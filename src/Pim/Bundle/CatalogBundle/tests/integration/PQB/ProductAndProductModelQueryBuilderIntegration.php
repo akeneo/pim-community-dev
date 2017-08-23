@@ -17,8 +17,6 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  */
 class ProductAndProductModelQueryBuilderIntegration extends TestCase
 {
-    // TODO: will be done with the next PR
-    /*
     public function testDefaultView()
     {
         $result = $this->executeFilter([]);
@@ -35,7 +33,6 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
             $result
         );
     }
-    */
 
     public function testSearchTshirtInDescription()
     {
