@@ -302,9 +302,11 @@ define(
                 var catalogChannel = UserContext.get('catalogScope');
                 var catalogLocale = UserContext.get('catalogLocale');
 
-                return FetcherRegistry.getFetcher('channel').fetch(catalogChannel).then(function (channel) {
-                    return i18n.getLabel(channel.labels, catalogLocale, catalogChannel);
-                });
+                return FetcherRegistry.getFetcher('channel')
+                    .fetch(catalogChannel, {list: true})
+                    .then(function (channel) {
+                        return i18n.getLabel(channel.labels, catalogLocale, catalogChannel);
+                    });
             },
 
             /**

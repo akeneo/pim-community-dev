@@ -131,6 +131,7 @@ Feature: Filter by project completeness in the product datagrid
       | project_completeness |          | In progress | tshirt-the-witcher-3, tshirt-skyrim |
       | project_completeness |          | Done        |                                     |
     When I am on the "tshirt-skyrim" product page
+    And I visit the "All" group
     And I fill in the following information:
       | Description | A t-shirt with a dragon |
     And I visit the "Technical" group
@@ -148,6 +149,7 @@ Feature: Filter by project completeness in the product datagrid
   Scenario: A project owner can filter by project completeness
     And I am logged in as "Julia"
     When I am on the "tshirt-skyrim" product page
+    And I visit the "All" group
     And I fill in the following information:
       | Description | A t-shirt with a dragon |
     And I visit the "Technical" group
@@ -175,6 +177,7 @@ Feature: Filter by project completeness in the product datagrid
       | project_completeness |          | In progress (project overview) | tshirt-the-witcher-3 |
       | project_completeness |          | Done (project overview)        | tshirt-skyrim        |
     When I am on the "tshirt-the-witcher-3" product page
+    And I visit the "All" group
     And I fill in the following information:
       | Description | A tshirt with Geralt |
     And I save the product
