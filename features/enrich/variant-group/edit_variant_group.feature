@@ -28,6 +28,7 @@ Feature: Edit a variant group
     When I fill in the variant group property "English (United States)" with "My boots"
     Then I should see the text "There are unsaved changes."
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Successfully edit a variant group and the completeness should be computed
     Given I add the "french" locale to the "tablet" channel
     And I add the "french" locale to the "mobile" channel

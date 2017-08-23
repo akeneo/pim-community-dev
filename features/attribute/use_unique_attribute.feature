@@ -19,17 +19,6 @@ Feature: Use an unique attribute
     And I should see available attribute Handmade
 
   @jira https://akeneo.atlassian.net/browse/PIM-6428
-  Scenario: Successfully use unique attributes on product edit form
-    Given I am on the products grid
-    When I create a new product
-    And I fill in the following information in the popin:
-      | SKU    | a_boot |
-      | family | Boots  |
-    And I press the "Save" button in the popin
-    And I wait to be on the "a_boot" product page
-    Then I should see available attribute Unique attribute
-
-  @jira https://akeneo.atlassian.net/browse/PIM-6428
   Scenario: Successfully hide unique attributes on product mass edit
     Given I am on the products grid
     And I create a new product

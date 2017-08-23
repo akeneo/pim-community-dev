@@ -199,16 +199,6 @@ extensions:
         targetZone: other-actions
         position: 100
 
-    pim-product-edit-form-add-attribute:
-        module: pim/product/add-select/attribute
-        parent: pim-product-edit-form-attributes
-        targetZone: other-actions
-        position: 90
-        config:
-            searchParameters:
-                options:
-                    exclude_unique: false
-
     pim-product-edit-form-copy:
         module: pim/form/common/attributes/copy
         parent: pim-product-edit-form-attributes

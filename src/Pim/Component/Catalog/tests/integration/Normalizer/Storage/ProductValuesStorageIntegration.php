@@ -116,16 +116,16 @@ class ProductValuesStorageIntegration extends TestCase
             'a_price' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
+                        ['amount' => '56.53', 'currency' => 'EUR'],
                         ['amount' => '45.00', 'currency' => 'USD'],
-                        ['amount' => '56.53', 'currency' => 'EUR']
                     ],
                 ],
             ],
             'a_price_without_decimal' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
+                        ['amount' => 56, 'currency' => 'EUR'],
                         ['amount' => -45, 'currency' => 'USD'],
-                        ['amount' => 56, 'currency' => 'EUR']
                     ],
                 ],
             ],

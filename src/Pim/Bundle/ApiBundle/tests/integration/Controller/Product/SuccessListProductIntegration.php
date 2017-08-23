@@ -52,18 +52,18 @@ class SuccessListProductIntegration extends AbstractProductTestCase
                         'locale' => null,
                         'scope'  => 'ecommerce',
                         'data'   => [
+                            ['amount' => '78.77', 'currency' => 'CNY'],
                             ['amount' => '10.50', 'currency' => 'EUR'],
                             ['amount' => '11.50', 'currency' => 'USD'],
-                            ['amount' => '78.77', 'currency' => 'CNY']
                         ]
                     ],
                     [
                         'locale' => null,
                         'scope'  => 'tablet',
                         'data'   => [
+                            ['amount' => '78.77', 'currency' => 'CNY'],
                             ['amount' => '10.50', 'currency' => 'EUR'],
                             ['amount' => '11.50', 'currency' => 'USD'],
-                            ['amount' => '78.77', 'currency' => 'CNY']
                         ]
                     ]
                 ]
@@ -299,9 +299,9 @@ JSON;
                             "locale" : null,
                             "scope"  : "ecommerce",
                             "data"   : [
+                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
-                                {"amount" : "11.50", "currency" : "USD"},
-                                {"amount" : "78.77", "currency" : "CNY"}
+                                {"amount" : "11.50", "currency" : "USD"}
                             ]
                         }
                     ]
@@ -414,9 +414,9 @@ JSON;
                             "locale" : null,
                             "scope"  : "tablet",
                             "data"   : [
+                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
-                                {"amount" : "11.50", "currency" : "USD"},
-                                {"amount" : "78.77", "currency" : "CNY"}
+                                {"amount" : "11.50", "currency" : "USD"}
                             ]
                         }
                     ]
@@ -520,9 +520,9 @@ JSON;
                             "locale" : null,
                             "scope"  : "tablet",
                             "data"   : [
+                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
-                                {"amount" : "11.50", "currency" : "USD"},
-                                {"amount" : "78.77", "currency" : "CNY"}
+                                {"amount" : "11.50", "currency" : "USD"}
                             ]
                         }
                     ]
@@ -697,18 +697,18 @@ JSON;
                             "locale" : null,
                             "scope"  : "tablet",
                             "data"   : [
+                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
-                                {"amount" : "11.50", "currency" : "USD"},
-                                {"amount" : "78.77", "currency" : "CNY"}
+                                {"amount" : "11.50", "currency" : "USD"}
                             ]
                         },
                         {
                             "locale" : null,
                             "scope"  : "ecommerce",
                             "data"   : [
+                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
-                                {"amount" : "11.50", "currency" : "USD"},
-                                {"amount" : "78.77", "currency" : "CNY"}
+                                {"amount" : "11.50", "currency" : "USD"}
                             ]
                         }
                     ]
@@ -939,9 +939,9 @@ JSON;
                             "locale" : null,
                             "scope"  : "tablet",
                             "data"   : [
+                                {"amount" : "78.77", "currency" : "CNY"},
                                 {"amount" : "10.50", "currency" : "EUR"},
-                                {"amount" : "11.50", "currency" : "USD"},
-                                {"amount" : "78.77", "currency" : "CNY"}
+                                {"amount" : "11.50", "currency" : "USD"}
                             ]
                         }
                     ]
@@ -1382,27 +1382,27 @@ JSON;
             "locale": null,
             "scope": "tablet",
             "data": [{
+                "amount": "78.77",
+                "currency": "CNY"
+            }, {
                 "amount": "10.50",
                 "currency": "EUR"
             }, {
                 "amount": "11.50",
                 "currency": "USD"
-            }, {
-                "amount": "78.77",
-                "currency": "CNY"
             }]
         }, {
             "locale": null,
             "scope": "ecommerce",
             "data": [{
+                "amount": "78.77",
+                "currency": "CNY"
+            }, {
                 "amount": "10.50",
                 "currency": "EUR"
             }, {
                 "amount": "11.50",
                 "currency": "USD"
-            }, {
-                "amount": "78.77",
-                "currency": "CNY"
             }]
         }]
     },

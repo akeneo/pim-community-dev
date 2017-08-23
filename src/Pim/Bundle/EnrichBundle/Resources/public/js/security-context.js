@@ -1,19 +1,36 @@
 'use strict';
 
 define(
-    ['backbone', 'routing'],
-    function (Backbone, Routing) {
-        var SecurityContext = Backbone.Model.extend({
-            url: Routing.generate('pim_user_security_rest_get'),
-            isGranted: function (acl) {
-                return this.get(acl) === true;
-            }
-        });
+    ['jquery', 'routing'],
+    ($, Routing) => {
+        var contextData = {};
 
-        var instance = new SecurityContext();
+        return {
+            /**
+             * Fetches data from the back then stores it.
+             *
+             * @returns {Promise}
+             */
+            initialize: () => {
+                return $.get(Routing.generate('pim_user_security_rest_get'))
+                    .then(response => contextData = response);
+            },
 
-        instance.fetch({async: false});
+            /**
+             * Returns the value corresponding to the specified key.
+             *
+             * @param {String} key
+             *
+             * @returns {*}
+             */
+            get: key => contextData[key],
 
-        return instance;
+            /**
+             * Shortcut to test if an ACL is granted for the current user.
+             *
+             * @param {String} acl
+             */
+            isGranted: acl => contextData[acl] === true
+        };
     }
 );

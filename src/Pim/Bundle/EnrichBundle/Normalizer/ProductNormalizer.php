@@ -8,6 +8,7 @@ use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
@@ -78,6 +79,9 @@ class ProductNormalizer implements NormalizerInterface
     /** @var FileNormalizer */
     protected $fileNormalizer;
 
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
     /**
      * @param NormalizerInterface               $productNormalizer
      * @param NormalizerInterface               $versionNormalizer
@@ -95,6 +99,7 @@ class ProductNormalizer implements NormalizerInterface
      * @param UserContext                       $userContext
      * @param CompletenessCalculatorInterface   $completenessCalculator
      * @param FileNormalizer                    $fileNormalizer
+     * @param ProductBuilderInterface           $productBuilder
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
@@ -112,7 +117,8 @@ class ProductNormalizer implements NormalizerInterface
         NormalizerInterface $completenessCollectionNormalizer,
         UserContext $userContext,
         CompletenessCalculatorInterface $completenessCalculator,
-        FileNormalizer $fileNormalizer
+        FileNormalizer $fileNormalizer,
+        ProductBuilderInterface $productBuilder
     ) {
         $this->productNormalizer                = $productNormalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -130,6 +136,7 @@ class ProductNormalizer implements NormalizerInterface
         $this->userContext                      = $userContext;
         $this->completenessCalculator           = $completenessCalculator;
         $this->fileNormalizer                   = $fileNormalizer;
+        $this->productBuilder                   = $productBuilder;
     }
 
     /**
@@ -137,6 +144,8 @@ class ProductNormalizer implements NormalizerInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
+        $this->productBuilder->addMissingAssociations($product);
+        $this->productBuilder->addMissingProductValues($product);
         $normalizedProduct = $this->productNormalizer->normalize($product, 'standard', $context);
         $normalizedProduct['values'] = $this->localizedConverter->convertToLocalizedFormats(
             $normalizedProduct['values'],
@@ -240,7 +249,7 @@ class ProductNormalizer implements NormalizerInterface
      */
     protected function normalizeImage(?ValueInterface $data, $format, $context = [])
     {
-        if (null === $data) {
+        if (null === $data || null === $data->getData()) {
             return null;
         }
 
