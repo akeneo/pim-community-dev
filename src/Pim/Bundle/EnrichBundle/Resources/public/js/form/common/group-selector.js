@@ -53,7 +53,9 @@ define(
                         };
 
                         locales.forEach((locale) => {
-                            this.all.labels[locale.code] = __('pim_enrich.form.product.tab.attributes.attribute_group_all');
+                            this.all.labels[locale.code] = __(
+                                'pim_enrich.form.product.tab.attributes.attribute_group_all'
+                            );
                         });
                     });
                 });

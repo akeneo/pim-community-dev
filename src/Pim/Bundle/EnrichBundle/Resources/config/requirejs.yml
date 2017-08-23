@@ -135,7 +135,6 @@ config:
                     options:
                         urls:
                             list: pim_enrich_channel_rest_index
-                            get: pim_enrich_channel_rest_get
                 locale:
                     module: pim/locale-fetcher
                     options:

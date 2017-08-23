@@ -14,11 +14,12 @@ Feature: Edit and remove a product
     And I create a new product
     And I fill in the following information in the popin:
       | SKU             | boots |
-      | Choose a family | shoes |
+      | Choose a family | Boots |
     And I press the "Save" button in the popin
     And I wait to be on the "boots" product page
+    And I visit the "Sizes" group
     And I fill in the following information:
-      | Length | 5.0000 Centimeter |
+      | Size | 36 |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
 
@@ -36,3 +37,17 @@ Feature: Edit and remove a product
     Then I should see the text "Confirm deletion"
     When I confirm the removal
     Then I should not see product boots
+
+  Scenario: Successfully edit the product
+    Given I am on the "boots" product page
+    Then I should not see the text "Media"
+    Then I should not see the text "Colors"
+    Then I should not see the text "Marketing"
+    And I visit the "All" group
+    Then I should see the text "3 attributes to complete"
+    Then I should see the text "Media"
+    Then I should see the text "Colors"
+    Then I should see the text "Marketing"
+    Then I should see the text "Sku"
+    Then I should see the text "Name"
+    Then I should see the text "Description"

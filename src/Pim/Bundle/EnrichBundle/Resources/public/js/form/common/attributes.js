@@ -59,7 +59,10 @@ define(
          */
         const groupFieldsBySection = (attributeGroups, fieldsTofill) => (fieldCollection, field) => {
             const newFieldCollection = Object.assign({}, fieldCollection);
-            const attributeGroupCode = AttributeGroupManager.getAttributeGroupForAttribute(attributeGroups, field.attribute.code);
+            const attributeGroupCode = AttributeGroupManager.getAttributeGroupForAttribute(
+                attributeGroups,
+                field.attribute.code
+            );
 
             if (!newFieldCollection[attributeGroupCode]) {
                 newFieldCollection[attributeGroupCode] = {
@@ -88,13 +91,16 @@ define(
          */
         const createSectionView = (fieldCollection, template, label) => {
             const view = document.createElement('div');
+            view.className = 'AknSubsection';
             view.innerHTML = template({
                 label,
                 fieldCollection,
                 __
             });
 
-            const container = fieldCollection.fields.reduce((container, field) => {
+            const container = fieldCollection.fields.sort(
+                (firstField, secondField) => firstField.attribute.sort_order - secondField.attribute.sort_order
+            ).reduce((container, field) => {
                 _.defer(field.render.bind(field));
                 container.appendChild(field.el);
 
@@ -155,7 +161,6 @@ define(
                 FieldManager.clearFields();
 
                 this.onExtensions('comparison:change', this.comparisonChange.bind(this));
-                this.onExtensions('add-attribute:add', this.addAttributes.bind(this));
                 this.onExtensions('copy:copy-fields:after', this.render.bind(this));
                 this.onExtensions('copy:select:after', this.render.bind(this));
                 this.onExtensions('copy:context:change', this.render.bind(this));
@@ -187,17 +192,15 @@ define(
                         return this.filterValues(values);
                     }).then((values) => {
                         return this.renderFields(data, values);
-                    }).then(function () {
-                        return Object.values(arguments).sort((firstField, secondField) => {
-                            firstField.attribute.sort_order > secondField.attribute.sort_order
-                        });
                     }).then(function (fields) {
                         this.rendering = false;
                         $.when(
                             AttributeGroupManager.getAttributeGroupsForObject(data),
                             toFillFieldProvider.getFields(this.getRoot(), this.getFormData())
                         ).then((attributeGroups, fieldsTofill) => {
-                            const sections = Object.values(
+                            this.renderExtensions();
+                            this.delegateEvents();
+                            const sections = _.values(
                                 fields.reduce(groupFieldsBySection(attributeGroups, fieldsTofill), {})
                             );
                             const fieldView = document.createElement('div');
@@ -217,9 +220,7 @@ define(
                             this.$('.object-values').empty().append(fieldView);
                         });
                     }.bind(this));
-                this.delegateEvents();
 
-                this.renderExtensions();
 
                 return this;
             },
@@ -248,7 +249,7 @@ define(
                         locale,
                         scope: scope.code,
                         scopeLabel: i18n.getLabel(scope.labels, locale, scope.code),
-                        uiLocale: UserContext.get('uiLocale'),
+                        uiLocale: UserContext.get('catalogLocale'),
                         optional: isOptional,
                         removable: SecurityContext.isGranted(this.config.removeAttributeACL)
                     });
@@ -256,46 +257,6 @@ define(
                     field.setValues(values);
 
                     return field;
-                }.bind(this));
-            },
-
-            /**
-             * Add an attribute to the current attribute list
-             *
-             * @param {Event} event
-             *
-             * // TODO: Move this to product/form/mass-edit/attributes when the variant groups will be dropped.
-             */
-            addAttributes: function (event) {
-                var attributeCodes = event.codes;
-
-                $.when(
-                    FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes),
-                    FetcherRegistry.getFetcher('locale').fetchActivated(),
-                    FetcherRegistry.getFetcher('channel').fetchAll(),
-                    FetcherRegistry.getFetcher('currency').fetchAll()
-                ).then(function (attributes, locales, channels, currencies) {
-                    var formData = this.getFormData();
-
-                    _.each(attributes, function (attribute) {
-                        if (!formData.values[attribute.code]) {
-                            formData.values[attribute.code] = AttributeManager.generateMissingValues(
-                                [],
-                                attribute,
-                                locales,
-                                channels,
-                                currencies
-                            );
-                        }
-                    });
-
-                    this.getExtension('attribute-group-selector').setCurrent(
-                        _.first(attributes).group
-                    );
-
-                    this.setData(formData);
-
-                    this.getRoot().trigger('pim_enrich:form:add-attribute:after');
                 }.bind(this));
             },
 
@@ -503,17 +464,25 @@ define(
             /**
              * Render all fields and return a collection of promises
              *
+             * This method is pretty opimisation oriented: We fetch the attributes as a collection
+             * to avoid individual fetching afterward. We also don't use fat arrow functions because
+             * we cannot get the 'arguments' object out of it
+             *
              * @param {object} data
              * @param {object} values
              *
              * @return {promise}
              */
             renderFields: function (data, values) {
-                const fieldPromises = Object.keys(values).map((attributeCode) => {
-                    return this.renderField(data, attributeCode, values[attributeCode]);
-                });
-
-                return $.when.apply($, fieldPromises);
+                return FetcherRegistry.getFetcher('attribute')
+                    .fetchByIdentifiers(Object.keys(values))
+                    .then((attributes) => {
+                        return $.when.apply($, attributes.map((attribute) => {
+                            return this.renderField(data, attribute.code, values[attribute.code]);
+                        }));
+                    }).then(function () {
+                        return _.values(arguments);
+                    });
             }
         });
     }

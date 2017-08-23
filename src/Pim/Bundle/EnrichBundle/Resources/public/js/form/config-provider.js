@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['jquery', 'routing'],
-    function ($, Routing) {
+    ['jquery', 'underscore', 'routing'],
+    function ($, _, Routing) {
         var promise = null;
 
         var loadConfig = function () {
@@ -21,7 +21,7 @@ define(
              */
             getExtensionMap: function () {
                 return loadConfig().then(function (config) {
-                    return Object.values(config.extensions);
+                    return _.values(config.extensions);
                 });
             },
 

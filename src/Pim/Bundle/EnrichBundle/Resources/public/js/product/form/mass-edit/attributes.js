@@ -44,6 +44,7 @@ define(
             configure: function () {
                 mediator.on('mass-edit:form:lock', this.onLock.bind(this));
                 mediator.on('mass-edit:form:unlock', this.onUnlock.bind(this));
+                this.onExtensions('add-attribute:add', this.addAttributes.bind(this));
 
                 return BaseAttributes.prototype.configure.apply(this, arguments);
             },

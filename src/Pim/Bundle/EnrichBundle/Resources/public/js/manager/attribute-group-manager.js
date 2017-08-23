@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'pim/fetcher-registry', 'pim/attribute-manager'],
-    function ($, _, FetcherRegistry, AttributeManager) {
+    ['jquery', 'underscore', 'pim/fetcher-registry'],
+    function ($, _, FetcherRegistry) {
     return {
         /**
          * Get all the attribute group for the given object
@@ -14,7 +14,7 @@ define(
         getAttributeGroupsForObject: function (object) {
             return FetcherRegistry.getFetcher('attribute-group').fetchAll()
                 .then(function (attributeGroups) {
-                    return Object.values(attributeGroups).reduce((result, attributeGroup) => {
+                    return _.values(attributeGroups).reduce((result, attributeGroup) => {
                         if (_.intersection(attributeGroup.attributes, _.keys(object.values)).length > 0) {
                             result[attributeGroup.code] = attributeGroup;
                         }

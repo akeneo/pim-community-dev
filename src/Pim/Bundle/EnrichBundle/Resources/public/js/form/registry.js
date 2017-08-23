@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['jquery', 'pim/form-config-provider', 'require-context'],
-    function ($, ConfigProvider, requireContext) {
+    ['jquery', 'pim/form-config-provider'],
+    function ($, ConfigProvider) {
         const getFormExtensions = (formName) => {
             return $.when(
                 ConfigProvider.getExtensionMap(),

@@ -54,7 +54,7 @@ define(
                     label: __('pim_enrich.form.product.panel.history.title')
                 });
 
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.update);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.update);
                 this.onExtensions('action:register',  this.addAction.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
