@@ -52,6 +52,6 @@ class FamilyVariantIntegration extends TestCase
      */
     protected function getConfiguration(): Configuration
     {
-        return new Configuration([Configuration::getFunctionalCatalog('catalog_modeling')]);
+        return new Configuration([Configuration::getFunctionalCatalogPath('catalog_modeling')]);
     }
 }

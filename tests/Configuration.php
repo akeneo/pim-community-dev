@@ -109,7 +109,7 @@ class Configuration
      *
      * @return string
      */
-    public static function getFunctionalCatalog($catalog)
+    public static function getFunctionalCatalogPath($catalog)
     {
         return realpath(self::getRootDirectory(). DIRECTORY_SEPARATOR . 'features'. DIRECTORY_SEPARATOR . 'Context' .
             DIRECTORY_SEPARATOR .'catalog'. DIRECTORY_SEPARATOR . $catalog);

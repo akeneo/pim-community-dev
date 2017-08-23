@@ -23,6 +23,7 @@ parameters:
     pim_catalog.query.elasticsearch.filter.status.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\StatusFilter
     pim_catalog.query.elasticsearch.filter.datetime.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\DateTimeFilter
     pim_catalog.query.elasticsearch.filter.completeness.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CompletenessFilter
+    pim_catalog.query.elasticsearch.filter.with_attributes.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\WithAttributesFilter
     pim_catalog.query.elasticsearch.filter.date.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\DateFilter
     pim_catalog.query.elasticsearch.filter.number.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\NumberFilter
     pim_catalog.query.elasticsearch.filter.text.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\TextFilter
@@ -234,6 +235,15 @@ services:
                 - '<='
                 - '<'
                 - 'EMPTY'
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.with_attributes:
+        class: '%pim_catalog.query.elasticsearch.filter.with_attributes.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - ['attributes_for_this_level']
+            - ['IN', 'NOT IN']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
 

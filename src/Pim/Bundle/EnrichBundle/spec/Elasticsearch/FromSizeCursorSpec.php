@@ -1,26 +1,29 @@
 <?php
 
-namespace spec\Akeneo\Bundle\ElasticsearchBundle\Cursor;
+namespace spec\Pim\Bundle\EnrichBundle\Elasticsearch;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\Cursor\FromSizeCursor;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\Elasticsearch\FromSizeCursor;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 
 class FromSizeCursorSpec extends ObjectBehavior
 {
     function let(
         Client $esClient,
-        CursorableRepositoryInterface $repository,
-        ProductInterface $productFoo,
-        ProductInterface $productBaz
+        CursorableRepositoryInterface $productRepository,
+        CursorableRepositoryInterface $productModelRepository,
+        ProductInterface $variantProduct,
+        ProductModelInterface $subProductModel
     ) {
-        $productFoo->getIdentifier()->willReturn('foo');
-        $productBaz->getIdentifier()->willReturn('baz');
-        $data = [$productBaz, $productFoo];
-        $repository->getItemsFromIdentifiers(['baz', 'foo'])->willReturn($data);
+        $variantProduct->getIdentifier()->willReturn('a-variant-product');
+        $productRepository->getItemsFromIdentifiers(['a-variant-product'])->willReturn([$variantProduct]);
+
+        $subProductModel->getCode()->willReturn('a-sub-product-model');
+        $productModelRepository->getItemsFromIdentifiers(['a-sub-product-model'])->willReturn([$subProductModel]);
 
         $esClient->search('pim_catalog_product', [
             'from' => 0,
@@ -32,12 +35,12 @@ class FromSizeCursorSpec extends ObjectBehavior
                     'total' => 4,
                     'hits' => [
                         [
-                            '_source' => ['identifier' => 'baz'],
-                            'sort' => ['pim_catalog_product#baz']
+                            '_source' => ['identifier' => 'a-variant-product', 'product_type' => 'PimCatalogVariantProduct'],
+                            'sort' => ['pim_catalog_product#a-variant-product']
                         ],
                         [
-                            '_source' => ['identifier' => 'foo'],
-                            'sort' => ['pim_catalog_product#foo']
+                            '_source' => ['identifier' => 'a-sub-product-model', 'product_type' => 'PimCatalogSubProductModel'],
+                            'sort' => ['pim_catalog_product#a-sub-product-model']
                         ],
                     ]
                 ]
@@ -45,7 +48,8 @@ class FromSizeCursorSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $esClient,
-            $repository,
+            $productRepository,
+            $productModelRepository,
             [],
             'pim_catalog_product',
             3,
@@ -67,12 +71,20 @@ class FromSizeCursorSpec extends ObjectBehavior
     }
 
     function it_is_iterable(
-        $repository,
         $esClient,
-        $productFoo,
-        $productBaz,
-        ProductInterface $productFum
+        $variantProduct,
+        $subProductModel,
+        $productRepository,
+        $productModelRepository,
+        ProductInterface $product,
+        ProductModelInterface $rootProductModel
     ) {
+        $product->getIdentifier()->willReturn('a-product');
+        $productRepository->getItemsFromIdentifiers(['a-product'])->willReturn([$product]);
+
+        $rootProductModel->getCode()->willReturn('a-root-product-model');
+        $productModelRepository->getItemsFromIdentifiers(['a-root-product-model'])->willReturn([$rootProductModel]);
+
         $esClient->search(
             'pim_catalog_product',
             [
@@ -85,9 +97,13 @@ class FromSizeCursorSpec extends ObjectBehavior
                     'total' => 4,
                     'hits' => [
                         [
-                            '_source' => ['identifier' => 'fum'],
-                            'sort' => ['pim_catalog_product#fum']
-                        ]
+                            '_source' => ['identifier' => 'a-root-product-model', 'product_type' => 'PimCatalogRootProductModel'],
+                            'sort' => ['pim_catalog_product#a-root-product-model']
+                        ],
+                        [
+                            '_source' => ['identifier' => 'a-product', 'product_type' => 'PimCatalogProduct'],
+                            'sort' => ['pim_catalog_product#a-product']
+                        ],
                     ]
                 ]
             ]);
@@ -104,15 +120,11 @@ class FromSizeCursorSpec extends ObjectBehavior
             ]
         ]);
 
-        $page1 = [$productBaz, $productFoo];
-        $page2 = [$productFum];
+        $page1 = [$variantProduct, $subProductModel];
+        $page2 = [$rootProductModel, $product];
         $data = array_merge($page1, $page2);
 
         $this->shouldImplement(\Iterator::class);
-
-        $repository->getItemsFromIdentifiers(['fum'])->willReturn($page2);
-        $productBaz->getIdentifier()->willReturn('baz');
-        $productFum->getIdentifier()->willReturn('fum');
 
         for ($i = 0; $i < 2; $i++) {
             if ($i > 0) {

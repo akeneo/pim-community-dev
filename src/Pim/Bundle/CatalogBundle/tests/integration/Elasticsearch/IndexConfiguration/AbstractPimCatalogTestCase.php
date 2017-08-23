@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
+use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -17,7 +18,11 @@ use Akeneo\Test\Integration\TestCase;
 abstract class AbstractPimCatalogTestCase extends TestCase
 {
     const DOCUMENT_TYPE = 'pim_catalog_product';
+
     private const PAGE_SIZE = 100;
+
+    /** @var Client */
+    protected $esProductClient;
 
     /**
      * {@inheritdoc}
@@ -34,6 +39,7 @@ abstract class AbstractPimCatalogTestCase extends TestCase
     {
         parent::setUp();
 
+        $this->esProductClient = $this->get('akeneo_elasticsearch.client.product');
         $this->addProducts();
     }
 
@@ -47,7 +53,7 @@ abstract class AbstractPimCatalogTestCase extends TestCase
      *
      * @param array $products
      */
-    protected function indexProducts(array $products)
+    protected function indexProductDocuments(array $products)
     {
         foreach ($products as $product) {
             $this->esProductClient->index(self::DOCUMENT_TYPE, $product['identifier'], $product);
