@@ -107,6 +107,7 @@ JSON;
 
         $client->request('POST', '/api/rest/v1/media-files', $content, ['file' => $file]);
         $response = $client->getResponse();
+//        var_dump($response->getContent());die();
         $this->assertCount(4, $this->fileRepository->findAll());
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
