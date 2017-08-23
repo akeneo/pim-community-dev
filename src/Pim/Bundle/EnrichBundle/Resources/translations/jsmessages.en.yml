@@ -238,6 +238,7 @@ pim_enrich:
             message:
                 created: Product successfully created
             completeness: Complete
+
         association_type:
             info:
                 deletion_successful: Association type successfully deleted.
