@@ -55,7 +55,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn([
                 'properties'                => 'properties are normalized here',
-                'product_type'              => 'PimCatalogRootProductModel',
+                'product_type'              => ProductModelInterface::class,
                 'attributes_for_this_level' => ['property_1', 'property_2'],
             ]);
     }
@@ -79,27 +79,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn([
                 'properties'                => 'properties are normalized here',
-                'product_type'              => 'PimCatalogSubProductModel',
+                'product_type'              => ProductModelInterface::class,
                 'attributes_for_this_level' => ['property_1', 'property_2'],
             ]);
-    }
-
-    function it_normalizes_throws_if_the_variation_level_is_invalid(
-        $propertiesNormalizer,
-        ProductModelInterface $productModel
-    ) {
-        $productModel->getVariationLevel()->willReturn(-1);
-
-        $propertiesNormalizer->normalize(
-            $productModel,
-            ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX,
-            []
-        )->willReturn(['properties' => 'properties are normalized here']);
-
-        $this->shouldThrow('\LogicException')
-            ->during(
-                'normalize',
-                [$productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX]
-            );
     }
 }

@@ -183,7 +183,7 @@ class FromSizeCursor implements CursorInterface
         $productModelIdentifiers = [];
 
         foreach ($identifiers as $identifier => $type) {
-            if (in_array($type, ['PimCatalogProduct', 'PimCatalogVariantProduct'])) {
+            if ($type === ProductInterface::class) {
                 $productIdentifiers[] = $identifier;
             } else {
                 $productModelIdentifiers[] = $identifier;
@@ -219,7 +219,7 @@ class FromSizeCursor implements CursorInterface
      *
      * For instance
      *      [
-     *          'tshirt-red-s'  => 'variant_product',
+     *          'tshirt-red-s'  => 'product',
      *          'tshirt-red'    => 'product_model',
      *          'watch'         => 'product',
      *      ]

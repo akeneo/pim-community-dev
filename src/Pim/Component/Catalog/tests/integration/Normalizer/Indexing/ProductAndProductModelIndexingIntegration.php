@@ -4,6 +4,8 @@ namespace tests\integration\Pim\Component\Catalog\Normalizer\Indexing;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
@@ -52,7 +54,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'product_type' => 'PimCatalogRootProductModel',
+            'product_type' => ProductModelInterface::class,
             'attributes_for_this_level' => ['a_text']
         ];
 
@@ -94,7 +96,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'product_type' => 'PimCatalogSubProductModel',
+            'product_type' => ProductModelInterface::class,
             'attributes_for_this_level' => ['a_simple_select']
         ];
 
@@ -145,7 +147,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'product_type' => 'PimCatalogVariantProduct',
+            'product_type' => ProductInterface::class,
             'attributes_for_this_level' => ['sku', 'a_yes_no']
         ];
 
@@ -173,7 +175,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             'family_variant'            => null,
             'parent'                    => null,
             'values'                    => [],
-            'product_type'              => 'PimCatalogProduct',
+            'product_type'              => ProductInterface::class,
             'attributes_for_this_level' => ['sku'],
         ];
 
@@ -414,7 +416,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'product_type' => 'PimCatalogProduct',
+            'product_type' => ProductInterface::class,
             'attributes_for_this_level' => [
                 123,
                 'sku',

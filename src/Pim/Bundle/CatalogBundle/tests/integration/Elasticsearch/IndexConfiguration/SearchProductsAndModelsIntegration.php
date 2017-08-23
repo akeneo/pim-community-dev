@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
+
 /**
  * Search use cases of products and models in a "smart datagrid way".
  * It returns either products or models depending on where the information is stored.
@@ -33,9 +36,9 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
         $query = [
             'query' => [
                 'bool' => [
-                   'filter' => [
-                       'terms' => [
-                           'product_type' => ['PimCatalogRootProductModel', 'PimCatalogProduct'],
+                   'must_not' => [
+                       'exists' => [
+                           'field' => 'parent',
                        ],
                    ],
                 ],
