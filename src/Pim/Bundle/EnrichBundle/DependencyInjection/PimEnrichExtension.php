@@ -39,6 +39,7 @@ class PimEnrichExtension extends Extension
         $loader->load('connector/readers.yml');
         $loader->load('controllers.yml');
         $loader->load('converters.yml');
+        $loader->load('datagrid_actions.yml');
         $loader->load('datagrid_listeners.yml');
         $loader->load('entities.yml');
         $loader->load('event_listeners.yml');

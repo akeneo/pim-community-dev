@@ -64,6 +64,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'channels'     => ['ecommerce'],
         ];
 
+        $productModel->getId()->willReturn(78);
         $filter->filterCollection($values, 'pim.transform.product_value.structured', $context)
             ->willReturn($values);
 
@@ -126,11 +127,13 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                 'filePath'         => '/p/i/m/4/all.png',
                 'originalFileName' => 'all.png',
             ],
-            'product_type'     => 'product_model',
             'variant_products' => '',
             'groups' => null,
             'enabled'      => null,
             'completeness' => null,
+            'product_type' => 'product_model',
+            'technical_id' => 78,
+            'search_id' => 'product_model_78',
         ];
 
         $this->normalize($productModel, 'datagrid',
@@ -158,6 +161,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $filter->filterCollection($values, 'pim.transform.product_value.structured', $context)
             ->willReturn($values);
 
+        $productModel->getId()->willReturn(78);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getFamily()->willReturn($family);
         $family->getCode()->willReturn('tshirt');
@@ -217,11 +221,13 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                 'filePath'         => '/p/i/m/4/all.png',
                 'originalFileName' => 'all.png',
             ],
-            'product_type'     => 'product_model',
             'variant_products' => '',
             'groups'       => null,
             'enabled'      => null,
             'completeness' => null,
+            'product_type' => 'product_model',
+            'technical_id' => 78,
+            'search_id' => 'product_model_78',
         ];
 
         $this->normalize($productModel, 'datagrid', ['locales' => ['en_US'], 'channels' => ['ecommerce']])

@@ -42,13 +42,11 @@ datagrid:
                 data_name:     variant_products
                 type:          field
         properties:
-            id: ~
-            edit_link:
-                type: url
-                route: pim_enrich_product_edit
-                params:
-                    - id
-                    - dataLocale
+            id:
+                type:          field
+                data_name:     search_id
+            product_type: ~
+            technical_id: ~
             delete_link:
                 type: url
                 route: pim_enrich_product_rest_remove
@@ -59,15 +57,11 @@ datagrid:
                 route: pim_enrich_product_toggle_status
                 params:
                     - id
-            product_type:
-                type:          field
-                data_name:     product_type
         actions:
             edit:
-                type:      navigate
+                type:      navigate-product-and-product-model
                 label:
                 icon:
-                link:      edit_link
                 rowAction: true
             edit_attributes:
                 type:      tab-redirect
