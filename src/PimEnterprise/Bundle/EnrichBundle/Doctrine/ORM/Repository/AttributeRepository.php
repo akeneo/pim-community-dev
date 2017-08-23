@@ -59,7 +59,7 @@ class AttributeRepository extends EntityRepository implements
 
         $formattedAttributes = [];
         foreach ($attributes as $attribute) {
-            $formattedAttributes[$attribute->getGroup()->getLabel()][$attribute->getCode()] = $attribute->getLabel();
+            $formattedAttributes[$attribute->getGroup()->getLabel()][$attribute->getLabel()] = $attribute->getCode();
         }
 
         return $formattedAttributes;

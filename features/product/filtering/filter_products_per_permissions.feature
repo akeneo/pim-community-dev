@@ -18,9 +18,9 @@ Feature: Filter products per permissions
   Scenario: Successfully filter products I can review or publish
     Given I am on the products page
     And the grid should contain 4 elements
-    Then I should see the filter permission
+    Then I should see the filter permissions
     And I should be able to use the following filters:
-      | filter     | operator | value            | result                                  |
-      | permission |          | Review / publish | owned, unclassified                     |
-      | permission |          | Edit             | owned, editable, unclassified           |
-      | permission |          | View             | owned, editable, viewable, unclassified |
+      | filter      | operator | value            | result                                  |
+      | permissions |          | Review / publish | owned, unclassified                     |
+      | permissions |          | Edit             | owned, editable, unclassified           |
+      | permissions |          | View             | owned, editable, viewable, unclassified |

@@ -20,6 +20,9 @@ app/bootstrap.php.cache
 var/bootstrap.php.cache
 app/phpunit.xml
 build/
+/docker/*
+!/docker/akeneo.conf
+!/docker/akeneo-behat.conf
 vendor
 /bin/*
 !/bin/docker
