@@ -7,8 +7,8 @@ Feature: Localize dates in asset picker
   Background:
     Given the "clothing" catalog configuration
     And the following products:
-      | sku   |
-      | shirt |
+      | sku   | family |
+      | shirt | tees   |
     And the following asset:
       | code   | end of use at |
       | mascot | 2017-12-25    |
@@ -16,7 +16,7 @@ Feature: Localize dates in asset picker
   Scenario: Successfully show english format datetime
     Given I am logged in as "Julia"
     And I am on the "shirt" product page
-    When I add available attributes Front view
+    And I visit the "Media" group
     And I start to manage assets for "Front view"
     And I change the page size to 25
     Then the row "mascot" should contain:
@@ -26,7 +26,7 @@ Feature: Localize dates in asset picker
   Scenario: Successfully show french format datetime
     Given I am logged in as "Julien"
     And I am on the "shirt" product page
-    When I add available attributes Vue de face
+    And I visit the "[media]" group
     And I start to manage assets for "Vue de face"
     And I change the page size to 25
     Then the row "mascot" should contain:

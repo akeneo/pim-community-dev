@@ -1,6 +1,6 @@
-<a class="AknActionButton" data-toggle="dropdown" href="#">
-    <%- currentSource.label %>
-    <span class="AknActionButton-caret AknCaret"></span>
+<a class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown" href="#">
+    <span class="AknActionButton-highlight"><%- currentSource.label %></span>
+    <span class="AknActionButton-caret"></span>
 </a>
 <ul class="AknDropdown-menu">
     <% _.each(sources, function (source) { %>

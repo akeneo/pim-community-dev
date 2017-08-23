@@ -25,7 +25,7 @@ class PublishedProductConsistencyException extends \Exception
      */
     public function __construct(
         $message,
-        $code = 409,
+        $code = 422,
         \Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);

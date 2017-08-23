@@ -18,14 +18,18 @@ Feature: Revert a product to a previous version
       | fabric | cashmerewool | Cashmerewool |
       | fabric | neoprene     |              |
       | fabric | silk         | Silk         |
+    And the following family:
+      | code       | attributes                            |
+      | high_heels | sku,name,main_color,main_fabric,color |
     And I am logged in as "Julia"
     And I am on the products page
     And I create a new product
     And I fill in the following information in the popin:
-      | SKU | red-heels |
+      | SKU    | red-heels  |
+      | family | high_heels |
     And I press the "Save" button in the popin
     And I wait to be on the "red-heels" product page
-    And I add available attributes Main color and Main fabric
+    And I visit the "Other" group
     And I fill in the following information:
       | Main color  | [red]                        |
       | Main fabric | Cashmerewool, neoprene, Silk |
@@ -34,7 +38,6 @@ Feature: Revert a product to a previous version
 
   Scenario: Revert a product with simple reference data
     Given I am on the "red-heels" product page
-    And I add available attribute Color
     And I visit the "Other" group
     And I fill in the following information:
       | Main color | Green |
@@ -60,7 +63,6 @@ Feature: Revert a product to a previous version
 
   Scenario: Revert a product with multiple reference data
     Given I am on the "red-heels" product page
-    And I add available attribute Color
     And I visit the "Other" group
     And I fill in the following information:
       | Main fabric | Cashmerewool, neoprene |

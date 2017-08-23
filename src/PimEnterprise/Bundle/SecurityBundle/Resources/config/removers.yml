@@ -1,3 +1,6 @@
+parameters:
+    pimee_security.remover.product.class: PimEnterprise\Component\Security\Remover\ProductRemover
+
 services:
     pimee_security.remover.product_category_access:
         class: '%akeneo_storage_utils.remover.base.class%'
@@ -12,3 +15,12 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '%pimee_security.entity.asset_category_access.class%'
+
+    pimee_security.remover.product:
+        class: '%pimee_security.remover.product.class%'
+        decorates: pim_catalog.remover.product
+        decoration_inner_name: pim_catalog.remover.product.community
+        arguments:
+            - '@pim_catalog.remover.product.community'
+            - '@pim_catalog.remover.product.community'
+            - '@security.authorization_checker'

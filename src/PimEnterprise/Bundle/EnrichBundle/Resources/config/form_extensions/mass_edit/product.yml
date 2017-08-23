@@ -10,3 +10,4 @@ extensions:
             code: publish
             jobInstanceCode: publish_product
             warning: pimee_enrich.mass_edit.product.operation.publish.warning
+            icon: icon-publish

@@ -17,10 +17,10 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Component\Security\Attributes;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Category access repository

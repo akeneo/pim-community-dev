@@ -23,15 +23,3 @@ Feature: Revert product attributes to a previous version
     When I revert the product version number 1
     Then the product "jeans" should have the following values:
     | handmade | 1 |
-    Given I am on the "short" product page
-    And I visit the "Attributes" column tab
-    And I add available attributes Handmade
-    When I check the "Handmade" switch
-    And I save the product
-    And I should not see the text "There are unsaved changes."
-    And the history of the product "short" has been built
-    And I visit the "History" column tab
-    Then I should see 2 versions in the history
-    When I revert the product version number 1
-    Then the product "short" should have the following values:
-    | handmade |  |

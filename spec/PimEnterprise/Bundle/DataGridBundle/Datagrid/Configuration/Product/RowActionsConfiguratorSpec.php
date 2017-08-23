@@ -113,7 +113,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         );
     }
 
-    function it_hides_the_edit_categories_action_if_user_does_not_own_the_product(
+    function it_hides_the_edit_categories_and_delete_actions_if_user_does_not_own_the_product(
         $record,
         $product,
         $authorizationChecker,
@@ -129,7 +129,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
                 'show' => false,
                 'edit' => true,
                 'edit_categories' => false,
-                'delete' => true,
+                'delete' => false,
                 'toggle_status' => false
             ]
         );

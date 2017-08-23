@@ -9,4 +9,6 @@ services:
             - '@pim_catalog.object_manager.product'
             - '%pim_catalog.entity.product.class%'
             - '@pimee_workflow.repository.published_product'
-
+            - '@security.token_storage'
+            - '%pimee_security.entity.product_category_access.class%'
+            - '%pim_catalog.entity.product.class%'

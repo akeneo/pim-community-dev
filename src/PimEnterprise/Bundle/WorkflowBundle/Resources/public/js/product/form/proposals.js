@@ -9,11 +9,11 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'routing',
         'oro/messenger',
         'oro/datagrid-builder',
         'pim/form',
-        'pim/product-manager',
         'pim/user-context',
         'pimee/template/product/tab/proposals',
         'require-context'
@@ -21,11 +21,11 @@ define(
     function (
         $,
         _,
+        __,
         Routing,
         messenger,
         datagridBuilder,
         BaseForm,
-        ProductManager,
         UserContext,
         template,
         requireContext
@@ -55,7 +55,7 @@ define(
                             false
                         );
                     }.bind(this),
-                    label: _.__('pimee_enrich.entity.product.tab.proposals.title')
+                    label: __('pimee_enrich.entity.product.tab.proposals.title')
                 });
 
                 this.datagrid = {
@@ -72,16 +72,13 @@ define(
              * @param {Object} product
              */
             onPostApproveSuccess: function (product) {
-                ProductManager.generateMissing(product)
-                    .then(function (product) {
-                        this.setData(product);
-                        this.getRoot().trigger('pim_enrich:form:entity:post_fetch', product);
+                this.setData(product);
+                this.getRoot().trigger('pim_enrich:form:entity:post_fetch', product);
 
-                        messenger.notify(
-                            'success',
-                            _.__('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
-                        );
-                    }.bind(this));
+                messenger.notify(
+                    'success',
+                    __('pimee_enrich.entity.product.tab.proposals.messages.approve.success')
+                );
             },
 
             /**
@@ -92,7 +89,7 @@ define(
             onPostApproveError: function (message) {
                 messenger.notify(
                     'error',
-                    _.__('pimee_enrich.entity.product.tab.proposals.messages.approve.error', {error: message})
+                    __('pimee_enrich.entity.product.tab.proposals.messages.approve.error', {error: message})
                 );
             },
 
@@ -102,7 +99,7 @@ define(
             onPostRejectSuccess: function () {
                 messenger.notify(
                     'success',
-                    _.__('pimee_enrich.entity.product.tab.proposals.messages.reject.success')
+                    __('pimee_enrich.entity.product.tab.proposals.messages.reject.success')
                 );
             },
 
@@ -112,7 +109,7 @@ define(
             onPostRemoveSuccess: function () {
                 messenger.notify(
                     'success',
-                    _.__('pimee_enrich.entity.product.tab.proposals.messages.remove.success')
+                    __('pimee_enrich.entity.product.tab.proposals.messages.remove.success')
                 );
             },
 

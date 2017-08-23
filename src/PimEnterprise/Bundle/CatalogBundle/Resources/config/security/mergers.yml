@@ -1,0 +1,25 @@
+parameters:
+    pimee_catalog.security.merger.not_granted_category.class: PimEnterprise\Component\Catalog\Security\Merger\NotGrantedCategoryMerger
+    pimee_catalog.security.merger.not_granted_associated_product.class: PimEnterprise\Component\Catalog\Security\Merger\NotGrantedAssociatedProductMerger
+    pimee_catalog.security.merger.not_granted_values.class: PimEnterprise\Component\Catalog\Security\Merger\NotGrantedValuesMerger
+
+services:
+    pimee_catalog.security.merger.not_granted_category:
+        class: '%pimee_catalog.security.merger.not_granted_category.class%'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.product_category'
+
+    pimee_catalog.security.merger.not_granted_associated_product:
+        class: '%pimee_catalog.security.merger.not_granted_associated_product.class%'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.product'
+
+    pimee_catalog.security.merger.not_granted_values:
+        class: '%pimee_catalog.security.merger.not_granted_values.class%'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.factory.value_collection_without_permission'

@@ -12,8 +12,8 @@ define(
         'backbone',
         'routing',
         'oro/messenger',
+        'oro/translator',
         'pim/form',
-        'pim/product-manager',
         'pimee/template/product/submit-draft',
         'pim/form-modal'
     ],
@@ -23,16 +23,16 @@ define(
         Backbone,
         Routing,
         messenger,
+        __,
         BaseForm,
-        ProductManager,
         submitTemplate,
         FormModal
     ) {
         return BaseForm.extend({
             className: 'btn-group',
             submitTemplate: _.template(submitTemplate),
-            confirmationMessage: _.__('pimee_enrich.entity.product_draft.confirmation.discard_changes'),
-            confirmationTitle: _.__('pimee_enrich.entity.product_draft.confirmation.discard_changes_title'),
+            confirmationMessage: __('pimee_enrich.entity.product_draft.confirmation.discard_changes'),
+            confirmationTitle: __('pimee_enrich.entity.product_draft.confirmation.discard_changes_title'),
             routes: {},
             events: {
                 'click .submit-draft': 'onSubmitDraft'
@@ -106,9 +106,9 @@ define(
                     'pimee-workflow-send-for-approval-comment',
                     callback,
                     {
-                        title: _.__('pimee_enrich.entity.product_draft.modal.send_for_approval'),
-                        cancelText: _.__('pimee_enrich.entity.product_draft.modal.cancel'),
-                        okText: _.__('pimee_enrich.entity.product_draft.modal.confirm')
+                        title: __('pimee_enrich.entity.product_draft.modal.send_for_approval'),
+                        cancelText: __('pimee_enrich.entity.product_draft.modal.cancel'),
+                        okText: __('pimee_enrich.entity.product_draft.modal.confirm')
                     }
                 );
 
@@ -135,7 +135,6 @@ define(
                         {productId: this.getProductId(), comment: comment}
                     )
                 )
-                .then(ProductManager.generateMissing.bind(ProductManager))
                 .then(function (product) {
                     this.setData(product);
 
@@ -143,13 +142,13 @@ define(
 
                     messenger.notify(
                         'success',
-                        _.__('pimee_enrich.entity.product_draft.flash.sent_for_approval')
+                        __('pimee_enrich.entity.product_draft.flash.sent_for_approval')
                     );
                 }.bind(this))
                 .fail(function () {
                     messenger.notify(
                         'error',
-                        _.__('pimee_enrich.entity.product_draft.flash.draft_not_sendable')
+                        __('pimee_enrich.entity.product_draft.flash.draft_not_sendable')
                     );
                 });
             }

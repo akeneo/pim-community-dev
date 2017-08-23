@@ -1,0 +1,39 @@
+parameters:
+    pimee_api.controller.published_product.class: PimEnterprise\Bundle\ApiBundle\Controller\PublishedProductController
+    pimee_api.controller.product_draft.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductDraftController
+    pimee_api.controller.product_proposal.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductProposalController
+
+services:
+    pimee_api.controller.published_product:
+        class: '%pimee_api.controller.published_product.class%'
+        arguments:
+            - '@pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory'
+            - '@pim_api.checker.query_parameters'
+            - '@pim_serializer'
+            - '@pim_api.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pim_api.repository.attribute'
+            - '@pimee_api.repository.published_product'
+            - '@pim_api.pagination.search_after_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.security.primary_key_encrypter'
+            - '%pim_api.configuration%'
+
+    pimee_api.controller.product_draft:
+        class: '%pimee_api.controller.product_draft.class%'
+        arguments:
+            - '@pim_api.repository.product'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.applier.product_draft'
+            - '@pim_serializer'
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+
+    pimee_api.controller.product_proposal:
+        class : '%pimee_api.controller.product_proposal.class%'
+        arguments:
+            - '@pim_api.repository.product'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.manager.product_draft'
+            - '@security.token_storage'
+            - '@security.authorization_checker'

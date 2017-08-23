@@ -73,7 +73,6 @@ config:
 
     map:
         '*':
-            pim/product-manager:             pimenterpriseenrich/js/manager/product-manager
             pim/job/common/edit/launch:      pimenterpriseenrich/js/job/common/edit/launch
 
     paths:
@@ -82,7 +81,6 @@ config:
 
         pimee/manage-permissions:        pimenterpriseenrich/js/manage-permissions
         pimee/rule-manager:              pimenterpriseenrich/js/product/rule-manager
-        pimee/product-manager:           pimenterpriseenrich/js/manager/product-manager
 
         # Form extensions
         pimee/product-edit-form/attributes/copy:                      pimenterpriseenrich/js/product/form/attributes/copy
@@ -93,6 +91,7 @@ config:
         pimee/product-edit-form/meta/owner-groups:                    pimenterpriseenrich/js/product/form/meta/owner-groups
         pimee/product-edit-form/tab/history/revert:                   pimenterpriseenrich/js/product/form/tab/history/revert
         pimee/product-edit-form/save:                                 pimenterpriseenrich/js/product/form/save
+        pimee/product-edit-form/delete:                               pimenterpriseenrich/js/product/form/delete
         pimee/product-edit-form/categories:                           pimenterpriseenrich/js/product/form/categories
         pimee/product-edit-form/associations:                         pimenterpriseenrich/js/product/form/associations
         pimee/product-edit-form/meta/status-switcher:                 pimenterpriseenrich/js/product/form/meta/status-switcher

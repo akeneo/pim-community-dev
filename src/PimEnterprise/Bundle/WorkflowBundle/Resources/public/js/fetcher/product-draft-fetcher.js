@@ -5,37 +5,19 @@ define(
         'jquery',
         'underscore',
         'routing',
-        'pim/base-fetcher',
-        'pim/product-manager'
+        'pim/base-fetcher'
     ],
     function (
         $,
         _,
         Routing,
-        BaseFetcher,
-        ProductManager
+        BaseFetcher
     ) {
         return BaseFetcher.extend({
             fetchAllByProduct: function (productId) {
                 return $.getJSON(
                     Routing.generate(this.options.urls.product_index, {productId: productId})
-                )
-                .then(function (drafts) {
-                    var draftsPromises = [];
-
-                    _.each(drafts, function (draft) {
-                        draftsPromises.push(
-                            ProductManager
-                                .doGenerateMissing(draft.changes)
-                                .then(function () {
-                                    return draft;
-                                })
-                        );
-                    });
-
-                    return this.getObjects(draftsPromises);
-                }.bind(this))
-                .promise();
+                ).promise();
             }
         });
     }
