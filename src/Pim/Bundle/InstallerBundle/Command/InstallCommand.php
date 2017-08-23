@@ -3,12 +3,11 @@
 namespace Pim\Bundle\InstallerBundle\Command;
 
 use Pim\Bundle\InstallerBundle\CommandExecutor;
-use Pim\Bundle\InstallerBundle\PimDirectoriesRegistry;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
+
 
 /**
  * Installer command to add PIM custom rules
@@ -54,8 +53,10 @@ class InstallCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $forceInstall = $input->getOption('force');
+
         // if there is application is not installed or no --force option
-        if ($this->getContainer()->hasParameter('installed') && $this->getContainer()->getParameter('installed')
+        //if ($this->getContainer()->hasParameter('installed') && $this->getContainer()->getParameter('installed')
+        if ( $this->checkInstalledFlag($output)
             && !$forceInstall
         ) {
             throw new \RuntimeException('Akeneo PIM is already installed.');
@@ -112,7 +113,6 @@ class InstallCommand extends ContainerAwareCommand
     protected function checkStep()
     {
         $this->commandExecutor->runCommand('pim:installer:check-requirements');
-
         return $this;
     }
 
@@ -141,6 +141,21 @@ class InstallCommand extends ContainerAwareCommand
     }
 
     /**
+     * Check installed flag
+     *
+     * @param OutputInterface $output
+     *
+     * @return boolean isInstalled
+     */
+    protected function checkInstalledFlag(OutputInterface $output)
+    {
+        $output->writeln('<info>Check installed flag.</info>');
+
+        $installStatus = $this->getContainer()->get('pim_installer.install_status');
+        return $installStatus->isInstalled();
+    }
+
+    /**
      * Update installed flag
      *
      * @param OutputInterface $output
@@ -152,11 +167,10 @@ class InstallCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Updating installed flag.</info>');
 
-        $dumper = $this->getContainer()->get('pim_installer.yaml_persister');
-        $params = $dumper->parse();
-        $params['system']['installed'] = $installed;
-        $dumper->dump($params);
+        $installStatus = $this->getContainer()->get('pim_installer.install_status');
+        $installStatus->setInstallStatus($installed);
 
         return $this;
     }
+
 }
