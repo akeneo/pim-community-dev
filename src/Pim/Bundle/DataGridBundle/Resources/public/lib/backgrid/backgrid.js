@@ -1168,7 +1168,7 @@ var BooleanCellEditor = Backgrid.BooleanCellEditor = CellEditor.extend({
 var BooleanCell = Backgrid.BooleanCell = Cell.extend({
 
   /** @property */
-  className: "AknGrid-bodyCell AknGrid-bodyCell--tight boolean-cell",
+  className: "AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--checkbox boolean-cell",
 
   /** @property */
   editor: BooleanCellEditor,

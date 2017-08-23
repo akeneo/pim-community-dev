@@ -17,7 +17,7 @@ function ($, _, Backgrid, SelectRowCell) {
      */
     return SelectRowCell.extend({
         /** @property */
-        className: "AknGrid-headerCell select-all-header-cell",
+        className: "AknGrid-headerCell AknGrid-headerCell--checkbox select-all-header-cell",
 
         /** @property */
         tagName: "th",

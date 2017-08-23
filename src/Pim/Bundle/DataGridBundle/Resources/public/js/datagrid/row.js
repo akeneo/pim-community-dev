@@ -14,7 +14,6 @@ function($, _, Backgrid) {
      * @extends Backgrid.Row
      */
     return Backgrid.Row.extend({
-
         /** @property */
         events: {
             "click": "onClick"
@@ -25,6 +24,21 @@ function($, _, Backgrid) {
             counter: 0,
             timeout: 100,
             hasSelectedText: false
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        initialize: function () {
+            Backgrid.Row.prototype.initialize.apply(this, arguments);
+
+            this.listenTo(this.model, 'backgrid:selected', function (model, checked) {
+                if (checked) {
+                    this.$el.addClass('AknGrid-bodyRow--selected');
+                } else {
+                    this.$el.removeClass('AknGrid-bodyRow--selected');
+                }
+            });
         },
 
         /**
