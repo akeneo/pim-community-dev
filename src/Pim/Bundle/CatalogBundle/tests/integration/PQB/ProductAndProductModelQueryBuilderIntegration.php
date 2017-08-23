@@ -7,6 +7,7 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\Sorter\Directions;
 
 /**
  * Test the ProductAndProductModelQueryBuilder can return both product and product models in a smart way.
@@ -17,18 +18,40 @@ use Pim\Component\Catalog\Query\Filter\Operators;
  */
 class ProductAndProductModelQueryBuilderIntegration extends TestCase
 {
-    public function testDefaultView()
+    public function testNoFilterAndSortIdentifier()
     {
-        $result = $this->executeFilter([]);
+        $pqb = $this->get('pim_enrich.query.product_and_product_model_query_builder_from_size_factory')->create(
+            [
+                'default_locale' => 'en_US',
+                'default_scope'  => 'ecommerce',
+                'limit'          => 19,
+            ]
+        );
+        $pqb->addSorter('identifier', Directions::DESCENDING);
+
+        $result = $pqb->execute();
+
         $this->assertSearch(
             [
-                'model-tshirt-divided',
-                'model-tshirt-unique-color-kurt',
                 'watch',
-                'model-braided-hat',
+                'zeus',
+                'vulcanus',
+                'venus',
+                'terminus',
+                'stock',
+                'stilleto',
+                'securitas',
+                'quirinus',
+                'poseidon',
+                'portunus',
+                'plain',
                 'model-tshirt-unique-size',
+                'model-tshirt-unique-color-kurt',
+                'model-tshirt-divided',
                 'model-running-shoes',
+                'model-braided-hat',
                 'model-biker-jacket',
+                'moccasin',
             ],
             $result
         );
