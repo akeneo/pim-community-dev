@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\Validator;
 
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
  * Contains the state of the unique axes combination for an entity with family variant.
@@ -46,11 +47,12 @@ class UniqueAxesCombinationSet
      */
     public function addCombination(EntityWithFamilyVariantInterface $entity, string $axesCombination): bool
     {
-        $identifier = $this->getEntityId($entity);
         $familyVariantCode = $entity->getFamilyVariant()->getCode();
+        $parentCode = $entity->getParent()->getCode();
+        $identifier = $this->getEntityCode($entity);
 
-        if (isset($this->uniqueAxesCombination[$familyVariantCode][$axesCombination])) {
-            $cachedIdentifier = $this->uniqueAxesCombination[$familyVariantCode][$axesCombination];
+        if (isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axesCombination])) {
+            $cachedIdentifier = $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axesCombination];
             if ($cachedIdentifier !== $identifier) {
                 return false;
             }
@@ -60,8 +62,12 @@ class UniqueAxesCombinationSet
             $this->uniqueAxesCombination[$familyVariantCode] = [];
         }
 
-        if (!isset($this->uniqueAxesCombination[$familyVariantCode][$axesCombination])) {
-            $this->uniqueAxesCombination[$familyVariantCode][$axesCombination] = $identifier;
+        if (!isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode])) {
+            $this->uniqueAxesCombination[$familyVariantCode][$parentCode] = [];
+        }
+
+        if (!isset($this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axesCombination])) {
+            $this->uniqueAxesCombination[$familyVariantCode][$parentCode][$axesCombination] = $identifier;
         }
 
         return true;
@@ -74,8 +80,12 @@ class UniqueAxesCombinationSet
      *
      * @return string
      */
-    private function getEntityId(EntityWithFamilyVariantInterface $entity): string
+    private function getEntityCode(EntityWithFamilyVariantInterface $entity): string
     {
-        return $entity->getId() ? (string) $entity->getId() : spl_object_hash($entity);
+        if ($entity instanceof VariantProductInterface) {
+            return $entity->getIdentifier();
+        }
+
+        return $entity->getCode();
     }
 }

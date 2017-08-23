@@ -8,6 +8,7 @@ use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvide
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxes;
 use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
@@ -68,6 +69,7 @@ class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
         EntityWithFamilyVariantInterface $entity,
         SiblingUniqueVariantAxes $constraint
     ) {
+        $entity->getParent()->willReturn(null);
         $axesProvider->getAxes($entity)->willReturn([]);
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $repository->findSiblings($entity)->willReturn([]);
@@ -86,6 +88,7 @@ class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
         EntityWithFamilyVariantInterface $sibling,
         SiblingUniqueVariantAxes $constraint
     ) {
+        $entity->getParent()->willReturn(null);
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $repository->findSiblings($entity)->willReturn([$sibling]);
         $axesProvider->getAxes($entity)->willReturn([]);
@@ -110,6 +113,7 @@ class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
         ValueInterface $red,
         ValueInterface $yellow
     ) {
+        $entity->getParent()->willReturn(null);
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $repository->findSiblings($entity)->willReturn([$sibling1, $sibling2]);
         $axesProvider->getAxes($entity)->willReturn([$color]);
@@ -145,6 +149,7 @@ class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
         ValueInterface $yellow,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $entity->getParent()->willReturn(null);
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $repository->findSiblings($entity)->willReturn([$sibling1, $sibling2]);
         $axesProvider->getAxes($entity)->willReturn([$color]);
@@ -189,6 +194,7 @@ class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
         ValueInterface $xl,
         ConstraintViolationBuilderInterface $violation
     ) {
+        $entity->getParent()->willReturn(null);
         $entity->getFamilyVariant()->willReturn($familyVariant);
         $repository->findSiblings($entity)->willReturn([$sibling1, $sibling2]);
         $axesProvider->getAxes($entity)->willReturn([$color, $size]);
@@ -221,5 +227,53 @@ class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
         $uniqueAxesCombinationSet->addCombination($entity, Argument::any())->willReturn(true);
 
         $this->validate($entity, $constraint);
+    }
+
+    function it_raises_a_violation_if_there_is_a_duplicate_in_the_batch(
+        $context,
+        $repository,
+        $axesProvider,
+        $uniqueAxesCombinationSet,
+        FamilyVariantInterface $familyVariant,
+        EntityWithFamilyVariantInterface $entity1,
+        EntityWithFamilyVariantInterface $entity2,
+        ProductModelInterface $parent,
+        AttributeInterface $color,
+        SiblingUniqueVariantAxes $constraint,
+        ValueInterface $blue,
+        ConstraintViolationBuilderInterface $violation
+    ) {
+        $color->getCode()->willReturn('color');
+        $blue->__toString()->willReturn('[blue]');
+
+        $entity1->getParent()->willReturn($parent);
+        $entity1->getFamilyVariant()->willReturn($familyVariant);
+        $repository->findSiblings($entity1)->willReturn([]);
+        $axesProvider->getAxes($entity1)->willReturn([$color]);
+        $entity1->getValue('color')->willReturn($blue);
+
+        $entity2->getParent()->willReturn($parent);
+        $entity2->getFamilyVariant()->willReturn($familyVariant);
+        $repository->findSiblings($entity2)->willReturn([]);
+        $axesProvider->getAxes($entity2)->willReturn([$color]);
+        $entity2->getValue('color')->willReturn($blue);
+
+        $uniqueAxesCombinationSet->addCombination($entity1, '[blue]')->willReturn(true);
+        $uniqueAxesCombinationSet->addCombination($entity2, '[blue]')->willReturn(false);
+
+        $context
+            ->buildViolation(
+                SiblingUniqueVariantAxes::DUPLICATE_VALUE_IN_SIBLING,
+                [
+                    '%values%' => '[blue]',
+                    '%attributes%' => 'color',
+                ]
+            )
+            ->willReturn($violation);
+
+        $this->validate($entity1, $constraint);
+        $this->validate($entity2, $constraint);
+
+        $violation->addViolation()->shouldHaveBeenCalled();
     }
 }
