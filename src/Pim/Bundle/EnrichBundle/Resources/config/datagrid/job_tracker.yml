@@ -8,6 +8,7 @@ datagrid:
             job:
                 label: Job
                 data_name: jobLabel
+                frontend_type: label
             type:
                 label: Type
                 type:  job_type

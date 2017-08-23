@@ -40,6 +40,16 @@
       opacity: 0;
       width: 1px;
     }
+
+    &--credentials {
+      line-height: 24px;
+    }
+
+    &--highlight {
+      color: @AknLightPurple;
+      font-style: italic;
+      font-size: @AknFontSizeBig;
+    }
   }
 
   &-bodyRow:hover &-bodyCell--actions {
@@ -101,5 +111,11 @@
 
   &--unclickable &-bodyRow &-bodyCell {
     cursor: default;
+  }
+
+  &-label {
+    font-weight: bold;
+    display: inline-block;
+    width: 60px;
   }
 }
