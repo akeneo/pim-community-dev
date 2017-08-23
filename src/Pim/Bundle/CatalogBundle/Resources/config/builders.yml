@@ -18,6 +18,19 @@ services:
             - '@pim_catalog.builder.entity_with_values'
             - {'product': '%pim_catalog.entity.product.class%', 'association': '%pim_catalog.entity.association.class%'}
 
+    pim_catalog.builder.variant_product:
+        class: '%pim_catalog.builder.product.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.currency'
+            - '@pim_catalog.repository.association_type'
+            - '@event_dispatcher'
+            - '@pim_catalog.resolver.attribute_values'
+            - '@pim_catalog.factory.value'
+            - '@pim_catalog.builder.entity_with_values'
+            - {'product': '%pim_catalog.entity.variant_product.class%', 'association': '%pim_catalog.entity.association.class%'}
+
     pim_catalog.builder.entity_with_values:
         class: '%pim_catalog.builder.entity_with_values.class%'
         arguments:
