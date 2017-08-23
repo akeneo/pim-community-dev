@@ -197,6 +197,8 @@ class FromSizeCursor implements CursorInterface
         $orderedItems = [];
 
         foreach ($identifiers as $identifier => $type) {
+            // sometimes $identifier is only numerical whereas getIdentifer() returns a string
+            $identifier = (string) $identifier;
             foreach ($hydratedItems as $hydratedItem) {
                 if ($hydratedItem instanceof ProductInterface && $identifier === $hydratedItem->getIdentifier()) {
                     $orderedItems[] = $hydratedItem;
