@@ -125,8 +125,11 @@ class GrantedProductUpdater implements ObjectUpdaterInterface
             $filteredFilters = !empty($fields) ? $this->productFieldFilter->filter($product, $fields) : [];
             $filteredAssociations = !empty($associations) ? $this->productAssociationFilter->filter($product, $associations) : [];
             if (!empty($filteredFilters) || !empty($filteredAssociations)) {
+                $keys = array_keys(array_merge($filteredFilters, $filteredAssociations));
+                $message = count($keys) > 1 ? 'following fields' : 'field';
                 throw new InvalidArgumentException(sprintf(
-                    'You cannot update the field "%s". You should at least own this product to do it.',
+                    'You cannot update the %s "%s". You should at least own this product to do it.',
+                    $message,
                     implode(', ', array_keys(array_merge($filteredFilters, $filteredAssociations)))
                 ));
             }

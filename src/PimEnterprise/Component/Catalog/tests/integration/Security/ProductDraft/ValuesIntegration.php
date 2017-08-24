@@ -279,6 +279,18 @@ class ValuesIntegration extends AbstractSecurityTestCase
     }
 
     /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\InvalidArgumentException
+     * @expectedExceptionMessage You cannot update the following fields "categories, enabled". You should at least own this product to do it
+     */
+    public function testUpdateMultipleFieldOnProductDraft()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA'], 'enabled' => true]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['categories' => 'categoriesA1', 'enabled' => false]);
+    }
+
+    /**
      * @param array $updatedValues
      * @param array $draftValues
      */
