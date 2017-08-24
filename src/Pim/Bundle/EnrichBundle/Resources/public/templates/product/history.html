@@ -2,6 +2,7 @@
     <table class="AknGrid expanded">
         <thead>
             <tr>
+                <th class="AknGrid-headerCell"></th>
                 <th class="AknGrid-headerCell version"><%- _.__('pim_enrich.entity.product.history.version') %></th>
                 <th class="AknGrid-headerCell author"><%- _.__('pim_enrich.entity.product.history.author') %></th>
                 <th class="AknGrid-headerCell logged-at"><%- _.__('pim_enrich.entity.product.history.logged_at') %></th>
@@ -12,33 +13,28 @@
         <tbody>
             <% _.each(versions, function(version) { %>
                 <tr data-version="<%- version.version %>" data-version-id="<%- version.id %>" class="AknGrid-bodyRow product-version">
-                    <td class="AknGrid-bodyCell version">
-                        <span class="version-expander">
-                            <i class="icon-chevron-right"></i>
-                        </span>
-                        <%- version.version %>
+                    <td class="AknGrid-bodyCell">
+                        <div class="version-expander AknGrid-expand"></div>
                     </td>
-                    <td class="AknGrid-bodyCell author"><%- version.author %><%- version.context ? ' (' + version.context + ')' : '' %></td>
+                    <td class="AknGrid-bodyCell version"><span class="AknButton AknButton--grey AknButton--round"><%- version.version %></span></td>
+                    <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight author"><%- version.author %><%- version.context ? ' (' + version.context + ')' : '' %></td>
                     <td class="AknGrid-bodyCell logged-at"><%- version.logged_at %></td>
-                    <td class="AknGrid-bodyCell changes"><%- _.keys(version.changeset).join(', ') %></td>
+                    <td class="AknGrid-bodyCell AknGrid-bodyCell--truncatable changes"><div class="AknGrid-truncatable"><%- _.keys(version.changeset).join(', ') %></div></td>
                     <% if (hasAction) { %><td class="AknGrid-bodyCell actions"></td><% } %>
                 </tr>
-                <tr class="AknGrid-bodyRow changeset hide">
-                    <td class="AknGrid-bodyCell AknGrid-bodyCell--full" colspan="<%- hasAction ? '6' : '5' %>">
-                        <table class="AknGrid AknGrid--condensed table-history-details">
-                            <thead>
-                                <tr>
-                                    <th class="AknGrid-headerCell property"><%- _.__('pim_enrich.entity.product.history.property') %></th>
-                                    <th class="AknGrid-headerCell old-values"><%- _.__('pim_enrich.entity.product.history.old_values') %></th>
-                                    <th class="AknGrid-headerCell new-values"><%- _.__('pim_enrich.entity.product.history.new_values') %></th>
-                                </tr>
-                            </thead>
+                <tr class="AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder changeset hide">
+                    <td class="AknGrid-bodyCell"></td>
+                    <td class="AknGrid-bodyCell"></td>
+                    <td class="AknGrid-bodyCell" colspan="<%- hasAction ? '4' : '3' %>">
+                        <table class="AknGrid table-history-details">
                             <tbody>
                                 <% _.each(version.changeset, function(value) { %>
                                     <tr class="AknGrid-bodyRow">
-                                        <td class="AknGrid-bodyCell property"><%= value.label %></td>
-                                        <td class="AknGrid-bodyCell old-values"><%- value.old %></td>
-                                        <td class="AknGrid-bodyCell onew-values"><%- value.new %></td>
+                                        <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight AknGrid-bodyCell--withoutBottomBorder property" colspan="2"><%= value.label %></td>
+                                    </tr>
+                                    <tr class="AknGrid-bodyRow">
+                                        <td class="AknGrid-bodyCell AknGrid-bodyCell--withoutTopBorder"><span class="AknDiff--remove"><%- _.__('pim_enrich.entity.product.history.old_value') %>:</span> <span class="old-values"><%- value.old %></span></td>
+                                        <td class="AknGrid-bodyCell AknGrid-bodyCell--withoutTopBorder"><span class="AknDiff--add"><%- _.__('pim_enrich.entity.product.history.new_value') %>:</span> <span class="new-values"><%- value.new %></span></td>
                                     </tr>
                                 <% }); %>
                             </tbody>

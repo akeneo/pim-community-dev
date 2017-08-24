@@ -1,16 +1,29 @@
 @import '../../base/variables';
 
 .AknGrid {
+  @miniPadding: 2px;
+
   font-size: @AknDefaultFontSize;
   width: 100%;
   border-collapse: collapse;
 
-  &-bodyRow + &-bodyRow &-bodyCell {
+  &-bodyRow + &-bodyRow:not(&-bodyRow--withoutTopBorder) &-bodyCell {
     border-top: 1px solid @AknBorderColor;
   }
 
   &-bodyRow + &-bodyRow &-bodyCell&-bodyCell--checkbox {
     border-top: none;
+  }
+
+  &-bodyRow + &-bodyRow &-bodyCell&-bodyCell--withoutTopBorder {
+    padding-top: @miniPadding;
+    border-top: none;
+    vertical-align: top;
+  }
+
+  &-bodyCell&-bodyCell--withoutBottomBorder {
+    padding-bottom: @miniPadding;
+    border-bottom: none;
   }
 
   &-bodyCell,
@@ -19,6 +32,7 @@
     line-height: 16px;
     padding: 12px 4px;
     transition: background 0.1s ease;
+    max-width: 100vh;
 
     &--tight {
       width: 1px;
@@ -128,6 +142,10 @@
     background: white;
   }
 
+  & &-bodyRow:first-child &-bodyCell {
+    border-top: none;
+  }
+
   &--unclickable &-bodyRow &-bodyCell {
     cursor: default;
   }
@@ -136,5 +154,22 @@
     font-weight: bold;
     display: inline-block;
     width: 60px;
+  }
+
+  &-truncatable {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &-expand {
+    width: 32px;
+    height: 32px;
+    background: url("../../../images/icon-right.svg") no-repeat 50%;
+    transition: transform 0.2s ease-in;
+
+    &--expanded {
+      transform: rotate(90deg);
+    }
   }
 }
