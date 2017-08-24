@@ -23,6 +23,7 @@ class ProductProcessorSpec extends ObjectBehavior
     function let(
         IdentifiableObjectRepositoryInterface $productRepository,
         ProductBuilderInterface $productBuilder,
+        ProductBuilderInterface $variantProductBuilder,
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
         StepExecution $stepExecution,
@@ -32,6 +33,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $this->beConstructedWith(
             $productRepository,
             $productBuilder,
+            $variantProductBuilder,
             $productUpdater,
             $productValidator,
             $productDetacher,
@@ -356,7 +358,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
+        $productRepository->findOneByIdentifier('tshirt')->willReturn(null);
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 
@@ -396,6 +398,108 @@ class ProductProcessorSpec extends ObjectBehavior
 
         $filteredData = [
             'family' => 'Tshirt',
+            'values' => [
+                'name' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' =>  null,
+                        'data' => 'T-shirt super beau'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  null,
+                        'data' => 'My awesome T-shirt'
+                    ]
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  'mobile',
+                        'data' => 'My description'
+                    ]
+                ],
+            ],
+            'enabled' => true
+        ];
+
+        $productFilter->filter($product, $filteredData)->willReturn($filteredData);
+
+        $productUpdater
+            ->update($product, $filteredData)
+            ->shouldBeCalled();
+
+        $productValidator
+            ->validate($product)
+            ->willReturn($violationList);
+
+        $this
+            ->process($convertedData)
+            ->shouldReturn($product);
+    }
+
+    function it_creates_a_variant_product(
+        $productRepository,
+        $variantProductBuilder,
+        $productUpdater,
+        $productValidator,
+        $productFilter,
+        $stepExecution,
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList,
+        JobParameters $jobParameters
+    ) {
+        $stepExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->get('enabledComparison')->willReturn(true);
+        $jobParameters->get('familyColumn')->willReturn('family');
+        $jobParameters->get('categoriesColumn')->willReturn('categories');
+        $jobParameters->get('groupsColumn')->willReturn('groups');
+        $jobParameters->get('enabled')->willReturn(true);
+        $jobParameters->get('decimalSeparator')->willReturn('.');
+        $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
+
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier('tshirt')->willReturn(null);
+
+        $variantProductBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
+
+        $convertedData = [
+            'identifier' => 'tshirt',
+            'enabled' => true,
+            'family' => 'Tshirt',
+            'parent' => 'parent_code',
+            'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' =>  null,
+                        'data' => 'tshirt'
+                    ],
+                ],
+                'name' => [
+                    [
+                        'locale' => 'fr_FR',
+                        'scope' =>  null,
+                        'data' => 'T-shirt super beau'
+                    ],
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  null,
+                        'data' => 'My awesome T-shirt'
+                    ]
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' =>  'mobile',
+                        'data' => 'My description'
+                    ]
+                ],
+            ]
+        ];
+
+        $filteredData = [
+            'family' => 'Tshirt',
+            'parent' => 'parent_code',
             'values' => [
                 'name' => [
                     [
@@ -491,7 +595,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
+        $productRepository->findOneByIdentifier('tshirt')->willReturn(null);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
@@ -595,7 +699,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
+        $productRepository->findOneByIdentifier('tshirt')->willReturn(null);
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
         $stepExecution->getSummaryInfo('item_position')->shouldBeCalled();
@@ -894,7 +998,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $jobParameters->get('dateFormat')->willReturn('yyyy-MM-dd');
 
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
-        $productRepository->findOneByIdentifier('tshirt')->willReturn(false);
+        $productRepository->findOneByIdentifier('tshirt')->willReturn(null);
 
         $productBuilder->createProduct('tshirt', 'Tshirt')->willReturn($product);
 
