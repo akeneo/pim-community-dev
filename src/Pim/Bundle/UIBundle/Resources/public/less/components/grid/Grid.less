@@ -5,8 +5,12 @@
   width: 100%;
   border-collapse: collapse;
 
-  &-bodyRow + &-bodyRow {
+  &-bodyRow + &-bodyRow &-bodyCell {
     border-top: 1px solid @AknBorderColor;
+  }
+
+  &-bodyRow + &-bodyRow &-bodyCell&-bodyCell--checkbox {
+    border-top: none;
   }
 
   &-bodyCell,
@@ -15,16 +19,32 @@
     line-height: 16px;
     padding: 12px 4px;
     transition: background 0.1s ease;
-    background: white;
 
     &--tight {
       width: 1px;
     }
+
+    &--checkbox {
+      background: white;
+      text-align: center;
+    }
   }
 
-  &-bodyRow:hover &-bodyCell,
-  &-bodyRow--highlight &-bodyCell {
+  &-headerCell&-headerCell--checkbox {
+    border-bottom: none;
+  }
+
+  &-bodyRow:hover,
+  &-bodyRow--highlight {
     background: @AknDefaultHoverBackground;
+  }
+
+  &-bodyRow--selected {
+    background: lighten(@AknBlue, 35%);
+  }
+
+  &-bodyRow--selected:hover {
+    background: lighten(@AknBlue, 30%);
   }
 
   &-bodyCell {
@@ -40,6 +60,16 @@
       opacity: 0;
       width: 1px;
     }
+
+    &--credentials {
+      line-height: 24px;
+    }
+
+    &--highlight {
+      color: @AknLightPurple;
+      font-style: italic;
+      font-size: @AknFontSizeBig;
+    }
   }
 
   &-bodyRow:hover &-bodyCell--actions {
@@ -49,10 +79,9 @@
   &-headerCell {
     color: @AknDefaultFontColor;
     border-bottom: solid 2px @AknDarkBlue;
-    font-size: @AknFontSizeSmall;
-    font-weight: bold;
+    font-size: @AknFontSizeBig;
+    font-weight: normal;
     text-align: left;
-    text-transform: uppercase;
     white-space: nowrap;
 
     // TODO To remove when we will remove the global 'a' rule
@@ -101,5 +130,11 @@
 
   &--unclickable &-bodyRow &-bodyCell {
     cursor: default;
+  }
+
+  &-label {
+    font-weight: bold;
+    display: inline-block;
+    width: 60px;
   }
 }

@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeTranslationInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ChannelTranslationInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
@@ -116,8 +117,6 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
         $completenessPrintFrFR->getMissingCount()->willReturn(1);
         $completenessPrintFrFR->getMissingAttributes()->willReturn($attributeCollectionPrintFrFR);
 
-
-
         $mobile->getCode()->willReturn('mobile');
         $print->getCode()->willReturn('print');
         $enUS->getCode()->willReturn('en_US');
@@ -134,7 +133,10 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
         $translationPrintFr->getLabel()->willReturn('impression');
 
         $attribute->getCode()->willReturn('name');
-        $attribute->getTranslation()->willReturn('Name');
+        $attribute->getTranslation('en_US')->willReturn($attributeTranslationEn);
+        $attribute->getTranslation('fr_FR')->willReturn($attributeTranslationFr);
+        $attributeTranslationEn->getLabel()->willReturn('Name');
+        $attributeTranslationFr->getLabel()->willReturn('Nom');
 
         $normalizer->normalize(Argument::cetera())->shouldBeCalledTimes(4);
         $normalizer
@@ -149,76 +151,89 @@ class CompletenessCollectionNormalizerSpec extends ObjectBehavior
         $normalizer
             ->normalize($completenessPrintFrFR, 'internal_api', ['a_context_key' => 'context_value'])
             ->willReturn([]);
-
+        
         $this
             ->normalize($completenessCollection, 'internal_api', ['a_context_key' => 'context_value'])
             ->shouldReturn([
             [
                 'channel' => "mobile",
-                    'labels'  => [
-                        'en_US' => "mobile",
-                        'fr_FR' => "mobile",
-                    ],
-                    'stats'   => [
-                        'total'    => 2,
-                        'complete' => 0,
-                    ],
-                    'locales' => [
-                        'en_US' => [
-                            'completeness' => [],
-                            'missing'      => [
-                                [
-                                    'code'  => "name",
-                                    'label' => 'Name'
-                                ],
+                'labels'  => [
+                    'en_US' => "mobile",
+                    'fr_FR' => "mobile",
+                ],
+                'stats'   => [
+                    'total'    => 2,
+                    'complete' => 0,
+                    'average'  => 50,
+                ],
+                'locales' => [
+                    'en_US' => [
+                        'completeness' => [],
+                        'missing'      => [
+                            [
+                                'code'   => "name",
+                                'labels' => [
+                                    'en_US' => 'Name',
+                                    'fr_FR' => 'Nom'
+                                ]
                             ],
-                            'label'        => "English",
                         ],
-                        'fr_FR' => [
-                            'completeness' => [],
-                            'missing'      => [
-                                [
-                                    'code'  => "name",
-                                    'label' => 'Name'
-                                ],
-                            ],
-                            'label'        => "French",
-                        ],
+                        'label'        => "English",
                     ],
-                ], [
+                    'fr_FR' => [
+                        'completeness' => [],
+                        'missing'      => [
+                            [
+                                'code'  => "name",
+                                'labels' => [
+                                    'en_US' => 'Name',
+                                    'fr_FR' => 'Nom'
+                                ]
+                            ],
+                        ],
+                        'label'        => "French",
+                    ],
+                ],
+            ], [
                 'channel' => "print",
-                    'labels'  => [
-                        'en_US' => "print",
-                        'fr_FR' => "impression",
-                    ],
-                    'stats'   => [
-                        'total'    => 2,
-                        'complete' => 0,
-                    ],
-                    'locales' => [
-                        'en_US' => [
-                            'completeness' => [],
-                            'missing'      => [
-                                [
-                                    'code'  => "name",
-                                    'label' => 'Name'
-                                ],
+                'labels'  => [
+                    'en_US' => "print",
+                    'fr_FR' => "impression",
+                ],
+                'stats'   => [
+                    'total'    => 2,
+                    'complete' => 0,
+                    'average'  => 50,
+                ],
+                'locales' => [
+                    'en_US' => [
+                        'completeness' => [],
+                        'missing'      => [
+                            [
+                                'code'  => "name",
+                                'labels' => [
+                                    'en_US' => 'Name',
+                                    'fr_FR' => 'Nom'
+                                ]
                             ],
-                            'label'        => "English",
                         ],
-                        'fr_FR' => [
-                            'completeness' => [],
-                            'missing'      => [
-                                [
-                                    'code'  => "name",
-                                    'label' => 'Name'
-                                ],
+                        'label'        => "English",
+                    ],
+                    'fr_FR' => [
+                        'completeness' => [],
+                        'missing'      => [
+                            [
+                                'code'  => "name",
+                                'labels' => [
+                                    'en_US' => 'Name',
+                                    'fr_FR' => 'Nom'
+                                ]
                             ],
-                            'label'        => "French",
-                        ]
+                        ],
+                        'label'        => "French",
                     ]
                 ]
             ]
-        );
+        ]);
     }
 }

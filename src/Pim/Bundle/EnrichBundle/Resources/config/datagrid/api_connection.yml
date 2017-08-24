@@ -10,6 +10,7 @@ datagrid:
             label:
                 label: Label
                 data_name: label
+                frontend_type: label
             credentials:
                 label: Credentials
                 data_name: credentials

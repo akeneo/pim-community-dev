@@ -1,6 +1,6 @@
 /* global define */
-define(['oro/datagrid/string-cell', 'underscore', 'oro/translator'],
-    function (StringCell, _, __) {
+define(['oro/datagrid/string-cell', 'underscore', 'oro/translator', 'pim/template/datagrid/cell/credentials-cell'],
+    function (StringCell, _, __, CredentialsTemplate) {
         'use strict';
 
         /**
@@ -9,6 +9,9 @@ define(['oro/datagrid/string-cell', 'underscore', 'oro/translator'],
          * @extends oro.datagrid.StringCell
          */
         return StringCell.extend({
+            className: 'AknGrid-bodyCell AknGrid-bodyCell--credentials',
+
+            template: _.template(CredentialsTemplate),
             /**
              * Render the API credentials.
              */
@@ -20,14 +23,14 @@ define(['oro/datagrid/string-cell', 'underscore', 'oro/translator'],
                     return this;
                 }
 
-                this.$el.empty().html("<div><span>" +
-                    __('Client ID') +
-                    ": </span>" +
-                    credentials.public_id + "</div><div><span>" +
-                    __('Secret') +
-                    ": </span> " +
-                    credentials.secret +
-                    " </div>");
+                this.$el.empty().html(
+                    this.template({
+                        clientIdLabel: __('Client ID'),
+                        secretLabel: __('Secret'),
+                        publicId: credentials.public_id,
+                        secret: credentials.secret
+                    })
+                );
 
                 return this;
             }

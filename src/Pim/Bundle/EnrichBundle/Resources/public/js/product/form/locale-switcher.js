@@ -47,6 +47,17 @@ define(
             /**
              * {@inheritdoc}
              */
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
+                    if ('base_product' === localeEvent.context) {
+                        this.render();
+                    }
+                }.bind(this));
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 this.getDisplayedLocales()
                     .done(function (locales) {

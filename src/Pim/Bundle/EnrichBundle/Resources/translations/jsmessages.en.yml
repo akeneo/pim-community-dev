@@ -238,6 +238,7 @@ pim_enrich:
             message:
                 created: Product successfully created
             completeness: Complete
+
         association_type:
             info:
                 deletion_successful: Association type successfully deleted.
@@ -425,10 +426,11 @@ pim_enrich:
                     title: Associations
                     info:
                         none_exist: No association types exist.
-                        show_products: Show products
-                        show_groups: Show groups
-                        number_of_associations: "{{ productCount }} products and {{ groupCount }} groups"
+                        show_products: Display products
+                        show_groups: Display groups
+                        number_of_associations: "{{ productCount }} product(s) and {{ groupCount }} group(s)"
                     association_type_selector: Association type
+                    target: Target
                 attributes:
                     title: Attributes
                     btn:

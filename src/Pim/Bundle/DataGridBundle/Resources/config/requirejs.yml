@@ -65,6 +65,7 @@ config:
         oro/datagrid/image-cell:                pimdatagrid/js/datagrid/cell/image-cell
         oro/datagrid/boolean-label-cell:        pimdatagrid/js/datagrid/cell/boolean-label-cell
         oro/datagrid/credentials-cell:          pimdatagrid/js/datagrid/cell/credentials-cell
+        oro/datagrid/label-cell:                pimdatagrid/js/datagrid/cell/label-cell
         oro/datagrid/cell-formatter:            pimdatagrid/js/datagrid/formatter/cell-formatter
         oro/datagrid/grid:                      pimdatagrid/js/datagrid/grid
         oro/datagrid/header-cell:               pimdatagrid/js/datagrid/header-cell/header-cell
@@ -137,3 +138,4 @@ config:
         pim/template/datagrid/filter/date-filter:               pimdatagrid/templates/filter/date-filter.html
         pim/template/datagrid/filter/metric-filter:             pimdatagrid/templates/filter/metric-filter.html
         pim/template/datagrid/filter/search-filter:             pimdatagrid/templates/filter/search-filter.html
+        pim/template/datagrid/cell/credentials-cell:            pimdatagrid/templates/datagrid/cell/credentials-cell.html

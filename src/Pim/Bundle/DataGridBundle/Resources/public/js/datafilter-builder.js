@@ -87,11 +87,11 @@ define(
             /**
              * Renders the filters
              */
-            build() {
-                var displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
-                var options = this.combineOptions.call(this);
+            build: function () {
+                var options = methods.combineOptions.call(this);
                 options.collection = this.collection;
-                options.displayManageFilters = displayManageFilters;
+                options.displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
+                options.filtersAsColumn = _.result(this.metadata.options, 'filtersAsColumn', false);
                 var filtersList = new FiltersManager(options);
                 this.$el.prepend(filtersList.render().$el);
 

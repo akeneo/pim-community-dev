@@ -53,13 +53,22 @@ define(
         },
 
         /**
+         * Displays the filters as column or not
+         *
+         * @property
+         */
+        filtersAsColumn: function() {
+            return _.result(this.options, 'filtersAsColumn', false);
+        },
+
+        /**
          * Container classes
          *
          * @property
          */
         className: function () {
             var name = 'AknFilterBox filter-box oro-clearfix-width';
-            if (true !== this.displayManageFilters()) {
+            if (true !== this.filtersAsColumn()) {
                 name += ' AknFilterBox--search';
             }
 
@@ -79,13 +88,6 @@ define(
          * @property
          */
         filterSelector: '#add-filter-select',
-
-        /**
-         * Add filter button hint
-         *
-         * @property
-         */
-        addButtonHint: _.__('oro_filter.filters.manage'),
 
         /**
          * Select widget object
@@ -111,7 +113,6 @@ define(
          *
          * @param {Object} options
          * @param {Object} [options.filters]
-         * @param {String} [options.addButtonHint]
          * @param {Boolean} [options.displayManageFilters]
          */
         initialize: function (options) {
@@ -123,10 +124,6 @@ define(
                 this.listenTo(filter, 'update', this._onFilterUpdated);
                 this.listenTo(filter, 'disable', this._onFilterDisabled);
             }, this);
-
-            if (options.addButtonHint) {
-                this.addButtonHint = options.addButtonHint;
-            }
 
             Backbone.View.prototype.initialize.apply(this, arguments);
 
@@ -266,7 +263,7 @@ define(
                 options.removeAttr('selected');
             }
 
-            if (optionsSelectors.length) {
+            if (this.displayManageFilters() && optionsSelectors.length) {
                 this.selectWidget.multiselect('refresh');
             }
 
@@ -329,7 +326,6 @@ define(
                 parameters: {
                     multiple: true,
                     selectedList: 0,
-                    selectedText: this.addButtonHint,
                     classes: 'AknFilterBox-addFilterButton filter-list select-filter-widget',
                     open: $.proxy(function () {
                         if (this.$el.is(':visible')) {
@@ -345,7 +341,7 @@ define(
             this.selectWidget.getWidget().addClass('pimmultiselect');
 
             this.$('.filter-list span:first').replaceWith(
-                `<a id='add-filter-button' href='javascript:void(0);'>${this.addButtonHint}</a>`
+                '<a id="add-filter-button" href="javascript:void(0);"></a>'
             );
         },
 

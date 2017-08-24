@@ -767,12 +767,11 @@ class Grid extends Index
         $this->spin(function () {
             $filterList = $this
                 ->getElement('Filters')
-                ->find('css', '#add-filter-button');
+                ->find('css', '.AknFilterBox-addFilterButton');
 
             if (null === $filterList) {
                 return false;
             }
-
             $filterList->click();
 
             return true;
