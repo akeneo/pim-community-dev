@@ -154,15 +154,15 @@ class NavigationContext extends PimContext implements PageObjectAware
         }, sprintf('You are not on the %s page', $page));
     }
 
-    /**
+        /**
      * @param array $options
      *
-     * @Given /^I am on the products grid$/
-     * @Given /^I go to the products grid$/
+     * @Given /^I am on the ([^"]*) grid$/
+     * @Given /^I go to the ([^"]*) grid$/
      */
-    public function iAmOnTheProductsGrid(array $options = [])
+    public function iAmOnTheGrid($pageName, array $options = [])
     {
-        $page = $this->getPageMapping()['products'];
+        $page = $this->getPageMapping()[$pageName];
 
         $this->spin(function () use ($page, $options) {
             $this->openPage($page, $options);
@@ -175,7 +175,7 @@ class NavigationContext extends PimContext implements PageObjectAware
             assertTrue($result, sprintf('Expecting to be on the page %s, not %s', $expectedUrl, $actualUrl));
 
             return $this->getCurrentPage()->find('css', '.AknGridToolbar-center');
-        }, sprintf('You are not on the products grid', $page));
+        }, sprintf('You are not on the %s grid', $pageName));
 
         $this->wait();
     }

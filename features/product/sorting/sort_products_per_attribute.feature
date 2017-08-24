@@ -18,6 +18,7 @@ Feature: Sort products per attributes
     And the grid should contain 5 elements
     And I should be able to sort the rows by SKU
 
+  @skip
   Scenario: Successfully sort products by boolean value for boolean attributes
     Given the "apparel" catalog configuration
     And the following products:
