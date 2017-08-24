@@ -13,7 +13,7 @@ function ($, Backbone, Backgrid) {
     return Backbone.View.extend({
 
         /** @property */
-        className: "AknGrid-bodyCell AknGrid-bodyCell--tight select-row-cell",
+        className: "AknGrid-bodyCell AknGrid-bodyCell--tight AknGrid-bodyCell--checkbox select-row-cell",
 
         /** @property */
         tagName: "td",

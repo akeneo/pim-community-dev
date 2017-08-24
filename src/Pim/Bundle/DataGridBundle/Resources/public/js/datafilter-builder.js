@@ -31,10 +31,10 @@ function($, _, tools,  mediator, FiltersManager) {
             },
 
             build: function () {
-                var displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
                 var options = methods.combineOptions.call(this);
                 options.collection = this.collection;
-                options.displayManageFilters = displayManageFilters;
+                options.displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
+                options.filtersAsColumn = _.result(this.metadata.options, 'filtersAsColumn', false);
                 var filtersList = new FiltersManager(options);
                 this.$el.prepend(filtersList.render().$el);
                 mediator.trigger('datagrid_filters:rendered', this.collection);

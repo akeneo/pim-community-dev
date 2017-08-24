@@ -52,7 +52,7 @@ define(
             className: 'tab-pane active product-associations',
             events: {
                 'click .associations-list li': 'changeAssociationType',
-                'click .AknTabHeader .target-button': 'changeAssociationTargets'
+                'click .target-button': 'changeAssociationTargets'
             },
             initialize: function () {
                 state = {
@@ -85,6 +85,7 @@ define(
                         getInitialParams: function (associationType) {
                             var params = {};
                             params[this.paramName] = this.getParamValue(associationType);
+                            params.dataLocale = UserContext.get('catalogLocale');
 
                             return params;
                         },
@@ -156,8 +157,7 @@ define(
                             currentAssociationType: _.findWhere(
                                 associationTypes,
                                 {code: this.getCurrentAssociationType()}
-                            ),
-                            label: __('pim_enrich.form.product.tab.associations.association_type_selector')
+                            )
                         })
                     );
                     this.renderPanes();
@@ -182,10 +182,17 @@ define(
                     this.$('.tab-content > .association-type').remove();
                     this.$('.tab-content').prepend(
                         this.panesTemplate({
+                            __: __,
+                            label: __('pim_enrich.form.product.tab.associations.association_type_selector'),
                             locale: UserContext.get('catalogLocale'),
                             associationTypes: associationTypes,
                             currentAssociationType: this.getCurrentAssociationType(),
-                            currentAssociationTarget: this.getCurrentAssociationTarget()
+                            currentAssociationTarget: this.getCurrentAssociationTarget(),
+                            numberAssociationLabelKey:
+                                'pim_enrich.form.product.tab.associations.info.number_of_associations',
+                            targetLabel: __('pim_enrich.form.product.tab.associations.target'),
+                            showProductsLabel: __('pim_enrich.form.product.tab.associations.info.show_products'),
+                            showGroupsLabel: __('pim_enrich.form.product.tab.associations.info.show_groups')
                         })
                     );
                 }.bind(this));
@@ -241,13 +248,8 @@ define(
             },
             changeAssociationType: function (event) {
                 event.preventDefault();
-                var associationType = event.currentTarget.dataset.associationType;
+                var associationType = event.currentTarget.dataset.associationtype;
                 this.setCurrentAssociationType(associationType);
-
-                this.$el.find('.current-association-type').html($(event.currentTarget).text());
-                this.$el.find('.association-type-selector .AknDropdown-menuLink--active')
-                    .removeClass('AknDropdown-menuLink--active');
-                $(event.currentTarget).find('.AknDropdown-menuLink ').addClass('AknDropdown-menuLink--active');
 
                 this.$('.AknTitleContainer.association-type[data-association-type="' + associationType + '"]')
                     .removeClass('AknTitleContainer--hidden')
@@ -267,7 +269,7 @@ define(
                     .trigger('datagrid:doRefresh:' + currentGrid.name);
             },
             changeAssociationTargets: function (event) {
-                var associationTarget = event.currentTarget.dataset.associationTarget;
+                const associationTarget = event.currentTarget.dataset.associationTarget;
                 this.setCurrentAssociationTarget(associationTarget);
 
                 _.each(this.datagrids, function (datagrid, gridType) {
@@ -275,10 +277,15 @@ define(
                     this.$('.' + datagrid.name)[method]('hide');
                 }.bind(this));
 
+                const text = event.currentTarget.textContent;
                 $(event.currentTarget)
-                    .addClass('AknButton--hidden')
+                    .addClass('AknDropdown-menuLink--active')
                     .siblings('.target-button')
-                    .removeClass('AknButton--hidden');
+                    .removeClass('AknDropdown-menuLink--active')
+                    .end()
+                    .closest('.AknDropdown')
+                    .find('.AknActionButton-highlight')
+                    .text(text);
 
                 this.updateListenerSelectors();
 

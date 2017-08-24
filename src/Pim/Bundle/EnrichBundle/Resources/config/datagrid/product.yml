@@ -4,6 +4,7 @@ datagrid:
             entityHint: product
             requireJSModules:
                 - pim/datagrid/configure-columns-action
+            filtersAsColumn: true
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_datasource_product
