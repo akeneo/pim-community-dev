@@ -9,19 +9,24 @@ Feature: Filter product assets
     And I am logged in as "Pamela"
     And I am on the assets page
 
-  Scenario: Successfully filter product assets
-    And I should be able to use the following filters:
-      | filter      | operator         | value                     | result                                                              |
-      | code        | contains         | ma                        | man_wall, machine                                                   |
-      | code        | is equal to      | bridge                    | bridge                                                              |
-      | tags        | in list          | women                     | mouette                                                             |
-      | tags        | in list          | lacework, men             | eagle, minivan                                                      |
-      | tags        | is empty         |                           | photo                                                               |
-      | endOfUseAt  | between          | 01/01/2006 and 01/01/2008 | paint, dog                                                          |
-      | endOfUseAt  | more than        | 09/01/2015                | autumn, tiger                                                       |
-      | endOfUseAt  | less than        | 01/01/2030                | dog, autumn, paint, akene                                           |
-      | description | contains         | animal                    | dog, mouette                                                        |
-      | description | does not contain | water                     | paint, chicagoskyline, akene, dog, machine, minivan, mouette, tiger |
+  Scenario Outline: Successfully filter product assets
+    When I show the filter "<filter>"
+    And I filter by "<filter>" with operator "<operator>" and value "<value>"
+    Then the grid should contain <count> elements
+    And I should see entities <result>
+
+    Examples:
+      | filter      | operator         | value                     | result                                                              | count |
+      | code        | contains         | ma                        | man_wall, machine                                                   | 2     |
+      | code        | is equal to      | bridge                    | bridge                                                              | 1     |
+      | tags        | in list          | women                     | mouette                                                             | 1     |
+      | tags        | in list          | lacework, men             | eagle, minivan                                                      | 2     |
+      | tags        | is empty         |                           | photo                                                               | 1     |
+      | endOfUseAt  | between          | 01/01/2006 and 01/01/2008 | paint, dog                                                          | 2     |
+      | endOfUseAt  | more than        | 09/01/2015                | autumn, tiger                                                       | 2     |
+      | endOfUseAt  | less than        | 01/01/2030                | dog, autumn, paint, akene                                           | 4     |
+      | description | contains         | animal                    | dog, mouette                                                        | 2     |
+      | description | does not contain | water                     | paint, chicagoskyline, akene, dog, machine, minivan, mouette, tiger | 8     |
 
   Scenario: Successfully filter product assets by category
     When I select the "Asset main catalog" tree
