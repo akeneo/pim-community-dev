@@ -41,8 +41,7 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
-use Symfony\Component\Routing\Router;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -90,7 +89,7 @@ class ProductController
     /** @var SaverInterface */
     protected $saver;
 
-    /** @var RouterInterface */
+    /** @var UrlGeneratorInterface */
     protected $router;
 
     /** @var ProductFilterInterface */
@@ -122,7 +121,7 @@ class ProductController
      * @param RemoverInterface                      $remover
      * @param ObjectUpdaterInterface                $updater
      * @param SaverInterface                        $saver
-     * @param RouterInterface                       $router
+     * @param UrlGeneratorInterface                 $router
      * @param ProductFilterInterface                $emptyValuesFilter
      * @param StreamResourceResponse                $partialUpdateStreamResource
      * @param PrimaryKeyEncrypter                   $primaryKeyEncrypter
@@ -142,7 +141,7 @@ class ProductController
         RemoverInterface $remover,
         ObjectUpdaterInterface $updater,
         SaverInterface $saver,
-        RouterInterface $router,
+        UrlGeneratorInterface $router,
         ProductFilterInterface $emptyValuesFilter,
         StreamResourceResponse $partialUpdateStreamResource,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
@@ -465,7 +464,7 @@ class ProductController
         $route = $this->router->generate(
             'pim_api_product_get',
             ['code' => $product->getIdentifier()],
-            Router::ABSOLUTE_URL
+            UrlGeneratorInterface::ABSOLUTE_URL
         );
         $response->headers->set('Location', $route);
 
