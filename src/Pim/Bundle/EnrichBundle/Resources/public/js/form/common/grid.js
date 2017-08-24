@@ -12,7 +12,8 @@ define([
         'pim/datagrid/state',
         'require-context',
         'pim/form',
-        'pim/user-context'
+        'pim/user-context',
+        'pim/fetcher-registry'
     ],
     function (
         $,
@@ -26,7 +27,8 @@ define([
         DatagridState,
         requireContext,
         BaseForm,
-        UserContext
+        UserContext,
+        FetcherRegistry
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -68,9 +70,27 @@ define([
             render: function () {
                 this.$el.html(this.template({}));
 
-                this.renderGrid(this.alias, this.options);
+                $.when(this.getDefaultColumns(), this.getDefaultView())
+                .then((defaultColumns, defaultView) => this.renderGrid(
+                    this.alias, this.options, defaultColumns, defaultView
+                ));
 
                 return this;
+            },
+
+            getDefaultView() {
+                console.log('getDefaultView', this.alias)
+                return FetcherRegistry.getFetcher('datagrid-view')
+                    .defaultUserView(this.alias)
+                    .then(defaultUserView => defaultUserView.view);
+            },
+
+            getDefaultColumns() {
+                return $.get(Routing.generate(
+                    'pim_datagrid_view_rest_default_columns', {
+                        alias: this.alias
+                    }
+                ));
             },
 
             /**
@@ -79,7 +99,7 @@ define([
              * @param {String} alias
              * @param {Object} params
              */
-            renderGrid: function (alias, params) {
+            renderGrid: function (alias, params, defaultColumns, defaultView) {
                 params.dataLocale = UserContext.get('catalogLocale');
 
                 this.urlParams = $.extend(true, {}, params);
@@ -93,9 +113,16 @@ define([
                 }
 
                 var state = DatagridState.get(alias, ['view', 'filters', 'columns']) || {};
-                this.applyView(state.view, alias);
-                this.applyFilters(state.filters, alias);
-                this.applyColumns(state.columns, alias);
+
+                if(defaultView && !state.view) {
+                    this.applyView(defaultView.id, alias);
+                    this.applyFilters(defaultView.filters, alias);
+                    this.applyColumns(defaultView.columns, alias);
+                } else {
+                    this.applyView(state.view, alias);
+                    this.applyFilters(state.filters, alias);
+                    this.applyColumns(state.columns, alias);
+                }
 
                 //TODO Manage columns for product form (when refactoring product form index)
                 //TODO Manage category filter (when refactoring category index)
