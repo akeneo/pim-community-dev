@@ -47,6 +47,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $productModel->getId()->willReturn(67);
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
+        $productModel->getParent()->willReturn(null);
+
         $productModel->getCode()->willReturn('sku-001');
         $productModel->getCreated()->willReturn($now);
         $serializer
@@ -80,6 +82,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                 'updated'        => $now->format('c'),
                 'family'         => 'family_A',
                 'family_variant' => 'family_variant_1',
+                'parent'         => null,
                 'values'         => [],
             ]
         );
@@ -96,6 +99,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
         $productModel->getId()->willReturn(67);
         $productModel->getCode()->willReturn('sku-001');
+
+        $productModel->getParent()->willReturn(null);
 
         $productModel->getCreated()->willReturn($now);
         $serializer->normalize(
@@ -151,6 +156,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                     ],
                 ],
                 'family_variant' => 'family_variant_B',
+                'parent'         => null,
                 'values'         => [
                     'a_size-decimal' => [
                         '<all_channels>' => [
@@ -165,6 +171,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_product_model_fields_and_values_with_its_parents_values(
         $serializer,
         ProductModelInterface $productModel,
+        ProductModelInterface $parent,
         ValueCollectionInterface $valueCollection,
         FamilyInterface $family,
         FamilyVariantInterface $familyVariant
@@ -173,6 +180,9 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
         $productModel->getId()->willReturn(67);
         $productModel->getCode()->willReturn('sku-001');
+
+        $productModel->getParent()->willReturn($parent);
+        $parent->getCode()->willReturn('parent_A');
 
         $productModel->getCreated()->willReturn($now);
         $serializer->normalize(
@@ -237,6 +247,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                     ],
                 ],
                 'family_variant' => 'family_variant_B',
+                'parent'         => 'parent_A',
                 'values'         => [
                     'a_size-decimal'         => [
                         '<all_channels>' => [

@@ -96,6 +96,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                 'groups'         => [],
                 'completeness'   => ['the completenesses'],
                 'family_variant' => null,
+                'parent'         => null,
                 'values'         => [],
             ]
         );
@@ -201,6 +202,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                     ],
                 ],
                 'family_variant' => null,
+                'parent'         => null,
                 'values'        => [
                     'a_size-decimal' => [
                         '<all_channels>' => [
@@ -218,9 +220,13 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         ValueCollectionInterface $valueCollection,
         Collection $completenesses,
         FamilyInterface $family,
-        FamilyVariantInterface $familyVariant
+        FamilyVariantInterface $familyVariant,
+        ProductModelInterface $parent
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
+
+        $variantProduct->getParent()->willReturn($parent);
+        $parent->getCode()->willReturn('parent_A');
 
         $variantProduct->getId()->willReturn(67);
         $variantProduct->getIdentifier()->willReturn('sku-001');
@@ -278,6 +284,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                 'groups'        => [],
                 'completeness'  => ['the completenesses'],
                 'family_variant' => 'family_variant_A',
+                'parent'        => 'parent_A',
                 'values'        => [],
             ]
         );
@@ -289,9 +296,13 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         ValueCollectionInterface $valueCollection,
         Collection $completenesses,
         FamilyInterface $family,
-        FamilyVariantInterface $familyVariant
+        FamilyVariantInterface $familyVariant,
+        ProductModelInterface $parent
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
+
+        $variantProduct->getParent()->willReturn($parent);
+        $parent->getCode()->willReturn('parent_A');
 
         $variantProduct->getId()->willReturn(67);
         $variantProduct->getIdentifier()->willReturn('sku-001');
@@ -397,6 +408,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                     ],
                 ],
                 'family_variant' => 'family_variant_A',
+                'parent'         => 'parent_A',
                 'values'        => [
                     'a_size-decimal' => [
                         '<all_channels>' => [

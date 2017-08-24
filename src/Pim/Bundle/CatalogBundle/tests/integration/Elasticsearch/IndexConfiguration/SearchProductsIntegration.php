@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
+use Pim\Component\Catalog\Model\ProductInterface;
+
 /**
  * Search use cases of products only (no product models should be returned).
  *
@@ -29,7 +31,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                 'bool' => [
                     'filter' => [
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],
@@ -106,7 +108,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                             ],
                         ],
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],
@@ -155,7 +157,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                             'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['red']],
                         ],
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],
@@ -196,7 +198,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                             'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
                         ],
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],
@@ -228,7 +230,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                             'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['blue']],
                         ],
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],
@@ -266,7 +268,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                             'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
                         ],
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],
@@ -304,7 +306,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                             'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['m']],
                         ],
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],
@@ -347,7 +349,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                             'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['s']],
                         ],
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],
@@ -372,7 +374,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                             'terms' => ['values.size-option.<all_channels>.<all_locales>' => ['m']],
                         ],
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],
@@ -400,7 +402,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                             'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['grey']],
                         ],
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],
@@ -430,7 +432,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                             'terms' => ['values.material-option.<all_channels>.<all_locales>' => ['cotton']],
                         ],
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],
@@ -479,7 +481,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                             'terms' => ['values.material-option.<all_channels>.<all_locales>' => ['leather']],
                         ],
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],
@@ -523,7 +525,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                             'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['white']],
                         ],
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],
@@ -555,7 +557,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                             'exists' => ['field' => 'values.color-option.<all_channels>.<all_locales>'],
                         ],
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],
@@ -624,7 +626,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                             'terms' => ['values.color-option.<all_channels>.<all_locales>' => ['red']],
                         ],
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],
@@ -670,7 +672,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                             'exists' => ['field' => 'values.color-option.<all_channels>.<all_locales>'],
                         ],
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],
@@ -715,7 +717,7 @@ class SearchProductsIntegration extends AbstractPimCatalogProductModelIntegratio
                             'exists' => ['field' => 'values.size-option.<all_channels>.<all_locales>'],
                         ],
                         [
-                            'terms' => ['product_type' => ['PimCatalogProduct', 'PimCatalogVariantProduct']],
+                            'terms' => ['product_type' => [ProductInterface::class]],
                         ],
                     ],
                 ],

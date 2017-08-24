@@ -77,7 +77,9 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
             }
         );
 
-        if (!empty($attributeFilters)) {
+        if (empty($attributeFilters)) {
+            $this->addFilter('parent', Operators::IS_EMPTY, null);
+        } else {
             $attributeFilterKeys = array_column($attributeFilters, 'field');
             $this->addFilter('attributes_for_this_level', Operators::IN_LIST, $attributeFilterKeys);
         }

@@ -24,6 +24,7 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
 
     private const FIELD_FAMILY_VARIANT = 'family_variant';
     private const FIELD_ID = 'id';
+    private const FIELD_PARENT = 'parent';
 
     /**
      * {@inheritdoc}
@@ -58,6 +59,9 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
         }
         $data[StandardPropertiesNormalizer::FIELD_FAMILY] = $family;
         $data[self::FIELD_FAMILY_VARIANT] = $familyVariant;
+
+        $parentCode = null !== $productModel->getParent() ? $productModel->getParent()->getCode() : null;
+        $data[self::FIELD_PARENT] = $parentCode;
 
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$productModel->getValues()->isEmpty()
             ? $this->serializer->normalize(

@@ -38,7 +38,7 @@ class ProductNormalizer implements NormalizerInterface
     {
         $data = $this->propertiesNormalizer->normalize($product, $format, $context);
 
-        $data[self::FIELD_PRODUCT_TYPE] = $this->getVariationLevelCode($product);
+        $data[self::FIELD_PRODUCT_TYPE] = ProductInterface::class;
         $data[self::FIELD_ATTRIBUTES_IN_LEVEL] = array_keys($product->getRawValues());
 
         return $data;
@@ -51,19 +51,5 @@ class ProductNormalizer implements NormalizerInterface
     {
         return ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format &&
             $data instanceof ProductInterface;
-    }
-
-    /**
-     * @param ProductInterface $product
-     *
-     * @return string
-     */
-    private function getVariationLevelCode(ProductInterface $product) : string
-    {
-        if ($product instanceof VariantProductInterface) {
-            return 'PimCatalogVariantProduct';
-        }
-
-        return 'PimCatalogProduct';
     }
 }
