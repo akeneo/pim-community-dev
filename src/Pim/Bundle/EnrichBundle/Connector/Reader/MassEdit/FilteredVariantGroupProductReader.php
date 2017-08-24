@@ -107,7 +107,6 @@ class FilteredVariantGroupProductReader extends ProductReader
         return $this->cleanedFilters;
     }
 
-
     /**
      * Clean the filters to keep only non duplicated.
      * This method send "skipped" message for every duplicated product for a variant group.

@@ -68,6 +68,7 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
     protected function validateConfiguration(ConfigurationInterface $configuration, $config)
     {
         $processor = new Processor();
+
         return $processor->processConfiguration(
             $configuration,
             $config

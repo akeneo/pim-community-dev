@@ -68,6 +68,7 @@ class CleanProductTemplateCommand extends ContainerAwareCommand
                 if ($attribute->isLocalizable()) {
                     $values = array_filter($values, function ($value) use ($localeCodes, $channelLocales, $attribute) {
                         $valueLocales = $attribute->isScopable() ? $channelLocales[$value['scope']] : $localeCodes;
+
                         return in_array($value['locale'], $valueLocales);
                     });
                 }

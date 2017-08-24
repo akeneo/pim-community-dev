@@ -108,7 +108,6 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
         return $identifiers;
     }
 
-
     /**
      * {@inheritdoc}
      */

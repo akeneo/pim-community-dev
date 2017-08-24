@@ -73,6 +73,7 @@ class ArrayToStringTransformer implements DataTransformerInterface
             $separator = $this->delimiter;
         }
         $arrayValue = explode($separator, $stringValue);
+
         return $this->filterArrayValue($arrayValue);
     }
 
@@ -89,6 +90,7 @@ class ArrayToStringTransformer implements DataTransformerInterface
         } else {
             $separator = $this->delimiter;
         }
+
         return implode($separator, $this->filterArrayValue($arrayValue));
     }
 
@@ -104,6 +106,7 @@ class ArrayToStringTransformer implements DataTransformerInterface
             $arrayValue = array_unique($arrayValue);
         }
         $arrayValue = array_filter(array_map('trim', $arrayValue));
+
         return array_values($arrayValue);
     }
 }

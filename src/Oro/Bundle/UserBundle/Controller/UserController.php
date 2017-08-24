@@ -22,6 +22,7 @@ class UserController extends Controller
     public function viewAction($id)
     {
         $user = $this->get('pim_user.repository.user')->find($id);
+
         return $this->view($user);
     }
 
@@ -95,7 +96,6 @@ class UserController extends Controller
             return new JsonResponse('', 403);
         }
     }
-
 
     /**
      * @param mixed  $user

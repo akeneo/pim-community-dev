@@ -59,6 +59,7 @@ class PaginationDecorator extends ElementDecorator
     public function getPageSize()
     {
         preg_match('/^\d+/', $this->getPageSizeButton()->getHtml(), $size);
+
         return (int) $size[0];
     }
 

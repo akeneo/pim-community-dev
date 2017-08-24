@@ -226,7 +226,6 @@ class ProductController
         return $this->categoryRepository->getFilledTree($parent, $categories);
     }
 
-
     /**
      * {@inheritdoc}
      */

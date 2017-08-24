@@ -37,7 +37,6 @@ class CategoryRepository extends NestedTreeRepository implements TranslatedLabel
             ->orderBy('t.label')
             ->getQuery();
 
-
         $choices = [];
         foreach ($query->getArrayResult() as $code) {
             $choices[$code['label']] = $code['code'];

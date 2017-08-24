@@ -59,6 +59,7 @@ class DateExtension extends \Twig_Extension
         $dateDiff = $this->getDateDiff($date, $options);
         if (!$dateDiff->invert) {
             $age = $dateDiff->y;
+
             return $this->translator->transChoice('oro.age', $age, ['%count%' => $age], 'messages');
         } else {
             return isset($options['default']) ? $options['default'] : '';
@@ -72,6 +73,7 @@ class DateExtension extends \Twig_Extension
             $tz = (isset($options['timezone'])) ? new \DateTimeZone($options['timezone']) : new \DateTimeZone('UTC');
             $date = \DateTime::createFromFormat($format, $date, $tz);
         }
+
         return $date->diff(new \DateTime('now'));
     }
 }

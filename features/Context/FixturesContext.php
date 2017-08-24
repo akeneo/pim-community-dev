@@ -154,7 +154,6 @@ class FixturesContext extends BaseFixturesContext
         );
     }
 
-
     /**
      * @param string $status
      * @param string $sku

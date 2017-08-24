@@ -79,6 +79,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
                 $this->returnCallback(
                     function () {
                         $params = func_get_arg(1);
+
                         return $params['json'];
                     }
                 )

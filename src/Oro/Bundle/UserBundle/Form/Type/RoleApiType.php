@@ -51,7 +51,6 @@ class RoleApiType extends AclRoleType
         );
     }
 
-
     /**
      * {@inheritdoc}
      */

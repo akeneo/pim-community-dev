@@ -206,6 +206,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function buildDatasourceProvider()
     {
         $datasourceMock = $this->getMockForAbstractClass('Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface');
+
         return [
             'Datasource not configured, exceptions should be thrown' => [
                 DatagridConfiguration::create([]),
@@ -302,6 +303,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             $this->eventDispatcher,
             $this->securityFacade
         ];
+
         return $this->getMockBuilder('Oro\Bundle\DataGridBundle\Datagrid\Builder')
             ->setConstructorArgs($args)
             ->setMethods($methods)->getMock();

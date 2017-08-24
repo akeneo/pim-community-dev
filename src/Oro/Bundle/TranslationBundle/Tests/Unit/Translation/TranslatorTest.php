@@ -169,6 +169,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
                 $catalogue->set($key, $translation, $domain);
             }
         }
+
         return $catalogue;
     }
 
@@ -189,10 +190,12 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
                 $this->returnCallback(
                     function () use ($obj, $messages) {
                         $locale = func_get_arg(1);
+
                         return $obj->getCatalogue($locale, $messages[$locale]);
                     }
                 )
             );
+
         return $loader;
     }
 
@@ -209,6 +212,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('get')
             ->will($this->returnValue($loader));
+
         return $container;
     }
 

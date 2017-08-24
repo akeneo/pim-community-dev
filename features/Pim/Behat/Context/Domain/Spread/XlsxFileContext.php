@@ -194,7 +194,6 @@ class XlsxFileContext extends PimContext
                 return 0 === count(array_diff($item, $actualLine));
             });
 
-
             if (1 !== count($rows)) {
                 throw new \Exception(
                     sprintf('Could not find a line containing "%s" in %s', implode(' | ', $actualLine), $path)

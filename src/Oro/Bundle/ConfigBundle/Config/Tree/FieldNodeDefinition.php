@@ -132,7 +132,6 @@ class FieldNodeDefinition extends AbstractNodeDefinition
     {
         $values = [];
 
-
         foreach ($nodes as $name => $childNodes) {
             if (is_numeric($name) && is_array($childNodes) && count($childNodes) == 1) {
                 $options = current($childNodes);

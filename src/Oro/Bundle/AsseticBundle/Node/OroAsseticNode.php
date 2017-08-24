@@ -79,7 +79,6 @@ class OroAsseticNode extends \Twig_Node
     {
         $compiler->addDebugInfo($this);
 
-
         $this->compileAsset($compiler, $this->compressedAsset, $this->nameCompress);
         $this->compileDebug($compiler);
 
