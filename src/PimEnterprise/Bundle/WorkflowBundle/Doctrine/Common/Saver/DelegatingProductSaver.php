@@ -174,7 +174,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
      *
      * @return bool
      *
-     * @throws \Exception
+     * @throws ResourceAccessDeniedException
      */
     protected function hasPermissions(ProductInterface $product)
     {

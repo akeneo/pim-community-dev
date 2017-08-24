@@ -35,9 +35,6 @@ class ProductController
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
     /** @var ObjectFilterInterface */
     protected $objectFilter;
 
@@ -45,21 +42,17 @@ class ProductController
      * @param ProductDraftRepositoryInterface $repository
      * @param ProductRepositoryInterface      $productRepository
      * @param NormalizerInterface             $normalizer
-     * @param TokenStorageInterface           $tokenStorage
      * @param ObjectFilterInterface           $objectFilter
      */
     public function __construct(
         ProductDraftRepositoryInterface $repository,
         ProductRepositoryInterface $productRepository,
         NormalizerInterface $normalizer,
-        TokenStorageInterface $tokenStorage,
         ObjectFilterInterface $objectFilter
     ) {
         $this->repository = $repository;
         $this->productRepository = $productRepository;
         $this->normalizer = $normalizer;
-        $this->tokenStorage = $tokenStorage;
-        $this->objectFilter = $objectFilter;
     }
 
     /**

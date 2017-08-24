@@ -2,12 +2,15 @@
 
 namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\Media;
 
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use League\Flysystem\FilesystemInterface;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Api\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\FileStorage;
+use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class CreateMediaFileIntegrationWithPermissions extends AbstractMediaFileTestCase
 {
@@ -20,8 +23,67 @@ class CreateMediaFileIntegrationWithPermissions extends AbstractMediaFileTestCas
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
+    /** @var ProductDraftRepositoryInterface */
+    private $productDraftRepository;
+
     /*** @var FilesystemInterface */
     private $fileSystem;
+
+    public function testCreateAMediaFile()
+    {
+        $product = $this->createProduct('product_editable_by_manager', [
+            'categories' => ['categoryA'],
+            'values'     => [
+                'a_localized_and_scopable_text_area' => [
+                    ['data' => 'EN ecommerce', 'locale' => 'en_US', 'scope' => 'ecommerce'],
+                    ['data' => 'FR ecommerce', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
+                    ['data' => 'DE ecommerce', 'locale' => 'de_DE', 'scope' => 'ecommerce']
+                ],
+                'a_number_float' => [['data' => '12.05', 'locale' => null, 'scope' => null]],
+                'a_localizable_image' => [
+                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'en_US', 'scope' => null],
+                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'fr_FR', 'scope' => null],
+                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => 'de_DE', 'scope' => null]
+                ],
+                'a_metric_without_decimal_negative' => [
+                    ['data' => ['amount' => -10, 'unit' => 'CELSIUS'], 'locale' => null, 'scope' => null]
+                ],
+                'a_multi_select' => [
+                    ['locale' => null, 'scope' => null, 'data' => ['optionA', 'optionB']],
+                ]
+            ]
+        ]);
+
+        $client = $this->createAuthenticatedClient([], ['CONTENT_TYPE' => 'multipart/form-data'], null, null, 'mary', 'mary');
+
+        $this->assertCount(6, $this->fileRepository->findAll());
+
+        $file = new UploadedFile($this->files['image'], 'akeneo.jpg');
+        $content = [
+            'product' => '{"identifier":"product_editable_by_manager", "attribute":"an_image", "locale":null, "scope":null}',
+        ];
+
+        $client->request('POST', '/api/rest/v1/media-files', $content, ['file' => $file]);
+        $response = $client->getResponse();
+
+        // test response
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertEmpty($response->getContent());
+
+        // check in repo if file has been created
+        $fileInfos = $this->fileRepository->findAll();
+        $this->assertCount(7, $fileInfos);
+
+        // check the content of file db
+        $fileInfo = current($fileInfos);
+        $this->assertSame('akeneo.jpg', $fileInfo->getOriginalFilename());
+        $this->assertSame('image/jpeg', $fileInfo->getMimeType());
+        $this->assertSame('catalogStorage', $fileInfo->getStorage());
+
+        // check if product value has been created
+        $productDraft = $this->productDraftRepository->findByProduct($product);
+        $this->assertContains('akeneo.jpg', $productDraft[0]->getChange('an_image', null, null));
+    }
 
     public function testErrorWhenProductNotViewableByRedactor()
     {
@@ -107,7 +169,6 @@ JSON;
 
         $client->request('POST', '/api/rest/v1/media-files', $content, ['file' => $file]);
         $response = $client->getResponse();
-//        var_dump($response->getContent());die();
         $this->assertCount(4, $this->fileRepository->findAll());
 
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
@@ -129,6 +190,7 @@ JSON;
 
         $this->fileRepository = $this->get('pim_api.repository.media_file');
         $this->productRepository = $this->get('pim_api.repository.product');
+        $this->productDraftRepository = $this->get('pimee_workflow.repository.product_draft');
 
         $product = $this->get('pim_catalog.builder.product')->createProduct('foo');
         $this->get('pim_catalog.saver.product')->save($product);
