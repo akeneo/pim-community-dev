@@ -68,7 +68,7 @@ class AttributeRepositorySpec extends ObjectBehavior
 
         $this->findTranslatedLabels()->shouldReturn([
             'group_label' => [
-                'code' => 'label'
+                'label' => 'code'
             ]
         ]);
     }

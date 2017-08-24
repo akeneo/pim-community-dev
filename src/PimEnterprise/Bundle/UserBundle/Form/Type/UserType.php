@@ -46,6 +46,7 @@ class UserType extends BaseUserType
      * @param EventDispatcherInterface          $eventDispatcher
      * @param EEUserPreferencesSubscriber       $eeSubscriber
      * @param TranslatedLabelsProviderInterface $categoryProvider
+     * @param string                            $productGridFilterTypeClassName
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -55,7 +56,8 @@ class UserType extends BaseUserType
         GroupRepository $groupRepository,
         EventDispatcherInterface $eventDispatcher,
         EEUserPreferencesSubscriber $eeSubscriber,
-        TranslatedLabelsProviderInterface $categoryProvider
+        TranslatedLabelsProviderInterface $categoryProvider,
+        string $productGridFilterTypeClassName
     ) {
         parent::__construct(
             $tokenStorage,
@@ -63,7 +65,8 @@ class UserType extends BaseUserType
             $ceSubscriber,
             $roleRepository,
             $groupRepository,
-            $eventDispatcher
+            $eventDispatcher,
+            $productGridFilterTypeClassName
         );
 
         $this->eeSubscriber = $eeSubscriber;
