@@ -10,3 +10,4 @@ parameters:
     index_name:         akeneo_pim
     index_hosts:        'localhost: 9200'
     install_status_dir: 'var'
+    
