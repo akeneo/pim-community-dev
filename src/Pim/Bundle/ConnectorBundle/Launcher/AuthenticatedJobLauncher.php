@@ -69,19 +69,18 @@ class AuthenticatedJobLauncher implements JobLauncherInterface
      */
     public function launch(JobInstance $jobInstance, UserInterface $user, array $configuration = []) : JobExecution
     {
-        $jobExecution = $this->createJobExecution($jobInstance, $user);
-        $executionId = $jobExecution->getId();
-        $pathFinder = new PhpExecutableFinder();
-
         $emailParameter = '';
         if (isset($configuration['send_email']) && method_exists($user, 'getEmail')) {
             $emailParameter = sprintf('--email=%s', escapeshellarg($user->getEmail()));
             unset($configuration['send_email']);
         }
 
-        $encodedConfiguration = json_encode($configuration, JSON_HEX_APOS);
+        $jobExecution = $this->createJobExecution($jobInstance, $user, $configuration);
+        $executionId = $jobExecution->getId();
+        $pathFinder = new PhpExecutableFinder();
+
         $cmd = sprintf(
-            '%s %s%sconsole pim:batch:job --env=%s %s %s %s %s %s >> %s%sbatch_execute.log 2>&1',
+            '%s %s%sconsole pim:batch:job --env=%s %s %s %s %s >> %s%sbatch_execute.log 2>&1',
             $pathFinder->find(),
             sprintf('%s%s..%sbin', $this->rootDir, DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR),
             DIRECTORY_SEPARATOR,
@@ -90,7 +89,6 @@ class AuthenticatedJobLauncher implements JobLauncherInterface
             escapeshellarg($jobInstance->getCode()),
             escapeshellarg($user->getUsername()),
             $executionId,
-            !empty($configuration) ? sprintf('--config=%s', escapeshellarg($encodedConfiguration)) : '',
             $this->logDir,
             DIRECTORY_SEPARATOR
         );
@@ -120,13 +118,15 @@ class AuthenticatedJobLauncher implements JobLauncherInterface
      *
      * @param JobInstance   $jobInstance
      * @param UserInterface $user
+     * @param array         $configuration
      *
      * @return JobExecution
      */
-    protected function createJobExecution(JobInstance $jobInstance, UserInterface $user) : JobExecution
+    protected function createJobExecution(JobInstance $jobInstance, UserInterface $user, array $configuration) : JobExecution
     {
         $job = $this->jobRegistry->get($jobInstance->getJobName());
-        $jobParameters = $this->jobParametersFactory->create($job, $jobInstance->getRawParameters());
+        $configuration = array_merge($jobInstance->getRawParameters(), $configuration);
+        $jobParameters = $this->jobParametersFactory->create($job, $configuration);
         $jobExecution = $this->jobRepository->createJobExecution($jobInstance, $jobParameters);
         $jobExecution->setUser($user->getUsername());
         $this->jobRepository->updateJobExecution($jobExecution);
