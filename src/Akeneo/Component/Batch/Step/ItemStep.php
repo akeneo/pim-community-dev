@@ -204,7 +204,7 @@ class ItemStep extends AbstractStep
             $stepExecution,
             $e->getMessage(),
             $e->getMessageParameters(),
-            $e->getItem()
+            $e->getItem()->getInvalidData()
         );
 
         $this->dispatchInvalidItemEvent(

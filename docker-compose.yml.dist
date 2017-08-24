@@ -19,7 +19,7 @@ services:
     user: docker
     volumes:
       - ./:/srv/pim
-      - ~/.config/composer:/home/docker/.composer
+      - ~/.composer:/home/docker/.composer
       - /tmp/behat/screenshots:/tmp/behat/screenshots
     working_dir: /srv/pim
     networks:
@@ -79,10 +79,10 @@ services:
   mysql:
     image: mysql:5.7
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=akeneo_pim
-      - MYSQL_PASSWORD=akeneo_pim
-      - MYSQL_DATABASE=akeneo_pim
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: akeneo_pim
+      MYSQL_PASSWORD: akeneo_pim
+      MYSQL_DATABASE: akeneo_pim
     ports:
       - '3306:3306'
     networks:
@@ -91,19 +91,19 @@ services:
   mysql-behat:
     image: mysql:5.7
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=akeneo_pim
-      - MYSQL_PASSWORD=akeneo_pim
-      - MYSQL_DATABASE=akeneo_pim
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: akeneo_pim
+      MYSQL_PASSWORD: akeneo_pim
+      MYSQL_DATABASE: akeneo_pim
     ports:
       - '3307:3306'
     networks:
       - behat
 
   elasticsearch:
-    image: elasticsearch:5
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.2
     environment:
-      ES_JAVA_OPTS: '-Xms256m -Xmx256m'
+      ES_JAVA_OPTS: '-Xms512m -Xmx512m'
     ports:
       - '9200:9200'
     networks:
