@@ -17,8 +17,8 @@
                         <div class="version-expander AknGrid-expand"></div>
                     </td>
                     <td class="AknGrid-bodyCell version"><span class="AknButton AknButton--grey AknButton--round"><%- version.version %></span></td>
-                    <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight author"><%- version.author %><%- version.context ? ' (' + version.context + ')' : '' %></td>
-                    <td class="AknGrid-bodyCell logged-at"><%- version.logged_at %></td>
+                    <td class="AknGrid-bodyCell AknGrid-bodyCell--noWrap AknGrid-bodyCell--highlight author"><%- version.author %><%- version.context ? ' (' + version.context + ')' : '' %></td>
+                    <td class="AknGrid-bodyCell AknGrid-bodyCell--noWrap logged-at"><%- version.logged_at %></td>
                     <td class="AknGrid-bodyCell AknGrid-bodyCell--truncatable changes"><div class="AknGrid-truncatable"><%- _.keys(version.changeset).join(', ') %></div></td>
                     <% if (hasAction) { %><td class="AknGrid-bodyCell actions"></td><% } %>
                 </tr>
@@ -30,7 +30,7 @@
                             <tbody>
                                 <% _.each(version.changeset, function(value) { %>
                                     <tr class="AknGrid-bodyRow">
-                                        <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight AknGrid-bodyCell--withoutBottomBorder property" colspan="2"><%= value.label %></td>
+                                        <td class="AknGrid-bodyCell AknGrid-bodyCell--highlightAlternative AknGrid-bodyCell--withoutBottomBorder property" colspan="2"><%= value.label %></td>
                                     </tr>
                                     <tr class="AknGrid-bodyRow">
                                         <td class="AknGrid-bodyCell AknGrid-bodyCell--withoutTopBorder"><span class="AknDiff--remove"><%- _.__('pim_enrich.entity.product.history.old_value') %>:</span> <span class="old-values"><%- value.old %></span></td>
