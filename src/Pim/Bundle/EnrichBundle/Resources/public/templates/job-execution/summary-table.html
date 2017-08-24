@@ -17,7 +17,7 @@
         <% } else { %>
             <% _.each(stepExecutions, function (stepExecution, stepIndex) { %>
                 <tr class="AknGrid-bodyRow">
-                    <td class="AknGrid-bodyCell"><%- __(stepExecution.label) %></td>
+                    <td class="AknGrid-bodyCell AknGrid-bodyCell--highlight"><%- __(stepExecution.label) %></td>
                     <td class="AknGrid-bodyCell"><%- stepExecution.status %></td>
                     <td class="AknGrid-bodyCell">
                         <% if (_.size(stepExecution.summary) > 0) { %>

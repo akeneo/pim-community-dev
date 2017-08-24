@@ -23,9 +23,6 @@ define(
             template: _.template(template),
             className: 'panel-pane completeness-panel AknCompletenessPanel',
             initialFamily: null,
-            events: {
-                'click .missing-attributes a': 'showAttribute'
-            },
 
             /**
              * {@inheritdoc}
@@ -108,19 +105,16 @@ define(
             },
 
             /**
-             * Set focus to the attribute given by the event
-             *
-             * @param Event event
+             * On family change listener
              */
-            showAttribute: function (event) {
-                this.getRoot().trigger(
-                    'pim_enrich:form:show_attribute',
-                    {
-                        attribute: event.currentTarget.dataset.attribute,
-                        locale: event.currentTarget.dataset.locale,
-                        scope: event.currentTarget.dataset.channel
-                    }
-                );
+            onChangeFamily: function () {
+                if (!_.isEmpty(this.getRoot().model._previousAttributes)) {
+                    var data = this.getFormData();
+                    data.meta.completenesses = [];
+                    this.setData(data);
+
+                    this.render();
+                }
             }
         });
     }
