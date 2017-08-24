@@ -77,9 +77,9 @@ class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedP
         $expected = <<<JSON
 {
     "_links": {
-        "self": {"href": "http://localhost/api/rest/v1/published-products?limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
-        "first": {"href": "http://localhost/api/rest/v1/published-products?limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
-        "next": {"href": "http://localhost/api/rest/v1/published-products?limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}&search_after=${encryptedId}"}
+        "self": {"href": "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
+        "first": {"href": "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
+        "next": {"href": "http://localhost/api/rest/v1/published-products?page=2&with_count=false&pagination_type=page&limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"}
     },
     "_embedded"    : {
 		"items": [
@@ -149,7 +149,8 @@ class ListPublishedProductWithCompletenessIntegration extends AbstractPublishedP
                 "associations": []
 		    }
 		]
-    }
+    },
+    "current_page": 1
 }
 JSON;
 

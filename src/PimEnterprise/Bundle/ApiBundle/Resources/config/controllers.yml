@@ -7,7 +7,8 @@ services:
     pimee_api.controller.published_product:
         class: '%pimee_api.controller.published_product.class%'
         arguments:
-            - '@pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory'
+            - '@pimee_workflow.doctrine.query.published_product_query_builder_search_after_size_factory_with_permissions'
+            - '@pimee_workflow.doctrine.query.published_product_query_builder_from_size_factory_with_permissions'
             - '@pim_api.checker.query_parameters'
             - '@pim_serializer'
             - '@pim_api.repository.channel'
@@ -15,6 +16,7 @@ services:
             - '@pim_api.repository.attribute'
             - '@pimee_api.repository.published_product'
             - '@pim_api.pagination.search_after_hal_paginator'
+            - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.security.primary_key_encrypter'
             - '%pim_api.configuration%'
