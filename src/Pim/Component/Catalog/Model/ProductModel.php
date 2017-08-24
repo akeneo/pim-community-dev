@@ -551,4 +551,12 @@ class ProductModel implements ProductModelInterface
 
         return $this->getAllValues($parent, $valueCollection);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFamily(): ?FamilyInterface
+    {
+        return null !== $this->getFamilyVariant() ? $this->getFamilyVariant()->getFamily() : null;
+    }
 }
