@@ -39,7 +39,6 @@ jobs:
         type: export
         configuration:
             filePath:      /tmp/asset_channel_configurations.yml
-            uploadAllowed: true
     classify_assets:
         connector: Akeneo Product Asset Connector
         alias:     classify_assets

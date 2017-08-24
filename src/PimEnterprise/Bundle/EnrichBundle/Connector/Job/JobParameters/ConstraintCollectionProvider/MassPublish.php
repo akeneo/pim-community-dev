@@ -15,6 +15,7 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Constraints for mass publish.
@@ -45,7 +46,8 @@ class MassPublish implements ConstraintCollectionProviderInterface
             [
                 'fields' => [
                     'filters' => new NotNull(),
-                    'actions' => []
+                    'actions' => [],
+                    'notification_user' => new Type('string'),
                 ]
             ]
         );
