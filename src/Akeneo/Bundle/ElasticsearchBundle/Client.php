@@ -37,6 +37,7 @@ class Client
      * To learn more, please see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_configuration.html}
      *
      * @param ClientBuilder $builder
+     * @param Loader        $configurationLoader
      * @param array         $hosts
      * @param string        $indexName
      */

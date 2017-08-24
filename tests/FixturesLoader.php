@@ -65,10 +65,16 @@ class FixturesLoader
     /**
      * Loads test catalog.
      *
+     * The elastic search indexes are reset here, at the same time than the database.
+     * However, the second index is not reset directly after the first one, as it could
+     * prevent the first one to be correctly dilated.
+     *
      * @throws \Exception
      */
     public function load()
     {
+        $this->container->get('akeneo_elasticsearch.client.product')->resetIndex();
+
         $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
 
@@ -81,10 +87,14 @@ class FixturesLoader
             $this->clearAclCache();
             $this->createUserSystem();
 
+            $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
+
             return;
         }
 
         $this->databaseSchemaHandler->reset();
+        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
+
         $this->loadData();
         $this->dumpDatabase($dumpFile);
     }
