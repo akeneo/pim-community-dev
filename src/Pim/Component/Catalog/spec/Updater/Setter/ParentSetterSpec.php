@@ -5,6 +5,7 @@ namespace spec\Pim\Component\Catalog\Updater\Setter;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
@@ -40,13 +41,34 @@ class ParentSetterSpec extends ObjectBehavior
         $productModelRepository,
         VariantProductInterface $product,
         ProductModelInterface $productModel,
-        FamilyVariantInterface $familyVariant
+        FamilyVariantInterface $familyVariant,
+        FamilyInterface $family
     ) {
         $productModelRepository->findOneByIdentifier('parent_code')->willReturn($productModel);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
 
         $product->setParent($productModel)->shouldBeCalled();
         $product->setFamilyVariant($familyVariant)->shouldBeCalled();
+        $product->getFamily()->willReturn($family);
+
+        $this->setFieldData($product, 'parent', 'parent_code')->shouldReturn(null);
+    }
+
+    function it_sets_the_variant_product_s_parent_family_if_none(
+        $productModelRepository,
+        VariantProductInterface $product,
+        ProductModelInterface $productModel,
+        FamilyVariantInterface $familyVariant,
+        FamilyInterface $family
+    ) {
+        $productModelRepository->findOneByIdentifier('parent_code')->willReturn($productModel);
+        $productModel->getFamilyVariant()->willReturn($familyVariant);
+        $familyVariant->getFamily()->willReturn($family);
+
+        $product->setParent($productModel)->shouldBeCalled();
+        $product->setFamilyVariant($familyVariant)->shouldBeCalled();
+        $product->getFamily()->willReturn(null);
+        $product->setFamily($family)->shouldBeCalled();
 
         $this->setFieldData($product, 'parent', 'parent_code')->shouldReturn(null);
     }

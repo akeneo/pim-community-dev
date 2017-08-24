@@ -1,8 +1,8 @@
 @javascript
-Feature: Execute a job
-  In order to use existing product information
+Feature: Import variant product
+  In order to setup my application
   As a product manager
-  I need to be able to import products
+  I need to be able to import new product models
 
   Background:
     Given the "catalog_modeling" catalog configuration
@@ -65,3 +65,18 @@ Feature: Execute a job
       parent;family;categories;ean;sku;weight;weight-unit;size
       apollon;clothing;master_men;EAN;apollon_blue_medium;100;GRAM;m
       """
+
+  Scenario: When we import a variant product without a family it has its parent family
+    Given the following root product model "code-001" with the variant family clothing_color_size
+    And the following sub product model "code-002" with "code-001" as parent
+    And the following CSV file to import:
+      """
+      parent;categories;ean;sku;weight;weight-unit;size
+      code-001;master_men;EAN;SKU-001;100;GRAM;m
+      """
+    And the following job "csv_default_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_default_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_default_product_import" job to finish
+    And the family of "SKU-001" should be "clothing"
