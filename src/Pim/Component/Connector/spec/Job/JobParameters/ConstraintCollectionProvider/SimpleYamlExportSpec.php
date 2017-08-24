@@ -22,7 +22,7 @@ class SimpleYamlExportSpec extends ObjectBehavior
         $collection = $this->getConstraintCollection();
         $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
         $fields = $collection->fields;
-        $fields->shouldHaveCount(1);
+        $fields->shouldHaveCount(2);
         $fields->shouldHaveKey('filePath');
     }
 

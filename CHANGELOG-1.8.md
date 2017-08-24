@@ -19,6 +19,7 @@
 - TIP-730: Reworking of the creation popin for basic entities
 - TIP-732: Rework the attribute form using the PEF architecture
 - TIP-747: Migrate to Symfony 3.3
+- API-359: Move notified user of a job into the configuration parameters of the job
 
 ## UI\UX Refactoring
 

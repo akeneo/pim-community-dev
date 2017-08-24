@@ -22,7 +22,7 @@ class SimpleCsvImportSpec extends ObjectBehavior
         $collection = $this->getConstraintCollection();
         $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
         $fields = $collection->fields;
-        $fields->shouldHaveCount(7);
+        $fields->shouldHaveCount(8);
         $fields->shouldHaveKey('filePath');
         $fields->shouldHaveKey('delimiter');
         $fields->shouldHaveKey('enclosure');
@@ -30,6 +30,7 @@ class SimpleCsvImportSpec extends ObjectBehavior
         $fields->shouldHaveKey('escape');
         $fields->shouldHaveKey('uploadAllowed');
         $fields->shouldHaveKey('invalid_items_file_format');
+        $fields->shouldHaveKey('notification_user');
     }
 
     function it_supports_a_job(JobInterface $job)
