@@ -15,6 +15,8 @@ use Symfony\Component\Yaml\Yaml;
 class InstallStatus
 {
     const INSTALL_STATUS_FILENAME = 'install_status.yml';
+    const ATTR_INSTALL_STATUS_DIR = 'install_status_dir';
+    const ATTR_INSTALLED_STATUS ='installed';
 
     /**
      * Path to install status file
@@ -31,7 +33,7 @@ class InstallStatus
         if (!empty($dir) ) {
             $this->installStatusFile = $dir . '/' . self::INSTALL_STATUS_FILENAME ;
         } else {
-            throw new \RuntimeException(sprintf('Please configure install_status_dir!'));
+            throw new \RuntimeException('Please configure ' . self::ATTR_INSTALL_STATUS_DIR .' !');
         }
     }
 
@@ -89,8 +91,8 @@ class InstallStatus
          if (!is_array($data) || !isset($data['install']) || !is_array($data['install']) ) {
              return 'false';
          }
-         if (array_key_exists('installed', $data['install'])) {
-             $installed = $data['install']['installed'];
+         if (array_key_exists(self::ATTR_INSTALLED_STATUS, $data['install'])) {
+             $installed = $data['install'][self::ATTR_INSTALLED_STATUS];
              if (empty($installed)||$installed==='false') {
                  return 'false';
              } else {
@@ -120,10 +122,10 @@ class InstallStatus
      public function  setInstallStatus( $installTime )
      {
          $install = [];
-         $install['installed'] = $installTime;
+         $install[self::ATTR_INSTALLED_STATUS] = $installTime;
 
          if (false === file_put_contents($this->installStatusFile, Yaml::dump(['install' => $install]))) {
-             throw new \RuntimeException(sprintf('Failed to write to %s.', $this->installStatusFile));
+             throw new \RuntimeException(sprintf('Failed to write to %s. "%s" status not set!', $this->installStatusFile,self::ATTR_INSTALLED_STATUS ));
          }
 
      }
