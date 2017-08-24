@@ -21,11 +21,11 @@ define(
         CategoryFilter
     ) {
         return BaseForm.extend({
-            id: 'tree',
             config: {
-                gridName: 'product-grid',
+                alias: 'product-grid',
                 categoryTreeName: 'pim_enrich_categorytree'
             },
+            id: 'tree',
             className: 'filter-item',
             attributes: {
                 'data-name': 'category',
@@ -56,7 +56,7 @@ define(
             setupCategoryTree(urlParams) {
                 return new CategoryFilter(
                     urlParams,
-                    this.config.gridName,
+                    this.config.alias,
                     this.config.categoryTreeName,
                     '.filter-item'
                 );
