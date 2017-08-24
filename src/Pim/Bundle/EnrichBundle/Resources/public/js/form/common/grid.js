@@ -10,7 +10,9 @@ define([
         'pim/template/form/grid',
         'oro/pageable-collection',
         'pim/datagrid/state',
-        'require-context'
+        'require-context',
+        'pim/form',
+        'pim/user-context'
     ],
     function (
         $,
@@ -22,9 +24,11 @@ define([
         template,
         PageableCollection,
         DatagridState,
-        requireContext
+        requireContext,
+        BaseForm,
+        UserContext
     ) {
-        return Backbone.View.extend({
+        return BaseForm.extend({
             template: _.template(template),
             className: 'AknTabContainer-content--fullWidth',
             urlParams: {},
@@ -76,6 +80,8 @@ define([
              * @param {Object} params
              */
             renderGrid: function (alias, params) {
+                params.dataLocale = UserContext.get('catalogLocale');
+
                 this.urlParams = $.extend(true, {}, params);
                 this.urlParams.alias = alias;
                 this.urlParams.params = $.extend(true, {}, params);
@@ -93,6 +99,8 @@ define([
 
                 //TODO Manage columns for product form (when refactoring product form index)
                 //TODO Manage category filter (when refactoring category index)
+
+                this.getRoot().trigger('datagrid:getParams', this.urlParams);
 
                 $.get(Routing.generate('pim_datagrid_load', this.urlParams)).then(function (response) {
 
