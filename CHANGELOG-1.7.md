@@ -1,3 +1,20 @@
+# 1.7.7 (2017-08-03)
+
+## Bug fixes
+
+- PIM-6471: Fix permission tab for XLSX import profiles.
+
+# 1.7.6 (2017-06-30)
+
+## Bug fixes
+
+- PIM-6465: Fix loading mask issue on asset creation from UI.
+- PIM-6393: Context kept when creating category tree
+- PIM-6470: Fix issue on Permission filter when added to the user default filters
+- PIM-6530: Fix pim:installer:grant-backend-processes-accesses command 
+
+# 1.7.5 (2017-06-02)
+
 # 1.7.4 (2017-05-10)
 
 ## Bug fixes

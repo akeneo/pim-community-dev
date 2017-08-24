@@ -45,7 +45,7 @@ class GiveBackendProcessesRightsToAllUsersCommand extends ContainerAwareCommand
         $output->writeln('Add the group "ALL" permissions to all job instances used for backend processes.');
         $groupAll = $this->getUserGroupRepository()->getDefaultUserGroup();
         $backendProcessCodes = $this->getJobInstanceCodes();
-        $jobInstances = $this->getJobInstanceRepository()->findOneByIdentifier($backendProcessCodes);
+        $jobInstances = $this->getJobInstanceRepository()->findBy(['code' => $backendProcessCodes]);
         $jobManager = $this->getJobProfileAccessManager();
         foreach ($jobInstances as $jobInstance) {
             $jobManager->grantAccess($jobInstance, $groupAll, Attributes::EXECUTE);
