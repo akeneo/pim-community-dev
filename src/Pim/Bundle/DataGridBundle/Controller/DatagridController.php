@@ -23,6 +23,7 @@ class DatagridController
 
     /**
      * @param EngineInterface $templating
+     * @param MetadataParser  $metadata
      */
     public function __construct(EngineInterface $templating, MetadataParser $metadata)
     {

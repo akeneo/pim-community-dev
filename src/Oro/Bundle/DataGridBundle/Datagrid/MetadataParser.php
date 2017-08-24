@@ -16,6 +16,9 @@ class MetadataParser
 
     /**
      * @param ContainerInterface $container
+     * @param Manager            $manager
+     * @param RequestParameters  $requestParams
+     * @param RouterInterface    $router
      */
     public function __construct(
         ContainerInterface $container,
