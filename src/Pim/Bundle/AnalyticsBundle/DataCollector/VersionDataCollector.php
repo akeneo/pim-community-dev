@@ -34,10 +34,10 @@ class VersionDataCollector implements DataCollectorInterface
     protected $installStatus;
 
     /**
-     * @param RequestStack $requestStack
-     * @param VersionProviderInterface $versionProvider
-     * @param InstallStatus $installStatus
-     * @param string $environment
+     * @param RequestStack              $requestStack
+     * @param VersionProviderInterface  $versionProvider
+     * @param InstallStatus             $installStatus
+     * @param string                    $environment
      */
     public function __construct(
         RequestStack $requestStack,
