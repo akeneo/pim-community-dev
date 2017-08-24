@@ -44,11 +44,6 @@ extensions:
         parent: pim-product-index
         targetZone: grid
 
-    # pim-product-index-grid-toolbar
-    #     module: pim/grid/toolbar
-    #     parent: pim-product-index
-    #     targetZone: grid
-
     pim-product-index-grid:
         module: pim/grid/table
         parent: pim-product-index

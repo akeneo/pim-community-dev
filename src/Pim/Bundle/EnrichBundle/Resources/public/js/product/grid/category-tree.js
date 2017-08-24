@@ -21,12 +21,11 @@ define(
         CategoryFilter
     ) {
         return BaseForm.extend({
+            id: 'tree',
             config: {
                 gridName: 'product-grid',
                 categoryTreeName: 'pim_enrich_categorytree'
             },
-            // The id is being used inside product_category-filter
-            id: 'tree',
             className: 'filter-item',
             attributes: {
                 'data-name': 'category',
@@ -34,6 +33,9 @@ define(
                 'data-relatedentity': 'product'
             },
 
+            /**
+             * @inheritdoc
+             */
             initialize(options) {
                 this.config = Object.assign(this.config, options.config || {});
 
@@ -50,7 +52,6 @@ define(
 
             /**
              * Render the category tree extensions when the datagrid is ready
-             * @TODO - Rewrite datagrid view to remove the need for the event listeners here
              */
             setupCategoryTree(urlParams) {
                 return new CategoryFilter(

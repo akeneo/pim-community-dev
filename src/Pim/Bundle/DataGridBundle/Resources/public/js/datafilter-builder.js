@@ -88,7 +88,7 @@ define(
              * Renders the filters
              */
             build: function () {
-                var options = methods.combineOptions.call(this);
+                var options = this.combineOptions.call(this);
                 options.collection = this.collection;
                 options.displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
                 options.filtersAsColumn = _.result(this.metadata.options, 'filtersAsColumn', false);
