@@ -2,11 +2,14 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
+use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -27,19 +30,31 @@ class ProductDatasource extends Datasource
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var ProductRepositoryInterface */
+    private $productRepository;
+
+    /** @var ProductModelRepositoryInterface */
+    private $productModelRepository;
+
     /**
      * @param ObjectManager                       $om
      * @param ProductQueryBuilderFactoryInterface $factory
      * @param NormalizerInterface                 $normalizer
+     * @param ProductRepositoryInterface          $productRepository
+     * @param ProductModelRepositoryInterface     $productModelRepository
      */
     public function __construct(
         ObjectManager $om,
         ProductQueryBuilderFactoryInterface $factory,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        ProductRepositoryInterface $productRepository,
+        ProductModelRepositoryInterface $productModelRepository
     ) {
         $this->om = $om;
         $this->factory = $factory;
         $this->normalizer = $normalizer;
+        $this->productRepository = $productRepository;
+        $this->productModelRepository = $productModelRepository;
     }
 
     /**
@@ -47,7 +62,13 @@ class ProductDatasource extends Datasource
      */
     public function getResults()
     {
-        $productCursor = $this->pqb->execute();
+        // let's mock the PQB with a search (MAIN_COLOR=orange AND TSHIRT_MATERIAL=cotton)
+        // that should return one root model, one sub model and and variant product
+        $productCursor = new ArrayCollection();
+        $productCursor->add($this->productModelRepository->findOneByIdentifier('Cotton t-shirt with a round neck Divided orange'));
+        $productCursor->add($this->productModelRepository->findOneByIdentifier('T-shirt with a Kurt Cobain print motif'));
+        $productCursor->add($this->productRepository->findOneByIdentifier('T-shirt unique size orange'));
+
         $context = [
             'locales'             => [$this->getConfiguration('locale_code')],
             'channels'            => [$this->getConfiguration('scope_code')],
