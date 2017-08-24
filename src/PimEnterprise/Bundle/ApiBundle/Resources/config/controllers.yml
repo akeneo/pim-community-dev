@@ -73,7 +73,7 @@ services:
             - '@pim_catalog.remover.product'
             - '@pim_catalog.updater.product'
             - '@pimee_workflow.saver.product_delegating'
-            - '@router'
+            - '@pimee_api.router.proxy_product'
             - '@pim_catalog.comparator.filter.product'
             - '@pim_api.stream.product_partial_update_stream'
             - '@pim_api.security.primary_key_encrypter'
