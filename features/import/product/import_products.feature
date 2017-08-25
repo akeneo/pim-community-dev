@@ -212,8 +212,8 @@ Feature: Execute a job
 
   Scenario: Successfully import products with attributes with full numeric codes
     And the following family:
-      | code      | attributes |
-      | my_family | name,123,description   |
+      | code      | attributes           |
+      | my_family | name,123,description |
     Given the following CSV file to import:
       """
       sku;123;family;groups;categories;name-en_US;description-en_US-tablet
