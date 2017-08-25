@@ -13,7 +13,14 @@ define(['oro/datagrid/string-cell', 'oro/translator'],
              * Render the field enabled.
              */
             render: function () {
+                if ('product_model' === this.model.get('product_type')) {
+                    this.$el.empty().html('');
+
+                    return this;
+                }
+
                 var value = this.formatter.fromRaw(this.model.get(this.column.get("name")));
+
                 var enabled = true === value ? 'enabled' : 'disabled';
 
                 this.$el.empty().html('<div class="AknBadge AknBadge--round AknBadge--' + enabled + ' status-' + enabled + '">' +

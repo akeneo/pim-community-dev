@@ -55,6 +55,11 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $data['label'] = $productModel->getLabel($locale);
         $data['image'] = $this->normalizeImage($productModel->getImage(), $format, $context);
 
+        $data['product_type'] = 'product_model';
+
+        // TODO: PIM-6560
+        $data['variant_products'] = '';
+
         $data['groups'] = null;
         $data['enabled'] = null;
         $data['completeness'] = null;

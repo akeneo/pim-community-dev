@@ -38,6 +38,15 @@ datagrid:
                 label:         Groups
                 data_name:     groups
                 type:          field
+            variant_products:
+                label:         Variant products
+                data_name:     variant_products
+                type:          field
+            product_type:
+                label:         Product type
+                data_name:     product_type
+                type:          field
+                renderable:    false
         properties:
             id: ~
             edit_link:

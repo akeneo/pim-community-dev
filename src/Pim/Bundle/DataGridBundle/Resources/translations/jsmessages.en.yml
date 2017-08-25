@@ -27,8 +27,9 @@ Action performed.: Action performed.
 Action is not performed.: Action is not performed.
 Please, select item to perform action.: Please, select item to perform action.
 View per page: View per page
-Enabled: Activé
-Disabled: Désactivé
+Enabled: Enabled
+Disabled: Disabled
+not_available: N/A
 Yes: Yes
 No: No
 oro.datagrid.entityHint: Entity
