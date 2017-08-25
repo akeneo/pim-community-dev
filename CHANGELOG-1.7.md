@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug Fixes
+
+- PIM-6491: Fix file extension validation on import job upload
+
 # 1.7.8 (2017-08-22)
 
 ## Bug Fixes
