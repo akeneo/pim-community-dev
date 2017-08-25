@@ -1,5 +1,5 @@
 @javascript
-Feature: Import variant product
+Feature: Import variant products
   In order to setup my application
   As a product manager
   I need to be able to import new product models
@@ -66,7 +66,7 @@ Feature: Import variant product
       apollon;clothing;master_men;EAN;apollon_blue_medium;100;GRAM;m
       """
 
-  Scenario: When we import a variant product without a family it has its parent family
+  Scenario: When we import a variant product without a family, then his parent's family is assigned to it.
     Given the following root product model "code-001" with the variant family clothing_color_size
     And the following sub product model "code-002" with "code-001" as parent
     And the following CSV file to import:
