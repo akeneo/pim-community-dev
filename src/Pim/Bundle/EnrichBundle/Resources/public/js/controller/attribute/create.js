@@ -7,7 +7,7 @@
 
 define([
     'underscore',
-    'pim/controller/base',
+    'pim/controller/front',
     'pim/form-builder',
     'pim/fetcher-registry'
 ],
@@ -16,7 +16,7 @@ function (_, BaseController, FormBuilder, fetcherRegistry) {
         /**
          * {@inheritdoc}
          */
-        renderRoute: function () {
+        renderForm: function () {
             if (!this.active) {
                 return;
             }
@@ -52,6 +52,8 @@ function (_, BaseController, FormBuilder, fetcherRegistry) {
                     });
 
                     form.setElement(this.$el).render();
+
+                    return form;
                 }.bind(this));
         },
 

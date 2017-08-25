@@ -4,7 +4,7 @@ define(
     [
         'underscore',
         'oro/translator',
-        'pim/controller/base',
+        'pim/controller/front',
         'pim/form-builder',
         'pim/fetcher-registry',
         'pim/user-context',
@@ -17,7 +17,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            renderRoute: function (route) {
+            renderForm: function (route) {
                 return FetcherRegistry.getFetcher('job-execution').fetch(
                         route.params.id, {id: route.params.id, cached: false}
                     ).then(function (jobExecution) {
@@ -25,7 +25,7 @@ define(
                             return;
                         }
 
-                        FormBuilder.build('pim-job-execution-form')
+                        return FormBuilder.build('pim-job-execution-form')
                             .then(function (form) {
                                 this.on('pim:controller:can-leave', function (event) {
                                     form.trigger('pim_enrich:form:can-leave', event);
@@ -37,6 +37,8 @@ define(
                                     form.getRoot().trigger('pim-job-execution-form:stop-auto-update');
                                 }.bind(this));
                                 form.setElement(this.$el).render();
+
+                                return form;
                             }.bind(this));
                     }.bind(this))
                 .fail(function (response) {

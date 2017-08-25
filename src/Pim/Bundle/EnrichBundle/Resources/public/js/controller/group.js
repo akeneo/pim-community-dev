@@ -4,7 +4,7 @@ define(
     [
         'underscore',
         'oro/translator',
-        'pim/controller/base',
+        'pim/controller/front',
         'pim/form-builder',
         'pim/fetcher-registry',
         'pim/user-context',
@@ -33,7 +33,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            renderRoute: function (route) {
+            renderForm: function (route) {
                 return FetcherRegistry.getFetcher(this.config.fetcher).fetch(route.params.code, {cached: false})
                     .then(function (group) {
                         if (!this.active) {
@@ -50,7 +50,7 @@ define(
 
                         PageTitle.set({'group.label': label });
 
-                        FormBuilder.build(group.meta.form)
+                        return FormBuilder.build(group.meta.form)
                             .then(function (form) {
                                 this.on('pim:controller:can-leave', function (event) {
                                     form.trigger('pim_enrich:form:can-leave', event);
@@ -58,6 +58,8 @@ define(
                                 form.setData(group);
                                 form.trigger('pim_enrich:form:entity:post_fetch', group);
                                 form.setElement(this.$el).render();
+
+                                return form;
                             }.bind(this));
                     }.bind(this))
                 .fail(function (response) {

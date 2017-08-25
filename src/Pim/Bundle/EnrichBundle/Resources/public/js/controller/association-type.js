@@ -4,7 +4,7 @@ define(
     [
         'underscore',
         'oro/translator',
-        'pim/controller/base',
+        'pim/controller/front',
         'pim/form-builder',
         'pim/fetcher-registry',
         'pim/user-context',
@@ -18,7 +18,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            renderRoute: function (route) {
+            renderForm: function (route) {
                 return FetcherRegistry.getFetcher('association-type').fetch(route.params.code, {cached: false})
                     .then(function (associationType) {
                         if (!this.active) {
@@ -35,7 +35,7 @@ define(
 
                         PageTitle.set({'association type.label': _.escape(label) });
 
-                        FormBuilder.build(associationType.meta.form)
+                        return FormBuilder.build(associationType.meta.form)
                             .then(function (form) {
                                 this.on('pim:controller:can-leave', function (event) {
                                     form.trigger('pim_enrich:form:can-leave', event);
@@ -43,6 +43,8 @@ define(
                                 form.setData(associationType);
                                 form.trigger('pim_enrich:form:entity:post_fetch', associationType);
                                 form.setElement(this.$el).render();
+
+                                return form;
                             }.bind(this));
                     }.bind(this))
                 .fail(function (response) {

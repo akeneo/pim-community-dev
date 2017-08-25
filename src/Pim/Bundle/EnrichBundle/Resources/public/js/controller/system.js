@@ -5,7 +5,7 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
-        'pim/controller/base',
+        'pim/controller/front',
         'pim/form-builder',
         'pim/page-title',
         'pim/error',
@@ -16,7 +16,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            renderRoute: function () {
+            renderForm: function () {
                 return $.when(
                     FormBuilder.build('oro-system-config-form'),
                     $.get(Routing.generate('oro_config_configuration_system_get'))
@@ -26,6 +26,8 @@ define(
                     });
                     form.setData(response[0]);
                     form.setElement(this.$el).render();
+
+                    return form;
                 }.bind(this)).fail(function (response) {
                     var message = response.responseJSON ? response.responseJSON.message : __('error.common');
 

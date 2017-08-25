@@ -11,7 +11,7 @@ define(
     [
         'underscore',
         'oro/translator',
-        'pim/controller/base',
+        'pim/controller/front',
         'pim/form-builder',
         'pim/fetcher-registry',
         'pim/user-context',
@@ -24,7 +24,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            renderRoute: function (route) {
+            renderForm: function (route) {
                 return FetcherRegistry.getFetcher('attribute-group').fetch(route.params.identifier, {cached: false})
                     .then(function (attributeGroup) {
                         if (!this.active) {
@@ -46,6 +46,8 @@ define(
                                 form.trigger('pim_enrich:form:entity:post_fetch', attributeGroup);
 
                                 form.setElement(this.$el).render();
+
+                                return form;
                             }.bind(this));
                     }.bind(this))
                     .fail(function (response) {

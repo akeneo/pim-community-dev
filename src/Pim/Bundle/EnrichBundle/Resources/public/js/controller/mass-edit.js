@@ -5,7 +5,7 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
-        'pim/controller/base',
+        'pim/controller/front',
         'pim/form-builder',
         'pim/page-title',
         'pim/error',
@@ -16,7 +16,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            renderRoute: function (route, path) {
+            renderForm: function (route, path) {
                 var query = path.replace(route.route.tokens[0][1], '');
                 var parameters = _.chain(query.split('&'))
                     .map(function (parameter) {
@@ -47,6 +47,8 @@ define(
                         });
 
                         form.setElement(this.$el).render();
+
+                        return form;
                     }.bind(this));
                 }.bind(this));
             }

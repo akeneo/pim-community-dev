@@ -39,8 +39,8 @@ class VersionedAttributeNormalizerSpec extends ObjectBehavior
 
         $versionManager->getOldestLogEntry($price)->willReturn($firstVersion);
         $versionManager->getNewestLogEntry($price)->willReturn($lastVersion);
-        $versionNormalizer->normalize($firstVersion, 'internal_api')->willReturn('normalizedFirstVersion');
-        $versionNormalizer->normalize($lastVersion, 'internal_api')->willReturn('normalizedLastVersion');
+        $versionNormalizer->normalize($firstVersion, 'internal_api', [])->willReturn('normalizedFirstVersion');
+        $versionNormalizer->normalize($lastVersion, 'internal_api', [])->willReturn('normalizedLastVersion');
         $price->getId()->willReturn(12);
         $structureVersionProvider->getStructureVersion()->willReturn(123789);
 

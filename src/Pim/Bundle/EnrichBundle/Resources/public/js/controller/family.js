@@ -4,7 +4,7 @@ define(
     [
         'underscore',
         'oro/translator',
-        'pim/controller/base',
+        'pim/controller/front',
         'pim/form-builder',
         'pim/fetcher-registry',
         'pim/user-context',
@@ -18,7 +18,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            renderRoute: function (route) {
+            renderForm: function (route) {
                 return FetcherRegistry.getFetcher('family').fetch(
                     route.params.code,
                     {cached: false, full_attributes: false}
@@ -37,7 +37,7 @@ define(
 
                         PageTitle.set({'family.label': _.escape(label) });
 
-                        FormBuilder.build(family.meta.form)
+                        return FormBuilder.build(family.meta.form)
                             .then(function (form) {
                                 this.on('pim:controller:can-leave', function (event) {
                                     form.trigger('pim_enrich:form:can-leave', event);
@@ -45,6 +45,8 @@ define(
                                 form.setData(family);
                                 form.trigger('pim_enrich:form:entity:post_fetch', family);
                                 form.setElement(this.$el).render();
+
+                                return form;
                             }.bind(this));
                     }.bind(this))
                 .fail(function (response) {

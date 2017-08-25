@@ -10,7 +10,7 @@
 define(
     [
         'underscore',
-        'pim/controller/base',
+        'pim/controller/front',
         'pim/form-builder'
     ],
     function (_, BaseController, FormBuilder) {
@@ -18,7 +18,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            renderRoute: function () {
+            renderForm: function () {
                 if (!this.active) {
                     return;
                 }
@@ -34,6 +34,8 @@ define(
                         });
 
                         form.setElement(this.$el).render();
+
+                        return form;
                     }.bind(this));
             }
         });

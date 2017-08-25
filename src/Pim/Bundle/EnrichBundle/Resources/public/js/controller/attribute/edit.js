@@ -7,7 +7,7 @@
 
 define([
     'underscore',
-    'pim/controller/base',
+    'pim/controller/front',
     'pim/form-builder',
     'pim/fetcher-registry',
     'pim/user-context',
@@ -29,7 +29,7 @@ function (
         /**
          * {@inheritdoc}
          */
-        renderRoute: function (route) {
+        renderForm: function (route) {
             if (!this.active) {
                 return;
             }
@@ -69,6 +69,8 @@ function (
                             form.setData(attribute);
                             form.trigger('pim_enrich:form:entity:post_fetch', attribute);
                             form.setElement(this.$el).render();
+
+                            return form;
                         }.bind(this));
                 }.bind(this))
             .fail(function (response) {

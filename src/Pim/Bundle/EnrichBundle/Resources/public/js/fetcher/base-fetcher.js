@@ -68,7 +68,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
             if (!(identifier in this.entityPromises) || false === options.cached) {
                 var deferred = $.Deferred();
 
-                if (this.options.urls.get) {
+                if (this.options.urls.get && !options.list) {
                     $.getJSON(
                         Routing.generate(this.options.urls.get, _.extend({identifier: identifier}, options))
                     ).then(_.identity).done(function (entity) {

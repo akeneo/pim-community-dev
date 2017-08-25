@@ -4,7 +4,7 @@ define(
     [
         'underscore',
         'oro/translator',
-        'pim/controller/base',
+        'pim/controller/front',
         'pim/form-builder',
         'pim/fetcher-registry',
         'pim/user-context',
@@ -18,7 +18,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            renderRoute: function (route) {
+            renderForm: function (route) {
                 if (undefined === route.params.code) {
                     var label = 'pim_enrich.entity.channel.title.create';
 
@@ -41,7 +41,7 @@ define(
                     return FetcherRegistry.getFetcher('channel')
                         .fetch(route.params.code, { cached: false })
                         .then(function (channel) {
-                            var label = _.escape(
+                            const label = _.escape(
                                 i18n.getLabel(
                                     channel.labels,
                                     UserContext.get('catalogLocale'),
@@ -52,9 +52,13 @@ define(
                             return createForm.call(this, this.$el, channel, label, channel.meta.form);
                         }.bind(this))
                         .fail(function (response) {
-                            var message = response.responseJSON ? response.responseJSON.message : __('error.common');
+                            const message = response &&
+                                response.responseJSON ?
+                                response.responseJSON.message :
+                                __('error.common');
+                            const status = response && response.status ? response.status : 500;
 
-                            var errorView = new Error(message, response.status);
+                            const errorView = new Error(message, status);
                             errorView.setElement(this.$el).render();
                         });
                 }
@@ -70,6 +74,8 @@ define(
                             form.setData(channel);
                             form.trigger('pim_enrich:form:entity:post_fetch', channel);
                             form.setElement(domElement).render();
+
+                            return form;
                         }.bind(this));
                 }
             }

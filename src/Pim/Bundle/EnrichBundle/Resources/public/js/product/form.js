@@ -169,6 +169,22 @@ define(
                 return this.getRoot().model;
             },
 
+            shutdown: function () {
+                this.doShutdown();
+
+                _.each(this.extensions, (extension) => {
+                    extension.shutdown();
+                });
+            },
+
+            doShutdown: function () {
+                this.stopListening();
+                this.undelegateEvents();
+                this.$el.removeData().unbind();
+                this.remove();
+                Backbone.View.prototype.remove.call(this);
+            },
+
             /**
              * {@inheritdoc}
              */

@@ -135,6 +135,7 @@ config:
                     options:
                         urls:
                             list: pim_enrich_channel_rest_index
+                            get: pim_enrich_channel_rest_get
                 locale:
                     module: pim/locale-fetcher
                     options:
@@ -501,6 +502,7 @@ config:
         # Controllers
         pim/controller-registry:               pimenrich/js/controller/registry
         pim/controller/base:                   pimenrich/js/controller/base
+        pim/controller/front:                  pimenrich/js/controller/front
         pim/controller/template:               pimenrich/js/controller/template
         pim/controller/form:                   pimenrich/js/controller/form
         pim/controller/product:                pimenrich/js/controller/product
