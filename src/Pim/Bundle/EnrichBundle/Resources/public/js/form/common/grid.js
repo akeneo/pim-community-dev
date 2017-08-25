@@ -70,27 +70,26 @@ define([
             render: function () {
                 this.$el.html(this.template({}));
 
+                this.getRoot().trigger('datagrid:getParams', this.urlParams);
+
                 $.when(this.getDefaultColumns(), this.getDefaultView())
-                .then((defaultColumns, defaultView) => this.renderGrid(
-                    this.alias, this.options, defaultColumns, defaultView
-                ));
+                .then((defaultColumns, defaultView) => {
+                    return this.renderGrid(this.alias, this.options, defaultColumns, defaultView);
+                });
 
                 return this;
             },
 
             getDefaultView() {
-                console.log('getDefaultView', this.alias)
                 return FetcherRegistry.getFetcher('datagrid-view')
                     .defaultUserView(this.alias)
                     .then(defaultUserView => defaultUserView.view);
             },
 
             getDefaultColumns() {
-                return $.get(Routing.generate(
-                    'pim_datagrid_view_rest_default_columns', {
-                        alias: this.alias
-                    }
-                ));
+                return FetcherRegistry.getFetcher('datagrid-view')
+                    .defaultColumns(this.alias)
+                    .then(defaultColumns => defaultColumns);
             },
 
             /**
@@ -114,27 +113,38 @@ define([
 
                 var state = DatagridState.get(alias, ['view', 'filters', 'columns']) || {};
 
-                if(defaultView && !state.view) {
+                if (defaultView && !state.view) {
                     this.applyView(defaultView.id, alias);
                     this.applyFilters(defaultView.filters, alias);
                     this.applyColumns(defaultView.columns, alias);
                 } else {
-                    this.applyView(state.view, alias);
-                    this.applyFilters(state.filters, alias);
-                    this.applyColumns(state.columns, alias);
+                    if (state.view) this.applyView(state.view, alias);
+                    if (state.filters) this.applyFilters(state.filters, alias);
+                    this.applyColumns(state.columns || defaultColumns, alias);
                 }
 
                 //TODO Manage columns for product form (when refactoring product form index)
                 //TODO Manage category filter (when refactoring category index)
 
                 $.get(Routing.generate('pim_datagrid_load', this.urlParams)).then(function (response) {
+                    const state = DatagridState.get(this.alias, ['view', 'filters', 'columns']);
+
+                    if (state.columns) {
+                        response.metadata.state.parameters = _.extend({},
+                            response.metadata.state.parameters,
+                            {
+                                view: {
+                                    columns: state.columns,
+                                    id: state.view
+                                }
+                            }
+                        );
+                    }
 
                     this.$el.find('.grid-drop').data({
                         metadata: response.metadata,
                         data: JSON.parse(response.data)
                     });
-
-                    this.getRoot().trigger('datagrid:getParams', this.urlParams);
 
                     var modules = response.metadata.requireJSModules.concat('pim/datagrid/state-listener');
 
