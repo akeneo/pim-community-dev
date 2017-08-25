@@ -38,20 +38,32 @@ define(
                 });
             },
 
-            renderTemplate: function (content) {
+            /**
+            * {@inheritdoc}
+            */
+            renderTemplate(content) {
                 if (!this.active) return;
                 this.$el.html(content);
             },
 
+            /**
+             * Get the locale from url and set to UserContext
+             */
             setupLocale() {
                 const locale = window.location.hash.split('?dataLocale=')[1];
                 if (locale) UserContext.set('catalogLocale', locale);
             },
 
+            /**
+             * Clear mass edit selected attributes
+             */
             setupMassEditAttributes() {
                 sessionStorage.setItem('mass_edit_selected_attributes', JSON.stringify([]));
             },
 
+            /**
+             * Select products menu tab
+             */
             selectMenuTab() {
                 mediator.trigger('pim_menu:highlight:tab', { extension: 'pim-menu-products' });
             }

@@ -6,7 +6,6 @@ define(
         'oro/datagrid-builder',
         'oro/pageable-collection',
         'pim/datagrid/state',
-        'oro/datafilter/product_category-filter',
         'require-context',
         'pim/form',
         'pim/user-context',
@@ -19,7 +18,6 @@ define(
         datagridBuilder,
         PageableCollection,
         DatagridState,
-        CategoryFilter,
         requireContext,
         BaseForm,
         UserContext,
@@ -35,23 +33,19 @@ define(
             },
 
             getDefaultView() {
-                const { gridName } = this.config;
-
                 return FetcherRegistry.getFetcher('datagrid-view')
-                    .defaultUserView(gridName)
+                    .defaultUserView(this.config.gridName)
                     .then(defaultUserView => defaultUserView.view);
             },
 
             getDefaultColumns() {
-                return $.get(Routing.generate(
-                    this.config.defaultColumnsUrl, {
-                        alias: this.config.gridName
-                    }
-                ));
+                return FetcherRegistry.getFetcher('datagrid-view')
+                    .defaultColumns(this.config.gridName);
             },
 
             loadDataGrid(resp) {
-                const { gridName } = this.config;
+                const { localeParamName, gridName } = this.config;
+                const locale = UserContext.get('catalogLocale');
                 const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
 
                 if (state.columns) {
@@ -73,6 +67,9 @@ define(
 
                 const modules = resp.metadata.requireJSModules;
                 modules.push('pim/datagrid/state-listener');
+
+                const url = decodeURI(resp.metadata.options.url).split('?')[0];
+                resp.metadata.options.url = `${url}?${localeParamName}=${locale}`;
 
                 const resolvedModules = [];
 

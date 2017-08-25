@@ -91,7 +91,7 @@ function(_, messenger, __, Modal, AbstractAction) {
             const gridName = this.datagrid.name;
             const urlParams = this.datagrid.collection.decodeStateData(url);
 
-            return urlParams[gridName][localeKey];
+            return urlParams[localeKey];
         },
 
         /**

@@ -82,7 +82,7 @@ define(
                 this.locale = decodeURIComponent(options.url).split('dataLocale]=').pop();
 
                 const filters = PageableCollection.prototype.decodeStateData(options.url.split('?')[1]);
-                this.locale = filters[this.gridName]['dataLocale'];
+                this.locale = filters['dataLocale'];
 
                 Backbone.View.prototype.initialize.apply(this, arguments);
 
