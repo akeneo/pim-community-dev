@@ -500,7 +500,7 @@ class JobInstanceController
 
         $configuration = $jobInstance->getRawParameters();
         $configuration['send_email'] = true;
-        $configuration['notification_user'] = $user->getUsername();
+        $configuration['user_to_notify'] = $user->getUsername();
 
         return $this->jobLauncher->launch($jobInstance, $user, $configuration);
     }

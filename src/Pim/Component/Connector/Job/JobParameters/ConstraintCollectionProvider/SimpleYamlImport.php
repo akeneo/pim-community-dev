@@ -52,7 +52,7 @@ class SimpleYamlImport implements ConstraintCollectionProviderInterface
                         new IsTrue(['groups' => 'UploadExecution']),
                     ],
                     'invalid_items_file_format' => new NotBlank(),
-                    'notification_user' => new Type('string'),
+                    'user_to_notify' => new Type('string'),
                 ]
             ]
         );

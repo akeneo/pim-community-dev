@@ -38,7 +38,7 @@ class SimpleCsvImport implements DefaultValuesProviderInterface
             'withHeader'                => true,
             'uploadAllowed'             => true,
             'invalid_items_file_format' => 'csv',
-            'notification_user'         => null,
+            'user_to_notify'         => null,
         ];
     }
 

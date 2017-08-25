@@ -26,7 +26,7 @@ class SimpleXlsxExportSpec extends ObjectBehavior
         $fields->shouldHaveKey('filePath');
         $fields->shouldHaveKey('withHeader');
         $fields->shouldHaveKey('linesPerFile');
-        $fields->shouldHaveKey('notification_user');
+        $fields->shouldHaveKey('user_to_notify');
     }
 
     function it_supports_a_job(JobInterface $job)

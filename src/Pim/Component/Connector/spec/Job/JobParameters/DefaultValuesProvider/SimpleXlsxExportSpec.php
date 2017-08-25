@@ -24,7 +24,7 @@ class SimpleXlsxExportSpec extends ObjectBehavior
                 'filePath'     => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.xlsx',
                 'withHeader'   => true,
                 'linesPerFile' => 10000,
-                'notification_user' => null
+                'user_to_notify' => null
             ]
         );
     }

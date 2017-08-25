@@ -62,7 +62,7 @@ class SimpleXlsxExport implements ConstraintCollectionProviderInterface
                             ]
                         ),
                     ],
-                    'notification_user' => new Type('string'),
+                    'user_to_notify' => new Type('string'),
                 ],
             ]
         );

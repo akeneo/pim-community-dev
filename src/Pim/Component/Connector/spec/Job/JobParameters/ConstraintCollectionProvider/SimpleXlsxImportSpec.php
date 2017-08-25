@@ -27,7 +27,7 @@ class SimpleXlsxImportSpec extends ObjectBehavior
         $fields->shouldHaveKey('withHeader');
         $fields->shouldHaveKey('uploadAllowed');
         $fields->shouldHaveKey('invalid_items_file_format');
-        $fields->shouldHaveKey('notification_user');
+        $fields->shouldHaveKey('user_to_notify');
     }
 
     function it_supports_a_job(JobInterface $job)

@@ -24,7 +24,7 @@ class SimpleYamlImportSpec extends ObjectBehavior
                 'filePath'                  => null,
                 'uploadAllowed'             => true,
                 'invalid_items_file_format' => 'yaml',
-                'notification_user'         => null,
+                'user_to_notify'         => null,
             ]
         );
     }

@@ -39,7 +39,7 @@ class ProductMassEdit implements ConstraintCollectionProviderInterface
                     'filters'            => new NotNull(),
                     'actions'            => new NotNull(),
                     'realTimeVersioning' => new Type('bool'),
-                    'notification_user'  => new Type('string'),
+                    'user_to_notify'  => new Type('string'),
                 ]
             ]
         );

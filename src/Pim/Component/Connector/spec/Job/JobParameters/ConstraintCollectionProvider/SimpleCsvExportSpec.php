@@ -27,7 +27,7 @@ class SimpleCsvExportSpec extends ObjectBehavior
         $fields->shouldHaveKey('delimiter');
         $fields->shouldHaveKey('enclosure');
         $fields->shouldHaveKey('withHeader');
-        $fields->shouldHaveKey('notification_user');
+        $fields->shouldHaveKey('user_to_notify');
     }
 
     function it_supports_a_job(JobInterface $job)
