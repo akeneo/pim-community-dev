@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/../var/SymfonyRequirements.php';
 
-use Pim\Bundle\InstallerBundle\InstallStatus\InstallStatus;
 use Symfony\Component\Intl\Intl;
+use Symfony\Component\Process\ProcessBuilder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -104,13 +104,9 @@ class PimRequirements extends SymfonyRequirements
             'Set the "<strong>memory_limit</strong>" setting in php.ini<a href="#phpini">*</a> to at least "512M".'
         );
 
-        $installStatusDir = $this->getInstallStatusDir();
-
         $directories = array(
-            'web/bundles',
-            $installStatusDir
+            'web/bundles'
         );
-
         foreach ($directories as $directory) {
             $this->addPimRequirement(
                 is_writable($baseDir.'/'.$directory),
@@ -209,55 +205,6 @@ class PimRequirements extends SymfonyRequirements
             return $requirement instanceof PimRequirement;
         });
     }
-
-
-    protected function getInstallStatusDir()
-    {
-        $file = file_get_contents(__DIR__.'/config/parameters.yml');
-
-        if (false === $file) {
-            throw new RuntimeException(
-                'The file config/parameters.yml does not exist, please create it'
-            );
-        }
-
-        $parameters = Yaml::parse($file);
-        if (!empty($parameters)
-            && !empty($parameters['parameters'])
-            && !isset($parameters['parameters'][InstallStatus::ATTR_INSTALL_STATUS_DIR]) ) {
-            throw new RuntimeException(
-                'Your PIM is not well configured. Please define "' . InstallStatus::ATTR_INSTALL_STATUS_DIR . '" in "app/config/parameters.yml"'
-            );
-        }
-
-        try {
-            if (null === $parameters) {
-                throw new RuntimeException(
-                    'Your PIM is not configured. Please fill the file "app/config/parameters.yml"'
-                );
-            }
-
-            return $parameters['parameters'][InstallStatus::ATTR_INSTALL_STATUS_DIR];
-        } catch (RuntimeException $e) {
-            $parameters = Yaml::parse(file_get_contents(__DIR__.'/config/parameters_test.yml'));
-            if (null === $parameters) {
-                throw $e;
-            }
-            if (!empty($parameters)
-                && !empty($parameters['parameters'])
-                && !isset($parameters['parameters'][InstallStatus::ATTR_INSTALL_STATUS_DIR]) ) {
-                throw new RuntimeException(
-                    'Your PIM is not well configured. Please define "' . InstallStatus::ATTR_INSTALL_STATUS_DIR . '" in "app/config/parameters_test.yml"'
-                );
-            }
-
-            return $parameters['parameters'][InstallStatus::ATTR_INSTALL_STATUS_DIR];
-        }
-    }
-
-
-
-
 
     /**
      * Gets the MySQL server version thanks to a PDO connection.

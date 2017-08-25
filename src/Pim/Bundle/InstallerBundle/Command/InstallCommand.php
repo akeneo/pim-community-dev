@@ -8,7 +8,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-
 /**
  * Installer command to add PIM custom rules
  *
@@ -57,22 +56,19 @@ class InstallCommand extends ContainerAwareCommand
         $forceInstall = $input->getOption('force');
 
         // if a parameter "installed" is defined and not false:
-        // the installation is <v1.8 so installed flag has to be migrated in the install status file:
+        // the installation is <v1.8 so installed flag has to be migrated in the install status file
         if ($this->getContainer()->hasParameter('installed')
-            && $this->getContainer()->getParameter('installed'))
-        {
-            if ( !$this->checkInstalledFlag($output) )
-            {
+            && $this->getContainer()->getParameter('installed')) {
+            if (!$this->checkInstalledFlag($output)) {
                 $installed = $this->getContainer()->getParameter('installed');
                 $output->writeln(sprintf('<warn>Migrating installed flag in dedicated file.</warn>', $installed));
-                $this->setInstalledFlag($output, $installed );
+                $this->setInstalledFlag($output, $installed);
             }
         }
 
-        // if there is application is not installed or no --force option
-        if ( $this->checkInstalledFlag($output)
-            && !$forceInstall
-        ) {
+        // if the application is already installed or no --force option
+        if ($this->checkInstalledFlag($output)
+            && !$forceInstall) {
             throw new \RuntimeException('Akeneo PIM is already installed.');
         } elseif ($forceInstall) {
             // if --force option we have to clear cache and set installed to false
@@ -167,11 +163,11 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @return boolean isInstalled
      */
-    protected function checkInstalledFlag(OutputInterface $output)
+    protected function checkInstalledFlag(OutputInterface $output) : bool
     {
         $output->writeln('<info>Check installed flag.</info>');
 
-        $installStatus = $this->getContainer()->get('pim_installer.install_status');
+        $installStatus = $this->getContainer()->get('pim_installer.install_status_checker');
 
         return $installStatus->isInstalled();
     }
@@ -188,10 +184,9 @@ class InstallCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Setting installed flag.</info>');
 
-        $installStatus = $this->getContainer()->get('pim_installer.install_status');
+        $installStatus = $this->getContainer()->get('pim_installer.install_status_checker');
         $installStatus->setInstallStatus($installed);
 
         return $this;
     }
-
 }

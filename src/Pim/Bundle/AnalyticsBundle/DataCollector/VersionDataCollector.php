@@ -4,7 +4,7 @@ namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
 use Pim\Bundle\CatalogBundle\VersionProviderInterface;
-use Pim\Bundle\InstallerBundle\InstallStatus\InstallStatus;
+use Pim\Bundle\InstallerBundle\InstallStatusChecker\InstallStatusChecker;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -30,24 +30,24 @@ class VersionDataCollector implements DataCollectorInterface
     /** @var string */
     protected $environment;
 
-    /** @var InstallStatus */
-    protected $installStatus;
+    /** @var InstallStatusChecker */
+    protected $installStatusChecker;
 
     /**
      * @param RequestStack $requestStack
      * @param VersionProviderInterface $versionProvider
-     * @param InstallStatus $installStatus
+     * @param InstallStatusChecker $installStatusChecker
      * @param string $environment
      */
     public function __construct(
         RequestStack $requestStack,
         VersionProviderInterface $versionProvider,
-        InstallStatus $installStatus,
+        InstallStatusChecker $installStatusChecker,
         $environment
     ) {
         $this->requestStack = $requestStack;
         $this->versionProvider = $versionProvider;
-        $this->installStatus = $installStatus;
+        $this->installStatusChecker = $installStatusChecker;
         $this->environment = $environment;
     }
 
@@ -60,7 +60,7 @@ class VersionDataCollector implements DataCollectorInterface
             'pim_edition'      => $this->versionProvider->getEdition(),
             'pim_version'      => $this->versionProvider->getPatch(),
             'pim_environment'  => $this->environment,
-            'pim_install_time' => $this->installStatus->getInstalledFlag(),
+            'pim_install_time' => $this->installStatusChecker->getInstalledFlag(),
             'server_version'   => $this->getServerVersion(),
         ];
     }
@@ -81,5 +81,4 @@ class VersionDataCollector implements DataCollectorInterface
 
         return $version;
     }
-
 }

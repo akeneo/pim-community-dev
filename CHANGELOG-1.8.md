@@ -401,6 +401,7 @@
 - Remove `Pim\Bundle\EnrichBundle\Controller\FamilyController.php`
 - Remove unused `Pim\Component\Catalog\Manager\AttributeGroupManager`
 - Remove unused `Pim\Bundle\CatalogBundle\ProductQueryUtility`
+- Remove service `pim_installer.yaml_persister`
 
 ### Methods
 
