@@ -12,7 +12,6 @@ parameters:
     mailer_from_address:  no-reply@example.com
     mailer_from_name:     Akeneo Admin
 
-
     # WebSocket server config
     websocket_host:       "127.0.0.1"
     websocket_port:       8080
