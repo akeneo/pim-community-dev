@@ -75,7 +75,7 @@ define(
              */
             collectModules() {
                 var modules = this.modules;
-                this.metadata.filters.forEach(filter => {
+                _.each(this.metadata.filters, filter => {
                     var type = filter.type;
                     modules[type] = this.config.filterModuleName.replace(
                         '{{type}}',
