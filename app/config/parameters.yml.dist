@@ -9,3 +9,4 @@ parameters:
     secret:             ThisTokenIsNotSoSecretChangeIt
     index_name:         akeneo_pim
     index_hosts:        'localhost: 9200'
+    
