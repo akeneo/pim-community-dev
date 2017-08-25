@@ -66,7 +66,7 @@ Feature: Import variant products
       apollon;clothing;master_men;EAN;apollon_blue_medium;100;GRAM;m
       """
 
-  Scenario: When we import a variant product without a family, then his parent's family is assigned to it.
+  Scenario: When we import a variant product without a family, then its parent's family is assigned to it.
     Given the following root product model "code-001" with the variant family clothing_color_size
     And the following sub product model "code-002" with "code-001" as parent
     And the following CSV file to import:
