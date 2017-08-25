@@ -39,6 +39,21 @@ extensions:
         config:
             gridName: product-grid
 
+    pim-product-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-product-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-products
+
+    pim-product-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-product-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-product-index-grid-filters:
         module: oro/datafilter-builder
         parent: pim-product-index
