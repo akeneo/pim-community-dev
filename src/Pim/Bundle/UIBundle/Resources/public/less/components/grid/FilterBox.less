@@ -11,12 +11,13 @@
 
   &-addFilterButton {
     line-height: @AknLittleButtonSize;
-    font-size: @AknFontSizeBig;
-    position: absolute;
-    left: 20px;
+    min-height: @searchHeight;
+    min-width: @searchHeight;
     border: none;
-    background: inherit;
+    order: 2;
     width: auto !important; // The width is updated by JS method.
+    background-color: white;
+    background: url("../../../images/icon-filters.svg") no-repeat 50%;
   }
 
   &-filterContainer {
@@ -34,15 +35,15 @@
   }
 
   &--search {
-    height: @searchHeight;
+    min-height: @searchHeight;
     display: flex;
     width: 100%;
     border-bottom: 1px solid @AknBorderColor;
     justify-content: flex-end;
     padding: 0 0 1px 0;
     background: none;
-    min-height: 0;
     margin: 10px 0;
+    flex-wrap: wrap;
   }
 
   &-search {

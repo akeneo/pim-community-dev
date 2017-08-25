@@ -61,8 +61,8 @@ class GroupRepository extends EntityRepository implements
     {
         $qb = $this->createQueryBuilder('g');
 
-        $groupLabelExpr = '(CASE WHEN translation.label IS NULL THEN g.code ELSE translation.label END)';
-        $typeLabelExpr = '(CASE WHEN typeTrans.label IS NULL THEN type.code ELSE typeTrans.label END)';
+        $groupLabelExpr = 'COALESCE(translation.label, g.code)';
+        $typeLabelExpr = 'COALESCE(typeTrans.label, type.code)';
 
         $qb
             ->addSelect(sprintf('%s AS groupLabel', $groupLabelExpr))
