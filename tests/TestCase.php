@@ -118,16 +118,12 @@ abstract class TestCase extends KernelTestCase
 
     protected function indexProducts()
     {
-        $this->get('akeneo_elasticsearch.client.product')->resetIndex();
-
         $products = $this->get('pim_catalog.repository.product')->findAll();
         $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
     }
 
     protected function indexProductModels()
     {
-        $this->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
-
         $productModels = $this->get('pim_catalog.repository.product_model')->findAll();
         $this->get('pim_catalog.elasticsearch.indexer.product_model')->indexAll($productModels);
         $this->get('pim_catalog.elasticsearch.indexer.product_model_descendance')->indexAll($productModels);
