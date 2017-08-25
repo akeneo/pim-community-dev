@@ -6,14 +6,14 @@ Feature: Filter products with multiples simpleselect filters
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code      |
-      | furniture |
-      | library   |
     And the following attributes:
       | code    | label-en_US | type                     | useable_as_grid_filter | group |
       | color   | Color       | pim_catalog_simpleselect | 1                      | other |
       | company | Company     | pim_catalog_simpleselect | 1                      | other |
+    And the following family:
+      | code      | attributes    |
+      | furniture | color,company |
+      | library   | color,company |
     And the following "color" attribute options: Black and Green
     And the following "company" attribute options: Debian and Canonical and Suze
     And the following products:

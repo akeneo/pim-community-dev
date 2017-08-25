@@ -6,14 +6,14 @@ Feature: Filter products with multiples prices filters
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code      |
-      | furniture |
-      | library   |
     And the following attributes:
       | code      | label-en_US | type                         | useable_as_grid_filter | group | decimals_allowed |
       | margin    | Margin      | pim_catalog_price_collection | 1                      | other | 0                |
       | transport | Transport   | pim_catalog_price_collection | 1                      | other | 0                |
+    And the following family:
+      | code      | attributes       |
+      | furniture | margin,transport |
+      | library   | margin,transport |
     And the following products:
       | sku    | family    | transport | margin |
       | BOOK   | library   |           |        |

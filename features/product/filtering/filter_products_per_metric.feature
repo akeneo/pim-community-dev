@@ -6,13 +6,13 @@ Feature: Filter products per metric
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code      |
-      | furniture |
-      | library   |
     And the following attributes:
       | label-en_US | scopable | type               | useable_as_grid_filter | metric_family | default_metric_unit | decimals_allowed | negative_allowed | group | code   |
       | Weight      | 1        | pim_catalog_metric | 1                      | Weight        | GRAM                | 1                | 0                | other | weight |
+    And the following family:
+      | code      | attributes |
+      | furniture | weight     |
+      | library   | weight     |
     And the following products:
       | sku    | family    | enabled | weight-ecommerce | weight-mobile |
       | postit | furniture | yes     | 120 GRAM         |               |
