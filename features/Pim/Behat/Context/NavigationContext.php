@@ -154,7 +154,7 @@ class NavigationContext extends PimContext implements PageObjectAware
         }, sprintf('You are not on the %s page', $page));
     }
 
-        /**
+    /**
      * @param array $options
      *
      * @Given /^I am on the ([^"]*) grid$/
