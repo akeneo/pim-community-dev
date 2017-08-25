@@ -6,6 +6,7 @@ namespace Pim\Bundle\ConnectorBundle\Launcher;
 
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
+use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
 use Akeneo\Component\Batch\Model\JobExecution;
@@ -31,6 +32,9 @@ class AuthenticatedJobLauncher implements JobLauncherInterface
     /** @var JobRegistry */
     protected $jobRegistry;
 
+    /** @var JobParametersValidator */
+    protected $jobParametersValidator;
+
     /** @var string */
     protected $rootDir;
 
@@ -44,6 +48,7 @@ class AuthenticatedJobLauncher implements JobLauncherInterface
      * @param JobRepositoryInterface $jobRepository
      * @param JobParametersFactory   $jobParametersFactory
      * @param JobRegistry            $jobRegistry
+     * @param JobParametersValidator $jobParametersValidator
      * @param string                 $rootDir
      * @param string                 $environment
      * @param string                 $logDir
@@ -52,6 +57,7 @@ class AuthenticatedJobLauncher implements JobLauncherInterface
         JobRepositoryInterface $jobRepository,
         JobParametersFactory $jobParametersFactory,
         JobRegistry $jobRegistry,
+        JobParametersValidator $jobParametersValidator,
         $rootDir,
         $environment,
         $logDir
@@ -59,6 +65,7 @@ class AuthenticatedJobLauncher implements JobLauncherInterface
         $this->jobRepository = $jobRepository;
         $this->jobParametersFactory = $jobParametersFactory;
         $this->jobRegistry = $jobRegistry;
+        $this->jobParametersValidator = $jobParametersValidator;
         $this->rootDir = $rootDir;
         $this->environment = $environment;
         $this->logDir = $logDir;
@@ -120,6 +127,8 @@ class AuthenticatedJobLauncher implements JobLauncherInterface
      * @param UserInterface $user
      * @param array         $configuration
      *
+     * @throws \RuntimeException
+     *
      * @return JobExecution
      */
     protected function createJobExecution(JobInstance $jobInstance, UserInterface $user, array $configuration) : JobExecution
@@ -127,6 +136,21 @@ class AuthenticatedJobLauncher implements JobLauncherInterface
         $job = $this->jobRegistry->get($jobInstance->getJobName());
         $configuration = array_merge($jobInstance->getRawParameters(), $configuration);
         $jobParameters = $this->jobParametersFactory->create($job, $configuration);
+
+        $errors = $this->jobParametersValidator->validate($job, $jobParameters, ['Default', 'Execution']);
+
+        if (count($errors) > 0) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Job instance "%s" running the job "%s" with parameters "%s" is invalid because of "%s"',
+                    $jobInstance->getCode(),
+                    $job->getName(),
+                    print_r($jobParameters->all(), true),
+                    $this->getErrorMessages($errors)
+                )
+            );
+        }
+
         $jobExecution = $this->jobRepository->createJobExecution($jobInstance, $jobParameters);
         $jobExecution->setUser($user->getUsername());
         $this->jobRepository->updateJobExecution($jobExecution);
