@@ -5,10 +5,13 @@ parameters:
 
     mailer_transport:     smtp
     mailer_host:          localhost
+    mailer_port:          25
+    mailer_encryption:    ~
     mailer_user:          ~
     mailer_password:      ~
     mailer_from_address:  no-reply@example.com
     mailer_from_name:     Akeneo Admin
+
 
     # WebSocket server config
     websocket_host:       "127.0.0.1"
