@@ -25,7 +25,8 @@ class SimpleCsvExportSpec extends ObjectBehavior
                 'delimiter'  => ";",
                 'enclosure'  => '"',
                 'withHeader' => true,
-                'user_to_notify' => null
+                'user_to_notify' => null,
+                'is_user_authenticated' => false,
             ]
         );
     }

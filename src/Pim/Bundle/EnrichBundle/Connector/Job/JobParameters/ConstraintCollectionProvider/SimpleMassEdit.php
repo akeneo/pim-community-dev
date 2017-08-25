@@ -39,6 +39,7 @@ class SimpleMassEdit implements ConstraintCollectionProviderInterface
                     'filters' => new NotNull(),
                     'actions' => new NotNull(),
                     'user_to_notify' => new Type('string'),
+                    'is_user_authenticated' => new Type('bool'),
                 ]
             ]
         );

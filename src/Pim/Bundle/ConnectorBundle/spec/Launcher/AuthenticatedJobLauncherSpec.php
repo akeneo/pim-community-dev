@@ -3,25 +3,28 @@
 namespace spec\Pim\Bundle\ConnectorBundle\Launcher;
 
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
-use Akeneo\Component\Batch\Job\JobParametersFactory;
-use Akeneo\Component\Batch\Job\JobParametersValidator;
-use Akeneo\Component\Batch\Job\JobRegistry;
-use Akeneo\Component\Batch\Job\JobRepositoryInterface;
+use Akeneo\Component\Batch\Model\JobInstance;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AuthenticatedJobLauncherSpec extends ObjectBehavior
 {
-    function let(
-        JobRepositoryInterface $jobRepository,
-        JobParametersFactory $jobParametersFactory,
-        JobRegistry $jobRegistry,
-        JobParametersValidator $jobParametersValidator
-    ) {
-        $this->beConstructedWith($jobRepository, $jobParametersFactory, $jobRegistry, $jobParametersValidator, '/', 'prod', '/logs');
+    function let(JobLauncherInterface $jobLauncher)
+    {
+        $this->beConstructedWith($jobLauncher);
     }
 
     function it_is_a_job_launcher()
     {
         $this->shouldHaveType(JobLauncherInterface::class);
+    }
+
+    function it_should_force_authentication_in_configuration(
+        $jobLauncher,
+        JobInstance $jobInstance,
+        UserInterface $user
+    ) {
+        $jobLauncher->launch($jobInstance, $user, ['filePath' => '/tmp', 'is_user_authenticated' => true]);
+        $this->launch($jobInstance, $user, ['filePath' => '/tmp']);
     }
 }

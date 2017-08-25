@@ -303,7 +303,6 @@
 - Change the constructor of `Pim\Component\Catalog\Builder\EntityWithValuesBuilder` to replace `Pim\Component\Catalog\Manager\AttributeValuesResolver` by `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface`
 - Change the constructor of `Pim\Bundle\ApiBundle\Controller\LocaleController` to add `Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface`
 - Change the constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add `Akeneo\Component\Batch\Job\JobParametersValidator`
-- Change the constructor of `Pim\Bundle\ConnectorBundle\Launcher\AuthenticatedJobLauncher` to add `Akeneo\Component\Batch\Job\JobParametersValidator`
 
 ### Methods
 
