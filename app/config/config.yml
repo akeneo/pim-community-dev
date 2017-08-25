@@ -125,4 +125,3 @@ akeneo_elasticsearch:
 
 parameters:
     install_status_dir: 'var'
-    

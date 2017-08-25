@@ -59,12 +59,12 @@ class InstallStatusChecker
     public function __construct(string $aProjectDir, string $aStatusFileDir, string $aEnv)
     {
         if (empty($aStatusFileDir)) {
-            throw new \RuntimeException('Please configure ' . self::ATTR_INSTALL_STATUS_DIR .' !');
+            throw new \RuntimeException('Please configure ' . self::ATTR_INSTALL_STATUS_DIR);
         }
-        $this->projectDir=$aProjectDir;
-        $this->env=$aEnv;
+        $this->projectDir = $aProjectDir;
+        $this->env = $aEnv;
 
-        if (mb_substr($aStatusFileDir, 0, 1)=='/') {
+        if (mb_substr($aStatusFileDir, 0, 1) === '/') {
             $this->absoluteDirectoryPath = $aStatusFileDir;
         } else {
             $this->absoluteDirectoryPath = $this->projectDir . '/' . $aStatusFileDir;
@@ -139,51 +139,6 @@ class InstallStatusChecker
                     self::ATTR_INSTALLED_STATUS
                 )
             );
-        }
-    }
-
-    /**
-     * @return array
-     */
-    protected function parse() : array
-    {
-        // if PIM not installed, the file probably doesn't exist
-        if (!file_exists($this->absoluteFilePath)) {
-            return [];
-        }
-
-        $data = Yaml::parse(file_get_contents($this->absoluteFilePath));
-        if (!is_array($data) || !isset($data[self::ATTR_INSTALLED_STATUS_SECTION])) {
-            return [];
-        }
-
-        $parameters = [];
-
-        foreach ($data[self::ATTR_INSTALLED_STATUS_SECTION] as $key => $value) {
-            $parameters[$key] = $value;
-        }
-
-        return $parameters;
-    }
-
-    /**
-     * @param array $data
-     */
-    protected function dump(array $data) : void
-    {
-        $parameters = [];
-
-        foreach ($data as $section) {
-            foreach ($section as $key => $value) {
-                $parameters[$key] = $value;
-            }
-        }
-
-        if (false === file_put_contents(
-            $this->absoluteFilePath,
-            Yaml::dump([self::ATTR_INSTALLED_STATUS_SECTION => $parameters])
-        )) {
-            throw new \RuntimeException(sprintf('Failed to write to %s.', $this->absoluteFilePath));
         }
     }
 

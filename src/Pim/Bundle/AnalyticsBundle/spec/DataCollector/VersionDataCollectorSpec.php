@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\VersionProviderInterface;
+use Pim\Bundle\InstallerBundle\InstallStatusChecker\InstallStatusChecker;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -11,26 +12,32 @@ use Symfony\Component\HttpFoundation\ServerBag;
 
 class VersionDataCollectorSpec extends ObjectBehavior
 {
-    function let(RequestStack $requestStack, VersionProviderInterface $versionProvider)
-    {
-        $this->beConstructedWith($requestStack, $versionProvider, 'prod', '2015-09-16T10:10:32+02:00');
+    public function let(
+        RequestStack $requestStack,
+        VersionProviderInterface $versionProvider,
+        InstallStatusChecker $installStatusChecker
+    ) {
+        $this->beConstructedWith($requestStack, $versionProvider, $installStatusChecker, 'prod');
     }
 
-    function it_is_initializable()
+    public function it_is_initializable()
     {
         $this->shouldHaveType('Pim\Bundle\AnalyticsBundle\DataCollector\VersionDataCollector');
         $this->shouldImplement('Akeneo\Component\Analytics\DataCollectorInterface');
     }
 
-    function it_collects_pim_version_edition_and_storage_driver(
+    public function it_collects_pim_version_edition_and_storage_driver
+    (
         $requestStack,
         $versionProvider,
+        $installStatusChecker,
         Request $request,
         ServerBag $serverBag
     ) {
         $versionProvider->getPatch()->willReturn('1.4.0');
         $versionProvider->getEdition()->willReturn('CE');
         $requestStack->getCurrentRequest()->willReturn($request);
+        $installStatusChecker->getInstalledFlag()->willReturn('2015-09-16T10:10:32+02:00');
         $request->server = $serverBag;
         $serverBag->get('SERVER_SOFTWARE')->willReturn('Apache/2.4.12 (Debian)');
 
@@ -45,14 +52,16 @@ class VersionDataCollectorSpec extends ObjectBehavior
         );
     }
 
-    function it_does_not_provides_server_version_of_pim_host_if_request_is_null(
+    public function it_does_not_provides_server_version_of_pim_host_if_request_is_null(
         $requestStack,
         $versionProvider,
+        $installStatusChecker,
         ServerBag $serverBag
     ) {
         $versionProvider->getPatch()->willReturn('1.4.0');
         $versionProvider->getEdition()->willReturn('CE');
         $requestStack->getCurrentRequest()->willReturn(null);
+        $installStatusChecker->getInstalledFlag()->willReturn('2015-09-16T10:10:32+02:00');
 
         $serverBag->get(Argument::type('string'))->shouldNotBeCalled();
 
