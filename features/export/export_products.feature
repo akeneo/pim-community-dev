@@ -207,20 +207,20 @@ Feature: Export products
     And the following job "csv_footwear_product_export" configuration:
       | filePath | %tmp%/product_export/product_export.csv |
     And the following products:
-      | sku      | family   | categories        | price          | size | color    | name-en_US | 123 |
-      | SNKRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black    | Model 1    | aaa |
-      | SNKRS-1R | sneakers | summer_collection | 50 EUR, 70 USD | 45   | red      | Model 1    | bbb |
-      | SNKRS-1C | sneakers | summer_collection | 55 EUR, 75 USD | 45   | charcoal | Model 1    | ccc |
+      | sku      | family   | categories        | price          | size | color    | name-en_US |
+      | SNKRS-1B | sneakers | summer_collection | 50 EUR, 70 USD | 45   | black    | Model 1    |
+      | SNKRS-1R | sneakers | summer_collection | 50 EUR, 70 USD | 45   | red      | Model 1    |
+      | SNKRS-1C | sneakers | summer_collection | 55 EUR, 75 USD | 45   | charcoal | Model 1    |
     And I am logged in as "Julia"
     When I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish
     Then exported file of "csv_footwear_product_export" should contain:
     """
-    sku;123;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
-    SNKRS-1B;aaa;summer_collection;black;;;1;sneakers;;;;"Model 1";;50.00;70.00;;;45;;
-    SNKRS-1R;bbb;summer_collection;red;;;1;sneakers;;;;"Model 1";;50.00;70.00;;;45;;
-    SNKRS-1C;ccc;summer_collection;charcoal;;;1;sneakers;;;;"Model 1";;55.00;75.00;;;45;;
+    sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
+    SNKRS-1B;summer_collection;black;;;1;sneakers;;;;"Model 1";;50.00;70.00;;;45;;
+    SNKRS-1R;summer_collection;red;;;1;sneakers;;;;"Model 1";;50.00;70.00;;;45;;
+    SNKRS-1C;summer_collection;charcoal;;;1;sneakers;;;;"Model 1";;55.00;75.00;;;45;;
     """
 
   Scenario: Export attributes with a predefine order
