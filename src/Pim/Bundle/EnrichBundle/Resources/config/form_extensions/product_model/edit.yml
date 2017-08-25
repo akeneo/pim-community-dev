@@ -155,7 +155,7 @@ extensions:
     pim-product-model-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector
         parent: pim-product-model-edit-form-attributes
-        targetZone: attribute-group-selector
+        targetZone: other-actions
         position: 100
 
     pim-product-model-edit-form-copy:
