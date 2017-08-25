@@ -23,6 +23,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -46,7 +47,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         UserContext $userContext,
         CompletenessCalculatorInterface $completenessCalculator,
         FileNormalizer $fileNormalizer,
-        ProductBuilderInterface $productBuilder
+        ProductBuilderInterface $productBuilder,
+        EntityWithFamilyValuesFillerInterface $productValuesFiller
     ) {
         $this->beConstructedWith(
             $productNormalizer,
@@ -65,7 +67,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             $userContext,
             $completenessCalculator,
             $fileNormalizer,
-            $productBuilder
+            $productBuilder,
+            $productValuesFiller
         );
     }
 
@@ -88,6 +91,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $collectionFilter,
         $fileNormalizer,
         $productBuilder,
+        $productValuesFiller,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -173,7 +177,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $formProvider->getForm($mug)->willReturn('product-edit-form');
 
         $productBuilder->addMissingAssociations($mug)->shouldBeCalled();
-        $productBuilder->addMissingProductValues($mug)->shouldBeCalled();
+        $productValuesFiller->fillMissingValues($mug)->shouldBeCalled();
 
         $this->normalize($mug, 'internal_api', $options)->shouldReturn(
             [

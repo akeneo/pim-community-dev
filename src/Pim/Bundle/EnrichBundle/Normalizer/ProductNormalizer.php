@@ -16,6 +16,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -82,24 +83,28 @@ class ProductNormalizer implements NormalizerInterface
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
+    /** @var EntityWithFamilyValuesFillerInterface */
+    protected $productValuesFiller;
+
     /**
-     * @param NormalizerInterface               $productNormalizer
-     * @param NormalizerInterface               $versionNormalizer
-     * @param VersionManager                    $versionManager
-     * @param LocaleRepositoryInterface         $localeRepository
-     * @param StructureVersionProviderInterface $structureVersionProvider
-     * @param FormProviderInterface             $formProvider
-     * @param AttributeConverterInterface       $localizedConverter
-     * @param ConverterInterface                $productValueConverter
-     * @param ObjectManager                     $productManager
-     * @param CompletenessManager               $completenessManager
-     * @param ChannelRepositoryInterface        $channelRepository
-     * @param CollectionFilterInterface         $collectionFilter
-     * @param NormalizerInterface               $completenessCollectionNormalizer
-     * @param UserContext                       $userContext
-     * @param CompletenessCalculatorInterface   $completenessCalculator
-     * @param FileNormalizer                    $fileNormalizer
-     * @param ProductBuilderInterface           $productBuilder
+     * @param NormalizerInterface                   $productNormalizer
+     * @param NormalizerInterface                   $versionNormalizer
+     * @param VersionManager                        $versionManager
+     * @param LocaleRepositoryInterface             $localeRepository
+     * @param StructureVersionProviderInterface     $structureVersionProvider
+     * @param FormProviderInterface                 $formProvider
+     * @param AttributeConverterInterface           $localizedConverter
+     * @param ConverterInterface                    $productValueConverter
+     * @param ObjectManager                         $productManager
+     * @param CompletenessManager                   $completenessManager
+     * @param ChannelRepositoryInterface            $channelRepository
+     * @param CollectionFilterInterface             $collectionFilter
+     * @param NormalizerInterface                   $completenessCollectionNormalizer
+     * @param UserContext                           $userContext
+     * @param CompletenessCalculatorInterface       $completenessCalculator
+     * @param FileNormalizer                        $fileNormalizer
+     * @param ProductBuilderInterface               $productBuilder
+     * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
@@ -118,7 +123,8 @@ class ProductNormalizer implements NormalizerInterface
         UserContext $userContext,
         CompletenessCalculatorInterface $completenessCalculator,
         FileNormalizer $fileNormalizer,
-        ProductBuilderInterface $productBuilder
+        ProductBuilderInterface $productBuilder,
+        EntityWithFamilyValuesFillerInterface $productValuesFiller
     ) {
         $this->productNormalizer                = $productNormalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -137,6 +143,7 @@ class ProductNormalizer implements NormalizerInterface
         $this->completenessCalculator           = $completenessCalculator;
         $this->fileNormalizer                   = $fileNormalizer;
         $this->productBuilder                   = $productBuilder;
+        $this->productValuesFiller = $productValuesFiller;
     }
 
     /**
@@ -145,7 +152,7 @@ class ProductNormalizer implements NormalizerInterface
     public function normalize($product, $format = null, array $context = [])
     {
         $this->productBuilder->addMissingAssociations($product);
-        $this->productBuilder->addMissingProductValues($product);
+        $this->productValuesFiller->fillMissingValues($product);
         $normalizedProduct = $this->productNormalizer->normalize($product, 'standard', $context);
         $normalizedProduct['values'] = $this->localizedConverter->convertToLocalizedFormats(
             $normalizedProduct['values'],
