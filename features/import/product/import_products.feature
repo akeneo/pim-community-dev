@@ -211,11 +211,14 @@ Feature: Execute a job
     And I should see the text "skipped product (no differences) 1"
 
   Scenario: Successfully import products with attributes with full numeric codes
+    And the following family:
+      | code      | attributes |
+      | my_family | name,123,description   |
     Given the following CSV file to import:
       """
       sku;123;family;groups;categories;name-en_US;description-en_US-tablet
-      SKU-001;aaa;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
-      SKU-002;bbb;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+      SKU-001;aaa;my_family;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      SKU-002;bbb;my_family;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
       """
     And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -342,6 +345,7 @@ Feature: Execute a job
       | mobile  | en_US  | success | 0              | 100%  |
 
   @jira https://akeneo.atlassian.net/browse/PIM-6085
+
   Scenario: Successfully import product associations with modified column name
     Given the following CSV file to import:
       """

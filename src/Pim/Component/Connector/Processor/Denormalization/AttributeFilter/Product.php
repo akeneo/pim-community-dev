@@ -70,7 +70,7 @@ class Product implements AttributeFilter
     {
         foreach ($flatProduct['values'] as $attributeName => $value) {
             $belongToFamily = $attributes->exists(function ($key, AttributeInterface $attribute) use ($attributeName) {
-                return $attribute->getCode() === $attributeName;
+                return $attribute->getCode() === (string) $attributeName;
             });
 
             if (!$belongToFamily) {
