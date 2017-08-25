@@ -179,7 +179,7 @@ define(
                     info += i18n.getFlag(key.shift());
                 }
                 if (attribute.scopable) {
-                    info = '<span>' + key.shift() + '</span>' + info;
+                    info = ' <span>' + key.shift() + '</span>' + info;
                 }
                 if (0 < key.length) {
                     info = key.join(' ') + info;

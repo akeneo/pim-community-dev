@@ -412,80 +412,89 @@ class AssertionContext extends PimContext
         }, 'Could not find the history block');
 
         foreach ($table->getHash() as $data) {
-            $row = $this->spin(function () use ($block, $data) {
-                return $block->find('css', 'tr[data-version="' . $data['version'] . '"]');
-            }, sprintf('Cannot find the row %s', $data['version']));
+            $unknownColumns = array_diff(array_keys($data), ['author', 'version', 'property', 'value', 'before']);
+            if (0 !== count($unknownColumns)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Unrecognized columns "%s"',
+                    json_encode($unknownColumns)
+                ));
+            }
 
-            if (!$row) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting to see history row for version %s, not found', $data['version'])
-                );
-            }
-            if (!$row->hasClass('expanded')) {
-                $this->spin(function () use ($row) {
-                    return $row->find('css', '.version-expander');
-                }, sprintf('Can not find the row version expander of %s', json_encode($data)))->click();
-            }
-            if (isset($data['author'])) {
-                $author = $row->find('css', 'td.author')->getText();
+            $expectedVersion = $data['version'];
+            $expectedProperty = $data['property'];
+
+            $row = $this->spin(function () use ($block, $expectedVersion) {
+                return $block->find('css', sprintf('.product-version[data-version="%d"]', $expectedVersion));
+            }, sprintf('Cannot find the version "%s"', $expectedVersion));
+
+            if (array_key_exists('author', $data)) {
+                $expectedAuthor = $data['author'];
+                $author = $row->find('css', '.author')->getText();
                 assertEquals(
-                    $data['author'],
+                    $expectedAuthor,
                     $author,
                     sprintf(
-                        'Expecting the author of version %s to be %s, got %s',
-                        $data['version'],
-                        $data['author'],
+                        'Expecting the author of version "%s" to be "%s", got "%s"',
+                        $expectedVersion,
+                        $expectedAuthor,
                         $author
                     )
                 );
             }
 
-            $changesetRows = $this->spin(function () use ($row) {
-                return $row->getParent()->findAll('css', '.changeset:not(.hide) tbody tr');
+            if (!$row->hasClass('expanded')) {
+                $this->spin(function () use ($row) {
+                    return $row->find('css', '.version-expander');
+                }, sprintf('Can not find the expand button of version "%s"', json_encode($data)))->click();
+            }
+
+            $changesetRow = $this->spin(function () use ($block, $expectedVersion) {
+                return $block->find('css', sprintf('.changeset:not(.hide)[data-version="%d"]', $expectedVersion));
             }, sprintf('No changeset found for version %s', $data['version']));
 
-            $matchingRow = null;
-            $parsedTexts = [];
-            foreach ($changesetRows as $row) {
-                $innerHtml = $row->find('css', 'td:first-of-type')->getHtml();
+            // Each change contains 3 cells: property, before and after cells.
+            $changes = array_chunk($changesetRow->findAll('css', '.AknGrid-bodyCell'), 3);
 
-                $parsedText = trim(preg_replace('/(<[^>]+>)+/', ' ', $innerHtml));
-                $parsedText = preg_replace('/\s+/', ' ', $parsedText);
-                $parsedTexts[] = $parsedText;
-
-                if ($parsedText === $data['property']) {
-                    $matchingRow = $row;
-                    break;
+            $matchingChange = $this->spin(function () use ($changes, $expectedProperty) {
+                foreach ($changes as $change) {
+                    $propertyCell = $change[0];
+                    if ($propertyCell->getText() === $expectedProperty) {
+                        return $change;
+                    }
                 }
-            }
 
-            if (!$matchingRow) {
-                throw $this->createExpectationException(
-                    sprintf('No row found for property %s, found %s', $data['property'], implode(', ', $parsedTexts))
-                );
-            }
+                return null;
+            }, sprintf('Can not find change of the property "%s"', $expectedProperty));
 
-            $newValue = isset($data['value']) ? $data['value'] : $data['after'];
-            $oldValue = isset($data['before']) ? $data['before'] : null;
-
-            if ($matchingRow->find('css', 'td:nth-of-type(2)')->getText() !== $oldValue && $oldValue) {
-                throw $this->createExpectationException(
-                    sprintf('Wrong old value in row %s, expected %s', $data['property'], $newValue)
-                );
-            }
-
-            if (!preg_match(
-                sprintf('/^%s$/', str_replace(['/', '$', '^'], ['\/', '\$', '\^'], $newValue)),
-                $actual = $matchingRow->find('css', 'td:last-of-type')->getText()
-            )) {
-                throw $this->createExpectationException(
+            if (array_key_exists('before', $data)) {
+                $expectedBefore = $data['before'];
+                $before = $matchingChange[1]->find('css', '.old-values')->getText();
+                assertEquals(
+                    $expectedBefore,
+                    $before,
                     sprintf(
-                        'Wrong new value in row %s, expected %s, got %s',
-                        $data['property'],
-                        $newValue,
-                        $actual
+                        'Expecting the old value of version "%s" to be "%s", got "%s"',
+                        $expectedVersion,
+                        $expectedBefore,
+                        $before
                     )
                 );
+            }
+
+            if (array_key_exists('value', $data)) {
+                $expectedAfter = $data['value'];
+                $after = $matchingChange[2]->find('css', '.new-values')->getText();
+                if (!preg_match(
+                    sprintf('/^%s$/', str_replace(['/', '$', '^'], ['\/', '\$', '\^'], $expectedAfter)),
+                    $after
+                )) {
+                    throw $this->createExpectationException(sprintf(
+                        'Expecting the new value of version "%s" to be "%s", got "%s"',
+                        $expectedVersion,
+                        $expectedAfter,
+                        $after
+                    ));
+                }
             }
         }
     }

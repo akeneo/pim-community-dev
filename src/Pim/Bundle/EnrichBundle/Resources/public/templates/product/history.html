@@ -22,7 +22,7 @@
                     <td class="AknGrid-bodyCell AknGrid-bodyCell--truncatable changes"><div class="AknGrid-truncatable"><%- _.keys(version.changeset).join(', ') %></div></td>
                     <% if (hasAction) { %><td class="AknGrid-bodyCell actions"></td><% } %>
                 </tr>
-                <tr class="AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder changeset hide">
+                <tr data-version="<%- version.version %>" class="AknGrid-bodyRow AknGrid-bodyRow--withoutTopBorder changeset hide">
                     <td class="AknGrid-bodyCell"></td>
                     <td class="AknGrid-bodyCell"></td>
                     <td class="AknGrid-bodyCell" colspan="<%- hasAction ? '4' : '3' %>">
