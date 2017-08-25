@@ -5,6 +5,9 @@ namespace Pim\Component\Catalog\ValuesFiller;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
 
 /**
+ * This service takes an EntityWithFamilyInterface, guesses the attributes it should have (depending on its family),
+ * and fills all missing values of this entity (the ones it doesn't have yet), but putting empty values for them.
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
