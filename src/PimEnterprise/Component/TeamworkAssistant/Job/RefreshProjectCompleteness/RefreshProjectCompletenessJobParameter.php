@@ -16,6 +16,7 @@ use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterfa
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
@@ -45,6 +46,7 @@ class RefreshProjectCompletenessJobParameter implements
                 'product_identifier' => new NotBlank(),
                 'locale_identifier'  => new NotBlank(),
                 'channel_identifier' => new NotBlank(),
+                'notification_user'  => new Type('string'),
             ],
         ]);
     }
@@ -54,7 +56,7 @@ class RefreshProjectCompletenessJobParameter implements
      */
     public function getDefaultValues()
     {
-        return [];
+        return ['notification_user' => null];
     }
 
     /**

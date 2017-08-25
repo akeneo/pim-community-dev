@@ -33,7 +33,7 @@ class ProjectCalculationJobParametersSpec extends ObjectBehavior
 
     function it_provides_default_values_to_the_job()
     {
-        $this->getDefaultValues()->shouldReturn([]);
+        $this->getDefaultValues()->shouldReturn(['notification_user' => null]);
     }
 
     function it_provides_constraints_to_the_job()
