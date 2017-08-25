@@ -315,12 +315,20 @@
 - Change the constructor of `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver` to replace `Pim\Component\Catalog\Manager\AttributeValuesResolver` by `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface` 
 - Change the constructor of `Pim\Component\Catalog\Builder\EntityWithValuesBuilder` to replace `Pim\Component\Catalog\Manager\AttributeValuesResolver` by `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface` 
 - Change the constructor of `Pim\Bundle\ApiBundle\Controller\LocaleController` to add `Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer` to add `Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface`
+- Change the constructor of `Pim\Component\Catalog\Builder\ProductBuilder` to remove `Pim\Component\Catalog\Repository\CurrencyRepositoryInterface` and `Pim\Component\Catalog\Factory\ValueFactory`
+- Change the constructor of `Pim\Component\Catalog\Builder\ProductTemplateBuilder` to add `Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface`
+- Change the constructor of `Pim\Component\Connector\Processor\Normalization\ProductProcessor` to remove `Pim\Component\Catalog\Builder\ProductBuilderInterface` and add `Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductProcessor` to replace `Pim\Component\Catalog\Builder\ProductBuilder` by `Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface`
 - Change the constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add `Akeneo\Component\Batch\Job\JobParametersValidator`
 - Change the constructor of `Pim\Bundle\ConnectorBundle\Launcher\AuthenticatedJobLauncher` to add `Akeneo\Component\Batch\Job\JobParametersValidator`
 
 ### Methods
 
 - Change `Pim\Component\Catalog\Model\FamilyInterface` to add `setAttributeAsImage` and `getAttributeAsImage`
+- Remove method `addMissingProductValues` of `Pim\Component\Catalog\Builder\ProductBuilderInterface` (this method is now handled by `Pim\Component\Catalog\ValuesFiller\ProductValuesFiller::fillMissingValues`)
+- Remove method `getFamily` of `Pim\Component\Catalog\Model\ProductInterface`
 
 ### Type hint
 
