@@ -341,9 +341,6 @@ pim_enrich:
           title: 关联
           info:
             none_exist: 没有关联的类型存在。
-            show_products: 显示产品
-            show_groups: 显示组
-            number_of_associations: "{{ productCount }} 产品和 {{ groupCount }} 组"
         attributes:
           title: 属性
           btn:

@@ -348,9 +348,6 @@ pim_enrich:
           title: Povezanost
           info:
             none_exist: Ne postoji tip pridruživanja.
-            show_products: Prikaži proizvode
-            show_groups: Prikaži grupe
-            number_of_associations: "{{ productCount }} proizvoda i {{ groupCount }} grupe"
         attributes:
           title: Atributi
           btn:
