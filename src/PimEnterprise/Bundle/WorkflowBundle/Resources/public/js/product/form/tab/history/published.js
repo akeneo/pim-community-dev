@@ -16,11 +16,11 @@ define(
                         var version = _.findWhere(versions, {published: true});
                         if (version) {
                             var $version = this.getParent().$el.find(
-                                '.product-version[data-version-id="' + version.id + '"] .version'
+                                '.product-version[data-version-id="' + version.id + '"] .actions'
                             );
 
                             if ($version.children('.label-published').length === 0) {
-                                $version.append(this.template());
+                                $version.prepend(this.template());
                             }
                         }
                     }.bind(this));
