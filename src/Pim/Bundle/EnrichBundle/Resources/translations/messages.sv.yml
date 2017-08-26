@@ -1,0 +1,915 @@
+pim_enrich:
+  product:
+    tab:
+      attribute.title: Attribut
+      category.title: Kategorier
+      association.title: Associationer
+      completeness.title: Fullständighet
+      history.title: Historik
+    no_comparison_locale_available: Inga andra språk är tillgängliga för jämförelse
+    no_compared_media: Inga medier tillgängliga för jämförelse
+  attribute:
+    tab:
+      parameter.title: Parametrar
+      value.title: Värden
+      history.title: Historik
+  attribute_group:
+    tab:
+      property.title: Egenskaper
+      attribute.title: Attribut
+      history.title: Historik
+  family:
+    tab:
+      property.title: Egenskaper
+      attribute.title: Attribut
+      history.title: Historik
+  association_type:
+    tab:
+      property.title: Egenskaper
+      history.title: Historik
+  group_type:
+    tab:
+      property.title: Egenskaper
+  category:
+    tab:
+      property.title: Egenskaper
+      history.title: Historik
+  locale:
+    tab:
+      property.title: Egenskaper
+      permission.title: Behörigheter
+  group:
+    axis.help: 'Axlar definierar de attribut som produkterna i gruppen varieras av. Axlar är attribut med val som inte är lokaliserbar eller områdesbegränsad. Axlar kan inte ändras efter variantgruppen är skapad.'
+    type:
+      VARIANT: Variant
+      X_SELL: X-Sälj
+      ADDITIONAL: Ytterligare
+      RELATED: Related
+    tab:
+      product.title: Produkter
+      property.title: Egenskaper
+      history.title: Historik
+  variant_group:
+    type:
+      VARIANT: Variant
+      X_SELL: X-Sälj
+      ADDITIONAL: Ytterligare
+      RELATED: Relaterade
+    tab:
+      product.title: Produkter
+      property.title: Egenskaper
+      history.title: Historik
+      attribute.title: Attribut
+    info:
+      no_attributes: Den här variantgruppen har inga attribut ännu
+      no_attributes_in_selected_locale: Den här variantgruppen har inga attribut på detta språket
+  completeness:
+    progress_bar.title: '%ratio%% färdigställt (1 obligatoriskt värde) | %ratio%% färdigställt (%count% obligatoriska värden)'
+    subtitle: '{0} färdigställt |{1} 1 saknat värde |] 1 Inf] %count% saknade värden'
+    missing_attributes: Saknat värde | Saknade värden
+    legend:
+      locale_not_associated: Språk som inte är associerade till denna kanal
+  mass_edit_action:
+    limit_exceeded: Välj mindre än %limit% poster att redigera
+    product:
+      page_title: Produkter
+      page_subtitle: Massredigera (1 produkt) | Massredigera (%count% produkter)
+      title: Välj åtgärd
+      subtitle: Välj den funktion som du vill utföra på den valda produkten | Välj den funktion som du vill utföra på de valda %count% produkterna
+      confirm: Du håller på att uppdatera en produkt med följande information, bekräfta. | Du håller på att uppdatera %count% produkter med följande information, bekräfta.
+      steps:
+        first: Välj produkter
+        second: Välj åtgärd
+        third: Konfigurera
+        fourth: Bekräfta
+    family:
+      page_title: Familjer
+      page_subtitle: Massredigera (1 familj) | Massredigera (%count% familjer)
+      title: Välj åtgärd
+      subtitle: Välj den funktion som du vill utföra på den valda familjen | Välj den funktion som du vill utföra på de valda %count% familjerna
+      confirm: Du håller på att uppdatera en familj med följande information, bekräfta. | Du håller på att uppdatera %count% familjer med följande information, bekräfta.
+      steps:
+        first: Välj familjer
+        second: Välj åtgärd
+        third: Konfigurera
+        fourth: Bekräfta
+    change-status:
+      label: Ändra status (aktivera / inaktivera)
+      description: De utvalda produkterna kommer att aktiveras eller inaktiveras.
+      success_flash: Produkt(er) status har ändrats
+      launched_flash: Massåtgärd "ändra status" har inletts. Du meddelas när det är gjort.
+    edit-common-attributes:
+      label: Redigera Attribut
+      description: Valda produktens attribut kommer att redigeras med följande uppgifter för det valda språket.
+      empty: Välj de attribut(er) som du vill redigera
+      success_flash: De jobb som uppdaterar produkt(er) status körs
+      launched_flash: Massåtgärd "redigera vanliga attribut" har inletts. Du meddelas när det är gjort.
+      message:
+        warning: Det finns inga attribut gemensamt för de valda produkterna. Vänligen ändra ditt val.
+        invalid_attribute: Attribut med koden "attribute_code" är inte vanligt för de utvalda produkter, attribut hoppas över.
+        no_valid_attribute: Ingen av valda attribut kan tillämpas på denna produkt.
+    classify-add:
+      label: Klassificera produkter i kategorier
+      description: Produkterna kommer att vara placerad i följande kategorier, befintliga placeringen hålls.
+      success_flash: Produkten har klassificerats i valda kategorier
+      launched_flash: Massåtgärd "Lägg till kategorier" har inletts. Du meddelas när det är gjort.
+    classify-move:
+      label: Flytta produkter till kategorier
+      description: Produkterna kommer att vara placerad i följande kategorier, befintliga placeringen är förlorad.
+      success_flash: Produkterna har flyttats till valda kategorier
+      launched_flash: Massåtgärd "flytta till kategorier" har inletts. Du meddelas när det är klart.
+    classify-remove:
+      label: Ta bort produkter från kategorier
+      description: Produkterna kommer att tas bort från följande kategorier.
+      success_flash: Produkterna har tagits bort från de valda kategorierna
+      launched_flash: Massåtgärd "ta bort från kategorier" har inletts. Du meddelas när det är klart.
+    change-family:
+      label: Ändra familjen av produkt(er)
+      description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
+      success_flash: Familjen av vald(a) produkt(er) har ändrats
+      launched_flash: Massåtgärd "ändra familj" har inletts. Du meddelas när det är gjort.
+    add-to-groups:
+      label: Lägg till i grupp
+      description: Markera de grupper som du vill lägga till valda produkter
+      success_flash: Produkter har lagts till de valda grupperna
+      launched_flash: Massåtgärd "Lägg till grupper" har inletts. Du meddelas när det är gjort.
+      no_group: Ingen grupp just nu. Börja med att skapa en grupp.
+    add-to-variant-group:
+      label: Lägga till i en variantgrupp
+      description: Markera gruppen variant för att lägga till valda produkter
+      success_flash: Produkter har lagts till i den valda variantgrupp
+      already_in_variant_group_or_not_valid: Du kan inte gruppera följande produkt eftersom det redan är i en grupp för varianten eller inte har gruppen axis.
+      no_variant_group: Ingen variant grupp för nu. Vänligen börja med att skapa en grupp för varianten.
+      no_valid_variant_group: Ingen variant grupp att dela attribut(er) med utvalda produkter.
+      some_variant_groups_are_skipped:
+        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
+      launched_flash: Massåtgärd "Lägg till variantgrupp" har inletts. Du meddelas när det är gjort.
+    set-attribute-requirements:
+      label: Ange attributkrav
+      description: Följande attributkrav kommer att tillämpas på de valda familjerna
+      success_flash: Attributkrav tillämpades på de valda familjerna
+      launched_flash: Bulk åtgärder "ange attributet kraven" lanseras. Du kommer att meddelas när det är klart.
+    mass_action:
+      quick_export:
+        launched_flash: Kör jobbet exportera produkter
+  sequential_edit_action:
+    product:
+      previous: Hoppa tillbaka till "%product%" utan att spara.
+      next: Hoppa till "%product%" utan att spara.
+  acl:
+    locale:
+      index: Lista språk
+    currency:
+      index: Lista valutor
+      toggle: Växla valutor
+    product:
+      index: Visa produkter
+      create: Skapa en produkt
+      edit_attributes: Redigera attribut för produkten
+      remove: Ta bort en produkt
+      add_attribute: Lägga till ett attribut till en produkt
+      remove_attribute: Ta bort ett attribut från en produkt
+      categories_view: Rådfråga kategorierna av en produkt
+      associations_view: Visa association typer av en produkt
+      change_family: Ändra produktfamilj
+      change_state: Ändra status för produkten
+      add_to_groups: Lägga till produkten i grupper
+      add_to_variant_group: Lägga till produkten i en variantgrupp
+      mass_edit: Produkt mass redigera
+      comment: Kommentera produkter
+      download: Ladda ner produkten som PDF
+      history: Visa produkten historik
+    category:
+      list: Visa kategorier
+      create: Skapa en kategori
+      edit: Ändra kategori
+      remove: Ta bort en kategori
+      move: Flytta kategori
+      children: Se kategori barn
+      products: Se kategoris produkter
+      history: Visa kategori historia
+    channel:
+      index: Lista kanaler
+      create: Skapa en kanal
+      edit: Redigera en kanal
+      remove: Ta bort en kanal
+      history: Visa kanal historik
+    family:
+      index: Visa familjer
+      create: Skapa en familj
+      edit_properties: Redigera egenskaper för en familj
+      edit_attributes: Redigera attribut för en familj
+      remove: Ta bort en familj
+      history: Visa familjehistorik
+    attribute_group:
+      index: Visa attributgrupper
+      create: Skapa en attributgrupp
+      edit: Redigera en attributgrupp
+      remove: Ta bort en attributgrupp
+      sort: Sortera attributgrupper
+      add_attribute: Lägga till attribut i en grupp
+      remove_attribute: Ta bort attribut från en grupp
+      history: Visa attribut grupp historik
+    attribute:
+      index: Visa attribut
+      create: Skapa ett attribut
+      edit: Redigera ett attribut
+      remove: Ta bort ett attribut
+      sort: Sortera attribut inut i attributgrupper
+      history: Visa attributhistorik
+    group:
+      index: Visa grupper
+      create: Skapa en grupp
+      edit: Redigera en grupp
+      remove: Ta bort en grupp
+      history: Visa grupp historik
+    variant_group:
+      index: Lista Variantgrupper
+      create: Skapa en variantgrupp
+      edit: Redigera en variantgrupp
+      remove: Ta bort en variantgrupp
+      history: Visa gruppens varianthistorik
+      edit_attributes: Redigera attribut för Variantgrupper
+      add_attributes: Lägga till attribut till Variantgrupper
+      remove_attribute: Ta bort attribut från Variantgrupper
+    group_type:
+      index: Lista grupptyper
+      create: Skapa en grupptyp
+      edit: Redigera en grupptyp
+      remove: Ta bort en grupptyp
+    association_type:
+      index: Lista förbindelse typer
+      create: Skapa en associationstypen
+      edit: Redigera en associationstyp
+      remove: Ta bort en associationstyp
+      history: Visa associationstypen(s) historik
+    job_tracker:
+      index: Visa process spårare
+  acl_group:
+    association_type: Associationstyp
+    attribute: Attributer
+    attribute_group: Attributgrupper
+    category: Kategorier
+    channel: Kanaler
+    currency: Valutor
+    family: Familjer
+    group: Grupper
+    variant_group: Variantgrupper
+    group_type: Grupptyper
+    locale: Språk
+    product: Produkter
+  product_value:
+    tooltip:
+      from_variant:
+        title: Uppdateras av en variantgrupp
+        content: Det här fältet uppdateras av följande variant grupp
+  reference_data:
+    empty_value:
+      reference_data_type:
+        label: Välj referens datatyp
+attribute:
+  title: attributet
+  overview: attribut översikt
+  create: skapa attribut
+  edit: redigera attribut
+attribute group:
+  title: attributgrupp
+  overview: attribut grupp översikt
+  create: skapa attributgrupp
+  edit: redigera attributgrupp
+  suggest creation: Vänligen välj en attributgrupp till vänster
+  or: eller
+  create new: Skapa en ny attributgrupp
+category:
+  title: kategori
+  overview: kategori översikt
+  create: skapa kategori
+  edit: redigera kategori
+  suggest selection: Vänligen välj en kategori till vänster
+  or: eller
+  create new: Skapa ny kategori
+tree:
+  title: träd
+  create: skapa träd
+  edit: redigera träd
+channel:
+  title: kanal
+  overview: kanalöversikt
+  create: skapa kanal
+  edit: redigera kanal
+currency:
+  title: valuta
+  overview: valutaöversikt
+  create: skapa valuta
+  edit: redigera valuta
+family:
+  title: familj
+  overview: familjen översikt
+  create: skapa familj
+  edit: redigera familj
+locale:
+  title: språk
+  overview: språk översikt
+  create: skapa språk
+  edit: redigera språk
+product:
+  title: produkt
+  overview: produktöversikt
+  create: skapa produkt
+  edit: redigera produkt
+group:
+  title: grupp
+  overview: gruppen översikt
+  create: skapa grupp
+  edit: redigera grupp
+group type:
+  title: grupp typ
+  overview: grupp typs översikt
+  create: skapa grupptyp
+  edit: redigera grupptyp
+variant group:
+  title: variantgrupp
+  overview: variantgrupp översikt
+  create: skapa variantgrupp
+  edit: redigera variantgrupp
+association type:
+  title: associationstyp
+  overview: associationstyp översikt
+  create: skapa associationstyp
+  edit: redigera associationstyp
+products: produkter
+btn:
+  create:
+    attribute: skapa attribut
+    attribute group: skapa attributgrupp
+    category: skapa kategori
+    tree: skapa träd
+    channel: skapa kanal
+    currency: skapa valuta
+    family: skapa familj
+    locale: skapa språk
+    product: skapa produkt
+    group: skapa grupp
+    variant group: skapa variantgrupp
+    association type: skapa associationstyp
+    group type: skapa grupptyp
+    drag_or_upload: Dra och släpp för att ladda upp eller klicka här
+  edit: redigera
+  save: spara
+  save and back: spara och tillbaka till produktlista
+  save and create: spara och skapa ny
+  save and next: spara och nästa
+  save and finish: spara och avsluta
+  remove: ta bort
+  delete: radera
+  cancel: avbryt
+  next: nästa
+  back: tillbaka
+  confirm: bekräfta
+  to grid: tillbaka till rutnät
+  to parent: tillbaka till förälder
+  download_pdf: PDF
+  download: hämta
+confirmation:
+  confirm: Bekräfta
+  delete: Bekräfta borttagning
+  leave: Är det säkert att du vill lämna den här sidan?
+  discard changes: Du kommer att förlora ändringar till %entity% om du lämnar sidan.
+  remove:
+    item: Är du säker på att du vill radera det här objektet?
+    attribute: Är du säker på att du vill ta bort attribut %name%?
+    attribute group: Är du säker du vill ta bort attribut gruppen %name%?
+    category: Är du säker på att du vill ta bort kategoriträdet %name%?
+    family: Är du säker på att du vill ta bort familjen %name%?
+    product: Är du säker på att du vill ta bort produkten %name%?
+    group: Är du säker på att du vill ta bort gruppen %name%?
+    variant group: Är du säker på att du vill ta bort variantgrupp %name%?
+    group type: Är du säker på att du vill ta bort gruppen %name%?
+    user: Är du säker på att du vill ta bort den här användaren %name%?
+  attribute group:
+    remove attribute: Är du säker på att du vill ta bort attribut %name% från denna attributgruppen?
+  family:
+    remove attribute: Är du säker på att du vill ta bort attribut %name% från denna familj?
+  product:
+    remove attribute: Är du säker på att du vill ta bort attribut %name% från denna produkt?
+  variant_group:
+    remove_attribute: Är du säker på att du vill ta bort attribut %name% från denna variant grupp?
+flash:
+  entity:
+    removed: Objektet har tagits bort
+  attribute:
+    created: Attributet har skapats
+    updated: Attributet har uppdaterats
+    removed: Attributet har tagits bort
+    identifier not removable: ID-attributet kan inte tas bort
+    used by groups: Detta attribut kan inte tas bort eftersom den används av %count% Variantgrupper
+  attribute group:
+    created: Attributgruppen har skapats
+    updated: Attributgruppen uppdaterades
+    removed: Attributgruppen har tagits bort
+    attributes added: Attribut har lagts till attributgruppen
+    attribute removed: Attribut har tagits bort från attributgruppen
+    not removed attributes: Attributgruppen kan inte tas bort eftersom den innehåller attribut(er)
+    not removed default: Standard attributgrupp kan inte tasbort
+    not removed default attributes: Attributet kan inte tas bort från en standard attributgrupp
+  category:
+    created: Kategorin har skapats
+    updated: Kategorin har uppdaterats
+    removed: Kategorin har tagits bort
+  tree:
+    created: Trädet har skapats
+    updated: Trädet har uppdaterats
+    removed: Trädet har tagits bort
+    not removable: Träd som är kopplade till kanaler kan inte tas bort.
+  currency:
+    updated: Valutan har uppdaterats
+    error.linked_to_channel: Du kan inte inaktivera en valuta som är kopplad till en kanal.
+  family:
+    created: Familjen har skapats
+    updated: Familjen har ändrats
+    removed: Familjen har tagits bort
+    identifier not removable: Id-attributet kan inte tas bort från en familj
+    label attribute not removable: Detta attribut kan inte tas bort eftersom den används som etikett för familjen
+    attribute not found: Attributet tillhör inte denna familj
+    attributes added: Attribut har lagts till i familjen
+    attribute removed: Attribut har tagits bort från familjen
+  product:
+    created: Produkten har skapts
+    updated: Produkten har uppdaterats
+    removed: Produkten har tagits bort
+    invalid: Kontrollera din post och försök igen
+    attributes added: Attribut har lagts till i produkten
+    attribute removed: Attribut har tagits bort från produkten
+    attribute not removable: Attributet kan inte tas bort från denna produkt
+    enabled: Produkten har aktiverats
+    disabled: Produkten har inaktiverats
+  group:
+    created: Gruppen har skapats
+    updated: Gruppen har uppdaterats
+    removed: Gruppen har tagits bort
+  variant group:
+    created: Variantgrupp som skapats
+    updated: Variantgruppen har ändrats
+    removed: Variantgruppen har tagits bort
+    attributes_added: Attribut har lagts till i variant gruppen
+    attribute_removed: Attribut har tagits bort från variant gruppen
+  group type:
+    created: Grupptyp skapades
+    updated: Grupptyp har uppdaterats
+    removed: Grupptypen har tagits bort
+    cant remove variant: Grupp typ variant kan inte tas bort
+    cant remove used: Grupptyp används av vissa grupper och kan inte tas bort
+  association type:
+    created: Associationstyp har skapats
+    updated: Associationstypen har ändrats
+    removed: Associationstypen har tagits bort
+  user:
+    removed: Användaren har tagits bort
+  error ocurred: Åtgärden misslyckades. Försök igen.
+info:
+  updated: Det finns osparade ändringar.
+  category:
+    remove children: Alla underkategorier kommer att raderas.
+    keep products: Produkter i dessa kategorier tas inte bort.
+    products limit exceeded: Denna kategori innehåller fler produkter än tillåtna för åtgärden (%limit% produkter maximala)
+  product:
+    no available attributes: Det finns inga fler attribut att lägga till
+    no family defined: Ingen familj har definieras
+    change family: Ändra produktfamiljen
+    change family to: Ändra familjen till
+    merge attributes: Aktuella attribut slås samman med de i den nya familjen.
+    keep attributes: Inga attribut kommer att tas bort.
+    number of associations: '%productCount% produkter och %groupCount% grupper'
+    enable: Aktivera
+    enabled: Aktiverad
+    disable: Inaktivera
+    disabled: Inaktiverad
+  group:
+    axis: Variation axel %attributes%
+    select products: Välj produkter som bör tillhöra denna grupp.
+    selectable products: Följande valbara produkter har ett definierat värde för varje axel.
+    no group types: Ingen grupptyper finns, klicka här för att skapa en
+    more products: '%count% fler produkter...'
+  association type:
+    show products: Visa produkter
+    show groups: Visa grupper
+    remove from products: Tar du bort denna associationstyp tas den bort från %count% produkter.
+    none exist: Det finns inga associationstyper.
+    create one: Klicka här för att skapa en
+  attribute:
+    auto option sorting: Om aktiverad, sorteras alternativ automatiskt efter deras lokaliserade etiketter
+  completeness:
+    not calculated: Ännu inte beräknas
+Options: Inställningar
+Created at: Skapad den
+Updated at: Uppdaterad den
+Created: Skapad
+Updated: Uppdaterad
+Last update: Senast uppdaterad
+by: Av
+N/A: N/A
+Manage products: Hantera produkter
+Manage groups: Hantera grupper
+Code: Kod
+Name: Namn
+Type: Typ
+Scope: Omfattning
+Required: Obligatorisk
+Unique: Unik
+Not required: Ej obligatorisk
+Translatable: Översättningsbara
+Scopable: Omfattningbar
+Localizable: Lokaliserbar
+Unique value: Unikt värde
+Attribute group: Attributgrupp
+Other: Övrigt
+Variants behavior when edited: Variant beteende när redigeras
+Edit: Redigera
+Remove: Ta bort
+Delete: Radera
+Parameters: Parametrar
+System: System
+Values: Värden
+General parameters: Allmänna parametrar
+Backend parameters: Backend-parametrar
+Label: Etikett
+Default label: Standardetikett
+Default value: Standardvärde
+Attributetype: Attribut typ
+Attribute type: Attribut typ
+Defaultvalue: Standardvärde
+Variant: Variant
+Smart: Smart
+Useable as grid column: Kan användas som rutnätskolumn
+Useable as grid filter: Användbara i rutnät
+Family: Familj
+Available locales: Tillgängliga språk
+Locale specific: Specifik språk
+default: Standard
+Axis: Axel
+Add attributes: Lägg till attribut
+Translate from: Översätt från
+switch_on: "Ja"
+switch_off: "Nej"
+Close: Stäng
+Search: Sök
+Choose the attribute type: Välj attributtyp
+Choose the attribute group: Välj attributgrupp
+Drag and drop a file or click here: Dra och släpp för att ladda upp eller klicka här
+Drop an image or click here: Släpp en bild eller klicka här
+Automatic option sorting: Automatisk sortering
+save_attribute_before_manage_option: För att hantera alternativ, vänligen Spara attributet först
+Please select: Var god välj
+Active: Aktiv
+Inactive: Inaktiv
+Do not convert: Konvertera inte
+Create: Skapa
+Cancel: Avbryt
+Choose a family: Välj en familj
+Choose a unit: Välj en enhet
+No matches found: Inga träffar hittades
+Category tree: Kategoriträd
+Completeness: Fullständighet
+Attribute used as label: Attribut används som etikett
+Global: Global
+Channel: Kanal
+Expand all channels: Expandera alla kanaler
+Collapse all channels: Kollapsa alla kanaler
+Always override: Alltid åsidosätta
+Ask: Fråga
+General Properties: Allmänna egenskaper
+Group values: Gruppvärden
+New group: Ny grupp
+Groups overview: Grupper översikt
+'Y-m-d h:i:s': 'Y-m-d h:i:s'
+Max characters: Max tecken
+Validation rule: Verifieringsuttryck
+Validation regexp: Validering regexp
+Wysiwyg enabled: WYSIWYG aktiverad
+Number min: Min antal
+Number max: Max antal
+Decimals allowed: Tillåt decimaler
+Negative allowed: Tillåta negativa värden
+Date min: Min datum
+Date max: Max datum
+Metric family: Metrisk familj
+Default metric unit: Metrisk standardenhet
+Max file size: Max filstorlek (MB)
+Allowed extensions: Tillåtna tillägg
+None: Inga
+E-mail: E-mail
+URL: URL
+Regular expression: Reguljära uttryck
+Minimum input length: Minsta indatalängden
+Default: Standard
+Attributes: Attributer
+Title: Titel
+pim_title.attribute_group:
+  index: "Attributgrupper"
+  create: "Attributgrupp | Skapa"
+  edit: "Attributgrupp %group.label% | Redigera"
+pim_title.category:
+  index: "Kategoriträd"
+  create: "Kategori träd | Skapa"
+  edit: "Kategori träd %category.label% | Redigera"
+pim_title.attribute:
+  index: "Attributer"
+  create: "Attribut | Skapa"
+  edit: "Attributen %attribute.label% | Redigera"
+pim_title.product:
+  index: "Produkter"
+  edit: "Produkter %product.sku% | Redigera"
+pim_title.family:
+  index: "Familjer"
+  edit: "Familjer %family.label% | Redigera"
+pim_title.channel:
+  index: "Kanaler"
+  create: "Kanaler | Skapa"
+  edit: "Kanaler %channel.label% | Redigera"
+pim_title.currency:
+  index: "Valutor"
+pim_title.locale:
+  index: "Språk"
+pim_title.group:
+  index: "Grupper"
+  edit: "Grupper %group.label% | Redigera"
+pim_title.variant_group:
+  index: "Variantgrupper"
+  edit: "Variantgrupper %group.label% | Redigera"
+pim_title.association_type:
+  index: "Associationstyp(er)"
+  edit: "Associationstyp %association type.label% | Redigera"
+pim_title.group_type:
+  index: "Grupptyper"
+  edit: "Grupp typer %group type.label% | Redigera"
+pim_title.mass_edit_product_action:
+  choose: "Mass redigera | Välj"
+  configure: "Mass redigera | Konfigurera"
+pim_title.mass_edit_family_action:
+  choose: "Mass redigera | Välj"
+  configure: "Mass redigera | Konfigurera"
+pim_title.job_tracker:
+  index: Spåra process
+  show: "Spåra process | Visa jobb"
+pim_title.dashboard: "Instrumentpanel"
+pim_catalog_identifier: Identifierare
+pim_catalog_text: Text
+pim_catalog_textarea: Textruta
+pim_catalog_number: Nummer
+pim_catalog_price_collection: Pris
+pim_catalog_multiselect: Välj Flera
+pim_catalog_simpleselect: Enkel Välj
+pim_catalog_file: Fil
+pim_catalog_image: Bild
+pim_catalog_boolean: "Ja/Nej"
+pim_catalog_date: Datum
+pim_catalog_metric: Metrisk
+pim_reference_data_simpleselect: Referensdata enkel Välj
+pim_reference_data_multiselect: Referens data multi Välj
+Activated: Aktiverad
+Disable: Inaktivera
+pim_enrich.sequential_edit_action:
+  product:
+    previous: Hoppa tillbaka till "%product%" utan att spara.
+    next: Hoppa till "%product%" utan att spara.
+pim_enrich.mass_edit_action:
+  limit_exceeded: Välj mindre än %limit% objekt att redigera
+  product:
+    page_title: Produkter
+    page_subtitle: Massredigera (1 produkt) | Massredigera (%count% produkter)
+    title: Välj åtgärd
+    subtitle: Välj den funktion som du vill utföra på den valda produkten | Välj den funktion som du vill utföra på de valda %count% produkterna
+    confirm: Du håller på att uppdatera en produkt med följande information, bekräfta. | Du håller på att uppdatera %count% produkter med följande information, bekräfta.
+    steps:
+      first: Välj produkter
+      second: Välj åtgärd
+      third: Konfigurera
+      fourth: Bekräfta
+  family:
+    page_title: Familjer
+    page_subtitle: Massredigera (1 familj) | Massredigera (%count% familjer)
+    title: Välj åtgärd
+    subtitle: Välj den funktion som du vill utföra på den valda familjen | Välj den funktion som du vill utföra på de valda %count% familjerna
+    confirm: Du håller på att uppdatera en familj med följande information, bekräfta. | Du håller på att uppdatera %count% familjer med följande information, bekräfta.
+    steps:
+      first: Välj familjer
+      second: Välj åtgärd
+      third: Konfigurera
+      fourth: Bekräfta
+  change-status:
+    label: Ändra status (aktivera / inaktivera)
+    description: De utvalda produkterna kommer att aktiveras eller inaktiveras.
+    success_flash: Produkt(er) status har ändrats
+  edit-common-attributes:
+    label: Redigera vanliga attribut(er)
+    description: Den valda produktens attribut kommer att redigeras med följande uppgifter för det valda språket.
+    empty: Välj de attribut(er) som du vill redigera
+    success_flash: Produkt(er) attribut har uppdaterats
+    message.warning: Det finns inga gemensamma attribut för de valda produkterna. Vänligen ändra ditt val.
+    no_attribute.warning: Det finns inga gemensamma attribut för de valda produkterna. Vänligen ändra ditt val.
+    truncated_by_variant_attribute.warning: 'Vissa gemensamma attribut från de utvalda produkter kommer från en variantgrupp. De är inte tillgängliga för massa redigering: %attributes%.'
+  classify:
+    label: Klassificera produkter i kategorier
+    description: Produkterna kommer att vara placerad i följande kategorier, befintliga placeringen hålls.
+    success_flash: Produkten har klassificerats i valda kategorier
+  change-family:
+    label: Ändra familjen av produkt(er)
+    description: Familjen av de utvalda produkterna kommer att ändras till den valda familjen
+    success_flash: Familjen av vald(a) produkt(er) har ändrats
+    no_family: Ingen familj
+  add-to-groups:
+    label: Lägg till i grupp
+    description: Markera de grupper som du vill lägga till de valda produkter
+    success_flash: Produkter har lagts till de valda grupperna
+  set-attribute-requirements:
+    label: Ange attributkrav
+    description: Följande attributkrav kommer att tillämpas på de valda familjerna
+    success_flash: Attributkrav tillämpades på de valda familjerna
+To enable: Aktivera
+Select attributes: Välj attribut
+Select: Välj
+Remove this attribute: Ta bort detta attributet
+Copy: Kopiera
+Current tab: Aktuell flik
+Group: Grupp
+View group: Visa grupp
+Products: Produkter
+pim_menu:
+  tab:
+    collect: Samla
+    enrich: Berika
+    settings: Inställningar
+    spread: Sprid
+  item:
+    association_type: Associationstyp(er)
+    attribute: Attributer
+    attribute_group: Attributgrupper
+    category: Kategorier
+    channel: Kanaler
+    currency: Valutor
+    family: Familjer
+    group: Grupper
+    group_type: Grupptyper
+    locale: Språk
+    product: Produkter
+    variant_group: Variantgrupper
+Properties: Egenskaper
+History: Historik
+pane.accordion:
+  node_values: Nodvärden
+  general_properties: Allmänna egenskaper
+  locale_values: Lokala värden
+  backend_parameters: Backend-parametrar
+  general_parameters: Allmänna parametrar
+  validation_parameters: Valideringsparametrar
+  label_translations: Etikettsöversättningar
+  options: Alternativ
+  group_values: Gruppvärden
+popin.create:
+  association_type.title: Skapa en ny typ av association
+  family.title: Skapa en ny familj
+  group.title: Skapa en ny grupp
+  group_type.title: Skapa en ny grupptyp
+  product.title: Skapa en ny produkt
+  variant_group.title: Skapa en ny variant grupp
+  option.title: Skapa ett nytt alternativ
+In group: I grupp
+Attribute as label: Attribut som etikett
+Is associated: Är associerad
+Complete: Klart
+Created At: Skapad den
+Updated At: Uppdaterad den
+Enabled: Aktiverad
+Disabled: Inaktiverad
+Status: Status
+Change History: Ändra historik
+Data Audit: Data revision
+Data Audit - System: 'Data revision - system'
+Action: Åtgärd
+Version: Version
+Entity type: Entitet typ
+Entity name: Entitetsnamn
+Entity id: Entitet-id
+Data: Data
+Author: Skapare
+Logged at: Loggad den
+Deleted: Raderad
+Old values: Gammalt värde
+New values: Nytt värde
+System configuration: Systemkonfiguration
+General setup: Allmänna inställningar
+Localization: Lokalisering
+Localization options: Lokalanpassningsalternativ
+Locale: Språk
+Location: Plats
+Format address by address country: Formatera adress efter landskod
+Language: Språk
+Timezone: Tidszon
+Currency: Valuta
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: "kommundel"
+      state: "delstat"
+      island: "ö"
+      county: "län"
+      area: "område"
+      prefecture: "prefektur"
+      department: "avdelning"
+      district: "område"
+      province: "område"
+  form:
+    tooltip:
+      locale: "Välj det språk du vill använda för att formatera tal, adresser, namn och datum"
+      location: " Välj språk att använda för att formatera adresserna när 'Formatera adress efter adress land' alternativet är inaktiverat"
+      format_address_by_address_country: "Med det här alternativet aktiverat så formateras adresser av det land som de är i. Inaktivera detta alternativ kommer att orsaka så adresserna formateras i ditt språks adressformat"
+      language: "Välj det systemspråk du vill använda"
+      timezone: "Välj tidszonen för visning av datum och tid"
+      currency: "Välj standardvaluta"
+Selected products successfully deleted: Valda produkter har tagits bort
+pim_mass_edit:
+  notification:
+    mass_edit:
+      error: Mass redigera <strong>%label%</strong> misslyckades
+      warning: Mass redigera <strong>%label%</strong> klar med några varningar
+      success: Mass redigera <strong>%label%</strong> färdig
+    quick_export:
+      error: Snabb export <strong>%label%</strong> misslyckades
+      warning: Snabb export <strong>%label%</strong> klar med några varningar
+      success: Snabb export <strong>%label%</strong> färdiga
+job_execution.summary:
+  mass_edited: Massa redigera
+  skip: Hoppade över
+  skipped_products: Överhoppade produkter
+  skipped_attributes: Överhoppade attribut
+  skipped_families: Överhoppade familjer
+pim_mass_edit_execution_show: Massa redigera utförande | Detaljer
+edit_common_attributes.steps.edit_common_attributes_processor.title: Redigera vanliga attribut
+update_product_value.steps.update_product_value_processor.title: Uppdatera produktens värde
+remove_product_value.steps.update_product_value_processor.title: Ta bort produktvärde
+add_to_variant_group_clean.steps.excluded.title: Utesluten produkt
+add_to_variant_group_clean.steps.duplicated.title: Duplicerade Axis
+add_to_variant_group.steps.excluded.title: Uteslutna produkt
+add_to_variant_group.steps.duplicated.title: Duplicerade Axis
+add_to_variant_group.steps.cleaner.warning.description: 'Produkten kan inte anges i den valda variantgrupp: duplicera variation axelvärden med en annan produkt i urval'
+edit_common_attributes: Redigera vanliga attribut(er)
+edit_common_attributes_clean: Rensa filer för vanliga attribut
+perform.steps.duplicated.title: Duplicerade Axlar
+perform.steps.excluded.title: Uteslutna produkt
+batch_jobs:
+  add_product_value:
+    label: Lägga till produktens värde
+    perform:
+      label: Lägga till produktens värde
+  update_product_value:
+    label: Uppdatera produktens värde
+    perform:
+      label: Uppdatera produktens värde
+  edit_common_attributes:
+    label: Redigera vanliga attribut
+    perform:
+      label: Redigera vanliga attribut
+    clean:
+      label: Rensa filer för vanliga attribut
+  set_attribute_requirements:
+    label: Ange attributkrav
+    perform:
+      label: Ange attributkrav
+  csv_product_quick_export:
+    quick_export.label: CSV-produkt snabb export
+    perform:
+      label: CSV-produkt snabb export
+  csv_product_grid_context_quick_export:
+    quick_export.label: CSV-produkt rutnät sammanhang snabb export
+    perform:
+      label: CSV-produkt rutnät sammanhang snabb export
+  xlsx_product_quick_export:
+    quick_export.label: XLSX produkt snabb export
+    perform:
+      label: XLSX produkt snabb export
+  xlsx_product_grid_context_quick_export:
+    quick_export.label: XLSX produkt rutnät sammanhang snabb export
+    perform:
+      label: XLSX produkt rutnät sammanhang snabb export
+  add_to_variant_group:
+    label: Lägg till variantgrupp
+    perform:
+      label: Lägg till variantgrupp
+mass_edit report:
+  overview: Massa redigera rapporter
+job_tracker:
+  tab:
+    title: Process spårare
+  filter:
+    started_at: Startade den
+pim_enrich_attribute_form:
+  code: Kod
+  type: Attribut typ
+  reference_data_name: Data Referensnamn
+  scopable: Värde per kanal
+  localizable: Värde per språk
+  unique: Unikt värde
+  availableLocales: Tillgängliga språk
+  locale_specific: Specifik språk
+  group: Attributgrupp
+  useableAsGridFilter: Användbara i rutnät
