@@ -26,6 +26,10 @@ pim_enrich:
         properties:
           label:
             is_read_only: Lecture seule
+pim:
+  grid:
+    mass_action:
+      asset_edit: Edition de masse des ressources
 pimee_enrich:
   form:
     job_instance:
@@ -80,6 +84,7 @@ pimee_enrich:
           messages:
             approve:
               success: La proposition a été soumise avec succès.
+              error: 'La proposition ne peut être soumise en raison de l''erreur suivante: {{ error }}'
             reject:
               success: La proposition a été rejetée.
             remove:
@@ -158,20 +163,27 @@ pimee_enrich:
         height: '%value%px de hauteur'
   mass_edit:
     next: Suivant
+    previous: Retour
     cancel: Annuler
     confirm: Confirmer
     product:
       operation:
         publish:
           label: Publier les produits
+          description: Les produits seront publiés
+          warning: Les {{ itemsCount }} produits sélectionnés vont être publiés.
         unpublish:
           label: Dépublier des produits
+          description: Les produits seront non publiés
+          warning: Les {{ itemsCount }} produits sélectionnés vont être non publiés.
     asset:
+      title: Ressources / Edition de masse ({{ itemsCount }} ressources)
       step:
         select:
           label: Choisir les ressources
         choose:
           label: Choisir une opération
+          title: Edit de masse ({{ itemsCount }} ressources)
         configure:
           label: Configurer
         confirm:
@@ -179,8 +191,11 @@ pimee_enrich:
       operation:
         add_tag:
           label: Ajouter des mots clés aux ressources
+          description: Les mots clés seront ajoutés aux ressources.
           field: Mots clés
         add_to_category:
+          label: Classifier les ressources dans des catégories
+          description: Les ressources seront positionnées dans les catégories suivantes, le placement existant avant l'opération sera conservé.
           field: Catégories
 pim_menu:
   tab:
