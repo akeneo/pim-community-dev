@@ -1,0 +1,12 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Förslag att granska
+      date: Datum
+      author: Skapare
+      product: Produkt
+      review: Granska
+      empty: Inga produktutkast att granska
+  version:
+    community_edition: CE
+    enterprise_edition: EE

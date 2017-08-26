@@ -1,0 +1,76 @@
+pimee_product_asset:
+  form:
+    product:
+      asset:
+        manage: Hantera tillgångar
+        panel:
+          basket:
+            title: Korg
+            empty_basket: Korgen är tom
+        manage_asset:
+          title: Hantera tillgångar
+          cancel: Avbryt
+          confirm: Bekräfta
+  enrich_asset:
+    grid:
+      edit: Redigera egenskaper för tillgången
+  enrich_variation:
+    popin:
+      delete:
+        title: Bekräfta borttagning
+        message: Är du säker på att du vill radera det här objektet?
+      reset:
+        title: Återställa variationer
+        message: Är du säker du vill återställa alla varianter?
+  mass_upload:
+    menu: Ladda upp tillgångar
+    btn:
+      remove_all_files: Ta bort alla filer
+      delete: Ta bort
+      import: Import
+      upload: Ladda upp
+    success:
+      new: En ny tillgång kommer att skapas
+      imported: Filer som importeras för asset bearbetning
+      canceled: Ladda upp framgångsrikt avbryts
+      deleted: Uppladdad fil har tagits bort
+    error:
+      list: Läsa kan inte redan uppladdade filer
+      upload: Ett fel uppstod vid uppladdning
+      delete: Kan inte ta bort filen från servern
+      import: Ett fel uppstod under importen
+      filename: Ogiltigt filnamn för tillgång
+      code: Ogiltig kodformat för tillgång
+      locale: En tillgång finns men är inte lokaliserbar
+      invalid_locale: Språket är inaktiverat eller ogiltigt
+      exists: En fil med samma namn har importerats redan
+      conflicts: Fil namn konflikt
+    grid:
+      medias: medias
+      filename: filnamn
+      filetype: filtyp
+      status: status
+      progress: framsteg
+      actions: åtgärder
+    action:
+      cancel: Avbryt
+      remove: Ta bort
+    status:
+      added: Tillagd
+      queued: Köad
+      uploading: Laddar upp
+      error: Fel
+      success: Slutförd
+    drag_and_drop: Dra och släpp din tillgångar eller klicka här
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Är du säker du vill ta bort valda tillgångar?
+        success: Valda tillgångar har tagits bort.
+        error: Ett fel uppstod när de valda produkterna skulle tas bort, vänligen försök igen.
+        empty_selection: Ingen tillgång som valts
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        mass_upload: Massuppladdning
