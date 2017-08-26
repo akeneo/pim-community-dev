@@ -348,9 +348,6 @@ pim_enrich:
           title: Associacions
           info:
             none_exist: No existeix cap tipus d'associació.
-            show_products: Mostrar productes
-            show_groups: Mostrar grups
-            number_of_associations: "productes {{ productCount }} i {{ groupCount }} grups"
         attributes:
           title: Atributs
           btn:

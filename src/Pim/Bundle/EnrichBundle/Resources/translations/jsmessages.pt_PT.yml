@@ -313,9 +313,6 @@ pim_enrich:
           title: Associações
           info:
             none_exist: Nenhum tipo de associação existente.
-            show_products: Mostrar produtos
-            show_groups: Mostrar grupos
-            number_of_associations: "{{ productCount }} produtos e {{ groupCount }} grupos"
         attributes:
           title: Atributos
           btn:

@@ -359,9 +359,7 @@ pim_enrich:
           title: Koppelingen
           info:
             none_exist: Er bestaan geen associatietypes.
-            show_products: Toon producten
-            show_groups: Toon groepen
-            number_of_associations: "{{ productCount }} producten en {{ groupCount }} groepen"
+            show_products: Producten weergeven
         attributes:
           title: Attributen
           btn:

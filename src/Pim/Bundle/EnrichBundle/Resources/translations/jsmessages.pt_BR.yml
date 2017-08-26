@@ -158,7 +158,6 @@ pim_enrich:
         deletion_failed: O produto não pode ser deletado.
         update_successful: Produto atualizado com sucesso.
         update_failed: O produto não pode ser atualizado.
-        field_not_ready: 'O produto não pode ser salvo agora. Os seguintes campos não estão prontos: {{ fields }}'
         already_in_upload: Um arquivo ja está sendo enviado para esse atributo no local "{{ locale }}" e no escopo "{{ scope }}"
       error:
         upload: Ocorreu um erro ao fazer o envio do arquivo
@@ -351,9 +350,6 @@ pim_enrich:
           title: Associações
           info:
             none_exist: Não existe nenhum tipo de associação.
-            show_products: Mostrar produtos
-            show_groups: Mostrar grupos
-            number_of_associations: "{{ productCount }} produtos e {{ groupCount }} grupos"
         attributes:
           title: Atributos
           btn:
@@ -572,9 +568,6 @@ pim_enrich:
           with_header:
             title: Com Cabeçalho
             help: Imprimir ou não o nome da coluna
-          with_media:
-            title: Exportação de arquivos e imagens
-            help: Se exportar ou não imagens e arquivos de produtos
           lines_per_file:
             title: Número de linhas por ficheiro
             help: Definir o número limite de linhas por ficheiro
@@ -598,7 +591,7 @@ pim_enrich:
             help: Habilitar ou não os produtos importados
           enabled_comparison:
             title: Comparar Valores
-            help: Permitir a comparação entre os valores originais e importados. Pode acelerar a importação se valores importados são muito semelhantes aos valores originais
+            help: Permitir a comparação entre os valores originais e importados. Pode acelerar a importação se os valores importados forem muito semelhantes aos valores originais
           real_time_versioning:
             title: Atualização de histórico em tempo real
             help: Significa que o histórico do produto é atualizado automaticamente, pode ser desligado para melhorar a velocidade
@@ -650,72 +643,51 @@ pim_enrich:
         attributes:
           label_label: Rótulo
           toolbox:
-            select_attributes_by_groups: Adicionar por grupos
             select_attributes: Adicionar atributos
             add: Adicionar
-            attributes_groups_selected: '{{ itemsCount }} grupo(s) selecionado(s)'
   job:
     upload: Arrastar e soltar o arquivo ou clique aqui
   export:
     product:
-      data:
-        title: Filtrar os produtos
       structure:
-        title: Filtrar os dados
         attributes:
           title: Atributos
       filter:
         channel:
           title: Canal
-          help: O canal define o escopo para os valores de produtos, as localidades usadas para selecionar dados e a árvore utilizada para selecionar produtos.
         locales:
           title: Localidades
-          help: 'As localidades define os valores de produtos localizados para exportar. Ex: apenas informações de produto em Francês.'
         attributes:
           title: Atributos
           edit: Editar
-          label: "{0} todos os atributos |{1} um atributo selecionado |] 1, Inf [{{ count }} atributos selecionados"
-          help: 'Selecione as informações do produto a exportar. Ex: somente os atributos técnicos.'
-          empty: Todos os atributos serão exportados
           modal:
             apply: Aplicar
             cancel: Cancelar
-            title: Seleção de atributo
         attributes_selector:
           attribute_group: Grupo de atributos
           attributes: "Procurar em {{ itemsCount }} atributos"
-          selected: "Atributos selecionados"
           clear: Limpar
           all_group: Todos os Grupos
-          empty_selection: Todos os atributos serão exportados
         family:
           title: Família
-          help: 'Selecione os produtos para exportação por sua família. Ex: Exporte somente os sapatos e vestidos.'
           operators:
             IN: Na lista
             "NOT IN": Não está na lista
-            EMPTY: Produtos que não têm uma família
-            "NOT EMPTY": Produtos que têm uma família
           empty_selection: Nenhuma condição sobre as famílias
         updated:
           title: Condição temporal
           operators:
             ALL: Sem restrição de data
-            "SINCE LAST N DAYS": Produtos atualizados sobre os últimos dias n (por exemplo, 6)
-            ">": Produtos atualizada desde esta data
             "SINCE LAST JOB": Produtos atualizados desde a última exportação
         enabled:
           title: Status
-          help: 'Selecione os produtos para exportação pelo seu status. Ex: Exporte produtos qualquer seu status.'
           value:
             all: Todos
             enabled: Habilitado
             disabled: Desabilitado
         completeness:
           title: Completude
-          help: Selecione os produtos para exportação por sua completude.
           operators:
-            ALL: Nenhuma condição da integralidade
             ">=": Completo em pelo menos uma das linguagens selecionadas
             "GREATER OR EQUALS THAN ON ALL LOCALES": Completo em todas as linguagens escolhidas
             LOWER THAN ON ALL LOCALES: Não completo em todas as linguagens escolhidas
