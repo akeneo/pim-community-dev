@@ -1,0 +1,140 @@
+View the product: Visa produkten
+pimee_enrich.product_history.action.revert: Återställ till denna version
+permission-changes:
+  category:
+    grant: Gruppen <strong>{{ group }}</strong> kommer att få<strong> {{ permission }}</strong> i denna kategori
+    revoke: Gruppen <strong>{{ group }}</strong> kommer inte att få<strong> {{ permission }}</strong> i denna kategori
+  locale:
+    grant: Gruppen <strong>{{ group }}</strong> kommer att få<strong> {{ permission }}</strong> i denna kategori
+    revoke: Gruppen <strong>{{ group }}</strong> kommer inte att få<strong> {{ permission }}</strong> i denna kategori
+  attribute group:
+    grant: Gruppen <strong>{{ group }}</strong> kommer <strong>få{{ permission }}</strong> av detta attributgrupp
+    revoke: Gruppen <strong>{{ group }}</strong> kommer <strong> inte få{{ permission }}</strong> av detta attributgrupp
+  job profile:
+    grant: Gruppen <strong>{{ group }}</strong> kommer <strong>få{{ permission }}</strong>
+    revoke: Gruppen <strong>{{ group }}</strong> kommer <strong>inte få{{ permission }}</strong>
+pimee_enrich:
+  form:
+    job_instance:
+      tab:
+        permission:
+          title: Behörigheter
+          added: Grupp {{ group }} kommer att få {{ permission }} jobbprofil
+          execute.label: Tillåt att köra jobbprofil
+          edit.label: Tillåt att redigera jobbprofil
+          removed: Grupp {{ group }} kommer inte att få {{ permission }} jobbprofil
+    channel:
+      tab:
+        asset-transformation:
+          title: Tillgångs transformationer
+  entity:
+    product:
+      history:
+        published: Publicerad
+        revert: Återställ
+      smart_attribute:
+        come_from: "Detta attribut kan uppdateras av en regel:"
+      btn:
+        publish: Publicera
+        publish_this_version: Publicera denna version
+        unpublish: Avpublicera
+        save_draft: Spara utkast
+      flash:
+        product_unpublished: Produkt framgångsrikt opublicerade
+        product_published: Produkten har publicerats
+        product_not_published: Misslyckades med att publicera denna produkt
+        product_not_unpublished: Det gick inte att avpublicera den här produkten
+        product_reverted: Produkten har återställt
+      meta:
+        published: Publicerade versionen
+        owner_groups: Ägargrupper
+        draft_status: Utkaststatus
+        draft:
+          in_progress: Pågående
+          sent_for_approval: Väntar på godkännande
+          working_copy: Arbetar kopia
+      tab:
+        proposals:
+          title: Förslag
+          messages:
+            approve:
+              success: Förslaget har tillämpats framgångsrikt.
+              error:
+                The proposal can't be applied due to the following error:
+                  - fel
+            reject:
+              success: Förslaget har förkastats.
+            remove:
+              success: Förslaget har tagits bort.
+      confirmation:
+        revert:
+          title: Återställa bekräftelse
+          content: Är du säker på att du vill återställa produkten till denna version?
+        publish:
+          title: Publicera denna produkt
+          content: Är du säker du vill publicera denna produkt?
+        unpublish:
+          title: Avpublicera den här produkten
+          content: Är du säker du vill Avpublicera den här produkten?
+      info:
+        update_successful: Produkten arbetskopia har uppdaterats
+      copy:
+        source:
+          working_copy: Arbetar kopia
+          draft: Mitt förslag
+          draft_of: "{{ author }}'s förslag till"
+    product_draft:
+      info:
+        update_successful: Produkten utkast har sparats
+        update_failed: Produkten utkast kunde inte uppdateras
+        value_modified: Detta värde ändras genom det nuvarande utkastet till
+      flash:
+        sent_for_approval: Produkten utkast skickades för godkännande
+        draft_not_sendable: Du kan inte skicka detta utkast för godkännande
+      btn:
+        send_for_approval: Skicka för godkännande
+        sent_for_approval: Skickat för godkännande
+      modal:
+        accept_proposal: Acceptera förslaget
+        accept_selected_proposal: Acceptera valda förslag
+        reject_proposal: Förkasta förslag
+        reject_selected_proposal: Avvisa valda förslag
+        remove_proposal: Ta bort förslag
+        send_for_approval: Skicka för godkännande
+        cancel: Avbryt
+        confirm: Skicka
+        title: Kommentera ditt förslag (tillval - 255 tecken max.)
+        characters: tecken.
+      confirmation:
+        discard_changes: Osparade ändringar förloras. Är du säker du vill sända ditt utkast för godkännande utan osparade ändringar?
+        discard_changes_title: Är du säker du vill sända detta utkast?
+  asset_transformation:
+    not_found: Ingen transformation som hittade
+    title:
+      transformation: Omvandling
+      options: Alternativ
+    colorspace:
+      title: Färgrymd
+      options:
+        colorspace: '%value% färgrymd'
+    resize:
+      title: Ändra storlek
+      options:
+        width: '%value%px bredd'
+        height: '%value%px höjd'
+    resolution:
+      title: Upplösning
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Skala
+      options:
+        width: '%value%px bredd'
+        height: '%value%px höjd'
+        ratio: baserat på %value%%
+    thumbnail:
+      title: Miniatyrbild
+      options:
+        width: '%value%px bredd'
+        height: '%value%px höjd'

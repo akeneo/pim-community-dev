@@ -1,0 +1,163 @@
+pimee_workflow:
+  product_draft:
+    author: Författare
+    created: På förslag
+    changes: Förändringar
+    locale: Lokalt sammanhang
+    product:
+      label: Produkt etikett
+    attribute:
+      label: Attribut
+    status:
+      label: Status
+      working_copy: Arbetar kopia
+      in_progress: Pågående
+      ready: Väntar på godkännande
+      can_be_partially_reviewed: Kan delvis granskas
+      can_not_be_approved: Kan inte granskas
+      can_not_be_deleted: Kan inte tas bort
+    status_message:
+      can_be_partially_reviewed: Du kan bara granska detta förslag delvis eftersom vissa ändringar tillämpas på värden du inte kan redigera. Kontakta administratören om du vill ändra dina rättigheter.
+      can_not_be_approved: Du kan inte granska detta förslag eftersom alla ändringarna är på värden som du inte kan redigera. Kontakta administratören om du vill ändra dina rättigheter.
+      can_not_be_deleted: Du kan inte radera detta förslag eftersom alla ändringarna på värden som du inte kan redigera. Kontakta administratören om du vill ändra dina rättigheter.
+      in_progress: Förslaget pågår för närvarande och har inte skickats ännu.
+    action:
+      approve: Godkänn alla
+      refuse: Avvisa alla
+      remove: Ta bort
+      partial_approve: Godkänna ändringar på attributet %attribute% av den produkten %product%
+      partial_reject: Ignorera ändringar på attributet %attribute% av den produkten %product%
+    notification:
+      partial_approve: '%owner% har accepterat värde(n) för %attributes% för den produkten %product%'
+      partial_approve_number: '%owner% har accepterat värden för %attributes_count% attribut för den produkten %product%'
+      partial_reject: '%owner% har accepterat värde(n) för %attributes% för produkt %product%'
+      partial_reject_number: '%owner% har accepterat värden för %attributes_count% attribut(er) för den produkten %product%'
+      partial_remove: '%owner% har raderat värde(n) för %attributes% för den produkten %product%'
+      partial_remove_number: '%owner% har raderat värden för %attributes_count% attribut(er) för den produkten %product%'
+      approve: '%owner% har accepterat ert förslag för den produkten %product%'
+      refuse: '%owner% har avvisat ert förslag för produkt %product%'
+      remove: '%owner% har raderat ditt förslag för produkt %product%'
+    mass_review_action:
+      approve: Godkänna alla valda
+      refuse: Avvisa alla valda
+      error:
+        draft_not_ready: Detta förslag är inte redo att godkännas
+        not_product_owner: Du äger inte produkten anknuten till detta förslag
+        cannot_edit_attributes: Du kan inte redigera attributer genom detta förslag
+        invalid_draft: Förslaget kan inte tillämpas på grund av följande fel. %error%
+  proposal:
+    to_review: '%author.firstname% %author.lastname% har skickat ett förslag att granska för produkt %product.label%'
+    individual_import: '%author.firstname% %author.lastname% har skickat förslag att granska från jobbet import'
+    generic_import: Du har förslag att granska från jobbet import
+    original_value: Original
+    new_value: Ny
+    no_diff: Värdet "%value%" är samma mellan förslaget och arbetskopian.
+    draft_in_progress: Ett utkast pågår av %author% för denna produkt.
+  published_product:
+    index: Publicerade produkter
+    title: Publicerad produkt
+  acl.published_product:
+    index: Hantera publicerade produkter
+  product:
+    permission:
+      label: Behörigheter
+      own: Granska / publicera
+      edit: Redigera
+      view: Visa
+  steps:
+    product_draft_processor.title: Förslag-processor
+    approve.title: Godkänna förslag
+    refuse.title: Neka förslag
+  mass_edit_action:
+    published:
+      page_title: Publicerade produkter
+      page_subtitle: Massredigera (1 publicerade produkt) | Mass redigera (%count% publicerad produkter)
+      title: Välj åtgärd
+      subtitle: Välj den funktion som du vill utföra på de valda offentliggjorda produkten | Välj den funktion som du vill utföra på den valda %count% publicerade produkter
+      confirm: Du håller på att uppdatera en publicerad produkt med följande information, bekräfta. | Du håller på att uppdatera %count% publicerade produkter med följande information, vänligen bekräfta.
+      steps:
+        first: Välj publicerade produkter
+        second: Välj åtgärd
+        third: Konfigurera
+        fourth: Bekräfta
+pimee_workflow_product_draft_notification_new_proposal: Nytt förslag
+pimee_workflow_import_notification_new_proposals: Nya förslag från import
+btn.publish: Publicera
+btn.unpublish: Avpublicera
+pimee_workflow_product_draft_notification_partial_approve: Förslaget delvis godkänd
+pimee_workflow_product_draft_notification_partial_reject: Förslaget delvis förkastat
+pimee_workflow_product_draft_notification_partial_remove: Förslaget tas delvis bort
+pimee_workflow_product_draft_notification_approve: Förslaget godkändes
+pimee_workflow_product_draft_notification_refuse: Förslag avvisat
+pimee_workflow_product_draft_notification_remove: Förslag tas bort
+flash:
+  product:
+    published: Produkten har publicerats.
+    unpublished: Produkten har inte publicerats.
+  product_draft:
+    approve:
+      success: Förslaget har tillämpats framgångsrikt.
+      error: Förslaget kan inte tillämpas på grund av följande fel. %error%
+    refuse:
+      success: Förslaget har förkastats.
+    remove:
+      success: Förslaget har nekats.
+pim_menu:
+  item:
+    published_product: Publicerade produkter
+    proposal: Förslag
+pim_title:
+  published_product:
+    index: Publicerade produkter
+    view: Publicerade produkter %product.sku% | Visa
+  product:
+    dispatch: "Produkter %product.sku%"
+    show: "Produkter %product.sku% | Visa"
+  proposal:
+    index: Förslag
+btn.editworkingcopy: Redigera arbetskopian
+confirmation:
+  product:
+    publish: Är du säker du vill publicera denna produkt?
+    unpublish: Är du säker du vill Avpublicera den här produkten?
+proposal.overview: Förslag
+Attributes.title: Attributer
+Completeness.title: Fullständighet
+publish_product.steps.publish_product_tasklet.title: Publicera produkt
+unpublish_product.steps.unpublish_product_tasklet.title: Avpublicera produkt
+approve_product_draft.steps.approve.title: Godkänn förslag
+approve_product_draft.steps.refuse.title: Förkasta förslag
+job_execution.summary:
+  approved: godkänt
+  refused: avvisade
+  mass_published: Produkten publicerad
+  mass_unpublished: Produkten opublicerad
+  proposal: Förslaget skapat
+  proposal_deleted: borttagna förslag
+  proposal_updated: uppdaterade förslag
+  proposal_created: skapade förslag
+  proposal_skipped: överhoppade förslag (inga skillnader)
+published products: Publicerade produkter
+batch_jobs:
+  csv_published_product_export:
+    label: Utgiven produkt exportera i CSV-filen
+    export.label: Utgiven produkt export
+  csv_product_proposal_import:
+    label: Produkt förslag import i CSV
+    import.label: Produkt förslag import
+  approve_product_draft:
+    label: Godkänna förslag
+    perform.label: Godkänna förslag
+  refuse_product_draft:
+    label: Vägra förslag
+    perform.label: Vägra förslag
+  xlsx_published_product_export:
+    label: Utgiven produkt export i XLSX
+    export.label: Utgiven produkt export
+  xlsx_product_proposal_import:
+    label: Produkt förslag import i XLSX
+    import.label: Produkt förslag import i XLSX
+pim_analytics:
+  info_type:
+    nb_published_products: Antal publicerade produkter
+    nb_product_drafts: Antal produkt utkast

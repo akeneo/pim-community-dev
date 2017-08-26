@@ -1,0 +1,118 @@
+pimee_catalog_rule:
+  datagrid:
+    rule-grid:
+      actions:
+        delete: Radera
+        execute: Utför
+      title: Regler
+      column:
+        code: Kod
+        conditions: Villkor
+        actions: Åtgärd
+        impacted_product_count:
+          label: Berörda produkter
+          count: '{0,1}%count% påverkas produkt |] 1 Inf [%count% påverkas produkter'
+          no_yet_calculated: Ännu inte beräknas
+      mass_edit_action:
+        impacted_product_count: Beräkna de påverkade produkterna
+        execute: Kör de valda reglerna
+        delete: Ta bort de valda reglerna
+  actions:
+    type:
+      "copy": Sedan kopieras %from_field% till %to_field%
+      "copy_value": Sedan kopieras %from_field% till %to_field%
+      "set": Då ligger %value% i %field%
+      "set_value": Då ligger %value% i %field%
+      "add": Sedan läggs %value% till %field%
+      "remove": Sedan tas %value% bort från %field%
+  condition:
+    label: Om %field% %operator% %value%
+    operators:
+      "STARTS WITH": börjar med
+      "ENDS WITH": slutar med
+      "CONTAINS": innehåller
+      "DOES NOT CONTAIN": innehåller inte
+      "EMPTY": är tom
+      "NOT EMPTY": är inte tom
+      "IN": in
+      "NOT IN": inte i
+      "IN CHILDREN": i element
+      "NOT IN CHILDREN": inte i element
+      "UNCLASSIFIED": är oklassificerade
+      "IN OR UNCLASSIFIED": är oklassificerade eller i
+      "BETWEEN": mellan
+      "NOT BETWEEN": inte mellan
+      "=": lika med
+      "!=": inte jämnlikt
+      ">": större än
+      ">=": är lika med eller större än
+      "<": mindre än
+      "<=": är lika med eller mindre än
+  acl_group:
+    rule: Regler
+  acl:
+    rule:
+      view_permissions: Visa regler
+      delete_permissions: Ta bort regel
+      impacted_product_count_permissions: Beräkna de påverkade produkterna för regler
+      execute_permissions: Kör regler
+  attribute:
+    tab:
+      rule.title: Regler
+    grid:
+      is_smart.label: Smart
+    acl:
+      rule.view_permissions: Visa regler
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: Värdet av detta attribut kan komma från regel <strong>%rule%</strong>. Det innebär att om villkoren för regeln är giltig, kommer din ändring att åsidosättas.
+      variant_attribute_affected_by_a_rule.content: Variant gruppens attribut har prioritet på attributen produkter. Detta innebär att varje attribut av denna variantgrupp åsidosätter motsvarande värde(n) i produkterna som innehöll regel <strong>%rule%</strong>, Ändringar tillämpas inte på produkter.
+      loading.title: Laddar...
+    history: Tillämpad regel "%rule%"
+  product_value:
+    tooltip:
+      affected_by.title: 'Påverkas av regel:'
+  steps:
+    product_rule_definition_reader.title: Produkt regel importera läsare
+    rule_definition_processor.title: Produkten regel importera processor
+    product_rule_definition_writer.title: Produkten regel importera skrivare
+    rules_execution.title: Regler utföranden
+  notification:
+    rule:
+      executed: Utförandet av regel klar
+      launched: Regelkörning har lanserats. Du meddelas när det är gjort.
+    mass_edit_rule:
+      success: Beräkningen av de berörda produkterna för regler är färdig
+      error: Ett fel uppstod vid beräkningen av de berörda produkterna för regler
+  popin:
+    execute_rules:
+      confirm_title: Utför bekräftelse
+      confirm_content: Är du säker på att du vill köra alla regler? (detta kan ta lång tid)
+btn:
+  Execute rules: Kör regler
+rule: Regler inställningar
+mass_edit_rule: Regler inställningar
+job_execution.summary.rule_calculated: Antal regler
+batch_jobs:
+  yml_rule_import:
+    label: Regel import i YAML
+    import.label: Regel import
+  yml_rule_export:
+    label: Regel export i YAML
+    export.label: Regel export
+  rule_impacted_product_count:
+    label: Berörda produkter för regler
+    perform.label: Räkna påverkade produkter
+    execute_rules.label: Regler utföranden
+  csv_product_import_with_rules:
+    label: Produkt import i CSV-filen med reglerna
+    execute_rules.label: Regler utföranden
+    validation.label: Filvalidering
+    import.label: Produkt import
+    import_associations.label: Importera associationer
+  xlsx_product_import_with_rules:
+    label: Produkt import i XLSX med regler
+    execute_rules.label: Regler utföranden
+    validation.label: Filvalidering
+    import.label: Produkt import
+    import_associations.label: Importera associationer

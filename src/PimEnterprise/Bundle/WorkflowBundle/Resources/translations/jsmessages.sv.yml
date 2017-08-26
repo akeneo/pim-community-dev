@@ -1,0 +1,40 @@
+View the product: Visa produkten
+Unpublish the product: Avaktivera produkten
+Approve: Godkänn
+Refuse: Avslå
+Approve selected: Godkänn valda
+Refuse selected: Avslå valda
+oro:
+  datagrid:
+    noentities:
+      proposal: Det finns inga förslag att granska.
+    noresults:
+      proposal: Det finns inga förslag att granska. Prova att ändra dina sökkriterier.
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Redigera arbetskopian
+    proposal:
+      modal.title: Lämna en kommentar (frivilligt - 255 tecken max.)
+  proposal:
+    mass_action_group:
+      review:
+        label: Massåtgärd
+    partial_accept:
+      modal.title: Godkänna delar av uppgifterna
+      modal.label: Lägg till kommentar (frivilligt)
+      modal.error: Ett fel uppstod, förslaget har inte delvis godkänts
+      modal.success: Delar av förslaget har godkännts framgångsrikt
+    partial_approve:
+      modal:
+        title: Delvis godkända ändringar
+        label: Lägg till kommentar (frivilligt)
+        error: Ett fel uppstod, förslaget har inte delvis godkänts
+        success: Ändringarna har godkänts
+    partial_reject:
+      modal:
+        title: Delvis ignorera ändringar
+        label: Lägg till kommentar (frivilligt)
+        error: Ett fel uppstod, förslaget har delvis inte godkänts
+        success: Ändringarna har avvisats

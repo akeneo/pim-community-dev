@@ -1,0 +1,51 @@
+project_calculation: Projekt beräkning
+project_created: Ett nytt projekt för dig
+project_finished: Projektet klar
+teamwork_assistant:
+  project:
+    required: Detta värde bör inte vara tomt.
+    label_maxlength: Detta värde är för långt. Det borde ha {{ max }} tecken eller mindre.
+    project_identifier: I projektet {{ project }} existerar inte.
+    project_locale: Projektets locale {{ locale }} måste aktiveras.
+    project_due_date: Du kan inte välja ett datum i förflutnan.
+  notification:
+    project_calculation:
+      error: Projektets beräkning för <strong>%project_label%</strong> misslyckades
+      warning: Projektets beräkning för <strong>%project_label%</strong> slutade med några varningar
+      success: I projektet <strong>%project_label%</strong> är klar och bidragsgivarna meddelas. Låt oss börja!
+      start: Start
+    message: Du har nya produkter att berika för "%project_label%". Due date är "%due_date%".
+    project_finished:
+      contributor: Grattis! Du är 100% klar med produkt %project_label%.
+      owner: '%project_label% för %due_date% är klar.'
+      show: Visa
+    due_date:
+      contributor: Du är %percent%% av produkten gjort med %project_label%. Glöm inte att fylla i de senaste produkterna för %due_date%.
+      owner: '%project_label% för %due_date% är inte 100% klart.'
+      start: Start
+  datagrid:
+    project_completeness: Projektstatus
+    contributor_todo: Att-göra
+    contributor_in_progress: Pågående
+    contributor_done: Slutförd
+    owner_todo: Todo (Projektöversikt)
+    owner_in_progress: Pågår (Projektöversikt)
+    owner_done: Klar (Projekt översikt)
+batch_jobs:
+  project_calculation:
+    project_calculation:
+      label: Projekt beräkning
+    prepare_project_calculation:
+      label: Förbered projektet beräkning
+    clean_contributor_group:
+      label: Kontrollera användare behörighet på projektets språk
+  refresh_project_completeness_calculation:
+    label: Uppdatera projekt fullständighet
+    refresh_project_completeness_calculation:
+      label: Uppdatera projektets fullständigheter
+job_execution:
+  summary:
+    processed_products: Bearbetade produkter
+pim_analytics:
+  info_type:
+    nb_projects: Antal projekt
