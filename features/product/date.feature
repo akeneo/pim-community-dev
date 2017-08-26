@@ -39,7 +39,7 @@ Feature: Check that imported date is properly displayed
     And I press the "Save" button
     When I visit the "History" column tab
     Then I should see history:
-      | version | property | before | after       |
+      | version | property | before | value       |
       | 2       | SKU      | postit | nice_postit |
       | 1       | SKU      |        | postit      |
       | 1       | release  |        | 05/01/2014  |

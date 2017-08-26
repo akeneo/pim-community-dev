@@ -178,9 +178,8 @@ pim_enrich:
                 logged_at: Logged at
                 from: From
                 modified: Modified
-                property: Property
-                old_values: Old values
-                new_values: New values
+                old_value: Old value
+                new_value: New value
                 actions: Actions
             info:
                 deletion_successful: Product successfully deleted.
