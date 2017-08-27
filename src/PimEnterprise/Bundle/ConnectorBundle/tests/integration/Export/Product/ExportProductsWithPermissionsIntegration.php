@@ -2,6 +2,8 @@
 
 namespace PimEnterprise\Bundle\ConnectorBundle\tests\integration\Export\Product;
 
+use Akeneo\Test\Integration\JobLauncher;
+
 /**
  * +----------+-------------------------------+-----------------------------------+-----------------------------------------------------+
  * |          |          Categories           |             Locales               |                  Attribute groups                   |
@@ -115,6 +117,49 @@ CSV;
         ];
 
         $csv = $this->jobLauncher->launchExport('pim:batch:job', 'csv_product_export', 'mary', $config);
+
+        $this->assertSame($expectedCsv, $csv);
+    }
+
+    public function testProductViewableByRedactorWithAuthenticatedJobLauncher()
+    {
+        $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR. JobLauncher::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'export.csv';
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+
+        $jobInstanceClass = $this->getParameter('akeneo_batch.entity.job_instance.class');
+        $jobInstance = $this
+            ->get('doctrine.orm.default_entity_manager')
+            ->getRepository($jobInstanceClass)
+            ->findOneBy(['code' => 'csv_product_export']);
+
+        $user = $this->get('pim_user.provider.user')->loadUserByUsername('mary');
+
+        $expectedCsv = <<<CSV
+sku;categories;enabled;family;groups;X_SELL-groups;X_SELL-products;UPSELL-groups;UPSELL-products;SUBSTITUTION-groups;SUBSTITUTION-products;PACK-groups;PACK-products
+product_viewable_by_everybody_1;categoryA2;1;;;;;;;;;;
+product_viewable_by_everybody_2;categoryA2;1;;;;;;;;;;
+product_without_category;;1;;;;product_viewable_by_everybody_2;;;;;;
+
+CSV;
+
+        $config = [
+            'filters' => [
+                'data'      => [],
+                'structure' => [
+                    'scope'   => 'tablet',
+                    'locales' => ['en_US', 'fr_FR', 'de_DE'],
+                    'attributes'=> ['a_metric_without_decimal_negative']
+                ],
+            ],
+            'filePath' => $filePath,
+        ];
+
+        $jobExecution = $this->get('pim_connector.launcher.authenticated_job_launcher')->launch($jobInstance, $user, $config);
+        $this->waitCompleteJobExecution($jobExecution);
+
+        $csv = file_get_contents($filePath);
 
         $this->assertSame($expectedCsv, $csv);
     }
