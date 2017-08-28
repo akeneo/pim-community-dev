@@ -53,6 +53,7 @@ class ProductController
         $this->repository = $repository;
         $this->productRepository = $productRepository;
         $this->normalizer = $normalizer;
+        $this->objectFilter = $objectFilter;
     }
 
     /**
