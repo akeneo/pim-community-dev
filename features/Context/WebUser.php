@@ -1725,7 +1725,6 @@ class WebUser extends PimContext
     public function iCheckTheSwitch($status, $locator)
     {
         $this->getCurrentPage()->toggleSwitch($locator, $status === '');
-        $this->wait();
     }
 
     /**
