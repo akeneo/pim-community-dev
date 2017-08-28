@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\AnalyticsBundle\DataCollector;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\VersionProviderInterface;
-use Pim\Bundle\InstallerBundle\InstallStatusChecker\InstallStatusChecker;
+use Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -15,9 +15,9 @@ class VersionDataCollectorSpec extends ObjectBehavior
     public function let(
         RequestStack $requestStack,
         VersionProviderInterface $versionProvider,
-        InstallStatusChecker $installStatusChecker
+        InstallStatusManager $installStatusManager
     ) {
-        $this->beConstructedWith($requestStack, $versionProvider, $installStatusChecker, 'prod');
+        $this->beConstructedWith($requestStack, $versionProvider, $installStatusManager, 'prod');
     }
 
     public function it_is_initializable()
@@ -30,14 +30,14 @@ class VersionDataCollectorSpec extends ObjectBehavior
     (
         $requestStack,
         $versionProvider,
-        $installStatusChecker,
+        $installStatusManager,
         Request $request,
         ServerBag $serverBag
     ) {
         $versionProvider->getPatch()->willReturn('1.4.0');
         $versionProvider->getEdition()->willReturn('CE');
         $requestStack->getCurrentRequest()->willReturn($request);
-        $installStatusChecker->getInstalledFlag()->willReturn('2015-09-16T10:10:32+02:00');
+        $installStatusManager->getInstalledFlag()->willReturn('2015-09-16T10:10:32+02:00');
         $request->server = $serverBag;
         $serverBag->get('SERVER_SOFTWARE')->willReturn('Apache/2.4.12 (Debian)');
 
@@ -55,13 +55,13 @@ class VersionDataCollectorSpec extends ObjectBehavior
     public function it_does_not_provides_server_version_of_pim_host_if_request_is_null(
         $requestStack,
         $versionProvider,
-        $installStatusChecker,
+        $installStatusManager,
         ServerBag $serverBag
     ) {
         $versionProvider->getPatch()->willReturn('1.4.0');
         $versionProvider->getEdition()->willReturn('CE');
         $requestStack->getCurrentRequest()->willReturn(null);
-        $installStatusChecker->getInstalledFlag()->willReturn('2015-09-16T10:10:32+02:00');
+        $installStatusManager->getInstalledFlag()->willReturn('2015-09-16T10:10:32+02:00');
 
         $serverBag->get(Argument::type('string'))->shouldNotBeCalled();
 

@@ -1,14 +1,13 @@
 parameters:
-    pim_installer.install_status_checker.class:       Pim\Bundle\InstallerBundle\InstallStatusChecker\InstallStatusChecker
+    pim_installer.install_status_manager.class:       Pim\Bundle\InstallerBundle\InstallStatusChecker\InstallStatusChecker
     pim_installer.directories_registry.class: Pim\Bundle\InstallerBundle\PimDirectoriesRegistry
 
 services:
-    pim_installer.install_status_checker:
-            class: '%pim_installer.install_status_checker.class%'
+    pim_installer.install_status_manager:
+            class: '%pim_installer.install_status_manager.class%'
             arguments:
                 - '%kernel.project_dir%'
                 - '%install_status_dir%'
-                - '%kernel.environment%'
 
     pim_installer.directories_registry:
         class: '%pim_installer.directories_registry.class%'

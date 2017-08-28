@@ -164,7 +164,7 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function checkInstalledFlag(OutputInterface $output) : bool
     {
-        $installStatus = $this->getContainer()->get('pim_installer.install_status_checker');
+        $installStatus = $this->getContainer()->get('pim_installer.install_status_manager');
 
         $output->writeln('<info>Check installed flag (file: '. $installStatus->getAbsoluteFilePath() .')</info>');
 
@@ -183,7 +183,7 @@ class InstallCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Setting installed flag.</info>');
 
-        $installStatus = $this->getContainer()->get('pim_installer.install_status_checker');
+        $installStatus = $this->getContainer()->get('pim_installer.install_status_manager');
         $installStatus->persistInstallStatus($installed);
 
         return $this;

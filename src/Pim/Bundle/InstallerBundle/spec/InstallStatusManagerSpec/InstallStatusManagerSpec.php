@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\InstallerBundle\InstallStatusChecker;
+namespace spec\Pim\Bundle\InstallerBundle\InstallStatusManager;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\InstallerBundle\InstallStatusChecker\InstallStatusChecker;
+use Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager;
 
-class InstallStatusCheckerSpec extends ObjectBehavior
+class InstallStatusManagerSpec extends ObjectBehavior
 {
     public function let()
     {
@@ -15,6 +15,6 @@ class InstallStatusCheckerSpec extends ObjectBehavior
 
     public function it_is_initializable()
     {
-        $this->shouldHaveType(InstallStatusChecker::class);
+        $this->shouldHaveType(InstallStatusManager::class);
     }
 }

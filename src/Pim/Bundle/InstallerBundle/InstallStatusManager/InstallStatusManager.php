@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\InstallerBundle\InstallStatusChecker;
+namespace Pim\Bundle\InstallerBundle\InstallStatusManager;
 
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * InstallStatusChecker : Check and persist a status file PIM has been installed and when.
+ * InstallStatusManager : Check and persist a status file PIM has been installed and when.
  * As the location of the file containing the flag is configurable (install_status_dir), the flag cannot be load
  * directly in the container.
  * Parameter "install_status_dir" can be a relative path to the project dir or an absolute path (if beginning with '/').
@@ -17,7 +17,7 @@ use Symfony\Component\Yaml\Yaml;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class InstallStatusChecker
+class InstallStatusManager
 {
     public const INSTALL_STATUS_FILENAME_PREFIX = 'install';
     public const INSTALL_STATUS_FILENAME_EXT = '.yml';

@@ -54,8 +54,8 @@ class CheckRequirementsCommand extends ContainerAwareCommand
             $directories = $this->getDirectoriesContainer()->getDirectories();
         }
 
-        $installStatusChecker = $this->getContainer()->get('pim_installer.install_status_checker');
-        array_push($directories, $installStatusChecker->getAbsoluteDirectoryPath());
+        $installStatusManager = $this->getContainer()->get('pim_installer.install_status_manager');
+        array_push($directories, $installStatusManager->getAbsoluteDirectoryPath());
 
         return new \PimRequirements($directories);
     }
