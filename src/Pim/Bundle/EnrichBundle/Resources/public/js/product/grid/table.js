@@ -67,6 +67,9 @@ define(
                 const modules = resp.metadata.requireJSModules;
                 modules.push('pim/datagrid/state-listener');
 
+                const url = decodeURI(resp.metadata.options.url).split('?')[0];
+                resp.metadata.options.url = `${url}?dataLocale=${UserContext.get('catalogLocale')}`;
+
                 const resolvedModules = [];
 
                 _.each(modules, function(module) {
