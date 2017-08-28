@@ -383,11 +383,13 @@ Feature: Notify users after a project creation
     And I should see the text "You have new products to enrich for \"2016 summer collection\". Due date is \"12/13/2018\"."
     And I am on the products page
     And I am on the "my-awesome-car" product page
+    And I visit the "All" group
     And I fill in the following information:
       | Description | It is a car |
     Then I save the product
     And I am on the products page
     And I run computation of the project "2016-summer-collection-ecommerce-en-us"
+    And I wait for the "project_calculation" job to finish
     And I am on the homepage
     # Is notified because she finished her project
     Then I should have 2 new notification
@@ -395,27 +397,32 @@ Feature: Notify users after a project creation
     And I should see the text "Congrats! You're 100% of done product done with \"2016 summer collection\"."
     And I am on the products page
     And I am on the "my-awesome-car" product page
+    And I visit the "All" group
     And I fill in the following information:
       | Description |  |
     Then I save the product
     And I am on the products page
     And I run computation of the project "2016-summer-collection-ecommerce-en-us"
+    And I wait for the "project_calculation" job to finish
     And I am on the homepage
     # Is not notified because she has already been notified for the project creation
     Then I should have 2 new notification
     And I am on the products page
     And I am on the "my-awesome-car" product page
+    And I visit the "All" group
     And I fill in the following information:
       | Description | It is a car |
     Then I save the product
     And I am on the products page
     And I run computation of the project "2016-summer-collection-ecommerce-en-us"
+    And I wait for the "project_calculation" job to finish
     And I am on the homepage
     # Is notified for project finished because the project was not to 100%
     Then I should have 3 new notification
     Then I open the notification panel
     And I should see the text "Congrats! You're 100% of done product done with \"2016 summer collection\"."
     And I run computation of the project "2016-summer-collection-ecommerce-en-us"
+    And I wait for the "project_calculation" job to finish
     And I am on the homepage
     # Is not notified because she was already at 100% just before and nothing changed between.
     Then I should have 3 new notification

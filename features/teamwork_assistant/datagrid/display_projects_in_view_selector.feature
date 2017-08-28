@@ -82,6 +82,7 @@ Feature: Display teamwork assistant projects in the datagrid view selector
       | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    | A1         |              |                   |                    |                    |                |          |               |
     And I am logged in as "Julia"
     And I am on the "tshirt-the-witcher-3" product page
+    And I visit the "All" group
     And I fill in the following information:
       | Description | A t-shirt with Geralt on it. |
     And I save the product

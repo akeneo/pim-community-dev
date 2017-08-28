@@ -77,7 +77,6 @@ config:
 
     paths:
         pimee/product-view-form:            pimenterpriseenrich/js/product/view-form
-        pimee/product-view-form/attributes: pimenterpriseenrich/js/product/form/attributes-view
 
         pimee/manage-permissions:        pimenterpriseenrich/js/manage-permissions
         pimee/rule-manager:              pimenterpriseenrich/js/product/rule-manager

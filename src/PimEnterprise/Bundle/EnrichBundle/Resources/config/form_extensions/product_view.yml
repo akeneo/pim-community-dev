@@ -9,6 +9,14 @@ extensions:
         config:
             tab: pim-menu-products
 
+    pimee-product-view-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pimee-product-view-form:
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pimee-product-view-cache-invalidator:
         module: pim/cache-invalidator
         parent: pimee-product-view-form
@@ -99,7 +107,7 @@ extensions:
         position: 120
 
     pimee-product-view-attributes:
-        module: pimee/product-view-form/attributes
+        module: pim/product-edit-form/attributes
         parent: pimee-product-view-column-tabs
         targetZone: container
         position: 90
