@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Product implements AttributeFilter
+class Product implements AttributeFilterInterface
 {
     /** @var IdentifiableObjectRepositoryInterface */
     private $productModelRepository;
@@ -40,10 +40,9 @@ class Product implements AttributeFilter
     public function filter(array $flatProduct): array
     {
         if (isset($flatProduct['parent'])) {
-            /** @var ProductModelInterface $parentProductModel */
             $parentProductModel = $this->productModelRepository->findOneByIdentifier($flatProduct['parent']);
             $attributeSet = $parentProductModel->getFamilyVariant()
-                ->getVariantAttributeSet($parentProductModel->getVariationLevel()+1);
+                ->getVariantAttributeSet($parentProductModel->getVariationLevel() + 1);
             $attributes = $attributeSet->getAttributes();
 
             return $this->removeUnknownAttributes($flatProduct, $attributes);
@@ -69,9 +68,11 @@ class Product implements AttributeFilter
     private function removeUnknownAttributes(array $flatProduct, Collection $attributes): array
     {
         foreach ($flatProduct['values'] as $attributeName => $value) {
-            $belongToFamily = $attributes->exists(function ($key, AttributeInterface $attribute) use ($attributeName) {
-                return $attribute->getCode() === (string) $attributeName;
-            });
+            $belongToFamily = $attributes->exists(
+                function ($key, AttributeInterface $attribute) use ($attributeName) {
+                    return $attribute->getCode() === (string)$attributeName;
+                }
+            );
 
             if (!$belongToFamily) {
                 unset($flatProduct['values'][$attributeName]);

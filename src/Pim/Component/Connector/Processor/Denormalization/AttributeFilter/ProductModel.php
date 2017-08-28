@@ -20,7 +20,7 @@ use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModel implements AttributeFilter
+class ProductModel implements AttributeFilterInterface
 {
     /** @var FamilyVariantRepositoryInterface */
     private $familyVariantRepository;
@@ -53,21 +53,19 @@ class ProductModel implements AttributeFilter
             return $flatProductModel;
         }
 
-        /** @var FamilyVariantInterface $familyVariant */
         $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariant);
         $parent = $flatProductModel['parent'] ?? '';
         if (empty($parent) && null !== $familyVariant) {
             return $this->removeUnknownAttributes($flatProductModel, $familyVariant->getCommonAttributes());
         }
 
-        /** @var ProductModelInterface $parentProductModel */
         $parentProductModel = $this->productModelRepository->findOneByIdentifier($parent);
         // Skip the attribute filtration if the parent does not exist, updater/validation will raise error.
         if (null === $parentProductModel) {
             return $flatProductModel;
         }
 
-        $variantAttributeSet = $familyVariant->getVariantAttributeSet($parentProductModel->getVariationLevel()+1);
+        $variantAttributeSet = $familyVariant->getVariantAttributeSet($parentProductModel->getVariationLevel() + 1);
 
         return $this->removeUnknownAttributes($flatProductModel, $variantAttributeSet->getAttributes());
     }

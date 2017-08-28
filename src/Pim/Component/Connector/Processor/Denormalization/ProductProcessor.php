@@ -11,7 +11,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilter;
+use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -47,7 +47,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /** @var FilterInterface */
     protected $productFilter;
 
-    /** @var AttributeFilter */
+    /** @var AttributeFilterInterface */
     private $productAttributeFilter;
 
     /**
@@ -58,7 +58,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      * @param ValidatorInterface                    $validator
      * @param ObjectDetacherInterface               $detacher
      * @param FilterInterface                       $productFilter
-     * @param AttributeFilter                       $productAttributeFilter
+     * @param AttributeFilterInterface              $productAttributeFilter
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -68,7 +68,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
         FilterInterface $productFilter,
-        AttributeFilter $productAttributeFilter
+        AttributeFilterInterface $productAttributeFilter
     ) {
         parent::__construct($repository);
 

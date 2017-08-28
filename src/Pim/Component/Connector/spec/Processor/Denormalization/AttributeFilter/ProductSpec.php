@@ -9,7 +9,7 @@ use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface;
-use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilter;
+use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\Product;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -30,7 +30,7 @@ class ProductSpec extends ObjectBehavior
 
     function it_is_an_attribute_filter()
     {
-        $this->shouldImplement(AttributeFilter::class);
+        $this->shouldImplement(AttributeFilterInterface::class);
     }
 
     function it_filters_the_attributes_that_does_not_belong_the_family(

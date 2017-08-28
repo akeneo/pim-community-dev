@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\CommonAttributeCollection;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
-use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilter;
+use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductModel;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -29,7 +29,7 @@ class ProductModelSpec extends ObjectBehavior
 
     function it_is_an_attribute_filter()
     {
-        $this->shouldImplement(AttributeFilter::class);
+        $this->shouldImplement(AttributeFilterInterface::class);
     }
 
     function it_filters_the_attributes_for_a_root_product_model(
