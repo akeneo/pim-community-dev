@@ -7,11 +7,10 @@ namespace Pim\Bundle\InstallerBundle\InstallStatusChecker;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * InstallStatusChecker manager : manage the very important file and flag that allow us to know
- * if the PIM has been installed and when.
- * As the location of the file containing the flag is configurable (install_status_dir), the flag could not be load
+ * InstallStatusChecker : Check and persist a status file PIM has been installed and when.
+ * As the location of the file containing the flag is configurable (install_status_dir), the flag cannot be load
  * directly in the container.
- * The parameter "install_status_dir" can be a relative path to the project dir or an absolute path.
+ * Parameter "install_status_dir" can be a relative path to the project dir or an absolute path (if beginning with '/').
  *
  *
  * @author    Vincent Berruchon <vincent.berruchon@akeneo.com>
@@ -20,11 +19,11 @@ use Symfony\Component\Yaml\Yaml;
  */
 class InstallStatusChecker
 {
-    const INSTALL_STATUS_FILENAME_PREFIX = 'install';
-    const INSTALL_STATUS_FILENAME_EXT = '.yml';
-    const ATTR_INSTALL_STATUS_DIR = 'install_status_dir';
-    const ATTR_INSTALLED_STATUS_SECTION ='install';
-    const ATTR_INSTALLED_STATUS ='installed';
+    public const INSTALL_STATUS_FILENAME_PREFIX = 'install';
+    public const INSTALL_STATUS_FILENAME_EXT = '.yml';
+    public const ATTR_INSTALL_STATUS_DIR = 'install_status_dir';
+    public const ATTR_INSTALLED_STATUS_SECTION ='install';
+    public const ATTR_INSTALLED_STATUS ='installed';
 
     /**
      * Path to the project directory
@@ -36,14 +35,7 @@ class InstallStatusChecker
      * Absolute or relative path to the directory to the install flag file.
      * @var string $absoluteDirectory
      */
-    protected $absoluteDirectoryPath;
-
-    /**
-     * Path to install status file
-     *
-     * @var string $absoluteInstallStatusFilePath
-     */
-    protected $absoluteFilePath;
+    protected $configStatusFileDir;
 
     /**
      * environment
@@ -52,36 +44,33 @@ class InstallStatusChecker
     protected $env;
 
     /**
-     * @param string $aProjectDir Path to parameters storage directory
-     * @param string string $aStatusFileDir
-     * @param string $aEnv
+     * @param string $projectDir Path to parameters storage directory
+     * @param string string $statusFileDir
+     * @param string $env
      */
-    public function __construct(string $aProjectDir, string $aStatusFileDir, string $aEnv)
+    public function __construct(string $projectDir, string $statusFileDir, string $env)
     {
-        if (empty($aStatusFileDir)) {
+        if (empty($statusFileDir)) {
             throw new \RuntimeException('Please configure ' . self::ATTR_INSTALL_STATUS_DIR);
         }
-        $this->projectDir = $aProjectDir;
-        $this->env = $aEnv;
-
-        if (mb_substr($aStatusFileDir, 0, 1) === '/') {
-            $this->absoluteDirectoryPath = $aStatusFileDir;
-        } else {
-            $this->absoluteDirectoryPath = $this->projectDir . '/' . $aStatusFileDir;
-        }
-        $this->absoluteFilePath = $this->absoluteDirectoryPath. '/' . self::INSTALL_STATUS_FILENAME_PREFIX
-            . $this->getEnvSuffixe($this->env)
-            . self::INSTALL_STATUS_FILENAME_EXT;
+        $this->projectDir = $projectDir;
+        $this->configStatusFileDir = $statusFileDir;
+        $this->env = $env;
     }
 
     public function getAbsoluteDirectoryPath() : string
     {
-        return $this->absoluteDirectoryPath;
+        if (!empty($this->configStatusFileDir) && mb_substr($this->configStatusFileDir, 0, 1) === '/') {
+            return $this->configStatusFileDir;
+        }
+        return $this->projectDir . '/' . $this->configStatusFileDir;
     }
 
     public function getAbsoluteFilePath() : string
     {
-        return $this->absoluteFilePath;
+        return $this->getAbsoluteDirectoryPath() . '/' . self::INSTALL_STATUS_FILENAME_PREFIX
+            . $this->getEnvSuffixe($this->env)
+            . self::INSTALL_STATUS_FILENAME_EXT;
     }
 
     /**
@@ -89,18 +78,20 @@ class InstallStatusChecker
      */
     public function getInstalledFlag() : string
     {
+        $absoluteFilePath=$this->getAbsoluteFilePath();
+
         // if PIM not installed, the file probably doesn't exist
-        if (!file_exists($this->absoluteFilePath)) {
+        if (!file_exists($absoluteFilePath)) {
             return 'false';
         }
-        $data = Yaml::parse(file_get_contents($this->absoluteFilePath));
+        $data = Yaml::parse(file_get_contents($absoluteFilePath));
         if (!is_array($data) || !isset($data[self::ATTR_INSTALLED_STATUS_SECTION])
          || !is_array($data[self::ATTR_INSTALLED_STATUS_SECTION])) {
             return 'false';
         }
         if (array_key_exists(self::ATTR_INSTALLED_STATUS, $data[self::ATTR_INSTALLED_STATUS_SECTION])) {
             $installed = $data[self::ATTR_INSTALLED_STATUS_SECTION][self::ATTR_INSTALLED_STATUS];
-            if (empty($installed)||$installed==='false') {
+            if (empty($installed) || $installed==='false') {
                 return 'false';
             } else {
                 return $installed;
@@ -121,21 +112,24 @@ class InstallStatusChecker
     }
 
     /**
-    * @param string $aInstallTime
-    */
-    public function setInstallStatus(string $aInstallTime) : void
+     * persistInstallStatus : write to file the installTime timestamp.
+     *
+     * @param string $installTime
+     */
+    public function persistInstallStatus(string $installTime) : void
     {
         $install = [];
-        $install[self::ATTR_INSTALLED_STATUS] = $aInstallTime;
+        $install[self::ATTR_INSTALLED_STATUS] = $installTime;
+        $absoluteFilePath=$this->getAbsoluteFilePath();
 
         if (false === file_put_contents(
-            $this->absoluteFilePath,
+            $absoluteFilePath,
             Yaml::dump([self::ATTR_INSTALLED_STATUS_SECTION => $install])
         )) {
             throw new \RuntimeException(
                 sprintf(
                     'Failed to write to "%s". "%s" status not set!',
-                    $this->absoluteFilePath,
+                    $absoluteFilePath,
                     self::ATTR_INSTALLED_STATUS
                 )
             );
@@ -143,13 +137,13 @@ class InstallStatusChecker
     }
 
     /**
-     * @param string $aEnv
+     * @param string $env
      * @return string If behat or test we add "_test" (will be finally "install_test.yml").
      *  For prod and test, add nothing.
      */
-    protected function getEnvSuffixe(string $aEnv) : string
+    protected function getEnvSuffixe(string $env) : string
     {
-        if ($aEnv==="behat"||$aEnv==="test") {
+        if ($env==='behat' || $env==='test') {
             return '_test';
         }
         return '';

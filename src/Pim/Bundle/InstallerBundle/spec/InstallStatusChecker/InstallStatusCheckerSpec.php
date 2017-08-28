@@ -7,8 +7,6 @@ use Pim\Bundle\InstallerBundle\InstallStatusChecker\InstallStatusChecker;
 
 class InstallStatusCheckerSpec extends ObjectBehavior
 {
-    protected $fs;
-
     public function let()
     {
         $projectRoot = realpath(__DIR__ . '/../../../..');
