@@ -58,6 +58,7 @@ Feature: Apply a mass action on all entities
       | characters | Lego characters |
     When I am on the families grid
     And I search "blocks"
+    Then the grid should contain 2 elements
     And I select all entities
     And I press the "Change product information" button
     And I choose the "Set attribute requirements" operation
