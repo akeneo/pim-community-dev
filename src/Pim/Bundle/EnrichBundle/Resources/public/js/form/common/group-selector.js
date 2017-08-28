@@ -11,14 +11,18 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
+        'pim/user-context',
         'pim/form',
         'oro/mediator',
+        'pim/fetcher-registry',
         'pim/template/form/group-selector'
     ],
-    function ($, _, BaseForm, mediator, template) {
+    function ($, _, __, UserContext, BaseForm, mediator, fetcherRegistry, template) {
         return BaseForm.extend({
             tagName: 'ul',
             className: 'AknVerticalNavtab nav nav-tabs group-selector',
+            all: {},
             template: _.template(template),
             elements: [],
             badges: {},
@@ -34,6 +38,27 @@ define(
                 this.elements = [];
 
                 BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                return BaseForm.prototype.configure.apply(this, arguments).then(() => {
+                    return fetcherRegistry.getFetcher('locale').fetchActivated().then((locales) => {
+                        this.all = {
+                            code: 'all_attribute_groups',
+                            labels: {},
+                            sort_order: -1
+                        };
+
+                        locales.forEach((locale) => {
+                            this.all.labels[locale.code] = __(
+                                'pim_enrich.form.product.tab.attributes.attribute_group_all'
+                            );
+                        });
+                    });
+                });
             },
 
             /**
@@ -59,6 +84,7 @@ define(
              */
             setElements: function (elements) {
                 this.elements = elements;
+                this.elements[this.all.code] = this.all;
                 this.ensureDefault();
             },
 
@@ -174,6 +200,10 @@ define(
                 }
 
                 this.render();
+            },
+
+            isAll: function () {
+                return this.getCurrent() === this.all.code;
             }
         });
     }

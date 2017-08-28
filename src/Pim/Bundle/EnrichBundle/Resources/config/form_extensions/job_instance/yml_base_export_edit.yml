@@ -2,7 +2,7 @@ extensions:
     pim-job-instance-yml-base-export-edit:
         module: pim/form/common/edit-form
 
-    pim-job-instance-yml-base-export-edit-mainImage:
+    pim-job-instance-yml-base-export-edit-main-image:
         module: pim/form/common/main-image
         parent: pim-job-instance-yml-base-export-edit
         targetZone: main-image

@@ -1,8 +1,8 @@
 @javascript
-Feature: Edit and remove a product
-  In order to delete an unnecessary product from my PIM
+Feature: Edit and see all attributes
+  In order to enrich a product from my PIM
   As a product manager
-  I need to be able to work with a product and then remove it
+  I need to be able to work with a product and see all attributes
 
   Background:
     Given the "footwear" catalog configuration
@@ -23,17 +23,16 @@ Feature: Edit and remove a product
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
 
-  Scenario: Successfully edit and then delete a product from the grid
-    Given I am on the products page
-    Then I should see product boots
-    When I click on the "Delete the product" action of the row which contains "boots"
-    Then I should see the text "Delete confirmation"
-    When I confirm the removal
-    Then I should be on the products page
-    And I should not see product boots
-
-  Scenario: Successfully delete a product from the edit form
-    Given I press the secondary action "Delete"
-    Then I should see the text "Confirm deletion"
-    When I confirm the removal
-    Then I should not see product boots
+  Scenario: Successfully edit the product and check that all attributes are visible
+    Given I am on the "boots" product page
+    Then I should not see the text "Media"
+    Then I should not see the text "Colors"
+    Then I should not see the text "Marketing"
+    And I visit the "All" group
+    Then I should see the text "3 attributes to complete"
+    Then I should see the text "Media"
+    Then I should see the text "Colors"
+    Then I should see the text "Marketing"
+    Then I should see the text "Sku"
+    Then I should see the text "Name"
+    Then I should see the text "Description"
