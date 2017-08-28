@@ -17,6 +17,7 @@ use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -88,8 +89,11 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_user_has_only_the_view_permission_on_product(
         $authorizationChecker,
-        ProductInterface $product
+        $tokenStorage,
+        ProductInterface $product,
+        TokenInterface $token
     ) {
+        $tokenStorage->getToken()->willReturn($token);
         $product->getId()->willReturn(42);
         $authorizationChecker->isGranted(Attributes::OWN, $product)
             ->willReturn(false);

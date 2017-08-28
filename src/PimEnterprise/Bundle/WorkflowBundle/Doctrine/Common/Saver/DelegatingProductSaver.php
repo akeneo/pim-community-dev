@@ -178,19 +178,19 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
      */
     protected function hasPermissions(ProductInterface $product)
     {
-        if ($this->authorizationChecker->isGranted(Attributes::VIEW, $product)
-            && !$this->authorizationChecker->isGranted(Attributes::EDIT, $product)
-            && !$this->authorizationChecker->isGranted(Attributes::OWN, $product)
-        ) {
-            throw new ResourceAccessDeniedException($product, sprintf(
-                'Product "%s" cannot be updated. It should be at least in an own category.',
-                $product->getIdentifier()
-            ));
-        }
-
         if (null === $product->getId() || null === $this->tokenStorage->getToken()) {
             $hasPermissions = true;
         } else {
+            if ($this->authorizationChecker->isGranted(Attributes::VIEW, $product)
+                && !$this->authorizationChecker->isGranted(Attributes::EDIT, $product)
+                && !$this->authorizationChecker->isGranted(Attributes::OWN, $product)
+            ) {
+                throw new ResourceAccessDeniedException($product, sprintf(
+                    'Product "%s" cannot be updated. It should be at least in an own category.',
+                    $product->getIdentifier()
+                ));
+            }
+
             $hasPermissions = $this->authorizationChecker->isGranted(Attributes::OWN, $product) && $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
         }
 

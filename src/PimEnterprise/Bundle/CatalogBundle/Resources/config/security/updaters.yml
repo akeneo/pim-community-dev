@@ -2,6 +2,7 @@ parameters:
     pimee_catalog.security.updater.setter.granted_category_field.class: PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedCategoryFieldSetter
     pimee_catalog.security.updater.setter.granted_association_field.class: PimEnterprise\Component\Catalog\Security\Updater\Setter\GrantedAssociationFieldSetter
     pimee_catalog.security.updater.entity_with_granted_values_property_setter.class: PimEnterprise\Component\Catalog\Security\Updater\Setter\EntityWithGrantedValuesPropertySetter
+    pimee_catalog.security.updater.granted_product.class: PimEnterprise\Component\Catalog\Security\Updater\GrantedProductUpdater
 
 services:
     pimee_catalog.security.updater.setter.granted_category_field:
@@ -35,6 +36,23 @@ services:
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.cached_locale'
 
+    pim_catalog.updater.entity_with_values_without_permission:
+        class: '%pim_catalog.updater.entity_with_values.class%'
+        arguments:
+            - '@pim_catalog.updater.entity_with_values_property_setter_without_permission'
+
+    pimee_catalog.security.updater.granted_product:
+        class: '%pimee_catalog.security.updater.granted_product.class%'
+        decorates: pim_catalog.updater.product
+        decoration_inner_name: pim_catalog.updater.product_with_values_permission
+        arguments:
+            - '@pim_catalog.updater.product_with_values_permission'
+            - '@security.authorization_checker'
+            - '@pim_catalog.comparator.filter.product_field'
+            - '@pim_catalog.comparator.filter.product_association'
+            - ['enabled', 'family', 'categories', 'variant_group', 'groups']
+            - ['associations']
+
     pim_catalog.updater.product_without_permission:
         class: '%pim_catalog.updater.product.class%'
         arguments:
@@ -43,8 +61,3 @@ services:
             - '@pim_catalog.updater.entity_with_values_without_permission'
             - ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations']
             - ['identifier', 'created', 'updated']
-
-    pim_catalog.updater.entity_with_values_without_permission:
-        class: '%pim_catalog.updater.entity_with_values.class%'
-        arguments:
-            - '@pim_catalog.updater.entity_with_values_property_setter_without_permission'
