@@ -63,3 +63,23 @@ Feature: Import variant products
       parent;family;categories;ean;sku;weight;weight-unit;size
       apollon;clothing;master_men;EAN;apollon_blue_medium;100;GRAM;m
       """
+
+  Scenario: Successfully skip a variant product if there is no value for the variant axes defined in the family variant for the last level
+    Given the following CSV file to import:
+      """
+      parent;family;categories;ean;sku;weight;weight-unit;size
+      apollon_blue;clothing;master_men;EAN;apollon_blue_medium;100;GRAM;
+      """
+    And the following job "csv_default_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_default_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_default_product_import" job to finish
+    Then I should see the text "Status: Completed"
+    And I should see the text "skipped 1"
+    And I should see the text "Attribute \"size\" cannot be empty, as it is defined as an axis for this entity: apollon_blue_medium"
+    And the invalid data file of "csv_default_product_import" should contain:
+      """
+      parent;family;categories;ean;sku;weight;weight-unit;size
+      apollon_blue;clothing;master_men;EAN;apollon_blue_medium;100;GRAM;
+      """
