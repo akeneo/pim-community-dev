@@ -38,6 +38,10 @@ datagrid:
                 label:         Groups
                 data_name:     groups
                 type:          field
+            variant_products:
+                label:         Variant products
+                data_name:     variant_products
+                type:          field
         properties:
             id: ~
             edit_link:
@@ -56,6 +60,9 @@ datagrid:
                 route: pim_enrich_product_toggle_status
                 params:
                     - id
+            product_type:
+                type:          field
+                data_name:     product_type
         actions:
             edit:
                 type:      navigate

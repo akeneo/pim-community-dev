@@ -56,6 +56,8 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $data['image'] = $this->normalizeImage($product->getImage(), $format, $context);
         $data['completeness'] = $this->getCompleteness($product, $context);
 
+        $data['product_type'] = 'product';
+
         return $data;
     }
 

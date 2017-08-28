@@ -1,6 +1,6 @@
 /* global define */
-define(['oro/datagrid/string-cell'],
-    function(StringCell) {
+define(['oro/datagrid/string-cell', 'oro/translator'],
+    function(StringCell, __) {
         'use strict';
 
         /**
@@ -13,6 +13,12 @@ define(['oro/datagrid/string-cell'],
              * Render the completeness.
              */
             render: function () {
+                if ('product_model' === this.model.get('product_type')) {
+                    this.$el.empty().html(__('not_available'));
+
+                    return this;
+                }
+
                 var ratio = this.formatter.fromRaw(this.model.get(this.column.get('name')));
 
                 var completeness = '-';
