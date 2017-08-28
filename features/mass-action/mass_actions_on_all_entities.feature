@@ -56,7 +56,7 @@ Feature: Apply a mass action on all entities
       | 4_blocks   | Lego 4 blocks   |
       | 2_blocks   | Lego 2 blocks   |
       | characters | Lego characters |
-    When I am on the families page
+    When I am on the families grid
     And I search "blocks"
     And I select all entities
     And I press the "Change product information" button
