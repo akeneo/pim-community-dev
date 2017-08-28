@@ -19,10 +19,8 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.family'
-            - '@pim_catalog.repository.currency'
             - '@pim_catalog.repository.association_type'
             - '@event_dispatcher'
             - '@pim_catalog.resolver.attribute_values'
-            - '@pim_catalog.factory.value'
             - '@pim_catalog.builder.entity_with_values'
             - {'product': '%pimee_workflow.entity.published_product.class%', 'association': '%pimee_workflow.entity.published_product_association.class%'}

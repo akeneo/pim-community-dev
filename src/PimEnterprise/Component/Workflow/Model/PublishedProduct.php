@@ -280,7 +280,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getFamily()
+    public function getFamily(): ?FamilyInterface
     {
         return $this->family;
     }

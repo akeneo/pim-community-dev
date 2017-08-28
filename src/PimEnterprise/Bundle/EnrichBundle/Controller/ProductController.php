@@ -23,6 +23,7 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -42,6 +43,22 @@ class ProductController extends BaseProductController
     /** @var CategoryManager */
     protected $categoryManager;
 
+    /**
+     * @param RouterInterface                       $router
+     * @param TokenStorageInterface                 $tokenStorage
+     * @param FormFactoryInterface                  $formFactory
+     * @param TranslatorInterface                   $translator
+     * @param ProductRepositoryInterface            $productRepository
+     * @param CategoryRepositoryInterface           $categoryRepository
+     * @param UserContext                           $userContext
+     * @param SecurityFacade                        $securityFacade
+     * @param SaverInterface                        $productSaver
+     * @param SequentialEditManager                 $seqEditManager
+     * @param ProductBuilderInterface               $productBuilder
+     * @param EntityWithFamilyValuesFillerInterface $valuesFiller
+     * @param CategoryManager                       $categoryManager
+     * @param                                       $categoryClass
+     */
     public function __construct(
         RouterInterface $router,
         TokenStorageInterface $tokenStorage,
@@ -54,6 +71,7 @@ class ProductController extends BaseProductController
         SaverInterface $productSaver,
         SequentialEditManager $seqEditManager,
         ProductBuilderInterface $productBuilder,
+        EntityWithFamilyValuesFillerInterface $valuesFiller,
         CategoryManager $categoryManager,
         $categoryClass
     ) {
@@ -69,6 +87,7 @@ class ProductController extends BaseProductController
             $productSaver,
             $seqEditManager,
             $productBuilder,
+            $valuesFiller,
             $categoryClass
         );
 

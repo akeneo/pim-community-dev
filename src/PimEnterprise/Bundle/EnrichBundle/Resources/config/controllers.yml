@@ -21,6 +21,7 @@ services:
             - '@pim_catalog.saver.product'
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.builder.product'
+            - '@pim_catalog.values_filler.product'
             - '@pim_catalog.manager.category'
             - '%pim_catalog.entity.category.class%'
 
