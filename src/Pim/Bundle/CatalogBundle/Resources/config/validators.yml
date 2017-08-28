@@ -53,6 +53,7 @@ parameters:
     pim_catalog.validator.constraint.sibling_unique_variant_axes.class:    Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxesValidator
     pim_catalog.validator.constraint.not_empty_variant_axes.class:         Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxesValidator
     pim_catalog.validator.constraint.has_a_root_product_model_as_parent.class: Pim\Component\Catalog\Validator\Constraints\ProductModelPositionInTheVariantTreeValidator
+    pim_catalog.validator.constraint.invalid_variant_product_parent.class: Pim\Component\Catalog\Validator\Constraints\VariantProductParentValidator
 
 services:
     # Helpers
@@ -111,6 +112,11 @@ services:
         class: '%pim_catalog.validator.constraint.has_a_root_product_model_as_parent.class%'
         tags:
             - { name: validator.constraint_validator, alias: pim_has_a_root_product_model_as_parent }
+
+    pim_catalog.validator.constraint.invalid_variant_product_parent:
+        class: '%pim_catalog.validator.constraint.invalid_variant_product_parent.class%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_invalid_variant_product_parent }
 
     pim_catalog.validator.constraint.valid_metric:
         class: '%pim_catalog.validator.constraint.valid_metric.class%'

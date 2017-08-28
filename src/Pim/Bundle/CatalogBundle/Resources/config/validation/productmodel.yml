@@ -19,7 +19,6 @@ Pim\Component\Catalog\Model\ProductModel:
         familyVariant:
             - NotBlank:
                 message: 'product_model.family_variant.not_blank.message'
-    # Needed ?
     getters:
         values:
             - Symfony\Component\Validator\Constraints\Valid:

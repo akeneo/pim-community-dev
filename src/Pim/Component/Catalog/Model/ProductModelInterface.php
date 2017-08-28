@@ -51,7 +51,7 @@ interface ProductModelInterface extends
     /**
      * Adds an product to the product model.
      *
-     * @param ProductInterface $product
+     * @param VariantProductInterface $product
      *
      * @throws \LogicException
      *
