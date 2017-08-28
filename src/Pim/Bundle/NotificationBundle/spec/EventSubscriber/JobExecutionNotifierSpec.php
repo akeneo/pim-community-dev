@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\NotificationBundle\EventSubscriber;
 
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Job\BatchStatus;
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -14,7 +15,6 @@ use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Prophecy\Argument;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class JobExecutionNotifierSpec extends ObjectBehavior
 {
@@ -23,18 +23,22 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         NotifierInterface $notifier,
         JobExecutionEvent $event,
         JobExecution $jobExecution,
+        JobParameters $jobParameters,
         StepExecution $stepExecution,
         ArrayCollection $warnings,
         JobInstance $jobInstance,
-        UserInterface $user,
         BatchStatus $status
     ) {
         $this->beConstructedWith($factoryRegistry, $notifier);
 
-        $jobExecution->getUser()->willReturn($user);
+        $jobExecution->getJobParameters()->willReturn($jobParameters);
         $jobExecution->getStepExecutions()->willReturn([$stepExecution]);
         $jobExecution->getStatus()->willReturn($status);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
+
+        $jobParameters->has('notification_user')->willReturn(true);
+        $jobParameters->get('notification_user')->willReturn('julia');
+
         $stepExecution->getWarnings()->willReturn($warnings);
         $jobExecution->getId()->willReturn(5);
         $jobInstance->getType()->willReturn('export');
@@ -56,11 +60,24 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         );
     }
 
-    function it_does_not_notify_if_job_execution_has_no_user($event, $jobExecution, $notifier)
+    function it_does_not_notify_if_job_execution_parameters_has_no_job_parameters($event, $jobExecution, $notifier)
     {
-        $jobExecution->getUser()->willReturn(null);
+        $jobExecution->getJobParameters()->willReturn(null);
 
-        $jobExecution->getStatus()->shouldNotBeCalled();
+        $notifier->notify(Argument::cetera())->shouldNotBeCalled();
+
+        $this->afterJobExecution($event);
+    }
+
+    function it_does_not_notify_if_job_execution_parameters_has_no_notification_user(
+        $event,
+        $jobExecution,
+        $notifier,
+        JobParameters $jobParameters
+    ) {
+        $jobExecution->getJobParameters()->willReturn($jobParameters);
+        $jobParameters->has('notification_user')->willReturn(false);
+
         $notifier->notify(Argument::cetera())->shouldNotBeCalled();
 
         $this->afterJobExecution($event);
@@ -68,7 +85,6 @@ class JobExecutionNotifierSpec extends ObjectBehavior
 
     function it_notifies_a_user_of_the_completion_of_job_execution(
         $event,
-        $user,
         $notifier,
         $factoryRegistry,
         $jobExecution,
@@ -84,14 +100,13 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $notification->setRouteParams(['id' => 5])->willReturn($notification);
         $notification->setContext(['actionType' => 'export'])->willReturn($notification);
 
-        $notifier->notify($notification, [$user])->shouldBeCalled();
+        $notifier->notify($notification, ['julia'])->shouldBeCalled();
 
         $this->afterJobExecution($event);
     }
 
     function it_notifies_a_user_of_the_completion_of_a_mass_edit_job_execution(
         $event,
-        $user,
         $notifier,
         $jobInstance,
         $jobExecution,
@@ -108,7 +123,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $notification->setRouteParams(['id' => 5])->willReturn($notification);
         $notification->setContext(['actionType' => 'mass_edit'])->willReturn($notification);
 
-        $notifier->notify($notification, [$user])->shouldBeCalled();
+        $notifier->notify($notification, ['julia'])->shouldBeCalled();
 
         $jobInstance->getType()->willReturn('mass_edit');
         $jobInstance->getLabel()->willReturn('Product mass edit');
@@ -120,7 +135,6 @@ class JobExecutionNotifierSpec extends ObjectBehavior
     function it_notifies_a_user_of_the_completion_of_job_execution_which_has_encountered_a_warning(
         $event,
         $warnings,
-        $user,
         $notifier,
         $jobExecution,
         $factoryRegistry,
@@ -137,7 +151,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $notification->setRouteParams(['id' => 5])->willReturn($notification);
         $notification->setContext(['actionType' => 'export'])->willReturn($notification);
 
-        $notifier->notify($notification, [$user])->shouldBeCalled();
+        $notifier->notify($notification, ['julia'])->shouldBeCalled();
 
         $warnings->count()->willReturn(2);
 
@@ -146,7 +160,6 @@ class JobExecutionNotifierSpec extends ObjectBehavior
 
     function it_notifies_a_user_of_the_completion_of_job_execution_which_has_encountered_an_error(
         $event,
-        $user,
         $status,
         $notifier,
         $jobExecution,
@@ -166,7 +179,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $notification->setRouteParams(['id' => 5])->willReturn($notification);
         $notification->setContext(['actionType' => 'export'])->willReturn($notification);
 
-        $notifier->notify($notification, [$user])->shouldBeCalled();
+        $notifier->notify($notification, ['julia'])->shouldBeCalled();
 
         $this->afterJobExecution($event);
     }

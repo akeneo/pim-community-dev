@@ -343,9 +343,6 @@ pim_enrich:
           title: Määritteet
           info:
             none_exist: Sidostyyppiä ei ole olemassa.
-            show_products: Näytä tuotteet
-            show_groups: Näytä ryhmät
-            number_of_associations: "{{ productCount }} ja {{ groupCount }} ryhmistä"
         attributes:
           title: Attribuutit
           btn:

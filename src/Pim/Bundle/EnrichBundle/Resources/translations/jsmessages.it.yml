@@ -403,9 +403,7 @@ pim_enrich:
           title: Associazioni
           info:
             none_exist: Nessun tipo di associazione esistente.
-            show_products: Mostra articoli
-            show_groups: Mostra gruppi
-            number_of_associations: "{{ productCount }} prodotti e {{ groupCount }} gruppi"
+            show_products: Visualizza i prodotti
           association_type_selector: Tipi di associazione
         attributes:
           title: Attributi
@@ -940,7 +938,6 @@ pim_enrich:
     cancel: Annulla
     confirm: Conferma
     product:
-      title: Prodotto / Modifica di massa ({{ itemsCount }} prodotti)
       step:
         select:
           label: Scegli gli articoli
@@ -985,7 +982,6 @@ pim_enrich:
           label: Rimuovi i prodotti dalle categorie
           description: I prodotti verranno rimossi dalle seguenti categorie.
     family:
-      title: Famiglia / Modifica di massa ({{ itemsCount }} famiglie)
       step:
         select:
           label: Scegli le famiglie

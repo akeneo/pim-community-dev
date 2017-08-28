@@ -8,6 +8,7 @@ services:
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.job_parameters_factory'
             - '@akeneo_batch.job.job_registry'
+            - '@akeneo_batch.job.job_parameters_validator'
             - '%kernel.root_dir%'
             - '%kernel.environment%'
             - '%kernel.logs_dir%'
