@@ -37,3 +37,22 @@ services:
             - '@pimee_workflow.manager.product_draft'
             - '@security.token_storage'
             - '@security.authorization_checker'
+
+    pim_api.controller.media_file:
+        class: '%pim_api.controller.media_file.class%'
+        arguments:
+            - '@pim_api.repository.media_file'
+            - '@pim_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@akeneo_file_storage.file_storage.filesystem_provider'
+            - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
+            - '@pim_api.repository.product'
+            - '@pim_catalog.updater.product'
+            - '@pimee_workflow.saver.product_delegating'
+            - '@pim_catalog.validator.product'
+            - '@akeneo_file_storage.saver.file'
+            - '@akeneo_file_storage.file_storage.file.file_storer'
+            - '@akeneo_file_storage.remover.file'
+            - '@router'
+            - '%pim_api.configuration%'

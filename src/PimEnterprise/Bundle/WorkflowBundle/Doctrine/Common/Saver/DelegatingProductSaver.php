@@ -21,6 +21,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -172,16 +173,28 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
      * @param ProductInterface $product
      *
      * @return bool
+     *
+     * @throws ResourceAccessDeniedException
      */
     protected function hasPermissions(ProductInterface $product)
     {
-        if (null === $product->getId() || null === $this->tokenStorage->getToken()) {
-            $isOwner = true;
-        } else {
-            $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
+        if ($this->authorizationChecker->isGranted(Attributes::VIEW, $product)
+            && !$this->authorizationChecker->isGranted(Attributes::EDIT, $product)
+            && !$this->authorizationChecker->isGranted(Attributes::OWN, $product)
+        ) {
+            throw new ResourceAccessDeniedException($product, sprintf(
+                'Product "%s" cannot be updated. It should be at least in an own category.',
+                $product->getIdentifier()
+            ));
         }
 
-        return $isOwner;
+        if (null === $product->getId() || null === $this->tokenStorage->getToken()) {
+            $hasPermissions = true;
+        } else {
+            $hasPermissions = $this->authorizationChecker->isGranted(Attributes::OWN, $product) && $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
+        }
+
+        return $hasPermissions;
     }
 
     /**
