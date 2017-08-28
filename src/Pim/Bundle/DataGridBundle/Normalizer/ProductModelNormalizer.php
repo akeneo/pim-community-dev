@@ -57,7 +57,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
 
         $data['product_type'] = 'product_model';
 
-        // TODO: PIM-6560
+        // TODO: PIM-6560 - Will show the number of complete products on the number of products (in the subtree)
         $data['variant_products'] = '';
 
         $data['groups'] = null;

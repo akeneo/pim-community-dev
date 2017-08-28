@@ -14,6 +14,7 @@ define(['oro/datagrid/string-cell', 'oro/translator'],
              */
             render: function () {
                 if ('product_model' === this.model.get('product_type')) {
+                    // PIM-6493: the value should be calculated depending on the the model subtree.
                     this.$el.empty().html('');
 
                     return this;

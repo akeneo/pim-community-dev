@@ -57,7 +57,6 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $data['completeness'] = $this->getCompleteness($product, $context);
 
         $data['product_type'] = 'product';
-        $data['variant_products'] = null;
 
         return $data;
     }
