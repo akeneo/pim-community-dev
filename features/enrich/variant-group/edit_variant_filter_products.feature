@@ -15,17 +15,22 @@ Feature: Filter available products for a variant group
     And I am logged in as "Julia"
     And I am on the "caterpillar_boots" variant group page
 
-  Scenario: Successfully filter the product datagrid when I edit a variant group
+  Scenario Outline: Successfully filter the product datagrid when I edit a variant group
     Then the grid should contain 3 elements
     And I should see products black_boots, white_boots and blue_boots
     And I should not see product black_sneakers
-    And I should be able to use the following filters:
-      | filter      | operator | value    | result                                  |
-      | in_group    |          | no       | black_boots, white_boots and blue_boots |
-      | sku         | Contains | bl       | black_boots and blue_boots              |
-      | family      | In List  | Sneakers | blue_boots                              |
-      | color       | In List  | Black    | black_boots                             |
-      | size        | In List  | 42       | white_boots                             |
-      | name        | Contains | bl       | black_boots and blue_boots              |
-      | description | Contains | great    | white_boots                             |
-      | price       | <        | 47 EUR   | black_boots and blue_boots              |
+    And I show the filter "<filter>"
+    And I filter by "<filter>" with operator "<operator>" and value "<value>"
+    Then the grid should contain <count> elements
+    And I should see entities <result>
+
+    Examples:
+      | filter      | operator | value    | result                                  | count |
+      | in_group    |          | no       | black_boots, white_boots and blue_boots | 3     |
+      | sku         | Contains | bl       | black_boots and blue_boots              | 2     |
+      | family      | In List  | Sneakers | blue_boots                              | 1     |
+      | color       | In List  | Black    | black_boots                             | 1     |
+      | size        | In List  | 42       | white_boots                             | 1     |
+      | name        | Contains | bl       | black_boots and blue_boots              | 2     |
+      | description | Contains | great    | white_boots                             | 1     |
+      | price       | <        | 47 EUR   | black_boots and blue_boots              | 2     |

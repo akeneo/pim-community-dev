@@ -3,6 +3,7 @@
 namespace Akeneo\Component\Batch\Job;
 
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderRegistry;
+use Akeneo\Component\Batch\Model\JobExecution;
 
 /**
  * Allow to create immutable JobParameters with passed parameters completed by default values
@@ -41,5 +42,17 @@ class JobParametersFactory
         $parameters = array_merge($provider->getDefaultValues(), $parameters);
 
         return new $this->jobParametersClass($parameters);
+    }
+
+    /**
+     * Create a JobParameters from the raw parameters of a job execution.
+     *
+     * @param JobExecution $jobExecution the job execution to create the job parameters from
+     *
+     * @return JobParameters
+     */
+    public function createFromRawParameters(JobExecution $jobExecution) : JobParameters
+    {
+        return new $this->jobParametersClass($jobExecution->getRawParameters());
     }
 }

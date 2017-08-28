@@ -34,6 +34,7 @@ class ProductMassEdit implements DefaultValuesProviderInterface
             'filters'            => [],
             'actions'            => [],
             'realTimeVersioning' => true,
+            'notification_user'  => null,
         ];
     }
 

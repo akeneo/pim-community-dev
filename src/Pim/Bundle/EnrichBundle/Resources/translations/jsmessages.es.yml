@@ -370,9 +370,7 @@ pim_enrich:
           title: Asociaciones
           info:
             none_exist: No existe ningún tipo de asociación.
-            show_products: Mostrar Productos
-            show_groups: Mostrar grupos
-            number_of_associations: "{{ productCount }} productos y {{ groupCount }} grupos"
+            show_products: Mostrar productos
         attributes:
           title: Atributos
           btn:

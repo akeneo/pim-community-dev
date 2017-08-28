@@ -121,6 +121,7 @@ class ProductExportController
         }
 
         $configuration = array_merge($rawParameters, $dynamicConfiguration);
+        $configuration['notification_user'] = $this->getUser()->getUsername();
 
         $this->jobLauncher->launch($jobInstance, $this->getUser(), $configuration);
 
