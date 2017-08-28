@@ -43,6 +43,9 @@ datagrid:
                 is_associated: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
+                label:
+                    type: search
+                    data_name: groupLabel
                 is_associated:
                     type:             boolean
                     label:            Is associated

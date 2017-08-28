@@ -243,7 +243,7 @@ class WebUser extends PimContext
      * @param string      $group
      * @param string|null $type
      *
-     * @Given /^I visit the "([^"]*)" (group|association type|tree)$/
+     * @Given /^I visit the "([^"]*)" (group|association type|tree|target)$/
      */
     public function iVisitTheGroup($group, $type)
     {

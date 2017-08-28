@@ -8,11 +8,12 @@
   color: @AknDefaultFontColor;
   display: inline-block;
   border-radius: 100px;
-  padding: 0 4px;
+  padding: 0 8px;
   transition: background 0.1s ease-in, opacity 0.4s ease-in;
   white-space: nowrap;
   margin: 0 4px;
   text-transform: uppercase;
+  cursor: default;
 
   &-icon {
     margin: 0 5px 0 0;
@@ -20,34 +21,34 @@
 
   &--enabled,
   &--success {
-    background: lighten(@AknGreen, 30%);
-    color: darken(@AknGreen, 20%);
+    background: @AknGreen;
+    color: white;
 
     &:hover {
-      background: lighten(@AknGreen, 20%);
+      background: darken(@AknGreen, 10%);
     }
   }
 
   &--enabled &-icon,
   &--success &-icon {
-    color: darken(@AknGreen, 20%);
+    color: white;
   }
 
   &--disabled,
   &--important,
   &--invalid {
-    background: lighten(@AknRed, 30%);
-    color: darken(@AknRed, 20%);
+    background: @AknRed;
+    color: white;
 
     &:hover {
-      background: lighten(@AknRed, 20%);
+      background: darken(@AknRed, 10%);
     }
   }
 
   &--disabled &-icon,
   &--important &-icon,
   &--invalid &-icon {
-    color: darken(@AknRed, 20%);
+    color: white;
   }
 
   &--warning {
@@ -129,11 +130,11 @@
   }
 
   &--big {
-    height: @AknMicroButtonSize;
-    min-width: @AknMicroButtonSize;
-    line-height: @AknMicroButtonSize;
+    height: @AknLittleButtonSize;
+    min-width: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
     font-size: @AknDefaultFontSize;
-    padding: 0 8px;
+    padding: 0 16px;
   }
 
   &--large {
