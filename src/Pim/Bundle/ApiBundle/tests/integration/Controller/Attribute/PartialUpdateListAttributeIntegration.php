@@ -35,7 +35,7 @@ JSON;
             'an_image' => [
                 'code'                   => 'an_image',
                 'type'                   => 'pim_catalog_image',
-                'group'                  => 'attributeGroupB',
+                'group'                  => 'attributeGroupA',
                 'unique'                 => false,
                 'useable_as_grid_filter' => false,
                 'allowed_extensions'     => ['jpg', 'gif', 'png'],
