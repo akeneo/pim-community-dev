@@ -123,6 +123,7 @@ define(
                             action:  this.submitDraft.bind(this, comment)
                         });
                     }.bind(this));
+                myFormModal.modal.$el.addClass('modal-fullPage');
             },
 
             /**
