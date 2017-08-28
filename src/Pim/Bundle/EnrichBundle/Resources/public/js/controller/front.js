@@ -22,7 +22,9 @@ define(['pim/controller/base'], function (BaseController) {
             }
 
             this.formPromise.then((form) => {
-                form.shutdown();
+                if (form && typeof form.shutdown === 'function') {
+                    form.shutdown();
+                }
             });
 
             BaseController.prototype.remove.apply(this, arguments);

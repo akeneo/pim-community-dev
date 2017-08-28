@@ -148,9 +148,8 @@ class NavigationContext extends PimContext implements PageObjectAware
             $actualUrl = $this->sanitizeUrl($actualFullUrl);
 
             $result = $expectedUrl === $actualUrl;
-            assertTrue($result, sprintf('Expecting to be on the page %s, not %s', $expectedUrl, $actualUrl));
 
-            return true;
+            return true === $result;
         }, sprintf('You are not on the %s page', $page));
     }
 
