@@ -171,6 +171,7 @@
                             var modules = resp.metadata.requireJSModules;
                             modules.push('pim/datagrid/state-listener');
 
+                            // Will be removed in TIP-733-2
                             {% if includeFilters %}
                                 modules.push('oro/datafilter-builder');
                             {% endif %}

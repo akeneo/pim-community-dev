@@ -1,3 +1,7 @@
+/**
+ * @deprecated
+ * @TODO - Will be removed in TIP-733-2
+ */
 'use strict';
 
 define([

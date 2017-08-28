@@ -44,8 +44,7 @@ define(
             },
 
             loadDataGrid(resp) {
-                const { localeParamName, gridName } = this.config;
-                const locale = UserContext.get('catalogLocale');
+                const { gridName } = this.config;
                 const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
 
                 if (state.columns) {
@@ -68,9 +67,6 @@ define(
                 const modules = resp.metadata.requireJSModules;
                 modules.push('pim/datagrid/state-listener');
 
-                const url = decodeURI(resp.metadata.options.url).split('?')[0];
-                resp.metadata.options.url = `${url}?${localeParamName}=${locale}`;
-
                 const resolvedModules = [];
 
                 _.each(modules, function(module) {
@@ -91,6 +87,7 @@ define(
             },
 
             applyColumns(columns, urlParams) {
+                urlParams = $.extend(true, {}, urlParams);
                 const { gridName } = this.config;
                 if (_.isArray(columns)) columns = columns.join();
 
@@ -102,6 +99,7 @@ define(
             },
 
             applyView(viewId, urlParams) {
+                urlParams = $.extend(true, {}, urlParams);
                 const { gridName } = this.config;
                 urlParams[`${gridName}[_parameters][view][id]`] = viewId;
 
@@ -111,6 +109,7 @@ define(
             },
 
             applyFilters(rawFilters, urlParams) {
+                urlParams = $.extend(true, {}, urlParams);
                 const { gridName } = this.config;
                 var filters = PageableCollection.prototype.decodeStateData(rawFilters);
                 var options = {};
@@ -159,13 +158,13 @@ define(
                 const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
 
                 if (defaultView && ('0' === state.view || null === state.view)) {
-                    this.applyView(defaultView.id, params);
-                    this.applyFilters(defaultView.filters, params);
-                    this.applyColumns(defaultView.columns, params);
+                    params = this.applyView(defaultView.id, params);
+                    params = this.applyFilters(defaultView.filters, params);
+                    params = this.applyColumns(defaultView.columns, params);
                 } else {
-                    if (state.view) this.applyView(state.view, params);
-                    if (state.filters) this.applyFilters(state.filters, params);
-                    this.applyColumns(state.columns || defaultColumns, params);
+                    if (state.view) params = this.applyView(state.view, params);
+                    if (state.filters) params = this.applyFilters(state.filters, params);
+                    params = this.applyColumns(state.columns || defaultColumns, params);
                 }
 
                 this.getRoot().trigger('datagrid:getParams', params);
