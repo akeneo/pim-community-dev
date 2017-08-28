@@ -303,7 +303,7 @@ define(
                 var catalogLocale = UserContext.get('catalogLocale');
 
                 return FetcherRegistry.getFetcher('channel')
-                    .fetch(catalogChannel, {list: true})
+                    .fetch(catalogChannel, {force_list_method: true})
                     .then(function (channel) {
                         return i18n.getLabel(channel.labels, catalogLocale, catalogChannel);
                     });
