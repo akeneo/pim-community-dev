@@ -10,11 +10,11 @@ use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
-use Pim\Component\Catalog\Updater\Setter\ParentSetter;
+use Pim\Component\Catalog\Updater\Setter\ParentFieldSetter;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class ParentSetterSpec extends ObjectBehavior
+class ParentFieldSetterSpec extends ObjectBehavior
 {
     function let(IdentifiableObjectRepositoryInterface $productModelRepository)
     {
@@ -23,7 +23,7 @@ class ParentSetterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ParentSetter::class);
+        $this->shouldHaveType(ParentFieldSetter::class);
     }
 
     function it_is_a_field_setter()
