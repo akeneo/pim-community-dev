@@ -7,11 +7,10 @@ namespace Pim\Bundle\InstallerBundle\InstallStatusManager;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * InstallStatusManager : Check and persist a status file PIM has been installed and when.
- * As the location of the file containing the flag is configurable (install_status_dir), the flag cannot be load
+ * InstallStatusManager : Check and persist a status flag in a file to indicate that PIM has been installed and when.
+ * As the location of the file containing the flag is configurable (install_status_dir), the flag cannot be loaded
  * directly in the container.
  * Parameter "install_status_dir" can be a relative path to the project dir or an absolute path (if beginning with '/').
- *
  *
  * @author    Vincent Berruchon <vincent.berruchon@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
