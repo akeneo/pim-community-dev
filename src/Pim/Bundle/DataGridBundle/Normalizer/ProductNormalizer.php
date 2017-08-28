@@ -6,9 +6,9 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\SerializerAwareInterface;
-use Symfony\Component\Serializer\SerializerAwareTrait;
 
 /**
  * Product normalizer for datagrid
@@ -17,9 +17,9 @@ use Symfony\Component\Serializer\SerializerAwareTrait;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
+class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
 {
-    use SerializerAwareTrait;
+    use NormalizerAwareTrait;
 
     /** @var CollectionFilterInterface */
     private $filter;
@@ -37,7 +37,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        if (!$this->serializer instanceof NormalizerInterface) {
+        if (!$this->normalizer instanceof NormalizerInterface) {
             throw new \LogicException('Serializer must be a normalizer');
         }
 
@@ -50,8 +50,8 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         $data['groups'] = $this->getGroupsLabels($product, $locale);
         $data['enabled'] = (bool) $product->isEnabled();
         $data['values'] = $this->normalizeValues($product->getValues(), $format, $context);
-        $data['created'] = $this->serializer->normalize($product->getCreated(), $format, $context);
-        $data['updated'] = $this->serializer->normalize($product->getUpdated(), $format, $context);
+        $data['created'] = $this->normalizer->normalize($product->getCreated(), $format, $context);
+        $data['updated'] = $this->normalizer->normalize($product->getUpdated(), $format, $context);
         $data['label'] = $product->getLabel($locale);
         $data['image'] = $this->normalizeImage($product->getImage(), $format, $context);
         $data['completeness'] = $this->getCompleteness($product, $context);
@@ -146,7 +146,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     protected function normalizeImage(?ValueInterface $data, $format, $context = [])
     {
-        return $this->serializer->normalize($data, $format, $context)['data'];
+        return $this->normalizer->normalize($data, $format, $context)['data'];
     }
 
     /**
@@ -164,7 +164,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             $values = $this->filter->filterCollection($values, $filterType, $context);
         }
 
-        $data = $this->serializer->normalize($values, $format, $context);
+        $data = $this->normalizer->normalize($values, $format, $context);
 
         return $data;
     }
