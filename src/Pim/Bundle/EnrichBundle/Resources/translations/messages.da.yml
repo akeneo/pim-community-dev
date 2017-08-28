@@ -244,6 +244,8 @@ pim_enrich:
       history: Se sammenhængs type historik
     job_tracker:
       index: Se process overvågning
+    api_connection:
+      manage: Administrere API-forbindelser
   acl_group:
     association_type: Sammenhængstyper
     attribute: Egenskaber
@@ -555,6 +557,7 @@ No matches found: Ingen fundet
 Category tree: Kategoritræstrukturen
 Completeness: Fuldstændighed
 Attribute used as label: Attributten anvendes som etiket
+Credentials: Legitimationsoplysninger
 Global: Global
 Channel: Kanal
 Expand all channels: Udvid alle kanaler

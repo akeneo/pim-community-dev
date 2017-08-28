@@ -91,3 +91,5 @@ grid.view_selector:
     remove: Êtes-vous sûr(e) de que vouloir supprimer cette vue ?
     delete: Confirmation de la suppression
 grid.view_selector.flash.updated: Vue de grille mise à jour avec succès
+Client ID: ID du client
+Secret: Secret 

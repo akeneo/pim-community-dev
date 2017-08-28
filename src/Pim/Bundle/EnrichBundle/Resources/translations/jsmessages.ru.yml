@@ -343,9 +343,6 @@ pim_enrich:
           title: Ассоциации
           info:
             none_exist: Титпы ассоциаций отсутствуют.
-            show_products: Показать продукты
-            show_groups: Показать группы
-            number_of_associations: "{{ productCount }} продуктов и {{ groupCount }} групп"
         attributes:
           title: Атрибуты
           btn:

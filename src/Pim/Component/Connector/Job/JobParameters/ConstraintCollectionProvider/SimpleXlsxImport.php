@@ -53,6 +53,7 @@ class SimpleXlsxImport implements ConstraintCollectionProviderInterface
                         new IsTrue(['groups' => 'UploadExecution']),
                     ],
                     'invalid_items_file_format' => new NotBlank(),
+                    'notification_user' => new Type('string'),
                 ]
             ]
         );
