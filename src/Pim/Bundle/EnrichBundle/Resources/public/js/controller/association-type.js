@@ -10,17 +10,16 @@ define(
         'pim/user-context',
         'pim/dialog',
         'pim/page-title',
-        'pim/error',
         'pim/i18n'
     ],
-    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error, i18n) {
+    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, i18n) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
              */
             renderForm: function (route) {
                 return FetcherRegistry.getFetcher('association-type').fetch(route.params.code, {cached: false})
-                    .then(function (associationType) {
+                    .then((associationType) => {
                         if (!this.active) {
                             return;
                         }
@@ -36,7 +35,7 @@ define(
                         PageTitle.set({'association type.label': _.escape(label) });
 
                         return FormBuilder.build(associationType.meta.form)
-                            .then(function (form) {
+                            .then((form) => {
                                 this.on('pim:controller:can-leave', function (event) {
                                     form.trigger('pim_enrich:form:can-leave', event);
                                 });
@@ -45,14 +44,8 @@ define(
                                 form.setElement(this.$el).render();
 
                                 return form;
-                            }.bind(this));
-                    }.bind(this))
-                .fail(function (response) {
-                    var message = response.responseJSON ? response.responseJSON.message : __('error.common');
-
-                    var errorView = new Error(message, response.status);
-                    errorView.setElement(this.$el).render();
-                });
+                            });
+                    });
             }
         });
     }

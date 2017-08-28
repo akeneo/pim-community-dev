@@ -1,6 +1,6 @@
 'use strict';
 
-define(['pim/controller/base'], function (BaseController) {
+define(['oro/translator', 'pim/controller/base', 'pim/error'], function (__, BaseController, Error) {
     return BaseController.extend({
         formPromise: null,
 
@@ -8,9 +8,31 @@ define(['pim/controller/base'], function (BaseController) {
          * {@inheritdoc}
          */
         renderRoute: function (route, path) {
-            this.formPromise = this.renderForm(route, path);
+            this.formPromise = this.renderForm(route, path)
+                .fail((response) => {
+                    const message = response &&
+                        response.responseJSON ?
+                        response.responseJSON.message :
+                        __('error.common');
+                    const status = response && response.status ? response.status : 500;
+
+                    const errorView = new Error(message, status);
+                    errorView.setElement(this.$el).render();
+                });
 
             return this.formPromise;
+        },
+
+        /**
+         * Render the from for given route
+         *
+         * @param {String} route
+         * @param {String} path
+         *
+         * @return {Promise}
+         */
+        renderForm: function () {
+            throw new Error('Method renderForm is abstract and must be implemented!');
         },
 
         /**

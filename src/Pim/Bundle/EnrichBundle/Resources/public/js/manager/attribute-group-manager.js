@@ -5,17 +5,18 @@ define(
     function ($, _, FetcherRegistry) {
     return {
         /**
-         * Get all the attribute group for the given object
+         * Get all the attribute group for the given product
          *
-         * @param {Object} object
+         * @param {Object} product
          *
          * @return {Promise}
          */
-        getAttributeGroupsForObject: function (object) {
+        getAttributeGroupsForObject: function (product) {
             return FetcherRegistry.getFetcher('attribute-group').fetchAll()
                 .then(function (attributeGroups) {
                     return _.values(attributeGroups).reduce((result, attributeGroup) => {
-                        if (_.intersection(attributeGroup.attributes, _.keys(object.values)).length > 0) {
+                        //If one (or more) of the attributes of the attribute group is in the product we need to add it
+                        if (_.intersection(attributeGroup.attributes, _.keys(product.values)).length > 0) {
                             result[attributeGroup.code] = attributeGroup;
                         }
 

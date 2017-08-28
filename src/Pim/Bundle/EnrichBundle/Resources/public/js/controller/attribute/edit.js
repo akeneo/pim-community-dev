@@ -12,7 +12,6 @@ define([
     'pim/fetcher-registry',
     'pim/user-context',
     'pim/page-title',
-    'pim/error',
     'pim/i18n'
 ],
 function (
@@ -22,7 +21,6 @@ function (
     fetcherRegistry,
     UserContext,
     PageTitle,
-    Error,
     i18n
 ) {
     return BaseController.extend({
@@ -39,7 +37,7 @@ function (
             fetcherRegistry.getFetcher('measure').clear();
 
             return fetcherRegistry.getFetcher('attribute').fetch(route.params.code, {cached: false})
-                .then(function (attribute) {
+                .then((attribute) => {
                     var label = _.escape(
                         i18n.getLabel(
                             attribute.labels,
@@ -55,14 +53,14 @@ function (
                         'pim-attribute-edit-form';
 
                     return FormBuilder.buildForm(formName)
-                        .then(function (form) {
+                        .then((form) => {
                             form.setType(attribute.type);
 
-                            return form.configure().then(function () {
+                            return form.configure().then(() => {
                                 return form;
                             });
                         })
-                        .then(function (form) {
+                        .then((form) => {
                             this.on('pim:controller:can-leave', function (event) {
                                 form.trigger('pim_enrich:form:can-leave', event);
                             });
@@ -71,12 +69,8 @@ function (
                             form.setElement(this.$el).render();
 
                             return form;
-                        }.bind(this));
-                }.bind(this))
-            .fail(function (response) {
-                var errorView = new Error(response.responseJSON.message, response.status);
-                errorView.setElement(this.$el).render();
-            });
+                        });
+                });
         }
     });
 });

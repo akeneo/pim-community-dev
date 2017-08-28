@@ -64,7 +64,7 @@ define(
                 field.attribute.code
             );
 
-            if (!newFieldCollection[attributeGroupCode]) {
+            if (undefined === newFieldCollection[attributeGroupCode]) {
                 newFieldCollection[attributeGroupCode] = {
                     attributeGroup: attributeGroups[attributeGroupCode],
                     fields: [],
@@ -186,13 +186,10 @@ define(
                         this.getExtension('attribute-group-selector').setElements(
                             _.indexBy(attributeGroups, 'code')
                         );
-                    }).then(() => {
-                        return AttributeManager.getValues(data);
-                    }).then((values) => {
-                        return this.filterValues(values);
-                    }).then((values) => {
-                        return this.renderFields(data, values);
-                    }).then(function (fields) {
+                    })
+                    .then(() => this.filterValues(data.values))
+                    .then((values) => this.createFields(data, values))
+                    .then((fields) => {
                         this.rendering = false;
                         $.when(
                             AttributeGroupManager.getAttributeGroupsForObject(data),
@@ -203,10 +200,10 @@ define(
                             const sections = _.values(
                                 fields.reduce(groupFieldsBySection(attributeGroups, fieldsTofill), {})
                             );
-                            const fieldView = document.createElement('div');
+                            const fieldsView = document.createElement('div');
 
                             for (const section of sections) {
-                                fieldView.appendChild(createSectionView(
+                                fieldsView.appendChild(createSectionView(
                                     section,
                                     this.attributeGroupTemplate,
                                     i18n.getLabel(
@@ -217,9 +214,9 @@ define(
                                 ));
                             }
 
-                            this.$('.object-values').empty().append(fieldView);
+                            this.$('.object-values').empty().append(fieldsView);
                         });
-                    }.bind(this));
+                    });
 
 
                 return this;
@@ -234,7 +231,7 @@ define(
              *
              * @return {Promise}
              */
-            renderField: function (object, attributeCode, values) {
+            createField: function (object, attributeCode, values) {
                 return FieldManager.getField(attributeCode).then(function (field) {
                     return $.when(
                         (new $.Deferred().resolve(field)),
@@ -473,12 +470,12 @@ define(
              *
              * @return {promise}
              */
-            renderFields: function (data, values) {
+            createFields: function (data, values) {
                 return FetcherRegistry.getFetcher('attribute')
                     .fetchByIdentifiers(Object.keys(values))
                     .then((attributes) => {
                         return $.when.apply($, attributes.map((attribute) => {
-                            return this.renderField(data, attribute.code, values[attribute.code]);
+                            return this.createField(data, attribute.code, values[attribute.code]);
                         }));
                     }).then(function () {
                         return _.values(arguments);

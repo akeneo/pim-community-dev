@@ -24,7 +24,7 @@ define(
                 }
 
                 return FormBuilder.build('pim-attribute-group-create-form')
-                    .then(function (form) {
+                    .then((form) => {
                         this.on('pim:controller:can-leave', function (event) {
                             form.trigger('pim_enrich:form:can-leave', event);
                         });
@@ -36,7 +36,7 @@ define(
                         form.setElement(this.$el).render();
 
                         return form;
-                    }.bind(this));
+                    });
             }
         });
     }

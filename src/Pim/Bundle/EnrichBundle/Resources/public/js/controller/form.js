@@ -32,9 +32,9 @@ define([
                 router.showLoadingMask();
 
                 $form.ajaxSubmit({
-                    complete: function (xhr) {
+                    complete: (xhr) => {
                         this.afterSubmit(xhr, $form);
-                    }.bind(this)
+                    }
                 });
 
                 return false;

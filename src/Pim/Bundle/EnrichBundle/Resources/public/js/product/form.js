@@ -169,6 +169,9 @@ define(
                 return this.getRoot().model;
             },
 
+            /**
+             * Called before removing the form from the view
+             */
             shutdown: function () {
                 this.doShutdown();
 
@@ -177,6 +180,9 @@ define(
                 });
             },
 
+            /**
+             * The actual shutdown method called on all extensions
+             */
             doShutdown: function () {
                 this.stopListening();
                 this.undelegateEvents();

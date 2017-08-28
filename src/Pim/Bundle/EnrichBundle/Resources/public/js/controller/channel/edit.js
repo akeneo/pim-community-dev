@@ -10,10 +10,9 @@ define(
         'pim/user-context',
         'pim/dialog',
         'pim/page-title',
-        'pim/error',
         'pim/i18n'
     ],
-    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error, i18n) {
+    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, i18n) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
@@ -40,7 +39,7 @@ define(
                 } else {
                     return FetcherRegistry.getFetcher('channel')
                         .fetch(route.params.code, { cached: false })
-                        .then(function (channel) {
+                        .then((channel) => {
                             const label = _.escape(
                                 i18n.getLabel(
                                     channel.labels,
@@ -50,16 +49,6 @@ define(
                             );
 
                             return createForm.call(this, this.$el, channel, label, channel.meta.form);
-                        }.bind(this))
-                        .fail(function (response) {
-                            const message = response &&
-                                response.responseJSON ?
-                                response.responseJSON.message :
-                                __('error.common');
-                            const status = response && response.status ? response.status : 500;
-
-                            const errorView = new Error(message, status);
-                            errorView.setElement(this.$el).render();
                         });
                 }
 
@@ -67,7 +56,7 @@ define(
                     PageTitle.set({'channel.label': _.escape(label) });
 
                     return FormBuilder.build(formExtension)
-                        .then(function (form) {
+                        .then((form) => {
                             this.on('pim:controller:can-leave', function (event) {
                                 form.trigger('pim_enrich:form:can-leave', event);
                             });
@@ -76,7 +65,7 @@ define(
                             form.setElement(domElement).render();
 
                             return form;
-                        }.bind(this));
+                        });
                 }
             }
         });

@@ -117,7 +117,7 @@ define(
             },
 
             handleError: function (xhr) {
-                if (!xhr) {
+                if (undefined !== xhr) {
                     this.displayErrorPage('An error occured');
                 }
 

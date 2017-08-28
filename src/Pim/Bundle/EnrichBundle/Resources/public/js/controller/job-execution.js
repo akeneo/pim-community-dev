@@ -3,16 +3,11 @@
 define(
     [
         'underscore',
-        'oro/translator',
         'pim/controller/front',
         'pim/form-builder',
-        'pim/fetcher-registry',
-        'pim/user-context',
-        'pim/dialog',
-        'pim/page-title',
-        'pim/error'
+        'pim/fetcher-registry'
     ],
-    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error) {
+    function (_, BaseController, FormBuilder, FetcherRegistry) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
@@ -20,33 +15,27 @@ define(
             renderForm: function (route) {
                 return FetcherRegistry.getFetcher('job-execution').fetch(
                         route.params.id, {id: route.params.id, cached: false}
-                    ).then(function (jobExecution) {
+                    ).then((jobExecution) => {
                         if (!this.active) {
                             return;
                         }
 
                         return FormBuilder.build('pim-job-execution-form')
-                            .then(function (form) {
+                            .then((form) => {
                                 this.on('pim:controller:can-leave', function (event) {
                                     form.trigger('pim_enrich:form:can-leave', event);
                                 });
                                 form.setData(jobExecution);
                                 form.getRoot().trigger('pim-job-execution-form:start-auto-update', jobExecution);
 
-                                this.on('pim-controller:job-execution:remove', function () {
+                                this.on('pim-controller:job-execution:remove', () => {
                                     form.getRoot().trigger('pim-job-execution-form:stop-auto-update');
-                                }.bind(this));
+                                });
                                 form.setElement(this.$el).render();
 
                                 return form;
-                            }.bind(this));
-                    }.bind(this))
-                .fail(function (response) {
-                    var message = response.responseJSON ? response.responseJSON.message : __('error.common');
-
-                    var errorView = new Error(message, response.status);
-                    errorView.setElement(this.$el).render();
-                });
+                            });
+                    });
             },
 
             remove: function () {

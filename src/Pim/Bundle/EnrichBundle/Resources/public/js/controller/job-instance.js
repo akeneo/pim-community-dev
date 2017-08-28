@@ -9,10 +9,9 @@ define(
         'pim/fetcher-registry',
         'pim/user-context',
         'pim/dialog',
-        'pim/page-title',
-        'pim/error'
+        'pim/page-title'
     ],
-    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error) {
+    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
@@ -22,7 +21,7 @@ define(
                 var mode = route.name.indexOf('_profile_show') === -1 ? 'edit' : 'show';
 
                 return FetcherRegistry.getFetcher('job-instance-' + type).fetch(route.params.code, {cached: false})
-                    .then(function (jobInstance) {
+                    .then((jobInstance) => {
                         if (!this.active) {
                             return;
                         }
@@ -30,8 +29,8 @@ define(
                         PageTitle.set({'job.label': _.escape(jobInstance.label) });
 
                         return FormBuilder.build(jobInstance.meta.form + '-' + mode)
-                            .then(function (form) {
-                                this.on('pim:controller:can-leave', function (event) {
+                            .then((form) => {
+                                this.on('pim:controller:can-leave', (event) => {
                                     form.trigger('pim_enrich:form:can-leave', event);
                                 });
                                 form.setData(jobInstance);
@@ -39,14 +38,8 @@ define(
                                 form.setElement(this.$el).render();
 
                                 return form;
-                            }.bind(this));
-                    }.bind(this))
-                .fail(function (response) {
-                    var message = response.responseJSON ? response.responseJSON.message : __('error.common');
-
-                    var errorView = new Error(message, response.status);
-                    errorView.setElement(this.$el).render();
-                });
+                            });
+                    });
             }
         });
     }

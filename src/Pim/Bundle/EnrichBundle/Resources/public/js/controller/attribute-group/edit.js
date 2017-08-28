@@ -16,17 +16,16 @@ define(
         'pim/fetcher-registry',
         'pim/user-context',
         'pim/dialog',
-        'pim/page-title',
-        'pim/error'
+        'pim/page-title'
     ],
-    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error) {
+    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
              */
             renderForm: function (route) {
                 return FetcherRegistry.getFetcher('attribute-group').fetch(route.params.identifier, {cached: false})
-                    .then(function (attributeGroup) {
+                    .then((attributeGroup) => {
                         if (!this.active) {
                             return;
                         }
@@ -37,7 +36,7 @@ define(
                         });
 
                         return FormBuilder.build('pim-attribute-group-edit-form')
-                            .then(function (form) {
+                            .then((form) => {
                                 this.on('pim:controller:can-leave', function (event) {
                                     form.trigger('pim_enrich:form:can-leave', event);
                                 });
@@ -48,13 +47,7 @@ define(
                                 form.setElement(this.$el).render();
 
                                 return form;
-                            }.bind(this));
-                    }.bind(this))
-                    .fail(function (response) {
-                        var message = response.responseJSON ? response.responseJSON.message : __('error.common');
-
-                        var errorView = new Error(message, response.status);
-                        errorView.setElement(this.$el).render();
+                            });
                     });
             }
         });

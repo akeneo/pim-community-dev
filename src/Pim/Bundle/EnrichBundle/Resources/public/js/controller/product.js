@@ -9,17 +9,16 @@ define(
         'pim/fetcher-registry',
         'pim/user-context',
         'pim/dialog',
-        'pim/page-title',
-        'pim/error'
+        'pim/page-title'
     ],
-    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error) {
+    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
              */
             renderForm: function (route) {
                 return FetcherRegistry.getFetcher('product').fetch(route.params.id, {cached: false})
-                    .then(function (product) {
+                    .then((product) => {
                         if (!this.active) {
                             return;
                         }
@@ -27,7 +26,7 @@ define(
                         PageTitle.set({'product.sku': product.meta.label[UserContext.get('catalogLocale')] })
 
                         return FormBuilder.build(product.meta.form)
-                            .then(function (form) {
+                            .then((form) => {
                                 this.on('pim:controller:can-leave', function (event) {
                                     form.trigger('pim_enrich:form:can-leave', event);
                                 });
@@ -36,14 +35,8 @@ define(
                                 form.setElement(this.$el).render();
 
                                 return form;
-                            }.bind(this));
-                    }.bind(this))
-                .fail(function (response) {
-                    var message = response.responseJSON ? response.responseJSON.message : __('error.common');
-
-                    var errorView = new Error(message, response.status);
-                    errorView.setElement(this.$el).render();
-                });
+                            });
+                    });
             }
         });
     }

@@ -8,10 +8,9 @@ define(
         'pim/controller/front',
         'pim/form-builder',
         'pim/page-title',
-        'pim/error',
         'routing'
     ],
-    function ($, _, __, BaseController, FormBuilder, PageTitle, Error, Routing) {
+    function ($, _, __, BaseController, FormBuilder, PageTitle, Routing) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
@@ -20,7 +19,7 @@ define(
                 return $.when(
                     FormBuilder.build('oro-system-config-form'),
                     $.get(Routing.generate('oro_config_configuration_system_get'))
-                ).then(function(form, response) {
+                ).then((form, response) => {
                     this.on('pim:controller:can-leave', function (event) {
                         form.trigger('pim_enrich:form:can-leave', event);
                     });
@@ -28,11 +27,6 @@ define(
                     form.setElement(this.$el).render();
 
                     return form;
-                }.bind(this)).fail(function (response) {
-                    var message = response.responseJSON ? response.responseJSON.message : __('error.common');
-
-                    var errorView = new Error(message, response.status);
-                    errorView.setElement(this.$el).render();
                 });
             }
         });

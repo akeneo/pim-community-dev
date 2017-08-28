@@ -17,11 +17,11 @@ define(
              */
             renderForm: function () {
                 return FormBuilder.build('pim-' + this.options.config.entity + '-index')
-                    .then(function (form) {
+                    .then((form) => {
                         form.setElement(this.$el).render();
 
                         return form;
-                    }.bind(this));
+                    });
             }
         });
     }

@@ -35,7 +35,7 @@ define(
              */
             renderForm: function (route) {
                 return FetcherRegistry.getFetcher(this.config.fetcher).fetch(route.params.code, {cached: false})
-                    .then(function (group) {
+                    .then((group) => {
                         if (!this.active) {
                             return;
                         }
@@ -51,7 +51,7 @@ define(
                         PageTitle.set({'group.label': label });
 
                         return FormBuilder.build(group.meta.form)
-                            .then(function (form) {
+                            .then((form) => {
                                 this.on('pim:controller:can-leave', function (event) {
                                     form.trigger('pim_enrich:form:can-leave', event);
                                 });
@@ -60,14 +60,8 @@ define(
                                 form.setElement(this.$el).render();
 
                                 return form;
-                            }.bind(this));
-                    }.bind(this))
-                .fail(function (response) {
-                    var message = response.responseJSON ? response.responseJSON.message : __('error.common');
-
-                    var errorView = new Error(message, response.status);
-                    errorView.setElement(this.$el).render();
-                });
+                            });
+                    });
             }
         });
     }

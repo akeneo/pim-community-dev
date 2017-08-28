@@ -11,42 +11,6 @@ define([
     ) {
         return {
             /**
-             * Get the attributes of the given entity
-             *
-             * @param {Object} entity
-             *
-             * @return {Promise}
-             *
-             * TODO: drop this when optional attributes will be removed
-             */
-            getAttributes: function (entity) {
-                return $.Deferred().resolve(_.keys(entity.values));
-            },
-
-            /**
-             * Get all optional attributes available for a product
-             *
-             * @param {Object} product
-             *
-             * @return {Array}
-             */
-            getAvailableOptionalAttributes: function (product) {
-                return $.when(
-                    FetcherRegistry.getFetcher('attribute').fetchAll(),
-                    this.getAttributes(product)
-                ).then(function (attributes, productAttributes) {
-                    var optionalAttributes = _.map(
-                        _.difference(_.pluck(attributes, 'code'), productAttributes),
-                        function (attributeCode) {
-                            return _.findWhere(attributes, { code: attributeCode });
-                        }
-                    );
-
-                    return optionalAttributes;
-                });
-            },
-
-            /**
              * Check if an attribute is optional
              *
              * @param {Object} attribute
@@ -85,25 +49,6 @@ define([
                 scope  = attribute.scopable ? scope : null;
 
                 return _.findWhere(values, { scope: scope, locale: locale });
-            },
-
-            /**
-             * Get values for the given object
-             *
-             * @param {Object} object
-             *
-             * @return {Promise}
-             */
-            getValues: function (object) {
-                return this.getAttributes(object).then(function (attributes) {
-                    _.each(attributes, function (attributeCode) {
-                        if (!_.has(object.values, attributeCode)) {
-                            object.values[attributeCode] = [];
-                        }
-                    });
-
-                    return object.values;
-                });
             },
 
             /**

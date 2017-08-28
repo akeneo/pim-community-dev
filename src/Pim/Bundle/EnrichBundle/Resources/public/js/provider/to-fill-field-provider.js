@@ -53,6 +53,9 @@ define(
                 return this.fieldsPromise
             },
 
+            /**
+             * Clear the to fill field cache
+             */
             clear: function () {
                 this.fieldsPromise = null;
             }
