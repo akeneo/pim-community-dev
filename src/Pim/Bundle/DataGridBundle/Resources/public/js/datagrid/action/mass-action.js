@@ -72,6 +72,7 @@ function(_, messenger, __, Modal, AbstractAction) {
 
             if ('family-grid' === this.datagrid.name) {
                 locale = this.getLocaleFromUrl('localeCode');
+                delete params['filters[label][value]'];
             }
 
             if (locale) {
@@ -88,7 +89,6 @@ function(_, messenger, __, Modal, AbstractAction) {
          */
         getLocaleFromUrl: function(localeKey) {
             const url = this.datagrid.collection.url.split('?')[1];
-            const gridName = this.datagrid.name;
             const urlParams = this.datagrid.collection.decodeStateData(url);
 
             return urlParams[localeKey];
