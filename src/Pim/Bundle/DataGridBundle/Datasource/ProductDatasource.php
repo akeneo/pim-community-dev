@@ -107,17 +107,19 @@ class ProductDatasource extends Datasource
     private function normalizeEntityWithValues(EntityWithValuesInterface $item, array $context): array
     {
         $defaultNormalizedItem = [
-            'id'           => $item->getId(),
-            'dataLocale'   => $this->getParameters()['dataLocale'],
-            'family'       => null,
-            'values'       => [],
-            'created'      => null,
-            'updated'      => null,
-            'label'        => null,
-            'image'        => null,
-            'groups'       => null,
-            'enabled'      => null,
-            'completeness' => null,
+            'id'               => $item->getId(),
+            'dataLocale'       => $this->getParameters()['dataLocale'],
+            'family'           => null,
+            'values'           => [],
+            'created'          => null,
+            'updated'          => null,
+            'label'            => null,
+            'image'            => null,
+            'groups'           => null,
+            'enabled'          => null,
+            'completeness'     => null,
+            'variant_products' => null,
+            'product_type'     => null,
         ];
 
         $normalizedItem = array_merge(

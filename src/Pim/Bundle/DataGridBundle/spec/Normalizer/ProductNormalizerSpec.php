@@ -137,7 +137,8 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'filePath'         => '/p/i/m/4/all.png',
                 'originalFileName' => 'all.png',
             ],
-            'completeness' => 76
+            'completeness' => 76,
+            'product_type' => 'product'
         ];
 
         $this->normalize($product, 'datagrid', ['locales' => ['en_US'], 'channels' => ['ecommerce']])->shouldReturn($data);
@@ -232,7 +233,8 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'filePath'         => '/p/i/m/4/all.png',
                 'originalFileName' => 'all.png',
             ],
-            'completeness' => 76
+            'completeness' => 76,
+            'product_type' => 'product'
         ];
 
         $this->normalize($product, 'datagrid', ['locales' => ['en_US'], 'channels' => ['ecommerce']])->shouldReturn($data);

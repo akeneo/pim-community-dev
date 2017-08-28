@@ -55,6 +55,11 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $data['label'] = $productModel->getLabel($locale);
         $data['image'] = $this->normalizeImage($productModel->getImage(), $format, $context);
 
+        $data['product_type'] = 'product_model';
+
+        // TODO: PIM-6560 - Will show the number of complete products on the number of products (in the subtree)
+        $data['variant_products'] = '';
+
         $data['groups'] = null;
         $data['enabled'] = null;
         $data['completeness'] = null;
