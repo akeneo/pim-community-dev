@@ -15,6 +15,7 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Constraints for ithe calculation of the count of impacted products by the rules.
@@ -45,6 +46,7 @@ class ImpactedProductCount implements ConstraintCollectionProviderInterface
             [
                 'fields' => [
                     'ruleIds' => new NotNull(),
+                    'notification_user' => new Type('string'),
                 ]
             ]
         );

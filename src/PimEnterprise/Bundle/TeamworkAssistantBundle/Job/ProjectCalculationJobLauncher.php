@@ -56,6 +56,11 @@ class ProjectCalculationJobLauncher
             throw new \RuntimeException('Cannot run project calculation, there is no available job');
         }
 
-        $this->simpleJobLauncher->launch($jobInstance, $project->getOwner(), ['project_code' => $project->getCode()]);
+        $configuration = [
+            'project_code' => $project->getCode(),
+            'notification_user' => $project->getOwner()->getUsername()
+        ];
+
+        $this->simpleJobLauncher->launch($jobInstance, $project->getOwner(), $configuration);
     }
 }

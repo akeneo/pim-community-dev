@@ -16,6 +16,7 @@ use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterfa
 use Akeneo\Component\Batch\Job\JobParameters\DefaultValuesProviderInterface;
 use PimEnterprise\Component\TeamworkAssistant\Validator\Constraints\ProjectIdentifier;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * @author Olivier Soulet <olivier.soulet@akeneo.com>
@@ -38,7 +39,7 @@ class ProjectCalculationJobParameters implements DefaultValuesProviderInterface,
      */
     public function getDefaultValues()
     {
-        return [];
+        return ['notification_user' => null];
     }
 
     /**
@@ -48,7 +49,8 @@ class ProjectCalculationJobParameters implements DefaultValuesProviderInterface,
     {
         return new Collection([
             'fields' => [
-                'project_code' => new ProjectIdentifier()
+                'project_code' => new ProjectIdentifier(),
+                'notification_user' => new Type('string'),
             ],
         ]);
     }

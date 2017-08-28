@@ -41,7 +41,8 @@ class MassPublish implements DefaultValuesProviderInterface
     {
         return [
             'filters' => null,
-            'actions' => null
+            'actions' => null,
+            'notification_user' => null,
         ];
     }
 

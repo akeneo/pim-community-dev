@@ -215,8 +215,11 @@ class MassUploadController
     {
         $result = $this->importer->import($this->getUploadContext());
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier('apply_assets_mass_upload');
+        $user =  $this->tokenStorage->getToken()->getUser();
 
-        $jobExecution = $this->jobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser());
+        $configuration = ['notification_user' => $user->getUsername()];
+
+        $jobExecution = $this->jobLauncher->launch($jobInstance, $user, $configuration);
 
         return new JsonResponse([
             'result' => $result,
