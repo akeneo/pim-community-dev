@@ -53,9 +53,9 @@
 {% block titleButtons %}
     {{ parent() }}
     {% if entity.enabled %}
-        <div class="AknBadge AknBadge AknBadge--enabled status-enabled"><i class="AknBadge-icon icon-status-enabled icon-circle"></i>{{ 'Active'|trans }}</div>
+        <div class="AknBadge AknBadge--enabled status-enabled"><i class="AknBadge-icon icon-status-enabled icon-circle"></i>{{ 'Active'|trans }}</div>
     {% else %}
-        <div class="AknBadge AknBadge AknBadge--disabled status-disabled"><i class="AknBadge-icon icon-status-disabled icon-circle"></i>{{ 'Inactive'|trans }}</div>
+        <div class="AknBadge AknBadge--disabled status-disabled"><i class="AknBadge-icon icon-status-disabled icon-circle"></i>{{ 'Inactive'|trans }}</div>
     {% endif %}
 {% endblock titleButtons %}
 

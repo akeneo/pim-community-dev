@@ -30,7 +30,7 @@ Feature: List proposals
       | Name  | Autumn jacket | General |
       | Price | 10 USD        | Sales   |
 
-  Scenario: Successfully sort and filter proposals in the grid
+  Scenario: Successfully sort proposals in the grid
     Given I am logged in as "Peter"
     When I am on the proposals page
     Then the grid should contain 1 elements
@@ -42,16 +42,32 @@ Feature: List proposals
     Then the grid should contain 3 elements
     And the rows should be sorted descending by proposed at
     And I should be able to sort the rows by author and proposed at
-    And I should be able to use the following filters:
-      | filter    | operator | value             | result                  |
-      | author    |          | Julia             | jacket                  |
-      | author    |          | Sandra,Mary       | sweater, tshirt         |
-      | product   |          | tshirt            | tshirt                  |
-      | product   |          | tshirt,jacket     | tshirt, jacket          |
-      | attribute |          | Name              | tshirt, sweater, jacket |
-      | attribute |          | Description       | tshirt                  |
-      | attribute |          | Price             | jacket                  |
-      | attribute |          | Description,Price | tshirt, jacket          |
+
+  Scenario Outline: Successfully filter proposals in the grid
+    Given I am logged in as "Peter"
+    When I am on the proposals page
+    Then the grid should contain 1 elements
+    Given the following product category accesses:
+      | product category | user group | access |
+      | 2014_collection  | IT support | own    |
+    When I am on the proposals page
+    And I reload the page
+    Then the grid should contain 3 elements
+    And I show the filter "<filter>"
+    And I filter by "<filter>" with operator "" and value "<value>"
+    Then the grid should contain <count> elements
+    And I should see entities <result>
+
+    Examples:
+      | filter    | value             | result                  | count |
+      | author    | Julia             | jacket                  | 1     |
+      | author    | Sandra,Mary       | sweater, tshirt         | 2     |
+      | product   | tshirt            | tshirt                  | 1     |
+      | product   | tshirt,jacket     | tshirt, jacket          | 2     |
+      | attribute | Name              | tshirt, sweater, jacket | 3     |
+      | attribute | Description       | tshirt                  | 1     |
+      | attribute | Price             | jacket                  | 1     |
+      | attribute | Description,Price | tshirt, jacket          | 2     |
 
   Scenario: Successfully approve or reject a proposal
     Given I am logged in as "Peter"

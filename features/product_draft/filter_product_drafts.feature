@@ -27,12 +27,17 @@ Feature: Filter product drafts
       | Price | 10 USD        | Sales   |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
-  Scenario: Successfully filter product drafts
+  Scenario Outline: Successfully filter product drafts
     Given I am logged in as "Peter"
     And I edit the "tshirt" product
     When I visit the "Proposals" column tab
     Then the grid should contain 3 elements
-    And I should be able to use the following filters:
-      | filter    | operator | value | result              |
-      | attribute |          | Name  | Mary, Julia, Sandra |
-      | attribute |          | Price | Julia               |
+    When I show the filter "<filter>"
+    And I filter by "<filter>" with operator "" and value "<value>"
+    Then the grid should contain <count> elements
+    And I should see entities <result>
+
+    Examples:
+      | filter    | value | result              | count |
+      | attribute | Name  | Mary, Julia, Sandra | 3     |
+      | attribute | Price | Julia               | 1     |

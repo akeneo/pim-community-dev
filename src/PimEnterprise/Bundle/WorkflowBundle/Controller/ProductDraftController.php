@@ -193,13 +193,15 @@ class ProductDraftController
         $parameters = $this->parameterParser->parse($request);
         $filters = $this->gridFilterAdapter->adapt($parameters);
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_APPROVE_JOB_CODE);
+        $user = $this->tokenStorage->getToken()->getUser();
+
         $configuration = [
             'draftIds' => $filters['values'],
             'comment'  => $request->get('comment'),
+            'notification_user' => $user->getUsername()
         ];
 
-        $jobExecution = $this->simpleJobLauncher
-            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
+        $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $user, $configuration);
 
         return new JsonResponse(
             [
@@ -222,13 +224,15 @@ class ProductDraftController
         $parameters = $this->parameterParser->parse($request);
         $filters = $this->gridFilterAdapter->adapt($parameters);
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_REFUSE_JOB_CODE);
+        $user = $this->tokenStorage->getToken()->getUser();
+
         $configuration = [
             'draftIds' => $filters['values'],
             'comment'  => $request->get('comment'),
+            'notification_user' => $user->getUsername(),
         ];
 
-        $jobExecution = $this->simpleJobLauncher
-            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
+        $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $user, $configuration);
 
         return new JsonResponse(
             [

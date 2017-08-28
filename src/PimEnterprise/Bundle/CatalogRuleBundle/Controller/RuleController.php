@@ -129,9 +129,14 @@ class RuleController
         $parameters = $this->parameterParser->parse($request);
         $filters = $this->gridFilterAdapter->adapt($parameters);
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier(self::MASS_RULE_IMPACTED_PRODUCTS);
-        $configuration = ['ruleIds' => $filters['values']];
+        $user =  $this->tokenStorage->getToken()->getUser();
 
-        $this->simpleJobLauncher->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
+        $configuration = [
+            'ruleIds' => $filters['values'],
+            'notification_user' => $user->getUsername()
+        ];
+
+        $this->simpleJobLauncher->launch($jobInstance, $user, $configuration);
 
         return new JsonResponse(
             [

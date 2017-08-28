@@ -241,17 +241,15 @@ class EnterpriseFeatureContext extends FeatureContext
         $version = (int) $version;
         $total = (null === $total ? $version + 1 : (int) $total);
 
-        $button = $this->spin(function () use ($version) {
+        $this->spin(function () use ($version) {
             return $this->getSession()->getPage()
-                ->find('css', sprintf('tr[data-version="%s"] td.actions .restore', $version));
-        }, sprintf('Cannot find product version "%s"', $version));
-
-        $button->click();
+                ->find('css', sprintf('.product-version[data-version="%s"] .restore', $version));
+        }, sprintf('Cannot find product version "%s"', $version))->click();
 
         $this->getSubcontext('navigation')->getCurrentPage()->confirmDialog();
 
         $this->spin(function () use ($total) {
-            return $total === count($this->getSession()->getPage()->findAll('css', 'tr[data-version]'));
+            return $total === count($this->getSession()->getPage()->findAll('css', '.product-version[data-version]'));
         }, 'Revert failed');
     }
 
