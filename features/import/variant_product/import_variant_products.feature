@@ -72,7 +72,7 @@ Feature: Import variant products
     And the following CSV file to import:
       """
       parent;categories;ean;sku;weight;weight-unit;size
-      code-001;master_men;EAN;SKU-001;100;GRAM;m
+      code-002;master_men;EAN;SKU-001;100;GRAM;m
       """
     And the following job "csv_default_product_import" configuration:
       | filePath | %file to import% |
