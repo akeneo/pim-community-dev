@@ -503,7 +503,7 @@ When the `decimal_allowed` attribute property is set to true, they are represent
         array:26 [
           "code" => "a_date"
           "type" => "pim_catalog_date"
-          "labels" => array:1 [
+          "labels" => array:2 [
             "en_US" => "A date"
             "fr_FR" => "Une date"
           ]
@@ -657,7 +657,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
         array:3 [
           "code" => "winter"
           "parent" => "master"
-          "labels" => array:1 [
+          "labels" => array:2 [
             "en_US" => "Winter",
             "fr_FR" => "Hiver"
           ]
@@ -753,7 +753,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
         array:4 [
           "code" => "my_family_variant"
           "family" => "family"
-          "labels" => array:1 [
+          "labels" => array:2 [
             "en_US" => "My family variant"
             "fr_FR" => "Ma variation de famille"
           ]
@@ -773,10 +773,12 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 
 | type                   | data structure | data example                                                                                               | notes                                                                                                   |
 | ---------------------- | -------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| code                   | string         | `"my_family_variant"`                                                                                      | it's the identifier of the variant group                                                                |
+| code                   | string         | `"my_family_variant"`                                                                                      | it's the identifier of the family variant                                                                |
 | family                 | string         | `"family"`                                                                                                 | the code of the family of the family variant                                                            |
 | labels                 | array          | `["en_US" => "My family variant", "fr_FR" => "Ma variation de famille"]`                                   | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*        |
-| variant_attribute_sets | array          | `[["level" => 1, "axes" => ["a_simple_select"], "attributes" => ["an_attribute", "an_other_attribute"]]]`, | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
+| variant_attribute_sets | array          | `[["level" => 1, "axes" => ["a_simple_select_attribute"], "attributes" => ["a_simple_select_attribute", "an_attribute", "an_other_attribute"]]]`, | an array containing the 3 following keys: `level` which is an integer always stricly higher than 0, `axes` and `attributes` which an arrays where each element represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
+
+Regarding the array `variant_attribute_sets`, an attribute present in the `axes` field will also be present in the `attributes` field.
 
 
 ### Group
