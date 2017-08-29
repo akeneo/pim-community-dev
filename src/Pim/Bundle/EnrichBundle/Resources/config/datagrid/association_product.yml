@@ -66,10 +66,6 @@ datagrid:
                 is_associated: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
-                label_or_identifier:
-                    type: label_or_identifier
-                    label: Label or identifier
-                    data_name: label_or_identifier
                 is_associated:
                     type:      product_is_associated
                     ftype:     boolean
