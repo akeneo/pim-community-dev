@@ -28,9 +28,7 @@ define(
              *
              * @return {Promise}
              */
-            fetchActivated: function (options = {}) {
-                if (options.clear) this.clear();
-
+            fetchActivated: function () {
                 if (!this.entityActivatedListPromise) {
                     if (!_.has(this.options.urls, 'list')) {
                         return $.Deferred().reject().promise();

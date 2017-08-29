@@ -63,6 +63,10 @@ define(
              * @param  {Object} resp Datagrid load response
              */
             loadDataGrid(resp) {
+                if (typeof resp === 'string' || null === resp) {
+                    return;
+                }
+
                 const { gridName } = this.config;
                 const dataLocale = UserContext.get('catalogLocale');
                 const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
@@ -79,7 +83,6 @@ define(
                     );
                 }
 
-                // Use class
                 $(`#grid-${gridName}`).data({
                     metadata: resp.metadata,
                     data: JSON.parse(resp.data)
@@ -193,14 +196,14 @@ define(
             setDatagridState(defaultColumns, defaultView) {
                 const { gridName, datagridLoadUrl} = this.config;
                 let params = this.getInitialParams();
-                const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
 
-                var viewStored = DatagridState.get(gridName, ['view']);
-                if (!viewStored.view) {
+                if (!DatagridState.get(gridName, ['view'])) {
                     DatagridState.refreshFiltersFromUrl(gridName);
                 }
 
-                if (defaultView && state.view === null) {
+                const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
+
+                if (defaultView && ('0' === state.view || null === state.view)) {
                     params = this.applyView(defaultView.id, params);
                     params = this.applyFilters(defaultView.filters, params);
                     params = this.applyColumns(defaultView.columns, params);

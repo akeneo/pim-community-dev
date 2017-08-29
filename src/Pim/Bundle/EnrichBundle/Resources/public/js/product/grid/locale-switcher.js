@@ -49,11 +49,9 @@ define([
              * {@inheritdoc}
             */
             configure() {
-                return $.when(
-                    FetcherRegistry.getFetcher('locale').fetchActivated()
-                    .then(locales => this.locales = locales),
-                    BaseForm.prototype.configure.apply(this, arguments)
-                );
+                this.fetchLocales().then(locales => this.locales = locales);
+
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
@@ -68,6 +66,17 @@ define([
                     i18n,
                     getDisplayName: this.getDisplayName
                 }));
+            },
+
+            /**
+             * Fetch the activated locales to render in the list
+             * @return {Array} An array of activated locales
+             */
+            fetchLocales() {
+                return FetcherRegistry.getFetcher('locale').search({
+                    activated: true,
+                    cached: false
+                });
             },
 
             /**
