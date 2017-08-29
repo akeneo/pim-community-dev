@@ -1,6 +1,6 @@
 parameters:
     pim_installer.install_status_manager.class:       Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager
-    pim_installer.directories_registry.class: Pim\Bundle\InstallerBundle\PimDirectoriesRegistry
+    pim_installer.directories_registry.class:         Pim\Bundle\InstallerBundle\PimDirectoriesRegistry
 
 services:
     pim_installer.install_status_manager:

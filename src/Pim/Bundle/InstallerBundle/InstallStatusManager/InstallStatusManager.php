@@ -46,7 +46,7 @@ class InstallStatusManager
     {
         $sql = 'SELECT create_time FROM INFORMATION_SCHEMA.TABLES
                 WHERE table_schema = :database_name
-                AND table_name = :install_table_name ';
+                AND table_name = :install_table_name';
 
         $connection = $this->doctrine->getConnection();
         try {
