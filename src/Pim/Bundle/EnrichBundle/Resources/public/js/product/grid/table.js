@@ -9,7 +9,9 @@ define(
         'require-context',
         'pim/form',
         'pim/user-context',
-        'pim/fetcher-registry'
+        'pim/fetcher-registry',
+        'pim/datagrid/state-listener',
+        'pim/datagrid/configure-columns-action'
     ],
     function(
         _,
@@ -21,28 +23,45 @@ define(
         requireContext,
         BaseForm,
         UserContext,
-        FetcherRegistry
+        FetcherRegistry,
+        StateListener,
+        ConfigureColumnsAction
     ) {
         return BaseForm.extend({
             config: {},
 
+            /**
+             * @inheritdoc
+             */
             initialize(options) {
                 this.config = options.config;
 
-                BaseForm.prototype.initialize.apply(this, arguments);
+                return BaseForm.prototype.initialize.apply(this, arguments);
             },
 
+            /**
+             * Fetch default view for grid
+             * @return {Promise}
+             */
             getDefaultView() {
                 return FetcherRegistry.getFetcher('datagrid-view')
                     .defaultUserView(this.config.gridName)
                     .then(defaultUserView => defaultUserView.view);
             },
 
+            /**
+             * Fetch default columns for grid
+             * @return {Promise}
+             */
             getDefaultColumns() {
                 return FetcherRegistry.getFetcher('datagrid-view')
                     .defaultColumns(this.config.gridName);
             },
 
+            /**
+             * Build the datagrid
+             * @param  {Object} resp Datagrid load response
+             */
             loadDataGrid(resp) {
                 const { gridName } = this.config;
                 const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
@@ -59,60 +78,76 @@ define(
                     );
                 }
 
+                // Use class
                 $(`#grid-${gridName}`).data({
-                    'metadata': resp.metadata,
-                    'data': JSON.parse(resp.data)
+                    metadata: resp.metadata,
+                    data: JSON.parse(resp.data)
                 });
 
-                const modules = resp.metadata.requireJSModules;
-                modules.push('pim/datagrid/state-listener');
-
-                const resolvedModules = [];
-
-                _.each(modules, function(module) {
-                    const resolvedModule = requireContext(module);
-                    resolvedModules.push(resolvedModule);
-                });
-
-                datagridBuilder(resolvedModules);
+                // Move to form extensions in TIP-733-2
+                datagridBuilder([
+                    StateListener,
+                    ConfigureColumnsAction
+                ]);
             },
 
+            /**
+             * Get the initial grid params with locale
+             * @return {Object} urlParams
+             */
             getInitialParams() {
-                const { localeParamName, gridName } = this.config;
-                const locale = UserContext.get('catalogLocale');
-                const urlParams = { [localeParamName]: locale, alias: gridName };
-                urlParams.params = {[ localeParamName ]: locale };
+                const dataLocale = UserContext.get('catalogLocale');
+                const alias = this.config.gridName;
+                const urlParams = { dataLocale, alias };
+                urlParams.params = { dataLocale };
 
                 return urlParams;
             },
 
+            /**
+             * Set the columns on the datagrid state
+             * @param  {Array} columns   An array of columns
+             * @param  {Object} urlParams Url params
+             * @return {Object}
+             */
             applyColumns(columns, urlParams) {
-                urlParams = $.extend(true, {}, urlParams);
+                urlParams = _.clone(urlParams);
                 const { gridName } = this.config;
                 if (_.isArray(columns)) columns = columns.join();
 
                 urlParams[`${gridName}[_parameters][view][columns]`] = columns;
-
                 DatagridState.set(gridName, { columns: columns });
 
                 return urlParams;
             },
 
+            /**
+             * Set the selected view on the datagrid state
+             * @param  {String} viewId    The id of the view
+             * @param  {Object} urlParams Url params
+             * @return {Object}
+             */
             applyView(viewId, urlParams) {
-                urlParams = $.extend(true, {}, urlParams);
+                urlParams = _.clone(urlParams);
                 const { gridName } = this.config;
-                urlParams[`${gridName}[_parameters][view][id]`] = viewId;
 
+                urlParams[`${gridName}[_parameters][view][id]`] = viewId;
                 DatagridState.set(gridName, {  view: viewId });
 
                 return urlParams;
             },
 
+            /**
+             * Apply filters to the datagrid params
+             * @param  {String} rawFilters Filters as string
+             * @param  {Object} urlParams  Url params
+             * @return {Object}
+             */
             applyFilters(rawFilters, urlParams) {
-                urlParams = $.extend(true, {}, urlParams);
+                urlParams = _.clone(urlParams);
                 const { gridName } = this.config;
-                var filters = PageableCollection.prototype.decodeStateData(rawFilters);
-                var options = {};
+                let filters = PageableCollection.prototype.decodeStateData(rawFilters);
+                let options = {};
 
                 if (!_.isEmpty(filters.filters)) {
                     options = {
@@ -122,10 +157,10 @@ define(
                     };
                 }
 
-                var collection = new PageableCollection(null, options);
+                let collection = new PageableCollection(null, options);
                 collection.processFiltersParams(urlParams, filters, `${gridName}[_filter]`);
 
-                for (var column in filters.sorters) {
+                for (let column in filters.sorters) {
                     urlParams[`${gridName}[_sort_by][${column}]`] =
                     1 === parseInt(filters.sorters[column]) ?
                     'DESC' :
@@ -140,24 +175,23 @@ define(
                     urlParams[`${gridName}[_pager][_page]`] = filters.currentPage;
                 }
 
-                DatagridState.set(gridName, {
-                    filters: rawFilters
-                });
+                DatagridState.set(gridName, { filters: rawFilters });
 
                 return urlParams;
             },
 
+            /**
+             * Apply filters columns and view for the datagrid
+             * @param {Array} defaultColumns
+             * @param {String} defaultView
+             */
             setDatagridState(defaultColumns, defaultView) {
                 const { gridName, datagridLoadUrl} = this.config;
                 let params = this.getInitialParams();
-
-                if (!DatagridState.get(gridName, ['view'])) {
-                    DatagridState.refreshFiltersFromUrl(gridName);
-                }
-
                 const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
 
-                if (defaultView && ('0' === state.view || null === state.view)) {
+                if (defaultView && state.view === null) {
+                    DatagridState.refreshFiltersFromUrl(gridName);
                     params = this.applyView(defaultView.id, params);
                     params = this.applyFilters(defaultView.filters, params);
                     params = this.applyColumns(defaultView.columns, params);
@@ -175,9 +209,14 @@ define(
                 );
             },
 
+            /**
+             * @inheritdoc
+             */
             render() {
                 $.when(this.getDefaultColumns(), this.getDefaultView())
-                .then((defaultColumns, defaultView) => this.setDatagridState(defaultColumns, defaultView));
+                .then((defaultColumns, defaultView) => {
+                    return this.setDatagridState(defaultColumns, defaultView);
+                });
             }
         });
     }

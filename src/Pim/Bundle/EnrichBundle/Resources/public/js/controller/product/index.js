@@ -5,7 +5,8 @@ define(
         'pim/controller/base',
         'pim/form-builder',
         'pim/user-context',
-        'oro/mediator'
+        'oro/mediator',
+        'pim/page-title'
     ],
     function (_, $, BaseController, FormBuilder, UserContext, mediator) {
         return BaseController.extend({
