@@ -67,8 +67,8 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function normalize($family, $format = null, array $context = array())
     {
-        $applyFilters = array_key_exists('apply_filters', $context)
-            && true === $context['apply_filters'];
+        $fullAttributes = array_key_exists('full_attributes', $context)
+            && true === $context['full_attributes'];
 
         $normalizedFamily = $this->familyNormalizer->normalize(
             $family,
@@ -76,11 +76,11 @@ class FamilyNormalizer implements NormalizerInterface
             $context
         );
 
-        $normalizedFamily['attributes'] = $this->normalizeAttributes($family, $applyFilters, $context);
+        $normalizedFamily['attributes'] = $this->normalizeAttributes($family, $fullAttributes, $context);
 
         $normalizedFamily['attribute_requirements'] = $this->normalizeRequirements(
             $normalizedFamily['attribute_requirements'],
-            $applyFilters
+            $fullAttributes
         );
 
         $firstVersion = $this->versionManager->getOldestLogEntry($family);
@@ -114,16 +114,16 @@ class FamilyNormalizer implements NormalizerInterface
      * Fetches attributes by code and normalizes them
      *
      * @param FamilyInterface $family
-     * @param boolean         $applyFilters
+     * @param boolean         $fullAttributes
      * @param array           $context
      *
      * @return array
      */
-    protected function normalizeAttributes(FamilyInterface $family, $applyFilters, $context)
+    protected function normalizeAttributes(FamilyInterface $family, $fullAttributes, $context)
     {
         $attributes = $this->attributeRepository->findAttributesByFamily($family);
 
-        if ($applyFilters) {
+        if ($fullAttributes) {
             $attributes = $this->collectionFilter->filterCollection(
                 $attributes,
                 'pim.internal_api.attribute.view'
@@ -132,7 +132,9 @@ class FamilyNormalizer implements NormalizerInterface
 
         $normalizedAttributes = [];
         foreach ($attributes as $attribute) {
-            $normalizedAttributes[] = $this->attributeNormalizer->normalize($attribute, 'internal_api', $context);
+            $normalizedAttributes[] = $fullAttributes ?
+                ['code' => $attribute->getCode()] :
+                $this->attributeNormalizer->normalize($attribute, 'internal_api', $context);
         }
 
         return $normalizedAttributes;
@@ -144,18 +146,18 @@ class FamilyNormalizer implements NormalizerInterface
      * It filters the requirements to the viewable ones
      *
      * @param array $requirements
-     * @param bool  $applyFilters
+     * @param bool  $fullAttributes
      *
      * @return array
      */
-    protected function normalizeRequirements($requirements, $applyFilters)
+    protected function normalizeRequirements($requirements, $fullAttributes)
     {
         $result = [];
 
         foreach ($requirements as $channel => $attributeCodes) {
             $attributes = $this->attributeRepository->findBy(['code' => $attributeCodes]);
 
-            if ($applyFilters) {
+            if ($fullAttributes) {
                 $attributes = $this->collectionFilter->filterCollection(
                     $attributes,
                     'pim.internal_api.attribute.view'

@@ -8,10 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface;
-use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -22,9 +19,6 @@ class AttributeNormalizerSpec extends ObjectBehavior
         FieldProviderInterface $fieldProvider,
         EmptyValueProviderInterface $emptyValueProvider,
         FilterProviderInterface $filterProvider,
-        VersionManager $versionManager,
-        NormalizerInterface $versionNormalizer,
-        StructureVersionProviderInterface $structureVersionProvider,
         LocalizerInterface $numberLocalizer
     ) {
         $this->beConstructedWith(
@@ -32,9 +26,6 @@ class AttributeNormalizerSpec extends ObjectBehavior
             $fieldProvider,
             $emptyValueProvider,
             $filterProvider,
-            $versionManager,
-            $versionNormalizer,
-            $structureVersionProvider,
             $numberLocalizer
         );
     }
@@ -44,12 +35,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $fieldProvider,
         $emptyValueProvider,
         $filterProvider,
-        $versionManager,
-        $versionNormalizer,
-        $structureVersionProvider,
-        AttributeInterface $price,
-        Version $firstVersion,
-        Version $lastVersion
+        AttributeInterface $price
     ) {
         $normalizer->normalize($price, 'standard', Argument::any())->willReturn(
             [
@@ -89,12 +75,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $fieldProvider->getField($price)->willReturn('akeneo-text-field');
         $filterProvider->getFilters($price)->willReturn(['product-export-builder' => 'akeneo-attribute-string-filter']);
         $price->isLocaleSpecific()->willReturn(false);
-        $versionManager->getOldestLogEntry($price)->willReturn($firstVersion);
-        $versionManager->getNewestLogEntry($price)->willReturn($lastVersion);
-        $versionNormalizer->normalize($firstVersion, 'internal_api')->willReturn('normalizedFirstVersion');
-        $versionNormalizer->normalize($lastVersion, 'internal_api')->willReturn('normalizedLastVersion');
         $price->getId()->willReturn(12);
-        $structureVersionProvider->getStructureVersion()->willReturn(123789);
 
         $this->normalize($price, 'internal_api', [])->shouldReturn(
             [
@@ -129,13 +110,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'field_type'             => 'akeneo-text-field',
                 'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
                 'is_locale_specific'     => false,
-                'meta'                   => [
-                    'id'                => 12,
-                    'created'           => 'normalizedFirstVersion',
-                    'updated'           => 'normalizedLastVersion',
-                    'structure_version' => 123789,
-                    'model_type'        => 'attribute',
-                ],
+                'meta'                   => ['id' => 12],
             ]
         );
     }
@@ -145,13 +120,8 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $fieldProvider,
         $emptyValueProvider,
         $filterProvider,
-        $versionManager,
-        $versionNormalizer,
-        $structureVersionProvider,
         $numberLocalizer,
-        AttributeInterface $price,
-        Version $firstVersion,
-        Version $lastVersion
+        AttributeInterface $price
     ) {
         $normalizer->normalize($price, 'standard', Argument::any())->willReturn(
             [
@@ -193,12 +163,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $price->isLocaleSpecific()->willReturn(false);
         $numberLocalizer->localize('20.5', ['locale' => 'fr_FR'])->willReturn('20,5');
         $numberLocalizer->localize('4000.8', ['locale' => 'fr_FR'])->willReturn('4000,8');
-        $versionManager->getOldestLogEntry($price)->willReturn($firstVersion);
-        $versionManager->getNewestLogEntry($price)->willReturn($lastVersion);
-        $versionNormalizer->normalize($firstVersion, 'internal_api')->willReturn('normalizedFirstVersion');
-        $versionNormalizer->normalize($lastVersion, 'internal_api')->willReturn('normalizedLastVersion');
         $price->getId()->willReturn(12);
-        $structureVersionProvider->getStructureVersion()->willReturn(123789);
 
         $this->normalize($price, 'internal_api', ['locale' => 'fr_FR'])->shouldReturn(
             [
@@ -233,13 +198,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
                 'field_type'             => 'akeneo-text-field',
                 'filter_types'           => ['product-export-builder' => 'akeneo-attribute-string-filter'],
                 'is_locale_specific'     => false,
-                'meta'                   => [
-                    'id'                => 12,
-                    'created'           => 'normalizedFirstVersion',
-                    'updated'           => 'normalizedLastVersion',
-                    'structure_version' => 123789,
-                    'model_type'        => 'attribute',
-                ],
+                'meta'                   => ['id' => 12],
             ]
         );
     }

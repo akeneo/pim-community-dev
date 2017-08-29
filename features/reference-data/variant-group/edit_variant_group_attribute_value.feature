@@ -33,6 +33,7 @@ Feature: Editing attribute values of a variant group also updates products with 
     And I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Change a pim_reference_data_simpleselect attribute of a variant group
     Given the following reference data:
       | type  | code      | label |
@@ -46,6 +47,7 @@ Feature: Editing attribute values of a variant group also updates products with 
     And I visit the "Other" group
     Then the product Heel color should be "ABJP44823"
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Change a pim_reference_data_multiselect attribute of a variant group
     Given the following reference data:
       | type   | code   | label  |

@@ -36,7 +36,13 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.empty().append(this.template({
+                this.$el.empty();
+
+                if (null === this.getPath()) {
+                    return;
+                }
+
+                this.$el.append(this.template({
                     path: this.getPath()
                 }));
 

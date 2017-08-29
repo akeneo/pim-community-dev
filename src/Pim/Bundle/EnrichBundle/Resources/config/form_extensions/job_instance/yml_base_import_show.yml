@@ -2,7 +2,7 @@ extensions:
     pim-job-instance-yml-base-import-show:
         module: pim/form/common/edit-form
 
-    pim-job-instance-yml-base-import-show-mainImage:
+    pim-job-instance-yml-base-import-show-main-image:
         module: pim/form/common/main-image
         parent: pim-job-instance-yml-base-import-show
         targetZone: main-image
@@ -72,7 +72,7 @@ extensions:
             identifier:
                 path: code
                 name: code
-                
+
     pim-job-instance-yml-base-import-show-subsection:
         module: pim/form/common/subsection
         parent: pim-job-instance-yml-base-import-show

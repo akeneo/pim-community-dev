@@ -98,6 +98,7 @@ Feature: Mass Edit Families
     And I display the Name attribute
     And I confirm mass edit
     And I wait for the "set_attribute_requirements" job to finish
+    And I am on the dashboard page
     Then I should see notification:
       | type    | message                                              |
       | success | Mass edit Set family attribute requirements finished |
