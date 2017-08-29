@@ -15,7 +15,7 @@ Feature: Quick export many products from datagrid
     And I am logged in as "Julia"
 
   Scenario: Successfully quick export all products as a CSV file
-    Given I am on the products page
+    Given I am on the products grid
     When I select all entities
     And I press "CSV (All attributes)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_quick_export" quick export to finish
@@ -37,7 +37,7 @@ Feature: Quick export many products from datagrid
     """
 
   Scenario: Successfully quick export selected products as a CSV file
-    Given I am on the products page
+    Given I am on the products grid
     When I select rows boots, sneakers
     And I press "CSV (All attributes)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_quick_export" quick export to finish
@@ -57,7 +57,7 @@ Feature: Quick export many products from datagrid
     """
 
   Scenario: Successfully quick export selected products as a XSLX file
-    Given I am on the products page
+    Given I am on the products grid
     When I select rows boots, sneakers
     And I press "Excel (All attributes)" on the "Quick Export" dropdown button
     And I wait for the "xlsx_product_quick_export" quick export to finish

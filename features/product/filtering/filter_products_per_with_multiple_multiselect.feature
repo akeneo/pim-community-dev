@@ -28,7 +28,7 @@ Feature: Filter products with multiples multiselect filters
       | POST-2 | furniture | suze      |       |
       | POST-3 | furniture | redhat    |       |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully filter products with the sames attributes
     Given I show the filter "company"
@@ -49,7 +49,7 @@ Feature: Filter products with multiples multiselect filters
       | company | is not empty |           | MUG-1, MUG-2, MUG-3, MUG-4 |
 
   Scenario: Successfully filter only one product
-    Given I am on the products page
+    Given I am on the products grid
     When I show the filter "company"
     And I filter by "company" with operator "in list" and value "Canonical"
     And I show the filter "color"

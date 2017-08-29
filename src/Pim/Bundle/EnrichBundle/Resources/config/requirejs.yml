@@ -378,7 +378,7 @@ config:
                     module: pim/controller/template
                     aclResourceId: pim_enrich_attribute_remove
                 pim_enrich_product_index:
-                    module: pim/controller/template
+                    module: pim/controller/product/index
                     aclResourceId: pim_enrich_product_index
                 pim_enrich_product_create:
                     module: pim/controller/template
@@ -505,7 +505,9 @@ config:
         pim/controller/front:                  pimenrich/js/controller/front
         pim/controller/template:               pimenrich/js/controller/template
         pim/controller/form:                   pimenrich/js/controller/form
+        # @TODO - Rename this to pimenrich/js/controller/product/edit and move the file
         pim/controller/product:                pimenrich/js/controller/product
+        pim/controller/product/index:          pimenrich/js/controller/product/index
         pim/controller/family:                 pimenrich/js/controller/family
         pim/controller/channel/edit:           pimenrich/js/controller/channel/edit
         pim/controller/common/index:           pimenrich/js/controller/common/index
@@ -890,13 +892,20 @@ config:
         pim/formatter/choices/base: pimenrich/js/formatter/choices/base
         pim/formatter/date: pimenrich/js/formatter/date-formatter
 
+        pim/grid/locale-switcher: pimenrich/js/product/grid/locale-switcher
+
+        # Category tree
+        pim/grid/category-tree: pimenrich/js/product/grid/category-tree
+
         # Grid view selector
+        pim/grid/view-selector: pimenrich/js/product/grid/view-selector
         pim/grid/view-selector/selector: pimenrich/js/grid/view-selector
         pim/grid/view-selector/line: pimenrich/js/grid/view-selector-line
         pim/grid/view-selector/create-view: pimenrich/js/grid/view-selector-create-view
         pim/grid/view-selector/save-view: pimenrich/js/grid/view-selector-save-view
         pim/grid/view-selector/remove-view: pimenrich/js/grid/view-selector-remove-view
         pim/grid/view-selector/current: pimenrich/js/grid/view-selector-current
+        pim/grid/table: pimenrich/js/product/grid/table
 
         # Templates
         pim/template/common/drop-zone:                            pimenrich/templates/common/drop-zone.html
@@ -964,6 +973,9 @@ config:
         pim/template/family/tab/attributes:                  pimenrich/templates/family/tab/attributes.html
         pim/template/family/tab/general/attribute-as-image:  pimenrich/templates/family/tab/general/attribute-as-image.html
 
+        # Grid
+        pim/template/product/grid/locale-switcher:           pimenrich/templates/product/grid/locale-switcher.html
+        pim/template/product/index:                          pimenrich/templates/product/index.html
         pim/template/product/tab/categories:                 pimenrich/templates/product/tab/categories.html
         pim/template/product/tab/catalog-switcher:           pimenrich/templates/product/tab/catalog-switcher.html
         pim/template/product/tab/attribute/validation-error: pimenrich/templates/product/tab/attributes/validation-error.html

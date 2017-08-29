@@ -12,6 +12,11 @@ extensions:
             tab: pim-menu-settings
             item: pim-menu-settings-variant-group
 
+    pim-variant-group-index-filters:
+        module: oro/datafilter-builder
+        parent: pim-variant-group-index
+        targetZone: content
+
     pim-variant-group-index-grid:
         module: pim/form/common/index/grid
         parent: pim-variant-group-index

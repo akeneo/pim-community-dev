@@ -20,7 +20,7 @@ Feature: Filter products by number field
       | mug    |       |      |
     And the "book" product has the "count" attribute
     And the "mug" product has the "rate" attribute
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
