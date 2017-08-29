@@ -81,7 +81,7 @@ class SequentialEditController
     public function sequentialEditAction(Request $request)
     {
         if ($this->seqEditManager->findByUser($this->userContext->getUser())) {
-          return new JsonResponse(
+            return new JsonResponse(
               [
                   'route'  => 'pim_enrich_product_index',
                   'params' => ['dataLocale' => $request->get('dataLocale')]
