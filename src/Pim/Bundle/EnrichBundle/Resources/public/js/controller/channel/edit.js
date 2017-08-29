@@ -4,21 +4,20 @@ define(
     [
         'underscore',
         'oro/translator',
-        'pim/controller/base',
+        'pim/controller/front',
         'pim/form-builder',
         'pim/fetcher-registry',
         'pim/user-context',
         'pim/dialog',
         'pim/page-title',
-        'pim/error',
         'pim/i18n'
     ],
-    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error, i18n) {
+    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, i18n) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
              */
-            renderRoute: function (route) {
+            renderForm: function (route) {
                 if (undefined === route.params.code) {
                     var label = 'pim_enrich.entity.channel.title.create';
 
@@ -40,8 +39,8 @@ define(
                 } else {
                     return FetcherRegistry.getFetcher('channel')
                         .fetch(route.params.code, { cached: false })
-                        .then(function (channel) {
-                            var label = _.escape(
+                        .then((channel) => {
+                            const label = _.escape(
                                 i18n.getLabel(
                                     channel.labels,
                                     UserContext.get('catalogLocale'),
@@ -50,12 +49,6 @@ define(
                             );
 
                             return createForm.call(this, this.$el, channel, label, channel.meta.form);
-                        }.bind(this))
-                        .fail(function (response) {
-                            var message = response.responseJSON ? response.responseJSON.message : __('error.common');
-
-                            var errorView = new Error(message, response.status);
-                            errorView.setElement(this.$el).render();
                         });
                 }
 
@@ -63,14 +56,16 @@ define(
                     PageTitle.set({'channel.label': _.escape(label) });
 
                     return FormBuilder.build(formExtension)
-                        .then(function (form) {
+                        .then((form) => {
                             this.on('pim:controller:can-leave', function (event) {
                                 form.trigger('pim_enrich:form:can-leave', event);
                             });
                             form.setData(channel);
                             form.trigger('pim_enrich:form:entity:post_fetch', channel);
                             form.setElement(domElement).render();
-                        }.bind(this));
+
+                            return form;
+                        });
                 }
             }
         });

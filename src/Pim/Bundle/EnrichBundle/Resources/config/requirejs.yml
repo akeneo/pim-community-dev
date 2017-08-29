@@ -502,6 +502,7 @@ config:
         # Controllers
         pim/controller-registry:               pimenrich/js/controller/registry
         pim/controller/base:                   pimenrich/js/controller/base
+        pim/controller/front:                  pimenrich/js/controller/front
         pim/controller/template:               pimenrich/js/controller/template
         pim/controller/form:                   pimenrich/js/controller/form
         pim/controller/product:                pimenrich/js/controller/product
@@ -924,6 +925,7 @@ config:
         pim/template/form/save-buttons:                           pimenrich/templates/form/save-buttons.html
         pim/template/form/edit-form:                              pimenrich/templates/form/edit-form.html
         pim/template/form/tab/attribute/attribute-group-selector: pimenrich/templates/form/tab/attributes/attribute-group-selector.html
+        pim/template/form/tab/attribute/attribute-group:          pimenrich/templates/form/tab/attributes/attribute-group.html
         pim/template/form/tab/attribute/copy:                     pimenrich/templates/form/tab/attributes/copy.html
         pim/template/form/tab/attribute/copy-field:               pimenrich/templates/form/tab/attributes/copy-field.html
         pim/template/form/tab/attribute/create-button:            pimenrich/templates/form/tab/attributes/create-button.html

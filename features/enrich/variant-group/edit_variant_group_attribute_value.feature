@@ -45,6 +45,7 @@ Feature: Editing attribute values of a variant group also updates products
     And I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Change a pim_catalog_boolean attribute of a variant group
     When I add available attributes Handmade
     And I visit the "Other" group
@@ -112,6 +113,7 @@ Feature: Editing attribute values of a variant group also updates products
     And I visit the "Marketing" group
     Then the field Rating should contain "5 stars"
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Change a pim_catalog_simpleselect locale specific attribute of a variant group
     Given I set the "English (United States), French (France)" locales to the "mobile" channel
     And I am on the "simple_select_local_specific" attribute page
@@ -155,6 +157,7 @@ Feature: Editing attribute values of a variant group also updates products
     Then the product "boot" should have the following values:
       | description-en_US-tablet | The best boots! |
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Change a pim_catalog_image attribute of a variant group
     When I add available attributes Side view
     And I visit the "Media" group
@@ -165,7 +168,7 @@ Feature: Editing attribute values of a variant group also updates products
     And I visit the "Media" group
     Then I should see the text "SNKRS-1R.png"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5335
+  @skip @info Will be removed in PIM-6444 @jira https://akeneo.atlassian.net/browse/PIM-5335
   Scenario: Change a pim_catalog_image attribute of a variant group and ensure saving
     When I add available attributes Side view
     And I visit the "Media" group
@@ -179,6 +182,7 @@ Feature: Editing attribute values of a variant group also updates products
     When I reload the page
     Then the row "boot" should not be checked
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Change a pim_catalog_file attribute of a variant group
     When I add available attributes Technical description
     And I visit the "Media" group

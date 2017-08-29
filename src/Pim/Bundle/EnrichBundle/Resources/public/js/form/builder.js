@@ -1,38 +1,42 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'pim/form-registry'],
-    function ($, _, FormRegistry) {
+    ['jquery', 'underscore', 'pim/form-registry', 'require-context'],
+    function ($, _, FormRegistry, requireContext) {
         var buildForm = function (formName) {
-            return $.when(
-                FormRegistry.getForm(formName),
-                FormRegistry.getFormMeta(formName),
-                FormRegistry.getFormExtensions(formName)
-            ).then(function (Form, formMeta, extensionMeta) {
-                var form = new Form(formMeta);
-                form.code = formName;
+            return FormRegistry.getFormMeta(formName).then((formMeta) => {
+                if (undefined === formMeta) {
+                    throw new Error(`
+                        The form ${formName} was not found. Are you sure you registered it properly?
+                        Check your form_extension files and be sure to clear your prod cache before proceeding
+                    `);
+                }
 
-                var extensionPromises = [];
-                _.each(extensionMeta, function (extension) {
-                    var extensionPromise = buildForm(extension.code);
-                    extensionPromise.done(function (loadedModule) {
-                        extension.loadedModule = loadedModule;
+                return FormRegistry.getFormExtensions(formMeta).then((extensionsMeta) => {
+                    const FormClass = requireContext(formMeta.module);
+                    const form = new FormClass(formMeta);
+                    form.code = formName;
+
+                    const extensionPromises = extensionsMeta.map((extension) => {
+                        return buildForm(extension.code).then(function (loadedModule) {
+                            extension.loadedModule = loadedModule;
+
+                            return extension;
+                        });
                     });
 
-                    extensionPromises.push(extensionPromise);
-                });
+                    return $.when.apply($, extensionPromises).then(function () {
+                        extensionsMeta.forEach((extension) => {
+                            form.addExtension(
+                                extension.code,
+                                extension.loadedModule,
+                                extension.targetZone,
+                                extension.position
+                            );
+                        });
 
-                return $.when.apply($, extensionPromises).then(function () {
-                    _.each(extensionMeta, function (extension) {
-                        form.addExtension(
-                            extension.code,
-                            extension.loadedModule,
-                            extension.targetZone,
-                            extension.position
-                        );
+                        return form;
                     });
-
-                    return form;
                 });
             });
         };

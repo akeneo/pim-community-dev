@@ -351,9 +351,7 @@ define([
              * @returns {string}
              */
             getLabel: function () {
-                return this.attribute.labels[this.context.uiLocale] ?
-                    this.attribute.labels[this.context.uiLocale] :
-                    '[' + this.attribute.code + ']';
+                return i18n.getLabel(this.attribute.labels, this.context.uiLocale, this.attribute.code);
             }
         });
     }

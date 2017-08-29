@@ -220,6 +220,7 @@
 
 ### Constructors
 
+- Change the constructor of `Pim\Component\Catalog\Comparator\Filter\ProductFilter` to add `Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface`
 - Change the constructor of `Oro\Bundle\UserBundle\Form\Handler\AclRoleHandler` to add `Symfony\Component\HttpFoundation\RequestStack`
 - Change the constructor of `Oro\Bundle\DataGridBundle\Datagrid\RequestParameters` to add `Symfony\Component\HttpFoundation\RequestStack`
 - Change the constructor of `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator` to add `Symfony\Component\HttpFoundation\RequestStack`
@@ -301,9 +302,9 @@
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `uploadTmpDir` (string)
 - Change the constructor of `Pim\Bundle\ApiBundle\Controller\ProductController` to remove `Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository`
 - Change the constructor of `Pim\Bundle\ApiBundle\Controller\ProductController` to add `Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface`
-- Change the constructor of `Pim\Component\Catalog\Builder\ProductBuilder` to replace `Pim\Component\Catalog\Manager\AttributeValuesResolver` by `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface` 
-- Change the constructor of `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver` to replace `Pim\Component\Catalog\Manager\AttributeValuesResolver` by `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface` 
-- Change the constructor of `Pim\Component\Catalog\Builder\EntityWithValuesBuilder` to replace `Pim\Component\Catalog\Manager\AttributeValuesResolver` by `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface` 
+- Change the constructor of `Pim\Component\Catalog\Builder\ProductBuilder` to replace `Pim\Component\Catalog\Manager\AttributeValuesResolver` by `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface`
+- Change the constructor of `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver` to replace `Pim\Component\Catalog\Manager\AttributeValuesResolver` by `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface`
+- Change the constructor of `Pim\Component\Catalog\Builder\EntityWithValuesBuilder` to replace `Pim\Component\Catalog\Manager\AttributeValuesResolver` by `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface`
 - Change the constructor of `Pim\Bundle\ApiBundle\Controller\LocaleController` to add `Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface`
 - Change the constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add `Akeneo\Component\Batch\Job\JobParametersValidator`
 - Change the constructor of `Pim\Bundle\ConnectorBundle\Launcher\AuthenticatedJobLauncher` to add `Akeneo\Component\Batch\Job\JobParametersValidator`
@@ -317,6 +318,9 @@
 
 - Add type hint `Akeneo\Component\Batch\Model\JobExecution` to the return of the function `launch` of `Akeneo\Bundle\BatchBundle\Launcher`
 - Add type hint `array` to the return of the function `resolveEligibleValues` of `Pim\Component\Catalog\Manager\AttributeValuesResolver`
+
+### Configuration
+- PIM-6740: Remove `installed` parameter from parameters.yml.dist , parameters_test.yml.dist and config.yml
 
 ### Others
 
@@ -406,6 +410,8 @@
 - Remove unused `Pim\Component\Catalog\Manager\AttributeGroupManager`
 - Remove unused `Pim\Bundle\CatalogBundle\ProductQueryUtility`
 - Remove service `pim_installer.yaml_persister`
+- Split `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` in two. The original service name (`pim_enrich.normalizer.attribute`) points now to `Pim\Bundle\EnrichBundle\Normalizer\VersionedAttributeNormalizer`
+    The arguments of the old normalizer are now divided between both normalizers, also `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` is injected into `Pim\Bundle\EnrichBundle\Normalizer\VersionedAttributeNormalizer`.
 
 ### Methods
 

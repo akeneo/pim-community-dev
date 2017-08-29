@@ -67,6 +67,9 @@ class AttributeController
     /** @var LocalizerInterface */
     protected $numberLocalizer;
 
+    /** @var NormalizerInterface */
+    private $lightAttributeNormalizer;
+
     /**
      * @param AttributeRepositoryInterface  $attributeRepository
      * @param NormalizerInterface           $normalizer
@@ -80,6 +83,7 @@ class AttributeController
      * @param AttributeFactory              $factory
      * @param UserContext                   $userContext
      * @param LocalizerInterface            $numberLocalizer
+     * @param NormalizerInterface           $lightAttributeNormalizer
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
@@ -93,7 +97,8 @@ class AttributeController
         RemoverInterface $remover,
         AttributeFactory $factory,
         UserContext $userContext,
-        LocalizerInterface $numberLocalizer
+        LocalizerInterface $numberLocalizer,
+        NormalizerInterface $lightAttributeNormalizer
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->normalizer = $normalizer;
@@ -107,6 +112,7 @@ class AttributeController
         $this->factory = $factory;
         $this->userContext = $userContext;
         $this->numberLocalizer = $numberLocalizer;
+        $this->lightAttributeNormalizer = $lightAttributeNormalizer;
     }
 
     /**
@@ -153,11 +159,13 @@ class AttributeController
             $options
         );
 
-        $normalizedAttributes = $this->normalizer->normalize(
-            $attributes,
-            'internal_api',
-            ['locale' => $this->userContext->getUiLocale()->getCode()]
-        );
+        $normalizedAttributes = array_map(function ($attribute) {
+            return $this->lightAttributeNormalizer->normalize(
+                $attribute,
+                'internal_api',
+                ['locale' => $this->userContext->getUiLocale()->getCode()]
+            );
+        }, $attributes);
 
         return new JsonResponse($normalizedAttributes);
     }
