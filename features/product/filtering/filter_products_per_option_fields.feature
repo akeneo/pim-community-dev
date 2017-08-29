@@ -24,19 +24,19 @@ Feature: Filter products per option
     Given I am on the products page
     And the grid should contain 3 elements
     Then I should be able to use the following filters:
-      | filter | operator     | value | result          |
-      | size   | in list      | M     | Sweat           |
-      | size   | is empty     |       | Shirt and Shoes |
-      | size   | is not empty |       | Sweat           |
+      | filter | operator     | value | result |
+      | size   | in list      | M     | Sweat  |
+      | size   | is empty     |       | Shirt  |
+      | size   | is not empty |       | Sweat  |
 
   Scenario: Successfully filter products by a multi option
     Given I am on the products page
     And the grid should contain 3 elements
     Then I should be able to use the following filters:
-      | filter | operator     | value | result          |
-      | color  | in list      | Black | Shoes           |
-      | color  | is empty     |       | Shirt and Sweat |
-      | color  | is not empty |       | Shoes           |
+      | filter | operator     | value | result |
+      | color  | in list      | Black | Shoes  |
+      | color  | is empty     |       | Shirt  |
+      | color  | is not empty |       | Shoes  |
 
   @jira https://akeneo.atlassian.net/browse/PIM-5802
   Scenario: Successfully keep data previously filled on a simple option
