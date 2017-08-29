@@ -59,7 +59,6 @@ Feature: Execute a job
     And I should see the text "price: Property \"currency\" expects a valid code. The currency does not exist, \"mouette\" given."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
-
   Scenario: Skip existing products with invalid prices during an import
     Given the following products:
       | sku     | price  |
@@ -111,7 +110,6 @@ Feature: Execute a job
     And I should see the text "price: Property \"currency\" expects a valid code. The currency does not exist, \"gruik\" given."
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
-
   Scenario: Skip new products with invalid metrics during an import
     Given the following CSV file to import:
       """
@@ -130,7 +128,6 @@ Feature: Execute a job
       | length | 4000.0000 CENTIMETER |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
-
   Scenario: Skip existing products with invalid metrics during an import
     Given the following products:
       | sku     | length        |
@@ -155,7 +152,6 @@ Feature: Execute a job
       | length | 2.0000 KILOMETER |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
-
   Scenario: Skip new products with invalid number during an import, as a not allowed negative number
     Given the following products:
       | sku     | number_in_stock |
@@ -177,7 +173,6 @@ Feature: Execute a job
       | number_in_stock | 2000.0000 |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
-
   Scenario: Skip existing products with invalid number during an import
     Given the following products:
       | sku     | number_in_stock |
@@ -202,7 +197,6 @@ Feature: Execute a job
       | number_in_stock | 100 |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
-
   Scenario: Skip new products with non-existing media attributes during an import
     Given the following attributes:
       | label-en_US | type              | allowed_extensions | group | code       |
@@ -233,7 +227,6 @@ Feature: Execute a job
       | userManual | fanatic-freewave-76.txt |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
-
   Scenario: Skip existing products with non-existing media attributes during an import
     Given the following products:
       | sku                 | family   | name-en_US          | categories      |
@@ -270,7 +263,6 @@ Feature: Execute a job
       | name-en_US | Bic Core 148 |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3311
-
   Scenario: Skip products with empty SKU
     Given the following CSV file to import:
       """
@@ -290,7 +282,6 @@ Feature: Execute a job
     And there should be 1 product
 
   @jira https://akeneo.atlassian.net/browse/PIM-3311
-
   Scenario: Skip products with a SKU that has just been created
     Given the following CSV file to import:
       """
@@ -425,7 +416,6 @@ Feature: Execute a job
     And I should see the text "This value should be a valid number.: gruik EUR"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4810
-
   Scenario: Correctly detach association reference when transformation fails (PIM-4810)
     Given the following products:
       | sku     |
@@ -449,7 +439,6 @@ Feature: Execute a job
     And I should see the text "Property \"associations\" expects a valid product identifier. The product does not exist, \"unknown\" given."
 
   @jira https://akeneo.atlassian.net/browse/PIM-6152
-
   Scenario: Display the lines with wrong number of columns
     Given the following CSV file to import:
       """

@@ -345,7 +345,6 @@ Feature: Execute a job
       | mobile  | en_US  | success | 0              | 100%  |
 
   @jira https://akeneo.atlassian.net/browse/PIM-6085
-
   Scenario: Successfully import product associations with modified column name
     Given the following CSV file to import:
       """

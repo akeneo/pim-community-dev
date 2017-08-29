@@ -76,7 +76,6 @@ Feature: Filter products
     Then the grid should contain 5 elements
 
   @jira https://akeneo.atlassian.net/browse/PIM-5208
-
   Scenario: View only attribute filters that are usable as grid filters
     Given I am on the products grid
     Then I should see the available filters sku, family, enabled
