@@ -1,0 +1,10 @@
+parameters:
+    pim_catalog.values_filler.product.class: Pim\Component\Catalog\ValuesFiller\ProductValuesFiller
+
+services:
+    pim_catalog.values_filler.product:
+        class: '%pim_catalog.values_filler.product.class%'
+        arguments:
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.resolver.attribute_values'
+            - '@pim_catalog.repository.currency'

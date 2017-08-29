@@ -9,10 +9,10 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -39,8 +39,8 @@ class ProductProcessor extends AbstractProcessor
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
+    /** @var EntityWithFamilyValuesFillerInterface */
+    protected $valuesFiller;
 
     /** @var ObjectDetacherInterface */
     protected $detacher;
@@ -55,20 +55,20 @@ class ProductProcessor extends AbstractProcessor
     protected $mediaFetcher;
 
     /**
-     * @param NormalizerInterface          $normalizer
-     * @param ChannelRepositoryInterface   $channelRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param ProductBuilderInterface      $productBuilder
-     * @param ObjectDetacherInterface      $detacher
-     * @param UserProviderInterface        $userProvider
-     * @param TokenStorageInterface        $tokenStorage
-     * @param BulkMediaFetcher             $mediaFetcher
+     * @param NormalizerInterface                   $normalizer
+     * @param ChannelRepositoryInterface            $channelRepository
+     * @param AttributeRepositoryInterface          $attributeRepository
+     * @param EntityWithFamilyValuesFillerInterface $valuesFiller
+     * @param ObjectDetacherInterface               $detacher
+     * @param UserProviderInterface                 $userProvider
+     * @param TokenStorageInterface                 $tokenStorage
+     * @param BulkMediaFetcher                      $mediaFetcher
      */
     public function __construct(
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        ProductBuilderInterface $productBuilder,
+        EntityWithFamilyValuesFillerInterface $valuesFiller,
         ObjectDetacherInterface $detacher,
         UserProviderInterface $userProvider,
         TokenStorageInterface $tokenStorage,
@@ -77,7 +77,7 @@ class ProductProcessor extends AbstractProcessor
         $this->normalizer = $normalizer;
         $this->channelRepository = $channelRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->productBuilder = $productBuilder;
+        $this->valuesFiller = $valuesFiller;
         $this->detacher = $detacher;
         $this->userProvider = $userProvider;
         $this->tokenStorage = $tokenStorage;
@@ -91,7 +91,7 @@ class ProductProcessor extends AbstractProcessor
     {
         $this->initSecurityContext($this->stepExecution);
 
-        $this->productBuilder->addMissingProductValues($product);
+        $this->valuesFiller->fillMissingValues($product);
 
         $parameters = $this->stepExecution->getJobParameters();
         $normalizerContext = $this->getNormalizerContext($parameters);

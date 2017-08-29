@@ -14,6 +14,7 @@ use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -77,19 +78,23 @@ class ProductController
     /** @var CategoryRepositoryInterface */
     protected $categoryRepository;
 
+    /** @var EntityWithFamilyValuesFillerInterface */
+    protected $valuesFiller;
+
     /**
-     * @param RouterInterface             $router
-     * @param TokenStorageInterface       $tokenStorage
-     * @param FormFactoryInterface        $formFactory
-     * @param TranslatorInterface         $translator
-     * @param ProductRepositoryInterface  $productRepository
-     * @param CategoryRepositoryInterface $categoryRepository
-     * @param UserContext                 $userContext
-     * @param SecurityFacade              $securityFacade
-     * @param SaverInterface              $productSaver
-     * @param SequentialEditManager       $seqEditManager
-     * @param ProductBuilderInterface     $productBuilder
-     * @param string                      $categoryClass
+     * @param RouterInterface                       $router
+     * @param TokenStorageInterface                 $tokenStorage
+     * @param FormFactoryInterface                  $formFactory
+     * @param TranslatorInterface                   $translator
+     * @param ProductRepositoryInterface            $productRepository
+     * @param CategoryRepositoryInterface           $categoryRepository
+     * @param UserContext                           $userContext
+     * @param SecurityFacade                        $securityFacade
+     * @param SaverInterface                        $productSaver
+     * @param SequentialEditManager                 $seqEditManager
+     * @param ProductBuilderInterface               $productBuilder
+     * @param EntityWithFamilyValuesFillerInterface $valuesFiller
+     * @param string                                $categoryClass
      */
     public function __construct(
         RouterInterface $router,
@@ -103,6 +108,7 @@ class ProductController
         SaverInterface $productSaver,
         SequentialEditManager $seqEditManager,
         ProductBuilderInterface $productBuilder,
+        EntityWithFamilyValuesFillerInterface $valuesFiller,
         $categoryClass
     ) {
         $this->router = $router;
@@ -116,6 +122,7 @@ class ProductController
         $this->seqEditManager = $seqEditManager;
         $this->productBuilder = $productBuilder;
         $this->categoryRepository = $categoryRepository;
+        $this->valuesFiller = $valuesFiller;
         $this->categoryClass = $categoryClass;
     }
 
@@ -289,7 +296,7 @@ class ProductController
             );
         }
         // With this version of the form we need to add missing values from family
-        $this->productBuilder->addMissingProductValues($product);
+        $this->valuesFiller->fillMissingValues($product);
         $this->productBuilder->addMissingAssociations($product);
 
         return $product;

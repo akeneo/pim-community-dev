@@ -39,13 +39,22 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
         },
 
         /**
+         * Displays the filters as column or not
+         *
+         * @property
+         */
+        filtersAsColumn: function() {
+            return _.result(this.options, 'filtersAsColumn', false);
+        },
+
+        /**
          * Container classes
          *
          * @property
          */
         className: function () {
             var name = 'AknFilterBox filter-box oro-clearfix-width';
-            if (true !== this.displayManageFilters()) {
+            if (true !== this.filtersAsColumn()) {
                 name += ' AknFilterBox--search';
             }
 
@@ -95,13 +104,6 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
         filterSelector: '#add-filter-select',
 
         /**
-         * Add filter button hint
-         *
-         * @property
-         */
-        addButtonHint: _.__('oro_filter.filters.manage'),
-
-        /**
          * Select widget object
          *
          * @property {oro.MultiselectDecorator}
@@ -125,7 +127,6 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          *
          * @param {Object} options
          * @param {Object} [options.filters]
-         * @param {String} [options.addButtonHint]
          * @param {Boolean} [options.displayManageFilters]
          */
         initialize: function (options)
@@ -138,10 +139,6 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
                 this.listenTo(filter, "update", this._onFilterUpdated);
                 this.listenTo(filter, "disable", this._onFilterDisabled);
             }, this);
-
-            if (options.addButtonHint) {
-                this.addButtonHint = options.addButtonHint;
-            }
 
             Backbone.View.prototype.initialize.apply(this, arguments);
 
@@ -281,7 +278,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
                 options.removeAttr('selected');
             }
 
-            if (optionsSelectors.length) {
+            if (this.displayManageFilters() && optionsSelectors.length) {
                 this.selectWidget.multiselect('refresh');
             }
 
@@ -339,7 +336,6 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
                 parameters: {
                     multiple: true,
                     selectedList: 0,
-                    selectedText: this.addButtonHint,
                     classes: 'AknFilterBox-addFilterButton filter-list select-filter-widget',
                     open: $.proxy(function () {
                         if (this.$el.is(':visible')) {
@@ -355,7 +351,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
             this.selectWidget.getWidget().addClass('pimmultiselect');
 
             this.$('.filter-list span:first').replaceWith(
-                '<a id="add-filter-button" href="javascript:void(0);">' + this.addButtonHint +'</a>'
+                '<a id="add-filter-button" href="javascript:void(0);"></a>'
             );
         },
 

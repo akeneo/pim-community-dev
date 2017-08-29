@@ -5,6 +5,7 @@ namespace spec\Akeneo\Component\Batch\Model;
 use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
+use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use PhpSpec\ObjectBehavior;
@@ -22,6 +23,8 @@ class JobExecutionSpec extends ObjectBehavior
         $this->getStepExecutions()->shouldBeEmpty();
         $this->getCreateTime()->shouldBeAnInstanceOf('\Datetime');
         $this->getFailureExceptions()->shouldHaveCount(0);
+        $this->getRawParameters()->shouldHaveCount(0);
+        $this->getJobParameters()->shouldBeNull();
     }
 
     function it_is_cloneable(
@@ -116,6 +119,14 @@ class JobExecutionSpec extends ObjectBehavior
         $this->setJobInstance($jobInstance);
         $jobInstance->getLabel()->willReturn('my label');
         $this->getLabel()->shouldReturn('my label');
+    }
+
+    function it_sets_raw_parameters_when_setting_job_parameters(JobParameters $jobParameters)
+    {
+        $jobParameters->all()->willReturn(['foo' => 'baz']);
+        $this->setJobParameters($jobParameters);
+        $this->getJobParameters()->shouldReturn($jobParameters);
+        $this->getRawParameters()->shouldReturn(['foo' => 'baz']);
     }
 
     function it_is_displayable()

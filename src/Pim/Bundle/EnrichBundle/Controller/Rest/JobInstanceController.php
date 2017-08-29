@@ -496,11 +496,13 @@ class JobInstanceController
      */
     protected function launchJob(JobInstance $jobInstance) : JobExecution
     {
+        $user = $this->tokenStorage->getToken()->getUser();
+
         $configuration = $jobInstance->getRawParameters();
         $configuration['send_email'] = true;
+        $configuration['notification_user'] = $user->getUsername();
 
-        return $this->jobLauncher
-            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
+        return $this->jobLauncher->launch($jobInstance, $user, $configuration);
     }
 
     /**

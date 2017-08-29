@@ -380,8 +380,6 @@ pim_enrich:
           info:
             none_exist: Es gibt keine Verbindungstypen.
             show_products: Produkte anzeigen
-            show_groups: Gruppen anzeigen
-            number_of_associations: "{{ productCount }} Produkte und {{ groupCount }} Gruppen"
         attributes:
           title: Attribute
           btn:

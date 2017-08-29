@@ -18,6 +18,10 @@ datagrid:
             is_associated:
                 label:         Is associated
                 frontend_type: boolean-label
+            image:
+                label:         Image
+                data_name:     image
+                frontend_type: image
             label:
                 label:         Label
                 type:          field
@@ -62,6 +66,10 @@ datagrid:
                 is_associated: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
         filters:
             columns:
+                label_or_identifier:
+                    type: label_or_identifier
+                    label: Label or identifier
+                    data_name: label_or_identifier
                 is_associated:
                     type:      product_is_associated
                     ftype:     boolean
@@ -90,16 +98,6 @@ datagrid:
                     type:      product_completeness
                     label:     Complete
                     data_name: ratio
-                created:
-                    type:      product_date
-                    ftype:     date
-                    data_name: created
-                    label:     Created At
-                updated:
-                    type:      product_date
-                    ftype:     date
-                    data_name: updated
-                    label:     Updated At
                 scope:
                     type:      product_scope
                     label:     Scope

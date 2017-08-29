@@ -250,7 +250,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getFamily()
+    public function getFamily(): ?FamilyInterface
     {
         return $this->family;
     }

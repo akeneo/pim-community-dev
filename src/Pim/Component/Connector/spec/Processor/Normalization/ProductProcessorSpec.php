@@ -19,6 +19,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -29,18 +30,18 @@ class ProductProcessorSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        ProductBuilderInterface $productBuilder,
         ObjectDetacherInterface $detacher,
         BulkMediaFetcher $mediaFetcher,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        EntityWithFamilyValuesFillerInterface $productValuesFiller
     ) {
         $this->beConstructedWith(
             $normalizer,
             $channelRepository,
             $attributeRepository,
-            $productBuilder,
             $detacher,
-            $mediaFetcher
+            $mediaFetcher,
+            $productValuesFiller
         );
 
         $this->setStepExecution($stepExecution);
@@ -62,7 +63,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $channelRepository,
         $stepExecution,
         $mediaFetcher,
-        $productBuilder,
+        $productValuesFiller,
         $attributeRepository,
         ChannelInterface $channel,
         LocaleInterface $locale,
@@ -86,7 +87,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
-        $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
+        $productValuesFiller->fillMissingValues($product)->shouldBeCalled();
 
         $normalizer->normalize($product, 'standard', ['channels' => ['foobar'], 'locales' => ['en_US']])
             ->willReturn([
@@ -136,7 +137,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $channelRepository,
         $stepExecution,
         $mediaFetcher,
-        $productBuilder,
+        $productValuesFiller,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
@@ -161,7 +162,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
-        $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
+        $productValuesFiller->fillMissingValues($product)->shouldBeCalled();
         $product->getIdentifier()->willReturn('AKIS_XS');
         $product->getValues()->willReturn($valuesCollection);
 
@@ -205,7 +206,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $channelRepository,
         $stepExecution,
         $mediaFetcher,
-        $productBuilder,
+        $productValuesFiller,
         ChannelInterface $channel,
         LocaleInterface $locale,
         ProductInterface $product,
@@ -230,7 +231,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $channel->getCode()->willReturn('foobar');
         $channel->getLocaleCodes()->willReturn(['en_US', 'de_DE']);
 
-        $productBuilder->addMissingProductValues($product, [$channel], [$locale])->shouldBeCalled();
+        $productValuesFiller->fillMissingValues($product)->shouldBeCalled();
         $product->getIdentifier()->willReturn('AKIS_XS');
         $product->getValues()->willReturn($valuesCollection);
 
