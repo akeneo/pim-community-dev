@@ -1,66 +1,108 @@
-<% columnDisplay = currentStep !== 'choose' %>
-<div class="AknFullPage <% if (currentStep !== 'choose') { %> AknFullPage--twoColumns<% } %> scrollable-container">
-    <% if (columnDisplay) { %>
-        <div class="AknFullPage-column">
-    <% } %>
-    <div class="AknFullPage-cancel wizard-action" data-action-target="grid"></div>
-    <div>
-        <div class="AknFullPage-subTitle"><%- title %></div>
-        <div class="AknFullPage-title"><%- label %></div>
-        <% if (description) { %>
-            <div class="AknFullPage-description">
-                <%- description %>
+<div class="AknFullPage">
+    <div class="AknFullPage-buttons">
+        <div class="AknButtonList">
+            <span class="AknButtonList-item AknFullPage-cancel wizard-action" data-action-target="grid"></span>
+            <% if (currentStep === 'configure') { %>
+            <span class="<%- currentStep %> AknButton AknButtonList-item AknButton--grey wizard-action" data-action-target="choose">
+                    <%- previousLabel %>
+                </span>
+            <% } else if (currentStep !== 'choose') { %>
+            <span class="<%- currentStep %> AknButton AknButtonList-item AknButton--grey wizard-action" data-action-target="configure">
+                    <%- previousLabel %>
+                </span>
+            <% } %>
+        </div>
+        <div>
+            <% if (currentStep === 'configure') { %>
+            <span class="<%- currentStep %> AknButton AknButton--apply wizard-action" data-action-target="confirm">
+                    <%- nextLabel %>
+                </span>
+            <% } %>
+        </div>
+    </div>
+    <div class="AknFullPage-content">
+        <% if (currentStep === 'choose') { %>
+        <div>
+            <div class="AknFullPage-subTitle"><%- title %></div>
+            <div class="AknFullPage-title"><%- label %></div>
+        </div>
+        <div class="AknWidget-content AknWidget-content--withPadding">
+            <div class="step">
             </div>
-        <% } %>
-        <% if (currentStep !== 'choose') { %>
-            <div class="AknFullPage-steps">
-                <% for (step = 0; step < 4; step++) { %>
-                    <div class="AknBadge AknBadge--round AknBadge--medium<% if (step === currentStepNumber) { %> AknBadge--active AknBadge--large <% } %>"></div>
-                <% } %>
+        </div>
+        <div class="AknButtonList AknButtonList--centered choose">
+                <span class="AknButton AknButtonList-item AknButton--apply<% if (!currentOperation) { %> AknButton--disabled<% } %> wizard-action" data-action-target="configure">
+                    <%- nextLabel %>
+                </span>
+        </div>
+        <% } else { %>
+        <div>
+            <div class="AknFullModal">
+                <div class="AknFullModal-left">
+                    <img src="bundles/pimui/images/illustration-attribute.svg" class="AknFullModal-image">
+                </div>
+                <div class="AknFullModal-right">
+                    <div class="AknFullModal-subTitle"><%- title %></div>
+                    <div class="AknFullModal-title"><%- label %></div>
+                    <% if (description) { %>
+                    <div class="AknFullPage-description">
+                        <%- description %>
+                    </div>
+                    <% } %>
+                    <% if (currentStep === 'confirm') { %>
+                    <div class="AknMessageBox AknMessageBox--warning">
+                        <%- confirm %>
+                    </div>
+                    <div class="AknButton AknButton--apply wizard-action" data-action-target="validate">
+                        <%- confirmLabel %>
+                    </div>
+                    <% } %>
+                    <div class="AknFullPage-content step">
+                    </div>
+                </div>
             </div>
+        </div>
         <% } %>
     </div>
-    <% if (columnDisplay) { %>
+    <div class="AknFullPage-bottom">Bottom</div>
+    <!--
+    <% columnDisplay = currentStep !== 'choose' %>
+    <div class="AknFullPage <% if (currentStep !== 'choose') { %> AknFullPage--twoColumns<% } %> scrollable-container">
+        <% if (columnDisplay) { %>
+            <div class="AknFullPage-column">
+        <% } %>
+        <div class="AknFullPage-cancel wizard-action" data-action-target="grid"></div>
+        <div>
+            <div class="AknFullPage-subTitle"><%- title %></div>
+            <div class="AknFullPage-title"><%- label %></div>
+
+            <% if (currentStep !== 'choose') { %>
+                <div class="AknFullPage-steps">
+                    <% for (step = 0; step < 4; step++) { %>
+                        <div class="AknBadge AknBadge--round AknBadge--medium<% if (step === currentStepNumber) { %> AknBadge--active AknBadge--large <% } %>"></div>
+                    <% } %>
+                </div>
+            <% } %>
         </div>
-        <div class="AknFullPage-column AknFullPage-column--right">
-    <% } %>
-    <% if (currentStep === 'configure') { %>
-        <div class="AknFullPage-buttons">
-            <div class="<%- currentStep %>">
-                <span class="AknButton AknButton--glued wizard-action" data-action-target="choose">
-                    <%- previousLabel %>
-                </span><span class="AknButton AknButton--glued AknButton--apply wizard-action" data-action-target="confirm">
+        <% if (columnDisplay) { %>
+            </div>
+            <div class="AknFullPage-column AknFullPage-column--right">
+        <% } %>
+
+        <div class="AknWidget-content AknWidget-content--withPadding">
+
+            <div class="AknFullPage-content step">
+            </div>
+        </div>
+        <% if (currentStep === 'choose') { %>
+            <div class="AknButtonList AknButtonList--centered <%- currentStep %>">
+                <span class="AknButton AknButtonList-item AknButton--apply<% if (!currentOperation) { %> AknButton--disabled<% } %> wizard-action" data-action-target="configure">
                     <%- nextLabel %>
                 </span>
             </div>
-        </div>
-    <% } else if (currentStep !== 'choose') { %>
-        <div class="AknFullPage-buttons">
-            <div class="<%- currentStep %>">
-                <span class="AknButton wizard-action" data-action-target="configure">
-                    <%- previousLabel %>
-                </span>
-            </div>
-        </div>
-    <% } %>
-    <div class="AknWidget-content AknWidget-content--withPadding">
-        <% if (currentStep === 'confirm') { %>
-            <div class="AknFullPage-confirm"><%- confirm %></div>
-            <div class="AknButton AknButton--apply wizard-action" data-action-target="validate">
-                <%- confirmLabel %>
+        <% }%>
+        <% if (columnDisplay) { %>
             </div>
         <% } %>
-        <div class="AknFullPage-content step">
-        </div>
-    </div>
-    <% if (currentStep === 'choose') { %>
-        <div class="AknButtonList AknButtonList--centered <%- currentStep %>">
-            <span class="AknButton AknButtonList-item AknButton--apply<% if (!currentOperation) { %> AknButton--disabled<% } %> wizard-action" data-action-target="configure">
-                <%- nextLabel %>
-            </span>
-        </div>
-    <% }%>
-    <% if (columnDisplay) { %>
-        </div>
-    <% } %>
+        -->
 </div>
