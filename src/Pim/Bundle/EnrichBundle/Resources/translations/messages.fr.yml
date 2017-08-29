@@ -244,6 +244,8 @@ pim_enrich:
       history: Afficher l'historique du type d'association
     job_tracker:
       index: Voir les processus exécutés
+    api_connection:
+      manage: Gérer les connexions API
   acl_group:
     association_type: Types d'association
     attribute: Attributs
@@ -555,6 +557,7 @@ No matches found: Aucune correspondance trouvée
 Category tree: Arborescence
 Completeness: Complétude
 Attribute used as label: Attribut utilisé comme étiquette
+Credentials: Certificats
 Global: Général
 Channel: Canal
 Expand all channels: Afficher tous les canaux

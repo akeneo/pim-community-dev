@@ -3,6 +3,8 @@ Akeneo\Component\Batch\Model\JobExecution:
     table: akeneo_batch_job_execution
     # TODO: should be like other entities
     #changeTrackingPolicy: DEFERRED_EXPLICIT
+    entityListeners:
+        \Akeneo\Bundle\BatchBundle\EventListener\LoadJobParametersListener: ~
     fields:
         id:
             type: integer
@@ -54,6 +56,9 @@ Akeneo\Component\Batch\Model\JobExecution:
             length: 255
             column: log_file
             nullable: true
+        rawParameters:
+            type: json_array
+            column: raw_parameters
     oneToMany:
         stepExecutions:
             targetEntity: Akeneo\Component\Batch\Model\StepExecution

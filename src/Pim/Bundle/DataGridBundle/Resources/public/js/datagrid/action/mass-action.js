@@ -90,8 +90,9 @@ function(_, messenger, __, Modal, AbstractAction) {
         getLocaleFromUrl: function(localeKey) {
             const url = this.datagrid.collection.url.split('?')[1];
             const urlParams = this.datagrid.collection.decodeStateData(url);
+            const datagridParams = urlParams[this.datagrid.name] || {};
 
-            return urlParams[localeKey];
+            return urlParams[localeKey] || datagridParams[localeKey];
         },
 
         /**

@@ -79,10 +79,11 @@ define(
 
                 this.$gridContainer = options.$gridContainer;
                 this.gridName = options.gridName;
-                this.locale = decodeURIComponent(options.url).split('dataLocale]=').pop();
 
                 const filters = PageableCollection.prototype.decodeStateData(options.url.split('?')[1]);
-                this.locale = filters[this.gridName].dataLocale;
+                const gridFilters = filters[this.gridName] || {};
+
+                this.locale = filters.dataLocale || gridFilters.dataLocale;
 
                 Backbone.View.prototype.initialize.apply(this, arguments);
 

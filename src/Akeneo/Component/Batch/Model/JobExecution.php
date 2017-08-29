@@ -71,6 +71,9 @@ class JobExecution
     /** @var JobParameters */
     private $jobParameters;
 
+    /** @var array */
+    private $rawParameters;
+
     /**
      * Constructor
      */
@@ -82,6 +85,7 @@ class JobExecution
         $this->stepExecutions = new ArrayCollection();
         $this->createTime = new \DateTime();
         $this->failureExceptions = [];
+        $this->rawParameters = [];
     }
 
     /**
@@ -572,17 +576,30 @@ class JobExecution
 
     /**
      * @param JobParameters $jobParameters
+     *
+     * @return JobExecution
      */
-    public function setJobParameters(JobParameters $jobParameters)
+    public function setJobParameters(JobParameters $jobParameters): JobExecution
     {
         $this->jobParameters = $jobParameters;
+        $this->rawParameters = $jobParameters->all();
+
+        return $this;
     }
 
     /**
      * @return JobParameters
      */
-    public function getJobParameters()
+    public function getJobParameters(): ?JobParameters
     {
         return $this->jobParameters;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getRawParameters(): array
+    {
+        return $this->rawParameters;
     }
 }
