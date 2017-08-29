@@ -24,6 +24,9 @@ define(
                 gridName: 'product-grid'
             },
 
+            /**
+             * {@inheritdoc}
+             */
             initialize(options) {
                 this.config = Object.assign(this.config, options.config || {});
 
