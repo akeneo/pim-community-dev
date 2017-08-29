@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-class BatchCommandIntegration extends TestCase
+class AuthenticatedBatchCommandIntegration extends TestCase
 {
     const EXPORT_DIRECTORY = 'pim-integration-tests-export';
 

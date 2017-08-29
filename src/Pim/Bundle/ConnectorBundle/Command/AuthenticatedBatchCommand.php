@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ConnectorBundle\Command;
 
-use Akeneo\Bundle\BatchBundle\Command\BatchCommand as BaseBatchCommand;
+use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
-class BatchCommand extends BaseBatchCommand
+class AuthenticatedBatchCommand extends BatchCommand
 {
     /**
      * {@inheritdoc}
