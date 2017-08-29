@@ -6,9 +6,14 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'pimee/product-edit-form/abstract-add-notification-comment'
     ],
-    function (_, AbstractCommentForm) {
+    function (
+        _,
+        __,
+        AbstractCommentForm
+    ) {
         return AbstractCommentForm.extend({
             /**
              * {@inheritdoc}
@@ -16,8 +21,10 @@ define(
             render: function () {
                 this.$el.html(
                     this.template({
-                        label: _.__('pimee_workflow.entity.proposal.modal.title'),
-                        characters: _.__('pimee_enrich.entity.product_draft.modal.characters')
+                        subTitleLabel: __('pim_menu.item.product'),
+                        titleLabel: __('pimee_enrich.entity.product_draft.modal.send_for_approval'),
+                        label: __('pimee_workflow.entity.proposal.modal.title'),
+                        characters: __('pimee_enrich.entity.product_draft.modal.characters')
                     })
                 );
 
