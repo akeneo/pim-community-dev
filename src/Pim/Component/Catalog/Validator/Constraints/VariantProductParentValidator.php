@@ -10,7 +10,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Validates that the parent of a variant product is not a root product model.
+ * Validates that the variant product has a parent, and that this parent do not
+ * have variant products as children.
  *
  * @author    Damien Carcel (damien.carcel@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -31,10 +32,13 @@ class VariantProductParentValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, VariantProductParent::class);
         }
 
-        $familyVariant = $variantProduct->getFamilyVariant();
         $parent = $variantProduct->getParent();
 
-        if (null === $familyVariant || null === $parent) {
+        if (null === $parent) {
+            $this->context->buildViolation(VariantProductParent::NO_PARENT, [
+                '%variant_product%' => $variantProduct->getIdentifier(),
+            ])->addViolation();
+
             return;
         }
 

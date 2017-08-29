@@ -56,6 +56,28 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
         ]);
     }
 
+    function it_builds_violation_if_variant_product_has_no_parent(
+        $context,
+        VariantProductInterface $variantProduct,
+        FamilyVariantInterface $familyVariant,
+        ProductModelInterface $productModel,
+        ConstraintViolationBuilderInterface $constraintViolationBuilder,
+        VariantProductParent $constraint
+    ) {
+        $variantProduct->getFamilyVariant()->willReturn($familyVariant);
+        $variantProduct->getParent()->willReturn(null);
+        $variantProduct->getIdentifier()->willReturn('variant_product');
+
+        $productModel->getProductModels()->shouldNotBeCalled();
+
+        $context->buildViolation(VariantProductParent::NO_PARENT, [
+            '%variant_product%' => 'variant_product',
+        ])->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->addViolation()->shouldBeCalled();
+
+        $this->validate($variantProduct, $constraint);
+    }
+
     function it_builds_violation_if_variant_product_parent_is_not_at_the_correct_tree_position(
         $context,
         VariantProductInterface $variantProduct,
@@ -97,30 +119,5 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($variantProduct, $constraint);
-    }
-
-    function it_does_not_build_violation_if_variant_product_has_no_parent_or_no_variant_family(
-        $context,
-        VariantProductInterface $variantProduct1,
-        VariantProductInterface $variantProduct2,
-        VariantProductInterface $variantProduct3,
-        FamilyVariantInterface $familyVariant,
-        ProductModelInterface $productModel,
-        VariantProductParent $constraint
-    ) {
-        $variantProduct1->getFamilyVariant()->willReturn(null);
-        $variantProduct1->getParent()->willReturn($productModel);
-
-        $variantProduct2->getFamilyVariant()->willReturn($familyVariant);
-        $variantProduct2->getParent()->willReturn(null);
-
-        $variantProduct3->getFamilyVariant()->willReturn(null);
-        $variantProduct3->getParent()->willReturn(null);
-
-        $context->buildViolation(Argument::cetera())->shouldNotBeCalled();
-
-        $this->validate($variantProduct1, $constraint);
-        $this->validate($variantProduct2, $constraint);
-        $this->validate($variantProduct3, $constraint);
     }
 }

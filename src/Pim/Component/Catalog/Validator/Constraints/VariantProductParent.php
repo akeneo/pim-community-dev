@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class VariantProductParent extends Constraint
 {
+    public const NO_PARENT = 'pim_catalog.constraint.variant_product_has_parent';
     public const INVALID_PARENT = 'pim_catalog.constraint.invalid_variant_product_parent';
 
     /**
