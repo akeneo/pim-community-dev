@@ -23,7 +23,11 @@ class ClassifyCategoryOnProductWithPermissionsIntegration extends AbstractProduc
 
         $data = '{"identifier": "my_product", "categories":["categoryB"]}';
         $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
-        $this->assertError422($client->getResponse(), 'Property \"categories\" expects a valid category code. The category does not exist, \"categoryB\" given');
+        $this->assertError422(
+            $client->getResponse(),
+            'Property \"categories\" expects a valid category code. The category does not exist, \"categoryB\" given',
+            'post_products'
+        );
     }
 
     public function testSuccessProductWithOnlyViewableCategory()
