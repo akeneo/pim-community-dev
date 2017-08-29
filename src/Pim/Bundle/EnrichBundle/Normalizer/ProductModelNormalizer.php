@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\scalar;
@@ -46,15 +50,23 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var LocaleRepositoryInterface */
     private $localeRepository;
 
+    /** @var EntityWithFamilyValuesFillerInterface */
+    private $entityValuesFiller;
+
+    /** @var EntityWithFamilyVariantAttributesProvider */
+    private $attributesProvider;
+
     /**
-     * @param NormalizerInterface         $normalizer
-     * @param NormalizerInterface         $versionNormalizer
-     * @param NormalizerInterface              $fileNormalizer
-     * @param VersionManager              $versionManager
-     * @param AttributeConverterInterface $localizedConverter
-     * @param ConverterInterface          $productValueConverter
-     * @param FormProviderInterface       $formProvider
-     * @param LocaleRepositoryInterface   $localeRepository
+     * @param NormalizerInterface                       $normalizer
+     * @param NormalizerInterface                       $versionNormalizer
+     * @param NormalizerInterface                       $fileNormalizer
+     * @param VersionManager                            $versionManager
+     * @param AttributeConverterInterface               $localizedConverter
+     * @param ConverterInterface                        $productValueConverter
+     * @param FormProviderInterface                     $formProvider
+     * @param LocaleRepositoryInterface                 $localeRepository
+     * @param EntityWithFamilyValuesFillerInterface     $entityValuesFiller
+     * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -64,7 +76,9 @@ class ProductModelNormalizer implements NormalizerInterface
         AttributeConverterInterface $localizedConverter,
         ConverterInterface $productValueConverter,
         FormProviderInterface $formProvider,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        EntityWithFamilyValuesFillerInterface $entityValuesFiller,
+        EntityWithFamilyVariantAttributesProvider $attributesProvider
     ) {
         $this->normalizer            = $normalizer;
         $this->versionNormalizer     = $versionNormalizer;
@@ -74,6 +88,8 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->productValueConverter = $productValueConverter;
         $this->formProvider          = $formProvider;
         $this->localeRepository      = $localeRepository;
+        $this->entityValuesFiller    = $entityValuesFiller;
+        $this->attributesProvider    = $attributesProvider;
     }
 
     /**
@@ -81,6 +97,8 @@ class ProductModelNormalizer implements NormalizerInterface
      */
     public function normalize($productModel, $format = null, array $context = []): array
     {
+        $this->entityValuesFiller->fillMissingValues($productModel);
+
         $normalizedProductModel = $this->normalizer->normalize($productModel, 'standard', $context);
         $normalizedProductModel['values'] = $this->localizedConverter->convertToLocalizedFormats(
             $normalizedProductModel['values'],
@@ -96,16 +114,22 @@ class ProductModelNormalizer implements NormalizerInterface
         $created = null !== $oldestLog ? $this->versionNormalizer->normalize($oldestLog, 'internal_api') : null;
         $updated = null !== $newestLog ? $this->versionNormalizer->normalize($newestLog, 'internal_api') : null;
 
+        $levelAttributes = [];
+        foreach ($this->attributesProvider->getAttributes($productModel) as $attribute) {
+            $levelAttributes[] = $attribute->getCode();
+        }
+
         $normalizedFamilyVariant = $this->normalizer->normalize($productModel->getFamilyVariant(), 'standard');
 
         $normalizedProductModel['meta'] = [
-                'family_variant' => $normalizedFamilyVariant,
-                'form'           => $this->formProvider->getForm($productModel),
-                'id'             => $productModel->getId(),
-                'created'        => $created,
-                'updated'        => $updated,
-                'model_type'     => 'product_model',
-                'image'          => $this->normalizeImage($productModel->getImage(), $format, $context),
+                'family_variant'            => $normalizedFamilyVariant,
+                'form'                      => $this->formProvider->getForm($productModel),
+                'id'                        => $productModel->getId(),
+                'created'                   => $created,
+                'updated'                   => $updated,
+                'model_type'                => 'product_model',
+                'attributes_for_this_level' => $levelAttributes,
+                'image'                     => $this->normalizeImage($productModel->getImage(), $format, $context),
             ] + $this->getLabels($productModel);
 
         return $normalizedProductModel;

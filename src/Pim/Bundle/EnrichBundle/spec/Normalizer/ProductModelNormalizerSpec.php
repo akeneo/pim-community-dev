@@ -6,12 +6,15 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -25,7 +28,9 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         AttributeConverterInterface $localizedConverter,
         ConverterInterface $productValueConverter,
         FormProviderInterface $formProvider,
-        LocaleRepositoryInterface $localeRepository
+        LocaleRepositoryInterface $localeRepository,
+        EntityWithFamilyValuesFillerInterface $entityValuesFiller,
+        EntityWithFamilyVariantAttributesProvider $attributesProvider
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -35,7 +40,9 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             $localizedConverter,
             $productValueConverter,
             $formProvider,
-            $localeRepository
+            $localeRepository,
+            $entityValuesFiller,
+            $attributesProvider
         );
     }
 
@@ -53,6 +60,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productValueConverter,
         $formProvider,
         $localeRepository,
+        $attributesProvider,
+        AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
@@ -111,6 +120,9 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             ]
         ];
 
+        $attributesProvider->getAttributes($productModel)->willReturn([$pictureAttribute]);
+        $pictureAttribute->getCode()->willReturn('picture');
+
         $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US', 'fr_FR']);
         $productModel->getLabel('en_US')->willReturn('Tshirt blue');
         $productModel->getLabel('fr_FR')->willReturn('Tshirt bleu');
@@ -149,6 +161,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'created'        => 'normalized_create_version',
                     'updated'        => 'normalized_update_version',
                     'model_type'     => 'product_model',
+                    'attributes_for_this_level' => ['picture'],
                     'image'          => $fileNormalized,
                     'label'          => [
                         'en_US' => 'Tshirt blue',

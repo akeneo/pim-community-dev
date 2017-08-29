@@ -699,6 +699,7 @@ config:
         pim/product-model-edit-form/meta/family-variant: pimenrich/js/product-model/form/meta/family-variant
         pim/product-model-edit-form/product-model-label: pimenrich/js/product-model/form/product-model-label
         pim/product-model-edit-form/save: pimenrich/js/product-model/form/save
+        pim/product-model-edit-form/attributes/read-only-parent-attributes: pimenrich/js/product-model/form/attributes/read-only-parent-attributes
 
         # Attribute group
         pim/attribute-group-form/tab/attribute: pimenrich/js/attribute-group/form/tab/attribute
