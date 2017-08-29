@@ -22,10 +22,6 @@ mappings:
             identifier:
                 type: 'keyword'
                 normalizer: 'identifier_normalizer'
-            label:
-                type: 'text'
-                analyzer: 'label_analyzer'
-
         dynamic_templates:
             -
                 family:
@@ -205,10 +201,6 @@ settings:
                 filter: ['lowercase']
                 char_filter: ['html_strip', 'newline_pattern']
                 type: 'custom'
-                tokenizer: 'standard'
-            label_analyzer:
-                filter: ['lowercase']
-                type: 'standard'
                 tokenizer: 'standard'
     mapping:
         # ES default value is 1000. This value can be too low for big catalogs.

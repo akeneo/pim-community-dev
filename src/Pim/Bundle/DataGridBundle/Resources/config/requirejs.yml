@@ -94,7 +94,6 @@ config:
         oro/multiselect-decorator:                  pimdatagrid/js/multiselect-decorator
 
         oro/datafilter/search-filter:               pimdatagrid/js/datafilter/filter/search-filter
-        oro/datafilter/label_or_identifier-filter:  pimdatagrid/js/datafilter/filter/label_or_identifier-filter
         oro/datafilter/price-filter:                pimdatagrid/js/datafilter/filter/price-filter
         oro/datafilter/metric-filter:               pimdatagrid/js/datafilter/filter/metric-filter
         oro/datafilter/product_scope-filter:        pimdatagrid/js/datafilter/filter/product_scope-filter

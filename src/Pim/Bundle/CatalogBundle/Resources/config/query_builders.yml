@@ -16,7 +16,6 @@ parameters:
 
     pim_catalog.query.elasticsearch.filter.identifier.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\IdentifierFilter
     pim_catalog.query.elasticsearch.filter.id.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\IdFilter
-    pim_catalog.query.elasticsearch.filter.label_or_identifier.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\LabelOrIdentifierFilter
     pim_catalog.query.elasticsearch.filter.family.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\FamilyFilter
     pim_catalog.query.elasticsearch.filter.category.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CategoryFilter
     pim_catalog.query.elasticsearch.filter.group.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\GroupFilter
@@ -136,14 +135,6 @@ services:
         arguments:
             - ['id']
             - ['IN', 'NOT IN', '=', '!=']
-        tags:
-            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
-
-    pim_catalog.query.elasticsearch.filter.label_or_identifier:
-        class: '%pim_catalog.query.elasticsearch.filter.label_or_identifier.class%'
-        arguments:
-            - ['label_or_identifier']
-            - ['CONTAINS']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
 
