@@ -38,4 +38,5 @@ pim_catalog:
         can_have_family_variant_unexpected_attribute: 'Cannot set the property "%attribute%" to this entity as it is not in the attribute set'
         has_a_root_product_model_as_parent: 'The sub product model parent must be a root product model'
         attribute_does_not_belong_to_family: 'Attribute "%attribute%" does not belong to the family "%family%"'
+        variant_product_invalid_family: 'The variant product family must be the same than its parent'
         invalid_variant_product_parent: 'Parent of the variant product "%variant_product%" cannot have product models as children, only variant products'

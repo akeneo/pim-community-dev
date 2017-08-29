@@ -27,7 +27,7 @@ parameters:
     pim_catalog.updater.setter.group_field.class:             Pim\Component\Catalog\Updater\Setter\GroupFieldSetter
     pim_catalog.updater.setter.variant_group_field.class:     Pim\Component\Catalog\Updater\Setter\VariantGroupFieldSetter
     pim_catalog.updater.setter.family_field.class:            Pim\Component\Catalog\Updater\Setter\FamilyFieldSetter
-    pim_catalog.updater.setter.parent_field.class:            Pim\Component\Catalog\Updater\Setter\ParentSetter
+    pim_catalog.updater.setter.parent_field.class:            Pim\Component\Catalog\Updater\Setter\ParentFieldSetter
     pim_catalog.updater.setter.association_field.class:       Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter
     pim_catalog.updater.setter.enabled_field.class:           Pim\Component\Catalog\Updater\Setter\EnabledFieldSetter
     pim_catalog.updater.setter.media_value.class:             Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter

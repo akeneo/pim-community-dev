@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
@@ -16,7 +17,7 @@ use Pim\Component\Catalog\Model\VariantProductInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ParentSetter extends AbstractFieldSetter
+class ParentFieldSetter extends AbstractFieldSetter
 {
     /** @var IdentifiableObjectRepositoryInterface */
     private $productModelRepository;
@@ -42,7 +43,7 @@ class ParentSetter extends AbstractFieldSetter
             );
         }
 
-        /** @var $parent VariantProductInterface */
+        /** @var $parent ProductModelInterface */
         if (null === $parent = $this->productModelRepository->findOneByIdentifier($data)) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 $field,
@@ -53,7 +54,12 @@ class ParentSetter extends AbstractFieldSetter
             );
         }
 
+        $familyVariant = $parent->getFamilyVariant();
+
         $product->setParent($parent);
-        $product->setFamilyVariant($parent->getFamilyVariant());
+        $product->setFamilyVariant($familyVariant);
+        if (null === $product->getFamily()) {
+            $product->setFamily($familyVariant->getFamily());
+        }
     }
 }
