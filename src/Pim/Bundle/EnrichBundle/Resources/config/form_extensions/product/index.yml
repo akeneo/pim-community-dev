@@ -1,9 +1,12 @@
 extensions:
     pim-product-index:
-        module: pim/grid
+        module: pim/common/simple-view
+        targetZone: self
         config:
-          title: Products
-          gridName: product-grid
+            template: pim/template/product/index
+            templateParams:
+                title: Products
+                gridName: product-grid
 
     pim-product-index-create-button:
         module: pim/form/common/index/create-button

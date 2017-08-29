@@ -893,7 +893,6 @@ config:
         pim/formatter/date: pimenrich/js/formatter/date-formatter
 
         pim/grid/locale-switcher: pimenrich/js/product/grid/locale-switcher
-        pim/grid: pimenrich/js/product/grid
 
         # Category tree
         pim/grid/category-tree: pimenrich/js/product/grid/category-tree
