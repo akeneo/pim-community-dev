@@ -6,9 +6,10 @@ define(
         'pim/form-builder',
         'pim/user-context',
         'oro/mediator',
-        'pim/page-title'
+        'pim/page-title',
+        'routing'
     ],
-    function (_, $, BaseController, FormBuilder, UserContext, mediator) {
+    function (_, $, BaseController, FormBuilder, UserContext, mediator, PageTitle, Routing) {
         return BaseController.extend({
             config: {
                 gridExtension: 'pim-product-index',
@@ -32,19 +33,32 @@ define(
 
                 const { gridName, gridExtension } = this.config;
 
-                return FormBuilder.build(gridExtension).then((form) => {
-                    this.setupLocale();
-                    this.setupMassEditAttributes();
-                    form.setElement(this.$el).render({ gridName });
-                });
+                return $.when(this.resetSequentialEdit(),
+                    FormBuilder.build(gridExtension).then((form) => {
+                        this.setupLocale();
+                        this.setupMassEditAttributes();
+                        form.setElement(this.$el).render({ gridName });
+                    })
+                );
             },
 
             /**
             * {@inheritdoc}
             */
             renderTemplate(content) {
-                if (!this.active) return;
+                if (!this.active) {
+                    return;
+                }
+
                 this.$el.html(content);
+            },
+
+            /**
+             * Sends a request to reset the current sequential edit in the backend
+             * @return {Promise} The remove request
+             */
+            resetSequentialEdit() {
+                return $.get(Routing.generate('pim_enrich_mass_edit_action_sequential_edit_remove'));
             },
 
             /**

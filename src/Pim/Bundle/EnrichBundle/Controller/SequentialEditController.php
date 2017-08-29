@@ -80,7 +80,14 @@ class SequentialEditController
      */
     public function sequentialEditAction(Request $request)
     {
-        $this->seqEditManager->removeByUser($this->userContext->getUser());
+        if ($this->seqEditManager->findByUser($this->userContext->getUser())) {
+          return new JsonResponse(
+              [
+                  'route'  => 'pim_enrich_product_index',
+                  'params' => ['dataLocale' => $request->get('dataLocale')]
+              ]
+          );
+        }
 
         $parameters = $this->parameterParser->parse($request);
 
@@ -110,5 +117,15 @@ class SequentialEditController
         $sequentialEdit = $this->seqEditManager->findByUser($this->userContext->getUser());
 
         return new JsonResponse($this->normalizer->normalize($sequentialEdit, 'internal_api'));
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function removeAction()
+    {
+        $this->seqEditManager->removeByUser($this->userContext->getUser());
+
+        return new JsonResponse();
     }
 }
