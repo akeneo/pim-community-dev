@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Catalog\FamilyVariant;
 
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -15,6 +17,8 @@ use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 class EntityWithFamilyVariantAttributesProvider
 {
     /**
+     * This method returns all attributes for the given $entityWithFamilyVariant, including axes.
+     *
      * @param EntityWithFamilyVariantInterface $entityWithFamilyVariant
      *
      * @return AttributeInterface[]

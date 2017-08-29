@@ -31,3 +31,10 @@ Feature: Edit a product model
     When I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And the product Name should be "Apollonito blue"
+
+  Scenario: Parent attributes of a sub product model are read only
+    Given I am logged in as "Mary"
+    And I edit the "apollon_blue" product model
+    When I visit the "Marketing" group
+    Then the field Model name should be read only
+    And the field Model description should be read only
