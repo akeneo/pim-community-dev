@@ -7,13 +7,13 @@ use Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager;
 
 class InstallStatusManagerSpec extends ObjectBehavior
 {
-    public function let()
+    function let()
     {
         $projectRoot = realpath(__DIR__ . '/../../../..');
         $this->beConstructedWith($projectRoot, '/tmp', 'prod');
     }
 
-    public function it_is_initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(InstallStatusManager::class);
     }
