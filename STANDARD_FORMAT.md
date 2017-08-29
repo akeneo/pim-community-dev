@@ -748,6 +748,37 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | attribute_requirements | array          | `["ecommerce" => [0 => "sku", "a_text_area"], "tablet" => [0 => "sku"]]` | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface*            |
 
 
+### Family variant
+
+        array:4 [
+          "code" => "my_family_variant"
+          "family" => "family"
+          "labels" => array:1 [
+            "en_US" => "My family variant"
+            "fr_FR" => "Ma variation de famille"
+          ]
+          "variant_attribute_sets" => array:1 [
+            0 => array:3 [
+              "level" => 1
+              "axes" => array:1 [
+                0 => "a_simple_select"
+              ]
+              "attributes" => array:2 [
+                0 => "an_attribute"
+                1 => "an_other_attribute"
+              ]
+            ]
+          ]
+        ]
+
+| type                   | data structure | data example                                                                                               | notes                                                                                                   |
+| ---------------------- | -------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| code                   | string         | `"my_family_variant"`                                                                                      | it's the identifier of the variant group                                                                |
+| family                 | string         | `"family"`                                                                                                 | the code of the family of the family variant                                                            |
+| labels                 | array          | `["en_US" => "My family variant", "fr_FR" => "Ma variation de famille"]`                                   | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*        |
+| variant_attribute_sets | array          | `[["level" => 1, "axes" => ["a_simple_select"], "attributes" => ["an_attribute", "an_other_attribute"]]]`, | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
+
+
 ### Group
         
         array:3 [
@@ -791,37 +822,6 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | ------- | --------------- | ------------ | --------------------------------- |
 | code    | string          | `"fr_FR"`    | it's the identifier of the locale |
 | enabled | boolean         | `false`      |                                   |
-
-
-### Family variant
-
-        array:4 [
-          "code" => "my_family_variant"
-          "family" => "family"
-          "labels" => array:1 [
-            "en_US" => "My family variant"
-            "fr_FR" => "Ma variation de famille"
-          ]
-          "variant_attribute_sets" => array:1 [
-            0 => array:3 [
-              "level" => 1
-              "axes" => array:1 [
-                0 => "a_simple_select"
-              ]
-              "attributes" => array:2 [
-                0 => "an_attribute"
-                1 => "an_other_attribute"
-              ]
-            ]
-          ]
-        ]
-
-| type                   | data structure | data example                                                                                               | notes                                                                                                   |
-| ---------------------- | -------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| code                   | string         | `"my_family_variant"`                                                                                      | it's the identifier of the variant group                                                                |
-| family                 | string         | `"family"`                                                                                                 | the code of the family of the family variant                                                            |
-| labels                 | array          | `["en_US" => "My family variant", "fr_FR" => "Ma variation de famille"]`                                   | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*        |
-| variant_attribute_sets | array          | `[["level" => 1, "axes" => ["a_simple_select"], "attributes" => ["an_attribute", "an_other_attribute"]]]`, | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
 
 
 ### File info
