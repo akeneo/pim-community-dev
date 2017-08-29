@@ -42,7 +42,11 @@ class AddAttributeOnProductWithPermissionsIntegration extends AbstractProductTes
 JSON;
 
         $client->request('POST', '/api/rest/v1/products', [], [], [], $data);
-        $this->assertError422($client->getResponse(), 'Property \"a_metric_without_decimal_negative\" does not exist');
+        $this->assertError422(
+            $client->getResponse(),
+            'Property \"a_metric_without_decimal_negative\" does not exist',
+            'post_products'
+        );
     }
 
     public function testErrorProductWithOnlyViewableAttributeForRedactor()
@@ -117,9 +121,10 @@ JSON;
     }
 }
 JSON;
-
+        $expectedErrorMessage = 'Attribute \"a_localized_and_scopable_text_area\" expects an existing and ' .
+            'activated locale, \"de_DE\" given';
         $client->request('POST', '/api/rest/v1/products', [], [], [], $data);
-        $this->assertError422($client->getResponse(), 'Attribute \"a_localized_and_scopable_text_area\" expects an existing and activated locale, \"de_DE\" given');
+        $this->assertError422($client->getResponse(), $expectedErrorMessage, 'post_products');
     }
 
     public function testErrorProductWithOnlyViewableLocaleForRedactor()
