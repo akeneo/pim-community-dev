@@ -6,6 +6,7 @@ use Behat\ChainedStepsExtension\Step;
 use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
@@ -60,6 +61,41 @@ class WebUser extends PimContext
         }, sprintf('Cannot create a new %s: cannot click on the creation link', $entity));
 
         $this->getNavigationContext()->currentPage = sprintf('%s creation', $entity);
+    }
+
+    /**
+     * @param string $entity
+     *
+     * @Given /^I take a screenshot with name "([^"]*)"$/
+     */
+    public function iTakeAScreenshot($name)
+    {
+        $driver = $this->getSession()->getDriver();
+        if ($driver instanceof Selenium2Driver) {
+            $dir      = getenv('WORKSPACE');
+            $buildUrl = getenv('BUILD_URL');
+            if (false !== $dir) {
+                $dir = sprintf('%s/app/build/screenshots', $dir);
+            } else {
+                $dir = '/tmp/behat/screenshots';
+            }
+
+            $filename = sprintf('%s_%s.png', $name, sha1(microtime()));
+            $path     = sprintf('%s/%s', $dir, $filename);
+
+            $fs = new \Symfony\Component\Filesystem\Filesystem();
+            $fs->dumpFile($path, $driver->getScreenshot());
+
+            if (false !== $dir) {
+                $path = sprintf(
+                    '%s/artifact/app/build/screenshots/%s',
+                    $buildUrl,
+                    $filename
+                );
+            }
+
+            $this->getMainContext()->addErrorMessage("Screenshot available at {$path}");
+        }
     }
 
     /**
