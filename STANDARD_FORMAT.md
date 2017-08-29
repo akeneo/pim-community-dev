@@ -736,6 +736,10 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
               1 => "sku"
             ]
           ]
+          "family_variants" => array:2 [
+            0 => "a_family_variant",
+            1 => "another_family_variant"
+          ]
         ]
         
 | type                   | data structure | data example                                                             | notes                                                                                                              |
@@ -746,6 +750,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | attribute_as_label     | string         | `"sku"`                                                                  | it represents the *code* of the object *Pim\Component\Catalog\Model\AttributeInterface* used as label              |
 | attribute_as_image     | string         | `"image"`                                                                | it represents the *code* of the object *Pim\Component\Catalog\Model\AttributeInterface* used as image. Can be null |
 | attribute_requirements | array          | `["ecommerce" => [0 => "sku", "a_text_area"], "tablet" => [0 => "sku"]]` | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface*            |
+| family_variants        | array          | `[0 => "a_family_variant", 1 => "another_family_variant"]`               | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\FamilyVariantInterface*            |
 
 
 ### Family variant
