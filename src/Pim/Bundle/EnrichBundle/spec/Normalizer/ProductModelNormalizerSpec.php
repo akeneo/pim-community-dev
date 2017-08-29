@@ -51,7 +51,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($productModel, 'internal_api')->shouldReturn(true);
     }
 
-    function it_normalize_products(
+    function it_normalize_product_models(
         $normalizer,
         $versionNormalizer,
         $fileNormalizer,
@@ -121,6 +121,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ];
 
         $attributesProvider->getAttributes($productModel)->willReturn([$pictureAttribute]);
+        $attributesProvider->getAxes($productModel)->willReturn([$pictureAttribute]);
         $pictureAttribute->getCode()->willReturn('picture');
 
         $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US', 'fr_FR']);
@@ -162,6 +163,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'updated'        => 'normalized_update_version',
                     'model_type'     => 'product_model',
                     'attributes_for_this_level' => ['picture'],
+                    'attributes_axes' => ['picture'],
                     'image'          => $fileNormalized,
                     'label'          => [
                         'en_US' => 'Tshirt blue',

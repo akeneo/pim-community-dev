@@ -38,3 +38,13 @@ Feature: Edit a product model
     When I visit the "Marketing" group
     Then the field Model name should be read only
     And the field Model description should be read only
+    When I visit the "Medias" group
+    Then the field Notice should be read only
+    And I should see the text "This attribute can be updated on the common attributes."
+
+  Scenario: Variant axes attributes are read only
+    Given I am logged in as "Mary"
+    And I edit the "apollon_blue" product model
+    And I visit the "Product" group
+    Then the field Color should be read only
+    And I should see the text "Color (Variant axis)"

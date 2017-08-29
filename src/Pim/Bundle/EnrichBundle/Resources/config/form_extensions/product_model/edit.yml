@@ -192,6 +192,12 @@ extensions:
         targetZone: self
         position: 100
 
+    pim-product-model-edit-form-read-only-variant-axes:
+        module: pim/product-model-edit-form/attributes/variant-axes
+        parent: pim-product-model-edit-form-attributes
+        targetZone: self
+        position: 110
+
     pim-product-model-edit-form-locale-specific:
         module: pim/product-edit-form/attributes/locale-specific
         parent: pim-product-model-edit-form-attributes
