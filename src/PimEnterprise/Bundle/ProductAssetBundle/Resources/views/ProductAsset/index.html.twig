@@ -73,7 +73,7 @@
             <div id="tree" data-datalocale="{{ locale_code() }}" data-name="category" data-type="tree" class="filter-item" data-relatedentity="asset"></div>
         {% endif %}
         <div id="product-grid" style="flex-grow: 1;">
-            {{ dataGrid.renderStatefulGrid('asset-grid', { dataLocale: dataLocale.code, currentUser: app.user }, {}, {}, 'pimee_asset_categorytree') }}
+            {{ dataGrid.renderStatefulGrid('asset-grid', { dataLocale: dataLocale.code, currentUser: app.user }, {}, {}, 'pimee_asset_categorytree', true) }}
         </div>
     </div>
 </div>

@@ -81,7 +81,7 @@ Feature: Select a project to display products to enrich
       | usb-key-small        | usb_keys | high_tech          |                           |            | 1            | OUNCE             |                    |                    |                | 8        | GIGABYTE      |
       | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    | A1         |              |                   |                    |                    |                |          |               |
     And I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     And I filter by "category" with operator "" and value "clothing"
     And I show the filter "weight"
     And I filter by "weight" with operator "<" and value "6 Ounce"
@@ -98,7 +98,7 @@ Feature: Select a project to display products to enrich
 
   Scenario: A message is displayed if I have no projects to work on
     Given I am logged in as "Kathy"
-    And I am on the products page
+    And I am on the products grid
     And I switch view selector type to "Projects"
     Then I should see the text "Start a new project"
     When I filter by "category" with operator "" and value "clothing"
@@ -107,7 +107,7 @@ Feature: Select a project to display products to enrich
 
   Scenario: A contributor can select a project by selecting it in the datagrid view selector
     Given I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I switch view selector type to "Projects"
     And I open the view selector
     When I apply the "2016 summer collection" project
@@ -157,7 +157,7 @@ Feature: Select a project to display products to enrich
 
   Scenario: A contributor must be alerted if he's leaving project scope by changing grid filters
     Given I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I switch view selector type to "Projects"
     And I open the view selector
     When I apply the "2016 summer collection" project

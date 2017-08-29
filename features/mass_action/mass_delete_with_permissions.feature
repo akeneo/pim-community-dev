@@ -13,7 +13,7 @@ Feature: Delete many products at once that I own
       | blue_sandal  | sandals                    |
       | black_sandal | sandals, summer_collection |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I select all visible entities
     And I press "Delete" on the "Bulk Actions" dropdown button
     Then I should see the text "Are you sure you want to delete selected products?"
@@ -27,7 +27,7 @@ Feature: Delete many products at once that I own
       | blue_sandal  |                            |
       | black_sandal | sandals, summer_collection |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I select all visible entities
     And I press "Delete" on the "Bulk Actions" dropdown button
     Then I should see the text "Are you sure you want to delete selected products?"
@@ -41,7 +41,7 @@ Feature: Delete many products at once that I own
       | blue_boot  | winter_boots, winter_collection |
       | black_boot | winter_boots, winter_collection |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I select all visible entities
     And I press "Delete" on the "Bulk Actions" dropdown button
     Then I should see the text "Are you sure you want to delete selected products?"
@@ -62,7 +62,7 @@ Feature: Delete many products at once that I own
       | blue_sandal  | winter_collection |
       | black_sandal | shoes             |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I select all visible entities
     And I press "Delete" on the "Bulk Actions" dropdown button
     Then I should see the text "Are you sure you want to delete selected products?"
@@ -77,7 +77,7 @@ Feature: Delete many products at once that I own
       | black_boot | winter_boots, winter_collection |
     And I am logged in as "Julia"
     And I publish the product "blue_boot"
-    And I am on the products page
+    And I am on the products grid
     And I select all visible entities
     And I press "Delete" on the "Bulk Actions" dropdown button
     Then I should see the text "Are you sure you want to delete selected products?"

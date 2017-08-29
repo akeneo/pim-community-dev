@@ -1,0 +1,67 @@
+extensions:
+    pimee-published-product-index:
+        module: pim/common/simple-view
+        targetZone: self
+        config:
+            template: pim/template/product/index
+            templateParams:
+                title: Published Products
+                gridName: published-product-grid
+
+    pimee-published-product-index-locale-switcher:
+        module: pim/grid/locale-switcher
+        parent: pimee-published-product-index
+        targetZone: title-buttons
+        position: 10
+        config:
+            routeName: pimee_workflow_published_product_index
+            localeParamName: dataLocale
+
+    pimee-published-product-index-view-selector:
+        module: pim/grid/view-selector
+        parent: pimee-published-product-index
+        targetZone: title-buttons
+        position: 20
+        config:
+            gridName: published-product-grid
+
+    pimee-published-product-index-category-tree:
+        module: pim/grid/category-tree
+        parent: pimee-published-product-index
+        targetZone: tree
+        aclResourceId: pim_enrich_product_category_list
+        config:
+            gridName: published-product-grid
+            categoryTreeName: pim_enrich_published_product_categorytree
+
+    pimee-published-product-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pimee-published-product-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-product-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pimee-published-product-index
+        targetZone: breadcrumbs
+        config:
+            tab: 'pim-menu-settings'
+            item: 'pim-menu-enrich-published-product'
+
+    pimee-published-product-index-grid-filters:
+        module: oro/datafilter-builder
+        parent: pimee-published-product-index
+        targetZone: grid
+
+    pimee-published-product-index-grid:
+        module: pim/grid/table
+        parent: pimee-published-product-index
+        targetZone: grid
+        config:
+            gridName: published-product-grid
+            localeParamName: dataLocale
+            datagridLoadUrl: pim_datagrid_load
+
+

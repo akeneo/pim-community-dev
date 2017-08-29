@@ -22,7 +22,7 @@ Feature: Edit a user
     And I fill in the following information:
       | Product grid filters | SKU, Name, Family |
     And I save the user
-    When I am on the published products page
+    When I am on the published products grid
     And I should see the filters name, family and sku
     And I should not see the filters Status
 

@@ -85,7 +85,7 @@ Feature: Notify users after a project creation
 
   Scenario: Successfully notify users when creating a project on clothing
     Given I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     And I filter by "category" with operator "" and value "clothing"
     And I show the filter "weight"
     # In order to remove the tshirt LCD which is in Clothing and High-Tech categories
@@ -144,7 +144,7 @@ Feature: Notify users after a project creation
 
   Scenario: Successfully notify users when creating a project with a product which is in two categories
     Given I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     And I filter by "category" with operator "" and value "clothing"
     And I click on the create project button
     When I fill in the following information in the popin:
@@ -202,7 +202,7 @@ Feature: Notify users after a project creation
 
   Scenario: Successfully notify users when creating a project on high-tech
     Given I am logged in as "Marc"
-    When I am on the products page
+    When I am on the products grid
     And I filter by "category" with operator "" and value "high_tech"
     And I show the filter "weight"
     # In order to remove the tshirt LCD which is in Clothing and High-Tech categories
@@ -261,7 +261,7 @@ Feature: Notify users after a project creation
 
   Scenario: Successfully notify users when creating a project on decoration
     And I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     And I filter by "category" with operator "" and value "decoration"
     And I click on the create project button
     When I fill in the following information in the popin:
@@ -318,7 +318,7 @@ Feature: Notify users after a project creation
       | product        | attribute   | value                                | locale | scope     |
       | my-awesome-car | description | My awesome description for ecommerce | en_US  | ecommerce |
     And I am logged in as "admin"
-    Then I am on the products page
+    Then I am on the products grid
     And I filter by "family" with operator "in list" and value "Car"
     And I click on the create project button
     And I fill in the following information in the popin:
@@ -338,7 +338,7 @@ Feature: Notify users after a project creation
       | product        | attribute   | value | locale | scope     |
       | my-awesome-car | description |       | en_US  | ecommerce |
     When I am logged in as "admin"
-    And I am on the products page
+    And I am on the products grid
     And I filter by "family" with operator "in list" and value "Car"
     And I click on the create project button
     And I fill in the following information in the popin:
@@ -358,7 +358,7 @@ Feature: Notify users after a project creation
       | product        | attribute   | value | locale | scope     |
       | my-awesome-car | description |       | en_US  | ecommerce |
     When I am logged in as "admin"
-    And I am on the products page
+    And I am on the products grid
     And I filter by "family" with operator "in list" and value "Car"
     And I click on the create project button
     And I fill in the following information in the popin:
@@ -381,13 +381,13 @@ Feature: Notify users after a project creation
     Then I should have 1 new notification
     Then I open the notification panel
     And I should see the text "You have new products to enrich for \"2016 summer collection\". Due date is \"12/13/2018\"."
-    And I am on the products page
+    And I am on the products grid
     And I am on the "my-awesome-car" product page
     And I visit the "All" group
     And I fill in the following information:
       | Description | It is a car |
     Then I save the product
-    And I am on the products page
+    And I am on the products grid
     And I run computation of the project "2016-summer-collection-ecommerce-en-us"
     And I wait for the "project_calculation" job to finish
     And I am on the homepage
@@ -395,25 +395,25 @@ Feature: Notify users after a project creation
     Then I should have 2 new notification
     Then I open the notification panel
     And I should see the text "Congrats! You're 100% of done product done with \"2016 summer collection\"."
-    And I am on the products page
+    And I am on the products grid
     And I am on the "my-awesome-car" product page
     And I visit the "All" group
     And I fill in the following information:
       | Description |  |
     Then I save the product
-    And I am on the products page
+    And I am on the products grid
     And I run computation of the project "2016-summer-collection-ecommerce-en-us"
     And I wait for the "project_calculation" job to finish
     And I am on the homepage
     # Is not notified because she has already been notified for the project creation
     Then I should have 2 new notification
-    And I am on the products page
+    And I am on the products grid
     And I am on the "my-awesome-car" product page
     And I visit the "All" group
     And I fill in the following information:
       | Description | It is a car |
     Then I save the product
-    And I am on the products page
+    And I am on the products grid
     And I run computation of the project "2016-summer-collection-ecommerce-en-us"
     And I wait for the "project_calculation" job to finish
     And I am on the homepage

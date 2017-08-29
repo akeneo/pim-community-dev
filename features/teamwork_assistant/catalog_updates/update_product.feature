@@ -43,7 +43,7 @@ Feature: Follow project completeness
 
   Scenario: Successfully refresh the project completeness after a product update
     Given I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     And I filter by "family" with operator "in list" and value "TShirts"
     And I should be on the products page
     And I click on the create project button

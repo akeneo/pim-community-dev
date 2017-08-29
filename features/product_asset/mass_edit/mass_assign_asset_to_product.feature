@@ -15,7 +15,7 @@ Feature: Edit asset collection of many products at once
       | sneakers | high_heels |
       | sandals  | high_heels |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Allow editing all attributes on configuration screen
     Given I select rows boots, sneakers and sandals

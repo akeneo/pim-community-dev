@@ -20,7 +20,7 @@ Feature: Create product assets
   @skip-nav
   Scenario: Create a localized asset
     Given I am logged in as "Pamela"
-    And I am on the assets page
+    And I am on the assets grid
     And I switch the locale to "fr_FR"
     And I press the "Create an asset" button
     Then I should see a dialog with the following content:
@@ -37,7 +37,7 @@ Feature: Create product assets
   @skip-nav
   Scenario: Create a non localized asset
     Given I am logged in as "Pamela"
-    And I am on the assets page
+    And I am on the assets grid
     And I press the "Create an asset" button
     Then I should see a dialog with the following content:
       | title | Create a new asset |
@@ -52,7 +52,7 @@ Feature: Create product assets
   @skip-nav
   Scenario: Create a non localized asset with a picture
     Given I am logged in as "Pamela"
-    And I am on the assets page
+    And I am on the assets grid
     And I press the "Create an asset" button
     Then I should see a dialog with the following content:
       | title | Create a new asset |
@@ -66,12 +66,12 @@ Feature: Create product assets
   @skip-nav
   Scenario: Successfully increment an existing asset code
     Given I am logged in as "Pamela"
-    And I am on the assets page
+    And I am on the assets grid
     When I press the "Create an asset" button
     And I fill the code with random_asset
     And I press the "Save" button
     Then I should be on the "random_asset" asset edit page
-    When I am on the assets page
+    When I am on the assets grid
     And I press the "Create an asset" button
     And I fill the code with random_asset and wait for validation
     And I hover over the element ".validation-tooltip"
@@ -80,12 +80,12 @@ Feature: Create product assets
   @skip-nav @jira https://akeneo.atlassian.net/browse/PIM-6023
   Scenario: Successfully create an asset with a non existent similar code
     Given I am logged in as "Pamela"
-    And I am on the assets page
+    And I am on the assets grid
     When I press the "Create an asset" button
     And I fill the code with random_asset_1
     And I press the "Save" button
     Then I should be on the "random_asset_1" asset edit page
-    When I am on the assets page
+    When I am on the assets grid
     And I press the "Create an asset" button
     And I fill the code with random_asset
     And I press the "Save" button

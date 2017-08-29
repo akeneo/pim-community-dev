@@ -23,7 +23,7 @@ Feature: Remove a product
 
   Scenario: Successfully mass delete a product and associated drafts
     Given I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I select row jean
     And I press "Delete" on the "Bulk Actions" dropdown button
     And I confirm the removal
@@ -50,7 +50,7 @@ Feature: Remove a product
     When I press the secondary action "Delete"
     And I confirm the removal
     Then I should see the text "Impossible to remove a published product"
-    When I am on the products page
+    When I am on the products grid
     Then I should see product jean
 
   Scenario: Not being able to delete a product from the edit form without having sufficient permissions
@@ -70,6 +70,6 @@ Feature: Remove a product
       | edit_only | tees       |
       | view_only | pants      |
     And I am logged in as "Mary"
-    When I am on the products page
+    When I am on the products grid
     Then I should not be able to view the "Delete the product" action of the row which contains "edit_only"
     And I should not be able to view the "Delete the product" action of the row which contains "view_only"

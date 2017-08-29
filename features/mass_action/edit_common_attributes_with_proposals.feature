@@ -31,7 +31,7 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
   @jira https://akeneo.atlassian.net/browse/PIM-3980 https://akeneo.atlassian.net/browse/PIM-4775
   Scenario: Successfully creates proposal on editable products
     Given I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     When I select rows viewable, editable and owned
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation

@@ -9,7 +9,7 @@ Feature: Revert product attributes to a previous version
     And I am logged in as "Julia"
 
   Scenario: Successfully revert simpleselect attribute options of a product
-    When I am on the products page
+    When I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | jean  |
@@ -42,7 +42,7 @@ Feature: Revert product attributes to a previous version
       | Manufacturer |  |
 
   Scenario: Successfully revert a simpleselect attribute
-    When I am on the products page
+    When I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | marcel |

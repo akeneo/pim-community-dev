@@ -17,7 +17,7 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
       | info            | Manager    | edit   |
       | marketing       | Manager    | view   |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully display read only attributes
     Given I select rows highheels

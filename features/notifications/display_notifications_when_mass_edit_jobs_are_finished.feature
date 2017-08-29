@@ -11,7 +11,7 @@ Feature: Display notifications for mass edit jobs
   Scenario: Successfully display a notification when a mass-edit job is finished
     Given a disabled "boat" product
     And a disabled "jet-ski" product
-    And I am on the products page
+    And I am on the products grid
     When I select rows boat and jet-ski
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Change status (enable / disable)" operation

@@ -35,7 +35,7 @@ Feature: Mass edit products through product draft
       | release_date-mobile      | 2014-05-14               |
       | length                   | 60 CENTIMETER            |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Succesfully create simple text attribute product draft of many products
     Given I select rows my-first-jacket and my-second-jacket

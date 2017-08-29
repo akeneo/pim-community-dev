@@ -86,7 +86,7 @@ Feature: Display teamwork assistant projects in the datagrid view selector
     And I fill in the following information:
       | Description | A t-shirt with Geralt on it. |
     And I save the product
-    When I am on the products page
+    When I am on the products grid
     And I filter by "category" with operator "" and value "clothing"
     And I show the filter "weight"
     And I filter by "weight" with operator "<" and value "6 Ounce"
@@ -99,7 +99,7 @@ Feature: Display teamwork assistant projects in the datagrid view selector
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"
     And I wait for the "project_calculation" job to finish
-    When I am on the products page
+    When I am on the products grid
     And I switch view selector type to "Views"
     And I apply the "Default view" view
     Then I should be on the products page
@@ -119,7 +119,7 @@ Feature: Display teamwork assistant projects in the datagrid view selector
 
   Scenario: A contributor can display projects he can work on
     Given I am logged in as "Mary"
-    When I am on the products page
+    When I am on the products grid
     And I switch view selector type to "Projects"
     Then I should be on the products page
     When I open the view selector
@@ -127,7 +127,7 @@ Feature: Display teamwork assistant projects in the datagrid view selector
 
   Scenario: A contributor can display projects based on filter he doesn't have access to
     Given I am logged in as "Kathy"
-    When I am on the products page
+    When I am on the products grid
     And I switch view selector type to "Projects"
     Then I should be on the products page
     When I open the view selector
@@ -135,7 +135,7 @@ Feature: Display teamwork assistant projects in the datagrid view selector
 
   Scenario: A contributor won't see a project he can't work on
     Given I am logged in as "Teddy"
-    And I am on the products page
+    And I am on the products grid
     And I switch view selector type to "Projects"
     Then I should be on the products page
     When I open the view selector
@@ -144,7 +144,7 @@ Feature: Display teamwork assistant projects in the datagrid view selector
 
   Scenario: A contributor can search for a project name
     Given I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I switch view selector type to "Projects"
     And I open the view selector
     When I filter view selector with name "2016"
@@ -154,7 +154,7 @@ Feature: Display teamwork assistant projects in the datagrid view selector
 
   Scenario: A contributor can see the completeness of a project in the list
     Given I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     And I switch view selector type to "Projects"
     Then I should see the text "2016 summer collection"
     When I open the view selector

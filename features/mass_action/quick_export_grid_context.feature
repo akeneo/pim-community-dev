@@ -18,7 +18,7 @@ Feature: Quick export products according to the product grid context
     And I am logged in as "Julia"
 
   Scenario: Successfully quick export published products from grid context as a CSV file
-    Given I am on the published products page
+    Given I am on the published products grid
     And I display in the published products grid the columns SKU, Name, Label, Family, Color, Complete, Groups, Price, Size, Created at, Updated at, Description and Weight
     And I select rows boots, sneakers, pump
     When I press "CSV (Grid context)" on the "Quick Export" dropdown button
@@ -40,7 +40,7 @@ Feature: Quick export products according to the product grid context
     """
 
   Scenario: Successfully quick export products from grid context as a XSLX file
-    Given I am on the published products page
+    Given I am on the published products grid
     And I display in the published products grid the columns SKU, Name, Label, Family, Color, Complete, Groups, Price, Size, Created at, Updated at, Description and Weight
     And I select rows boots, sneakers, pump
     When I press "Excel (Grid context)" on the "Quick Export" dropdown button

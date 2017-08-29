@@ -10,7 +10,7 @@ Feature: Revert product attributes to a previous version
 
   @jira https://akeneo.atlassian.net/browse/PIM-3760
   Scenario: Successfully revert a image attribute
-    Given I am on the products page
+    Given I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | t-shirt |

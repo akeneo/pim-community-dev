@@ -9,7 +9,7 @@ Feature: Revert product attributes to a previous version
     And I am logged in as "Julia"
 
   Scenario: Successfully revert a product number and leave it empty
-    Given I am on the products page
+    Given I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | jeans   |
@@ -29,7 +29,7 @@ Feature: Revert product attributes to a previous version
     | number_in_stock-tablet |  |
 
   Scenario: Successfully revert a number attribute
-    Given I am on the products page
+    Given I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | t-shirt |

@@ -81,7 +81,7 @@ Feature: Filter by project completeness in the product datagrid
       | usb-key-small        | usb_keys | high_tech          |                           |            | 1            | OUNCE             |                    |                    |                | 8        | GIGABYTE      |
       | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    | A1         |              |                   |                    |                    |                |          |               |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I filter by "category" with operator "" and value "clothing"
     And I show the filter "weight"
     And I filter by "weight" with operator "<" and value "6 Ounce"
@@ -98,7 +98,7 @@ Feature: Filter by project completeness in the product datagrid
 
   Scenario: The project completeness filter is hidden if the user is not on a project
     And I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     Then I should see the text "Default view"
     But I should not see the text "Project progress"
     When I switch view selector type to "Projects"
@@ -107,7 +107,7 @@ Feature: Filter by project completeness in the product datagrid
 
   Scenario: Project overview options are hidden for contributors
     And I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     Then I should see the text "Default view"
     When I switch view selector type to "Projects"
     Then I should see the text "2016 summer collection"
@@ -121,7 +121,7 @@ Feature: Filter by project completeness in the product datagrid
 
   Scenario: A contributor can filter by project completeness
     And I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     Then I should see the text "Default view"
     When I switch view selector type to "Projects"
     Then I should see the text "2016 summer collection"
@@ -139,7 +139,7 @@ Feature: Filter by project completeness in the product datagrid
       | Material | Silk |
     And I save the product
     And I run computation of the project "2016-summer-collection-ecommerce-en-us"
-    And I am on the products page
+    And I am on the products grid
     Then I should be able to use the following filters:
       | filter               | operator | value       | result               |
       | project_completeness |          | Todo        |                      |
@@ -164,7 +164,7 @@ Feature: Filter by project completeness in the product datagrid
     And I run computation of the project "2016-summer-collection-ecommerce-en-us"
     And I logout
     And I am logged in as "Mary"
-    When I am on the products page
+    When I am on the products grid
     Then I should see the text "Default view"
     When I switch view selector type to "Projects"
     Then I should see the text "2016 summer collection"
@@ -182,7 +182,7 @@ Feature: Filter by project completeness in the product datagrid
       | Description | A tshirt with Geralt |
     And I save the product
     And I run computation of the project "2016-summer-collection-ecommerce-en-us"
-    And I am on the products page
+    And I am on the products grid
     And I should be able to use the following filters:
       | filter               | operator | value                          | result                              |
       | project_completeness |          | Todo                           |                                     |
@@ -194,7 +194,7 @@ Feature: Filter by project completeness in the product datagrid
 
   Scenario: Filtering by project completeness doesn't leave the project context
     And I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     Then I should see the text "Default view"
     When I switch view selector type to "Projects"
     Then I should see the text "2016 summer collection"

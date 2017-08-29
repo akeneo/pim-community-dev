@@ -10,7 +10,7 @@ Feature: Create enrichment project
       | sku         | family   | categories        |
       | blue_sandal | Sneakers | summer_collection |
     And I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     And I filter by "family" with operator "in list" and value "Sneakers"
     And I filter by "category" with operator "" and value "summer_collection"
     And I display in the products grid the columns sku, name, description
@@ -45,7 +45,7 @@ Feature: Create enrichment project
   Scenario: An error message is displayed to the project creator if label is empty
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     And I click on the create project button
     When I fill in the following information in the popin:
       | project-label | 01/31/2020 |
@@ -55,7 +55,7 @@ Feature: Create enrichment project
   Scenario: An error message is displayed to the project creator if due date is empty
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     And I click on the create project button
     When I fill in the following information in the popin:
       | project-label | New collection |
@@ -65,7 +65,7 @@ Feature: Create enrichment project
   Scenario: An error message is displayed to the project creator if the label is greater than 100 characters
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     And I click on the create project button
     When I fill in the following information in the popin:
       | project-label | This is a very long label that has obviously more than one hundred characters which is irrelevant for a normal use |
@@ -79,7 +79,7 @@ Feature: Create enrichment project
   Scenario: An error message is displayed to the project creator if the due date is in the past
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     And I click on the create project button
     When I fill in the following information in the popin:
       | project-due-date | 10/06/2012 |
@@ -93,13 +93,13 @@ Feature: Create enrichment project
   Scenario: An error message is displayed to the project creator if the project label already exists with the same locale and channel
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     And I click on the create project button
     When I fill in the following information in the popin:
       | project-label    | Star Wars Collection |
       | project-due-date | 01/31/2051           |
     And I press the "Save" button
-    And I am on the products page
+    And I am on the products grid
     And I click on the create project button
     When I fill in the following information in the popin:
       | project-label    | Star Wars Collection |
@@ -107,7 +107,7 @@ Feature: Create enrichment project
     And I press the "Save" button
     Then I should see the text "This value is already used."
     And I reload the page
-    When I am on the products page
+    When I am on the products grid
     And I filter by "scope" with operator "equals" and value "Mobile"
     And I click on the create project button
     When I fill in the following information in the popin:
@@ -133,13 +133,13 @@ Feature: Create enrichment project
     Scenario: I can re-submit new data when there is a validation error
       Given a "footwear" catalog configuration
       And I am logged in as "Julia"
-      When I am on the products page
+      When I am on the products grid
       And I click on the create project button
       When I fill in the following information in the popin:
         | project-label    | Star Wars Collection |
         | project-due-date | 01/31/2051           |
       And I press the "Save" button
-      And I am on the products page
+      And I am on the products grid
       And I click on the create project button
       When I fill in the following information in the popin:
         | project-label    | Star Wars Collection |
