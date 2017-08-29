@@ -15,6 +15,7 @@ Feature: Edit sequentially some products
       | sneaker      | sneakers |
     And I am logged in as "Julia"
     And I am on the products grid
+    And I switch the locale to "en_US"
 
   Scenario: Successfully sequentially edit some products
     Given I sort by "SKU" value ascending

@@ -79,8 +79,6 @@ function(_, messenger, __, Modal, AbstractAction) {
                 params.dataLocale = locale;
             }
 
-            console.log('mass-action params', params);
-
             return params;
         },
 
