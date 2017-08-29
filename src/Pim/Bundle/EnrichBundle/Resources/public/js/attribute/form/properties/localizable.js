@@ -6,9 +6,10 @@
 'use strict';
 
 define([
+    'underscore',
     'pim/attribute-edit-form/properties/boolean'
 ],
-function (BaseField) {
+function (_, BaseField) {
     return BaseField.extend({
         /**
          * {@inheritdoc}
