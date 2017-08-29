@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ApiBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -40,7 +41,7 @@ class ListClientsCommand extends ContainerAwareCommand
             return 0;
         }
 
-        $table = $this->getHelper('table');
+        $table = new Table($output);
         $table->setHeaders(['client id', 'secret', 'label']);
 
         foreach ($clients as $client) {

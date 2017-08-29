@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Connector\Processor\BulkMediaFetcher;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -34,9 +35,6 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
     /** @var ObjectDetacherInterface */
     protected $detacher;
 
@@ -46,28 +44,31 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     /** @var BulkMediaFetcher */
     protected $mediaFetcher;
 
+    /** @var EntityWithFamilyValuesFillerInterface */
+    protected $productValuesFiller;
+
     /**
-     * @param NormalizerInterface          $normalizer
-     * @param ChannelRepositoryInterface   $channelRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param ProductBuilderInterface      $productBuilder
-     * @param ObjectDetacherInterface      $detacher
-     * @param BulkMediaFetcher             $mediaFetcher
+     * @param NormalizerInterface                   $normalizer
+     * @param ChannelRepositoryInterface            $channelRepository
+     * @param AttributeRepositoryInterface          $attributeRepository
+     * @param ObjectDetacherInterface               $detacher
+     * @param BulkMediaFetcher                      $mediaFetcher
+     * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
      */
     public function __construct(
         NormalizerInterface $normalizer,
         ChannelRepositoryInterface $channelRepository,
         AttributeRepositoryInterface $attributeRepository,
-        ProductBuilderInterface $productBuilder,
         ObjectDetacherInterface $detacher,
-        BulkMediaFetcher $mediaFetcher
+        BulkMediaFetcher $mediaFetcher,
+        EntityWithFamilyValuesFillerInterface $productValuesFiller
     ) {
         $this->normalizer = $normalizer;
         $this->detacher = $detacher;
         $this->channelRepository = $channelRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->productBuilder = $productBuilder;
         $this->mediaFetcher = $mediaFetcher;
+        $this->productValuesFiller = $productValuesFiller;
     }
 
     /**
@@ -78,7 +79,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
         $parameters = $this->stepExecution->getJobParameters();
         $structure = $parameters->get('filters')['structure'];
         $channel = $this->channelRepository->findOneByIdentifier($structure['scope']);
-        $this->productBuilder->addMissingProductValues($product, [$channel], $channel->getLocales()->toArray());
+        $this->productValuesFiller->fillMissingValues($product);
 
         $productStandard = $this->normalizer->normalize($product, 'standard', [
             'channels' => [$channel->getCode()],

@@ -31,10 +31,11 @@ class SimpleCsvExport implements DefaultValuesProviderInterface
     public function getDefaultValues()
     {
         return [
-            'filePath'   => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.csv',
-            'delimiter'  => ';',
-            'enclosure'  => '"',
-            'withHeader' => true,
+            'filePath'          => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'export_%job_label%_%datetime%.csv',
+            'delimiter'         => ';',
+            'enclosure'         => '"',
+            'withHeader'        => true,
+            'notification_user' => null,
         ];
     }
 

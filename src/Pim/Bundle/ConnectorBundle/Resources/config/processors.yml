@@ -233,9 +233,9 @@ services:
             - '@pim_catalog.normalizer.standard.product'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.builder.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.processor.bulk_media_fetcher'
+            - '@pim_catalog.values_filler.product'
 
     pim_connector.processor.normalization.variant_group:
         class: '%pim_connector.processor.normalization.variant_group.class%'

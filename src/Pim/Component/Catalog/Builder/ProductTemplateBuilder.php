@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Builder;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 
 /**
  * Product template builder, allows to create new product template and update them
@@ -18,16 +19,24 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
+    /** @var EntityWithFamilyValuesFillerInterface */
+    protected $productValuesFiller;
+
     /** @var string */
     protected $productTemplateClass;
 
     /**
-     * @param ProductBuilderInterface $productBuilder
-     * @param string                  $productTemplateClass
+     * @param ProductBuilderInterface               $productBuilder
+     * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
+     * @param string                                $productTemplateClass
      */
-    public function __construct(ProductBuilderInterface $productBuilder, $productTemplateClass)
-    {
+    public function __construct(
+        ProductBuilderInterface $productBuilder,
+        EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        $productTemplateClass
+    ) {
         $this->productBuilder = $productBuilder;
+        $this->productValuesFiller = $productValuesFiller;
         $this->productTemplateClass = $productTemplateClass;
     }
 
@@ -75,7 +84,7 @@ class ProductTemplateBuilder implements ProductTemplateBuilderInterface
             $this->productBuilder->addAttribute($product, $attribute);
         }
 
-        $this->productBuilder->addMissingProductValues($product);
+        $this->productValuesFiller->fillMissingValues($product);
 
         return $product->getValues();
     }

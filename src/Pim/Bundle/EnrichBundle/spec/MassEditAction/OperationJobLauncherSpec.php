@@ -41,13 +41,15 @@ class OperationJobLauncherSpec extends ObjectBehavior
 
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
+        $user->getUsername()->willReturn('julia');
 
         $jobLauncher->launch(
             $jobInstance,
             $user,
             [
                 'foo'  => 'bar',
-                'pomf' => 'thud'
+                'pomf' => 'thud',
+                'notification_user' => 'julia'
             ]
         );
 
