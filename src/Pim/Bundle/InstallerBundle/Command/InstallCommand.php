@@ -55,24 +55,10 @@ class InstallCommand extends ContainerAwareCommand
     {
         $forceInstall = $input->getOption('force');
 
-        // if a parameter "installed" is defined and not false:
-        // the installation is <v1.8 so installed flag has to be migrated in the install status file
-        if ($this->getContainer()->hasParameter('installed')
-            && $this->getContainer()->getParameter('installed')) {
-            if (!$this->checkInstalledFlag($output)) {
-                $installed = $this->getContainer()->getParameter('installed');
-                $output->writeln(sprintf('<warn>Migrating installed flag in dedicated file.</warn>', $installed));
-                $this->setInstalledFlag($output, $installed);
-            }
-        }
-
         // if the application is already installed or no --force option
         if ($this->checkInstalledFlag($output)
             && !$forceInstall) {
             throw new \RuntimeException('Akeneo PIM is already installed.');
-        } elseif ($forceInstall) {
-            // if --force option we have to clear cache and set installed to false
-            $this->setInstalledFlag($output, false);
         }
 
         $output->writeln(sprintf('<info>Installing %s Application.</info>', static::APP_NAME));
@@ -90,8 +76,6 @@ class InstallCommand extends ContainerAwareCommand
 
             return $e->getCode();
         }
-
-        $this->setInstalledFlag($output, date('c'));
 
         $output->writeln('');
         $output->writeln(sprintf('<info>%s Application has been successfully installed.</info>', static::APP_NAME));
@@ -166,26 +150,8 @@ class InstallCommand extends ContainerAwareCommand
     {
         $installStatus = $this->getContainer()->get('pim_installer.install_status_manager');
 
-        $output->writeln('<info>Check installed flag (file: '. $installStatus->getAbsoluteFilePath() .')</info>');
+        $output->writeln('<info>Check installed flag</info>');
 
         return $installStatus->isInstalled();
-    }
-
-    /**
-     * Update installed flag
-     *
-     * @param OutputInterface $output
-     * @param bool            $installed
-     *
-     * @return InstallCommand
-     */
-    protected function setInstalledFlag(OutputInterface $output, $installed)
-    {
-        $output->writeln('<info>Setting installed flag.</info>');
-
-        $installStatus = $this->getContainer()->get('pim_installer.install_status_manager');
-        $installStatus->persistInstallStatus($installed);
-
-        return $this;
     }
 }

@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\InstallerBundle\InstallStatusManager;
 
-use Symfony\Component\Yaml\Yaml;
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\DBAL\Exception\ConnectionException;
 
 /**
- * InstallStatusManager : Check and persist a status flag in a file to indicate that PIM has been installed and when.
- * As the location of the file containing the flag is configurable (install_status_dir), the flag cannot be loaded
- * directly in the container.
- * Parameter "install_status_dir" can be a relative path to the project dir or an absolute path (if beginning with '/').
+ * InstallStatusManager : Check that PIM has been installed by checking that an 'oro_user' table exists.
  *
  * @author    Vincent Berruchon <vincent.berruchon@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -18,85 +16,50 @@ use Symfony\Component\Yaml\Yaml;
  */
 class InstallStatusManager
 {
-    public const INSTALL_STATUS_FILENAME_PREFIX = 'install';
-    public const INSTALL_STATUS_FILENAME_EXT = '.yml';
-    public const ATTR_INSTALL_STATUS_DIR = 'install_status_dir';
-    public const ATTR_INSTALLED_STATUS_SECTION ='install';
-    public const ATTR_INSTALLED_STATUS ='installed';
+    public const INSTALL_TABLE_NAME ='oro_user';
+    public const MYSQL_META_COLUMN_CREATE_TIME ='create_time';
 
     /**
-     * Path to the project directory
-     * @var string $projectDir
+     * @var Registry $doctrine
      */
-    protected $projectDir;
+    protected $doctrine;
 
     /**
-     * Absolute or relative path to the directory to the install flag file.
-     * @var string $absoluteDirectory
+     * @var string $databaseName
      */
-    protected $configStatusFileDir;
+    protected $databaseName;
 
     /**
-     * environment
-     * @var string $env
+     * @param Registry $doctrine
+     * @param string string $databaseName
      */
-    protected $env;
-
-    /**
-     * @param string $projectDir Path to parameters storage directory
-     * @param string string $statusFileDir
-     * @param string $env
-     */
-    public function __construct(string $projectDir, string $statusFileDir, string $env)
+    public function __construct(Registry $doctrine, string $databaseName)
     {
-        if (empty($statusFileDir)) {
-            throw new \RuntimeException('Please configure ' . self::ATTR_INSTALL_STATUS_DIR);
-        }
-        $this->projectDir = $projectDir;
-        $this->configStatusFileDir = $statusFileDir;
-        $this->env = $env;
-    }
-
-    public function getAbsoluteDirectoryPath() : string
-    {
-        if (!empty($this->configStatusFileDir) && mb_substr($this->configStatusFileDir, 0, 1) === '/') {
-            return $this->configStatusFileDir;
-        }
-        return $this->projectDir . '/' . $this->configStatusFileDir;
-    }
-
-    public function getAbsoluteFilePath() : string
-    {
-        return $this->getAbsoluteDirectoryPath() . '/' . self::INSTALL_STATUS_FILENAME_PREFIX
-            . $this->getEnvSuffixe($this->env)
-            . self::INSTALL_STATUS_FILENAME_EXT;
+        $this->doctrine = $doctrine;
+        $this->databaseName = $databaseName;
     }
 
     /**
-     * @return string return the string 'false' if not installed or return the timestamp of installation.
+     * @return string return null if the PIM not installed or return the timestamp of creation of the 'oro_user' table.
      */
-    public function getInstalledFlag() : string
+    public function getInstalledFlag() : ?string
     {
-        $absoluteFilePath=$this->getAbsoluteFilePath();
+        $sql = 'SELECT create_time FROM INFORMATION_SCHEMA.TABLES
+                WHERE table_schema = :database_name
+                AND table_name = :install_table_name ';
 
-        // if PIM not installed, the file probably doesn't exist
-        if (!file_exists($absoluteFilePath)) {
-            return 'false';
+        $connection = $this->doctrine->getConnection();
+        try {
+            $stmt = $connection->prepare($sql);
+        } catch (ConnectionException $e) {
+            return null;
         }
-        $data = Yaml::parse(file_get_contents($absoluteFilePath));
-        if (!is_array($data) || !isset($data[self::ATTR_INSTALLED_STATUS_SECTION])
-         || !is_array($data[self::ATTR_INSTALLED_STATUS_SECTION])) {
-            return 'false';
-        }
-        if (array_key_exists(self::ATTR_INSTALLED_STATUS, $data[self::ATTR_INSTALLED_STATUS_SECTION])) {
-            $installed = $data[self::ATTR_INSTALLED_STATUS_SECTION][self::ATTR_INSTALLED_STATUS];
-            if (empty($installed) || $installed==='false') {
-                return 'false';
-            } else {
-                return $installed;
-            }
-        }
-        return 'false';
+
+        $stmt->bindValue('database_name', $this->databaseName);
+        $stmt->bindValue('install_table_name', self::INSTALL_TABLE_NAME);
+        $stmt->execute();
+
+        return $stmt->fetch()[self::MYSQL_META_COLUMN_CREATE_TIME];
     }
 
     /**
@@ -104,47 +67,6 @@ class InstallStatusManager
     */
     public function isInstalled() : bool
     {
-        if ($this->getInstalledFlag()==='false') {
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * persistInstallStatus : write to file the installTime timestamp.
-     *
-     * @param string $installTime
-     */
-    public function persistInstallStatus(string $installTime) : void
-    {
-        $install = [];
-        $install[self::ATTR_INSTALLED_STATUS] = $installTime;
-        $absoluteFilePath=$this->getAbsoluteFilePath();
-
-        if (false === file_put_contents(
-            $absoluteFilePath,
-            Yaml::dump([self::ATTR_INSTALLED_STATUS_SECTION => $install])
-        )) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Failed to write to "%s". "%s" status not set!',
-                    $absoluteFilePath,
-                    self::ATTR_INSTALLED_STATUS
-                )
-            );
-        }
-    }
-
-    /**
-     * @param string $env
-     * @return string If behat or test we add "_test" (will be finally "install_test.yml").
-     *  For prod and test, add nothing.
-     */
-    protected function getEnvSuffixe(string $env) : string
-    {
-        if ($env==='behat' || $env==='test') {
-            return '_test';
-        }
-        return '';
+        return null !== $this->getInstalledFlag();
     }
 }

@@ -122,6 +122,3 @@ akeneo_elasticsearch:
     index_name: "%index_name%"
     hosts: "%index_hosts%"
     configuration_files: "%elasticsearch_index_configuration_files%"
-
-parameters:
-    install_status_dir: 'var'
