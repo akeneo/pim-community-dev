@@ -9,7 +9,7 @@ services:
             - 'quick_export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.database.product'
+            - '@pim_enrich.reader.database.product_and_product_model'
             - '@pim_enrich.connector.processor.quick_export.product'
             - '@pim_connector.writer.file.csv_product_quick_export'
             - 1000
@@ -21,7 +21,7 @@ services:
             - 'quick_export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.database.product'
+            - '@pim_enrich.reader.database.product_and_product_model'
             - '@pim_enrich.connector.processor.quick_export.product'
             - '@pim_connector.writer.file.xlsx_product_quick_export'
             - 1000
@@ -33,7 +33,7 @@ services:
             - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.database.product'
+            - '@pim_enrich.reader.database.product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.update_value'
             - '@pim_connector.writer.database.product'
 
@@ -43,7 +43,7 @@ services:
             - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.database.product'
+            - '@pim_enrich.reader.database.product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.add_value'
             - '@pim_connector.writer.database.product'
 
@@ -53,7 +53,7 @@ services:
             - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.database.product'
+            - '@pim_enrich.reader.database.product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.remove_value'
             - '@pim_connector.writer.database.product'
 
@@ -63,7 +63,7 @@ services:
             - 'perform'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_connector.reader.database.product'
+            - '@pim_enrich.reader.database.product_and_product_model'
             - '@pim_enrich.connector.processor.mass_edit.product.edit_common_attributes'
             - '@pim_connector.writer.database.product'
 
