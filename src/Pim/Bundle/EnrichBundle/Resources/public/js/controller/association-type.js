@@ -4,23 +4,22 @@ define(
     [
         'underscore',
         'oro/translator',
-        'pim/controller/base',
+        'pim/controller/front',
         'pim/form-builder',
         'pim/fetcher-registry',
         'pim/user-context',
         'pim/dialog',
         'pim/page-title',
-        'pim/error',
         'pim/i18n'
     ],
-    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, Error, i18n) {
+    function (_, __, BaseController, FormBuilder, FetcherRegistry, UserContext, Dialog, PageTitle, i18n) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
              */
-            renderRoute: function (route) {
+            renderForm: function (route) {
                 return FetcherRegistry.getFetcher('association-type').fetch(route.params.code, {cached: false})
-                    .then(function (associationType) {
+                    .then((associationType) => {
                         if (!this.active) {
                             return;
                         }
@@ -35,22 +34,18 @@ define(
 
                         PageTitle.set({'association type.label': _.escape(label) });
 
-                        FormBuilder.build(associationType.meta.form)
-                            .then(function (form) {
+                        return FormBuilder.build(associationType.meta.form)
+                            .then((form) => {
                                 this.on('pim:controller:can-leave', function (event) {
                                     form.trigger('pim_enrich:form:can-leave', event);
                                 });
                                 form.setData(associationType);
                                 form.trigger('pim_enrich:form:entity:post_fetch', associationType);
                                 form.setElement(this.$el).render();
-                            }.bind(this));
-                    }.bind(this))
-                .fail(function (response) {
-                    var message = response.responseJSON ? response.responseJSON.message : __('error.common');
 
-                    var errorView = new Error(message, response.status);
-                    errorView.setElement(this.$el).render();
-                });
+                                return form;
+                            });
+                    });
             }
         });
     }

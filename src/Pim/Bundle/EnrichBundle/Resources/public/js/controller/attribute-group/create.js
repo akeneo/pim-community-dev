@@ -10,7 +10,7 @@
 define(
     [
         'underscore',
-        'pim/controller/base',
+        'pim/controller/front',
         'pim/form-builder'
     ],
     function (_, BaseController, FormBuilder) {
@@ -18,13 +18,13 @@ define(
             /**
              * {@inheritdoc}
              */
-            renderRoute: function () {
+            renderForm: function () {
                 if (!this.active) {
                     return;
                 }
 
                 return FormBuilder.build('pim-attribute-group-create-form')
-                    .then(function (form) {
+                    .then((form) => {
                         this.on('pim:controller:can-leave', function (event) {
                             form.trigger('pim_enrich:form:can-leave', event);
                         });
@@ -34,7 +34,9 @@ define(
                         });
 
                         form.setElement(this.$el).render();
-                    }.bind(this));
+
+                        return form;
+                    });
             }
         });
     }

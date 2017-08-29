@@ -1,52 +1,28 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'pim/fetcher-registry', 'pim/attribute-manager'],
-    function ($, _, FetcherRegistry, AttributeManager) {
+    ['jquery', 'underscore', 'pim/fetcher-registry'],
+    function ($, _, FetcherRegistry) {
     return {
         /**
-         * Get all the attribute group for the given object
+         * Get all the attribute group for the given product
          *
-         * @param {Object} object
+         * @param {Object} product
          *
          * @return {Promise}
          */
-        getAttributeGroupsForObject: function (object) {
-            return $.when(
-                FetcherRegistry.getFetcher('attribute-group').fetchAll(),
-                AttributeManager.getAttributes(object)
-            ).then(function (attributeGroups, ObjectAttributes) {
-                return _.reduce(attributeGroups, function (result, attributeGroup) {
-                    if (_.intersection(attributeGroup.attributes, ObjectAttributes).length > 0) {
-                        result[attributeGroup.code] = attributeGroup;
-                    }
+        getAttributeGroupsForObject: function (product) {
+            return FetcherRegistry.getFetcher('attribute-group').fetchAll()
+                .then(function (attributeGroups) {
+                    return _.values(attributeGroups).reduce((result, attributeGroup) => {
+                        //If one (or more) of the attributes of the attribute group is in the product we need to add it
+                        if (_.intersection(attributeGroup.attributes, _.keys(product.values)).length > 0) {
+                            result[attributeGroup.code] = attributeGroup;
+                        }
 
-                    return result;
-                }, {});
-            });
-        },
-
-        /**
-         * Get attribute group values filtered from the whole list
-         *
-         * @param {Object} values
-         * @param {String} attributeGroup
-         *
-         * @return {Object}
-         */
-        getAttributeGroupValues: function (values, attributeGroup) {
-            var matchingValues = {};
-            if (!attributeGroup) {
-                return matchingValues;
-            }
-
-            _.each(attributeGroup.attributes, function (attributeCode) {
-                if (values[attributeCode]) {
-                    matchingValues[attributeCode] = values[attributeCode];
-                }
-            });
-
-            return matchingValues;
+                        return result;
+                    }, {});
+                });
         },
 
         /**

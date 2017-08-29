@@ -442,6 +442,8 @@ pim_enrich:
                         no_match: No matches found
                         load_more: Loading more results...
                     attribute_group_selector: Attribute group
+                    attribute_group_all: All
+                    attribute_group.to_fill_count: "{1} 1 attribute to complete|] 1, Inf [{{ count }} attributes to complete"
                 categories:
                     title: Categories
             panel:

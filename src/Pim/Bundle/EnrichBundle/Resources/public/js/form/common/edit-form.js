@@ -68,10 +68,6 @@ define(
 
                 this.renderExtensions();
 
-                formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
-                    form.setElement('.user-menu').render();
-                }.bind(this));
-
                 this.getRoot().trigger('pim_enrich:form:render:after');
             },
 

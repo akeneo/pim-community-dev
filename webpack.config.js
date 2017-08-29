@@ -13,8 +13,12 @@ const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
 const AddToContextPlugin = require('./frontend/add-context-plugin')
 const LiveReloadPlugin = require('webpack-livereload-plugin')
 
-const babelPresets = ['es2015', 'es2016', 'es2017']
-if (isProd) babelPresets.push('babili')
+const babelPresets = [['babel-preset-env', {
+  "targets": {
+    "browsers": ["firefox >= 45"]
+  }
+}]];
+if (isProd) babelPresets.push('babel-preset-minify')
 
 console.log('Starting webpack from', rootDir, 'in environment', isProd ? 'prod' : 'dev')
 

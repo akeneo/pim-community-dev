@@ -14,11 +14,12 @@ Feature: Edit and remove a product
     And I create a new product
     And I fill in the following information in the popin:
       | SKU             | boots |
-      | Choose a family | shoes |
+      | Choose a family | Boots |
     And I press the "Save" button in the popin
     And I wait to be on the "boots" product page
+    And I visit the "Sizes" group
     And I fill in the following information:
-      | Length | 5.0000 Centimeter |
+      | Size | 36 |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
 

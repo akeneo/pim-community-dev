@@ -130,14 +130,8 @@ define(
              * @param {string} tab
              */
             setCurrentTab: function (tab) {
-                var needRender = false;
-
                 if (this.getCurrentTab() !== tab) {
                     sessionStorage.setItem(this.currentKey, tab);
-                    needRender = true;
-                }
-
-                if (needRender) {
                     this.render();
                 }
 
