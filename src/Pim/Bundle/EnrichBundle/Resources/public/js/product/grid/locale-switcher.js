@@ -49,9 +49,10 @@ define([
              * {@inheritdoc}
             */
             configure() {
-                this.fetchLocales().then(locales => this.locales = locales);
-
-                return BaseForm.prototype.configure.apply(this, arguments);
+                return $.when(
+                    this.fetchLocales().then(locales => this.locales = locales),
+                    BaseForm.prototype.configure.apply(this, arguments)
+                );
             },
 
             /**
@@ -73,10 +74,10 @@ define([
              * @return {Array} An array of activated locales
              */
             fetchLocales() {
-                return FetcherRegistry.getFetcher('locale').search({
-                    activated: true,
-                    cached: false
-                });
+                const localeFetcher = FetcherRegistry.getFetcher('locale');
+                localeFetcher.clear();
+
+                return localeFetcher.search({ activated: true, cached: false });
             },
 
             /**
