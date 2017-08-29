@@ -438,7 +438,7 @@ Product values can be localizable and/or scopable:
 * *scopable* means its value depends on the scope (also called channel)
 * *localizable and scopable* means its value depends on the locale and the scope (also called channel)
 
-That's why product values always respect the following structure:
+That's why a product value always respect the following structure:
 
         array:3 [
           "locale" => "a locale code"
@@ -446,7 +446,7 @@ That's why product values always respect the following structure:
           "data" => "the value for the given locale and scope"
         ]
 
-And that's why, for the same attribute, you can have multiple product values:
+And that's why, for the same attribute, it's possible to have multiple product values:
 
         "a_localizable_attribute" => array:2 [
           0 => array:3 [
@@ -947,15 +947,12 @@ The standard format is used to:
 * store draft changes (EE)
 
 
-## Next version ?
+## Next version?
 
 ### Add more information in product format
 
-Currently, we have no information about the product values (attribute_type, etc). 
-If we want information, we have to request the database which is quite consuming. 
-We could add them, but we have to be careful as these data have not to be updated during a POST for instance.
+Currently, we have not enough information about the product values in the standard format. For instance, we don't know their attribute types. If we want this information, we have to request the database which can be quite consuming. We could add them, but we have to be careful as these data must not be updated during a POST for instance.
 
 ### Attribute format
 
-Currently, all options for an attribute are returned in the standard format. For instance, keys `date_min` & `date_max` are returned for a number attribute which is not relevant.
-Specific options could be return in a key `parameters` for example.
+Currently, all options of an attribute are returned in the standard format. For instance, keys `date_min` & `date_max` are returned for a number attribute even if it's not relevant. Specific options could be return in a key `parameters` for example.
