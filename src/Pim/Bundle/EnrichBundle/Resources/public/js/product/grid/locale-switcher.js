@@ -86,7 +86,6 @@ define([
             changeLocale(event) {
                 const { localeParamName } = this.config;
                 const localeCode = this.$(event.currentTarget).attr('data-locale');
-                FetcherRegistry.getFetcher('locale').clear();
                 router.redirectToRoute(this.config.routeName, { [localeParamName]: localeCode });
             }
         });

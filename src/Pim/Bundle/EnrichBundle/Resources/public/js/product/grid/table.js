@@ -195,8 +195,12 @@ define(
                 let params = this.getInitialParams();
                 const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
 
-                if (defaultView && state.view === null) {
+                var viewStored = DatagridState.get(gridName, ['view']);
+                if (!viewStored.view) {
                     DatagridState.refreshFiltersFromUrl(gridName);
+                }
+
+                if (defaultView && state.view === null) {
                     params = this.applyView(defaultView.id, params);
                     params = this.applyFilters(defaultView.filters, params);
                     params = this.applyColumns(defaultView.columns, params);
