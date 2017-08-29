@@ -2,6 +2,7 @@ Pim\Component\Catalog\Model\VariantProduct:
     constraints:
         - Pim\Component\Catalog\Validator\Constraints\VariantProductParent: ~
         - Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParent: ~
+        - Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxes: ~
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: [identifier]
             message: The same identifier is already set on another product
