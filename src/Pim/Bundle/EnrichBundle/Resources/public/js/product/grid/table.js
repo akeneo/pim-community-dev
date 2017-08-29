@@ -64,7 +64,7 @@ define(
              */
             loadDataGrid(resp) {
                 const { gridName } = this.config;
-                const dataLocale = UserContext.get('locale');
+                const dataLocale = UserContext.get('catalogLocale');
                 const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
 
                 if (state.columns) {
@@ -88,8 +88,6 @@ define(
                 const url = decodeURI(resp.metadata.options.url).split('?')[0];
                 const localeParam = $.param({ dataLocale });
                 resp.metadata.options.url =  `${url}?${localeParam}`;
-
-                console.log(url);
 
                 // Move to form extensions in TIP-733-2
                 datagridBuilder([
