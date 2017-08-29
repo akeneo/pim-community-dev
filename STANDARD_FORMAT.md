@@ -59,7 +59,6 @@ Let's consider a *bar* product, without any product value, except its identifier
 
 * an identifier
 * a family
-* a parent
 * several groups
 * several categories
 * several associations related to groups and/or other products
@@ -69,7 +68,6 @@ Its standard format would be the following:
         array:10 [
           "identifier" => "bar"
           "family" => "familyA"
-          "parent" => "parentA"
           "groups" => array:2 [
             0 => "groupA"
             1 => "groupB"
@@ -119,7 +117,6 @@ Its standard format would be the following:
 | ------------- | -------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | identifier    | string         | `"bar"`                                                                   | it's the identifier of the product                                                               |
 | family        | string         | `"familyA"`                                                               | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyInterface*                    |
-| parent        | string         | `"parentA"`                                                               | it represents the *code* of the *Pim\Component\Catalog\Model\ProductModelInterface*              |
 | groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*                     |
 | categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the object *Akeneo\Component\Classification\Model\CategoryInterface* |
 | enabled       | boolean        | `true`                                                                    |                                                                                                  |
@@ -771,16 +768,16 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 ### Group Type
         
         array:3 [
-          "code" => "GROUP"
+          "code" => "my_group_type"
           "labels" => array:1 [
-            "en_US" => "Group type"
+            "en_US" => "My beautiful group type"
           ]
         ]
         
 | type       | data structure | data example                  | notes                                                                                            |
 | ---------- | -------------- | ----------------------------- | ------------------------------------------------------------------------------------------------ |
-| code       | string         | `"GROUP"`                     | it's the identifier of the group type                                                            |
-| labels     | array          | `["en_US" => "GROUP type"]`   | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface* |
+| code       | string         | `"my_group_type"`             | it's the identifier of the group type                                                            |
+| labels     | array          | `["en_US" => "My beautiful group type"]` | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface* |
 
     
 ### Locale
@@ -825,6 +822,7 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | family                 | string         | `"family"`                                                                                                 | the code of the family of the family variant                                                            |
 | labels                 | array          | `["en_US" => "My family variant", "fr_FR" => "Ma variation de famille"]`                                   | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*        |
 | variant_attribute_sets | array          | `[["level" => 1, "axes" => ["a_simple_select"], "attributes" => ["an_attribute", "an_other_attribute"]]]`, | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
+
 
 ### File info
 
