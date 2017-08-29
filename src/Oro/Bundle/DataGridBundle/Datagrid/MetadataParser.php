@@ -7,6 +7,13 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * Metadata parser for grid data
+ *
+ * @author    Tamara Robichet <tamara.robichet@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class MetadataParser
 {
     const ROUTE = 'oro_datagrid_index';

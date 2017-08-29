@@ -47,7 +47,8 @@ define(
              */
             configure() {
                 this.listenTo(this.getRoot(), 'datagrid:getParams', this.setupCategoryTree);
-                BaseForm.prototype.configure.apply(this, arguments);
+
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**

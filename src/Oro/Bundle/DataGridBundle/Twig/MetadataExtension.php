@@ -6,9 +6,6 @@ use Oro\Bundle\DataGridBundle\Datagrid\MetadataParser;
 use Twig_Extension;
 use Twig_SimpleFunction;
 
-/**
- * @deprecated
- */
 class MetadataExtension extends Twig_Extension
 {
     /**

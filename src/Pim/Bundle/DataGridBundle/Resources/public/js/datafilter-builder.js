@@ -126,7 +126,7 @@ define(
             }
         });
 
-        // This is for the grids that don't yet use form extensions
+        // Drop in TIP-733-2
         DataFilterBuilder.init = () => new DataFilterBuilder();
 
         return DataFilterBuilder;

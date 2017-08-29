@@ -52,7 +52,9 @@ define(
              */
             setupLocale() {
                 const locale = window.location.hash.split('?dataLocale=')[1];
-                if (locale) UserContext.set('catalogLocale', locale);
+                if (locale) {
+                    UserContext.set('catalogLocale', locale);
+                }
             },
 
             /**
