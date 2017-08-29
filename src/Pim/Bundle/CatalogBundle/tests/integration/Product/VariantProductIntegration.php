@@ -37,6 +37,47 @@ class VariantProductIntegration extends TestCase
         );
     }
 
+    public function testVariantAxisValuesAreUnique(): void
+    {
+        $variantProduct1 = $this->get('pim_catalog.builder.variant_product')->createProduct('apollon_blue_m_1');
+        $this->get('pim_catalog.updater.product')->update($variantProduct1, [
+            'parent' => 'apollon_blue',
+            'values' => [
+                'size' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'm',
+                    ],
+                ],
+            ],
+        ]);
+        $errors = $this->get('validator')->validate($variantProduct1);
+        $this->assertEquals(0, $errors->count());
+
+        $this->get('pim_catalog.saver.product')->save($variantProduct1);
+
+        $variantProduct2 = $this->get('pim_catalog.builder.variant_product')->createProduct('apollon_blue_m_2');
+        $this->get('pim_catalog.updater.product')->update($variantProduct2, [
+            'parent' => 'apollon_blue',
+            'values' => [
+                'size' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'm',
+                    ],
+                ],
+            ],
+        ]);
+        $errors = $this->get('validator')->validate($variantProduct2);
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            'Cannot set value "[m]" for the attribute axis "size", as another sibling entity already has this value',
+            $errors->get(0)->getMessage()
+        );
+    }
+
     /**
      * {@inheritdoc}
      */
