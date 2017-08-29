@@ -11,7 +11,6 @@ define(
         'pim/common/column-list-view',
         'bootstrap-modal',
         'jquery-ui'
-
     ],
     function(
         PageableCollection,
