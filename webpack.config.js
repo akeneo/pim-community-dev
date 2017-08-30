@@ -24,6 +24,13 @@ if (isProd) babelPresets.push('babel-preset-minify')
 console.log('Starting webpack from', rootDir, 'in environment', isProd ? 'prod' : 'dev')
 
 module.exports = {
+    stats: {
+        hash: false,
+        maxModules: 5,
+        modules: false,
+        timings: true,
+        version: true
+    },
     target: 'web',
     entry: [
         'babel-polyfill',
