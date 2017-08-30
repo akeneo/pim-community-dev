@@ -42,7 +42,6 @@ module.exports = {
         filename: '[name].min.js',
         chunkFilename: '[name].bundle.js'
     },
-    devtool: 'cheap-source-map',
     resolve: {
         symlinks: false,
         alias: mapKeys(aliases, (path, key) => `${key}$`)
