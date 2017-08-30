@@ -17,7 +17,7 @@ Feature: Filter products by boolean field
       | shoes | tshirts | 0        |
       | hat   | tshirts | 0        |
       | socks | tshirts | 1        |
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 5 elements
     And I should see products pants, shirt, shoes, hat and socks
     And I should be able to use the following filters:
@@ -39,7 +39,7 @@ Feature: Filter products by boolean field
     And an enabled "hat" product
     And a disabled "shoes" product
     And a disabled "socks" product
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 5 elements
     And I should see products pants, shirt, shoes, hat and socks
     And I should be able to use the following filters:
@@ -56,7 +56,7 @@ Feature: Filter products by boolean field
       | shoes | tshirts | 0        |
       | hat   | tshirts | 0        |
       | socks | tshirts | 1        |
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 5 elements
     And I should see products pants, shirt, shoes, hat and socks
     When I show the filter "handmade"
@@ -64,7 +64,7 @@ Feature: Filter products by boolean field
     Then the grid should contain 2 elements
     And I should see entities pants and socks
     When I reload the page
-    And I am on the products page
+    And I am on the products grid
     And I show the filter "handmade"
     Then the grid should contain 2 elements
     And I should see entities pants and socks
@@ -74,9 +74,9 @@ Feature: Filter products by boolean field
     Given the following products:
       | sku              | family  | handmade |
       | lumberjack-shirt | tshirts | 1        |
-    And I am on the products page
+    And I am on the products grid
     And I show the filter "handmade"
     And I filter by "handmade" with operator "" and value "yes"
     When I am on the dashboard page
-    And I am on the products page
+    And I am on the products grid
     Then the criteria of "handmade" filter should be "yes"

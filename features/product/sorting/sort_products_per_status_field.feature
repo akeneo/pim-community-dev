@@ -23,7 +23,7 @@ Feature: Sort products per status field
     And I am logged in as "Mary"
 
   Scenario: Successfully sort products by status
-    Given I am on the products page
+    Given I am on the products grid
     And the grid should contain 7 elements
     And I should be able to sort the rows by Status
 
@@ -37,6 +37,6 @@ Feature: Sort products per status field
       | Whirlpool  | yes     |
       | Electrolux | no      |
       | Mug        | yes     |
-    When I am on the products page
+    When I am on the products grid
     And the grid should contain 7 elements
     And I should be able to sort the rows by Status

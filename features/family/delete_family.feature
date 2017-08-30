@@ -29,13 +29,13 @@ Feature: Delete a family
     Given the following product:
       | sku | family   |
       | foo | sneakers |
-    When I am on the products page
+    When I am on the products grid
     And I display the columns SKU, Family
     Then I should see the text "Sneakers"
     When I am on the "sneakers" family page
     And I press the secondary action "Delete"
     And I confirm the deletion
-    And I am on the products page
+    And I am on the products grid
     And I display the columns SKU, Family
     Then I should not see the text "Sneakers"
     When I edit the "foo" product

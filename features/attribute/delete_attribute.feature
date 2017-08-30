@@ -10,7 +10,7 @@ Feature: Delete an attribute
 
   @jira https://akeneo.atlassian.net/browse/PIM-5347
   Scenario: Successfully delete and recreate a text attribute used in a product and filter on it
-    Given I am on the products page
+    Given I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | caterpillar_1 |
@@ -20,7 +20,7 @@ Feature: Delete an attribute
     And I visit the "Product information" group
     And I change the "Name" to "My caterpillar"
     And I save the product
-    When I am on the products page
+    When I am on the products grid
     Then the grid should contain 1 elements
     And I should see products caterpillar_1
     And I should be able to use the following filters:
@@ -32,7 +32,7 @@ Feature: Delete an attribute
     And the following attribute:
       | code | label-en_US | type             | useable_as_grid_filter | localizable | group |
       | name | name        | pim_catalog_text | 1                      | 1           | other |
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 1 elements
     And I should see products caterpillar_1
     And I should be able to use the following filters:

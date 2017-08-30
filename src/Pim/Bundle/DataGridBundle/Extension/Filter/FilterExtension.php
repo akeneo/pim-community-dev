@@ -150,8 +150,7 @@ class FilterExtension extends AbstractExtension
         }
 
         $data->offsetAddToArray('state', ['filters' => $filtersState])
-            ->offsetAddToArray('filters', $filtersMetaData)
-            ->offsetAddToArray(MetadataObject::REQUIRED_MODULES_KEY, ['oro/datafilter-builder']);
+            ->offsetAddToArray('filters', $filtersMetaData);
     }
 
     /**

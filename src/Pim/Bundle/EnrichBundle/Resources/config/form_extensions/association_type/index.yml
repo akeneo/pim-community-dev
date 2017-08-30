@@ -12,6 +12,11 @@ extensions:
             tab: pim-menu-settings
             item: pim-menu-settings-association-type
 
+    pim-association-type-index-filters:
+        module: oro/datafilter-builder
+        parent: pim-association-type-index
+        targetZone: content
+
     pim-association-type-index-grid:
         module: pim/form/common/index/grid
         parent: pim-association-type-index

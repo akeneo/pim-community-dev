@@ -16,7 +16,7 @@ Feature: Filter products by category
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products by category
-    Given I am on the products page
+    Given I am on the products grid
     When I select the "2015 collection" tree
     Then I should see products purple-tshirt, green-tshirt and blue-jeans
     When I uncheck the "Include sub-categories" switch

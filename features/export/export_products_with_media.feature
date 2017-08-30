@@ -50,7 +50,7 @@ Feature: Export products with media
       | FLIPFLOP-1R | summer_collection | 50 EUR, 70 USD | 45   | red      | Model 1    | flipflop |
       | FLIPFLOP-1C | summer_collection | 55 EUR, 75 USD | 45   | charcoal | Model 1    | flipflop |
       | FLIPFLOP-1B | summer_collection | 50 EUR, 70 USD | 45   | black    | Model 1    | flipflop |
-    And I am on the products page
+    And I am on the products grid
     And I select rows FLIPFLOP-1R and FLIPFLOP-1C
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -59,7 +59,7 @@ Feature: Export products with media
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
     Then the file "picture" of products FLIPFLOP-1R and FLIPFLOP-1C should be "akeneo.jpg"
-    And I am on the products page
+    And I am on the products grid
     And I select row FLIPFLOP-1C
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation

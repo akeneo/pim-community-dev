@@ -14,7 +14,7 @@ Feature: Create product and save a new product value
       | code          | attributes                 |
       | super_sandals | rate_sale,tmp_price,weight |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | gladiator       |

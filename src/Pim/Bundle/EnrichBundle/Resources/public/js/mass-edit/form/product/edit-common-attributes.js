@@ -43,8 +43,9 @@ define(
              */
             configure: function () {
                 return $.when(
-                    FetcherRegistry.getFetcher('channel').fetch(UserContext.get('catalogScope')),
-                    FetcherRegistry.getFetcher('locale').fetchActivated()
+                    FetcherRegistry.getFetcher('channel')
+                        .fetch(UserContext.get('catalogScope'), {force_list_method: true}),
+                    FetcherRegistry.getFetcher('locale').search({ activated: true, cached: false })
                 ).then((channel, locales) => {
                     this.channel = channel;
                     this.locales = locales;
