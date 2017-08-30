@@ -42,6 +42,6 @@ Feature: Filter products per price
       | price  | >        | 40.5 EUR |                 |
     When I show the filter "price"
     And I filter by "price" with operator "is empty" and value " EUR"
-    And I should see product mug and pen
+    And I should see product mug
     And I filter by "price" with operator "is not empty" and value " EUR"
-    And I should see product postit and book
+    And I should see product postit

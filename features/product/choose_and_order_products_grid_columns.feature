@@ -7,14 +7,14 @@ Feature: Choose and order product grids columns
   Background:
     Given a "footwear" catalog configuration
     And the following products:
-      | sku     |
-      | sandals |
-      | basket  |
+      | sku     | family |
+      | sandals | heels  |
+      | basket  | heels  |
     And I am logged in as "Mary"
     And I am on the products page
 
   Scenario: Successfully display default columns
-    Then I should see the columns Sku, Image, Label, Family, Status, Complete, Created At, Updated At, Groups
+    Then I should see the columns Sku, Image, Label, Family, Status, Complete, Created At, Updated At, Groups, Variant products
 
   @skip
   Scenario: Successfully hide some columns
