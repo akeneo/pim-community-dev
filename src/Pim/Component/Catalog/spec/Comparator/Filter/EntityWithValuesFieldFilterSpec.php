@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ProductFieldFilterSpec extends ObjectBehavior
+class EntityWithValuesFieldFilterSpec extends ObjectBehavior
 {
     function let(NormalizerInterface $normalizer, ComparatorRegistry $comparatorRegistry)
     {
