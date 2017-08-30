@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
+use Oro\Bundle\DataGridBundle\Datagrid\MetadataParser;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,10 +23,12 @@ class DatagridController
 
     /**
      * @param EngineInterface $templating
+     * @param MetadataParser  $metadata
      */
-    public function __construct(EngineInterface $templating)
+    public function __construct(EngineInterface $templating, MetadataParser $metadata)
     {
         $this->templating = $templating;
+        $this->metadata   = $metadata;
     }
 
     /**
@@ -38,13 +41,11 @@ class DatagridController
      */
     public function loadAction(Request $request, $alias)
     {
-        return $this->templating->renderResponse(
-            'PimDataGridBundle:Datagrid:load.json.twig',
-            [
-                'alias'  => $alias,
-                'params' => $request->get('params', [])
-            ],
-            new JsonResponse()
-        );
+        $params = $request->get('params', []);
+
+        return new JsonResponse([
+            'metadata' => $this->metadata->getGridMetadata($alias, $params),
+            'data' => $this->metadata->getGridData($alias, $params)
+        ]);
     }
 }

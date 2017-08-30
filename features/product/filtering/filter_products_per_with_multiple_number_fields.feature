@@ -26,7 +26,7 @@ Feature: Filter products with multiples number fields filters
       | POST-2 | furniture | 03       |           |
       | POST-3 | furniture | 01       |           |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I show the filter "supplier"
     And I show the filter "component"
 

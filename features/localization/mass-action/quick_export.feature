@@ -15,7 +15,8 @@ Feature: Quick export many products with localized attributes from datagrid
     And I am logged in as "Julien"
 
   Scenario: Successfully quick export CSV products with localized attributes
-    Given I am on the products page
+    Given I am on the products grid
+    And I switch the locale to "en_US"
     When I select rows boots, sneakers, sandals and pump
     And I press "CSV (tous les attributs)" on the "Export rapide" dropdown button
     And I wait for the "csv_product_quick_export" quick export to finish
@@ -37,7 +38,8 @@ Feature: Quick export many products with localized attributes from datagrid
     """
 
   Scenario: Successfully quick export XLSX products with localized attributes
-    Given I am on the products page
+    Given I am on the products grid
+    And I switch the locale to "en_US"
     When I select rows boots, sneakers, sandals and pump
     And I press "Excel (tous les attributs)" on the "Export rapide" dropdown button
     And I wait for the "xlsx_product_quick_export" quick export to finish

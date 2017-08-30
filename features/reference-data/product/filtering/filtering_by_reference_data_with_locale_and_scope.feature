@@ -19,7 +19,7 @@ Feature: Filter products by reference data with locale and scope
       | postit  | lace_fabric | Cotton,Flax | tablet | en_US  |
       | postit  | lace_fabric | Straw       | mobile | en_US  |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully filter products by reference data
     Given I should not see the filter cap_color

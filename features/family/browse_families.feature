@@ -51,7 +51,7 @@ Feature: Browse families
       | tbs         | sneakers |
       | vans        | sneakers |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     When I sort by "family" value ascending
     Then the rows should be sorted ascending by family
     When I select rows caterpillar and dr-martens

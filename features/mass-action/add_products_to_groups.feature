@@ -12,7 +12,7 @@ Feature: Add products to many groups at once via a form
       | hiking_shoes |
       | moon_boots   |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     Given I select rows kickers, hiking_shoes and moon_boots
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Add to groups" operation

@@ -8,7 +8,7 @@ Feature: Display the product history
   Scenario: Update product history when a linked attribute option is removed
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | boots |
@@ -40,7 +40,7 @@ Feature: Display the product history
   Scenario: Update product history when a linked category is removed
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU | boots |
@@ -72,7 +72,7 @@ Feature: Display the product history
   Scenario: Update product history when multiple linked categories are removed
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU | boots |
@@ -108,7 +108,7 @@ Feature: Display the product history
   Scenario: Update product history when a linked attribute is removed
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | boots |
@@ -139,7 +139,7 @@ Feature: Display the product history
   Scenario: Update product history when multiple linked attributes are removed
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | boots |

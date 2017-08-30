@@ -1,0 +1,73 @@
+extensions:
+    pim-product-index:
+        module: pim/common/simple-view
+        targetZone: self
+        config:
+            template: pim/template/product/index
+            templateParams:
+                title: Products
+                gridName: product-grid
+
+    pim-product-index-create-button:
+        module: pim/form/common/index/create-button
+        parent: pim-product-index
+        targetZone: buttons
+        aclResourceId: pim_enrich_product_create
+        config:
+           title:     Create product
+           modalForm: pim-product-create-modal
+
+    pim-product-index-locale-switcher:
+        module: pim/grid/locale-switcher
+        parent: pim-product-index
+        targetZone: title-buttons
+        position: 10
+        config:
+            routeName: pim_enrich_product_index
+            localeParamName: dataLocale
+
+    pim-product-index-view-selector:
+        module: pim/grid/view-selector
+        parent: pim-product-index
+        targetZone: title-buttons
+        position: 20
+        config:
+            gridName: product-grid
+
+    pim-product-index-category-tree:
+        module: pim/grid/category-tree
+        parent: pim-product-index
+        targetZone: tree
+        aclResourceId: pim_enrich_product_category_list
+        config:
+            gridName: product-grid
+
+    pim-product-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-product-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-products
+
+    pim-product-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-product-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-product-index-grid-filters:
+        module: oro/datafilter-builder
+        parent: pim-product-index
+        targetZone: grid
+
+    pim-product-index-grid:
+        module: pim/grid/table
+        parent: pim-product-index
+        targetZone: grid
+        config:
+            gridName: product-grid
+            localeParamName: dataLocale
+            datagridLoadUrl: pim_datagrid_load
+

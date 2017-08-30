@@ -7,7 +7,7 @@ Feature: Display the product history
   Scenario: Display product updates
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU | sandals-001 |
@@ -107,7 +107,7 @@ Feature: Display the product history
   Scenario: Update product history when updating product media
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | boots |
