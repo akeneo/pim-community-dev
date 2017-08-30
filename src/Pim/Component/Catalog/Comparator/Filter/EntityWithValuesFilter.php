@@ -29,7 +29,7 @@ class EntityWithValuesFilter implements FilterInterface
     /** @var array */
     protected $entityFields;
 
-    /** @var ProductFilterInterface */
+    /** @var FilterInterface */
     protected $productFieldFilter;
 
     /** @var array[] */
@@ -39,14 +39,14 @@ class EntityWithValuesFilter implements FilterInterface
      * @param NormalizerInterface          $normalizer
      * @param ComparatorRegistry           $comparatorRegistry
      * @param AttributeRepositoryInterface $attributeRepository
-     * @param ProductFilterInterface       $productFieldFilter
+     * @param FilterInterface              $productFieldFilter
      * @param array                        $entityFields
      */
     public function __construct(
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
         AttributeRepositoryInterface $attributeRepository,
-        ProductFilterInterface $productFieldFilter,
+        FilterInterface $productFieldFilter,
         array $entityFields
     ) {
         $this->normalizer = $normalizer;
@@ -80,7 +80,7 @@ class EntityWithValuesFilter implements FilterInterface
             }
         }
 
-        $productFieldsFilter = $this->productFieldFilter->filter($product, $fields);
+        $productFieldsFilter = $this->productFieldFilter->filter($entity, $fields);
         $result = $this->mergeValueToResult($result, $productFieldsFilter);
 
         return $result;

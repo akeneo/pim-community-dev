@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\Comparator\Filter;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Comparator\ComparatorInterface;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
-use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
+use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -16,7 +16,7 @@ class EntityWithValuesFilterSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
         AttributeRepositoryInterface $attributeRepository,
-        ProductFilterInterface $productFieldFilter
+        FilterInterface $productFieldFilter
     ) {
         $this->beConstructedWith($normalizer, $comparatorRegistry, $attributeRepository, $productFieldFilter, ['family', 'enabled']);
     }

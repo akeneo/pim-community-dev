@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Comparator\Filter;
 
-use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -17,7 +16,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductFieldFilter implements ProductFilterInterface
+class ProductFieldFilter implements FilterInterface
 {
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -46,7 +45,7 @@ class ProductFieldFilter implements ProductFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function filter(ProductInterface $product, array $newFields)
+    public function filter(EntityWithValuesInterface $product, array $newFields): array
     {
         $originalProduct = $this->normalizer->normalize($product, 'standard');
         $result = [];
