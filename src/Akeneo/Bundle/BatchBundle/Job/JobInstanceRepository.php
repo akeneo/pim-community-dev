@@ -25,6 +25,20 @@ class JobInstanceRepository extends EntityRepository implements IdentifiableObje
     /**
      * {@inheritdoc}
      */
+    public function findOneByCode($code)
+    {
+        $qb = $this->createQueryBuilder('job_instance');
+        $qb
+            ->select('job_instance')
+            ->where($qb->expr()->eq('job_instance.code', ':code'))
+            ->setParameter('code', $code);
+
+        return $qb->getQuery()->getArrayResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getIdentifierProperties()
     {
         return ['code'];

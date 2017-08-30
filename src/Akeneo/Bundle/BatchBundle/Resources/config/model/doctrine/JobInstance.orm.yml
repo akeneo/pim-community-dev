@@ -1,8 +1,7 @@
 Akeneo\Component\Batch\Model\JobInstance:
     type: entity
     table: akeneo_batch_job_instance
-    # TODO: should be like other entities
-    #changeTrackingPolicy: DEFERRED_EXPLICIT
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     uniqueConstraints:
         searchunique_idx:
             columns:
