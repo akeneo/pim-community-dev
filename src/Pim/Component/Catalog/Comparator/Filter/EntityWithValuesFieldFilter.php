@@ -6,11 +6,10 @@ namespace Pim\Component\Catalog\Comparator\Filter;
 
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Filter product's fields to have only updated or new values
+ * Filter entity with values fields to have only updated or new values
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -25,38 +24,38 @@ class EntityWithValuesFieldFilter implements FilterInterface
     protected $comparatorRegistry;
 
     /** @var array */
-    protected $productFields;
+    protected $entityFields;
 
     /**
      * @param NormalizerInterface $normalizer
      * @param ComparatorRegistry  $comparatorRegistry
-     * @param array               $productFields
+     * @param array               $entityFields
      */
     public function __construct(
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
-        array $productFields
+        array $entityFields
     ) {
         $this->normalizer = $normalizer;
         $this->comparatorRegistry = $comparatorRegistry;
-        $this->productFields = $productFields;
+        $this->entityFields = $entityFields;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function filter(EntityWithValuesInterface $product, array $newFields): array
+    public function filter(EntityWithValuesInterface $entity, array $newFields): array
     {
-        $originalProduct = $this->normalizer->normalize($product, 'standard');
+        $originalEntity = $this->normalizer->normalize($entity, 'standard');
         $result = [];
 
         foreach ($newFields as $field => $value) {
-            if (!in_array($field, $this->productFields)) {
+            if (!in_array($field, $this->entityFields)) {
                 throw new \LogicException(sprintf('Cannot filter value of field "%s"', $field));
             }
 
             $comparator = $this->comparatorRegistry->getFieldComparator($field);
-            $originalData = !isset($originalProduct[$field]) ? null : $originalProduct[$field];
+            $originalData = !isset($originalEntity[$field]) ? null : $originalEntity[$field];
             $diff = $comparator->compare($value, $originalData);
 
             if (null !== $diff) {
