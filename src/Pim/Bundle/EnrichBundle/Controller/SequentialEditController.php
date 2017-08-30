@@ -91,6 +91,15 @@ class SequentialEditController
 
         $parameters = $this->parameterParser->parse($request);
 
+        # PIM-6360: to refactor for the product models sequential edit to work
+        $filteredIds = [];
+        foreach ($parameters['values'] as $id) {
+            if (1 !== preg_match('/^product_model_/', $id)) {
+                $filteredIds[] = $id;
+            }
+        }
+        $parameters['values'] = $filteredIds;
+
         $sequentialEdit = $this->seqEditManager->createEntity(
             $this->massActionDispatcher->dispatch($parameters),
             $this->userContext->getUser()
