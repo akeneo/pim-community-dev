@@ -41,7 +41,7 @@ Feature: Import variant products
     And I wait for the "csv_default_product_import" job to finish
     And the family of "SKU-001" should be "clothing"
 
-  Scenario: Import variant product without optional attributes, they are ignored
+  Scenario: Import variant product by ignoring attributes that are not part of the family
     Given the following root product model "code-001" with the variant family clothing_color_size
     And the following sub product model "code-002" with "code-001" as parent
     And the following CSV file to import:

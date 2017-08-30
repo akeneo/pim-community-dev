@@ -4,17 +4,16 @@ namespace spec\Pim\Component\Connector\Processor\Denormalization\AttributeFilter
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
-use Pim\Component\Catalog\Updater\Setter\AttributeSetterInterface;
 use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
-use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\Product;
-use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductAttributeFilter;
 use Prophecy\Argument;
 
-class ProductSpec extends ObjectBehavior
+class ProductAttributeFilterSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $productModelRepository,
@@ -25,7 +24,7 @@ class ProductSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(Product::class);
+        $this->shouldHaveType(ProductAttributeFilter::class);
     }
 
     function it_is_an_attribute_filter()

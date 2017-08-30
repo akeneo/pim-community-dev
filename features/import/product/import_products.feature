@@ -73,7 +73,7 @@ Feature: Execute a job
     And the english localizable value name of "SKU-001" should be "Donec"
     And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
 
-  Scenario: Import product without optional attributes, they are ignored
+  Scenario: Successfully import product by ignoring attributes that are not part of the family
     Given the following CSV file to import:
       """
       sku;family;groups;categories;name-en_US;description-en_US-tablet;comment

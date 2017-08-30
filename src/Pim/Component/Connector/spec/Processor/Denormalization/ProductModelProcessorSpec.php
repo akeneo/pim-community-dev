@@ -13,7 +13,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductModel;
+use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductModelAttributeFilter;
 use Pim\Component\Connector\Processor\Denormalization\ProductModelProcessor;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -29,7 +29,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
         ValidatorInterface $validator,
         FilterInterface $productModelFilter,
         ObjectDetacherInterface $objectDetacher,
-        ProductModel $attributeFilter
+        ProductModelAttributeFilter $attributeFilter
     ) {
         $this->beConstructedWith(
             $productModelFactory,
