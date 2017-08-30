@@ -205,6 +205,16 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $client->getResponse()->getContent());
     }
 
+    public function testToUpdateAViewableProductWithoutChange()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $data = '{"enabled": true}';
+        $client->request('PATCH', 'api/rest/v1/products/product_viewable_by_everybody_1', [], [], [], $data);
+        $this->assertSame(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
+        $this->assertEmpty($client->getResponse()->getContent());
+    }
+
     /**
      * @param string $identifier                code of the product
      * @param string $data                      data submitted
