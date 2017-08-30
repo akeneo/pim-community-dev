@@ -27,7 +27,7 @@ module.exports = function(content) {
                     .mapValues(alias => alias.replace(/\$$/, ''))
                     .value()
 
-    let modulePath = this._module.rawRequest
+    let modulePath = this._module.userRequest
     const moduleExt = path.extname(modulePath)
 
     modulePath = modulePath.replace(moduleExt, '')

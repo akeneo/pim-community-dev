@@ -14,17 +14,21 @@ const AddToContextPlugin = require('./frontend/add-context-plugin')
 const LiveReloadPlugin = require('webpack-livereload-plugin')
 
 const babelPresets = [['babel-preset-env', {
-  "targets": {
-    "browsers": ["firefox >= 45"]
-  }
+    targets: {
+        browsers: ['firefox >= 45']
+    }
 }]];
+
 if (isProd) babelPresets.push('babel-preset-minify')
 
 console.log('Starting webpack from', rootDir, 'in environment', isProd ? 'prod' : 'dev')
 
 module.exports = {
     target: 'web',
-    entry: [resolve(rootDir, './web/bundles/pimenrich/js/index.js')],
+    entry: [
+        'babel-polyfill',
+        resolve(rootDir, './web/bundles/pimenrich/js/index.js')
+    ],
     output: {
         path: resolve('./web/dist/'),
         publicPath: '/dist/',
