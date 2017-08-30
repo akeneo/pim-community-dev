@@ -22,7 +22,7 @@ Feature: Show a product
       | boots   | boots      | Party boots     | 80 EUR, 90 USD   | M    | blue       |
 
   Scenario: Seeing the view actions on the product grid
-    Given I am on the products page
+    Given I am on the products grid
     And I select the "Shoes" tree
     Then I should be able to view the "View the product" action of the row which contains "rangers"
     And I should not be able to view the "Edit attributes of the product" action of the row which contains "rangers"
@@ -31,7 +31,7 @@ Feature: Show a product
 
   @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4591
   Scenario: Being able to view a product I can not edit
-    Given I am on the products page
+    Given I am on the products grid
     And I should be able to access the show "boots" product page
     Then I should not be able to access the edit "boots" product page
     And I should be able to access the edit "rangers" product page

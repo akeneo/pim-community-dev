@@ -26,7 +26,7 @@ Feature: Revert a product to a previous version
     And I am logged in as "Julia"
 
   Scenario: Successfully revert a product
-    Given I am on the products page
+    Given I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | shirt   |
@@ -44,7 +44,7 @@ Feature: Revert a product to a previous version
       | 1       | Julia Stark | enabled  | 1     |
 
   Scenario: Successfully revert the status of a product (disabled)
-    Given I am on the products page
+    Given I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | shirt   |
@@ -58,7 +58,7 @@ Feature: Revert a product to a previous version
     Then product "shirt" should be enabled
 
   Scenario: Successfully revert the status of a product (enable)
-    Given I am on the products page
+    Given I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | shirt   |
@@ -76,14 +76,14 @@ Feature: Revert a product to a previous version
     Then product "shirt" should be disabled
 
   Scenario: Successfully revert the family of a product
-    Given I am on the products page
+    Given I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | jean  |
       | family | Pants |
     And I press the "Save" button in the popin
     And I wait to be on the "jean" product page
-    And I am on the products page
+    And I am on the products grid
     Then I select rows jean
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Change the family of products" operation
@@ -99,7 +99,7 @@ Feature: Revert a product to a previous version
     Then the family of product "jean" should be "pants"
 
   Scenario: Successfully revert the category of a product
-    Given I am on the products page
+    Given I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU | sandals |

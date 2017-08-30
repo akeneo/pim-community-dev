@@ -10,7 +10,7 @@ Feature: Revert product attributes to a previous version
 
   @jira https://akeneo.atlassian.net/browse/PIM-3301
   Scenario: Successfully revert a product date and leave it empty
-    Given I am on the products page
+    Given I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | akeneo-jacket |
@@ -29,7 +29,7 @@ Feature: Revert product attributes to a previous version
       | release_date-mobile |  |
 
   Scenario: Successfully revert a date attribute with original empty value
-    Given I am on the products page
+    Given I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | akeneo-jacket |
@@ -48,7 +48,7 @@ Feature: Revert product attributes to a previous version
       | release_date-mobile |  |
 
   Scenario: Successfully revert a date attribute with original non empty value
-    Given I am on the products page
+    Given I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | akeneo-jacket |

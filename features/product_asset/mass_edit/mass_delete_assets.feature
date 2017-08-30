@@ -7,7 +7,7 @@ Feature: Mass delete assets
   Background:
     Given the "clothing" catalog configuration
     And I am logged in as "Pamela"
-    And I am on the assets page
+    And I am on the assets grid
 
   Scenario: Successfully mass delete many assets
     Given I select rows minivan, machine and bridge

@@ -12,6 +12,11 @@ extensions:
             tab: pim-menu-settings
             item: pim-menu-enrich-rule
 
+    pim-rule-index-filters:
+        module: oro/datafilter-builder
+        parent: pim-rule-index
+        targetZone: content
+
     pim-rule-index-grid:
         module: pim/form/common/index/grid
         parent: pim-rule-index

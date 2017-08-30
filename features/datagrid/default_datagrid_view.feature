@@ -16,7 +16,7 @@ Feature: Published products datagrid views
     And I am logged in as "Mary"
 
   Scenario: A contributor can choose his default published products datagrid view from his profile
-    Given I am on the published products page
+    Given I am on the published products grid
     And I filter by "family" with operator "in list" and value "Sneakers"
     And I create the view:
       | new-view-label | Sneakers only |
@@ -33,11 +33,11 @@ Feature: Published products datagrid views
     Then I should not see the text "There are unsaved changes."
     When I logout
     And I am logged in as "Julia"
-    And I am on the published products page
+    And I am on the published products grid
     Then I should see published products black-boots, purple-sneakers and black-sneakers
     When I logout
     And I am logged in as "Mary"
-    And I am on the published products page
+    And I am on the published products grid
     Then I should see the text "Sneakers only"
     And I should see published products purple-sneakers and black-sneakers
     But I should not see product black-boots

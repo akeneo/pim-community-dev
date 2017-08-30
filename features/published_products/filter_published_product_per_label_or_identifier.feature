@@ -23,7 +23,7 @@ Feature: Filter published products by label or identifier field
       | 1258   | office | Post it | 1212 |
       | 6589   | office | paper   | post |
       | mug    | home   | Mug     | 4212 |
-    And I am on the published products page
+    And I am on the published products grid
     Then the grid should contain 3 elements
     And I should see published products 1258, 6589 and mug
     And I should be able to use the following filters:

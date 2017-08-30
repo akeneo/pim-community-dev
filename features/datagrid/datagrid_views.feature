@@ -13,7 +13,7 @@ Feature: Datagrid views
       | label          | alias        | columns         | filters   |
       | Granted view   | product-grid | sku             | f[sku]=-1 |
       | Forbidden view | product-grid | sku, main_color | f[sku]=-1 |
-      And I am on the products page
+      And I am on the products grid
       Then I should see the "Default view" view
       And I should see the "Granted view" view
       And I should not see the "Forbidden view" view
@@ -23,7 +23,7 @@ Feature: Datagrid views
       | label          | alias        | columns | filters                  |
       | Granted view   | product-grid | sku     | f[sku]=-1                |
       | Forbidden view | product-grid | sku     | f[main_color][value]=red |
-    And I am on the products page
+    And I am on the products grid
     Then I should see the "Default view" view
     And I should see the "Granted view" view
     And I should not see the "Forbidden view" view
@@ -33,7 +33,7 @@ Feature: Datagrid views
       | label          | alias        | columns | filters                            |
       | Granted view   | product-grid | sku     | f[sku]=-1                          |
       | Forbidden view | product-grid | sku     | f[category][value][categoryId]=999 |
-    And I am on the products page
+    And I am on the products grid
     Then I should see the "Default view" view
     And I should see the "Granted view" view
     And I should not see the "Forbidden view" view

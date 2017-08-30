@@ -16,7 +16,7 @@ Feature: Ensure that a published product is safe
     Given I am on the "my-jacket" product page
     And I press the secondary action "Delete"
     And I confirm the removal
-    Then I am on the products page
+    Then I am on the products grid
     And I should see product my-jacket
 
   @skip @jira https://akeneo.atlassian.net/browse/PIM-6314
@@ -87,7 +87,7 @@ Feature: Ensure that a published product is safe
     Given the following products:
       | sku          | categories | family  |
       | black-jacket | jackets    | jackets |
-    And I am on the products page
+    And I am on the products grid
     And I select rows my-jacket and black-jacket
     And I press "Delete" on the "Bulk Actions" dropdown button
     And I confirm the removal

@@ -8,7 +8,7 @@ Feature: Update product history when rules are executed
     Given a "footwear" catalog configuration
     And I add the "french" locale to the "mobile" channel
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU             | converse-sneakers |
@@ -39,7 +39,7 @@ Feature: Update product history when rules are executed
       """
     And the product rule "set_description" is executed
     And the history of the product "converse-sneakers" has been built
-    And I am on the products page
+    And I am on the products grid
     And I am on the "converse-sneakers" product page
     And I visit the "History" column tab
     Then there should be 3 updates
@@ -85,7 +85,7 @@ Feature: Update product history when rules are executed
     And the history of the product "converse-sneakers" has been built
     And the product rule "set_name" is executed
     And the history of the product "converse-sneakers" has been built
-    And I am on the products page
+    And I am on the products grid
     And I am on the "converse-sneakers" product page
     And I visit the "History" column tab
     Then there should be 4 updates

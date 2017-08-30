@@ -20,14 +20,14 @@ Feature: Publish many products at once
       | yellow-sneakers | Yellow     | Nylon                   |
 
   Scenario: Successfully publish several products with reference data
-    Given I am on the published products page
+    Given I am on the published products grid
     Then the grid should contain 0 elements
-    When I am on the products page
+    When I am on the products grid
     And I select rows red-heels, blue-sneakers and yellow-sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Publish products" operation
     And I should see the text "The 3 selected products will be published"
     And I confirm mass edit
     And I wait for the "publish_product" job to finish
-    When I am on the published products page
+    When I am on the published products grid
     Then the grid should contain 3 elements

@@ -22,7 +22,7 @@ Feature: Quick export products with user permissions applied
     And I fill in the following information:
       | Allowed to view attributes | IT support |
     And I save the attribute group
-    When I am on the products page
+    When I am on the products grid
     And I select rows blackhoodie and greenhoodie
     And I press "CSV (All attributes)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_quick_export" quick export to finish
@@ -51,7 +51,7 @@ Feature: Quick export products with user permissions applied
     And I fill in the following information:
       | Allowed to view attributes | IT support |
     And I save the attribute group
-    When I am on the published products page
+    When I am on the published products grid
     And I select rows blackhoodie and greenhoodie
     And I press "CSV (All attributes)" on the "Quick Export" dropdown button
     And I wait for the "csv_published_product_quick_export" quick export to finish
@@ -78,7 +78,7 @@ Feature: Quick export products with user permissions applied
     And I fill in the following information:
       | Allowed to view product information | IT support |
     And I save the locale
-    When I am on the products page
+    When I am on the products grid
     And I select rows blackhoodie and greenhoodie
     And I press "CSV (All attributes)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_quick_export" quick export to finish

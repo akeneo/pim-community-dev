@@ -7,7 +7,7 @@ Feature: Follow project calculation job
   Scenario: A project creator can see the project calculation on job in the process tracker
     Given the "teamwork_assistant" catalog configuration
     And I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     And I click on the create project button
     And I fill in the following information in the popin:
       | project-label       | Collection 2017                 |

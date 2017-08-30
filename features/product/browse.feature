@@ -27,7 +27,7 @@ Feature: Browse products I have access to
 
   @skip
   Scenario: Browse products
-    When I am on the products page
+    When I am on the products grid
     And I select the "Shoes" tree
     Then I should see products rangers and loafer
     And I select the "Slippers" tree

@@ -21,7 +21,7 @@ Feature: Unpublish many products at once
 
   @jira https://akeneo.atlassian.net/browse/PIM-4600
   Scenario: Successfully unpublish several products with reference data
-    And I am on the published products page
+    And I am on the published products grid
     Then the grid should contain 3 elements
     And I select rows red-heels and blue-sneakers
     And I press the "Change product information" button
@@ -29,12 +29,12 @@ Feature: Unpublish many products at once
     Then I should see the text "The 2 selected products will be unpublished"
     When I confirm mass edit
     And I wait for the "unpublish_product" job to finish
-    And I am on the published products page
+    And I am on the published products grid
     Then the grid should contain 1 element
 
   @jira https://akeneo.atlassian.net/browse/PIM-4895
   Scenario: Redirection to unpublished product after mass edit
-    When I am on the published products page
+    When I am on the published products grid
     And I select rows red-heels and blue-sneakers
     And I press the "Change product information" button
     When I choose the "Unpublish products" operation

@@ -12,12 +12,12 @@ Feature: Display channels on the datagrid
 
   Scenario: Display code of channel if no translation is available for the UI language
     Given I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     Then I should see the text "Tablet"
     When I am on the "tablet" channel page
     And I change the "Locales" to "English (United States), Spanish (Mexico)"
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
-    When I am on the products page
+    When I am on the products grid
     And I switch the locale to "es_MX"
     Then I should see the text "[tablet]"

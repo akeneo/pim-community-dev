@@ -7,7 +7,7 @@ Feature: Filter product assets
   Background:
     Given a "clothing" catalog configuration
     And I am logged in as "Pamela"
-    And I am on the assets page
+    And I am on the assets grid
 
   Scenario Outline: Successfully filter product assets
     When I show the filter "<filter>"

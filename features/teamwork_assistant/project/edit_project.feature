@@ -10,7 +10,7 @@ Feature: Edit basic project informations
       | sku         | family   | categories        |
       | blue_sandal | Sneakers | summer_collection |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I click on the create project button
     And I fill in the following information in the popin:
       | project-label    | Star Wars Collection |
@@ -22,7 +22,7 @@ Feature: Edit basic project informations
 
   Scenario: A project creator can edit his project
     Given I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I switch view selector type to "Projects"
     And I should see the text "Star Wars Collection"
     When I click on the edit project button
@@ -44,20 +44,20 @@ Feature: Edit basic project informations
 
   Scenario: A contributor doesn't see the button to edit a project if he's not the creator
     Given I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     When I switch view selector type to "Projects"
     Then I should see the text "Star Wars Collection"
     But I should not see the "Edit project" icon button
 
   Scenario: Project edition doesn't have same validation rules than project creation
     Given I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I click on the create project button
     And I fill in the following information in the popin:
       | project-label    | Existing project |
       | project-due-date | 01/02/2051       |
     And I press the "Save" button
-    And I am on the products page
+    And I am on the products grid
     And I switch view selector type to "Projects"
     And I apply the "Star Wars Collection" project
     Then I should be on the view "Star Wars Collection"

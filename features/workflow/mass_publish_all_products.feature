@@ -27,7 +27,7 @@ Feature: Publish many products at once
 
   Scenario: Successfully publish all products
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I select rows unionjack and jackadi
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
@@ -38,13 +38,13 @@ Feature: Publish many products at once
   @jira https://akeneo.atlassian.net/browse/PIM-3784
   Scenario: Successfully publish all products
     Given I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I select rows unionjack
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
     And I confirm mass edit
     And I wait for the "publish_product" job to finish
-    And I am on the published products page
+    And I am on the published products grid
     And I should see product unionjack
     Then the row "unionjack" should contain:
       | column   | value |

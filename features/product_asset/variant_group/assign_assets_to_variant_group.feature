@@ -34,7 +34,7 @@ Feature: Assign assets to a variant group
     And I visit the "Media" group
     Then the "Front view" asset gallery should contain paint, machine
 
-  @jira https://akeneo.atlassian.net/browse/PIM-6267
+  @skip @info Will be removed in PIM-6444 @jira https://akeneo.atlassian.net/browse/PIM-6267
   Scenario: Picking assets for a variant group doesn't affect product selection of the variant group
     Given I am on the "hh_jackets" variant group page
     Then the row "jacket" should be checked

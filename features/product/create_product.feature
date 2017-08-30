@@ -10,7 +10,7 @@ Feature: Product creation
       | attribute group | user group | access |
       | other           | Manager    | none   |
     And I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     When I create a new product
     And I press the "Save" button in the popin
     Then I should see the text "No attribute is configured as a product identifier or you don't have the rights to edit it."

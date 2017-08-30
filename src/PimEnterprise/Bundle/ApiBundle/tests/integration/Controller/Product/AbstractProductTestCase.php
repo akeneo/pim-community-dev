@@ -281,8 +281,9 @@ JSON;
     /**
      * @param Response $response
      * @param string   $message
+     * @param string   $documentation
      */
-    protected function assertError422(Response $response, $message)
+    protected function assertError422(Response $response, $message, $documentation)
     {
         $expected = <<<JSON
 {
@@ -290,7 +291,7 @@ JSON;
   "message": "{$message}. Check the standard format documentation.",
   "_links": {
     "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#post_products"
+      "href": "http://api.akeneo.com/api-reference.html#{$documentation}"
     }
   }
 }

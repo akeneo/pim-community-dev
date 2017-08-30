@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Component\Catalog\tests\integration\Security\Product;
+namespace PimEnterprise\Component\Catalog\tests\integration\Security;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\TestEnterprise\Integration\TestCase;

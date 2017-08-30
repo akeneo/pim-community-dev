@@ -43,7 +43,7 @@ Feature: Follow project completeness
 
   Scenario: Successfully refresh the project completeness after a product update
     Given I am logged in as "Julia"
-    When I am on the products page
+    When I am on the products grid
     And I filter by "family" with operator "in list" and value "TShirts"
     And I should be on the products page
     And I click on the create project button
@@ -62,6 +62,7 @@ Feature: Follow project completeness
       | 0    | 3           | 0    |
     When I am on the "tshirt-the-witcher-3" product page
     And I switch the locale to "fr_FR"
+    And I visit the "All" group
     And I fill in the following information:
       | Description | Ma description |
     And I press the "Save" button
@@ -74,6 +75,7 @@ Feature: Follow project completeness
       | 0    | 3           | 0    |
     When I am on the "tshirt-the-witcher-3" product page
     And I switch the locale to "en_US"
+    And I visit the "All" group
     And I fill in the following information:
       | Description | Description |
     And I press the "Save" button

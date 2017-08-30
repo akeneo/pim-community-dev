@@ -15,7 +15,7 @@ Feature: Publish a product
     And I edit the "my-jacket" product
     When I press the secondary action "Publish"
     And I confirm the publishing
-    And I am on the published products page
+    And I am on the published products grid
     Then the grid should contain 1 elements
     And I should see product my-jacket
 
@@ -71,7 +71,7 @@ Feature: Publish a product
     And I edit the "my-jacket" product
     When I press the secondary action "Publish"
     And I confirm the publishing
-    And I am on the published products page
+    And I am on the published products grid
     Then the grid should contain 1 elements
     And I should see product my-jacket
     And I am on the "my-jacket" published product show page
@@ -97,7 +97,7 @@ Feature: Publish a product
     And I save the product
     When I press the secondary action "Publish"
     And I confirm the publishing
-    And I am on the published products page
+    And I am on the published products grid
     Then the grid should contain 1 elements
     And I should see product my-jacket
     And I am on the "my-jacket" published product show page

@@ -19,7 +19,7 @@ Feature: Filter products by assets
     And I save the product
 
   Scenario: Successfully filter products by assets
-    Given I am on the products page
+    Given I am on the products grid
     And the grid should contain 2 elements
     When I should be able to use the following filters:
       | filter     | operator | value        | result |

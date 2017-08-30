@@ -14,7 +14,7 @@ Feature: Products datagrid views
       | black-sneakers  | sneakers |
       | black-boots     | boots    |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: A contributor can create a product datagrid view
     Given I filter by "family" with operator "in list" and value "Sneakers"
@@ -79,11 +79,11 @@ Feature: Products datagrid views
     Then I should not see the text "There are unsaved changes."
     When I logout
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     Then I should see products black-boots, purple-sneakers and black-sneakers
     When I logout
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     Then I should see the text "Sneakers only"
     And I should see products purple-sneakers and black-sneakers
     But I should not see product black-boots
@@ -103,7 +103,7 @@ Feature: Products datagrid views
       | Default product grid view | Sneakers only |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
-    When I am on the products page
+    When I am on the products grid
     Then I should see the text "Sneakers only"
     When I delete the view
     And I confirm the deletion
@@ -113,6 +113,6 @@ Feature: Products datagrid views
     But I should not see the text "Sneakers only"
 
   Scenario: The view type switcher is not displayed on the published product grid
-    Given I am on the published products page
+    Given I am on the published products grid
     Then I should see the text "Default view"
     But I should not see the text "Views"

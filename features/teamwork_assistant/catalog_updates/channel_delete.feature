@@ -48,7 +48,7 @@ Feature: Catalog updates - Remove a channel used by a project
     When I am on the dashboard page
     Then I should not see the "Collection Summer 2030" project in the widget
     But I should see the "Collection Winter 2030" project in the widget
-    When I am on the products page
+    When I am on the products grid
     And I switch view selector type to "Projects"
     Then I should not see the "Collection Summer 2030" project
     But I should see the "Collection Winter 2030" project
@@ -62,7 +62,7 @@ Feature: Catalog updates - Remove a channel used by a project
     When I am on the dashboard page
     Then I should not see the "Collection Winter 2030" project in the widget
     But I should see the "Collection Summer 2030" project in the widget
-    When I am on the products page
+    When I am on the products grid
     And I switch view selector type to "Projects"
     Then I should not see the "Collection Winter 2030" project
     But I should see the "Collection Summer 2030" project

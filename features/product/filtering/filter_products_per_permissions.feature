@@ -16,7 +16,7 @@ Feature: Filter products per permissions
     And I am logged in as "Julia"
 
   Scenario: Successfully filter products I can review or publish
-    Given I am on the products page
+    Given I am on the products grid
     And the grid should contain 4 elements
     Then I should see the filter permissions
     And I should be able to use the following filters:

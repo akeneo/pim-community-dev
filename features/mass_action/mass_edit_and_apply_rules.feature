@@ -30,7 +30,7 @@ Feature: Apply rules after a mass edit have run
     And I am logged in as "Julia"
 
   Scenario: Successfully apply rules after a mass edit operation only on edited products
-    When I am on the products page
+    When I am on the products grid
     And I select rows tshirt-github, tshirt-docker
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation

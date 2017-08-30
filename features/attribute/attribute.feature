@@ -42,7 +42,7 @@ Feature: Display available field options
     And I check the "Read only" switch
     And I save the "attribute"
     And I should not see the text "There are unsaved change"
-    And I am on the products page
+    And I am on the products grid
     When I select row my-jacket
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -55,7 +55,7 @@ Feature: Display available field options
     And I check the "Read only" switch
     And I save the "attribute"
     And I should not see the text "There are unsaved change"
-    And I am on the products page
+    And I am on the products grid
     When I select rows my-jacket
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation

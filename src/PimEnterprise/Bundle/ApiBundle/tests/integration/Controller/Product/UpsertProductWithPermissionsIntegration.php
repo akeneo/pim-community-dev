@@ -176,12 +176,12 @@ JSON;
 
         $expected = <<<JSON
 {
-  "code": 422,
+  "code": 403,
   "message": "You should at least keep your product in one category on which you have an own permission."
 }
 JSON;
 
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $client->getResponse()->getStatusCode());
+        $this->assertSame(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expected, $client->getResponse()->getContent());
     }
 

@@ -17,7 +17,7 @@ Feature: Mass edit assets to add them tags
       | second_tag |
       | third_tag  |
     And I am logged in as "Pamela"
-    And I am on the assets page
+    And I am on the assets grid
 
   Scenario: Massively add existing tags to all assets with a bulk action from the grid
     Given I select all entities
