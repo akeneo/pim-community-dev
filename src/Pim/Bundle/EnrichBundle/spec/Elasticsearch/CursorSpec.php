@@ -6,11 +6,11 @@ use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Elasticsearch\FromSizeCursor;
+use Pim\Bundle\EnrichBundle\Elasticsearch\Cursor;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
-class FromSizeCursorSpec extends ObjectBehavior
+class CursorSpec extends ObjectBehavior
 {
     function let(
         Client $esClient,
@@ -26,7 +26,6 @@ class FromSizeCursorSpec extends ObjectBehavior
         $productModelRepository->getItemsFromIdentifiers(['a-sub-product-model'])->willReturn([$subProductModel]);
 
         $esClient->search('pim_catalog_product', [
-            'from' => 0,
             'size' => 2,
             'sort' => ['_uid' => 'asc']
         ])
@@ -52,15 +51,13 @@ class FromSizeCursorSpec extends ObjectBehavior
             $productModelRepository,
             [],
             'pim_catalog_product',
-            3,
-            2,
-            0
+            2
         );
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(FromSizeCursor::class);
+        $this->shouldHaveType(Cursor::class);
         $this->shouldImplement(CursorInterface::class);
     }
 
@@ -90,7 +87,7 @@ class FromSizeCursorSpec extends ObjectBehavior
             [
                 'size' => 2,
                 'sort' => ['_uid' => 'asc'],
-                'from' => 2
+                'search_after' => ['pim_catalog_product#a-sub-product-model'],
             ])
             ->willReturn([
                 'hits' => [
@@ -112,7 +109,7 @@ class FromSizeCursorSpec extends ObjectBehavior
             [
                 'size' => 2,
                 'sort' => ['_uid' => 'asc'],
-                'from' => 3
+                'search_after' => ['pim_catalog_product#a-product'],
             ])->willReturn([
             'hits' => [
                 'total' => 4,
@@ -126,15 +123,15 @@ class FromSizeCursorSpec extends ObjectBehavior
 
         $this->shouldImplement(\Iterator::class);
 
-        for ($i = 0; $i < 2; $i++) {
+        $this->rewind()->shouldReturn(null);
+        for ($i = 0; $i < 4; $i++) {
             if ($i > 0) {
                 $this->next()->shouldReturn(null);
             }
             $this->valid()->shouldReturn(true);
             $this->current()->shouldReturn($data[$i]);
 
-            $n = 0 === $i%2 ? 0 : $i;
-            $this->key()->shouldReturn($n);
+            $this->key()->shouldReturn($i%2);
         }
 
         $this->next()->shouldReturn(null);
@@ -165,7 +162,7 @@ class FromSizeCursorSpec extends ObjectBehavior
             [
                 'size' => 2,
                 'sort' => ['_uid' => 'asc'],
-                'from' => 2
+                'search_after' => ['pim_catalog_product#a-sub-product-model'],
             ])
             ->willReturn([
                 'hits' => [
@@ -187,7 +184,7 @@ class FromSizeCursorSpec extends ObjectBehavior
             [
                 'size' => 2,
                 'sort' => ['_uid' => 'asc'],
-                'from' => 3
+                'search_after' => ['pim_catalog_product#foo'],
             ])->willReturn([
             'hits' => [
                 'total' => 4,
@@ -201,15 +198,15 @@ class FromSizeCursorSpec extends ObjectBehavior
 
         $this->shouldImplement(\Iterator::class);
 
-        for ($i = 0; $i < 2; $i++) {
+        $this->rewind()->shouldReturn(null);
+        for ($i = 0; $i < 4; $i++) {
             if ($i > 0) {
                 $this->next()->shouldReturn(null);
             }
             $this->valid()->shouldReturn(true);
             $this->current()->shouldReturn($data[$i]);
 
-            $n = 0 === $i%2 ? 0 : $i;
-            $this->key()->shouldReturn($n);
+            $this->key()->shouldReturn($i%2);
         }
 
         $this->next()->shouldReturn(null);
