@@ -35,6 +35,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
         $expected = [
             'id'             => 'product_model_150',
             'identifier'     => 'qux',
+            'label'          => 'qux',
             'created'        => $date->format('c'),
             'updated'        => $date->format('c'),
             'family'        => [
@@ -72,6 +73,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
         $expected = [
             'id'             => 'product_model_151',
             'identifier'     => 'quux',
+            'label'          => 'quux',
             'created'        => $date->format('c'),
             'updated'        => $date->format('c'),
             'family'        => [
@@ -114,6 +116,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
         $expected = [
             'id'             => 'product_50',
             'identifier'     => 'qux',
+            'label'          => 'qux',
             'created'        => $date->format('c'),
             'updated'        => $date->format('c'),
             'family'         => [
@@ -165,6 +168,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
         $expected = [
             'id'                        => 'product_47',
             'identifier'                => 'bar',
+            'label'                     => 'bar',
             'created'                   => $date->format('c'),
             'updated'                   => $date->format('c'),
             'family'                    => null,
@@ -193,6 +197,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
         $expected = [
             'id'             => 'product_49',
             'identifier'     => 'foo',
+            'label'          => 'foo',
             'created'        => $date->format('c'),
             'updated'        => $date->format('c'),
             'family'         => [
