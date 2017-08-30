@@ -4,7 +4,7 @@
   "description": "Akeneo PIM Application",
   "homepage": "http://www.akeneo.com",
   "scripts": {
-    "webpack": "webpack --config webpack.config.js --progress",
+    "webpack": "webpack --config webpack.config.js --progress --env=prod",
     "webpack-watch": "webpack --progress --config webpack.config.js --watch",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
     "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix"
