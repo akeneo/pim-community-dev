@@ -141,4 +141,79 @@ class CursorSpec extends ObjectBehavior
         $this->current()->shouldReturn(false);
         $this->key()->shouldReturn(null);
     }
+
+    function it_is_iterable_with_products_and_product_models_having_the_same_identifiers(
+        $esClient,
+        $variantProduct,
+        $subProductModel,
+        $productRepository,
+        $productModelRepository,
+        ProductInterface $product,
+        ProductModelInterface $rootProductModel
+    ) {
+        $product->getIdentifier()->willReturn('foo');
+        $productRepository->getItemsFromIdentifiers(['foo'])->willReturn([$product]);
+
+        $rootProductModel->getCode()->willReturn('foo');
+        $productModelRepository->getItemsFromIdentifiers(['foo'])->willReturn([$rootProductModel]);
+
+        $esClient->search(
+            'pim_catalog_product',
+            [
+                'size' => 2,
+                'sort' => ['_uid' => 'asc'],
+                'search_after' => ['pim_catalog_product#a-sub-product-model'],
+            ])
+            ->willReturn([
+                'hits' => [
+                    'total' => 4,
+                    'hits' => [
+                        [
+                            '_source' => ['identifier' => 'foo', 'product_type' => ProductModelInterface::class],
+                            'sort' => ['pim_catalog_product#foo']
+                        ],
+                        [
+                            '_source' => ['identifier' => 'foo', 'product_type' => ProductInterface::class],
+                            'sort' => ['pim_catalog_product#foo']
+                        ],
+                    ]
+                ]
+            ]);
+        $esClient->search(
+            'pim_catalog_product',
+            [
+                'size' => 2,
+                'sort' => ['_uid' => 'asc'],
+                'search_after' => ['pim_catalog_product#foo'],
+            ])->willReturn([
+            'hits' => [
+                'total' => 4,
+                'hits' => []
+            ]
+        ]);
+
+        $page1 = [$variantProduct, $subProductModel];
+        $page2 = [$rootProductModel, $product];
+        $data = array_merge($page1, $page2);
+
+        $this->shouldImplement(\Iterator::class);
+
+        $this->rewind()->shouldReturn(null);
+        for ($i = 0; $i < 4; $i++) {
+            if ($i > 0) {
+                $this->next()->shouldReturn(null);
+            }
+            $this->valid()->shouldReturn(true);
+            $this->current()->shouldReturn($data[$i]);
+
+            $this->key()->shouldReturn($i%2);
+        }
+
+        $this->next()->shouldReturn(null);
+        $this->valid()->shouldReturn(false);
+
+        // check behaviour after the end of data
+        $this->current()->shouldReturn(false);
+        $this->key()->shouldReturn(null);
+    }
 }
