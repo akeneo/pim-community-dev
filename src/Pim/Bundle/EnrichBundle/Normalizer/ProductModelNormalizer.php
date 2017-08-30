@@ -119,6 +119,11 @@ class ProductModelNormalizer implements NormalizerInterface
             $levelAttributes[] = $attribute->getCode();
         }
 
+        $axesAttributes = [];
+        foreach ($this->attributesProvider->getAxes($productModel) as $attribute) {
+            $axesAttributes[] = $attribute->getCode();
+        }
+
         $normalizedFamilyVariant = $this->normalizer->normalize($productModel->getFamilyVariant(), 'standard');
 
         $normalizedProductModel['meta'] = [
@@ -129,6 +134,7 @@ class ProductModelNormalizer implements NormalizerInterface
                 'updated'                   => $updated,
                 'model_type'                => 'product_model',
                 'attributes_for_this_level' => $levelAttributes,
+                'attributes_axes'           => $axesAttributes,
                 'image'                     => $this->normalizeImage($productModel->getImage(), $format, $context),
             ] + $this->getLabels($productModel);
 
