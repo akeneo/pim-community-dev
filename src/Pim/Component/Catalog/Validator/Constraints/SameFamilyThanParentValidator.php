@@ -32,9 +32,13 @@ class SameFamilyThanParentValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, SameFamilyThanParent::class);
         }
 
-        $parentFamilyVariant = $variantProduct->getParent()->getFamilyVariant()->getFamily();
+        if (null === $parent = $variantProduct->getParent()) {
+            return;
+        }
 
-        if ($variantProduct->getFamily()->getCode() !== $parentFamilyVariant->getCode()) {
+        $parentFamily = $parent->getFamilyVariant()->getFamily();
+
+        if ($variantProduct->getFamily()->getCode() !== $parentFamily->getCode()) {
             $this->context->buildViolation(SameFamilyThanParent::MESSAGE)->addViolation();
         }
     }
