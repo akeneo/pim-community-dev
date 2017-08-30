@@ -4,6 +4,7 @@ Feature: Add products to variant group via a form
   As a product manager
   I need to be able to add products to variant group via a form
 
+  @skip
   Scenario: Add products to a variant group
     Given the "footwear" catalog configuration
     And the following products:
