@@ -15,7 +15,7 @@ Feature: Apply restrictions when mass editing products with variant groups
       | gold_sandals | sandals  |                   | 42   | white |
       | gold_boots   | sandals  |                   | 42   | white |
 
-  @ce
+  @ce @skip
   Scenario: Add products to a variant group
     Given I am logged in as "Julia"
     And I am on the products page
