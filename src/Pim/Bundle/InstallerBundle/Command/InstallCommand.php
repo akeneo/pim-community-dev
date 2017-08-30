@@ -147,7 +147,7 @@ class InstallCommand extends ContainerAwareCommand
     {
         $installStatus = $this->getContainer()->get('pim_installer.install_status_manager');
 
-        $output->writeln('<info>Check installed flag</info>');
+        $output->writeln('<info>Check PIM installation</info>');
 
         return $installStatus->isPimInstalled();
     }

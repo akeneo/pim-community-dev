@@ -37,7 +37,7 @@ class VersionDataCollectorSpec extends ObjectBehavior
         $versionProvider->getPatch()->willReturn('1.4.0');
         $versionProvider->getEdition()->willReturn('CE');
         $requestStack->getCurrentRequest()->willReturn($request);
-        $installStatusManager->getInstalledFlag()->willReturn('2015-09-16T10:10:32+02:00');
+        $installStatusManager->getPimInstallDateTime()->willReturn(new \DateTime('2015-09-16T10:10:32+02:00'));
         $request->server = $serverBag;
         $serverBag->get('SERVER_SOFTWARE')->willReturn('Apache/2.4.12 (Debian)');
 
@@ -46,7 +46,7 @@ class VersionDataCollectorSpec extends ObjectBehavior
                 'pim_edition'        => 'CE',
                 'pim_version'        => '1.4.0',
                 'pim_environment'    => 'prod',
-                'pim_install_time'   => '2015-09-16T10:10:32+02:00',
+                'pim_install_time'   => (new \DateTime('2015-09-16T10:10:32+02:00'))->format(\DateTime::ISO8601),
                 'server_version'     => 'Apache/2.4.12 (Debian)',
             ]
         );
@@ -61,7 +61,7 @@ class VersionDataCollectorSpec extends ObjectBehavior
         $versionProvider->getPatch()->willReturn('1.4.0');
         $versionProvider->getEdition()->willReturn('CE');
         $requestStack->getCurrentRequest()->willReturn(null);
-        $installStatusManager->getInstalledFlag()->willReturn('2015-09-16T10:10:32+02:00');
+        $installStatusManager->getPimInstallDateTime()->willReturn(new \DateTime('2015-09-16T10:10:32+02:00'));
 
         $serverBag->get(Argument::type('string'))->shouldNotBeCalled();
 
@@ -70,7 +70,7 @@ class VersionDataCollectorSpec extends ObjectBehavior
                 'pim_edition'      => 'CE',
                 'pim_version'      => '1.4.0',
                 'pim_environment'  => 'prod',
-                'pim_install_time' => '2015-09-16T10:10:32+02:00',
+                'pim_install_time' => (new \DateTime('2015-09-16T10:10:32+02:00'))->format(\DateTime::ISO8601),
                 'server_version'     => '',
             ]
         );

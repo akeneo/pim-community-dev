@@ -9,7 +9,7 @@ class InstallStatusManagerSpec extends ObjectBehavior
 {
     function let(Registry $doctrine, string $databaseName)
     {
-        $this->beConstructedWith($projectRoot, $databaseName);
+        $this->beConstructedWith($doctrine, $databaseName);
     }
 
     function it_is_initializable()
