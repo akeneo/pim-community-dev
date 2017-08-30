@@ -12,7 +12,7 @@
 
 {% block head_script %}
     <script type="text/javascript">
-        require(['underscore', 'jquery', 'pim/initselect2', 'datepicker', 'pim/date-context', 'jquery.jstree', 'jstree/jquery.hotkeys'],
+        require(['underscore', 'jquery', 'pim/initselect2', 'datepicker', 'pim/date-context', 'jquery.jstree', 'jstree/jquery.hotkeys', 'bootstrap.bootstrapswitch'],
         function (_, $, initSelect2, datepicker, dateContext) {
             $(function() {
                 $('#{{ form.vars.id }}').find('select').addClass('select2');
@@ -43,6 +43,8 @@
 
                     checkRoles();
                 {% endif %}
+
+                $('#{{ form.vars.id }} .switch:not(.has-switch)').bootstrapSwitch();
             });
         });
     </script>
