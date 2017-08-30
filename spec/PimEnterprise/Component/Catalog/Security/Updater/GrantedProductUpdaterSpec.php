@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Component\Catalog\Security\Updater;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
@@ -15,8 +16,8 @@ class GrantedProductUpdaterSpec extends ObjectBehavior
     function let(
         ObjectUpdaterInterface $productUpdater,
         AuthorizationCheckerInterface $authorizationChecker,
-        ProductFilterInterface $productFieldFilter,
-        ProductFilterInterface $productAssociationFilter
+        FilterInterface $productFieldFilter,
+        FilterInterface $productAssociationFilter
     ) {
         $this->beConstructedWith(
             $productUpdater,
