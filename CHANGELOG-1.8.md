@@ -412,6 +412,7 @@
 - Remove service `pim_installer.yaml_persister`
 - Split `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` in two. The original service name (`pim_enrich.normalizer.attribute`) points now to `Pim\Bundle\EnrichBundle\Normalizer\VersionedAttributeNormalizer`
     The arguments of the old normalizer are now divided between both normalizers, also `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` is injected into `Pim\Bundle\EnrichBundle\Normalizer\VersionedAttributeNormalizer`.
+- PIM-6740: Add exception `Pim\Bundle\InstallerBundle\Exception\UnavailableCreationTimeException`
 
 ### Methods
 
