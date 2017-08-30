@@ -18,6 +18,7 @@ Feature: Filter products per media
       | shirt-one   | tshirts |
       | shirt-two   | tshirts |
       | shirt-three | tshirts |
+      | shirt-four  | tshirts |
     And the following product values:
       | product     | attribute  | value                              |
       | shirt-one   | image      | %fixtures%/akeneo.jpg              |
@@ -25,15 +26,16 @@ Feature: Filter products per media
       | shirt-three | image      | %fixtures%/fanatic-freewave-76.gif |
       | shirt-one   | attachment | %fixtures%/akeneo.txt              |
       | shirt-two   | attachment | %fixtures%/fanatic-freewave-76.txt |
+    And the "shirt-four" product has the "attachment" attribute
     And I am logged in as "Mary"
     When I am on the products grid
-    Then the grid should contain 3 elements
-    And I should see products shirt-one, shirt-two and shirt-three
+    Then the grid should contain 4 elements
+    And I should see products shirt-one, shirt-two, shirt-three and shirt-four
     And I should be able to use the following filters:
       | filter     | operator         | value      | result                    |
       | image      | starts with      | a          | shirt-one                 |
       | image      | contains         | ic         | shirt-two and shirt-three |
       | attachment | does not contain | neo        | shirt-two                 |
       | image      | is equal to      | akeneo.jpg | shirt-one                 |
-      | attachment | is empty         |            | shirt-three               |
-      | attachment | is not empty     |            | shirt-one, shirt-two      |
+      | attachment | is empty         |            | shirt-four                |
+      | attachment | is not empty     |            | shirt-one and shirt-two   |

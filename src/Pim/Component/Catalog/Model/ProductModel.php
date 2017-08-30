@@ -490,7 +490,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel(?string $localeCode): string
+    public function getLabel(string $localeCode = null): string
     {
         $code = (string) $this->getCode();
         $attributeAsLabel = $this->familyVariant->getFamily()->getAttributeAsLabel();

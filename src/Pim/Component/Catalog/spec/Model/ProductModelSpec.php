@@ -179,6 +179,33 @@ class ProductModelSpec extends ObjectBehavior
         $this->getLabel('fr_FR')->shouldReturn('shovel');
     }
 
+    function it_gets_the_label_if_no_locale_is_specified(
+        FamilyVariantInterface $familyVariant,
+        FamilyInterface $family,
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values,
+        ValueInterface $nameValue
+    ) {
+        $familyVariant->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
+        $attributeAsLabel->getCode()->willReturn('name');
+        $attributeAsLabel->isLocalizable()->willReturn(false);
+        $attributeAsLabel->isUnique()->willReturn(false);
+
+        $values->toArray()->willreturn(['name-<all_channels>-fr_FR' => $nameValue]);
+
+        $nameValue->getAttribute()->willReturn($attributeAsLabel);
+        $nameValue->getScope()->willReturn(null);
+        $nameValue->getLocale()->willReturn('fr_FR');
+        $nameValue->getData()->willReturn(null);
+
+        $this->setFamilyVariant($familyVariant);
+        $this->setValues($values);
+        $this->setCode('shovel');
+
+        $this->getLabel()->shouldReturn('shovel');
+    }
+
     function it_gets_the_image_of_the_product_model(
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,

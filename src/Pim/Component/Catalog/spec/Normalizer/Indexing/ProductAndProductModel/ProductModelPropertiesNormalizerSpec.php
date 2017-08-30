@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
@@ -50,6 +49,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $productModel->getParent()->willReturn(null);
 
         $productModel->getCode()->willReturn('sku-001');
+        $productModel->getLabel()->willReturn('my sku-001');
+
         $productModel->getCreated()->willReturn($now);
         $serializer
             ->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
@@ -78,6 +79,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
             [
                 'id'             => 'product_model_67',
                 'identifier'     => 'sku-001',
+                'label'          => 'my sku-001',
                 'created'        => $now->format('c'),
                 'updated'        => $now->format('c'),
                 'family'         => 'family_A',
@@ -99,6 +101,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
         $productModel->getId()->willReturn(67);
         $productModel->getCode()->willReturn('sku-001');
+        $productModel->getLabel()->willReturn('my sku-001');
 
         $productModel->getParent()->willReturn(null);
 
@@ -146,6 +149,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
             [
                 'id'             => 'product_model_67',
                 'identifier'     => 'sku-001',
+                'label'          => 'my sku-001',
                 'created'        => $now->format('c'),
                 'updated'        => $now->format('c'),
                 'family'         => [
@@ -180,6 +184,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
         $productModel->getId()->willReturn(67);
         $productModel->getCode()->willReturn('sku-001');
+        $productModel->getLabel()->willReturn('my sku-001');
 
         $productModel->getParent()->willReturn($parent);
         $parent->getCode()->willReturn('parent_A');
@@ -237,6 +242,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
             [
                 'id'             => 'product_model_67',
                 'identifier'     => 'sku-001',
+                'label'          => 'my sku-001',
                 'created'        => $now->format('c'),
                 'updated'        => $now->format('c'),
                 'family'         => [
