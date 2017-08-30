@@ -21,6 +21,7 @@ extensions:
         parent: pim-mass-family-edit
         config:
             label: pim_enrich.mass_edit.family.operation.set_requirements.label
+            labelCount: pim_enrich.mass_edit.family.operation.set_requirements.label.label_count
             description: pim_enrich.mass_edit.family.operation.set_requirements.description
             code: set_requirements
             jobInstanceCode: set_attribute_requirements

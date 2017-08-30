@@ -90,6 +90,7 @@ css:
         - bundles/pimui/less/components/Search.less
         - bundles/pimui/less/components/SequentialEdit.less
         - bundles/pimui/less/components/SquareList.less
+        - bundles/pimui/less/components/Steps.less
         - bundles/pimui/less/components/Subsection.less
         - bundles/pimui/less/components/TabContainer.less
         - bundles/pimui/less/components/Thumbnail.less

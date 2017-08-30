@@ -969,14 +969,14 @@ pim_enrich:
         cancel: Cancel
         confirm: Confirm
         product:
-            title: "{1} Product / Mass Edit (1 product)|] 1, Inf [Product / Mass Edit ({{ itemsCount }} products)"
+            title: Products bulk action
             confirm: "{1} You are about to update a product with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} products with the following information, please confirm."
             step:
                 select:
                     label: Choose products
                 choose:
                     label: Choose operation
-                    title: Mass edit ({{ itemsCount }} products)
+                    labelCount: "{1}Select your action for <span class=\"AknFullPage-title--highlight\">the product</span>|] 1, Inf [Select your action for the <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                 configure:
                     label: Configure
                 confirm:
@@ -988,34 +988,42 @@ pim_enrich:
             operation:
                 change_status:
                     label: Change status (enable / disable)
+                    label_count: "{1} Change status of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The selected products will be enabled or disabled.
                     field: To enable
                 edit_common:
                     label: Edit common attributes
+                    label_count: "{1} Edit common attributes of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit common attributes <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The selected product's attributes will be edited with the following data for the locale {{ locale }} and the channel {{ scope }}, chosen in the products grid.
                 change_family:
                     label: Change the family of products
+                    label_count: "{1} Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The family of the selected products will be changed to the chosen family
                     field: Family
                 add_to_group:
                     label: Add to groups
+                    label_count: "{1} Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
                     description: Select the groups in which to add the selected products
                     field: Groups
                 add_to_variant_group:
                     label: Add to a variant group
+                    label_count: "{1} Add <span class=\"AknFullPage-title--highlight\">1 product</span>to a variant group|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to a variant group"
                     description: Select the variant group in which to add the selected products
                     field: Group
                 add_to_category:
                     label: Classify products in categories
+                    label_count: "{1} Classify <span class=\"AknFullPage-title--highlight\">1 product</span> in categories|] 1, Inf [Classify <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> in categories"
                     description: The products will be positioned into following categories, the existing placement is kept.
                 move_to_category:
                     label: Move products to categories
+                    label_count: "{1} Move <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|] 1, Inf [Move <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
                     description: The products will be positioned into following categories, the existing placement is lost.
                 remove_from_category:
                     label: Remove products from categories
+                    label_count: "{1} Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|] 1, Inf [Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
                     description: The products will be removed from the following categories.
         family:
-            title: "{1} Product / Mass Edit (1 family)|] 1, Inf [Product / Mass Edit ({{ itemsCount }} families)"
+            title: Families bulk action
             confirm: "{1} You are about to update a family with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} families with the following information, please confirm."
             step:
                 select:
@@ -1033,7 +1041,7 @@ pim_enrich:
                 set_requirements:
                     label: Set attribute requirements
                     description: The following attribute requirements will be applied to the selected families
-
+                    label_count: "{1} Change attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|] 1, Inf [Change attribute requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
 
 pim_enrich.error:
     exception.title: Oh snap! A {{ status_code }} error occured...

@@ -15,6 +15,7 @@ extensions:
         targetZone: choose
         config:
             title: pim_enrich.mass_edit.product.step.choose.title
+            labelCount: pim_enrich.mass_edit.product.step.choose.labelCount
 
     pim-mass-product-edit-configure-edit-common:
         module: pim/mass-edit-form/product/edit-common-attributes
@@ -23,6 +24,7 @@ extensions:
         aclResourceId: pim_enrich_product_edit_attributes
         config:
             label: pim_enrich.mass_edit.product.operation.edit_common.label
+            labelCount: pim_enrich.mass_edit.product.operation.edit_common.label_count
             description: pim_enrich.mass_edit.product.operation.edit_common.description
             code: edit_common
             jobInstanceCode: edit_common_attributes
@@ -35,6 +37,7 @@ extensions:
         aclResourceId: pim_enrich_product_change_family
         config:
             label: pim_enrich.mass_edit.product.operation.change_family.label
+            labelCount: pim_enrich.mass_edit.product.operation.change_family.label_count
             description: pim_enrich.mass_edit.product.operation.change_family.description
             code: change_family
             jobInstanceCode: update_product_value
@@ -47,6 +50,7 @@ extensions:
         position: 110
         config:
             label: pim_enrich.mass_edit.product.operation.change_status.label
+            labelCount: pim_enrich.mass_edit.product.operation.change_status.label_count
             description: pim_enrich.mass_edit.product.operation.change_status.description
             code: change_status
             jobInstanceCode: update_product_value
@@ -59,6 +63,7 @@ extensions:
         aclResourceId: pim_enrich_product_add_to_groups
         config:
             label: pim_enrich.mass_edit.product.operation.add_to_group.label
+            labelCount: pim_enrich.mass_edit.product.operation.add_to_group.label_count
             description: pim_enrich.mass_edit.product.operation.add_to_group.description
             code: add_to_group
             jobInstanceCode: add_product_value
@@ -71,6 +76,7 @@ extensions:
         aclResourceId: pim_enrich_product_add_to_variant_group
         config:
             label: pim_enrich.mass_edit.product.operation.add_to_variant_group.label
+            labelCount: pim_enrich.mass_edit.product.operation.add_to_variant_group.label_count
             description: pim_enrich.mass_edit.product.operation.add_to_variant_group.description
             code: add_to_variant_group
             jobInstanceCode: add_to_variant_group
@@ -83,6 +89,7 @@ extensions:
         position: 160
         config:
             label: pim_enrich.mass_edit.product.operation.add_to_category.label
+            labelCount: pim_enrich.mass_edit.product.operation.add_to_category.label_count
             description: pim_enrich.mass_edit.product.operation.add_to_category.description
             code: add_to_category
             jobInstanceCode: add_product_value
@@ -97,6 +104,7 @@ extensions:
         aclResourceId: pim_enrich_product_categories_view
         config:
             label: pim_enrich.mass_edit.product.operation.move_to_category.label
+            labelCount: pim_enrich.mass_edit.product.operation.move_to_category.label_count
             description: pim_enrich.mass_edit.product.operation.move_to_category.description
             code: move_to_category
             jobInstanceCode: update_product_value
@@ -111,6 +119,7 @@ extensions:
         aclResourceId: pim_enrich_product_categories_view
         config:
             label: pim_enrich.mass_edit.product.operation.remove_from_category.label
+            labelCount: pim_enrich.mass_edit.product.operation.remove_from_category.label_count
             description: pim_enrich.mass_edit.product.operation.remove_from_category.description
             code: remove_from_category
             jobInstanceCode: remove_product_value

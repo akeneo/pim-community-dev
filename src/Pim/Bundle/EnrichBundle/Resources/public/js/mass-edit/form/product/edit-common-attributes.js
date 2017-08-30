@@ -83,8 +83,12 @@ define(
                     form.setElement(this.$('.edit-common-attributes')).render();
                     form.trigger('pim_enrich:form:update_read_only', this.readOnly);
 
+                    // This method renders a complete PEF page, we need to remove useless elements manually.
+                    this.$el.find('.navigation').remove();
+                    this.$el.find('.AknDefault-mainContent').addClass('AknDefault-mainContent--withoutPadding');
+
                     if (this.errors) {
-                        var event = {
+                        const event = {
                             sentData: product,
                             response: {values: this.errors}
                         };

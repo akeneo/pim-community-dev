@@ -25,7 +25,7 @@
     <div class="AknFullPage-content AknFullPage-content--column">
         <div>
             <div class="AknFullPage-subTitle"><%- title %></div>
-            <div class="AknFullPage-title"><%- label %></div>
+            <div class="AknFullPage-title"><%= labelCount %></div>
         </div>
         <div class="AknWidget-content AknWidget-content--withPadding">
             <div class="step">
@@ -44,7 +44,7 @@
         </div>
         <div class="AknFullPage-right">
             <div class="AknFullPage-subTitle"><%- title %></div>
-            <div class="AknFullPage-title"><%- label %></div>
+            <div class="AknFullPage-title"><%= labelCount %></div>
             <% if (description) { %>
             <div class="AknFullPage-description">
                 <%- description %>
@@ -63,7 +63,24 @@
     </div>
     <% } %>
 
-    <div class="AknFullPage-bottom">Bottom</div>
+    <div class="AknFullPage-bottom">
+        <div class="AknSteps">
+            <div class="AknSteps-step<% if (currentStepNumber > 0) { %> AknSteps-step--checked<% } %>">
+                Select action
+            </div>
+            <% if (currentStep === 'choose') { %>
+            <div class="AknSteps-step AknSteps-step--undefined"></div>
+            <div class="AknSteps-step AknSteps-step--undefined"></div>
+            <% } else { %>
+            <div class="AknSteps-step<% if (currentStepNumber > 1) { %> AknSteps-step--checked<% } %>">
+                <%- label %>
+            </div>
+            <div class="AknSteps-step<% if (currentStepNumber > 2) { %> AknSteps-step--checked<% } %>">
+                <%- confirmLabel %>
+            </div>
+            <% } %>
+        </div>
+    </div>
     <!--
     <% columnDisplay = currentStep !== 'choose' %>
     <div class="AknFullPage <% if (currentStep !== 'choose') { %> AknFullPage--twoColumns<% } %> scrollable-container">
