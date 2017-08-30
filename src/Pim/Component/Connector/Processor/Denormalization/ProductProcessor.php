@@ -12,6 +12,8 @@ use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -103,7 +105,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         $filteredItem = $this->filterItemData($item);
 
         $parent = $item['parent'] ?? '';
-        $product = $this->findOrCreateProduct($identifier, $familyCode, $parent);
+        $product = $this->findOrCreateProduct($identifier, $familyCode, $item, $parent);
 
         if (false === $itemHasStatus && null !== $product->getId()) {
             unset($filteredItem['enabled']);
@@ -128,6 +130,9 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             $this->detachProduct($product);
             $message = sprintf('%s: %s', $exception->getPropertyName(), $exception->getMessage());
             $this->skipItemWithMessage($item, $message, $exception);
+        } catch (InvalidArgumentException | AccessDeniedException $exception) {
+            $this->detachProduct($product);
+            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
         $violations = $this->validateProduct($product);
@@ -191,25 +196,29 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     }
 
     /**
-     * @param string $identifier
-     * @param string $familyCode
-     * @param string $parentCode
+     * @param string      $identifier
+     * @param string|null $familyCode
+     * @param array       $item
+     * @param string      $parentCode
      *
      * @return ProductInterface
      */
-    protected function findOrCreateProduct(string $identifier, string $familyCode, string $parentCode)
+    protected function findOrCreateProduct(string $identifier, ?string $familyCode, array $item, string $parentCode): ProductInterface
     {
-        $product = $this->repository->findOneByIdentifier($identifier);
+        try {
+            $product = $this->repository->findOneByIdentifier($identifier);
+            if (null === $product && '' !== $parentCode) {
+                $product = $this->variantProductBuilder->createProduct($identifier, $familyCode);
+            }
 
-        if (null === $product && '' !== $parentCode) {
-            $product = $this->variantProductBuilder->createProduct($identifier, $familyCode);
+            if (null === $product) {
+                $product = $this->productBuilder->createProduct($identifier, $familyCode);
+            }
+
+            return $product;
+        } catch (AccessDeniedException $e) {
+            $this->skipItemWithMessage($item, $e->getMessage(), $e);
         }
-
-        if (null === $product) {
-            $product = $this->productBuilder->createProduct($identifier, $familyCode);
-        }
-
-        return $product;
     }
 
     /**
