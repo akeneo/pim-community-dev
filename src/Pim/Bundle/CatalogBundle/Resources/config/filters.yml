@@ -39,6 +39,7 @@ services:
             - '@pim_catalog.normalizer.standard.product_model'
             - '@pim_catalog.comparator.registry'
             - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.comparator.filter.product_field'
             - ['family_variant', 'categories', 'parent']
 
     pim_catalog.comparator.filter.product_association:
