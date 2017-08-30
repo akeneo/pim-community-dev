@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\EnrichBundle\Elasticsearch;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
@@ -87,38 +89,33 @@ abstract class AbstractCursor implements CursorInterface
      *
      * @return array
      */
-    protected function getNextItems(array $esQuery)
+    protected function getNextItems(array $esQuery): array
     {
-        $identifiers = $this->getNextIdentifiers($esQuery);
-        if (empty($identifiers)) {
+        $identifierResults = $this->getNextIdentifiers($esQuery);
+        if ($identifierResults->isEmpty()) {
             return [];
         }
 
-        $productIdentifiers = [];
-        $productModelIdentifiers = [];
-
-        foreach ($identifiers as $identifier => $type) {
-            if ($type === ProductInterface::class) {
-                $productIdentifiers[] = $identifier;
-            } else {
-                $productModelIdentifiers[] = $identifier;
-            }
-        }
-
-        $hydratedProducts = $this->productRepository->getItemsFromIdentifiers($productIdentifiers);
-        $hydratedProductModels = $this->productModelRepository->getItemsFromIdentifiers($productModelIdentifiers);
+        $hydratedProducts = $this->productRepository->getItemsFromIdentifiers(
+            $identifierResults->getProductIdentifiers()
+        );
+        $hydratedProductModels = $this->productModelRepository->getItemsFromIdentifiers(
+            $identifierResults->getProductModelIdentifiers()
+        );
         $hydratedItems = array_merge($hydratedProducts, $hydratedProductModels);
 
         $orderedItems = [];
 
-        foreach ($identifiers as $identifier => $type) {
-            // sometimes $identifier is only numerical whereas getIdentifer() returns a string
-            $identifier = (string) $identifier;
+        foreach ($identifierResults->all() as $identifierResult) {
             foreach ($hydratedItems as $hydratedItem) {
-                if ($hydratedItem instanceof ProductInterface && $identifier === $hydratedItem->getIdentifier()) {
+                if ($hydratedItem instanceof ProductInterface &&
+                    $identifierResult->isProductIdentifierEquals($hydratedItem->getIdentifier())
+                ) {
                     $orderedItems[] = $hydratedItem;
                     break;
-                } elseif ($hydratedItem instanceof ProductModelInterface && $identifier === $hydratedItem->getCode()) {
+                } elseif ($hydratedItem instanceof ProductModelInterface &&
+                    $identifierResult->isProductModelIdentifierEquals($hydratedItem->getCode())
+                ) {
                     $orderedItems[] = $hydratedItem;
                     break;
                 }
@@ -129,17 +126,10 @@ abstract class AbstractCursor implements CursorInterface
     }
 
     /**
-     * Returns an array containing the identifier as keys and the product type as values.
-     * The idea is keep the sort of the identifier and to be able to know if it's a product or a product model.
+     * Returns the next identifier results.
+     * The idea is keep the sort of the identifiers and to be able to know if it's a product or a product model.
      *
-     * For instance
-     *      [
-     *          'tshirt-red-s'  => 'product',
-     *          'tshirt-red'    => 'product_model',
-     *          'watch'         => 'product',
-     *      ]
-     *
-     * @return array
+     * @return IdentifierResults
      */
-    abstract protected function getNextIdentifiers(array $esQuery);
+    abstract protected function getNextIdentifiers(array $esQuery): IdentifierResults;
 }
