@@ -75,7 +75,6 @@ css:
         - bundles/pimui/less/components/Diff.less
         - bundles/pimui/less/components/Dropdown.less
         - bundles/pimui/less/components/Flash.less
-        - bundles/pimui/less/components/FullModal.less
         - bundles/pimui/less/components/Footer.less
         - bundles/pimui/less/components/Header.less
         - bundles/pimui/less/components/InfoBlock.less
