@@ -6,14 +6,14 @@ Feature: Sort available products for a variant group
 
   Background:
     Given the "default" catalog configuration
-    And the following families:
-      | code      | label-en_US |
-      | mug       | Mug         |
-      | furniture | Furniture   |
     And the following attributes:
       | code  | label-en_US | type                     | useable_as_grid_filter | group |
       | color | Color       | pim_catalog_simpleselect | 1                      | other |
       | size  | Size        | pim_catalog_simpleselect | 1                      | other |
+    And the following families:
+      | code      | label-en_US | attributes |
+      | mug       | Mug         | color,size |
+      | furniture | Furniture   | color,size |
     And the following "color" attribute options: Yellow, Blue, Green and Red
     And the following "size" attribute options: XS, S, M, L and XL
     And the following variant groups:

@@ -7,8 +7,8 @@ Feature: Export products according to boolean attribute filter
   Background:
     Given a "footwear" catalog configuration
     And the following family:
-      | code    | requirements-mobile | attributes |
-      | rangers | sku,name            | sku,name   |
+      | code    | requirements-mobile | attributes        |
+      | rangers | sku,name            | sku,name,handmade |
     And the following products:
       | sku      | enabled | family  | categories        | handmade |
       | SNKRS-1B | 1       | rangers | summer_collection | 0        |

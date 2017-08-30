@@ -39,8 +39,9 @@ class Product implements AttributeFilterInterface
      */
     public function filter(array $flatProduct): array
     {
-        if (isset($flatProduct['parent'])) {
-            $parentProductModel = $this->productModelRepository->findOneByIdentifier($flatProduct['parent']);
+        if (isset($flatProduct['parent']) &&
+            null !== $parentProductModel = $this->productModelRepository->findOneByIdentifier($flatProduct['parent'])
+        ) {
             $attributeSet = $parentProductModel->getFamilyVariant()
                 ->getVariantAttributeSet($parentProductModel->getVariationLevel() + 1);
             $attributes = $attributeSet->getAttributes();

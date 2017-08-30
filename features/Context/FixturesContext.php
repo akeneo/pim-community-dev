@@ -1362,7 +1362,7 @@ class FixturesContext extends BaseFixturesContext
             }
 
             return true;
-        }, sprintf('Cannot get the product %s', $identifier));
+        }, sprintf('Cannot get the values of the product %s', $identifier));
     }
 
     /**

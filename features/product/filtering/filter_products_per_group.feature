@@ -6,13 +6,13 @@ Feature: Filter products
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code      |
-      | furniture |
-      | library   |
     And the following attribute:
       | code  | label-en_US | type                     | group |
       | color | Color       | pim_catalog_simpleselect | other |
+    And the following family:
+      | code      | attributes |
+      | furniture | color      |
+      | library   | color      |
     And the following "color" attribute options: Black and White
     And the following variant groups:
       | code | label-en_US | axis  | type    |
