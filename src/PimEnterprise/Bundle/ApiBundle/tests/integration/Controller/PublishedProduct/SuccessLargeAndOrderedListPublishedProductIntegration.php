@@ -48,13 +48,13 @@ class SuccessLargeAndOrderedListPublishedProductIntegration extends AbstractPubl
 
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/published-products?limit=100');
+        $client->request('GET', 'api/rest/v1/published-products?limit=100&pagination_type=search_after');
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/published-products?limit=100"},
-        "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=100"},
-        "next" : {"href": "http://localhost/api/rest/v1/published-products?limit=100&search_after={$lastEncryptedId}"}
+        "self"  : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=100"},
+        "first" : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=100"},
+        "next" : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=100&search_after={$lastEncryptedId}"}
     },
     "_embedded"    : {
 		"items": [
