@@ -55,9 +55,7 @@ class InstallCommand extends ContainerAwareCommand
     {
         $forceInstall = $input->getOption('force');
 
-        // if the application is already installed or no --force option
-        if ($this->isPimInstalled(($output))
-            && !$forceInstall) {
+        if ($this->isPimInstalled(($output)) && false === $forceInstall) {
             throw new \RuntimeException('Akeneo PIM is already installed.');
         }
 
@@ -141,10 +139,9 @@ class InstallCommand extends ContainerAwareCommand
     }
 
     /**
-     *
      * @param OutputInterface $output
      *
-     * @return boolean isInstalled
+     * @return boolean
      */
     protected function isPimInstalled(OutputInterface $output) : bool
     {
@@ -152,6 +149,6 @@ class InstallCommand extends ContainerAwareCommand
 
         $output->writeln('<info>Check installed flag</info>');
 
-        return $installStatus->isInstalled();
+        return $installStatus->isPimInstalled();
     }
 }

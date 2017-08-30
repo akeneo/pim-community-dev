@@ -43,7 +43,7 @@ class VersionDataCollector implements DataCollectorInterface
         RequestStack $requestStack,
         VersionProviderInterface $versionProvider,
         InstallStatusManager $installStatusManager,
-        $environment
+        string $environment
     ) {
         $this->requestStack = $requestStack;
         $this->versionProvider = $versionProvider;
@@ -60,7 +60,7 @@ class VersionDataCollector implements DataCollectorInterface
             'pim_edition'      => $this->versionProvider->getEdition(),
             'pim_version'      => $this->versionProvider->getPatch(),
             'pim_environment'  => $this->environment,
-            'pim_install_time' => $this->installStatusManager->getInstalledFlag(),
+            'pim_install_time' => $this->installStatusManager->getPimInstallDateTime()->format(\DateTime::ISO8601),
             'server_version'   => $this->getServerVersion(),
         ];
     }

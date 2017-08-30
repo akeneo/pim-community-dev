@@ -7,10 +7,9 @@ use Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager;
 
 class InstallStatusManagerSpec extends ObjectBehavior
 {
-    function let()
+    function let(Registry $doctrine, string $databaseName)
     {
-        $projectRoot = realpath(__DIR__ . '/../../../..');
-        $this->beConstructedWith($projectRoot, '/tmp', 'prod');
+        $this->beConstructedWith($projectRoot, $databaseName);
     }
 
     function it_is_initializable()

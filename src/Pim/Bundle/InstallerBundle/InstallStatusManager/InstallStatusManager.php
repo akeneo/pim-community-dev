@@ -6,9 +6,10 @@ namespace Pim\Bundle\InstallerBundle\InstallStatusManager;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
 use Doctrine\DBAL\Exception\ConnectionException;
+use Pim\Bundle\InstallerBundle\Exception\UnavailableCreationTimeException;
 
 /**
- * InstallStatusManager : Check that PIM has been installed by checking that an 'oro_user' table exists.
+ * Checks whether the PIM has already been installed by checking that an 'oro_user' table exists.
  *
  * @author    Vincent Berruchon <vincent.berruchon@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -40,9 +41,11 @@ class InstallStatusManager
     }
 
     /**
-     * @return string return null if the PIM not installed or return the timestamp of creation of the 'oro_user' table.
+     * Returns null if the PIM not installed or returns the timestamp of creation of the 'oro_user' table.
+     *
+     * @return \DateTime
      */
-    public function getInstalledFlag() : ?string
+    public function getPimInstallDateTime() : ?\DateTime
     {
         $sql = 'SELECT create_time FROM INFORMATION_SCHEMA.TABLES
                 WHERE table_schema = :database_name
@@ -52,21 +55,39 @@ class InstallStatusManager
         try {
             $stmt = $connection->prepare($sql);
         } catch (ConnectionException $e) {
-            return null;
+            throw new UnavailableCreationTimeException('Database connection failed.', $e);
         }
 
         $stmt->bindValue('database_name', $this->databaseName);
         $stmt->bindValue('install_table_name', self::INSTALL_TABLE_NAME);
         $stmt->execute();
 
-        return $stmt->fetch()[self::MYSQL_META_COLUMN_CREATE_TIME];
+        $result = $stmt->fetch();
+        if (!isset($result[self::MYSQL_META_COLUMN_CREATE_TIME])) {
+            throw new UnavailableCreationTimeException(
+                sprintf(
+                    '"%" not available for table "%s"',
+                    self::MYSQL_META_COLUMN_CREATE_TIME,
+                    self::INSTALL_TABLE_NAME
+                )
+            );
+        }
+        $installDateTime = new \DateTime($result[self::MYSQL_META_COLUMN_CREATE_TIME]);
+
+        return $installDateTime;
     }
 
     /**
     * @return bool Return a boolean about installation state of the PIM
     */
-    public function isInstalled() : bool
+    public function isPimInstalled() : bool
     {
-        return null !== $this->getInstalledFlag();
+        try {
+            $this->getPimInstallDateTime();
+        } catch (UnavailableCreationTimeException $e) {
+            return false;
+        }
+
+        return true;
     }
 }
