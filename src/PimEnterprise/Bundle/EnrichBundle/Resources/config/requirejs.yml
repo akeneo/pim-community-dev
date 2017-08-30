@@ -25,6 +25,8 @@ config:
             defaultController:
                 module: pim/controller/template
             controllers:
+                pim_enrich_attribute_create:
+                    module: pimee/controller/attribute/create
                 pimee_enrich_locale_edit:
                     module: pim/controller/form
                     aclResourceId: pimee_enrich_locale_edit_permissions
@@ -85,6 +87,9 @@ config:
 
         pimee/manage-permissions:        pimenterpriseenrich/js/manage-permissions
         pimee/rule-manager:              pimenterpriseenrich/js/product/rule-manager
+
+        # Controllers
+        pimee/controller/attribute/create: pimenterpriseenrich/js/controller/attribute/create
 
         # Form extensions
         pimee/product-edit-form/attributes/copy:                      pimenterpriseenrich/js/product/form/attributes/copy
