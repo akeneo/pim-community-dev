@@ -143,17 +143,22 @@ define(
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.clearFillFieldProvider);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:add-attribute:after', this.render);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:show_attribute', this.showAttribute);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
                 this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', (scopeEvent) => {
                     if ('base_product' === scopeEvent.context) {
+                        this.setScope(scopeEvent.scopeCode, {silent: true});
+                        this.clearFillFieldProvider();
                         this.setScope(scopeEvent.scopeCode);
                     }
                 });
                 this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
                 this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', (localeEvent) => {
                     if ('base_product' === localeEvent.context) {
+                        this.setLocale(localeEvent.localeCode, {silent: true});
+                        this.clearFillFieldProvider();
                         this.setLocale(localeEvent.localeCode);
                     }
                 });
@@ -480,6 +485,15 @@ define(
                     }).then(function () {
                         return _.values(arguments);
                     });
+            },
+
+            /**
+             * Clear the fill field provider on product fetch
+             */
+            clearFillFieldProvider: function () {
+                toFillFieldProvider.clear();
+
+                this.getRoot().trigger('pim_enrich:form:to-fill:cleared')
             }
         });
     }
