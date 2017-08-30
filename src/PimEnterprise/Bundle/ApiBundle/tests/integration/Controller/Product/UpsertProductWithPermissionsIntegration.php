@@ -188,11 +188,12 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expected, $client->getResponse()->getContent());
     }
 
-    public function testToUpdateAViewableProduct()
+    public function testToUpdateAViewableProductWithChange()
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
-        $client->request('PATCH', 'api/rest/v1/products/product_viewable_by_everybody_1', [], [], [], '{}');
+        $data = '{"enabled": false}';
+        $client->request('PATCH', 'api/rest/v1/products/product_viewable_by_everybody_1', [], [], [], $data);
         $this->assertSame(Response::HTTP_FORBIDDEN, $client->getResponse()->getStatusCode());
 
         $expected = <<<JSON
