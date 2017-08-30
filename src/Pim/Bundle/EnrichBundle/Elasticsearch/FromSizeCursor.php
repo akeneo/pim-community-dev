@@ -104,13 +104,14 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
      *
      * {@see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-from-size.html}
      */
-    protected function getNextIdentifiers(array $esQuery)
+    protected function getNextIdentifiers(array $esQuery): IdentifierResults
     {
         $size = ($this->to - $this->from) > $this->pageSize ? $this->pageSize : ($this->to - $this->from);
         $esQuery['size'] = $size;
+        $identifiers = new IdentifierResults();
 
         if (0 === $esQuery['size']) {
-            return [];
+            return $identifiers;
         }
 
         $sort = ['_uid' => 'asc'];
@@ -125,9 +126,8 @@ class FromSizeCursor extends AbstractCursor implements CursorInterface
         $response = $this->esClient->search($this->indexType, $esQuery);
         $this->count = $response['hits']['total'];
 
-        $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {
-            $identifiers[$hit['_source']['identifier']] = $hit['_source']['product_type'];
+            $identifiers->add($hit['_source']['identifier'], $hit['_source']['product_type']);
         }
 
         return $identifiers;
