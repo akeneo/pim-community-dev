@@ -11,7 +11,7 @@ services:
     pim_catalog.localization.presenter.registry:
         class: '%pim_catalog.localization.presenter.registry.class%'
         arguments:
-            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.cached_attribute'
 
     # Product values
     pim_catalog.localization.presenter.prices:
