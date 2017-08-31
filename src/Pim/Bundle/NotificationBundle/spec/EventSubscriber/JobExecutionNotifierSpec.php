@@ -36,8 +36,8 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $jobExecution->getStatus()->willReturn($status);
         $jobExecution->getJobInstance()->willReturn($jobInstance);
 
-        $jobParameters->has('notification_user')->willReturn(true);
-        $jobParameters->get('notification_user')->willReturn('julia');
+        $jobParameters->has('user_to_notify')->willReturn(true);
+        $jobParameters->get('user_to_notify')->willReturn('julia');
 
         $stepExecution->getWarnings()->willReturn($warnings);
         $jobExecution->getId()->willReturn(5);
@@ -69,14 +69,14 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
-    function it_does_not_notify_if_job_execution_parameters_has_no_notification_user(
+    function it_does_not_notify_if_job_execution_parameters_has_no_user_to_notify(
         $event,
         $jobExecution,
         $notifier,
         JobParameters $jobParameters
     ) {
         $jobExecution->getJobParameters()->willReturn($jobParameters);
-        $jobParameters->has('notification_user')->willReturn(false);
+        $jobParameters->has('user_to_notify')->willReturn(false);
 
         $notifier->notify(Argument::cetera())->shouldNotBeCalled();
 

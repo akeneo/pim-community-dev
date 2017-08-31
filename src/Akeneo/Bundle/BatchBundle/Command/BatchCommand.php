@@ -58,6 +58,12 @@ class BatchCommand extends ContainerAwareCommand
                 'php bin/console akeneo:batch:job -c "{\"filePath\":\"/tmp/foo.csv\"}" acme_product_import)'
             )
             ->addOption(
+                'username',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'Username to launch the job instance with'
+            )
+            ->addOption(
                 'email',
                 null,
                 InputOption::VALUE_REQUIRED,
@@ -116,16 +122,26 @@ class BatchCommand extends ContainerAwareCommand
         }
 
         $job = $this->getJobRegistry()->get($jobInstance->getJobName());
-        $executionId = $input->getArgument('execution');
+        $executionId = $input->hasArgument('execution') ? $input->getArgument('execution') : null;
 
         if (null !== $executionId && null !== $input->getOption('config')) {
             throw new \InvalidArgumentException('Configuration option cannot be specified when launching a job execution.');
+        }
+
+        if (null !== $executionId && $input->hasOption('username') && null !== $input->getOption('username')) {
+            throw new \InvalidArgumentException('Username option cannot be specified when launching a job execution.');
         }
 
         if (null === $executionId) {
             $jobParameters = $this->createJobParameters($jobInstance, $input);
             $this->validateJobParameters($jobInstance, $jobParameters, $code);
             $jobExecution = $job->getJobRepository()->createJobExecution($jobInstance, $jobParameters);
+
+            $username = $input->getOption('username');
+            if (null !== $username) {
+                $jobExecution->setUser($username);
+                $job->getJobRepository()->updateJobExecution($jobExecution);
+            }
         } else {
             $jobExecutionClass = $this->getContainer()->getParameter('akeneo_batch.entity.job_execution.class');
             $jobExecution = $this->getJobManager()->getRepository($jobExecutionClass)->find($executionId);

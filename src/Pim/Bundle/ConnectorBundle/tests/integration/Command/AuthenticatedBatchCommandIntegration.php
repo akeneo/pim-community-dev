@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-class BatchCommandIntegration extends TestCase
+class AuthenticatedBatchCommandIntegration extends TestCase
 {
     const EXPORT_DIRECTORY = 'pim-integration-tests-export';
 
@@ -35,24 +35,7 @@ class BatchCommandIntegration extends TestCase
         $stmt->execute();
         $result = $stmt->fetch();
 
-        $this->assertEquals(BatchStatus::COMPLETED, $result['status']);
-        $this->assertNotNull($result['start_time']);
-        $this->assertNotNull($result['end_time']);
-        $this->assertNotNull($result['create_time']);
-        $this->assertNotNull($result['pid']);
-        $this->assertNotNull($result['log_file']);
-        $this->assertNotNull(json_decode($result['raw_parameters'], true));
-        $this->assertNull($result['user']);
-        $this->assertEquals('Export csv_product_export has been successfully executed.' . PHP_EOL, $output->fetch());
-    }
-
-    public function testJobExecutionStateWithUsername()
-    {
-        $output = $this->launchJob(['--username' => 'mary']);
-        $connection = $this->get('doctrine.orm.default_entity_manager')->getConnection();
-        $stmt = $connection->prepare('SELECT status, pid, start_time, end_time, create_time, user, log_file, raw_parameters from akeneo_batch_job_execution');
-        $stmt->execute();
-        $result = $stmt->fetch();
+        $rawParameters = json_decode($result['raw_parameters'], true);
 
         $this->assertEquals(BatchStatus::COMPLETED, $result['status']);
         $this->assertNotNull($result['start_time']);
@@ -60,7 +43,9 @@ class BatchCommandIntegration extends TestCase
         $this->assertNotNull($result['create_time']);
         $this->assertNotNull($result['pid']);
         $this->assertNotNull($result['log_file']);
-        $this->assertNotNull(json_decode($result['raw_parameters'], true));
+        $this->assertNotNull($rawParameters);
+        $this->assertArrayHasKey('is_user_authenticated', $rawParameters);
+        $this->assertTrue($rawParameters['is_user_authenticated']);
         $this->assertEquals('mary', $result['user']);
         $this->assertEquals('Export csv_product_export has been successfully executed.' . PHP_EOL, $output->fetch());
     }
@@ -115,38 +100,6 @@ class BatchCommandIntegration extends TestCase
         $this->assertContains('Email "email" is invalid', $output->fetch());
     }
 
-    public function testLaunchJobWithInvalidJobExecutionCode()
-    {
-        $output = $this->launchJob(['execution' => '1']);
-        $this->assertContains('Could not find job execution "1"', $output->fetch());
-    }
-
-    public function testLaunchJobAlreadyStarted()
-    {
-        $this->launchJob();
-        $connection = $this->get('doctrine.orm.default_entity_manager')->getConnection();
-        $stmt = $connection->prepare('SELECT id, status from akeneo_batch_job_execution');
-        $stmt->execute();
-        $result = $stmt->fetch();
-
-        $this->assertEquals(BatchStatus::COMPLETED, $result['status']);
-
-        $output = $this->launchJob(['execution' => $result['id']]);
-        $this->assertContains('Job execution "18" has invalid status: COMPLETED', $output->fetch());
-    }
-
-    public function testLaunchJobExecutionWithConfigOverridden()
-    {
-        $output = $this->launchJob(['execution' => '1', '--config' => ['filePath' => '/tmp/foo']]);
-        $this->assertContains('Configuration option cannot be specified when launching a job execution.', $output->fetch());
-    }
-
-    public function testLaunchJobExecutionWithUsernameOverridden()
-    {
-        $output = $this->launchJob(['execution' => '1', '--username' => 'mary']);
-        $this->assertContains('Username option cannot be specified when launching a job execution', $output->fetch());
-    }
-
     /**
      * @param array $arrayInput
      *
@@ -158,8 +111,9 @@ class BatchCommandIntegration extends TestCase
         $application->setAutoExit(false);
 
         $defaultArrayInput = [
-            'command'  => 'akeneo:batch:job',
+            'command'  => 'pim:batch:job',
             'code'     => 'csv_product_export',
+            'username' => 'mary',
         ];
 
         $arrayInput = array_merge($defaultArrayInput, $arrayInput);
