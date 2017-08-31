@@ -13,7 +13,7 @@ define(['oro/datagrid/string-cell', 'oro/translator'],
              * Render the completeness.
              */
             render: function () {
-                if ('product_model' === this.model.get('product_type')) {
+                if ('product_model' === this.model.get('document_type')) {
                     this.$el.empty().html(__('not_available'));
 
                     return this;

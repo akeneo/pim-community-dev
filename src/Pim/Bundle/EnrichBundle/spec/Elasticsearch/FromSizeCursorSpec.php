@@ -35,11 +35,11 @@ class FromSizeCursorSpec extends ObjectBehavior
                     'total' => 4,
                     'hits' => [
                         [
-                            '_source' => ['identifier' => 'a-variant-product', 'product_type' => ProductInterface::class],
+                            '_source' => ['identifier' => 'a-variant-product', 'document_type' => ProductInterface::class],
                             'sort' => ['pim_catalog_product#a-variant-product']
                         ],
                         [
-                            '_source' => ['identifier' => 'a-sub-product-model', 'product_type' => ProductModelInterface::class],
+                            '_source' => ['identifier' => 'a-sub-product-model', 'document_type' => ProductModelInterface::class],
                             'sort' => ['pim_catalog_product#a-sub-product-model']
                         ],
                     ]
@@ -97,11 +97,11 @@ class FromSizeCursorSpec extends ObjectBehavior
                     'total' => 4,
                     'hits' => [
                         [
-                            '_source' => ['identifier' => 'a-root-product-model', 'product_type' => ProductModelInterface::class],
+                            '_source' => ['identifier' => 'a-root-product-model', 'document_type' => ProductModelInterface::class],
                             'sort' => ['pim_catalog_product#a-root-product-model']
                         ],
                         [
-                            '_source' => ['identifier' => 'a-product', 'product_type' => ProductInterface::class],
+                            '_source' => ['identifier' => 'a-product', 'document_type' => ProductInterface::class],
                             'sort' => ['pim_catalog_product#a-product']
                         ],
                     ]
@@ -172,11 +172,11 @@ class FromSizeCursorSpec extends ObjectBehavior
                     'total' => 4,
                     'hits' => [
                         [
-                            '_source' => ['identifier' => 'foo', 'product_type' => ProductModelInterface::class],
+                            '_source' => ['identifier' => 'foo', 'document_type' => ProductModelInterface::class],
                             'sort' => ['pim_catalog_product#foo']
                         ],
                         [
-                            '_source' => ['identifier' => 'foo', 'product_type' => ProductInterface::class],
+                            '_source' => ['identifier' => 'foo', 'document_type' => ProductInterface::class],
                             'sort' => ['pim_catalog_product#foo']
                         ],
                     ]

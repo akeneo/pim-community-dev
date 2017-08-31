@@ -64,7 +64,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->normalize($product, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn([
                 'properties'                => 'properties are normalized here',
-                'product_type'              => ProductInterface::class,
+                'document_type'              => ProductInterface::class,
                 'attributes_for_this_level' => ['property_1', 'property_2'],
             ]);
     }
@@ -88,7 +88,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->normalize($variantProduct, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->shouldReturn([
                 'properties'                => 'properties are normalized here',
-                'product_type'              => ProductInterface::class,
+                'document_type'              => ProductInterface::class,
                 'attributes_for_this_level' => ['property_1', 'property_2'],
             ]);
     }

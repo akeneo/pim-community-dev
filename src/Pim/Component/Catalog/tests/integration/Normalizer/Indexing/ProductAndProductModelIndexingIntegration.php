@@ -55,7 +55,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'product_type' => ProductModelInterface::class,
+            'document_type' => ProductModelInterface::class,
             'attributes_for_this_level' => ['a_text']
         ];
 
@@ -98,7 +98,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'product_type' => ProductModelInterface::class,
+            'document_type' => ProductModelInterface::class,
             'attributes_for_this_level' => ['a_simple_select']
         ];
 
@@ -150,7 +150,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'product_type' => ProductInterface::class,
+            'document_type' => ProductInterface::class,
             'attributes_for_this_level' => ['sku', 'a_yes_no']
         ];
 
@@ -179,7 +179,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             'family_variant'            => null,
             'parent'                    => null,
             'values'                    => [],
-            'product_type'              => ProductInterface::class,
+            'document_type'              => ProductInterface::class,
             'attributes_for_this_level' => ['sku'],
         ];
 
@@ -421,7 +421,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
-            'product_type' => ProductInterface::class,
+            'document_type' => ProductInterface::class,
             'attributes_for_this_level' => [
                 123,
                 'sku',
