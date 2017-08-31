@@ -69,7 +69,7 @@ const utils = {
 
         utils.createModuleRegistry(keys(aliases), baseDir)
 
-        return { paths, config, aliases }
+        return { config, aliases }
     },
 
     createModuleRegistry(modules, baseDir) {

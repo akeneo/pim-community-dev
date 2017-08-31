@@ -5,7 +5,7 @@ const webpack = require('webpack')
 const { resolve } = require('path')
 const { mapKeys } = require('lodash')
 const { getModulePaths } = require('./frontend/requirejs-utils')
-const { aliases, context, config, paths } = getModulePaths(rootDir, __dirname)
+const { aliases, config } = getModulePaths(rootDir, __dirname)
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1
 
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
@@ -46,33 +46,6 @@ module.exports = {
     },
     module: {
         rules: [
-
-            // Inject a regex that contains a list of the allowed paths to grab modules from
-            {
-                test: resolve(__dirname, 'frontend/require-context'),
-                loader: 'regexp-replace-loader',
-                options: {
-                    match: {
-                        pattern: /__contextPlaceholder/,
-                        flags: 'g'
-                    },
-                    replaceWith: context
-                }
-            },
-
-            // Inject the hash of absolute module paths mapped to module name
-            {
-                test: resolve(__dirname, 'frontend/require-context'),
-                loader: 'regexp-replace-loader',
-                options: {
-                    match: {
-                        pattern: /__contextPaths/,
-                        flags: 'g'
-                    },
-                    replaceWith: JSON.stringify(paths)
-                }
-            },
-
             // Inject the module config (to replace module.config() from requirejs)
             {
                 test: /\.js$/,
