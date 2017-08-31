@@ -1,25 +1,27 @@
-<div class="AknDefault-mainContent">
-    <header class="AknTitleContainer navigation">
-        <div class="AknTitleContainer-imageContainer" data-drop-zone="main-image"></div>
-        <div class="AknTitleContainer-mainContainer">
-            <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div>
-            <div class="AknTitleContainer-title" data-drop-zone="title"><%- title %></div>
-        </div>
-        <div class="AknTitleContainer-buttonsContainer">
-            <div class="user-menu" data-drop-zone="user-menu"></div>
-            <div class="AknTitleContainer-rightButtons">
-                <div class="AknButtonList AknButtonsList--right AknTitleContainer-rightButtons" data-drop-zone="buttons"></div>
+<div class="AknDefault-contentWithColumn" data-drop-zone="column">
+    <div class="AknDefault-mainContent">
+        <header class="AknTitleContainer navigation">
+            <div class="AknTitleContainer-imageContainer" data-drop-zone="main-image"></div>
+            <div class="AknTitleContainer-mainContainer">
+                <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div>
+                <div class="AknTitleContainer-title" data-drop-zone="title"><%- title %></div>
             </div>
-            <div class="AknTitleContainer-titleButtons AknButtonList" data-drop-zone="title-buttons"></div>
-            <div class="AknTitleContainer-state state" data-drop-zone="state"> </div>
-        </div>
-    </header>
+            <div class="AknTitleContainer-buttonsContainer">
+                <div class="user-menu" data-drop-zone="user-menu"></div>
+                <div class="AknTitleContainer-rightButtons">
+                    <div class="AknButtonList AknButtonsList--right AknTitleContainer-rightButtons" data-drop-zone="buttons"></div>
+                </div>
+                <div class="AknTitleContainer-titleButtons AknButtonList" data-drop-zone="title-buttons"></div>
+                <div class="AknTitleContainer-state state" data-drop-zone="state"> </div>
+            </div>
+        </header>
 
-    <div class="row-fluid" style="display: flex; height: 100%; margin-left: -40px; margin-right: -40px;">
-        <div data-drop-zone="tree"></div>
+        <div class="row-fluid" style="display: flex; height: 100%; margin-left: -40px; margin-right: -40px;">
+            <div data-drop-zone="tree"></div>
 
-        <div id="product-grid" style="flex-grow: 1;" data-drop-zone="grid">
-            <div id="grid-<%- gridName %>" data-type="datagrid" ></div>
+            <div id="product-grid" style="flex-grow: 1;" data-drop-zone="grid">
+                <div id="grid-<%- gridName %>" data-type="datagrid" ></div>
+            </div>
         </div>
     </div>
 </div>

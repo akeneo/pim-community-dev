@@ -5,8 +5,18 @@ extensions:
         config:
             template: pim/template/product/index
             templateParams:
+#               TODO This next one should be translated, no ?
                 title: Products
                 gridName: product-grid
+
+    pim-product-index-left-column:
+        module: pim/form/common/column
+        parent: pim-product-index
+        position: 5
+        targetZone: column
+        config:
+          stateCode: product_index
+          navigationTitle: pim_enrich.entity.product.navigation
 
     pim-product-index-create-button:
         module: pim/form/common/index/create-button
@@ -14,6 +24,7 @@ extensions:
         targetZone: buttons
         aclResourceId: pim_enrich_product_create
         config:
+#          TODO This next one should be translated, no ?
            title:     Create product
            modalForm: pim-product-create-modal
 
