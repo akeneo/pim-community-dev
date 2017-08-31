@@ -24,8 +24,6 @@ parameters:
     tmp_storage_dir:      '/tmp/pim/file_storage'
     upload_tmp_dir:       '/tmp/pim/upload_tmp_dir'
 
-    installed:            ~
-
     # You can use installer_data to install an outside catalog (like one from akeneo/catalogs)
     # installer_data: %kernel.root_dir%/../vendor/akeneo/catalogs/master/enterprise/small/fixtures
     # or you can use one of the provided catalogs
