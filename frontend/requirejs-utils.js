@@ -1,12 +1,11 @@
 /* eslint-env es6 */
 const { assign } = Object
-const { values, get, mapValues } = require('lodash')
-const { resolve } = require('path')
+const { get, mapValues, keys } = require('lodash')
+const { resolve, join } = require('path')
 const { parse } = require('yamljs')
-const { readFileSync, existsSync } = require('fs')
+const { readFileSync, existsSync, writeFileSync } = require('fs')
 
 const deepMerge = require('deepmerge')
-const globToRegex = require('glob-to-regexp')
 const customPaths = require('./custom-paths')
 
 const utils = {
@@ -68,14 +67,24 @@ const utils = {
             'require-context': resolve(sourceDir, './frontend/require-context.js')
         })
 
-        // Derive the allowed context paths from all the paths in all the requirejs.yml files
-        const contextPaths = values(aliases).map(alias => {
-          const filename = alias.replace(/.js$/, '')
-          return globToRegex(filename).toString().slice(2, -2)
-        })
-        const context = `/^.*(${contextPaths.join('|')})$/`
+        utils.createModuleRegistry(keys(aliases), baseDir)
 
-        return { paths, config, context, aliases }
+        return { paths, config, aliases }
+    },
+
+    createModuleRegistry(modules, baseDir) {
+        const registryFiles = {}
+
+        modules.forEach(file => {
+            registryFiles[`'${file}'`] = `require.resolve('${file}')`
+        })
+
+        const registry = `module.exports = function(moduleName) {
+            const paths = ${JSON.stringify(registryFiles).replace(/\"/g, '')};
+            return __webpack_require__(paths[moduleName])
+        }`
+
+        writeFileSync(join(baseDir, './web/js/module-registry.js'), registry);
     }
 }
 

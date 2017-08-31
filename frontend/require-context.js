@@ -1,14 +1,5 @@
-define([], function() {
+define(['module-registry'], function(moduleRegistry) {
     return function(moduleName) {
-        var modulePath = __contextPaths[moduleName];
-        var grab = require.context('./dynamic/', true, __contextPlaceholder)
-
-        if (modulePath === undefined) {
-            console.error('Cannot fetch module', moduleName, ' - it needs to be defined in the requirejs.yml')
-        }
-
-        modulePath = modulePath.replace(/.js$/, '')
-
-        return grab(modulePath)
-    }
-})
+        return moduleRegistry(moduleName);
+    };
+});

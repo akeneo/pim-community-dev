@@ -6,5 +6,6 @@ module.exports = {
     'jquery': 'node_modules/jquery/dist/jquery.js',
     'json': 'node_modules/JSON2/json2.js',
     'underscore': 'node_modules/underscore/underscore.js',
-    'routes': 'web/js/routes.js'
+    'routes': 'web/js/routes.js',
+    'module-registry': 'web/js/module-registry.js'
 }

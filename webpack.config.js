@@ -3,14 +3,12 @@ const process = require('process')
 const rootDir = process.cwd()
 const webpack = require('webpack')
 const { resolve } = require('path')
-const { values, mapKeys } = require('lodash')
+const { mapKeys } = require('lodash')
 const { getModulePaths } = require('./frontend/requirejs-utils')
 const { aliases, context, config, paths } = getModulePaths(rootDir, __dirname)
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1
 
-const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
 const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
-const AddToContextPlugin = require('./frontend/add-context-plugin')
 const LiveReloadPlugin = require('webpack-livereload-plugin')
 
 const babelPresets = [['babel-preset-env', {
@@ -181,12 +179,6 @@ module.exports = {
 
         // This is for the summernote lib (until it's updated to the latest version)
         new webpack.DefinePlugin({'require.specified': 'require.resolve'}),
-
-        // When we dynamically require modules, replace the context with the root directory
-        new ContextReplacementPlugin(/.\/dynamic/, resolve('./')),
-
-        // A custom plugin to use absolute paths for webpack context map
-        new AddToContextPlugin(values(paths), rootDir),
 
         // Ignore these directories when webpack watches for changes
         new webpack.WatchIgnorePlugin([
