@@ -26,7 +26,7 @@
   &--warning {
     border: 1px solid darken(@AknOrange, 10%);
     background: lighten(@AknOrange, 30%);
-    color: @AknDefaultFontColor;
+    color: darken(@AknOrange, 20%);
   }
 
   &--danger,
@@ -50,5 +50,15 @@
 
   & + & {
     margin-top: 10px;
+  }
+
+  &--withIcon {
+    // TODO Change
+    background-image: url("../../images/icon-delete-slategrey.svg");
+    background-repeat: no-repeat;
+    background-position: 8px 50%;
+    padding-left: 40px;
+    font-size: @AknFontSizeBig;
+    font-weight: bold;
   }
 }
