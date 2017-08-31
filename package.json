@@ -46,7 +46,7 @@
     "summernote": "0.6.5",
     "text-loader": "0.0.1",
     "underscore": "1.8.3",
-    "webpack": "3.5.4",
+    "webpack": "3.5.5",
     "webpack-cleanup-plugin": "0.5.1",
     "webpack-dev-server": "2.7.1",
     "webpack-livereload-plugin": "0.11.0",

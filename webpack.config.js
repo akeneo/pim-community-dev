@@ -1,15 +1,21 @@
 /* eslint-env es6 */
-const process = require('process')
-const rootDir = process.cwd()
-const webpack = require('webpack')
-const { resolve } = require('path')
-const { mapKeys } = require('lodash')
-const { getModulePaths } = require('./frontend/requirejs-utils')
-const { aliases, config } = getModulePaths(rootDir, __dirname)
-const isProd = process.argv && process.argv.indexOf('--env=prod') > -1
+const fs = require('fs');
+const process = require('process');
+const rootDir = process.cwd();
+const webpack = require('webpack');
+const path = require('path');
+const _ = require('lodash');
 
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
-const LiveReloadPlugin = require('webpack-livereload-plugin')
+const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
+const sourcePath = path.resolve(rootDir, 'web/js/require-paths.js');
+
+const { getModulePaths, createModuleRegistry } = require('./webpack/requirejs-utils');
+const { aliases, config } = getModulePaths(rootDir, __dirname, sourcePath);
+
+createModuleRegistry(Object.keys(aliases), rootDir);
+
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+const LiveReloadPlugin = require('webpack-livereload-plugin');
 
 const babelPresets = [['babel-preset-env', {
     targets: {
@@ -17,9 +23,17 @@ const babelPresets = [['babel-preset-env', {
     }
 }]];
 
-if (isProd) babelPresets.push('babel-preset-minify')
+if (isProd) {
+    babelPresets.push('babel-preset-minify');
+}
 
-console.log('Starting webpack from', rootDir, 'in environment', isProd ? 'prod' : 'dev')
+if (!fs.existsSync(sourcePath)) {
+    throw new Error(`The web/js/require-paths.js module does not exist - You need to run
+    "bin/console pim:install" or "bin/console pim:installer:dump-require-paths" before
+    running webpack \n`);
+}
+
+console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
 
 module.exports = {
     stats: {
@@ -32,17 +46,18 @@ module.exports = {
     target: 'web',
     entry: [
         'babel-polyfill',
-        resolve(rootDir, './web/bundles/pimenrich/js/index.js')
+        path.resolve(rootDir, './web/bundles/pimenrich/js/index.js')
     ],
     output: {
-        path: resolve('./web/dist/'),
+        path: path.resolve('./web/dist/'),
         publicPath: '/dist/',
         filename: '[name].min.js',
         chunkFilename: '[name].bundle.js'
     },
+    devtool: 'source-map',
     resolve: {
         symlinks: false,
-        alias: mapKeys(aliases, (path, key) => `${key}$`)
+        alias: _.mapKeys(aliases, (path, key) => `${key}$`)
     },
     module: {
         rules: [
@@ -52,7 +67,7 @@ module.exports = {
                 exclude: /\/node_modules\/|\/spec\//,
                 use: [
                     {
-                        loader: resolve(__dirname, 'frontend/config-loader'),
+                        loader: path.resolve(__dirname, 'webpack/config-loader'),
                         options: {
                             configMap: config
                         }
@@ -108,7 +123,7 @@ module.exports = {
 
             // Expose the require-polyfill to window
             {
-                test: resolve(__dirname, './frontend/require-polyfill.js'),
+                test: path.resolve(__dirname, './webpack/require-polyfill.js'),
                 use: [
                     {
                         loader: 'expose-loader',
@@ -118,16 +133,15 @@ module.exports = {
             },
 
 
-            // Process the pim frontend files with babel
+            // Process the pim webpack files with babel
             {
                 test: /\.js$/,
-                include: /(web\/bundles|frontend|spec)/,
+                include: /(web\/bundles|webpack|spec)/,
                 exclude: /lib|node_modules/,
                 use: {
                     loader: 'babel-loader',
                     options: {
                         presets: babelPresets,
-                        // Cache speeds up the incremental builds
                         cacheDirectory: 'web/cache'
                     }
                 }
@@ -143,6 +157,7 @@ module.exports = {
     resolveLoader: {
         moduleExtensions: ['-loader']
     },
+
     plugins: [
         // Clean up the dist folder and source maps before rebuild
         new WebpackCleanupPlugin(),
@@ -155,10 +170,10 @@ module.exports = {
 
         // Ignore these directories when webpack watches for changes
         new webpack.WatchIgnorePlugin([
-            resolve(rootDir, './node_modules'),
-            resolve(rootDir, './app'),
-            resolve(rootDir, './app/cache'),
-            resolve(rootDir, './vendor')
+            path.resolve(rootDir, './node_modules'),
+            path.resolve(rootDir, './app'),
+            path.resolve(rootDir, './app/cache'),
+            path.resolve(rootDir, './vendor')
         ]),
 
         // Inject live reload to auto refresh the page (hmr not compatible with our app)
@@ -175,4 +190,4 @@ module.exports = {
         }),
         new webpack.optimize.CommonsChunkPlugin({name: 'manifest'})
     ]
-}
+};
