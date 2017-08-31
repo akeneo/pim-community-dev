@@ -11,7 +11,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Connector\Processor\AttributeFilter;
+use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -49,8 +49,8 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
     /** @var ObjectDetacherInterface */
     private $objectDetacher;
 
-    /** @var AttributeFilter */
-    private $attributeFilter;
+    /** @var AttributeFilterInterface */
+    private $productModelAttributeFilter;
 
     /** @var string */
     private $importType;
@@ -62,7 +62,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
      * @param ValidatorInterface                    $validator
      * @param FilterInterface                       $productModelFilter
      * @param ObjectDetacherInterface               $objectDetacher
-     * @param AttributeFilter                       $attributeFilter
+     * @param AttributeFilterInterface              $productModelAttributeFilter
      * @param string                                $importType
      */
     public function __construct(
@@ -72,7 +72,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         ValidatorInterface $validator,
         FilterInterface $productModelFilter,
         ObjectDetacherInterface $objectDetacher,
-        AttributeFilter $attributeFilter,
+        AttributeFilterInterface $productModelAttributeFilter,
         string $importType
     ) {
         $this->productModelFactory = $productModelFactory;
@@ -81,7 +81,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         $this->validator = $validator;
         $this->productModelFilter = $productModelFilter;
         $this->objectDetacher = $objectDetacher;
-        $this->attributeFilter = $attributeFilter;
+        $this->productModelAttributeFilter = $productModelAttributeFilter;
         $this->importType = $importType;
     }
 
@@ -101,7 +101,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
             $this->skipItemWithMessage($flatProductModel, 'The code must be filled');
         }
 
-        $flatProductModel = $this->attributeFilter->filter($flatProductModel);
+        $flatProductModel = $this->productModelAttributeFilter->filter($flatProductModel);
         $productModel = $this->findOrCreateProductModel($flatProductModel['code']);
 
         $jobParameters = $this->stepExecution->getJobParameters();

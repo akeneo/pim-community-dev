@@ -11,8 +11,8 @@ Feature: Export product by attribute number
       | order_number | pim_catalog_number | Order number | other | 0                | 0                |
       | track_number | pim_catalog_number | Track number | other | 0                | 0                |
     And the following family:
-      | code | requirements-mobile | attributes                   |
-      | CD   | sku                 | number_in_stock,order_number |
+      | code | requirements-mobile | attributes                                |
+      | CD   | sku                 | number_in_stock,order_number,track_number |
     And the following products:
       | sku              | enabled | family | categories      | number_in_stock | order_number | track_number |
       | CD-RATM          | 1       | CD     | 2014_collection | 17500           | 4            |              |

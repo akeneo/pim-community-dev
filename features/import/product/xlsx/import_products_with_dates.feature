@@ -6,6 +6,9 @@ Feature: Import XLSX products with dates
 
   Background:
     Given the "footwear" catalog configuration
+    And the following family:
+      | code        | attributes      |
+      | date_family | destocking_date |
     And I am logged in as "Julia"
 
   @info If Excel opens a file containing dates that match its locale config it will be transformed into a timestamp

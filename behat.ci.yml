@@ -68,7 +68,9 @@ default:
                 - Pim\Behat\Context\Storage\FileInfoStorage:
                     - 'Context\FeatureContext'
                 - Pim\Behat\Context\Storage\ProductStorage:
-                    - 'Context\FeatureContext'
+                    - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+                    - '@pim_catalog.repository.product'
+                    - '@doctrine.orm.default_entity_manager'
                 - Pim\Behat\Context\Storage\ProductModelStorage:
                     - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
                     - '@pim_catalog.repository.product_model'

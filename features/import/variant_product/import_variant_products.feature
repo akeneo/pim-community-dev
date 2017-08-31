@@ -40,3 +40,19 @@ Feature: Import variant products
     And I launch the import job
     And I wait for the "csv_default_product_import" job to finish
     And the family of "SKU-001" should be "clothing"
+
+  Scenario: Import variant product by ignoring attributes that are not part of the family
+    Given the following root product model "code-001" with the variant family clothing_color_size
+    And the following sub product model "code-002" with "code-001" as parent
+    And the following CSV file to import:
+      """
+      parent;family;categories;ean;sku;weight;weight-unit;size;color
+      code-002;clothing;master_men;EAN;SKU-001;100;GRAM;m;red
+      """
+    And the following job "csv_default_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_default_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_default_product_import" job to finish
+    Then the variant product "SKU-001" should not have the following values:
+      | color |

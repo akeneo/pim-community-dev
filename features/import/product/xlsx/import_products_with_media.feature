@@ -11,14 +11,17 @@ Feature: Import media with products
       | Front view  | pim_catalog_image | gif, jpg           | 1             | other | frontView  |
       | User manual | pim_catalog_file  | txt, pdf           | 1             | other | userManual |
       | Warranty    | pim_catalog_file  | txt, pdf           | 1             | other | warranty   |
+    And the following family:
+      | code         | attributes                         |
+      | media_family | frontView,name,userManual,warranty |
     And I am logged in as "Julia"
 
   Scenario: Successfully import media
     Given the following XLSX file to import:
       """
       sku;family;groups;frontView;name-en_US;userManual;categories
-      bic-core-148;sneakers;;bic-core-148.gif;"Bic Core 148";bic-core-148.txt;2014_collection
-      fanatic-freewave-76;sneakers;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
+      bic-core-148;media_family;;bic-core-148.gif;"Bic Core 148";bic-core-148.txt;2014_collection
+      fanatic-freewave-76;media_family;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
       """
     And the following job "xlsx_footwear_product_import" configuration:
       | filePath | %file to import% |

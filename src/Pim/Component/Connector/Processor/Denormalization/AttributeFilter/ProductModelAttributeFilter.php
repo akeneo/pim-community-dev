@@ -1,26 +1,27 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Component\Connector\Processor;
+namespace Pim\Component\Connector\Processor\Denormalization\AttributeFilter;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 
 /**
- * Filter the attribute depending on the variant family, we will remove all attributes that don't belong to your level.
- * This is because when product models are exported, they gather the values of their parent.
- * And we should be able to import those export files.
+ * Filter data according to attributes defined on the family variant. All
+ * attributes that don't belong to the corresponding attribute set will be
+ * removed.
+ *
+ * This is because when product models are exported, they gather the values
+ * of their parent, and we should be able to import those export files.
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeFilter
+class ProductModelAttributeFilter implements AttributeFilterInterface
 {
     /** @var FamilyVariantRepositoryInterface */
     private $familyVariantRepository;
@@ -41,9 +42,7 @@ class AttributeFilter
     }
 
     /**
-     * @param array $flatProductModel
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function filter(array $flatProductModel): array
     {
@@ -53,44 +52,42 @@ class AttributeFilter
             return $flatProductModel;
         }
 
-        /** @var FamilyVariantInterface $familyVariant */
         $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariant);
         $parent = $flatProductModel['parent'] ?? '';
         if (empty($parent) && null !== $familyVariant) {
-            return $this->removeUnknownAttributes($flatProductModel, $familyVariant->getCommonAttributes());
+            return $this->keepOnlyAttributes($flatProductModel, $familyVariant->getCommonAttributes());
         }
 
-        /** @var ProductModelInterface $parentProductModel */
         $parentProductModel = $this->productModelRepository->findOneByIdentifier($parent);
         // Skip the attribute filtration if the parent does not exist, updater/validation will raise error.
         if (null === $parentProductModel) {
             return $flatProductModel;
         }
 
-        $variantAttributeSet = $familyVariant->getVariantAttributeSet($parentProductModel->getVariationLevel()+1);
+        $variantAttributeSet = $familyVariant->getVariantAttributeSet($parentProductModel->getVariationLevel() + 1);
 
-        return $this->removeUnknownAttributes($flatProductModel, $variantAttributeSet->getAttributes());
+        return $this->keepOnlyAttributes($flatProductModel, $variantAttributeSet->getAttributes());
     }
 
     /**
      * @param array      $flatProductModel
-     * @param Collection $familyVariantAttribute
+     * @param Collection $attributesToKeep
      *
      * @return array
      */
-    private function removeUnknownAttributes(array $flatProductModel, Collection $familyVariantAttribute): array
+    private function keepOnlyAttributes(array $flatProductModel, Collection $attributesToKeep): array
     {
         foreach ($flatProductModel['values'] as $attributeName => $value) {
             $shortAttributeName = explode('-', $attributeName);
             $shortAttributeName = $shortAttributeName[0];
 
-            $belongToFamilyVariant = $familyVariantAttribute->exists(
+            $keepedAttributeCodes = $attributesToKeep->exists(
                 function ($key, AttributeInterface $attribute) use ($shortAttributeName) {
                     return $attribute->getCode() === $shortAttributeName;
                 }
             );
 
-            if (!$belongToFamilyVariant) {
+            if (!$keepedAttributeCodes) {
                 unset($flatProductModel['values'][$attributeName]);
             }
         }

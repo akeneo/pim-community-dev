@@ -11,6 +11,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -46,14 +47,18 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /** @var FilterInterface */
     protected $productFilter;
 
+    /** @var AttributeFilterInterface */
+    private $productAttributeFilter;
+
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository            product repository
-     * @param ProductBuilderInterface               $productBuilder        product builder
-     * @param ProductBuilderInterface               $variantProductBuilder variant product builder
-     * @param ObjectUpdaterInterface                $updater               product updater
-     * @param ValidatorInterface                    $validator             product validator
-     * @param ObjectDetacherInterface               $detacher              detacher to remove it from UOW when skip
-     * @param FilterInterface                       $productFilter         product filter
+     * @param IdentifiableObjectRepositoryInterface $repository
+     * @param ProductBuilderInterface               $productBuilder
+     * @param ProductBuilderInterface               $variantProductBuilder
+     * @param ObjectUpdaterInterface                $updater
+     * @param ValidatorInterface                    $validator
+     * @param ObjectDetacherInterface               $detacher
+     * @param FilterInterface                       $productFilter
+     * @param AttributeFilterInterface              $productAttributeFilter
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -62,7 +67,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
-        FilterInterface $productFilter
+        FilterInterface $productFilter,
+        AttributeFilterInterface $productAttributeFilter
     ) {
         parent::__construct($repository);
 
@@ -72,6 +78,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         $this->validator = $validator;
         $this->detacher = $detacher;
         $this->productFilter = $productFilter;
+        $this->productAttributeFilter = $productAttributeFilter;
     }
 
     /**
@@ -89,6 +96,8 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
         if (null === $identifier) {
             $this->skipItemWithMessage($item, 'The identifier must be filled');
         }
+
+        $item = $this->productAttributeFilter->filter($item);
 
         $familyCode = $this->getFamilyCode($item);
         $filteredItem = $this->filterItemData($item);
