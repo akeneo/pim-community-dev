@@ -94,6 +94,10 @@ Feature: List proposals
 
   Scenario: Successfully review a proposal with a new simple select value
     Given I am logged in as "Julia"
+    And I am on the "tshirts" family page
+    And I visit the "Attributes" tab
+    And I add available attribute Weather conditions
+    And I save the family
     And I am on the "additional_materials" attribute page
     And I visit the "Options" tab
     And I create the following attribute options:
@@ -112,7 +116,7 @@ Feature: List proposals
     When I am on the proposals page
     Then I should see the following proposals:
       | product | author | attribute          | original | new  |
-      | tshirt  | Mary   | weather_conditions | Dry      | Blue |
+      | tshirt  | Mary   | weather_conditions |          | Blue |
 
   @jira https://akeneo.atlassian.net/browse/PIM-5825
   Scenario: Successfully display a proposal even when an attribute has been deleted

@@ -6,6 +6,12 @@ Feature: Review a product draft
 
   Background:
     Given a "clothing" catalog configuration
+    And I am logged in as "Julia"
+    And I am on the "jackets" family page
+    And I visit the "Attributes" tab
+    And I add available attribute Old attribute not used anymore
+    And I save the family
+    And I logout
     And the product:
       | family                   | jackets           |
       | categories               | winter_top        |

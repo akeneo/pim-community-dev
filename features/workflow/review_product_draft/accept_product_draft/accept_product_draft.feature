@@ -6,6 +6,11 @@ Feature: Review a product draft
 
   Background:
     Given a "clothing" catalog configuration
+    And I am logged in as "Julia"
+    And I am on the "jackets" family page
+    And I visit the "Attributes" tab
+    And I add available attribute Old attribute not used anymore
+    And I save the family
     And the product:
       | family                   | jackets           |
       | categories               | winter_top        |
@@ -23,6 +28,7 @@ Feature: Review a product draft
       | legacy_attribute         | legacy            |
       | datasheet                |                   |
       | side_view                |                   |
+    And I logout
 
   @jira https://akeneo.atlassian.net/browse/PIM-3980
   Scenario: Not being able to approve or reject a proposal with values I can't edit
