@@ -45,6 +45,7 @@ class PimEnterpriseEnrichExtension extends Extension
         $loader->load('normalizers.yml');
         $loader->load('parameters.yml');
         $loader->load('providers.yml');
+        $loader->load('query_builders.yml');
         $loader->load('repositories.yml');
         $loader->load('steps.yml');
         $loader->load('twig.yml');
