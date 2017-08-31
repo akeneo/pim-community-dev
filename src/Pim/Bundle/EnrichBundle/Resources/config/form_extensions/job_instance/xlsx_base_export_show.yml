@@ -2,7 +2,7 @@ extensions:
     pim-job-instance-xlsx-base-export-show:
         module: pim/form/common/edit-form
 
-    pim-job-instance-xlsx-base-export-show-mainImage:
+    pim-job-instance-xlsx-base-export-show-main-image:
         module: pim/form/common/main-image
         parent: pim-job-instance-xlsx-base-export-show
         targetZone: main-image

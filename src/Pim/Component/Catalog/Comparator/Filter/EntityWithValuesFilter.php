@@ -29,6 +29,9 @@ class EntityWithValuesFilter implements FilterInterface
     /** @var array */
     protected $entityFields;
 
+    /** @var FilterInterface */
+    protected $productFieldFilter;
+
     /** @var array[] */
     protected $attributeTypeByCodes;
 
@@ -36,18 +39,21 @@ class EntityWithValuesFilter implements FilterInterface
      * @param NormalizerInterface          $normalizer
      * @param ComparatorRegistry           $comparatorRegistry
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param FilterInterface              $productFieldFilter
      * @param array                        $entityFields
      */
     public function __construct(
         NormalizerInterface $normalizer,
         ComparatorRegistry $comparatorRegistry,
         AttributeRepositoryInterface $attributeRepository,
+        FilterInterface $productFieldFilter,
         array $entityFields
     ) {
         $this->normalizer = $normalizer;
         $this->comparatorRegistry = $comparatorRegistry;
         $this->attributeRepository = $attributeRepository;
         $this->entityFields = $entityFields;
+        $this->productFieldFilter = $productFieldFilter;
         $this->attributeTypeByCodes = [];
     }
 
@@ -58,44 +64,26 @@ class EntityWithValuesFilter implements FilterInterface
     {
         $originalValues = $this->getOriginalEntity($entity);
         $result = [];
+        $fields = [];
+
         foreach ($newEntity as $code => $value) {
             if ('values' === $code) {
                 $data = $this->compareAttribute($originalValues, $value);
+
+                if (null !== $data) {
+                    $result = $this->mergeValueToResult($result, $data);
+                }
             } elseif (in_array($code, $this->entityFields)) {
-                $data = $this->compareField($originalValues, $value, $code);
+                $fields[$code] = $value;
             } else {
                 throw new \LogicException(sprintf('Cannot filter value of field "%s"', $code));
             }
-
-            if (null !== $data) {
-                $result = $this->mergeValueToResult($result, $data);
-            }
         }
+
+        $productFieldsFilter = $this->productFieldFilter->filter($entity, $fields);
+        $result = $this->mergeValueToResult($result, $productFieldsFilter);
 
         return $result;
-    }
-
-    /**
-     * Compare entity's field
-     *
-     * @param array  $originalValues
-     * @param mixed  $field
-     * @param string $code
-     *
-     * @throws \LogicException
-     *
-     * @return array|null
-     */
-    protected function compareField(array $originalValues, $field, $code): ?array
-    {
-        $comparator = $this->comparatorRegistry->getFieldComparator($code);
-        $diff = $comparator->compare($field, $this->getOriginalField($originalValues, $code));
-
-        if (null !== $diff) {
-            return [$code => $diff];
-        }
-
-        return null;
     }
 
     /**
@@ -130,17 +118,6 @@ class EntityWithValuesFilter implements FilterInterface
         }
 
         return !empty($result) ? ['values' => $result] : null;
-    }
-
-    /**
-     * @param array  $originalValues
-     * @param string $code
-     *
-     * @return array|string|null
-     */
-    protected function getOriginalField(array $originalValues, $code)
-    {
-        return !isset($originalValues[$code]) ? null : $originalValues[$code];
     }
 
     /**

@@ -148,10 +148,35 @@ class NavigationContext extends PimContext implements PageObjectAware
             $actualUrl = $this->sanitizeUrl($actualFullUrl);
 
             $result = $expectedUrl === $actualUrl;
-            assertTrue($result, sprintf('Expecting to be on the page %s, not %s', $expectedUrl, $actualUrl));
 
-            return true;
+            return true === $result;
         }, sprintf('You are not on the %s page', $page));
+    }
+
+    /**
+     * @param array $options
+     *
+     * @Given /^I am on the ([^"]*) grid$/
+     * @Given /^I go to the ([^"]*) grid$/
+     */
+    public function iAmOnTheGrid($pageName, array $options = [])
+    {
+        $page = $this->getPageMapping()[$pageName];
+
+        $this->spin(function () use ($page, $options) {
+            $this->openPage($page, $options);
+            $expectedFullUrl = $this->getCurrentPage()->getUrl();
+            $actualFullUrl = $this->getSession()->getCurrentUrl();
+            $expectedUrl = $this->sanitizeUrl($expectedFullUrl);
+            $actualUrl = $this->sanitizeUrl($actualFullUrl);
+
+            $result = $expectedUrl === $actualUrl;
+            assertTrue($result, sprintf('Expecting to be on the grid %s, not %s', $expectedUrl, $actualUrl));
+
+            return $this->getCurrentPage()->find('css', '.AknGridToolbar-center');
+        }, sprintf('You are not on the %s grid', $pageName));
+
+        $this->wait();
     }
 
     /**
@@ -238,9 +263,7 @@ class NavigationContext extends PimContext implements PageObjectAware
             $expectedUrl   = $this->sanitizeUrl($expectedFullUrl);
             $result        = $expectedUrl === $actualUrl;
 
-            assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expectedUrl, $actualUrl));
-
-            return true;
+            return true === $result;
         }, sprintf('Cannot got to the %s edit page', $page));
     }
 

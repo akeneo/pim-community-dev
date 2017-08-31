@@ -23,7 +23,7 @@ Feature: Sort attribute options
     Given I check the "Sort automatically options by alphabetical order" switch
     And I save the attribute
     And I should not see the text "There are unsaved changes"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | boots |

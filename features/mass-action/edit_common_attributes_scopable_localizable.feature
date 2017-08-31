@@ -11,7 +11,7 @@ Feature: Edit common attributes of many products at once
       | black_jacket | jackets | A black jacket | Eine schwarze Jacke | 1                         | 2                     |
       | white_jacket | jackets | A white jacket | Ein weißer Jacke    | 3                         | 4                     |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   @info https://akeneo.atlassian.net/browse/PIM-5351
   Scenario: Successfully mass edit scoped product values

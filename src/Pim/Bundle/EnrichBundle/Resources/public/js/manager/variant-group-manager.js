@@ -18,16 +18,12 @@ define([
         return {
             productValues: null,
             doGenerateMissing: function (variantGroup) {
-                return AttributeManager.getAttributes(variantGroup)
-                    .then(function (productAttributeCodes) {
-                        return $.when(
-                            FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(productAttributeCodes),
-                            FetcherRegistry.getFetcher('locale').fetchActivated(),
-                            FetcherRegistry.getFetcher('channel').fetchAll(),
-                            FetcherRegistry.getFetcher('currency').fetchAll()
-                        );
-                    })
-                    .then(function (attributes, locales, channels, currencies) {
+                return $.when(
+                        FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(_.keys(variantGroup.values)),
+                        FetcherRegistry.getFetcher('locale').fetchActivated(),
+                        FetcherRegistry.getFetcher('channel').fetchAll(),
+                        FetcherRegistry.getFetcher('currency').fetchAll()
+                    ).then(function (attributes, locales, channels, currencies) {
                         var oldValues = {};
                         var newValues = {};
 

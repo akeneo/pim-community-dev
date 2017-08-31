@@ -32,7 +32,7 @@ Feature: Edit common attributes of many products at once
       | highheels      | high_heels | red   | variant_heels |
       | blue_highheels | high_heels | blue  | variant_heels |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   @jira https://akeneo.atlassian.net/browse/PIM-3282, https://akeneo.atlassian.net/browse/PIM-3880
   Scenario: Successfully mass edit products on the non default channel

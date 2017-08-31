@@ -12,6 +12,11 @@ extensions:
             tab: pim-menu-system
             item: pim-menu-system-api-connection
 
+    pim-api-connection-index-filters:
+        module: oro/datafilter-builder
+        parent: pim-api-connection-index
+        targetZone: content
+
     pim-api-connection-index-grid:
         module: pim/form/common/index/grid
         parent: pim-api-connection-index

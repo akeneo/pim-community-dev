@@ -15,7 +15,7 @@ Feature: Apply a mass action on all entities
     And I am logged in as "Julia"
 
   Scenario: Edit common attributes of all products
-    When I am on the products page
+    When I am on the products grid
     And I select all entities
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -34,7 +34,7 @@ Feature: Apply a mass action on all entities
 
   Scenario: Edit family of all products, filtered by category and completeness
     Given I launched the completeness calculator
-    When I am on the products page
+    When I am on the products grid
     And I hide the filter "family"
     And I filter by "category" with operator "" and value "2014_collection"
     And I filter by "category" with operator "" and value "winter_collection"
@@ -56,8 +56,9 @@ Feature: Apply a mass action on all entities
       | 4_blocks   | Lego 4 blocks   |
       | 2_blocks   | Lego 2 blocks   |
       | characters | Lego characters |
-    When I am on the families page
+    When I am on the families grid
     And I search "blocks"
+    Then the grid should contain 2 elements
     And I select all entities
     And I press the "Change product information" button
     And I choose the "Set attribute requirements" operation
@@ -70,7 +71,7 @@ Feature: Apply a mass action on all entities
 
   @jira https://akeneo.atlassian.net/browse/PIM-5000
   Scenario: Not applying a mass edit operation on unchecked products after "all" was selected
-    Given I am on the products page
+    Given I am on the products grid
     And I select all entities
     And I unselect row mega_boots
     When I press "Change product information" on the "Bulk Actions" dropdown button

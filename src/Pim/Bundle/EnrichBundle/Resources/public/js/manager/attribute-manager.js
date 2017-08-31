@@ -11,17 +11,6 @@ define([
     ) {
         return {
             /**
-             * Get the attributes of the given entity
-             *
-             * @param {Object} entity
-             *
-             * @return {Promise}
-             */
-            getAttributes: function (entity) {
-                return $.Deferred().resolve(_.keys(entity.values));
-            },
-
-            /**
              * Check if an attribute is optional
              *
              * @param {Object} attribute
@@ -60,25 +49,6 @@ define([
                 scope  = attribute.scopable ? scope : null;
 
                 return _.findWhere(values, { scope: scope, locale: locale });
-            },
-
-            /**
-             * Get values for the given object
-             *
-             * @param {Object} object
-             *
-             * @return {Promise}
-             */
-            getValues: function (object) {
-                return this.getAttributes(object).then(function (attributes) {
-                    _.each(attributes, function (attributeCode) {
-                        if (!_.has(object.values, attributeCode)) {
-                            object.values[attributeCode] = [];
-                        }
-                    });
-
-                    return object.values;
-                });
             },
 
             /**

@@ -22,7 +22,7 @@ Feature: Filter products per metric
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products by metric
-    Given I am on the products page
+    Given I am on the products grid
     Then I should not see the filter weight
     And the grid should contain 4 elements
     And I should see products postit and book

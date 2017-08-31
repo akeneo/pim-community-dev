@@ -68,10 +68,11 @@ function(_, messenger, __, Modal, AbstractAction) {
 
             params = collection.processFiltersParams(params, null, 'filters');
 
-            var locale = decodeURIComponent(this.datagrid.collection.url).split('dataLocale]=').pop();
+            var locale = this.getLocaleFromUrl('dataLocale');
 
             if ('family-grid' === this.datagrid.name) {
-                locale = decodeURIComponent(this.datagrid.collection.url).split('localeCode]=').pop();
+                locale = this.getLocaleFromUrl('localeCode');
+                delete params['filters[label][value]'];
             }
 
             if (locale) {
@@ -79,6 +80,19 @@ function(_, messenger, __, Modal, AbstractAction) {
             }
 
             return params;
+        },
+
+        /**
+         * Get the locale from the datagrid collection url with a given key
+         * @param  {String} localeKey For example dataLocale or localeCode
+         * @return {String} locale.   The returned locale e.g. en_US
+         */
+        getLocaleFromUrl: function(localeKey) {
+            const url = this.datagrid.collection.url.split('?')[1];
+            const urlParams = this.datagrid.collection.decodeStateData(url);
+            const datagridParams = urlParams[this.datagrid.name] || {};
+
+            return urlParams[localeKey] || datagridParams[localeKey];
         },
 
         /**

@@ -19,7 +19,7 @@ Feature: Filter products by text field
       | 13378171 | Canon 5D + EF 24-105mm f/4L IS |
       | 13572541 | Canon 5D + EF 24-105 F5L IS    |
       | 135-2541 | Canon 5D + EF 25-15 FL         |
-    When I am on the products page
+    When I am on the products grid
     And I display the columns SKU, Name, Family, Complete, Created at and Updated at
     Then I should see products "HP LA2206xc + WF722A", "Canon 5D + EF 24-105 F4L IS", "Canon 5D + EF 24-105mm f/4L IS" and "Canon 5D + EF 24-105 F5L IS"
     And the grid should contain 5 elements
@@ -47,7 +47,7 @@ Feature: Filter products by text field
       | mug    |          | MyMugDescription |
     And the "postit" product has the "description" attribute
     And the "book" product has the "name" attribute
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
@@ -66,7 +66,7 @@ Feature: Filter products by text field
       | postit | MyPostit   | MonPostit  |
       | book   |            | MonLivre   |
       | mug    |            |            |
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
@@ -83,7 +83,7 @@ Feature: Filter products by text field
       | postit | MyPostit       | MyPostit    |
       | book   |                | MyBook      |
       | mug    |                |             |
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
@@ -101,7 +101,7 @@ Feature: Filter products by text field
       | postit | MyPostit             | MyPostit          | MonPostit            | MonPostit         |
       | book   |                      | MyBook            | MonLivre             | MonLivre          |
       | mug    |                      |                   |                      |                   |
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:

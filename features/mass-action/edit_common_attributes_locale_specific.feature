@@ -10,7 +10,7 @@ Feature: Edit common attributes of many products at once with locale specific ca
     | sku    | family  | description-fr_FR-ecommerce |
     | tshirt | tshirts | Mon joli tshirt             |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   @jira https://akeneo.atlassian.net/browse/PIM-3298
   Scenario: Allow editing only common attributes, including locale specific attribute

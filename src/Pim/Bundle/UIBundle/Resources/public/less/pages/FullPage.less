@@ -1,8 +1,6 @@
 @import '../base/variables';
 
 .AknFullPage {
-  @insidePadding: 24px;
-
   position: absolute;
   width: 100%;
   height: 100%;
@@ -64,14 +62,14 @@
 
   &-buttons {
     position: fixed;
-    top: @insidePadding;
-    right: @insidePadding;
+    top: @AknFullPagePadding;
+    right: @AknFullPagePadding;
   }
 
   &-cancel {
     position: fixed;
-    top: @insidePadding;
-    left: @insidePadding;
+    top: @AknFullPagePadding;
+    left: @AknFullPagePadding;
     width: 32px;
     height: 32px;
     background: url("../../images/icon-delete-slategrey.svg") no-repeat 50% 50%;

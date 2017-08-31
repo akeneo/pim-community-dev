@@ -14,7 +14,8 @@ Feature: Edit sequentially some products
       | boot         | boots    |
       | sneaker      | sneakers |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
+    And I switch the locale to "en_US"
 
   Scenario: Successfully sequentially edit some products
     Given I sort by "SKU" value ascending
@@ -44,7 +45,7 @@ Feature: Edit sequentially some products
       When I press "Edit products sequentially" on the "Bulk Actions" dropdown button
       Then I should be on the product "boot" edit page
       And I should see the text "1 / 3 products"
-      When I am on the products page
+      When I am on the products grid
       And I select rows white_sandal, blue_sandal, boot and sneaker
       And I press "Edit products sequentially" on the "Bulk Actions" dropdown button
       Then I should be on the product "blue_sandal" edit page

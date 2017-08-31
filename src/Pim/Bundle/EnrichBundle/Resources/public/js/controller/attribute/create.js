@@ -7,7 +7,7 @@
 
 define([
     'underscore',
-    'pim/controller/base',
+    'pim/controller/front',
     'pim/form-builder',
     'pim/fetcher-registry'
 ],
@@ -16,7 +16,7 @@ function (_, BaseController, FormBuilder, fetcherRegistry) {
         /**
          * {@inheritdoc}
          */
-        renderRoute: function () {
+        renderForm: function () {
             if (!this.active) {
                 return;
             }
@@ -32,15 +32,15 @@ function (_, BaseController, FormBuilder, fetcherRegistry) {
                 'pim-attribute-create-form';
 
             return FormBuilder.buildForm(formName)
-                .then(function (form) {
+                .then((form) => {
                     form.setType(type);
 
-                    return form.configure().then(function () {
+                    return form.configure().then(() => {
                         return form;
                     });
                 })
-                .then(function (form) {
-                    this.on('pim:controller:can-leave', function (event) {
+                .then((form) => {
+                    this.on('pim:controller:can-leave', (event) => {
                         form.trigger('pim_enrich:form:can-leave', event);
                     });
 
@@ -52,7 +52,9 @@ function (_, BaseController, FormBuilder, fetcherRegistry) {
                     });
 
                     form.setElement(this.$el).render();
-                }.bind(this));
+
+                    return form;
+                });
         },
 
         /**

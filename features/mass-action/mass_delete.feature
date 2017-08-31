@@ -27,7 +27,7 @@ Feature: Delete many product at once
     And I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Display a message when try to delete none product
     Given I press "Delete" on the "Bulk Actions" dropdown button

@@ -169,6 +169,7 @@ JSON;
        "sku",
        "a_date",
        "a_file",
+       "an_image",
        "a_price",
        "a_price_without_decimal",
        "a_ref_data_multi_select",
@@ -197,7 +198,6 @@ JSON;
     "code":"attributeGroupB",
     "sort_order":2,
     "attributes":[
-       "an_image",
        "a_metric",
        "a_metric_without_decimal",
        "a_metric_negative",

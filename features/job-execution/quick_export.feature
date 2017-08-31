@@ -18,7 +18,7 @@ Feature: Quick export products
     And I am logged in as "Julia"
 
   Scenario: Go to the job execution page for a "quick export" (by clicking on the notifications) and then check buttons status on the header
-    Given I am on the products page
+    Given I am on the products grid
     And I select rows boots, sneakers, pump
     When I press "CSV (Grid context)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish

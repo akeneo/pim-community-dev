@@ -188,7 +188,6 @@ def runGruntTest() {
             docker.image('node:8').inside("") {
                 unstash "pim_community_dev_full"
                 sh "npm run lint"
-                sh "npm run webpack-jasmine"
             }
         } finally {
             sh "docker stop \$(docker ps -a -q) || true"

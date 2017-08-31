@@ -21,7 +21,7 @@
 {#
     Datagrid macro to load the grid asynchronously
 #}
-{% macro renderStatefulGrid(name, params = {}, renderParams = {}, defaultView = {}, categoryBaseRoute = null) %}
+{% macro renderStatefulGrid(name, params = {}, renderParams = {}, defaultView = {}, categoryBaseRoute = null, includeFilters = false) %}
     <div id="grid-{{ name }}" data-type="datagrid" {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}></div>
     <script type="text/javascript">
         require(
@@ -170,6 +170,12 @@
 
                             var modules = resp.metadata.requireJSModules;
                             modules.push('pim/datagrid/state-listener');
+
+                            // Will be removed in TIP-733-2
+                            {% if includeFilters %}
+                                modules.push('oro/datafilter-builder');
+                            {% endif %}
+
                             var resolvedModules = []
                             _.each(modules, function(module) {
                               var resolvedModule = require(module)

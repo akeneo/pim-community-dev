@@ -12,6 +12,11 @@ extensions:
             tab: pim-menu-settings
             item: pim-menu-settings-attribute
 
+    pim-attribute-index-filters:
+        module: oro/datafilter-builder
+        targetZone: content
+        parent: pim-attribute-index
+
     pim-attribute-index-grid:
         module: pim/form/common/index/grid
         parent: pim-attribute-index

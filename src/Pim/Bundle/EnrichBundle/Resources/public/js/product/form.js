@@ -170,6 +170,28 @@ define(
             },
 
             /**
+             * Called before removing the form from the view
+             */
+            shutdown: function () {
+                this.doShutdown();
+
+                _.each(this.extensions, (extension) => {
+                    extension.shutdown();
+                });
+            },
+
+            /**
+             * The actual shutdown method called on all extensions
+             */
+            doShutdown: function () {
+                this.stopListening();
+                this.undelegateEvents();
+                this.$el.removeData().unbind();
+                this.remove();
+                Backbone.View.prototype.remove.call(this);
+            },
+
+            /**
              * {@inheritdoc}
              */
             render: function () {

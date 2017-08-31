@@ -28,7 +28,7 @@ Feature: Display jobs execution in job tracker
       | boots    | boots    |
       | sneakers | sneakers |
       | sandals  | sandals  |
-    When I am on the products page
+    When I am on the products grid
     Then I select rows Boots, Sandals and Sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
