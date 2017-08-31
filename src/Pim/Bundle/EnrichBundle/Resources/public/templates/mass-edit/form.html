@@ -81,44 +81,4 @@
             <% } %>
         </div>
     </div>
-    <!--
-    <% columnDisplay = currentStep !== 'choose' %>
-    <div class="AknFullPage <% if (currentStep !== 'choose') { %> AknFullPage--twoColumns<% } %> scrollable-container">
-        <% if (columnDisplay) { %>
-            <div class="AknFullPage-column">
-        <% } %>
-        <div class="AknFullPage-cancel wizard-action" data-action-target="grid"></div>
-        <div>
-            <div class="AknFullPage-subTitle"><%- title %></div>
-            <div class="AknFullPage-title"><%- label %></div>
-
-            <% if (currentStep !== 'choose') { %>
-                <div class="AknFullPage-steps">
-                    <% for (step = 0; step < 4; step++) { %>
-                        <div class="AknBadge AknBadge--round AknBadge--medium<% if (step === currentStepNumber) { %> AknBadge--active AknBadge--large <% } %>"></div>
-                    <% } %>
-                </div>
-            <% } %>
-        </div>
-        <% if (columnDisplay) { %>
-            </div>
-            <div class="AknFullPage-column AknFullPage-column--right">
-        <% } %>
-
-        <div class="AknWidget-content AknWidget-content--withPadding">
-
-            <div class="AknFullPage-content step">
-            </div>
-        </div>
-        <% if (currentStep === 'choose') { %>
-            <div class="AknButtonList AknButtonList--centered <%- currentStep %>">
-                <span class="AknButton AknButtonList-item AknButton--apply<% if (!currentOperation) { %> AknButton--disabled<% } %> wizard-action" data-action-target="configure">
-                    <%- nextLabel %>
-                </span>
-            </div>
-        <% }%>
-        <% if (columnDisplay) { %>
-            </div>
-        <% } %>
-        -->
 </div>
