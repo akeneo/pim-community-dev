@@ -26,7 +26,7 @@ Feature: Publish a product
     Given I am on the "red-heels" product page
     When I press the secondary action "Publish"
     And I confirm the publishing
-    And I am on the published products page
+    And I am on the published products grid
     Then the grid should contain 1 elements
     And I should see product red-heels
 
@@ -40,7 +40,7 @@ Feature: Publish a product
       | Main fabric | spandex, neoprene |
     And I save the product
     Then I should not see the text "There are unsaved changes."
-    When I am on the published products page
+    When I am on the published products grid
     Then the grid should contain 1 elements
     And I should see product red-heels
     When I am on the "red-heels" published product show page

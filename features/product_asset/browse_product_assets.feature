@@ -28,7 +28,7 @@ Feature: Browse product assets
     And I save the asset
     And I should not see the text "There are unsaved changes."
     And I should see the text "akene.jpg"
-    And I am on the assets page
+    And I am on the assets grid
     Then the grid should contain 15 elements
     And I should see the columns Thumbnail, Code, Description, Tags, End of use, Created at and Last updated at
     And the row "paint" should contain the thumbnail for channel "mobile"
@@ -40,7 +40,7 @@ Feature: Browse product assets
 
   @jira https://akeneo.atlassian.net/browse/PIM-5400
   Scenario: Successfully display 10 product asset rows in the grid
-    And I am on the assets page
+    And I am on the assets grid
     And the row "paint" should contain:
       | column      | value             |
       | description | Photo of a paint. |

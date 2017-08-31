@@ -7,9 +7,9 @@ Feature: Import proposals
   Background:
     Given the "clothing" catalog configuration
     And the following product:
-      | sku        | categories |
-      | my-jacket  | jackets    |
-      | my-jacket2 | jackets    |
+      | sku        | categories | enabled |
+      | my-jacket  | jackets    | 1       |
+      | my-jacket2 | jackets    | 0       |
 
   Scenario: Fail to create a proposal if product does not exist
     Given I am logged in as "Mary"

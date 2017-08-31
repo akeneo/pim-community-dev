@@ -27,7 +27,7 @@ Feature: Publish many products at once
 
   Scenario: Only publish products on which user is the owner
     Given I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     When I select rows unionjack, jackadi and teafortwo
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Publish products" operation
@@ -35,12 +35,12 @@ Feature: Publish many products at once
     And I wait for the "publish_product" job to finish
     Then I should see the text "You're not the owner of the product, you can't publish it"
     And I should see the text "skipped products 1"
-    When I am on the published products page
+    When I am on the published products grid
     Then the grid should contain 2 elements
 
   Scenario: Publish nothing if the user is the owner of no product
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I select rows unionjack, jackadi and teafortwo
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
@@ -48,5 +48,5 @@ Feature: Publish many products at once
     And I wait for the "publish_product" job to finish
     Then I should see the text "You're not the owner of the product, you can't publish it"
     And I should see the text "skipped products 3"
-    When I am on the published products page
+    When I am on the published products grid
     Then the grid should contain 0 elements

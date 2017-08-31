@@ -34,4 +34,26 @@ JSON;
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
         $this->assertSame($expectedResponseContent, $response->getContent());
     }
+
+    public function testSuccessfullyToUpdateAProduct()
+    {
+        $data = <<<JSON
+{
+    "values": {
+        "a_text": [
+            { "data": "the text", "locale": null, "scope": null }
+        ]
+    }
+}
+JSON;
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client->request('PATCH', 'api/rest/v1/products/product_without_category', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSame('http://localhost/api/rest/v1/products/product_without_category', $response->headers->get('location'));
+
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_without_category');
+        $this->assertSame('the text', $product->getValue('a_text')->getData());
+    }
 }

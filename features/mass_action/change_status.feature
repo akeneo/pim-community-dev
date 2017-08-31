@@ -15,7 +15,7 @@ Feature: Disabled mass edit status of product when user is not owner
     And I am logged in as "Mary"
 
   Scenario: Impossible to mass edit status if not owner of products
-    And I am on the products page
+    And I am on the products grid
     When I select rows boots, sneakers and pump
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Change status (enable / disable)" operation

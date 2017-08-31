@@ -64,8 +64,12 @@ config:
                     config:
                         entity: rule
                 pimee_workflow_published_product_index:
-                    module: pim/controller/template
+                    module: pimee/controller/published-product/index
                     aclResourceId: pimee_workflow_published_product_index
+                    config:
+                        gridExtension: pimee-published-product-index
+                        gridName: published-product-grid
+                        title: Published products
 
         pim/form/common/attributes/create-button:
             attribute_icons:
@@ -76,8 +80,8 @@ config:
             pim/job/common/edit/launch:      pimenterpriseenrich/js/job/common/edit/launch
 
     paths:
+        pimee/controller/published-product/index: pimenterpriseenrich/js/controller/published-product/index
         pimee/product-view-form:            pimenterpriseenrich/js/product/view-form
-        pimee/product-view-form/attributes: pimenterpriseenrich/js/product/form/attributes-view
 
         pimee/manage-permissions:        pimenterpriseenrich/js/manage-permissions
         pimee/rule-manager:              pimenterpriseenrich/js/product/rule-manager

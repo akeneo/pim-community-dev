@@ -37,7 +37,7 @@ Feature: Edit a product I have access
     Then the product Name should be "My Rangers"
 
   Scenario: Seeing the edit actions on the product grid
-    Given I am on the products page
+    Given I am on the products grid
     And I select the "Boots" tree
     Then I should not be able to view the "View the product" action of the row which contains "boots"
     And I should be able to view the "Edit attributes of the product" action of the row which contains "boots"
@@ -46,5 +46,5 @@ Feature: Edit a product I have access
 
   @skip
   Scenario: Not being able to edit a product I have not access
-    Given I am on the products page
+    Given I am on the products grid
     Then I should not be able to access the "boots" product page

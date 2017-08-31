@@ -23,7 +23,11 @@ class ClassifyCategoryOnProductWithPermissionsIntegration extends AbstractProduc
 
         $data = '{"identifier": "my_product", "categories":["categoryB"]}';
         $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
-        $this->assertError422($client->getResponse(), 'Property \"categories\" expects a valid category code. The category does not exist, \"categoryB\" given');
+        $this->assertError422(
+            $client->getResponse(),
+            'Property \"categories\" expects a valid category code. The category does not exist, \"categoryB\" given',
+            'post_products'
+        );
     }
 
     public function testSuccessProductWithOnlyViewableCategory()
@@ -35,6 +39,7 @@ class ClassifyCategoryOnProductWithPermissionsIntegration extends AbstractProduc
         $response = $client->getResponse();
         $this->assertSame(201, $response->getStatusCode());
         $this->assertProduct('my_product', ['categoryA2']);
+        $this->assertSame('http://localhost/api/rest/v1/products/my_product', $response->headers->get('location'));
     }
 
     public function testSuccessProductWithEditableCategory()
@@ -46,6 +51,7 @@ class ClassifyCategoryOnProductWithPermissionsIntegration extends AbstractProduc
         $response = $client->getResponse();
         $this->assertSame(201, $response->getStatusCode());
         $this->assertProduct('my_product', ['categoryA']);
+        $this->assertSame('http://localhost/api/rest/v1/products/my_product', $response->headers->get('location'));
     }
 
     public function testSuccessProductWithOwnCategory()
@@ -57,6 +63,7 @@ class ClassifyCategoryOnProductWithPermissionsIntegration extends AbstractProduc
         $response = $client->getResponse();
         $this->assertSame(201, $response->getStatusCode());
         $this->assertProduct('my_product', ['master']);
+        $this->assertSame('http://localhost/api/rest/v1/products/my_product', $response->headers->get('location'));
     }
 
     /**

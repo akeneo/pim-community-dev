@@ -618,7 +618,7 @@ Feature: Read a single product by applying rules
             scope: tablet
     """
     Then the product rule "set_name" is executed
-    And I am on the products page
+    And I am on the products grid
     When I am on the "my-jacket" product page
     When I visit the "Completeness" column tab
     Then I should see the completeness:

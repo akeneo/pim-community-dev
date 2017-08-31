@@ -22,13 +22,13 @@ Feature: Enforce no permissions for a category
       | Allowed to edit products | Manager |
       | Allowed to own products  | Manager |
     And I save the category
-    And I am on the products page
+    And I am on the products grid
     Then I should be on the homepage
     Then I should see the text "You don't have access to products in any tree, please contact your administrator"
 
   Scenario: Display only granted products in products grid, I see all products
     Given I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And the grid should contain 3 elements
 
   Scenario: Display only granted products in products grid, I see a sub set of products
@@ -40,7 +40,7 @@ Feature: Enforce no permissions for a category
       | Allowed to edit products | Manager |
       | Allowed to own products  | Manager |
     And I save the category
-    And I am on the products page
+    And I am on the products grid
     And the grid should contain 2 elements
 
   Scenario: Display only granted products in products grid when filtering by unclassified
@@ -61,7 +61,7 @@ Feature: Enforce no permissions for a category
       | inProtectedTree | protected_tree |
       | inProtectedNode | protected_node |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     When I filter by "category" with operator "unclassified" and value ""
     Then the grid should contain 2 elements
     And I should see products unclassifiedOne and unclassifiedTwo
@@ -71,7 +71,7 @@ Feature: Enforce no permissions for a category
     And I fill in the following information:
       | Allowed to view products | Manager |
     And I save the category
-    When I am on the products page
+    When I am on the products grid
     Then the grid should contain 4 elements
     And I should see products unclassifiedOne, unclassifiedTwo, inProtectedTree and inProtectedNode
 

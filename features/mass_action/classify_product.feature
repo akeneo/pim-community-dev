@@ -30,7 +30,7 @@ Feature: Classify many products at once for the tree I have access
       | rangers | 2014_collection |
       | loafer  | 2014_collection |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Add several products to categories at once
     Given I select rows rangers and loafer
@@ -44,7 +44,7 @@ Feature: Classify many products at once for the tree I have access
     And I click on the "classy" category
     And I confirm mass edit
     And I wait for the "add_product_value" job to finish
-    And I am on the products page
+    And I am on the products grid
     And I select the "Shoes" tree
     Then I should see the text "2014 collection (2)"
     Then I should see the text "Vintage (2)"
@@ -62,7 +62,7 @@ Feature: Classify many products at once for the tree I have access
     And I click on the "sneakers" category
     And I confirm mass edit
     And I wait for the "update_product_value" job to finish
-    And I am on the products page
+    And I am on the products grid
     And I select the "Shoes" tree
     Then I should see the text "2014 collection (0)"
     Then I should see the text "Sandals (2)"
@@ -81,7 +81,7 @@ Feature: Classify many products at once for the tree I have access
     And I click on the "classy" category
     And I confirm mass edit
     And I wait for the "update_product_value" job to finish
-    And I am on the products page
+    And I am on the products grid
     And I select the "Shoes" tree
     Then I should see the text "2014 collection (2)"
     Then I should see the text "Vintage (0)"

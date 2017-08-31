@@ -38,27 +38,27 @@ Feature: Publish many products at once
     And I visit the "Cross sell" association type
     And I check the row "unionjack"
     And I save the product
-    And I am on the products page
+    And I am on the products grid
     And I select rows unionjack and jackadi
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
     Then I should see the text "The 2 selected products will be published"
     And I confirm mass edit
     And I wait for the "publish_product" job to finish
-    And I am on the published products page
+    And I am on the published products grid
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
-    And I am on the products page
+    And I am on the products grid
     And I select rows unionjack and jackadi
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
     Then I should see the text "The 2 selected products will be published"
     And I confirm mass edit
     And I wait for the "publish_product" job to finish
-    And I am on the published products page
+    And I am on the published products grid
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
-    When I am on the products page
+    When I am on the products grid
     Then the grid should contain 3 elements
     And I should see product unionjack, jackadi and teafortwo
 
@@ -81,24 +81,24 @@ Feature: Publish many products at once
     And I visit the "Cross sell" association type
     And I check the row "teafortwo"
     And I save the product
-    And I am on the products page
+    And I am on the products grid
     And I select rows unionjack and jackadi
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
     Then I should see the text "The 2 selected products will be published"
     And I confirm mass edit
     And I wait for the "publish_product" job to finish
-    And I am on the published products page
+    And I am on the published products grid
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
-    And I am on the products page
+    And I am on the products grid
     And I select rows unionjack and jackadi
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
     Then I should see the text "The 2 selected products will be published"
     And I confirm mass edit
     And I wait for the "publish_product" job to finish
-    And I am on the published products page
+    And I am on the published products grid
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
 
@@ -110,14 +110,14 @@ Feature: Publish many products at once
     And I visit the "Cross sell" association type
     And I check the row "jackadi"
     And I save the product
-    And I am on the products page
+    And I am on the products grid
     And I select rows unionjack and jackadi
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Publish products" operation
     Then I should see the text "The 2 selected products will be published"
     And I confirm mass edit
     And I wait for the "publish_product" job to finish
-    And I am on the published products page
+    And I am on the published products grid
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
     When I select rows unionjack and jackadi

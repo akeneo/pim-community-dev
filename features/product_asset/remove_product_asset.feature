@@ -47,5 +47,5 @@ Feature: Remove product assets
     Then I should see the text "Delete confirmation"
     And I confirm the removal
     Then I should be on the "chicagoskyline" asset edit page
-    When I am on the assets page
+    When I am on the assets grid
     And I should see asset chicagoskyline

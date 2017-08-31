@@ -37,5 +37,6 @@ class PimEnterpriseApiExtension extends Extension
         $loader->load('normalizers.yml');
         $loader->load('security.yml');
         $loader->load('repositories.yml');
+        $loader->load('routers.yml');
     }
 }

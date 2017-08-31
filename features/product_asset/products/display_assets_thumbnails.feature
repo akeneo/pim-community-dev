@@ -39,7 +39,7 @@ Feature: Display assets thumbnails
     And I check the row "chicagoskyline"
     And I confirm the asset modification
     And I save the product
-    When I am on the products page
+    When I am on the products grid
     And I display the columns SKU and Front view
     Then the cell "Front view" in row "pineapple" should contain the thumbnail for channel "tablet"
     And the cell "Front view" in row "potatoe" should contain the thumbnail for channel "tablet" and locale "en_US"

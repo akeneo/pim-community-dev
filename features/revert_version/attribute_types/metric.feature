@@ -7,7 +7,7 @@ Feature: Revert product attributes to a previous version
   Background:
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
 
   Scenario: Successfully revert a metric attribute

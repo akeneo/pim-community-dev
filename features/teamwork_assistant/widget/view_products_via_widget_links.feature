@@ -81,7 +81,7 @@ Feature: View products via widget completeness links
       | usb-key-small        | usb_keys | high_tech          |                           |            | 1            | OUNCE             |                    |                    |                | 8        | GIGABYTE      |
       | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    | A1         |              |                   |                    |                    |                |          |               |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I filter by "category" with operator "" and value "clothing"
     And I show the filter "weight"
     And I filter by "weight" with operator "<" and value "6 Ounce"

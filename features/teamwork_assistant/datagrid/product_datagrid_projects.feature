@@ -83,7 +83,7 @@ Feature: Products datagrid projects
 
   Scenario: A contributor can modify filters of a projects on the grid
     Given I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I filter by "family" with operator "in list" and value "TShirts"
     And I show the filter "size"
     And I filter by "size" with operator "contains" and value "M"
@@ -95,7 +95,7 @@ Feature: Products datagrid projects
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"
     And I wait for the "project_calculation" job to finish
-    When I am on the products page
+    When I am on the products grid
     And I switch view selector type to "Projects"
     Then I should see the text "My TShirts Project"
     And the grid should contain 2 elements
@@ -107,7 +107,7 @@ Feature: Products datagrid projects
 
   Scenario: A project is not seen as modified if only columns change
     Given I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I filter by "family" with operator "in list" and value "TShirts"
     And I show the filter "size"
     And I filter by "size" with operator "contains" and value "M"
@@ -119,7 +119,7 @@ Feature: Products datagrid projects
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"
     And I wait for the "project_calculation" job to finish
-    When I am on the products page
+    When I am on the products grid
     And I switch view selector type to "Projects"
     Then I should see the text "My TShirts Project"
     When I display in the products grid the columns sku, name, groups
@@ -127,7 +127,7 @@ Feature: Products datagrid projects
     And the grid should contain 2 elements
     And I should see the text "My TShirts Project"
     But I should not see the text "My TShirts Project *"
-  
+
   @skip
   Scenario: A project is not seen as modified if only items per page or current page change
     Given the following products:
@@ -147,7 +147,7 @@ Feature: Products datagrid projects
       | tshirt-fast-furious-13 | tshirt | clothing   | T-Shirt "Fast & Furious 13" |
       | tshirt-fast-furious-14 | tshirt | clothing   | T-Shirt "Fast & Furious 14" |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     When I filter by "family" with operator "in list" and value "TShirts"
     And I click on the create project button
     And I fill in the following information in the popin:
@@ -157,7 +157,7 @@ Feature: Products datagrid projects
     Then I should be on the products page
     When I go on the last executed job resume of "project_calculation"
     And I wait for the "project_calculation" job to finish
-    And I am on the products page
+    And I am on the products grid
     And I switch view selector type to "Projects"
     Then I should see the text "My TShirts Project"
     When I change the page size to 10
@@ -167,7 +167,7 @@ Feature: Products datagrid projects
 
   Scenario: I fallback on my custom default view if the project I was working on has been deleted
     Given I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I filter by "family" with operator "in list" and value "Posters"
     And I create the view:
       | new-view-label | My posters |
@@ -182,7 +182,7 @@ Feature: Products datagrid projects
       | Default product grid view | My posters |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
-    When I am on the products page
+    When I am on the products grid
     And I filter by "family" with operator "in list" and value "TShirts"
     And I show the filter "size"
     And I filter by "size" with operator "contains" and value "M"
@@ -194,21 +194,21 @@ Feature: Products datagrid projects
     Then I should be on the products page
     And I go on the last executed job resume of "project_calculation"
     And I wait for the "project_calculation" job to finish
-    When I am on the products page
+    When I am on the products grid
     And I switch view selector type to "Projects"
     Then I should see the text "My TShirts Project"
     When  I am on the "ecommerce" channel page
     And I change the "Locales" to "French (France)"
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
-    When I am on the products page
+    When I am on the products grid
     Then I should see the text "My posters"
     But I should not see the text "My TShirts Project"
     And the grid should contain 1 element
 
   Scenario: The channel changes when I select a project
     Given I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I filter by "category" with operator "" and value "clothing"
     Then the grid should contain 3 elements
     When I click on the create project button
@@ -219,7 +219,7 @@ Feature: Products datagrid projects
     Then I should be on the products page
     When I go on the last executed job resume of "project_calculation"
     And I wait for the "project_calculation" job to finish
-    And I am on the products page
+    And I am on the products grid
     And I filter by "category" with operator "" and value "default"
     And the grid should contain 6 elements
     And I filter by "scope" with operator "" and value "Mobile"

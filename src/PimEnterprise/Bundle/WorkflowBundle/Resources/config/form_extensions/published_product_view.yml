@@ -2,7 +2,7 @@ extensions:
     pimee-published-product-view-form:
         module: pimee/product-view-form
 
-    pimee-published-product-view-mainImage:
+    pimee-published-product-view-main-image:
         module: pim/form/common/main-image
         parent: pimee-published-product-view-form
         targetZone: main-image
@@ -13,6 +13,14 @@ extensions:
         targetZone: breadcrumbs
         config:
             tab: pim-menu-products
+
+    pimee-published-product-view-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pimee-published-product-view-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
 
     pimee-published-product-view-cache-invalidator:
         module: pim/cache-invalidator
@@ -104,7 +112,7 @@ extensions:
         position: 120
 
     pimee-published-product-view-attributes:
-        module: pimee/product-view-form/attributes
+        module: pim/product-edit-form/attributes
         parent: pimee-published-product-view-column-tabs
         targetZone: container
         position: 90
