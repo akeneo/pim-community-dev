@@ -55,9 +55,9 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $data['label'] = $product->getLabel($locale);
         $data['image'] = $this->normalizeImage($product->getImage(), $format, $context);
         $data['completeness'] = $this->getCompleteness($product, $context);
-        $data['product_type'] = 'product';
+        $data['document_type'] = 'product';
         $data['technical_id'] = $product->getId();
-        $data['search_id'] = sprintf('%s_%s', $data['product_type'], $data['technical_id']);
+        $data['search_id'] = sprintf('%s_%s', $data['document_type'], $data['technical_id']);
 
         return $data;
     }

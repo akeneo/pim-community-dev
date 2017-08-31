@@ -20,7 +20,7 @@ define(
              */
             execute: function() {
                 var route = null;
-                var productType = this.model.get('product_type');
+                var productType = this.model.get('document_type');
 
                 if ('product' === productType) {
                     route = 'pim_enrich_product_edit';

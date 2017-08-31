@@ -13,7 +13,7 @@ define(['oro/datagrid/string-cell', 'oro/translator'],
              * Render the field enabled.
              */
             render: function () {
-                if ('product_model' === this.model.get('product_type')) {
+                if ('product_model' === this.model.get('document_type')) {
                     // PIM-6493: the value should be calculated depending on the the model subtree.
                     this.$el.empty().html('');
 

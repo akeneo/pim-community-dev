@@ -19,7 +19,7 @@ class ProductModelNormalizer implements NormalizerInterface
 {
     public const INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX = 'indexing_product_and_product_model';
     private const FIELD_ATTRIBUTES_IN_LEVEL = 'attributes_for_this_level';
-    private const FIELD_PRODUCT_TYPE = 'product_type';
+    private const FIELD_DOCUMENT_TYPE = 'document_type';
 
     /** @var NormalizerInterface */
     private $propertiesNormalizer;
@@ -41,7 +41,7 @@ class ProductModelNormalizer implements NormalizerInterface
     {
         $data = $this->propertiesNormalizer->normalize($productModel, $format, $context);
 
-        $data[self::FIELD_PRODUCT_TYPE] = ProductModelInterface::class;
+        $data[self::FIELD_DOCUMENT_TYPE] = ProductModelInterface::class;
         $data[self::FIELD_ATTRIBUTES_IN_LEVEL] = array_keys($productModel->getRawValues());
 
         return $data;

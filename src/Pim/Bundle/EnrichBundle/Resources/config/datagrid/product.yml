@@ -45,7 +45,7 @@ datagrid:
             id:
                 type:          field
                 data_name:     search_id
-            product_type: ~
+            document_type: ~
             technical_id: ~
             delete_link:
                 type: url

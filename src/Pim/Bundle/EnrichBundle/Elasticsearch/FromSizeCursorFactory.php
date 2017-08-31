@@ -57,7 +57,7 @@ class FromSizeCursorFactory implements CursorFactoryInterface
     {
         $options = $this->resolveOptions($options);
 
-        $queryBuilder['_source'] = array_merge($queryBuilder['_source'], ['product_type']);
+        $queryBuilder['_source'] = array_merge($queryBuilder['_source'], ['document_type']);
 
         return new FromSizeCursor(
             $this->searchEngine,

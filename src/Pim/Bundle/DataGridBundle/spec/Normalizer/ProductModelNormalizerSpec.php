@@ -131,7 +131,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'groups' => null,
             'enabled'      => null,
             'completeness' => null,
-            'product_type' => 'product_model',
+            'document_type' => 'product_model',
             'technical_id' => 78,
             'search_id' => 'product_model_78',
         ];
@@ -225,7 +225,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'groups'       => null,
             'enabled'      => null,
             'completeness' => null,
-            'product_type' => 'product_model',
+            'document_type' => 'product_model',
             'technical_id' => 78,
             'search_id' => 'product_model_78',
         ];

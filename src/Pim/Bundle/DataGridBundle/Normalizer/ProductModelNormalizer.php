@@ -60,9 +60,9 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $data['groups'] = null;
         $data['enabled'] = null;
         $data['completeness'] = null;
-        $data['product_type'] = 'product_model';
+        $data['document_type'] = 'product_model';
         $data['technical_id'] = $productModel->getId();
-        $data['search_id'] = sprintf('%s_%s', $data['product_type'], $data['technical_id']);
+        $data['search_id'] = sprintf('%s_%s', $data['document_type'], $data['technical_id']);
 
         return $data;
     }

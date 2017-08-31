@@ -59,7 +59,7 @@ class CursorFactory implements CursorFactoryInterface
     {
         $pageSize = !isset($options['page_size']) ? $this->pageSize : $options['page_size'];
 
-        $queryBuilder['_source'] = array_merge($queryBuilder['_source'], ['product_type']);
+        $queryBuilder['_source'] = array_merge($queryBuilder['_source'], ['document_type']);
 
         return new Cursor(
             $this->searchEngine,

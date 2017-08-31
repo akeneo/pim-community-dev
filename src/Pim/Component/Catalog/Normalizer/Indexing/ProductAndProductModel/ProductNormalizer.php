@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ProductNormalizer implements NormalizerInterface
 {
     private const FIELD_ATTRIBUTES_IN_LEVEL = 'attributes_for_this_level';
-    private const FIELD_PRODUCT_TYPE = 'product_type';
+    private const FIELD_DOCUMENT_TYPE = 'document_type';
 
     /** @var NormalizerInterface */
     private $propertiesNormalizer;
@@ -38,7 +38,7 @@ class ProductNormalizer implements NormalizerInterface
     {
         $data = $this->propertiesNormalizer->normalize($product, $format, $context);
 
-        $data[self::FIELD_PRODUCT_TYPE] = ProductInterface::class;
+        $data[self::FIELD_DOCUMENT_TYPE] = ProductInterface::class;
         $data[self::FIELD_ATTRIBUTES_IN_LEVEL] = array_keys($product->getRawValues());
 
         return $data;

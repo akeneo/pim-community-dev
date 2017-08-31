@@ -139,7 +139,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'originalFileName' => 'all.png',
             ],
             'completeness' => 76,
-            'product_type' => 'product',
+            'document_type' => 'product',
             'technical_id' => 78,
             'search_id' => 'product_78',
         ];
@@ -238,7 +238,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'originalFileName' => 'all.png',
             ],
             'completeness' => 76,
-            'product_type' => 'product',
+            'document_type' => 'product',
             'technical_id' => 78,
             'search_id' => 'product_78',
         ];
