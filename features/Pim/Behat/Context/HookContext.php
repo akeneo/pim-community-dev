@@ -98,7 +98,7 @@ class HookContext extends PimContext
      */
     public function takeScreenshotAfterFailedStep(StepEvent $event)
     {
-        if ($event->getResult() === StepEvent::FAILED) {
+//        if ($event->getResult() === StepEvent::FAILED) {
             $driver = $this->getSession()->getDriver();
 
             $rootDir   = dirname($this->getParameter('kernel.root_dir'));
@@ -107,7 +107,7 @@ class HookContext extends PimContext
                 'scenario_file'  => substr($filePath, strlen($rootDir) + 1),
                 'scenario_line'  => $event->getLogicalParent()->getLine(),
                 'scenario_label' => $event->getLogicalParent()->getTitle(),
-                'exception'      => $event->getException()->getMessage(),
+                'exception'      => null === $event->getException()?: $event->getException()->getMessage(),
                 'step_line'      => $event->getStep()->getLine(),
                 'step_label'     => $event->getStep()->getText(),
                 'status'         => 'failed'
@@ -145,7 +145,7 @@ class HookContext extends PimContext
             if ('JENKINS' === getenv('BEHAT_CONTEXT')) {
                 echo sprintf("\033[1;37m##glados_step##%s##glados_step##\033[0m\n", json_encode($stepStats));
             }
-        }
+//        }
     }
 
     /**
