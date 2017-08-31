@@ -95,7 +95,7 @@ extensions:
             jobInstanceCode: add_product_value
             listRoute: pim_enrich_product_listcategories
             childrenRoute: pim_enrich_categorytree_children
-            icon: icon-folders
+            icon: icon-folder_in
 
     pim-mass-product-edit-configure-move-to-category:
         module: pim/mass-edit-form/product/category
@@ -110,7 +110,7 @@ extensions:
             jobInstanceCode: update_product_value
             listRoute: pim_enrich_product_listcategorieslue
             childrenRoute: pim_enrich_categorytree_children
-            icon: icon-compare
+            icon: icon-folder_move
 
     pim-mass-product-edit-configure-remove-from-category:
         module: pim/mass-edit-form/product/category
@@ -125,4 +125,4 @@ extensions:
             jobInstanceCode: remove_product_value
             listRoute: pim_enrich_product_listcategorieslue
             childrenRoute: pim_enrich_categorytree_children
-            icon: icon-delete
+            icon: icon-folder_out
