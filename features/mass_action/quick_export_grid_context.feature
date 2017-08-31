@@ -9,13 +9,25 @@ Feature: Quick export products according to the product grid context
     And the following attributes:
       | label-en_US | type               | useable_as_grid_filter | metric_family | default_metric_unit | decimals_allowed | group | code   |
       | Weight      | pim_catalog_metric | 1                      | Weight        | GRAM                | 1                | other | weight |
+    And I am logged in as "Julia"
+    And I am on the "boots" family page
+    And I visit the "Attributes" tab
+    And I add available attribute Weight
+    And I save the family
+    And I am on the "sneakers" family page
+    And I visit the "Attributes" tab
+    And I add available attribute Weight
+    And I save the family
+    And I am on the "sandals" family page
+    And I visit the "Attributes" tab
+    And I add available attribute Weight
+    And I save the family
     And the following published products:
       | sku      | family   | categories        | name-en_US    | price          | size | color | 123 | description-en_US-tablet | weight | weight-unit |
       | boots    | boots    | winter_collection | Amazing boots | 20 EUR, 25 USD | 40   | black | aaa | Mob                      | 20     | GRAM        |
       | sneakers | sneakers | summer_collection | Sneakers      | 50 EUR, 60 USD | 42   | white | bbb | ylette                   | 4      | GRAM        |
       | sandals  | sandals  | summer_collection | Sandals       | 5 EUR, 5 USD   | 40   | red   | ccc |                          |        |             |
       | pump     |          | summer_collection | Pump          | 15 EUR, 20 USD | 41   | blue  | ddd |                          |        |             |
-    And I am logged in as "Julia"
 
   Scenario: Successfully quick export published products from grid context as a CSV file
     Given I am on the published products grid
