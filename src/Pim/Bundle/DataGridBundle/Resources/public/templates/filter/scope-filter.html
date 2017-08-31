@@ -1,0 +1,12 @@
+<div data-toggle="dropdown">
+    <div class="AknColumn-subtitle"><%= label %></div>
+    <div class="AknColumn-value value"></div>
+</div>
+<div class="AknDropdown-menu">
+    <div class="AknDropdown-menuTitle"><%= label %></div>
+    <% _.each(options, function (option) { %>
+    <div class="AknDropdown-menuLink" data-value="<%- option.value %>">
+        <span class="label"><%- option.label %></span>
+    </div>
+    <% }) %>
+</div>
