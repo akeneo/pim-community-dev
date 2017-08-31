@@ -3,9 +3,9 @@
 namespace Pim\Bundle\UserBundle\Form\Subscriber;
 
 use Akeneo\Component\Localization\Provider\LocaleProviderInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
@@ -30,16 +30,22 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
     /** @var TranslatedLabelsProviderInterface */
     protected $categoryRepository;
 
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $localeRepository;
+
     /**
-     * @param LocaleProviderInterface  $localeProvider
-     * @param TranslatedLabelsProviderInterface $categoryRepository
+     * @param LocaleProviderInterface               $localeProvider
+     * @param TranslatedLabelsProviderInterface     $categoryRepository
+     * @param IdentifiableObjectRepositoryInterface $localeRepository
      */
     public function __construct(
         LocaleProviderInterface $localeProvider,
-        TranslatedLabelsProviderInterface $categoryRepository
+        TranslatedLabelsProviderInterface $categoryRepository,
+        IdentifiableObjectRepositoryInterface $localeRepository
     ) {
         $this->localeProvider = $localeProvider;
         $this->categoryRepository = $categoryRepository;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -135,6 +141,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
                 'class'         => 'PimCatalogBundle:Locale',
                 'choice_label'  => 'getName',
                 'select2'       => true,
+                'data' => $this->localeRepository->findOneByIdentifier('en_US'),
                 'query_builder' => function (LocaleRepository $repository) use ($localeProvider) {
                     $locales = $localeProvider->getLocales();
 

@@ -43,4 +43,4 @@ services:
         arguments:
             - '@pim_localization.provider.ui_locale'
             - '@pim_enrich.repository.category'
-            - '%pim_catalog.entity.category.class%'
+            - '@pim_catalog.repository.cached_locale'
