@@ -174,7 +174,7 @@ class ProductModelNormalizer implements NormalizerInterface
      */
     private function normalizeImage(?ValueInterface $data, string $format, array $context = []): ?array
     {
-        if (null === $data) {
+        if (null === $data || null === $data->getData()) {
             return null;
         }
 
