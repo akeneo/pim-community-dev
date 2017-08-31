@@ -2,7 +2,7 @@ services:
     pim_enrich.reader.database.product_and_product_model:
         class: '%pim_connector.reader.database.product.class%'
         arguments:
-            - '@pim_enrich.query.product_query_builder_factory'
+            - '@pim_enrich.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.converter.metric'
