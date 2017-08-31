@@ -19,7 +19,7 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
  * - Each documents has an 'attributes_for_this_level' property which is a list of the attribute codes that belong to the
  *   document (following the family variant settings and levels definition).
  *
- * - Each document has a property 'product_type' which gives an hint about the level in the family variant the document
+ * - Each document has a property 'document_type' which gives an hint about the level in the family variant the document
  *   belongs to.
  *
  * @author    Samir Boulil <samir.boulil@gmail.com>
