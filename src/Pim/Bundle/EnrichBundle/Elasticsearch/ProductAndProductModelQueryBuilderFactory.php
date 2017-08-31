@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Elasticsearch;
 
-use Pim\Bundle\CatalogBundle\Elasticsearch\ProductQueryBuilderFactory;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 
@@ -18,14 +17,14 @@ class ProductAndProductModelQueryBuilderFactory implements ProductQueryBuilderFa
     /** @var string */
     private $pqbClass;
 
-    /** @var ProductQueryBuilderFactory */
+    /** @var ProductQueryBuilderFactoryInterface */
     private $factory;
 
     /**
-     * @param string                     $pqbClass
-     * @param ProductQueryBuilderFactory $factory
+     * @param string                              $pqbClass
+     * @param ProductQueryBuilderFactoryInterface $factory
      */
-    public function __construct(string $pqbClass, ProductQueryBuilderFactory $factory)
+    public function __construct(string $pqbClass, ProductQueryBuilderFactoryInterface $factory)
     {
         $this->pqbClass = $pqbClass;
         $this->factory = $factory;
