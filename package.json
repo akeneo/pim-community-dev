@@ -24,6 +24,7 @@
     "babel-eslint": "7.2.3",
     "babel-loader": "7.1.2",
     "babel-minify": "0.2.0",
+    "babel-polyfill": "6.26.0",
     "babel-preset-env": "1.6.0",
     "backbone": "0.9.10",
     "bundle-loader": "0.5.5",

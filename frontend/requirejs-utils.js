@@ -81,6 +81,11 @@ const utils = {
 
         const registry = `module.exports = function(moduleName) {
             const paths = ${JSON.stringify(registryFiles).replace(/\"/g, '')};
+
+            if (paths[moduleName] === undefined) {
+                return console.error(moduleName + ' is missing from the registry - include it in your requirejs.yml and clear the app cache');
+            }
+
             return __webpack_require__(paths[moduleName])
         }`
 
