@@ -1,15 +1,15 @@
 parameters:
-    oro_filter.filter_utility.class:        Oro\Bundle\FilterBundle\Filter\FilterUtility
-    oro_filter.string_filter.class:         Oro\Bundle\FilterBundle\Filter\StringFilter
-    oro_filter.search_filter.class:         Oro\Bundle\FilterBundle\Filter\SearchFilter
-    oro_filter.select_row_filter.class:     Oro\Bundle\FilterBundle\Filter\SelectRowFilter
-    oro_filter.number_filter.class:         Oro\Bundle\FilterBundle\Filter\NumberFilter
-    oro_filter.percent_filter.class:        Oro\Bundle\FilterBundle\Filter\PercentFilter
-    oro_filter.choice_filter.class:         Oro\Bundle\FilterBundle\Filter\ChoiceFilter
-    oro_filter.entity_filter.class:         Oro\Bundle\FilterBundle\Filter\EntityFilter
-    oro_filter.boolean_filter.class:        Oro\Bundle\FilterBundle\Filter\BooleanFilter
-    oro_filter.date_range_filter.class:     Oro\Bundle\FilterBundle\Filter\DateRangeFilter
-    oro_filter.datetime_range_filter.class: Oro\Bundle\FilterBundle\Filter\DateTimeRangeFilter
+    oro_filter.filter_utility.class:              Oro\Bundle\FilterBundle\Filter\FilterUtility
+    oro_filter.string_filter.class:               Oro\Bundle\FilterBundle\Filter\StringFilter
+    oro_filter.search_filter.class:               Oro\Bundle\FilterBundle\Filter\SearchFilter
+    oro_filter.select_row_filter.class:           Oro\Bundle\FilterBundle\Filter\SelectRowFilter
+    oro_filter.number_filter.class:               Oro\Bundle\FilterBundle\Filter\NumberFilter
+    oro_filter.percent_filter.class:              Oro\Bundle\FilterBundle\Filter\PercentFilter
+    oro_filter.choice_filter.class:               Oro\Bundle\FilterBundle\Filter\ChoiceFilter
+    oro_filter.entity_filter.class:               Oro\Bundle\FilterBundle\Filter\EntityFilter
+    oro_filter.boolean_filter.class:              Oro\Bundle\FilterBundle\Filter\BooleanFilter
+    oro_filter.date_range_filter.class:           Oro\Bundle\FilterBundle\Filter\DateRangeFilter
+    oro_filter.datetime_range_filter.class:       Oro\Bundle\FilterBundle\Filter\DateTimeRangeFilter
 
 services:
     oro_filter.filter_utility:
