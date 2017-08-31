@@ -12,6 +12,7 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -82,7 +83,6 @@ class SimpleJobLauncher implements JobLauncherInterface
         }
 
         $jobExecution = $this->createJobExecution($jobInstance, $user, $configuration);
-        $executionId = $jobExecution->getId();
         $pathFinder = new PhpExecutableFinder();
 
         $cmd = sprintf(
@@ -93,7 +93,7 @@ class SimpleJobLauncher implements JobLauncherInterface
             $this->environment,
             $emailParameter,
             escapeshellarg($jobInstance->getCode()),
-            $executionId,
+            $jobExecution->getId(),
             $this->logDir,
             DIRECTORY_SEPARATOR
         );
@@ -155,5 +155,21 @@ class SimpleJobLauncher implements JobLauncherInterface
         $this->jobRepository->updateJobExecution($jobExecution);
 
         return $jobExecution;
+    }
+
+    /**
+     * @param ConstraintViolationList $errors
+     *
+     * @return string
+     */
+    private function getErrorMessages(ConstraintViolationList $errors): string
+    {
+        $errorsStr = '';
+
+        foreach ($errors as $error) {
+            $errorsStr .= sprintf("\n  - %s", $error);
+        }
+
+        return $errorsStr;
     }
 }

@@ -36,7 +36,6 @@
 - PIM-6397: Enable Search filter on all grids
 - PIM-6406: Update job profile show page to include last executions
 - TIP-764: Mass edit has been redone
-- PIM-6621: Add the ability to search on label and identifier on the product grid
 
 ## Remove MongoDB product storage
 
