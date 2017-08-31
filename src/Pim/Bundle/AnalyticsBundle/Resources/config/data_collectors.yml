@@ -31,8 +31,8 @@ services:
         arguments:
             - '@request_stack'
             - '@pim_catalog.version_provider'
+            - '@pim_installer.install_status_manager'
             - '%kernel.environment%'
-            - '%installed%'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }
