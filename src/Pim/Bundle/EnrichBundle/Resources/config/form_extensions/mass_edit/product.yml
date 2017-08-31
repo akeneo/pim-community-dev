@@ -20,7 +20,7 @@ extensions:
     pim-mass-product-edit-configure-edit-common:
         module: pim/mass-edit-form/product/edit-common-attributes
         parent: pim-mass-product-edit
-        position: 120
+        position: 110
         aclResourceId: pim_enrich_product_edit_attributes
         config:
             label: pim_enrich.mass_edit.product.operation.edit_common.label
@@ -33,7 +33,7 @@ extensions:
     pim-mass-product-edit-configure-change-family:
         module: pim/mass-edit-form/product/change-family
         parent: pim-mass-product-edit
-        position: 130
+        position: 120
         aclResourceId: pim_enrich_product_change_family
         config:
             label: pim_enrich.mass_edit.product.operation.change_family.label
@@ -47,7 +47,7 @@ extensions:
         module: pim/mass-edit-form/product/change-status
         parent: pim-mass-product-edit
         aclResourceId: pim_enrich_product_change_state
-        position: 110
+        position: 130
         config:
             label: pim_enrich.mass_edit.product.operation.change_status.label
             labelCount: pim_enrich.mass_edit.product.operation.change_status.label_count
