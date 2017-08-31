@@ -198,7 +198,7 @@ class ProductDraftController
         $configuration = [
             'draftIds' => $filters['values'],
             'comment'  => $request->get('comment'),
-            'notification_user' => $user->getUsername()
+            'user_to_notify' => $user->getUsername()
         ];
 
         $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $user, $configuration);
@@ -229,7 +229,7 @@ class ProductDraftController
         $configuration = [
             'draftIds' => $filters['values'],
             'comment'  => $request->get('comment'),
-            'notification_user' => $user->getUsername(),
+            'user_to_notify' => $user->getUsername(),
         ];
 
         $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $user, $configuration);

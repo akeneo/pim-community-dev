@@ -49,7 +49,8 @@ class MassReview implements ConstraintCollectionProviderInterface
                     'draftIds'           => new NotBlank(),
                     'comment'            => new IsString(),
                     'realTimeVersioning' => new Type('bool'),
-                    'notification_user'  => new Type('string'),
+                    'user_to_notify'     => new Type('string'),
+                    'is_user_authenticated' => new Type('bool'),
                 ]
             ]
         );
