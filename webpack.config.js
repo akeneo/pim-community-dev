@@ -6,16 +6,22 @@ const webpack = require('webpack');
 const path = require('path');
 const _ = require('lodash');
 
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+const LiveReloadPlugin = require('webpack-livereload-plugin');
+
 const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
-const sourcePath = path.resolve(rootDir, 'web/js/require-paths.js');
+const sourcePath = path.join(rootDir, 'web/js/require-paths.js');
+
+if (!fs.existsSync(sourcePath)) {
+    throw new Error(`The web/js/require-paths.js module does not exist - You need to run
+    "bin/console pim:install" or "bin/console pim:installer:dump-require-paths" before
+    running webpack \n`);
+}
 
 const { getModulePaths, createModuleRegistry } = require('./webpack/requirejs-utils');
 const { aliases, config } = getModulePaths(rootDir, __dirname, sourcePath);
 
 createModuleRegistry(Object.keys(aliases), rootDir);
-
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
-const LiveReloadPlugin = require('webpack-livereload-plugin');
 
 const babelPresets = [['babel-preset-env', {
     targets: {
@@ -25,12 +31,6 @@ const babelPresets = [['babel-preset-env', {
 
 if (isProd) {
     babelPresets.push('babel-preset-minify');
-}
-
-if (!fs.existsSync(sourcePath)) {
-    throw new Error(`The web/js/require-paths.js module does not exist - You need to run
-    "bin/console pim:install" or "bin/console pim:installer:dump-require-paths" before
-    running webpack \n`);
 }
 
 console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
