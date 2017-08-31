@@ -174,18 +174,6 @@ define(
             },
 
             /**
-             * Remove badge for the given attribute group
-             *
-             * @param {String} element
-             * @param {String} code
-             */
-            removeBadge: function (element, code) {
-                delete this.badges[element][code];
-
-                this.render();
-            },
-
-            /**
              * Remove badges for all attribute groups
              *
              * @param {String} code

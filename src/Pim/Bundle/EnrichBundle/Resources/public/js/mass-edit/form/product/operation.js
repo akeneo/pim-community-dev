@@ -37,7 +37,7 @@ define(
             reset: function () {},
 
             /**
-             * The label diplayed in the operation list
+             * The label displayed in the operation list
              *
              * @return {string}
              */
@@ -57,8 +57,9 @@ define(
             },
 
             /**
-             * [getDescription description]
-             * @return {[type]} [description]
+             * Get the operation description
+             *
+             * @return {string}
              */
             getDescription: function () {
                 return __(this.config.description);

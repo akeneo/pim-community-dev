@@ -40,6 +40,7 @@ class Form extends Base
                 'Association type selector'       => ['css' => '.association-type-selector'],
                 'Tree selector'                   => ['css' => '.tree-selector'],
                 'Target selector'                 => ['css' => '.target-selector'],
+                'Attribute filter selector'       => ['css' => '.attribute-filter'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
                 'Available attributes form'       => ['css' => '#pim_available_attributes'],
                 'Available attributes button'     => ['css' => 'button:contains("Add attributes")'],
@@ -142,7 +143,26 @@ class Form extends Base
             $this->getGroup($groupName, $type)->click();
 
             return true;
-        }, sprintf('Can not visit group "%s"', $groupName));
+        }, sprintf('Cannot visit group "%s"', $groupName));
+    }
+
+    /**
+     * @param $filter
+     */
+    public function filterAttributes($filter)
+    {
+        $this->spin(function () use ($filter) {
+            $loadingMasks = $this->findAll('css', '.loading-wrapper');
+            if (0 < count(array_filter($loadingMasks, function ($loadingMask) {
+                    return $loadingMask->isVisible();
+                }))) {
+                return false;
+            }
+
+            $this->getGroup($filter, 'Attribute filter')->click();
+
+            return true;
+        }, sprintf('Cannot filter attributes with "%s"', $filter));
     }
 
     /**
@@ -150,6 +170,8 @@ class Form extends Base
      * @param string $type
      *
      * @return NodeElement
+     *
+     * //TODO: make it more generic, no logic is specific to groups here, it's just naming.
      */
     public function getGroup($groupName, $type = 'Group')
     {
