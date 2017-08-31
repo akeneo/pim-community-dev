@@ -18,6 +18,11 @@ extensions:
           stateCode: product_index
           navigationTitle: pim_enrich.entity.product.navigation
 
+    pim-product-index-column-inner:
+        module: pim/grid/column-inner
+        parent: pim-product-index-left-column
+        targetZone: navigation
+
     pim-product-index-create-button:
         module: pim/form/common/index/create-button
         parent: pim-product-index
