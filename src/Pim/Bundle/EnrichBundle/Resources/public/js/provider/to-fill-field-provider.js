@@ -27,13 +27,14 @@ define(
              * @return {promise}
              */
             getFields: function (root, product) {
-                var filterPromises = [];
-                root.trigger(
-                    'pim_enrich:form:field:to-fill-filter',
-                    {'filters': filterPromises}
-                );
 
                 if (null == this.fieldsPromise) {
+                    var filterPromises = [];
+                    root.trigger(
+                        'pim_enrich:form:field:to-fill-filter',
+                        {'filters': filterPromises}
+                    );
+
                     this.fieldsPromise = $.when.apply($, filterPromises).then(function () {
                         return arguments;
                     }).then(function (filters) {
