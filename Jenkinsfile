@@ -120,7 +120,7 @@ stage("Test") {
             },
             "behat-ce": {
                 queue({
-                    scenarios = sh (returnStdout: true, script: 'find /home/jenkins/pim/features -name "*.feature" -exec grep -En "(Scenario|Scenario Outline): " {} +').tokenize('\n')
+                    scenarios = sh (returnStdout: true, script: 'find /home/jenkins/pim/features/family -name "*.feature" -exec grep -En "(Scenario|Scenario Outline): " {} +').tokenize('\n')
                     messages = new net.sf.json.JSONArray()
 
                     for (scenario in scenarios) {
@@ -141,7 +141,7 @@ stage("Test") {
                     }
 
                     return messages
-                }, 300)
+                }, 20)
             }
         )
     } finally {
