@@ -12,6 +12,10 @@ datagrid:
             entity:            '%pim_catalog.entity.product.class%'
             user_config_alias: product-grid
         columns:
+            identifier:
+                label:     ID
+                data_name: identifier
+                type:      field
             is_checked:
                 frontend_type: boolean
                 editable:      true
@@ -44,6 +48,9 @@ datagrid:
             id: ~
         sorters:
             columns:
+                identifier:
+                    data_name: identifier
+                    sorter: product_field
                 is_associated:
                     data_name: is_associated
                     sorter:    product_is_associated

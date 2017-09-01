@@ -30,14 +30,6 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
     function it_configures_datagrid_columns($configuration, $registry)
     {
         $attributes = [
-            'identifier' => [
-                'code'          => 'sku',
-                'label'         => 'Sku',
-                'type'          => 'pim_catalog_identifier',
-                'sortOrder'     => 1,
-                'group'         => 'General',
-                'groupOrder'    => 1
-            ],
             'name' => [
                 'code'          => 'name',
                 'label'         => 'Name',
@@ -62,13 +54,6 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $configuration->offsetGetByPath($displayColumnPath)->shouldBeCalled();
 
         $availableColumns = [
-            'identifier' => [
-                'identifier_config',
-                'label'      => 'Sku',
-                'order'      => 1,
-                'group'      => 'General',
-                'groupOrder' => 1
-            ],
             'family' => [
                 'family_config',
             ],
