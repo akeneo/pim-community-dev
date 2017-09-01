@@ -31,7 +31,8 @@ define([
             template: _.template(template),
             config: {},
             locales: [],
-
+            id: 'locale-switcher',
+            className: 'AknDropdown AknColumn-block locale-switcher',
             events: {
                 'click [data-locale]': 'changeLocale'
             },

@@ -1,17 +1,12 @@
-<div id="locale-switcher" class="AknDropdownButton AknDropdown AknButtonList-item locale-switcher">
-    <div class="AknDropdownButton-button" data-toggle="dropdown">
-        <%= i18n.getFlag(currentLocaleCode, false) %>&nbsp;<%- getDisplayName(currentLocaleCode) %>
-        <div class="AknDropdownButton-caretContainer">
-            <i class="AknCaret AknCaret--big"></i>
-        </div>
+<div data-toggle="dropdown">
+    <div class="AknColumn-subtitle">Locale - to translate, bitch please</div>
+    <div class="AknColumn-value value"><%= i18n.getFlag(currentLocaleCode, false) %>&nbsp;<%- getDisplayName(currentLocaleCode) %></div>
+</div>
+<div class="AknDropdown-menu">
+    <div class="AknDropdown-menuTitle">Locale - to translate, bitch please</div>
+    <% _.each(locales, (locale) => { %>
+    <div class="AknDropdown-menuLink" data-locale="<%- locale.code %>">
+        <span class="label"><%= i18n.getFlag(locale.code, false) %> <%- getDisplayName(locale.code) %></span>
     </div>
-    <ul class="AknDropdown-menu">
-        <% _.each(locales, (locale) => { %>
-             <li>
-                <a class="AknDropdown-menuLink <% if (currentLocaleCode == locale.code) { %>AknDropdown-menuLink--active<% } %>" data-locale="<%- locale.code %>">
-                    <%= i18n.getFlag(locale.code, false) %> <%- getDisplayName(locale.code) %>
-                </a>
-            </li>
-        <% }) %>
-    </ul>
+    <% }) %>
 </div>

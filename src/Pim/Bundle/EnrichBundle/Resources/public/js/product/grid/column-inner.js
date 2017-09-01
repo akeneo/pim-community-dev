@@ -24,6 +24,8 @@ define(
              */
             render() {
                 this.$el.html(this.template);
+
+                this.renderExtensions();
             }
         });
     }

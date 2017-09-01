@@ -35,8 +35,9 @@ extensions:
 
     pim-product-index-locale-switcher:
         module: pim/grid/locale-switcher
-        parent: pim-product-index
-        targetZone: title-buttons
+        parent: pim-product-index-column-inner
+#        // TODO Rename
+        targetZone: product-scope-filter
         position: 10
         config:
             routeName: pim_enrich_product_index
