@@ -11,7 +11,16 @@ define(
     ['jquery', 'underscore', 'pim/fetcher-registry', 'pim/form-config-provider', 'require-context'],
     function ($, _, FetcherRegistry, ConfigProvider, requireContext) {
         var fields = {};
+        var visibleFields = {};
         var loadedModules = {};
+
+        /**
+         * Create a field view for the given attribute
+         *
+         * @param {Object} attribute
+         *
+         * @return {View}
+         */
         var getFieldForAttribute = function (attribute) {
             var deferred = $.Deferred();
 
@@ -37,6 +46,13 @@ define(
         };
 
         return {
+            /**
+             * Get the field view for the given attribute code
+             *
+             * @param {string} attributeCode
+             *
+             * @return {View}
+             */
             getField: function (attributeCode) {
                 var deferred = $.Deferred();
 
@@ -55,22 +71,56 @@ define(
 
                 return deferred.promise();
             },
+
+            /**
+             * Get all the fields that are not ready (for example media fields that are currently uploading)
+             *
+             * @return {array}
+             */
             getNotReadyFields: function () {
-                var notReadyFields = [];
-
-                _.each(fields, function (field) {
-                    if (!field.isReady()) {
-                        notReadyFields.push(field);
-                    }
-                });
-
-                return notReadyFields;
+                return Object.values(fields).filter(field => !field.isReady());
             },
+
+            /**
+             * Get all the cached fields
+             *
+             * @return {array}
+             */
             getFields: function () {
                 return fields;
             },
+
+            /**
+             * Add a field to the collection of currently displayed fields
+             *
+             * @param {string} attributeCode
+             */
+            addVisibleField: function (attributeCode) {
+                visibleFields[attributeCode] = fields[attributeCode];
+            },
+
+            /**
+             * Get all visible fields
+             *
+             * @return {[type]}
+             */
+            getVisibleFields: function () {
+                return visibleFields;
+            },
+
+            /**
+             * Clear the field collection
+             */
             clearFields: function () {
                 fields = {};
+                this.clearVisibleFields();
+            },
+
+            /**
+             * Clear the displayed field collection
+             */
+            clearVisibleFields: function () {
+                visibleFields = {};
             }
         };
     }

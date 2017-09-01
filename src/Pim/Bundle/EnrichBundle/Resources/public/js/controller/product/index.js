@@ -2,14 +2,15 @@ define(
     [
         'underscore',
         'jquery',
-        'pim/controller/base',
+        'pim/controller/front',
         'pim/form-builder',
         'pim/user-context',
         'oro/mediator',
         'pim/page-title',
-        'routing'
+        'routing',
+        'pim/fetcher-registry'
     ],
-    function (_, $, BaseController, FormBuilder, UserContext, mediator, PageTitle, Routing) {
+    function (_, $, BaseController, FormBuilder, UserContext, mediator, PageTitle, Routing, fetcherRegistry) {
         return BaseController.extend({
             config: {
                 gridExtension: 'pim-product-index',
@@ -28,16 +29,20 @@ define(
             /**
             * {@inheritdoc}
             */
-            renderRoute() {
+            renderForm() {
                 this.selectMenuTab();
 
                 const { gridName, gridExtension } = this.config;
+                fetcherRegistry.getFetcher('locale').clear();
+                fetcherRegistry.getFetcher('datagrid-view').clear();
 
                 return $.when(this.resetSequentialEdit(),
                     FormBuilder.build(gridExtension).then((form) => {
                         this.setupLocale();
                         this.setupMassEditAttributes();
                         form.setElement(this.$el).render({ gridName });
+
+                        return form;
                     })
                 );
             },

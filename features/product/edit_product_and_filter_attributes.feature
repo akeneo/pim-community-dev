@@ -17,7 +17,6 @@ Feature: Edit product and filter attributes
 
   Scenario: Edit the product and show only missing required attributes
     When I filter attributes with "All missing required attributes"
-    # Check if it's normal that "all" is not the default value
     And I visit the "All" group
     Then I should not see the text "Manufacturer"
     But I should see the text "Name"

@@ -219,6 +219,10 @@ define([
             removeElement: function (position, code) {
                 if (this.elements[position] && this.elements[position][code]) {
                     delete this.elements[position][code];
+
+                    if (_.isEmpty(this.elements[position])) {
+                        delete this.elements[position];
+                    }
                 }
             },
 

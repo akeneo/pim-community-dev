@@ -46,7 +46,7 @@ define(
                     this.model = new Backbone.Model();
                 }
 
-                var extensionPromises = _.mapObject(this.extensions, function (extension) {
+                var extensionPromises = _.map(this.extensions, function (extension) {
                     return extension.configure();
                 });
 

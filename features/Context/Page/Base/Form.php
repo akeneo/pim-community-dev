@@ -139,7 +139,7 @@ class Form extends Base
             }))) {
                 return false;
             }
-
+            $this->getGroup($groupName, $type)->click();
             $this->getGroup($groupName, $type)->click();
 
             return true;
@@ -154,8 +154,8 @@ class Form extends Base
         $this->spin(function () use ($filter) {
             $loadingMasks = $this->findAll('css', '.loading-wrapper');
             if (0 < count(array_filter($loadingMasks, function ($loadingMask) {
-                    return $loadingMask->isVisible();
-                }))) {
+                return $loadingMask->isVisible();
+            }))) {
                 return false;
             }
 
@@ -864,7 +864,7 @@ class Form extends Base
         $field = $this->findPriceField($label->labelContent, $label->subLabelContent);
         $field->setValue($value);
     }
-    
+
     /**
      * @param string $type
      *

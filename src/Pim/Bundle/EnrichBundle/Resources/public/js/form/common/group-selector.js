@@ -132,7 +132,7 @@ define(
                 if (_.isUndefined(this.getCurrent()) ||
                     !this.getElements()[this.getCurrent()]
                 ) {
-                    this.setCurrent(_.first(_.keys(this.getElements())), {silent: true});
+                    this.setCurrent(this.all.code, {silent: true});
                 }
             },
 

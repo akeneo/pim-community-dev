@@ -61,7 +61,7 @@ define(
              * @returns {Array}
              */
             getFilters() {
-                return _.values(this.extensions);
+                return Object.values(this.extensions);
             },
 
             /**

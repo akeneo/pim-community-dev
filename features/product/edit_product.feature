@@ -30,6 +30,7 @@ Feature: Edit a product
   Scenario: Successfully create, edit and save a product
     Given I am logged in as "Mary"
     And I am on the "sandal" product page
+    And I visit the "All" group
     And I fill in the following information:
       | Name | My Sandal |
     When I press the "Save" button

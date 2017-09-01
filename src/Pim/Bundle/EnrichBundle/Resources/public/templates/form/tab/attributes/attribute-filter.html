@@ -7,10 +7,8 @@
 <ul class="AknDropdown-menu AknDropdown-menu--right">
     <li class="AknDropdown-menuTitle"><%- __('pim_enrich.form.product.tab.attributes.attribute_filter.display') %></li>
     <% _.each(filters, function (filter) { %>
-        <li class="<%- currentFilter.code === filter.code ? 'active' : '' %>" data-code="<%- filter.code %>">
-            <div class="AknDropdown-menuLink <%- currentFilter.code === filter.code ? 'AknDropdown-menuLink--active' : '' %>">
-                <span class="label"><%- filter.label %></span>
-            </div>
+        <li class="AknDropdown-menuLink <%- currentFilter.code === filter.code ? 'AknDropdown-menuLink--active active' : '' %>" data-code="<%- filter.code %>">
+            <span class="label"><%- filter.label %></span>
         </li>
     <% }); %>
 </ul>

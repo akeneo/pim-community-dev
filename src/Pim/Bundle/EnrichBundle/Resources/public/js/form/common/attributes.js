@@ -189,6 +189,7 @@ define(
                         this.getExtension('attribute-group-selector').setElements(
                             _.indexBy(attributeGroups, 'code')
                         );
+                        FieldManager.clearVisibleFields();
                     })
                     .then(() => this.filterValues(data.values))
                     .then((values) => this.createFields(data, values))
@@ -255,6 +256,7 @@ define(
                     });
 
                     field.setValues(values);
+                    FieldManager.addVisibleField(field.attribute.code);
 
                     return field;
                 }.bind(this));
@@ -422,8 +424,9 @@ define(
                 var displayedAttributes = FieldManager.getFields();
 
                 if (_.has(displayedAttributes, event.attribute)) {
+                    const field = displayedAttributes[event.attribute];
                     // TODO: the manager shouldn't be stateful, access the field by another way
-                    displayedAttributes[event.attribute].setFocus();
+                    _.defer(field.setFocus.bind(field));
                 }
             },
 
@@ -456,6 +459,10 @@ define(
                         }
                     });
                     values = filteredValues;
+                }
+
+                if (undefined === this.getExtension('attribute-filter')) {
+                    return $.Deferred().resolve(values);
                 }
 
                 return this.getExtension('attribute-filter').filterValues(values);
