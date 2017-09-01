@@ -92,7 +92,7 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
      *
      * @param string[] $criteria
      *
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Exception
      */
     protected function prepareCompleteAssets(array $criteria)
     {
@@ -135,6 +135,7 @@ SQL;
                 $insertStmt->bindValue('locale_id', $completeness['locale_id']);
                 $insertStmt->bindValue('channel_id', $completeness['channel_id']);
                 $insertStmt->execute();
+                $count++;
 
                 if ($count === $this->commitBatchSize) {
                     $this->connection->commit();
