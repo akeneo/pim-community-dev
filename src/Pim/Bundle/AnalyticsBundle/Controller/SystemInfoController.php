@@ -33,7 +33,18 @@ class SystemInfoController
      */
     public function indexAction($_format)
     {
+        $moveToEnd = function (array $data, string $key) {
+            $value = $data[$key];
+            unset($data[$key]);
+            $data[$key] = $value;
+
+            return $data;
+        };
+
         $data = $this->dataCollector->collect('system_info_report');
+        $data = $moveToEnd($data, 'php_extensions');
+        $data = $moveToEnd($data, 'registered_bundles');
+
         $content = $this->templating->render(
             sprintf('PimAnalyticsBundle:SystemInfo:index.%s.twig', $_format),
             ['data' => $data]
