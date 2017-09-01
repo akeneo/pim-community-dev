@@ -15,13 +15,14 @@ extensions:
         targetZone: choose
         config:
             title: pim_enrich.mass_edit.family.step.choose.title
+            labelCount: pim_enrich.mass_edit.family.step.choose.labelCount
 
     pim-mass-family-edit-configure-set-requirements:
         module: pim/mass-edit-form/family/set-requirements
         parent: pim-mass-family-edit
         config:
             label: pim_enrich.mass_edit.family.operation.set_requirements.label
-            labelCount: pim_enrich.mass_edit.family.operation.set_requirements.label.label_count
+            labelCount: pim_enrich.mass_edit.family.operation.set_requirements.label_count
             description: pim_enrich.mass_edit.family.operation.set_requirements.description
             code: set_requirements
             jobInstanceCode: set_attribute_requirements

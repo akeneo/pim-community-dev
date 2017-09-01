@@ -127,7 +127,7 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     public function removeAttributeRequirement(AttributeRequirementInterface $requirement);
 
     /**
-     * Set attribute requirements
+     * Set attributes requirements
      *
      * @param AttributeRequirementInterface[] $requirements
      *

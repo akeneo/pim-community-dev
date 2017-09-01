@@ -42,7 +42,7 @@ Feature: Apply a mass action on all entities
     And I filter by "completeness" with operator "" and value "yes"
     When I select all entities
     And I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Change the family of products" operation
+    And I choose the "Change family" operation
     And I change the Family to "Sandals"
     And I confirm mass edit
     And I wait for the "update_product_value" job to finish
@@ -61,7 +61,7 @@ Feature: Apply a mass action on all entities
     Then the grid should contain 2 elements
     And I select all entities
     And I press the "Change product information" button
-    And I choose the "Set attribute requirements" operation
+    And I choose the "Set attributes requirements" operation
     And I display the Length attribute
     And I switch the attribute "length" requirement in channel "mobile"
     And I confirm mass edit
@@ -75,9 +75,9 @@ Feature: Apply a mass action on all entities
     And I select all entities
     And I unselect row mega_boots
     When I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Change status (enable / disable)" operation
+    And I choose the "Change status" operation
     And I move on to the choose step
-    And I choose the "Change status (enable / disable)" operation
+    And I choose the "Change status" operation
     And I disable the products
     And I wait for the "update_product_value" job to finish
     Then product "super_boots" should be disabled

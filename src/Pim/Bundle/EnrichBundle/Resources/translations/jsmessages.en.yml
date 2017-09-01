@@ -1030,7 +1030,7 @@ pim_enrich:
                     label: Choose families
                 choose:
                     label: Choose operation
-                    title: Mass edit ({{ itemsCount }} families)
+                    labelCount: "{1}Select your action for <span class=\"AknFullPage-title--highlight\">the family</span>|] 1, Inf [Select your action for the <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
                 configure:
                     label: Configure
                 confirm:
@@ -1041,7 +1041,7 @@ pim_enrich:
                 set_requirements:
                     label: Set attributes requirements
                     description: The following attributes requirements will be applied to the selected families
-                    label_count: "{1}Set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|] 1, Inf [Set attribute requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
+                    label_count: "{1}Set attributes requirements of <span class=\"AknFullPage-title--highlight\">1 family</span>|] 1, Inf [Set attributes requirements of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
 
 pim_enrich.error:
     exception.title: Oh snap! A {{ status_code }} error occured...
@@ -1103,9 +1103,9 @@ batch_jobs:
         cleaner:
             label: Clean files for common attributes
     set_attribute_requirements:
-        label: Set attribute requirements
+        label: Set attributes requirements
         perform:
-            label: Set attribute requirements
+            label: Set attributes requirements
     csv_product_quick_export:
         quick_export.label: CSV product quick export
         perform:
