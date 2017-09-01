@@ -8,6 +8,10 @@ datagrid:
             type:              pim_datasource_product
             entity:            '%pim_catalog.entity.product.class%'
         columns:
+            ID:
+                label: ID
+                data_name:     identifier
+                type:          field
             image:
                 label:         Image
                 data_name:     image
@@ -192,6 +196,9 @@ datagrid:
                     group: quick_export
         sorters:
             columns:
+                ID:
+                    data_name: identifier
+                    sorter: product_field
                 family:
                     data_name: familyLabel
                     sorter:    product_family
