@@ -30,7 +30,7 @@ Feature: Publish many products at once
     And I am on the products grid
     And I select rows unionjack and jackadi
     And I press "Change product information" on the "Bulk Actions" dropdown button
-    When I choose the "Publish products" operation
+    When I choose the "Publish" operation
     And I move on to the next step
     Then I should see the text "The 2 selected products will be published"
     And I should see the text "Confirm"
@@ -41,7 +41,7 @@ Feature: Publish many products at once
     And I am on the products grid
     And I select rows unionjack
     And I press "Change product information" on the "Bulk Actions" dropdown button
-    When I choose the "Publish products" operation
+    When I choose the "Publish" operation
     And I confirm mass edit
     And I wait for the "publish_product" job to finish
     And I am on the published products grid

@@ -107,12 +107,15 @@ class Edit extends Form
         $variationContainer = $this->findVariationContainer($channel);
 
         $this->spin(function () use ($variationContainer) {
+            $modal = $this->find('css', '.modal');
+            if (null !== $modal && $modal->isVisible()) {
+                return true;
+            }
+
             $deleteButton = $variationContainer->find('css', '.delete');
 
             if (null !== $deleteButton && $deleteButton->isVisible()) {
                 $deleteButton->click();
-
-                return true;
             }
 
             return null;
