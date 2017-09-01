@@ -49,7 +49,7 @@ class OperationJobLauncherSpec extends ObjectBehavior
             [
                 'foo'  => 'bar',
                 'pomf' => 'thud',
-                'notification_user' => 'julia'
+                'user_to_notify' => 'julia'
             ]
         );
 

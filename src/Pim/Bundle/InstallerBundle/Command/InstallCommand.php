@@ -3,12 +3,10 @@
 namespace Pim\Bundle\InstallerBundle\Command;
 
 use Pim\Bundle\InstallerBundle\CommandExecutor;
-use Pim\Bundle\InstallerBundle\PimDirectoriesRegistry;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Installer command to add PIM custom rules
@@ -56,14 +54,9 @@ class InstallCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $forceInstall = $input->getOption('force');
-        // if there is application is not installed or no --force option
-        if ($this->getContainer()->hasParameter('installed') && $this->getContainer()->getParameter('installed')
-            && !$forceInstall
-        ) {
+
+        if ($this->isPimInstalled($output) && false === $forceInstall) {
             throw new \RuntimeException('Akeneo PIM is already installed.');
-        } elseif ($forceInstall) {
-            // if --force option we have to clear cache and set installed to false
-            $this->updateInstalledFlag($output, false);
         }
 
         $output->writeln(sprintf('<info>Installing %s Application.</info>', static::APP_NAME));
@@ -81,8 +74,6 @@ class InstallCommand extends ContainerAwareCommand
 
             return $e->getCode();
         }
-
-        $this->updateInstalledFlag($output, date('c'));
 
         $output->writeln('');
         $output->writeln(sprintf('<info>%s Application has been successfully installed.</info>', static::APP_NAME));
@@ -148,22 +139,16 @@ class InstallCommand extends ContainerAwareCommand
     }
 
     /**
-     * Update installed flag
-     *
      * @param OutputInterface $output
-     * @param bool            $installed
      *
-     * @return InstallCommand
+     * @return boolean
      */
-    protected function updateInstalledFlag(OutputInterface $output, $installed)
+    protected function isPimInstalled(OutputInterface $output) : bool
     {
-        $output->writeln('<info>Updating installed flag.</info>');
+        $installStatus = $this->getContainer()->get('pim_installer.install_status_manager');
 
-        $dumper = $this->getContainer()->get('pim_installer.yaml_persister');
-        $params = $dumper->parse();
-        $params['system']['installed'] = $installed;
-        $dumper->dump($params);
+        $output->writeln('<info>Check PIM installation</info>');
 
-        return $this;
+        return $installStatus->isPimInstalled();
     }
 }

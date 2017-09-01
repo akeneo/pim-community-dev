@@ -46,6 +46,25 @@ class BatchCommandIntegration extends TestCase
         $this->assertEquals('Export csv_product_export has been successfully executed.' . PHP_EOL, $output->fetch());
     }
 
+    public function testJobExecutionStateWithUsername()
+    {
+        $output = $this->launchJob(['--username' => 'mary']);
+        $connection = $this->get('doctrine.orm.default_entity_manager')->getConnection();
+        $stmt = $connection->prepare('SELECT status, pid, start_time, end_time, create_time, user, log_file, raw_parameters from akeneo_batch_job_execution');
+        $stmt->execute();
+        $result = $stmt->fetch();
+
+        $this->assertEquals(BatchStatus::COMPLETED, $result['status']);
+        $this->assertNotNull($result['start_time']);
+        $this->assertNotNull($result['end_time']);
+        $this->assertNotNull($result['create_time']);
+        $this->assertNotNull($result['pid']);
+        $this->assertNotNull($result['log_file']);
+        $this->assertNotNull(json_decode($result['raw_parameters'], true));
+        $this->assertEquals('mary', $result['user']);
+        $this->assertEquals('Export csv_product_export has been successfully executed.' . PHP_EOL, $output->fetch());
+    }
+
     public function testLaunchJobWithConfigOverridden()
     {
         $filePath= sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'new_export.csv';
@@ -122,10 +141,14 @@ class BatchCommandIntegration extends TestCase
         $this->assertContains('Configuration option cannot be specified when launching a job execution.', $output->fetch());
     }
 
+    public function testLaunchJobExecutionWithUsernameOverridden()
+    {
+        $output = $this->launchJob(['execution' => '1', '--username' => 'mary']);
+        $this->assertContains('Username option cannot be specified when launching a job execution', $output->fetch());
+    }
+
     /**
      * @param array $arrayInput
-     *
-     * @throws \Exception
      *
      * @return BufferedOutput
      */

@@ -73,11 +73,11 @@ class ListProductWithCompletenessIntegration extends AbstractProductTestCase
         $expected = <<<JSON
 {
     "_links": {
-        "self": {"href": "http://localhost/api/rest/v1/products?limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
-        "first": {"href": "http://localhost/api/rest/v1/products?limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
-        "next": {"href": "http://localhost/api/rest/v1/products?limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}&search_after=${encryptedId}"}
+        "self": {"href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
+        "first": {"href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
+        "next": {"href": "http://localhost/api/rest/v1/products?page=2&with_count=false&pagination_type=page&limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"}
     },
-    "current_page" : null,
+    "current_page" : 1,
     "_embedded"    : {
 		"items": [
 		    {
