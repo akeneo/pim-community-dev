@@ -62,7 +62,7 @@ stage("Checkout") {
                 stash "pim_community_dev_full"
             }
 
-            sh "mkdir /home/akeneo/.yarn-cache"
+            sh "mkdir -p /home/akeneo/.yarn-cache"
 
             docker.image('node:8').inside("-v /home/akeneo/.yarn-cache:/home/node/.yarn-cache") {
                 unstash "pim_community_dev_full"
@@ -109,7 +109,7 @@ stage("Checkout") {
                     stash "pim_enterprise_dev_full"
                 }
 
-                sh "mkdir /home/akeneo/.yarn-cache"
+                sh "mkdir -p /home/akeneo/.yarn-cache"
 
                 docker.image('node:8').inside("-v /home/akeneo/.yarn-cache:/home/node/.yarn-cache") {
                     unstash "pim_enterprise_dev_full"
