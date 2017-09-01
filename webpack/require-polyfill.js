@@ -1,6 +1,6 @@
 define(['jquery', 'underscore', 'require-context'], function ($, _, requireContext) {
     /**
-     * Provides a polyfill to hijack require() calls in twig templates and any other dynamic require calls in the app
+     * Provides a polyfill to hijack require() calls in twig templates
      *
      * @param  {String|Array}   modules An array of module names to request, or a string for a single module
      * @param  {Function} cb      The callback to run after fetching the module
