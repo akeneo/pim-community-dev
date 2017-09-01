@@ -57,7 +57,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $product->getIdentifier()->willReturn('sku-001');
         $product->getFamily()->willReturn($family);
-        $product->getLabel()->willReturn('my sku-001');
         $serializer->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->willReturn(null);
 
@@ -89,7 +88,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
             [
                 'id'             => 'product_67',
                 'identifier'     => 'sku-001',
-                'label'          => 'my sku-001',
                 'created'        => $now->format('c'),
                 'updated'        => $now->format('c'),
                 'family'         => null,
@@ -115,7 +113,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $product->getId()->willReturn(67);
         $product->getIdentifier()->willReturn('sku-001');
-        $product->getLabel()->willReturn('my sku-001');
 
         $product->getCreated()->willReturn($now);
         $serializer->normalize(
@@ -180,7 +177,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
             [
                 'id'            => 'product_67',
                 'identifier'    => 'sku-001',
-                'label'          => 'my sku-001',
                 'created'       => $now->format('c'),
                 'updated'       => $now->format('c'),
                 'family' => [
@@ -234,7 +230,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $variantProduct->getId()->willReturn(67);
         $variantProduct->getIdentifier()->willReturn('sku-001');
-        $variantProduct->getLabel()->willReturn('my sku-001');
 
         $variantProduct->getCreated()->willReturn($now);
         $serializer->normalize(
@@ -273,25 +268,24 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
             ->willReturn(['the completenesses']);
 
         $this->normalize($variantProduct, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn([
-                'id'             => 'product_67',
-                'identifier'     => 'sku-001',
-                'label'          => 'my sku-001',
-                'created'        => $now->format('c'),
-                'updated'        => $now->format('c'),
-                'family'         => [
+                'id'            => 'product_67',
+                'identifier'    => 'sku-001',
+                'created'       => $now->format('c'),
+                'updated'       => $now->format('c'),
+                'family' => [
                     'code'   => 'family',
                     'labels' => [
                         'fr_FR' => 'Une famille',
                         'en_US' => 'A family',
                     ],
                 ],
-                'enabled'        => false,
-                'categories'     => [],
-                'groups'         => [],
-                'completeness'   => ['the completenesses'],
+                'enabled'       => false,
+                'categories'    => [],
+                'groups'        => [],
+                'completeness'  => ['the completenesses'],
                 'family_variant' => 'family_variant_A',
-                'parent'         => 'parent_A',
-                'values'         => [],
+                'parent'        => 'parent_A',
+                'values'        => [],
             ]
         );
     }
@@ -312,7 +306,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $variantProduct->getId()->willReturn(67);
         $variantProduct->getIdentifier()->willReturn('sku-001');
-        $variantProduct->getLabel()->willReturn('my sku-001');
 
         $variantProduct->getCreated()->willReturn($now);
         $serializer->normalize(
@@ -390,7 +383,6 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
             [
                 'id'            => 'product_67',
                 'identifier'    => 'sku-001',
-                'label'          => 'my sku-001',
                 'created'       => $now->format('c'),
                 'updated'       => $now->format('c'),
                 'family' => [

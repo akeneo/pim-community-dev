@@ -39,7 +39,6 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
 
         $data[self::FIELD_ID] = 'product_model_' . (string) $productModel->getId();
         $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] = $productModel->getCode();
-        $data[StandardPropertiesNormalizer::FIELD_LABEL] = $productModel->getLabel();
         $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->serializer->normalize(
             $productModel->getCreated(),
             $format
