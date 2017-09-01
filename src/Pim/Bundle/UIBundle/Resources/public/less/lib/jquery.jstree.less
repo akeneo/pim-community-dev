@@ -6,9 +6,8 @@
   padding: 0;
 
   & > ul {
-    padding: 10px 20px 50px 0;
+    padding: 20px 0 50px 0;
     margin-left: -20px;
-
 
     .jstree-icon(@url) {
       background: url(@url) 0 0 no-repeat;
@@ -19,12 +18,15 @@
 
     a {
       height: 40px;
-      line-height: 40px;
+      line-height: 26px;
       font-size: @AknFontSizeBig;
       padding: 0;
-      display: inline-flex;
       align-items: center;
       color: @AknDefaultFontColor !important;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: ~"calc(100% - 32px)";
+      overflow: hidden;
     }
 
     ins.jstree-checkbox {
@@ -39,6 +41,10 @@
 
     li {
       margin-left: 40px;
+    }
+
+    & > li {
+      margin-left: 20px;
     }
 
     li.jstree-leaf > ins.jstree-icon {
@@ -59,7 +65,7 @@
 
     li.jstree-closed > .jstree-icon,
     li.jstree-open > .jstree-icon {
-      line-height: 40px + 4px;
+      line-height: 72px;
       cursor: pointer;
       opacity: 0.5;
     }
@@ -127,9 +133,26 @@
   }
 
   .jstree-tree-toolbar {
-    padding: 6.5px;
-    margin-bottom: 10px;
-    background: lighten(@AknGrey, 25%);
+    .select2-container {
+      .select2-choice {
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        border-bottom: 1px solid @AknPurple;
+        color: @AknPurple;
+        padding: 0;
+        margin-top: -10px;
+
+        .select2-arrow {
+          border-left: none;
+          background: url("../../images/icon-down-white.svg") no-repeat 3px center;
+
+          b {
+            display: none;
+          }
+        }
+      }
+    }
   }
 
   .jstree-footer {
