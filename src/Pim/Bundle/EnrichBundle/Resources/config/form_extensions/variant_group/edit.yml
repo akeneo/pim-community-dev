@@ -90,7 +90,7 @@ extensions:
     pim-variant-group-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector
         parent: pim-variant-group-edit-form-attributes
-        targetZone: attribute-group-selector
+        targetZone: other-actions
         position: 100
 
     pim-variant-group-edit-form-add-attribute:
@@ -209,6 +209,11 @@ extensions:
         config:
             class: 'group'
             title: 'pim_enrich.form.variant_group.tab.history.title'
+
+    pim-variant-group-edit-form-filters:
+        module: oro/datafilter-builder
+        parent: pim-variant-group-edit-form-form-tabs
+        targetZone: container
 
     pim-variant-group-edit-form-products:
         module: pim/group-edit-form/products

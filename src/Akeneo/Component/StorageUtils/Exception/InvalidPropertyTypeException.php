@@ -266,7 +266,7 @@ class InvalidPropertyTypeException extends PropertyException
      */
     public static function arrayKeyExpected($propertyName, $key, $className, array $propertyValue)
     {
-        $message = 'Property "%s" expects an array with the key "%s" as data.';
+        $message = 'Property "%s" expects an array with the key "%s".';
 
         return new static(
             $propertyName,

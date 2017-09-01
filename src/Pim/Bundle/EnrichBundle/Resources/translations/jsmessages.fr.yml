@@ -15,6 +15,7 @@ confirmation:
     user: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
     role: Êtes-vous sûr(e) de vouloir supprimer ce rôle ?
     job_instance: Êtes-vous sûr(e) de vouloir supprimer cette opération ?
+    api_connection: Êtes-vous certain(e) de vouloir révoquer cette connexion API ? Toutes les requêtes API renverront ensuite une erreur.
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -62,6 +63,8 @@ flash:
     removed: Le rôle a bien été supprimé
   job_instance:
     removed: La tâche a bien été supprimée
+  api_connection:
+    removed: La connexion API a été révoquée avec succès
 error:
   common: Une erreur est survenue
   creating:
@@ -282,6 +285,8 @@ pim_enrich:
         update_successful: Famille mise à jour avec succès.
         create_successful: Canal créé avec succès.
         update_failed: Une erreur s'est produite à la mise à jour de la famille.
+        cant_remove_attribute_as_label: Impossible de supprimer un attribut utilisé comme libellé
+        cant_remove_attribute_as_image: Impossible de supprimer un attribut utilisé comme image principale
         attribute_edit_permission_is_not_granted: Vous n'avez pas les permissions pour mettre à jour les attributs de la famille
       meta:
         created: Créé
@@ -346,6 +351,13 @@ pim_enrich:
         update_failed: Le profil n'a pas pu être mis à jour.
         update_successful: Le profil a été mis à jour avec succès.
     attribute:
+      info:
+        deletion_successful: Attribut supprimé avec succès.
+        deletion_failed: L'attribut n'a pas pu être supprimé.
+        update_successful: Attribut mis à jour avec succès.
+        update_failed: L'attribut n'a pas pu être mis à jour.
+        create_successful: Attribut créé avec succès.
+        create_failed: L'attribut n'a pas pu être créé.
       scopable: Décliné par canal
       type:
         pim_catalog_identifier: Identifiant
@@ -370,6 +382,11 @@ pim_enrich:
       info:
         update_failed: Le groupe d'attributs n'a pas pu être mis à jour.
         update_successful: Groupe d'attributs mis à jour avec succès
+    api_connection:
+      create_popin:
+        title: Créer une nouvelle connexion API
+      message:
+        created: Connexion API créée avec succès
   confirmation:
     leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
     discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
@@ -396,8 +413,9 @@ pim_enrich:
             none_exist: Aucun type d'association n'existe.
             show_products: Afficher les produits
             show_groups: Afficher les groupes
-            number_of_associations: "{{ productCount }} produits et {{ groupCount }} groupes"
+            number_of_associations: "{{ productCount }} produit(s) et {{ groupCount }} groupe(s)"
           association_type_selector: Type d'association
+          target: Destination
         attributes:
           title: Attributs
           btn:
@@ -418,7 +436,7 @@ pim_enrich:
           info:
             no_family: Aucune famille définie. Merci de définir une famille pour calculer la complétude de ce produit.
             no_completeness: Vous venez de modifier la famille du produit. Merci de l'enregistrer en premier pour calculer la complétude de la nouvelle famille.
-          missing_values: Valeurs manquantes
+          missing_values: "{1} 1 valeur manquante|] 1, Inf [{{ count }} valeurs manquantes"
         history:
           title: Historique
       switch:
@@ -484,6 +502,7 @@ pim_enrich:
           general: Général
           code: Code
           attribute_as_label: Attribut utilisé comme étiquette
+          attribute_as_image: Attribut utilisé comme l’image principale
           empty_attribute_as_image: Pas sélectionné
           label_translations: Traduction des libellés
         attributes:
@@ -511,6 +530,7 @@ pim_enrich:
         "no": "Non"
         "yes": "Oui"
     variant_group:
+      axis.help: Les axes sont des attributs qui définissent les groupes de variantes. Les axes sont des attributs avec des options, non localisables et ayant une portée globale. Ils ne peuvent pas être modifiés après leur création.
       tab:
         properties:
           title: Propriétés
@@ -662,19 +682,24 @@ pim_enrich:
     attribute:
       meta:
         created: Créé
+        created_by: par
         updated: Dernière mise à jour
+        updated_by: par
       tab:
         properties:
           title: Propriétés
           section:
             common: Paramètres généraux
+            type_specific: Paramètres spécifiques
             validation: Paramètres de validation
           label:
             allowed_extensions: Extensions autorisées
+            auto_option_sorting: Trier automatiquement les options par ordre alphabétique
             available_locales: Locales disponibles
             code: Code
             date_max: Date maxi
             date_min: Date mini
+            decimals_allowed: Valeurs décimales autorisées
             default_metric_unit: Unité de mesure par défaut
             group: Groupe d'attributs
             is_locale_specific: Spécifique à une locale
@@ -682,14 +707,18 @@ pim_enrich:
             max_characters: Nombre maximum de caractères
             max_file_size: Taille de fichier maximale (MB)
             metric_family: Type de mesure
+            minimum_input_length: Longueur minimale pour l’auto-complétion
+            negative_allowed: Valeurs négatives autorisées
             number_max: Nombre max
             number_min: Nombre min
+            reference_data_name: Type de données de référence
             scopable: Valeur par canal
             type: Type
             unique: Valeur unique
             useable_as_grid_filter: Utilisable sur la grille
             validation_regexp: Expression régulière
             validation_rule: Règle de validation
+            wysiwyg_enabled: Éditeur de texte enrichi activé
           default_label:
             default_metric_unit: Choisir une unité
             group: Choisir le groupe d'attributs
@@ -863,6 +892,8 @@ pim_enrich:
       list: Sélectionner une tâche
       create_popin:
         title: Créer un nouveau profil d'import
+      message:
+        created: Le profil d'export a bien été créé
     import_history:
       title: Rapports d'import
     variant_group:
@@ -876,6 +907,8 @@ pim_enrich:
       create_btn: Créer un profil d'export
       create_popin:
         title: Créer un nouveau profil d'export
+      message:
+        created: Le profil d'exportation a bien été créé
     export_history:
       title: Rapports d'export
     family:
@@ -909,20 +942,31 @@ pim_enrich:
     attribute_group:
       title: Vue d'ensemble des groupes d'attributs
       create_btn: Créer
+    api_connection:
+      title: Connexions API
+      create_btn: Créer
   mass_edit:
     next: Suivant
+    previous: Retour
     cancel: Annuler
     confirm: Confirmer
     product:
+      title: "{1} Produit / Edition de masse (1 produit)|] 1, Inf [Produit / Edition de masse ({{ itemsCount }} produits)"
+      confirm: "{1} Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} produits avec les renseignements suivants, merci de confirmer."
       step:
         select:
           label: Choisir des produits
         choose:
           label: Choisir une opération
+          title: Edit de masse ({{ itemsCount }} produits)
         configure:
           label: Configurer
         confirm:
           label: Confirmer
+        launch_error:
+          label: Une erreur s’est produite lors du lancement de l'édition de masse
+        launched:
+          label: L'action de masse "{{ operation }}" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
       operation:
         change_status:
           label: Changer de statut (activé / désactivé)
@@ -930,6 +974,7 @@ pim_enrich:
           field: Pour activer
         edit_common:
           label: Modifier les attributs communs
+          description: Les attributs des produits séléctionnés vont être éditées avec les données suivantes, pour la locale {{ locale }} et le canal {{ scope }}, choisis dans la grille de produits.
         change_family:
           label: Changer la famille des produits
           description: La famille des produits sélectionnés sera remplacée par la famille choisie
@@ -952,15 +997,20 @@ pim_enrich:
           label: Retirer des produits des catégories
           description: Les produits seront retirés des catégories suivantes.
     family:
+      title: "{1} Famille / Edition de masse (1 famille)|] 1, Inf [Famille / Edition de masse ({{ itemsCount }} familles)"
+      confirm: "{1} Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} familles avec les renseignements suivants, merci de confirmer."
       step:
         select:
           label: Choisir des familles
         choose:
           label: Choisir une opération
+          title: Edit de masse ({{ itemsCount }} familles)
         configure:
           label: Configurer
         confirm:
           label: Confirmer
+        launched:
+          label: L'action de masse "{{ operation }}" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
       operation:
         set_requirements:
           label: Choisir les attributs requis
@@ -1003,6 +1053,8 @@ page_title:
   pim_enrich_mass_edit_action_perform: Edition en masse | Effectuer
   pim_enrich_job_tracker_index: Traqueur de processus
   pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
+  pim_enrich_api_connection_index: Connexions API
+  pim_enrich_api_connection_create: Connexions API
 batch_jobs:
   add_product_value:
     label: Ajouter une valeur de produit
@@ -1265,6 +1317,7 @@ pim_menu:
     user_role: Rôles
     info: Informations système
     job_tracker: Traqueur de processus
+    api_connection: Connexions API
   navigation:
     system: Navigation système
     user: Navigation utilisateurs

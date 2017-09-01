@@ -141,7 +141,6 @@ class ProductController
     public function getAction($id)
     {
         $product = $this->findProductOr404($id);
-        $this->productBuilder->addMissingAssociations($product);
 
         $normalizationContext = $this->userContext->toArray() + [
             'filter_types'               => ['pim.internal_api.product_value.view'],

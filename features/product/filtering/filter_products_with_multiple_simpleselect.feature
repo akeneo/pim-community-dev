@@ -30,7 +30,7 @@ Feature: Filter products with multiples simpleselect filters
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products with the sames attributes
-    Given I am on the products page
+    Given I am on the products grid
     And I show the filter "company"
     And I filter by "company" with operator "in list" and value "Suze"
     And I show the filter "color"
@@ -41,7 +41,7 @@ Feature: Filter products with multiples simpleselect filters
     And I hide the filter "color"
 
   Scenario: Successfully filter product without commons attributes
-    Given I am on the products page
+    Given I am on the products grid
     And I show the filter "company"
     And I filter by "company" with operator "in list" and value "Debian"
     And I show the filter "color"
@@ -51,7 +51,7 @@ Feature: Filter products with multiples simpleselect filters
     And I hide the filter "color"
 
   Scenario: Successfully filter only one product
-    Given I am on the products page
+    Given I am on the products grid
     And I show the filter "company"
     And I filter by "company" with operator "in list" and value "Canonical"
     And I show the filter "color"

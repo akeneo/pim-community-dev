@@ -4,15 +4,16 @@
   line-height: @AknDefaultFontSize + 4px;
   height: @AknDefaultFontSize + 4px;
   font-size: @AknDefaultFontSize;
-  background: @AknLightGray;
+  background: @AknMediumGrey;
   color: @AknDefaultFontColor;
   display: inline-block;
   border-radius: 100px;
-  padding: 0 4px;
+  padding: 0 8px;
   transition: background 0.1s ease-in, opacity 0.4s ease-in;
   white-space: nowrap;
   margin: 0 4px;
   text-transform: uppercase;
+  cursor: default;
 
   &-icon {
     margin: 0 5px 0 0;
@@ -20,34 +21,34 @@
 
   &--enabled,
   &--success {
-    background: lighten(@AknGreen, 30%);
-    color: darken(@AknGreen, 20%);
+    background: @AknGreen;
+    color: white;
 
     &:hover {
-      background: lighten(@AknGreen, 20%);
+      background: darken(@AknGreen, 10%);
     }
   }
 
   &--enabled &-icon,
   &--success &-icon {
-    color: darken(@AknGreen, 20%);
+    color: white;
   }
 
   &--disabled,
   &--important,
   &--invalid {
-    background: lighten(@AknRed, 30%);
-    color: darken(@AknRed, 20%);
+    background: @AknRed;
+    color: white;
 
     &:hover {
-      background: lighten(@AknRed, 20%);
+      background: darken(@AknRed, 10%);
     }
   }
 
   &--disabled &-icon,
   &--important &-icon,
   &--invalid &-icon {
-    color: darken(@AknRed, 20%);
+    color: white;
   }
 
   &--warning {
@@ -81,6 +82,15 @@
     }
   }
 
+  &--active {
+    background: @AknLightPurple;
+    color: white;
+
+    &:hover {
+      background: darken(@AknLightPurple, 10%);
+    }
+  }
+
   &--highlight {
     background: @AknOrange;
   }
@@ -90,7 +100,7 @@
   }
 
   &--round {
-    border-radius: 10px;
+    border-radius: 100px;
     padding: 0 6px;
     height: @AknDefaultFontSize;
     line-height: @AknDefaultFontSize;
@@ -98,6 +108,8 @@
     &:not(:empty) {
       padding-left: 7px;
       padding-right: 7px;
+      height: 18px;
+      line-height: 18px;
     }
   }
 
@@ -109,10 +121,23 @@
     display: none;
   }
 
-  &--big {
-    height: @AknMicroButtonSize;
-    line-height: @AknMicroButtonSize;
+  &--medium {
+    height: @AknSmallProgressBarHeight;
+    min-width: @AknSmallProgressBarHeight;
+    line-height: @AknSmallProgressBarHeight;
     font-size: @AknDefaultFontSize;
     padding: 0 8px;
+  }
+
+  &--big {
+    height: @AknLittleButtonSize;
+    min-width: @AknLittleButtonSize;
+    line-height: @AknLittleButtonSize;
+    font-size: @AknDefaultFontSize;
+    padding: 0 16px;
+  }
+
+  &--large {
+    padding: 0 20px;
   }
 }

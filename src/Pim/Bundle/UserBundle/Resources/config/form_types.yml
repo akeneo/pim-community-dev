@@ -27,6 +27,7 @@ services:
             - '@pim_user.repository.role'
             - '@pim_user.repository.group'
             - '@event_dispatcher'
+            - '%pim_enrich.form.type.product_grid_filter_choice.class%'
         tags:
             - { name: form.type, alias: pim_user_user }
 
@@ -42,4 +43,4 @@ services:
         arguments:
             - '@pim_localization.provider.ui_locale'
             - '@pim_enrich.repository.category'
-            - '%pim_catalog.entity.category.class%'
+            - '@pim_catalog.repository.cached_locale'

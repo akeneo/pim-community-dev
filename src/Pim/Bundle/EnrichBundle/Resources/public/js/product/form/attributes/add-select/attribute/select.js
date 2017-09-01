@@ -57,7 +57,7 @@ define(
              * {@inheritdoc}
              */
             getItemsToExclude: function () {
-                return AttributeManager.getAttributes(this.getFormData());
+                return $.Deferred().resolve(_.keys(this.getFormData().values));
             },
 
 

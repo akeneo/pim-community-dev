@@ -3,5 +3,5 @@
         <div class="AknTextField-layer AknTextField-layer--first"></div>
         <div class="AknTextField-layer AknTextField-layer--second"></div>
     <% } %>
-    <input id="<%- fieldId %>" class="AknTextField<% if (attribute.localizable) { %> AknTextField--localizable <% } %> datepicker-field add-on" type="text" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" value="<%- value.data %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
+    <input id="<%- fieldId %>" class="AknTextField<% if (attribute.localizable) { %> AknTextField--localizable <% } %> datepicker-field add-on" type="text" data-locale="<%- locale %>" data-scope="<%- scope %>" value="<%- value ? value.data : null %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
 </div>

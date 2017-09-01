@@ -1,8 +1,22 @@
-/* global define */
-define(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/multiselect-decorator'],
-function($, _, Backbone, mediator, MultiselectDecorator) {
-    'use strict';
-
+define(
+    [
+        'oro/translator',
+        'jquery',
+        'underscore',
+        'backbone',
+        'oro/mediator',
+        'oro/multiselect-decorator',
+        'pim/template/datagrid/add-filter-select'
+    ],
+    function(
+        __,
+        $,
+        _,
+        Backbone,
+        mediator,
+        MultiselectDecorator,
+        addFilterSelectTemplate
+    ) {
     /**
      * View that represents all grid filters
      *
@@ -30,12 +44,21 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
         tagName: 'div',
 
         /**
-         * Display the "manage filters" button or not
+         * Display the 'manage filters' button or not
          *
          * @property
          */
         displayManageFilters: function() {
             return _.result(this.options, 'displayManageFilters', true);
+        },
+
+        /**
+         * Displays the filters as column or not
+         *
+         * @property
+         */
+        filtersAsColumn: function() {
+            return _.result(this.options, 'filtersAsColumn', false);
         },
 
         /**
@@ -45,7 +68,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          */
         className: function () {
             var name = 'AknFilterBox filter-box oro-clearfix-width';
-            if (true !== this.displayManageFilters()) {
+            if (true !== this.filtersAsColumn()) {
                 name += ' AknFilterBox--search';
             }
 
@@ -57,35 +80,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          *
          * @property
          */
-        addButtonTemplate: _.template(
-            '<select id="add-filter-select" multiple>' +
-                '<%  var groups = [_.__("system_filter_group")];' +
-                    '_.each(filters, function(filter) {' +
-                        'if (filter.group) {' +
-                            'var key = filter.groupOrder !== null ? filter.groupOrder : "last";' +
-                            'if (_.isUndefined(groups[key])) {' +
-                                'groups[key] = filter.group;' +
-                            '} else if (!_.contains(groups, filter.group)) {' +
-                                'groups.push(filter.group);' +
-                            '}' +
-                        '} else {' +
-                            'filter.group = _.__("system_filter_group");' +
-                        '} ' +
-                   '});' +
-                '%>' +
-                '<% _.each(groups, function (group) { %>' +
-                    '<optgroup label="<%= group %>">' +
-                        '<% _.each(filters, function (filter, name) { %>' +
-                            '<% if (filter.group == group) { %>' +
-                                '<option value="<%= name %>" <% if (filter.enabled) { %>selected<% } %>>' +
-                                    '<%= filter.label %>' +
-                                '</option>' +
-                                '<% } %>' +
-                        '<% }); %>' +
-                    '</optgroup>' +
-                '<% }); %>' +
-            '</select>'
-        ),
+        addButtonTemplate: _.template(addFilterSelectTemplate),
 
         /**
          * Filter list input selector
@@ -93,13 +88,6 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          * @property
          */
         filterSelector: '#add-filter-select',
-
-        /**
-         * Add filter button hint
-         *
-         * @property
-         */
-        addButtonHint: _.__('oro_filter.filters.manage'),
 
         /**
          * Select widget object
@@ -125,31 +113,25 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          *
          * @param {Object} options
          * @param {Object} [options.filters]
-         * @param {String} [options.addButtonHint]
          * @param {Boolean} [options.displayManageFilters]
          */
-        initialize: function (options)
-        {
+        initialize: function (options) {
             if (options.filters) {
                 this.filters = options.filters;
             }
 
             _.each(this.filters, function (filter) {
-                this.listenTo(filter, "update", this._onFilterUpdated);
-                this.listenTo(filter, "disable", this._onFilterDisabled);
+                this.listenTo(filter, 'update', this._onFilterUpdated);
+                this.listenTo(filter, 'disable', this._onFilterDisabled);
             }, this);
-
-            if (options.addButtonHint) {
-                this.addButtonHint = options.addButtonHint;
-            }
 
             Backbone.View.prototype.initialize.apply(this, arguments);
 
             // destroy events bindings
             mediator.once('hash_navigation_request:start', function () {
                 _.each(this.filters, function (filter) {
-                    this.stopListening(filter, "update", this._onFilterUpdated);
-                    this.stopListening(filter, "disable", this._onFilterDisabled);
+                    this.stopListening(filter, 'update', this._onFilterUpdated);
+                    this.stopListening(filter, 'disable', this._onFilterDisabled);
                 }, this);
             }, this);
         },
@@ -244,7 +226,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
 
             _.each(filters, function (filter) {
                 filter.enable();
-                optionsSelectors.push('option[value="' + filter.name + '"]:not(:selected)');
+                optionsSelectors.push(`option[value="${filter.name}"]:not(:selected)`);
             }, this);
 
             var options = this.$(this.filterSelector).find(optionsSelectors.join(','));
@@ -273,7 +255,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
 
             _.each(filters, function (filter) {
                 filter.disable();
-                optionsSelectors.push('option[value="' + filter.name + '"]:selected');
+                optionsSelectors.push(`option[value="${filter.name}"]:selected`);
             }, this);
 
             var options = this.$(this.filterSelector).find(optionsSelectors.join(','));
@@ -281,7 +263,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
                 options.removeAttr('selected');
             }
 
-            if (optionsSelectors.length) {
+            if (this.displayManageFilters() && optionsSelectors.length) {
                 this.selectWidget.multiselect('refresh');
             }
 
@@ -309,13 +291,18 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
                 }
             }, this);
 
-            this.trigger("rendered");
+            this.trigger('rendered');
 
             if (_.isEmpty(this.filters)) {
                 this.$el.hide();
             } else {
                 if (this.displayManageFilters()) {
-                    this.$el.append(this.addButtonTemplate({filters: this.filters}));
+                    this.$el.append(this.addButtonTemplate(
+                        {
+                            filters: this.filters,
+                            systemFilterGroup: __('system_filter_group')
+                        }
+                    ));
                 }
                 this.$el.append(fragment);
                 this._initializeSelectWidget();
@@ -339,7 +326,6 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
                 parameters: {
                     multiple: true,
                     selectedList: 0,
-                    selectedText: this.addButtonHint,
                     classes: 'AknFilterBox-addFilterButton filter-list select-filter-widget',
                     open: $.proxy(function () {
                         if (this.$el.is(':visible')) {
@@ -355,7 +341,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
             this.selectWidget.getWidget().addClass('pimmultiselect');
 
             this.$('.filter-list span:first').replaceWith(
-                '<a id="add-filter-button" href="javascript:void(0);">' + this.addButtonHint +'</a>'
+                '<a id="add-filter-button" href="javascript:void(0);"></a>'
             );
         },
 

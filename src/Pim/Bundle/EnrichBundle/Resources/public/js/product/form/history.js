@@ -54,7 +54,7 @@ define(
                     label: __('pim_enrich.form.product.panel.history.title')
                 });
 
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.update);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.update);
                 this.onExtensions('action:register',  this.addAction.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -179,7 +179,7 @@ define(
                     info += i18n.getFlag(key.shift());
                 }
                 if (attribute.scopable) {
-                    info = '<span>' + key.shift() + '</span>' + info;
+                    info = ' <span>' + key.shift() + '</span>' + info;
                 }
                 if (0 < key.length) {
                     info = key.join(' ') + info;
@@ -210,11 +210,11 @@ define(
                 var $body = $row.closest('.AknGrid');
 
                 $body.find('tr.changeset').addClass('hide');
-                $body.find('i.icon-chevron-down').toggleClass('icon-chevron-right icon-chevron-down');
+                $body.find('.AknGrid-expand').removeClass('AknGrid-expand--expanded');
 
                 if (!$row.hasClass('expanded')) {
                     $row.next('tr.changeset').removeClass('hide');
-                    $row.find('i').toggleClass('icon-chevron-right icon-chevron-down');
+                    $row.find('.AknGrid-expand').addClass('AknGrid-expand--expanded');
                 }
                 $row.siblings().removeClass('expanded');
                 $row.toggleClass('expanded');

@@ -120,7 +120,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $this->assert('an_image', [
             'code'                   => 'an_image',
             'type'                   => 'pim_catalog_image',
-            'group'                  => 'attributeGroupB',
+            'group'                  => 'attributeGroupA',
             'unique'                 => false,
             'useable_as_grid_filter' => false,
             'allowed_extensions'     => 'jpg,gif,png',
@@ -224,7 +224,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $expected = [
             'code'                   => 'a_metric_without_decimal_negative',
             'type'                   => 'pim_catalog_metric',
-            'group'                  => 'attributeGroupB',
+            'group'                  => 'attributeGroupC',
             'unique'                 => false,
             'useable_as_grid_filter' => false,
             'allowed_extensions'     => '',
@@ -296,7 +296,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
         $expected = [
             'code'                   => 'a_multi_select',
             'type'                   => 'pim_catalog_multiselect',
-            'group'                  => 'attributeGroupB',
+            'group'                  => 'attributeGroupC',
             'unique'                 => false,
             'useable_as_grid_filter' => false,
             'allowed_extensions'     => '',

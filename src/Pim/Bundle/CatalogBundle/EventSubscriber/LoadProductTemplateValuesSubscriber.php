@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-use Pim\Component\Catalog\Factory\ValueCollectionFactory;
+use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -26,7 +26,7 @@ class LoadProductTemplateValuesSubscriber implements EventSubscriber
     /** @var ContainerInterface */
     protected $container;
 
-    /** @var ValueCollectionFactory */
+    /** @var ValueCollectionFactoryInterface */
     protected $valueCollectionFactory;
 
     /**
@@ -73,7 +73,7 @@ class LoadProductTemplateValuesSubscriber implements EventSubscriber
     }
 
     /**
-     * @return ValueCollectionFactory
+     * @return ValueCollectionFactoryInterface
      */
     private function getProductValueCollectionFactory()
     {

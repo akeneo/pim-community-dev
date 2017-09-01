@@ -133,9 +133,6 @@ class Grid extends Index
         'akeneo-attribute-media-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\MediaDecorator',
-        ],
-        'label_or_identifier' => [
-            'Pim\Behat\Decorator\Grid\Filter\SearchDecorator',
         ]
     ];
 
@@ -767,12 +764,11 @@ class Grid extends Index
         $this->spin(function () {
             $filterList = $this
                 ->getElement('Filters')
-                ->find('css', '#add-filter-button');
+                ->find('css', '.AknFilterBox-addFilterButton');
 
             if (null === $filterList) {
                 return false;
             }
-
             $filterList->click();
 
             return true;

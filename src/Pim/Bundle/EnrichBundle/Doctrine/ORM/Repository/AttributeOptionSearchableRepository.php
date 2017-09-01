@@ -3,10 +3,9 @@
 namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\SearchableRepositoryInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
@@ -56,15 +55,21 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
         $qb->select('o')
             ->distinct()
             ->from($this->entityName, 'o')
-            ->leftJoin('o.optionValues', 'v')
             ->leftJoin('o.attribute', 'a')
             ->andWhere('a.code = :attributeCode')
             ->setParameter('attributeCode', $options['identifier']);
 
-        if ($this->isAttributeAutoSorted($options['identifier'])) {
-            $qb->orderBy('o.code');
+        if ($this->isAttributeAutoSorted($options['identifier']) && isset($options['catalogLocale'])) {
+            $qb
+                ->addSelect('v.value AS HIDDEN')
+                ->leftJoin('o.optionValues', 'v', Expr\Join::WITH, 'v.locale = :localeCode')
+                ->setParameter('localeCode', $options['catalogLocale'])
+                ->orderBy('v.value')
+                ->addOrderBy('o.code');
         } else {
-            $qb->orderBy('o.sortOrder');
+            $qb
+                ->leftJoin('o.optionValues', 'v')
+                ->orderBy('o.sortOrder');
         }
 
         if ($search) {

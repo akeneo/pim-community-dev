@@ -196,18 +196,8 @@ extensions:
     pim-product-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector
         parent: pim-product-edit-form-attributes
-        targetZone: attribute-group-selector
-        position: 100
-
-    pim-product-edit-form-add-attribute:
-        module: pim/product/add-select/attribute
-        parent: pim-product-edit-form-attributes
         targetZone: other-actions
-        position: 90
-        config:
-            searchParameters:
-                options:
-                    exclude_unique: false
+        position: 100
 
     pim-product-edit-form-copy:
         module: pim/form/common/attributes/copy

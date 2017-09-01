@@ -26,6 +26,7 @@ Feature: Display the variant group history
       | 1       | type     | VARIANT           |
       | 1       | axis     | size              |
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Successfully edit a variant group attribute and see the change in history
     Given I am on the variant groups page
     And I create a new variant group

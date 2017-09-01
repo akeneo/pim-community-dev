@@ -23,24 +23,6 @@ Feature: Export products according to multi select values
     And I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I add available attributes Weather conditions
-    And I filter by "weather_conditions.code" with operator "In list" and value "Dry"
-    And I filter by "completeness" with operator "No condition on completeness" and value ""
-    And I press the "Save" button
-    Then I should not see the text "There are unsaved changes"
-    When I launch the export job
-    And I wait for the "csv_footwear_product_export" job to finish
-    Then exported file of "csv_footwear_product_export" should contain:
-      """
-      sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
-      BOOT-2;;;;1;boots;;;;"The boot 2";;;;;;;dry
-      BOOT-3;;;;1;boots;;;;"The boot 3";;;;;;;dry,wet
-      """
-
-  Scenario: Export only the product values with selected options
-    Given I am logged in as "Julia"
-    And I am on the "csv_footwear_product_export" export job edit page
-    And I visit the "Content" tab
-    And I add available attributes Weather conditions
     And I filter by "weather_conditions.code" with operator "In list" and value "Dry,Cold"
     And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
@@ -53,24 +35,6 @@ Feature: Export products according to multi select values
       BOOT-2;;;;1;boots;;;;"The boot 2";;;;;;;dry
       BOOT-3;;;;1;boots;;;;"The boot 3";;;;;;;dry,wet
       BOOT-6;;;;1;boots;;;;"The boot 6";;;;;;;cold
-      """
-
-  Scenario: Export only the product values without options selected
-    Given I am logged in as "Julia"
-    And I am on the "csv_footwear_product_export" export job edit page
-    And I visit the "Content" tab
-    And I add available attributes Weather conditions
-    And I filter by "weather_conditions.code" with operator "Is empty" and value ""
-    And I filter by "completeness" with operator "No condition on completeness" and value ""
-    And I press the "Save" button
-    Then I should not see the text "There are unsaved changes"
-    When I launch the export job
-    And I wait for the "csv_footwear_product_export" job to finish
-    Then exported file of "csv_footwear_product_export" should contain:
-      """
-      sku;categories;color;description-en_US-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions
-      BOOT-1;;;;1;boots;;;;"The boot 1";;;;;;;
-      BOOT-7;;;;1;boots;;;;"The boot 7";;;;;;;
       """
 
   Scenario: Export all the product values when no option is provided with operator IN LIST

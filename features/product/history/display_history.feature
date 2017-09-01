@@ -7,7 +7,7 @@ Feature: Display the product history
   Scenario: Display product updates
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU | sandals-001 |
@@ -24,13 +24,10 @@ Feature: Display the product history
   Scenario: Update product history when updating product prices
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
-    And I create a new product
-    And I fill in the following information in the popin:
-      | SKU | boots |
-    And I press the "Save" button in the popin
-    And I wait to be on the "boots" product page
-    And I add available attributes Price
+    And the following products:
+      | sku   | price-EUR | price-USD |
+      | boots |           |           |
+    And I am on the "boots" product page
     When I visit the "Marketing" group
     And I change the "Price" to "10 EUR"
     And I change the "Price" to "20 USD"
@@ -73,14 +70,11 @@ Feature: Display the product history
   Scenario: Update product history when updating product metric
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
-    And I create a new product
-    And I fill in the following information in the popin:
-      | SKU | boots |
-    And I press the "Save" button in the popin
-    And I wait to be on the "boots" product page
-    And I add available attributes Length
-    And I change the "Length" to "30"
+    And the following products:
+      | sku   | length | length-unit |
+      | boots |     20 | METER       |
+    And I am on the "boots" product page
+    And I change the "Length" to "30 Centimeter"
     And I save the product
     When I visit the "History" column tab
     Then there should be 2 update
@@ -113,13 +107,13 @@ Feature: Display the product history
   Scenario: Update product history when updating product media
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
-      | SKU | boots |
+      | SKU    | boots |
+      | family | Boots |
     And I press the "Save" button in the popin
     And I wait to be on the "boots" product page
-    And I add available attribute Side view
     And I visit the "Media" group
     And I attach file "SNKRS-1R.png" to "Side view"
     And I save the product

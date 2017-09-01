@@ -39,6 +39,7 @@ class Form extends Base
                 'Group selector'                  => ['css' => '.group-selector'],
                 'Association type selector'       => ['css' => '.association-type-selector'],
                 'Tree selector'                   => ['css' => '.tree-selector'],
+                'Target selector'                 => ['css' => '.target-selector'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
                 'Available attributes form'       => ['css' => '#pim_available_attributes'],
                 'Available attributes button'     => ['css' => 'button:contains("Add attributes")'],
@@ -157,7 +158,7 @@ class Form extends Base
 
             $groupLabels = $groupSelector->findAll('css', '.label');
             foreach ($groupLabels as $groupLabel) {
-                if (trim($groupLabel->getText()) === $groupName && $groupLabel->isVisible()) {
+                if (strtolower(trim($groupLabel->getText())) === strtolower($groupName) && $groupLabel->isVisible()) {
                     return $this->getClosest($groupLabel, 'AknDropdown-menuLink');
                 }
             }
@@ -489,7 +490,7 @@ class Form extends Base
                 return false;
             }
 
-            return $container->find('css', '.select2, .select2-default');
+            return $container->find('css', '.select2-container');
         }, 'Impossible to find the select');
         $select2 = $this->decorate($select2, [Select2Decorator::class]);
         $selectChoices = $select2->getAvailableValues();
@@ -850,9 +851,14 @@ class Form extends Base
     public function openGroupSelector($type = 'Group')
     {
         $groupSelector = $this->spin(function () use ($type) {
-            $result = $this->find('css', $this->elements[sprintf('%s selector', $type)]['css']);
+            $groupSelectors = $this->findAll('css', $this->elements[sprintf('%s selector', $type)]['css']);
+            foreach ($groupSelectors as $groupSelector) {
+                if ($groupSelector->isVisible()) {
+                    return $groupSelector;
+                }
+            }
 
-            return null !== $result && $result->isVisible() ? $result : null;
+            return null;
         }, sprintf('Can not find the "%s" selector', $type));
 
         if (!$groupSelector->hasClass('open')) {

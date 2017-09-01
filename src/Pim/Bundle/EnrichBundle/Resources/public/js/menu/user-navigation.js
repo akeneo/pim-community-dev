@@ -30,7 +30,7 @@ define(
         template
     ) {
         return BaseForm.extend({
-            className: 'AknHeader-userMenu',
+            className: 'AknTitleContainer-userMenu',
             template: _.template(template),
             events: {
                 'click .logout': 'logout',

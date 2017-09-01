@@ -3,13 +3,10 @@ extensions:
         module: pim/mass-edit-form/form
         config:
             backRoute: pim_enrich_family_index
-            selectLabel: pim_enrich.mass_edit.family.step.select.label
-            chooseLabel: pim_enrich.mass_edit.family.step.choose.label
-            configureLabel: pim_enrich.mass_edit.family.step.configure.label
-            confirmLabel: pim_enrich.mass_edit.family.step.confirm.label
             launchedLabel: pim_enrich.mass_edit.family.step.launched.label
             launchErrorLabel: pim_enrich.mass_edit.product.step.launch_error.label
             title: pim_enrich.mass_edit.family.title
+            confirm: pim_enrich.mass_edit.family.confirm
 
     pim-mass-family-edit-choose:
         module: pim/mass-edit-form/choose
@@ -27,3 +24,4 @@ extensions:
             description: pim_enrich.mass_edit.family.operation.set_requirements.description
             code: set_requirements
             jobInstanceCode: set_attribute_requirements
+            icon: icon-edit

@@ -117,6 +117,10 @@ define(
             },
 
             handleError: function (xhr) {
+                if (undefined !== xhr) {
+                    this.displayErrorPage('An error occured');
+                }
+
                 switch (xhr.status) {
                     case 401:
                         window.location = this.generate('oro_user_security_login');

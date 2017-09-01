@@ -12,7 +12,6 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'pim/product-manager',
         'pim/template/product/meta/change-family-modal',
         'pim/common/select2/family',
         'pim/initselect2',
@@ -23,7 +22,6 @@ define(
         _,
         Backbone,
         BaseForm,
-        ProductManager,
         modalTemplate,
         Select2Configurator,
         initSelect2
@@ -53,15 +51,12 @@ define(
                 familyModal.on('ok', function () {
                     var selectedFamily = familyModal.$('.family-select2').select2('val') || null;
 
-                    this.getFormModel().set('family', selectedFamily);
-                    ProductManager.generateMissing(this.getFormData()).then(function (product) {
-                        this.getRoot().trigger('pim_enrich:form:change-family:before');
+                    this.getRoot().trigger('pim_enrich:form:change-family:before');
 
-                        this.setData(product);
+                    this.setData({ family: selectedFamily });
+                    familyModal.close();
 
-                        this.getRoot().trigger('pim_enrich:form:change-family:after');
-                        familyModal.close();
-                    }.bind(this));
+                    this.getRoot().trigger('pim_enrich:form:change-family:after');
                 }.bind(this));
 
                 familyModal.open();

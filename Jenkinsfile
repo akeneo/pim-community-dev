@@ -62,11 +62,11 @@ stage("Checkout") {
                 stash "pim_community_dev_full"
             }
 
-            docker.image('node:8').inside("-v /home/akeneo/.yarn-cache:/home/node/.yarn-cache") {
+            docker.image('node:8').inside("-v /home/akeneo/.cache/yarn:/home/node/.cache/yarn") {
                 unstash "pim_community_dev_full"
 
                 sh "yarn install"
-                sh "npm run webpack"
+                sh "yarn run webpack"
 
                 stash "pim_community_dev_full"
             }
@@ -75,7 +75,7 @@ stage("Checkout") {
 
             def output = sh (
                 returnStdout: true,
-                script: 'find src -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"'
+                script: 'find src tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"'
             )
             def files = output.tokenize('\n')
             for (file in files) {
@@ -107,11 +107,11 @@ stage("Checkout") {
                     stash "pim_enterprise_dev_full"
                 }
 
-                docker.image('node:8').inside("-v /home/akeneo/.yarn-cache:/home/node/.yarn-cache") {
+                docker.image('node:8').inside("-v /home/akeneo/.cache/yarn:/home/node/.cache/yarn") {
                     unstash "pim_enterprise_dev_full"
 
                     sh "yarn install"
-                    sh "npm run webpack"
+                    sh "yarn run webpack"
 
                     stash "pim_enterprise_dev_full"
                 }
@@ -187,8 +187,7 @@ def runGruntTest() {
         try {
             docker.image('node:8').inside("") {
                 unstash "pim_community_dev_full"
-                sh "npm run lint"
-                sh "npm run webpack-jasmine"
+                sh "yarn run lint"
             }
         } finally {
             sh "docker stop \$(docker ps -a -q) || true"

@@ -35,7 +35,7 @@ JSON;
             'an_image' => [
                 'code'                   => 'an_image',
                 'type'                   => 'pim_catalog_image',
-                'group'                  => 'attributeGroupB',
+                'group'                  => 'attributeGroupA',
                 'unique'                 => false,
                 'useable_as_grid_filter' => false,
                 'allowed_extensions'     => ['jpg', 'gif', 'png'],
@@ -53,7 +53,7 @@ JSON;
                 'negative_allowed'       => null,
                 'date_min'               => null,
                 'date_max'               => null,
-                'max_file_size'          => '800.00',
+                'max_file_size'          => '800',
                 'minimum_input_length'   => null,
                 'sort_order'             => 0,
                 'localizable'            => false,

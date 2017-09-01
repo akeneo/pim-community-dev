@@ -1,30 +1,64 @@
 @import '../../base/variables';
 
 .AknGrid {
+  @miniPadding: 2px;
+
   font-size: @AknDefaultFontSize;
   width: 100%;
   border-collapse: collapse;
 
-  &-bodyRow + &-bodyRow {
+  &-bodyRow + &-bodyRow:not(&-bodyRow--withoutTopBorder) &-bodyCell {
     border-top: 1px solid @AknBorderColor;
+  }
+
+  &-bodyRow + &-bodyRow &-bodyCell&-bodyCell--checkbox {
+    border-top: none;
+  }
+
+  &-bodyRow + &-bodyRow &-bodyCell&-bodyCell--withoutTopBorder {
+    padding-top: @miniPadding;
+    border-top: none;
+    vertical-align: top;
+  }
+
+  &-bodyCell&-bodyCell--withoutBottomBorder {
+    padding-bottom: @miniPadding;
+    border-bottom: none;
   }
 
   &-bodyCell,
   &-headerCell {
     vertical-align: middle;
-    line-height: 16px;
+    line-height: 20px;
     padding: 12px 4px;
     transition: background 0.1s ease;
-    background: white;
+    max-width: 100vh;
 
     &--tight {
       width: 1px;
     }
+
+    &--checkbox {
+      background: white;
+      text-align: center;
+    }
   }
 
-  &-bodyRow:hover &-bodyCell,
-  &-bodyRow--highlight &-bodyCell {
+  &-headerCell&-headerCell--checkbox {
+    border-bottom: none;
+  }
+
+  &-bodyRow:hover,
+  &-bodyRow--highlight {
     background: @AknDefaultHoverBackground;
+  }
+
+  &-bodyRow--selected {
+    background: lighten(@AknBlue, 35%);
+  }
+
+  &-bodyRow--selected:hover {
+    background: lighten(@AknBlue, 30%);
   }
 
   &-bodyCell {
@@ -40,6 +74,25 @@
       opacity: 0;
       width: 1px;
     }
+
+    &--credentials {
+      line-height: 24px;
+    }
+
+    &--highlight {
+      color: @AknLightPurple;
+      font-style: italic;
+      font-size: @AknFontSizeBig;
+    }
+
+    &--highlightAlternative {
+      color: @AknDarkBlue;
+      font-size: @AknFontSizeBig;
+    }
+
+    &--noWrap {
+      white-space: nowrap;
+    }
   }
 
   &-bodyRow:hover &-bodyCell--actions {
@@ -49,10 +102,9 @@
   &-headerCell {
     color: @AknDefaultFontColor;
     border-bottom: solid 2px @AknDarkBlue;
-    font-size: @AknFontSizeSmall;
-    font-weight: bold;
+    font-size: @AknFontSizeBig;
+    font-weight: normal;
     text-align: left;
-    text-transform: uppercase;
     white-space: nowrap;
 
     // TODO To remove when we will remove the global 'a' rule
@@ -99,7 +151,34 @@
     background: white;
   }
 
+  & &-bodyRow:first-child &-bodyCell {
+    border-top: none;
+  }
+
   &--unclickable &-bodyRow &-bodyCell {
     cursor: default;
+  }
+
+  &-label {
+    font-weight: bold;
+    display: inline-block;
+    width: 60px;
+  }
+
+  &-truncatable {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &-expand {
+    width: 32px;
+    height: 32px;
+    background: url("../../../images/icon-right.svg") no-repeat 50%;
+    transition: transform 0.2s ease-in;
+
+    &--expanded {
+      transform: rotate(90deg);
+    }
   }
 }

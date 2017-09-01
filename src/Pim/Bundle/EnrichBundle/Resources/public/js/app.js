@@ -18,6 +18,9 @@ define(
         'oro/init-layout',
         'pimuser/js/init-signin',
         'pim/page-title',
+        'pim/date-context',
+        'pim/security-context',
+        'pim/user-context',
         'pim/template/app',
         'pim/template/common/flash'
     ], function (
@@ -32,6 +35,9 @@ define(
         initLayout,
         initSignin,
         pageTitle,
+        DateContext,
+        SecurityContext,
+        UserContext,
         template,
         flashTemplate
     ) {
@@ -55,13 +61,19 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                return $.when(FetcherRegistry.initialize(), initTranslator.fetch())
+                return $.when(
+                        FetcherRegistry.initialize(),
+                        DateContext.initialize(),
+                        SecurityContext.initialize(),
+                        UserContext.initialize()
+                    )
+                    .then(initTranslator.fetch)
                     .then(function () {
                         messenger.showQueuedMessages();
 
                         init();
 
-                        pageTitle.set('Akeneo PIM')
+                        pageTitle.set('Akeneo PIM');
 
                         return BaseForm.prototype.configure.apply(this, arguments);
                     }.bind(this));

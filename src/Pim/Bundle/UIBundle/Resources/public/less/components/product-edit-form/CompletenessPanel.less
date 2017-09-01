@@ -10,18 +10,20 @@
 
   &-block {
     width: @width;
-    margin: @margin;
     padding: 8px 20px 20px 20px;
     border: 1px solid @AknBorderColor;
   }
 
+  & &-block {
+    margin: @margin;
+  }
+
   &-header {
-    border-bottom: 1px solid @AknBorderColor;
-    height: @AknTabHeight;
-    line-height: @AknTabHeight;
-    font-size: @AknFontSizeBig;
+    border-bottom: 1px solid @AknPurple;
+    height: @AknBigButtonSize;
+    line-height: @AknBigButtonSize;
     display: flex;
-    color: @AknDarkBlue;
+    color: @AknPurple;
   }
 
   &-headerLocale {
@@ -75,5 +77,10 @@
 
   &[data-closed="true"] &-arrow:before {
     transform: rotate(90deg);
+  }
+
+  &-highlight {
+    cursor: pointer;
+    color: @AknPurple;
   }
 }

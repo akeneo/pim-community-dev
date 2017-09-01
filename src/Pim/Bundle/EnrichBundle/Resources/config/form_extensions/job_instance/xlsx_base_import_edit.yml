@@ -2,7 +2,7 @@ extensions:
     pim-job-instance-xlsx-base-import-edit:
         module: pim/form/common/edit-form
 
-    pim-job-instance-xlsx-base-import-edit-mainImage:
+    pim-job-instance-xlsx-base-import-edit-main-image:
         module: pim/form/common/main-image
         parent: pim-job-instance-xlsx-base-import-edit
         targetZone: main-image

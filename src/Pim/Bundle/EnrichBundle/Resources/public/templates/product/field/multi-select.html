@@ -7,9 +7,9 @@
         id="<%- fieldId %>"
         type="hidden"
         class="select-field<% if (attribute.localizable) { %> AknTextField--localizable<% } %>"
-        value="<%- value.data.join(',') %>"
-        data-locale="<%- value.locale %>"
-        data-scope="<%- value.scope %>"
+        value="<%- value ? value.data.join(',') : null %>"
+        data-locale="<%- locale %>"
+        data-scope="<%- scope %>"
         <%- editMode === 'view' ? 'disabled' : '' %>
     />
 </div>

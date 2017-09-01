@@ -202,6 +202,23 @@ class Creation extends Form
     }
 
     /**
+     * Checks that the attribute options are in the expected order in the grid.
+     *
+     * @param array $expectedOrder
+     */
+    public function checkOptionsOrder(array $expectedOrder)
+    {
+        $this->spin(function () use ($expectedOrder) {
+            $rows = $this->getOptionsElement();
+            $actualOrder = array_map(function ($row) {
+                return $row->find('css', '.option-code')->getText();
+            }, $rows);
+
+            return $actualOrder === $expectedOrder;
+        }, 'Attribute options are not ordered as expected.');
+    }
+
+    /**
      * Get option elements
      *
      * @return array

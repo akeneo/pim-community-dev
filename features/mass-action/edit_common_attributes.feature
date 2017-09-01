@@ -33,7 +33,7 @@ Feature: Edit common attributes of many products at once
     And I am logged in as "Julia"
 
   Scenario: Allow editing all attributes on configuration screen
-    Given I am on the products page
+    Given I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -46,7 +46,7 @@ Feature: Edit common attributes of many products at once
 
   @jira https://akeneo.atlassian.net/browse/PIM-6273
   Scenario: Successfully remove product attribute fields
-    Given I am on the products page
+    Given I am on the products grid
     And I select rows boots, sandals and sneakers
     When I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -58,7 +58,7 @@ Feature: Edit common attributes of many products at once
     And I confirm mass edit
 
   Scenario: Successfully update many text values at once
-    Given I am on the products page
+    Given I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -72,7 +72,7 @@ Feature: Edit common attributes of many products at once
     And the english localizable value name of "sneakers" should be "boots"
 
   Scenario: Successfully update many multi-valued values at once
-    Given I am on the products page
+    Given I am on the products grid
     And I select rows boots and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -87,7 +87,7 @@ Feature: Edit common attributes of many products at once
 
   @info https://akeneo.atlassian.net/browse/PIM-2163
   Scenario: Successfully mass edit product values that does not belong yet to the product
-    Given I am on the products page
+    Given I am on the products grid
     And I set product "pump" family to "sneakers"
     When I select rows pump and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
@@ -101,14 +101,14 @@ Feature: Edit common attributes of many products at once
 
   @info https://akeneo.atlassian.net/browse/PIM-3070
   Scenario: Successfully mass edit a price not added to the product
-    Given I am on the products page
+    Given I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU             | Shoes |
       | Choose a family | Heels |
     And I press the "Save" button in the popin
     Then I should be on the product "Shoes" edit page
-    And I am on the products page
+    And I am on the products grid
     When I select row Shoes
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -127,7 +127,7 @@ Feature: Edit common attributes of many products at once
     Given the following product values:
       | product | attribute          | value   |
       | boots   | weather_conditions | dry,hot |
-    And I am on the products page
+    And I am on the products grid
     And I select rows boots and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -142,7 +142,7 @@ Feature: Edit common attributes of many products at once
 
   @jira https://akeneo.atlassian.net/browse/PIM-4528
   Scenario: See previously selected fields on mass edit error
-    Given I am on the products page
+    Given I am on the products grid
     And I select rows boots and sandals
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -154,7 +154,7 @@ Feature: Edit common attributes of many products at once
     Then I visit the "Product information" group
     And I should see the text "Name"
     When I am on the attributes page
-    And I am on the products page
+    And I am on the products grid
     And I select rows boots and sandals
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -164,7 +164,7 @@ Feature: Edit common attributes of many products at once
 
   @jira https://akeneo.atlassian.net/browse/PIM-4777
   Scenario: Doing a mass edit of an attribute from a variant group does not override group value
-    Given I am on the products page
+    Given I am on the products grid
     And I select rows highheels, blue_highheels and sandals
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -177,7 +177,7 @@ Feature: Edit common attributes of many products at once
 
   @jira https://akeneo.atlassian.net/browse/PIM-6008
   Scenario: Successfully mass edit scoped product values with special chars
-    Given I am on the products page
+    Given I am on the products grid
     And I set product "pump" family to "boots"
     When I select rows boots and pump
     And I press "Change product information" on the "Bulk Actions" dropdown button
@@ -202,7 +202,7 @@ Feature: Edit common attributes of many products at once
       | channel | locale | state   | missing_values | ratio |
       | tablet  | en_US  | warning | 7              | 12%   |
       | mobile  | en_US  | warning | 4              | 20%   |
-    Then I am on the products page
+    Then I am on the products grid
     And I select rows sandals, sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -215,7 +215,7 @@ Feature: Edit common attributes of many products at once
     And I change the "Size" to "37"
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
-    Then I am on the products page
+    Then I am on the products grid
     And I should see the text "44"
     And I should see the text "50"
     Then I am on the "sneakers" product page
@@ -248,7 +248,7 @@ Feature: Edit common attributes of many products at once
     And I add available attributes Comment
     And I save the family
     And I should not see the text "There are unsaved changes."
-    And I am on the products page
+    And I am on the products grid
     When I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -279,7 +279,7 @@ Feature: Edit common attributes of many products at once
       | English (United States) | |
     And I press the "Save" button
     Then I should not see the text "My tablet"
-    And I am on the products page
+    And I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Edit common attributes" operation
@@ -294,7 +294,7 @@ Feature: Edit common attributes of many products at once
       | Regular expression | /^\d+$/            |
     And I press the "Save" button
     And I should not see the text "There are unsaved changes."
-    And I am on the products page
+    And I am on the products grid
     Given I select rows boots, sandals and sneakers
     When I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -304,7 +304,7 @@ Feature: Edit common attributes of many products at once
 
   @jira https://akeneo.atlassian.net/browse/PIM-6199
   Scenario: Successfully disable form when we are in validation step on mass edit products
-    Given I am on the products page
+    Given I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Edit common attributes" operation
@@ -316,7 +316,7 @@ Feature: Edit common attributes of many products at once
 
   @jira https://akeneo.atlassian.net/browse/PIM-6271
   Scenario: Successfully keep mass edit form fields disabled after switching groups
-    Given I am on the products page
+    Given I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     When I choose the "Edit common attributes" operation

@@ -28,7 +28,7 @@ Feature: Display the completeness of a product
     And I switch the attribute "rating" requirement in channel "mobile"
     And I save the family
     And I should not see the text "There are unsaved changes."
-    And I am on the products page
+    And I am on the products grid
     And I switch the locale to "en_US"
     When I filter by "scope" with operator "equals" and value "Mobile"
     Then the row "sneakers" should contain:
@@ -85,7 +85,7 @@ Feature: Display the completeness of a product
     When I change the "Locales" to "French (France)"
     And I press the "Save" button
     Then I should see the text "Channel successfully updated."
-    When I am on the products page
+    When I am on the products grid
     And I switch the locale to "en_US"
     And I filter by "scope" with operator "equals" and value "Mobile"
     Then the row "sneakers" should contain:

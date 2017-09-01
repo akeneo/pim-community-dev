@@ -33,6 +33,8 @@ class SimpleMassEdit implements DefaultValuesProviderInterface
         return [
             'filters' => [],
             'actions' => [],
+            'user_to_notify' => null,
+            'is_user_authenticated' => false,
         ];
     }
 

@@ -38,6 +38,19 @@ define([
          */
         getType: function () {
             return this.type;
+        },
+
+        /**
+         * {@inheritdoc}
+         *
+         * Little hack to restore the scroll position after a complete re-render of the form.
+         */
+        render: function () {
+            var scrollPosition = this.$el.find('.edit-form').scrollTop();
+
+            BaseEditForm.prototype.render.apply(this, arguments);
+
+            this.$el.find('.edit-form').scrollTop(scrollPosition);
         }
     });
 });

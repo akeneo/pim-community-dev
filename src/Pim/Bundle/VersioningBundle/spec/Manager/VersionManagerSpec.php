@@ -38,8 +38,6 @@ class VersionManagerSpec extends ObjectBehavior
 
     function it_uses_version_builder_to_build_versions($builder, $om, ProductInterface $product)
     {
-        $om->refresh($product)->shouldBeCalled();
-
         $this->setUsername('julia');
         $this->buildVersion($product);
 
@@ -49,7 +47,6 @@ class VersionManagerSpec extends ObjectBehavior
     function it_builds_versions_for_versionable_entities($om, ProductInterface $product, $builder)
     {
         $builder->buildVersion(Argument::cetera())->willReturn(new Version('foo', 1, 'bar'));
-        $om->refresh($product)->shouldBeCalled();
 
         $versions = $this->buildVersion($product);
         $versions->shouldHaveCount(1);
@@ -82,7 +79,6 @@ class VersionManagerSpec extends ObjectBehavior
         $builder->buildPendingVersion($pending2, $pending1)->willReturn($pending2)->shouldBeCalled();
         $builder->buildVersion(Argument::cetera())->willReturn(new Version('Product', 1, 'julia'))->shouldBeCalled();
 
-        $om->refresh($product)->shouldBeCalled();
         $om->detach($pending2)->shouldBeCalled();
 
         $versions = $this->buildVersion($product);

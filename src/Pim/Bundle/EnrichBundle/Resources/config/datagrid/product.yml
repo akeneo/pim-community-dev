@@ -2,8 +2,7 @@ datagrid:
     product-grid:
         options:
             entityHint: product
-            requireJSModules:
-                - pim/datagrid/configure-columns-action
+            filtersAsColumn: true
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_datasource_product
@@ -17,6 +16,7 @@ datagrid:
                 label:         Label
                 data_name:     label
                 type:          field
+                frontend_type: label
             family:
                 label:         Family
                 data_name:     family
@@ -257,7 +257,3 @@ datagrid:
                     ftype:     date
                     data_name: updated
                     label:     Updated At
-                label_or_identifier:
-                    type: label_or_identifier
-                    label: Label or identifier
-                    data_name: label_or_identifier

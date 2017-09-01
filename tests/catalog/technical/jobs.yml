@@ -29,6 +29,23 @@ jobs:
         alias:     add_to_variant_group
         label:     Mass add products to variant group
         type:      mass_edit
+    csv_product_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_import
+        label:     CSV product import
+        type:      import
+        configuration:
+            filePath:           '/tmp/footwear_products.csv'
+            uploadAllowed:      true
+            delimiter:          ;
+            enclosure:          '"'
+            escape:             '\'
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator:   .
     csv_product_quick_export:
         connector: Akeneo CSV Connector
         alias: csv_product_quick_export
@@ -51,6 +68,26 @@ jobs:
             withHeader: true
             filePath:   /tmp/products_export_grid_context_%locale%_%scope%_%datetime%.csv
             with_media: true
+    csv_product_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_export
+        label:     CSV product export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath: /tmp/products.csv
+            filters:
+                data:
+                    -
+                        field: enabled
+                        operator: '='
+                        value: true
+                structure:
+                    scope: ecommerce
+                    locales:
+                        - en_US
     xlsx_product_quick_export:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_quick_export

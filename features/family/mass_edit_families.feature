@@ -46,7 +46,7 @@ Feature: Mass Edit Families
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     And I am on the families page
-    When I select rows Boots, Sneakers and Sandals
+    When I select rows Boots and Sneakers
     And I press the "Change product information" button
     And I click on the cancel button of the mass edit
     Then I should be on the families page
@@ -98,6 +98,7 @@ Feature: Mass Edit Families
     And I display the Name attribute
     And I confirm mass edit
     And I wait for the "set_attribute_requirements" job to finish
+    And I am on the dashboard page
     Then I should see notification:
       | type    | message                                              |
       | success | Mass edit Set family attribute requirements finished |

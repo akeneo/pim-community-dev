@@ -14,6 +14,7 @@ confirmation:
     export profile: Sei sicuro di voler eliminare questo profilo di esportazione?
     user: Sei sicuro di voler eliminare questo utente?
     role: Sei sicuro di voler eliminare questo ruolo?
+    job_instance: È sicuro di che volere cancellare questa istanza di lavoro?
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -29,7 +30,7 @@ pim_datagrid:
     view: Visualizzazione
     create_view_modal:
       confirm: OK
-      cancel: Cancella
+      cancel: Annulla
 flash:
   item:
     removed: Articolo rimosso con successo
@@ -59,6 +60,8 @@ flash:
     removed: Utente rimosso con successo
   role:
     removed: Ruolo rimosso con successo
+  job_instance:
+    removed: Istanza di lavoro rimossa correttamente
 error:
   common: Si è verificato un errore
   creating:
@@ -128,6 +131,7 @@ pim_enrich:
   navigation:
     link:
       back_to_grid: Torna alla griglia
+    other_actions: Altre azioni
   entity:
     save:
       label: Salva
@@ -139,8 +143,10 @@ pim_enrich:
       label: Etichetta
       labels:
         save: Salva
-        cancel: Cancella
+        cancel: Annulla
     product:
+      navigation: Navigazione prodotti
+      infos: Info prodotto
       title: Articoli
       btn:
         enabled: Attivato
@@ -189,7 +195,7 @@ pim_enrich:
         locale: Impostazioni locali
       copy:
         select: Selezionare
-        all: Tutto
+        all: Tutti
         all_visible: Tutti visibili
         none: Nessun
         copy: Copia
@@ -211,7 +217,7 @@ pim_enrich:
         labels:
           family: Scegli una famiglia
           save: Salva
-          cancel: Cancella
+          cancel: Annulla
       message:
         created: Articolo creato con successo
       completeness: Completo
@@ -221,6 +227,7 @@ pim_enrich:
         deletion_failed: Il tipo di associazione non può essere eliminato.
         update_successful: Tipo di associazione aggiornato con successo.
         update_failed: Il tipo di associazione non può essere aggiornato.
+        field_not_ready: 'Il tipo di associazione non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
       meta:
         created: Creato
         created_by: Creato da
@@ -239,6 +246,7 @@ pim_enrich:
         deletion_failed: Il tipo di gruppo non può essere eliminato.
         update_successful: Il tipo di gruppo è stato aggiornato correttamente.
         update_failed: Il tipo di gruppo non può essere aggiornato.
+        field_not_ready: 'Il tipo di gruppo non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
       meta:
         created: Creato
         created_by: Creato da
@@ -260,6 +268,7 @@ pim_enrich:
         update_failed: Il canale non può essere aggiornato.
         create_successful: Canale creato con successo.
         create_failed: Il canale non può essere creato.
+        field_not_ready: 'Il canale non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
       meta:
         created: Creato
         created_by: Creato da
@@ -273,6 +282,8 @@ pim_enrich:
         update_successful: Famiglia aggiornata con successo.
         create_successful: Canale creato con successo.
         update_failed: Errore durante l'aggiornamento della famiglia.
+        cant_remove_attribute_as_label: Non è possibile rimuovere l'attributo utilizzato come etichetta
+        cant_remove_attribute_as_image: Non è possibile rimuovere l'attributo utilizzato come immagine principale
         attribute_edit_permission_is_not_granted: Non hai i diritti per modificare gli attributi della famiglia
       meta:
         created: Creato
@@ -296,6 +307,7 @@ pim_enrich:
         deletion_failed: Il gruppo di varianti non può essere eliminato.
         update_successful: Gruppo di varianti aggiornato con successo.
         update_failed: Il gruppo di varianti non può essere aggiornato.
+        field_not_ready: 'Il gruppo di varianti non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
         already_in_upload: Un file è già in caricamento per questo attributo nell'impostazione internazionale "{{ locale }}" e nell'ambito "{{ scope }}"
         no_attributes: Questo gruppo di varianti non ha ancora attributi
       btn:
@@ -317,6 +329,7 @@ pim_enrich:
         deletion_failed: Il gruppo non può essere eliminato.
         update_successful: Gruppo aggiornato con successo.
         update_failed: Il gruppo non può essere aggiornato.
+        field_not_ready: 'Il gruppo non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
       btn:
         save: Salva
       meta:
@@ -335,6 +348,13 @@ pim_enrich:
         update_failed: Il profilo del job non può essere aggiornato.
         update_successful: Il profilo del job è stato aggiornato con successo.
     attribute:
+      info:
+        deletion_successful: Attributo eliminato correttamente.
+        deletion_failed: L'attributo non può essere eliminato.
+        update_successful: Attributo aggiornato con successo.
+        update_failed: L'attributo non può essere aggiornato.
+        create_successful: Attributo creato con successo.
+        create_failed: L'attributo non può essere creato.
       scopable: Customizzazione per canale
       type:
         pim_catalog_identifier: Identificatore
@@ -357,6 +377,7 @@ pim_enrich:
         url: URL
     attribute_group:
       info:
+        update_failed: Gruppo di attributi non può essere aggiornato
         update_successful: Gruppo di attributi aggiornato con successo
   confirmation:
     leave: Sei sicuro di voler lasciare questa pagina?
@@ -364,6 +385,7 @@ pim_enrich:
     delete_item: Conferma cancellazione
     delete:
       attribute: Sei sicuro di voler rimuovere questo attributo dal prodotto?
+      attribute_group: Sei sicuro di che voler rimuovere l'attributo {{ attribute }} da questo gruppo di attributi?
   info:
     not_applicable: N/A
     entity:
@@ -371,6 +393,7 @@ pim_enrich:
   error:
     upload: Si è verificato un errore durante il caricamento del file
   alert:
+    not_allowed: Vietato. Non è consentito accedere a questa pagina
     error_occured: Si è verificato un errore durante il caricamento della pagina
   form:
     required: (richiesto)
@@ -380,9 +403,8 @@ pim_enrich:
           title: Associazioni
           info:
             none_exist: Nessun tipo di associazione esistente.
-            show_products: Mostra articoli
-            show_groups: Mostra gruppi
-            number_of_associations: "{{ productCount }} prodotti e {{ groupCount }} gruppi"
+            show_products: Visualizza i prodotti
+          association_type_selector: Tipi di associazione
         attributes:
           title: Attributi
           btn:
@@ -403,7 +425,6 @@ pim_enrich:
           info:
             no_family: Nessuna famiglia definita. Si prega di definire una famiglia per calcolare il livello di completamento di questo prodotto.
             no_completeness: Hai appena cambiato la famiglia del prodotto. Si prega di salvare prima di calcolare il livello di completamento per la nuova famiglia.
-          missing_values: Valori mancanti
         history:
           title: Cronologia
       switch:
@@ -469,6 +490,7 @@ pim_enrich:
           general: Generale
           code: Codice
           attribute_as_label: Attributo utilizzato come etichetta
+          attribute_as_image: Attributo utilizzato come immagine principale
           empty_attribute_as_image: Non Selezionato
           label_translations: Traduzioni etichetta
         attributes:
@@ -496,6 +518,7 @@ pim_enrich:
         "no": "No"
         "yes": "Sì"
     variant_group:
+      axis.help: Gli assi definiscono gli attributi sui quali dovrebbero variare i prodotti del gruppo. Gli assi sono attributi con opzioni, non localizzabili e senza ambiti. Non possono essere modificati dopo la creazione del gruppo di varianti
       tab:
         properties:
           title: Proprietà
@@ -562,6 +585,7 @@ pim_enrich:
         warning: Attenzione
         header.step: Passo
         header.status: Stato
+        header.warnings: Avvisi
         header.summary: Riepilogo
         header.start: Inizio
         header.end: Fine
@@ -577,9 +601,12 @@ pim_enrich:
         export.title: Esporta ora
         import.launch: Importa ora
         import.upload: Carica e importa ora
+        import.upload_file: Carica un file
       meta:
         job: Lavoro
         connector: Connettore
+      subsection:
+        last_executions: Ultime esecuzioni
       tab:
         content:
           title: Contenuto
@@ -643,19 +670,24 @@ pim_enrich:
     attribute:
       meta:
         created: Creato
+        created_by: da
         updated: Ultimo aggiornamento
+        updated_by: da
       tab:
         properties:
           title: Proprietà
           section:
             common: Parametri generali
+            type_specific: Digita parametri specifici
             validation: Parametri di validazione
           label:
             allowed_extensions: Estensioni consentite
+            auto_option_sorting: Ordina automaticamente le opzioni in ordine alfabetico
             available_locales: Impostazioni locali disponibili
             code: Codice
             date_max: Data massima
             date_min: Data minima
+            decimals_allowed: Valori decimali ammessi
             default_metric_unit: Unità metrica di default
             group: Attributo di gruppo
             is_locale_specific: Impostazioni locali specifiche
@@ -663,14 +695,18 @@ pim_enrich:
             max_characters: Numero massimo di caratteri
             max_file_size: Dimensione massima del file (MB)
             metric_family: Famiglia metrica
+            minimum_input_length: Lunghezza minima per l'autocompletamento
+            negative_allowed: Valori negativi ammessi
             number_max: Numero massimo
             number_min: Numero minimo
+            reference_data_name: Tipo riferimento dati
             scopable: Valore per canale
             type: Tipo
             unique: Valore univoco
             useable_as_grid_filter: Utilizzabile nella griglia
             validation_regexp: Espressione regolare
             validation_rule: Regola di convalida
+            wysiwyg_enabled: Editor di testo RTF abilitato
           default_label:
             default_metric_unit: Scegli un'unità
             group: Scegliere l'attributo di gruppo
@@ -716,7 +752,7 @@ pim_enrich:
           empty: Tutti gli attributi verranno esportati
           modal:
             apply: Applica
-            cancel: Cancella
+            cancel: Annulla
             title: Selezione attributi
         attributes_selector:
           attribute_group: Gruppi di attributi
@@ -745,7 +781,7 @@ pim_enrich:
           title: Stato
           help: 'Selezionare i prodotti da esportare in base al loro stato. Es: Esportare prodotti qualunque sia lo stato.'
           value:
-            all: Tutto
+            all: Tutti
             enabled: Attivato
             disabled: Disabilitato
         completeness:
@@ -762,6 +798,7 @@ pim_enrich:
           help: Utilizza le categorie di prodotto nell'albero (definito dal canale di cui sopra) per selezionare i prodotti da esportare
         identifier:
           title: Identificatore
+          help: Utilizzare gli identificatori dei prodotti da esportare separati da virgole, spazi o interruzioni di riga
         metric:
           operators:
             "=": È uguale a
@@ -774,7 +811,7 @@ pim_enrich:
             NOT EMPTY: Non è vuoto
         string:
           operators:
-            ALL: Tutto
+            ALL: Tutti
             CONTAINS: Contiene
             DOES NOT CONTAIN: Non contiene
             "=": È uguale a
@@ -838,14 +875,40 @@ pim_enrich:
       title: Anteprima tipi associazione
       create_btn: Crea tipo associazione
     import_profiles:
+      title: Panoramica profili di importazione
+      create_btn: Crea un profilo di importazione
       list: Seleziona un job
       create_popin:
         title: Crea un nuovo profilo di importazione
+      message:
+        created: Profilo di importazione creato correttamente
+    import_history:
+      title: Report di importazione
+    variant_group:
+      title: Panoramica gruppi varianti
+      create_btn: Crea variante gruppo
     group:
+      title: Panoramica gruppi
       create_btn: Crea gruppo
     export_profiles:
+      title: Panoramica profili di esportazione
+      create_btn: Crea un profilo di esportazione
       create_popin:
         title: Crea un nuovo profilo di esportazione
+      message:
+        created: Profilo di esportazione creato correttamente
+    export_history:
+      title: Report di esportazione
+    family:
+      title: Panoramica famiglie
+      create_btn: Crea famiglia
+    grouptype:
+      title: Panoramica tipi di gruppo
+      create_btn: Crea tipo gruppo
+    currency:
+      title: Panoramica valute
+    locale:
+      title: Panoramica impostazioni di localizzazione
     user:
       title: Utente
       create_btn: Crea utente
@@ -857,13 +920,22 @@ pim_enrich:
       create_btn: Crea gruppo
     process_tracker:
       title: Tracker di processo
+    channel:
+      title: Panoramica canali
+      create_btn: Crea canale
     attribute:
+      title: Panoramica attributi
+      create_btn: Crea attributo
       modal_title: Scegliere il tipo di attributo
     attribute_group:
+      title: Panoramica attributi di gruppo
+      create_btn: Crea
+    api_connection:
       create_btn: Crea
   mass_edit:
     next: Successivo
-    cancel: Cancella
+    previous: Indietro
+    cancel: Annulla
     confirm: Conferma
     product:
       step:
@@ -871,10 +943,15 @@ pim_enrich:
           label: Scegli gli articoli
         choose:
           label: Scegli l'operazione
+          title: Modifica di massa ({{ itemsCount }} prodotti)
         configure:
           label: Configura
         confirm:
           label: Conferma
+        launch_error:
+          label: Si è verificato un errore durante l'avvio dell'operazione di modifica di massa
+        launched:
+          label: L'azione di massa "{{ operation }}" è stato lanciata. Sarai avvisato quando finisce.
       operation:
         change_status:
           label: Cambia stato (attiva / disattiva)
@@ -882,6 +959,7 @@ pim_enrich:
           field: Per attivare
         edit_common:
           label: Modifica gli attributi comuni
+          description: Gli attributi del prodotto selezionato verranno modificati con i seguenti dati per le impostazioni locali {{ locale }} e per il canale {{ scope }}, selezionati nella griglia prodotti.
         change_family:
           label: Cambiare la famiglia degli articoli
           description: La famiglia degli articoli selezionati verrà modificata nella famiglia selezionata
@@ -909,37 +987,53 @@ pim_enrich:
           label: Scegli le famiglie
         choose:
           label: Scegli l'operazione
+          title: Modifica di massa ({{ itemsCount }} famiglie)
         configure:
           label: Configura
         confirm:
           label: Conferma
+        launched:
+          label: L'azione di massa "{{ operation }}" è stato lanciata. Sarai avvisato quando finisce.
       operation:
         set_requirements:
           label: Impostare gli attributi richiesti
           description: I seguenti attributi richiesti verranno applicati alle famiglie selezionate
 pim_enrich.error:
   exception.title: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
+  http:
+    403: Vietato. Non è consentito accedere a questa pagina
 page_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Gruppi di attributi
   pim_enrich_attributegroup_create: Gruppi di attributo | Crea
+  pim_enrich_attributegroup_edit: Gruppi attributo {{ group.label }} | Modifica
   pim_enrich_categorytree_index: Albero della categoria
   pim_enrich_categorytree_create: Strutture di categoria | Crea
+  pim_enrich_categorytree_edit: Albero categorie {{ category.label }} | Modifica
   pim_enrich_categorytree_create_tree: Strutture di categoria | Crea
   pim_enrich_attribute_index: Attributi
   pim_enrich_attribute_create: Attributi | Crea
+  pim_enrich_attribute_edit: Attributi {{ attribute.label }} | Modifica
   pim_enrich_product_index: Articoli
+  pim_enrich_product_edit: Prodotti {{ product.sku }} | Modifica
   pim_enrich_family_index: Famiglie
+  pim_enrich_family_edit: Famiglie {{ family.label }} | Modifica
   pim_enrich_channel_index: Canali
   pim_enrich_channel_create: Canali | Crea
+  pim_enrich_channel_edit: Canali {{ channel.label }} | Modifica
   pim_enrich_currency_index: Valute
   pim_enrich_locale_index: Impostazioni locali
   pim_enrich_group_index: Gruppi
+  pim_enrich_group_edit: Gruppi {{ group.label }} | Modifica
   pim_enrich_variant_group_index: Gruppi varianti
+  pim_enrich_variant_group_edit: Gruppi varianti {{ group.label }} | Modifica
   pim_enrich_associationtype_index: Tipi di associazione
+  pim_enrich_associationtype_edit: Tipi associazione {{ association type.label }} | Modifica
   pim_enrich_grouptype_index: Tipi di gruppo
+  pim_enrich_grouptype_edit: Tipi di gruppo {{ group type.label }} | Modifica
   pim_enrich_mass_edit_action_choose: Modifica di massa| Scegli
   pim_enrich_mass_edit_action_configure: Modifica di massa| Configura
+  pim_enrich_mass_edit_action_perform: Modifica di massa | Esegui
   pim_enrich_job_tracker_index: Tracker di processo
   pim_enrich_job_tracker_show: Tracker di processo | Visualizza lavoro
 batch_jobs:
@@ -1165,10 +1259,19 @@ batch_jobs:
     label: Importazione dei tipi di gruppo in XLSX
     validation.label: Validazione file
     import.label: Importazione dei tipi di gruppo
+job_tracker:
+  download_archive:
+    archive: Scarica archivio generato
+    output: Scarica file generati
+    input: Scarica file letti
+    invalid_xlsx: Scarica dati non validi
+    invalid_csv: Scarica dati non validi
 pim_menu:
   tab:
     dashboard: Dashboard
+    imports: Importazioni
     products: Articoli
+    exports: Esportazioni
     settings: Impostazioni
     system: Sistema
   item:
@@ -1193,11 +1296,16 @@ pim_menu:
     user: Utenti
     user_group: Gruppi
     user_role: Ruoli
-    info: Informazioni sistema
+    info: Informazioni di sistema
     job_tracker: Tracker di processo
+  navigation:
+    system: Sistema
+    user: Gestione utenti
+    settings: Impostazioni
   user:
     logout: Disconnetti
     user_account: Il mio profilo
 pim_notification:
   mark_all_as_read: Segna tutti come già letti
+  no_notifications: Nessuna notifica
   loading: Caricamento in corso...

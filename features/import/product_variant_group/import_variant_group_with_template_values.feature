@@ -14,6 +14,7 @@ Feature: Execute an import with template values
       | Name | The T-Shirt |
     And I save the variant group
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Import a variant group with empty data from the template should not change the structure of the variant
     Given the following CSV file to import:
       """
@@ -32,6 +33,7 @@ Feature: Execute an import with template values
     When I am on the "hoodies" variant group page
     Then I should not see "Description"
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Import a variant group with partial data should not change the structure of the variant
     Given the following CSV file to import:
     """

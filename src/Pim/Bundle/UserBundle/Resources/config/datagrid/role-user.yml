@@ -18,14 +18,15 @@ datagrid:
                 label: Has role
                 editable: true
                 frontend_type: boolean
+            username:
+                label: oro.user.grid.users.columns.username
+                frontend_type: label
+            email:
+                label: oro.user.grid.users.columns.email
             firstName:
                 label: oro.user.grid.users.columns.firstName
             lastName:
                 label: oro.user.grid.users.columns.lastName
-            username:
-                label: oro.user.grid.users.columns.username
-            email:
-                label: oro.user.grid.users.columns.email
         filters:
             columns:
                 has_role:

@@ -343,9 +343,6 @@ pim_enrich:
           title: Määritteet
           info:
             none_exist: Sidostyyppiä ei ole olemassa.
-            show_products: Näytä tuotteet
-            show_groups: Näytä ryhmät
-            number_of_associations: "{{ productCount }} ja {{ groupCount }} ryhmistä"
         attributes:
           title: Attribuutit
           btn:
@@ -365,7 +362,6 @@ pim_enrich:
           info:
             no_family: Ryhmää ei ole määritelty. Määritä ryhmä jotta voit laskea tuotteen täyttöasteen.
             no_completeness: Olet juuri muuttanut tuotteen ryhmän. Tallenna se ensin, jotta voit laskea uuden ryhmän täyttöasteen.
-          missing_values: Puuttuvat arvot
         history:
           title: Historia
       switch:
@@ -800,6 +796,8 @@ pim_enrich:
     attribute:
       modal_title: Valitse attribuutin tyyppi
     attribute_group:
+      create_btn: Luo
+    api_connection:
       create_btn: Luo
   mass_edit:
     next: Seuraava

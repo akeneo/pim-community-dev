@@ -3,7 +3,7 @@
         <div class="AknTextField-layer AknTextField-layer--first"></div>
         <div class="AknTextField-layer AknTextField-layer--second"></div>
     <% } %>
-    <input class="AknTextField AknTextField--noRightRadius data" id="<%- fieldId %>" type="text" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" value="<%- value.data.amount %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
+    <input class="AknTextField AknTextField--noRightRadius data" id="<%- fieldId %>" type="text" data-locale="<%- locale %>" data-scope="<%- scope %>" value="<%- value ? value.data.amount : null %>" <%- editMode === 'view' ? 'disabled' : '' %>/>
     <select class="AknMetricField-unit unit select-field" data-locale="<%- value.locale %>" data-scope="<%- value.scope %>" <%- editMode === 'view' ? 'disabled' : '' %>>
         <% _.each(_.keys(measures[attribute.metric_family].units), function(unit) { %>
             <option value="<%- unit %>"<% if (value.data.unit === unit) { %> selected<% } %>><%- _.__(unit) %></option>

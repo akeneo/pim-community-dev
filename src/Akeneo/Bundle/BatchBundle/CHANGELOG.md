@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+0.5.x (2017-xx-xx)
+------------------
+
+- Upgrade minimal version to PHP 7.1
+
+### Bug fixes
+
+- PIM-5120: Do not hydrate all JobExecution of a JobInstance during a the creation of a JobExecution
+
 0.4.5 (2015-11-04)
 ------------------
 

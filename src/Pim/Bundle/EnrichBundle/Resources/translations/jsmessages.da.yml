@@ -15,6 +15,7 @@ confirmation:
     user: Er du sikker på du vil slette denne bruger?
     role: Er du sikker på du vil slette denne rolle?
     job_instance: Er du sikker på du vil slette dette job?
+    api_connection: Er du sikker på, du vil tilbagekalde denne API tilslutning? Alle API forbindelser via denne forbindelse vil fremover fejle.
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -62,6 +63,8 @@ flash:
     removed: Rollen blev slettet
   job_instance:
     removed: Jobbet fjernet
+  api_connection:
+    removed: API forbindelse tilbagekaldt
 error:
   common: Der er opstået en fejl
   creating:
@@ -379,6 +382,11 @@ pim_enrich:
       info:
         update_failed: Attributgruppe kunne ikke opdateres
         update_successful: Attributgruppe opdateret
+    api_connection:
+      create_popin:
+        title: Opret en ny API-forbindelse
+      message:
+        created: API forbindelse oprettet
   confirmation:
     leave: Er du sikker på du vil forlade denne side?
     discard_changes: Du vil miste ændringer til {{ entity }}, hvis du forlader siden.
@@ -403,10 +411,11 @@ pim_enrich:
           title: Tilknytninger
           info:
             none_exist: Der findes ingen sammenhængstype.
-            show_products: Vis produkter
-            show_groups: Vis grupper
+            show_products: Display-produkter
+            show_groups: Visningsgrupper
             number_of_associations: "{{ productCount }} produkter og {{ groupCount }} grupper"
           association_type_selector: Sammenhængstyper
+          target: Mål
         attributes:
           title: Egenskaber
           btn:
@@ -427,7 +436,7 @@ pim_enrich:
           info:
             no_family: Ingen familie defineret. Definér venligst en familie for at beregne fuldstændigheden af dette produkt.
             no_completeness: Du har lige ændret familie af produktet. Gem det første for at beregne fuldstændighed for den nye familie.
-          missing_values: Manglende værdier
+          missing_values: "{1} 1 mangler værdi |] 1, Inf [{{ count }} manglende værdier"
         history:
           title: Historik
       switch:
@@ -933,13 +942,17 @@ pim_enrich:
     attribute_group:
       title: attributgruppe oversigt
       create_btn: Opret
+    api_connection:
+      title: API-forbindelser
+      create_btn: Opret
   mass_edit:
     next: Næste
     previous: Tilbage
     cancel: Annuller
     confirm: Bekræft
     product:
-      title: Produkt / masse redigere ({{ itemsCount }} produkter)
+      title: "{1} produkt / masse redigere (1 produkt) |] 1, Inf [produkt / masse redigere ({{ itemsCount }} produkter)"
+      confirm: "{1} Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere {{ itemsCount }} produkter med følgende oplysninger, bekræft venligst."
       step:
         select:
           label: Vælg produkter
@@ -984,7 +997,8 @@ pim_enrich:
           label: Fjern produkter fra kategorier
           description: Produkterne vil blive fjernet fra følgende kategorier.
     family:
-      title: Familie / masse redigere ({{ itemsCount }} familier)
+      title: "{1} produkt / masse redigere (1 produkt) |] 1, Inf [produkt / masse redigere ({{ itemsCount }} produkter)"
+      confirm: "{1} Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere {{ itemsCount }} produkter med følgende oplysninger, bekræft venligst."
       step:
         select:
           label: Vælg familier
@@ -1039,6 +1053,8 @@ page_title:
   pim_enrich_mass_edit_action_perform: Masse Rediger | Udføre
   pim_enrich_job_tracker_index: Process overvågning
   pim_enrich_job_tracker_show: Process overvågning | Vis job
+  pim_enrich_api_connection_index: API-forbindelser
+  pim_enrich_api_connection_create: API-forbindelser
 batch_jobs:
   add_product_value:
     label: Tilføj produktværdi
@@ -1301,6 +1317,7 @@ pim_menu:
     user_role: Roller
     info: Systemoplysninger
     job_tracker: Process overvågning
+    api_connection: API-forbindelser
   navigation:
     system: System navigation
     user: Brugere håndtering navigation

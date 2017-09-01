@@ -75,6 +75,7 @@ Feature: Edit attributes of a variant group
     When I switch the scope to "tablet"
     Then the variant group Description should be "British tablet description"
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Display a message when variant group has no attributes
     Given I am on the "jackets" variant group page
     And I visit the "Attributes" tab

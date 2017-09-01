@@ -26,6 +26,9 @@ app/file_storage/*
 app/bootstrap.php.cache
 app/phpunit.xml
 build/
+/docker/*
+!/docker/akeneo.conf
+!/docker/akeneo-behat.conf
 vendor
 composer.phar
 /cov
@@ -49,4 +52,5 @@ npm-debug.log
 !/docker/akeneo-behat.conf
 !/docker/httpd.conf
 docker-compose.yml
+yarn.lock
 package-lock.json

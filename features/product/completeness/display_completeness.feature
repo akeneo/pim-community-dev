@@ -33,7 +33,7 @@ Feature: Display the completeness of a product
       | tablet  | fr_FR  | warning | 2              | 77%   |
       | mobile  | en_US  | success | 0              | 100%  |
       | mobile  | fr_FR  | success | 0              | 100%  |
-    When I am on the products page
+    When I am on the products grid
     Then I am on the "sandals" product page
     And I visit the "Attributes" column tab
     And the Name, Description fields should be highlighted
@@ -52,7 +52,7 @@ Feature: Display the completeness of a product
       | mobile  | fr_FR  | warning | 2              | 60%   |
 
   Scenario: Successfully display the completeness of the products in the grid
-    Given I am on the products page
+    Given I am on the products grid
     When I switch the locale to "en_US"
     And I filter by "scope" with operator "equals" and value "Mobile"
     Then the row "sneakers" should contain:
@@ -90,7 +90,7 @@ Feature: Display the completeness of a product
     And I visit the "Media" group
     And I attach file "SNKRS-1C-s.png" to "Side view"
     And I save the product
-    And I am on the products page
+    And I am on the products grid
     And I switch the locale to "en_US"
     When I filter by "scope" with operator "equals" and value "Mobile"
     Then the row "sneakers" should contain:
@@ -122,17 +122,13 @@ Feature: Display the completeness of a product
 
   @jira https://akeneo.atlassian.net/browse/PIM-4489
   Scenario: Don't display the completeness if the family is not defined on product creation
-    Given the following products:
-      | sku              |
-      | my_nice_sneakers |
-    And I am on the "my_nice_sneakers" product page
+    Given I am on the "my_nice_sneakers" product page
     When I visit the "Completeness" column tab
     Given I am on the "my_nice_sneakers" product page
     When I visit the "Completeness" column tab
     Then I should see the text "No family defined. Please define a family to calculate the completeness of this product."
     And I change the family of the product to "Sneakers"
-    And I should see the text "You just changed the family of the product. Please save it first to calculate the completeness for the new family."
-    And I should not see "No family defined. Please define a family to calculate the completeness of this product."
+    And I should not see the text "No family defined. Please define a family to calculate the completeness of this product."
 
   @jira https://akeneo.atlassian.net/browse/PIM-6277
   Scenario: Display the channel code in the completeness panel

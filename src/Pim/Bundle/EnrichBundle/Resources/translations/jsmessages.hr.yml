@@ -348,9 +348,6 @@ pim_enrich:
           title: Povezanost
           info:
             none_exist: Ne postoji tip pridruživanja.
-            show_products: Prikaži proizvode
-            show_groups: Prikaži grupe
-            number_of_associations: "{{ productCount }} proizvoda i {{ groupCount }} grupe"
         attributes:
           title: Atributi
           btn:
@@ -370,7 +367,6 @@ pim_enrich:
           info:
             no_family: Nijedna obitelj nije definirana. Definirajte obitelj kako bi se izračunala potpunost ovog proizvoda.
             no_completeness: Promijenili ste obitelj proizvoda. Prvo sačuvajte promjene da se izračuna potpunost za novu obitelj.
-          missing_values: Vrijednosti koje nedostaju
         history:
           title: Povijest
       switch:
@@ -806,6 +802,8 @@ pim_enrich:
     attribute:
       modal_title: Odaberi tip atributa
     attribute_group:
+      create_btn: Kreiraj
+    api_connection:
       create_btn: Kreiraj
   mass_edit:
     next: Sljedeća

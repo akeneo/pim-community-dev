@@ -175,7 +175,16 @@ define(
                             UserContext.get('catalogScope')
                         );
 
-                        oldValue.data = copyField.getCurrentValue().data;
+                        if (undefined === oldValue) {
+                            return;
+                        }
+
+                        var currentValue = copyField.getCurrentValue();
+                        if (undefined === currentValue) {
+                            return;
+                        }
+
+                        oldValue.data = currentValue.data;
                         this.getRoot().trigger('pim_enrich:form:entity:update_state');
                         copyField.setSelected(false);
                     }
@@ -302,7 +311,7 @@ define(
              * Mark all visible fields (from active attribute group) as selected
              */
             selectAllVisible: function () {
-                this.selectFields(FieldManager.getVisibleFields());
+                this.selectFields(FieldManager.getFields());
             },
 
             /**

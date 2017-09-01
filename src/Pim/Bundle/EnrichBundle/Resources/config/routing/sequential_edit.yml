@@ -7,3 +7,8 @@ pim_enrich_mass_edit_action_sequential_edit_get:
     path: /get
     defaults: { _controller: pim_enrich.controller.sequential_edit:getAction }
     methods: [GET]
+
+pim_enrich_mass_edit_action_sequential_edit_remove:
+    path: /remove
+    defaults: { _controller: pim_enrich.controller.sequential_edit:removeAction }
+    methods: [GET]

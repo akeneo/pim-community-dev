@@ -163,8 +163,7 @@ class DataGridContext extends PimContext implements PageObjectAware
     {
         $filterElement = $this->spin(function () use ($title) {
             $manageFilterElement = $this->getElementFromDatagrid('Manage filters');
-
-            return $manageFilterElement->find('css', sprintf('input[title="%s"]', $title));
+            return $manageFilterElement->find('css', sprintf('label:contains(%s)', $title));
         }, sprintf('Cannot find the filter "%s" in the filter list', $title));
 
         if ($filterElement == null || !$filterElement->isVisible()) {

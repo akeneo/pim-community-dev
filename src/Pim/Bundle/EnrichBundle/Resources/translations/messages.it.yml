@@ -141,6 +141,7 @@ pim_enrich:
       already_in_variant_group_or_not_valid: Non è possibile raggruppare il seguente prodotto perché è già in un gruppo di varianti o non ha la dimensione gruppo.
       no_variant_group: Al momento non c'è nessun gruppo di varianti. Si prega di iniziare con la creazione di un gruppo di varianti.
       no_valid_variant_group: Nessun gruppo di varianti condivide gli attributi con i prodotti selezionati.
+      some_variant_groups_are_skipped: 'I seguenti gruppi di variante sono stati ignorati perché non condividono attributi con i prodotti selezionati: %groups%'
       launched_flash: L'azione di massa "aggiungi al gruppo di varianti" è stata lanciata. Sarai avvisato quando finisce.
     set-attribute-requirements:
       label: Impostare gli attributi richiesti
@@ -489,6 +490,7 @@ Updated at: Caricato il
 Created: Creato
 Updated: Caricato
 Last update: Ultimo aggiornamento
+by: Da
 N/A: N/A
 Manage products: Gestione articoli
 Manage groups: Gestione gruppi
@@ -546,7 +548,7 @@ Active: Attivo
 Inactive: Inattivo
 Do not convert: Non convertire
 Create: Crea
-Cancel: Cancella
+Cancel: Annulla
 Choose a family: Scegli una famiglia
 Choose a unit: Scegli un'unità
 No matches found: Nessuna corrispondenza trovata
@@ -781,6 +783,7 @@ oro.locale:
       province: "provincia"
   form:
     tooltip:
+      locale: "Selezionare le impostazioni locali utilizzate per formattare numeri, indirizzi, nomi e date"
       location: " Verrà utilizzato per formattare gli indirizzi quando l'opzione 'Formato indirizzo in base alle impostazioni locali' è disabilitata"
       format_address_by_address_country: "Selezionando questa opzione gli indirizzi verranno formattati in base alle impostazioni locali. Disabilitando questa opzione gli indirizzi saranno formattati in base al Paese"
       language: "Selezionare la lingua di sistema che si desidera utilizzare"

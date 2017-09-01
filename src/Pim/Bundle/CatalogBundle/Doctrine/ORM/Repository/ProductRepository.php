@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
@@ -292,6 +293,22 @@ class ProductRepository extends EntityRepository implements
             ->setMaxResults($size);
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAssociatedProductIds(ProductInterface $product)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('a.id AS association_id', 't.code AS association_type_code', 'pa.id AS product_id', 'pa.identifier AS product_identifier')
+            ->innerJoin('p.associations', 'a')
+            ->innerJoin('a.associationType', 't')
+            ->innerJoin('a.products', 'pa')
+            ->where('p.id = :productId')
+            ->setParameter(':productId', $product->getId());
+
+        return $qb->getQuery()->execute();
     }
 
     /**

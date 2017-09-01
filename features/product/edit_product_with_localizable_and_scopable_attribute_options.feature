@@ -6,13 +6,16 @@ Feature: Edit a product with localizable and scopable attribute options
 
   Background:
     Given the "apparel" catalog configuration
-    And the following products:
-      | sku        | categories      |
-      | rick_morty | 2014_collection |
     And the following attributes:
       | code   | label-en_US | label-fr_FR | label-de_DE | type                     | group | scopable | localizable |
       | multi  | Multi       | Multi       | Multi       | pim_catalog_multiselect  | other | 1        | 1           |
       | simple | Simple      | Simple      | Simple      | pim_catalog_simpleselect | other | 1        | 1           |
+    And the following family:
+      | code   | attributes   |
+      | addams | simple,multi |
+    And the following products:
+      | sku        | family | categories      |
+      | rick_morty | addams | 2014_collection |
     And I am logged in as "Peter"
     And the following CSV file to import:
       """
@@ -32,7 +35,7 @@ Feature: Edit a product with localizable and scopable attribute options
   @jira https://akeneo.atlassian.net/browse/PIM-5989
   Scenario: I should not lost data when switching scope on scopable and localizable simple select
     Given I edit the "rick_morty" product
-    And I add available attribute Simple
+    And I visit the "Other" group
     Then the field Simple should display the Print scope label
     And I change the Simple to "US1"
     When I save the product
@@ -47,7 +50,7 @@ Feature: Edit a product with localizable and scopable attribute options
   @jira https://akeneo.atlassian.net/browse/PIM-6017
   Scenario: I edit a localizable and scopable multiselect attribute
     Given I edit the "rick_morty" product
-    And I add available attribute Multi
+    And I visit the "Other" group
     And I switch the scope to "ecommerce"
     And I switch the locale to "en_US"
     And I change the "Multi" to "US1, US3"

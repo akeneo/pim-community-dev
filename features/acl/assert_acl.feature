@@ -84,12 +84,12 @@ Feature: Define user rights
   @jira https://akeneo.atlassian.net/browse/PIM-3758
   Scenario: Successfully remove and add the List categories rights
     Given I am logged in as "Peter"
-    When I am on the products page
+    When I am on the products grid
     Then I should see the text "2014 Collection"
     When  I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I revoke rights to resource List categories
     And I save the role
     Then I should not see the text "There are unsaved changes."
-    When I am on the products page
+    When I am on the products grid
     Then I should not see the text "2014 Collection"

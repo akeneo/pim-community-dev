@@ -108,4 +108,13 @@ interface ProductRepositoryInterface extends ObjectRepository
      * @return array
      */
     public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = []);
+
+    /**
+     * Get all associated products ids
+     *
+     * @param ProductInterface $product
+     *
+     * @return string[]
+     */
+    public function getAssociatedProductIds(ProductInterface $product);
 }

@@ -6,16 +6,14 @@ define(
         'pim/base-fetcher',
         'routing',
         'oro/mediator',
-        'pim/cache-invalidator',
-        'pim/product-manager'
+        'pim/cache-invalidator'
     ],
     function (
         $,
         BaseFetcher,
         Routing,
         mediator,
-        CacheInvalidator,
-        ProductManager
+        CacheInvalidator
     ) {
         return BaseFetcher.extend({
             /**
@@ -46,7 +44,6 @@ define(
 
                         return variantGroup;
                     })
-                    .then(ProductManager.generateMissing.bind(ProductManager))
                     .then(function (variantGroup) {
                         mediator.trigger('pim_enrich:form:variant_group:post_fetch', variantGroup);
 

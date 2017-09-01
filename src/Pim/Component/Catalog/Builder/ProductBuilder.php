@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Builder;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolver;
+use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -43,7 +44,7 @@ class ProductBuilder implements ProductBuilderInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var AttributeValuesResolver */
+    /** @var AttributeValuesResolverInterface */
     protected $valuesResolver;
 
     /** @var string */
@@ -63,7 +64,7 @@ class ProductBuilder implements ProductBuilderInterface
      * @param CurrencyRepositoryInterface        $currencyRepository  Currency repository
      * @param AssociationTypeRepositoryInterface $assocTypeRepository Association type repository
      * @param EventDispatcherInterface           $eventDispatcher     Event dispatcher
-     * @param AttributeValuesResolver            $valuesResolver      Attributes values resolver
+     * @param AttributeValuesResolverInterface   $valuesResolver      Attributes values resolver
      * @param ValueFactory                       $productValueFactory Product value factory
      * @param EntityWithValuesBuilderInterface   $entityWithValuesBuilder
      * @param array                              $classes             Model classes
@@ -74,7 +75,7 @@ class ProductBuilder implements ProductBuilderInterface
         CurrencyRepositoryInterface $currencyRepository,
         AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
-        AttributeValuesResolver $valuesResolver,
+        AttributeValuesResolverInterface $valuesResolver,
         ValueFactory $productValueFactory,
         EntityWithValuesBuilderInterface $entityWithValuesBuilder,
         array $classes

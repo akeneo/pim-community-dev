@@ -7,6 +7,7 @@ use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterfa
 use Pim\Component\Catalog\Validator\Constraints\FileExtension;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Constraints for simple Yaml export
@@ -45,6 +46,8 @@ class SimpleYamlExport implements ConstraintCollectionProviderInterface
                             ]
                         )
                     ],
+                    'user_to_notify' => new Type('string'),
+                    'is_user_authenticated' => new Type('bool'),
                 ]
             ]
         );

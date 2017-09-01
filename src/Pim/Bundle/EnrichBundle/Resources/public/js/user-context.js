@@ -1,16 +1,41 @@
 'use strict';
 
 define(
-    ['backbone', 'routing'],
-    function (Backbone, Routing) {
-        var UserContext = Backbone.Model.extend({
-            url: Routing.generate('pim_user_user_rest_get_current')
-        });
+    ['jquery', 'backbone', 'underscore', 'routing'],
+    ($, Backbone, _, Routing) => {
+        var contextData = {};
 
-        var instance = new UserContext();
+        return _.extend({
+            /**
+             * Fetches data from the back then stores it.
+             *
+             * @returns {Promise}
+             */
+            initialize: () => {
+                return $.get(Routing.generate('pim_user_user_rest_get_current'))
+                    .then(response => contextData = response);
+            },
 
-        instance.fetch({async: false});
+            /**
+             * Returns the value corresponding to the specified key.
+             *
+             * @param {String} key
+             *
+             * @returns {*}
+             */
+            get: key => contextData[key],
 
-        return instance;
+            /**
+             * Sets a new value at the specified key.
+             *
+             * @param {String} key
+             * @param {String} value
+             */
+            set: function (key, value) {
+                contextData[key] = value;
+
+                this.trigger('change:' + key);
+            }
+        }, Backbone.Events);
     }
 );

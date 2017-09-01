@@ -35,7 +35,7 @@ Feature: When I mass edit I should be able to see how many items will be edited
       | shoe_13   | high_heels |
       | shoe_14   | high_heels |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully count the number of mass-edited items when click on all products
     Given I select all entities

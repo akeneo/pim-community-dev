@@ -2,11 +2,13 @@
 
 ## Functional improvements
 
+- API-324: Convert label option to mandatory argument in command `pim:oauth-server:create-client`
 - API-312: Add UI to manage (create/revoke) API connections
 - TIP-718: Update group types form
 - PIM-6291: Adds attribute used as the main picture in the UI for each family (attribute_as_image)
 - GITHUB-4877: Update some tooltips messages of the export builder, Cheers @Milie44!
 - GITHUB-5949: Fix the deletion of a job instance (import\export) from the job edit page, cheers @BatsaxIV !
+- PIM-6531: Have English language as default language for new users
 
 ## Technical improvements
 
@@ -18,6 +20,8 @@
 - TIP-730: Reworking of the creation popin for basic entities
 - TIP-732: Rework the attribute form using the PEF architecture
 - TIP-747: Migrate to Symfony 3.3
+- PIM-6740: Separe installation state (installed) from config file 
+- API-359: Move notified user of a job into the configuration parameters of the job
 
 ## UI\UX Refactoring
 
@@ -33,7 +37,6 @@
 - PIM-6397: Enable Search filter on all grids
 - PIM-6406: Update job profile show page to include last executions
 - TIP-764: Mass edit has been redone
-- PIM-6621: Add the ability to search on label and identifier on the product grid
 
 ## Remove MongoDB product storage
 
@@ -213,9 +216,11 @@
 - PIM-6442: Rename `Pim\Component\ReferenceData\ProductValue\ReferenceDataProductValue` to `Pim\Component\ReferenceData\Value\ReferenceDataValue`
 - PIM-6442: Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductValueValueFactoryPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterValueFactoryPass`
 - TIP-764: Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface` and all inherited classes
+- PIM-6740: Remove `Pim\Bundle\InstallerBundle\Persister\YamlPersister`
 
 ### Constructors
 
+- Change the constructor of `Pim\Component\Catalog\Comparator\Filter\ProductFilter` to add `Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface`
 - Change the constructor of `Oro\Bundle\UserBundle\Form\Handler\AclRoleHandler` to add `Symfony\Component\HttpFoundation\RequestStack`
 - Change the constructor of `Oro\Bundle\DataGridBundle\Datagrid\RequestParameters` to add `Symfony\Component\HttpFoundation\RequestStack`
 - Change the constructor of `Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator` to add `Symfony\Component\HttpFoundation\RequestStack`
@@ -230,7 +235,6 @@
 - Change the constructor of `Pim\Component\Connector\Writer\Database\ProductWriter` to replace `Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface` by `Akeneo\Component\StorageUtils\Cache\CacheClearerInterface`.
 - Change the constructor of `Pim\Component\Catalog\Updater\AttributeGroupUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\JobTrackerController` to add `Oro\Bundle\SecurityBundle\SecurityFacade` and add an associative array
-- Change the constructor of `Pim\Bundle\ApiBundle\Controller\ProductController` to remove `Pim\Component\Api\Pagination\PaginatorInterface`
 - Change the constructor of `Pim\Component\Catalog\Manager\CompletenessManager` to remove the completeness class.
 - Change the constructor of `Pim\Component\Catalog\Updater\FamilyUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
 - Change the constructor of `Pim\Component\Catalog\Updater\AttributeUpdater` to add `Akeneo\Component\Localization\TranslatableUpdater`
@@ -294,14 +298,32 @@
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` to add `Pim\Bundle\VersioningBundle\Manager\VersionManager`, `Symfony\Component\Serializer\Normalizer\NormalizerInterface`, `Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface`, `Akeneo\Component\Localization\Localizer\LocalizerInterface`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer` to add `Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer`
-- Change the constructor of `\Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `uploadTmpDir` (string)
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `uploadTmpDir` (string)
+- Change the constructor of `Pim\Bundle\ApiBundle\Controller\ProductController` to remove `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` and to add `Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface` and `Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface`
+- Change the constructor of `Pim\Component\Catalog\Builder\ProductBuilder` to replace `Pim\Component\Catalog\Manager\AttributeValuesResolver` by `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface`
+- Change the constructor of `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver` to replace `Pim\Component\Catalog\Manager\AttributeValuesResolver` by `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface`
+- Change the constructor of `Pim\Component\Catalog\Builder\EntityWithValuesBuilder` to replace `Pim\Component\Catalog\Manager\AttributeValuesResolver` by `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface`
+- Change the constructor of `Pim\Bundle\ApiBundle\Controller\LocaleController` to add `Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface`
+- Change the constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add `Akeneo\Component\Batch\Job\JobParametersValidator`
+- Change the constructor of `Pim\Bundle\ConnectorBundle\Launcher\AuthenticatedJobLauncher` to add `Akeneo\Component\Batch\Job\JobParametersValidator`
+- Change the constructor of `Pim\Bundle\AnalyticsBundle\DataCollector\VersionDataCollector` to replace `string` by `Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager` 
 
 ### Methods
 
 - Change `Pim\Component\Catalog\Model\FamilyInterface` to add `setAttributeAsImage` and `getAttributeAsImage`
 
+### Type hint
+
+- Add type hint `Akeneo\Component\Batch\Model\JobExecution` to the return of the function `launch` of `Akeneo\Bundle\BatchBundle\Launcher`
+- Add type hint `array` to the return of the function `resolveEligibleValues` of `Pim\Component\Catalog\Manager\AttributeValuesResolver`
+
+### Configuration
+- PIM-6740: Remove `installed` parameter from parameters.yml.dist , parameters_test.yml.dist and config.yml
+
 ### Others
 
+- Add method `findCategoriesItem` to `Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface`
+- Add method `getAssociatedProductIds` to `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
 - Remove useless method `applyFilterByIds` of `Pim\Component\Catalog\Repository\ProductCategoryRepositoryInterface`
 - Remove useless method `getLocalesQB` of `Pim\Component\Catalog\Repository\LocaleRepositoryInterface`
 - Remove useless method `findTypeIds` of `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface`
@@ -385,6 +407,10 @@
 - Remove `Pim\Bundle\EnrichBundle\Controller\FamilyController.php`
 - Remove unused `Pim\Component\Catalog\Manager\AttributeGroupManager`
 - Remove unused `Pim\Bundle\CatalogBundle\ProductQueryUtility`
+- Split `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` in two. The original service name (`pim_enrich.normalizer.attribute`) points now to `Pim\Bundle\EnrichBundle\Normalizer\VersionedAttributeNormalizer`
+    The arguments of the old normalizer are now divided between both normalizers, also `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` is injected into `Pim\Bundle\EnrichBundle\Normalizer\VersionedAttributeNormalizer`.
+- PIM-6740: Remove service `pim_installer.yaml_persister`
+- PIM-6740: Add exception `Pim\Bundle\InstallerBundle\Exception\UnavailableCreationTimeException`
 
 ### Methods
 

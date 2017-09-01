@@ -8,6 +8,7 @@ Feature: Add attributes to a variant group
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Display available attributes for a variant group
     Given the following attribute:
       | code   | label-en_US | unique | group     | type             |
@@ -22,6 +23,7 @@ Feature: Add attributes to a variant group
     And I should not see available attribute SKU in group "Product information"
     And I should not see available attribute Unique in group "Marketing"
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Add some available attributes to a variant group
     Given I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
@@ -35,6 +37,7 @@ Feature: Add attributes to a variant group
     And I should not see available attribute Name in group "Product information"
     And I should not see available attribute Price in group "Marketing"
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Update values of products in a variant group only after saving the group (not immediately after adding a new attribute)
     Given the following product:
       | sku  | groups            | name-en_US | color | size |
@@ -48,6 +51,7 @@ Feature: Add attributes to a variant group
     When I am on the "boot" product page
     Then the field Name should contain ""
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Update products when values are changed on the variant group page
     Given the following products:
       | sku  | groups            | color | size |
@@ -62,6 +66,7 @@ Feature: Add attributes to a variant group
     When I am on the "boot" product page
     Then the field Name should contain "bar"
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Remove an attribute which is linked to a variant group
     Given the following products:
       | sku  | groups            | color | size |
@@ -78,13 +83,14 @@ Feature: Add attributes to a variant group
     When I am on the "caterpillar_boots" variant group page
     Then I should not see available attribute Name in group "Product information"
 
+  @skip @info Will be removed in PIM-6444
   Scenario: The price attribute should be visible once added
     Given I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
     When I add available attributes Price
     And I should see "EUR, USD" currencies on the Price price field
 
-  @jira https://akeneo.atlassian.net/browse/PIM-5208
+  @skip @info Will be removed in PIM-6444 @jira https://akeneo.atlassian.net/browse/PIM-5208
   Scenario: View only attribute filters that are usable as grid filters and view variant axes in columns
     Given the following attributes:
       | code                       | label-en_US                | type                     | group  | useable_as_grid_filter |

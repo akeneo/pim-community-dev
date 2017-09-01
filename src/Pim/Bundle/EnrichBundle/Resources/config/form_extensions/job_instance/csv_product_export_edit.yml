@@ -2,7 +2,7 @@ extensions:
     pim-job-instance-csv-product-export-edit:
         module: pim/form/common/edit-form
 
-    pim-job-instance-csv-product-export-edit-mainImage:
+    pim-job-instance-csv-product-export-edit-main-image:
         module: pim/form/common/main-image
         parent: pim-job-instance-csv-product-export-edit
         targetZone: main-image

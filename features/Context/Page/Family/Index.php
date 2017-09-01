@@ -30,11 +30,11 @@ class Index extends Grid
             $this->elements,
             [
                 'Available attributes form' => ['css' => '#pim_enrich_mass_edit_choose_action_operation_displayedAttributes'],
-                'Cancel'                    => ['css' => '.AknButton[data-action-target="grid"]'],
-                'Choose'                    => ['css' => '.AknButton[data-action-target="choose"]'],
-                'Configure'                 => ['css' => '.AknButton[data-action-target="configure"]'],
-                'Confirm'                   => ['css' => '.AknButton[data-action-target="confirm"]'],
-                'Validate'                  => ['css' => '.AknButton[data-action-target="validate"]'],
+                'Cancel'                    => ['css' => '.wizard-action[data-action-target="grid"]'],
+                'Choose'                    => ['css' => '.wizard-action[data-action-target="choose"]'],
+                'Configure'                 => ['css' => '.wizard-action[data-action-target="configure"]'],
+                'Confirm'                   => ['css' => '.wizard-action[data-action-target="confirm"]'],
+                'Validate'                  => ['css' => '.wizard-action[data-action-target="validate"]'],
             ]
         );
     }

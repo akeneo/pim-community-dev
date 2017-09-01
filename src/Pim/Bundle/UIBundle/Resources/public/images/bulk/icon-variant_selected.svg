@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <path id="icon-variant-a" d="M17.5,2 L18,2 L18,18 L17.5,18 L2,18 L2,17 L17,17 L17,3 L3,3 L3,17 L2,17 L2,2 L2.5,2 L17.5,2 Z M21.5,6 L22,6 L22,22 L21.5,22 L6,22 L6,21.5 L6,18 L7,18 L7,21 L21,21 L21,7 L18,7 L18,6 L21.5,6 Z"/>
+  </defs>
+  <g fill="none" fill-rule="evenodd">
+    <use fill="#5992C7" xlink:href="#icon-variant-a"/>
+  </g>
+</svg>

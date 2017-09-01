@@ -22,7 +22,7 @@ Feature: Filter products per price
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products by price
-    Given I am on the products page
+    Given I am on the products grid
     Then I should see the filter sku
     And I should not see the filter price
     And the grid should contain 4 elements

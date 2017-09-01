@@ -163,7 +163,7 @@ class MetricFilterIntegration extends AbstractProductQueryBuilderTestCase
 
     /**
      * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "a_metric" expects an array with the key "amount" as data.
+     * @expectedExceptionMessage Property "a_metric" expects an array with the key "amount".
      */
     public function testErrorAmountIsMissing()
     {
@@ -172,7 +172,7 @@ class MetricFilterIntegration extends AbstractProductQueryBuilderTestCase
 
     /**
      * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "a_metric" expects an array with the key "unit" as data.
+     * @expectedExceptionMessage Property "a_metric" expects an array with the key "unit".
      */
     public function testErrorCurrencyIsMissing()
     {

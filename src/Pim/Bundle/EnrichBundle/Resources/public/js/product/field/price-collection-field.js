@@ -21,6 +21,10 @@ define([
             'change .field-input:first input[type="text"]': 'updateModel'
         },
         renderInput: function (context) {
+            if (undefined === context.value) {
+                return null;
+            }
+
             context.value.data = _.sortBy(context.value.data, 'currency');
 
             return this.fieldTemplate(context);

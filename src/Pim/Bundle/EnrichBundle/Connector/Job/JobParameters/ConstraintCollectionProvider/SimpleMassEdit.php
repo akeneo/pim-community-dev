@@ -6,6 +6,7 @@ use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Constraints for simple mass edit
@@ -37,6 +38,8 @@ class SimpleMassEdit implements ConstraintCollectionProviderInterface
                 'fields' => [
                     'filters' => new NotNull(),
                     'actions' => new NotNull(),
+                    'user_to_notify' => new Type('string'),
+                    'is_user_authenticated' => new Type('bool'),
                 ]
             ]
         );

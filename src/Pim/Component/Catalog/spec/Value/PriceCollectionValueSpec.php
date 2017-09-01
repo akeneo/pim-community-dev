@@ -80,4 +80,42 @@ class PriceCollectionValueSpec extends ObjectBehavior
 
         $this->__toString()->shouldReturn('34.00 USD');
     }
+
+    function it_returns_true_if_there_is_data(
+        $priceCollection,
+        \ArrayIterator $pricesIterator,
+        ProductPriceInterface $priceUSD,
+        ProductPriceInterface $priceEUR
+    ) {
+        $priceUSD->getData()->willReturn(34);
+        $priceUSD->getCurrency()->willReturn('USD');
+        $priceEUR->getData()->willReturn(null);
+        $priceEUR->getCurrency()->willReturn('EUR');
+
+        $priceCollection->getIterator()->willReturn($pricesIterator);
+        $pricesIterator->rewind()->shouldBeCalled();
+        $pricesIterator->valid()->willReturn(true, true, false);
+        $pricesIterator->current()->willReturn($priceEUR, $priceUSD);
+        $pricesIterator->next()->shouldBeCalled();
+
+        $this->hasData()->shouldReturn(true);
+    }
+
+    function it_returns_false_if_there_is_no_data(
+        $priceCollection,
+        \ArrayIterator $pricesIterator,
+        ProductPriceInterface $priceUSD,
+        ProductPriceInterface $priceEUR
+    ) {
+        $priceUSD->getData()->willReturn(null);
+        $priceEUR->getData()->willReturn(null);
+
+        $priceCollection->getIterator()->willReturn($pricesIterator);
+        $pricesIterator->rewind()->shouldBeCalled();
+        $pricesIterator->valid()->willReturn(true, true, false);
+        $pricesIterator->current()->willReturn($priceEUR, $priceUSD);
+        $pricesIterator->next()->shouldBeCalled();
+
+        $this->hasData()->shouldReturn(false);
+    }
 }

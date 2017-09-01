@@ -34,14 +34,12 @@ Feature: Browse families
   Scenario: Successfully keep descending sorting order after refreshing the page
     And I sort by "Label" value descending
     When I refresh current page
-    And I wait 3 seconds
     Then the rows should be sorted descending by Label
 
   Scenario: Successfully keep ascending sorting order after refreshing the page
     And I sort by "Label" value descending
     And I sort by "Label" value ascending
     When I refresh current page
-    And I wait 3 seconds
     Then the rows should be sorted ascending by Label
 
   @jira https://akeneo.atlassian.net/browse/PIM-4494
@@ -53,7 +51,7 @@ Feature: Browse families
       | tbs         | sneakers |
       | vans        | sneakers |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     When I sort by "family" value ascending
     Then the rows should be sorted ascending by family
     When I select rows caterpillar and dr-martens

@@ -10,6 +10,7 @@ datagrid:
         columns:
             label:
                 label: Label
+                frontend_type: label
             type:
                 label: Type
                 type: translateable

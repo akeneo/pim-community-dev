@@ -48,7 +48,7 @@ Feature: Navigate the application in hash navigation mode
       | boots    | boots    |       |        |
       | sneakers | sneakers |       |        |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     When I select rows boots and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation

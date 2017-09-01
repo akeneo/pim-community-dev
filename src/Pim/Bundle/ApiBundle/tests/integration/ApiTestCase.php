@@ -91,20 +91,25 @@ abstract class ApiTestCase extends WebTestCase
     /**
      * Creates a new OAuth client and returns its client id and secret.
      *
+     * @param string|null $label
+     *
      * @return string[]
      */
-    protected function createOAuthClient()
+    protected function createOAuthClient(?string $label = null): array
     {
         $consoleApp = new Application(static::$kernel);
         $consoleApp->setAutoExit(false);
 
-        $input  = new ArrayInput(['command' => 'pim:oauth-server:create-client']);
+        $input  = new ArrayInput([
+            'command' => 'pim:oauth-server:create-client',
+            'label'   => null !== $label ? $label : 'Api test case client',
+        ]);
         $output = new BufferedOutput();
 
         $consoleApp->run($input, $output);
 
         $content = $output->fetch();
-        preg_match('/client_id: (.+)\nsecret: (.+)$/', $content, $matches);
+        preg_match('/client_id: (.+)\nsecret: (.+)\nlabel: (.+)$/', $content, $matches);
 
         return [$matches[1], $matches[2]];
     }

@@ -2,7 +2,6 @@
 
 namespace Context;
 
-use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Context\Loader\ReferenceDataLoader;
 use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
@@ -10,7 +9,9 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Behat\Context\PimContext;
 use Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
-use Symfony\Component\Console\Application;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -56,7 +57,7 @@ class CatalogConfigurationContext extends PimContext
         $this->initializeReferenceRepository();
 
         $this->loadCatalog($this->getConfigurationFiles($catalog));
-        
+
         $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
@@ -88,25 +89,23 @@ class CatalogConfigurationContext extends PimContext
         $this->getFixtureJobLoader()->loadJobInstances($replacePaths);
 
         // setup application to be able to run akeneo:batch:job command
-        $application = new Application();
-        $application->add(new BatchCommand());
-        $batchJobCommand = $application->find('akeneo:batch:job');
-        $batchJobCommand->setContainer($this->getContainer());
-        $command = new CommandTester($batchJobCommand);
+        $application = new Application($this->getContainer()->get('kernel'));
+        $application->setAutoExit(false);
 
         // install the catalog via the job instances
         $jobInstances = $this->getFixtureJobLoader()->getLoadedJobInstances();
         foreach ($jobInstances as $jobInstance) {
-            $exitCode = $command->execute(
-                [
-                    'command'    => $batchJobCommand->getName(),
-                    'code'       => $jobInstance->getCode(),
-                    '--no-log'   => true,
-                    '-v'         => true
-                ]
-            );
+            $input = new ArrayInput([
+                'command'  => 'akeneo:batch:job',
+                'code'     => $jobInstance->getCode(),
+                '--no-log' => true,
+                '-v'       => true
+            ]);
+            $output = new BufferedOutput();
+            $exitCode = $application->run($input, $output);
+
             if (0 !== $exitCode) {
-                throw new \Exception(sprintf('Catalog not installable! "%s"', $command->getDisplay()));
+                throw new \Exception(sprintf('Catalog not installable! "%s"', $output->fetch()));
             }
         }
 

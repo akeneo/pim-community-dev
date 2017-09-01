@@ -12,6 +12,7 @@ use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
@@ -44,25 +45,27 @@ class ProductNormalizerSpec extends ObjectBehavior
         NormalizerInterface $completenessCollectionNormalizer,
         UserContext $userContext,
         CompletenessCalculatorInterface $completenessCalculator,
-        FileNormalizer $fileNormalizer
+        FileNormalizer $fileNormalizer,
+        ProductBuilderInterface $productBuilder
     ) {
         $this->beConstructedWith(
-        $productNormalizer,
-        $versionNormalizer,
-        $versionManager,
-        $localeRepository,
-        $structureVersionProvider,
-        $formProvider,
-        $localizedConverter,
-        $productValueConverter,
-        $productManager,
-        $completenessManager,
-        $channelRepository,
-        $collectionFilter,
-        $completenessCollectionNormalizer,
-        $userContext,
-        $completenessCalculator,
-        $fileNormalizer
+            $productNormalizer,
+            $versionNormalizer,
+            $versionManager,
+            $localeRepository,
+            $structureVersionProvider,
+            $formProvider,
+            $localizedConverter,
+            $productValueConverter,
+            $productManager,
+            $completenessManager,
+            $channelRepository,
+            $collectionFilter,
+            $completenessCollectionNormalizer,
+            $userContext,
+            $completenessCalculator,
+            $fileNormalizer,
+            $productBuilder
         );
     }
 
@@ -84,6 +87,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $userContext,
         $collectionFilter,
         $fileNormalizer,
+        $productBuilder,
         ProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -167,6 +171,9 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $structureVersionProvider->getStructureVersion()->willReturn(12);
         $formProvider->getForm($mug)->willReturn('product-edit-form');
+
+        $productBuilder->addMissingAssociations($mug)->shouldBeCalled();
+        $productBuilder->addMissingProductValues($mug)->shouldBeCalled();
 
         $this->normalize($mug, 'internal_api', $options)->shouldReturn(
             [

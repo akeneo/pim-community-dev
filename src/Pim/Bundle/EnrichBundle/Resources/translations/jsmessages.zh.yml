@@ -341,9 +341,6 @@ pim_enrich:
           title: 关联
           info:
             none_exist: 没有关联的类型存在。
-            show_products: 显示产品
-            show_groups: 显示组
-            number_of_associations: "{{ productCount }} 产品和 {{ groupCount }} 组"
         attributes:
           title: 属性
           btn:
@@ -363,7 +360,6 @@ pim_enrich:
           info:
             no_family: 没有定义品类。请定义一个品类来计算这个产品的完成度。
             no_completeness: 你只是改变了产品的品类。请先保存来计算在该品类下的数据完整性。
-          missing_values: 缺失的值
         history:
           title: 历史
       switch:
@@ -774,6 +770,8 @@ pim_enrich:
     attribute:
       modal_title: 选择属性类型
     attribute_group:
+      create_btn: 创建
+    api_connection:
       create_btn: 创建
   mass_edit:
     next: 下一页

@@ -23,9 +23,6 @@ define(
             template: _.template(template),
             className: 'panel-pane completeness-panel AknCompletenessPanel',
             initialFamily: null,
-            events: {
-                'click .missing-attributes a': 'showAttribute'
-            },
 
             /**
              * {@inheritdoc}
@@ -46,7 +43,6 @@ define(
                 });
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.onChangeFamily);
                 this.listenTo(UserContext, 'change:catalogLocale', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -106,22 +102,6 @@ define(
                 var sortedCompleteness = [_.findWhere(completenesses, {channel: UserContext.get('catalogScope')})];
 
                 return _.union(sortedCompleteness, completenesses);
-            },
-
-            /**
-             * Set focus to the attribute given by the event
-             *
-             * @param Event event
-             */
-            showAttribute: function (event) {
-                this.getRoot().trigger(
-                    'pim_enrich:form:show_attribute',
-                    {
-                        attribute: event.currentTarget.dataset.attribute,
-                        locale: event.currentTarget.dataset.locale,
-                        scope: event.currentTarget.dataset.channel
-                    }
-                );
             },
 
             /**

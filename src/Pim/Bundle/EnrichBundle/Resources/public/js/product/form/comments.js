@@ -83,7 +83,7 @@ define(
                         this.template({
                             __: __,
                             comments: this.comments,
-                            currentUser: UserContext.toJSON(),
+                            username: UserContext.get('username'),
                             emptyLabel: __('comment.index.empty')
                         })
                     );

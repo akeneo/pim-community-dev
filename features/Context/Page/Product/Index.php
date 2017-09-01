@@ -147,4 +147,28 @@ class Index extends Grid
             return $this->findAll('css', $this->elements['Manage filters options']['css']);
         }, 'Filters list was not found.');
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * This method is overridden in this class because we have to wait modal to be display before continue
+     */
+    public function clickCreationLink()
+    {
+        $this->spin(function () {
+            $modal = $this->find('css', '.modal-backdrop');
+
+            if (null !== $modal && $modal->isVisible()) {
+                return true;
+            }
+
+            $button = $this->find('css', $this->elements['Creation link']['css']);
+
+            if (null !== $button && $button->isVisible()) {
+                $button->click();
+            }
+
+            return null;
+        }, 'Cannot create product');
+    }
 }

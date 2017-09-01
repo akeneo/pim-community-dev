@@ -359,9 +359,7 @@ pim_enrich:
           title: Koppelingen
           info:
             none_exist: Er bestaan geen associatietypes.
-            show_products: Toon producten
-            show_groups: Toon groepen
-            number_of_associations: "{{ productCount }} producten en {{ groupCount }} groepen"
+            show_products: Producten weergeven
         attributes:
           title: Attributen
           btn:
@@ -381,7 +379,6 @@ pim_enrich:
           info:
             no_family: Geen familie gedefinieerd. Gelieve een familie te definiëren om de volledigheid van dit product te berekenen.
             no_completeness: Je hebt zonet de familie van dit product gewijzigd. Gelieve dit eerst te bewaren om de volledigheid van de nieuwe familie te berekenen.
-          missing_values: Ontbrekende waarden
         history:
           title: Geschiedenis
       switch:
@@ -806,6 +803,8 @@ pim_enrich:
     attribute:
       modal_title: Kies het attribuuttype
     attribute_group:
+      create_btn: Aanmaken
+    api_connection:
       create_btn: Aanmaken
   mass_edit:
     next: Volgende

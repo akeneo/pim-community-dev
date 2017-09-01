@@ -51,12 +51,13 @@ class WebUser extends PimContext
     public function iCreateANew($entity)
     {
         $entity = implode('', array_map('ucfirst', explode(' ', $entity)));
-
         $this->spin(function () use ($entity) {
             $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
 
-            return true;
-        }, sprintf('Cannot create a new %s', $entity));
+            sleep(1);
+
+            return null !== $this->getCurrentPage()->find('css', '.modal, .ui-dialog');
+        }, sprintf('Cannot create a new %s: cannot click on the creation link', $entity));
 
         $this->getNavigationContext()->currentPage = sprintf('%s creation', $entity);
     }
@@ -242,7 +243,7 @@ class WebUser extends PimContext
      * @param string      $group
      * @param string|null $type
      *
-     * @Given /^I visit the "([^"]*)" (group|association type|tree)$/
+     * @Given /^I visit the "([^"]*)" (group|association type|tree|target)$/
      */
     public function iVisitTheGroup($group, $type)
     {
@@ -1172,18 +1173,22 @@ class WebUser extends PimContext
      */
     public function iRemoveTheAttribute($field)
     {
-        $removeLink = $this->getCurrentPage()->getRemoveLinkFor($field);
+        $this->spin(function () use ($field) {
+            $removeLink = $this->getCurrentPage()->getRemoveLinkFor($field);
 
-        if (null === $removeLink) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Remove link on field "%s" should be displayed.',
-                    $field
-                )
-            );
-        }
+            if (null === $removeLink) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Remove link on field "%s" should be displayed.',
+                        $field
+                    )
+                );
+            }
 
-        $removeLink->click();
+            $removeLink->click();
+
+            return true;
+        }, 'Cannot click on the remove attribute button');
     }
 
     /**
@@ -1272,6 +1277,16 @@ class WebUser extends PimContext
 
             return $count <= 0;
         }, 'Expected not to see reorder handles.');
+    }
+
+    /**
+     * @Then /^the attribute options order should be (.+)$/
+     */
+    public function theAttributeOptionsOrderShouldBe($optionCodes)
+    {
+        $expected = $this->listToArray($optionCodes);
+
+        $this->getCurrentPage()->checkOptionsOrder($expected);
     }
 
     /**
@@ -1710,7 +1725,6 @@ class WebUser extends PimContext
     public function iCheckTheSwitch($status, $locator)
     {
         $this->getCurrentPage()->toggleSwitch($locator, $status === '');
-        $this->wait();
     }
 
     /**
@@ -1720,15 +1734,15 @@ class WebUser extends PimContext
      */
     public function iSwitchTheSubCategoriesInclusion($status)
     {
-        $switch = $this->spin(function () {
-            return $this->getCurrentPage()->findById('nested_switch_input');
-        }, 'Cannot find the switch button to include sub categories');
+        $this->spin(function () use ($status) {
+            $switch = $this->getCurrentPage()->findById('nested_switch_input');
 
-        $on = 'en' === $status;
-        if ($switch->isChecked() !== $on) {
-            $switch->getParent()->find('css', 'label')->click();
-        }
-        $this->wait();
+            if (('en' === $status) !== $switch->isChecked()) {
+                $switch->getParent()->find('css', 'label')->click();
+            }
+
+            return true;
+        }, sprintf('Cannot %sable the inclusion of sub-categories', $status));
     }
 
     /**
@@ -1773,7 +1787,6 @@ class WebUser extends PimContext
     public function theFamilyOfProductShouldBe($sku, $expectedFamily = '')
     {
         $this->spin(function () use ($sku, $expectedFamily) {
-            $this->clearUOW();
             $product      = $this->getFixturesContext()->getProduct($sku);
             $actualFamily = $product->getFamily() ? $product->getFamily()->getCode() : '';
 
@@ -1789,7 +1802,6 @@ class WebUser extends PimContext
      */
     public function theCategoryOfProductShouldBe($sku, $categoryCode)
     {
-        $this->clearUOW();
         $product = $this->getFixturesContext()->getProduct($sku);
 
         $categoryCodes = $product->getCategoryCodes();
@@ -2123,7 +2135,6 @@ class WebUser extends PimContext
      */
     public function iCancelTheMassEdit()
     {
-        $this->scrollContainerTo(900);
         $this->getCurrentPage()->cancel();
     }
 

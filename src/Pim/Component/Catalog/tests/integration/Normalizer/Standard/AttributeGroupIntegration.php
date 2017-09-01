@@ -34,12 +34,9 @@ class AttributeGroupIntegration extends AbstractStandardNormalizerTestCase
             'code'       => 'attributeGroupB',
             'sort_order' => 2,
             'attributes' => [
-                'an_image',
                 'a_metric',
                 'a_metric_without_decimal',
-                'a_metric_without_decimal_negative',
                 'a_metric_negative',
-                'a_multi_select',
                 'a_number_float',
                 'a_number_float_negative',
                 'a_number_integer',

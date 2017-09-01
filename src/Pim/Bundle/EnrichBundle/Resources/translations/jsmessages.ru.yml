@@ -343,9 +343,6 @@ pim_enrich:
           title: Ассоциации
           info:
             none_exist: Титпы ассоциаций отсутствуют.
-            show_products: Показать продукты
-            show_groups: Показать группы
-            number_of_associations: "{{ productCount }} продуктов и {{ groupCount }} групп"
         attributes:
           title: Атрибуты
           btn:
@@ -365,7 +362,6 @@ pim_enrich:
           info:
             no_family: Семейство не определено. Пожалуйста определите семейство для вычисления завершенности этого продукта.
             no_completeness: Вы только что изменили семейство продукта. Пожалуйста, сохраните его первым, чтобы вычислить завершенность для нового семейства.
-          missing_values: Отсутствующуют значения
         history:
           title: Журнал
       switch:
@@ -800,6 +796,8 @@ pim_enrich:
     attribute:
       modal_title: Выберите тип атрибута
     attribute_group:
+      create_btn: Создать
+    api_connection:
       create_btn: Создать
   mass_edit:
     next: Следующая

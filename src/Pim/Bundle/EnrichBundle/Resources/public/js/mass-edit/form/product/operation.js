@@ -63,6 +63,15 @@ define(
             },
 
             /**
+             * Get the operation icon
+             *
+             * @return {string}
+             */
+            getIcon: function () {
+                return this.config.icon;
+            },
+
+            /**
              * Get job instance code to launch
              *
              * @return {string}

@@ -370,9 +370,7 @@ pim_enrich:
           title: Asociaciones
           info:
             none_exist: No existe ningún tipo de asociación.
-            show_products: Mostrar Productos
-            show_groups: Mostrar grupos
-            number_of_associations: "{{ productCount }} productos y {{ groupCount }} grupos"
+            show_products: Mostrar productos
         attributes:
           title: Atributos
           btn:
@@ -392,7 +390,6 @@ pim_enrich:
           info:
             no_family: Ninguna familia definida. Por favor defina una familia para calcular la completitud de este producto.
             no_completeness: Usted cambió la familia del producto. Por favor guarde los cambios en primero para calcular la completitud para esta nueva familia.
-          missing_values: Valores faltantes
         history:
           title: Histórico
       switch:
@@ -839,6 +836,8 @@ pim_enrich:
     attribute:
       modal_title: Elija el tipo de atributo
     attribute_group:
+      create_btn: Crear
+    api_connection:
       create_btn: Crear
   mass_edit:
     next: Siguiente

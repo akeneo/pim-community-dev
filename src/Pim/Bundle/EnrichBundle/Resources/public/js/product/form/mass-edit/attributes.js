@@ -44,6 +44,7 @@ define(
             configure: function () {
                 mediator.on('mass-edit:form:lock', this.onLock.bind(this));
                 mediator.on('mass-edit:form:unlock', this.onUnlock.bind(this));
+                this.onExtensions('add-attribute:add', this.addAttributes.bind(this));
 
                 return BaseAttributes.prototype.configure.apply(this, arguments);
             },
@@ -57,7 +58,6 @@ define(
                 if (field.canBeSeen()) {
                     field.setLocked(this.locked);
                     field.render();
-                    FieldManager.addVisibleField(field.attribute.code);
                     panel.append(field.$el);
                 }
             },
@@ -73,7 +73,8 @@ define(
                 $.when(
                     FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes),
                     FetcherRegistry.getFetcher('locale').fetch(UserContext.get('catalogLocale')),
-                    FetcherRegistry.getFetcher('channel').fetch(UserContext.get('catalogScope')),
+                    FetcherRegistry.getFetcher('channel')
+                        .fetch(UserContext.get('catalogScope'), {force_list_method: true}),
                     FetcherRegistry.getFetcher('currency').fetchAll()
                 ).then(function (attributes, locale, channel, currencies) {
                     var formData = this.getFormData();
@@ -133,6 +134,7 @@ define(
                 this.triggerExtensions('add-attribute:update:available-attributes');
 
                 delete product.values[attributeCode];
+                // TODO: the manager's internal state shouldn't be modified by reference
                 delete fields[attributeCode];
 
                 this.setData(product);

@@ -18,6 +18,7 @@ datagrid:
         columns:
             name:
                 label: oro.user.grid.groups.columns.name
+                frontend_type: label
 
         properties:
             id: ~

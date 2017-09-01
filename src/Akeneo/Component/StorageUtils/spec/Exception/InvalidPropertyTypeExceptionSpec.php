@@ -237,7 +237,7 @@ class InvalidPropertyTypeExceptionSpec extends ObjectBehavior
             'attribute',
             [],
             'Pim\Component\Catalog\Updater\Attribute',
-            'Property "attribute" expects an array with the key "currency" as data.',
+            'Property "attribute" expects an array with the key "currency".',
             InvalidPropertyTypeException::ARRAY_KEY_EXPECTED_CODE
         );
 

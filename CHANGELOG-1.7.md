@@ -2,7 +2,28 @@
 
 ## Bug Fixes
 
+- PIM-6568: Fix import items invalid data that were no longer saved
+- PIM-6744: Fix field configuration of xlsx product import job edit form
+- PIM-6757: Fix scalability issue on product deletion
+
+## Improvements
+
+- GITHUB-6570: Make Attribute option labels longer, cheers @fitn!
+
+# 1.7.7 (2017-08-03)
+
+## Bug Fixes
+
+- PIM-6525: Fix issue with select attribute type which never open in PEF.
+- PIM-6420: Fix simple and multi select auto sorting.
+- PIM-6620: Fix simple select attribute option sorting in products grid.
+
+# 1.7.6 (2017-06-30)
+
+## Bug Fixes
+
 - PIM-6420: Fix autosorting of attribute options
+- PIM-6470: Correctly translate default filters on user profile
 
 # 1.7.5 (2017-06-02)
 

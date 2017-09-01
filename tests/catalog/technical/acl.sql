@@ -56,13 +56,14 @@ INSERT INTO `acl_entries` VALUES
     (8,9,NULL,2,NULL,0,0,1,'all',0,0),
     (9,10,NULL,2,NULL,0,0,1,'all',0,0),
     (10,11,NULL,2,NULL,0,0,1,'all',0,0),
-    (11,1,NULL,3,NULL,0,0,1,'all',0,0),
+    (11,1,NULL,2,NULL,0,0,1,'all',0,0),
     (12,12,NULL,2,NULL,0,0,1,'all',0,0),
     (13,13,NULL,2,NULL,0,0,1,'all',0,0),
     (14,14,NULL,2,NULL,0,0,1,'all',0,0),
     (15,15,NULL,2,NULL,0,0,1,'all',0,0),
     (16,16,NULL,2,NULL,0,0,1,'all',0,0),
-    (17,17,NULL,2,NULL,0,0,1,'all',0,0)
+    (17,17,NULL,2,NULL,0,0,1,'all',0,0),
+    (18,1,NULL,4,NULL,0,0,1,'all',0,0)
 ;
 /*!40000 ALTER TABLE `acl_entries` ENABLE KEYS */;
 

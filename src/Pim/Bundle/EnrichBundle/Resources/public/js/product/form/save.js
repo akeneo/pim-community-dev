@@ -14,7 +14,6 @@ define(
         'oro/translator',
         'pim/form/common/save',
         'oro/messenger',
-        'pim/product-manager',
         'pim/saver/product',
         'pim/field-manager',
         'pim/i18n',
@@ -26,7 +25,6 @@ define(
         __,
         BaseSave,
         messenger,
-        ProductManager,
         ProductSaver,
         FieldManager,
         i18n,
@@ -35,6 +33,12 @@ define(
         return BaseSave.extend({
             updateSuccessMessage: __('pim_enrich.entity.product.info.update_successful'),
             updateFailureMessage: __('pim_enrich.entity.product.info.update_failed'),
+
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:change-family:after', this.save);
+
+                return BaseSave.prototype.configure.apply(this, arguments);
+            },
 
             /**
              * {@inheritdoc}
@@ -70,7 +74,6 @@ define(
 
                 return ProductSaver
                     .save(productId, product)
-                    .then(ProductManager.generateMissing.bind(ProductManager))
                     .then(function (data) {
                         this.postSave();
 
