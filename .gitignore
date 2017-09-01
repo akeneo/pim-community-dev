@@ -55,3 +55,4 @@ docker-compose.yml
 
 yarn.lock
 package-lock.json
+.yarn-metadata.json
