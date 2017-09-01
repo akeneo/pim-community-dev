@@ -23,6 +23,11 @@ extensions:
         parent: pim-product-index-left-column
         targetZone: navigation
 
+    pim-product-index-column-category:
+        module: pim/grid/column-category
+        parent: pim-product-index-column-inner
+        targetZone: product-scope-filter
+
     pim-product-index-create-button:
         module: pim/form/common/index/create-button
         parent: pim-product-index

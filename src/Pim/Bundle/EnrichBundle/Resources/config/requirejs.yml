@@ -898,6 +898,7 @@ config:
         # Grid
         pim/grid/locale-switcher: pimenrich/js/product/grid/locale-switcher
         pim/grid/column-inner:    pimenrich/js/product/grid/column-inner
+        pim/grid/column-category: pimenrich/js/product/grid/column-category
 
         # Category tree
         pim/grid/category-tree: pimenrich/js/product/grid/category-tree
@@ -981,6 +982,7 @@ config:
         # Grid
         pim/template/product/grid/locale-switcher:           pimenrich/templates/product/grid/locale-switcher.html
         pim/template/product/grid/column-inner:              pimenrich/templates/product/grid/column-inner.html
+        pim/template/product/grid/column-category:           pimenrich/templates/product/grid/column-category.html
         pim/template/product/index:                          pimenrich/templates/product/index.html
         pim/template/product/tab/categories:                 pimenrich/templates/product/tab/categories.html
         pim/template/product/tab/catalog-switcher:           pimenrich/templates/product/tab/catalog-switcher.html

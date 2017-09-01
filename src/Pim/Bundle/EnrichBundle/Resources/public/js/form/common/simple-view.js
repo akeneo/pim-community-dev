@@ -47,6 +47,8 @@ define([
 
             this.template = requireContext(this.config.template);
 
+            this.listenTo(this.getRoot(), 'grid:third_column:toggle', this.toggleThirdColumn.bind(this));
+
             return BaseForm.prototype.configure.apply(this, arguments);
         },
 
@@ -62,6 +64,16 @@ define([
             );
 
             this.renderExtensions();
+        },
+
+        /**
+         * Toggle the thrid column
+         */
+        toggleThirdColumn() {
+            const thirdColumn = this.$el.find('.AknDefault-thirdColumn');
+            if (null !== thirdColumn) {
+                thirdColumn.toggleClass('AknDefault-thirdColumn--open');
+            }
         }
     });
 });
