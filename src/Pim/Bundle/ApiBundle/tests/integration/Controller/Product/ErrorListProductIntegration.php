@@ -253,7 +253,7 @@ class ErrorListProductIntegration extends AbstractProductTestCase
 
         $this->get('pim_versioning.manager.version')->setRealTimeVersioning(false);
         $this->get('pim_catalog.saver.product')->saveAll($products);
-        $this->get('akeneo_elasticsearch.client')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
 
         $client->request('GET', 'api/rest/v1/products?page=101&limit=100');
 
