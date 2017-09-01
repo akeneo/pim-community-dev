@@ -39,7 +39,10 @@ class ProjectCalculationJobParameters implements DefaultValuesProviderInterface,
      */
     public function getDefaultValues()
     {
-        return ['notification_user' => null];
+        return [
+            'user_to_notify' => null,
+            'is_user_authenticated' => false
+        ];
     }
 
     /**
@@ -50,7 +53,8 @@ class ProjectCalculationJobParameters implements DefaultValuesProviderInterface,
         return new Collection([
             'fields' => [
                 'project_code' => new ProjectIdentifier(),
-                'notification_user' => new Type('string'),
+                'user_to_notify' => new Type('string'),
+                'is_user_authenticated' => new Type('bool'),
             ],
         ]);
     }

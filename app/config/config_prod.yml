@@ -1,6 +1,17 @@
 imports:
     - { resource: config.yml }
 
+doctrine:
+    orm:
+        entity_managers:
+            default:
+                metadata_cache_driver:
+                    cache_provider: pim
+                result_cache_driver:
+                    cache_provider: pim
+                query_cache_driver:
+                    cache_provider: pim
+
 monolog:
     handlers:
         main:

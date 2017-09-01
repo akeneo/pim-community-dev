@@ -217,7 +217,7 @@ class MassUploadController
         $jobInstance = $this->jobInstanceRepo->findOneByIdentifier('apply_assets_mass_upload');
         $user =  $this->tokenStorage->getToken()->getUser();
 
-        $configuration = ['notification_user' => $user->getUsername()];
+        $configuration = ['user_to_notify' => $user->getUsername()];
 
         $jobExecution = $this->jobLauncher->launch($jobInstance, $user, $configuration);
 

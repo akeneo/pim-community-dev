@@ -76,7 +76,8 @@ class SuccessListPublishedProductIntegration extends AbstractPublishedProductTes
                     ['data' => 'Big description', 'locale' => 'en_US', 'scope' => 'ecommerce'],
                     ['data' => 'Medium description', 'locale' => 'en_US', 'scope' => 'tablet'],
                     ['data' => 'Grande description', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                    ['data' => 'Description moyenne', 'locale' => 'fr_FR', 'scope' => 'tablet']
+                    ['data' => 'Description moyenne', 'locale' => 'fr_FR', 'scope' => 'tablet'],
+                    ['data' => 'China description', 'locale' => 'zh_CN', 'scope' => 'ecommerce_china'],
                 ]
             ]
         ]);
@@ -104,9 +105,9 @@ class SuccessListPublishedProductIntegration extends AbstractPublishedProductTes
     }
 
     /**
-     * Get all products, whatever locale, scope, category
+     * Get all published products, whatever locale, scope, category with the default pagination type that is with an offset.
      */
-    public function testListPublishedProductsWithoutParameter()
+    public function testDefaultPaginationListPublishedProductsWithoutParameter()
     {
         $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
@@ -115,9 +116,10 @@ class SuccessListPublishedProductIntegration extends AbstractPublishedProductTes
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/published-products?limit=10"},
-        "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=10"}
+        "self"  : {"href": "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10"},
+        "first" : {"href": "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10"}
     },
+    "current_page" : 1,
     "_embedded"    : {
 		"items": [
             {$standardizedPublishedProducts['simple']},
@@ -134,27 +136,26 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testFirstPageListPublishedProductsWithCount()
+    public function testDefaultPaginationFirstPageListPublishedProductsWithCount()
     {
-        $standardizedProducts = $this->getStandardizedPublishedProducts();
+        $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
-
-        $nextId = rawurlencode($this->getEncryptedId('scopable'));
 
         $client->request('GET', 'api/rest/v1/published-products?with_count=true&limit=3');
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/published-products?limit=3&with_count=true"},
-        "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=3&with_count=true"},
-        "next"  : {"href": "http://localhost/api/rest/v1/published-products?limit=3&with_count=true&search_after={$nextId}"}
+        "self"  : {"href": "http://localhost/api/rest/v1/published-products?page=1&with_count=true&pagination_type=page&limit=3"},
+        "first" : {"href": "http://localhost/api/rest/v1/published-products?page=1&with_count=true&pagination_type=page&limit=3"},
+        "next"  : {"href": "http://localhost/api/rest/v1/published-products?page=2&with_count=true&pagination_type=page&limit=3"}
     },
+    "current_page" : 1,
     "items_count"  : 6,
     "_embedded"    : {
 		"items": [
-            {$standardizedProducts['simple']},
-            {$standardizedProducts['localizable']},
-            {$standardizedProducts['scopable']}
+            {$standardizedPublishedProducts['simple']},
+            {$standardizedPublishedProducts['localizable']},
+            {$standardizedPublishedProducts['scopable']}
 		]
     }
 }
@@ -163,67 +164,27 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    /**
-     * Get products with "search_before" parameter.
-     */
-    public function testListPublishedProductsWithSearchBeforeParameter()
+    public function testDefaultPaginationLastPageListPublishedProductsWithCount()
     {
-        $standardizedProducts = $this->getStandardizedPublishedProducts();
+        $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $ids = [
-            'localizable'              => rawurlencode($this->getEncryptedId('localizable')),
-            'localizable_and_scopable' => rawurlencode($this->getEncryptedId('localizable_and_scopable')),
-            'scopable'                 => rawurlencode($this->getEncryptedId('scopable')),
-        ];
-
-        $client->request('GET', sprintf('api/rest/v1/published-products?search_before=%s&limit=2', $ids['localizable_and_scopable']));
+        $client->request('GET', 'api/rest/v1/published-products?with_count=true&limit=3&page=2');
         $expected = <<<JSON
 {
     "_links": {
-        "self" : {"href": "http://localhost/api/rest/v1/published-products?limit=2&search_before={$ids['localizable_and_scopable']}"},
-        "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=2"},
-        "next": {"href": "http://localhost/api/rest/v1/published-products?limit=2&search_after={$ids['scopable']}"},
-        "previous": {"href": "http://localhost/api/rest/v1/published-products?limit=2&search_before={$ids['localizable']}"}
+        "self"     : {"href": "http://localhost/api/rest/v1/published-products?page=2&with_count=true&pagination_type=page&limit=3"},
+        "first"    : {"href": "http://localhost/api/rest/v1/published-products?page=1&with_count=true&pagination_type=page&limit=3"},
+        "previous" : {"href": "http://localhost/api/rest/v1/published-products?page=1&with_count=true&pagination_type=page&limit=3"},
+        "next"     : {"href": "http://localhost/api/rest/v1/published-products?page=3&with_count=true&pagination_type=page&limit=3"}
     },
+    "current_page" : 2,
+    "items_count"  : 6,
     "_embedded"    : {
 		"items": [
-            {$standardizedProducts['localizable']},
-            {$standardizedProducts['scopable']}
-		]
-    }
-}
-JSON;
-
-        $this->assertListResponse($client->getResponse(), $expected);
-    }
-
-    /**
-     * Get the 3 latest published products with "search_before" parameter.
-     */
-    public function testLatestPublishedProductsWithSearchBeforeParameter()
-    {
-        $standardizedProducts = $this->getStandardizedPublishedProducts();
-        $client = $this->createAuthenticatedClient();
-
-        $ids = [
-            'product_china'             => rawurlencode($this->getEncryptedId('product_china')),
-            'product_without_category2' => rawurlencode($this->getEncryptedId('product_without_category2'))
-        ];
-
-        $client->request('GET', 'api/rest/v1/published-products?search_before=&limit=2');
-        $expected = <<<JSON
-{
-    "_links": {
-        "self" : {"href": "http://localhost/api/rest/v1/published-products?limit=2&search_before="},
-        "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=2"},
-        "next": {"href": "http://localhost/api/rest/v1/published-products?limit=2&search_after={$ids['product_without_category2']}"},
-        "previous": {"href": "http://localhost/api/rest/v1/published-products?limit=2&search_before={$ids['product_china']}"}
-    },
-    "_embedded"    : {
-		"items": [
-            {$standardizedProducts['product_china']},
-            {$standardizedProducts['product_without_category2']}
+            {$standardizedPublishedProducts['localizable_and_scopable']},
+            {$standardizedPublishedProducts['product_china']},
+            {$standardizedPublishedProducts['product_without_category2']}
 		]
     }
 }
@@ -239,21 +200,22 @@ JSON;
      *    - locale = "en_US" or null
      * Then only published products in "master" tree are returned
      */
-    public function testListPublishedProductsWithEcommerceChannel()
+    public function testOffsetPaginationListPublishedProductsWithEcommerceChannel()
     {
-        $standardizedProducts = $this->getStandardizedPublishedProducts();
+        $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/published-products?scope=ecommerce');
+        $client->request('GET', 'api/rest/v1/published-products?scope=ecommerce&pagination_type=page');
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=ecommerce"},
-        "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=ecommerce"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&scope=ecommerce"},
+        "first" : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&scope=ecommerce"}
     },
+    "current_page" : 1,
     "_embedded"    : {
         "items" : [
-            {$standardizedProducts['simple']},
+            {$standardizedPublishedProducts['simple']},
             {
                 "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/published-products/localizable"}
@@ -340,68 +302,23 @@ JSON;
      *     - locale = "en_US", "fr_FR" or null
      * Then only published products in "master" tree are returned
      */
-    public function testListPublishedProductsWithTabletChannel()
+    public function testOffsetPaginationListPublishedProductsWithTabletChannel()
     {
-        $standardizedProducts = $this->getStandardizedPublishedProducts();
+        $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/published-products?scope=tablet');
+        $client->request('GET', 'api/rest/v1/published-products?scope=tablet&pagination_type=page');
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet"},
-        "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&scope=tablet"},
+        "first" : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&scope=tablet"}
     },
+    "current_page" : 1,
     "_embedded"    : {
         "items" : [
-            {$standardizedProducts['simple']},
-            {
-                "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/published-products/localizable"}
-                },
-                "identifier"    : "localizable",
-                "family"        : null,
-                "groups"        : [],
-                "categories"    : ["categoryB"],
-                "enabled"       : true,
-                "values"        : {
-                    "a_localizable_image" : [
-                        {
-                            "data": "3/3/6/a/336af1d213f9953530b3a7c4b4aeaf57615dbaaf_akeneo.jpg",
-                            "locale": "de_DE",
-                            "scope": null,
-                            "_links": {
-                                "download": {
-                                    "href": "http://localhost/api/rest/v1/media-files/3/3/6/a/336af1d213f9953530b3a7c4b4aeaf57615dbaaf_akeneo.jpg"
-                                }
-                            }
-                        },
-                        {
-                            "locale" : "en_US",
-                            "scope" : null,
-                            "data" : "8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg",
-                            "_links": {
-                                "download": {
-                                    "href": "http://localhost/api/rest/v1/8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg/download"
-                                }
-                            }
-                        },
-                        {
-                            "locale" : "fr_FR",
-                            "scope" : null,
-                            "data" : "5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg",
-                            "_links": {
-                                "download": {
-                                    "href": "http://localhost/api/rest/v1/5/5/9/6/559681bb0b2df7ae0eaf3bda76af5819c08bd6ae_akeneo.jpg/download"
-                                }
-                            }
-                        }
-                    ]
-                },
-                "created"       : "2017-01-23T11:44:25+01:00",
-                "updated"       : "2017-01-23T11:44:25+01:00",
-                "associations"  : {}
-            },
+            {$standardizedPublishedProducts['simple']},
+            {$standardizedPublishedProducts['localizable']},
             {
                 "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/published-products/scopable"}
@@ -460,23 +377,24 @@ JSON;
      * So PV are returned only if:
      *     - scope = "tablet"
      *     - locale = "fr_FR" or null
-     * Then only published products in "master" tree are returned
+     * Then only products in "master" tree are returned
      */
-    public function testListPublishedProductsWithTabletChannelAndFRLocale()
+    public function testOffsetPaginationListProductsWithTabletChannelAndFRLocale()
     {
-        $standardizedProducts = $this->getStandardizedPublishedProducts();
+        $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/published-products?scope=tablet&locales=fr_FR');
+        $client->request('GET', 'api/rest/v1/published-products?scope=tablet&locales=fr_FR&pagination_type=page');
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet&locales=fr_FR"},
-        "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet&locales=fr_FR"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&scope=tablet&locales=fr_FR"},
+        "first" : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&scope=tablet&locales=fr_FR"}
     },
+    "current_page" : 1,
     "_embedded"    : {
         "items" : [
-            {$standardizedProducts['simple']},
+            {$standardizedPublishedProducts['simple']},
             {
                 "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/published-products/localizable"}
@@ -557,63 +475,88 @@ JSON;
     }
 
     /**
-     * Filter on locales "en_US" and "fr_FR"
+     * Scope "ecommerce_china" has "CNY" activated locale and it category tree linked is "master_china"
      * So PV are returned only if:
-     *     - locale = "en_US", "fr_FR" or null
-     * Then we return all published products (whatever the categories)
+     *     - scope = "ecommerce_china"
+     *     - locale = "en_US", "zh_CN" or null
+     * Then only published products in "master_china" tree are returned
      */
-    public function testListPublishedProductsWithENAndFRLocales()
+    public function testOffsetPaginationListPublishedProductsWithEcommerceChinaChannel()
     {
-        $standardizedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/published-products?locales=en_US,fr_FR');
+        $client->request('GET', 'api/rest/v1/published-products?scope=ecommerce_china&pagination_type=page');
         $expected = <<<JSON
 {
-    "_links": {
-        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&locales=en_US%2Cfr_FR"},
-        "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&locales=en_US%2Cfr_FR"}
+    "_links"       : {
+        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&scope=ecommerce_china"},
+        "first" : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&scope=ecommerce_china"}
     },
+    "current_page" : 1,
     "_embedded"    : {
         "items" : [
-            {$standardizedProducts['simple']},
             {
                 "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/published-products/localizable"}
+                    "self" : {"href" : "http://localhost/api/rest/v1/published-products/localizable_and_scopable"}
                 },
-                "identifier"    : "localizable",
+                "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "groups"        : [],
-                "categories"    : ["categoryB"],
+                "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {
-                    "a_localizable_image" : [
-                        {
-                            "locale" : "en_US",
-                            "scope" : null,
-                            "data" : "8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg",
-                            "_links": {
-                                "download": {
-                                    "href": "http://localhost/api/rest/v1/8/5/6/e/856e7f47e3e53415d9c4ce8efe9bb51c8b2c68d5_akeneo.jpg/download"
-                                }
-                            }
-                        },
-                        {
-                            "locale": "fr_FR",
-                            "scope": null,
-                            "data": "6\/7\/8\/3\/6783035ea95aefa68c1c0732a3ceb197319367fa_akeneo.jpg",
-                            "_links": {
-                                "download": {
-                                    "href": "http:\/\/localhost\/api\/rest\/v1\/media-files\/6\/7\/8\/3\/6783035ea95aefa68c1c0732a3ceb197319367fa_akeneo.jpg\/download"
-                                }
-                            }
-                        }
+                    "a_localized_and_scopable_text_area" : [
+                        {"locale" : "zh_CN", "scope" : "ecommerce_china", "data" : "China description"}
                     ]
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
                 "associations"  : {}
             },
+            {
+                "_links" : {
+                    "self" : {"href" : "http://localhost/api/rest/v1/published-products/product_china"}
+                },
+                "identifier"    : "product_china",
+                "family"        : null,
+                "groups"        : [],
+                "categories"    : ["master_china"],
+                "enabled"       : true,
+                "values"        : {},
+                "created"       : "2017-01-23T11:44:25+01:00",
+                "updated"       : "2017-01-23T11:44:25+01:00",
+                "associations"  : {}
+            }
+        ]
+    }
+}
+JSON;
+
+        $this->assertListResponse($client->getResponse(), $expected);
+    }
+
+    /**
+     * Filter on locales "en_US" and "zh_CN"
+     * So PV are returned only if:
+     *     - locale = "en_US", "zh_CN" or null
+     * Then we return all products (whatever the categories)
+     */
+    public function testOffsetPaginationListProductsWithENAndCNLocales()
+    {
+        $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', 'api/rest/v1/published-products?locales=en_US,zh_CN&pagination_type=page');
+        $expected = <<<JSON
+{
+    "_links": {
+        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&locales=en_US%2Czh_CN"},
+        "first" : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&locales=en_US%2Czh_CN"}
+    },
+    "current_page" : 1,
+    "_embedded"    : {
+        "items" : [
+            {$standardizedPublishedProducts['simple']},
             {
                 "_links" : {
                     "self" : {"href" : "http://localhost/api/rest/v1/published-products/scopable"}
@@ -662,16 +605,15 @@ JSON;
                     "a_localized_and_scopable_text_area" : [
                         {"locale" : "en_US", "scope" : "tablet", "data" : "Medium description"},
                         {"locale" : "en_US", "scope" : "ecommerce", "data" : "Big description"},
-                        {"locale" : "fr_FR", "scope" : "tablet", "data" : "Description moyenne"},
-                        {"locale" : "fr_FR", "scope" : "ecommerce", "data" : "Grande description"}
+                        {"locale" : "zh_CN", "scope" : "ecommerce_china", "data" : "China description"}
                     ]
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
                 "updated"       : "2017-01-23T11:44:25+01:00",
                 "associations"  : []
             },
-            {$standardizedProducts['product_china']},
-            {$standardizedProducts['product_without_category2']}
+            {$standardizedPublishedProducts['product_china']},
+            {$standardizedPublishedProducts['product_without_category2']}
         ]
     }
 }
@@ -680,17 +622,18 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testListPublishedProductsWithFilteredAttributes()
+    public function testOffsetPaginationListProductsWithFilteredAttributes()
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/published-products?attributes=a_text');
+        $client->request('GET', 'api/rest/v1/published-products?attributes=a_text&pagination_type=page');
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&attributes=a_text"},
-        "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&attributes=a_text"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&attributes=a_text"},
+        "first" : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&attributes=a_text"}
     },
+    "current_page" : 1,
     "_embedded"    : {
         "items" : [
             {
@@ -793,17 +736,18 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testListPublishedProductsWithChannelLocalesAndAttributesParams()
+    public function testOffsetPaginationListProductsWithChannelLocalesAndAttributesParams()
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/published-products?scope=tablet&locales=fr_FR&attributes=a_scopable_price,a_metric,a_localized_and_scopable_text_area');
+        $client->request('GET', 'api/rest/v1/published-products?scope=tablet&locales=fr_FR&attributes=a_scopable_price,a_metric,a_localized_and_scopable_text_area&pagination_type=page');
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area"},
-        "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area"},
+        "first" : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&scope=tablet&locales=fr_FR&attributes=a_scopable_price%2Ca_metric%2Ca_localized_and_scopable_text_area"}
     },
+    "current_page" : 1,
     "_embedded"    : {
         "items" : [
             {
@@ -897,35 +841,30 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testTheSecondPageOfTheListOfPublishedProductsWithoutCount()
+    public function testTheSecondPageOfTheListOfProductsWithOffsetPaginationWithoutCount()
     {
         $client = $this->createAuthenticatedClient();
 
-        $ids = [
-            'localizable_and_scopable' => rawurlencode($this->getEncryptedId('localizable_and_scopable')),
-            'product_china'            => rawurlencode($this->getEncryptedId('product_china')),
-            'product_without_category2' => rawurlencode($this->getEncryptedId('product_without_category2')),
-        ];
-
-        $client->request('GET', sprintf('api/rest/v1/published-products?attributes=a_text&search_after=%s&limit=2&with_count=false', $ids['localizable_and_scopable']));
+        $client->request('GET', 'api/rest/v1/published-products?attributes=a_text&page=2&limit=2&pagination_type=page&with_count=false');
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"     : {"href" : "http://localhost/api/rest/v1/published-products?limit=2&attributes=a_text&search_after={$ids['localizable_and_scopable']}&with_count=false"},
-        "first"    : {"href" : "http://localhost/api/rest/v1/published-products?limit=2&attributes=a_text&with_count=false"},
-        "previous" : {"href" : "http://localhost/api/rest/v1/published-products?limit=2&attributes=a_text&with_count=false&search_before={$ids['product_china']}"},
-        "next"     : {"href" : "http://localhost/api/rest/v1/published-products?limit=2&attributes=a_text&search_after={$ids['product_without_category2']}&with_count=false"}
+        "self"     : {"href" : "http://localhost/api/rest/v1/published-products?page=2&with_count=false&pagination_type=page&limit=2&attributes=a_text"},
+        "first"    : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=2&attributes=a_text"},
+        "previous" : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=2&attributes=a_text"},
+        "next"     : {"href" : "http://localhost/api/rest/v1/published-products?page=3&with_count=false&pagination_type=page&limit=2&attributes=a_text"}
     },
+    "current_page" : 2,
     "_embedded"    : {
         "items" : [
             {
                 "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/published-products/product_china"}
+                    "self" : {"href" : "http://localhost/api/rest/v1/published-products/scopable"}
                 },
-                "identifier"    : "product_china",
+                "identifier"    : "scopable",
                 "family"        : null,
                 "groups"        : [],
-                "categories"    : ["master_china"],
+                "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -934,12 +873,12 @@ JSON;
             },
             {
                 "_links" : {
-                    "self" : {"href" : "http://localhost/api/rest/v1/published-products/product_without_category2"}
+                    "self" : {"href" : "http://localhost/api/rest/v1/published-products/localizable_and_scopable"}
                 },
-                "identifier"    : "product_without_category2",
+                "identifier"    : "localizable_and_scopable",
                 "family"        : null,
                 "groups"        : [],
-                "categories"    : [],
+                "categories"    : ["categoryA", "master_china"],
                 "enabled"       : true,
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -954,20 +893,19 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testOutOfRangePublishedProductsList()
+    public function testOutOfRangeProductsList()
     {
         $client = $this->createAuthenticatedClient();
 
-        $id = rawurlencode($this->getEncryptedId('product_without_category2'));
-
-        $client->request('GET', sprintf('api/rest/v1/published-products?search_after=%s&with_count=true', $id));
+        $client->request('GET', 'api/rest/v1/published-products?page=2&pagination_type=page&with_count=true');
         $expected = <<<JSON
 {
-    "_links" : {
-        "self": {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search_after={$id}&with_count=true"},
-        "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&with_count=true"},
-        "previous": {"href" : "http://localhost/api/rest/v1/published-products?limit=10&with_count=true&search_before="}
+    "_links"       : {
+        "self"        : {"href" : "http://localhost/api/rest/v1/published-products?page=2&with_count=true&pagination_type=page&limit=10"},
+        "first"       : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=true&pagination_type=page&limit=10"},
+        "previous"    : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=true&pagination_type=page&limit=10"}
     },
+    "current_page" : 2,
     "items_count"  : 6,
     "_embedded"    : {
         "items" : []
@@ -978,19 +916,20 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testListPublishedProductsWithSearch()
+    public function testOffsetPaginationListProductsWithSearch()
     {
         $client = $this->createAuthenticatedClient();
 
         $search = '{"a_metric":[{"operator":">","value":{"amount":"9","unit":"KILOWATT"}}]}';
-        $client->request('GET', 'api/rest/v1/published-products?search=' . $search);
+        $client->request('GET', 'api/rest/v1/published-products?pagination_type=page&search=' . $search);
         $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
 {
     "_links"       : {
-        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"},
-        "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
     },
+    "current_page" : 1,
     "_embedded"    : {
         "items" : [
             {
@@ -1033,19 +972,20 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testListPublishedProductsWithMultiplePQBFilters()
+    public function testOffsetPaginationListProductsWithMultiplePQBFilters()
     {
         $client = $this->createAuthenticatedClient();
 
         $search = '{"categories":[{"operator":"IN", "value":["categoryB"]}], "a_yes_no":[{"operator":"=","value":true}]}';
-        $client->request('GET', 'api/rest/v1/published-products?search=' . $search);
+        $client->request('GET', 'api/rest/v1/published-products?pagination_type=page&search=' . $search);
         $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"},
-        "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
     },
+    "current_page" : 1,
     "_embedded"    : {
         "items" : []
     }
@@ -1055,7 +995,7 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testListPublishedProductsWithCompletenessPQBFilters()
+    public function testListProductsWithCompletenessPQBFilters()
     {
         $client = $this->createAuthenticatedClient();
 
@@ -1065,9 +1005,10 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"},
-        "first" : {"href" : "http://localhost/api/rest/v1/published-products?limit=10&search=${searchEncoded}"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"},
+        "first" : {"href" : "http://localhost/api/rest/v1/published-products?page=1&with_count=false&pagination_type=page&limit=10&search=${searchEncoded}"}
     },
+    "current_page" : 1,
     "_embedded"    : {
         "items" : []
     }
@@ -1077,28 +1018,29 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testPaginationLastPageOfTheListOfPublishedProducts()
+    /**
+     * Get all products, whatever locale, scope, category with a search after pagination
+     */
+    public function testSearchAfterPaginationListProductsWithoutParameter()
     {
-        $standardizedProducts = $this->getStandardizedPublishedProducts();
+        $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
 
-        $ids = [
-            'localizable_and_scopable' => rawurlencode($this->getEncryptedId('localizable_and_scopable')),
-            'product_china'            => rawurlencode($this->getEncryptedId('product_china')),
-        ];
-
-        $client->request('GET', sprintf('api/rest/v1/published-products?limit=4&search_after=%s', $ids['localizable_and_scopable']));
+        $client->request('GET', 'api/rest/v1/published-products?pagination_type=search_after');
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/published-products?limit=4&search_after={$ids['localizable_and_scopable']}"},
-        "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=4"},
-        "previous": {"href": "http://localhost/api/rest/v1/published-products?limit=4&search_before={$ids['product_china']}"}
+        "self"  : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=10"},
+        "first" : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=10"}
     },
-    "_embedded"    : {
+    "_embedded" : {
         "items" : [
-            {$standardizedProducts['product_china']},
-            {$standardizedProducts['product_without_category2']}
+            {$standardizedPublishedProducts['simple']},
+            {$standardizedPublishedProducts['localizable']},
+            {$standardizedPublishedProducts['scopable']},
+            {$standardizedPublishedProducts['localizable_and_scopable']},
+            {$standardizedPublishedProducts['product_china']},
+            {$standardizedPublishedProducts['product_without_category2']}
         ]
     }
 }
@@ -1107,12 +1049,9 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    /**
-     * @group todo
-     */
-    public function testSearchAfterPaginationListPublishedProductsWithNextLink()
+    public function testSearchAfterPaginationListProductsWithNextLink()
     {
-        $standardizedProducts = $this->getStandardizedPublishedProducts();
+        $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
 
         $id = [
@@ -1125,16 +1064,15 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/published-products?limit=3&pagination_type=search_after&search_after={$id['simple']}"},
-        "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=3&pagination_type=search_after"},
-        "next"  : {"href": "http://localhost/api/rest/v1/published-products?limit=3&pagination_type=search_after&search_after={$id['localizable_and_scopable']}"},
-        "previous" : {"href": "http://localhost/api/rest/v1/published-products?limit=3&pagination_type=search_after&search_before={$id['localizable']}"}
+        "self"  : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=3&search_after={$id['simple']}"},
+        "first" : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=3"},
+        "next"  : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=3&search_after={$id['localizable_and_scopable']}"}
     },
     "_embedded"    : {
         "items" : [
-            {$standardizedProducts['localizable']},
-            {$standardizedProducts['scopable']},
-            {$standardizedProducts['localizable_and_scopable']}
+            {$standardizedPublishedProducts['localizable']},
+            {$standardizedPublishedProducts['scopable']},
+            {$standardizedPublishedProducts['localizable_and_scopable']}
         ]
     }
 }
@@ -1143,27 +1081,25 @@ JSON;
         $this->assertListResponse($client->getResponse(), $expected);
     }
 
-    public function testSearchAfterPaginationLastPageOfTheListOfPublishedProducts()
+    public function testSearchAfterPaginationLastPageOfTheListOfProducts()
     {
-        $standardizedProducts = $this->getStandardizedPublishedProducts();
+        $standardizedPublishedProducts = $this->getStandardizedPublishedProducts();
         $client = $this->createAuthenticatedClient();
 
         $scopableEncryptedId = rawurlencode($this->getEncryptedId('scopable'));
-        $localizableAndScopableEncryptedId = rawurlencode($this->getEncryptedId('localizable_and_scopable'));
 
         $client->request('GET', sprintf('api/rest/v1/published-products?pagination_type=search_after&limit=4&search_after=%s' , $scopableEncryptedId));
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href": "http://localhost/api/rest/v1/published-products?limit=4&pagination_type=search_after&search_after={$scopableEncryptedId}"},
-        "first" : {"href": "http://localhost/api/rest/v1/published-products?limit=4&pagination_type=search_after"},
-        "previous" : {"href": "http://localhost/api/rest/v1/published-products?limit=4&pagination_type=search_after&search_before={$localizableAndScopableEncryptedId}"}
+        "self"  : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=4&search_after={$scopableEncryptedId}"},
+        "first" : {"href": "http://localhost/api/rest/v1/published-products?pagination_type=search_after&limit=4"}
     },
     "_embedded"    : {
         "items" : [
-            {$standardizedProducts['localizable_and_scopable']},
-            {$standardizedProducts['product_china']},
-            {$standardizedProducts['product_without_category2']}
+            {$standardizedPublishedProducts['localizable_and_scopable']},
+            {$standardizedPublishedProducts['product_china']},
+            {$standardizedPublishedProducts['product_without_category2']}
         ]
     }
 }
@@ -1334,7 +1270,12 @@ JSON;
             "locale": "fr_FR",
             "scope": "ecommerce",
             "data": "Grande description"
-        }]
+        }, {
+            "locale": "zh_CN",
+            "scope": "ecommerce_china",
+            "data": "China description"
+        }
+        ]
     },
     "created": "2017-03-11T10:39:38+01:00",
     "updated": "2017-03-11T10:39:38+01:00",

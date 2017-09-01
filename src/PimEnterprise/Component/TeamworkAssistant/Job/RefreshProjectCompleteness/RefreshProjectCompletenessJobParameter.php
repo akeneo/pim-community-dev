@@ -46,7 +46,8 @@ class RefreshProjectCompletenessJobParameter implements
                 'product_identifier' => new NotBlank(),
                 'locale_identifier'  => new NotBlank(),
                 'channel_identifier' => new NotBlank(),
-                'notification_user'  => new Type('string'),
+                'user_to_notify'     => new Type('string'),
+                'is_user_authenticated' => new Type('bool'),
             ],
         ]);
     }
@@ -56,7 +57,10 @@ class RefreshProjectCompletenessJobParameter implements
      */
     public function getDefaultValues()
     {
-        return ['notification_user' => null];
+        return [
+            'user_to_notify' => null,
+            'is_user_authenticated' => false
+        ];
     }
 
     /**
