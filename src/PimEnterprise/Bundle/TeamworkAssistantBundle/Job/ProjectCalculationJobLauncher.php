@@ -58,7 +58,7 @@ class ProjectCalculationJobLauncher
 
         $configuration = [
             'project_code' => $project->getCode(),
-            'notification_user' => $project->getOwner()->getUsername()
+            'user_to_notify' => $project->getOwner()->getUsername()
         ];
 
         $this->simpleJobLauncher->launch($jobInstance, $project->getOwner(), $configuration);

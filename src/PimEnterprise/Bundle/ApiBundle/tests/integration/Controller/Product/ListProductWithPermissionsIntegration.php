@@ -23,10 +23,10 @@ class ListProductWithPermissionsIntegration extends AbstractProductTestCase
         $expected = <<<JSON
 {
     "_links": {
-        "self": {"href": "http://localhost/api/rest/v1/products?limit=10"},
-        "first": {"href": "http://localhost/api/rest/v1/products?limit=10"}
+        "self": {"href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10"},
+        "first": {"href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10"}
     },
-    "current_page": null,
+    "current_page": 1,
     "_embedded": {
         "items": [
             {$standardizedProducts['product_viewable_by_everybody_1']},
@@ -49,10 +49,10 @@ JSON;
         $expected = <<<JSON
 {
     "_links": {
-        "self": {"href": "http://localhost/api/rest/v1/products?limit=10"},
-        "first": {"href": "http://localhost/api/rest/v1/products?limit=10"}
+        "self": {"href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10"},
+        "first": {"href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10"}
     },
-    "current_page": null,
+    "current_page": 1   ,
     "_embedded": {
         "items": [
             {

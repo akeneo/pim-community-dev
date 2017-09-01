@@ -31,7 +31,7 @@ class ProjectCalculationJobLauncherSpec extends ObjectBehavior
 
         $configuration = [
             'project_code' => 'project_code',
-            'notification_user' => 'julia'
+            'user_to_notify' => 'julia'
         ];
 
         $simpleJobLauncher->launch($jobInstance, $user, $configuration)->shouldBeCalled();

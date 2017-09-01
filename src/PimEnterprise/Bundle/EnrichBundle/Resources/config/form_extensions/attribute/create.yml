@@ -1,4 +1,12 @@
 extensions:
+    pim-attribute-create-form-properties-common-scopable:
+        config:
+            readOnlyForTypes: [pim_assets_collection]
+
+    pim-attribute-create-form-properties-common-localizable:
+        config:
+            readOnlyForTypes: [pim_assets_collection]
+
     pim-attribute-create-form-properties-common-is-read-only:
         module: pim/attribute-edit-form/properties/boolean
         parent: pim-attribute-create-form-properties-common
