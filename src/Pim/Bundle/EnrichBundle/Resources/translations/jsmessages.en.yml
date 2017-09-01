@@ -443,7 +443,7 @@ pim_enrich:
                         load_more: Loading more results...
                     attribute_group_selector: Attribute group
                     attribute_group_all: All
-                    attribute_group.to_fill_count: "{1} 1 attribute to complete|] 1, Inf [{{ count }} attributes to complete"
+                    attribute_group.to_fill_count: "{1} 1 empty required attribute|] 1, Inf [{{ count }} empty required attributes"
                 categories:
                     title: Categories
             panel:
@@ -586,7 +586,7 @@ pim_enrich:
                     table:
                         name: Name
                         type: Type
-                        scope: Scope
+                        scopable: Scopable
                         localizable: Localizable
                 history.title: History
         common:

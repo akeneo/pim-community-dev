@@ -43,8 +43,7 @@ define(
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.onValidationError);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.onPostFetch);
-                this.listenTo(UserContext, 'change:catalogLocale', this.render);
-                this.listenTo(UserContext, 'change:catalogScope', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:to-fill:cleared', this.render);
 
                 return GroupSelectorForm.prototype.configure.apply(this, arguments);
             },
@@ -116,6 +115,7 @@ define(
                             badges: this.badges,
                             locale: UserContext.get('catalogLocale'),
                             toFillAttributeGroups: toFillAttributeGroups,
+                            allAttributeCode: this.all.code,
                             currentElement: _.findWhere(this.getElements(), {code: this.getCurrent()}),
                             i18n: i18n,
                             label: __('pim_enrich.form.product.tab.attributes.attribute_group_selector')

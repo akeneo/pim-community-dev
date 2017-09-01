@@ -28,13 +28,6 @@ function (
         containerTemplate: _.template(template),
         config: {},
         elements: {},
-        events: {
-            'change input,select': function (event) {
-                this.errors = [];
-                this.updateModel(this.getFieldValue(event.target));
-                this.getRoot().render();
-            }
-        },
         fieldName: null,
         errors: [],
 

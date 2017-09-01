@@ -10,7 +10,8 @@ define([
     'underscore',
     'oro/translator',
     'pim/attribute-edit-form/properties/field',
-    'pim/template/attribute/tab/properties/boolean'
+    'pim/template/attribute/tab/properties/boolean',
+    'bootstrap.bootstrapswitch'
 ],
 function (
     $,
@@ -20,6 +21,13 @@ function (
     template
 ) {
     return BaseField.extend({
+        events: {
+            'change input': function (event) {
+                this.errors = [];
+                this.updateModel(this.getFieldValue(event.target));
+                this.getRoot().render();
+            }
+        },
         template: _.template(template),
 
         /**

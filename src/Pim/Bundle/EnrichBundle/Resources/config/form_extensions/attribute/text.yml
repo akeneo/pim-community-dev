@@ -31,7 +31,9 @@ extensions:
         config:
             fieldName: validation_rule
             choices:
+                email: pim_enrich.entity.attribute.validation_rule.email
                 regexp: pim_enrich.entity.attribute.validation_rule.regexp
+                url: pim_enrich.entity.attribute.validation_rule.url
 
     pim-attribute-form-text-validation-params-validation-regexp:
         module: pim/attribute-edit-form/properties/validation-regexp

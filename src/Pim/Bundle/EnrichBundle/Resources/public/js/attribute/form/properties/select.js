@@ -20,12 +20,23 @@ function (
     template
 ) {
     return BaseField.extend({
+        events: {
+            'change select': function (event) {
+                this.errors = [];
+                this.updateModel(this.getFieldValue(event.target));
+                this.getRoot().render();
+            }
+        },
         template: _.template(template),
 
         /**
          * {@inheritdoc}
          */
         renderInput: function (templateContext) {
+            if (!_.has(this.getFormData(), this.fieldName) && _.has(this.config, 'defaultValue')) {
+                this.updateModel(this.config.defaultValue);
+            }
+
             return this.template(_.extend(templateContext, {
                 value: this.getFormData()[this.fieldName],
                 choices: this.formatChoices(this.config.choices || []),

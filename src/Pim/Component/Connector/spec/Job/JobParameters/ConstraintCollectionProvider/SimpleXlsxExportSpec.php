@@ -22,11 +22,12 @@ class SimpleXlsxExportSpec extends ObjectBehavior
         $collection = $this->getConstraintCollection();
         $collection->shouldReturnAnInstanceOf('Symfony\Component\Validator\Constraints\Collection');
         $fields = $collection->fields;
-        $fields->shouldHaveCount(4);
+        $fields->shouldHaveCount(5);
         $fields->shouldHaveKey('filePath');
         $fields->shouldHaveKey('withHeader');
         $fields->shouldHaveKey('linesPerFile');
-        $fields->shouldHaveKey('notification_user');
+        $fields->shouldHaveKey('user_to_notify');
+        $fields->shouldHaveKey('is_user_authenticated');
     }
 
     function it_supports_a_job(JobInterface $job)
