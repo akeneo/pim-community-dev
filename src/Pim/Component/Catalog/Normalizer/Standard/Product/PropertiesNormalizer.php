@@ -23,7 +23,6 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     use SerializerAwareTrait;
 
     const FIELD_IDENTIFIER = 'identifier';
-    const FIELD_LABEL = 'label';
     const FIELD_FAMILY = 'family';
     const FIELD_GROUPS = 'groups';
     const FIELD_VARIANT_GROUP = 'variant_group';

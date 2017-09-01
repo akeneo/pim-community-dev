@@ -5,10 +5,4 @@ services:
     pim_connector.launcher.authenticated_job_launcher:
         class: '%pim_connector.launcher.authenticated_job_launcher.class%'
         arguments:
-            - '@akeneo_batch.job_repository'
-            - '@akeneo_batch.job_parameters_factory'
-            - '@akeneo_batch.job.job_registry'
-            - '@akeneo_batch.job.job_parameters_validator'
-            - '%kernel.root_dir%'
-            - '%kernel.environment%'
-            - '%kernel.logs_dir%'
+            - '@akeneo_batch.launcher.simple_job_launcher'

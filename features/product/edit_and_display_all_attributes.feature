@@ -29,7 +29,7 @@ Feature: Edit and see all attributes
     Then I should not see the text "Colors"
     Then I should not see the text "Marketing"
     And I visit the "All" group
-    Then I should see the text "3 attributes to complete"
+    Then I should see the text "3 empty required attributes"
     Then I should see the text "Media"
     Then I should see the text "Colors"
     Then I should see the text "Marketing"

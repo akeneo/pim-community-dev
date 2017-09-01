@@ -1,14 +1,11 @@
 define(
-    ['jquery', 'pim/initselect2', 'wysiwyg', 'bootstrap', 'bootstrap.bootstrapswitch'],
+    ['jquery', 'pim/initselect2', 'wysiwyg', 'bootstrap'],
     function ($, initSelect2, wysiwyg) {
         'use strict';
 
         return function ($target) {
             // Apply Select2
             initSelect2.init($target);
-
-            // Apply bootstrapSwitch
-            $target.find('.switch:not(.has-switch)').bootstrapSwitch();
 
             // Initialize tooltip
             $target.find('[data-toggle="tooltip"]').tooltip();

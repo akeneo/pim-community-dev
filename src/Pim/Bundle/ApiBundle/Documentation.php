@@ -12,4 +12,5 @@ namespace Pim\Bundle\ApiBundle;
 class Documentation
 {
     const URL = 'http://api.akeneo.com/api-reference.html#';
+    const URL_DOCUMENTATION = 'http://api.akeneo.com/documentation/';
 }

@@ -7,17 +7,18 @@
 (function ($) {
     'use strict';
 
-    var nested_switch_id = 'nested_switch_input';
+    require(['bootstrap.bootstrapswitch'], function () {
+        var nested_switch_id = 'nested_switch_input';
 
-    $.jstree.plugin('nested_switch', {
-        __init: function () {
-            var container = this.get_container();
+        $.jstree.plugin('nested_switch', {
+            __init: function () {
+                var container = this.get_container();
 
-            // Create the tree toolbar and load trees in tree selector
-            container.bind('init.jstree', $.proxy(function () {
+                // Create the tree toolbar and load trees in tree selector
+                container.bind('init.jstree', $.proxy(function () {
                     var settings = this._get_settings().nested_switch;
-                    this.data.nested_switch.state    = settings.state;
-                    this.data.nested_switch.label    = settings.label;
+                    this.data.nested_switch.state = settings.state;
+                    this.data.nested_switch.label = settings.label;
                     this.data.nested_switch.callback = settings.callback;
                     var _this = this;
 
@@ -27,8 +28,8 @@
                     });
 
                     var nested_switch = $('<input>', {
-                        type:    'checkbox',
-                        id:      nested_switch_id,
+                        type: 'checkbox',
+                        id: nested_switch_id,
                         'class': 'input-large jstree-tree-select',
                         checked: !!this.data.nested_switch.state
                     });
@@ -38,15 +39,15 @@
                     var switch_wrapper = $('<div>', {
                         'class': 'switch switch-small pull-right',
                         'attr': {
-                            'data-on-label':  __('switch_on'),
+                            'data-on-label': __('switch_on'),
                             'data-off-label': __('switch_off'),
-                            'data-animated':  false
+                            'data-animated': false
                         }
                     }).html(nested_switch);
 
                     var nested_switch_label = $('<label>', {
-                        'for':    nested_switch_id,
-                        'html':   this.data.nested_switch.label,
+                        'for': nested_switch_id,
+                        'html': this.data.nested_switch.label,
                         'class': 'control-label pull-left'
                     });
 
@@ -66,18 +67,19 @@
                     container.closest('.sidebar-content').css('height', 'calc(100% - 60px)');
 
                 }, this));
-        },
-        defaults: {
-            state:    true,
-            label:    null,
-            callback: null
-        },
-        _fn: {
-            get_nested_switch: function () {
-                return $('#' + nested_switch_id);
+            },
+            defaults: {
+                state: true,
+                label: null,
+                callback: null
+            },
+            _fn: {
+                get_nested_switch: function () {
+                    return $('#' + nested_switch_id);
+                }
             }
-        }
+        });
+        // include the nested_switch plugin by default on available plugins list
+        $.jstree.defaults.plugins.push('nested_switch');
     });
-    // include the nested_switch plugin by default on available plugins list
-    $.jstree.defaults.plugins.push('nested_switch');
 })(jQuery);

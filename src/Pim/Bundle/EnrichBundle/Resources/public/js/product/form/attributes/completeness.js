@@ -20,7 +20,6 @@ define(
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:to-fill-filter', this.addFieldFilter);
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.clearFillFieldProvider);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -64,13 +63,6 @@ define(
                         });
                     };
                 }));
-            },
-
-            /**
-             * Clear the fill field provider on product fetch
-             */
-            clearFillFieldProvider: function () {
-                toFillFieldProvider.clear();
             },
 
             /**
