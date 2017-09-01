@@ -48,10 +48,8 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
-                    if ('base_product' === localeEvent.context) {
-                        this.render();
-                    }
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:render', function () {
+                    this.render();
                 }.bind(this));
             },
 
@@ -101,8 +99,6 @@ define(
                     localeCode: event.currentTarget.dataset.locale,
                     context: this.config.context
                 });
-
-                this.render();
             },
 
             /**

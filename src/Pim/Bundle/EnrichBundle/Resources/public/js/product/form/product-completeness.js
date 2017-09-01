@@ -142,18 +142,10 @@ define(
              */
             showAttribute: function (event) {
                 this.getRoot().trigger(
-                    'pim_enrich:form:locale_switcher:change',
-                    {
-                        localeCode: event.currentTarget.dataset.locale,
-                        context: 'base_product'
-                    }
-                );
-                this.getRoot().trigger(
                     'pim_enrich:form:show_attribute',
                     {
                         attribute: event.currentTarget.dataset.attribute,
-                        locale: event.currentTarget.dataset.locale,
-                        scope: UserContext.get('catalogScope')
+                        locale: event.currentTarget.dataset.locale
                     }
                 );
                 this.render();
