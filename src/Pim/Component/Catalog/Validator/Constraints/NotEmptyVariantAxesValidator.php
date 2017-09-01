@@ -39,7 +39,7 @@ class NotEmptyVariantAxesValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, NotEmptyVariantAxes::class);
         }
 
-        if (null === $familyVariant = $entity->getFamilyVariant()) {
+        if (null === $entity->getFamilyVariant()) {
             return;
         }
 
@@ -49,8 +49,7 @@ class NotEmptyVariantAxesValidator extends ConstraintValidator
             $value = $entity->getValue($axis->getCode());
 
             if (null === $value || empty($value->getData())) {
-                $this->context->buildViolation(
-                    NotEmptyVariantAxes::EMPTY_AXIS_VALUE, [
+                $this->context->buildViolation(NotEmptyVariantAxes::EMPTY_AXIS_VALUE, [
                     '%attribute%' => $axis->getCode()
                 ])->addViolation();
             }

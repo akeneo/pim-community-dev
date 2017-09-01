@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
@@ -258,32 +260,36 @@ class ProductModelUpdater implements ObjectUpdaterInterface
      * exception will be thrown.
      *
      * @param ProductModelInterface $productModel
-     * @param mixed                 $value
+     * @param string                $parentCode
      *
      * @throws ImmutablePropertyException
      * @throws InvalidPropertyException
      */
-    private function updateParent(ProductModelInterface $productModel, $value): void
+    private function updateParent(ProductModelInterface $productModel, string $parentCode): void
     {
-        if (empty($value)) {
+        if (empty($parentCode)) {
             return;
         }
 
-        if (null !== $productModel->getId() && $productModel->isRootProductModel()) {
+        // TODO: To remove in PIM-6350.
+        if (null !== $productModel->getId() && (
+            $productModel->isRootProductModel() ||
+            (null !== $productModel->getParent() && $parentCode !== $productModel->getParent()->getCode())
+        )) {
             throw ImmutablePropertyException::immutableProperty(
                 'parent',
-                $value,
+                $parentCode,
                 static::class
             );
         }
 
-        if (null === $parentProductModel = $this->productModelRepository->findOneByIdentifier($value)) {
+        if (null === $parentProductModel = $this->productModelRepository->findOneByIdentifier($parentCode)) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 'parent',
                 'parent code',
                 'The product model does not exist',
                 static::class,
-                $value
+                $parentCode
             );
         }
 
@@ -294,19 +300,27 @@ class ProductModelUpdater implements ObjectUpdaterInterface
      * Updates the family variant of the family variant of the product model.
      *
      * @param ProductModelInterface $productModel
-     * @param mixed                 $value
+     * @param string                $familyVariantCode
      *
      * @throws InvalidPropertyException
      */
-    private function updateFamilyVariant(ProductModelInterface $productModel, $value): void
+    private function updateFamilyVariant(ProductModelInterface $productModel, string $familyVariantCode): void
     {
-        if (null === $familyVariant = $this->familyVariantRepository->findOneByIdentifier($value)) {
+        if (null !== $productModel->getFamilyVariant() && $familyVariantCode !== $productModel->getFamilyVariant()->getCode()) {
+            throw ImmutablePropertyException::immutableProperty(
+                'family_variant',
+                $familyVariantCode,
+                static::class
+            );
+        }
+
+        if (null === $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariantCode)) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 'family_variant',
                 'family variant code',
                 'The family variant does not exist',
                 static::class,
-                $value
+                $familyVariantCode
             );
         }
 

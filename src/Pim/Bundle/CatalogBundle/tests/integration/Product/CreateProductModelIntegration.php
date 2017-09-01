@@ -1,6 +1,6 @@
 <?php
 
-namespace tests\integration\Pim\Bundle\CatalogBundle\Product;
+namespace Pim\Bundle\CatalogBundle\tests\integration\Product;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Test\Integration\Configuration;
@@ -12,7 +12,7 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelIntegration extends TestCase
+class CreateProductModelIntegration extends TestCase
 {
     /**
      * Create a product without any errors

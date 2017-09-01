@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\Localization\TranslatableUpdater;

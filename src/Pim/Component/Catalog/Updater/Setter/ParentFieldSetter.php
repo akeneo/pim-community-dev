@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
@@ -43,7 +43,11 @@ class ParentFieldSetter extends AbstractFieldSetter
             );
         }
 
-        /** @var $parent ProductModelInterface */
+        // TODO: This is to be removed in PIM-6350.
+        if (null !== $product->getParent() && $data !== $product->getParent()->getCode()) {
+            throw ImmutablePropertyException::immutableProperty('parent', $data, static::class);
+        }
+
         if (null === $parent = $this->productModelRepository->findOneByIdentifier($data)) {
             throw InvalidPropertyException::validEntityCodeExpected(
                 $field,

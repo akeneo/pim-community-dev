@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
@@ -47,6 +48,7 @@ class ParentFieldSetterSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier('parent_code')->willReturn($productModel);
         $productModel->getFamilyVariant()->willReturn($familyVariant);
 
+        $product->getParent()->willReturn(null);
         $product->setParent($productModel)->shouldBeCalled();
         $product->setFamilyVariant($familyVariant)->shouldBeCalled();
         $product->getFamily()->willReturn($family);
@@ -65,6 +67,7 @@ class ParentFieldSetterSpec extends ObjectBehavior
         $productModel->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getFamily()->willReturn($family);
 
+        $product->getParent()->willReturn(null);
         $product->setParent($productModel)->shouldBeCalled();
         $product->setFamilyVariant($familyVariant)->shouldBeCalled();
         $product->getFamily()->willReturn(null);
@@ -90,6 +93,19 @@ class ParentFieldSetterSpec extends ObjectBehavior
         $this->shouldThrow(InvalidPropertyException::class)->during(
             'setFieldData',
             [$variantProduct, 'parent', 'parent_code']
+        );
+    }
+
+    function it_throws_exception_if_the_parent_is_updated(
+        VariantProductInterface $variantProduct,
+        ProductModelInterface $parent
+    ) {
+        $variantProduct->getParent()->willReturn($parent);
+        $parent->getCode()->willReturn('parent_code');
+
+        $this->shouldThrow(ImmutablePropertyException::class)->during(
+            'setFieldData',
+            [$variantProduct, 'parent', 'new_parent_code']
         );
     }
 }
