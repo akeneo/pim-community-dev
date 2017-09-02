@@ -1,0 +1,10 @@
+version: "2"
+
+services:
+  akeneo:
+    volumes:
+      - akeneo-sync:/srv/pim:rw
+
+volumes:
+  akeneo-sync:
+    external: true

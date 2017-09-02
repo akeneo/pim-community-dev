@@ -1,0 +1,12 @@
+version: "2"
+
+options:
+  compose-dev-file-path: 'docker-compose.mac.yml'
+
+syncs:
+  akeneo-sync:
+    src: './'
+    sync_host_port: 10872
+    sync_strategy: 'unison'
+    sync_userid: '1000'
+    sync_excludes: ['app/cache', 'app/logs', '.github', '.phpspec']
