@@ -151,9 +151,6 @@ pim_enrich:
         logged_at: Prijavljen u
         from: Od
         modified: Promjenjeno
-        property: Svojstvo
-        old_values: Stare vrijednosti
-        new_values: Nove vrijednosti
         actions: Akcije
       info:
         deletion_successful: Proizvod je uspješno izbrisan.
@@ -359,6 +356,7 @@ pim_enrich:
             no_match: Nisu pronađeni rezultati
             load_more: Učitavanje više rezultata...
           attribute_group_selector: Grupa atributa
+          attribute_group_all: Sve
         categories:
           title: Kategorije
       panel:
@@ -495,7 +493,7 @@ pim_enrich:
           table:
             name: Ime
             type: Tip
-            scope: Djelokrug
+            scopable: Moguće je odrediti djelokrug
             localizable: Moguće je lokalizirati
         history.title: Povijest
     common:

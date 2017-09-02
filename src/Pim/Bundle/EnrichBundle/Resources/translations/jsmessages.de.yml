@@ -153,9 +153,6 @@ pim_enrich:
         logged_at: Angemeldet am
         from: Von
         modified: Bearbeitet
-        property: Eigenschaft
-        old_values: Alte Werte
-        new_values: Neue Werte
         actions: Aktionen
       info:
         deletion_successful: Produkt erfolgreich gelöscht.
@@ -392,6 +389,7 @@ pim_enrich:
             no_match: Keine Treffer gefunden
             load_more: Weitere Ergebnisse werden geladen...
           attribute_group_selector: Attributgruppe
+          attribute_group_all: Alle
         categories:
           title: Kategorien
       panel:
@@ -530,7 +528,7 @@ pim_enrich:
           table:
             name: Name
             type: Typ
-            scope: Gültigkeitsbereich
+            scopable: Je Ausgabekanal individualisierbar
             localizable: Lokalisierbar
         history.title: Historie
     common:

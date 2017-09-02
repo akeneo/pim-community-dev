@@ -164,9 +164,8 @@ pim_enrich:
         logged_at: Logget af
         from: Fra
         modified: Ændret
-        property: Ejendom
-        old_values: Gamle værdier
-        new_values: Nye værdier
+        old_value: Gamle værdier
+        new_value: Ny værdi
         actions: Aktioner
       info:
         deletion_successful: Produkt slettet.
@@ -428,6 +427,8 @@ pim_enrich:
             no_match: Ingen fundet
             load_more: Indlæs flere resultater...
           attribute_group_selector: Attributgruppe
+          attribute_group_all: Alle
+          attribute_group.to_fill_count: "Der er {1} 1-attribut tilbage |] 1, Inf [{{ count }} attributter tilbage"
         categories:
           title: Kategorier
       panel:
@@ -569,7 +570,7 @@ pim_enrich:
           table:
             name: Navn
             type: Type
-            scope: Omfang
+            scopable: Omfangbar
             localizable: Kan oversættes
         history.title: Historik
     common:
