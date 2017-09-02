@@ -161,9 +161,6 @@ pim_enrich:
         logged_at: Loggato il
         from: Da
         modified: Modificato
-        property: Proprietà
-        old_values: Vecchi valori
-        new_values: Nuovi valori
         actions: Azioni
       info:
         deletion_successful: Prodotto eliminato correttamente.
@@ -417,6 +414,7 @@ pim_enrich:
             no_match: Nessuna corrispondenza trovata
             load_more: Carica ulteriori risultati...
           attribute_group_selector: Attributo di gruppo
+          attribute_group_all: Tutti
         categories:
           title: Categorie
       panel:
@@ -557,7 +555,7 @@ pim_enrich:
           table:
             name: Nome
             type: Tipo
-            scope: Ambito
+            scopable: Customizzazione per canale
             localizable: Localizzabile
         history.title: Cronologia
     common:
