@@ -25,7 +25,7 @@ Feature: Publish many products at once
     When I am on the products grid
     And I select rows red-heels, blue-sneakers and yellow-sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Publish products" operation
+    And I choose the "Publish" operation
     And I should see the text "The 3 selected products will be published"
     And I confirm mass edit
     And I wait for the "publish_product" job to finish

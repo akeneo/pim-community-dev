@@ -20,7 +20,7 @@ extensions:
         module: pimee/mass-edit-form/product/publish
         parent: pim-mass-published-product-edit
         aclResourceId: pimee_workflow_published_product_index
-        position: 110
+        position: 200
         config:
             label: pimee_enrich.mass_edit.product.operation.unpublish.label
             description: pimee_enrich.mass_edit.product.operation.unpublish.description
