@@ -45,6 +45,19 @@
     overflow-x: auto;
     flex-grow: 1;
     height: 100%;
+
+    &--withoutPadding {
+      padding: 10px 0 0 0;
+    }
+  }
+}
+
+@-moz-document url-prefix() {
+  // On Firefox, there is a bug to display the main menu border
+  .AknDefault {
+    &-contentWithColumn {
+      margin-left: 1px;
+    }
   }
 }
 

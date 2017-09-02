@@ -46,6 +46,17 @@ define(
             },
 
             /**
+             * Returns the label with the count of impacted elements
+             *
+             * @returns {String}
+             */
+            getLabelCount: function () {
+                const itemsCount = this.getFormData().itemsCount;
+
+                return __(this.config.labelCount, {itemsCount}, itemsCount);
+            },
+
+            /**
              * [getDescription description]
              * @return {[type]} [description]
              */

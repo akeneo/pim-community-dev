@@ -174,7 +174,7 @@ Start:    Start
 End:      End
 
 # Process tracker
-set_attribute_requirements: Set attribute requirements
+set_attribute_requirements: Set attributes requirements
 COMPLETED: Completed
 STARTING: Starting
 STARTED: Started

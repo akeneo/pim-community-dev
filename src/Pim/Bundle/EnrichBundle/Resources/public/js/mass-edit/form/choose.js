@@ -66,10 +66,20 @@ define(
              * {@inheritdoc}
              */
             getLabel: function () {
-                return __(
-                    this.config.title,
-                    {itemsCount: this.getFormData().itemsCount}
-                );
+                const itemsCount = this.getFormData().itemsCount;
+
+                return __(this.config.title, {itemsCount}, itemsCount);
+            },
+
+            /**
+             * Returns the label with the count of impacted elements
+             *
+             * @returns {String}
+             */
+            getLabelCount: function () {
+                const itemsCount = this.getFormData().itemsCount;
+
+                return __(this.config.labelCount, {itemsCount}, itemsCount);
             },
 
             /**
