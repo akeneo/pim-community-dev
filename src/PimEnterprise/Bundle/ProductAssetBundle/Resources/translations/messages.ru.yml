@@ -233,3 +233,4 @@ batch_jobs:
     perform.label: Переместить медиафайлы в категории
   add_tags_to_assets:
     perform.label: Добавление тегов к медиафайлам
+pim_assets_collection: Коллекция медиафайлов

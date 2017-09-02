@@ -234,3 +234,4 @@ batch_jobs:
     perform.label: 在目录中移动资源
   add_tags_to_assets:
     perform.label: 将标签添加到资源
+pim_assets_collection: 资源集合
