@@ -365,7 +365,7 @@ class WebUser extends PimContext
     {
         $element = $this->getElementOnCurrentPage('Main context selector');
 
-        $element->switchScope($scope);
+        $element->switchScope(strtolower($scope));
         $this->wait();
     }
 
@@ -412,6 +412,33 @@ class WebUser extends PimContext
             );
         }
     }
+
+    /**
+     * @param string $action open|close
+     *
+     * @When /^I (open|close) the category tree$/
+     */
+    public function iOpenTheCategoryTree($action) {
+        $this->spin(function() use ($action) {
+            $thirdColumn = $this->getCurrentPage()->find('css', '.AknDefault-thirdColumn');
+            if (null !== $thirdColumn) {
+                if (
+                    ('open' === $action && $thirdColumn->hasClass('AknDefault-thirdColumn--open')) ||
+                    ('close' === $action && !$thirdColumn->hasClass('AknDefault-thirdColumn--open'))
+                ) {
+                    return true;
+                }
+            }
+
+            $categorySwitcher = $this->getCurrentPage()->find('css', '.category-switcher');
+            if (null !== $categorySwitcher) {
+                $categorySwitcher->click();
+            }
+
+            return false;
+        }, 'Cannot find the category switcher');
+    }
+
 
     /**
      * @param TableNode $table

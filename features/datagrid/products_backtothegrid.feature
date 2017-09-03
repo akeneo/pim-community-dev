@@ -61,4 +61,4 @@ Feature: Products back to the grid
     And I should not see the text "Ecommerce"
     When I move backward one page
     Then I should see the text "Mobile"
-    And I should not see the text "ECommerce"
+    And I should not see the text "Ecommerce"

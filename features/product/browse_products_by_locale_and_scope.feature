@@ -63,16 +63,21 @@ Feature: Browse products by locale and scope
       | family        | [furniture]           |
 
   Scenario: Keep working local context through navigation
-    Given I should see the text "Master catalog"
+    Given I open the category tree
+    Then I should see the text "Master catalog"
     When I switch the locale to "fr_FR"
     And I am on the dashboard page
     And I am on the products grid
+    And I open the category tree
     Then I should see the text "Catalog principal"
 
   Scenario: Keep working scope context through navigation
-    Given I filter by "scope" with operator "equals" and value "Mobile"
+    Given I open the category tree
+    And I switch the scope to "Mobile"
     And I am on the dashboard page
     When I am on the products grid
+    And I open the category tree
     Then I should see the text "Mobile"
     When I refresh current page
+    And I open the category tree
     Then I should see the text "Mobile"

@@ -37,7 +37,7 @@ Feature: Filter products by reference data with locale and scope
       | lace_fabric | in list      | Straw        |        |
       | lace_fabric | is empty     |              | mug    |
       | lace_fabric | is not empty |              | postit |
-    When I filter by "scope" with operator "" and value "Mobile"
+    When I switch the scope to "Mobile"
     Then I should be able to use the following filters:
       | filter      | operator     | value         | result |
       | cap_color   | in list      | Purple        | postit |
@@ -64,7 +64,7 @@ Feature: Filter products by reference data with locale and scope
       | lace_fabric | in list      | Straw        |        |
       | lace_fabric | is empty     |              |        |
       | lace_fabric | is not empty |              | postit |
-    When I filter by "scope" with operator "" and value "Mobile"
+    When I switch the scope to "Mobile"
     And I hide the filter "cap_color"
     And I show the filter "cap_color"
     And I filter by "cap_color" with operator "in list" and value "Purple"

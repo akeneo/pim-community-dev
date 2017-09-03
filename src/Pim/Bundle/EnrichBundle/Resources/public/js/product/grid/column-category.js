@@ -18,7 +18,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'AknDropdown AknColumn-block',
+            className: 'AknDropdown AknColumn-block category-switcher',
             events: {
                 'click': 'toggleThirdColumn'
             },

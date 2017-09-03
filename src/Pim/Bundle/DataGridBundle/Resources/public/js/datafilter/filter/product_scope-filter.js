@@ -33,11 +33,9 @@ define(
 
         return SelectFilter.extend({
             template: _.template(template),
-            className: 'AknDropdown AknColumn-block filter-item',
+            className: 'AknDropdown AknColumn-block filter-item scope-switcher',
             events: {
                 'keydown select': '_preventEnterProcessing',
-                'click .filter-select': '_onClickFilterArea',
-                'click .disable-filter': '_onClickDisableFilter',
                 'click .AknDropdown-menuLink': '_onSelectChange'
             },
             /**
@@ -77,8 +75,6 @@ define(
                 let $filterChoices = $grid.find('#add-filter-select');
                 $filterChoices.find('option[value="scope"]').remove();
                 $filterChoices.multiselect('refresh');
-
-                this.selectWidget.multiselect('refresh');
             },
 
             /**
@@ -93,6 +89,8 @@ define(
                 this.setValue({value: scope});
                 UserContext.set('catalogScope', scope);
 
+                this.selectWidget.multiselect('refresh');
+
                 this.render();
             },
 
@@ -102,10 +100,7 @@ define(
             render: function () {
                 SelectFilter.prototype.render.apply(this, arguments);
 
-                this.$el.find('.value').html(_.findWhere(this.options.choices, {value: this.catalogScope}).label);
-                this.$el.find('.AknDropdown-menuLink').removeClass('.AknDropdown-menuLink--active')
-                this.$el.find('.AknDropdown-menuLink[data-value="' + this.catalogScope + '"]')
-                    .addClass('AknDropdown-menuLink--active');
+                this.highlightScope(this.catalogScope);
             },
 
             /**
@@ -143,14 +138,38 @@ define(
              * We don't put this logic in the setValue method because we want this behavior only when the value
              * comes from a change of the select element, not from a view/url for example.
              */
-            _onSelectChange: function() {
+            _onSelectChange: function(event) {
                 const value = $(event.target).closest('.AknDropdown-menuLink').attr('data-value');
-                this.catalogScope = value;
-                this.setValue(value);
-                DatagridState.set('product-grid', 'scope', value);
+                this.highlightScope(value);
 
-                this.render();
+                SelectFilter.prototype._onSelectChange.apply(this, arguments);
+
+                DatagridState.set('product-grid', 'scope', value);
             },
+
+            /**
+             * @inheritDoc
+             */
+            _readDOMValue() {
+                const currentScope = this.$el.find('.AknDropdown-menuLink--active').attr('data-value');
+
+                return { value: currentScope };
+            },
+
+            /**
+             * Highlight the current scope
+             *
+             * @param scope
+             */
+            highlightScope(scope) {
+                const currentOption = _.findWhere(this.options.choices, {value: scope});
+                if (undefined !== currentOption) {
+                    this.$el.find('.value').html(currentOption.label);
+                    this.$el.find('.AknDropdown-menuLink').removeClass('AknDropdown-menuLink--active');
+                    this.$el.find('.AknDropdown-menuLink[data-value="' + scope + '"]')
+                        .addClass('AknDropdown-menuLink--active');
+                }
+            }
         });
     }
 );
