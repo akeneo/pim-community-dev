@@ -67,7 +67,7 @@ stage("Checkout") {
             docker.image('node:8').inside("-v /home/akeneo/.yarn-cache:/home/node/.yarn-cache") {
                 unstash "pim_community_dev_full"
 
-                sh "yarn install"
+                sh "yarn install --verbose"
                 sh "yarn run webpack"
 
                 stash "pim_community_dev_full"
@@ -114,7 +114,7 @@ stage("Checkout") {
                 docker.image('node:8').inside("-v /home/akeneo/.yarn-cache:/home/node/.yarn-cache") {
                     unstash "pim_enterprise_dev_full"
 
-                    sh "yarn install"
+                    sh "yarn install --verbose"
                     sh "yarn run webpack"
 
                     stash "pim_enterprise_dev_full"
