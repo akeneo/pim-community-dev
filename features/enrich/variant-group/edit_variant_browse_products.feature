@@ -1,4 +1,4 @@
-@javascript
+@javascript @skip
 Feature: Edit a variant group adding/removing products
   In order to manage existing variant groups for the catalog
   As a product manager

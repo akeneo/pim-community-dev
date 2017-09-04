@@ -1,4 +1,4 @@
-@javascript
+@javascript @skip
 Feature: Filter available products for a variant group
   In order to easily browse products inside a variant group
   As a product manager

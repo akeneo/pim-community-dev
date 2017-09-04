@@ -1,4 +1,4 @@
-@javascript
+@javascript @skip
 Feature: Browse variant groups
   In order to list the existing variant groups for the catalog
   As a product manager

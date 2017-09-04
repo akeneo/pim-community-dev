@@ -1,4 +1,4 @@
-@javascript
+@javascript @skip
 Feature: Remove an attribute from a variant group
   In order to manage some attributes separately on variant group products
   As a product manager
