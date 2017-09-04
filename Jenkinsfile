@@ -64,10 +64,10 @@ stage("Checkout") {
 
             sh "mkdir -p /home/akeneo/.yarn-cache"
 
-            docker.image('node:8').inside("-v /home/akeneo/.yarn-cache:/home/node/.yarn-cache") {
+            docker.image('node:8').inside("-v /home/akeneo/.yarn-cache:/home/node/.yarn-cache -e YARN_CACHE_FOLDER=/home/node/.yarn-cache") {
                 unstash "pim_community_dev_full"
 
-                sh "yarn install --verbose"
+                sh "yarn install"
                 sh "yarn run webpack"
 
                 stash "pim_community_dev_full"
@@ -111,10 +111,10 @@ stage("Checkout") {
 
                 sh "mkdir -p /home/akeneo/.yarn-cache"
 
-                docker.image('node:8').inside("-v /home/akeneo/.yarn-cache:/home/node/.yarn-cache") {
+                docker.image('node:8').inside("-v /home/akeneo/.yarn-cache:/home/node/.yarn-cache -e YARN_CACHE_FOLDER=/home/node/.yarn-cache") {
                     unstash "pim_enterprise_dev_full"
 
-                    sh "yarn install --verbose"
+                    sh "yarn install"
                     sh "yarn run webpack"
 
                     stash "pim_enterprise_dev_full"

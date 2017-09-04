@@ -28,10 +28,13 @@ services:
 
   node:
     image: node:8
+    environment:
+      YARN_CACHE_FOLDER: '/home/node/.yarn-cache'
     user: node
     volumes:
       - ./:/srv/pim
       - ~/.npm:/home/node/.npm
+      - ~/.cache/yarn:/home/node/.yarn-cache
     working_dir: /srv/pim
     networks:
       - akeneo
