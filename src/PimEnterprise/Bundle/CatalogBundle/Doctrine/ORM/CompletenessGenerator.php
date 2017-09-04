@@ -41,6 +41,7 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
      * @param string                   $productValueClass
      * @param string                   $attributeClass
      * @param string                   $assetClass
+     * @param int                      $commitBatchSize
      */
     public function __construct(
         EntityManagerInterface $manager,
@@ -48,9 +49,10 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
         $productClass,
         $productValueClass,
         $attributeClass,
-        $assetClass
+        $assetClass,
+        $commitBatchSize = 1000
     ) {
-        parent::__construct($manager, $productClass, $productValueClass, $attributeClass);
+        parent::__construct($manager, $productClass, $productValueClass, $attributeClass, $commitBatchSize);
 
         $this->assetRepository = $assetRepository;
         $this->assetClass      = $assetClass;
@@ -80,14 +82,7 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
             $this->prepareCompleteAssets($criteria);
         }
 
-        $sql = $this->getInsertCompletenessSQL($criteria);
-
-        $stmt = $this->connection->prepare($sql);
-
-        foreach ($criteria as $placeholder => $value) {
-            $stmt->bindValue($placeholder, $value);
-        }
-        $stmt->execute();
+        $this->insertCompleteness($criteria);
     }
 
     /**
@@ -105,21 +100,55 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
         $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
-        $selectSql = $this->getCompleteAssetsSQL();
-        $selectSql = $this->applyTableNames($selectSql);
-        $selectSql = $this->applyCriteria($selectSql, $criteria);
+        $tempTableName = self::COMPLETE_ASSETS_TABLE;
+        $createSql = <<<SQL
+CREATE TEMPORARY TABLE {$tempTableName} (value_id INT, locale_id INT, channel_id INT)
+SQL;
+        $createSql = $this->applyTableNames($createSql);
+        $tempTableStmt = $this->connection->prepare($createSql);
+        $tempTableStmt->execute();
 
-        $createPattern = 'CREATE TEMPORARY TABLE %s (value_id INT, locale_id INT, channel_id INT) %s';
+        $sql = $this->getCompleteAssetsSQL();
+        $sql = $this->applyCriteria($sql, $criteria);
+        $sql = $this->applyTableNames($sql);
 
-        $createSql = sprintf($createPattern, self::COMPLETE_ASSETS_TABLE, $selectSql);
-
-        $stmt = $this->connection->prepare($createSql);
-
+        $fetchStmt = $this->connection->prepare($sql);
         foreach ($criteria as $placeholder => $value) {
-            $stmt->bindValue($placeholder, $value);
+            $fetchStmt->bindValue($placeholder, $value);
         }
+        $fetchStmt->execute();
 
-        $stmt->execute();
+        $insertSql = <<<SQL
+    INSERT INTO {$tempTableName} (value_id, locale_id, channel_id) 
+    VALUES (:value_id, :locale_id, :channel_id)
+SQL;
+        $insertStmt = $this->connection->prepare($insertSql);
+        $count = 0;
+
+        try {
+            while ($completeness = $fetchStmt->fetch()) {
+                if ($count === 0) {
+                    $this->connection->beginTransaction();
+                }
+
+                $insertStmt->bindValue('value_id', $completeness['value_id']);
+                $insertStmt->bindValue('locale_id', $completeness['locale_id']);
+                $insertStmt->bindValue('channel_id', $completeness['channel_id']);
+                $insertStmt->execute();
+
+                if ($count === $this->commitBatchSize) {
+                    $this->connection->commit();
+                    $count = 0;
+                }
+            }
+
+            if ($count > 0) {
+                $this->connection->commit();
+            }
+        } catch (\Exception $e) {
+            $this->connection->rollBack();
+            throw $e;
+        }
     }
 
     /**
@@ -139,7 +168,7 @@ class CompletenessGenerator extends BaseCompletenessGenerator implements Complet
 
         return $sql;
     }
-    
+
     /**
      * Overrided method to exclude assets from automatic mapping
      *

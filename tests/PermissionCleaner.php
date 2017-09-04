@@ -10,20 +10,32 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 class PermissionCleaner
 {
+    /** @var KernelInterface */
+    protected $kernel;
+
+    /**
+     * @param KernelInterface $kernel
+     */
+    public function __construct(KernelInterface $kernel)
+    {
+        $this->kernel = $kernel;
+    }
+
     /**
      * Remove the group All after an import
      *
-     * @param KernelInterface $kernel
-     *
      * @throws \Exception
      */
-    public function cleanPermission(KernelInterface $kernel)
+    public function cleanPermission()
     {
         $application = new Application();
+
         $cleanCategoryRight = $application->add(new CleanCategoryAccessesCommand());
         $cleanAttributeGroupRight = $application->add(new CleanAttributeGroupAccessesCommand());
-        $cleanCategoryRight->setContainer($kernel->getContainer());
-        $cleanAttributeGroupRight->setContainer($kernel->getContainer());
+
+        $cleanCategoryRight->setContainer($this->kernel->getContainer());
+        $cleanAttributeGroupRight->setContainer($this->kernel->getContainer());
+
         $cleanCategoryRightCommand = new CommandTester($cleanCategoryRight);
         $cleanAttributeGroupRightCommand = new CommandTester($cleanAttributeGroupRight);
 

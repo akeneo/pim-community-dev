@@ -61,7 +61,8 @@ class RuleNotificationFactory extends AbstractNotificationFactory implements Not
             ->setType($status)
             ->setMessage(sprintf('pimee_catalog_rule.notification.%s.%s', $type, $status))
             ->setMessageParams(['%label%' => $jobExecution->getJobInstance()->getLabel()])
-            ->setRoute('pimee_catalog_rule_rule_index')
+            ->setRoute('pim_enrich_job_tracker_show')
+            ->setRouteParams(['id' => $jobExecution->getId()])
             ->setContext(['actionType' => $type]);
 
         return $notification;

@@ -71,7 +71,8 @@ class ProductCascadeRemovalRepository extends DocumentRepository implements Prod
         $qb
             ->update()
             ->multiple(true)
-            ->field(sprintf('normalizedData.%s.id', $attributeCode))->equals((int) $asset->getId())->unsetField()
+            ->field(sprintf('normalizedData.%s', $attributeCode))
+            ->pull(['id' => (int) $asset->getId()])
             ->getQuery()
             ->execute();
     }

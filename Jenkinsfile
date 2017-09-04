@@ -4,9 +4,6 @@ def storages = ["orm", "odm"]
 def features = "features,vendor/akeneo/pim-community-dev/features"
 def ceBranch = "1.7.x-dev"
 def ceOwner = "akeneo"
-def phpVersion = "5.6"
-def mysqlVersion = "5.5"
-def esVersion = "none"
 def launchUnitTests = "yes"
 def launchIntegrationTests = "yes"
 def launchBehatTests = "yes"
@@ -21,18 +18,12 @@ stage("Checkout") {
             choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
             choice(choices: 'yes\nno', description: 'Run behat tests', name: 'launchBehatTests'),
             string(defaultValue: 'odm,orm', description: 'Storage used for the behat tests (comma separated values)', name: 'storages'),
-            string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features'),
-            choice(choices: '5.6\n7.0\n7.1', description: 'PHP version to run behat with', name: 'phpVersion'),
-            choice(choices: '5.5\n5.7', description: 'Mysql version to run behat with', name: 'mysqlVersion'),
-            choice(choices: 'none\n1.7\n5', description: 'ElasticSearch version to run behat with', name: 'esVersion')
+            string(defaultValue: 'features,vendor/akeneo/pim-community-dev/features', description: 'Behat scenarios to build', name: 'features')
         ])
 
         storages = userInput['storages'].tokenize(',')
         ceBranch = userInput['ce_branch']
         ceOwner = userInput['ce_owner']
-        phpVersion = userInput['phpVersion']
-        mysqlVersion = userInput['mysqlVersion']
-        esVersion = userInput['esVersion']
         features = userInput['features']
         launchUnitTests = userInput['launchUnitTests']
         launchIntegrationTests = userInput['launchIntegrationTests']
@@ -54,7 +45,7 @@ stage("Checkout") {
 
     node('docker') {
         deleteDir()
-        docker.image("carcel/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+        docker.image("akeneo/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
             unstash "project_files"
 
             sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
@@ -71,12 +62,8 @@ if (launchUnitTests.equals("yes")) {
     stage("Unit tests and Code style") {
         def tasks = [:]
 
-        tasks["phpspec-5.6"] = {runPhpSpecTest("5.6")}
-        tasks["phpspec-7.0"] = {runPhpSpecTest("7.0")}
-        tasks["phpspec-7.1"] = {runPhpSpecTest("7.1")}
-
+        tasks["phpspec"] = {runPhpSpecTest()}
         tasks["php-cs-fixer"] = {runPhpCsFixerTest()}
-
         tasks["grunt"] = {runGruntTest()}
 
         parallel tasks
@@ -87,12 +74,8 @@ if (launchIntegrationTests.equals("yes")) {
     stage("Integration tests") {
         def tasks = [:]
 
-        tasks["phpunit-5.6-orm"] = {runIntegrationTest("5.6", "orm")}
-        tasks["phpunit-7.0-orm"] = {runIntegrationTest("7.0", "orm")}
-        tasks["phpunit-7.1-orm"] = {runIntegrationTest("7.1", "orm")}
-        tasks["phpunit-5.6-odm"] = {runIntegrationTest("5.6", "odm")}
-        tasks["phpunit-7.0-odm"] = {runIntegrationTest("7.0", "odm")}
-        tasks["phpunit-7.1-odm"] = {runIntegrationTest("7.1", "odm")}
+        tasks["integration-orm"] = {runIntegrationTest("orm")}
+        // tasks["integration-odm"] = {runIntegrationTest("odm")}
 
         parallel tasks
     }
@@ -102,8 +85,8 @@ if (launchBehatTests.equals("yes")) {
     stage("Functional tests") {
         def tasks = [:]
 
-        if (storages.contains('odm')) {tasks["behat-odm"] = {runBehatTest("odm", features, phpVersion, mysqlVersion, esVersion)}}
-        if (storages.contains('orm')) {tasks["behat-orm"] = {runBehatTest("orm", features, phpVersion, mysqlVersion, esVersion)}}
+        if (storages.contains('odm')) {tasks["behat-odm"] = {runBehatTest("odm", features)}}
+        if (storages.contains('orm')) {tasks["behat-orm"] = {runBehatTest("orm", features)}}
 
         parallel tasks
     }
@@ -123,22 +106,20 @@ def runGruntTest() {
             sh "docker stop \$(docker ps -a -q) || true"
             sh "docker rm \$(docker ps -a -q) || true"
             sh "docker volume rm \$(docker volume ls -q) || true"
+
             deleteDir()
         }
     }
 }
 
-def runPhpSpecTest(phpVersion) {
+def runPhpSpecTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("akeneo/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "project_files"
 
-                if (phpVersion != "5.6") {
-                    sh "composer require --no-update --ignore-platform-reqs alcaeus/mongo-php-adapter"
-                }
-                sh "php -d memory_limit=-1 /usr/local/bin/composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
 
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
@@ -147,27 +128,25 @@ def runPhpSpecTest(phpVersion) {
             sh "docker stop \$(docker ps -a -q) || true"
             sh "docker rm \$(docker ps -a -q) || true"
             sh "docker volume rm \$(docker volume ls -q) || true"
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}] /\" app/build/logs/*.xml"
+
+            sh "find app/build/logs/ -name \"*.xml\" | xargs sed -i \"s/testcase name=\\\"/testcase name=\\\"[phpspec] /\""
             junit "app/build/logs/*.xml"
+
             deleteDir()
         }
     }
 }
 
-def runIntegrationTest(phpVersion, storage) {
+def runIntegrationTest(storage) {
     node('docker') {
         deleteDir()
         try {
             docker.image("mongo:2.4").withRun("--name mongodb", "--smallfiles") {
                 docker.image("mysql:5.5").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim") {
-                    docker.image("carcel/php:${phpVersion}").inside("--link mysql:mysql --link mongodb:mongodb -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+                    docker.image("akeneo/php:5.6").inside("--link mysql:mysql --link mongodb:mongodb -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                         unstash "project_files"
 
-                        if (phpVersion != "5.6") {
-                            sh "composer require --ignore-platform-reqs --no-update alcaeus/mongo-php-adapter"
-                        }
-
-                        sh "composer update --ignore-platform-reqs --optimize-autoloader --no-interaction --no-progress --prefer-dist"
+                        sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                         sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
                         sh "sed -i 's/database_host:     localhost/database_host:     mysql/' app/config/parameters_test.yml"
 
@@ -190,8 +169,10 @@ def runIntegrationTest(phpVersion, storage) {
             sh "docker stop \$(docker ps -a -q) || true"
             sh "docker rm \$(docker ps -a -q) || true"
             sh "docker volume rm \$(docker volume ls -q) || true"
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-${phpVersion}-${storage}] /\" app/build/logs/*.xml"
+
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[integration-${storage}] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
+
             deleteDir()
         }
     }
@@ -201,10 +182,9 @@ def runPhpCsFixerTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("carcel/php:7.1").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
+            docker.image("akeneo/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
                 unstash "project_files"
 
-                sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"
                 sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
 
@@ -214,14 +194,16 @@ def runPhpCsFixerTest() {
             sh "docker stop \$(docker ps -a -q) || true"
             sh "docker rm \$(docker ps -a -q) || true"
             sh "docker volume rm \$(docker volume ls -q) || true"
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-cs-fixer] /\" app/build/logs/*.xml"
+
+            sh "find app/build/logs/ -name \"*.xml\" | xargs sed -i \"s/testcase name=\\\"/testcase name=\\\"[php-cs-fixer] /\""
             junit "app/build/logs/*.xml"
+
             deleteDir()
         }
     }
 }
 
-def runBehatTest(storage, features, phpVersion, mysqlVersion, esVersion) {
+def runBehatTest(storage, features) {
     node() {
         dir("behat-${storage}") {
             deleteDir()
@@ -244,9 +226,9 @@ def runBehatTest(storage, features, phpVersion, mysqlVersion, esVersion) {
             sh "cp behat.ci.yml behat.yml"
 
             try {
-                sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat-${storage} ${env.BUILD_NUMBER} ${storage} ${features} ${env.JOB_NAME} 5 ${phpVersion} ${mysqlVersion} \"${tags}\" \"behat-${storage}\" -e ${esVersion} --exit_on_failure"
+                sh "php /var/lib/distributed-ci/dci-master/bin/build ${env.WORKSPACE}/behat-${storage} ${env.BUILD_NUMBER} ${storage} ${features} ${env.JOB_NAME} 5 5.6 5.5 \"${tags}\" \"behat-${storage}\" --exit_on_failure"
             } finally {
-                sh "sed -i \"s/ name=\\\"/ name=\\\"[${storage}] /\" app/build/logs/behat/*.xml"
+                sh "find app/build/logs/behat/ -name \"*.xml\" | xargs sed -i \"s/ name=\\\"/ name=\\\"[${storage}] /\""
                 junit 'app/build/logs/behat/*.xml'
                 archiveArtifacts allowEmptyArchive: true, artifacts: 'app/build/screenshots/*.png'
                 deleteDir()

@@ -56,6 +56,7 @@
                         } else if ('click' === event.type || 'keypress' === event.type) {
                             dialog.find('form').submit();
                             dialog.remove();
+                            $('div.AknLoadingMask-wrapper').hide();
                         }
                     });
                 };

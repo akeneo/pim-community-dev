@@ -162,8 +162,7 @@ class CatalogUpdatesIntegration extends TeamworkAssistantTestCase
     {
         $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
         return new Configuration(
-            [$rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' .    DIRECTORY_SEPARATOR . 'teamwork_assistant'],
-            true
+            [$rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' .    DIRECTORY_SEPARATOR . 'teamwork_assistant']
         );
     }
 }

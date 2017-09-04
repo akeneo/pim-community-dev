@@ -13,6 +13,7 @@ services:
             - '@pimee_workflow.publisher.chained'
             - '@pimee_workflow.unpublisher.product'
             - '@pim_catalog.object_manager.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pimee_workflow.manager.product_draft:
         class: '%pimee_workflow.manager.product_draft.class%'

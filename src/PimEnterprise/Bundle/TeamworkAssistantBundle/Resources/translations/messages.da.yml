@@ -1,0 +1,51 @@
+project_calculation: Projekt beregning
+project_created: Et nyt projekt til dig
+project_finished: Projekt færdig
+teamwork_assistant:
+  project:
+    required: Denne værdi må ikke være tom.
+    label_maxlength: Denne værdi er for lang. Det skal have {{ max }} tegn eller mindre.
+    project_identifier: Projekt {{ project }} findes ikke.
+    project_locale: Projektets landestandard {{ locale }} skal aktiveres.
+    project_due_date: Du kan ikke vælge en dato i fortiden.
+  notification:
+    project_calculation:
+      error: Projektets beregningen for <strong>%project_label%</strong> mislykkedes
+      warning: Projektets beregning for <strong>%project_label%</strong> færdig med nogle advarsler
+      success: Projekt <strong>%project_label%</strong> er klar og bidragyderne er adviseret. Lad os starte!
+      start: Start
+    message: Du har nye produkter der skal beriges for "%project_label%". Forfaldsdato er "%due_date%".
+    project_finished:
+      contributor: Tillykke! Du er 100% færdig med alle produkt for %project_label%.
+      owner: '%project_label% for %due_date% er færdig.'
+      show: Vis
+    due_date:
+      contributor: Du er %percent%% af produkt udført med %project_label%. Glem ikke, at udfylde de sidste produkter til %due_date%.
+      owner: '%project_label% for %due_date% er ikke 100% færdig.'
+      start: Start
+  datagrid:
+    project_completeness: Projektets fremdrift
+    contributor_todo: Todo
+    contributor_in_progress: Igangværende
+    contributor_done: Udført
+    owner_todo: Todo (projektoversigt)
+    owner_in_progress: Igangværende (projektoversigt)
+    owner_done: Gennemført (Projekt oversigt)
+batch_jobs:
+  project_calculation:
+    project_calculation:
+      label: Projekt beregning
+    prepare_project_calculation:
+      label: Forbered beregningen af projekt
+    clean_contributor_group:
+      label: Kontrollere brugernes tilladelse på projektets landestandard
+  refresh_project_completeness_calculation:
+    label: Opdater projekt fuldstændighed
+    refresh_project_completeness_calculation:
+      label: Opdater projekt fuldstændighed
+job_execution:
+  summary:
+    processed_products: bearbejdede produkter
+pim_analytics:
+  info_type:
+    nb_projects: Antal projekter

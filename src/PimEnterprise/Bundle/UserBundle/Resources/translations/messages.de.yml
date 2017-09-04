@@ -9,8 +9,8 @@ user:
       "no": false
   asset_delay_reminder: Wiedervorlage (Tage)
   default_published_product_grid_view:
-    label: Standardansicht Übersicht veröffentlichter Produkte
-Default asset tree: Voreingestellte Daten
+    label: Standardansicht Produktliste veröffentlichte Produkte
+Default asset tree: Standardkategoriebaum Assets
 pimee_user:
   user:
     tab:

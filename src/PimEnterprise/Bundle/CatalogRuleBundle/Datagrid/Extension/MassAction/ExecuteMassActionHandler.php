@@ -29,7 +29,7 @@ class ExecuteMassActionHandler implements MassActionHandlerInterface
     protected $launcher;
 
     /** @var TokenStorageInterface */
-    protected $token;
+    protected $tokenStorage;
 
     /**
      * @param CommandLauncher       $launcher

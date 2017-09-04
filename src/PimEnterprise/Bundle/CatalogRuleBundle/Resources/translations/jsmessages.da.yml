@@ -1,0 +1,53 @@
+pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Kode
+      condition.label: Betingelse
+      action.label: Handling
+      no_rule_yet.label: Ingen regel for nu
+  rule:
+    condition:
+      if.label: hvis
+    action:
+      then.label: så
+      set_value.label: er sat ind i
+      copy_value.label: er blevet kopieret til
+      set.label: er sat ind i
+      copy.label: er blevet kopieret til
+      add.label: er blevet tilføjet i
+      remove.label: er fjernet fra
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Udfør bekræftelse
+          confirm_content: Er du sikker på, du vil køre reglen?
+          confirm_ok: OK
+      mass_edit_action:
+        confirm_title: Beregning bekræftelse
+        confirm_content: Er du sikker på, du vil beregne de berørte produkter for reglerne?
+        confirm_ok: OK
+      mass_action:
+        execute:
+          confirm_ok: OK
+          confirm_title: Udfør bekræftelse
+          confirm_content: Er du sikker på du vil udføre de valgte regler?
+          success: Massehandling til at udføre de valgte regler er blevet igangsat. Du vil blive underrettet, når det er gennemført
+          error: Der opstod en fejl under udførelse af reglerne.
+          empty_selection: Ingen regler valgt.
+        delete:
+          confirm_ok: OK
+          confirm_title: Bekræft sletning
+          confirm_content: Er du sikker på du vil udføre de valgte regler?
+          success: Reglerne er slettet.
+          error: Der opstod en fejl under udførelse af reglerne.
+          empty_selection: Ingen regler valgt.
+confirmation:
+  remove:
+    rule: Er du sikker på at du ønsker at slette denne regel? Det er ikke muligt at fortryde handlingen
+flash:
+  rule:
+    removed: Rollen blev slettet
+    impacted_product_count: Massehandling til at beregne de berørte produkter for reglerne, der er blevet igangsat. Du får besked, når det er gennemført.
+    executed: Regeludførelsen er blevet igangsat. Du får besked, når det er gennemført.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regler indstillinger

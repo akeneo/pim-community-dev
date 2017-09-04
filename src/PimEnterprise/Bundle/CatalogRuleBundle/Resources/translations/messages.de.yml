@@ -103,6 +103,7 @@ batch_jobs:
   rule_impacted_product_count:
     label: Von dieser Regel betroffene Produkte
     perform.label: Anzahl der betroffenen Produkte
+    execute_rules.label: Regel-Ausführung
   csv_product_import_with_rules:
     label: Produktimport in CSV mit Regeln
     execute_rules.label: Regel-Ausführung

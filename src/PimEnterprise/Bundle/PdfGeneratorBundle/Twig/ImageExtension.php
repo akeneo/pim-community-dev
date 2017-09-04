@@ -20,6 +20,8 @@ use Pim\Component\Catalog\Model\ProductInterface;
  * finding for pim_assets_collection attribute type.
  *
  * @author Pierre Allard <pierre.allard@akeneo.com>
+ *
+ * @deprecated Will be removed in 1.8
  */
 class ImageExtension extends BaseImageExtension
 {

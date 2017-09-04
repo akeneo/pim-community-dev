@@ -13,6 +13,8 @@ pimee_workflow:
     published_product:
       btn:
         original_product: Edytuj kopię roboczą
+    proposal:
+      modal.title: Pozostaw komentarz (opcjonalnie - 255 znaków max.)
   proposal:
     mass_action_group:
       review:

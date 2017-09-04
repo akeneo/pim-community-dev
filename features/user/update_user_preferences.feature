@@ -39,3 +39,15 @@ Feature: Update user preferences
     And I edit the "Peter" user
     Then I should see "Users"
     And I should see "Login count"
+
+  @javascript @jira https://akeneo.atlassian.net/browse/PIM-6470
+  Scenario: Add permissions filter on default grid filters
+    Given I edit the "Julia" user
+    And I visit the "Additional" tab
+    And I fill in the following information:
+      | Product grid filters | Permissions |
+    And I save the user
+    When I am on the users page
+    And I click on the "View" action of the row which contains "Julia"
+    And I visit the "Additional" tab
+    Then I should see the text "Permissions"

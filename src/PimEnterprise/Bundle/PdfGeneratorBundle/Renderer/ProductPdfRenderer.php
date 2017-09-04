@@ -83,20 +83,49 @@ class ProductPdfRenderer extends PimProductPdfRenderer
     }
 
     /**
-     * Adds attributes with 'pim_assets_collection' type to display images in header.
+     * Adds image paths to display for assets.
      *
      * {@inheritdoc}
      */
-    protected function getImageAttributes(ProductInterface $product, $locale, $scope)
+    protected function getImagePaths(ProductInterface $product, $locale, $scope)
     {
-        $attributes = parent::getImageAttributes($product, $locale, $scope);
+        $imagePaths = parent::getImagePaths($product, $locale, $scope);
 
         foreach ($this->getAttributes($product, $locale) as $attribute) {
             if (AttributeTypes::ASSETS_COLLECTION === $attribute->getType()) {
-                $attributes[$attribute->getCode()] = $attribute;
+                $assets = $product->getValue($attribute->getCode(), $locale, $scope)->getAssets();
+
+                // TODO: To be reworked on master
+                // We could use PimEnterprise\Component\ProductAsset\Model\AssetInterface::getFileForContext but it
+                // implies to inject locale and channel repositories.
+                foreach ($assets as $asset) {
+                    if (!$asset->isLocalizable()) {
+                        $reference = $asset->getReferences()[0];
+                    } else {
+                        foreach ($asset->getReferences() as $assetReference) {
+                            if ($locale === $assetReference->getLocale()->getCode()) {
+                                $reference = $assetReference;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (null === $reference) {
+                        continue;
+                    }
+
+                    foreach ($reference->getVariations() as $variation) {
+                        if ($scope === $variation->getChannel()->getCode() &&
+                            null !== $variation->getFileInfo() &&
+                            null !== $variation->getFileInfo()->getKey()
+                        ) {
+                            $imagePaths[] = $variation->getFileInfo()->getKey();
+                        }
+                    }
+                }
             }
         }
 
-        return $attributes;
+        return $imagePaths;
     }
 }

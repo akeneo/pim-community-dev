@@ -26,12 +26,12 @@ teamwork_assistant:
     saved: Il progetto è stato salvato.
     title: Modifica progetto
     confirm: Salva
-    cancel: Cancella
+    cancel: Annulla
   create_project_modal:
     saved: Il progetto è stato salvato, sarai avvisato quando il calcolo sarà finito.
     title: Crea progetto
     confirm: Salva
-    cancel: Cancella
+    cancel: Annulla
   widget:
     no_project: Non si dispone di alcun progetto corrente
     no_project_create: crea un nuovo progetto

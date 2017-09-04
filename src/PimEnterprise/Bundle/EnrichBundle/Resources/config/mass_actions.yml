@@ -4,6 +4,8 @@ parameters:
     pimee_enrich.mass_edit_tasklet.publish_product.class:           PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\PublishProductTasklet
     pimee_enrich.mass_edit_tasklet.unpublish_product.class:         PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\UnpublishProductTasklet
 
+    pimee_enrich.mass_edit.publish_product_memory_cleaner.class:    PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\PublishProductMemoryCleaner
+
 services:
     # Published products operation
     pimee_enrich.mass_edit_action.unpublish:
@@ -44,6 +46,7 @@ services:
             - '@security.token_storage'
             - '@security.authorization_checker'
             - '@pim_catalog.query.product_query_builder_factory'
+            - '@pimee_enrich.mass_edit.publish_product_memory_cleaner'
 
     pim_enrich.mass_edit_tasklet.unpublish_product:
         class: '%pimee_enrich.mass_edit_tasklet.unpublish_product.class%'
@@ -56,6 +59,15 @@ services:
             - '@security.token_storage'
             - '@security.authorization_checker'
             - '@pimee_workflow.doctrine.query.published_product_query_factory'
+
+    pimee_enrich.mass_edit.publish_product_memory_cleaner:
+        class: %pimee_enrich.mass_edit.publish_product_memory_cleaner.class%
+        arguments:
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
+            - '%pim_catalog.entity.product.class%'
+            - '%pim_versioning.entity.version.class%'
+            - '%pimee_workflow.entity.published_product_value.class%'
+            - '%pimee_workflow.entity.published_product.class%'
 
     # We override mass edit operations services to inject a different background job which
     # take permissions in account & apply rules

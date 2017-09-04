@@ -25,6 +25,7 @@ class RuleNotificationFactorySpec extends ObjectBehavior
         JobInstance $jobInstance,
         BatchStatus $batchStatus
     ) {
+        $jobExecution->getId()->shouldBeCalled();
         $jobExecution->getJobInstance()->willReturn($jobInstance);
         $jobExecution->getStatus()->willReturn($batchStatus);
         $batchStatus->isUnsuccessful()->willReturn(true);

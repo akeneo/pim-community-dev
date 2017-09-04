@@ -137,6 +137,9 @@ edit_common_attributes_with_permission_and_rules:
   steps.perform: Gemeinsame Attribute bearbeiten
   steps.edit_common_attributes_processor.title: Gemeinsame Attribute bearbeiten
 batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: Asset-Ausgabekanal-Konfiguration-Import
   add_product_value_with_permission_and_rules:
     label: Hinzufügen von Produktwerten mit Rechteprüfung und Regeln
     perform.label: Produktwert hinzufügen

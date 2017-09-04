@@ -1,0 +1,5 @@
+pimee_datagrid:
+  cell:
+    expand:
+      expandText: Åbn
+      collapseText: Minimer

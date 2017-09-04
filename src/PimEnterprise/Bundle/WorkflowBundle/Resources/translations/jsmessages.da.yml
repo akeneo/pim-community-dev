@@ -1,0 +1,40 @@
+View the product: Se produktet
+Unpublish the product: Afpublicer produktetet
+Approve: Godkend
+Refuse: Afvis
+Approve selected: Godkend valgte
+Refuse selected: Afvis valgte
+oro:
+  datagrid:
+    noentities:
+      proposal: Der er ingen forslag om revision.
+    noresults:
+      proposal: Der er ingen forslag om revision. Prøv at ændre dine søgkriterier.
+pimee_workflow:
+  entity:
+    published_product:
+      btn:
+        original_product: Rediger arbejdskopi
+    proposal:
+      modal.title: Efterlad en kommentar (valgfri - maks. 255 tegn)
+  proposal:
+    mass_action_group:
+      review:
+        label: Massehandling
+    partial_accept:
+      modal.title: Godkend delvise oplysninger
+      modal.label: Tilføj en kommentar (valgfrit)
+      modal.error: Der opstod en fejl, forslag er ikke blevet delvis godkendt
+      modal.success: Forslaget er blevet delvist valideret
+    partial_approve:
+      modal:
+        title: Delvis godkend ændringer
+        label: Tilføj en kommentar (valgfrit)
+        error: Der opstod en fejl, forslag er ikke blevet delvis godkendt
+        success: Ændringerne er blevet godkendt
+    partial_reject:
+      modal:
+        title: Delvist afvist ændringer
+        label: Tilføj en kommentar (valgfrit)
+        error: Der opstod en fejl, forslag er ikke blevet delvist afvist
+        success: Ændringerne er blevet afvist

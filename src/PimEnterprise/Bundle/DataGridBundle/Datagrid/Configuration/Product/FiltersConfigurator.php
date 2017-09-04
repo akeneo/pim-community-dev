@@ -129,7 +129,7 @@ class FiltersConfigurator extends BaseFiltersConfigurator
         ];
 
         $configuration->offsetSetByPath(
-            sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'permission'),
+            sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'permissions'),
             $filter
         );
     }

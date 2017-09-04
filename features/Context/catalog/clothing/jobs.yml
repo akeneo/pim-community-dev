@@ -370,6 +370,11 @@ jobs:
         alias:     set_attribute_requirements
         label:     Set family attribute requirements
         type:      mass_edit
+    rule_impacted_product_count:
+        connector: Akeneo Rule Engine Connector
+        alias:     rule_impacted_product_count
+        label:     Calculation of the affected products for the rules
+        type:      mass_edit_rule
     csv_product_quick_export:
         connector: Akeneo Mass Edit Connector
         alias: csv_product_quick_export

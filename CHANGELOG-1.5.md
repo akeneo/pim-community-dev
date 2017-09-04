@@ -1,3 +1,31 @@
+# 1.5.26 (2017-08-03)
+
+## Bug fixes
+
+- PIM-6657: Memory leak on Mass publication
+
+# 1.5.25 (2017-06-30)
+
+## Bug fixes
+
+- PIM-6466: Fix issue on localizable assets when you add a new locale
+
+# 1.5.24 (2017-06-28)
+
+# 1.5.23 (2017-06-23)
+
+# 1.5.22 (2017-05-22)
+
+## Bug fixes
+
+- PIM-6400: Fix MongoDB query done to remove an asset from normalized data
+
+# 1.5.21 (2017-04-28)
+
+## Bug fixes
+
+- PIM-6316: Fix an issue where we cannot scroll locales on asset page when too many locales activated
+
 # 1.5.20 (2017-02-09)
 
 ## Bug fixes
@@ -135,7 +163,7 @@
 # 1.5.0-ALPHA1 (2016-01-26)
 
 ## Technical improvements
-- PIM-5450: MongoDb ODM bundle in dev requirements 
+- PIM-5450: MongoDb ODM bundle in dev requirements
 
 ## Bug fixes
 
@@ -216,4 +244,4 @@
 - Moved PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule\ValueConditionValidator to PimEnterprise\Component\CatalogRule\Validator\ValueConditionValidator
 - Update schema of `PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric`. Increase precision of data and baseData.
 - Change constructor of `PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor`. Add argument `Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface`.
-- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController`. Add argument `PimEnterprise\Bundle\UserBundle\Context\UserContext`.
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController`. Add argument `PimEnterprise\Bundle\UserBundle\Context\UserContext`

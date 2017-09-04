@@ -5,6 +5,9 @@ pimee_enrich:
     product:
       history:
         published: Opublikowane
+        revert: Odzyskaj
+      smart_attribute:
+        come_from: "Ten atrybut może być aktualizowany poprzez regułę:"
       btn:
         publish: Opublikuj
         publish_this_version: Opublikuj tę wersję
@@ -25,18 +28,37 @@ pimee_enrich:
       tab:
         proposals:
           title: Propozycje
+          messages:
+            approve:
+              error:
+                The proposal can't be applied due to the following error:
+                  - błąd
+            remove:
+              success: Propozycja została usunięta.
       confirmation:
         publish:
+          title: Opublikuj ten produkt
           content: Czy na pewno chcesz opublikować ten produkt?
         unpublish:
           title: Cofnij publikację produktu
+          content: Czy na pewno chcesz cofnąć publikację tego produktu?
+      info:
+        update_successful: Kopia robocza produktu została zaktualizowana
       copy:
         source:
           working_copy: Kopia robocza
           draft: Moje szkice
+          draft_of: "szkic {{ author }}"
     product_draft:
+      info:
+        update_successful: Szkic produktu został pomyślnie zapisany
+        update_failed: Nie można zaktualizować szkicu produktu
+      flash:
+        sent_for_approval: Szkic produkty wysłany do zatwierdzenia
+        draft_not_sendable: Nie możesz wysłać tego szkicu do zatwierdzenia
       btn:
         send_for_approval: Wyślij do zatwierdzenia
+        sent_for_approval: Wyślij do zatwierdzenia
       modal:
         accept_proposal: Akceptuj propozycję
         accept_selected_proposal: Zaakceptuj wybrane propozycje
@@ -45,3 +67,4 @@ pimee_enrich:
         send_for_approval: Wyślij do zatwierdzenia
         cancel: Anuluj
         confirm: Wyślij
+        characters: znaki.

@@ -1,3 +1,31 @@
+# 1.6.18 (2017-07-17)
+
+# 1.6.17 (2017-06-30)
+
+## Bug fixes
+
+- PIM-6433: Fix product import reference data multi with duplicate code options
+- PIM-6438: Add a link in the notification report of "calculate affected products" rules mass action, that redirects to job process
+- PIM-6475: Generate asset variations, even if reference file has corrupted metadata
+
+# 1.6.16 (2017-05-24)
+
+# 1.6.15 (2017-05-18)
+
+# 1.6.14 (2017-04-21)
+
+## Bug fixes
+
+- PIM-6325: Fix thumbnails display for assets in product PDF
+
+# 1.6.13 (2017-03-29)
+
+## Bug fixes
+
+- PIM-6268: Fix an issue where one cannot scroll locales on asset page when too many locales are activated
+- PIM-6267: Fix an error when you add assets to a variant group, products were unticked
+- PIM-6269: Fix the display of rules containing array of dates in their conditions (IN, BETWEEN...)
+
 # 1.6.12 (2017-02-28)
 
 # 1.6.11 (2017-02-14)
@@ -92,7 +120,7 @@
 
 - PIM-5665: As Peter, I would like to remove products from categories using rules (mass edit, add "remove" action in rule engine)
 - PIM-5742: Improve the products save for mass operations, I would like to have the completeness and rules calculated directly
-- PIM-5577: As Julia, when I save several products, I would like to have the completeness and rules calculated directly	
+- PIM-5577: As Julia, when I save several products, I would like to have the completeness and rules calculated directly
 - PIM-5757: As Peter, I would like to make bulk actions on the rules (dd delete bulk action on the rules datagrid)
 - PIM-5813: As Peter, I would like to launch manually 1 or all rules from the UI (add the possibility to launch the rules from the UI)
 - PIM-5860: As Peter, I would like to launch manually a selection of rules (add the execute mass action on rules)
@@ -104,7 +132,7 @@
 - PIM-5455: As Peter, when I define a rule, I would like to know the number of products impacted by the rule
 - PIM-5892: Change warning message when executing all rules from the UI
 
-### Improve Asset Manager 
+### Improve Asset Manager
 
 - PIM-5488: As Pamela, I would like to move the assets in the trees (add a bulk action on the product assets grid, to move them in categories)
 - PIM-5489: As Pamela, I would like to mass add tags for a selection of assets (add a bulk action on the product assets grid, to add tags on assets)

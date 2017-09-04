@@ -99,6 +99,21 @@ Feature: Show all rules related to an attribute
             to_field:    name
             from_locale: en_US
             to_locale:   de_DE
+      nineties:
+        priority: 30
+        conditions:
+          - field: release_date
+            operator: BETWEEN
+            scope: mobile
+            value:
+              - "1990-01-15"
+              - "2000-01-15"
+        actions:
+          - type:        copy
+            from_field:  name
+            to_field:    name
+            from_locale: en_US
+            to_locale:   de_DE
       """
 
   Scenario: Successfully show rules of an attribute
@@ -126,3 +141,10 @@ Feature: Show all rules related to an attribute
       | Action    | Then 10 Centimeter is set into length                               |
       | Action    | Then name [ en ] is copied into name [ fr ]                         |
       | Action    | Then name [ en ] is copied into name [ de ]                         |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6269
+  Scenario: Successfully display rules containing an array of date
+    Given I am on the rules page
+    Then the row "nineties" should contain the texts:
+      | column    | value                                                     |
+      | Condition | If release_date between 01/15/1990, 01/15/2000 [ mobile ] |

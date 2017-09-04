@@ -17,12 +17,14 @@ teamwork_assistant:
     message: Es müssen neue Produkte angereichert werden für "%project_label%". Das Fälligkeitsdatum ist "%due_date%".
     project_finished:
       contributor: Glückwunsch! Sie haben 100% vollständige Produkte in %project_label%.
+      owner: '%project_label% für den %due_date% ist fertiggestellt.'
       show: Anzeigen
     due_date:
       contributor: Sie haben %percent%% der Produkte in %project_label% vollständig. Vergessen Sie nicht, die fehlenden Produkte bis zum %due_date% zu vervollständigen.
       owner: '%project_label% für den %due_date% ist fertiggestellt.'''
       start: Start
   datagrid:
+    project_completeness: Projektfortschritt
     contributor_todo: ToDo
     contributor_in_progress: In Arbeit
     contributor_done: Fertig
@@ -37,6 +39,10 @@ batch_jobs:
       label: Projekt-Kalkulation vorbereiten
     clean_contributor_group:
       label: Überprüfe Benutzerberechtigung für das Gebietsschema des Projekts
+  refresh_project_completeness_calculation:
+    label: Projektvollständigkeit aktualisieren
+    refresh_project_completeness_calculation:
+      label: Projektvollständigkeit aktualisieren
 job_execution:
   summary:
     processed_products: Bearbeitete Produkte

@@ -1,3 +1,4 @@
 flash.version.revert.product: Pomyślnie przywrócić poprzednią wersję produktu
 flash.error.revert.product: Ta wersja nie może być przywrócona. Wystąpiły pewne błędy podczas sprawdzania poprawności.
+flash.error.revert.product_has_variant: Produkt nie może zostać przywrócony, ponieważ należy do grupy wariantów
 pimee_versioning.acl.product_version.revert: Przywrócić produkt

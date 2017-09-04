@@ -15,7 +15,7 @@ twig:
 fos_rest:
     exception:
         codes:
-            PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException: HTTP_CONFLICT
+            PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException: 409
         messages:
             PimEnterprise\Component\Workflow\Exception\PublishedProductConsistencyException: true
 

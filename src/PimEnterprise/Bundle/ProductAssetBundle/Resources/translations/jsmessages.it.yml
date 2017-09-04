@@ -9,7 +9,7 @@ pimee_product_asset:
             empty_basket: Il basket è vuoto
         manage_asset:
           title: Gestisci asset
-          cancel: Cancella
+          cancel: Annulla
           confirm: Conferma
   enrich_asset:
     grid:
@@ -53,7 +53,7 @@ pimee_product_asset:
       progress: progresso
       actions: azioni
     action:
-      cancel: Cancella
+      cancel: Annulla
       remove: Rimuovere
     status:
       added: Aggiunto

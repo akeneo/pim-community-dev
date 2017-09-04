@@ -75,7 +75,7 @@ fos_oauth_server:
 
 Update the security configuration `$PIM_DIR/app/config/security.yml`:
 
-Add these new lines under `security.firewalls`:
+Add these new lines under `security.firewalls`, before `security.firewalls.main`:
 
 ```YAML
 oauth_token:
@@ -90,6 +90,8 @@ api:
         stateless:                      true
         access_denied_handler:          pim_api.security.access_denied_handler
 ```
+
+Do note that if you don't add these lines __before__ `security.firewalls.main`, you will not be able to access to the API.
 
 Add these new lines under `security.access_control`:
 

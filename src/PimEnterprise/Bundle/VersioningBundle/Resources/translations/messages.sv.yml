@@ -1,0 +1,4 @@
+flash.version.revert.product: Framgångsrikt återställt produkten till den tidigare versionen
+flash.error.revert.product: Denna version kan inte återställas. Vissa fel inträffade under valideringen.
+flash.error.revert.product_has_variant: Produkten kan inte återställas eftersom det tillhör en variantgrupp
+pimee_versioning.acl.product_version.revert: Återställ en produkt

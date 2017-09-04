@@ -1,0 +1,197 @@
+pim_title.locale:
+  edit: "Landestandarder %locale.code% | Rediger"
+Permissions: Rettigheder
+pane.accordion.permissions: Rettigheder
+attribute group.permissions:
+  view.label: Rettighed til at se attributter
+  view.help: Rettighed til at se produkterne i denne attribut gruppe
+  edit.label: Rettighed til at redigere attributter
+  edit.help: Rettighed til at se produkterne i denne attribut gruppe
+  no_access_to_attributes: Du har ikke adgang til nogen attributter for dette produkt. Kontakt din administrator.
+category.permissions:
+  view.label: Rettighed til at se produkter
+  view.help: Rettighed til at se produkterne i denne kategori
+  edit.label: Rettighed til at redigere produkter
+  edit.help: Gør det muligt at redigere produkter i denne kategori (forventer tilladelsen visning)
+  own.label: Rettighed til at eje produkter
+  own.help: Har tilladelse til at gennemse, publicerer, af publicerer og klassificerer relaterede produkter i denne kategori (indebærer redigeringstilladelse)
+  no_access_to_products: Du har ikke adgang til produkter i nogen af de tilgængelige samlinger. Kontakt venligst administratoren
+  apply_on_children.label: Anvend ændringer på underliggende kategorier
+  apply_on_children.help: Kopier tilladelses ændringer på alle underliggende elementer, eksisterende tilladelser bibeholdes
+locale.permissions:
+  view.label: Rettighed til at se produktinformation
+  view.help: Rettighed til at se produktinformation i denne landestandard
+  edit.label: Rettighed til at redigere oplysninger om produktet
+  edit.help: Rettighed til at redigere produkt oplysningerne i denne landestandard (indebærer tilladelsen visning)
+  no_access_to_products: Du har ikke adgang til produktdata i nogen af de aktiverede landestandard, kontakt venligst administratoren
+btn:
+  save working copy: Gem arbejdskopi
+  save draft: Gem kladde
+  save working copy and next: Gem arbejdskopi og næste
+  save draft and next: Gem kladde og næste
+  save working copy and finish: Gem arbejdskopi og afslut
+  save draft and finish: Gem kladde og afslut
+  send for approval: Send til godkendelse
+  sent for approval: Sendt til godkendelse
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Du har ikke tilladelse til at redigere produkterne "%identifiers%".
+      page_title: Produkter
+      page_subtitle: Masse redigere (1 produkt) | Masse redigere (%count% produkter)
+      title: Vælg handling
+      subtitle: Vælg den handling, du ønsker at udføre på det valgte produkt|Vælg den handling, du ønsker at udføre på de valgte %count% produkter
+      confirm: Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere %count% produkter med følgende oplysninger, bekræft venligst.
+      steps:
+        first: Vælg produkter
+        second: Vælg handling
+        third: Konfigurér
+        fourth: Bekræft
+    publish:
+      label: Udgiv produkter
+      description: Udgiv de udvalgte produkter, de nuværende offentliggjorte data vil blive slettet af de aktuelle data.
+      success_flash: Udvalgte produkter har været publiceret.
+      launched_flash: Jobbet "Publisering af produkt(er)" kører i øjeblikket.
+      message:
+        error: Du er ikke ejeren af produktet, du kan ikke udgive den.
+        warning: Du er ikke ejer af alle de valgte produkter. Du kan ikke udgive disse produkter "%notGranted%".
+        info: '%nbProducts% udvalgte produkter vil blive offentliggjort.'
+      not_editable: Du har ikke tilladelse til at redigere produkterne "%identifiers%".
+    unpublish:
+      label: Af-publicer af produkter
+      description: Af publicer de valgte produkter, de nuværende offentliggjorte data vil blive slettet.
+      success_flash: De udvalgte produkter er ikke længere synlige.
+      launched_flash: Jobbet "Publisering af produkt(er)" kører i øjeblikket.
+      message:
+        error: Du er ikke ejeren af produktet, du kan ikke udgive den.
+        warning: Du er ikke ejer af alle de valgte produkter. Du kan ikke annullere publiceringen af produkter "%notGranted%".
+        info: '%nbProducts% udvalgte produkter vil blive af publiceret.'
+      not_editable: Du har ikke tilladelse til at redigere produkterne "%identifiers%".
+    classify:
+      message:
+        error: Du er ikke ejeren af produktet, du kan ikke klassificere det.
+        warning: Du er ikke ejer af alle de valgte produkter. Du kan derfor ikke klassificere produkterne "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: Du er ikke ejeren af produktet, du kan ikke redigere den.
+flash.product.updated: Produktets arbejdskopi er blevet opdateret
+flash.product_draft.updated: Udkastet er blevet gemt
+flash.locale.updated: Landestandard og rettighederne er blevet opdateret
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Rettigheder
+  product:
+    tab:
+      proposal.title: Forslag
+  category:
+    tab:
+      permission.title: Rettigheder
+  locale:
+    tab:
+      permission.title: Rettigheder
+  channel:
+    tab:
+      asset_transformation.title: Aktiv transformationer
+  acl.product_ownership.title: Ejerskab
+  attributes:
+    empty: ingen
+  groups:
+    label: ejer grupper
+    empty: ingen
+  asset_transformation:
+    not_found: Ingen transformation fundet
+    title:
+      transformation: Transformation
+      options: Valgmuligheder
+    colorspace:
+      title: Farverum
+      options:
+        colorspace: '%value% farverum'
+    resize:
+      title: Skalér
+      options:
+        width: '%value%px bredde'
+        height: '%value%px højde'
+    resolution:
+      title: Opløsning
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Skaler
+      options:
+        width: '%value%px bredde'
+        height: '%value%px højde'
+        ratio: '%value%% forhold'
+    thumbnail:
+      title: Miniature
+      options:
+        width: '%value%px bredde'
+        height: '%value%px højde'
+add_product_value_with_permission_and_rules:
+  steps.perform: Tilføj produktværdi
+update_product_value_with_permission_and_rules:
+  steps.perform: Opdatere produktets værdi
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Rediger fælles attributter
+  steps.edit_common_attributes_processor.title: Rediger fælles attributter
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: Aktiv kanal konfiguration import
+  add_product_value_with_permission_and_rules:
+    label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
+    perform.label: Tilføj produktværdi
+    execute_rules.label: Regler udførelse
+  update_product_value_with_permission_and_rules:
+    label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
+    perform.label: Opdatere produktets værdi
+    execute_rules.label: Regler udførelse
+  remove_product_value_with_permission_and_rules:
+    label: Tilføj produktværdi med tilladelse tjek & regler anvendelse
+    perform.label: Fjern produktværdi
+    execute_rules.label: Regler udførelse
+  edit_common_attributes_with_permission_and_rules:
+    label: Rediger fælles attributter med tilladelse kontrollere & regler anvendelse
+    perform.label: Rediger fælles attributter
+    execute_rules.label: Regler udførelse
+    cleaner.label: Ryd midlertidige filer
+  add_to_variant_group_with_rules:
+    label: Føj produkter til variant gruppe med regler anvendelse
+    perform.label: Føj produktet til en variant gruppe
+    execute_rules.label: Regler udførelse
+  csv_published_product_quick_export:
+    export.label: CSV offentliggjort produkter hurtig eksport
+    perform:
+      label: CSV offentliggjort produkter hurtig eksport
+  csv_published_product_grid_context_quick_export:
+    export.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+    perform:
+      label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+  xlsx_published_product_quick_export:
+    export.label: CSV offentliggjort produkter hurtig eksport
+    perform:
+      label: CSV offentliggjort produkter hurtig eksport
+  xlsx_published_product_grid_context_quick_export:
+    export.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+    perform:
+      label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
+add_to_variant_group_with_rules:
+  steps.perform: Føj produktet til en variant gruppe
+  steps.excluded.title: Udelukkede produkt
+  steps.duplicated.title: Duplikeret akse
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Rediger fælles attributter
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Tilføj produktværdi med tilladelse
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Opdatere produktets værdi med tilladelse
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Fjerne produktværdi med tilladelse
+edit_common_attributes_with_permission: Redigere fælles attributter med tilladelse
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Redigere fælles attributter med tilladelse
+job_execution.summary:
+  mass_published: Produkt publiceret
+  mass_unpublished: Produkt afpubliceret
+  proposal: Forslag oprettet
+  proposal_deleted: slettet
+pim_assets_collection: Aktiver samling
+pim_enrich_attribute_form:
+  isReadOnly: Skrivebeskyttet
