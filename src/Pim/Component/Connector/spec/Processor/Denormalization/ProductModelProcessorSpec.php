@@ -325,7 +325,8 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $validator,
         $productModelFilter,
         $objectDetacher,
-        $attributeFilter
+        $attributeFilter,
+        StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $productModelFactory,
@@ -337,6 +338,10 @@ class ProductModelProcessorSpec extends ObjectBehavior
             $attributeFilter,
             'root_product_model'
         );
+
+        $this->setStepExecution($stepExecution);
+
+        $stepExecution->decrementSummaryInfo('item_position')->shouldBeCalled();
 
         $this->process([
             'code' => 'product_model_code',
@@ -352,7 +357,8 @@ class ProductModelProcessorSpec extends ObjectBehavior
         $validator,
         $productModelFilter,
         $objectDetacher,
-        $attributeFilter
+        $attributeFilter,
+        StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $productModelFactory,
@@ -364,6 +370,10 @@ class ProductModelProcessorSpec extends ObjectBehavior
             $attributeFilter,
             'sub_product_model'
         );
+
+        $this->setStepExecution($stepExecution);
+
+        $stepExecution->decrementSummaryInfo('item_position')->shouldBeCalled();
 
         $this->process([
             'code' => 'product_model_code',
