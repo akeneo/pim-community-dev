@@ -36,7 +36,7 @@ class ProductModelStorage extends RawMinkContext
     private $productModelUpdater;
 
     /** @var ValidatorInterface */
-    private $validator;
+    private $productModelValidator;
 
     /** @var SaverInterface */
     private $productModelSaver;
@@ -47,7 +47,7 @@ class ProductModelStorage extends RawMinkContext
      * @param FamilyVariantRepositoryInterface $familyVariantRepository
      * @param SimpleFactoryInterface           $productModelFactory
      * @param ObjectUpdaterInterface           $productModelUpdater
-     * @param ValidatorInterface               $validator
+     * @param ValidatorInterface               $productModelValidator
      * @param SaverInterface                   $productModelSaver
      */
     public function __construct(
@@ -56,7 +56,7 @@ class ProductModelStorage extends RawMinkContext
         FamilyVariantRepositoryInterface $familyVariantRepository,
         SimpleFactoryInterface $productModelFactory,
         ObjectUpdaterInterface $productModelUpdater,
-        ValidatorInterface $validator,
+        ValidatorInterface $productModelValidator,
         SaverInterface $productModelSaver
     ) {
         $this->attributeColumnInfoExtractor = $attributeColumnInfoExtractor;
@@ -64,7 +64,7 @@ class ProductModelStorage extends RawMinkContext
         $this->familyVariantRepository = $familyVariantRepository;
         $this->productModelFactory = $productModelFactory;
         $this->productModelUpdater = $productModelUpdater;
-        $this->validator = $validator;
+        $this->productModelValidator = $productModelValidator;
         $this->productModelSaver = $productModelSaver;
     }
 
@@ -138,7 +138,7 @@ class ProductModelStorage extends RawMinkContext
             'family_variant' => $variantFamilyCode,
         ]);
 
-        $this->validator->validate($productModel);
+        $this->productModelValidator->validate($productModel);
         $this->productModelSaver->save($productModel);
     }
 
@@ -156,7 +156,7 @@ class ProductModelStorage extends RawMinkContext
             'family_variant' => $parentProductModel->getFamilyVariant()->getCode(),
         ]);
 
-        $this->validator->validate($productModel);
+        $this->productModelValidator->validate($productModel);
         $this->productModelSaver->save($productModel);
     }
 

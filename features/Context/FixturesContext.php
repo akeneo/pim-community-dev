@@ -11,7 +11,6 @@ use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\Localization\Localizer\LocalizerInterface;
-use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Behat\ChainedStepsExtension\Step;
 use Behat\Gherkin\Node\TableNode;
@@ -237,7 +236,7 @@ class FixturesContext extends BaseFixturesContext
             $convertedData = $converter->convert($data);
             $productModel = $processor->process($convertedData);
 
-            $errors = $this->getContainer()->get('validator')->validate($productModel);
+            $errors = $this->getContainer()->get('pim_catalog.validator.product_model')->validate($productModel);
             if (0 !== $errors->count()) {
                 throw new \LogicException('Product model could not be updated, invalid data provided.');
             }
@@ -281,7 +280,7 @@ class FixturesContext extends BaseFixturesContext
             $convertedData = $converter->convert($data);
             $productModel = $processor->process($convertedData);
 
-            $errors = $this->getContainer()->get('validator')->validate($productModel);
+            $errors = $this->getContainer()->get('pim_catalog.validator.product_model')->validate($productModel);
             if (0 !== $errors->count()) {
                 throw new \LogicException('Product model could not be updated, invalid data provided.');
             }

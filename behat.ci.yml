@@ -77,7 +77,7 @@ default:
                     - '@pim_catalog.repository.family_variant'
                     - '@pim_catalog.factory.product_model'
                     - '@pim_catalog.updater.product_model'
-                    - '@validator'
+                    - '@pim_catalog.validator.product_model'
                     - '@pim_catalog.saver.product_model'
     extensions:
         Behat\ChainedStepsExtension: ~
