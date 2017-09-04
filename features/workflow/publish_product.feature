@@ -1,6 +1,6 @@
 @javascript
 Feature: Publish a product
-  In order to froze the product data I would use to export
+  In order to freeze the product data I would use to export
   As a product manager
   I need to be able to publish a product
 
