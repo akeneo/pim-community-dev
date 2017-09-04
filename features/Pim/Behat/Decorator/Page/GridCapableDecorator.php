@@ -20,13 +20,14 @@ class GridCapableDecorator extends ElementDecorator
 
     /** @var array Selectors to ease find */
     protected $selectors = [
-        'Dialog grid'        => '.modal',
-        'Grid'               => 'table.grid',
-        'View selector'      => '.grid-view-selector .select2-container',
-        'View type switcher' => '.grid-view-selector .view-selector-type-switcher',
-        'Create view button' => '.grid-view-selector .create-button .create',
-        'Save view button'   => '.grid-view-selector .save-button .save',
-        'Remove view button' => '.grid-view-selector .remove-button .remove',
+        'Dialog grid'                  => '.modal',
+        'Grid'                         => 'table.grid',
+        'View selector'                => '.grid-view-selector .select2-container',
+        'View type switcher'           => '.grid-view-selector .view-selector-type-switcher',
+        'Create view button'           => '.grid-view-selector .create-button .create',
+        'Save view button'             => '.grid-view-selector .save-button .save',
+        'Remove view button'           => '.grid-view-selector .remove-button .remove',
+        'Grid view secondary actions'  => '.grid-view-selector .secondary-actions',
     ];
 
     /** @var array */
@@ -80,6 +81,7 @@ class GridCapableDecorator extends ElementDecorator
 
     public function clickOnCreateViewButton()
     {
+        $this->openSecondaryActions();
         $selector = $this->selectors['Create view button'];
 
         $button = $this->spin(function () use ($selector) {
@@ -112,6 +114,7 @@ class GridCapableDecorator extends ElementDecorator
      */
     public function saveView()
     {
+        $this->openSecondaryActions();
         $selector = $this->selectors['Save view button'];
 
         $button = $this->spin(function () use ($selector) {
@@ -126,6 +129,7 @@ class GridCapableDecorator extends ElementDecorator
      */
     public function removeView()
     {
+        $this->openSecondaryActions();
         $selector = $this->selectors['Remove view button'];
 
         $button = $this->spin(function () use ($selector) {
@@ -140,6 +144,7 @@ class GridCapableDecorator extends ElementDecorator
      */
     public function isViewDeletable()
     {
+        $this->openSecondaryActions();
         $selector = $this->selectors['Remove view button'];
 
         try {
@@ -158,6 +163,7 @@ class GridCapableDecorator extends ElementDecorator
      */
     public function isViewCanBeSaved()
     {
+        $this->openSecondaryActions();
         $selector = $this->selectors['Save view button'];
 
         try {
@@ -240,5 +246,20 @@ class GridCapableDecorator extends ElementDecorator
         }, 'Cannot find the View Type Switcher in the View Selector.');
 
         return $viewTypeSwitcher->getText();
+    }
+
+    /**
+     * Opens the secondary actions dropdown
+     */
+    protected function openSecondaryActions() {
+        $this->spin(function () {
+            $element = $this->find('css', $this->selectors['Grid view secondary actions']);
+            if ($element !== null && $element->hasClass('open')) {
+                return true;
+            }
+            $element->click();
+
+            return false;
+        }, 'Can not open the grid view selector secondary actions');
     }
 }
