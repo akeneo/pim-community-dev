@@ -23,7 +23,7 @@ extensions:
         module: pim/product-edit-form/sequential-edit
         parent: pim-product-model-edit-form
         targetZone: sequential
-        aclResourceId: pim_enrich_product_edit_attributes
+        aclResourceId: pim_enrich_product_model_edit_attributes
         position: 100
 
     pim-product-model-edit-form-left-column:
@@ -68,20 +68,6 @@ extensions:
         parent: pim-product-model-edit-form
         targetZone: buttons
         position: 50
-
-    pim-product-model-edit-form-delete:
-        module: pim/product-edit-form/delete
-        parent: pim-product-model-edit-form-secondary-actions
-        targetZone: secondary-actions
-        aclResourceId: pim_enrich_product_remove
-        position: 100
-        config:
-            trans:
-                title: confirmation.remove.product
-                content: pim_enrich.confirmation.delete_item
-                success: pim_enrich.entity.product.info.deletion_successful
-                fail: pim_enrich.entity.product.info.deletion_failed
-            redirect: pim_enrich_product_index
 
     pim-product-model-edit-form-save-buttons:
         module: pim/form/common/save-buttons
@@ -137,20 +123,13 @@ extensions:
         module: pim/product-edit-form/attributes
         parent: pim-product-model-edit-form-column-tabs
         targetZone: container
-        aclResourceId: pim_enrich_product_edit_attributes
+        aclResourceId: pim_enrich_product_model_edit_attributes
         position: 90
         config:
             removeAttributeRoute: pim_enrich_product_remove_attribute_rest
             removeAttributeACL: pim_enrich_product_remove_attribute
             tabTitle: pim_enrich.form.product.tab.attributes.title
             deletionFailed: pim_enrich.form.product.flash.attribute_deletion_error
-
-    pim-product-model-edit-form-categories:
-        module: pim/product-edit-form/categories
-        parent: pim-product-model-edit-form-column-tabs
-        targetZone: container
-        aclResourceId: pim_enrich_product_categories_view
-        position: 100
 
     pim-product-model-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector
@@ -209,13 +188,6 @@ extensions:
         parent: pim-product-model-edit-form-attributes
         targetZone: self
         position: 90
-
-    pim-product-model-edit-form-history:
-        module: pim/product-edit-form/history
-        parent: pim-product-model-edit-form-column-tabs
-        targetZone: container
-        aclResourceId: pim_enrich_product_history
-        position: 140
 
     pim-product-model-edit-form-copy-scope-switcher:
         module: pim/product-edit-form/scope-switcher

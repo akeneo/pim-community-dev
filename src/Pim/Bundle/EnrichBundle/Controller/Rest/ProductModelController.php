@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFilter;
@@ -132,6 +133,8 @@ class ProductModelController
     /**
      * @param Request $request
      * @param int     $id
+     *
+     * @AclAncestor("pim_enrich_product_model_edit_attributes")
      *
      * @return JsonResponse
      */
