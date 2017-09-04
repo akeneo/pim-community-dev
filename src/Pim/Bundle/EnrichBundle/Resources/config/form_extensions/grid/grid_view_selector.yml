@@ -6,7 +6,7 @@ extensions:
             fetchers:
                 view: 'datagrid-view'
 
-    pim-grid-view-secondary-actions:
+    pim-grid-view-selector-secondary-actions:
         module: pim/form/common/secondary-actions
         parent: pim-grid-view-selector
         targetZone: buttons
@@ -19,18 +19,18 @@ extensions:
 
     pim-grid-view-selector-create-view:
         module: pim/grid/view-selector/create-view
-        parent: pim-grid-view-secondary-actions
+        parent: pim-grid-view-selector-secondary-actions
         targetZone: secondary-actions
         position: 110
 
     pim-grid-view-selector-save-view:
         module: pim/grid/view-selector/save-view
-        parent: pim-grid-view-secondary-actions
+        parent: pim-grid-view-selector-secondary-actions
         targetZone: secondary-actions
         position: 120
 
     pim-grid-view-selector-remove-view:
         module: pim/grid/view-selector/remove-view
-        parent: pim-grid-view-secondary-actions
+        parent: pim-grid-view-selector-secondary-actions
         targetZone: secondary-actions
         position: 130

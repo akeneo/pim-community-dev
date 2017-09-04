@@ -8,32 +8,4 @@
             </div>
         </div>
     </div>
-
-    <% if (false) { %>
-    <!-- Choose between view and projects -->
-    <%- displayViewSwitcher ? 'stickedLeft' : '' %>
-
-    <div class="AknDropdown AknDropdownButton AknDropdownButton--grey AknDropdownButton--stickedRight <%- displayViewSwitcher ? '' : 'AknDropdownButton--hide' %>">
-        <a class="AknDropdownButton-button view-selector-type-switcher" data-toggle="dropdown" href="#">
-            <span class="current-view-type"><%- __('pim_datagrid.view_selector.' + currentViewType) %></span>
-            <div class="AknDropdownButton-caretContainer">
-                <span class="AknCaret"></span>
-            </div>
-        </a>
-        <ul class="AknDropdown-menu">
-            <% viewTypes.forEach(function (type) { %>
-            <li>
-                <a data-value="<%- type %>" class="AknDropdown-menuLink view-type-item" title="<%- __('pim_datagrid.view_selector.' + type) %>">
-                    <%- __('pim_datagrid.view_selector.' + type) %>
-                </a>
-            </li>
-            <% });  %>
-        </ul>
-    </div>
-
-
-    <% } %>
 </div>
-
-<!-- Button create view -->
-
