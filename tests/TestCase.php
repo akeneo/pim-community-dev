@@ -2,7 +2,6 @@
 
 namespace Akeneo\Test\Integration;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
