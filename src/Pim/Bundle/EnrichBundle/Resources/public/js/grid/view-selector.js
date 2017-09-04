@@ -131,7 +131,7 @@ define(
                 var $select = this.$('input[type="hidden"]');
 
                 var options = {
-                    dropdownCssClass: 'select2--bigDrop grid-view-selector',
+                    dropdownCssClass: 'grid-view-selector',
                     closeOnSelect: false,
 
                     /**
@@ -218,8 +218,8 @@ define(
                     this.currentLoadingTerm = null;
                 }.bind(this));
 
-                var $search = this.$('.select2-search');
-                $search.prepend($('<i class="icon-search"></i>'));
+                // var $search = this.$('.select2-search');
+                // $search.prepend($('<i class="icon-search"></i>'));
             },
 
             /**

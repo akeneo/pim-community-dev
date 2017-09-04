@@ -1,4 +1,18 @@
-<div class="AknButtonList grid-view-selector">
+<div class="grid-view-selector">
+    <div class="AknColumn-block AknColumn-block--withSecondaryActions">
+        <div class="AknColumn-blockDropdown" data-drop-zone="buttons"></div>
+        <div>
+            <div class="AknColumn-subtitle">Views</div>
+            <div class="AknColumn-value">
+                <input type="hidden" class="select-field" value="0" data-placeholder="Select your view"/>
+            </div>
+        </div>
+    </div>
+
+    <% if (false) { %>
+    <!-- Choose between view and projects -->
+    <%- displayViewSwitcher ? 'stickedLeft' : '' %>
+
     <div class="AknDropdown AknDropdownButton AknDropdownButton--grey AknDropdownButton--stickedRight <%- displayViewSwitcher ? '' : 'AknDropdownButton--hide' %>">
         <a class="AknDropdownButton-button view-selector-type-switcher" data-toggle="dropdown" href="#">
             <span class="current-view-type"><%- __('pim_datagrid.view_selector.' + currentViewType) %></span>
@@ -17,7 +31,9 @@
         </ul>
     </div>
 
-    <input type="hidden" class="AknButtonList-item select-field <%- displayViewSwitcher ? 'stickedLeft' : '' %>" value="0" />
-    <div class="AknButtonList-item buttons" data-drop-zone="buttons">
-    </div>
+
+    <% } %>
 </div>
+
+<!-- Button create view -->
+

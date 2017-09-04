@@ -50,9 +50,8 @@ extensions:
 
     pim-product-index-view-selector:
         module: pim/grid/view-selector
-        parent: pim-product-index
-        targetZone: title-buttons
-        position: 20
+        parent: pim-product-index-column-inner
+        targetZone: view-selector
         config:
             gridName: product-grid
 

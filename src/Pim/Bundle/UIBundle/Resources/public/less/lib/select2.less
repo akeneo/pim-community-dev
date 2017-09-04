@@ -216,139 +216,69 @@
 /* Grid view selector custom */
 .grid-view-selector {
   .select2-container {
-    width: 200px;
-    font-size: @AknFontSizeBig;
-
-    &.stickedLeft .select2-choice {
-      border-top-left-radius: 0px;
-      border-bottom-left-radius: 0px;
-
-      border-top: 1px solid #848fa1;
-      border-right: 1px solid #848fa1;
-      border-bottom: 1px solid #848fa1;
-      border-left: none;
-    }
-
     .select2-choice {
-      background: lighten(@AknGrey, 25%);
-      font-style: @AknFontSizeBig;
+      background: none;
+      border: none;
+      color: @AknDarkBlue;
+      font-size: @AknFontSizeBig;
+      padding: 0;
+      height: auto;
+      line-height: 20px;
+      display: inline-block;
 
       .select2-arrow {
-        background: lighten(@AknGrey, 15%);
+        background: url("../../images/icon-down.svg") no-repeat 0 center;
+        background-color: inherit;
+        background-size: 40%;
+        border-left: none;
+
+        b {
+          display: none;
+        }
       }
     }
   }
 
   &.select2-drop {
-    width: 400px !important; // The select2 lib sets the width with JS methods.
+    box-shadow: 1px 2px 8px rgba(0,0,0,0.15);
+    margin-top: -40px;
+    min-width: 300px;
 
     .select2-search {
-      background: @AknLightGray;
-      border-top: 1px solid @AknBorderColor;
-      border-bottom: 1px solid @AknBorderColor;
-      padding: 6px;
+      padding: 15px 0 5px 0;
+      border-bottom: 1px solid @AknLightPurple;
+      margin-left: 20px;
+      width: ~"calc(100% - 40px)";
+      display: flex;
 
-      .view-selector-type-dropdown {
-        position: absolute;
-        top: 6px;
-        right: 6px;
-
-        .view-type-item {
-          text-transform: uppercase;
-        }
-      }
-
-      .view-selector-type-switcher {
-        border: 1px solid @AknBorderColor;
-        text-transform: uppercase;
-        height: 38px;
-        border-radius: 0;
-        width: 107px;
-        font-weight: bold;
-      }
-
-      .icon-search {
-        font-size: @AknLittleIconFontSize;
-        color: @AknGrey;
-        position: absolute;
-        top: 16px;
-        left: 12px;
-      }
-
-      .select2-input {
-        font-size: @AknFontSizeBig;
-        background: white !important;
-        height: 38px;
-        padding-left: 32px;
-        line-height: 38px;
-
-        &.with-dropdown {
-          width: 280px;
-        }
+      input {
+        height: 30px;
+        line-height: 30px;
+        background: url("../../images/icon-search-purple.svg") no-repeat 0 5px;
+        background-size: 20px;
+        border: none;
+        padding-left: 25px;
+        color: @AknLightPurple;
       }
     }
 
     .select2-results {
-      padding: 0;
-      margin: 8px 8px 8px 8px;
+      margin: 0;
+      padding: 15px 20px;
 
-      .select2-result {
-        border-left: 1px solid @AknBorderColor;
-        border-top: 1px solid @AknBorderColor;
-        border-right: 1px solid @AknBorderColor;
-
-        &:last-child {
-          border-bottom: 1px solid @AknBorderColor;
-        }
+      li.select2-result {
+        font-size: @AknFontSizeBig;
+        height: 40px;
+        line-height: 40px;
 
         .select2-result-label {
-          font-size: @AknFontSizeBig;
-          position: relative;
-          padding: 15px;
-
-          .select2-result-label-view {
-            .view-label.view-label-current {
-              color: @AknPurple;
-              font-style: italic;
-              font-weight: bold;
-            }
-
-            .project-line.project-line-current {
-              .project-label {
-                color: @AknPurple;
-                font-style: italic;
-                font-weight: bold;
-              }
-            }
-          }
+          line-height: 40px;
         }
 
         &.select2-highlighted {
-          background: none;
-
-          .select2-result-label {
-            background-color: @AknDefaultHoverBackground;
-          }
+          color: @AknLightPurple;
+          font-weight: bold;
         }
-      }
-
-      .select2-more-results,
-      .select2-no-results,
-      .select2-searching {
-        color: @AknGrey;
-        text-align: center;
-        padding: 15px;
-      }
-    }
-
-    .ui-multiselect-footer {
-      border-top: 1px solid @AknBorderColor;
-      padding: 3px;
-      height: 50px;
-
-      .buttons {
-        line-height: 30px;
-        margin: 5px;
       }
     }
   }
