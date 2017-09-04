@@ -53,7 +53,7 @@ Feature: Delete many product at once
     And the grid should contain 10 elements
 
   Scenario: Successfully mass delete visible products
-    Given I sort by "SKU" value ascending
+    Given I sort by "ID" value ascending
     And I change the page size to 10
     And I select all visible entities
     Then I press "Delete" on the "Bulk Actions" dropdown button

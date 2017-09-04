@@ -16,7 +16,7 @@ Feature: Filter product and product models
     And I should see the product models model-tshirt-divided-crimson-red, model-tshirt-unique-color-kurt
     And the row "model-tshirt-divided-crimson-red" should contain:
       | column           | value                            |
-      | SKU              | model-tshirt-divided-crimson-red |
+      | ID               | model-tshirt-divided-crimson-red |
       | label            | Divided crimson red              |
       | family           | Clothing                         |
       | Status           |                                  |
@@ -25,7 +25,7 @@ Feature: Filter product and product models
       | variant products |                                  |
     And the row "running-shoes-xxs-crimson-red" should contain:
       | column           | value                         |
-      | SKU              | running-shoes-xxs-crimson-red |
+      | ID               | running-shoes-xxs-crimson-red |
       | label            | running-shoes-xxs-crimson-red |
       | family           | Shoes                         |
       | Status           | Enabled                       |

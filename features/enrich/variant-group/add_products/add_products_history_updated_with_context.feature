@@ -1,4 +1,4 @@
-@javascript
+@javascript @skip
 Feature: Add products to a variant group
   In order to manage existing variant groups for the catalog
   As a product manager
@@ -41,4 +41,4 @@ Feature: Add products to a variant group
       | version | author                                        | property | value           |
       | 3       | Julia Stark (Comes from variant group SANDAL) | groups   | SANDAL          |
       | 2       | John Doe                                      | Color    | white           |
-      | 1       | John Doe                                      | SKU      | sandal-white-37 |
+      | 1       | John Doe                                      |  ID      | sandal-white-37 |

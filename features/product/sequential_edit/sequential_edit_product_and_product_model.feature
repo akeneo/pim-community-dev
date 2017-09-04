@@ -13,7 +13,7 @@ Feature: Edit sequentially some products
   Scenario: Successfully sequentially edit some products but not the product models 1/2
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Crimson red"
-    And I sort by "SKU" value ascending
+    And I sort by "ID" value ascending
     And I select rows model-tshirt-divided-crimson-red, running-shoes-xxs-crimson-red
     When I press "Edit products sequentially" on the "Bulk Actions" dropdown button
     Then I should see the text "running-shoes-xxs-crimson-red"
@@ -22,7 +22,7 @@ Feature: Edit sequentially some products
   Scenario: Successfully sequentially edit some products but not the product models 2/2
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Crimson red"
-    And I sort by "SKU" value descending
+    And I sort by "ID" value descending
     And I select rows model-tshirt-divided-crimson-red, running-shoes-xxs-crimson-red
     When I press "Edit products sequentially" on the "Bulk Actions" dropdown button
     Then I should see the text "running-shoes-xxs-crimson-red"

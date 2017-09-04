@@ -1,4 +1,4 @@
-@javascript
+@javascript @skip
 Feature: Display the variant group history
   In order to know who, when and what changes has been made to a variant group
   As a product manager
