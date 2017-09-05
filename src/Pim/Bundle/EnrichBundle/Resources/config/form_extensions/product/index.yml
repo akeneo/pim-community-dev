@@ -39,7 +39,6 @@ extensions:
     pim-product-index-locale-switcher:
         module: pim/grid/locale-switcher
         parent: pim-product-index-column-inner
-#        // TODO Rename
         targetZone: column-context-switcher
         position: 10
         config:
