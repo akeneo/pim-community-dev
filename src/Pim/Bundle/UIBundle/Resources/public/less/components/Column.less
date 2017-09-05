@@ -83,6 +83,10 @@
     color: @AknGrey;
     text-transform: uppercase;
     font-size: 11px;
+
+    &--inline {
+      display: inline-block;
+    }
   }
 
   &-title {
@@ -97,6 +101,14 @@
       color: @AknLightPurple;
       font-weight: bold;
     }
+
+    &--inline {
+      display: inline-block;
+    }
+  }
+
+  &-block--withSecondaryActions &-subtitle--inline {
+    line-height: 32px;
   }
 
   &-part {
@@ -105,7 +117,7 @@
     margin-right: -@padding;
     padding-left: @padding;
     padding-right: @padding;
-    min-height: 58px;
+    min-height: 52px;
   }
 
   &-navigationLink {

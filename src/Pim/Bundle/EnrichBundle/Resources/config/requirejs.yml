@@ -1108,7 +1108,6 @@ config:
         pim/template/grid/view-selector/remove-view: pimenrich/templates/grid/view-selector-remove-view.html
         pim/template/grid/view-selector/current: pimenrich/templates/grid/view-selector-current.html
         pim/template/grid/view-selector: pimenrich/templates/grid/view-selector.html
-        pim/template/grid/view-switcher: pimenrich/templates/grid/view-switcher.html
 
         # Job execution
         pim/template/job-execution/summary-table:             pimenrich/templates/job-execution/summary-table.html

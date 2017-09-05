@@ -18,7 +18,6 @@ define(
         'backbone',
         'pim/form',
         'pim/template/grid/view-selector',
-        'pim/template/grid/view-switcher',
         'pim/initselect2',
         'pim/datagrid/state',
         'pim/fetcher-registry',
@@ -31,7 +30,6 @@ define(
         Backbone,
         BaseForm,
         template,
-        viewSwitcherTemplate,
         initSelect2,
         DatagridState,
         FetcherRegistry,
@@ -39,7 +37,6 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            viewSwitcherTemplate: _.template(viewSwitcherTemplate),
             resultsPerPage: 20,
             queryTimer: null,
             config: {},
@@ -110,8 +107,10 @@ define(
 
                     this.$el.html(this.template({
                         __: __,
-                        currentViewType: this.currentViewType
-                    }));
+                        currentViewType: this.currentViewType,
+                        displaySwitcher: (this.config.viewTypes.length > 1),
+                        viewTypes: this.config.viewTypes,
+                }));
 
                     this.initializeSelectWidget();
                     this.renderExtensions();
@@ -218,14 +217,6 @@ define(
                     this.currentLoadingPage = null;
                     this.currentLoadingTerm = null;
                 }.bind(this));
-
-                if (this.config.viewTypes.length > 1) {
-                    this.$el.find('.select2-search').append(this.viewSwitcherTemplate({
-                        __: __,
-                        viewTypes: this.config.viewTypes,
-                        currentViewType: this.currentViewType,
-                    }));
-                }
             },
 
             /**

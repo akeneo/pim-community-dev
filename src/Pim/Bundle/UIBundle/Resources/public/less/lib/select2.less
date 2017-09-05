@@ -219,17 +219,22 @@
     .select2-choice {
       background: none;
       border: none;
-      color: @AknDarkBlue;
+      color: @AknLightPurple;
       font-size: @AknFontSizeBig;
       padding: 0;
       height: auto;
       line-height: 20px;
       display: inline-block;
 
+      & > .select2-chosen {
+        margin-right: 30px;
+      }
+
       .select2-arrow {
-        background: url("../../images/icon-down.svg") no-repeat 0 center;
+        width: 25px;
+        background: url("../../images/icon-down.svg") no-repeat 0 6px;
         background-color: inherit;
-        background-size: 40%;
+        background-size: 12px;
         border-left: none;
 
         b {
@@ -241,8 +246,11 @@
 
   &.select2-drop {
     box-shadow: 1px 2px 8px rgba(0,0,0,0.15);
-    margin-top: -40px;
+    margin-top: -30px;
+    margin-left: -10px;
     min-width: 300px;
+    border-top: 1px solid @AknBorderColor;
+    border-radius: 2px;
 
     .select2-search {
       padding: 15px 0 5px 0;
