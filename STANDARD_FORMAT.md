@@ -413,6 +413,8 @@ Its standard format would be the following:
         array:10 [
           "identifier" => "bar"
           "family" => "familyA"
+          "family_variant" => null,
+          "parent" => null,
           "groups" => array:2 [
             0 => "groupA"
             1 => "groupB"
@@ -511,6 +513,8 @@ Its standard format would be the following:
         array:10 [
           "identifier" => "foo"
           "family" => "familyA"
+          "family_variant" => null
+          "parent" => null
           "groups" => array:2 [
             0 => "groupA"
             1 => "groupB"
@@ -775,7 +779,44 @@ Its standard format would be the following:
           ]
         ]
 
+### Variant product
 
+A product is considered as variant if it has a *parent* as product model. Therefore, the family variant becomes available in the standard format.
+
+Let's consider a *baz* product, without any product value, except its identifier *sku*. This product also contains:
+
+* an identifier
+* a family
+* a parent product model
+
+Its standard format would be the following:
+        
+        array:10 [
+          "identifier" => "baz"
+          "family" => "familyA"
+          "family_variant" => "familyVariantA",
+          "parent" => "fooProductModel",
+          "groups" => array:0 []
+          "categories" => array:0 []
+          "enabled" => false
+          "values" => array:1 [
+            "sku" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "baz"
+              ]
+            ]
+          ]
+          "created" => "2016-06-23T11:24:44+02:00"
+          "updated" => "2016-06-23T11:24:44+02:00"
+          "associations" => array:0 []
+        ]
+
+| type          | data structure | data example           | notes                                                                                            |
+| ------------- | -------------- | ---------------------- | ------------------------------------------------------------------------------------------------ |
+| family_variant| string         | `"familyVariantA"`     | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyVariantInterface*             |
+| parent        | string         | `"fooProductModel"`    | it represents the *code* of the *Pim\Component\Catalog\Model\ProductModelInterface*              |
 
 ## Product model
 
