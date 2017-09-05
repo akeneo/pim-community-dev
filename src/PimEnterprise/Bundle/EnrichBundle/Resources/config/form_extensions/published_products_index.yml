@@ -42,7 +42,7 @@ extensions:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
-    pim-product-index-breadcrumbs:
+    pimee-published-product-index-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pimee-published-product-index
         targetZone: breadcrumbs
