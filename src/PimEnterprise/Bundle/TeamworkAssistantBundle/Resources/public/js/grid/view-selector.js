@@ -49,8 +49,12 @@ define(
              * We define the default view type if the current user has a project as current view.
              */
             initializeViewTypes: function () {
-                if (null !== this.currentView) {
-                    this.currentViewType = 'project' === this.currentView.type ? 'project' : 'view';
+                if (null === this.currentViewType) {
+                    if (null !== this.currentView) {
+                        this.currentViewType = 'project' === this.currentView.type ? 'project' : 'view';
+                    } else {
+                        return ViewSelector.prototype.initializeViewTypes.apply(this, arguments);
+                    }
                 }
             },
 
@@ -60,7 +64,7 @@ define(
              * Override to handle teamwork assistant projects.
              */
             switchViewType: function (event) {
-                var viewType = $(event.target).data('value');
+                const viewType = $(event.target).data('value');
 
                 if (this.currentViewType === viewType) {
                     return;
@@ -96,6 +100,8 @@ define(
                         this.selectView(view);
                     }.bind(this));
                 }
+
+                this.render();
             },
 
             /**
