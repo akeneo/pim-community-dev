@@ -60,7 +60,7 @@ services:
             - '%pim_enrich.query.product_and_product_model_query_builder.class%'
             - '@pim_enrich.query.product_query_builder_from_size_factory.with_product_and_product_model_from_size_cursor'
 
-    pim_enrich.query.product_query_builder_factory.with_product_and_product_model_cursor:
+    pim_enrich.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor:
         public: false
         class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
         arguments:
@@ -71,8 +71,8 @@ services:
             - '@pim_enrich.factory.product_and_product_model_cursor'
             - '@pim_catalog.query.product_query_builder_resolver'
 
-    pim_enrich.query.product_query_builder_factory:
+    pim_enrich.query.product_and_product_model_query_builder_factory:
         class: '%pim_enrich.query.elasticsearch.product_and_model_query_builder_factory.class%'
         arguments:
             - '%pim_enrich.query.product_and_product_model_query_builder.class%'
-            - '@pim_enrich.query.product_query_builder_factory.with_product_and_product_model_cursor'
+            - '@pim_enrich.query.product_and_product_model_query_builder_factory.with_product_and_product_model_cursor'
