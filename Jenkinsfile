@@ -46,90 +46,58 @@ stage("PreBuild") {
 }
 
 stage("Build") {
+    parallel(
+        "pim-ce": {withBuildNode({
+            checkout scm
+            container("php") {
+                sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --ignore-platform-reqs --no-suggest"
+                sh "bin/console assets:install"
+                sh "bin/console pim:installer:dump-require-paths"
+            }
+            container("node") {
+                sh "npm config set cache /shared/.npm --global"
+                sh "npm install"
+                sh "npm run webpack"
+            }
+            container("docker") {
+                sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce ."
+                sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce"
+            }
+        })},
+        "pim-ee": {withBuildNode({
+            checkout([$class: 'GitSCM',
+              branches: [[name: 'master']],
+              userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
+            ])
+            // Required to avoid permission error when "composer update"
+            sh "mkdir -m 777 vendor"
 
-    tasks = [:]
-
-    tasks['pim-ce'] = {
-        clearTemplateNames()
-        podTemplate(label: "pimce", containers: [
-            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [containerEnvVar(key: "DOCKER_API_VERSION", value: "1.23")]),
-            containerTemplate(name: "composer", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "composer", envVars: [containerEnvVar(key: "COMPOSER_HOME", value: "/shared/.composer")]),
-            containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8")
-        ], volumes: [
-            nfsVolume(mountPath: '/shared', serverAddress: '10.3.248.208', serverPath: '/exports', readOnly: false),
-            hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
-        ]) {
-            node("pimce") {
-                dir('/home/jenkins/pim') {
+            container("php") {
+                sh "php -d memory_limit=-1 /usr/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-scripts --ignore-platform-reqs --no-suggest"
+                // Required to avoid permission error when "deleteDir()"
+                sh "chmod 777 -R vendor/akeneo"
+                dir('vendor/akeneo/pim-community-dev') {
+                    deleteDir()
                     checkout scm
-                    container("composer") {
-                        sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --ignore-platform-reqs --no-suggest"
-                        sh "bin/console assets:install"
-                        sh "bin/console pim:installer:dump-require-paths"
-                    }
-                    container("node") {
-                        sh "npm config set cache /shared/.npm --global"
-                        sh "npm install"
-                        sh "npm run webpack"
-                    }
-                    container("docker") {
-                        sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce ."
-                        sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce"
-                    }
                 }
+                sh "php -d memory_limit=-1 /usr/bin/composer -n run-script post-update-cmd"
+                sh "bin/console assets:install"
+                sh "bin/console pim:installer:dump-require-paths"
             }
-        }
-    }
-
-    tasks['pim-ee'] = {
-        clearTemplateNames()
-        podTemplate(label: "pimee", containers: [
-            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [containerEnvVar(key: "DOCKER_API_VERSION", value: "1.23")]),
-            containerTemplate(name: "php", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", envVars: [containerEnvVar(key: "COMPOSER_HOME", value: "/shared/.composer")]),
-            containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8")
-        ], volumes: [
-            nfsVolume(mountPath: '/shared', serverAddress: '10.3.248.208', serverPath: '/exports', readOnly: false),
-            hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
-        ]) {
-            node("pimee") {
-                dir('/home/jenkins/pim') {
-                    checkout([$class: 'GitSCM',
-                      branches: [[name: 'master']],
-                      userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
-                    ])
-                    // Required to avoid permission error when "composer update"
-                    sh "mkdir -m 777 vendor"
-
-                    container("php") {
-                        sh "php -d memory_limit=-1 /usr/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-scripts --ignore-platform-reqs --no-suggest"
-                        // Required to avoid permission error when "deleteDir()"
-                        sh "chmod 777 -R vendor/akeneo"
-                        dir('vendor/akeneo/pim-community-dev') {
-                            deleteDir()
-                            checkout scm
-                        }
-                        sh "php -d memory_limit=-1 /usr/bin/composer -n run-script post-update-cmd"
-                        sh "bin/console assets:install"
-                        sh "bin/console pim:installer:dump-require-paths"
-                    }
-                    container("node") {
-                        sh "npm config set cache /shared/.npm --global"
-                        // Required to avoid permission error
-                        sh "npm config set unsafe-perm true"
-                        sh "npm install"
-                        sh "npm run webpack"
-                    }
-                    container("docker") {
-                        sh "cp vendor/akeneo/pim-community-dev/Dockerfile ."
-                        sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee ."
-                        sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee"
-                    }
-                }
+            container("node") {
+                sh "npm config set cache /shared/.npm --global"
+                // Required to avoid permission error
+                sh "npm config set unsafe-perm true"
+                sh "npm install"
+                sh "npm run webpack"
             }
-        }
-    }
-
-    parallel tasks
+            container("docker") {
+                sh "cp vendor/akeneo/pim-community-dev/Dockerfile ."
+                sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee ."
+                sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee"
+            }
+        })}
+    )
 }
 
 stage("Test") {
@@ -259,7 +227,26 @@ stage("Test") {
             node("cleanup") {
                 container("docker") {
                     sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce"
+                    sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee"
                 }
+            }
+        }
+    }
+}
+
+def withBuildNode(body) {
+    clearTemplateNames()
+    podTemplate(label: "build", containers: [
+        containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [containerEnvVar(key: "DOCKER_API_VERSION", value: "1.23")]),
+        containerTemplate(name: "php", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", envVars: [containerEnvVar(key: "COMPOSER_HOME", value: "/shared/.composer")]),
+        containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8")
+    ], volumes: [
+        nfsVolume(mountPath: '/shared', serverAddress: '10.3.248.208', serverPath: '/exports', readOnly: false),
+        hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
+    ]) {
+        node("build") {
+            dir('/home/jenkins/pim') {
+                body()
             }
         }
     }
