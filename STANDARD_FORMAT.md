@@ -80,9 +80,9 @@ Empty data are rendered as null or empty array depending on their type:
         array:1 [
           "an_empty_boolean" => null,
           "an_empty_integer" => null,
-          "a_empty_decimal" => null,
-          "a_empty_datetime" => null,
-          "a_empty_date" => null,
+          "an_empty_decimal" => null,
+          "an_empty_datetime" => null,
+          "an_empty_date" => null,
           "no_linked_entity" => null,
           "an_empty_array" => [],
         ]
@@ -104,7 +104,7 @@ That's why a value always respect the following structure:
         array:3 [
           "locale" => "a locale code"
           "scope" => "a scope code"
-          "data" => "the value for the given locale and scope"
+          "data" => "the data for the given locale and scope"
         ]
 
 And that's why, for the same attribute, it's possible to have multiple values:
@@ -122,7 +122,7 @@ And that's why, for the same attribute, it's possible to have multiple values:
           ]
         ]
 
-All types of attributes (except the *identifier* and *asset*) can be localizable and/or scopable. In the example above:
+All types of attributes (except the *identifier* and *asset*) can be localizable and/or scopable. For instance, in the examples you'll discover later:
  
 * there is a localizable image: *a_localizable_image*
 * there is a scopable price: *a_scopable_price_with_decimal*
@@ -397,10 +397,10 @@ Its standard format would be the following:
 
 ### Common structure
 
-The products contains inner fields and product values that are linked to attributes.
-All products have the same fields (identifier, label, family, groups, categories, associations, status, dates of creation and update) while product values are flexible among products. Its product values are provided via the key *values*.
+The products contain inner fields as well as values that are linked to attributes.
+All products have the same fields (identifier, label, family, groups, categories, associations, status, dates of creation and update, parent, family variant) while values are flexible among products. Their values are provided via the key *values*.
 
-Let's consider a *bar* product, without any product value, except its identifier *sku*. This product also contains:
+Let's consider a *bar* product, without any product value, except an identifier *sku*. This product also contains:
 
 * an identifier
 * a family
@@ -464,13 +464,14 @@ Its standard format would be the following:
 | ------------- | -------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | identifier    | string         | `"bar"`                                                                   | it's the identifier of the product                                                               |
 | family        | string         | `"familyA"`                                                               | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyInterface*                    |
-| groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*                     |
-| categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the object *Akeneo\Component\Classification\Model\CategoryInterface* |
+| groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the objects *Pim\Component\Catalog\Model\GroupInterface*             |
+| categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the objects *Akeneo\Component\Classification\Model\CategoryInterface* |
 | enabled       | boolean        | `true`                                                                    |                                                                                                  |
 | values        | array          |                                                                           | see below                                                                                        |
 | created       | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
 | updated  	    | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
 | associations  | array          | `["X_SELL" => ["groups" => [0 => "groupA"], "products" => [0 => "foo"]]]` | see below                                                                                        |
+Fields *family_variant* and *parent* are detailed in the [variant product](#variant-product) section.
 
 
 ### Product associations
@@ -783,7 +784,7 @@ Its standard format would be the following:
 
 A product is considered as variant if it has a *parent* as product model. Therefore, the family variant becomes available in the standard format.
 
-Let's consider a *baz* product, without any product value, except its identifier *sku*. This product also contains:
+Let's consider a *baz* product, without any product value, except an identifier *sku*. This product also contains:
 
 * an identifier
 * a family
@@ -822,10 +823,10 @@ Its standard format would be the following:
 
 ### Common structure
 
-The product models contains inner fields and product model values that are linked to attributes.
-All product models have the same fields (code, label, family, groups, categories, associations, status, dates of creation and update) while product model values are flexible among product models. Its product model values are provided via the key *values*.
+The product models contains inner fields and values that are linked to attributes.
+All product models have the same fields (code, label, family, groups, categories, associations, status, dates of creation and update, parent, family variant) while values are flexible among product models. Their values are provided via the key *values*.
 
-Let's consider a *bar* product model, without any product model value, except its identifier *sku*. This product model also contains:
+Let's consider a *bar* product model, without any product model value. This product model also contains:
 
 * a code
 * a family variant (therefore, the family becomes available in the standard format)
@@ -849,15 +850,7 @@ Its standard format would be the following:
             0 => "categoryA"
             1 => "categoryB"
           ]
-          "values" => array:1 [
-            "sku" => array:1 [
-              0 => array:3 [
-                "locale" => null
-                "scope" => null
-                "data" => "bar"
-              ]
-            ]
-          ]
+          "values" => array:0 []
           "created" => "2016-06-23T11:24:44+02:00"
           "updated" => "2016-06-23T11:24:44+02:00"
           "associations" => array:3 [
@@ -920,7 +913,7 @@ Each element in the array "groups" represents the *code* of the *Pim\Component\C
 
 Each element in the array "product models" represents the *identifier* of the *Pim\Component\Catalog\Model\Product modelInterface*
 
-If an association type does not contain neither element in groups, nor element in product models, it is not returned.
+If an association type does not contain neither element in groups, nor element in product models, it will not appear.
 
 
 ### Product model values
@@ -928,7 +921,7 @@ If an association type does not contain neither element in groups, nor element i
 Let's now consider a catalog with all attribute types possible and a *foo* product model, that contains:
 
 * all the attributes of the catalog
-* an identifier
+* a code
 * a family variant
 * several groups
 * several categories
@@ -951,13 +944,6 @@ Its standard format would be the following:
           ]
           "enabled" => true
           "values" => array:19 [
-            "sku" => array:1 [
-              0 => array:3 [
-                "locale" => null
-                "scope" => null
-                "data" => "foo"
-              ]
-            ]
             "a_file" => array:1 [
               0 => array:3 [
                 "locale" => null
@@ -1489,9 +1475,9 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | type                   | data structure | data example                                                                                               | notes                                                                                                   |
 | ---------------------- | -------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
 | code                   | string         | `"my_family_variant"`                                                                                      | it's the identifier of the family variant                                                                |
-| family                 | string         | `"family"`                                                                                                 | the code of the family of the family variant                                                            |
+| family                 | string         | `"family"`                                                                                                 | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyInterface* the family variant belongs to |
 | labels                 | array          | `["en_US" => "My family variant", "fr_FR" => "Ma variation de famille"]`                                   | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*        |
-| variant_attribute_sets | array          | `[["level" => 1, "axes" => ["a_simple_select_attribute"], "attributes" => ["a_simple_select_attribute", "an_attribute", "an_other_attribute"]]]`, | an array containing the 3 following keys: `level` which is an integer always stricly higher than 0, `axes` and `attributes` which an arrays where each element represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
+| variant_attribute_sets | array          | `[["level" => 1, "axes" => ["a_simple_select_attribute"], "attributes" => ["a_simple_select_attribute", "an_attribute", "an_other_attribute"]]]`, | an array containing the 3 following keys: `level` which is an integer always stricly higher than 0, `axes` and `attributes` which are arrays where each element represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
 
 Regarding the array `variant_attribute_sets`, an attribute present in the `axes` field will also be present in the `attributes` field.
 
