@@ -1,4 +1,4 @@
-# 1.6.x
+# 1.6.19 (2017-09-05)
 
 - PIM-6770: Fix assets completeness calculation
 
