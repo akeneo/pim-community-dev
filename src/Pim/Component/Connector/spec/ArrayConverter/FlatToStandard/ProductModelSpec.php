@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
@@ -10,8 +11,7 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel\FieldConverter;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Pim\Component\Connector\Exception\StructureArrayConversionException;
 
 class ProductModelSpec extends ObjectBehavior
 {
@@ -43,7 +43,7 @@ class ProductModelSpec extends ObjectBehavior
         $this->shouldImplement(ArrayConverterInterface::class);
     }
 
-    function it_convert_flat_product_model_to_standard_format(
+    function it_converts_flat_product_model_to_standard_format(
         $columnsMapper,
         $fieldConverter,
         $productValueConverter,
@@ -56,16 +56,7 @@ class ProductModelSpec extends ObjectBehavior
         ConvertedField $categoryConverter
     ) {
         $flatProductModel = [
-            'identifier' => 'identifier',
-            'parent' => '1234',
-            'family' => 'family_variant',
-            'categories' => 'tshirt,pull',
-            'name-en_US' => 'name',
-            'description-en_US-ecommerce' => 'description',
-        ];
-
-        $mappedFlatProductModel = [
-            'identifier' => 'identifier',
+            'code' => 'code',
             'parent' => '1234',
             'family_variant' => 'family_variant',
             'categories' => 'tshirt,pull',
@@ -75,31 +66,31 @@ class ProductModelSpec extends ObjectBehavior
 
         $columnsMapper->map($flatProductModel, [
             'family' => 'family_variant',
-        ])->willReturn($mappedFlatProductModel);
+        ])->willReturn($flatProductModel);
 
-        $columnsMerger->merge($mappedFlatProductModel)->willReturn($mappedFlatProductModel);
+        $columnsMerger->merge($flatProductModel)->willReturn($flatProductModel);
 
-        $attributeColumnsResolver->resolveIdentifierField()->willReturn(['identifier']);
-        $fieldsRequirementChecker->checkFieldsPresence($mappedFlatProductModel, 'identifier');
+        $fieldsRequirementChecker->checkFieldsPresence($flatProductModel, ['code'])->shouldBeCalled();
+        $attributeColumnsResolver->resolveAttributeColumns()->willReturn(['name-en_US', 'description-en_US-ecommerce']);
 
-        $fieldConverter->supportsColumn('identifier')->willreturn(true);
-        $fieldConverter->convert('identifier', 'identifier')->willreturn([$identifierConverter]);
-        $identifierConverter->appendTo([])->willReturn(['identifier' => 'identifier']);
+        $fieldConverter->supportsColumn('code')->willreturn(true);
+        $fieldConverter->convert('code', 'code')->willreturn([$identifierConverter]);
+        $identifierConverter->appendTo([])->willReturn(['code' => 'code']);
 
         $fieldConverter->supportsColumn('parent')->willreturn(1324);
         $fieldConverter->convert('parent', '1234')->willreturn([$parentConverter]);
-        $parentConverter->appendTo(['identifier' => 'identifier'])->willReturn([
-            'identifier' => 'identifier',
+        $parentConverter->appendTo(['code' => 'code'])->willReturn([
+            'code' => 'code',
             'parent' => 1234,
         ]);
 
         $fieldConverter->supportsColumn('family_variant')->willreturn(true);
         $fieldConverter->convert('family_variant', 'family_variant')->willreturn([$familyVariantConverter]);
         $familyVariantConverter->appendTo([
-            'identifier' => 'identifier',
+            'code' => 'code',
             'parent' => 1234,
         ])->willReturn([
-            'identifier' => 'identifier',
+            'code' => 'code',
             'parent' => 1234,
             'family_variant' => 'family_variant'
         ]);
@@ -107,11 +98,11 @@ class ProductModelSpec extends ObjectBehavior
         $fieldConverter->supportsColumn('categories')->willreturn(true);
         $fieldConverter->convert('categories', 'tshirt,pull')->willreturn([$categoryConverter]);
         $categoryConverter->appendTo([
-            'identifier' => 'identifier',
+            'code' => 'code',
             'parent' => 1234,
             'family_variant' => 'family_variant'
         ])->willReturn([
-            'identifier' => 'identifier',
+            'code' => 'code',
             'parent' => 1234,
             'family_variant' => 'family_variant',
             'categories' => [
@@ -147,7 +138,7 @@ class ProductModelSpec extends ObjectBehavior
                 'family' => 'family_variant',
             ]
         ])->shouldReturn([
-            'identifier' => 'identifier',
+            'code' => 'code',
             'parent' => 1234,
             'family_variant' => 'family_variant',
             'categories' => [
@@ -170,6 +161,40 @@ class ProductModelSpec extends ObjectBehavior
                     ],
                 ]
             ]
+        ]);
+    }
+
+    function it_throws(
+        $columnsMapper,
+        $columnsMerger,
+        $fieldsRequirementChecker,
+        $attributeColumnsResolver
+    ) {
+        $flatProductModel = [
+            'code' => 'code',
+            'parent' => '1234',
+            'family' => 'family_variant',
+            'categories' => 'tshirt,pull',
+            'name-en_US' => 'name',
+            'description-en_US-ecommerce' => 'description',
+        ];
+
+        $columnsMapper->map($flatProductModel, [
+            'family' => 'family_variant',
+        ])->willReturn($flatProductModel);
+
+        $columnsMerger->merge($flatProductModel)->willReturn($flatProductModel);
+
+        $fieldsRequirementChecker->checkFieldsPresence($flatProductModel, ['code'])->shouldBeCalled();
+        $attributeColumnsResolver->resolveAttributeColumns()->willReturn(['name', 'description-en_US-ecommerce']);
+
+        $this->shouldThrow(StructureArrayConversionException::class)->during('convert', [
+            $flatProductModel,
+            [
+                'mapping' => [
+                    'family' => 'family_variant',
+                ],
+            ],
         ]);
     }
 }

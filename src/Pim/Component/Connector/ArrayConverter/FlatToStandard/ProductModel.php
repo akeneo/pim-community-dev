@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard;
 
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
@@ -8,6 +10,8 @@ use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColum
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductModel\FieldConverter;
+use Pim\Component\Connector\Exception\DataArrayConversionException;
+use Pim\Component\Connector\Exception\StructureArrayConversionException;
 
 /**
  *
@@ -36,12 +40,12 @@ class ProductModel implements ArrayConverterInterface
     private $fieldsRequirementChecker;
 
     /**
-     * @param ColumnsMapper                   $columnsMapper
-     * @param FieldConverter                  $fieldConverter
-     * @param ArrayConverterInterface         $productValueConverter
-     * @param ColumnsMerger                  $columnsMerger
+     * @param ColumnsMapper            $columnsMapper
+     * @param FieldConverter           $fieldConverter
+     * @param ArrayConverterInterface  $productValueConverter
+     * @param ColumnsMerger            $columnsMerger
      * @param AttributeColumnsResolver $attributeColumnsResolver ,
-     * @param FieldsRequirementChecker        $fieldsRequirementChecker
+     * @param FieldsRequirementChecker $fieldsRequirementChecker
      */
     public function __construct(
         ColumnsMapper $columnsMapper,
@@ -64,15 +68,95 @@ class ProductModel implements ArrayConverterInterface
      */
     public function convert(array $flatProductModel, array $options = []): array
     {
-        $convertedValues = $convertedFlatProductModel = [];
+        $mappedFlatProductModel = $this->mapFields($flatProductModel, $options);
+        $this->validateItem($mappedFlatProductModel);
+        $mergedFlatProductModel = $this->columnsMerger->merge($mappedFlatProductModel);
+        $convertedProductModel = $this->convertItem($mergedFlatProductModel);
+
+        return $convertedProductModel;
+    }
+
+    /**
+     * @param array $flatProductModel
+     * @param array $options
+     *
+     * @return array
+     */
+    private function mapFields(array $flatProductModel, array $options): array
+    {
         if (isset($options['mapping'])) {
             $flatProductModel = $this->columnsMapper->map($flatProductModel, $options['mapping']);
         }
-        $flatProductModel = $this->columnsMerger->merge($flatProductModel);
 
-        $this->fieldsRequirementChecker->checkFieldsPresence($flatProductModel, ['code']);
+        return $flatProductModel;
+    }
 
-        foreach ($flatProductModel as $column => $value) {
+    /**
+     * @param array $mappedFlatProductModel
+     */
+    protected function validateItem(array $mappedFlatProductModel): void
+    {
+        $this->fieldsRequirementChecker->checkFieldsPresence($mappedFlatProductModel, ['code']);
+        $this->validateOptionalFields($mappedFlatProductModel);
+        $this->validateFieldValueTypes($mappedFlatProductModel);
+    }
+
+    /**
+     * @param array $mappedFlatProductModel
+     *
+     * @throws StructureArrayConversionException
+     */
+    protected function validateOptionalFields(array $mappedFlatProductModel): void
+    {
+        $optionalFields = array_merge(
+            ['categories', 'code', 'family_variant', 'parent'],
+            $this->attributeColumnsResolver->resolveAttributeColumns()
+        );
+
+        // index $optionalFields by keys to improve performances
+        $optionalFields = array_combine($optionalFields, $optionalFields);
+        $unknownFields = [];
+
+        foreach (array_keys($mappedFlatProductModel) as $field) {
+            if (!isset($optionalFields[$field])) {
+                $unknownFields[] = $field;
+            }
+        }
+
+        if (0 < count($unknownFields)) {
+            $message = count($unknownFields) > 1 ? 'The fields "%s" do not exist' : 'The field "%s" does not exist';
+
+            throw new StructureArrayConversionException(sprintf($message, implode(', ', $unknownFields)));
+        }
+    }
+
+    /**
+     * @param array $mappedFlatProductModel
+     *
+     * @throws DataArrayConversionException
+     */
+    protected function validateFieldValueTypes(array $mappedFlatProductModel): void
+    {
+        $stringFields = ['code', 'categories', 'family_variant', 'parent'];
+
+        foreach ($mappedFlatProductModel as $field => $value) {
+            if (in_array($field, $stringFields) && !is_string($value)) {
+                throw new DataArrayConversionException(
+                    sprintf('The field "%s" should contain a string, "%s" provided', $field, $value)
+                );
+            }
+        }
+    }
+
+    /**
+     * @param array $mergedFlatProductModel
+     *
+     * @return array
+     */
+    protected function convertItem(array $mergedFlatProductModel): array
+    {
+        $convertedValues = $convertedFlatProductModel = [];
+        foreach ($mergedFlatProductModel as $column => $value) {
             if ($this->fieldConverter->supportsColumn($column)) {
                 $convertedFields = $this->fieldConverter->convert($column, $value);
                 /**

@@ -183,7 +183,7 @@ class Product implements ArrayConverterInterface
         $this->validateItem($filteredItem);
 
         $mergedItem = $this->columnsMerger->merge($filteredItem);
-        $convertedItem = $this->convertItem($mergedItem, $options);
+        $convertedItem = $this->convertItem($mergedItem);
 
         return $convertedItem;
     }
