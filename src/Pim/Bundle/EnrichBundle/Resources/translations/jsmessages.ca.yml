@@ -151,9 +151,6 @@ pim_enrich:
         logged_at: Connectat a
         from: Des de
         modified: Modificat
-        property: Propietat
-        old_values: Valors antics
-        new_values: Valors nous
         actions: Accions
       info:
         deletion_successful: Producte suprimit correctament.
@@ -359,6 +356,7 @@ pim_enrich:
             no_match: No s’han trobat coincidències
             load_more: Carregant més resultats...
           attribute_group_selector: Grup d'atributs
+          attribute_group_all: Tots
         categories:
           title: Categories
       panel:
@@ -495,7 +493,7 @@ pim_enrich:
           table:
             name: Nom
             type: Tipus
-            scope: Abast
+            scopable: Abastable
             localizable: Configurable regionalment
         history.title: Històric
     common:

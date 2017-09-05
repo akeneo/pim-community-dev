@@ -17,7 +17,7 @@ Feature: Update product history when mass editing products
     Given I am on the products grid
     And I select rows boots, sandals and sneakers
     And I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Change the family of products" operation
+    And I choose the "Change family" operation
     And I change the Family to "Sandals"
     And I confirm mass edit
     And I wait for the "update_product_value" job to finish

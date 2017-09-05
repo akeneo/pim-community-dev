@@ -17,7 +17,7 @@ Feature: Unclassify many products at once
   Scenario: Add several products to categories at once
     Given I select rows bigfoot and horseshoe
     And I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Remove products from categories" operation
+    And I choose the "Remove from categories" operation
     And I press the "2014 collection" button
     And I expand the "2014_collection" category
     And I click on the "winter_collection" category

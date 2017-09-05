@@ -431,6 +431,36 @@
   left: 10px;
 }
 
+// Stylize like AknButton
+.aknButtonLike {
+  &.select2-container {
+    .select2-choice.select2-default {
+      background: @AknBlue;
+      color: white !important;
+      border-radius: 100px;
+      height: @AknDefaultButtonSize;
+      line-height: @AknDefaultButtonSize;
+      border-color: @AknBlue;
+      padding: 0 0 0 @AknDefaultButtonSize / 2;
+      text-transform: uppercase;
+
+      & > .select2-chosen {
+        margin-right: 45px;
+      }
+
+      .select2-arrow {
+        background: @AknBlue url("../../images/icon-down-white.svg") no-repeat 3px center;
+        background-size: 50%;
+        border: none;
+
+        b {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
 // Fix for Retina icons
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi)  {
   .select2-search-choice-close,

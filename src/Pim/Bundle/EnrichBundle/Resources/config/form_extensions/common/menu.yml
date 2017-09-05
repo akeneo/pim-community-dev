@@ -31,7 +31,7 @@ extensions:
         aclResourceId: pim_importexport_import_profile_index
         config:
             title: pim_menu.tab.imports
-            iconModifier: iconUpload
+            iconModifier: iconDownload
             to: pim_importexport_import_profile_index
 
     # Products
@@ -55,7 +55,7 @@ extensions:
         aclResourceId: pim_importexport_export_profile_index
         config:
             title: pim_menu.tab.exports
-            iconModifier: iconDownload
+            iconModifier: iconUpload
             to: pim_importexport_export_profile_index
 
     # Settings

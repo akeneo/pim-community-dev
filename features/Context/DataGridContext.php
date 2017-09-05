@@ -448,10 +448,15 @@ class DataGridContext extends PimContext implements PageObjectAware
         $columnsToAdd = array_diff($expectedColumns, $currentColumns);
         $columnsToRemove = array_diff($currentColumns, $expectedColumns);
 
+        // Temporary solution waiting for Category tree moving (PIM-6574)
+        $this->getSession()->executeScript('$(".AknDefault-mainContent").scrollLeft(1000)');
+
         $this->getDatagrid()->openColumnsPopin();
         $this->getDatagrid()->addColumns($columnsToAdd);
         $this->getDatagrid()->removeColumns($columnsToRemove);
         $this->getDatagrid()->validateColumnsPopin();
+
+        $this->getSession()->executeScript('$(".AknDefault-mainContent").scrollLeft(0)');
     }
 
     /**

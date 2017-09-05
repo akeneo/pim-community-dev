@@ -36,7 +36,7 @@ Feature: Update product history when mass editing products
     And I press "Change product information" on the "Bulk Actions" dropdown button
 
   Scenario: Display history when changing product status
-    Given I choose the "Change status (enable / disable)" operation
+    Given I choose the "Change status" operation
     And I disable the products
     And I wait for the "update_product_value" job to finish
     When I edit the "boots" product
