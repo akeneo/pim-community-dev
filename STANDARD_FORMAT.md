@@ -9,6 +9,33 @@ The standard format is consistent in term of:
 
 The standard format always returns the complete structure, even if data is null.
 
+## Table of content
+
+- [General points](#general-points)
+- [Flexible values](#flexible-values)
+- [Product](#product)
+- [Product model](#product-model)
+- Other entities
+    - [Attribute](#attribute)
+    - [Attribute option](#attribute-option)
+    - [Association type](#association-type)
+    - [Attribute group](#attribute-group)
+    - [Category](#category)
+    - [Channel](#channel)
+    - [Currency](#currency)
+    - [Family](#family)
+    - [Family variant](#family-variant)
+    - [Group](#group)
+    - [Group type](#group-type)
+    - [Locale](#locale)
+    - [File info](#file-info)
+- Other entities only available on Enterprise Edition
+    - [Asset](#asset-enterprise-edition)
+    - [Asset variation](#asset-variation-enterprise-edition)
+    - [Channel configuration](#channel-configuration-enterprise-edition)
+    - [Rule](#rule-enterprise-edition)
+    
+
 ## General points
 
 Keys of the array are snake cased.
