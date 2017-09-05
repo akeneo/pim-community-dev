@@ -5,8 +5,7 @@ extensions:
         config:
             template: pim/template/product/index
             templateParams:
-#               TODO This next one should be translated, no ?
-                title: Products
+                titleKey: pim_enrich.entity.product.index_title
                 gridName: product-grid
 
     pim-product-index-left-column:
@@ -26,7 +25,7 @@ extensions:
     pim-product-index-column-category:
         module: pim/grid/column-category
         parent: pim-product-index-column-inner
-        targetZone: product-scope-filter
+        targetZone: column-context-switcher
 
     pim-product-index-create-button:
         module: pim/form/common/index/create-button
@@ -34,15 +33,14 @@ extensions:
         targetZone: buttons
         aclResourceId: pim_enrich_product_create
         config:
-#          TODO This next one should be translated, no ?
-           title:     Create product
+           title:     pim_enrich.entity.product.create
            modalForm: pim-product-create-modal
 
     pim-product-index-locale-switcher:
         module: pim/grid/locale-switcher
         parent: pim-product-index-column-inner
 #        // TODO Rename
-        targetZone: product-scope-filter
+        targetZone: column-context-switcher
         position: 10
         config:
             routeName: pim_enrich_product_index

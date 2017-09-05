@@ -418,7 +418,7 @@ class WebUser extends PimContext
      *
      * @When /^I (open|close) the category tree$/
      */
-    public function iOpenTheCategoryTree($action) {
+    public function iToggleTheCategoryTree($action) {
         $this->spin(function() use ($action) {
             $thirdColumn = $this->getCurrentPage()->find('css', '.AknDefault-thirdColumn');
             if (null !== $thirdColumn) {
@@ -438,7 +438,6 @@ class WebUser extends PimContext
             return false;
         }, 'Cannot find the category switcher');
     }
-
 
     /**
      * @param TableNode $table

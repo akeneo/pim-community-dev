@@ -8,11 +8,13 @@
 define(
     [
         'underscore',
+        'oro/translator',
         'pim/form',
         'pim/template/product/grid/column-category'
     ],
     function(
         _,
+        __,
         BaseForm,
         template
     ) {
@@ -22,12 +24,16 @@ define(
             events: {
                 'click': 'toggleThirdColumn'
             },
+            isHighlited: false,
 
             /**
              * {@inheritdoc}
              */
             render() {
-                this.$el.html(this.template);
+                this.$el.html(this.template({
+                    categoryLabel: __('pim_enrich.entity.product.category'),
+                    isHighlited: this.isHighlited
+                }));
 
                 this.renderExtensions();
             },
@@ -36,7 +42,10 @@ define(
              * Toggle the thrid column
              */
             toggleThirdColumn() {
+                this.isHighlited = !this.isHighlited;
                 this.getRoot().trigger('grid:third_column:toggle');
+
+                this.render();
             }
         });
     }

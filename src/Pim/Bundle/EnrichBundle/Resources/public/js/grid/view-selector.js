@@ -226,9 +226,6 @@ define(
                         currentViewType: this.currentViewType,
                     }));
                 }
-
-                // var $search = this.$('.select2-search');
-                // $search.prepend($('<i class="icon-search"></i>'));
             },
 
             /**

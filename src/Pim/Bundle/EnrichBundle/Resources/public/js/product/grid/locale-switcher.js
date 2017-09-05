@@ -10,6 +10,7 @@
 define([
         'jquery',
         'underscore',
+        'oro/translator',
         'pim/form',
         'pim/template/product/grid/locale-switcher',
         'pim/fetcher-registry',
@@ -20,6 +21,7 @@ define([
     function (
         $,
         _,
+        __,
         BaseForm,
         template,
         FetcherRegistry,
@@ -63,6 +65,7 @@ define([
                 const currentLocaleCode = UserContext.get('catalogLocale');
 
                 this.$el.empty().append(this.template({
+                    localeLabel: __('pim_enrich.entity.product.locale'),
                     locales: this.locales,
                     currentLocaleCode,
                     i18n,

@@ -64,7 +64,7 @@ define(
              * @param {Array} collection
              */
             moveFilter: function (collection) {
-                this.$el.appendTo($('[data-drop-zone="product-scope-filter"]'));
+                this.$el.appendTo($('[data-drop-zone="column-context-switcher"]'));
 
                 let $grid = $('#grid-' + collection.inputName);
 

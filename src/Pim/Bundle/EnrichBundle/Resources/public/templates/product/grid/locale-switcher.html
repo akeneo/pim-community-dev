@@ -1,9 +1,9 @@
 <div data-toggle="dropdown">
-    <div class="AknColumn-subtitle">Locale - to translate, bitch please</div>
+    <div class="AknColumn-subtitle"><%- localeLabel %></div>
     <div class="AknColumn-value value"><%= i18n.getFlag(currentLocaleCode, false) %>&nbsp;<%- getDisplayName(currentLocaleCode) %></div>
 </div>
 <div class="AknDropdown-menu">
-    <div class="AknDropdown-menuTitle">Locale - to translate, bitch please</div>
+    <div class="AknDropdown-menuTitle"><%- localeLabel %></div>
     <% _.each(locales, (locale) => { %>
     <div class="AknDropdown-menuLink<% if (currentLocaleCode === locale.code) { %> AknDropdown-menuLink--active<% } %>" data-locale="<%- locale.code %>">
         <span class="label"><%= i18n.getFlag(locale.code, false) %> <%- getDisplayName(locale.code) %></span>
