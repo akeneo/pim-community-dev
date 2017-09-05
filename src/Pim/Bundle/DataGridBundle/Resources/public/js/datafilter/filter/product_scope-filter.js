@@ -126,6 +126,7 @@ define(
                 }
 
                 UserContext.set('catalogScope', newValue.value);
+                this.catalogScope = newValue.value;
 
                 return SelectFilter.prototype._onValueUpdated.apply(this, arguments);
             },
