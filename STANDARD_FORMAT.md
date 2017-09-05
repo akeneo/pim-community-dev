@@ -12,7 +12,7 @@ The standard format always returns the complete structure, even if data is null.
 ## Table of content
 
 - [General points](#general-points)
-- [Flexible values](#flexible-values)
+- [Values](#values)
 - [Product](#product)
 - [Product model](#product-model)
 - Other entities
@@ -87,11 +87,11 @@ Empty data are rendered as null or empty array depending on their type:
           "an_empty_array" => [],
         ]
 
-## Flexible values
+## Values
 
-A flexible value is a data holder linked to an [attribute](#attribute). Depending on its attribute type, the value will be either a number, a string or even a more complex data type like a price collection or a metric for instance.
+A value is a data holder linked to an [attribute](#attribute). Depending on its attribute type, the value will be either a number, a string or even a more complex data type like a price collection or a metric for instance.
 
-Flexible values are typically used in products and product models. They are accessible via the key *values*.
+Values are typically used in products and product models. They are accessible via the key *values*.
 
 Those values can be localizable and/or scopable:
 
@@ -495,7 +495,7 @@ Each element in the array "groups" represents the *code* of the *Pim\Component\C
 
 Each element in the array "products" represents the *identifier* of the *Pim\Component\Catalog\Model\ProductInterface*
 
-If an association type does not contain neither element in groups, nor element in products, it is not returned.
+If an association type does not contain neither element in groups, nor element in products, it will not appear.
 
 
 ### Product values
