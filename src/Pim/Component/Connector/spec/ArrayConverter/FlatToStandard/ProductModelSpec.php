@@ -164,7 +164,7 @@ class ProductModelSpec extends ObjectBehavior
         ]);
     }
 
-    function it_throws(
+    function it_throws_an_exception_if_family_variant_is_different_from_the_parent(
         $columnsMapper,
         $columnsMerger,
         $fieldsRequirementChecker,
