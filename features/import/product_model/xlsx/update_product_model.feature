@@ -15,7 +15,7 @@ Feature: Update product models through XLSX import
     And the following XLSX file to import:
       """
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;name-en_US;composition;size;ean;sku;weight
-      code-001;;clothing_colorsize;master_men;Spring2017;A new description;Blazers_1654;50 EUR;;;;;;;
+      code-001;;clothing_color_size;master_men;Spring2017;A new description;Blazers_1654;50 EUR;;;;;;;
       """
     And the following job "xlsx_catalog_modeling_product_model_import" configuration:
       | filePath          | %file to import% |
@@ -24,8 +24,8 @@ Feature: Update product models through XLSX import
     And I launch the import job
     And I wait for the "xlsx_catalog_modeling_product_model_import" job to finish
     Then there should be the following root product model:
-      | code     | categories | family_variant     | collection   | description-en_US-ecommerce | erp_name-en_US | price     |
-      | code-001 | master_men | clothing_colorsize | [Spring2017] | A new description           | Blazers_1654   | 50.00 EUR |
+      | code     | categories | family_variant      | collection   | description-en_US-ecommerce | erp_name-en_US | price     |
+      | code-001 | master_men | clothing_color_size | [Spring2017] | A new description           | Blazers_1654   | 50.00 EUR |
 
   Scenario: Julia successfully updates an exiting product sub product model through XLSX import
     Given the following root product model:

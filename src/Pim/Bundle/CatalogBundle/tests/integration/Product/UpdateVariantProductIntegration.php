@@ -25,7 +25,7 @@ class UpdateVariantProductIntegration extends TestCase
     public function testTheParentCannotBeChanged(): void
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_blue_xl');
-        $this->get('pim_catalog.updater.product')->update($product, ['parent' => 'amor',]);
+        $this->get('pim_catalog.updater.product')->update($product, ['parent' => 'amor']);
     }
 
     /**
@@ -36,9 +36,9 @@ class UpdateVariantProductIntegration extends TestCase
     public function testTheFamilyCannotBeChanged(): void
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_blue_xl');
-        $this->get('pim_catalog.updater.product')->update($product, ['family' => 'shoes',]);
+        $this->get('pim_catalog.updater.product')->update($product, ['family' => 'shoes']);
 
-        $errors = $this->get('validator')->validate($product);
+        $errors = $this->get('pim_catalog.validator.product')->validate($product);
         $this->assertEquals(1, $errors->count());
         $this->assertEquals(
             'The variant product family must be the same than its parent',
@@ -75,7 +75,7 @@ class UpdateVariantProductIntegration extends TestCase
             ],
         ]);
 
-        $errors = $this->get('validator')->validate($product);
+        $errors = $this->get('pim_catalog.validator.product')->validate($product);
         if (0 !== $errors->count()) {
             throw new \Exception(sprintf(
                 'Impossible to setup test in %s: %s',
@@ -85,5 +85,6 @@ class UpdateVariantProductIntegration extends TestCase
         }
 
         $this->get('pim_catalog.saver.product')->save($product);
+        $this->get('pim_catalog.validator.unique_value_set')->reset();
     }
 }

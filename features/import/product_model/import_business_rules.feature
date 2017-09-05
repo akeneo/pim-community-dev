@@ -136,6 +136,9 @@ Feature: Create product models through CSV import
     And there should be the following product model:
       | code     | color  | variation_name-en_US | composition |
       | code-002 | [blue] | Blazers              | composition |
+    And I should see the text "created 1"
+    And I should see the text "read lines 1"
+    But I should not see the text "read lines 2"
 
   Scenario: A root product model cannot have a parent
     Given the following root product models:
@@ -190,11 +193,15 @@ Feature: Create product models through CSV import
       """
 
   Scenario: Skip a product model if its combination of axes values exist more than once in an import file
-    Given the following CSV file to import:
+    Given the following root product model:
+      | code     | parent   | family_variant      | categories         | collection | description-en_US-ecommerce | erp_name-en_US | price   |
+      | code-001 |          | clothing_color_size | master_men         | Spring2017 | description                 | Blazers_1654   | 100 EUR |
+    And the following sub product model:
+      | code     | parent   | family_variant      | categories         | color | variation_name-en_US | composition |
+      | code-002 | code-001 | clothing_color_size | master_men_blazers | blue  | Blazers              | composition |
+    And the following CSV file to import:
       """
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
-      code-001;;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
-      code-002;code-001;clothing_color_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
       code-003;code-001;clothing_color_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:

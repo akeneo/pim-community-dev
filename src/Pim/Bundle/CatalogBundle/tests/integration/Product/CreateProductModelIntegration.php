@@ -36,7 +36,7 @@ class CreateProductModelIntegration extends TestCase
             ]
         );
 
-        $errors = $this->get('validator')->validate($productModel);
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
         $this->assertEquals(0, $errors->count());
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
@@ -65,7 +65,7 @@ class CreateProductModelIntegration extends TestCase
             ]
         );
 
-        $errors = $this->get('validator')->validate($productModel);
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
 
         $this->assertEquals('The product model code must not be empty.', $errors->get(0)->getMessage());
         $this->assertEquals('code', $errors->get(0)->getPropertyPath());
@@ -82,7 +82,7 @@ class CreateProductModelIntegration extends TestCase
             ]
         );
 
-        $this->get('validator')->validate($productModel);
+        $this->get('pim_catalog.validator.product_model')->validate($productModel);
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
         $productModel = $this->createProductModel(
@@ -91,7 +91,7 @@ class CreateProductModelIntegration extends TestCase
             ]
         );
 
-        $errors = $this->get('validator')->validate($productModel);
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
 
         $this->assertEquals(
             'The same code is already set on another product model.',
@@ -138,7 +138,7 @@ class CreateProductModelIntegration extends TestCase
             ]
         );
 
-        $errors = $this->get('validator')->validate($productModelParent);
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModelParent);
         $this->assertEquals(0, $errors->count());
         $this->get('pim_catalog.saver.product_model')->save($productModelParent);
 
@@ -150,7 +150,7 @@ class CreateProductModelIntegration extends TestCase
         );
         $productModel->setParent($productModelParent);
 
-        $errors = $this->get('validator')->validate($productModel);
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
         $this->assertEquals(
             'Attribute "color" cannot be empty, as it is defined as an axis for this entity',
             $errors->get(0)->getMessage()
@@ -170,7 +170,7 @@ class CreateProductModelIntegration extends TestCase
             ]
         );
 
-        $errors = $this->get('validator')->validate($productModelParent);
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModelParent);
         $this->assertEquals(0, $errors->count());
         $this->get('pim_catalog.saver.product_model')->save($productModelParent);
 
@@ -198,7 +198,7 @@ class CreateProductModelIntegration extends TestCase
         );
         $productModel->setParent($productModelParent);
 
-        $errors = $this->get('validator')->validate($productModel);
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
         $this->assertEquals(
             'Cannot set the property "sku" to this entity as it is not in the attribute set',
             $errors->get(0)->getMessage()
@@ -217,7 +217,7 @@ class CreateProductModelIntegration extends TestCase
             ]
         );
 
-        $errors = $this->get('validator')->validate($productModelParent);
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModelParent);
         $this->assertEquals(0, $errors->count());
         $this->get('pim_catalog.saver.product_model')->save($productModelParent);
 
@@ -237,7 +237,7 @@ class CreateProductModelIntegration extends TestCase
             ]
         );
         $productModel->setParent($productModelParent);
-        $errors = $this->get('validator')->validate($productModel);
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
         $this->assertEquals(0, $errors->count());
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
@@ -257,9 +257,48 @@ class CreateProductModelIntegration extends TestCase
             ]
         );
         $productModelDuplicate->setParent($productModelParent);
-        $errors = $this->get('validator')->validate($productModelDuplicate);
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModelDuplicate);
         $this->assertEquals(
             'Cannot set value "[blue]" for the attribute axis "color", as another sibling entity already has this value',
+            $errors->get(0)->getMessage()
+        );
+    }
+
+    /**
+     * Create a product without any errors
+     */
+    public function testTheProductModelHaveValidMetricValue()
+    {
+        $productModel = $this->createProductModel(
+            [
+                'code' => 'model-running-shoes-l',
+                'family_variant' => 'shoes_size_color',
+                'parent' => 'model-running-shoes',
+                'values' => [
+                    'size' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'l',
+                        ],
+                    ],
+                    'weight' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => [
+                                'amount' => 'foobar',
+                                'unit' => 'GRAM'
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
+        $this->assertEquals(
+            'This value should be a valid number.',
             $errors->get(0)->getMessage()
         );
     }

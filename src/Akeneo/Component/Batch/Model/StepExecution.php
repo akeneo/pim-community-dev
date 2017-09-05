@@ -492,7 +492,7 @@ class StepExecution
      */
     public function addSummaryInfo($key, $info)
     {
-        $this->summary[$key]= $info;
+        $this->summary[$key] = $info;
     }
 
     /**
@@ -504,9 +504,24 @@ class StepExecution
     public function incrementSummaryInfo($key, $increment = 1)
     {
         if (!isset($this->summary[$key])) {
-            $this->summary[$key]= $increment;
+            $this->summary[$key] = $increment;
         } else {
-            $this->summary[$key]= $this->summary[$key] + $increment;
+            $this->summary[$key] = $this->summary[$key] + $increment;
+        }
+    }
+
+    /**
+     * Decrement counter in summary
+     *
+     * @param string  $key
+     * @param integer $decrement
+     */
+    public function decrementSummaryInfo($key, $decrement = 1)
+    {
+        if (!isset($this->summary[$key])) {
+            $this->summary[$key] = -$decrement;
+        } else {
+            $this->summary[$key] = $this->summary[$key] - $decrement;
         }
     }
 

@@ -413,6 +413,9 @@ services:
             - '@validator.validator_factory'
             - []
 
+    pim_catalog.validator.product_model:
+        alias: 'pim_catalog.validator.product'
+
     pim_catalog.validator.constraint.unique_variant_group_type:
         class: '%pim_catalog.validator.constraint.unique_variant_group_type.class%'
         arguments:
