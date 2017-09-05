@@ -137,8 +137,9 @@ Feature: Create product models through CSV import
       | code     | color  | variation_name-en_US | composition |
       | code-002 | [blue] | Blazers              | composition |
     And I should see the text "created 1"
-    And I should see the text "read lines 1"
-    But I should not see the text "read lines 2"
+    And I should see the text "skipped product model with parent 1"
+    And I should see the text "skipped product model without parent 1"
+    And I should see the text "read lines 2"
 
   Scenario: A root product model cannot have a parent
     Given the following root product models:

@@ -341,7 +341,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
 
         $this->setStepExecution($stepExecution);
 
-        $stepExecution->decrementSummaryInfo('item_position')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('skipped_in_root_product_model')->shouldBeCalled();
 
         $this->process([
             'code' => 'product_model_code',
@@ -373,7 +373,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
 
         $this->setStepExecution($stepExecution);
 
-        $stepExecution->decrementSummaryInfo('item_position')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('skipped_in_sub_product_model')->shouldBeCalled();
 
         $this->process([
             'code' => 'product_model_code',
