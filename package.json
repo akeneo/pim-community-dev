@@ -17,6 +17,11 @@
   "bugs": {
     "url": "https://github.com/akeneo/pim-community-dev/issues"
   },
+  "devDependencies": {
+    "colors": "1.1.2",
+    "dep-diff": "1.0.1",
+    "read-pkg": "2.0.0"
+  },
   "dependencies": {
     "JSON2": "0.1.0",
     "babel-cli": "6.26.0",
