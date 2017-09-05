@@ -48,6 +48,18 @@ Linked entities are represented only by their identifier as strings. For instanc
           "bar" => "the_bar_identifier"
         ]
 
+Empty data are rendered as null or empty array depending on their type:
+
+        array:1 [
+          "an_empty_boolean" => null,
+          "an_empty_integer" => null,
+          "a_empty_decimal" => null,
+          "a_empty_datetime" => null,
+          "a_empty_date" => null,
+          "no_linked_entity" => null,
+          "an_empty_array" => [],
+        ]
+
 ## Flexible values
 
 A flexible value is a data holder linked to an [attribute](#attribute). Depending on its attribute type, the value will be either a number, a string or even a more complex data type like a price collection or a metric for instance.
