@@ -254,10 +254,13 @@ class GridCapableDecorator extends ElementDecorator
     protected function openSecondaryActions() {
         $this->spin(function () {
             $element = $this->find('css', $this->selectors['Grid view secondary actions']);
-            if ($element !== null && $element->hasClass('open')) {
-                return true;
+            if ($element !== null) {
+                if ($element->hasClass('open')) {
+                    return true;
+                } else {
+                    $element->click();
+                }
             }
-            $element->click();
 
             return false;
         }, 'Can not open the grid view selector secondary actions');

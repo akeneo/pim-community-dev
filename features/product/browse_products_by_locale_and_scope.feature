@@ -76,8 +76,6 @@ Feature: Browse products by locale and scope
     And I switch the scope to "Mobile"
     And I am on the dashboard page
     When I am on the products grid
-    And I open the category tree
     Then I should see the text "Mobile"
     When I refresh current page
-    And I open the category tree
     Then I should see the text "Mobile"

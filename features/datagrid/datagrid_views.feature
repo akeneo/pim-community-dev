@@ -265,5 +265,6 @@ Feature: Datagrid views
 
   @ce
   Scenario: Don't display view type switcher if there is only one view type
+#   TODO This scenario will fail until I have a new design, I just keep it to be sure I don't forget!
     Given I am on the products grid
     Then I should not see the text "Views"

@@ -43,11 +43,9 @@ Feature: Reset product grid filters
   Scenario: I successfully keep the scope I work on when I reset the defaut view
     When I switch the scope to "Mobile"
     And I reset the grid
-    And I open the category tree
     Then I should see the text "Mobile"
     When I reload the page
     Then the grid should contain 6 elements
-    And I open the category tree
     And I should see the text "Mobile"
 
   Scenario: I successfully reset attribute filters of an existing view
