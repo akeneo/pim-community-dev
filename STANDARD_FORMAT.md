@@ -737,6 +737,395 @@ Its standard format would be the following:
         ]
 
 
+
+## Product model
+
+### Common structure
+
+The product models contains inner fields and product model values that are linked to attributes.
+All product models have the same fields (code, label, family, groups, categories, associations, status, dates of creation and update) while product model values are flexible among product models. Its product model values are provided via the key *values*.
+
+Let's consider a *bar* product model, without any product model value, except its identifier *sku*. This product model also contains:
+
+* a code
+* a family variant (therefore, the family becomes available in the standard format)
+* a parent product model
+* several groups
+* several categories
+* several associations related to groups and/or other product models
+
+Its standard format would be the following:
+        
+        array:10 [
+          "code" => "bar"
+          "family" => "familyA"
+          "family_variant" => "familyVariantA1"
+          "parent" => "fooProductModel"
+          "groups" => array:2 [
+            0 => "groupA"
+            1 => "groupB"
+          ]
+          "categories" => array:2 [
+            0 => "categoryA"
+            1 => "categoryB"
+          ]
+          "values" => array:1 [
+            "sku" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "bar"
+              ]
+            ]
+          ]
+          "created" => "2016-06-23T11:24:44+02:00"
+          "updated" => "2016-06-23T11:24:44+02:00"
+          "associations" => array:3 [
+            "PACK" => array:1 [
+              "groups" => []
+              "product models" => array:2 [
+                0 => "foo"
+                1 => "baz"
+              ]
+            ]
+            "UPSELL" => array:1 [
+              "groups" => array:1 [
+                0 => "groupA"
+              ]
+              "product models" => []
+            ]
+            "X_SELL" => array:2 [
+              "groups" => array:1 [
+                0 => "groupB"
+              ]
+              "product models" => array:1 [
+                0 => "foo"
+              ]
+            ]
+          ]
+        ]
+
+| type          | data structure | data example                                                              | notes                                                                                            |
+| ------------- | -------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| code          | string         | `"bar"`                                                                   | it's the identifier of the product model                                                         |
+| family        | string         | `"familyA"`                                                               | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyInterface*                    |
+| family_variant| string         | `"familyVariantA1"`                                                       | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyVariantInterface*             |
+| parent        | string         | `"fooProductModel"`                                                       | it represents the *code* of the *Pim\Component\Catalog\Model\ProductModelInterface*              |
+| groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*                     |
+| categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the object *Akeneo\Component\Classification\Model\CategoryInterface* |
+| values        | array          |                                                                           | see below                                                                                        |
+| created       | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
+| updated  	    | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
+| associations  | array          | `["X_SELL" => ["groups" => [0 => "groupA"], "product models" => [0 => "foo"]]]` | see below                                                                                        |
+
+
+### Product model associations
+
+The structure of the array is composed as below:
+
+        "associations" => array:3 [
+          "X_SELL" => array:2 [
+            "groups" => array:1 [
+              0 => "groupB"
+            ]
+            "product models" => array:1 [
+              0 => "foo"
+            ]
+          ]
+        ]
+
+"X_SELL" represents the *code* of the *Pim\Component\Catalog\Model\AssociationTypeInterface*.
+
+Each element in the array "groups" represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*
+
+Each element in the array "product models" represents the *identifier* of the *Pim\Component\Catalog\Model\Product modelInterface*
+
+If an association type does not contain neither element in groups, nor element in product models, it is not returned.
+
+
+### Product model values
+
+Let's now consider a catalog with all attribute types possible and a *foo* product model, that contains:
+
+* all the attributes of the catalog
+* an identifier
+* a family variant
+* several groups
+* several categories
+* several associations related to groups and/or other product models
+
+Its standard format would be the following:
+
+        array:10 [
+          "code" => "foo"
+          "family" => "familyA"
+          "family_variant" => "familyVariantA1"
+          "parent" => null
+          "groups" => array:2 [
+            0 => "groupA"
+            1 => "groupB"
+          ]
+          "categories" => array:2 [
+            0 => "categoryA1"
+            1 => "categoryB"
+          ]
+          "enabled" => true
+          "values" => array:19 [
+            "sku" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "foo"
+              ]
+            ]
+            "a_file" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "f/2/e/6/f2e6674e076ad6fafa12012e8fd026acdc70f814_fileA.txt"
+              ]
+            ]
+            "an_image" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "f/4/d/1/f4d12ffbdbe628ba8e0b932c27f425130cc23535_imageA.jpg"
+              ]
+            ]
+            "a_date" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "2016-06-13T00:00:00+02:00"
+              ]
+            ]
+            "a_multi_select" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  0 => "optionA"
+                  1 => "optionB"
+                ]
+              ]
+            ]
+            "a_number_float" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "12.5678"
+              ]
+            ]
+            "a_number_float_negative" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "-99.8732"
+              ]
+            ]
+            "a_number_integer" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => 42
+              ]
+            ]
+            "a_number_integer_negative" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => -5
+              ]
+            ]
+            "a_ref_data_multi_select" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  0 => "fabricA"
+                  1 => "fabricB"
+                ]
+              ]
+            ]
+            "a_ref_data_simple_select" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "colorB"
+              ]
+            ]
+            "a_simple_select" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "optionB"
+              ]
+            ]
+            "a_text" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "this is a text"
+              ]
+            ]
+            "a_text_area" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => "this is a very very very very very long text"
+              ]
+            ]
+            "a_yes_no" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => true
+              ]
+            ]
+            "a_localizable_image" => array:2 [
+              0 => array:3 [
+                "locale" => "en_US"
+                "scope" => null
+                "data" => "2/b/6/b/2b6b451334ee1a9aa83b5755590dae72ba254d8b_imageB_en_US.jpg"
+              ]
+              1 => array:3 [
+                "locale" => "fr_FR"
+                "scope" => null
+                "data" => "d/e/3/f/de3f2a0af94d8b10ccc2c37bf4f945fd262d568e_imageB_fr_FR.jpg"
+              ]
+            ]
+            "a_localized_and_scopable_text_area" => array:3 [
+              0 => array:3 [
+                "locale" => "en_US"
+                "scope" => "ecommerce"
+                "data" => "a text area for ecommerce in English"
+              ]
+              1 => array:3 [
+                "locale" => "en_US"
+                "scope" => "tablet"
+                "data" => "a text area for tablets in English"
+              ]
+              2 => array:3 [
+                "locale" => "fr_FR"
+                "scope" => "tablet"
+                "data" => "une zone de texte pour les tablettes en français"
+              ]
+            ]
+            "a_metric" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  "amount" => "987654321987.123456789123"
+                  "unit" => "KILOWATT"
+                ]
+              ]
+            ]
+            "a_metric_without_decimal" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  "amount" => 200
+                  "unit" => "GRAM"
+                ]
+              ]
+            ]
+            "a_metric_negative" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  "amount" => "-20.000000000000"
+                  "unit" => "CELSIUS"
+                ]
+              ]
+            ]
+            "a_metric_negative_without_decimal" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  "amount" => -100
+                  "unit" => "CELSIUS"
+                ]
+              ]
+            ]
+            "a_price" => array:1 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => null
+                "data" => array:2 [
+                  0 => array:2 [
+                    "amount" => "45.00"
+                    "currency" => "USD"
+                  ]
+                  1 => array:2 [
+                    "amount" => "-56.53"
+                    "currency" => "EUR"
+                  ]
+                ]
+              ]
+            ]
+            "a_scopable_price_without_decimal" => array:2 [
+              0 => array:3 [
+                "locale" => null
+                "scope" => "ecommerce"
+                "data" => array:2 [
+                  0 => array:2 [
+                    "amount" => 15
+                    "currency" => "EUR"
+                  ]
+                  1 => array:2 [
+                    "amount" => -20
+                    "currency" => "USD"
+                  ]
+                ]
+              ]
+              1 => array:3 [
+                "locale" => null
+                "scope" => "tablet"
+                "data" => array:2 [
+                  0 => array:2 [
+                    "amount" => 17
+                    "currency" => "EUR"
+                  ]
+                  1 => array:2 [
+                    "amount" => 24
+                    "currency" => "USD"
+                  ]
+                ]
+              ]
+            ]
+          ]
+          "created" => "2016-06-23T11:24:44+02:00"
+          "updated" => "2016-06-23T11:24:44+02:00"
+          "associations" => array:3 [
+            "PACK" => array:1 [
+              "groups" => []
+              "product models" => array:2 [
+                0 => "bar"
+                1 => "baz"
+              ]
+            ]
+            "UPSELL" => array:1 [
+              "groups" => array:1 [
+                0 => "groupA"
+              ]
+              "product models" => []
+            ]
+            "X_SELL" => array:2 [
+              "groups" => array:1 [
+                0 => "groupB"
+              ]
+              "product models" => array:1 [
+                0 => "bar"
+              ]
+            ]
+          ]
+        ]
+
+
 ## Other entities
 
 ### Attribute
