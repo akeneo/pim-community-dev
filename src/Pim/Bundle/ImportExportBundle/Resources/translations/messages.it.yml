@@ -1,8 +1,6 @@
 Job: Lavoro
 Connector: Connettore
 pim_import_export:
-  job: Lavoro
-  connector: Connettore
   status:
     - Pronto
   batch_status:
@@ -18,8 +16,7 @@ pim_import_export:
     archive: scarica l'archivio generato |scarica gli archivi generati
     output: scarica il file generato |scarica i files generati
     input: scarica il file letto |scarica i files letti
-    invalid_xlsx: Scarica dati non validi
-    invalid_csv: Scarica dati non validi
+    invalid: Scarica dati non validi
   notification:
     export:
       error: Esportazione <strong>%label%</strong> non riuscita
@@ -30,11 +27,6 @@ pim_import_export:
       warning: Importazione <strong>%label%</strong> completata con alcuni avvisi
       success: Importazione <strong>%label%</strong> completata
   list: Seleziona un job
-  job_profile:
-    tab:
-      property.title: Proprietà generali
-      history.title: Cronologia
-      job_content.title: Contenuto
 pim_title.export_profile.index: Gestione profili di esportazione
 pim_title.export_profile.edit: Esportare profili %job.label% | Modifica
 pim_title.export_profile.show: Esportare profili %job.label% | Visualizza
@@ -68,11 +60,7 @@ pim_importexport:
       edit: Modifica un profilo di esportazione
       remove: Rimuovi un profilo di esportazione
       launch: Esegui un profilo di esportazione
-      property_edit: Modifica le proprietà generali del profilo di esportazione
-      property_show: Visualizza le proprietà generali del profilo di esportazione
       history: Vedi lo storico del profilo di esportazione
-      content_edit: Modifica il contenuto del profilo di esportazione
-      content_show: Visualizza il contenuto del profilo di esportazione
     import_profile:
       index: Visualizza la lista dei profili di importazione
       create: Crea un profilo di importazione
@@ -96,8 +84,9 @@ pim_importexport:
     import: Profili di importazione
 btn:
   create:
-    export profile: crea un profilo di esportazione
+    export profile: crea il profilo di esportazione
     import profile: crea un profilo di importazione
+Upload and import: Carica e importa
 Upload and import now: Carica e importa ora
 import now: Importa ora
 export now: Esporta ora
@@ -127,7 +116,6 @@ History: Cronologia
 pane.accordion:
   properties: Proprietà
   global_settings: Impostazioni Globali
-  filters: Filtri
 popin.create:
   export_profile.title: Crea un nuovo profilo di esportazione
   import_profile.title: Crea un nuovo profilo di importazione
@@ -164,4 +152,3 @@ STOPPED: FERMATO
 FAILED: NON RIUSCITA
 ABANDONED: ABBANDONATO
 UNKNOWN: SCONOSCIUTO
-warning.label: Attenzione
