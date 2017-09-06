@@ -325,6 +325,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
      * @param ProductModelInterface $productModel
      * @param string                $familyVariantCode
      *
+     * @throws ImmutablePropertyException
      * @throws InvalidPropertyException
      */
     private function updateFamilyVariant(ProductModelInterface $productModel, string $familyVariantCode): void

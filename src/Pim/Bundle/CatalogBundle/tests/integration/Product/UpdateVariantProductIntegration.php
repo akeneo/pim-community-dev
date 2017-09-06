@@ -15,8 +15,6 @@ use Akeneo\Test\Integration\TestCase;
 class UpdateVariantProductIntegration extends TestCase
 {
     /**
-     * Ensure that the parent of a variant product cannot be changed.
-     *
      * TODO: This will become possible in PIM-6350.
      *
      * @expectedException \Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException
@@ -29,8 +27,16 @@ class UpdateVariantProductIntegration extends TestCase
     }
 
     /**
-     * Ensure that the family of a variant product cannot be changed.
-     *
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException
+     * @expectedExceptionMessage Property "parent" cannot be modified, "" given.
+     */
+    public function testTheParentCannotBeRemoved(): void
+    {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_blue_xl');
+        $this->get('pim_catalog.updater.product')->update($product, ['parent' => '']);
+    }
+
+    /**
      * TODO: This will become possible in PIM-6460.
      */
     public function testTheFamilyCannotBeChanged(): void
