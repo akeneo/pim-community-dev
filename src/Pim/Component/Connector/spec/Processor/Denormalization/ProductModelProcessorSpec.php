@@ -258,7 +258,7 @@ class ProductModelProcessorSpec extends ObjectBehavior
 
         $objectDetacher->detach($productModel)->shouldBeCalled();
 
-        $stepExecution->incrementSummaryInfo('product_skipped_no_diff')->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('product_model_skipped_no_diff')->shouldBeCalled();
         $productModelUpdater->update(Argument::cetera())->shouldNotBeCalled();
 
         $this->process($productModelData)->shouldReturn(null);

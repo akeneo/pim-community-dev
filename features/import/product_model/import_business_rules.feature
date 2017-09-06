@@ -56,8 +56,8 @@ Feature: Create product models through CSV import
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
+    And I should see the text "The product model \"code-003\" cannot have the product model \"code-002\" as parent"
     And I should see the text "Property \"parent\" expects a valid parent code. The product model does not exist, \"code-005\" given"
-    And I should see the text "The sub product model parent must be a root product model"
 
   Scenario: Skip a product model saving if its parent is the last product model in the tree (it should be a product variant instead).
     Given the following CSV file to import:
@@ -73,7 +73,7 @@ Feature: Create product models through CSV import
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
     Then I should see the text "created 1"
     And I should see the text "skipped 1"
-    And I should see the text "The sub product model parent must be a root product model"
+    And I should see the text "The product model \"code-002\" cannot have a parent"
 
   Scenario: Skip the products sub product model if variant axes are empty
     Given the following CSV file to import:
