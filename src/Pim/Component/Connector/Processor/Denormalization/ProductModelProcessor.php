@@ -116,7 +116,7 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
 
             if (empty($flatProductModel)) {
                 $this->objectDetacher->detach($productModel);
-                $this->stepExecution->incrementSummaryInfo('product_skipped_no_diff');
+                $this->stepExecution->incrementSummaryInfo('product_model_skipped_no_diff');
 
                 return null;
             }

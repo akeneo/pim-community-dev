@@ -9,7 +9,10 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Validate that a sub product model can only have a root product model as parent
+ * Validates that, if the family variant has 2 levels (meaning 2 attribute sets),
+ * a sub product model can only have a root product model as parent, and if the
+ * family variant has 1 level (meaning 1 attribute set), the product model has no
+ * parent.
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -36,15 +39,25 @@ class ProductModelPositionInTheVariantTreeValidator extends ConstraintValidator
             return;
         }
 
-        if (false === $productModel->getParent()->isRootProductModel()) {
-            $this->context->buildViolation(ProductModelPositionInTheVariantTree::INVALID_PARENT)->addViolation();
-        }
-
-        $productModelPosition = $productModel->getVariationLevel();
         $numberOfLevel = $productModel->getFamilyVariant()->getNumberOfLevel();
 
-        if ($numberOfLevel === $productModelPosition) {
-            $this->context->buildViolation(ProductModelPositionInTheVariantTree::INVALID_PARENT)->addViolation();
+        if (2 === $numberOfLevel && false === $productModel->getParent()->isRootProductModel()) {
+            $this->context->buildViolation(
+                ProductModelPositionInTheVariantTree::INVALID_PARENT,
+                [
+                    '%product_model%' => $productModel->getCode(),
+                    '%parent_product_model%' => $productModel->getParent()->getCode(),
+                ]
+            )->addViolation();
+        }
+
+        if (1 === $numberOfLevel && null !== $productModel->getParent()) {
+            $this->context->buildViolation(
+                ProductModelPositionInTheVariantTree::CANNOT_HAVE_PARENT,
+                [
+                    '%product_model%' => $productModel->getCode(),
+                ]
+            )->addViolation();
         }
     }
 }

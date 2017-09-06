@@ -6,7 +6,10 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Validate that a sub product model can only have a root product model as parent
+ * Validates that, if the family variant has 2 levels (meaning 2 attribute sets),
+ * a sub product model can only have a root product model as parent, and if the
+ * family variant has 1 level (meaning 1 attribute set), the product model has no
+ * parent.
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -14,7 +17,8 @@ use Symfony\Component\Validator\Constraint;
  */
 class ProductModelPositionInTheVariantTree extends Constraint
 {
-    public const INVALID_PARENT = 'pim_catalog.constraint.has_a_root_product_model_as_parent';
+    public const INVALID_PARENT = 'pim_catalog.constraint.cannot_have_product_model_as_parent';
+    public const CANNOT_HAVE_PARENT = 'pim_catalog.constraint.cannot_have_parent';
 
     /**
      * {@inheritdoc}
