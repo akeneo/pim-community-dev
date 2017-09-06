@@ -51,6 +51,9 @@ Feature: Products back to the grid
     And I am on the products grid
     Then the page number should be 2
 
+  # This next scenario does not fail on master but does not check the right things.
+  # We choose to skip it because we did not find an easy & quick solution to solve it
+  @skip
   Scenario: Successfully restore the scope dropdown
     And I should see the text "Ecommerce"
     And I should not see the text "Mobile"
