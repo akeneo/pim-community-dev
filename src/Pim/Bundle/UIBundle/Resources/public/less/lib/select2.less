@@ -285,7 +285,6 @@
 
       li.select2-result {
         font-size: @AknFontSizeBig;
-        height: 40px;
         line-height: 40px;
 
         .select2-result-label {
@@ -295,6 +294,48 @@
         &.select2-highlighted {
           color: @AknLightPurple;
           font-weight: bold;
+        }
+      }
+
+      .select2-result-label-view {
+        .view-label {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 100%;
+          display: block;
+
+          &.view-label-current {
+            color: @AknLightPurple;
+            font-weight: bold;
+          }
+        }
+
+        .project-line {
+          display: flex;
+          justify-content: space-between;
+          line-height: 20px;
+          margin: 0 0 20px 0;
+          align-items: center;
+
+          .project-main-infos {
+            font-size: @AknFontSizeBig;
+            color: @AknDarkBlue;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 180px;
+          }
+
+          .project-secondary-infos {
+            color: @AknSlateGrey;
+            font-size: @AknFontSizeSmall;
+          }
+
+          &.project-line-current .project-main-infos {
+            color: @AknLightPurple;
+            font-weight: bold;
+          }
         }
       }
     }
@@ -328,7 +369,7 @@
     border: 1px solid @AknBorderColor !important;
     padding: 5px;
     margin-top: 5px;
-    min-width: 300px;
+    min-width: 340px;
 
     .select2-search {
       margin-bottom: 5px;
