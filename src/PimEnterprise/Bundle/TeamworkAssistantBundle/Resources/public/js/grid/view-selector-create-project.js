@@ -32,7 +32,7 @@ define(
             fieldsStatuses: {},
             form: null,
             events: {
-                'click .create': 'promptCreateProject'
+                'click': 'promptCreateProject'
             },
 
             /**
@@ -42,24 +42,15 @@ define(
                 if (!_.contains(this.getRoot().config.viewTypes, 'project')) {
                     return this;
                 }
-
-                var label = '';
-                var icon = '';
-
-                if ('project' === this.getRoot().currentViewType) {
-                    label = __('teamwork_assistant.grid.view_selector.create');
-                    icon = 'plus';
-                } else {
-                    label = __('teamwork_assistant.grid.view_selector.create_from_view');
-                    icon = 'tasks';
-                }
+                const label = ('project' === this.getRoot().currentViewType) ?
+                    __('teamwork_assistant.grid.view_selector.create') :
+                    __('teamwork_assistant.grid.view_selector.create_from_view');
 
                 this.$el.html(this.template({
                     label: label,
-                    icon: icon
                 }));
 
-                this.$('[data-toggle="tooltip"]').tooltip();
+                this.delegateEvents();
 
                 return this;
             },

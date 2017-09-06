@@ -15,18 +15,18 @@ extensions:
 
     pimee-grid-view-selector-create-project:
         module: teamwork-assistant/grid/view-selector/create-project
-        parent: pimee-grid-view-selector-secondary-actions
+        parent: pim-grid-view-selector-secondary-actions
         targetZone: secondary-actions
         position: 115
 
     pimee-grid-view-selector-edit-project:
         module: teamwork-assistant/grid/view-selector/edit-project
-        parent: pimee-grid-view-selector-secondary-actions
+        parent: pim-grid-view-selector-secondary-actions
         targetZone: secondary-actions
         position: 120
 
     pimee-grid-view-selector-remove-project:
         module: teamwork-assistant/grid/view-selector/remove-project
-        parent: pimee-grid-view-selector-secondary-actions
+        parent: pim-grid-view-selector-secondary-actions
         targetZone: secondary-actions
         position: 130
