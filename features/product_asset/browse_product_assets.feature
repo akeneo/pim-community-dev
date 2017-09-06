@@ -34,7 +34,7 @@ Feature: Browse product assets
     And the row "paint" should contain the thumbnail for channel "mobile"
     And the row "chicagoskyline" should contain the thumbnail for channel "mobile" and locale "en_US"
     When I switch the locale to "de_DE"
-    And I filter by "scope" with operator "equals" and value "Tablet"
+    And I switch the scope to "Tablet"
     Then the row "paint" should contain the thumbnail for channel "tablet"
     And the row "chicagoskyline" should contain the thumbnail for channel "tablet" and locale "de_DE"
 

@@ -12,6 +12,7 @@ Feature: Create enrichment project
     And I am logged in as "Julia"
     When I am on the products grid
     And I filter by "family" with operator "in list" and value "Sneakers"
+    And I open the category tree
     And I filter by "category" with operator "" and value "summer_collection"
     And I display in the products grid the columns sku, name, description
     Then I should be on the products page
@@ -108,7 +109,7 @@ Feature: Create enrichment project
     Then I should see the text "This value is already used."
     And I reload the page
     When I am on the products grid
-    And I filter by "scope" with operator "equals" and value "Mobile"
+    And I switch the scope to "Mobile"
     And I click on the create project button
     When I fill in the following information in the popin:
       | project-label    | Star Wars Collection |

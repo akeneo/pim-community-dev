@@ -222,9 +222,11 @@ Feature: Products datagrid projects
     When I go on the last executed job resume of "project_calculation"
     And I wait for the "project_calculation" job to finish
     And I am on the products grid
+    And I open the category tree
     And I filter by "category" with operator "" and value "default"
+    And I close the category tree
     And the grid should contain 6 elements
-    And I filter by "scope" with operator "" and value "Mobile"
+    And I switch the scope to "Mobile"
     And I switch view selector type to "Projects"
     Then I should see the text "The clothing project"
     And I should see the text "E-Commerce"
