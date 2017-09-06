@@ -10,19 +10,19 @@
     margin-left: -20px;
 
     .jstree-icon(@url) {
-      background: url(@url) 0 0 no-repeat;
+      background: url(@url) 50% 50% no-repeat;
       height: 22px;
       width: 22px;
-      margin: 0 10px 0 0;
+      margin: 0 5px 0 0;
     }
 
     a {
-      height: 40px;
+      height: 35px;
       line-height: 26px;
       font-size: @AknFontSizeBig;
       padding: 0;
       align-items: center;
-      color: @AknDefaultFontColor !important;
+      color: @AknDarkBlue !important;
       white-space: nowrap;
       text-overflow: ellipsis;
       max-width: ~"calc(100% - 32px)";
@@ -40,7 +40,9 @@
     }
 
     li {
-      margin-left: 40px;
+      margin-left: 20px;
+      line-height: 0;
+      min-height: 0;
     }
 
     & > li {
@@ -48,7 +50,9 @@
     }
 
     li.jstree-leaf > ins.jstree-icon {
-      margin-right: 14px;
+      margin-right: 9px;
+      margin-top: 0;
+      height: 0;
     }
 
     li.jstree-checked {
@@ -65,7 +69,7 @@
 
     li.jstree-closed > .jstree-icon,
     li.jstree-open > .jstree-icon {
-      line-height: 72px;
+      line-height: 62px;
       cursor: pointer;
       opacity: 0.5;
     }
@@ -85,10 +89,12 @@
 
     li.jstree-closed > .jstree-icon {
       .jstree-icon("../../images/jstree/icon-right.svg");
+      background-size: 20px;
     }
 
     li.jstree-open > .jstree-icon {
       .jstree-icon("../../images/jstree/icon-down.svg");
+      background-size: 20px;
     }
 
     li.jstree-leaf.jstree-checked > a:not(.jstree-loading):not(.jstree-clicked) .jstree-icon,
@@ -138,14 +144,16 @@
         border-left: none;
         border-right: none;
         border-top: none;
-        border-bottom: 1px solid @AknPurple;
-        color: @AknPurple;
+        border-bottom: 1px solid @AknLightPurple;
+        color: @AknLightPurple;
         padding: 0;
         margin-top: -10px;
+        font-size: @AknFontSizeBig;
 
         .select2-arrow {
           border-left: none;
-          background: url("../../images/icon-down-white.svg") no-repeat 3px center;
+          background: url("../../images/icon-down.svg") no-repeat 100% center;
+          background-size: 20px;
 
           b {
             display: none;
