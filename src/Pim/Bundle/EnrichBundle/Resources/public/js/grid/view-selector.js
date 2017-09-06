@@ -109,8 +109,8 @@ define(
                         __: __,
                         currentViewType: this.currentViewType,
                         displaySwitcher: (this.config.viewTypes.length > 1),
-                        viewTypes: this.config.viewTypes,
-                }));
+                        viewTypes: this.config.viewTypes
+                    }));
 
                     this.initializeSelectWidget();
                     this.renderExtensions();
