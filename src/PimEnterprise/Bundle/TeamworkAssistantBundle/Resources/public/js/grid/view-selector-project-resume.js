@@ -65,9 +65,20 @@ define(
                     this.$el.append(this.template({
                         dueDate: DateFormatter.format(this.dueDate, 'yyyy-MM-dd', DateContext.get('date').format),
                         completeness: this.completeness,
-                        badgeClass: this.completeness >= 100 ? 'AknBadge--success' : 'AknBadge--warning'
+                        badgeClass: this.getBadgeClass(),
+                        dueDateLabel: __('teamwork_assistant.project.due_date')
                     }));
                 }
+            },
+
+            getBadgeClass() {
+                if (this.completeness <= 0) {
+                    return 'AknBadge--invalid';
+                } else if (this.completeness >= 100) {
+                    return 'AknBadge--success';
+                }
+
+                return 'AknBadge--warning';
             }
         });
     }

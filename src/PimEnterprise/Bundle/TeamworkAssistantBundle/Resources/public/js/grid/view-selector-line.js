@@ -79,12 +79,12 @@ define(
              */
             prepareProjectData: function () {
                 var project = this.datagridView;
-                var completionStatus = 'wip';
+                var badgeClass = 'AknBadge--warning';
 
                 if (project.completeness.ratio_done === 0) {
-                    completionStatus = 'todo';
+                    badgeClass = 'AknBadge--invalid';
                 } else if (project.completeness.ratio_done === 100) {
-                    completionStatus = 'done';
+                    badgeClass = 'AknBadge--success';
                 }
 
                 var dateFormat = DateContext.get('date').format;
@@ -100,8 +100,8 @@ define(
                     ),
                     localeLabel: project.locale.label,
                     isCurrent: (this.currentViewId === project.datagridView.id),
-                    completionRatio: project.completeness.ratio_done,
-                    completionStatus: completionStatus
+                    completionRatio: Math.round(project.completeness.ratio_done),
+                    badgeClass: badgeClass
                 };
             }
         });
