@@ -43,11 +43,15 @@ class ChannelNormalizerSpec extends ObjectBehavior
     ) {
         $channel->getLocales()->willReturn([$locale1, $locale2]);
         $channel->getId()->willReturn(10);
-        $collectionFilter->filterCollection([$locale1, $locale2], 'pim.internal_api.locale.view')
-            ->willReturn([$locale1]);
+
         $localeNormalizer->normalize($locale1, 'standard')->willReturn([
             'code' => 'fr_FR',
             'label' => 'French'
+        ]);
+
+        $localeNormalizer->normalize($locale2, 'standard')->willReturn([
+            'code' => 'de_DE',
+            'label' => 'German'
         ]);
 
         $channelNormalizer->normalize($channel, 'standard', [])->willReturn([
@@ -58,7 +62,8 @@ class ChannelNormalizerSpec extends ObjectBehavior
             [
                 'keyFromNormalizer' => 'dataFromNormalizer',
                 'locales' => [
-                    ['code' => 'fr_FR', 'label' => 'French']
+                    ['code' => 'fr_FR', 'label' => 'French'],
+                    ['code' => 'de_DE', 'label' => 'German']
                 ],
 
                 'meta' => [

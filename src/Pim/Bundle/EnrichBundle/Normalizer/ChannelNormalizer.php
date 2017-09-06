@@ -103,7 +103,7 @@ class ChannelNormalizer implements NormalizerInterface
     {
         $normalizedLocales = [];
 
-        foreach ($this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view') as $locale) {
+        foreach ($locales as $locale) {
             $normalizedLocales[] = $this->localeNormalizer->normalize($locale, 'standard');
         }
 
