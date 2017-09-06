@@ -60,4 +60,13 @@ services:
             - '@pim_catalog.updater.product_template'
             - '@pim_catalog.updater.entity_with_values_without_permission'
             - ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations']
-            - ['identifier', 'created', 'updated']
+            - ['identifier', 'created', 'updated', 'metadata']
+
+    pim_catalog.updater.product:
+        class: '%pim_catalog.updater.product.class%'
+        arguments:
+            - '@pim_catalog.updater.property_setter'
+            - '@pim_catalog.updater.product_template'
+            - '@pim_catalog.updater.entity_with_values'
+            - ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations', 'parent']
+            - ['identifier', 'created', 'updated', 'metadata']
