@@ -262,9 +262,3 @@ Feature: Datagrid views
     And I am on the products grid
     And I should see the text "Default view"
     But I should not see the text "Boots only"
-
-  @ce
-  Scenario: Don't display view type switcher if there is only one view type
-#   TODO This scenario will fail until I have a new design, I just keep it to be sure I don't forget!
-    Given I am on the products grid
-    Then I should not see the text "Views"

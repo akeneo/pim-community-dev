@@ -96,6 +96,7 @@ define(
                 this.$el.prepend(filtersList.render().$el);
 
                 mediator.trigger('datagrid_filters:rendered', this.collection);
+
                 if (this.collection.length === 0) {
                     filtersList.$el.hide();
                 }

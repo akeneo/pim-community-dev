@@ -104,6 +104,7 @@ extensions:
         config:
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_import_profile_edit
+            buttonClass: AknButton AknButton--action
             identifier:
                 path: code
                 name: code
