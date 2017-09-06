@@ -1,6 +1,8 @@
 @import '../base/variables';
 
 .AknBadge {
+  @mediumBadge: 20px;
+
   line-height: @AknDefaultFontSize + 4px;
   height: @AknDefaultFontSize + 4px;
   font-size: @AknDefaultFontSize;
@@ -11,7 +13,7 @@
   padding: 0 8px;
   transition: background 0.1s ease-in, opacity 0.4s ease-in;
   white-space: nowrap;
-  margin: 0 4px;
+  margin: 0;
   text-transform: uppercase;
   cursor: default;
 
@@ -123,9 +125,9 @@
   }
 
   &--medium {
-    height: @AknSmallProgressBarHeight;
-    min-width: @AknSmallProgressBarHeight;
-    line-height: @AknSmallProgressBarHeight;
+    height: @mediumBadge;
+    min-width: @mediumBadge;
+    line-height: @mediumBadge;
     font-size: @AknDefaultFontSize;
     padding: 0 8px;
   }
