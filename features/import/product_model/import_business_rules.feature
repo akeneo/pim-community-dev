@@ -11,7 +11,7 @@ Feature: Create product models through CSV import
   Scenario: Skip a root product model if a code and a family variant are not defined
     Given the following CSV file to import:
       """
-      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;EAN;sku;weight
+      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
       code-001;;;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
       ;;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
       """
@@ -27,7 +27,7 @@ Feature: Create product models through CSV import
   Scenario: Skip a product model if a code, a parent and a family variant are not defined
     Given the following CSV file to import:
       """
-      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;EAN;sku;weight
+      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
       code-001;;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
       ;code-001;clothing_color_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
       code-003;code-001;;master_men_blazers;;;;;blue;Blazers;composition;;;;
@@ -47,7 +47,7 @@ Feature: Create product models through CSV import
     And the following sub product model "code-002" with "code-001" as parent
     And the following CSV file to import:
       """
-      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;EAN;sku;weight
+      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
       code-003;code-002;clothing_color_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
       code-004;code-005;clothing_color_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
       """
@@ -78,7 +78,7 @@ Feature: Create product models through CSV import
   Scenario: Skip the products sub product model if variant axes are empty
     Given the following CSV file to import:
       """
-      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;EAN;sku;weight
+      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
       code-001;;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
       code-002;code-001;clothing_color_size;master_men_blazers;;;;;;Blazers;composition;;;;
       """
@@ -94,7 +94,7 @@ Feature: Create product models through CSV import
   Scenario: Only the attributes with values defined as "common attributes" in the family variant are updated.
     Given the following CSV file to import:
       """
-      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;EAN;sku;weight
+      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
       code-001;;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;blue;Blazers;composition;;;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
