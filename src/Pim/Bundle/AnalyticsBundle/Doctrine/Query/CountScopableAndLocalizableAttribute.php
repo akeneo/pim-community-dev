@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
+ * Return the number of scopable and localizable attributes
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

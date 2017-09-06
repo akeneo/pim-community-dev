@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 /**
- * Return the number of localizable attribute
+ * Return the number of localizable attributes
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -38,5 +38,6 @@ class CountLocalizableAttribute
             ->andWhere('attribute.localizable = 1')
             ->getQuery();
 
-        return (int) $query->getSingleScalarResult();    }
+        return (int) $query->getSingleScalarResult();
+    }
 }
