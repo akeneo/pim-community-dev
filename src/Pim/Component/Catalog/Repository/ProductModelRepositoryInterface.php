@@ -42,4 +42,31 @@ interface ProductModelRepositoryInterface extends
      * @return array
      */
     public function findRootProductModelsWithOffsetAndSize($offset = 0, $size = 100): array;
+
+    /**
+     * Find product models which are the direct children of the given $productModel
+     *
+     * @param ProductModelInterface $productModel
+     *
+     * @return array|ProductModelInterface[]
+     */
+    public function findChildrenProductModels(ProductModelInterface $productModel): array;
+
+    /**
+     * Returns the identifiers of the products belonging to a product model descendants subtree
+     *
+     * @param ProductModelInterface $productModel
+     *
+     * @return array
+     */
+    public function findDescendantProductIdentifiers(ProductModelInterface $productModel): array;
+
+    /**
+     * Find several product models by their identifier
+     *
+     * @param array $codes
+     *
+     * @return ProductModelInterface[]
+     */
+    public function findByIdentifiers(array $codes): array;
 }

@@ -112,3 +112,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/product_models.csv
+    compute_product_models_descendants:
+        connector: internal
+        alias:     compute_product_models_descendants
+        label:     Compute product models descendants
+        type:      compute_product_models_descendants

@@ -159,6 +159,7 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_root_product_model.import'
                 - '@pim_connector.step.csv_sub_product_model.import'
+                - '@pim_connector.step.csv_compute_product_models_descendants.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_connector.job.import_type%' }
 
@@ -485,6 +486,7 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.xlsx_root_product_model.import'
                 - '@pim_connector.step.xlsx_sub_product_model.import'
+                - '@pim_connector.step.xlsx_compute_product_models_descendants.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.import_type%' }
 

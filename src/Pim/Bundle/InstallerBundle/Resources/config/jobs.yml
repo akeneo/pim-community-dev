@@ -164,6 +164,7 @@ services:
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_root_product_model.import'
                 - '@pim_connector.step.csv_sub_product_model.import'
+                - '@pim_connector.step.csv_compute_product_models_descendants.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 

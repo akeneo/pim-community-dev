@@ -131,7 +131,7 @@ jobs:
     csv_catalog_modeling_product_model_import:
         connector: Akeneo CSV Connector
         alias: csv_product_model_import
-        label: Demo CSV product model import
+        label: CSV catalog modeling product model import
         type: import
         configuration:
             filePath: /tmp/product_model.csv
@@ -147,7 +147,7 @@ jobs:
     xlsx_catalog_modeling_product_model_import:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_model_import
-        label: Demo XLSX product model import
+        label: XLSX catalog modeling product model import
         type: import
         configuration:
             filePath: /tmp/product_model.xlsx
@@ -212,3 +212,8 @@ jobs:
                     scope: ecommerce
                     locales:
                         - en_US
+    compute_product_models_descendants:
+        connector: internal
+        alias:     compute_product_models_descendants
+        label:     Compute product models descendants
+        type:      compute_product_models_descendants
