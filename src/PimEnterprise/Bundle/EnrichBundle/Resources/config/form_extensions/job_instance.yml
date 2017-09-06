@@ -231,7 +231,6 @@ extensions:
             tabCode: pim-job-instance-permission
             readOnly: true
 
-#Edit button
     pim-job-instance-csv-base-export-show-edit:
         module: pimee/job/export/edit/edit-button
         parent: pim-job-instance-csv-base-export-show
@@ -241,6 +240,7 @@ extensions:
             iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_export_profile_edit
+            buttonClass: AknButton AknButton--action
             identifier:
                 path: code
                 name: code
@@ -254,6 +254,7 @@ extensions:
             iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_import_profile_edit
+            buttonClass: AknButton AknButton--action
             identifier:
                 path: code
                 name: code
@@ -267,6 +268,7 @@ extensions:
             iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_export_profile_edit
+            buttonClass: AknButton AknButton--action
             identifier:
                 path: code
                 name: code
@@ -280,6 +282,7 @@ extensions:
             iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_import_profile_edit
+            buttonClass: AknButton AknButton--action
             identifier:
                 path: code
                 name: code
@@ -293,6 +296,7 @@ extensions:
             iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_export_profile_edit
+            buttonClass: AknButton AknButton--action
             identifier:
                 path: code
                 name: code
@@ -306,6 +310,7 @@ extensions:
             iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_import_profile_edit
+            buttonClass: AknButton AknButton--action
             identifier:
                 path: code
                 name: code
@@ -319,6 +324,7 @@ extensions:
             iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_export_profile_edit
+            buttonClass: AknButton AknButton--action
             identifier:
                 path: code
                 name: code
@@ -332,6 +338,7 @@ extensions:
             iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_import_profile_edit
+            buttonClass: AknButton AknButton--action
             identifier:
                 path: code
                 name: code
@@ -345,6 +352,7 @@ extensions:
             iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_export_profile_edit
+            buttonClass: AknButton AknButton--action
             identifier:
                 path: code
                 name: code
@@ -358,6 +366,7 @@ extensions:
             iconName: pencil
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_import_profile_edit
+            buttonClass: AknButton AknButton--action
             identifier:
                 path: code
                 name: code

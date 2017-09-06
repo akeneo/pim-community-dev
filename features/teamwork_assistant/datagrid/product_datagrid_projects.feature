@@ -209,7 +209,9 @@ Feature: Products datagrid projects
   Scenario: The channel changes when I select a project
     Given I am logged in as "Julia"
     And I am on the products grid
+    And I open the category tree
     And I filter by "category" with operator "" and value "clothing"
+    And I close the category tree
     Then the grid should contain 3 elements
     When I click on the create project button
     And I fill in the following information in the popin:

@@ -86,7 +86,9 @@ Feature: Notify users after a project creation
   Scenario: Successfully notify users when creating a project on clothing
     Given I am logged in as "Julia"
     When I am on the products grid
+    And I open the category tree
     And I filter by "category" with operator "" and value "clothing"
+    And I close the category tree
     And I show the filter "weight"
     # In order to remove the tshirt LCD which is in Clothing and High-Tech categories
     And I filter by "weight" with operator "<" and value "6 Ounce"
@@ -145,7 +147,9 @@ Feature: Notify users after a project creation
   Scenario: Successfully notify users when creating a project with a product which is in two categories
     Given I am logged in as "Julia"
     When I am on the products grid
+    And I open the category tree
     And I filter by "category" with operator "" and value "clothing"
+    And I close the category tree
     And I click on the create project button
     When I fill in the following information in the popin:
       | project-label       | 2016 summer collection |

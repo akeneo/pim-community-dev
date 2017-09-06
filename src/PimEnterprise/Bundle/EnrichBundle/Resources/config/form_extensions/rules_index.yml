@@ -38,6 +38,6 @@ extensions:
             successMessage: pimee_catalog_rule.notification.launched
             errorMessage: pimee_catalog_rule.notification.fail
             buttonLabel: pimee_catalog_rule.execution_button
-            buttonClass: AknButton--apply execute-all-rules
+            buttonClass: AknButton AknButton--apply execute-all-rules
             message: pimee_catalog_rule.popin.execute_rules.confirm_content
             title: pimee_catalog_rule.popin.execute_rules.confirm_title

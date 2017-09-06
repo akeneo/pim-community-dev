@@ -82,7 +82,9 @@ Feature: Filter by project completeness in the product datagrid
       | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    | A1         |              |                   |                    |                    |                |          |               |
     And I am logged in as "Mary"
     And I am on the products grid
+    And I open the category tree
     And I filter by "category" with operator "" and value "clothing"
+    And I close the category tree
     And I show the filter "weight"
     And I filter by "weight" with operator "<" and value "6 Ounce"
     And I click on the create project button
@@ -103,7 +105,8 @@ Feature: Filter by project completeness in the product datagrid
     But I should not see the text "Project progress"
     When I switch view selector type to "Projects"
     Then I should see the text "2016 summer collection"
-    And I should see the text "Project progress"
+    And I should see the text "Due date: 12/13/2018"
+    And I should see the text "0%"
 
   Scenario: Project overview options are hidden for contributors
     And I am logged in as "Julia"

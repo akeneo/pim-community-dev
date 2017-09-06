@@ -62,7 +62,9 @@ Feature: Enforce no permissions for a category
       | inProtectedNode | protected_node |
     And I am logged in as "Julia"
     And I am on the products grid
+    And I open the category tree
     When I filter by "category" with operator "unclassified" and value ""
+    And I close the category tree
     Then the grid should contain 2 elements
     And I should see products unclassifiedOne and unclassifiedTwo
     But I should not see products inProtectedTree and inProtectedNode
