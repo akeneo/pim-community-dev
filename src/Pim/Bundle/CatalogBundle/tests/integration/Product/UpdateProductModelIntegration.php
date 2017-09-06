@@ -6,7 +6,6 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
  * @author    Damien Carcel (damien.carcel@akeneo.com)
@@ -45,27 +44,49 @@ class UpdateProductModelIntegration extends TestCase
      */
     public function testTheFamilyVariantIsTheSameThanTheParent(): void
     {
-        $productModel = $this->createProductModel(
-            [
-                'code' => 'model-running-shoes-l',
-                'parent' => 'model-running-shoes',
-                'family_variant' => 'shoes_size_color',
-                'values' => [
-                    'size' => [
-                        [
-                            'locale' => null,
-                            'scope' => null,
-                            'data' => 'l',
-                        ],
+        $productModel = $this->get('pim_catalog.factory.product_model')->create();
+        $this->get('pim_catalog.updater.product_model')->update($productModel, [
+            'code' => 'model-running-shoes-l',
+            'parent' => 'model-running-shoes',
+            'family_variant' => 'shoes_size_color',
+            'values' => [
+                'size' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'l',
                     ],
                 ],
-            ]
-        );
+            ],
+        ]);
 
         $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
         $this->assertEquals(0, $errors->count());
 
         $this->get('pim_catalog.updater.product_model')->update($productModel, ['family_variant' => 'shoes_size',]);
+    }
+
+    public function testTheVariantAxisValuesCannotBeUpdated(): void
+    {
+        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('apollon_blue');
+        $this->get('pim_catalog.updater.product_model')->update($productModel, [
+            'values' => [
+                'color' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'black',
+                    ],
+                ],
+            ],
+        ]);
+
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            'Variant axis "color" cannot be modified, "[black]" given',
+            $errors->get(0)->getMessage()
+        );
     }
 
     /**
@@ -74,18 +95,5 @@ class UpdateProductModelIntegration extends TestCase
     protected function getConfiguration(): Configuration
     {
         return new Configuration([Configuration::getFunctionalCatalogPath('catalog_modeling')]);
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return ProductModelInterface
-     */
-    private function createProductModel(array $data): ProductModelInterface
-    {
-        $productModel = $this->get('pim_catalog.factory.product_model')->create();
-        $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
-
-        return $productModel;
     }
 }

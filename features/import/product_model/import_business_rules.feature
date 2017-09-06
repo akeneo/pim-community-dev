@@ -186,7 +186,7 @@ Feature: Create product models through CSV import
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
     Then I should see the text "Status: Completed"
     And I should see the text "skipped 1"
-    And I should see the text "Property \"color\" cannot be modified, \"red\" given."
+    And I should see the text "Variant axis \"color\" cannot be modified, \"[red]\" given"
     And the invalid data file of "csv_catalog_modeling_product_model_import" should contain:
       """
       code;parent;family_variant;color
