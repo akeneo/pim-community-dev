@@ -1,0 +1,23 @@
+An identifier attribute already exists.: Ett attribut för identifiering finns redan.
+Attribute code may contain only letters, numbers and underscore: Attribut-koden får endast innehålla bokstäver, siffror och understreck
+Attribute code may contain only letters (at least one), numbers and underscores: Attribut-koden får endast innehålla bokstäver (minst en), siffror och understreck
+This attribute type can't be used as a grid filter: Här attribut-typen kan inte användas som ett tabell filter
+This code is not available: Denna kod är inte tillgänglig
+This attribute type must be required: Den här attribut-typen måste vara tvingande
+This attribute type can't be required: Den här attribut-typen får inte vara tvingande
+This attribute type can't have unique value: Den här attribut-typen får inte vara unika värden
+No default value may be specified for this attribute type: Inget standardvärde får anges för den här attribut-typen
+This value should be Yes or No: Detta värde ska vara ja eller Nej
+This value should not be blank: Detta värde får inte vara tomt
+Option code may contain only letters, numbers and underscores: Alternativ-koden får endast innehålla bokstäver, siffror och understreck
+Option code may contain only letters (at least one), numbers and underscores: Alternativ-koden får endast innehålla bokstäver (minst en), siffror och understreck
+This value should not be a decimal.: Detta värde bör inte vara ett decimaltal.
+'The file extension is not allowed (allowed extensions: %extensions%).': 'Filändelsen tillåts inte (tillåtna filändelser: %extensions%).'
+"The value %value% is already set on another product for the unique attribute %attribute%": Värdet %value% är redan satt på en annan produkt för det unika attributet %attribute%
+regex.comma_or_semicolon.message: Det här fältet får inte innehålla några kommatecken eller semikolon.
+file.extensions.message: 'Filändelsen tillåts inte (tillåtna filändelser: %extensions%).'
+"This type of value expects the use of {{ decimal_separator }} to separate decimals.": Det här värdet förväntar sig att {{ decimal_separator }} används för att separera decimaler.
+"This type of value expects the use of dot (.) to separate decimals.": Det här värdet förväntar sig punkt (.) för att separera decimaler.
+"This type of value expects the use of comma (,) to separate decimals.": Det här värdet förväntar sig komma (,) för att separera decimaler.
+"This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Det här värdet förväntar sig arabiskt decimaltecken (٫) för att separera decimaler.
+"This type of value expects the use of the format {{ date_format }} for dates.": Det här värdet förväntar sig att datumformatet {{ date_format }} används för datum.

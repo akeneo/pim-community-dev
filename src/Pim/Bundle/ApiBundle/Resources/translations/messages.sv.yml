@@ -1,0 +1,26 @@
+pim_api:
+  acl:
+    rights: Web API-rättigheter
+    attribute:
+      edit: Skapa och uppdatera attribut
+      list: Lista attribut
+    attribute_option:
+      edit: Skapa och uppdatera attributalternativ
+      list: Lista attributalternativ
+    category:
+      edit: Skapa och uppdatera kategorier
+      list: Lista kategorier
+    family:
+      edit: Skapa och uppdatera familjer
+      list: Lista familjer
+    channel.list: Lista kanaler
+    locale.list: Lista språk
+  acl_group:
+    overall_access: Övergripande Web API-åtkomst
+    attribute: Attribut
+    attribute_option: Attributalternativ
+    category: Kategorier
+    family: Familjer
+    channel: Kanaler
+    locale: Språk
+rights.api: Web API-rättigheter

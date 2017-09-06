@@ -1,0 +1,168 @@
+Job: Jobb
+Connector: Connector
+pim_import_export:
+  job: Jobb
+  connector: Connector
+  status:
+    - Redo
+  batch_status:
+    1: Slutförd
+    2: Startar
+    3: Startad
+    4: Stoppar
+    5: Stoppad
+    6: Misslyckad
+    7: Övergiven
+    8: Okänt
+  download_archive:
+    archive: hämta skapat arkiv | ladda ner skapade arkiv
+    output: hämta skapad fil | ladda ner skapade filer
+    input: hämta läst fil | ladda ner lästa filer
+    invalid_xlsx: hämta ogiltiga data
+    invalid_csv: hämta ogiltiga data
+  notification:
+    export:
+      error: Exporten <strong>%label%</strong> misslyckades
+      warning: Exporten <strong>%label%</strong> klar med några varningar
+      success: Exporten <strong>%label%</strong> är klar
+    import:
+      error: Importen <strong>%label%</strong> misslyckades
+      warning: Importen <strong>%label%</strong> klar med några varningar
+      success: Importen <strong>%label%</strong> är klar
+  list: Välj ett jobb
+  job_profile:
+    tab:
+      property.title: Allmänna egenskaper
+      history.title: Historik
+      job_content.title: Innehåll
+pim_title.export_profile.index: Hantera exportprofiler
+pim_title.export_profile.edit: Exportprofiler %job.label% | Redigera
+pim_title.export_profile.show: Exportprofiler %job.label% | Visa
+pim_title.export_execution.index: Exporthistorik
+pim_title.export_execution.show: Exporthistorik | Detaljer
+pim_title.import_profile.index: Hantera importprofiler
+pim_title.import_profile.edit: Importprofiler %job.label% | Redigera
+pim_title.import_profile.show: Importprofiler %job.label% | Visa
+pim_title.import_execution.index: Importhistorik
+pim_title.import_execution.show: Importhistorik | Detaljer
+export profile:
+  title: exportprofil
+  overview: översikt exportprofil
+  create: skapa exportprofil
+  edit: redigera exportprofil
+export report:
+  overview: exportrapporter
+import profile:
+  title: importprofile
+  overview: översikt importprofil
+  create: skapa importprofil
+  edit: redigera importprofil
+import report:
+  overview: importrapport
+pim_importexport:
+  acl:
+    export_profile:
+      index: Visa lista med exportprofiler
+      create: Skapa en exportprofil
+      show: Visa en exportprofil
+      edit: Redigera en exportprofil
+      remove: Ta bort en exportprofil
+      launch: Starta en exportprofil
+      property_edit: Redigera en exportprofils allmänna egenskaper
+      property_show: Visa en exportprofils allmänna egenskaper
+      history: Visa historik för exportprofil
+      content_edit: Redigera innehåll för en exportprofil
+      content_show: Visa innehåll för en exportprofil
+    import_profile:
+      index: Visa lista med importprofiler
+      create: Skapa en importprofil
+      show: Visa en importprofil
+      edit: Redigera en importprofil
+      remove: Ta bort en exportprofil
+      launch: Starta en exportprofil
+      history: Visa historik för importprofiler
+    export_execution:
+      index: Visa lista med exportrapporter
+      show: Visa detaljer för exportrapport
+      dl_log: Hämta logg för exportrapport
+      dl_files: Hämta exporterade filer
+    import_execution:
+      index: Visa lista med importrapporter
+      show: Visa detaljer för importrapport
+      dl_log: Hämta logg för importrapport
+      dl_files: Hämta importerade filer
+  acl_group:
+    export: Exportprofiler
+    import: Importprofiler
+btn:
+  create:
+    export profile: skapa exportprofil
+    import profile: skapa importprofil
+Upload and import now: Ladda upp och importera nu
+import now: Importera nu
+export now: Exportera nu
+confirmation:
+  remove:
+    export profile: Är du säker på att du vill ta bort exportprofilen %name%?
+    import profile: Är du säker på att du vill ta bort importprofilen %name%?
+flash:
+  export:
+    created: Exporten har skapats med lyckat resultat
+    removed: Exporten har tagits bort
+    updated: Exporten har ändrats med lyckat resultat
+    running: Exporten körs
+  import:
+    created: Importen har skapats med lyckat resultat
+    removed: Importen har tagits bort
+    updated: Importen har ändrats med lyckat resultat
+    running: Importen körs
+pim_menu:
+  item:
+    export_history: Exporthistorik
+    export_profile: Exportprofiler
+    import_history: Importhistorik
+    import_profile: Importprofiler
+General properties: Allmänna egenskaper
+History: Historik
+pane.accordion:
+  properties: Egenskaper
+  global_settings: Globala inställningar
+  filters: Filter
+popin.create:
+  export_profile.title: Skapa en ny exportprofil
+  import_profile.title: Skapa en ny importprofil
+'Display item': Visa objekt
+'Hide item': Dölj objekt
+'Collecting data about job execution...': Samlar in data om jobbkörning...
+'You must select a file to upload': Du måste välja en fil att ladda upp
+Download log: Ladda ner logg
+Show profile: Visa profil
+execution details: utförandedetaljer
+job_execution.summary:
+  read: läs
+  write: skrivet
+  skip: hoppades över
+  create: skapades
+  update: uppdaterades
+  update_products: uppdaterade produkter
+  skip_products: överhoppade produkter
+  displayed: första varningarna visas
+  charset_validator:
+    title: 'Filkodning:'
+    skipped: hoppades över, filändelsen i godkäntlistan
+Step: Steg
+Status: Status
+Warnings: Varningar
+Summary: Sammanfattning
+Start: Start
+End: Slut
+set_attribute_requirements: Ange attributkrav
+COMPLETED: Slutförd
+STARTING: Startar
+STARTED: Startad
+STOPPING: Stoppar
+STOPPED: Stoppad
+FAILED: Misslyckad
+ABANDONED: Övergiven
+UNKNOWN: Okänt
+warning.label: Varning
