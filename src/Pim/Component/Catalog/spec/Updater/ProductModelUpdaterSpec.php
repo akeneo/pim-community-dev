@@ -67,6 +67,7 @@ class ProductModelUpdaterSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant
     ) {
         $productModel->getId()->willReturn(null);
+        $productModel->getParent()->willReturn(null);
         $productModel->getFamilyVariant()->willReturn(null);
 
         $propertySetter->setData($productModel, 'categories', ['tshirt'])->shouldBeCalled();
@@ -349,6 +350,21 @@ class ProductModelUpdaterSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant
     ) {
         $productModel->getFamilyVariant()->willReturn($familyVariant);
+        $familyVariant->getCode()->willreturn('family_variant');
+
+        $this->shouldThrow(ImmutablePropertyException::class)->during('update', [$productModel, [
+            'family_variant' => 'new_family_variant'
+        ]]);
+    }
+
+    function it_throws_an_exception_if_the_family_variant_is_different_from_the_parent(
+        ProductModelInterface $productModel,
+        ProductModelInterface $parent,
+        FamilyVariantInterface $familyVariant
+    ) {
+        $productModel->getFamilyVariant()->willReturn(null);
+        $productModel->getParent()->willReturn($parent);
+        $parent->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getCode()->willreturn('family_variant');
 
         $this->shouldThrow(ImmutablePropertyException::class)->during('update', [$productModel, [

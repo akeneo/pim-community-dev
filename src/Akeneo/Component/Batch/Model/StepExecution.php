@@ -511,21 +511,6 @@ class StepExecution
     }
 
     /**
-     * Decrement counter in summary
-     *
-     * @param string  $key
-     * @param integer $decrement
-     */
-    public function decrementSummaryInfo($key, $decrement = 1)
-    {
-        if (!isset($this->summary[$key])) {
-            $this->summary[$key] = -$decrement;
-        } else {
-            $this->summary[$key] = $this->summary[$key] - $decrement;
-        }
-    }
-
-    /**
      * Get a summary row
      *
      * @param string $key

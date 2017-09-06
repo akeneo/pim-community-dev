@@ -264,9 +264,6 @@ class CreateProductModelIntegration extends TestCase
         );
     }
 
-    /**
-     * Create a product without any errors
-     */
     public function testTheProductModelHaveValidMetricValue()
     {
         $productModel = $this->createProductModel(
@@ -301,6 +298,29 @@ class CreateProductModelIntegration extends TestCase
             'This value should be a valid number.',
             $errors->get(0)->getMessage()
         );
+    }
+
+    public function testFamilyVariantIsOptionalForSubProductModel()
+    {
+        $productModel = $this->createProductModel(
+            [
+                'code' => 'model-running-shoes-l',
+                'parent' => 'model-running-shoes',
+                'values' => [
+                    'size' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'l',
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
+        $this->assertEquals(0, $errors->count());
+        $this->assertEquals('shoes_size_color', $productModel->getFamilyVariant()->getCode());
     }
 
     /**

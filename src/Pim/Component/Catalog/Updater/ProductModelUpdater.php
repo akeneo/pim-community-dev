@@ -96,13 +96,16 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             );
         }
 
+        if (isset($data['parent'])) {
+            $this->updateParentAndFamily($productModel, $data);
+            unset($data['parent']);
+        }
+
         foreach ($data as $code => $value) {
             if ('values' === $code) {
                 $this->updateValues($productModel, $value, $options);
             } elseif ('code' === $code) {
                 $productModel->setCode($value);
-            } elseif ('parent' === $code) {
-                $this->updateParent($productModel, $value);
             } elseif ('family_variant' === $code) {
                 $this->updateFamilyVariant($productModel, $value);
             } elseif (in_array($code, $this->supportedFields)) {
@@ -113,6 +116,26 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         }
 
         return $this;
+    }
+
+    /**
+     * As for a sub product model, the family variant can be guessed from the
+     * parent, it needs to be set first, then the family.
+     * However, the family variant will be automatically set only if there is not
+     * already one and if the product model has a parent.
+     *
+     * @param ProductModelInterface $productModel
+     * @param array                 $data
+     */
+    private function updateParentAndFamily(ProductModelInterface $productModel, array $data): void
+    {
+        $this->updateParent($productModel, $data['parent']);
+
+        if (null === $productModel->getFamilyVariant() &&
+            (!isset($data['family_variant']) || '' === $data['family_variant'])
+        ) {
+            $productModel->setFamilyVariant($productModel->getParent()->getFamilyVariant());
+        }
     }
 
     /**
@@ -306,7 +329,18 @@ class ProductModelUpdater implements ObjectUpdaterInterface
      */
     private function updateFamilyVariant(ProductModelInterface $productModel, string $familyVariantCode): void
     {
-        if (null !== $productModel->getFamilyVariant() && $familyVariantCode !== $productModel->getFamilyVariant()->getCode()) {
+        if (null !== $productModel->getFamilyVariant() &&
+            $familyVariantCode !== $productModel->getFamilyVariant()->getCode()
+        ) {
+            throw ImmutablePropertyException::immutableProperty(
+                'family_variant',
+                $familyVariantCode,
+                static::class
+            );
+        }
+
+        $parent = $productModel->getParent();
+        if (null !== $parent && $familyVariantCode !== $parent->getFamilyVariant()->getCode()) {
             throw ImmutablePropertyException::immutableProperty(
                 'family_variant',
                 $familyVariantCode,
