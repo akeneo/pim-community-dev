@@ -16,7 +16,7 @@ use Pim\Component\Catalog\Query\Sorter\Directions;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ProductAndProductModelQueryBuilderIntegration extends TestCase
+class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndProductModelQueryBuilderTestCase
 {
     public function testNoFilterAndSortIdentifier()
     {
@@ -31,7 +31,8 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
 
         $result = $pqb->execute();
 
-        $this->assertSearch(
+        $this->assert(
+            $result,
             [
                 'watch',
                 'zeus',
@@ -52,8 +53,7 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
                 'model-braided-hat',
                 'model-biker-jacket',
                 'moccasin',
-            ],
-            $result
+            ]
         );
     }
 
@@ -61,13 +61,13 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
     {
         $result = $this->executeFilter([['description', Operators::CONTAINS, 'Divided slim T-shirt with 2 buttons']]);
 
-        $this->assertSearch(
+        $this->assert(
+            $result,
             [
                 'model-tshirt-divided',
                 'model-tshirt-unique-color-kurt',
                 'model-tshirt-unique-size',
-            ],
-            $result
+            ]
         );
     }
 
@@ -84,7 +84,8 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
     {
         $result = $this->executeFilter([['color', Operators::IN_LIST, ['crimson_red']]]);
 
-        $this->assertSearch(
+        $this->assert(
+            $result,
             [
                 'model-tshirt-divided-crimson-red',
                 'model-tshirt-unique-color-kurt',
@@ -92,8 +93,7 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
                 'running-shoes-xxs-crimson-red',
                 'running-shoes-m-crimson-red',
                 'running-shoes-xxxl-crimson-red',
-            ],
-            $result
+            ]
         );
     }
 
@@ -101,14 +101,15 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
     {
         $result = $this->executeFilter([['color', Operators::IN_LIST, ['battleship_grey']]]);
 
-        $this->assertSearch(['model-tshirt-divided-battleship-grey', 'model-braided-hat'], $result);
+        $this->assert($result, ['model-tshirt-divided-battleship-grey', 'model-braided-hat']);
     }
 
     public function testSearchColorBlue()
     {
         $result = $this->executeFilter([['color', Operators::IN_LIST, ['navy_blue']]]);
 
-        $this->assertSearch(
+        $this->assert(
+            $result,
             [
                 'model-tshirt-divided-navy-blue',
                 'tshirt-unique-size-navy-blue',
@@ -116,8 +117,7 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
                 'running-shoes-m-navy-blue',
                 'running-shoes-xxxl-navy-blue',
                 'watch',
-            ],
-            $result
+            ]
         );
     }
 
@@ -125,7 +125,8 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
     {
         $result = $this->executeFilter([['size', Operators::IN_LIST, ['xxs']]]);
 
-        $this->assertSearch(
+        $this->assert(
+            $result,
             [
                 'tshirt-divided-battleship-grey-xxs',
                 'tshirt-divided-navy-blue-xxs',
@@ -134,8 +135,7 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
                 'model-running-shoes-xxs',
                 'biker-jacket-leather-xxs',
                 'biker-jacket-polyester-xxs',
-            ],
-            $result
+            ]
         );
     }
 
@@ -143,7 +143,8 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
     {
         $result = $this->executeFilter([['size', Operators::IN_LIST, ['xxxl']]]);
 
-        $this->assertSearch(
+        $this->assert(
+            $result,
             [
                 'tshirt-divided-battleship-grey-xxxl',
                 'tshirt-divided-crimson-red-xxxl',
@@ -153,8 +154,7 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
                 'model-running-shoes-xxxl',
                 'biker-jacket-leather-xxxl',
                 'biker-jacket-polyester-xxxl',
-            ],
-            $result
+            ]
         );
     }
 
@@ -182,7 +182,7 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
             ]
         );
 
-        $this->assertSearch(['tshirt-divided-battleship-grey-xxs'], $result);
+        $this->assert($result, ['tshirt-divided-battleship-grey-xxs']);
     }
 
     public function testSearchColorGreyAndSize3XL()
@@ -194,7 +194,7 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
             ]
         );
 
-        $this->assertSearch(['tshirt-divided-battleship-grey-xxxl', 'braided-hat-xxxl'], $result);
+        $this->assert($result, ['tshirt-divided-battleship-grey-xxxl', 'braided-hat-xxxl']);
     }
 
     public function testSearchColorGreyAndDescriptionTshirt()
@@ -206,21 +206,21 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
             ]
         );
 
-        $this->assertSearch(['model-tshirt-divided-battleship-grey'], $result);
+        $this->assert($result, ['model-tshirt-divided-battleship-grey']);
     }
 
     public function testSearchMaterialCotton()
     {
         $result = $this->executeFilter([['material', Operators::IN_LIST, ['cotton']]]);
 
-        $this->assertSearch(
+        $this->assert(
+            $result,
             [
                 'model-tshirt-divided-battleship-grey',
                 'model-tshirt-divided-crimson-red',
                 'model-tshirt-unique-color-kurt',
                 'model-tshirt-unique-size',
-            ],
-            $result
+            ]
         );
     }
 
@@ -228,12 +228,12 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
     {
         $result = $this->executeFilter([['material', Operators::IN_LIST, ['leather']]]);
 
-        $this->assertSearch(
+        $this->assert(
+            $result,
             [
                 'model-running-shoes',
                 'model-biker-jacket-leather',
-            ],
-            $result
+            ]
         );
     }
 
@@ -246,9 +246,9 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
             ]
         );
 
-        $this->assertSearch(
-            ['running-shoes-xxxl-antique-white', 'biker-jacket-polyester-xxxl', 'biker-jacket-leather-xxxl'],
-            $result
+        $this->assert(
+            $result,
+            ['running-shoes-xxxl-antique-white', 'biker-jacket-polyester-xxxl', 'biker-jacket-leather-xxxl']
         );
     }
 
@@ -261,13 +261,13 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
             ]
         );
 
-        $this->assertSearch(
+        $this->assert(
+            $result,
             [
                 'model-tshirt-divided-crimson-red',
                 'model-tshirt-unique-color-kurt',
                 'tshirt-unique-size-crimson-red',
-            ],
-            $result
+            ]
         );
     }
 
@@ -280,7 +280,8 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
             ]
         );
 
-        $this->assertSearch(
+        $this->assert(
+            $result,
             [
                 'tshirt-divided-navy-blue-xxs',
                 'tshirt-divided-crimson-red-xxs',
@@ -290,8 +291,7 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
                 'running-shoes-xxs-crimson-red',
                 'biker-jacket-leather-xxs',
                 'biker-jacket-polyester-xxs',
-            ],
-            $result
+            ]
         );
     }
 
@@ -305,15 +305,15 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
             ]
         );
 
-        $this->assertSearch(
+        $this->assert(
+            $result,
             [
                 'tshirt-divided-navy-blue-m',
                 'tshirt-divided-navy-blue-l',
                 'tshirt-divided-navy-blue-xxxl',
                 'biker-jacket-polyester-m',
                 'biker-jacket-polyester-xxxl',
-            ],
-            $result
+            ]
         );
     }
 
@@ -325,54 +325,6 @@ class ProductAndProductModelQueryBuilderIntegration extends TestCase
         parent::setUp();
 
         $this->setParentsInTheDataset();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration([Configuration::getFunctionalCatalogPath('catalog_modeling')]);
-    }
-
-    /**
-     * @param array $filters
-     *
-     * @return CursorInterface
-     */
-    private function executeFilter(array $filters)
-    {
-        $pqb = $this->get('pim_enrich.query.product_and_product_model_query_builder_from_size_factory')->create(
-            [
-                'default_locale' => 'en_US',
-                'default_scope'  => 'ecommerce',
-                'limit'          => 200, // set it big enough to have all products in one page
-            ]
-        );
-
-        foreach ($filters as $filter) {
-            $context = isset($filter[3]) ? $filter[3] : [];
-            $pqb->addFilter($filter[0], $filter[1], $filter[2], $context);
-        }
-
-        return $pqb->execute();
-    }
-
-    /**
-     * @param array           $expected
-     * @param CursorInterface $actual
-     */
-    private function assertSearch(array $expected, CursorInterface $actual)
-    {
-        $productAndProductModels = [];
-        foreach ($actual as $item) {
-            $productAndProductModels[] = $item instanceof ProductInterface ? $item->getIdentifier() : $item->getCode();
-        }
-
-        sort($productAndProductModels);
-        sort($expected);
-
-        $this->assertSame($productAndProductModels, $expected);
     }
 
     /**
