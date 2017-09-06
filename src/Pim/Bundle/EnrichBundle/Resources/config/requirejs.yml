@@ -655,34 +655,37 @@ config:
         pim/group-edit-form/save: pimenrich/js/group/form/save
 
         # Product
-        pim/product-edit-form/product-label:               pimenrich/js/product/form/product-label
-        pim/product-edit-form/product-completeness:        pimenrich/js/product/form/product-completeness
-        pim/product-edit-form/attributes/validation:       pimenrich/js/product/form/attributes/validation
-        pim/product-edit-form/attributes/validation-error: pimenrich/js/product/form/attributes/validation-error
-        pim/product-edit-form/attributes/variant-group:    pimenrich/js/product/form/attributes/variant-group
-        pim/product-edit-form/attributes/locale-specific:  pimenrich/js/product/form/attributes/locale-specific
-        pim/product-edit-form/attributes/read-only-form:   pimenrich/js/product/form/attributes/read-only-form
-        pim/product-edit-form/attributes/completeness:     pimenrich/js/product/form/attributes/completeness
-        pim/product-edit-form/attributes/localizable:      pimenrich/js/product/form/attributes/localizable
-        pim/product-edit-form/categories:                  pimenrich/js/product/form/categories
-        pim/product-edit-form/associations:                pimenrich/js/product/form/associations
-        pim/product-edit-form/locale-switcher:             pimenrich/js/product/form/locale-switcher
-        pim/product-edit-form/scope-switcher:              pimenrich/js/product/form/scope-switcher
-        pim/product-edit-form/completeness:                pimenrich/js/product/form/completeness
-        pim/product-edit-form/history:                     pimenrich/js/product/form/history
-        pim/product-edit-form/comments:                    pimenrich/js/product/form/comments
-        pim/product-edit-form/save:                        pimenrich/js/product/form/save
-        pim/product-edit-form/sequential-edit:             pimenrich/js/product/form/sequential-edit
-        pim/product-edit-form/delete:                      pimenrich/js/product/form/delete
-        pim/product-edit-form/meta/family:                 pimenrich/js/product/form/meta/family
-        pim/product-edit-form/meta/change-family:          pimenrich/js/product/form/meta/change-family
-        pim/product-edit-form/meta/created:                pimenrich/js/product/form/meta/created
-        pim/product-edit-form/meta/updated:                pimenrich/js/product/form/meta/updated
-        pim/product-edit-form/meta/groups:                 pimenrich/js/product/form/meta/groups
-        pim/product-edit-form/meta/status-switcher:        pimenrich/js/product/form/meta/status-switcher
-        pim/product-edit-form/download-pdf:                pimenrich/js/product/form/download-pdf
-        pim/product-edit-form/attributes:                  pimenrich/js/product/form/attributes
-        pim/product-edit-form/creation/identifier:         pimenrich/js/product/form/creation/identifier
+        pim/product-edit-form/product-label:                     pimenrich/js/product/form/product-label
+        pim/product-edit-form/product-completeness:              pimenrich/js/product/form/product-completeness
+        pim/product-edit-form/attribute-filter:                  pimenrich/js/product/form/attribute-filter
+        pim/product-edit-form/attribute-filter-all:              pimenrich/js/product/form/attribute-filter-all
+        pim/product-edit-form/attribute-filter-missing-required: pimenrich/js/product/form/attribute-filter-missing-required
+        pim/product-edit-form/attributes/validation:             pimenrich/js/product/form/attributes/validation
+        pim/product-edit-form/attributes/validation-error:       pimenrich/js/product/form/attributes/validation-error
+        pim/product-edit-form/attributes/variant-group:          pimenrich/js/product/form/attributes/variant-group
+        pim/product-edit-form/attributes/locale-specific:        pimenrich/js/product/form/attributes/locale-specific
+        pim/product-edit-form/attributes/read-only-form:         pimenrich/js/product/form/attributes/read-only-form
+        pim/product-edit-form/attributes/completeness:           pimenrich/js/product/form/attributes/completeness
+        pim/product-edit-form/attributes/localizable:            pimenrich/js/product/form/attributes/localizable
+        pim/product-edit-form/categories:                        pimenrich/js/product/form/categories
+        pim/product-edit-form/associations:                      pimenrich/js/product/form/associations
+        pim/product-edit-form/locale-switcher:                   pimenrich/js/product/form/locale-switcher
+        pim/product-edit-form/scope-switcher:                    pimenrich/js/product/form/scope-switcher
+        pim/product-edit-form/completeness:                      pimenrich/js/product/form/completeness
+        pim/product-edit-form/history:                           pimenrich/js/product/form/history
+        pim/product-edit-form/comments:                          pimenrich/js/product/form/comments
+        pim/product-edit-form/save:                              pimenrich/js/product/form/save
+        pim/product-edit-form/sequential-edit:                   pimenrich/js/product/form/sequential-edit
+        pim/product-edit-form/delete:                            pimenrich/js/product/form/delete
+        pim/product-edit-form/meta/family:                       pimenrich/js/product/form/meta/family
+        pim/product-edit-form/meta/change-family:                pimenrich/js/product/form/meta/change-family
+        pim/product-edit-form/meta/created:                      pimenrich/js/product/form/meta/created
+        pim/product-edit-form/meta/updated:                      pimenrich/js/product/form/meta/updated
+        pim/product-edit-form/meta/groups:                       pimenrich/js/product/form/meta/groups
+        pim/product-edit-form/meta/status-switcher:              pimenrich/js/product/form/meta/status-switcher
+        pim/product-edit-form/download-pdf:                      pimenrich/js/product/form/download-pdf
+        pim/product-edit-form/attributes:                        pimenrich/js/product/form/attributes
+        pim/product-edit-form/creation/identifier:               pimenrich/js/product/form/creation/identifier
 
         # Attribute group
         pim/attribute-group-form/tab/attribute: pimenrich/js/attribute-group/form/tab/attribute
@@ -933,6 +936,7 @@ config:
         pim/template/form/tab/attributes:                         pimenrich/templates/form/tab/attributes.html
         pim/template/form/save-buttons:                           pimenrich/templates/form/save-buttons.html
         pim/template/form/edit-form:                              pimenrich/templates/form/edit-form.html
+        pim/template/form/tab/attribute/attribute-filter:         pimenrich/templates/form/tab/attributes/attribute-filter.html
         pim/template/form/tab/attribute/attribute-group-selector: pimenrich/templates/form/tab/attributes/attribute-group-selector.html
         pim/template/form/tab/attribute/attribute-group:          pimenrich/templates/form/tab/attributes/attribute-group.html
         pim/template/form/tab/attribute/copy:                     pimenrich/templates/form/tab/attributes/copy.html

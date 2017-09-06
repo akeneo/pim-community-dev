@@ -97,7 +97,7 @@ define(
              */
             render: function () {
                 $.when(
-                    toFillFieldProvider.getFields(this.getRoot(), this.getFormData()),
+                    toFillFieldProvider.getFields(this.getRoot(), this.getFormData().values),
                     AttributeGroupManager.getAttributeGroupsForObject(this.getFormData())
                 ).then(function (attributes, attributeGroups) {
                     var toFillAttributeGroups = _.uniq(_.map(attributes, function (attribute) {

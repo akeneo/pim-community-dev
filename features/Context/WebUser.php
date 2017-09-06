@@ -271,12 +271,10 @@ class WebUser extends PimContext
     }
 
     /**
-     * @Given /^there should be (\d+) errors? in the "([^"]*)" tab$/
+     * @Then /^there should be (\d+) errors? in the "([^"]*)" tab$/
      *
      * @param $expectedErrorsCount
      * @param $tabName
-     *
-     * @throws TimeoutException
      */
     public function thereShouldBeErrorsInTheTab($expectedErrorsCount, $tabName)
     {
@@ -290,6 +288,16 @@ class WebUser extends PimContext
             $tabName,
             $this->getTabErrorsCount($tab)
         ));
+    }
+
+    /**
+     * @When /^I filter attributes with "(.+)"$/
+     *
+     * @param $filter
+     */
+    public function iFilterAttributes($filter)
+    {
+        $this->getCurrentPage()->filterAttributes($filter);
     }
 
     /* -------------------- Other methods -------------------- */

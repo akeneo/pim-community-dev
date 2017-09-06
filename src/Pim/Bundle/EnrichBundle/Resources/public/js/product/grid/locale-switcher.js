@@ -75,9 +75,8 @@ define([
              */
             fetchLocales() {
                 const localeFetcher = FetcherRegistry.getFetcher('locale');
-                localeFetcher.clear();
 
-                return localeFetcher.search({ activated: true, cached: false });
+                return localeFetcher.fetchActivated();
             },
 
             /**
