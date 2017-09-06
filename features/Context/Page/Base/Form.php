@@ -166,6 +166,31 @@ class Form extends Base
     }
 
     /**
+     * @param $attributeGroup
+     */
+    public function clickOnAttributeGroupHeader($attributeGroup)
+    {
+        $this->spin(function () use ($attributeGroup) {
+            $loadingMasks = $this->findAll('css', '.loading-wrapper');
+            if (0 < count(array_filter($loadingMasks, function ($loadingMask) {
+                return $loadingMask->isVisible();
+            }))) {
+                return false;
+            }
+
+            $groupHeader = $this->find('css', sprintf('.required-attribute-indicator[data-group="%s"]', $attributeGroup));
+
+            if (null === $groupHeader) {
+                return false;
+            }
+
+            $groupHeader->click();
+
+            return true;
+        }, sprintf('Cannot click on attribute group "%s" header', $attributeGroup));
+    }
+
+    /**
      * @param $groupName
      * @param string $type
      *

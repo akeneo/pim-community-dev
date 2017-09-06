@@ -114,7 +114,8 @@ define(
             attributeGroupTemplate: _.template(attributeGroupTemplate),
             className: 'tabbable object-attributes',
             events: {
-                'click .remove-attribute': 'removeAttribute'
+                'click .remove-attribute': 'removeAttribute',
+                'click .required-attribute-indicator': 'filterRequiredAttributes'
             },
             rendering: false,
 
@@ -199,8 +200,6 @@ define(
                             AttributeGroupManager.getAttributeGroupsForObject(data),
                             toFillFieldProvider.getFields(this.getRoot(), data.values)
                         ).then((attributeGroups, fieldsToFill) => {
-                            this.renderExtensions();
-                            this.delegateEvents();
                             const sections = _.values(
                                 fields.reduce(groupFieldsBySection(attributeGroups, fieldsToFill), {})
                             );
@@ -219,6 +218,8 @@ define(
                             }
 
                             this.$('.object-values').empty().append(fieldsView);
+                            this.renderExtensions();
+                            this.delegateEvents();
                         });
                     });
 
@@ -490,6 +491,13 @@ define(
                     }).then(function () {
                         return _.values(arguments);
                     });
+            },
+
+            /**
+             * Filter the required attributes and attribute group
+             */
+            filterRequiredAttributes: function () {
+                this.getRoot().trigger('pim_enrich:form:switch_values_filter', 'missing_required');
             },
 
             /**

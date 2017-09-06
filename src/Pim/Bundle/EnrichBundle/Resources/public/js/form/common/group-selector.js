@@ -120,8 +120,9 @@ define(
 
                     if (!options.silent) {
                         this.trigger('group:change');
-                        this.render();
                     }
+
+                    this.render();
                 }
             },
 
