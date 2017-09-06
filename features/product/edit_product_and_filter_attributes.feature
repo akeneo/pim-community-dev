@@ -36,3 +36,41 @@ Feature: Edit product and filter attributes
     Then I should not see the text "Top view"
     And I should not see the text "Weather conditions"
     But I should see the text "Side view"
+
+  Scenario: Edit the product and show all missing required attributes by clicking on attribute group header
+    And I visit the "All" group
+    When I filter attributes with "All attributes"
+    And I click on the "marketing" required attribute indicator
+    Then I should not see the text "Manufacturer"
+    And I should not see the text "SKU"
+    But I should see the text "Name"
+    And I should see the text "Weather conditions"
+    And I should see the text "Description"
+    And I should see the text "Price"
+    And I should see the text "Rating"
+    And I should see the text "Side view"
+    And I should see the text "Size"
+    And I should see the text "Color"
+    When I filter attributes with "All attributes"
+    Then I should see the text "Manufacturer"
+    And I should see the text "SKU"
+
+  Scenario: Edit the product and show only group missing required attributes by clicking on attribute group header
+    And I visit the "Product information" group
+    And I click on the "info" required attribute indicator
+    Then I should not see the text "Manufacturer"
+    And I should not see the text "SKU"
+    But I should see the text "Name"
+    And I should see the text "Weather conditions"
+    And I should see the text "Description"
+    And I should not see the text "Price"
+    And I should not see the text "Rating"
+    And I should not see the text "Side view"
+    And I should not see the text "Size"
+    And I should not see the text "Color"
+    When I filter attributes with "All attributes"
+    Then I should see the text "Manufacturer"
+    And I should see the text "SKU"
+    And I should not see the text "Side view"
+    And I should not see the text "Size"
+    And I should not see the text "Color"

@@ -30,6 +30,15 @@ define(
             /**
              * {@inheritdoc}
              */
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:switch_values_filter', this.setCurrent.bind(this));
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             render() {
                 const currentFilter = this.getCurrentFilter();
 
@@ -83,8 +92,15 @@ define(
              * @param {Event} event
              */
             onChange(event) {
-                const filterCode = event.currentTarget.dataset.code;
+                this.setCurrent(event.currentTarget.dataset.code);
+            },
 
+            /**
+             * Set the current filter
+             *
+             * @param {string} filterCode
+             */
+            setCurrent(filterCode) {
                 if (filterCode === this.currentFilterCode) {
                     return;
                 }

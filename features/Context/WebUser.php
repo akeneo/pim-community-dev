@@ -291,6 +291,16 @@ class WebUser extends PimContext
     }
 
     /**
+     * @When /^I click on the "([^"]*)" required attribute indicator$/
+     *
+     * @param $attributeGroup
+     */
+    public function iClickOnAttributeGroupHeader($attributeGroup)
+    {
+        $this->getCurrentPage()->clickOnAttributeGroupHeader($attributeGroup);
+    }
+
+    /**
      * @When /^I filter attributes with "(.+)"$/
      *
      * @param $filter
