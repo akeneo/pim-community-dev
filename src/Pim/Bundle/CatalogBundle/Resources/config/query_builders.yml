@@ -242,8 +242,9 @@ services:
     pim_catalog.query.elasticsearch.filter.parent:
         class: '%pim_catalog.query.elasticsearch.filter.parent.class%'
         arguments:
+            - '@pim_catalog.repository.product_model'
             - ['parent']
-            - ['EMPTY']
+            - ['IN', 'EMPTY']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
 
