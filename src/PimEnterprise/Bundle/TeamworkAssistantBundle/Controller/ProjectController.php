@@ -236,6 +236,8 @@ class ProjectController
         foreach ($projects as $project) {
             $normalizedProject = $this->projectNormalizer->normalize($project, 'internal_api');
 
+            /* For scalability reasons, the completeness is not attached to the normalizer. Indeed, the computing of a
+             * completeness can be very time consuming. */
             if ('1' === $options['completeness']) {
                 $normalizedProject['completeness'] = $this->projectCompletenessNormalizer->normalize(
                     $this->projectCompletenessRepository->getProjectCompleteness(
@@ -259,9 +261,20 @@ class ProjectController
      */
     public function getAction($identifier)
     {
+        $contributor = $this->tokenStorage->getToken()->getUser()->getUsername();
         $project = $this->projectRepository->findOneByIdentifier($identifier);
 
         $normalizedProject = $this->projectNormalizer->normalize($project, 'internal_api');
+
+        /* For scalability reasons, the completeness is not attached to the normalizer. Indeed, the computing of a
+         * completeness can be very time consuming. */
+        $normalizedProject['completeness'] = $this->projectCompletenessNormalizer->normalize(
+            $this->projectCompletenessRepository->getProjectCompleteness(
+                $project,
+                $contributor
+            ),
+            'internal_api'
+        );
 
         return new JsonResponse($normalizedProject, 200);
     }

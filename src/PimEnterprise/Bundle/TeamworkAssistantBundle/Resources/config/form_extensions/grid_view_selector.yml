@@ -30,3 +30,8 @@ extensions:
         parent: pim-grid-view-selector-secondary-actions
         targetZone: secondary-actions
         position: 130
+
+    pimee-grid-view-selector-project-resume:
+        module: teamwork-assistant/grid/view-selector/project-resume
+        parent: pim-grid-view-selector
+        targetZone: resume

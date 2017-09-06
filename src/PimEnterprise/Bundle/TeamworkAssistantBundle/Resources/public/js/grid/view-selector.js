@@ -149,9 +149,10 @@ define(
                     return FetcherRegistry.getFetcher('project')
                         .fetch(view.label).then(function (project) {
                             view.text = project.label;
+                            this.trigger('grid:view-selector:project-selected', project);
 
                             return view;
-                        });
+                        }.bind(this));
                 }
 
                 return ViewSelector.prototype.postFetchDatagridView.apply(this, arguments);
