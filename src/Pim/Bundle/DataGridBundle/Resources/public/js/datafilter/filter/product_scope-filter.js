@@ -52,7 +52,10 @@ define(
                 $filterChoices.find('option[value="scope"]').remove();
                 $filterChoices.multiselect('refresh');
 
-                this.selectWidget.multiselect('refresh');
+                if (this.selectWidget) {
+                    this.selectWidget.multiselect('refresh');
+                }
+
             },
 
             /**
@@ -66,7 +69,11 @@ define(
 
                 this.setValue({value: scope});
                 UserContext.set('catalogScope', scope);
-                this.selectWidget.multiselect('refresh');
+
+                if (this.selectWidget) {
+                    this.selectWidget.multiselect('refresh');
+                }
+
             },
 
             /**
