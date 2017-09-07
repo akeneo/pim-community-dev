@@ -62,7 +62,9 @@ define(
                     TreeView.refresh();
                 });
 
-                updateCallback(this.value);
+                if (undefined !== updateCallback) {
+                    updateCallback(this.value);
+                }
 
                 NumberFilter.prototype.initialize.apply(this, arguments);
             },

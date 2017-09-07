@@ -67,52 +67,14 @@ define(
              * Updates the current category and tree
              *
              * @param {Object} value
-             * @param {integer} value.type
-             * @param {integer} value.value.categoryId
-             * @param {integer} value.value.treeId
+             * @param {String} value.categoryLabel
+             * @param {String} value.treeLabel
              */
             updateValue(value) {
-                this.categoryLabel = this.getCategoryLabel(value.value.categoryId);
-                this.treeLabel = this.getTreeLabel(value.value.treeId);
+                this.categoryLabel = value.categoryLabel;
+                this.treeLabel = value.treeLabel;
 
                 this.render();
-            },
-
-            /**
-             * Get the category label from its id.
-             * We search the matching DOM element in the JStree plugin directly, because it does not exist any fetcher
-             * able to get the label from its id.
-             *
-             * @param {integer} id
-             *
-             * @returns {String}
-             */
-            getCategoryLabel(id) {
-                return this.trimCount($('#node_' + id).text().trim());
-            },
-
-            /**
-             * Get the tree label from its id.
-             * See this.getCategoryLabel
-             *
-             * @param {integer} id
-             *
-             * @returns {String}
-             */
-            getTreeLabel(id) {
-                return this.trimCount($('#tree_toolbar .select2-chosen').text().trim());
-            },
-
-            /**
-             * Deletes the count of the category and the tree to only keep the label
-             * For example, "Audio (123)" will return "Audio".
-             *
-             * @param {String} str
-             *
-             * @returns {String}
-             */
-            trimCount(str) {
-                return str.replace(/(.*) \(\d+\)/, (match, text) => text);
             }
         });
     }

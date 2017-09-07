@@ -184,7 +184,6 @@ config:
                         urls:
                             list: pim_enrich_category_rest_list
                             get: pim_enrich_category_rest_get
-                            search: pim_enrich_category_rest_search
                 job-instance-export:
                     module: pim/base-fetcher
                     options:
@@ -898,7 +897,6 @@ config:
 
         # Grid
         pim/grid/locale-switcher:   pimenrich/js/product/grid/locale-switcher
-        pim/grid/column-inner:      pimenrich/js/product/grid/column-inner
         pim/grid/category-switcher: pimenrich/js/product/grid/category-switcher
 
         # Category tree

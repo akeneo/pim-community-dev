@@ -1,2 +1,4 @@
 <div class="AknColumn-subtitle"><%- label %></div>
-<div class="AknColumn-value<% if (isHighlited) { %> AknColumn-value--highlited<% } %>"><%- treeLabel %> - <%- categoryLabel %></div>
+<div class="AknColumn-value<% if (isHighlited) { %> AknColumn-value--highlited<% } %>">
+    <%- treeLabel %><% if ('' !== categoryLabel) { %> - <%- categoryLabel %><% } %>
+</div>

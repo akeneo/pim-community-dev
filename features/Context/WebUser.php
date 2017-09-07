@@ -418,8 +418,9 @@ class WebUser extends PimContext
      *
      * @When /^I (open|close) the category tree$/
      */
-    public function iToggleTheCategoryTree($action) {
-        $this->spin(function() use ($action) {
+    public function iToggleTheCategoryTree($action)
+    {
+        $this->spin(function () use ($action) {
             $thirdColumn = $this->getCurrentPage()->find('css', '.AknDefault-thirdColumnContainer');
             if (null !== $thirdColumn) {
                 if (

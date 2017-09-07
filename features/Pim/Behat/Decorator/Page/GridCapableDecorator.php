@@ -219,7 +219,7 @@ class GridCapableDecorator extends ElementDecorator
         }, 'Cannot open view type switcher');
 
         $this->spin(function () use ($selector, $type) {
-            $currentViewType = $selector->find('css', '.current-view-type');;
+            $currentViewType = $selector->find('css', '.current-view-type');
             if (null !== $currentViewType && strtolower($currentViewType->getText()) === strtolower($type)) {
                 return true;
             }
@@ -252,7 +252,8 @@ class GridCapableDecorator extends ElementDecorator
     /**
      * Opens the secondary actions dropdown
      */
-    protected function openSecondaryActions() {
+    protected function openSecondaryActions()
+    {
         $this->spin(function () {
             $element = $this->find('css', $this->selectors['Grid view secondary actions']);
             if ($element !== null) {

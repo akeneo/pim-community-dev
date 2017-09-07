@@ -11,16 +11,17 @@ extensions:
     pim-product-index-left-column:
         module: pim/form/common/column
         parent: pim-product-index
-        position: 5
         targetZone: column
         config:
           stateCode: product_index
           navigationTitle: pim_enrich.entity.product.navigation
 
     pim-product-index-column-inner:
-        module: pim/grid/column-inner
+        module: pim/common/simple-view
         parent: pim-product-index-left-column
         targetZone: navigation
+        config:
+          template: pim/template/product/grid/column-inner
 
     pim-product-index-category-switcher:
         module: pim/grid/category-switcher
