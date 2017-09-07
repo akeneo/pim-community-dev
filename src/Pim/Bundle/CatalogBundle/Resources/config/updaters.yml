@@ -70,9 +70,6 @@ services:
             - '@pim_catalog.updater.entity_with_values'
             - '@pim_catalog.repository.family_variant'
             - '@pim_catalog.repository.product_model'
-            - '@pim_catalog.normalizer.standard.product.product_value'
-            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
-            - '@pim_catalog.comparator.registry'
             - ['categories']
             - ['identifier', 'created', 'updated']
 

@@ -55,6 +55,7 @@ parameters:
     pim_catalog.validator.constraint.has_a_root_product_model_as_parent.class: Pim\Component\Catalog\Validator\Constraints\ProductModelPositionInTheVariantTreeValidator
     pim_catalog.validator.constraint.family_same_family_than_parent.class: Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParentValidator
     pim_catalog.validator.constraint.invalid_variant_product_parent.class: Pim\Component\Catalog\Validator\Constraints\VariantProductParentValidator
+    pim_catalog.validator.constraint.immutable_variant_axis_values.class:  Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValuesValidator
 
 services:
     # Helpers
@@ -118,6 +119,15 @@ services:
         class: '%pim_catalog.validator.constraint.invalid_variant_product_parent.class%'
         tags:
             - { name: validator.constraint_validator, alias: pim_invalid_variant_product_parent }
+
+    pim_catalog.validator.constraint.immutable_variant_axis_values:
+        class: '%pim_catalog.validator.constraint.immutable_variant_axis_values.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_catalog.factory.value_collection'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_immutable_variant_axis_values_validator }
 
     pim_catalog.validator.constraint.valid_metric:
         class: '%pim_catalog.validator.constraint.valid_metric.class%'

@@ -15,8 +15,6 @@ use Akeneo\Test\Integration\TestCase;
 class UpdateVariantProductIntegration extends TestCase
 {
     /**
-     * Ensure that the parent of a variant product cannot be changed.
-     *
      * TODO: This will become possible in PIM-6350.
      *
      * @expectedException \Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException
@@ -29,8 +27,16 @@ class UpdateVariantProductIntegration extends TestCase
     }
 
     /**
-     * Ensure that the family of a variant product cannot be changed.
-     *
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException
+     * @expectedExceptionMessage Property "parent" cannot be modified, "" given.
+     */
+    public function testTheParentCannotBeRemoved(): void
+    {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_blue_xl');
+        $this->get('pim_catalog.updater.product')->update($product, ['parent' => '']);
+    }
+
+    /**
      * TODO: This will become possible in PIM-6460.
      */
     public function testTheFamilyCannotBeChanged(): void
@@ -42,6 +48,29 @@ class UpdateVariantProductIntegration extends TestCase
         $this->assertEquals(1, $errors->count());
         $this->assertEquals(
             'The variant product family must be the same than its parent',
+            $errors->get(0)->getMessage()
+        );
+    }
+
+    public function testTheVariantAxisValuesCannotBeUpdated(): void
+    {
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('apollon_blue_xl');
+        $this->get('pim_catalog.updater.product')->update($product, [
+            'values' => [
+                'size' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 's',
+                    ],
+                ],
+            ],
+        ]);
+
+        $errors = $this->get('pim_catalog.validator.product')->validate($product);
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            'Variant axis "size" cannot be modified, "[s]" given',
             $errors->get(0)->getMessage()
         );
     }
