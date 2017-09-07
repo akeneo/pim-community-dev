@@ -47,7 +47,7 @@ define(
                     __('teamwork_assistant.grid.view_selector.create_from_view');
 
                 this.$el.html(this.template({
-                    label: label,
+                    label: label
                 }));
 
                 this.delegateEvents();

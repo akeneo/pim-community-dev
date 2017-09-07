@@ -53,7 +53,7 @@ define(
                     if (null !== this.currentView) {
                         this.currentViewType = 'project' === this.currentView.type ? 'project' : 'view';
                     } else {
-                        return ViewSelector.prototype.initializeViewTypes.apply(this, arguments);
+                        ViewSelector.prototype.initializeViewTypes.apply(this, arguments);
                     }
                 }
             },
@@ -147,12 +147,12 @@ define(
             postFetchDatagridView: function (view) {
                 if ('project' === view.type) {
                     return FetcherRegistry.getFetcher('project')
-                        .fetch(view.label).then(function (project) {
+                        .fetch(view.label).then((project) => {
                             view.text = project.label;
                             this.trigger('grid:view-selector:project-selected', project);
 
                             return view;
-                        }.bind(this));
+                        });
                 }
 
                 return ViewSelector.prototype.postFetchDatagridView.apply(this, arguments);

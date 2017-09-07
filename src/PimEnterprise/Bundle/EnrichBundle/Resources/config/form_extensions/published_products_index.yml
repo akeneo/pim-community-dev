@@ -18,9 +18,11 @@ extensions:
           navigationTitle: pimee_enrich.entity.product.navigation
 
     pimee-published-product-index-column-inner:
-        module: pim/grid/column-inner
+        module: pim/common/simple-view
         parent: pimee-published-product-index-left-column
         targetZone: navigation
+        config:
+            template: pim/template/product/grid/column-inner
 
     pimee-product-index-category-switcher:
         module: pim/grid/category-switcher

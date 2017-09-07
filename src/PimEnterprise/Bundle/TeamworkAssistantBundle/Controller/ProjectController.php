@@ -221,6 +221,7 @@ class ProjectController
         $options = ['limit' => 20, 'page' => 1, 'completeness' => '1'];
         $options = array_merge($options, $request->query->get('options', []));
         $contributor = $this->tokenStorage->getToken()->getUser()->getUsername();
+        $computeCompleteness = boolval($options['completeness']);
 
         $projects = $this->projectRepository->findBySearch(
             $request->query->get('search'),
@@ -232,13 +233,12 @@ class ProjectController
         );
 
         $normalizedProjects = [];
-
         foreach ($projects as $project) {
             $normalizedProject = $this->projectNormalizer->normalize($project, 'internal_api');
 
             /* For scalability reasons, the completeness is not attached to the normalizer. Indeed, the computing of a
              * completeness can be very time consuming. */
-            if ('1' === $options['completeness']) {
+            if ($computeCompleteness) {
                 $normalizedProject['completeness'] = $this->projectCompletenessNormalizer->normalize(
                     $this->projectCompletenessRepository->getProjectCompleteness(
                         $project,
@@ -320,7 +320,7 @@ class ProjectController
      *
      * @Template("PimEnterpriseTeamworkAssistantBundle:Project:filter-grid.html.twig")
      *
-     * @return array|RedirectResponse
+     * @return array|RedirectResponse|JsonResponse
      */
     public function showAction($identifier, $status)
     {

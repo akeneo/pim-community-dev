@@ -41,7 +41,7 @@ config:
         teamwork-assistant/grid/view-selector/create-project: pimenterpriseteamworkassistant/js/grid/view-selector-create-project
         teamwork-assistant/grid/view-selector/edit-project: pimenterpriseteamworkassistant/js/grid/view-selector-edit-project
         teamwork-assistant/grid/view-selector/remove-project: pimenterpriseteamworkassistant/js/grid/view-selector-remove-project
-        teamwork-assistant/grid/view-selector/project-resume: pimenterpriseteamworkassistant/js/grid/view-selector-project-resume
+        teamwork-assistant/grid/view-selector/project-status: pimenterpriseteamworkassistant/js/grid/view-selector-project-status
 
         # Savers
         teamwork-assistant/saver/project: pimenterpriseteamworkassistant/js/saver/project-saver
@@ -56,7 +56,7 @@ config:
         teamwork-assistant/templates/grid/view-selector/create-project: pimenterpriseteamworkassistant/templates/grid/view-selector-create-project.html
         teamwork-assistant/templates/grid/view-selector/edit-project: pimenterpriseteamworkassistant/templates/grid/view-selector-edit-project.html
         teamwork-assistant/templates/grid/view-selector/remove-project: pimenterpriseteamworkassistant/templates/grid/view-selector-remove-project.html
-        teamwork-assistant/templates/grid/view-selector/project-resume: pimenterpriseteamworkassistant/templates/grid/view-selector-project-resume.html
+        teamwork-assistant/templates/grid/view-selector/project-status: pimenterpriseteamworkassistant/templates/grid/view-selector-project-status.html
         teamwork-assistant/templates/grid/view-selector/current: pimenterpriseteamworkassistant/templates/grid/view-selector-current.html
         teamwork-assistant/templates/widget/project-widget: pimenterpriseteamworkassistant/templates/widget/project-widget.html
         teamwork-assistant/templates/widget/project-widget-empty: pimenterpriseteamworkassistant/templates/widget/project-widget-empty.html

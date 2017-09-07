@@ -11,7 +11,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'teamwork-assistant/templates/grid/view-selector/project-resume',
+        'teamwork-assistant/templates/grid/view-selector/project-status',
         'pim/formatter/date',
         'pim/date-context'
     ],
@@ -32,12 +32,8 @@ define(
             /**
              * {@inheritdoc}
              */
-            configure (gridAlias) {
+            configure(gridAlias) {
                 this.gridAlias = gridAlias;
-
-                if (_.has(__moduleConfig, 'forwarded-events')) {
-                    this.forwardMediatorEvents(__moduleConfig['forwarded-events']);
-                }
 
                 this.listenTo(this.getRoot(), 'grid:view-selector:project-selected', this.updateProject.bind(this));
             },
@@ -71,6 +67,11 @@ define(
                 }
             },
 
+            /**
+             * Get the badge class from the current completeness
+             *
+             * @returns {String}
+             */
             getBadgeClass() {
                 if (this.completeness <= 0) {
                     return 'AknBadge--invalid';
