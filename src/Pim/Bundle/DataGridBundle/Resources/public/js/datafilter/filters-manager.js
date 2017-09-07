@@ -93,6 +93,7 @@ define(
          * @param {Boolean} [options.displayManageFilters]
          */
         initialize: function (options) {
+            console.log('filters-manager', options)
             if (options.filters) {
                 this.filters = options.filters;
             }

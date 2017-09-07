@@ -12,10 +12,15 @@ extensions:
             tab: pim-menu-settings
             item: pim-menu-settings-locale
 
-    pim-locale-index-filters:
-        module: oro/datafilter-builder
+    pim-locale-index-filters-list:
+        module: oro/datafilter/filters-list
         parent: pim-locale-index
-        targetZone: content
+        targetZone: filters
+
+    pim-locale-index-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-locale-index
+        targetZone: filters
 
     pim-locale-index-grid:
         module: pim/form/common/index/grid

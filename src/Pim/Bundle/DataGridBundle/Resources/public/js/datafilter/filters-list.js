@@ -2,8 +2,8 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'],
     function (_, BaseForm, mediator, tools) {
 
         return BaseForm.extend({
+            options: {},
             filters: [],
-            filterModules: [],
             className: 'AknFilterBox--list',
 
             config: {
@@ -73,7 +73,6 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'],
                     );
                 });
             },
-
 
             render() {
                 _.each(this.filters, function (filter) {

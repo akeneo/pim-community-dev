@@ -12,13 +12,13 @@ extensions:
             tab: pim-menu-system
             item: pim-menu-system-api-connection
 
-    pim-api-connection-index-filters-manage:
-        module: oro/datafilter-builder
+    pim-api-connection-index-filters-list:
+        module: oro/datafilter/filters-list
         parent: pim-api-connection-index
         targetZone: filters
 
-    pim-api-connection-index-filters-list:
-        module: oro/datafilter/filters-list
+    pim-api-connection-index-filters-manage:
+        module: oro/datafilter/filters-button
         parent: pim-api-connection-index
         targetZone: filters
 

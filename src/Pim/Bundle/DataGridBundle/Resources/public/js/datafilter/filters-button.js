@@ -3,10 +3,10 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/datafilter/collection-fil
 
         return BaseForm.extend({
             render() {
+                console.log('render filters-button')
                 mediator.once('datagrid_filters:loaded', options => {
                     var filtersList = new FiltersManager(options);
                     this.$el.append(filtersList.render().$el);
-
                     mediator.trigger('datagrid_filters:build.post', filtersList);
                 });
             }
