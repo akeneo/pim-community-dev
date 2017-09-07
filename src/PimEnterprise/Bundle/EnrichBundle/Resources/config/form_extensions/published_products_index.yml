@@ -22,8 +22,8 @@ extensions:
         parent: pimee-published-product-index-left-column
         targetZone: navigation
 
-    pimee-product-index-column-category:
-        module: pim/grid/column-category
+    pimee-product-index-category-switcher:
+        module: pim/grid/category-switcher
         parent: pimee-published-product-index-column-inner
         targetZone: column-context-switcher
 
