@@ -19,8 +19,7 @@ function(_, FiltersManager) {
          * @param {Object} [options.filters]
          * @param {String} [options.addButtonHint]
          */
-        initialize: function(options)
-        {
+        initialize: function(options) {
             this.collection = options.collection;
 
             this.collection.on('beforeFetch', this._beforeCollectionFetch, this);

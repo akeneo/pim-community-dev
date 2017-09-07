@@ -53,30 +53,6 @@ define(
         },
 
         /**
-         * Displays the filters as column or not
-         *
-         * @property
-         */
-        filtersAsColumn: function() {
-            return _.result(this.options, 'filtersAsColumn', false);
-        },
-
-        /**
-         * Container classes
-         *
-         * @property
-         */
-        className: function () {
-            var name = '';
-            // AknFilterBox filter-box oro-clearfix-width
-            if (true !== this.filtersAsColumn()) {
-                name += ' AknFilterBox--search';
-            }
-
-            return name;
-        },
-
-        /**
          * Filter list template
          *
          * @property

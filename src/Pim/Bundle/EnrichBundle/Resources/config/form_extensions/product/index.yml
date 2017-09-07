@@ -57,17 +57,17 @@ extensions:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
-    pim-product-index-grid-filters-manage:
-        module: oro/datafilter-builder
-        parent: pim-product-index
-        targetZone: filters
-        config:
-            className: datafilter-builder
-
     pim-product-index-grid-filters-list:
         module: oro/datafilter/filters-list
         parent: pim-product-index
         targetZone: filters
+
+    pim-product-index-grid-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-product-index
+        targetZone: filters
+        config:
+            className: datafilter-builder
 
     pim-product-index-grid:
         module: pim/grid/table
