@@ -93,9 +93,11 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
 
         $productModel->getProductModels()->willReturn($productModels);
         $productModels->isEmpty()->willReturn(false);
+        $productModel->getCode()->willReturn('product_model');
 
         $context->buildViolation(VariantProductParent::INVALID_PARENT, [
             '%variant_product%' => 'variant_product',
+            '%product_model%' => 'product_model',
         ])->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
