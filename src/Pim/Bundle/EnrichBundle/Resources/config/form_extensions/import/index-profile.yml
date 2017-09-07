@@ -11,8 +11,13 @@ extensions:
         config:
             tab: pim-menu-imports
 
-    pim-import-profile-index-filters:
+    pim-import-profile-index-filters-manage:
         module: oro/datafilter-builder
+        parent: pim-import-profile-index
+        targetZone: content
+
+    pim-import-profile-index-filters-list:
+        module: oro/datafilter/filters-list
         parent: pim-import-profile-index
         targetZone: content
 

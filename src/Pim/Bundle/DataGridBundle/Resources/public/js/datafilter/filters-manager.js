@@ -68,6 +68,7 @@ define(
          */
         className: function () {
             var name = '';
+            // AknFilterBox filter-box oro-clearfix-width
             if (true !== this.filtersAsColumn()) {
                 name += ' AknFilterBox--search';
             }
@@ -277,7 +278,19 @@ define(
          */
         render: function () {
             this.$el.empty();
-            mediator.trigger('datagrid_filters:loaded', this.filters);
+            // var fragment = document.createDocumentFragment();
+
+            // _.each(this.filters, function (filter) {
+            //     if (!filter.enabled) {
+            //         filter.hide();
+            //     }
+            //     if (filter.enabled) {
+            //         filter.render();
+            //     }
+            //     if (filter.$el.length > 0) {
+            //         fragment.appendChild(filter.$el.get(0));
+            //     }
+            // }, this);
 
             this.trigger('rendered');
 
@@ -292,6 +305,7 @@ define(
                         }
                     ));
                 }
+                // this.$el.append(fragment);
                 this._initializeSelectWidget();
             }
 

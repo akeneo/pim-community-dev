@@ -3,16 +3,14 @@ define(['underscore', 'pim/form', 'oro/mediator'],
 
         return BaseForm.extend({
             filters: [],
-            className: 'filters-list',
 
             initialize() {
-                mediator.once('datagrid_filters:loaded', this.filtersUpdated.bind(this));
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
+                mediator.once('datagrid_filters:rendered', (grid, filters) => {
+                    this.filters = filters;
+                    this.render();
+                });
 
-            filtersUpdated(filters) {
-                this.filters = filters;
-                this.render();
+                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             render() {

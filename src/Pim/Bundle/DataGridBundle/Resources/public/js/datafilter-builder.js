@@ -28,6 +28,8 @@ define(
                 }
             },
 
+            className: 'datafilter-builder',
+
             /**
              * {@inheritdoc}
              */
@@ -94,7 +96,8 @@ define(
                 var filtersList = new FiltersManager(options);
                 this.$el.append(filtersList.render().$el);
 
-                mediator.trigger('datagrid_filters:rendered', this.collection);
+                mediator.trigger('datagrid_filters:rendered', this.collection, filtersList.filters);
+
                 if (this.collection.length === 0) {
                     filtersList.$el.hide();
                 }

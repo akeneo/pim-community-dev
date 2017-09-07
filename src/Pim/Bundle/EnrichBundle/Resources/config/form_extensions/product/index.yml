@@ -61,6 +61,8 @@ extensions:
         module: oro/datafilter-builder
         parent: pim-product-index
         targetZone: filters
+        config:
+            className: datafilter-builder
 
     pim-product-index-grid-filters-list:
         module: oro/datafilter/filters-list
