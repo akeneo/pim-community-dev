@@ -31,6 +31,6 @@ Feature: Show localized attributes in compare mode
     And I open the comparison panel
     And I switch the comparison locale to "fr_FR"
     And I switch the comparison scope to "ecommerce"
-    Then the decimal_price comparison value should be "10,12"
-    And the decimal_number comparison value should be "12,1234"
-    And the decimal_metric comparison value should be "10,3456 Centimètre"
+    Then the [decimal_price] comparison value should be "10,12"
+    And the [decimal_number] comparison value should be "12,1234"
+    And the [decimal_metric] comparison value should be "10,3456 Centimètre"

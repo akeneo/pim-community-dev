@@ -1,0 +1,53 @@
+pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Kod
+      condition.label: Villkor
+      action.label: Åtgärd
+      no_rule_yet.label: Ingen regel för nu
+  rule:
+    condition:
+      if.label: om
+    action:
+      then.label: sedan
+      set_value.label: är satt i
+      copy_value.label: kopieras till
+      set.label: är satt i
+      copy.label: kopieras till
+      add.label: läggs till i
+      remove.label: tas bort från
+  datagrid:
+    rule-grid:
+      actions:
+        execute:
+          confirm_title: Utföra bekräftelse
+          confirm_content: Är du säker på att du vill köra regeln?
+          confirm_ok: OK
+      mass_edit_action:
+        confirm_title: Beräkning bekräftelse
+        confirm_content: Är du säker på att du vill beräkna de påverkade produkterna för regler?
+        confirm_ok: OK
+      mass_action:
+        execute:
+          confirm_ok: OK
+          confirm_title: Utföra bekräftelse
+          confirm_content: Är du säker du vill köra de valda reglerna?
+          success: Bulk åtgärden för att verkställa de valda reglerna har lanserats. Du meddelas när det är gjort
+          error: Ett fel uppstod under körningen av reglerna.
+          empty_selection: Inga regler som valts.
+        delete:
+          confirm_ok: OK
+          confirm_title: Bekräfta borttagning
+          confirm_content: Är du säker på att du vill ta bort de valda reglerna?
+          success: Du lyckades ta bort reglerna.
+          error: Ett fel uppstod vid borttagning av reglerna.
+          empty_selection: Inga regler har valts.
+confirmation:
+  remove:
+    rule: Är du säker du vill ta bort denna regel? Det går inte att ångra åtgärden
+flash:
+  rule:
+    removed: Rollen har tagits bort
+    impacted_product_count: Massåtgärd för att beräkna de påverkade produkterna för regler har lanserats. Du meddelas när det är gjort.
+    executed: Regelkörning har lanserats. Du meddelas när det är gjort.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regler inställningar

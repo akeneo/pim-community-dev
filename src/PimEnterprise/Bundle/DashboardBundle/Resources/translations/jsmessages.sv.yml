@@ -1,0 +1,8 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      date: Datum
+      author: Författare
+      product: Produkt
+      review: Granska
+      empty: Inga förslag att granska

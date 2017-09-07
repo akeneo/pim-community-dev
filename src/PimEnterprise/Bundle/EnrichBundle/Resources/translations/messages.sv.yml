@@ -1,0 +1,197 @@
+pim_title.locale:
+  edit: "Språk %locale.code% | Redigera"
+Permissions: Behörigheter
+pane.accordion.permissions: Behörigheter
+attribute group.permissions:
+  view.label: Tillåtet för att visa attribut
+  view.help: Tillåt för att Visa produkterna i detta attributgrupp
+  edit.label: Får redigera attribut
+  edit.help: Tillåt för att Visa produkterna i detta attributgrupp
+  no_access_to_attributes: Du har inte tillgång till några attribut av denna produkt. Kontakta din administratör.
+category.permissions:
+  view.label: Tillåtet för att Visa produkter
+  view.help: Tillåt för att Visa produkter i denna kategori
+  edit.label: Får redigera produkter
+  edit.help: Tillåt för att redigera produkter i denna kategori (innebär behörigheten Visa)
+  own.label: Tillåtet att äga produkter
+  own.help: Tillåtet att granska, publicera, avpublicera, klassificera, associera produkter i denna kategori (innebär behörigheten redigera)
+  no_access_to_products: Du har inte tillgång till produkter i något träd, kontakta administratören
+  apply_on_children.label: Tillämpa ändringar på elementen
+  apply_on_children.help: Kopiera behörigheter ändringarna på alla elementen, befintliga behörigheter för element hålls
+locale.permissions:
+  view.label: Tillåtet att Visa produktinformation
+  view.help: Tillåt för att se produktinformationen i detta språk
+  edit.label: Får redigera produktinformation
+  edit.help: Tillåt för att redigera produktinformationen i detta locale (innebär behörigheten Visa)
+  no_access_to_products: Du har inte tillgång till produktdata i någon av de aktiverade språk, kontakta administratören
+btn:
+  save working copy: Spara arbetskopian
+  save draft: Spara utkast
+  save working copy and next: Spara arbetskopian och nästa
+  save draft and next: Spara utkast och nästa
+  save working copy and finish: Spara arbetskopian och avsluta
+  save draft and finish: Spara utkast och finish
+  send for approval: Skicka för godkännande
+  sent for approval: Skickat för godkännande
+pim_enrich:
+  mass_edit_action:
+    product:
+      not_editable: Du har inte behörighet att redigera produkterna "%identifiers%".
+      page_title: Produkter
+      page_subtitle: Massredigera (1 produkt) | Massredigera (%count% produkter)
+      title: Välj åtgärd
+      subtitle: Välj den funktion som du vill utföra på den valda produkten | Välj den funktion som du vill utföra på de valda %count% produkterna
+      confirm: Du håller på att uppdatera en produkt med följande information, bekräfta. | Du håller på att uppdatera %count% produkter med följande information, bekräfta.
+      steps:
+        first: Välj produkter
+        second: Välj åtgärd
+        third: Konfigurera
+        fourth: Bekräfta
+    publish:
+      label: Publicera produkt
+      description: Publicera de utvalda produkterna, aktuella publicerade data kommer att raderas av nuvarande arbetskopian.
+      success_flash: Utvalda produkter har publicerats framgångsrikt.
+      launched_flash: Jobbet publicera produkt(er) körs för närvarande.
+      message:
+        error: Du är inte ägaren av produkten, du kan inte publicera den.
+        warning: Du inte är ägare till alla valda produkter. Du kan inte publicera produkterna "%notGranted%".
+        info: '%nbProducts% utvalda produkter kommer att publiceras.'
+      not_editable: Du har inte behörighet att redigera produkterna "%identifiers%".
+    unpublish:
+      label: Avpublicera produkter
+      description: Avpublicera de utvalda produkterna, aktuella publicerade data kommer att raderas.
+      success_flash: Utvalda produkter har publicerats framgångsrikt.
+      launched_flash: Jobbet avpublicera produkt(er) körs för närvarande.
+      message:
+        error: Du är inte ägaren av produkten, du kan inte avpublicera den.
+        warning: Du inte är ägare till alla valda produkter. Du kan inte publicera produkterna "%notGranted%".
+        info: '%nbProducts% utvalda produkter kommer att avpubliceras.'
+      not_editable: Du har inte behörighet att redigera produkterna "%identifiers%".
+    classify:
+      message:
+        error: Du är inte ägaren av produkten, du kan inte klassificera det.
+        warning: Du inte är ägare till alla valda produkter. Du kan inte publicera produkterna "%notGranted%".
+    edit_common_attributes:
+      message:
+        error: Du är inte ägaren av produkten, du kan inte redigera den.
+flash.product.updated: Produkten arbetskopia har uppdaterats
+flash.product_draft.updated: Utkastet har sparats
+flash.locale.updated: De nationella inställningar och behörigheter har uppdaterats
+pimee_enrich:
+  attribute_group:
+    tab:
+      permission.title: Behörigheter
+  product:
+    tab:
+      proposal.title: Förslag
+  category:
+    tab:
+      permission.title: Behörigheter
+  locale:
+    tab:
+      permission.title: Behörigheter
+  channel:
+    tab:
+      asset_transformation.title: Tillgångs transformationer
+  acl.product_ownership.title: Ägande
+  attributes:
+    empty: ingen
+  groups:
+    label: Ägargrupper
+    empty: ingen
+  asset_transformation:
+    not_found: Ingen transformation hittades
+    title:
+      transformation: Omvandling
+      options: Alternativ
+    colorspace:
+      title: Färgrymd
+      options:
+        colorspace: '%value% färgrymd'
+    resize:
+      title: Ändra storlek
+      options:
+        width: '%value%px bredd'
+        height: '%value%px höjd'
+    resolution:
+      title: Upplösning
+      options:
+        resolution: '%value%'
+        resolution-unit: '%value%'
+    scale:
+      title: Skala
+      options:
+        width: '%value%px bredd'
+        height: '%value%px höjd'
+        ratio: baserat på %value%%
+    thumbnail:
+      title: Miniatyrbild
+      options:
+        width: '%value%px bredd'
+        height: '%value%px höjd'
+add_product_value_with_permission_and_rules:
+  steps.perform: Lägg till produkt värde
+update_product_value_with_permission_and_rules:
+  steps.perform: Uppdatera produktens värde
+edit_common_attributes_with_permission_and_rules:
+  steps.perform: Redigera vanliga attribut(er)
+  steps.edit_common_attributes_processor.title: Redigera vanliga attribut(er)
+batch_jobs:
+  yml_asset_channel_configuration_import:
+    import:
+      label: Kanal tillgångar importera konfiguration
+  add_product_value_with_permission_and_rules:
+    label: Lägg till produkt värde med behörighet kontrollera & regler ansökan
+    perform.label: Lägga till produktens värde
+    execute_rules.label: Regler utförande
+  update_product_value_with_permission_and_rules:
+    label: Uppdatera produkt värde med behörighet kontrollera & regler ansökan
+    perform.label: Uppdatera produktens värde
+    execute_rules.label: Regler utföranden
+  remove_product_value_with_permission_and_rules:
+    label: Ta bort produktvärde med tillstånd kontrollera & regler ansökan
+    perform.label: Ta bort produktvärde
+    execute_rules.label: Regler utföranden
+  edit_common_attributes_with_permission_and_rules:
+    label: Redigera vanliga attribut med tillstånd kontrollera & reglera ansökan
+    perform.label: Redigera vanliga attribut(er)
+    execute_rules.label: Regler utförande
+    cleaner.label: Rensa temporära filer
+  add_to_variant_group_with_rules:
+    label: Lägg till produkter i variantgrupp med regler
+    perform.label: Lägg till produkten i en variantgrupp
+    execute_rules.label: Regler utföranden
+  csv_published_product_quick_export:
+    export.label: CSV publicerade produkter snabb export
+    perform:
+      label: CSV publicerade produkter snabb export
+  csv_published_product_grid_context_quick_export:
+    export.label: CSV publicerade produkter rutnät sammanhang snabb export
+    perform:
+      label: CSV publicerade produkter rutnät sammanhang snabb export
+  xlsx_published_product_quick_export:
+    export.label: XLSX publicerade produkter snabb export
+    perform:
+      label: XLSX publicerade produkter snabb export
+  xlsx_published_product_grid_context_quick_export:
+    export.label: XLSX publicerade produkter rutnät sammanhang snabb export
+    perform:
+      label: XLSX publicerade produkter rutnät sammanhang snabb export
+add_to_variant_group_with_rules:
+  steps.perform: Lägg till produkten i en variantgrupp
+  steps.excluded.title: Utesluten produkt
+  steps.duplicated.title: Duplicerade Axlar
+edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Redigera vanliga attribut(er)
+add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Lägg till produktvärde med tillstånd
+update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Uppdatera produktens värde med tillstånd
+remove_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Ta bort produktvärde med tillstånd
+edit_common_attributes_with_permission: Redigera vanliga attribut med tillstånd
+edit_common_attributes_with_permission.steps.edit_common_attributes_processor.title: Redigera vanliga attribut med tillstånd
+job_execution.summary:
+  mass_published: Produkten publiceras
+  mass_unpublished: Produkt opublicerad
+  proposal: Förslaget skapat
+  proposal_deleted: raderad
+pim_assets_collection: Tillgångar kollektion
+pim_enrich_attribute_form:
+  isReadOnly: Endast läsning
