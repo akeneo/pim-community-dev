@@ -113,7 +113,10 @@ class ProductModelUpdater implements ObjectUpdaterInterface
         if (null === $productModel->getFamilyVariant() &&
             (!isset($data['family_variant']) || '' === $data['family_variant'])
         ) {
-            $productModel->setFamilyVariant($productModel->getParent()->getFamilyVariant());
+            $parent = $productModel->getParent();
+            if (null !== $parent) {
+                $productModel->setFamilyVariant($parent->getFamilyVariant());
+            }
         }
     }
 
@@ -170,6 +173,10 @@ class ProductModelUpdater implements ObjectUpdaterInterface
      */
     private function updateFamilyVariant(ProductModelInterface $productModel, string $familyVariantCode): void
     {
+        if (empty($familyVariantCode) && null !== $productModel->getFamilyVariant()) {
+            return;
+        }
+
         if (null !== $productModel->getFamilyVariant() &&
             $familyVariantCode !== $productModel->getFamilyVariant()->getCode()
         ) {

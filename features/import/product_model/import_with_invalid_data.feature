@@ -20,27 +20,38 @@ Feature: Skip invalid product models through CSV
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
-    Then I should see the text "skipped 2"
+    Then I should see the text "Status: Completed"
+    And I should see the text "skipped 2"
     And I should see the text "The product model code must not be empty"
     And I should see the text "Property \"family_variant\" expects a valid family variant code. The family variant does not exist, \"\" given"
+    And the invalid data file of "csv_catalog_modeling_product_model_import" should contain:
+      """
+      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
+      code-001;;;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
+      ;;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
+      """
 
-  Scenario: Skip a product model if a code, a parent and a family variant are not defined
+  Scenario: Skip a product model if a code or a parent are not defined
     Given the following CSV file to import:
       """
       code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
       code-001;;clothing_color_size;master_men;Spring2017;description;Blazers_1654;100 EUR;;;;;;;
       ;code-001;clothing_color_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
-      code-003;code-001;;master_men_blazers;;;;;blue;Blazers;composition;;;;
       """
     And the following job "csv_catalog_modeling_product_model_import" configuration:
       | filePath | %file to import% |
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
-    Then I should see the text "created 1"
-    Then I should see the text "skipped 2"
+    Then I should see the text "Status: Completed"
+    And I should see the text "created 1"
+    And I should see the text "skipped 1"
     And I should see the text "The product model code must not be empty"
-    And I should see the text "Property \"family_variant\" expects a valid family variant code. The family variant does not exist, \"\" given"
+    And the invalid data file of "csv_catalog_modeling_product_model_import" should contain:
+      """
+      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
+      ;code-001;clothing_color_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
+      """
 
   Scenario: Skip a product model if the parent does not exist or is not a root product model
     Given the following root product model "code-001" with the variant family clothing_color_size
@@ -56,8 +67,15 @@ Feature: Skip invalid product models through CSV
     When I am on the "csv_catalog_modeling_product_model_import" import job page
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_model_import" job to finish
+    Then I should see the text "Status: Completed"
     And I should see the text "The product model \"code-003\" cannot have the product model \"code-002\" as parent"
     And I should see the text "Property \"parent\" expects a valid parent code. The product model does not exist, \"code-005\" given"
+    And the invalid data file of "csv_catalog_modeling_product_model_import" should contain:
+      """
+      code;parent;family_variant;categories;collection;description-en_US-ecommerce;erp_name-en_US;price;color;variation_name-en_US;composition;size;ean;sku;weight
+      code-003;code-002;clothing_color_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
+      code-004;code-005;clothing_color_size;master_men_blazers;;;;;blue;Blazers;composition;;;;
+      """
 
   Scenario: A root product model cannot have a parent
     Given the following root product models:
