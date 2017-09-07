@@ -15,7 +15,6 @@ class DBDataCollectorSpec extends ObjectBehavior
     function let(
         ChannelRepositoryInterface $channelRepository,
         ProductRepositoryInterface $productRepository,
-        AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
         FamilyRepositoryInterface $familyRepository,
         UserRepositoryInterface $userRepository
@@ -23,7 +22,6 @@ class DBDataCollectorSpec extends ObjectBehavior
         $this->beConstructedWith(
             $channelRepository,
             $productRepository,
-            $attributeRepository,
             $localeRepository,
             $familyRepository,
             $userRepository
@@ -39,14 +37,12 @@ class DBDataCollectorSpec extends ObjectBehavior
     function it_collects_database_statistics(
         $channelRepository,
         $productRepository,
-        $attributeRepository,
         $localeRepository,
         $familyRepository,
         $userRepository
     ) {
         $channelRepository->countAll()->willReturn(3);
         $productRepository->countAll()->willReturn(1121);
-        $attributeRepository->countAll()->willReturn(55);
         $localeRepository->countAllActivated()->willReturn(3);
         $familyRepository->countAll()->willReturn(14);
         $userRepository->countAll()->willReturn(5);
@@ -56,7 +52,6 @@ class DBDataCollectorSpec extends ObjectBehavior
                 "nb_channels"   => 3,
                 "nb_locales"    => 3,
                 "nb_products"   => 1121,
-                "nb_attributes" => 55,
                 "nb_families"   => 14,
                 "nb_users"      => 5,
             ]

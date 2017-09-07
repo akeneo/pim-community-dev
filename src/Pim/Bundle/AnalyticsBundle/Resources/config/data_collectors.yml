@@ -7,6 +7,7 @@ parameters:
     pim_analytics.data_collector.database.class:         Pim\Bundle\AnalyticsBundle\DataCollector\DBDataCollector
     pim_analytics.data_collector.bundles.class:          Pim\Bundle\AnalyticsBundle\DataCollector\BundlesDataCollector
     pim_analytics.data_collector.storage.class:          Pim\Bundle\AnalyticsBundle\DataCollector\StorageDataCollector
+    pim_analytics.data_collector.attribute.class:        Pim\Bundle\AnalyticsBundle\DataCollector\AttributeDataCollector
 
 services:
     pim_analytics.data_collector.chained:
@@ -42,12 +43,21 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.family'
             - '@pim_user.repository.user'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
+            - { name: pim_analytics.data_collector, type: system_info_report }
+
+    pim_analytics.data_collector.attribute:
+        class: '%pim_analytics.data_collector.attribute.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - '@pim_analytics.query.count_localizable_attribute'
+            - '@pim_analytics.query.count_scopable_attribute'
+            - '@pim_analytics.query.count_localizable_scopable_attribute'
+        tags:
             - { name: pim_analytics.data_collector, type: system_info_report }
 
     pim_analytics.data_collector.operating_system:
