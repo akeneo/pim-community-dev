@@ -3,9 +3,9 @@
 namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Repository\EntityWithVariantFamilyRepositoryInterface;
+use Pim\Component\Catalog\Repository\EntityWithFamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -23,7 +23,7 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
     /** @var EntityWithFamilyVariantAttributesProvider */
     private $axesProvider;
 
-    /** @var EntityWithVariantFamilyRepositoryInterface */
+    /** @var EntityWithFamilyVariantRepositoryInterface */
     private $repository;
 
     /** @var UniqueAxesCombinationSet */
@@ -31,12 +31,12 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
 
     /**
      * @param EntityWithFamilyVariantAttributesProvider  $axesProvider
-     * @param EntityWithVariantFamilyRepositoryInterface $repository
+     * @param EntityWithFamilyVariantRepositoryInterface $repository
      * @param UniqueAxesCombinationSet                   $uniqueAxesCombinationSet
      */
     public function __construct(
         EntityWithFamilyVariantAttributesProvider $axesProvider,
-        EntityWithVariantFamilyRepositoryInterface $repository,
+        EntityWithFamilyVariantRepositoryInterface $repository,
         UniqueAxesCombinationSet $uniqueAxesCombinationSet
     ) {
         $this->axesProvider = $axesProvider;
@@ -88,12 +88,12 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
      *
      * This allows use to compare multiple combinations, to look for a potential duplicate.
      *
-     * @param EntityWithValuesInterface $entityWithValues
-     * @param array                     $axes
+     * @param EntityWithFamilyVariantInterface $entityWithValues
+     * @param AttributeInterface[]             $axes
      *
      * @return string
      */
-    private function buildAxesCombination(EntityWithValuesInterface $entityWithValues, array $axes): string
+    private function buildAxesCombination(EntityWithFamilyVariantInterface $entityWithValues, array $axes): string
     {
         $combination = [];
 
@@ -114,7 +114,7 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
     /**
      * This method returns TRUE if there is a duplicate value in siblings of $entity in database, FALSE otherwise
      *
-     * @param $entity
+     * @param EntityWithFamilyVariantInterface $entity
      *
      * @return bool
      */

@@ -26,7 +26,7 @@ Pim\Component\Catalog\Model\FamilyVariant:
         variantAttributeSets:
             targetEntity: Pim\Component\Catalog\Model\VariantAttributeSetInterface
             joinTable:
-                name: pim_catalog_variant_family_has_variant_attribute_sets
+                name: pim_catalog_family_variant_has_variant_attribute_sets
                 joinColumns:
                     family_variant_id:
                         referencedColumnName: id
