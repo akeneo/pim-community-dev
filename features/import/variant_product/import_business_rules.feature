@@ -86,3 +86,26 @@ Feature: Import variant products
       apollon_blue;clothing;master_men;12345;apollon_blue_medium;100;GRAM;
       apollon_blue;clothing;master_men;67890;apollon_blue_large;100;GRAM;
       """
+
+  Scenario: Successfully skip a non variant product when we try to set a parent
+    Given the following product:
+      | sku             |
+      | regular_product |
+    And the following CSV file to import:
+      """
+      parent;family;categories;ean;sku;weight;weight-unit;size
+      apollon_blue;clothing;master_men;EAN;regular_product;100;GRAM;m
+      """
+    And the following job "csv_default_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_default_product_import" import job page
+    And I launch the import job
+    And I wait for the "csv_default_product_import" job to finish
+    Then I should see the text "Status: Completed"
+    And I should see the text "skipped 1"
+    And I should see the text "Product \"regular_product\" cannot have a parent as it is not a variant product."
+    And the invalid data file of "csv_default_product_import" should contain:
+      """
+      parent;family;categories;ean;sku;weight;weight-unit;size
+      apollon_blue;clothing;master_men;EAN;regular_product;100;GRAM;m
+      """
