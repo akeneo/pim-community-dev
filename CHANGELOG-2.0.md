@@ -2,8 +2,12 @@
 
 ## Bug Fixes
 
-- GITHUB-6824: Update gitignore for web-server-bundle, cheers @xElysioN!
 - GITHUB-6866: fix the QueryProductCommand, cheers @LeoBenoist!
+
+## Tech improvements
+
+- GITHUB-6639: Fix Job throwing exception, cheers @dnd-tyler!
+- GITHUB-6824: Update gitignore for web-server-bundle, cheers @xElysioN!
 
 # 2.0.0 (2017-09-28)
 
