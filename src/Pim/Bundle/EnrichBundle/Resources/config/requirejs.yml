@@ -184,6 +184,7 @@ config:
                         urls:
                             list: pim_enrich_category_rest_list
                             get: pim_enrich_category_rest_get
+                            search: pim_enrich_category_rest_search
                 job-instance-export:
                     module: pim/base-fetcher
                     options:

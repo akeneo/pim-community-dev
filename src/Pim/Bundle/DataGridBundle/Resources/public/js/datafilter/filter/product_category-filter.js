@@ -34,7 +34,7 @@ define(
             /**
              * @inheritDoc
              */
-            initialize: function(urlParams, gridName, categoryBaseRoute, container) {
+            initialize: function(urlParams, gridName, categoryBaseRoute, container, updateCallback) {
                 this.$el.remove();
                 this.$el = $(container);
 
@@ -61,6 +61,8 @@ define(
                 mediator.on('grid_action_execute:product-grid:delete', function() {
                     TreeView.refresh();
                 });
+
+                updateCallback(this.value);
 
                 NumberFilter.prototype.initialize.apply(this, arguments);
             },
@@ -124,7 +126,7 @@ define(
              * @inheritDoc
              */
             _triggerUpdate: function () {
-                this.trigger('update');
+                this.trigger('update', this.value);
             },
 
             /**

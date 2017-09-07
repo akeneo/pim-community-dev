@@ -55,12 +55,33 @@ define(
              * Render the category tree extensions when the datagrid is ready
              */
             setupCategoryTree(urlParams) {
-                return new CategoryFilter(
+                const categoryFilter = new CategoryFilter(
                     urlParams,
                     this.config.alias,
                     this.config.categoryTreeName,
-                    '.filter-item'
+                    '.filter-item',
+                    (value) => {
+                        this.valueUpdated(value);
+                    }
                 );
+
+                this.listenTo(categoryFilter, 'update', function (value) {
+                    this.valueUpdated(value);
+                });
+
+                return categoryFilter;
+            },
+
+            /**
+             * Triggers a new event when the value of the category is updated
+             *
+             * @param {Object} value
+             * @param {integer} value.type
+             * @param {integer} value.value.categoryId
+             * @param {integer} value.value.treeId
+             */
+            valueUpdated(value) {
+                this.getRoot().trigger('pim_enrich:form:category_updated', value);
             }
         });
     }
