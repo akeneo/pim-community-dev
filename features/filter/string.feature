@@ -20,5 +20,18 @@ Feature: Filter on string
       | [{"field":"name", "operator":"CONTAINS",         "value": "black",        "locale": "en_US"}] | ["BOOTBXS", "BOOTBS"]            |
       | [{"field":"name", "operator":"DOES NOT CONTAIN", "value": "Boot",         "locale": "en_US"}] | ["BOOTBL"]                       |
       | [{"field":"name", "operator":"=",                "value": "Boot black s", "locale": "en_US"}] | ["BOOTBS"]                       |
-      | [{"field":"name", "operator":"=",                "value": "Mug ",         "locale": "en_US"}] | []                       |
+      | [{"field":"name", "operator":"=",                "value": "Mug ",         "locale": "en_US"}] | []                               |
       | [{"field":"name", "operator":"EMPTY",            "value": null,           "locale": "en_US"}] | ["BOOTRXS"]                      |
+
+  Scenario: Filter string with special character
+    Given a "footwear" catalog configuration
+    And the following products:
+      | sku       | name-en_US |
+      | BOOTBOOT1 | _          |
+      | BOOTBOOT2 | %          |
+    Then I should get the following results for the given filters:
+      | filter                                                                                        | result        |
+      | [{"field":"name", "operator":"DOES NOT CONTAIN", "value": "_", "locale": "en_US"}] | ["BOOTBOOT2"] |
+      | [{"field":"name", "operator":"DOES NOT CONTAIN", "value": "%", "locale": "en_US"}] | ["BOOTBOOT1"] |
+      | [{"field":"name", "operator":"CONTAINS", "value": "_",         "locale": "en_US"}] | ["BOOTBOOT1"] |
+      | [{"field":"name", "operator":"CONTAINS", "value": "%",         "locale": "en_US"}] | ["BOOTBOOT2"] |
