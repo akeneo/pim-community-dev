@@ -1,0 +1,117 @@
+Close: Stäng
+Update: Uppdatera
+Selected Rows: Markerade rader
+"Yes": "Ja"
+"Yes, Delete": "Ja, ta bort"
+"Yes, I Agree": "Ja, jag godkänner"
+"Yes, do it": "Ja, gör det"
+"No": "Nej"
+"Ok, got it.": "Ok, jag förstår."
+"Cancel": "Avbryt"
+"Delete Confirmation": "Bekräfta borttagning"
+"Edit": "Redigera"
+"Unexpected error occured. Please contact system administrator.": "Oväntat fel uppstod. Vänligen kontakta systemadministratören."
+Now: Nu
+Prev: Föregående
+Next: Nästa
+Today: Idag
+Wk: V.
+Done: Slutförd
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Välj tid"
+Time: Tid
+Hour: Timme
+Minute: Minut
+Second: Sekund
+Millisecond: Millisekund
+Microsecond: Mikrosekund
+"Time Zone": "Tidszon"
+Localized value: Språkberoende värde
+Columns: Kolumner
+Datagrid Configuration: Tabellkonfigurering
+Apply: Tillämpa
+Action: Åtgärd
+Unit: Enhet
+Currency: Valuta
+jstree:
+  all: Alla produkter
+  unclassified: Oklassificerade produkter
+  product:
+    all: Alla produkter
+    unclassified: Oklassificerade produkter
+  no_tree: Inga träd är tillgängliga
+  include_sub: Inkludera underkategorier
+  loading: Laddar ...
+datetimepicker:
+  days:
+    Sunday: Söndag
+    Monday: Måndag
+    Tuesday: Tisdag
+    Wednesday: Onsdag
+    Thursday: Torsdag
+    Friday: Fredag
+    Saturday: Lördag
+  daysShort:
+    Sun: Sön
+    Mon: Mån
+    Tue: Tis
+    Wed: Ons
+    Thu: Tor
+    Fri: Fre
+    Sat: Lör
+  daysMin:
+    Su: Sö
+    Mo: Må
+    Tu: Ti
+    We: On
+    Th: To
+    Fr: Fr
+    Sa: Lö
+  months:
+    January: January
+    February: Februrari
+    March: Mars
+    April: April
+    May: Maj
+    June: Juni
+    July: Juli
+    August: Augusti
+    September: September
+    October: Oktober
+    November: November
+    December: December
+  monthsShort:
+    Jan: Jan
+    Feb: Feb
+    Mar: Mar
+    Apr: Apr
+    May: Maj
+    Jun: Jun
+    Jul: Jul
+    Aug: Aug
+    Sep: Sep
+    Oct: Okt
+    Nov: Nov
+    Dec: Dec
+oro_config:
+  form:
+    config:
+      title: Systemkonfiguration
+      tab:
+        system:
+          title: System
+      group:
+        localization:
+          title: Lokalisering
+          system_locale: Spåk
+        notification:
+          title: Notiser
+          system_notification: Ny versionsnotiser
+        loading_message:
+          title: Hämtar meddelanden
+          label: Aktivera hämtning av meddelanden
+        loading_messages:
+          label: Tillgängliga meddelanden att hämta

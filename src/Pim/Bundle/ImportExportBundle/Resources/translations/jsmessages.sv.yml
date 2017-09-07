@@ -1,0 +1,18 @@
+job_execution:
+  summary:
+    display_item: Visa objekt
+    hide_item: Dölj objekt
+pim_connector:
+  export:
+    categories:
+      selector:
+        modal:
+          title: Valda kategorier
+          cancel: Avbryt
+          confirm: Bekräfta
+        label: "{0} alla produkter |{1} en kategori vald |] 1 Inf [{{ count }} kategorier valda"
+        edit: Redigera
+        title: Välj kategorier
+    locales:
+      validation:
+        not_blank: Ett språk måste vara markerad, Välj ett språk att exportera.
