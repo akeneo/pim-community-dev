@@ -64,11 +64,12 @@ Feature: Import variant products
       apollon;clothing;master_men;EAN;apollon_blue_medium;100;GRAM;m
       """
 
-  Scenario: Successfully skip a variant product if there is no value for the variant axes defined in the family variant for the last level
+  Scenario: Successfully skip variant products if there are no values for their variant axes as defined in the family variant
     Given the following CSV file to import:
       """
       parent;family;categories;ean;sku;weight;weight-unit;size
-      apollon_blue;clothing;master_men;EAN;apollon_blue_medium;100;GRAM;
+      apollon_blue;clothing;master_men;12345;apollon_blue_medium;100;GRAM;
+      apollon_blue;clothing;master_men;67890;apollon_blue_large;100;GRAM;
       """
     And the following job "csv_default_product_import" configuration:
       | filePath | %file to import% |
@@ -76,10 +77,12 @@ Feature: Import variant products
     And I launch the import job
     And I wait for the "csv_default_product_import" job to finish
     Then I should see the text "Status: Completed"
-    And I should see the text "skipped 1"
-    And I should see the text "Attribute \"size\" cannot be empty, as it is defined as an axis for this entity: apollon_blue_medium"
+    And I should see the text "skipped 2"
+    And I should not see the text "Cannot set value \"\" for the attribute axis \"size\""
+    But I should see the text "Attribute \"size\" cannot be empty, as it is defined as an axis for this entity: apollon_blue_medium"
     And the invalid data file of "csv_default_product_import" should contain:
       """
       parent;family;categories;ean;sku;weight;weight-unit;size
-      apollon_blue;clothing;master_men;EAN;apollon_blue_medium;100;GRAM;
+      apollon_blue;clothing;master_men;12345;apollon_blue_medium;100;GRAM;
+      apollon_blue;clothing;master_men;67890;apollon_blue_large;100;GRAM;
       """
