@@ -22,8 +22,8 @@ extensions:
         parent: pim-product-index-left-column
         targetZone: navigation
 
-    pim-product-index-column-category:
-        module: pim/grid/column-category
+    pim-product-index-category-switcher:
+        module: pim/grid/category-switcher
         parent: pim-product-index-column-inner
         targetZone: column-context-switcher
 

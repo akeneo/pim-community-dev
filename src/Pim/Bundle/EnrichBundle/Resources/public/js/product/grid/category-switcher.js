@@ -11,7 +11,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'pim/template/product/grid/column-category'
+        'pim/template/product/grid/category-switcher'
     ],
     function(
         $,
@@ -21,9 +21,6 @@ define(
         template
     ) {
         return BaseForm.extend({
-
-            // TODO CHANGE NAME TO CATEGORY SWITCHER
-
             template: _.template(template),
             className: 'AknDropdown AknColumn-block category-switcher',
             events: {
