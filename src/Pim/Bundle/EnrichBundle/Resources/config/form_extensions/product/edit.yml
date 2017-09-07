@@ -8,6 +8,7 @@ extensions:
         targetZone: breadcrumbs
         config:
             tab: pim-menu-products
+            itemPath: identifier
 
     pim-product-edit-form-user-navigation:
         module: pim/menu/user-navigation
