@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
@@ -36,16 +37,26 @@ class ParentFieldSetter extends AbstractFieldSetter
      */
     public function setFieldData($product, $field, $data, array $options = []): void
     {
-        if (!$product instanceof VariantProductInterface) {
+
+        // TODO: To test against "VariantProductInterface" instead of "ProductInterface" in PIM-6791.
+        if (!$product instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(
                 ClassUtils::getClass($product),
                 VariantProductInterface::class
             );
         }
 
+        // TODO: This is to be removed in PIM-6791.
+        if (!$product instanceof VariantProductInterface) {
+            throw InvalidPropertyException::expected(
+                sprintf('Product "%s" cannot have a parent as it is not a variant product.', $product->getIdentifier()),
+                static::class
+            );
+        }
+
         // TODO: This is to be removed in PIM-6350.
         if (null !== $product->getParent() && $data !== $product->getParent()->getCode()) {
-            throw ImmutablePropertyException::immutableProperty('parent', $data, static::class);
+            throw ImmutablePropertyException::immutableProperty($field, $data, static::class);
         }
 
         if (null === $parent = $this->productModelRepository->findOneByIdentifier($data)) {

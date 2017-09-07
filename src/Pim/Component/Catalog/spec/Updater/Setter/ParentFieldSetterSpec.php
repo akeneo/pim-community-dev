@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
@@ -106,6 +107,14 @@ class ParentFieldSetterSpec extends ObjectBehavior
         $this->shouldThrow(ImmutablePropertyException::class)->during(
             'setFieldData',
             [$variantProduct, 'parent', 'new_parent_code']
+        );
+    }
+
+    function it_throws_exception_if_a_parent_is_set_to_a_regular_product(ProductInterface $product)
+    {
+        $this->shouldThrow(InvalidPropertyException::class)->during(
+            'setFieldData',
+            [$product, 'parent', Argument::any()]
         );
     }
 }
