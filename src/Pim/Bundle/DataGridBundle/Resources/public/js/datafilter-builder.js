@@ -51,7 +51,6 @@ define(
              */
             initHandler(collection, $el) {
                 this.collection = collection;
-                // this.$el = $el;
                 this.initBuilder($el);
                 this.initialized = true;
             },
@@ -59,11 +58,11 @@ define(
             /**
              * Collect and load the filter modules
              */
-            initBuilder($el) {
+            initBuilder(gridElement) {
                 this.metadata = Object.assign({
                     filters: {},
                     options: {}
-                }, $el.data('metadata'));
+                }, gridElement.data('metadata'));
 
                 this.modules = {};
                 this.collectModules.call(this);
@@ -93,8 +92,7 @@ define(
                 options.displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
                 options.filtersAsColumn = _.result(this.metadata.options, 'filtersAsColumn', false);
                 var filtersList = new FiltersManager(options);
-
-                this.$el.prepend(filtersList.render().$el);
+                this.$el.append(filtersList.render().$el);
 
                 mediator.trigger('datagrid_filters:rendered', this.collection);
                 if (this.collection.length === 0) {

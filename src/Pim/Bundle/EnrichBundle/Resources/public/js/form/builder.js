@@ -14,7 +14,13 @@ define(
 
                 return FormRegistry.getFormExtensions(formMeta).then((extensionsMeta) => {
                     const FormClass = requireContext(formMeta.module);
+
+                    if (typeof FormClass !== 'function') {
+                        throw new Error(`Your module ${formMeta.module} must return a function. It returns: ${typeof FormClass}`);
+                    }
+
                     const form = new FormClass(formMeta);
+
                     form.code = formName;
 
                     const extensionPromises = extensionsMeta.map((extension) => {

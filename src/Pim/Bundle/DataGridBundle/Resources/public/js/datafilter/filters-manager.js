@@ -277,19 +277,7 @@ define(
          */
         render: function () {
             this.$el.empty();
-            // var fragment = document.createDocumentFragment();
-
-            // _.each(this.filters, function (filter) {
-            //     if (!filter.enabled) {
-            //         filter.hide();
-            //     }
-            //     if (filter.enabled) {
-            //         filter.render();
-            //     }
-            //     if (filter.$el.length > 0) {
-            //         fragment.appendChild(filter.$el.get(0));
-            //     }
-            // }, this);
+            mediator.trigger('datagrid_filters:loaded', this.filters);
 
             this.trigger('rendered');
 
@@ -304,8 +292,6 @@ define(
                         }
                     ));
                 }
-
-                // this.$el.append(fragment);
                 this._initializeSelectWidget();
             }
 
