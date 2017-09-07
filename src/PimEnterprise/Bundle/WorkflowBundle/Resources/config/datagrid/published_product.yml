@@ -8,6 +8,10 @@ datagrid:
             type:              pimee_datasource_published_product
             entity:            '%pimee_workflow.entity.published_product.class%'
         columns:
+            ID:
+                label: ID
+                data_name:     identifier
+                type:          field
             label:
                 label:         Label
                 data_name:     label
