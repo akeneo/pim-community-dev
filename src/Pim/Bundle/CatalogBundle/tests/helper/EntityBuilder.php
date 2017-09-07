@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Helper to create some catalog entities, such as ProductVariant and ProductModel
+ * Helper to create some catalog entities, such as VariantProduct and ProductModel
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

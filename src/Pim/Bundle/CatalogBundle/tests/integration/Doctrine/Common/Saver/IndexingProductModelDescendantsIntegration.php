@@ -57,10 +57,10 @@ class IndexingProductModelDescendantsIntegration extends TestCase
                 'seed_root_product_model',
                 'seed_sub_product_model_1',
                 'seed_sub_product_model_2',
-                'seed_product_variant_1',
-                'seed_product_variant_2',
-                'seed_product_variant_3',
-                'seed_product_variant_4',
+                'seed_variant_product_1',
+                'seed_variant_product_2',
+                'seed_variant_product_3',
+                'seed_variant_product_4',
             ],
             [
                 '_source' => 'identifier',
@@ -114,10 +114,10 @@ class IndexingProductModelDescendantsIntegration extends TestCase
                 'seed1_root_product_model',
                 'seed1_sub_product_model_1',
                 'seed1_sub_product_model_2',
-                'seed1_product_variant_1',
-                'seed1_product_variant_2',
-                'seed1_product_variant_3',
-                'seed1_product_variant_4',
+                'seed1_variant_product_1',
+                'seed1_variant_product_2',
+                'seed1_variant_product_3',
+                'seed1_variant_product_4',
             ],
             [
                 '_source' => 'identifier',
@@ -179,10 +179,10 @@ class IndexingProductModelDescendantsIntegration extends TestCase
         $subProductModel1 = $entityBuilder->createProductModel($seed . '_sub_product_model_1', 'familyVariantA1', $rootProductModel, []);
         $subProductModel2 = $entityBuilder->createProductModel($seed . '_sub_product_model_2', 'familyVariantA1', $rootProductModel, []);
 
-        $variantProduct1 = $entityBuilder->createVariantProduct($seed . '_product_variant_1', 'familyA', 'familyVariantA1', $subProductModel1, []);
-        $variantProduct2 = $entityBuilder->createVariantProduct($seed . '_product_variant_2', 'familyA', 'familyVariantA1', $subProductModel1, []);
-        $variantProduct3 = $entityBuilder->createVariantProduct($seed . '_product_variant_3', 'familyA', 'familyVariantA1', $subProductModel2, []);
-        $variantProduct4 = $entityBuilder->createVariantProduct($seed . '_product_variant_4', 'familyA', 'familyVariantA1', $subProductModel2, []);
+        $variantProduct1 = $entityBuilder->createVariantProduct($seed . '_variant_product_1', 'familyA', 'familyVariantA1', $subProductModel1, []);
+        $variantProduct2 = $entityBuilder->createVariantProduct($seed . '_variant_product_2', 'familyA', 'familyVariantA1', $subProductModel1, []);
+        $variantProduct3 = $entityBuilder->createVariantProduct($seed . '_variant_product_3', 'familyA', 'familyVariantA1', $subProductModel2, []);
+        $variantProduct4 = $entityBuilder->createVariantProduct($seed . '_variant_product_4', 'familyA', 'familyVariantA1', $subProductModel2, []);
 
         $this->get('pim_catalog.saver.product_model')->save($rootProductModel);
         $this->get('pim_catalog.saver.product_model')->saveAll([$subProductModel1, $subProductModel2]);
