@@ -70,9 +70,9 @@ define([
          * Toggle the thrid column
          */
         toggleThirdColumn() {
-            const thirdColumn = this.$el.find('.AknDefault-thirdColumn');
+            const thirdColumn = this.$el.find('.AknDefault-thirdColumnContainer');
             if (null !== thirdColumn) {
-                thirdColumn.toggleClass('AknDefault-thirdColumn--open');
+                thirdColumn.toggleClass('AknDefault-thirdColumnContainer--open');
             }
         }
     });

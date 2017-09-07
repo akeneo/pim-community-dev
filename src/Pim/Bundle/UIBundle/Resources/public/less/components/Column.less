@@ -17,11 +17,12 @@
   transition:
     flex-basis @timing @transition,
     width @timing @transition;
-  order: -1;
+  order: -10;
   background: @AknLightGray;
   border-right: 1px solid @AknBorderColor;
   flex-shrink: 0;
   height: 100%;
+  z-index: 802;
 
   &:empty {
     display: none;

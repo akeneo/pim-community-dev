@@ -420,11 +420,11 @@ class WebUser extends PimContext
      */
     public function iToggleTheCategoryTree($action) {
         $this->spin(function() use ($action) {
-            $thirdColumn = $this->getCurrentPage()->find('css', '.AknDefault-thirdColumn');
+            $thirdColumn = $this->getCurrentPage()->find('css', '.AknDefault-thirdColumnContainer');
             if (null !== $thirdColumn) {
                 if (
-                    ('open' === $action && $thirdColumn->hasClass('AknDefault-thirdColumn--open')) ||
-                    ('close' === $action && !$thirdColumn->hasClass('AknDefault-thirdColumn--open'))
+                    ('open' === $action && $thirdColumn->hasClass('AknDefault-thirdColumnContainer--open')) ||
+                    ('close' === $action && !$thirdColumn->hasClass('AknDefault-thirdColumnContainer--open'))
                 ) {
                     return true;
                 }

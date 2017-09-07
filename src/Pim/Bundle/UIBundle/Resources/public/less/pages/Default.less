@@ -55,21 +55,27 @@
     }
   }
 
+  &-thirdColumnContainer {
+    width: 0;
+    order: -5;
+    margin-left: -@thirdColumnWidth;
+    margin-right: @thirdColumnWidth;
+    transition: margin 0.3s ease-in-out;
+
+    &--open {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
   &-thirdColumn {
     width: @thirdColumnWidth;
-    position: absolute;
-    left: -@thirdColumnWidth;
-    top: 0;
-    height: 100%;
+    position: fixed;
+    height: 100vh;
     background: white;
     z-index: 801;
     border-right: 1px solid @AknBorderColor;
-    transition: left 0.3s ease-in-out;
     padding: 20px;
-
-    &--open {
-      left: 0;
-    }
   }
 }
 
