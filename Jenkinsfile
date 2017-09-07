@@ -50,14 +50,14 @@ stage("Build") {
         "pim-ce": {withBuildNode({
             checkout scm
             container("php") {
-                sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --ignore-platform-reqs --no-suggest"
-                sh "bin/console assets:install"
-                sh "bin/console pim:installer:dump-require-paths"
+                sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --ignore-platform-reqs --no-suggest"
+                sh "bin/console --ansi assets:install"
+                sh "bin/console --ansi pim:installer:dump-require-paths"
             }
             container("node") {
                 sh "npm config set cache /shared/.npm --global"
-                sh "npm install"
-                sh "npm run webpack"
+                sh "npm install --color=always"
+                sh "npm run webpack --color=always"
             }
             container("docker") {
                 sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce ."
@@ -73,23 +73,23 @@ stage("Build") {
             sh "mkdir -m 777 vendor"
 
             container("php") {
-                sh "php -d memory_limit=-1 /usr/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-scripts --ignore-platform-reqs --no-suggest"
+                sh "php -d memory_limit=-1 /usr/bin/composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-scripts --ignore-platform-reqs --no-suggest"
                 // Required to avoid permission error when "deleteDir()"
                 sh "chmod 777 -R vendor/akeneo"
                 dir('vendor/akeneo/pim-community-dev') {
                     deleteDir()
                     checkout scm
                 }
-                sh "php -d memory_limit=-1 /usr/bin/composer -n run-script post-update-cmd"
-                sh "bin/console assets:install"
-                sh "bin/console pim:installer:dump-require-paths"
+                sh "php -d memory_limit=-1 /usr/bin/composer --ansi -n run-script post-update-cmd"
+                sh "bin/console --ansi assets:install"
+                sh "bin/console --ansi pim:installer:dump-require-paths"
             }
             container("node") {
                 sh "npm config set cache /shared/.npm --global"
                 // Required to avoid permission error
                 sh "npm config set unsafe-perm true"
-                sh "npm install"
-                sh "npm run webpack"
+                sh "npm install --color=always"
+                sh "npm run webpack --color=always"
             }
             container("docker") {
                 sh "cp vendor/akeneo/pim-community-dev/Dockerfile ."
@@ -121,8 +121,8 @@ stage("Test") {
             },
             "grunt": {
                 withNode({
-                    sh "cd /home/jenkins/pim && npm run webpack"
-                    sh "cd /home/jenkins/pim && npm run lint"
+                    sh "cd /home/jenkins/pim && npm run webpack --color=always"
+                    sh "cd /home/jenkins/pim && npm run lint --color=always"
                 })
             },
             "php-coupling-detector": {
@@ -146,7 +146,7 @@ stage("Test") {
                     }
 
                     return messages
-                }, 20, "ce")
+                }, 30, "ce")
             },
             "behat-ce": {
                 queue({
@@ -154,13 +154,13 @@ stage("Test") {
                     messages = new net.sf.json.JSONArray()
 
                     for (scenario in scenarios) {
-                        line = scenario.trim().substring(0, scenario.indexOf(":"))
+                        line = scenario.trim().substring(0, scenario.indexOf(":", scenario.indexOf(":") + 1))
 
                         messages.add([
                             [container: "php", script: "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"],
                             [container: "php", script: "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"],
                             [container: "php", script: "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"],
-                            [container: "php", script: "printf \"    installer_data: 'PimInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"],
+                            [container: "php", script: "sed \"\$a    installer_data: 'PimInstallerBundle:minimal'\n\" app/config/parameters_test.yml"],
                             [container: "php", script: "cp behat.ci.yml behat.yml"],
                             [container: "php", script: "bin/console --env=behat --quiet pim:install --force"],
                             [container: "php", script: "chmod 777 -R var/cache/behat"],
@@ -171,7 +171,7 @@ stage("Test") {
                     }
 
                     return messages
-                }, 300, "ce")
+                }, 150, "ce")
             },
             "phpunit-integration-ee": {
                 queue({
@@ -189,7 +189,7 @@ stage("Test") {
                     }
 
                     return messages
-                }, 20, "ee")
+                }, 30, "ee")
             },
             "behat-ee": {
                 queue({
@@ -197,13 +197,13 @@ stage("Test") {
                     messages = new net.sf.json.JSONArray()
 
                     for (scenario in scenarios) {
-                        line = scenario.trim().substring(0, scenario.indexOf(":"))
+                        line = scenario.trim().substring(0, scenario.indexOf(":", scenario.indexOf(":") + 1))
 
                         messages.add([
                             [container: "php", script: "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"],
                             [container: "php", script: "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"],
                             [container: "php", script: "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"],
-                            [container: "php", script: "printf \"    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" >> app/config/parameters_test.yml"],
+                            [container: "php", script: "sed \"\$a    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" app/config/parameters_test.yml"],
                             [container: "php", script: "cp behat.ci.yml behat.yml"],
                             [container: "php", script: "bin/console --env=behat --quiet pim:install --force"],
                             [container: "php", script: "chmod 777 -R var/cache/behat"],
@@ -214,7 +214,7 @@ stage("Test") {
                     }
 
                     return messages
-                }, 300, "ee")
+                }, 150, "ee")
             }
         )
     } finally {
@@ -312,25 +312,31 @@ def queue(body, scale, edition) {
         node("pubsub") {
             container("gcloud") {
                 sh "gcloud.phar pubsub:topic:create ${NODE_NAME}"
+                sh "gcloud.phar pubsub:topic:create ${NODE_NAME}-results"
                 sh "gcloud.phar pubsub:subscription:create ${NODE_NAME} ${NODE_NAME}-subscription"
+                sh "gcloud.phar pubsub:subscription:create ${NODE_NAME}-results ${NODE_NAME}-results-subscription"
 
-                messages = body()
+                def messages = body()
+                def size = messages.size()
 
                 writeJSON file: 'output.json', json: messages
                 sh "gcloud.phar pubsub:message:publish ${NODE_NAME} output.json"
 
                 sh "sed -i 's#JOB_NAME#${NODE_NAME}#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
                 sh "sed -i 's#SUBSCRIPTION_NAME#${NODE_NAME}-subscription#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
+                sh "sed -i 's#RESULT_TOPIC#${NODE_NAME}-results#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
                 sh "sed -i 's#PIM_IMAGE#eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
 
                 try {
                     sh "kubectl apply -f /home/jenkins/pim/.ci/k8s/"
                     sh "kubectl scale --replicas=${scale} jobs/${NODE_NAME}"
-                    sh "gcloud.phar job:wait ${NODE_NAME}"
+                    sh "gcloud.phar job:wait ${NODE_NAME}-results-subscription ${size} --ansi"
                 } finally {
-                    sh "kubectl delete job ${NODE_NAME}"
-                    sh "gcloud.phar pubsub:topic:delete ${NODE_NAME}"
-                    sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-subscription"
+                    sh "kubectl delete job ${NODE_NAME} || true"
+                    sh "gcloud.phar pubsub:topic:delete ${NODE_NAME} || true"
+                    sh "gcloud.phar pubsub:topic:delete ${NODE_NAME}-results || true"
+                    sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-subscription || true"
+                    sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-results-subscription || true"
                 }
             }
         }

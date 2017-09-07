@@ -64,7 +64,7 @@ spec:
           image: eu.gcr.io/akeneo-ci/gcloud:latest
           imagePullPolicy: Always
           command: ["gcloud.phar"]
-          args: ["pubsub:message:consume", "SUBSCRIPTION_NAME"]
+          args: ["pubsub:message:consume", "SUBSCRIPTION_NAME", "RESULT_TOPIC"]
           env:
             - { name: DOCKER_API_VERSION, value: "1.23" }
             - { name: POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }

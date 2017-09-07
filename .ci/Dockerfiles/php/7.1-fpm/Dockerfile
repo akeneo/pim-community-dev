@@ -1,6 +1,7 @@
 FROM php:7.1-fpm
 
 RUN apt-get update && apt-get install -y \
+    imagemagick \
     libcurl4-gnutls-dev \
     libicu-dev \
     libmagickwand-dev \
