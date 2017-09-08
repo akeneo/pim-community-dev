@@ -16,7 +16,8 @@ define(
         'oro/datagrid/select-row-cell',
         'oro/datagrid/select-all-header-cell',
         'oro/datagrid/refresh-collection-action',
-        'oro/datagrid/reset-collection-action'
+        'oro/datagrid/reset-collection-action',
+        'pim/template/common/no-data'
     ],
     function (
         $,
@@ -33,7 +34,8 @@ define(
         SelectRowCell,
         SelectAllHeaderCell,
         RefreshCollectionAction,
-        ResetCollectionAction
+        ResetCollectionAction,
+        noDataTemplate
     ) {
         'use strict';
 
@@ -65,17 +67,13 @@ define(
                 '<div class="toolbar"></div>' +
                 '<div class="AknGridContainer grid-container container-fluid">' +
                     '<table class="AknGrid grid"></table>' +
-                    '<div class="no-data AknGridContainer-noData AknGridContainer-noData--hidden"></div>' +
+                    '<div class="no-data"></div>' +
                     '<div class="loading-mask"></div>' +
                 '</div>'
             ),
 
             /** @property */
-            noDataTemplate: _.template(
-                '<div class="AknGridContainer-noDataImage"></div>' +
-                '<div class="AknGridContainer-noDataTitle"><%- hint %></div>' +
-                '<div class="AknGridContainer-noDataSubtitle"><%- subHint %></div>'
-            ),
+            noDataTemplate: _.template(noDataTemplate),
 
             /** @property {Object} */
             selectors: {
@@ -512,7 +510,7 @@ define(
                 this.$(this.selectors.noDataBlock).html($(this.noDataTemplate({
                     hint: __(key, {entityHint: entityHint}).replace('\n', '<br />'),
                     subHint: __('oro.datagrid.noresults_subTitle')
-                })));
+                }))).hide();
 
                 this._updateNoDataBlock();
             },
@@ -572,12 +570,12 @@ define(
                     this.$(this.selectors.toolbar).show();
                     this.$(this.selectors.grid).show();
                     this.$(this.selectors.filterBox).show();
-                    this.$(this.selectors.noDataBlock).addClass('AknGridContainer-noData--hidden');
+                    this.$(this.selectors.noDataBlock).hide();
                 } else {
                     this.$(this.selectors.grid).hide();
                     this.$(this.selectors.toolbar).hide();
                     this.$(this.selectors.filterBox).hide();
-                    this.$(this.selectors.noDataBlock).removeClass('AknGridContainer-noData--hidden');
+                    this.$(this.selectors.noDataBlock).show();
                 }
             },
 
