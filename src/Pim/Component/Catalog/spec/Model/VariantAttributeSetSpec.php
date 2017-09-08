@@ -13,7 +13,7 @@ class VariantAttributeSetSpec extends ObjectBehavior
         $this->shouldHaveType(VariantAttributeSet::class);
     }
 
-    function it_is_a_variant_family()
+    function it_is_a_family_variant()
     {
         $this->shouldImplement(VariantAttributeSetInterface::class);
     }

@@ -3,9 +3,9 @@
 namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use Pim\Component\Catalog\Model\EntityWithValuesInterface;
-use Pim\Component\Catalog\Repository\EntityWithVariantFamilyRepositoryInterface;
+use Pim\Component\Catalog\Repository\EntityWithFamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -23,7 +23,7 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
     /** @var EntityWithFamilyVariantAttributesProvider */
     private $axesProvider;
 
-    /** @var EntityWithVariantFamilyRepositoryInterface */
+    /** @var EntityWithFamilyVariantRepositoryInterface */
     private $repository;
 
     /** @var UniqueAxesCombinationSet */
@@ -31,12 +31,12 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
 
     /**
      * @param EntityWithFamilyVariantAttributesProvider  $axesProvider
-     * @param EntityWithVariantFamilyRepositoryInterface $repository
+     * @param EntityWithFamilyVariantRepositoryInterface $repository
      * @param UniqueAxesCombinationSet                   $uniqueAxesCombinationSet
      */
     public function __construct(
         EntityWithFamilyVariantAttributesProvider $axesProvider,
-        EntityWithVariantFamilyRepositoryInterface $repository,
+        EntityWithFamilyVariantRepositoryInterface $repository,
         UniqueAxesCombinationSet $uniqueAxesCombinationSet
     ) {
         $this->axesProvider = $axesProvider;
@@ -61,12 +61,17 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
             return;
         }
 
-        $valueAlreadyExists = $this->alreadyExists($entity);
-        $valueAlreadyProcessed = $this->hasAlreadyValidatedTheSameValue($entity);
+        $axes = $this->axesProvider->getAxes($entity);
+
+        if (empty($axes)) {
+            return;
+        }
+
+        $valueAlreadyExists = $this->alreadyExists($entity, $axes);
+        $valueAlreadyProcessed = $this->hasAlreadyValidatedTheSameValue($entity, $axes);
 
         if ($valueAlreadyExists || $valueAlreadyProcessed) {
-            $axes = $this->axesProvider->getAxes($entity);
-            $axesCodes = implode(',', array_map(function ($axis) {
+            $axesCodes = implode(',', array_map(function (AttributeInterface $axis) {
                 return $axis->getCode();
             }, $axes));
             $duplicateCombination = $this->buildAxesCombination($entity, $axes);
@@ -88,12 +93,12 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
      *
      * This allows use to compare multiple combinations, to look for a potential duplicate.
      *
-     * @param EntityWithValuesInterface $entityWithValues
-     * @param array                     $axes
+     * @param EntityWithFamilyVariantInterface $entityWithValues
+     * @param AttributeInterface[]             $axes
      *
      * @return string
      */
-    private function buildAxesCombination(EntityWithValuesInterface $entityWithValues, array $axes): string
+    private function buildAxesCombination(EntityWithFamilyVariantInterface $entityWithValues, array $axes): string
     {
         $combination = [];
 
@@ -114,21 +119,16 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
     /**
      * This method returns TRUE if there is a duplicate value in siblings of $entity in database, FALSE otherwise
      *
-     * @param $entity
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param AttributeInterface[]             $axes
      *
      * @return bool
      */
-    private function alreadyExists(EntityWithFamilyVariantInterface $entity): bool
+    private function alreadyExists(EntityWithFamilyVariantInterface $entity, array $axes): bool
     {
         $brothers = $this->repository->findSiblings($entity);
 
         if (empty($brothers)) {
-            return false;
-        }
-
-        $axes = $this->axesProvider->getAxes($entity);
-
-        if (empty($axes)) {
             return false;
         }
 
@@ -139,6 +139,10 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
 
         $ownCombination = $this->buildAxesCombination($entity, $axes);
 
+        if ('' === str_replace(',', '', $ownCombination)) {
+            return false;
+        }
+
         return in_array($ownCombination, $brothersCombinations);
     }
 
@@ -147,22 +151,21 @@ class SiblingUniqueVariantAxesValidator extends ConstraintValidator
      * FALSE otherwise
      *
      * @param EntityWithFamilyVariantInterface $entity
+     * @param AttributeInterface[]             $axes
      *
      * @return bool
      */
-    private function hasAlreadyValidatedTheSameValue(EntityWithFamilyVariantInterface $entity): bool
+    private function hasAlreadyValidatedTheSameValue(EntityWithFamilyVariantInterface $entity, array $axes): bool
     {
         if (null === $entity->getParent()) {
             return false;
         }
 
-        $axes = $this->axesProvider->getAxes($entity);
+        $combination = $this->buildAxesCombination($entity, $axes);
 
-        if (empty($axes)) {
+        if ('' === str_replace(',', '', $combination)) {
             return false;
         }
-
-        $combination = $this->buildAxesCombination($entity, $axes);
 
         return false === $this->uniqueAxesCombinationSet->addCombination($entity, $combination);
     }

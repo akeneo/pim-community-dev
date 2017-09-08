@@ -45,6 +45,7 @@ class VariantProductParentValidator extends ConstraintValidator
         if (!$parent->getProductModels()->isEmpty()) {
             $this->context->buildViolation(VariantProductParent::INVALID_PARENT, [
                 '%variant_product%' => $variantProduct->getIdentifier(),
+                '%product_model%' => $parent->getCode(),
             ])->addViolation();
         }
     }

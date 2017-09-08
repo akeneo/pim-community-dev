@@ -41,5 +41,5 @@ pim_catalog:
         attribute_does_not_belong_to_family: 'Attribute "%attribute%" does not belong to the family "%family%"'
         variant_product_invalid_family: 'The variant product family must be the same than its parent'
         variant_product_has_parent: 'The variant product "%variant_product%" must have a parent'
-        invalid_variant_product_parent: 'Parent of the variant product "%variant_product%" cannot have product models as children, only variant products'
+        invalid_variant_product_parent: 'The variant product "%variant_product%" cannot have product model "%product_model%" as parent, (this product model can only have other product models as children)'
         modified_variant_axis_value: 'Variant axis "%variant_axis%" cannot be modified, "%provided_value%" given'

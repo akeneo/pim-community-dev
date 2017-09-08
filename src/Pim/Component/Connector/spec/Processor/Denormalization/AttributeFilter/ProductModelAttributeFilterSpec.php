@@ -92,7 +92,7 @@ class ProductModelAttributeFilterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_skips_the_filtration_if_the_variant_family_is_invalid()
+    function it_skips_the_filtration_if_the_family_variant_is_invalid()
     {
         $this->filter([
             'code' => 'code',

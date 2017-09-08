@@ -20,7 +20,7 @@ parameters:
     pim_catalog.repository.completeness.class:          Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CompletenessRepository
     pim_catalog.repository.product_mass_action.class:   Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository
     pim_catalog.repository.product_category.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductCategoryRepository
-    pim_catalog.repository.entity_with_variant_family.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithVariantFamilyRepository
+    pim_catalog.repository.entity_with_family_variant.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithFamilyVariantRepository
 
 services:
     # Base repositories
@@ -210,7 +210,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.abstract_product.class%'
 
-    pim_catalog.repository.entity_with_variant_family:
-        class: '%pim_catalog.repository.entity_with_variant_family.class%'
+    pim_catalog.repository.entity_with_family_variant:
+        class: '%pim_catalog.repository.entity_with_family_variant.class%'
         arguments:
             - '@pim_catalog.repository.product_model'

@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithVariantFamilyRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithFamilyVariantRepository;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
@@ -22,7 +22,7 @@ class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
 {
     function let(
         EntityWithFamilyVariantAttributesProvider $axesProvider,
-        EntityWithVariantFamilyRepository $repository,
+        EntityWithFamilyVariantRepository $repository,
         UniqueAxesCombinationSet $uniqueAxesCombinationSet,
         ExecutionContextInterface $context
     ) {

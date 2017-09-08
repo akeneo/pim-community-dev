@@ -21,7 +21,7 @@ class FamilyVariantSpec extends ObjectBehavior
         $this->shouldHaveType(FamilyVariant::class);
     }
 
-    function it_is_a_variant_family()
+    function it_is_a_family_variant()
     {
         $this->shouldImplement(FamilyVariantInterface::class);
     }
