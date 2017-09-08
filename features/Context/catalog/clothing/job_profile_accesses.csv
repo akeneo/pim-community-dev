@@ -47,3 +47,4 @@ classify_assets;All;
 add_tags_to_assets;All;
 project_calculation;All;
 refresh_project_completeness_calculation;All;
+compute_product_models_descendants;All;
