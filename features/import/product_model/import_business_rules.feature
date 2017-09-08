@@ -89,3 +89,43 @@ Feature: Create product models through CSV import
     And I should see the text "skipped product model with parent 1"
     And I should see the text "skipped product model without parent 1"
     And I should see the text "read lines 2"
+
+  Scenario: Successfully create product models without specifying the family variant of the sub product models
+    Given the following CSV file to import:
+      """
+      code;family_variant;parent;name-en_US;collection;description-en_US-ecommerce;erp_name-en_US;price-EUR;supplier;wash_temperature;color;composition;variation_name-en_US;material;size
+      new_hades;clothing_color_size;;Elegant slim long sleeve shirt;autumn_2016;Elegant slim long sleeve shirt white with button-down collar and breast pocket. 65% polyester, 35% cotton. Machine washable.;Hades;700;zaro;600;;;;;
+      new_hades_blue;;new_hades;;;;;;;;blue;;Hades black;;
+      new_hades_red;;new_hades;;;;;;;;red;;Hades red;;
+      """
+    And the following job "csv_catalog_modeling_product_model_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_catalog_modeling_product_model_import" import job page
+    And I launch the import job
+    And I wait for the "csv_catalog_modeling_product_model_import" job to finish
+    Then I should see the text "Status: Completed"
+    And I should see the text "read lines 3"
+    And I should see the text "created 1"
+    And I should see the text "created 2"
+    And I should see the text "skipped product model with parent 2"
+    And I should see the text "skipped product model without parent 1"
+
+  Scenario: Successfully update product models without specifying the family variant of the sub product models
+    Given the following CSV file to import:
+      """
+      code;family_variant;parent;name-en_US;collection;description-en_US-ecommerce;erp_name-en_US;price-EUR;supplier;wash_temperature;color;composition;variation_name-en_US;material;size
+      hades;clothing_color_size;;Elegant slim long sleeve shirt;autumn_2016;Elegant slim long sleeve shirt white with button-down collar and breast pocket. 65% polyester, 35% cotton. Machine washable.;Hades;700;zaro;600;;;;;
+      hades_blue;;hades;;;;;;;;blue;;Hades black;;
+      hades_red;;hades;;;;;;;;red;;Hades red;;
+      """
+    And the following job "csv_catalog_modeling_product_model_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_catalog_modeling_product_model_import" import job page
+    And I launch the import job
+    And I wait for the "csv_catalog_modeling_product_model_import" job to finish
+    Then I should see the text "Status: Completed"
+    And I should see the text "read lines 3"
+    And I should see the text "processed 1"
+    And I should see the text "processed 2"
+    And I should see the text "skipped product model with parent 2"
+    And I should see the text "skipped product model without parent 1"
