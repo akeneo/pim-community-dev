@@ -90,7 +90,7 @@ define(
             build: function () {
                 var options = this.combineOptions.call(this);
                 options.collection = this.collection;
-                options.renderFilterList = this.config.renderFilterList;
+                options.renderFilterList = true;
                 options.displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
                 options.filtersAsColumn = _.result(this.metadata.options, 'filtersAsColumn', false);
                 var filtersList = new FiltersManager(options);

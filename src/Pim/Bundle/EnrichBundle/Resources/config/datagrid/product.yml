@@ -2,6 +2,7 @@ datagrid:
     product-grid:
         options:
             entityHint: product
+            filtersAsColumn: true
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_datasource_product

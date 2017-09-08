@@ -214,8 +214,6 @@ extensions:
         module: oro/datafilter-builder
         parent: pim-variant-group-edit-form-form-tabs
         targetZone: container
-        config:
-            renderFilterList: true
 
     pim-variant-group-edit-form-products:
         module: pim/group-edit-form/products

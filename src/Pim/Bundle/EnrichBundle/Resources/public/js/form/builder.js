@@ -20,7 +20,6 @@ define(
                     }
 
                     const form = new FormClass(formMeta);
-
                     form.code = formName;
 
                     const extensionPromises = extensionsMeta.map((extension) => {

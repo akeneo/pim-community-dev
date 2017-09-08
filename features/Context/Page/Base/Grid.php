@@ -663,7 +663,6 @@ class Grid extends Index
     public function hideFilter($filterName)
     {
         $filter = $this->getFilter($filterName);
-
         if ($filter->isVisible()) {
             $filter->remove();
         }
