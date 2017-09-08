@@ -1,14 +1,15 @@
 extensions:
     pim-import-profile-create-modal:
-       module: pim/form/common/creation/modal
-       config:
-           labels:
-               title: pim_enrich.index.import_profiles.create_popin.title
-           successMessage: pim_enrich.index.import_profiles.message.created
-           editRoute: pim_importexport_import_profile_edit
-           postUrl: pim_enrich_job_instance_rest_import_create
-           routerKey: code
-           defaultValues:
-               permissions:
-                   execute: [All]
-                   edit: [All]
+        module: pim/form/common/creation/modal
+        config:
+            labels:
+                title: pim_enrich.index.import_profiles.create_popin.title
+                subTitle: pim_menu.item.import_profile
+            successMessage: pim_enrich.index.import_profiles.message.created
+            editRoute: pim_importexport_import_profile_edit
+            postUrl: pim_enrich_job_instance_rest_import_create
+            routerKey: code
+            defaultValues:
+                permissions:
+                    execute: [All]
+                    edit: [All]
