@@ -240,3 +240,4 @@ batch_jobs:
     perform.label: Moure recursos a categories
   add_tags_to_assets:
     perform.label: Afegir etiquetes als recursos
+pim_assets_collection: Col·lecció de recursos

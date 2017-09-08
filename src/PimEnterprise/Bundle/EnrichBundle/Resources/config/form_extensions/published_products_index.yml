@@ -5,13 +5,34 @@ extensions:
         config:
             template: pim/template/product/index
             templateParams:
-                title: Published Products
+                titleKey: pimee_enrich.entity.product.index_title
                 gridName: published-product-grid
+
+    pimee-published-product-index-left-column:
+        module: pim/form/common/column
+        parent: pimee-published-product-index
+        position: 5
+        targetZone: column
+        config:
+          stateCode: published_product_index
+          navigationTitle: pimee_enrich.entity.product.navigation
+
+    pimee-published-product-index-column-inner:
+        module: pim/common/simple-view
+        parent: pimee-published-product-index-left-column
+        targetZone: navigation
+        config:
+            template: pim/template/product/grid/column-inner
+
+    pimee-product-index-category-switcher:
+        module: pim/grid/category-switcher
+        parent: pimee-published-product-index-column-inner
+        targetZone: column-context-switcher
 
     pimee-published-product-index-locale-switcher:
         module: pim/grid/locale-switcher
-        parent: pimee-published-product-index
-        targetZone: title-buttons
+        parent: pimee-published-product-index-column-inner
+        targetZone: column-context-switcher
         position: 10
         config:
             routeName: pimee_workflow_published_product_index
@@ -19,9 +40,8 @@ extensions:
 
     pimee-published-product-index-view-selector:
         module: pim/grid/view-selector
-        parent: pimee-published-product-index
-        targetZone: title-buttons
-        position: 20
+        parent: pimee-published-product-index-column-inner
+        targetZone: view-selector
         config:
             gridName: published-product-grid
 
@@ -34,6 +54,13 @@ extensions:
             gridName: published-product-grid
             categoryTreeName: pim_enrich_published_product_categorytree
 
+    pimee-published-product-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pimee-published-product-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-products
+
     pimee-published-product-index-user-navigation:
         module: pim/menu/user-navigation
         parent: pimee-published-product-index
@@ -41,14 +68,6 @@ extensions:
         config:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
-
-    pim-product-index-breadcrumbs:
-        module: pim/common/breadcrumbs
-        parent: pimee-published-product-index
-        targetZone: breadcrumbs
-        config:
-            tab: 'pim-menu-settings'
-            item: 'pim-menu-enrich-published-product'
 
     pimee-published-product-index-grid-filters:
         module: oro/datafilter-builder
@@ -64,4 +83,17 @@ extensions:
             localeParamName: dataLocale
             datagridLoadUrl: pim_datagrid_load
 
+    pimee-published-product-index-secondary-actions:
+        module: pim/form/common/secondary-actions
+        parent: pimee-published-product-index
+        targetZone: buttons
+        position: 50
 
+    pimee-published-product-index-redirect:
+        module: pim/common/redirect
+        parent: pimee-published-product-index-secondary-actions
+        targetZone: secondary-actions
+        config:
+            buttonClass: 'AknDropdown-menuLink'
+            route: pim_enrich_product_index
+            label: pim_enrich.entity.product.index_title

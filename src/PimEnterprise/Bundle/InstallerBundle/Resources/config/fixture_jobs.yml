@@ -67,7 +67,7 @@ jobs:
             filePath: rules.yml
 
     fixtures_asset_csv:
-        order:     150
+        order:     70
         connector: Data fixtures
         alias:     fixtures_asset_csv
         label:     assets data fixtures

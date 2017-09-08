@@ -9,30 +9,33 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Behat\Decorator\Page\Product;
+namespace PimEnterprise\Behat\Decorator\Page;
 
-use Context\Spin\SpinCapableTrait;
 use Pim\Behat\Decorator\ElementDecorator;
+use Pim\Behat\Decorator\Page\GridCapableDecorator as GridCapableDecoratorOrigin;
 
 /**
  * @author Arnaud Langlade <arnaud.langlade@akeneo.com>
  */
-class IndexDecorator extends ElementDecorator
+class GridCapableDecorator extends GridCapableDecoratorOrigin
 {
-    use SpinCapableTrait;
+    public function __construct($element)
+    {
+        parent::__construct($element);
 
-    /** @var array Selectors to ease find */
-    protected $selectors = [
-        'Create project button' => '.grid-view-selector .create-project-button .create',
-        'Edit project button'   => '.grid-view-selector .edit-button .edit',
-        'Remove project button' => '.grid-view-selector .remove-button .remove',
-    ];
+        $this->selectors = array_merge($this->selectors, [
+            'Create project button' => '.grid-view-selector .create-project-button .create',
+            'Edit project button'   => '.grid-view-selector .edit-button .edit',
+            'Remove project button' => '.grid-view-selector .remove-button .remove',
+        ]);
+    }
 
     /**
      * Click on the create project button
      */
     public function clickOnCreateProjectButton()
     {
+        $this->openSecondaryActions();
         $selector = $this->selectors['Create project button'];
 
         $this->spin(function () use ($selector) {
@@ -52,6 +55,7 @@ class IndexDecorator extends ElementDecorator
      */
     public function clickOnEditProjectButton()
     {
+        $this->openSecondaryActions();
         $selector = $this->selectors['Edit project button'];
 
         $button = $this->spin(function () use ($selector) {
@@ -66,6 +70,7 @@ class IndexDecorator extends ElementDecorator
      */
     public function clickOnRemoveProjectButton()
     {
+        $this->openSecondaryActions();
         $selector = $this->selectors['Remove project button'];
 
         $button = $this->spin(function () use ($selector) {

@@ -23,7 +23,9 @@ Feature: Show a product
 
   Scenario: Seeing the view actions on the product grid
     Given I am on the products grid
+    And I open the category tree
     And I select the "Shoes" tree
+    And I close the category tree
     Then I should be able to view the "View the product" action of the row which contains "rangers"
     And I should not be able to view the "Edit attributes of the product" action of the row which contains "rangers"
     And I should not be able to view the "Classify the product" action of the row which contains "rangers"

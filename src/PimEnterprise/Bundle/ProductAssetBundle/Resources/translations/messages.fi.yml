@@ -182,3 +182,4 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
   xlsx_asset_category_import:
     validation.label: Tiedostojen tarkistaminen
+pim_assets_collection: Resurssien keruu

@@ -243,3 +243,4 @@ batch_jobs:
 pim_analytics:
   info_type:
     nb_assets: Nombre de ressources produit
+pim_assets_collection: Collection de ressources

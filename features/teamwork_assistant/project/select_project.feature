@@ -82,7 +82,9 @@ Feature: Select a project to display products to enrich
       | poster-movie-contact | posters  | decoration         | Movie poster "Contact"    | A1         |              |                   |                    |                    |                |          |               |
     And I am logged in as "Julia"
     When I am on the products grid
+    And I open the category tree
     And I filter by "category" with operator "" and value "clothing"
+    And I close the category tree
     And I show the filter "weight"
     And I filter by "weight" with operator "<" and value "6 Ounce"
     And I click on the create project button
@@ -101,6 +103,7 @@ Feature: Select a project to display products to enrich
     And I am on the products grid
     And I switch view selector type to "Projects"
     Then I should see the text "Start a new project"
+    And I open the category tree
     When I filter by "category" with operator "" and value "clothing"
     Then the grid should contain 3 elements
     And I should see the text "Start a new project"
@@ -163,5 +166,6 @@ Feature: Select a project to display products to enrich
     When I apply the "2016 summer collection" project
     Then I should see products tshirt-skyrim and tshirt-the-witcher-3
     And I should see the text "2016 summer collection"
+    And I open the category tree
     When I filter by "category" with operator "" and value "high_tech"
     Then I should see the text "You're leaving project scope."

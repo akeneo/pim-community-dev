@@ -111,8 +111,3 @@ Feature: Products datagrid views
     And I should see the flash message "Datagrid view successfully removed"
     And I should see the text "Default view"
     But I should not see the text "Sneakers only"
-
-  Scenario: The view type switcher is not displayed on the published product grid
-    Given I am on the published products grid
-    Then I should see the text "Default view"
-    But I should not see the text "Views"

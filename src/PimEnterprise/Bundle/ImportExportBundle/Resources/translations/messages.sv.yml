@@ -1,0 +1,7 @@
+job_profile.permissions:
+  execute.label: Tillåt att köra jobbprofil
+  edit.label: Tillåt att redigera jobbprofil
+pimee_import_export:
+  job_profile:
+    tab:
+      permission.title: Behörigheter

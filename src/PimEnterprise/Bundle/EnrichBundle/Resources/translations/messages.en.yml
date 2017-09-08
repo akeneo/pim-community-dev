@@ -55,7 +55,7 @@ pim_enrich:
                 third: Configure
                 fourth: Confirm
         publish:
-            label: Publish products
+            label: Publish
             description: Publish the selected products, the current published data will be erased by the current working copy.
             success_flash: Selected products have been successfully published.
             launched_flash: The job publishing product(s) is currently running.
@@ -65,7 +65,7 @@ pim_enrich:
                 info: The %nbProducts% selected products will be published.
             not_editable: You don't have the permission to edit the products "%identifiers%".
         unpublish:
-            label: Unpublish products
+            label: Unpublish
             description: Unpublish the selected products, the current published data will be erased.
             success_flash: Selected products have been successfully unpublished.
             launched_flash: The job unpublishing product(s) is currently running.

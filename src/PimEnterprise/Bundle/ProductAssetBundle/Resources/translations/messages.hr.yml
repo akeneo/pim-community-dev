@@ -185,3 +185,4 @@ batch_jobs:
     perform.label: Premjesti imovinu u kategorije
   add_tags_to_assets:
     perform.label: Dodaj oznake u imovine
+pim_assets_collection: Popis imovine

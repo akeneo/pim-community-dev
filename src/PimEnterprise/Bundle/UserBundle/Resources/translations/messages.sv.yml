@@ -1,0 +1,17 @@
+user:
+  email:
+    notifications: E-postaviseringar
+  proposals:
+    notifications:
+      to_review: När nya förslag att granska
+      state: När förslaget godkänns eller underkänns
+      "yes": true
+      "no": false
+  asset_delay_reminder: Fördröjning för påminnelse av tillgång (i dagar)
+  default_published_product_grid_view:
+    label: Standard produkt publicerad i listan
+Default asset tree: Standard träd för tillgångar
+pimee_user:
+  user:
+    tab:
+      notifications.title: Notiser
