@@ -26,7 +26,7 @@ class FamilyVariantIntegration extends TestCase
                 [
                     'level' => 1,
                     'axes' => ['color'],
-                    'attributes' => ['image', 'variation_name', 'variation_image', 'composition', 'color', 'material'],
+                    'attributes' => ['variation_name', 'variation_image', 'composition', 'color', 'material'],
                 ],
                 [
                     'level' => 2,
