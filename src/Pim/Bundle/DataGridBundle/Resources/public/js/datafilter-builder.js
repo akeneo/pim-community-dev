@@ -51,18 +51,19 @@ define(
              */
             initHandler(collection, $el) {
                 this.collection = collection;
-                this.initBuilder($el);
+                this.$el = $el;
+                this.initBuilder();
                 this.initialized = true;
             },
 
             /**
              * Collect and load the filter modules
              */
-            initBuilder(gridElement) {
+            initBuilder() {
                 this.metadata = Object.assign({
                     filters: {},
                     options: {}
-                }, gridElement.data('metadata'));
+                }, this.$el.data('metadata'));
 
                 this.modules = {};
                 this.collectModules.call(this);
@@ -89,8 +90,18 @@ define(
             build: function () {
                 var options = this.combineOptions.call(this);
                 options.collection = this.collection;
+                options.renderFilterList = this.config.renderFilterList;
                 options.displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
                 options.filtersAsColumn = _.result(this.metadata.options, 'filtersAsColumn', false);
+                var filtersList = new FiltersManager(options);
+                this.$el.prepend(filtersList.render().$el);
+
+                mediator.trigger('datagrid_filters:rendered', this.collection);
+
+                if (this.collection.length === 0) {
+                    filtersList.$el.hide();
+                }
+                mediator.trigger('datagrid_filters:build.post', filtersList);
             },
 
             /**

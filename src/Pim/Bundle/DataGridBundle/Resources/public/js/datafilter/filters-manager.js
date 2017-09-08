@@ -93,7 +93,6 @@ define(
          * @param {Boolean} [options.displayManageFilters]
          */
         initialize: function (options) {
-            console.log('filters-manager', options)
             if (options.filters) {
                 this.filters = options.filters;
             }
@@ -249,31 +248,46 @@ define(
         },
 
         /**
+         * Container classes
+         *
+         * @property
+         */
+        className: function () {
+            if (this.options.renderFilterList) {
+                return 'AknFilterBox filter-box oro-clearfix-width AknFilterBox--search';
+            }
+        },
+
+        /**
          * Render filter list
          *
          * @return {*}
          */
         render: function () {
             this.$el.empty();
-            // var fragment = document.createDocumentFragment();
+            var fragment = document.createDocumentFragment();
 
-            // _.each(this.filters, function (filter) {
-            //     if (!filter.enabled) {
-            //         filter.hide();
-            //     }
-            //     if (filter.enabled) {
-            //         filter.render();
-            //     }
-            //     if (filter.$el.length > 0) {
-            //         fragment.appendChild(filter.$el.get(0));
-            //     }
-            // }, this);
+            // Only used for grids within tabs
+            if (this.options.renderFilterList) {
+                _.each(this.filters, function (filter) {
+                    if (!filter.enabled) {
+                        filter.hide();
+                    }
+                    if (filter.enabled) {
+                        filter.render();
+                    }
+                    if (filter.$el.length > 0) {
+                        fragment.appendChild(filter.$el.get(0));
+                    }
+                }, this);
+            }
 
             this.trigger('rendered');
 
             if (_.isEmpty(this.filters)) {
                 this.$el.hide();
             } else {
+                this.$el.append(fragment);
                 if (this.displayManageFilters()) {
                     this.$el.append(this.addButtonTemplate(
                         {
@@ -282,7 +296,6 @@ define(
                         }
                     ));
                 }
-                // this.$el.append(fragment);
                 this._initializeSelectWidget();
             }
 
