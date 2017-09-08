@@ -598,7 +598,6 @@ pim_title.category:
 pim_title.attribute:
   index: "Attribute"
   create: "Attribute | Anlegen"
-  edit: "Attributee %attribute.label% | Bearbeiten"
 pim_title.product:
   index: "Produkte"
   edit: "Produkte %product.sku% | Bearbeiten"

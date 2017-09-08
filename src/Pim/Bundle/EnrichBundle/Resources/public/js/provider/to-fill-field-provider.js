@@ -21,12 +21,12 @@ define(
             /**
              * Get list of fields that need to be filled to complete the product
              *
-             * @param {object} root
-             * @param {object} product
+             * @param {Object} root
+             * @param {Object} values
              *
-             * @return {promise}
+             * @return {Promise}
              */
-            getFields: function (root, product) {
+            getFields: function (root, values) {
 
                 if (null == this.fieldsPromise) {
                     var filterPromises = [];
@@ -38,7 +38,7 @@ define(
                     this.fieldsPromise = $.when.apply($, filterPromises).then(function () {
                         return arguments;
                     }).then(function (filters) {
-                        return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(_.keys(product.values))
+                        return fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(Object.keys(values))
                             .then(function (attributesToFilter) {
                                 var filteredAttributes = _.reduce(filters, function (attributes, filter) {
                                     return filter(attributes);

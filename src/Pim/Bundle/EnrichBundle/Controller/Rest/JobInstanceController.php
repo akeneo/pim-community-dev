@@ -342,7 +342,7 @@ class JobInstanceController
         }
 
         $file = $request->files->get('file');
-        if ($file) {
+        if (null !== $file) {
             $violations = $this->validator->validate($file);
 
             if (count($violations) > 0) {
@@ -363,7 +363,8 @@ class JobInstanceController
             $jobInstance->setRawParameters($rawParameters);
         }
 
-        $errors = $this->getValidationErrors($jobInstance);
+        $validationGroups = null !== $file ? ['Default', 'Execution', 'UploadExecution'] : ['Default', 'Execution'];
+        $errors = $this->getValidationErrors($jobInstance, $validationGroups);
         if (count($errors) > 0) {
             return new JsonResponse($errors, 400);
         }
@@ -437,17 +438,18 @@ class JobInstanceController
      * Aggregate validation errors
      *
      * @param JobInstance $jobInstance
+     * @param array|null  $groups
      *
      * @return array
      */
-    protected function getValidationErrors(JobInstance $jobInstance)
+    protected function getValidationErrors(JobInstance $jobInstance, $groups = null)
     {
         $rawParameters = $jobInstance->getRawParameters();
         $parametersViolations = [];
         if (!empty($rawParameters)) {
             $job = $this->jobRegistry->get($jobInstance->getJobName());
             $parameters = $this->jobParamsFactory->create($job, $rawParameters);
-            $parametersViolations = $this->jobParameterValidator->validate($job, $parameters);
+            $parametersViolations = $this->jobParameterValidator->validate($job, $parameters, $groups);
         }
 
         $errors = [];

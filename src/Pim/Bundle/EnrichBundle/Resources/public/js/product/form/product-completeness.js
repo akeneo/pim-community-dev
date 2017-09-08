@@ -56,11 +56,11 @@ define(
              * @param options.locale String
              * @param options.scope  String
              */
-            render: function (options) {
-                options = _.extend({
+            render: function () {
+                const options = {
                     locale: UserContext.get('catalogLocale'),
                     scope: UserContext.get('catalogScope')
-                }, options);
+                };
                 this.$el.empty();
 
                 const ratio = this.getCurrentRatio(options);

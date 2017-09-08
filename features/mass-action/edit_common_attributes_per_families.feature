@@ -44,7 +44,7 @@ Feature: Edit common attributes of many products at once
     And I should see available attribute Size in group "Sizes"
     And I should see available attribute Color in group "Colors"
     And I add available attributes Name and Weather conditions
-    And I change the "Weather condition" to "Cold, Wet"
+    And I change the "Weather conditions" to "Cold, Wet"
     And I change the "Name" to "Product"
     And I should see the text "Product"
     And I confirm mass edit

@@ -1,6 +1,9 @@
 @import '../base/variables';
 
 .AknDefault {
+  @mainContentPadding: 40px;
+  @thirdColumnWidth: 300px;
+
   &-page {
     width: 100%;
     height: 100%;
@@ -41,10 +44,47 @@
   }
 
   &-mainContent {
-    padding: 40px;
+    padding: @mainContentPadding;
     overflow-x: auto;
     flex-grow: 1;
     height: 100%;
+    position: relative;
+
+    &--withoutPadding {
+      padding: 10px 0 0 0;
+    }
+  }
+
+  &-thirdColumnContainer {
+    width: 0;
+    order: -5;
+    margin-left: -@thirdColumnWidth;
+    margin-right: @thirdColumnWidth;
+    transition: margin 0.3s ease-in-out;
+
+    &--open {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+  &-thirdColumn {
+    width: @thirdColumnWidth;
+    position: fixed;
+    height: 100vh;
+    background: white;
+    z-index: 801;
+    border-right: 1px solid @AknBorderColor;
+    padding: 20px;
+  }
+}
+
+@-moz-document url-prefix() {
+  // On Firefox, there is a bug to display the main menu border
+  .AknDefault {
+    &-contentWithColumn {
+      margin-left: 1px;
+    }
   }
 }
 

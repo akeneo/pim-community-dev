@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Set attribute requirements operation
+ * Set attributes requirements operation
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -60,6 +60,10 @@ define(
                     this.$el.html(this.template());
                     form.setElement(this.$('.set-requirements')).render();
                     form.trigger('pim_enrich:form:update_read_only', this.readOnly);
+
+                    // This method renders a complete PEF page, we need to remove useless elements manually.
+                    this.$el.find('.navigation').remove();
+                    this.$el.find('.AknDefault-mainContent').addClass('AknDefault-mainContent--withoutPadding');
                 }.bind(this));
 
                 return this;

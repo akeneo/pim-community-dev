@@ -271,12 +271,10 @@ class WebUser extends PimContext
     }
 
     /**
-     * @Given /^there should be (\d+) errors? in the "([^"]*)" tab$/
+     * @Then /^there should be (\d+) errors? in the "([^"]*)" tab$/
      *
      * @param $expectedErrorsCount
      * @param $tabName
-     *
-     * @throws TimeoutException
      */
     public function thereShouldBeErrorsInTheTab($expectedErrorsCount, $tabName)
     {
@@ -290,6 +288,26 @@ class WebUser extends PimContext
             $tabName,
             $this->getTabErrorsCount($tab)
         ));
+    }
+
+    /**
+     * @When /^I click on the "([^"]*)" required attribute indicator$/
+     *
+     * @param $attributeGroup
+     */
+    public function iClickOnAttributeGroupHeader($attributeGroup)
+    {
+        $this->getCurrentPage()->clickOnAttributeGroupHeader($attributeGroup);
+    }
+
+    /**
+     * @When /^I filter attributes with "(.+)"$/
+     *
+     * @param $filter
+     */
+    public function iFilterAttributes($filter)
+    {
+        $this->getCurrentPage()->filterAttributes($filter);
     }
 
     /* -------------------- Other methods -------------------- */
@@ -347,7 +365,7 @@ class WebUser extends PimContext
     {
         $element = $this->getElementOnCurrentPage('Main context selector');
 
-        $element->switchScope($scope);
+        $element->switchScope(strtolower($scope));
         $this->wait();
     }
 
@@ -393,6 +411,33 @@ class WebUser extends PimContext
                 )
             );
         }
+    }
+
+    /**
+     * @param string $action open|close
+     *
+     * @When /^I (open|close) the category tree$/
+     */
+    public function iToggleTheCategoryTree($action)
+    {
+        $this->spin(function () use ($action) {
+            $thirdColumn = $this->getCurrentPage()->find('css', '.AknDefault-thirdColumnContainer');
+            if (null !== $thirdColumn) {
+                if (
+                    ('open' === $action && $thirdColumn->hasClass('AknDefault-thirdColumnContainer--open')) ||
+                    ('close' === $action && !$thirdColumn->hasClass('AknDefault-thirdColumnContainer--open'))
+                ) {
+                    return true;
+                }
+            }
+
+            $categorySwitcher = $this->getCurrentPage()->find('css', '.category-switcher');
+            if (null !== $categorySwitcher) {
+                $categorySwitcher->click();
+            }
+
+            return false;
+        }, 'Cannot find the category switcher');
     }
 
     /**

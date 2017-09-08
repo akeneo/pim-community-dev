@@ -37,7 +37,7 @@ define(
             reset: function () {},
 
             /**
-             * The label diplayed in the operation list
+             * The label displayed in the operation list
              *
              * @return {string}
              */
@@ -46,8 +46,20 @@ define(
             },
 
             /**
-             * [getDescription description]
-             * @return {[type]} [description]
+             * Returns the label with the count of impacted elements
+             *
+             * @returns {String}
+             */
+            getLabelCount: function () {
+                const itemsCount = this.getFormData().itemsCount;
+
+                return __(this.config.labelCount, {itemsCount}, itemsCount);
+            },
+
+            /**
+             * Get the operation description
+             *
+             * @return {string}
              */
             getDescription: function () {
                 return __(this.config.description);

@@ -38,11 +38,13 @@ Feature: Edit a user groups and roles
     Then the "User" checkbox should be checked
     And the "Administrator" checkbox should be checked
     When I edit the "admin" user
+    Then I should not see the text "There are unsaved changes."
     And I visit the "Groups and Roles" tab
     And I uncheck "Administrator"
     And I uncheck "User"
     And I save the user
     Then I should not see the text "There are unsaved changes."
+    And I visit the "Groups and Roles" tab
     And the user "admin" should still have 2 roles
     And the "User" checkbox should be checked
     And the "Administrator" checkbox should be checked

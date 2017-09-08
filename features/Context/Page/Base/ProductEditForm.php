@@ -102,7 +102,15 @@ class ProductEditForm extends Form
         }
 
         $labelNode = $this->spin(function () use ($label) {
-            return $this->find('css', sprintf('.AknComparableFields .AknFieldContainer-label:contains("%s")', $label));
+            $labels = $this->findAll('css', sprintf('.AknComparableFields .AknFieldContainer-label:contains("%s")', $label));
+
+            foreach ($labels as $labelContainer) {
+                if ($labelContainer->getText() === $label) {
+                    return $labelContainer;
+                }
+            }
+
+            return false;
         }, 'Cannot find the field label');
 
         $container = $this->getClosest($labelNode, 'AknComparableFields');

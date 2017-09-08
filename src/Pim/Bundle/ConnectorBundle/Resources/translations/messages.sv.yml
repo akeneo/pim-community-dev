@@ -1,0 +1,232 @@
+pim_connector:
+  steps:
+    dummy_reader.title: Dummy läsare
+    product_reader.title: Extrahering produkt
+    entity_reader.title: Extrahering entitet
+    csv_reader:
+      title: CSV-läsare
+    file_reader:
+      invalid_item_columns_count: '%totalColumnsCount% kolumner förväntades, faktiskt antal %itemColumnsCount% i %filePath%:%lineno%'
+    csv_product_reader.title: CSV produkt-läsare
+    csv_category_reader.title: CSV kategori-läsare
+    csv_variant_group .title: CSV variantgrupp-läsare
+    dummy_processor.title: Dummy-processor
+    product_processor.title: Produkt skapande
+    variant_group_processor.title: Skapa / uppdatera variantgrupp
+    category_processor.title: Kategoriskapande
+    association_processor.title: Associationsskapande
+    product_association_processor.title: Associationsskapande
+    group_processor.title: Gruppskapande
+    attribute_processor.title: Attributskapande
+    attribute_option_processor.title: Attributvalsskapande
+    heterogeneous_processor.title: CSV produkt-serialiseraren
+    homogeneous_processor.title: CSV entitet-serialiseraren
+    transformer_processor.title: Omvandling
+    dummy_writer.title: Dummyskrivare
+    file_writer.title: Utdata
+    product_writer.title: Produktlagring
+    category_writer.title: Kategorilagring
+    variant_group_writer.title: Variantgruppslagring
+    writer.title: Entitetslagring
+    csv_writer.title: Csv skrivare
+job_execution.summary:
+  read: läst
+  write: skrivet
+  skip: hoppades över
+  create: skapades
+  process: bearbetade
+  update_products: uppdaterade produkter
+  process_products: bearbetade produkter
+  skip_products: överhoppade produkter
+  displayed: första varningarna visas
+  charset_validator:
+    title: 'Filkodning:'
+    skipped: hoppades över, filändelsen i godkäntlistan
+  product_skipped_no_diff: hoppade över produkten (inga skillnader)
+  product_skipped_no_associations: hoppade över produkten (inga associationer hittades)
+  item_position: lästa rader
+batch_jobs:
+  csv_product_export:
+    label: Exportera produkt till CSV
+    export.label: Exportera produkt
+  csv_category_export:
+    label: Exportera kategorier till CSV
+    export.label: Exportera kategorier
+  csv_attribute_export:
+    label: Exportera egenskaper till CSV
+    export.label: Exportera egenskaper
+  csv_attribute_option_export:
+    label: Exportera attributalternativ till CSV
+    export.label: Exportera attributalternativ
+  csv_association_type_export:
+    label: Exportera associationstyp till CSV
+    export.label: Exportera associationstyp
+  csv_group_export:
+    label: Exportera grupper till CSV
+    export.label: Exportera grupper
+  csv_variant_group_export:
+    label: Exportera variantgrupp till CSV
+    export.label: Exportera variantgrupp
+  csv_family_export:
+    label: Exportera familjer till CSV
+    export.label: Exportera familjer
+  csv_product_import:
+    label: Importera produkter från CSV
+    validation.label: Filvalidering
+    import.label: Importera produkter
+    import_associations.label: Importera associationer
+  csv_category_import:
+    label: Importera kategorier från CSV
+    validation.label: Filvalidering
+    import.label: Importera produkt
+  csv_attribute_import:
+    label: Importera attribut från CSV
+    validation.label: Filvalidering
+    import.label: Importera attribut
+  csv_attribute_option_import:
+    label: Importera attributalternativ från CSV
+    validation.label: Filvalidering
+    import.label: Importera attributalternativ
+  csv_association_type_import:
+    label: Importera associationstyp från CSV
+    validation.label: Filvalidering
+    import.label: Importera associationstyp
+  csv_family_import:
+    label: Importera familjer från CSV
+    validation.label: Filvalidering
+    import.label: Importera familjer
+  csv_group_import:
+    label: Importera grupper från CSV
+    validation.label: Filvalidering
+    import.label: Importera grupper
+  csv_variant_group_import:
+    label: Importera variantgrupp från CSV
+    validation.label: Filvalidering
+    import.label: Importera variantgrupp
+  csv_channel_export:
+    label: Exportera kanaler till CSV
+    export.label: Exportera kanaler
+  csv_locale_export:
+    label: Exportera språk till CSV
+    export.label: Exportera språk
+  csv_attribute_group_export:
+    label: Exportera attributgrupp till CSV
+    export.label: Exportera attributgrupp
+  csv_currency_export:
+    label: Exportera valutor till CSV
+    export.label: Exportera valutor
+  csv_group_type_export:
+    label: Exportera grupptyper till CSV
+    export.label: Exportera grupptyper
+  csv_channel_import:
+    label: Importera kanaler från CSV
+    validation.label: Filvalidering
+    import.label: Importera kanaler
+  csv_locale_import:
+    label: Importera språk från CSV
+    validation.label: Filvalidering
+    import.label: Importera språk
+  csv_attribute_group_import:
+    label: Importera attributgrupp från CSV
+    validation.label: Filvalidering
+    import.label: Importera attributgrupp
+  csv_currency_import:
+    label: Importera valutor från CSV
+    validation.label: Filvalidering
+    import.label: Importera valutor
+  csv_group_type_import:
+    label: Importera grupptyper från CSV
+    validation.label: Filvalidering
+    import.label: Importera grupptyper
+  xlsx_category_import:
+    label: Importera kategorier från XLSX
+    validation.label: Filvalidering
+    import.label: Importera kategorier
+  xlsx_association_type_import:
+    label: Importera associationstyp från XLSX
+    validation.label: Filvalidering
+    import.label: Importera associationstyp
+  xlsx_attribute_import:
+    label: Importera attribut i XLSX
+    validation.label: Filvalidering
+    import.label: Importera attribut
+  xlsx_attribute_option_import:
+    label: Importera attributalternativ från XLSX
+    validation.label: Filvalidering
+    import.label: Importera attributalternativ
+  xlsx_family_import:
+    label: Importera familjer från XLSX
+    validation.label: Filvalidering
+    import.label: Importera familjer
+  xlsx_product_export:
+    label: Exportera produkt till XLSX
+    export.label: Exportera produkt
+  xlsx_product_import:
+    label: Importera produkter från XLSX
+    validation.label: Filvalidering
+    import.label: Importera produkter
+    import_associations.label: Importera associationer
+  xlsx_group_export:
+    label: Exportera grupper till XLSX
+    export.label: Exportera grupper
+  xlsx_variant_group_export:
+    label: Exportera variantgrupp till XLSX
+    export.label: Exportera variantgrupp
+  xlsx_group_import:
+    label: Importera grupper från XLSX
+    validation.label: Filvalidering
+    import.label: Importera grupper
+  xlsx_variant_group_import:
+    label: Importera variantgrupp från XLSX
+    validation.label: Filvalidering
+    import.label: Importera variantgrupp
+  xlsx_family_export:
+    label: Exportera familjer till XLSX
+    export.label: Exportera familjer
+  xlsx_category_export:
+    label: Exportera kategorier till XLSX
+    export.label: Exportera kategorier
+  xlsx_attribute_export:
+    label: Exportera attribut till XLSX
+    export.label: Exportera attribut till XLSX
+  xlsx_attribute_option_export:
+    label: Exportera attributalternativ till XLSX
+    export.label: Exportera attributalternativ till XLSX
+  xlsx_association_type_export:
+    label: Exportera associationstyp till XLSX
+    export.label: Exportera associationstyp till XLSX
+  xlsx_channel_export:
+    label: Exportera kanaler till XLSX
+    export.label: Exportera kanaler
+  xlsx_locale_export:
+    label: Exportera språk till XLSX
+    export.label: Exportera språk
+  xlsx_attribute_group_export:
+    label: Exportera attributgrupp till XLSX
+    export.label: Exportera attributgrupp
+  xlsx_currency_export:
+    label: Exportera valutor till XLSX
+    export.label: Exportera valutor
+  xlsx_group_type_export:
+    label: Exportera grupptyper till XLSX
+    export.label: Exportera grupptyper
+  xlsx_channel_import:
+    label: Importera kanaler från XLSX
+    validation.label: Filvalidering
+    import.label: Importera kanaler
+  xlsx_locale_import:
+    label: Importera språk från XLSX
+    validation.label: Filvalidering
+    import.label: Importera språk
+  xlsx_attribute_group_import:
+    label: Importera attributgrupp från XLSX
+    validation.label: Filvalidering
+    import.label: Importera attributgrupp
+  xlsx_currency_import:
+    label: Importera valutor från XLSX
+    validation.label: Filvalidering
+    import.label: Importera valutor
+  xlsx_group_type_import:
+    label: Importera grupptyper från XLSX
+    validation.label: Filvalidering
+    import.label: Importera grupptyper

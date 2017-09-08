@@ -164,9 +164,6 @@ pim_enrich:
         logged_at: Connecté(e) le
         from: De
         modified: Modifié
-        property: Propriété
-        old_values: Anciennes valeurs
-        new_values: Nouvelles valeurs
         actions: Actions
       info:
         deletion_successful: Les produits ont bien été supprimés.
@@ -428,6 +425,7 @@ pim_enrich:
             no_match: Aucune correspondance trouvée
             load_more: Chargement de plus de résultats...
           attribute_group_selector: Groupe d'attributs
+          attribute_group_all: Tous
         categories:
           title: Catégories
       panel:
@@ -569,7 +567,7 @@ pim_enrich:
           table:
             name: Nom
             type: Type
-            scope: Portée
+            scopable: Décliné par canal
             localizable: Localisable
         history.title: Historique
     common:

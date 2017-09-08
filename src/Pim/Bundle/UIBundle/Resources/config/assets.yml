@@ -75,7 +75,6 @@ css:
         - bundles/pimui/less/components/Diff.less
         - bundles/pimui/less/components/Dropdown.less
         - bundles/pimui/less/components/Flash.less
-        - bundles/pimui/less/components/FullModal.less
         - bundles/pimui/less/components/Footer.less
         - bundles/pimui/less/components/Header.less
         - bundles/pimui/less/components/InfoBlock.less
@@ -91,6 +90,7 @@ css:
         - bundles/pimui/less/components/Search.less
         - bundles/pimui/less/components/SequentialEdit.less
         - bundles/pimui/less/components/SquareList.less
+        - bundles/pimui/less/components/Steps.less
         - bundles/pimui/less/components/Subsection.less
         - bundles/pimui/less/components/TabContainer.less
         - bundles/pimui/less/components/Thumbnail.less

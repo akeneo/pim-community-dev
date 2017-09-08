@@ -151,9 +151,6 @@ pim_enrich:
         logged_at: Дата входа
         from: С
         modified: Изменен
-        property: Свойство
-        old_values: Старые значения
-        new_values: Новые значения
         actions: Действия
       info:
         deletion_successful: Продукт успешно удален.
@@ -354,6 +351,7 @@ pim_enrich:
             no_match: Совпадений не найдено
             load_more: Загрузка дополнительных результатов...
           attribute_group_selector: Группа атрибутов
+          attribute_group_all: Все
         categories:
           title: Категории
       panel:
@@ -490,7 +488,7 @@ pim_enrich:
           table:
             name: Имя
             type: Тип
-            scope: Область
+            scopable: Область назначаема
             localizable: Локализуемый
         history.title: Журнал
     common:

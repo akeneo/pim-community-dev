@@ -1,0 +1,89 @@
+Item deleted: Objektet har tagits bort
+Are you sure you want to delete this item?: Är du säker på att du vill radera det här objektet?
+Delete Error: Fel vid radering
+Are you sure you want to do remove selected items?: Är du säker på att du vill ta bort valda objekt?
+Selected items were removed.: Valda objekt har tagits bort.
+Selected items were not removed.: Valda objekt har inte tagits bort.
+Please, select items to remove.: Välj objekt att ta bort.
+Cannot delete item.: Kan inte radera objekt.
+Refresh Confirmation: Uppdatera bekräftelse
+Your local changes will be lost. Are you sure you want to refresh grid?: Dina lokala ändringar kommer att tas bort. Är du säker på att du vill uppdatera listan?
+Reset Confirmation: Bekräfta återställning
+Your local changes will be lost. Are you sure you want to reset grid?: Din lokala ändringar går förlorade. Är du säker på att du vill återställa tabell?
+Confirmation: Bekräfta
+edit: redigera
+copy: kopiera
+remove: ta bort
+Status: Status
+All: Alla
+Per page: Per sida
+Mass Action Confirmation: Bekräfta massåtgärd
+Mass action performed.: Massåtgärd utförd.
+Mass action is not performed.: Massåtgärd har inte utförts.
+Please, select items to perform mass action.: Välj objekt för massåtgärd.
+Execution Confirmation: Bekräfta åtgärd
+Are you sure you want to do this?: Är du säker på att du vill göra detta?
+Action performed.: Åtgärd utförd.
+Action is not performed.: Åtgärd har inte utförts.
+Please, select item to perform action.: Välj ett objekt för åtgärd.
+View per page: Visa per sida
+oro.datagrid.entityHint: Enhet
+oro.datagrid.noentities: Inga resultat hittades
+oro.datagrid.noresults: "Inga resultat hittades. Prova att ändra dina sökkriterier."
+oro.datagrid.nocolumns: Inga kolumner konfigurerade för denna tabell
+oro.datagrid.pagination.label: "Sida"
+oro.datagrid.pagination.totalPages: "av {{ totalPages }}"
+oro.datagrid.pagination.totalRecords: "{{ totalRecords }} poster"
+oro.datagrid.action.reset: "Återställ"
+oro.datagrid.action.refresh: "Uppdatera"
+oro_datagrid.select.all: "Alla"
+oro_datagrid.select.visible: "Alla synliga"
+oro_datagrid.select.none: "Ingen"
+pim.grid.ajax_choice_filter.label_empty: är tom
+pim.grid.ajax_choice_filter.label_not_empty: är inte tom
+pim.grid.choice_filter:
+  label_empty: är tom
+  label_not_empty: är inte tom
+  label_in_list: i listan
+Available Columns: Tillgängliga Kolumner
+Displayed Columns: Valda Kolumner
+datagrid_view.columns.min_message: Du måste välja minst en tabellkolumn att visa
+pim_datagrid:
+  column_configurator:
+    label: Kolumner
+    title: Kolumnval
+    all_groups: Alla grupper
+    search: Sök
+    clear: Rensa
+    displayed_columns: Valda Kolumner
+    apply: Tillämpa
+    cancel: Avbryt
+    remove_column: Ta bort
+  mass_action:
+    delete:
+      confirm_title: Bekräfta borttagning
+      confirm_ok: OK
+      empty_selection: Ingen produkt har valts
+pim.grid.mass_action.quick_export.title: Snabbexport
+pim.grid.mass_action.quick_export.launched: Snabbexport har startats
+pim.grid.action.launch.title: Starta
+pim.grid.action.show.title: Visa
+Please select view: Välj en vy
+Loading...: Laddar...
+View: Visa
+from: från
+to: till
+grid.view_selector:
+  default_view: Standardvy
+  save_changes: Spara denna vy
+  remove: Ta bort denna vy
+  create_view: Skapa vy
+  create: Skapa
+  search: Sök
+  views: Vyer
+  placeholder: Namnge ny vy
+  choose_label: Välj en etikett för vyn
+  confirmation:
+    remove: Är du säker på att du vill ta bort vyn?
+    delete: Bekräfta borttagning
+grid.view_selector.flash.updated: Vy har uppdaterats

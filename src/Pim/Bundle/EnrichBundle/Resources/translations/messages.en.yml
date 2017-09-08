@@ -111,7 +111,7 @@ pim_enrich:
                 fourth: Confirm
 
         change-status:
-            label:          Change status (enable / disable)
+            label:          Change status
             description:    The selected products will be enabled or disabled.
             success_flash:  Product(s) status have been changed
             launched_flash: The bulk action "change status" has been launched. You will be notified when it is done.
@@ -128,25 +128,25 @@ pim_enrich:
                 no_valid_attribute: None of selected attribute can be applied on this product.
 
         classify-add:
-            label:          Classify products in categories
+            label:          Add to categories
             description:    The products will be positioned into following categories, the existing placement is kept.
             success_flash:  Product(s) have been classified into selected categories
             launched_flash: The bulk action "add to categories" has been launched. You will be notified when it is done.
 
         classify-move:
-            label:          Move products to categories
+            label:          Move between categories
             description:    The products will be positioned into following categories, the existing placement is lost.
             success_flash:  Product(s) have been moved to selected categories
             launched_flash: The bulk action "move to categories" has been launched. You will be notified when it is done.
 
         classify-remove:
-            label:          Remove products from categories
+            label:          Remove from categories
             description:    The products will be removed from the following categories.
             success_flash:  Product(s) have been removed from the selected categories
             launched_flash: The bulk action "remove from categories" has been launched. You will be notified when it is done.
 
         change-family:
-            label:          Change the family of products
+            label:          Change family
             description:    The family of the selected products will be changed to the chosen family
             success_flash:  The family of selected product(s) has been successfully changed
             launched_flash: The bulk action "change family" has been launched. You will be notified when it is done.
@@ -169,7 +169,7 @@ pim_enrich:
             launched_flash:                        The bulk action "add to variant group" has been launched. You will be notified when it is done.
 
         set-attribute-requirements:
-            label:         Set attribute requirements
+            label:         Set attributes requirements
             description:   The following attribute requirements will be applied to the selected families
             success_flash: Attribute requirements were applied to the selected families
             launched_flash: The bulk action "set attribute requirements" is launched. You will be notified when it will be done.
@@ -778,7 +778,7 @@ pim_enrich.mass_edit_action:
             fourth: Confirm
 
     change-status:
-        label:         Change status (enable / disable)
+        label:         Change status
         description:   The selected products will be enabled or disabled.
         success_flash: Product(s) status have been changed
 
@@ -791,12 +791,12 @@ pim_enrich.mass_edit_action:
         no_attribute.warning: There is no attribute in common for the selected products. Please change your selection.
         truncated_by_variant_attribute.warning: "Some common attributes from selected products come from a variant group. They are not available for mass edition: %attributes%."
     classify:
-        label:         Classify products in categories
+        label:         Add to categories
         description:   The products will be positioned into following categories, the existing placement is kept.
         success_flash: Product(s) have been classified into selected categories
 
     change-family:
-        label:         Change the family of products
+        label:         Change family
         description:   The family of the selected products will be changed to the chosen family
         success_flash: The family of selected product(s) has been successfully changed
         no_family:     No family
@@ -807,7 +807,7 @@ pim_enrich.mass_edit_action:
         success_flash: Products were successfully added to the selected groups
 
     set-attribute-requirements:
-        label:         Set attribute requirements
+        label:         Set attributes requirements
         description:   The following attribute requirements will be applied to the selected families
         success_flash: Attribute requirements were applied to the selected families
 
@@ -960,9 +960,9 @@ batch_jobs:
         clean:
             label: Clean files for common attributes
     set_attribute_requirements:
-        label: Set attribute requirements
+        label: Set attributes requirements
         perform:
-            label: Set attribute requirements
+            label: Set attributes requirements
     csv_product_quick_export:
         quick_export.label: Csv product quick export
         perform:

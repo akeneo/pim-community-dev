@@ -19,6 +19,7 @@ Pim\Component\Catalog\Model\ProductUniqueData:
     manyToOne:
         product:
             targetEntity: Pim\Component\Catalog\Model\ProductInterface
+            inversedBy: uniqueData
             joinColumns:
                 product_id:
                     referencedColumnName: id

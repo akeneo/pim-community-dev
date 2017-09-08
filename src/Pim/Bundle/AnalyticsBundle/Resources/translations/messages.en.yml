@@ -22,6 +22,9 @@ pim_analytics:
         nb_channels: Number of channels
         nb_products: Number of products
         nb_attributes: Number of attributes
+        nb_scopable_attributes: Number of scopable attributes
+        nb_localizable_attributes: Number of localizable attributes
+        nb_scopable_localizable_attributes: Number of localizable and scopable attributes
         nb_locales: Number of locales
         nb_families: Number of families
         nb_users: Number of users
@@ -33,7 +36,6 @@ pim_analytics:
         mongodb_version: MongoDB version
         server_version: Server version
         php_extensions: PHP extensions
-
     acl:
         system_info:
             index: System information
