@@ -97,6 +97,15 @@ class ProjectCompletenessFilter extends OroChoiceFilter
         $username = $this->tokenStorage->getToken()->getUsername();
         $productIds = $this->projectCompletenessRepo->findProductIds($project, $data['value'], $username);
 
+        // the datagrid uses the "product_and_product_model_index_name" index,
+        // where ES product identifier are prefixed by "model_"
+        $productIds = array_map(
+            function (string $productId): string {
+                return 'product_' . $productId;
+            },
+            $productIds
+        );
+
         // If the user has access to zero product in the project, we have to return "no result". So we add an
         // "always-false" filter by looking for products with "id = '-1'"
         $productIds = empty($productIds) ? ['-1'] : $productIds;
