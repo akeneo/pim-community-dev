@@ -53,10 +53,10 @@ define(
         },
 
         /**
-        * Displays the filters as column or not
-        *
-        * @property
-        */
+         * Displays the filters as column or not
+         *
+         * @property
+         */
         filtersAsColumn: function() {
             return _.result(this.options, 'filtersAsColumn', false);
         },

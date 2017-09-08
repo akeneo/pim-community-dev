@@ -18,7 +18,8 @@ define(
                     if (typeof FormClass !== 'function') {
                         throw new Error(`
                             The extension ${formMeta.module} must return a function.
-                            It returns: ${typeof FormClass}`);
+                            It returns: ${typeof FormClass}`
+                        );
                     }
 
                     const form = new FormClass(formMeta);
