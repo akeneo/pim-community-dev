@@ -16,7 +16,8 @@ define(
         'oro/datagrid/select-row-cell',
         'oro/datagrid/select-all-header-cell',
         'oro/datagrid/refresh-collection-action',
-        'oro/datagrid/reset-collection-action'
+        'oro/datagrid/reset-collection-action',
+        'pim/template/common/no-data'
     ],
     function (
         $,
@@ -33,7 +34,8 @@ define(
         SelectRowCell,
         SelectAllHeaderCell,
         RefreshCollectionAction,
-        ResetCollectionAction
+        ResetCollectionAction,
+        noDataTemplate
     ) {
         'use strict';
 
@@ -65,13 +67,13 @@ define(
                 '<div class="toolbar"></div>' +
                 '<div class="AknGridContainer grid-container container-fluid">' +
                     '<table class="AknGrid grid"></table>' +
-                    '<div class="no-data AknMessageBox AknMessageBox--centered"></div>' +
+                    '<div class="no-data"></div>' +
                     '<div class="loading-mask"></div>' +
                 '</div>'
             ),
 
             /** @property */
-            noDataTemplate: _.template('<span><%= hint %><span>'),
+            noDataTemplate: _.template(noDataTemplate),
 
             /** @property {Object} */
             selectors: {
@@ -499,14 +501,15 @@ define(
              */
             renderNoDataBlock: function () {
                 var entityHint = (this.entityHint || __('oro.datagrid.entityHint')).toLowerCase();
-                var template = 'oro.datagrid.' + (_.isEmpty(this.collection.state.filters) ? 'noentities' : 'noresults');
+                var key = 'oro.datagrid.' + (_.isEmpty(this.collection.state.filters) ? 'noentities' : 'noresults');
 
-                if (Translator.has('jsmessages:' + template + '.' + entityHint)) {
-                    template += '.' + entityHint;
+                if (Translator.has('jsmessages:' + key + '.' + entityHint)) {
+                    key += '.' + entityHint;
                 }
 
                 this.$(this.selectors.noDataBlock).html($(this.noDataTemplate({
-                    hint: __(template, {entityHint: entityHint}).replace('\n', '<br />')
+                    hint: __(key, {entityHint: entityHint}).replace('\n', '<br />'),
+                    subHint: __('oro.datagrid.noresults_subTitle')
                 }))).hide();
 
                 this._updateNoDataBlock();

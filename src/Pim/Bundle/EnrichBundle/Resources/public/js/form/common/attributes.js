@@ -24,6 +24,7 @@ define(
         'pim/security-context',
         'pim/template/form/tab/attributes',
         'pim/template/form/tab/attribute/attribute-group',
+        'pim/template/common/no-data',
         'pim/provider/to-fill-field-provider',
         'pim/dialog',
         'oro/messenger',
@@ -45,6 +46,7 @@ define(
         SecurityContext,
         formTemplate,
         attributeGroupTemplate,
+        noDataTemplate,
         toFillFieldProvider,
         Dialog,
         messenger,
@@ -112,6 +114,7 @@ define(
         return BaseForm.extend({
             template: _.template(formTemplate),
             attributeGroupTemplate: _.template(attributeGroupTemplate),
+            noDataTemplate: _.template(noDataTemplate),
             className: 'tabbable object-attributes',
             events: {
                 'click .remove-attribute': 'removeAttribute',
@@ -217,7 +220,15 @@ define(
                                 ));
                             }
 
-                            this.$('.object-values').empty().append(fieldsView);
+                            const objectValuesDom = this.$('.object-values').empty();
+                            if (_.isEmpty(fields)) {
+                                objectValuesDom.append(this.noDataTemplate({
+                                    hint: __('oro.datagrid.noresults'),
+                                    subHint: __('oro.datagrid.noresults_subTitle')
+                                }));
+                            } else {
+                                objectValuesDom.append(fieldsView);
+                            }
                             this.renderExtensions();
                             this.delegateEvents();
                         });
