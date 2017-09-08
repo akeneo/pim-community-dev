@@ -65,13 +65,17 @@ define(
                 '<div class="toolbar"></div>' +
                 '<div class="AknGridContainer grid-container container-fluid">' +
                     '<table class="AknGrid grid"></table>' +
-                    '<div class="no-data AknMessageBox AknMessageBox--centered"></div>' +
+                    '<div class="no-data AknGridContainer-noData AknGridContainer-noData--hidden"></div>' +
                     '<div class="loading-mask"></div>' +
                 '</div>'
             ),
 
             /** @property */
-            noDataTemplate: _.template('<span><%= hint %><span>'),
+            noDataTemplate: _.template(
+                '<div class="AknGridContainer-noDataImage"></div>' +
+                '<div class="AknGridContainer-noDataTitle"><%- hint %></div>' +
+                '<div class="AknGridContainer-noDataSubtitle"><%- subHint %></div>'
+            ),
 
             /** @property {Object} */
             selectors: {
@@ -499,15 +503,16 @@ define(
              */
             renderNoDataBlock: function () {
                 var entityHint = (this.entityHint || __('oro.datagrid.entityHint')).toLowerCase();
-                var template = 'oro.datagrid.' + (_.isEmpty(this.collection.state.filters) ? 'noentities' : 'noresults');
+                var key = 'oro.datagrid.' + (_.isEmpty(this.collection.state.filters) ? 'noentities' : 'noresults');
 
-                if (Translator.has('jsmessages:' + template + '.' + entityHint)) {
-                    template += '.' + entityHint;
+                if (Translator.has('jsmessages:' + key + '.' + entityHint)) {
+                    key += '.' + entityHint;
                 }
 
                 this.$(this.selectors.noDataBlock).html($(this.noDataTemplate({
-                    hint: __(template, {entityHint: entityHint}).replace('\n', '<br />')
-                }))).hide();
+                    hint: __(key, {entityHint: entityHint}).replace('\n', '<br />'),
+                    subHint: __('oro.datagrid.noresults_subTitle')
+                })));
 
                 this._updateNoDataBlock();
             },
@@ -567,12 +572,12 @@ define(
                     this.$(this.selectors.toolbar).show();
                     this.$(this.selectors.grid).show();
                     this.$(this.selectors.filterBox).show();
-                    this.$(this.selectors.noDataBlock).hide();
+                    this.$(this.selectors.noDataBlock).addClass('AknGridContainer-noData--hidden');
                 } else {
                     this.$(this.selectors.grid).hide();
                     this.$(this.selectors.toolbar).hide();
                     this.$(this.selectors.filterBox).hide();
-                    this.$(this.selectors.noDataBlock).show();
+                    this.$(this.selectors.noDataBlock).removeClass('AknGridContainer-noData--hidden');
                 }
             },
 

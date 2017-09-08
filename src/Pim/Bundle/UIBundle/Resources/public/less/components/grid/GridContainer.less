@@ -1,2 +1,37 @@
+@import '../../base/variables';
+
 .AknGridContainer {
+  &-noData {
+    height: ~"calc(100vh - 300px)";
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &--hidden {
+      display: none;
+    }
+  }
+
+  &-noDataImage {
+    background: url("../../../images/illustration-attribute.svg") no-repeat center center;
+    height: 200px;
+    width: 200px;
+    margin-bottom: 30px;
+  }
+
+  &-noDataTitle {
+    font-size: @AknAltTitleFontSize;
+    color: @AknDarkBlue;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  &-noDataSubtitle {
+    max-width: 600px;
+    color: @AknSlateGrey;
+    font-size: @AknFontSizeBigger;
+    line-height: 24px;
+    text-align: center;
+  }
 }
