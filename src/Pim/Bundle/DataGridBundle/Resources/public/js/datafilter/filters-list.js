@@ -17,63 +17,81 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'],
                 }
             },
 
+            /**
+             * @inheritdoc
+             */
             initialize(options) {
                 this.options = options.config;
 
-                mediator.once('datagrid_collection_set_after', (collection, gridElement) => {
-                    this.collection = collection;
-                    this.gridElement = gridElement;
-                    this.metadata = this.gridElement.data('metadata') || {};
-                    this.filters = this.metadata.filters;
-
-                    this.modules = {};
-                    this.collectModules.call(this);
-
-                    tools.loadModules(this.modules, () => {
-                        const options = this.combineOptions.call(this);
-                        options.collection = this.collection;
-                        options.displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
-
-                        this.filters = options.filters;
-                        this.render();
-
-                        mediator.trigger('datagrid_filters:loaded', options);
-                        mediator.trigger('datagrid_filters:rendered', this.collection, this.filters);
-                    });
-                });
+                mediator.once('datagrid_collection_set_after', this.loadFilterModules.bind(this));
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
 
+            /**
+             * Load the filter modules given a datagrid collection and grid metadata
+             * @param  {Object} collection  Backbone collection for a datagrid
+             * @param  {HTMLElement} gridElement Grid element
+             */
+            loadFilterModules(collection, gridElement) {
+                this.collection = collection;
+                this.gridElement = gridElement;
+                this.metadata = this.gridElement.data('metadata') || {};
+                this.filters = this.metadata.filters;
+                this.modules = this.collectModules();
+
+                tools.loadModules(this.modules, () => {
+                    const options = this.combineOptions.call(this);
+                    options.collection = this.collection;
+                    options.displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
+
+                    this.filters = options.filters;
+                    this.render();
+
+                    mediator.trigger('datagrid_filters:loaded', options);
+                    mediator.trigger('datagrid_filters:rendered', this.collection, this.filters);
+                });
+            },
+
+            /**
+             * Returns the filter module names
+             */
+            collectModules() {
+                const modules = {};
+
+                this.filters.forEach(filter => {
+                    const type = filter.type;
+                    modules[type] = this.config.filterModuleName.replace(
+                        '{{type}}',
+                        this.config.filterTypes[type] || type
+                    );
+                });
+
+                return modules;
+            },
+
+            /**
+             * Passes data to and creates new instances of filter modules
+             * @return {Object} The filter modules
+             */
             combineOptions() {
                 const filters = {};
-                const modules = this.modules;
-                const collection = this.collection;
 
-                _.each(this.metadata.filters, function(options) {
+                _.each(this.metadata.filters, options => {
                     if (_.has(options, 'name') && _.has(options, 'type')) {
-                        // @TODO pass collection only for specific filters
                         if (options.type === 'selectrow') {
-                            options.collection = collection;
+                            options.collection = this.collection;
                         }
-                        filters[options.name] = new(modules[options.type].extend(options))(options);
+                        filters[options.name] = new(this.modules[options.type].extend(options))(options);
                     }
                 });
 
                 return { filters };
             },
 
-            collectModules() {
-                var modules = this.modules;
-                _.each(this.filters, filter => {
-                    var type = filter.type;
-                    modules[type] = this.config.filterModuleName.replace(
-                        '{{type}}',
-                        this.config.filterTypes[type] || type
-                    );
-                });
-            },
-
+            /**
+             * Render filters
+             */
             render() {
                 _.each(this.filters, function (filter) {
                     if (!filter.enabled) {
