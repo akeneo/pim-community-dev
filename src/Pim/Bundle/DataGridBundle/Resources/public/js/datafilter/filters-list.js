@@ -4,7 +4,7 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'],
         return BaseForm.extend({
             options: {},
             filters: [],
-            className: 'AknFilterBox--list',
+            className: 'AknFilterBox--list filter-box',
 
             config: {
                 filterModuleName: 'oro/datafilter/{{type}}-filter',

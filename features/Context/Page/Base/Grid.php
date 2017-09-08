@@ -646,7 +646,10 @@ class Grid extends Index
             return $this->getElement('Body')->find('css', $this->elements['Filters']['css']);
         }, 'The filter box is not loaded');
 
-        $filter = $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
+        $filter = $this->spin(function () use ($filterName) {
+            return $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
+        }, sprintf('Could not find filter item %s', $filterName));
+
         if (null === $filter || !$filter->isVisible()) {
             $this->clickOnFilterToManage($filterName);
         }
@@ -660,6 +663,7 @@ class Grid extends Index
     public function hideFilter($filterName)
     {
         $filter = $this->getFilter($filterName);
+
         if ($filter->isVisible()) {
             $filter->remove();
         }
@@ -763,7 +767,7 @@ class Grid extends Index
 
         $this->spin(function () {
             $filterList = $this
-                ->getElement('Filters')
+                ->getElement('Body')
                 ->find('css', '.AknFilterBox-addFilterButton');
 
             if (null === $filterList) {

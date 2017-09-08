@@ -2,6 +2,8 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/datafilter/collection-fil
     function (_, BaseForm, mediator, FiltersManager) {
 
         return BaseForm.extend({
+            className: 'AknFilterBox--manage',
+
             render() {
                 mediator.once('datagrid_filters:loaded', options => {
                     var filtersList = new FiltersManager(options);
