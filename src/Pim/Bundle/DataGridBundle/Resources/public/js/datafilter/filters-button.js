@@ -9,6 +9,7 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/datafilter/collection-fil
              */
             initialize() {
                 mediator.once('datagrid_filters:loaded', this.showFilterManager.bind(this));
+                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**
