@@ -1,4 +1,5 @@
 job_profile;execute_job_profile;edit_job_profile
+csv_product_model_import;All;IT support,Manager
 csv_product_import;All;IT support,Manager
 csv_product_import_with_rules;All;IT support,Manager
 csv_product_export;All;IT support,Manager
@@ -51,6 +52,7 @@ xlsx_product_grid_context_quick_export;All
 xlsx_published_product_quick_export;All;
 xlsx_published_product_grid_context_quick_export;All;
 rule_impacted_product_count;All;
+xlsx_product_model_import;All;IT support,Manager
 xlsx_product_import;All;IT support,Manager
 xlsx_product_import_with_rules;All;IT support,Manager
 xlsx_product_proposal_import;All;IT support,Manager

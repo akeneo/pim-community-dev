@@ -1,4 +1,21 @@
 jobs:
+    csv_product_model_import:
+        connector: Akeneo CSV Connector
+        alias: csv_product_model_import
+        label: Demo CSV product model import
+        type: import
+        configuration:
+            filePath: /tmp/product_model.csv
+            uploadAllowed: true
+            delimiter: ;
+            enclosure: '"'
+            escape: '\'
+            enabled: true
+            categoriesColumn: categories
+            familyVariantColumn: familyVariant
+            realTimeVersioning: true
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
     csv_product_import:
         connector: Akeneo CSV Connector
         alias:     csv_product_import
@@ -568,6 +585,20 @@ jobs:
         alias:     rule_impacted_product_count
         label:     Calculation of the affected products for the rules
         type:      mass_edit_rule
+    xlsx_product_model_import:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_product_model_import
+        label: Demo XLSX product model import
+        type: import
+        configuration:
+            filePath: /tmp/product_model.xlsx
+            uploadAllowed: true
+            enabled: true
+            categoriesColumn: categories
+            familyVariantColumn: family_variant
+            realTimeVersioning: true
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
     xlsx_product_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_import
