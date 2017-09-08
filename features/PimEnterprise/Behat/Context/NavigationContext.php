@@ -20,7 +20,6 @@ class NavigationContext extends EnterpriseNavigationContext
 {
     /** @var array */
     protected $pageDecorators = [
-        'Pim\Behat\Decorator\Page\GridCapableDecorator',
-        'PimEnterprise\Behat\Decorator\Page\Product\IndexDecorator',
+        'PimEnterprise\Behat\Decorator\Page\GridCapableDecorator',
     ];
 }

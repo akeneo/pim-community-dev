@@ -1,14 +1,16 @@
 <div class="select2-result-label-view">
     <div class="project-line <%- isCurrent ? 'project-line-current' : '' %>">
-        <div class="project-completeness project-completeness--<%- completionStatus %>">
-            <%- project.completeness.ratio_done %>%
+        <div>
+            <div class="project-main-infos" title="<%- project.label %> - <%- channelLabel %> | <%- localeLabel %>">
+                <span class="project-label"><%- project.label %></span>
+                <span class="project-scope">- <%- channelLabel %> | <%- localeLabel %></span>
+            </div>
+            <div class="project-secondary-infos">
+                <%- dueDateLabel %>: <span class="project-duedate"><%- dueDate %></span>
+            </div>
         </div>
-        <div class="project-main-infos">
-            <span class="project-label"><%- project.label %></span>
-            <span class="project-scope">- <%- channelLabel %> | <%- localeLabel %></span>
-        </div>
-        <div class="project-secondary-infos">
-            <%- dueDateLabel %> <span class="project-duedate"><%- dueDate %></span>
+        <div class="AknBadge AknBadge--medium <%- badgeClass %>">
+            <%- completionRatio %>%
         </div>
     </div>
 </div>

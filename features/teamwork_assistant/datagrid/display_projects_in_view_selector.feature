@@ -87,7 +87,9 @@ Feature: Display teamwork assistant projects in the datagrid view selector
       | Description | A t-shirt with Geralt on it. |
     And I save the product
     When I am on the products grid
+    And I open the category tree
     And I filter by "category" with operator "" and value "clothing"
+    And I close the category tree
     And I show the filter "weight"
     And I filter by "weight" with operator "<" and value "6 Ounce"
     And I click on the create project button
@@ -103,7 +105,9 @@ Feature: Display teamwork assistant projects in the datagrid view selector
     And I switch view selector type to "Views"
     And I apply the "Default view" view
     Then I should be on the products page
+    And I open the category tree
     And I filter by "category" with operator "" and value "default"
+    And I close the category tree
     And I show the filter "capacity"
     And I filter by "capacity" with operator "=" and value "8 Gigabyte"
     And I click on the create project button

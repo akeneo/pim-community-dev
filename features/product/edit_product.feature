@@ -38,13 +38,10 @@ Feature: Edit a product I have access
 
   Scenario: Seeing the edit actions on the product grid
     Given I am on the products grid
+    And I open the category tree
     And I select the "Boots" tree
+    And I close the category tree
     Then I should not be able to view the "View the product" action of the row which contains "boots"
     And I should be able to view the "Edit attributes of the product" action of the row which contains "boots"
     And I should be able to view the "Classify the product" action of the row which contains "boots"
     And I should be able to view the "Delete the product" action of the row which contains "boots"
-
-  @skip
-  Scenario: Not being able to edit a product I have not access
-    Given I am on the products grid
-    Then I should not be able to access the "boots" product page

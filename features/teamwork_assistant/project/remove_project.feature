@@ -11,6 +11,7 @@ Feature: Remove project
       | blue_sandal | Sneakers | summer_collection |
     And I am logged in as "Julia"
     And I am on the products grid
+    And I switch view selector type to "Projects"
     And I click on the create project button
     And I fill in the following information in the popin:
       | project-label    | Star Wars Collection |

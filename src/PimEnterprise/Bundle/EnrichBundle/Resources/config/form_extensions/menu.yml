@@ -37,15 +37,6 @@ extensions:
             title: pim_menu.item.upload_asset
             to: pimee_product_asset_mass_upload
 
-    pim-menu-enrich-published-product:
-        module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        aclResourceId: pimee_workflow_published_product_index
-        position: 105
-        config:
-            title: pim_menu.item.published_product
-            to: pimee_workflow_published_product_index
-
     pim-menu-settings-proposal:
         module: pim/menu/item
         parent: pim-menu-settings-navigation-block
