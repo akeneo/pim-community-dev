@@ -74,6 +74,9 @@ define(
                         currentLocale: options.locale,
                         missingValues: 'pim_enrich.form.product.panel.completeness.missing_values'
                     }));
+                } else {
+                    // We drop the element for design issues, to avoid blank spaces.
+                    this.$el.remove();
                 }
 
                 return this;

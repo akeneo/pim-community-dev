@@ -950,6 +950,7 @@ config:
         pim/template/form/index/index:                            pimenrich/templates/form/index/index.html
         pim/template/form/index/create-button:                    pimenrich/templates/form/index/create-button.html
         pim/template/form/index/confirm-button:                   pimenrich/templates/form/index/confirm-button.html
+        pim/template/form/creation/modal:                         pimenrich/templates/form/creation/modal.html
 
         pim/template/form/creation/field:                         pimenrich/templates/form/creation/field.html
         pim/template/form/creation/family:                        pimenrich/templates/form/creation/family.html

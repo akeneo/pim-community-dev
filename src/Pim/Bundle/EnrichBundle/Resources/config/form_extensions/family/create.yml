@@ -1,17 +1,19 @@
 extensions:
     pim-family-create-modal:
-       module: pim/form/common/creation/modal
-       config:
-           labels:
-               title: pim_enrich.entity.family.create_popin.title
-           successMessage: pim_enrich.entity.family.message.created
-           editRoute: pim_enrich_family_edit
-           postUrl: pim_enrich_family_rest_create
-           routerKey: code
+        module: pim/form/common/creation/modal
+        config:
+            labels:
+                title: pim_enrich.entity.family.create_popin.title
+                subTitle: pim_menu.item.family
+            successMessage: pim_enrich.entity.family.message.created
+            editRoute: pim_enrich_family_edit
+            postUrl: pim_enrich_family_rest_create
+            routerKey: code
 
     pim-family-create-code:
-       module: pim/form/common/creation/field
-       parent: pim-family-create-modal
-       config:
-          identifier: code
-          label: pim_enrich.entity.create_popin.code
+        module: pim/form/common/creation/field
+        parent: pim-family-create-modal
+        targetZone: fields
+        config:
+            identifier: code
+            label: pim_enrich.entity.create_popin.code
