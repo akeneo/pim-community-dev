@@ -170,7 +170,8 @@ Feature: Associate a product
   @jira https://akeneo.atlassian.net/browse/PIM-5295
   Scenario: Association product grid is not filtered by the category selected in the product grid
     Given I am on the products grid
-    When I filter by "category" with operator "" and value "summer_collection"
+    When I open the category tree
+    And I filter by "category" with operator "" and value "summer_collection"
     Then I should see product charcoal-boots
     And I should not see product black-boots
     When I am on the "charcoal-boots" product page

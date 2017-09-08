@@ -34,4 +34,4 @@ extensions:
         config:
             label: pim_enrich.index.user_group.create_btn
             route: oro_user_group_create
-            buttonClass: AknButton--apply
+            buttonClass: AknButton AknButton--apply

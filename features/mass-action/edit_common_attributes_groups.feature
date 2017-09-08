@@ -19,7 +19,7 @@ Feature: Edit common attributes of many products at once
       | name      | french | Nom    |
       | size      | french | Taille |
     And I am on the products grid
-    And I filter by "scope" with operator "equals" and value "Mobile"
+    And I switch the scope to "Mobile"
     And I switch the locale to "fr_FR"
     When I select rows boots and sandals
     And I press "Change product information" on the "Bulk Actions" dropdown button

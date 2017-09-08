@@ -33,7 +33,7 @@ class Index extends Grid
             [
                 'Categories tree'         => ['css' => '#tree'],
                 'Main context selector'   => [
-                    'css'        => '#container',
+                    'css'        => '.AknColumn-innerTop',
                     'decorators' => ['Pim\Behat\Decorator\ContextSwitcherDecorator'],
                 ],
                 'Tree select'             => ['css' => '#tree_select'],

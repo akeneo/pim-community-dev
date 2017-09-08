@@ -138,3 +138,4 @@ config:
         pim/template/datagrid/filter/metric-filter:             pimdatagrid/templates/filter/metric-filter.html
         pim/template/datagrid/filter/search-filter:             pimdatagrid/templates/filter/search-filter.html
         pim/template/datagrid/cell/credentials-cell:            pimdatagrid/templates/datagrid/cell/credentials-cell.html
+        pim/template/datagrid/filter/scope-filter:              pimdatagrid/templates/filter/scope-filter.html

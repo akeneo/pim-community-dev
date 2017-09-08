@@ -34,4 +34,4 @@ extensions:
         config:
             label: pim_enrich.index.channel.create_btn
             route: pim_enrich_channel_create
-            buttonClass: AknButton--apply
+            buttonClass: AknButton AknButton--apply

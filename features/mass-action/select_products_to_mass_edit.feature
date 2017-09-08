@@ -65,7 +65,7 @@ Feature: When I mass edit I should be able to see how many items will be edited
       | pump      | weight                   | 500 GRAM                |
       | highheels | weight                   | 500 GRAM                |
     And I show the filter "description"
-    And I filter by "scope" with operator "" and value "Tablet"
+    And I switch the scope to "Tablet"
     And I filter by "description" with operator "contains" and value "A beautiful description"
     And I select all entities
     When I press "Change product information" on the "Bulk Actions" dropdown button

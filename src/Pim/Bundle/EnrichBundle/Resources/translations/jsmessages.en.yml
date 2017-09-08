@@ -164,7 +164,11 @@ pim_enrich:
         product:
             navigation: Product navigation
             infos: Product infos
+            index_title: Products
             title: product
+            locale: Locale
+            category: Category
+            create: Create product
             btn:
                 enabled: Enabled
                 disabled: Disabled

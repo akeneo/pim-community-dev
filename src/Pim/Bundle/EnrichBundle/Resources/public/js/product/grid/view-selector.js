@@ -19,7 +19,7 @@ define(
         BaseForm
     ) {
         return BaseForm.extend({
-            className: 'view-selector pull-right',
+            className: 'view-selector',
             config: {
                 gridName: 'product-grid'
             },

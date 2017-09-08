@@ -204,6 +204,7 @@ Feature: Datagrid views
     And I logout
     And I am logged in as "Mary"
     And I am on the products grid
+    And I open the category tree
     And I filter by "category" with operator "unclassified" and value ""
     Then the row "purple-sneakers" should contain:
       | column | value           |
@@ -221,7 +222,7 @@ Feature: Datagrid views
   Scenario: Successfully change grid channel
     Given I am on the products grid
     Then I should see the text "Tablet"
-    When I filter by "scope" with operator "" and value "Mobile"
+    When I switch the scope to "Mobile"
     And I create the view:
       | new-view-label | Mobile only |
     Then I should be on the products page
@@ -261,8 +262,3 @@ Feature: Datagrid views
     And I am on the products grid
     And I should see the text "Default view"
     But I should not see the text "Boots only"
-
-  @ce
-  Scenario: Don't display view type switcher if there is only one view type
-    Given I am on the products grid
-    Then I should not see the text "Views"
