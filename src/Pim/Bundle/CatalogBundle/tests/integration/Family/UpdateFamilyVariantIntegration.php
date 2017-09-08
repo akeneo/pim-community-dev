@@ -44,12 +44,12 @@ class UpdateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update(
             $familyVariant,
             [
-                'label'                  => [
-                    'en_US' => 'My family variant'
+                'label' => [
+                    'en_US' => 'My family variant',
                 ],
                 'variant_attribute_sets' => [
                     [
-                        'axes'       => ['eu_shoes_size'],
+                        'axes' => ['eu_shoes_size'],
                         'attributes' => [
                             'ean',
                             'brand',
@@ -58,9 +58,9 @@ class UpdateFamilyVariantIntegration extends TestCase
                             'description',
                             'erp_name',
                             'image',
-                            'weight'
+                            'weight',
                         ],
-                        'level'      => 1,
+                        'level' => 1,
                     ],
                 ],
             ]
@@ -85,7 +85,18 @@ class UpdateFamilyVariantIntegration extends TestCase
             'Axis is invalid (level 1)'
         );
         $this->assertEquals(
-            ['brand', 'collection', 'color', 'description', 'ean', 'erp_name', 'image', 'size', 'weight'],
+            [
+                'brand',
+                'collection',
+                'color',
+                'description',
+                'ean',
+                'erp_name',
+                'eu_shoes_size',
+                'image',
+                'size',
+                'weight',
+            ],
             $this->extractAttributeCode($variantAttributeSet->getAttributes()),
             'Variant attribute are invalid (level 1)'
         );
@@ -109,9 +120,9 @@ class UpdateFamilyVariantIntegration extends TestCase
             [
                 'variant_attribute_sets' => [
                     [
-                        'axes'       => ['weight', 'brand'],
+                        'axes' => ['weight', 'brand'],
                         'attributes' => ['ean', 'collection', 'color', 'description', 'erp_name'],
-                        'level'      => 1,
+                        'level' => 1,
                     ],
                 ],
             ]
@@ -137,14 +148,14 @@ class UpdateFamilyVariantIntegration extends TestCase
             [
                 'variant_attribute_sets' => [
                     [
-                        'axes'       => ['eu_shoes_size'],
+                        'axes' => ['eu_shoes_size'],
                         'attributes' => ['brand', 'collection', 'color', 'description', 'erp_name', 'image'],
-                        'level'      => 1,
+                        'level' => 1,
                     ],
                     [
-                        'axes'       => ['supplier'],
+                        'axes' => ['supplier'],
                         'attributes' => ['ean', 'name', 'notice', 'price', 'sku'],
-                        'level'      => 2,
+                        'level' => 2,
                     ],
                 ],
             ]
@@ -164,11 +175,11 @@ class UpdateFamilyVariantIntegration extends TestCase
                 'variant_attribute_sets' => [
                     [
                         'attributes' => ['brand'],
-                        'level'      => 2,
+                        'level' => 2,
                     ],
                     [
                         'attributes' => ['collection'],
-                        'level'      => 1,
+                        'level' => 1,
                     ],
                 ],
             ]
@@ -185,6 +196,7 @@ class UpdateFamilyVariantIntegration extends TestCase
                 'care_instructions',
                 'description',
                 'erp_name',
+                'image',
                 'keywords',
                 'meta_description',
                 'meta_title',
@@ -200,7 +212,7 @@ class UpdateFamilyVariantIntegration extends TestCase
 
         $variantAttributeSet1 = $familyVariant->getVariantAttributeSet(1);
         $this->assertEquals(
-            ['collection', 'color', 'composition', 'image', 'material', 'variation_image', 'variation_name'],
+            ['collection', 'color', 'composition', 'material', 'variation_image', 'variation_name'],
             $this->extractAttributeCode($variantAttributeSet1->getAttributes()),
             'Variant attribute are invalid (level 1)'
         );
@@ -269,9 +281,11 @@ class UpdateFamilyVariantIntegration extends TestCase
      */
     private function extractAttributeCode(Collection $collection): array
     {
-        $codes = $collection->map(function (AttributeInterface $attribute) {
-            return $attribute->getCode();
-        })->toArray();
+        $codes = $collection->map(
+            function (AttributeInterface $attribute) {
+                return $attribute->getCode();
+            }
+        )->toArray();
 
         $codes = array_values($codes);
         sort($codes);

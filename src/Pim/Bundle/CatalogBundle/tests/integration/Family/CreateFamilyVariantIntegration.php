@@ -60,7 +60,7 @@ class CreateFamilyVariantIntegration extends TestCase
             'Axis is invalid (level 1)'
         );
         $this->assertEquals(
-            ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
+            ['color', 'weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
             $this->extractAttributeCode($variantAttributeSet->getAttributes()),
             'Variant attribute are invalid (level 1)'
         );
@@ -72,7 +72,7 @@ class CreateFamilyVariantIntegration extends TestCase
             'The axis is invalid (level 2)'
         );
         $this->assertEquals(
-            ['sku', 'price'],
+            ['size', 'sku', 'price'],
             $this->extractAttributeCode($variantAttributeSet->getAttributes()),
             'Variant attribute are invalid (level 2)'
         );
@@ -142,10 +142,14 @@ class CreateFamilyVariantIntegration extends TestCase
         ]);
 
         $errors = $this->get('validator')->validate($familyVariant);
-        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(2, $errors->count());
         $this->assertEquals(
             'Variant axes must be unique, "color" are used several times in variant attributes sets',
             $errors->get(0)->getMessage()
+        );
+        $this->assertEquals(
+            'Attributes must be unique, "color" are used several times in variant attributes sets',
+            $errors->get(1)->getMessage()
         );
     }
 
@@ -475,10 +479,14 @@ class CreateFamilyVariantIntegration extends TestCase
         ]);
 
         $errors = $this->get('validator')->validate($familyVariant);
-        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(2, $errors->count());
         $this->assertEquals(
             'Attribute "size" must be set as attribute in the same variant attribute set it was set as axis',
             $errors->get(0)->getMessage()
+        );
+        $this->assertEquals(
+            'Attributes must be unique, "size" are used several times in variant attributes sets',
+            $errors->get(1)->getMessage()
         );
     }
 
