@@ -85,6 +85,7 @@ Feature: Define user rights
   Scenario: Successfully remove and add the List categories rights
     Given I am logged in as "Peter"
     When I am on the products grid
+    And I open the category tree
     Then I should see the text "2014 Collection"
     When  I am on the "Administrator" role page
     And I visit the "Permissions" tab

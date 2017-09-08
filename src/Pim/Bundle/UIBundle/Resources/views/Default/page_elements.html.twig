@@ -232,9 +232,9 @@
     {% if form.enabled is defined %}
         <div class="status-enabled pull-left">
             {% if form.enabled.vars.value %}
-                <div class="AknBadge AknBadge--rounded AknBadge--enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
+                <div class="AknBadge AknBadge--enabled status-enabled"><i class="icon-status-enabled icon-circle"></i>{{ 'info.product.enabled'|trans }}</div>
             {% else %}
-                <div class="AknBadge AknBadge--rounded AknBadge--disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
+                <div class="AknBadge AknBadge--disabled status-disabled"><i class="icon-status-disabled icon-circle"></i>{{ 'info.product.disabled'|trans }}</div>
             {% endif %}
         </div>
     {% endif %}

@@ -895,7 +895,9 @@ config:
         pim/formatter/choices/base: pimenrich/js/formatter/choices/base
         pim/formatter/date: pimenrich/js/formatter/date-formatter
 
-        pim/grid/locale-switcher: pimenrich/js/product/grid/locale-switcher
+        # Grid
+        pim/grid/locale-switcher:   pimenrich/js/product/grid/locale-switcher
+        pim/grid/category-switcher: pimenrich/js/product/grid/category-switcher
 
         # Category tree
         pim/grid/category-tree: pimenrich/js/product/grid/category-tree
@@ -978,6 +980,8 @@ config:
 
         # Grid
         pim/template/product/grid/locale-switcher:           pimenrich/templates/product/grid/locale-switcher.html
+        pim/template/product/grid/column-inner:              pimenrich/templates/product/grid/column-inner.html
+        pim/template/product/grid/category-switcher:         pimenrich/templates/product/grid/category-switcher.html
         pim/template/product/index:                          pimenrich/templates/product/index.html
         pim/template/product/tab/categories:                 pimenrich/templates/product/tab/categories.html
         pim/template/product/tab/catalog-switcher:           pimenrich/templates/product/tab/catalog-switcher.html

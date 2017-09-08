@@ -26,6 +26,7 @@ Feature: Classify many products at once
     And I confirm mass edit
     And I wait for the "add_product_value" job to finish
     When I am on the products grid
+    And I open the category tree
     And I select the "2014 collection" tree
     Then I should see the text "Summer collection (2)"
     And I should see the text "Winter collection (2)"
@@ -42,6 +43,7 @@ Feature: Classify many products at once
     And I confirm mass edit
     And I wait for the "update_product_value" job to finish
     When I am on the products grid
+    And I open the category tree
     And I select the "2014 collection" tree
     Then I should see the text "Summer collection (0)"
     And I should see the text "Winter collection (2)"

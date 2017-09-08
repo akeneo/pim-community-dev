@@ -46,7 +46,7 @@ Feature: Edit common attributes of many products at once
       | pump      | weight                   | 500 GRAM                |
       | highheels | weight                   | 500 GRAM                |
     When I show the filter "description"
-    And I filter by "scope" with operator "" and value "Tablet"
+    And I switch the scope to "Tablet"
     And I filter by "description" with operator "contains" and value "A beautiful description"
     And I select all entities
     And I press "Change product information" on the "Bulk Actions" dropdown button

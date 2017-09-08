@@ -1,20 +1,18 @@
 confirmation:
   remove:
     item: Sei sicuro di voler eliminare questo articolo?
-    association_type: Sei sicuro di voler eliminare questo tipo di associazione?
+    association type: Sei sicuro di voler eliminare questo tipo di associazione?
     attribute: Sei sicuro di voler eliminare questo attributo?
-    attribute_group: Sei sicuro di voler eliminare questo gruppo di attributi?
     family: Sei sicuro di voler eliminare questa famiglia?
     product: Sei sicuro di voler eliminare questo prodotto?
     channel: Sei sicuro di voler eliminare questo canale?
     group: Sei sicuro di voler eliminare questo gruppo?
     variant group: Sei sicuro di voler eliminare questa variante del gruppo?
-    group_type: Sei sicuro di voler eliminare questo tipo di gruppo?
+    group type: Sei sicuro di voler eliminare questo tipo di gruppo?
     import profile: Sei sicuro di voler eliminare questo profilo di importazione?
     export profile: Sei sicuro di voler eliminare questo profilo di esportazione?
     user: Sei sicuro di voler eliminare questo utente?
     role: Sei sicuro di voler eliminare questo ruolo?
-    job_instance: È sicuro di che volere cancellare questa istanza di lavoro?
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -26,31 +24,24 @@ pim_datagrid:
       confirm_content: Sei sicuro di che voler eliminare i prodotti selezionati?
       success: I prodotti selezionati sono stati eliminati con successo.
       error: Si è verificato un errore cancellando i prodotti selezionati, per favore riprova.
-  view_selector:
-    view: Visualizzazione
-    create_view_modal:
-      confirm: OK
-      cancel: Annulla
 flash:
   item:
     removed: Articolo rimosso con successo
-  association_type:
+  association type:
     removed: Tipo di associazione rimossa con successo
   attribute:
-    removed: Attributo eliminato con successo
-  attribute_group:
-    removed: Gruppo di attributi rimosso con successo
+    removed: Attributo rimosso con successo
   family:
     removed: Famiglia rimossa con successo
   product:
-    removed: Articolo rimosso con successo
+    removed: Prodotto rimosso con successo
   channel:
     removed: Canale rimosso con successo
   group:
     removed: Gruppo rimosso con successo
   variant group:
     removed: Variante gruppo rimossa con successo
-  group_type:
+  group type:
     removed: Tipo di gruppo rimosso con successo
   import profile:
     removed: Profilo di importazione rimosso con successo
@@ -60,15 +51,10 @@ flash:
     removed: Utente rimosso con successo
   role:
     removed: Ruolo rimosso con successo
-  job_instance:
-    removed: Istanza di lavoro rimossa correttamente
 error:
-  common: Si è verificato un errore
-  creating:
-    product: Nessun attributo è configurato come identificatore di prodotto o non hai i diritti per modificarlo.
   removing:
     item: Non è possibile eliminare questo articolo
-    association_type: Non è possibile eliminare questo tipo di associazione
+    association type: Non è possibile eliminare questo tipo di associazione
     attribute: Non è possibile eliminare questo attributo
     family: Non è possibile eliminare questa famiglia
     product: Non è possibile eliminare questo prodotto
@@ -82,7 +68,7 @@ error:
     role: Non è possibile eliminare questo ruolo
     attribute_option: Errore durante la cancellazione dell'opzione attributo
   saving:
-    attribute_option: Non è possibile salvare l'opzione dell'attributo
+    attribute_option: Impossibile salvare l'opzione dell'attributo
     export_profile: Non è possibile salvare il profilo di esportazione. Si prega di verificare che tutti i filtri siano correttamente valorizzati
 alert:
   attribute_option:
@@ -99,7 +85,7 @@ label:
     add_option: Aggiungi un'opzione
 Code: Codice
 Edit: Modifica
-Delete: Eliminare
+Delete: Elimina
 Edit attributes of the product: Modificare gli attributi del prodotto
 Classify the product: Classificare il prodotto
 Delete the product: Eliminare il prodotto
@@ -115,52 +101,51 @@ pim:
         xlsx_grid_context: Excel (Contesto di griglia)
       delete: Elimina i prodotti
       mass_edit: Cambia le informazioni del prodotto
-      category_edit: Spostare i prodotti nelle categorie
-      sequential_edit: Modificare i prodotti in sequenza
-jstree.create: Crea
+      category_edit: Sposta i prodotti nelle categorie
+      sequential_edit: Modifica i prodotti in sequenza
+jstree.create: Creare
 switch_on: "Sì"
 switch_off: "No"
 pim_enrich:
   item:
     list:
       delete.label: Eliminare
-      delete.error: Errore durante l'eliminazione dell'articolo
+      delete.error: Errore durante l'eliminazione della voce
     delete:
-      confirm.content: Sei sicuro di che voler eliminare questo {{ itemName }}? Non è possibile annullare questa azione
-      confirm.title: Elimina questo {{ itemName }}
+      confirm.content: Sei sicuro di che voler eliminare la voce {{ itemName }}? Non è possibile annullare questa azione
+      confirm.title: Elimina la voce {{ itemName }}
   navigation:
     link:
       back_to_grid: Torna alla griglia
-    other_actions: Altre azioni
   entity:
     save:
       label: Salva
     info:
       update_failed: Aggiornamento non riuscito
-      update_successful: Aggiornamento completato
-    create_popin:
-      code: Codice
-      label: Etichetta
-      labels:
-        save: Salva
-        cancel: Annulla
+      update_successful: Aggiornato correttamente
     product:
-      navigation: Navigazione prodotti
-      infos: Info prodotto
       title: Articoli
       btn:
+        enable: Attiva
         enabled: Attivato
+        disable: Disabilita
         disabled: Disabilitato
         download_pdf: PDF
         compare_translate: Confronta / Traduci
         delete: Eliminare
         save: Salva
+        save_and_back: Salva e torna alla griglia
       history:
         version: Versione
         author: Autore
         logged_at: Loggato il
+        more: Altro
+        less: Meno
         from: Da
         modified: Modificato
+        property: Proprietà
+        old_values: Vecchi valori
+        new_values: Nuovi valori
         actions: Azioni
       info:
         deletion_successful: Prodotto eliminato correttamente.
@@ -185,11 +170,8 @@ pim_enrich:
             title: Gruppo {{ group }}
             view_group: Visualizzazione gruppo
             group_label: Etichetta
-            more_products: '{{ count }} prodotti in più...'
+            more_products: '{{ count }} altri prodotti...'
             close: Chiudi
-        status: Stato
-        scope: Canale
-        locale: Impostazioni locali
       copy:
         select: Selezionare
         all: Tutti
@@ -208,95 +190,16 @@ pim_enrich:
       localizable:
         channel_locale_unavailable: Questo campo localizzabile non è disponibile per l'impostazione internazionale '{{ locale }}' e per il canale '{{ channel }}'
       media:
-        upload: Rilascia i file qui dentro per caricarli oppure clicca qui
+        upload: Trascina e rilascia qui un file per caricarlo o fai click qui
       create_popin:
         title: Crea un nuovo articolo
         labels:
           family: Scegli una famiglia
           save: Salva
           cancel: Annulla
-      message:
-        created: Articolo creato con successo
-      completeness: Completo
-    association_type:
-      info:
-        deletion_successful: Tipo di associazione rimosso con successo.
-        deletion_failed: Il tipo di associazione non può essere eliminato.
-        update_successful: Tipo di associazione aggiornato con successo.
-        update_failed: Il tipo di associazione non può essere aggiornato.
-        field_not_ready: 'Il tipo di associazione non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
-      meta:
-        created: Creato
-        created_by: Creato da
-        updated: Caricato
-        updated_by: Aggiornato da
-      btn:
-        save: Salva
-      title: Tipo associazione
-      create_popin:
-        title: Creare un nuovo tipo di associazione
-      message:
-        created: Tipo di associazione creata con successo
-    group_type:
-      info:
-        deletion_successful: Il tipo di gruppo è stato eliminato correttamente.
-        deletion_failed: Il tipo di gruppo non può essere eliminato.
-        update_successful: Il tipo di gruppo è stato aggiornato correttamente.
-        update_failed: Il tipo di gruppo non può essere aggiornato.
-        field_not_ready: 'Il tipo di gruppo non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
-      meta:
-        created: Creato
-        created_by: Creato da
-        updated: Caricato
-        updated_by: Aggiornato da
-      btn:
-        save: Salva
-      title: Tipo gruppo
-      create_popin:
-        title: Crea un nuovo tipo di gruppo
-      message:
-        created: Tipo di gruppo creato con successo
-    channel:
-      title: canale
-      info:
-        deletion_successful: Canale rimosso con successo.
-        deletion_failed: Impossibile eliminate il canale.
-        update_successful: Canale aggiornato con successo.
-        update_failed: Il canale non può essere aggiornato.
-        create_successful: Canale creato con successo.
-        create_failed: Il canale non può essere creato.
-        field_not_ready: 'Il canale non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
-      meta:
-        created: Creato
-        created_by: Creato da
-        updated: Caricato
-        updated_by: Aggiornato da
-      btn:
-        save: Salva
-    family:
-      title: famiglia
-      info:
-        update_successful: Famiglia aggiornata con successo.
-        create_successful: Canale creato con successo.
-        update_failed: Errore durante l'aggiornamento della famiglia.
-        cant_remove_attribute_as_label: Non è possibile rimuovere l'attributo utilizzato come etichetta
-        cant_remove_attribute_as_image: Non è possibile rimuovere l'attributo utilizzato come immagine principale
-        attribute_edit_permission_is_not_granted: Non hai i diritti per modificare gli attributi della famiglia
-      meta:
-        created: Creato
-        created_by: Creato da
-        updated: Caricato
-        updated_by: Aggiornato da
-      btn:
-        save: Salva
-      create_popin:
-        title: Crea una nuova famiglia
-      message:
-        created: Famiglia creata con successo
     attribute_option:
       code: Codice
       label: Etichetta
-      actions: Azioni
     variant_group:
       title: Gruppo di varianti
       info:
@@ -304,7 +207,9 @@ pim_enrich:
         deletion_failed: Il gruppo di varianti non può essere eliminato.
         update_successful: Gruppo di varianti aggiornato con successo.
         update_failed: Il gruppo di varianti non può essere aggiornato.
-        field_not_ready: 'Il gruppo di varianti non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
+        field_not_ready:
+          The variant group cannot be saved right now. The following fields are not ready:
+            - campi
         already_in_upload: Un file è già in caricamento per questo attributo nell'impostazione internazionale "{{ locale }}" e nell'ambito "{{ scope }}"
         no_attributes: Questo gruppo di varianti non ha ancora attributi
       btn:
@@ -315,74 +220,12 @@ pim_enrich:
         created_by: Creato da
         updated: Caricato
         updated_by: Aggiornato da
-      create_popin:
-        title: Crea una nuova variante di gruppo
-      message:
-        created: Variante gruppo creata con successo
-    group:
-      title: Gruppo
-      info:
-        deletion_successful: Il gruppo è stato cancellato con successo.
-        deletion_failed: Il gruppo non può essere eliminato.
-        update_successful: Gruppo aggiornato con successo.
-        update_failed: Il gruppo non può essere aggiornato.
-        field_not_ready: 'Il gruppo non può essere salvato in questo momento. I seguenti campi non sono pronti: {{ fields }}'
-      btn:
-        save: Salva
-      meta:
-        product_count: Articoli
-        created: Creato
-        created_by: Creato da
-        updated: Caricato
-        updated_by: Aggiornato da
-      create_popin:
-        title: Crea un nuovo gruppo
-      message:
-        created: Gruppo creato con successo
-    job_instance:
-      title: profilo del job
-      info:
-        update_failed: Il profilo del job non può essere aggiornato.
-        update_successful: Il profilo del job è stato aggiornato con successo.
-    attribute:
-      info:
-        deletion_successful: Attributo eliminato correttamente.
-        deletion_failed: L'attributo non può essere eliminato.
-        update_successful: Attributo aggiornato con successo.
-        update_failed: L'attributo non può essere aggiornato.
-        create_successful: Attributo creato con successo.
-        create_failed: L'attributo non può essere creato.
-      scopable: Customizzazione per canale
-      type:
-        pim_catalog_identifier: Identificatore
-        pim_catalog_text: Testo
-        pim_catalog_textarea: Area di testo
-        pim_catalog_number: Numero
-        pim_catalog_price_collection: Prezzo
-        pim_catalog_multiselect: Selezione multipla
-        pim_catalog_simpleselect: Selezione singola
-        pim_catalog_file: File
-        pim_catalog_image: Immagine
-        pim_catalog_boolean: "Sì/No"
-        pim_catalog_date: Data
-        pim_catalog_metric: Metrico
-        pim_reference_data_simpleselect: Seleziona un singolo riferimento dati
-        pim_reference_data_multiselect: Seleziona un riferimento dati multiplo
-      validation_rule:
-        email: E-mail
-        regexp: Espressione regolare
-        url: URL
-    attribute_group:
-      info:
-        update_failed: Gruppo di attributi non può essere aggiornato
-        update_successful: Gruppo di attributi aggiornato con successo
   confirmation:
     leave: Sei sicuro di voler lasciare questa pagina?
     discard_changes: Perderai le modifiche a {{ entity }} se lasci la pagina.
     delete_item: Conferma cancellazione
     delete:
       attribute: Sei sicuro di voler rimuovere questo attributo dal prodotto?
-      attribute_group: Sei sicuro di che voler rimuovere l'attributo {{ attribute }} da questo gruppo di attributi?
   info:
     not_applicable: N/A
     entity:
@@ -390,7 +233,7 @@ pim_enrich:
   error:
     upload: Si è verificato un errore durante il caricamento del file
   alert:
-    not_allowed: Vietato. Non è consentito accedere a questa pagina
+    not_allowed: Non sei autorizzato ad accedere a questa pagina
     error_occured: Si è verificato un errore durante il caricamento della pagina
   form:
     required: (richiesto)
@@ -400,8 +243,9 @@ pim_enrich:
           title: Associazioni
           info:
             none_exist: Nessun tipo di associazione esistente.
-            show_products: Visualizza i prodotti
-          association_type_selector: Tipi di associazione
+            show_products: Mostra articoli
+            show_groups: Mostra gruppi
+            number_of_associations: "{{ productCount }} prodotti e {{ groupCount }} gruppi"
         attributes:
           title: Attributi
           btn:
@@ -410,11 +254,9 @@ pim_enrich:
           info:
             search_attributes: Ricerca...
             no_available_attributes: Non ci sono altri attributi da aggiungere
-            attributes_selected: "{{ itemsCount }} attributo(i) selezionato(i)"
+            attributes_selected: "{{ attributeCount }} attributo(i) selezionato(i)"
             no_match: Nessuna corrispondenza trovata
             load_more: Carica ulteriori risultati...
-          attribute_group_selector: Attributo di gruppo
-          attribute_group_all: Tutti
         categories:
           title: Categorie
       panel:
@@ -423,6 +265,7 @@ pim_enrich:
           info:
             no_family: Nessuna famiglia definita. Si prega di definire una famiglia per calcolare il livello di completamento di questo prodotto.
             no_completeness: Hai appena cambiato la famiglia del prodotto. Si prega di salvare prima di calcolare il livello di completamento per la nuova famiglia.
+          missing_values: Valori mancanti
         history:
           title: Cronologia
       switch:
@@ -448,61 +291,6 @@ pim_enrich:
       mass_edit:
         select_attributes: Selezionare gli attributi
         select: Selezionare
-    association_type:
-      tab:
-        properties:
-          title: Proprietà
-          general: Proprietà generali
-          code: Codice
-          label_translations: Traduzioni etichetta
-        history:
-          title: Cronologia
-    group_type:
-      tab:
-        properties:
-          title: Proprietà
-          general: Proprietà generali
-          code: Codice
-          label_translations: Traduzioni etichetta
-        history:
-          title: Cronologia
-    channel:
-      tab:
-        history:
-          title: Cronologia
-        properties:
-          title: Proprietà
-          general: Generale
-          code: Codice
-          currencies: Valute
-          locales: Impostazioni locali
-          category_tree: Struttura della categoria
-          label_translations: Traduzioni etichetta
-          label_conversion_units: Scegliere un'unità di conversione per ogni attributo metrico che verrà utilizzato durante l'esportazione dell'articolo
-          conversion_unit:
-            do_not_convert: Non convertire
-    family:
-      tab:
-        properties:
-          title: Proprietà
-          general: Generale
-          code: Codice
-          attribute_as_label: Attributo utilizzato come etichetta
-          attribute_as_image: Attributo utilizzato come immagine principale
-          empty_attribute_as_image: Non Selezionato
-          label_translations: Traduzioni etichetta
-        attributes:
-          title: Attributi
-          label_label: Etichetta
-          toolbox:
-            select_attributes_by_groups: Aggiungi per gruppi
-            select_attributes: Aggiungi attributi
-            add: Aggiungi
-            attributes_groups_selected: '{{ itemsCount }} gruppo(i) selezionato(i)'
-          not_required_label: Non obbligatorio
-          required_label: Obbligatorio
-        history:
-          title: Cronologia
     attribute_option:
       flash:
         option_created: Opzione di attributo creata correttamente
@@ -516,7 +304,6 @@ pim_enrich:
         "no": "No"
         "yes": "Sì"
     variant_group:
-      axis.help: Gli assi definiscono gli attributi sui quali dovrebbero variare i prodotti del gruppo. Gli assi sono attributi con opzioni, non localizzabili e senza ambiti. Non possono essere modificati dopo la creazione del gruppo di varianti
       tab:
         properties:
           title: Proprietà
@@ -531,33 +318,6 @@ pim_enrich:
           title: Articoli
         attributes:
           title: Attributi
-    group:
-      tab:
-        properties:
-          title: Proprietà
-          general: Proprietà generali
-          code: Codice
-          type: Tipo
-          label_translations: Traduzioni etichetta
-        history:
-          title: Cronologia
-        products:
-          title: Articoli
-    attribute_group:
-      tab:
-        properties:
-          title: Proprietà
-          general: Proprietà generali
-          code: Codice
-          label_translations: Traduzioni etichetta
-        attribute:
-          title: Attributi
-          table:
-            name: Nome
-            type: Tipo
-            scopable: Customizzazione per canale
-            localizable: Localizzabile
-        history.title: Cronologia
     common:
       tab:
         attributes:
@@ -567,166 +327,6 @@ pim_enrich:
           info:
             search_attributes: Ricerca...
             no_available_attributes: Non ci sono altri attributi da aggiungere
-    job_execution:
-      loading: Caricamento in corso...
-      title.details: Dettagli esecuzione
-      refreshBtn.title: Aggiorna
-      meta:
-        status.title: Stato
-      button:
-        show_profile.title: Visualizza profilo
-        download_log.title: Scarica il log
-        download_file.title: Scarica file generati
-        download_archive.title: Scarica archivi generati
-      summary:
-        fetching: Raccolta di dati sull'esecuzione del lavoro...
-        warning: Attenzione
-        header.step: Passo
-        header.status: Stato
-        header.warnings: Avvisi
-        header.summary: Riepilogo
-        header.start: Inizio
-        header.end: Fine
-    job_instance:
-      fail:
-        launch: Impossibile avviare il profilo di lavoro. Assicurarsi che sia valido e che si abbia il permesso per lanciarlo.
-        save: Impossibile salvare il profilo di lavoro. Assicurarsi che si abbia il permesso per modificarlo.
-      title:
-        import: Profilo di importazione
-        export: Profilo di esportazione
-      button:
-        edit.title: Modifica
-        export.title: Esporta ora
-        import.launch: Importa ora
-        import.upload: Carica e importa ora
-        import.upload_file: Carica un file
-      meta:
-        job: Lavoro
-        connector: Connettore
-      subsection:
-        last_executions: Ultime esecuzioni
-      tab:
-        content:
-          title: Contenuto
-        properties:
-          title: Proprietà generali
-          code:
-            title: Codice
-          label:
-            title: Etichetta
-          decimal_separator:
-            title: Separatore decimale
-            help: Determina il separatore decimale
-          date_format:
-            title: Formato della data
-            help: Determina il formato dei campi data
-          file_path:
-            title: Percorso del file
-            help: Dove scrivere il file generato nel file System
-          delimiter:
-            title: Delimitatore
-            help: Un carattere utilizzato per impostare il delimitatore di campo
-          enclosure:
-            title: Contenitore
-            help: Un carattere utilizzato per impostare il contenitore del campo
-          with_header:
-            title: Con intestazione
-            help: Stampare o no la l'intestazione della colonna
-          with_media:
-            title: Esporta file e immagini
-            help: Esportare o meno i file e le immagini del prodotto
-          lines_per_file:
-            title: Numero di linee per file
-            help: Definire il numero limite di righe per file
-          upload_allowed:
-            title: Consentire il caricamento di file
-            help: Consentire o no il caricamento diretto di file
-          categories_column:
-            title: Colonna categorie
-            help: Nome della colonna categorie
-          escape:
-            title: Escape
-            help: Un carattere di escape utilizzato
-          family_column:
-            title: Colonna famiglia
-            help: Nome della colonna famiglia
-          groups_column:
-            title: Colonna gruppi
-            help: Nome della colonna gruppi
-          enabled:
-            title: Attivare il prodotto
-            help: Attivare o no i prodotti importati
-          enabled_comparison:
-            title: Confronta i valori
-            help: Abilita il confronto tra i valori originali e valori importati. L'importazione può essere velocizzata se i valori importati sono abbastanza simili ai valori originali
-          real_time_versioning:
-            title: Aggiornamento cronologia in tempo reale
-            help: Significa che la cronologia del prodotto viene aggiornata automaticamente, può essere disattivato per migliorare le prestazioni
-        history:
-          title: Cronologia
-      file_path: Percorso del file
-    attribute:
-      meta:
-        created: Creato
-        created_by: da
-        updated: Ultimo aggiornamento
-        updated_by: da
-      tab:
-        properties:
-          title: Proprietà
-          section:
-            common: Parametri generali
-            type_specific: Digita parametri specifici
-            validation: Parametri di validazione
-          label:
-            allowed_extensions: Estensioni consentite
-            auto_option_sorting: Ordina automaticamente le opzioni in ordine alfabetico
-            available_locales: Impostazioni locali disponibili
-            code: Codice
-            date_max: Data massima
-            date_min: Data minima
-            decimals_allowed: Valori decimali ammessi
-            default_metric_unit: Unità metrica di default
-            group: Attributo di gruppo
-            is_locale_specific: Impostazioni locali specifiche
-            localizable: Valore per impostazioni internazionali
-            max_characters: Numero massimo di caratteri
-            max_file_size: Dimensione massima del file (MB)
-            metric_family: Famiglia metrica
-            minimum_input_length: Lunghezza minima per l'autocompletamento
-            negative_allowed: Valori negativi ammessi
-            number_max: Numero massimo
-            number_min: Numero minimo
-            reference_data_name: Tipo riferimento dati
-            scopable: Valore per canale
-            type: Tipo
-            unique: Valore univoco
-            useable_as_grid_filter: Utilizzabile nella griglia
-            validation_regexp: Espressione regolare
-            validation_rule: Regola di convalida
-            wysiwyg_enabled: Editor di testo RTF abilitato
-          default_label:
-            default_metric_unit: Scegli un'unità
-            group: Scegliere l'attributo di gruppo
-            metric_family: Scegli una famiglia
-            reference_data_name: Scegli il tipo di dati di riferimento
-        labels:
-          title: Traduzioni etichetta
-        choices:
-          title: Opzioni
-        history:
-          title: Cronologia
-    mass_edit:
-      family:
-        attributes:
-          label_label: Etichetta
-          toolbox:
-            select_attributes_by_groups: Aggiungi per gruppi
-            select_attributes: Aggiungi attributi
-            add: Aggiungi
-            attributes_groups_selected: '{{ itemsCount }} gruppo(i) selezionato(i)'
-  job:
-    upload: Drag and drop per caricare un file o fai click qui
   export:
     product:
       data:
@@ -754,7 +354,7 @@ pim_enrich:
             title: Selezione attributi
         attributes_selector:
           attribute_group: Gruppi di attributi
-          attributes: "Cerca tra {{ itemsCount }} attributi"
+          attributes: "Cerca tra {{ attributeCount }} attributi"
           selected: "Attributi selezionati"
           clear: Ripulisci
           all_group: Tutti i gruppi
@@ -789,14 +389,14 @@ pim_enrich:
             ALL: Nessuna condizione sulla completezza
             ">=": Completo in almeno una delle impostazioni internazionali selezionate
             "GREATER OR EQUALS THAN ON ALL LOCALES": Completo in tutte le impostazioni internazionali selezionate
-            LOWER THAN ON ALL LOCALES: Non completo in tutte le impostazione internazionali selezionate
+            LOWER THAN ON ALL LOCALES: Non completo in tutte le impostazioni internazionali selezionate
           empty_selection: Seleziona una famiglia
         category:
           title: Categoria
           help: Utilizza le categorie di prodotto nell'albero (definito dal canale di cui sopra) per selezionare i prodotti da esportare
         identifier:
           title: Identificatore
-          help: Utilizzare gli identificatori dei prodotti da esportare separati da virgole, spazi o interruzioni di riga
+          help: Identificatori dei prodotti che si desidera esportare separati da virgola, spazio o interruzione di riga
         metric:
           operators:
             "=": È uguale a
@@ -861,449 +461,8 @@ pim_enrich:
             "<": Inferiore a
             EMPTY: È vuoto
             NOT EMPTY: Non è vuoto
-      properties:
-        title: Proprietà
-      global_settings:
-        title: Impostazioni Globali
   mass_edit_action:
     edit_common_attributes:
       description: Gli attributi dei prodotto selezionati nella griglia verranno modificati con i dati seguenti per le impostazioni internazionali <span class="highlight">{{ locale }}</span> e per il canale <span class="highlight">{{ channel }}</span>.
-  index:
-    association_type:
-      title: Anteprima tipi associazione
-      create_btn: Crea tipo associazione
-    import_profiles:
-      title: Panoramica profili di importazione
-      create_btn: Crea un profilo di importazione
-      list: Seleziona un job
-      create_popin:
-        title: Crea un nuovo profilo di importazione
-      message:
-        created: Profilo di importazione creato correttamente
-    import_history:
-      title: Report di importazione
-    variant_group:
-      title: Panoramica gruppi varianti
-      create_btn: Crea variante gruppo
-    group:
-      title: Panoramica gruppi
-      create_btn: Crea gruppo
-    export_profiles:
-      title: Panoramica profili di esportazione
-      create_btn: Crea un profilo di esportazione
-      create_popin:
-        title: Crea un nuovo profilo di esportazione
-      message:
-        created: Profilo di esportazione creato correttamente
-    export_history:
-      title: Report di esportazione
-    family:
-      title: Panoramica famiglie
-      create_btn: Crea famiglia
-    grouptype:
-      title: Panoramica tipi di gruppo
-      create_btn: Crea tipo gruppo
-    currency:
-      title: Panoramica valute
-    locale:
-      title: Panoramica impostazioni di localizzazione
-    user:
-      title: Utente
-      create_btn: Crea utente
-    user_role:
-      title: Ruolo
-      create_btn: Crea Ruolo
-    user_group:
-      title: Gruppi
-      create_btn: Crea gruppo
-    process_tracker:
-      title: Tracker di processo
-    channel:
-      title: Panoramica canali
-      create_btn: Crea canale
-    attribute:
-      title: Panoramica attributi
-      create_btn: Crea attributo
-      modal_title: Scegliere il tipo di attributo
-    attribute_group:
-      title: Panoramica attributi di gruppo
-      create_btn: Crea
-    api_connection:
-      create_btn: Crea
-  mass_edit:
-    next: Successivo
-    previous: Indietro
-    cancel: Annulla
-    confirm: Conferma
-    product:
-      step:
-        select:
-          label: Scegli gli articoli
-        choose:
-          label: Scegli l'operazione
-          title: Modifica di massa ({{ itemsCount }} prodotti)
-        configure:
-          label: Configura
-        confirm:
-          label: Conferma
-        launch_error:
-          label: Si è verificato un errore durante l'avvio dell'operazione di modifica di massa
-        launched:
-          label: L'azione di massa "{{ operation }}" è stato lanciata. Sarai avvisato quando finisce.
-      operation:
-        change_status:
-          label: Cambia stato (attiva / disattiva)
-          description: Gli articoli selezionati saranno attivati o disattivati.
-          field: Per attivare
-        edit_common:
-          label: Modifica gli attributi comuni
-          description: Gli attributi del prodotto selezionato verranno modificati con i seguenti dati per le impostazioni locali {{ locale }} e per il canale {{ scope }}, selezionati nella griglia prodotti.
-        change_family:
-          label: Cambiare la famiglia degli articoli
-          description: La famiglia degli articoli selezionati verrà modificata nella famiglia selezionata
-          field: Famiglia
-        add_to_group:
-          label: Aggiungere ai gruppi
-          description: Selezionare i gruppi in cui aggiungere gli articoli selezionati
-          field: Gruppi
-        add_to_variant_group:
-          label: Aggiungi ad un gruppo di varianti
-          description: Seleziona il gruppo di varianti a cui aggiungere gli articoli selezionati
-          field: Gruppo
-        add_to_category:
-          label: Classificare i prodotti in categorie
-          description: Gli articoli saranno posizionati nelle seguenti categorie, il posizionamento attuale è mantenuto.
-        move_to_category:
-          label: Sposta i prodotti nelle categorie
-          description: I prodotti saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso.
-        remove_from_category:
-          label: Rimuovi i prodotti dalle categorie
-          description: I prodotti verranno rimossi dalle seguenti categorie.
-    family:
-      step:
-        select:
-          label: Scegli le famiglie
-        choose:
-          label: Scegli l'operazione
-          title: Modifica di massa ({{ itemsCount }} famiglie)
-        configure:
-          label: Configura
-        confirm:
-          label: Conferma
-        launched:
-          label: L'azione di massa "{{ operation }}" è stato lanciata. Sarai avvisato quando finisce.
-      operation:
-        set_requirements:
-          label: Impostare gli attributi richiesti
-          description: I seguenti attributi richiesti verranno applicati alle famiglie selezionate
 pim_enrich.error:
   exception.title: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
-  http:
-    403: Vietato. Non è consentito accedere a questa pagina
-page_title:
-  oro_default: Dashboard
-  pim_enrich_attributegroup_index: Gruppi di attributi
-  pim_enrich_attributegroup_create: Gruppi di attributo | Crea
-  pim_enrich_attributegroup_edit: Gruppi attributo {{ group.label }} | Modifica
-  pim_enrich_categorytree_index: Albero della categoria
-  pim_enrich_categorytree_create: Strutture di categoria | Crea
-  pim_enrich_categorytree_edit: Albero categorie {{ category.label }} | Modifica
-  pim_enrich_categorytree_create_tree: Strutture di categoria | Crea
-  pim_enrich_attribute_index: Attributi
-  pim_enrich_attribute_create: Attributi | Crea
-  pim_enrich_attribute_edit: Attributi {{ attribute.label }} | Modifica
-  pim_enrich_product_index: Articoli
-  pim_enrich_product_edit: Prodotti {{ product.sku }} | Modifica
-  pim_enrich_family_index: Famiglie
-  pim_enrich_family_edit: Famiglie {{ family.label }} | Modifica
-  pim_enrich_channel_index: Canali
-  pim_enrich_channel_create: Canali | Crea
-  pim_enrich_channel_edit: Canali {{ channel.label }} | Modifica
-  pim_enrich_currency_index: Valute
-  pim_enrich_locale_index: Impostazioni locali
-  pim_enrich_group_index: Gruppi
-  pim_enrich_group_edit: Gruppi {{ group.label }} | Modifica
-  pim_enrich_variant_group_index: Gruppi varianti
-  pim_enrich_variant_group_edit: Gruppi varianti {{ group.label }} | Modifica
-  pim_enrich_associationtype_index: Tipi di associazione
-  pim_enrich_associationtype_edit: Tipi associazione {{ association type.label }} | Modifica
-  pim_enrich_grouptype_index: Tipi di gruppo
-  pim_enrich_grouptype_edit: Tipi di gruppo {{ group type.label }} | Modifica
-  pim_enrich_mass_edit_action_choose: Modifica di massa| Scegli
-  pim_enrich_mass_edit_action_configure: Modifica di massa| Configura
-  pim_enrich_mass_edit_action_perform: Modifica di massa | Esegui
-  pim_enrich_job_tracker_index: Tracker di processo
-  pim_enrich_job_tracker_show: Tracker di processo | Visualizza lavoro
-batch_jobs:
-  add_product_value:
-    label: Aggiungi un valore di prodotto
-    perform:
-      label: Aggiungi un valore di prodotto
-  update_product_value:
-    label: Aggiorna il valore di prodotto
-    perform:
-      label: Aggiorna il valore di prodotto
-  edit_common_attributes:
-    label: Modifica gli attributi comuni
-    perform:
-      label: Modifica gli attributi comuni
-    cleaner:
-      label: Pulisci i file per gli attributi comuni
-  set_attribute_requirements:
-    label: Impostare gli attributi richiesti
-    perform:
-      label: Impostare gli attributi richiesti
-  csv_product_quick_export:
-    quick_export.label: Esportazione rapida prodotti in Csv
-    perform:
-      label: Esportazione rapida prodotti in Csv
-  csv_product_grid_context_quick_export:
-    quick_export.label: Esportazione rapida prodotti in Csv presenti nel contesto griglia
-    perform:
-      label: Esportazione rapida prodotti in Csv presenti nel contesto griglia
-  xlsx_product_quick_export:
-    quick_export.label: Esportazione rapida prodotti in XLSX
-    perform:
-      label: Esportazione rapida prodotti in XLSX
-  xlsx_product_grid_context_quick_export:
-    quick_export.label: Esportazione rapida prodotti in XLSX presenti nel contesto griglia
-    perform:
-      label: Esportazione rapida prodotti in XLSX presenti nel contesto griglia
-  add_to_variant_group:
-    label: Aggiungi al gruppo di varianti
-    perform:
-      label: Aggiungi al gruppo di varianti
-  csv_product_export:
-    label: Esportazione prodotti in CSV
-    export.label: Esportazione Prodotti
-  csv_category_export:
-    label: Esportazione categorie in CSV
-    export.label: Esportazione categorie
-  csv_attribute_export:
-    label: Esporta gli attributi in CSV
-    export.label: Esportazione di attributo
-  csv_attribute_option_export:
-    label: Esportazione opzioni degli attributi in CSV
-    export.label: Estrazione opzioni degli attributi
-  csv_association_type_export:
-    label: Estrazione tipi associazione in CSV
-    export.label: Estrazione tipi associazione
-  csv_group_export:
-    label: Esportazione gruppi in CSV
-    export.label: Esportazione gruppi
-  csv_variant_group_export:
-    label: Esportazione in CSV dei gruppi di varianti
-    export.label: Esportazione gruppo varianti
-  csv_family_export:
-    label: Esportazione famiglie in CSV
-    export.label: Esportazione famiglie
-  csv_product_import:
-    label: Importazione prodotti in CSV
-    validation.label: Validazione file
-    import.label: Importazione prodotti
-    import_associations.label: Importazione associazioni
-  csv_category_import:
-    label: Importazione categorie in CSV
-    validation.label: Validazione file
-    import.label: Importazione categorie
-  csv_attribute_import:
-    label: Importazione attributi in CSV
-    validation.label: Validazione file
-    import.label: Importazione attributi
-  csv_attribute_option_import:
-    label: Importazione opzioni degli attributi in CSV
-    validation.label: Validazione file
-    import.label: Opzioni importazione attributi
-  csv_association_type_import:
-    label: Importazione tipi associazione in CSV
-    validation.label: Validazione file
-    import.label: Importazione tipi associazione
-  csv_family_import:
-    label: Importazione famiglie in CSV
-    validation.label: Validazione file
-    import.label: Importazione famiglie
-  csv_group_import:
-    label: importazione gruppi in CSV
-    validation.label: Validazione file
-    import.label: importazione gruppi
-  csv_variant_group_import:
-    label: Importazione in CSV dei gruppi di varianti
-    validation.label: Validazione file
-    import.label: Importazione gruppi di varianti
-  csv_channel_export:
-    label: Esportazione canali in CSV
-    export.label: Esportazione canali
-  csv_locale_export:
-    label: Esportazione localizzazioni in CSV
-    export.label: Esportazione delle localizzazioni
-  csv_attribute_group_export:
-    label: Esportazione dei gruppi di attributi in CSV
-    export.label: Esportazione dei gruppi di attributi
-  csv_currency_export:
-    label: Esportazione valute in CSV
-    export.label: Esportazione valute
-  csv_group_type_export:
-    label: Esportazione dei tipi di gruppo in CSV
-    export.label: Esportazione dei tipi di gruppo
-  csv_channel_import:
-    label: Importazione canali in CSB
-    validation.label: Validazione file
-    import.label: Importazione canali
-  csv_locale_import:
-    label: Importazione localizzazioni in CSV
-    validation.label: Validazione file
-    import.label: Importazione localizzazione
-  csv_attribute_group_import:
-    label: Importazione dei gruppi di attributi in CSV
-    validation.label: Validazione file
-    import.label: Importazione dei gruppi di attributi
-  csv_currency_import:
-    label: Importazione valute in CSV
-    validation.label: Validazione file
-    import.label: Importazione valute
-  csv_group_type_import:
-    label: Importazione dei tipi di gruppo in CSV
-    validation.label: Validazione file
-    import.label: Importazione dei tipi di gruppo
-  xlsx_category_import:
-    label: Importazione categorie in XLSX
-    validation.label: Validazione file
-    import.label: Importazione categorie
-  xlsx_association_type_import:
-    label: Importazione dei tipi di associazione in XLSX
-    validation.label: Validazione file
-    import.label: Importazione tipi associazione
-  xlsx_attribute_import:
-    label: Importazione attributi in XLSX
-    validation.label: Validazione file
-    import.label: Importazione attributi
-  xlsx_attribute_option_import:
-    label: Importazione delle opzioni degli attributi in XLSX
-    validation.label: Validazione file
-    import.label: Opzioni importazione attributi
-  xlsx_family_import:
-    label: Importazione famiglie in XLSX
-    validation.label: Validazione file
-    import.label: Importazione famiglie
-  xlsx_product_export:
-    label: Esportazione prodotti in XLSX
-    export.label: Esportazione Prodotti
-  xlsx_product_import:
-    label: Importazione prodotti in XLSX
-    validation.label: Validazione file
-    import.label: Importazione prodotti
-    import_associations.label: Importazione associazioni
-  xlsx_group_export:
-    label: Esportazione gruppi in XLSX
-    export.label: Esportazione gruppi
-  xlsx_variant_group_export:
-    label: Esportazione in XLSX dei gruppi di varianti
-    export.label: Esportazione gruppo varianti
-  xlsx_group_import:
-    label: Importazione gruppi in XLSX
-    validation.label: Validazione file
-    import.label: importazione gruppi
-  xlsx_variant_group_import:
-    label: Importazione gruppi di varianti in XLSX
-    validation.label: Validazione file
-    import.label: Importazione dei gruppi di varianti
-  xlsx_family_export:
-    label: Esportazione famiglie in XLSX
-    export.label: Esportazione famiglie
-  xlsx_category_export:
-    label: Esportazione categorie in XLSX
-    export.label: Esportazione categorie
-  xlsx_attribute_export:
-    label: Esportazione attributi in XLSX
-    export.label: Esportazione attributi in XLSX
-  xlsx_attribute_option_export:
-    label: Esportazione delle opzioni degli attributi in XLSX
-    export.label: Esportazione delle opzioni degli attributi in XLSX
-  xlsx_association_type_export:
-    label: Esportazione dei tipi di associazione in XLSX
-    export.label: Esportazione dei tipi di associazione in XLSX
-  xlsx_channel_export:
-    label: Esportazione canali in XLSX
-    export.label: Esportazione canali
-  xlsx_locale_export:
-    label: Esportazione localizzazioni in XLSX
-    export.label: Esportazione delle localizzazioni
-  xlsx_attribute_group_export:
-    label: Esportazione dei gruppi di attributi in XLSX
-    export.label: Esportazione dei gruppi di attributi
-  xlsx_currency_export:
-    label: Esportazione valute in XLSX
-    export.label: Esportazione valute
-  xlsx_group_type_export:
-    label: Esportazione dei tipi di gruppo in XLSX
-    export.label: Esportazione dei tipi di gruppo
-  xlsx_channel_import:
-    label: Importazione canali in XLSX
-    validation.label: Validazione file
-    import.label: Importazione canali
-  xlsx_locale_import:
-    label: Importazione localizzazioni in XLSX
-    validation.label: Validazione file
-    import.label: Importazione localizzazione
-  xlsx_attribute_group_import:
-    label: Importazione dei gruppi di attributi in XLSX
-    validation.label: Validazione file
-    import.label: Importazione dei gruppi di attributi
-  xlsx_currency_import:
-    label: Importazione valute in XLSX
-    validation.label: Validazione file
-    import.label: Importazione valute
-  xlsx_group_type_import:
-    label: Importazione dei tipi di gruppo in XLSX
-    validation.label: Validazione file
-    import.label: Importazione dei tipi di gruppo
-job_tracker:
-  download_archive:
-    archive: Scarica archivio generato
-    output: Scarica file generati
-    input: Scarica file letti
-    invalid_xlsx: Scarica dati non validi
-    invalid_csv: Scarica dati non validi
-pim_menu:
-  tab:
-    dashboard: Dashboard
-    imports: Importazioni
-    products: Articoli
-    exports: Esportazioni
-    settings: Impostazioni
-    system: Sistema
-  item:
-    association_type: Tipi di associazione
-    attribute: Attributi
-    attribute_group: Gruppi di attributi
-    category: Categorie
-    channel: Canali
-    currency: Valute
-    family: Famiglie
-    group: Gruppi
-    group_type: Tipi di gruppo
-    locale: Impostazioni locali
-    product: Articoli
-    variant_group: Gruppi varianti
-    export_history: Cronologia esportazioni
-    export_profile: Profili di esportazione
-    import_history: Cronologia importazioni
-    import_profile: Profili di importazione
-    configuration: Configurazione
-    user_management: Gestione degli utenti
-    user: Utenti
-    user_group: Gruppi
-    user_role: Ruoli
-    info: Informazioni di sistema
-    job_tracker: Tracker di processo
-  navigation:
-    system: Sistema
-    user: Gestione utenti
-    settings: Impostazioni
-  user:
-    logout: Disconnetti
-    user_account: Il mio profilo
-pim_notification:
-  mark_all_as_read: Segna tutti come già letti
-  no_notifications: Nessuna notifica
-  loading: Caricamento in corso...

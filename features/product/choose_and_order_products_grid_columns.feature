@@ -41,6 +41,7 @@ Feature: Choose and order product grids columns
     And I display the columns SKU, Family and Name
     And I am on the products grid
     Then I should see the columns SKU, Family and Name
-    And I should be able to use the following filters:
-      | filter   | operator | value             | result                 |
-      | category |          | summer_collection | sandal one, sandal two |
+    And I open the category tree
+    When I filter by "category" with operator "" and value "summer_collection"
+    Then the grid should contain 2 elements
+    And I should see entities sandal one, sandal two

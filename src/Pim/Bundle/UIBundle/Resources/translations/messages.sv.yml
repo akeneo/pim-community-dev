@@ -1,0 +1,48 @@
+User: Användare
+Run demo: Kör demo
+Product: Produkt
+Attribute list: Attributlista
+Attribute Group list: Attributgruppslista
+Users: Användare
+Roles: Roller
+Groups: Grupper
+Configuration: Inställningar
+Currency list: Valutalistan
+Locale list: Språklista
+Logged in as: Inloggad som
+Logout: Logga ut
+Login: Logga in
+Previous: Föregående
+Next: Nästa
+Channel list: Kanallista
+Select file: Välj fil
+Change file: Byta fil
+Remove file: Ta bort fil
+Delete: Radera
+Save: Spara
+Cancel: Avbryt
+Get help: Få hjälp
+My User: Mitt konto
+oro.form.choose_value: Välj ett värde...
+Read more: Läs mer
+oro.form.click_here_to_select: Klicka här för att välja...
+Add: Lägg tilll
+"Learn how to use this space": "Lär dig att använda detta utrymme"
+"How To Use Pinbar": "Hur du använder anslagstavlan"
+Pinbar: Anslagstavla
+Favorites: Favoriter
+Most Viewed: Mest visade
+"Add this page to favorites": "Lägg till sidan i favoriter"
+"Minimize the window to the pinbar": "Minimera fönstret till anslagstavlan"
+"Loading ...": "Laddar ..."
+"Yes": "Ja"
+"No": "Nej"
+required: (obligatorisk)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Aktivera hämtning av meddelanden
+    loading_message_enabled.tooltip: Visa användarvänliga meddelanden medans en sida laddas
+    loading_messages.label: Tillgängliga meddelanden att hämta
+    loading_messages.tooltip: Alla tillgängliga laddningsmeddelanden separerade med radbrytningar
+  group:
+    loading_message.title: Hämtar meddelanden

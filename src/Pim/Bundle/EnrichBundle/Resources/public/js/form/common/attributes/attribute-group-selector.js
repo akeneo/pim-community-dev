@@ -44,6 +44,11 @@ define(
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.onValidationError);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.onPostFetch);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:to-fill:cleared', this.render);
+                this.listenTo(
+                    this.getRoot(),
+                    'pim_enrich:form:switch_attribute_group',
+                    this.setAttributeGroup.bind(this)
+                );
 
                 return GroupSelectorForm.prototype.configure.apply(this, arguments);
             },
@@ -126,6 +131,15 @@ define(
                 }.bind(this));
 
                 return this;
+            },
+
+            /**
+             * Set current group from event
+             *
+             * @param {[type]} attributeGroupCode [description]
+             */
+            setAttributeGroup: function (attributeGroupCode) {
+                this.setCurrent(attributeGroupCode, {silent: true});
             }
         });
     }

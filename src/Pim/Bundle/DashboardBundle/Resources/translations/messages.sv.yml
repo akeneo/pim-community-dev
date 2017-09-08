@@ -1,0 +1,27 @@
+pim_dashboard:
+  title: Översiktspanel
+  version: Version
+  link.label:
+    product: Hantera produkter
+    category: Hantera kategorier
+    attribute: Hantera attribut
+    family: Hantera familjer
+  widget:
+    error:
+      title: Fel vid inläsning av widget
+      message: Widget '%alias%' finns inte
+    completeness:
+      title: Fullständighet över kanaler och språk
+    last_operations:
+      title: Senaste händelser
+      empty: Inga händelser hittade
+      status: Status
+      date: Datum
+      type: Typ
+      "profile name": Profilnamn
+      details: Detaljer
+      job_type:
+        import: Import
+        export: Export
+        mass_edit: Massredigera
+        quick_export: Snabbexport
