@@ -40,7 +40,7 @@ Feature: Choose and order product grids columns
       | sandal2 | sandal two | summer_collection |
     And I display the columns ID, Family and Name
     And I am on the products grid
-    Then I should see the columns SKU, Family and Name
+    Then I should see the columns ID, Family and Name
     And I open the category tree
     When I filter by "category" with operator "" and value "summer_collection"
     Then the grid should contain 2 elements
