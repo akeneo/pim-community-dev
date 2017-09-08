@@ -46,14 +46,14 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
      */
     public function filter(array $flatProductModel): array
     {
+        $parent = $flatProductModel['parent'] ?? '';
         $familyVariant = $flatProductModel['family_variant'] ?? '';
-        // Skip the attribute filtration if there is no family variant, updater/validation will raise error.
-        if (empty($familyVariant)) {
+        // Skip the attribute filtration if there is no parent nor family variant, updater/validation will raise error.
+        if (empty($parent) && empty($familyVariant)) {
             return $flatProductModel;
         }
 
         $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariant);
-        $parent = $flatProductModel['parent'] ?? '';
         if (empty($parent) && null !== $familyVariant) {
             return $this->keepOnlyAttributes($flatProductModel, $familyVariant->getCommonAttributes());
         }
@@ -62,6 +62,11 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
         // Skip the attribute filtration if the parent does not exist, updater/validation will raise error.
         if (null === $parentProductModel) {
             return $flatProductModel;
+        }
+
+        // Family variant field is not mandatory for sub product models.
+        if (null === $familyVariant) {
+            $familyVariant = $parentProductModel->getFamilyVariant();
         }
 
         $variantAttributeSet = $familyVariant->getVariantAttributeSet($parentProductModel->getVariationLevel() + 1);
