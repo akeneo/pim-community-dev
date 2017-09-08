@@ -1,17 +1,19 @@
 extensions:
     pim-association-type-create-modal:
-       module: pim/form/common/creation/modal
-       config:
-           labels:
-               title: pim_enrich.entity.association_type.create_popin.title
-           successMessage: pim_enrich.entity.association_type.message.created
-           editRoute: pim_enrich_associationtype_edit
-           postUrl: pim_enrich_associationtype_rest_create
-           routerKey: code
+        module: pim/form/common/creation/modal
+        config:
+            labels:
+                title: pim_enrich.entity.association_type.create_popin.title
+                subTitle: pim_menu.item.association_type
+            successMessage: pim_enrich.entity.association_type.message.created
+            editRoute: pim_enrich_associationtype_edit
+            postUrl: pim_enrich_associationtype_rest_create
+            routerKey: code
 
     pim-association-type-create-form:
-       module: pim/form/common/creation/field
-       parent: pim-association-type-create-modal
-       config:
-          identifier: code
-          label: pim_enrich.entity.create_popin.code
+        module: pim/form/common/creation/field
+        parent: pim-association-type-create-modal
+        targetZone: fields
+        config:
+            identifier: code
+            label: pim_enrich.entity.create_popin.code
