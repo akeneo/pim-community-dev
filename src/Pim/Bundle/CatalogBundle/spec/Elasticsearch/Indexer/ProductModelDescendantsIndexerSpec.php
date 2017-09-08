@@ -41,7 +41,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $this->shouldImplement(BulkRemoverInterface::class);
     }
 
-    function it_indexes_a_product_model_descendants_that_are_product_variants(
+    function it_indexes_a_product_model_descendants_that_are_variant_products(
         $productIndexer,
         $productModelIndexer,
         ProductModelInterface $productModel,
@@ -63,13 +63,13 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $this->index($productModel);
     }
 
-    function it_indexes_a_product_model_descendants_that_are_product_models_and_product_variants(
+    function it_indexes_a_product_model_descendants_that_are_product_models_and_variant_products(
         $productIndexer,
         $productModelIndexer,
         ProductModelInterface $rootProductModel,
         ProductModelInterface $childProductModel,
-        VariantProductInterface $childProductVariant1,
-        VariantProductInterface $childProductVariant2,
+        VariantProductInterface $childVariantProduct1,
+        VariantProductInterface $childVariantProduct2,
         ArrayCollection $emptyProductsChildren,
         ArrayCollection $rootProductModelChildren,
         ArrayCollection $emptyChildProductModelChildren,
@@ -110,10 +110,10 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
 
         // Second recursion - second round - index product variants
         $productVariantsChildren->isEmpty()->willReturn(false);
-        $productVariantsChildren->first()->willReturn($childProductVariant1);
-        $productVariantsChildren->toArray()->willReturn([$childProductVariant1, $childProductVariant2]);
+        $productVariantsChildren->first()->willReturn($childVariantProduct1);
+        $productVariantsChildren->toArray()->willReturn([$childVariantProduct1, $childVariantProduct2]);
 
-        $productIndexer->indexAll([$childProductVariant1, $childProductVariant2])->shouldBeCalled();
+        $productIndexer->indexAll([$childVariantProduct1, $childVariantProduct2])->shouldBeCalled();
 
         $this->index($rootProductModel);
     }
@@ -189,7 +189,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $this->indexAll([]);
     }
 
-    function it_removes_the_descendants_of_a_product_model_that_are_product_variants(
+    function it_removes_the_descendants_of_a_product_model_that_are_variant_products(
         $productRemover,
         $productModelRemover,
         ProductModelInterface $productModel,
@@ -211,13 +211,13 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $this->remove($productModel);
     }
 
-    function it_removes_a_product_model_descendants_that_are_product_models_and_product_variants(
+    function it_removes_a_product_model_descendants_that_are_product_models_and_variant_products(
         $productRemover,
         $productModelRemover,
         ProductModelInterface $rootProductModel,
         ProductModelInterface $childProductModel,
-        VariantProductInterface $childProductVariant1,
-        VariantProductInterface $childProductVariant2,
+        VariantProductInterface $childVariantProduct1,
+        VariantProductInterface $childVariantProduct2,
         ArrayCollection $emptyProductsChildren,
         ArrayCollection $rootProductModelChildren,
         ArrayCollection $emptyChildProductModelChildren,
@@ -258,10 +258,10 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
 
         // Second recursion - second round - index product variants
         $productVariantsChildren->isEmpty()->willReturn(false);
-        $productVariantsChildren->first()->willReturn($childProductVariant1);
-        $productVariantsChildren->toArray()->willReturn([$childProductVariant1, $childProductVariant2]);
+        $productVariantsChildren->first()->willReturn($childVariantProduct1);
+        $productVariantsChildren->toArray()->willReturn([$childVariantProduct1, $childVariantProduct2]);
 
-        $productRemover->removeAll([$childProductVariant1, $childProductVariant2])->shouldBeCalled();
+        $productRemover->removeAll([$childVariantProduct1, $childVariantProduct2])->shouldBeCalled();
 
         $this->remove($rootProductModel);
     }
