@@ -83,6 +83,9 @@ class VariantAttributeSet implements VariantAttributeSetInterface
             if (!$this->axes->contains($axis)) {
                 $this->axes->add($axis);
             }
+            if (!$this->attributes->contains($axis)) {
+                $this->attributes->add($axis);
+            }
         }
     }
 
