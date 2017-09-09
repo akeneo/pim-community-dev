@@ -48,7 +48,7 @@ pim_enrich:
         third: 配置
         fourth: 确认
     publish:
-      label: 发布产品
+      label: 发布
       description: 发布选定的产品，目前已发布的数据将会被当前的工作副本清除。
       success_flash: 已发布选定的产品。
       launched_flash: 发布产品的作业正在运行
@@ -58,7 +58,7 @@ pim_enrich:
         info: 即将发布所选定的产品%nbProducts% 。
       not_editable: 您没有权限编辑产品"%identifiers%"。
     unpublish:
-      label: 取消发布产品
+      label: 取消发布
       description: 取消发布所选的产品，目前已发布的数据将被删除。
       success_flash: 已取消发布所选定的产品。
       launched_flash: 撤回产品的作业正在运行

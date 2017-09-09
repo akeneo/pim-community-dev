@@ -48,7 +48,7 @@ pim_enrich:
         third: Konfiguroi
         fourth: Vahvista
     publish:
-      label: Julkaise tuotteet
+      label: Julkaise
       description: Julkaise valitut tuotteet, tällä hetkellä julkaistu data pyyhkiytyy julkaistavan datan alta.
       success_flash: Valitut tuotteet ovat julkaistu onnistuneesti.
       launched_flash: Työ "Tuotteiden julkaisu" on tällä hetkellä käynnissä.
@@ -58,7 +58,7 @@ pim_enrich:
         info: '%nbProducts% valitut tuotteet julkaistaan.'
       not_editable: Sinulla ei ole käyttöoikeuksia muokata tuotteita "%identifiers%".
     unpublish:
-      label: Muuta tuote tilaan "Julkaisematon"
+      label: Peruuta julkaisu
       description: Muuta valittujen tuotteiden tila tilaan "Julkaisematon", tällä hetkellä julkaistu data poistetaan.
       success_flash: Valitut tuotteet ovat onnistuneesti muutettu tilaan "Julkaisematon".
       launched_flash: Työ "Peruuta julkaisu tuotteelta/tuotteilta" on käynnissä.

@@ -142,12 +142,6 @@ pimee_enrich:
     next: Sljedeća
     cancel: Poništi
     confirm: Potvrdi
-    product:
-      operation:
-        publish:
-          label: Objavljivanje proizvoda
-        unpublish:
-          label: Poništi objave proizvoda
     asset:
       step:
         select:

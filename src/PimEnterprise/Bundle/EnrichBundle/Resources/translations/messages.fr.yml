@@ -48,7 +48,7 @@ pim_enrich:
         third: Configurer
         fourth: Confirmer
     publish:
-      label: Publier les produits
+      label: Publier
       description: Publie les produits sélectionnés, les données produits déjà publiées seront écrasées par celles des copies de travail actuelles.
       success_flash: Les produits sélectionnés ont bien été publiés.
       launched_flash: Le processus de publication de produits est en cours d'exécution.
@@ -58,7 +58,7 @@ pim_enrich:
         info: Les %nbProducts% produits sélectionnés vont être publiés.
       not_editable: Vous n'avez pas le droit de modifier les produits "%identifiers%".
     unpublish:
-      label: Dépublier des produits
+      label: Dépublier
       description: Dépublier les produits sélectionnés, les données actuellement publiées seront supprimées.
       success_flash: Les produits sélectionnés ont bien été dépubliés.
       launched_flash: Le processus de dépublication de produits est en cours d'exécution.
