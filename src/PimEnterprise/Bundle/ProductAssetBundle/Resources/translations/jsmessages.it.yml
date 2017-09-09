@@ -25,26 +25,25 @@ pimee_product_asset:
   mass_upload:
     menu: Caricamento di asset
     btn:
-      add_files: Aggiungi file
-      cancel: Annulla il caricamento
+      remove_all_files: Rimuovi tutti i file
       delete: Eliminare
-      schedule: Pianificazione
-      start: Inizia il caricamento
+      import: Importa
+      upload: Carica file
     success:
       new: Verrà creato un nuovo asset
-      scheduled: File pianificati per l'elaborazione di asset
+      imported: File importati per l'elaborazione di asset
       canceled: Caricamento correttamente annullato
       deleted: File caricato correttamente eliminato
     error:
       list: Non è possibile leggere file già caricati
       upload: Si è verificato un errore durante il caricamento
       delete: Impossibile eliminare il file dal server
-      schedule: Errore durante la pianificazione dell'elaborazione del caricamento
+      import: Si è verificato un errore durante l'importazione
       filename: Nome file non valido per l'asset
       code: Formato codice non valido per l'asset
       locale: Un asset esiste ma non è traducibile
       invalid_locale: L'impostazione internazionale è disabilitata o non valida
-      exists: Un file con lo stesso nome è già pianificato per il caricamento
+      exists: Un file con lo stesso nome è già importato
       conflicts: Conflitto di nomi di file
     grid:
       medias: media
@@ -55,13 +54,21 @@ pimee_product_asset:
       actions: azioni
     action:
       cancel: Annulla
-      delete: Eliminare
+      remove: Rimuovere
     status:
       added: Aggiunto
       queued: Accodato
       uploading: Caricamento
       error: Errore
       success: Successo
+    drag_and_drop: Trascina e rilascia qui i tuoi asset per caricarli o fai click qui
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Sei sicuro di che voler eliminare gli asset selezionati?
+        success: Gli asset selezionati sono stati eliminati con successo.
+        error: Si è verificato un errore cancellando gli asset selezionati, per favore riprova.
+        empty_selection: Nessun asset selezionato
 pim_dashboard:
   widget:
     last_operations:
