@@ -10,6 +10,7 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -109,7 +110,7 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
             );
         }
 
-        $this->detacher->detach($product);
+        $this->detachProduct($product);
 
         return $productStandard;
     }
@@ -188,5 +189,24 @@ class ProductProcessor implements ItemProcessorInterface, StepExecutionAwareInte
     {
         return isset($parameters->get('filters')['structure']['attributes'])
             && !empty($parameters->get('filters')['structure']['attributes']);
+    }
+
+    /**
+     * Detach $product and its associations
+     *
+     * @param ProductInterface $product
+     *
+     * @return void
+     */
+    protected function detachProduct(ProductInterface $product)
+    {
+        $this->detacher->detach($product);
+        /** @var AssociationInterface $association */
+        $associations = $product->getAssociations();
+        foreach ($associations as $association) {
+            foreach ($association->getProducts() as $associatedProduct) {
+                $this->detacher->detach($associatedProduct);
+            }
+        }
     }
 }

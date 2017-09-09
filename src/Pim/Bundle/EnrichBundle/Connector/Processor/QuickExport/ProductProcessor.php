@@ -10,6 +10,7 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -113,7 +114,7 @@ class ProductProcessor extends AbstractProcessor
             $this->fetchMedia($product, $directory);
         }
 
-        $this->detacher->detach($product);
+        $this->detachProduct($product);
 
         return $productStandard;
     }
@@ -224,5 +225,25 @@ class ProductProcessor extends AbstractProcessor
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->tokenStorage->setToken($token);
+    }
+
+
+    /**
+     * Detach $product and its associations
+     *
+     * @param ProductInterface $product
+     *
+     * @return void
+     */
+    protected function detachProduct(ProductInterface $product)
+    {
+        $this->detacher->detach($product);
+        /** @var AssociationInterface $association */
+        $associations = $product->getAssociations();
+        foreach ($associations as $association) {
+            foreach ($association->getProducts() as $associatedProduct) {
+                $this->detacher->detach($associatedProduct);
+            }
+        }
     }
 }

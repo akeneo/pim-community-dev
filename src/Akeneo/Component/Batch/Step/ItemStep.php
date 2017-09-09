@@ -115,6 +115,7 @@ class ItemStep extends AbstractStep
             }
 
             $processedItem = $this->process($readItem);
+            unset($readItem);
             if (null !== $processedItem) {
                 $itemsToWrite[] = $processedItem;
                 $writeCount++;
