@@ -159,9 +159,9 @@ pimee_enrich:
     product:
       operation:
         publish:
-          label: 发布产品
+          label: 发布
         unpublish:
-          label: 取消发布产品
+          label: 取消发布
     asset:
       step:
         select:

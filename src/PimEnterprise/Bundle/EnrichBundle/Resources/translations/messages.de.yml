@@ -48,7 +48,7 @@ pim_enrich:
         third: Konfigurieren
         fourth: Bestätigen
     publish:
-      label: Produkte veröffentlichen
+      label: Veröffentlichen
       description: Die ausgewählten Produkte veröffentlichen, dabei werden die aktuell veröffentlichten Daten von der aktuellen Arbeitskopie überschrieben.
       success_flash: Die ausgewählten Produkte wurden erfolgreich veröffentlicht.
       launched_flash: Der Produkt/e-Veröffentlichen Job läuft im Moment.
@@ -58,7 +58,7 @@ pim_enrich:
         info: Die %nbProducts% ausgewählten Produkte werden veröffentlicht.
       not_editable: Sie haben nicht die Berechtigung die "%identifiers%" des Produktes zu bearbeiten.
     unpublish:
-      label: Produktveröffentlichungen entziehen
+      label: Veröffentlichung entziehen
       description: Die Veröffentlichung den ausgewählten Produkten entziehen, die aktuell veröffentlichten Daten werden gelöscht.
       success_flash: Die Veröffentlichung der ausgewählten Produkte wurde erfolgreich entzogen.
       launched_flash: Das Entziehen der Produktveröffentlichung wird derzeit ausgeführt.

@@ -161,9 +161,9 @@ pimee_enrich:
     product:
       operation:
         publish:
-          label: Productos publicados
+          label: Publicar
         unpublish:
-          label: Quitar publicación de productos
+          label: Despublicar
     asset:
       step:
         select:

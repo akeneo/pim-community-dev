@@ -169,11 +169,11 @@ pimee_enrich:
     product:
       operation:
         publish:
-          label: Pubblica i prodotti
+          label: Pubblica
           description: I prodotti saranno pubblicati
           warning: I {{ itemsCount }} prodotti selezionati saranno pubblicati.
         unpublish:
-          label: Annulla la pubblicazione dei prodotti
+          label: Annulla la pubblicazione
           description: I prodotti saranno ritirati
           warning: I {{ itemsCount }} prodotti selezionati saranno ritirati.
     asset:

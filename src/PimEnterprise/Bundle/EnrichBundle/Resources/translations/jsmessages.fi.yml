@@ -153,9 +153,9 @@ pimee_enrich:
     product:
       operation:
         publish:
-          label: Julkaise tuotteet
+          label: Julkaise
         unpublish:
-          label: Muuta tuote tilaan "Julkaisematon"
+          label: Peruuta julkaisu
     asset:
       step:
         choose:
