@@ -43,7 +43,7 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'],
                     options.collection = this.collection;
                     options.displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
 
-                    this.filters = options.filters;
+                    this.filters = options.filters || [];
                     this.render();
 
                     mediator.trigger('datagrid_filters:loaded', options);
@@ -57,7 +57,7 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'],
             collectModules() {
                 const modules = {};
 
-                this.filters.forEach(filter => {
+                _.each(this.filters, filter => {
                     const type = filter.type;
                     modules[type] = this.config.filterModuleName.replace(
                         '{{type}}',
