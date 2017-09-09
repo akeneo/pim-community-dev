@@ -23,6 +23,7 @@
 - TIP-747: Migrate to Symfony 3.3
 - PIM-6740: Separe installation state (installed) from config file
 - API-359: Move notified user of a job into the configuration parameters of the job
+- TIP-733: Replace `oro/datafilter-builder` with `filters-list` and `filters-button`
 
 ## UI\UX Refactoring
 
