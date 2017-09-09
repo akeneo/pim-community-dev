@@ -6,7 +6,6 @@ parameters:
     pim_enrich.controller.attribute_option.class:             Pim\Bundle\EnrichBundle\Controller\AttributeOptionController
     pim_enrich.controller.product.class:                      Pim\Bundle\EnrichBundle\Controller\ProductController
     pim_enrich.controller.group.class:                        Pim\Bundle\EnrichBundle\Controller\GroupController
-    pim_enrich.controller.association.class:                  Pim\Bundle\EnrichBundle\Controller\AssociationController
     pim_enrich.controller.association_type.class:             Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
     pim_enrich.controller.file.class:                         Pim\Bundle\EnrichBundle\Controller\FileController
     pim_enrich.controller.sequential_edit.class:              Pim\Bundle\EnrichBundle\Controller\SequentialEditController
@@ -97,14 +96,6 @@ services:
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.builder.product'
             - '%pim_catalog.entity.category.class%'
-
-    pim_enrich.controller.association:
-        class: '%pim_enrich.controller.association.class%'
-        arguments:
-            - '@pim_catalog.repository.association_type'
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.builder.product'
-            - '@templating'
 
     pim_enrich.controller.group:
         class: '%pim_enrich.controller.group.class%'

@@ -94,7 +94,7 @@ pim_enrich:
         third: Konfiguriraj
         fourth: Potvrdi
     change-status:
-      label: Promjeni status (Omogući / Onemogući)
+      label: Promjena statusa
       description: Odabrani proizvodi će biti omogućeni ili onemogućeni.
       success_flash: Status proizvoda se promijenio
       launched_flash: Pokrenuta je masovna radnja "promijeni status". Biti ćete obaviješteni kad bude gotovo.
@@ -109,22 +109,18 @@ pim_enrich:
         invalid_attribute: Atribut sa kodom "attribute_code" nije zajednički za odabrane proizvode, atribut je preskočen.
         no_valid_attribute: Niti jedan od odabranih atributa se ne može primijeniti na ovaj proizvod.
     classify-add:
-      label: Klasificiraj proizvode u kategorije
       description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
       success_flash: Proizvodi su klasificirani u odabrane kategorije
       launched_flash: Pokrenuta je masovna radnja "dodati u grupe". Biti ćete obaviješteni kad bude gotovo.
     classify-move:
-      label: Premjestiti proizvode u kategorije
       description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
       success_flash: Proizvodi su premješteni u odabrane kategorije
       launched_flash: Pokrenuta je masovna radnja "premjesti u kategorije". Biti ćete obaviješteni kad bude gotovo.
     classify-remove:
-      label: Uklanjanje proizvoda iz kategorija
       description: Proizvodi će biti uklonjeni iz sljedećih kategorija.
       success_flash: Proizvodi su uklonjeni iz odabranih kategorija
       launched_flash: Masovna radnja "ukloni iz kategorija" je pokrenuta. Biti ćete obaviješteni kad bude gotovo.
     change-family:
-      label: Promjeni obitelj proizvoda
       description: Obitelj odabranih proizvoda će se promijeniti u odabranu obitelj
       success_flash: Obitelj odabranih proizvoda je uspješno promijenjena
       launched_flash: Pokrenuta je masovna radnja "promijeni status". Biti ćete obaviješteni kad bude gotovo.
@@ -143,7 +139,6 @@ pim_enrich:
       no_valid_variant_group: Niti jedna varijanta grupe ne dijeli atribute s odabranim proizvodima.
       launched_flash: Pokrenuta je masovna radnja "dodati u varijantu grupe". Biti ćete obaviješteni kad bude gotovo.
     set-attribute-requirements:
-      label: Postavi zahtjeve za atribute
       description: Sljedeći zahtjevi atributa će se primijeniti na odabrane obitelji
       success_flash: Zahtjevi atributa su primjenjeni na odabrane obitelji
       launched_flash: Masovna akcija "postavi zahtjeve za atribute" je pokrenuta. Biti ćete obaviješteni kada bude gotovo.
@@ -679,7 +674,7 @@ pim_enrich.mass_edit_action:
       third: Konfiguriraj
       fourth: Potvrdi
   change-status:
-    label: Promjeni status (Omogući / Onemogući)
+    label: Promjena statusa
     description: Odabrani proizvodi će biti omogućeni ili onemogućeni.
     success_flash: Status proizvoda se promijenio
   edit-common-attributes:
@@ -691,11 +686,9 @@ pim_enrich.mass_edit_action:
     no_attribute.warning: Ne postoji zajednički atribut za odabrane proizvode. Promijenite odabir.
     truncated_by_variant_attribute.warning: 'Neki uobičajene atributi iz odabranih proizvode dolaze iz varijante grupe. Oni nisu dostupni za masovno uređivanje: %attributes%.'
   classify:
-    label: Klasificiraj proizvode u kategorije
     description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
     success_flash: Proizvodi su klasificirani u odabrane kategorije
   change-family:
-    label: Promjeni obitelj proizvoda
     description: Obitelj odabranih proizvoda će se promijeniti u odabranu obitelj
     success_flash: Obitelj odabranih proizvoda je uspješno promijenjena
     no_family: Bez obitelji
@@ -704,7 +697,6 @@ pim_enrich.mass_edit_action:
     description: Odaberi grupe u koju se dodaju odabrani proizvodi
     success_flash: Proizvodi su uspješno dodani u odabrane grupe
   set-attribute-requirements:
-    label: Postavi zahtjeve za atribute
     description: Sljedeći zahtjevi atributa će se primijeniti na odabrane obitelji
     success_flash: Zahtjevi atributa su primjenjeni na odabrane obitelji
 To enable: Da se omogući
@@ -831,10 +823,6 @@ batch_jobs:
       label: Uredi uobičajene atribute
     clean:
       label: Obriši datoteke za uobičajene atribute
-  set_attribute_requirements:
-    label: Postavi zahtjeve za atribute
-    perform:
-      label: Postavi zahtjeve za atribute
   csv_product_quick_export:
     quick_export.label: Brzi izvoz proizvoda u Csv
     perform:

@@ -4,6 +4,7 @@ extensions:
        config:
            labels:
                title: pim_enrich.entity.api_connection.create_popin.title
+               subTitle: pim_menu.item.api_connection
            successMessage: pim_enrich.entity.api_connection.message.created
            postUrl: pim_enrich_api_connection_rest_create
            editRoute: pim_enrich_api_connection_index
@@ -12,6 +13,7 @@ extensions:
     pim-api-connection-create-form:
         module: pim/form/common/creation/field
         parent: pim-api-connection-create-modal
+        targetZone: fields
         config:
             identifier: label
             label: pim_enrich.entity.create_popin.label

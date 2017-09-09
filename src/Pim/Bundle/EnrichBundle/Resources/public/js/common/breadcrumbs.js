@@ -14,7 +14,8 @@ define([
         'pim/form',
         'pim/template/common/breadcrumbs',
         'oro/mediator',
-        'pim/form-registry'
+        'pim/form-registry',
+        'pim/common/property'
     ],
     function (
         $,
@@ -23,7 +24,8 @@ define([
         BaseForm,
         template,
         mediator,
-        FormRegistry
+        FormRegistry,
+        propertyAccessor
     ) {
         return BaseForm.extend({
             className: 'AknBreadcrumb',
@@ -70,7 +72,14 @@ define([
                     var breadcrumbTab = { code: this.config.tab, label: __(metaTab.config.title) };
                     var breadcrumbItem = null;
                     if (undefined !== metaItem) {
-                        breadcrumbItem = { code: this.config.item, label: __(metaItem.config.title) };
+                        breadcrumbItem = { code: this.config.item, label: __(metaItem.config.title), active: true };
+                    }
+                    if (undefined !== this.config.itemPath &&
+                        null !== propertyAccessor.accessProperty(this.getFormData(), this.config.itemPath)
+                    ) {
+                        const item = propertyAccessor.accessProperty(this.getFormData(), this.config.itemPath);
+
+                        breadcrumbItem = { code: item, label: item, active: false };
                     }
 
                     this.$el.empty().append(this.template({

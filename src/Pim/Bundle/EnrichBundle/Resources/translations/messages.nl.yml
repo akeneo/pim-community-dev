@@ -83,7 +83,7 @@ pim_enrich:
       steps:
         second: Kies bewerking
     change-status:
-      label: Status wijzigen (inschakelen / uitschakelen)
+      label: Status wijzigen
       description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
       success_flash: De status van één of meerdere producten is gewijzigd
       launched_flash: De massa actie "verander status" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
@@ -97,22 +97,18 @@ pim_enrich:
         warning: Er is geen gemeenschappelijke attribuut voor de geselecteerde producten. Gelieve uw selectie te wijzigen.
         no_valid_attribute: Geen van de geselecteerde attributen kan worden toegepast op dit product.
     classify-add:
-      label: Producten in categorieën indelen
       description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing wordt behouden.
       success_flash: Producten zijn in geselecteerde categorieën ingedeeld
       launched_flash: De massa actie "voeg toe aan categorieën" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
     classify-move:
-      label: Verplaats producten naar categorieën
       description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing gaat verloren.
       success_flash: Producten zijn verplaatst naar de geselecteerde categorieën
       launched_flash: De massa actie "verplaats naar categorieën" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
     classify-remove:
-      label: Verwijder producten van categorieën
       description: De producten zullen worden verwijderd uit de volgende categorieën.
       success_flash: Product(en) zijn verwijderd van de geselecteerde categorieën
       launched_flash: De massa actie "verwijder van categorieën" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
     change-family:
-      label: Wijzigen van de productfamilie
       description: De familie van de geselecteerde producten zal worden gewijzigd in de gekozen familie
       success_flash: De familie van de geselecteerde producten is succesvol gewijzigd
       launched_flash: De massa actie "verander familie" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
@@ -615,7 +611,7 @@ pim_enrich.mass_edit_action:
     steps:
       second: Kies bewerking
   change-status:
-    label: Status wijzigen (inschakelen / uitschakelen)
+    label: Status wijzigen
     description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
     success_flash: De status van één of meerdere producten is gewijzigd
   edit-common-attributes:
@@ -625,11 +621,9 @@ pim_enrich.mass_edit_action:
     message.warning: Er is geen gemeenschappelijke attribuut voor de geselecteerde producten. Gelieve uw selectie te wijzigen.
     no_attribute.warning: Er is geen gemeenschappelijke attribuut voor de geselecteerde producten. Gelieve uw selectie te wijzigen.
   classify:
-    label: Producten in categorieën indelen
     description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing wordt behouden.
     success_flash: Producten zijn in geselecteerde categorieën ingedeeld
   change-family:
-    label: Wijzigen van de productfamilie
     description: De familie van de geselecteerde producten zal worden gewijzigd in de gekozen familie
     success_flash: De familie van de geselecteerde producten is succesvol gewijzigd
     no_family: Geen familie
