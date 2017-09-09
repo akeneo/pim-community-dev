@@ -1,4 +1,5 @@
 const process = require('process');
+const { exec, execSync } = require('child_process');
 const rootDir = process.cwd();
 const path = require('path');
 const fs = require('fs');
@@ -119,8 +120,12 @@ const generateInstallString = (dependencies) => {
         return dep += `${next.name}@${next.version} `;
     }, '');
 
-    console.log('You can run this command to update your dependencies before running webpack: '.yellow);
-    console.log(`\n    yarn add ${packageString} \n`);
+    const command = `yarn add ${packageString}`;
+
+    console.log('Automatically syncing your dependencies...'.yellow);
+    console.log(`\n  Running: ${command}\n`.green);
+
+    return command;
 };
 
 try {
@@ -129,10 +134,13 @@ try {
 
     if (diffs.length > 0) {
         reportDiffs(diffs);
-        generateInstallString(diffs);
+        const command = generateInstallString(diffs);
+        execSync(command);
     }
 } catch (e) {
     console.log('Error checking dependencies'.yellow, e.message);
 }
+
+
 
 
