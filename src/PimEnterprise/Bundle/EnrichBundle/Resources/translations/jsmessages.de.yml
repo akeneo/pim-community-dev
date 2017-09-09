@@ -161,9 +161,9 @@ pimee_enrich:
     product:
       operation:
         publish:
-          label: Produkte veröffentlichen
+          label: Veröffentlichen
         unpublish:
-          label: Produktveröffentlichungen entziehen
+          label: Veröffentlichung entziehen
     asset:
       step:
         select:

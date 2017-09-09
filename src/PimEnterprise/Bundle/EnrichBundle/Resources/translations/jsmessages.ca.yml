@@ -159,9 +159,9 @@ pimee_enrich:
     product:
       operation:
         publish:
-          label: Publicar productes
+          label: Publicar
         unpublish:
-          label: Anul·lar la publicació de productes
+          label: Despublicar
     asset:
       step:
         select:
