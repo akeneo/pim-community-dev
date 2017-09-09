@@ -801,13 +801,12 @@ pim_enrich:
           label: Confirmar
       operation:
         change_status:
-          label: Mudar status (habilitar / desabilitar)
+          label: Alterar Status
           description: Os produtos selecionados serão habilitados ou desabilitados.
           field: Habilitar
         edit_common:
           label: Editar atributos comuns
         change_family:
-          label: Mudar a família dos produtos
           description: A família dos produtos selecionados será alterada para a família escolhida
           field: Família
         add_to_group:
@@ -819,13 +818,10 @@ pim_enrich:
           description: Selecione o grupo variante em qual quer adicionar os produtos selecionados
           field: Grupo
         add_to_category:
-          label: Classificar os produtos em categorias
           description: Os produtos serão posicionados nas categorias, o posicionamento existente será mantido.
         move_to_category:
-          label: Mover produtos para categorias
           description: Os produtos serão colocados nas categorias seguintes, a sua localização atual será perdida.
         remove_from_category:
-          label: Retirar produtos de categorias
           description: Os produtos serão retirados das seguintes categorias.
     family:
       step:
@@ -837,10 +833,6 @@ pim_enrich:
           label: Configurar
         confirm:
           label: Confirmar
-      operation:
-        set_requirements:
-          label: Estabelecer requisitos do atributo
-          description: Os seguintes requisitos de atributo serão aplicados às famílias selecionadas
 pim_enrich.error:
   exception.title: Oh snap! Um {{ status_code }} erro aconteceu...
 page_title:
@@ -877,10 +869,6 @@ batch_jobs:
       label: Editar atributos comuns
     cleaner:
       label: Limpar ficheiros de atributos comuns
-  set_attribute_requirements:
-    label: Estabelecer requisitos do atributo
-    perform:
-      label: Estabelecer requisitos do atributo
   add_to_variant_group:
     label: Adicionar a grupo variante
     perform:

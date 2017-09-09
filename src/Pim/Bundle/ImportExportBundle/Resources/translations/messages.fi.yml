@@ -132,5 +132,4 @@ Status: Status
 Summary: Yhteenveto
 Start: Aloitus
 End: Loppu
-set_attribute_requirements: Aseta attribuuttivaatimukset
 warning.label: Varoitus
