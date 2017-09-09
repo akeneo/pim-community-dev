@@ -9,6 +9,7 @@
 - GITHUB-4877: Update some tooltips messages of the export builder, Cheers @Milie44!
 - GITHUB-5949: Fix the deletion of a job instance (import\export) from the job edit page, cheers @BatsaxIV !
 - PIM-6531: Have English language as default language for new users
+- PIM-6761: Add filter on required attributes
 
 ## Technical improvements
 
@@ -20,8 +21,9 @@
 - TIP-730: Reworking of the creation popin for basic entities
 - TIP-732: Rework the attribute form using the PEF architecture
 - TIP-747: Migrate to Symfony 3.3
-- PIM-6740: Separe installation state (installed) from config file 
+- PIM-6740: Separe installation state (installed) from config file
 - API-359: Move notified user of a job into the configuration parameters of the job
+- TIP-733: Replace `oro/datafilter-builder` with `filters-list` and `filters-button`
 
 ## UI\UX Refactoring
 
@@ -306,7 +308,7 @@
 - Change the constructor of `Pim\Bundle\ApiBundle\Controller\LocaleController` to add `Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface`
 - Change the constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add `Akeneo\Component\Batch\Job\JobParametersValidator`
 - Change the constructor of `Pim\Bundle\ConnectorBundle\Launcher\AuthenticatedJobLauncher` to add `Akeneo\Component\Batch\Job\JobParametersValidator`
-- Change the constructor of `Pim\Bundle\AnalyticsBundle\DataCollector\VersionDataCollector` to replace `string` by `Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager` 
+- Change the constructor of `Pim\Bundle\AnalyticsBundle\DataCollector\VersionDataCollector` to replace `string` by `Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager`
 
 ### Methods
 

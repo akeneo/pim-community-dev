@@ -94,7 +94,7 @@ pim_enrich:
         third: Konfigurér
         fourth: Bekræft
     change-status:
-      label: Ændre status (aktiver / deaktiver)
+      label: Skift status
       description: De valgte produkter vil blive aktiveret eller deaktiveret.
       success_flash: Produkt(er) status er blevet ændret
       launched_flash: Bulk-handlingen "Skift status" er blevet iværksat. Du får besked, når det er afsluttet.
@@ -109,22 +109,22 @@ pim_enrich:
         invalid_attribute: Attribut med koden "attribute_code" er ikke fælles for de valgte produkter, attributten springes over.
         no_valid_attribute: Ingen af de valgte attributter kan anvendes på dette produkt.
     classify-add:
-      label: Klassificere produkter i kategorier
+      label: Tilføje til kategorier
       description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering bibeholdes.
       success_flash: Produkt(er), der er blevet klassificeret i udvalgte kategorier
       launched_flash: Handlingen bulk "Føj til kategorier" er blevet lanceret. Du får besked, når det er afsluttet.
     classify-move:
-      label: Flyt produkter til kategorier
+      label: Flyt mellem kategorier
       description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
       success_flash: Produkt(er), der er blevet flyttet til udvalgte kategorier
       launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
     classify-remove:
-      label: Fjern produkter fra kategorier
+      label: Fjern fra kategorier
       description: Produkterne vil blive fjernet fra følgende kategorier.
       success_flash: Produkt(er), der er blevet fjernet fra de valgte kategorier
       launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
     change-family:
-      label: Ændre familie af produkter
+      label: Ændre familie
       description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
       success_flash: Familien af valgte produkt(er) er blevet ændret
       launched_flash: Bulk-handlingen "Skift status" er blevet igangsat. Du får besked, når den er afsluttet.
@@ -684,7 +684,7 @@ pim_enrich.mass_edit_action:
       third: Konfigurér
       fourth: Bekræft
   change-status:
-    label: Ændre status (aktiver / deaktiver)
+    label: Skift status
     description: De valgte produkter vil blive aktiveret eller deaktiveret.
     success_flash: Produkt(er) status er blevet ændret
   edit-common-attributes:
@@ -696,11 +696,11 @@ pim_enrich.mass_edit_action:
     no_attribute.warning: Der er ingen fælles egenskaber for de valgte produkter. Ændre venligst dit valg.
     truncated_by_variant_attribute.warning: 'Nogle almindelige attributter fra udvalgte produkter kommer fra en variant gruppe. De er ikke tilgængelige for masse-redigering: %attributes%.'
   classify:
-    label: Klassificere produkter i kategorier
+    label: Tilføje til kategorier
     description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering bibeholdes.
     success_flash: Produkt(er), der er blevet klassificeret i udvalgte kategorier
   change-family:
-    label: Ændre familie af produkter
+    label: Ændre familie
     description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
     success_flash: Familien af valgte produkt(er) er blevet ændret
     no_family: Ingen familie

@@ -34,7 +34,7 @@ Feature: Edit common attributes of many products at once
     And I am logged in as "Julia"
     And I am on the products grid
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3282, https://akeneo.atlassian.net/browse/PIM-3880
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-3282, https://akeneo.atlassian.net/browse/PIM-3880
   Scenario: Successfully mass edit products on the non default channel
     Given the following product values:
       | product   | attribute                | value                   |
@@ -46,7 +46,7 @@ Feature: Edit common attributes of many products at once
       | pump      | weight                   | 500 GRAM                |
       | highheels | weight                   | 500 GRAM                |
     When I show the filter "description"
-    And I filter by "scope" with operator "" and value "Tablet"
+    And I switch the scope to "Tablet"
     And I filter by "description" with operator "contains" and value "A beautiful description"
     And I select all entities
     And I press "Change product information" on the "Bulk Actions" dropdown button

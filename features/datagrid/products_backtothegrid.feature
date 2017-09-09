@@ -31,6 +31,9 @@ Feature: Products back to the grid
     And I should see product sneakers_1
     And I should not see product boots_1
 
+  # These next scenarios do not fail on master but does not check the right things.
+  # We choose to skip it because we did not find an easy & quick solution to solve it
+  @skip
   Scenario: Successfully restore page number with hashnav
     Given the following products:
       | sku        |
@@ -51,6 +54,7 @@ Feature: Products back to the grid
     And I am on the products grid
     Then the page number should be 2
 
+  @skip
   Scenario: Successfully restore the scope dropdown
     And I should see the text "Ecommerce"
     And I should not see the text "Mobile"
@@ -61,4 +65,4 @@ Feature: Products back to the grid
     And I should not see the text "Ecommerce"
     When I move backward one page
     Then I should see the text "Mobile"
-    And I should not see the text "ECommerce"
+    And I should not see the text "Ecommerce"

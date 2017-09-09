@@ -1,5 +1,5 @@
 oro_datagrid.no_data_hint %entityHint%: No %entityHint% exists.
-oro_datagrid.not_found_hint: No results found. Try to change your search criteria.
+oro_datagrid.not_found_hint: Sorry, there is no result for your search.
 oro_datagrid.label_add_filter: Manage filters
 oro_datagrid.label_loading_mask: Loading . . .
 oro.grid.mass_action.selected_rows: Selected Rows

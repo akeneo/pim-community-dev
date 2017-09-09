@@ -31,9 +31,6 @@ class DBDataCollector implements DataCollectorInterface
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
@@ -46,7 +43,6 @@ class DBDataCollector implements DataCollectorInterface
     /**
      * @param ChannelRepositoryInterface   $channelRepository
      * @param ProductRepositoryInterface   $productRepository
-     * @param AttributeRepositoryInterface $attributeRepository
      * @param LocaleRepositoryInterface    $localeRepository
      * @param FamilyRepositoryInterface    $familyRepository
      * @param UserRepositoryInterface      $userRepository
@@ -54,14 +50,12 @@ class DBDataCollector implements DataCollectorInterface
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
         ProductRepositoryInterface $productRepository,
-        AttributeRepositoryInterface $attributeRepository,
         LocaleRepositoryInterface $localeRepository,
         FamilyRepositoryInterface $familyRepository,
         UserRepositoryInterface $userRepository
     ) {
         $this->channelRepository = $channelRepository;
         $this->productRepository = $productRepository;
-        $this->attributeRepository = $attributeRepository;
         $this->localeRepository = $localeRepository;
         $this->familyRepository = $familyRepository;
         $this->userRepository = $userRepository;
@@ -76,7 +70,6 @@ class DBDataCollector implements DataCollectorInterface
             'nb_channels'   => $this->channelRepository->countAll(),
             'nb_locales'    => $this->localeRepository->countAllActivated(),
             'nb_products'   => $this->productRepository->countAll(),
-            'nb_attributes' => $this->attributeRepository->countAll(),
             'nb_families'   => $this->familyRepository->countAll(),
             'nb_users'      => $this->userRepository->countAll(),
         ];

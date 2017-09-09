@@ -18,13 +18,6 @@ define(
     ) {
         return BaseFetcher.extend({
             /**
-             * {@inheritdoc}
-             */
-            initialize: function (options) {
-                BaseFetcher.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
              * Fetch default columns for grid with given alias
              *
              * @param {string} alias

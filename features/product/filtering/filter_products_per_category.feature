@@ -17,7 +17,8 @@ Feature: Filter products by category
 
   Scenario: Successfully filter products by category
     Given I am on the products grid
-    When I select the "2015 collection" tree
+    When I open the category tree
+    And I select the "2015 collection" tree
     Then I should see products purple-tshirt, green-tshirt and blue-jeans
     When I uncheck the "Include sub-categories" switch
     Then I should be able to use the following filters:

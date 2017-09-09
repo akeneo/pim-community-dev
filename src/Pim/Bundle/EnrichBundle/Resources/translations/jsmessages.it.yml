@@ -745,7 +745,6 @@ pim_enrich:
         attributes:
           title: Attributi
           edit: Modifica
-          label: "{0} Tutti gli attributi |{1} Un attributo selezionato |] 1, Inf[ {{ count }} attributi selezionati"
           help: 'Seleziona le informazioni di prodotto da esportare. Es: solo gli attributi tecnici.'
           empty: Tutti gli attributi verranno esportati
           modal:
@@ -941,7 +940,6 @@ pim_enrich:
           label: Scegli gli articoli
         choose:
           label: Scegli l'operazione
-          title: Modifica di massa ({{ itemsCount }} prodotti)
         configure:
           label: Configura
         confirm:
@@ -952,14 +950,13 @@ pim_enrich:
           label: L'azione di massa "{{ operation }}" è stato lanciata. Sarai avvisato quando finisce.
       operation:
         change_status:
-          label: Cambia stato (attiva / disattiva)
+          label: Modificare lo stato
           description: Gli articoli selezionati saranno attivati o disattivati.
           field: Per attivare
         edit_common:
           label: Modifica gli attributi comuni
           description: Gli attributi del prodotto selezionato verranno modificati con i seguenti dati per le impostazioni locali {{ locale }} e per il canale {{ scope }}, selezionati nella griglia prodotti.
         change_family:
-          label: Cambiare la famiglia degli articoli
           description: La famiglia degli articoli selezionati verrà modificata nella famiglia selezionata
           field: Famiglia
         add_to_group:
@@ -971,13 +968,10 @@ pim_enrich:
           description: Seleziona il gruppo di varianti a cui aggiungere gli articoli selezionati
           field: Gruppo
         add_to_category:
-          label: Classificare i prodotti in categorie
           description: Gli articoli saranno posizionati nelle seguenti categorie, il posizionamento attuale è mantenuto.
         move_to_category:
-          label: Sposta i prodotti nelle categorie
           description: I prodotti saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso.
         remove_from_category:
-          label: Rimuovi i prodotti dalle categorie
           description: I prodotti verranno rimossi dalle seguenti categorie.
     family:
       step:
@@ -985,17 +979,12 @@ pim_enrich:
           label: Scegli le famiglie
         choose:
           label: Scegli l'operazione
-          title: Modifica di massa ({{ itemsCount }} famiglie)
         configure:
           label: Configura
         confirm:
           label: Conferma
         launched:
           label: L'azione di massa "{{ operation }}" è stato lanciata. Sarai avvisato quando finisce.
-      operation:
-        set_requirements:
-          label: Impostare gli attributi richiesti
-          description: I seguenti attributi richiesti verranno applicati alle famiglie selezionate
 pim_enrich.error:
   exception.title: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
   http:
@@ -1049,10 +1038,6 @@ batch_jobs:
       label: Modifica gli attributi comuni
     cleaner:
       label: Pulisci i file per gli attributi comuni
-  set_attribute_requirements:
-    label: Impostare gli attributi richiesti
-    perform:
-      label: Impostare gli attributi richiesti
   csv_product_quick_export:
     quick_export.label: Esportazione rapida prodotti in Csv
     perform:

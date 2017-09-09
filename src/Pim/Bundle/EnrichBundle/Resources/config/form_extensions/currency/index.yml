@@ -12,10 +12,15 @@ extensions:
             tab: pim-menu-settings
             item: pim-menu-settings-currency
 
-    pim-currency-index-filters:
-        module: oro/datafilter-builder
+    pim-currency-index-filters-list:
+        module: oro/datafilter/filters-list
         parent: pim-currency-index
-        targetZone: content
+        targetZone: filters
+
+    pim-currency-index-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-currency-index
+        targetZone: filters
 
     pim-currency-index-grid:
         module: pim/form/common/index/grid

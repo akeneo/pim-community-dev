@@ -24,6 +24,7 @@ Feature: Unclassify many products at once
     And I confirm mass edit
     And I wait for the "remove_product_value" job to finish
     When I am on the products grid
+    And I open the category tree
     And I select the "2014 collection" tree
     Then I should see the text "Summer collection (2)"
     And I should see the text "Winter collection (0)"

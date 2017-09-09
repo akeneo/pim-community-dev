@@ -6,9 +6,6 @@ Feature: Edit and see all attributes
 
   Background:
     Given the "footwear" catalog configuration
-    And the following family:
-      | code  | attributes                                                       |
-      | shoes | sku,name,description,price,rating,size,color,manufacturer,length |
     And I am logged in as "Julia"
     And I am on the products page
     And I create a new product
@@ -24,7 +21,6 @@ Feature: Edit and see all attributes
     Then I should not see the text "There are unsaved changes."
 
   Scenario: Successfully edit the product and check that all attributes are visible
-    Given I am on the "boots" product page
     Then I should not see the text "Media"
     Then I should not see the text "Colors"
     Then I should not see the text "Marketing"

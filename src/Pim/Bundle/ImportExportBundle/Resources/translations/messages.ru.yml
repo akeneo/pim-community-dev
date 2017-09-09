@@ -132,5 +132,4 @@ Status: Статус
 Summary: Сводка
 Start: Начало
 End: Конец
-set_attribute_requirements: Установить требования к атрибутам
 warning.label: Предупреждение

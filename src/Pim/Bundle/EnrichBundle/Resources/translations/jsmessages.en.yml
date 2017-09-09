@@ -164,7 +164,11 @@ pim_enrich:
         product:
             navigation: Product navigation
             infos: Product infos
+            index_title: Products
             title: product
+            locale: Locale
+            category: Category
+            create: Create product
             btn:
                 enabled: Enabled
                 disabled: Disabled
@@ -444,6 +448,10 @@ pim_enrich:
                     attribute_group_selector: Attribute group
                     attribute_group_all: All
                     attribute_group.to_fill_count: "{1}1 empty required attribute|]1, Inf [{{ count }} empty required attributes"
+                    attribute_filter:
+                        display: Display
+                        all: All attributes
+                        missing_required: All missing required attributes
                 categories:
                     title: Categories
             panel:

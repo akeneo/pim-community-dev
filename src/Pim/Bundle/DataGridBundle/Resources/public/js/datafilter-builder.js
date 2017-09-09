@@ -90,12 +90,14 @@ define(
             build: function () {
                 var options = this.combineOptions.call(this);
                 options.collection = this.collection;
+                options.renderFilterList = true;
                 options.displayManageFilters = _.result(this.metadata.options, 'manageFilters', true);
                 options.filtersAsColumn = _.result(this.metadata.options, 'filtersAsColumn', false);
                 var filtersList = new FiltersManager(options);
                 this.$el.prepend(filtersList.render().$el);
 
                 mediator.trigger('datagrid_filters:rendered', this.collection);
+
                 if (this.collection.length === 0) {
                     filtersList.$el.hide();
                 }

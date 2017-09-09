@@ -24,6 +24,7 @@ define(
         'pim/security-context',
         'pim/template/form/tab/attributes',
         'pim/template/form/tab/attribute/attribute-group',
+        'pim/template/common/no-data',
         'pim/provider/to-fill-field-provider',
         'pim/dialog',
         'oro/messenger',
@@ -45,6 +46,7 @@ define(
         SecurityContext,
         formTemplate,
         attributeGroupTemplate,
+        noDataTemplate,
         toFillFieldProvider,
         Dialog,
         messenger,
@@ -53,28 +55,25 @@ define(
         /**
          * Group field views by sections (attribute groups)
          *
-         * @param {array} attributeGroups
+         * @param {Array} attributeGroups
+         * @param {Array} fieldsToFill
          *
-         * @return {object}
+         * @return {Object}
          */
-        const groupFieldsBySection = (attributeGroups, fieldsTofill) => (fieldCollection, field) => {
+        const groupFieldsBySection = (attributeGroups, fieldsToFill) => (fieldCollection, field) => {
             const newFieldCollection = Object.assign({}, fieldCollection);
-            const attributeGroupCode = AttributeGroupManager.getAttributeGroupForAttribute(
-                attributeGroups,
-                field.attribute.code
-            );
 
-            if (undefined === newFieldCollection[attributeGroupCode]) {
-                newFieldCollection[attributeGroupCode] = {
-                    attributeGroup: attributeGroups[attributeGroupCode],
+            if (undefined === newFieldCollection[field.attribute.group]) {
+                newFieldCollection[field.attribute.group] = {
+                    attributeGroup: attributeGroups[field.attribute.group],
                     fields: [],
                     toFill: 0
                 };
             }
 
-            newFieldCollection[attributeGroupCode].fields.push(field);
-            if (-1 !== fieldsTofill.indexOf(field.attribute.code)) {
-                newFieldCollection[attributeGroupCode].toFill++;
+            newFieldCollection[field.attribute.group].fields.push(field);
+            if (-1 !== fieldsToFill.indexOf(field.attribute.code)) {
+                newFieldCollection[field.attribute.group].toFill++;
             }
 
             return newFieldCollection;
@@ -83,9 +82,9 @@ define(
         /**
          * Generate a section view for the given fields
          *
-         * @param {object}   fieldCollection
+         * @param {Object}   fieldCollection
          * @param {function} template
-         * @param {string}   label
+         * @param {String}   label
          *
          * @return {view}
          */
@@ -115,9 +114,11 @@ define(
         return BaseForm.extend({
             template: _.template(formTemplate),
             attributeGroupTemplate: _.template(attributeGroupTemplate),
+            noDataTemplate: _.template(noDataTemplate),
             className: 'tabbable object-attributes',
             events: {
-                'click .remove-attribute': 'removeAttribute'
+                'click .remove-attribute': 'removeAttribute',
+                'click .required-attribute-indicator': 'filterRequiredAttributes'
             },
             rendering: false,
 
@@ -170,6 +171,7 @@ define(
                 this.onExtensions('copy:select:after', this.render.bind(this));
                 this.onExtensions('copy:context:change', this.render.bind(this));
                 this.onExtensions('group:change', this.render.bind(this));
+                this.onExtensions('attribute_filter:change', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -191,6 +193,7 @@ define(
                         this.getExtension('attribute-group-selector').setElements(
                             _.indexBy(attributeGroups, 'code')
                         );
+                        FieldManager.clearVisibleFields();
                     })
                     .then(() => this.filterValues(data.values))
                     .then((values) => this.createFields(data, values))
@@ -198,12 +201,10 @@ define(
                         this.rendering = false;
                         $.when(
                             AttributeGroupManager.getAttributeGroupsForObject(data),
-                            toFillFieldProvider.getFields(this.getRoot(), this.getFormData())
-                        ).then((attributeGroups, fieldsTofill) => {
-                            this.renderExtensions();
-                            this.delegateEvents();
+                            toFillFieldProvider.getFields(this.getRoot(), data.values)
+                        ).then((attributeGroups, fieldsToFill) => {
                             const sections = _.values(
-                                fields.reduce(groupFieldsBySection(attributeGroups, fieldsTofill), {})
+                                fields.reduce(groupFieldsBySection(attributeGroups, fieldsToFill), {})
                             );
                             const fieldsView = document.createElement('div');
 
@@ -219,7 +220,17 @@ define(
                                 ));
                             }
 
-                            this.$('.object-values').empty().append(fieldsView);
+                            const objectValuesDom = this.$('.object-values').empty();
+                            if (_.isEmpty(fields)) {
+                                objectValuesDom.append(this.noDataTemplate({
+                                    hint: __('oro.datagrid.noresults'),
+                                    subHint: __('oro.datagrid.noresults_subTitle')
+                                }));
+                            } else {
+                                objectValuesDom.append(fieldsView);
+                            }
+                            this.renderExtensions();
+                            this.delegateEvents();
                         });
                     });
 
@@ -257,6 +268,7 @@ define(
                     });
 
                     field.setValues(values);
+                    FieldManager.addVisibleField(field.attribute.code);
 
                     return field;
                 }.bind(this));
@@ -327,8 +339,8 @@ define(
              * Initialize  the scope if there is none, or modify it by reference if there is already one
              *
              * @param {Object} scopeEvent
-             * @param {string} scopeEvent.context
-             * @param {string} scopeEvent.scopeCode
+             * @param {String} scopeEvent.context
+             * @param {String} scopeEvent.scopeCode
              */
             initScope: function (scopeEvent) {
                 if ('base_product' === scopeEvent.context) {
@@ -424,8 +436,9 @@ define(
                 var displayedAttributes = FieldManager.getFields();
 
                 if (_.has(displayedAttributes, event.attribute)) {
+                    const field = displayedAttributes[event.attribute];
                     // TODO: the manager shouldn't be stateful, access the field by another way
-                    displayedAttributes[event.attribute].setFocus();
+                    _.defer(field.setFocus.bind(field));
                 }
             },
 
@@ -444,9 +457,9 @@ define(
             /**
              * Filter values
              *
-             * @param {object} values
+             * @param {Object} values
              *
-             * @return {object}
+             * @return {Promise}
              */
             filterValues: function (values) {
                 if (!this.getExtension('attribute-group-selector').isAll()) {
@@ -460,20 +473,24 @@ define(
                     values = filteredValues;
                 }
 
-                return values;
+                if (undefined === this.getExtension('attribute-filter')) {
+                    return $.Deferred().resolve(values);
+                }
+
+                return this.getExtension('attribute-filter').filterValues(values);
             },
 
             /**
              * Render all fields and return a collection of promises
              *
-             * This method is pretty opimisation oriented: We fetch the attributes as a collection
+             * This method is pretty optimization oriented: We fetch the attributes as a collection
              * to avoid individual fetching afterward. We also don't use fat arrow functions because
              * we cannot get the 'arguments' object out of it
              *
-             * @param {object} data
-             * @param {object} values
+             * @param {Object} data
+             * @param {Object} values
              *
-             * @return {promise}
+             * @return {Promise}
              */
             createFields: function (data, values) {
                 return FetcherRegistry.getFetcher('attribute')
@@ -485,6 +502,13 @@ define(
                     }).then(function () {
                         return _.values(arguments);
                     });
+            },
+
+            /**
+             * Filter the required attributes and attribute group
+             */
+            filterRequiredAttributes: function () {
+                this.getRoot().trigger('pim_enrich:form:switch_values_filter', 'missing_required');
             },
 
             /**
