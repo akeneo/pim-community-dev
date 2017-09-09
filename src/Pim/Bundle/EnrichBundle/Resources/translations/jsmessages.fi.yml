@@ -650,7 +650,6 @@ pim_enrich:
         attributes:
           title: Attribuutit
           edit: Muokkaa
-          label: "{0} Kaikki attribuutit|{1} Yksi attribuutti valittu|]1,Inf[ {{ count }} attribuuttia valittu"
           help: 'Valitse vietävä attribuuttiryhmä. Esim: vain tekniset attribuutit.'
           empty: Kaikki attribuutit viedään
           modal:
@@ -813,13 +812,12 @@ pim_enrich:
           label: Vahvista
       operation:
         change_status:
-          label: Muuta tilaa (päälle / pois)
+          label: Muuta tuotteen tila
           description: Valitut tuotteet otetaan käyttöön tai pois käytöstä.
           field: Ottaa käyttöön
         edit_common:
           label: Muokkaa yleisiä attribuutteja
         change_family:
-          label: Vaihda tuoteperhettä
           description: Valittujen tuotteiden perhe vaihdetaan valittuun tuoteperheeseen
           field: Perhe
         add_to_group:
@@ -831,13 +829,10 @@ pim_enrich:
           description: Valitse tuotevariaatioyhmä johon lisätä valitut tuotteet
           field: Ryhmä
         add_to_category:
-          label: Luokittele tuotteet kategorioihin
           description: Tuotteet asetetaan seuraaviin kategorioihin, olemassaolevat asetukset pyyvät.
         move_to_category:
-          label: Siirrä tuotteet kategorioihin
           description: Tuotteet asetetaan seuraaviin kategorioihin, aikaisemmat kategorisoinnit menetetään.
         remove_from_category:
-          label: Poista tuotteet kategorioista
           description: Tuotteet poistetaan seuraavista kategorioista.
     family:
       step:
@@ -849,10 +844,6 @@ pim_enrich:
           label: Konfiguroi
         confirm:
           label: Vahvista
-      operation:
-        set_requirements:
-          label: Aseta attribuuttivaatimukset
-          description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
 pim_enrich.error:
   exception.title: Voi ei! {{ status_code }} virhe tapahtui...
 page_title:
@@ -889,10 +880,6 @@ batch_jobs:
       label: Muokkaa yleisiä attribuutteja
     cleaner:
       label: Puhdista tiedostot yleisille attribuuteille
-  set_attribute_requirements:
-    label: Aseta attribuuttivaatimukset
-    perform:
-      label: Aseta attribuuttivaatimukset
   add_to_variant_group:
     label: Lisää tuotevariaatioryhmään
     perform:
