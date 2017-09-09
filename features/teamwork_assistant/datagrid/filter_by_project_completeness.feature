@@ -108,6 +108,7 @@ Feature: Filter by project completeness in the product datagrid
     And I should see the text "Due date: 12/13/2018"
     And I should see the text "0%"
 
+  @skip @info To be fixed in PIM-6517
   Scenario: Project overview options are hidden for contributors
     And I am logged in as "Julia"
     When I am on the products grid
@@ -122,6 +123,7 @@ Feature: Filter by project completeness in the product datagrid
     And I should see the available option "In progress" in the filter "project_completeness"
     And I should see the available option "Done" in the filter "project_completeness"
 
+  @skip @info To be fixed in PIM-6517
   Scenario: A contributor can filter by project completeness
     And I am logged in as "Julia"
     When I am on the products grid
@@ -149,6 +151,7 @@ Feature: Filter by project completeness in the product datagrid
       | project_completeness |          | In progress | tshirt-the-witcher-3 |
       | project_completeness |          | Done        | tshirt-skyrim        |
 
+  @skip @info To be fixed in PIM-6517
   Scenario: A project owner can filter by project completeness
     And I am logged in as "Julia"
     When I am on the "tshirt-skyrim" product page
@@ -195,6 +198,7 @@ Feature: Filter by project completeness in the product datagrid
       | project_completeness |          | In progress (project overview) | tshirt-the-witcher-3                |
       | project_completeness |          | Done (project overview)        | tshirt-skyrim                       |
 
+  @skip @info To be fixed in PIM-6517
   Scenario: Filtering by project completeness doesn't leave the project context
     And I am logged in as "Julia"
     When I am on the products grid

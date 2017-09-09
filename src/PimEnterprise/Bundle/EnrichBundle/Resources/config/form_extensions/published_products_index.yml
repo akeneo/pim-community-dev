@@ -69,10 +69,15 @@ extensions:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
-    pimee-published-product-index-grid-filters:
-        module: oro/datafilter-builder
+    pimee-published-product-index-filters-manage:
+        module: oro/datafilter/filters-button
         parent: pimee-published-product-index
-        targetZone: grid
+        targetZone: filters
+
+    pimee-published-product-index-grid-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pimee-published-product-index
+        targetZone: filters
 
     pimee-published-product-index-grid:
         module: pim/grid/table
