@@ -125,19 +125,17 @@ function($, _, mediator) {
          */
         getMinimumDropdownWidth: function() {
             if (_.isNull(this.minimumWidth)) {
-                var elements = this.getWidget().find('.ui-multiselect-checkboxes li');
-                var margin = 26;
+                const margin = 100;
+                const elements = this.getWidget().find('.ui-multiselect-checkboxes li');
+                const longest = _.max(_.map(elements, function (element) {
+                    console.log($(element).find('span:first').width());
+                    return $(element).find('span:first').width();
+                }));
 
-                var longestElement = _.max(elements, function (element) {
-                    var htmlContent = $(element).find('span:first').html();
-                    var length = htmlContent ? htmlContent.length : 0;
-
-                    return length;
-                });
-
-                this.minimumWidth = $(longestElement).find('span:first').width() + margin;
+                this.minimumWidth = longest + margin;
             }
 
+            console.log(this.minimumWidth);
             return this.minimumWidth;
         },
 
@@ -172,20 +170,6 @@ function($, _, mediator) {
          */
         multiselectfilter: function(functionName) {
             return this.element.multiselectfilter(functionName);
-        },
-
-        /**
-         *  Set dropdown position according to button element
-         *
-         * @param {Object} button
-         */
-        updateDropdownPosition: function(button) {
-            var position = button.offset();
-
-            this.getWidget().css({
-                top: position.top + button.outerHeight(),
-                right: position.right
-            });
         }
     };
 

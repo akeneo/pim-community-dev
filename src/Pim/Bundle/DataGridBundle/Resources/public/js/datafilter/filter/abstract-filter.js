@@ -478,17 +478,17 @@ function($, _, Backbone, app) {
             criteria.css({ position: 'fixed' });
 
             let expectedLeft = this.$el.offset().left;
-            if ((expectedLeft + criteria.width() > body.width()) &&
-                expectedLeft + this.$el.width() - criteria.width() > 0) {
-                criteria.css({ left: expectedLeft + this.$el.width() - criteria.width() });
+            if ((expectedLeft + criteria.outerWidth() > body.width()) &&
+                expectedLeft + this.$el.width() - criteria.outerWidth() > 0) {
+                criteria.css({ left: expectedLeft + this.$el.width() - criteria.outerWidth() });
             } else {
                 criteria.css({ left: expectedLeft });
             }
 
             let expectedTop = this.$el.offset().top;
-            if ((expectedTop + criteria.height() > body.height()) &&
-                expectedTop + this.$el.height() - criteria.height() > 0) {
-                criteria.css({ top: expectedTop + this.$el.height() - criteria.height() });
+            if ((expectedTop + criteria.outerHeight() > body.height()) &&
+                expectedTop + this.$el.height() - criteria.outerHeight() > 0) {
+                criteria.css({ top: expectedTop + this.$el.height() - criteria.outerHeight() });
             } else {
                 criteria.css({ top: expectedTop });
             }

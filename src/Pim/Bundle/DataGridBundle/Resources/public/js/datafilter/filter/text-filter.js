@@ -267,7 +267,7 @@ function($, _, __, AbstractFilter) {
          */
         outsideClickListener(event) {
             if (!$(event.target).closest(this.criteriaSelector).length) {
-                if (this.$(this.criteriaSelector).is(':visible')) {
+                if (this.popupCriteriaShowed) {
                     this._hideCriteria();
                     document.removeEventListener('click', this.outsideClickListener.bind(this));
                 }
