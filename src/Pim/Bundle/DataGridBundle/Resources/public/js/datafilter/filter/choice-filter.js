@@ -208,7 +208,7 @@ function($, _, __, app, TextFilter, initSelect2) {
             $(e.currentTarget).parent().addClass('active');
             dropdown.find('.name_input').val($(e.currentTarget).attr('data-value'));
 
-            var filterContainer = $(e.currentTarget).closest('.AknFilterChoice');
+            var filterContainer = $(e.currentTarget).closest('.filter-item');
             if ($(e.currentTarget).attr('data-value') === 'in') {
                 this._enableListSelection();
             } else {

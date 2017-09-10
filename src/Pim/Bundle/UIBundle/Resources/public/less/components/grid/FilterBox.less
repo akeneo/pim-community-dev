@@ -3,12 +3,6 @@
 .AknFilterBox {
   @searchHeight: 44px;
 
-  background: lighten(@AknGrey, 20%);;
-  padding: 20px 20px 10px 140px;
-  z-index: 800;
-  position: relative;
-  min-height: 64px;
-
   &-addFilterButton {
     line-height: @AknLittleButtonSize;
     min-height: @searchHeight;
@@ -20,18 +14,8 @@
     background: url("../../../images/icon-filters.svg") no-repeat 50%;
   }
 
-  &-filterContainer {
-    display: inline-block;
-
-    &--inline {
-      margin-bottom: 0;
-    }
-  }
-
   &-disableFilter {
-    text-align: center;
-    display: inline-block;
-    width: 20px;
+    display: none;
   }
 
   &--search {
@@ -67,34 +51,29 @@
     display: flex;
   }
 
-  &--search &-disableFilter {
-    display: none;
+  &-filter {
+    margin: (@AknPaddingBetweenBlocksLeftColumn - @AknPaddingLeftColumn) 0 @AknPaddingLeftColumn 0;
   }
 
   &-filterLabel {
-    &:after {
-      content: ':';
-      margin-right: 3px;
-    }
-  }
-
-  &-filter {
-    background: white;
-    border: 1px solid @AknBorderColor;
-    height: 28px;
-    line-height: 28px;
-    padding: 0 10px;
-    border-radius: 2px;
-    display: inline-block;
+    display: block;
+    color: @AknGrey;
+    text-transform: uppercase;
+    font-size: @AknFontSizeSmall;
   }
 
   &-filterCriteria {
+    color: @AknDarkBlue;
+    font-size: @AknDefaultFontSize;
+
     &.ui-multiselect {
       // jQuery select adds style for the button, we need to remove it for the filters.
       width: auto !important;
       padding: 0 !important;
       border: none;
       background: none;
+      line-height: 0;
+      height: 0;
     }
   }
 
@@ -105,6 +84,7 @@
     cursor: pointer;
     background: none;
     border: none;
+    margin: 0 10px;
   }
 
   &--search &-filterCriteria {
@@ -123,11 +103,21 @@
     margin-left: 3px;
   }
 
+  &--search &-filterLabel {
+    text-transform: none;
+    
+    &:after {
+      content: ' : ';
+      margin-right: 3px;
+      color: @AknDefaultFontColor;
+    }
+  }
+
   &--manage {
     float: left;
   }
 
-  &--list {
+  &--search &-list {
     display: flex;
     flex-grow: 1;
   }

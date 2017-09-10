@@ -4,11 +4,9 @@
   @timing: 0.3s;
   @width: 280px;
   @iconSize: 24px;
-  @padding: 20px;
   @littleWidth: 40px;
   @transition: ease-in-out;
   @scrollbarWidth: 16px;
-  @paddingBetweenBlocks: 36px;
 
   flex-basis: @width;
   width: @width;
@@ -34,7 +32,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    font-size: 11px;
+    font-size: @AknFontSizeSmall;
     position: absolute;
     right: 0;
     overflow-x: auto;
@@ -43,7 +41,7 @@
 
   &-innerTop:not(:empty),
   &-innerBottom:not(:empty) {
-    padding: 0 @padding @padding @padding;
+    padding: 0 @AknPaddingLeftColumn @AknPaddingLeftColumn @AknPaddingLeftColumn;
     line-height: 14px;
     transition:
       margin-right @timing @transition,
@@ -56,14 +54,14 @@
 
   &-innerBottom:not(:empty) {
     border-top: 1px solid @AknBorderColor;
-    padding-top: @padding;
+    padding-top: @AknPaddingLeftColumn;
   }
 
   &-block {
     &:not(:empty) {
       display: flex;
       flex-direction: column;
-      margin: (@paddingBetweenBlocks - @padding) 0 @padding 0;
+      margin: (@AknPaddingBetweenBlocksLeftColumn - @AknPaddingLeftColumn) 0 @AknPaddingLeftColumn 0;
     }
 
     &--inline:not(:empty) {
@@ -94,16 +92,16 @@
   &-subtitle {
     color: @AknGrey;
     text-transform: uppercase;
-    font-size: 11px;
+    font-size: @AknFontSizeSmall;
   }
 
   &-title {
-    margin-bottom: 20px;
+    margin-bottom: @AknPaddingLeftColumn;
   }
 
   &-value {
     color: @AknDarkBlue;
-    font-size: 12px;
+    font-size: @AknDefaultFontSize;
 
     &--highlited {
       color: @AknLightPurple;
@@ -113,16 +111,16 @@
 
   &-part {
     border-bottom: 1px solid @AknBorderColor;
-    margin-left: -@padding;
-    margin-right: -@padding;
-    padding-left: @padding;
-    padding-right: @padding;
+    margin-left: -@AknPaddingLeftColumn;
+    margin-right: -@AknPaddingLeftColumn;
+    padding-left: @AknPaddingLeftColumn;
+    padding-right: @AknPaddingLeftColumn;
     min-height: 52px;
   }
 
   &-navigationLink {
     display: block;
-    font-size: 14px;
+    font-size: @AknFontSizeBig;
     margin: 0 0 16px 0;
     color: @AknDarkBlue;
     cursor: pointer;
@@ -154,14 +152,14 @@
   }
 
   &-collapseButton {
-    height: @iconSize + @padding;
+    height: @iconSize + @AknPaddingLeftColumn;
     width: @width;
     background: url("../../images/icon-panelClose.svg") no-repeat 20px 100%;
     background-size: @iconSize;
     cursor: pointer;
     opacity: 0.8;
     position: absolute;
-    bottom: @padding;
+    bottom: @AknPaddingLeftColumn;
     right: 0;
     border-top: 1px solid @AknBorderColor;
     transition:

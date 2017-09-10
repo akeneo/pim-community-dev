@@ -209,7 +209,7 @@ define(
             _onClickChoiceValue: function(e) {
                 NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
                 if ($(e.currentTarget).attr('data-input-toggle')) {
-                    var filterContainer = $(e.currentTarget).closest('.AknFilterChoice');
+                    var filterContainer = $(e.currentTarget).closest('.filter-item');
                     if (_.contains(['empty', 'not empty'], $(e.currentTarget).attr('data-value'))) {
                         filterContainer.find(this.criteriaValueSelectors.value).hide();
                     } else {
