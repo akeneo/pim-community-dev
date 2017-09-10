@@ -256,6 +256,22 @@ function($, _, __, AbstractFilter) {
             setTimeout(_.bind(function() {
                 this.popupCriteriaShowed = true;
             }, this), 100);
+
+            document.addEventListener('click', this.outsideClickListener.bind(this))
+        },
+
+        /**
+         * Closes the criteria if the user clicks on the rest of the document.
+         *
+         * @param {Event} event
+         */
+        outsideClickListener(event) {
+            if (!$(event.target).closest(this.criteriaSelector).length) {
+                if (this.$(this.criteriaSelector).is(':visible')) {
+                    this._hideCriteria();
+                    document.removeEventListener('click', this.outsideClickListener.bind(this));
+                }
+            }
         },
 
         /**
