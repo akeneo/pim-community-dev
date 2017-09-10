@@ -6,6 +6,28 @@ function($, _, Backbone, app) {
     /**
      * Basic grid filter
      *
+     * Inheritance schema:
+     *
+     * - abstract-filter (abstract)
+     *   - none-filter (unused?)
+     *   - search-filter (Displays a search box)
+     *   - select-filter (Displays a list of choices with a search box. "Status", only boolean)
+     *     - multiselect-filter (Displays a multiselect with checkboxes (no ajax). "Job type"...
+     *       - ajax-choice-filter (unused?)
+     *     - product_completeness-filter (Displays the completeness like a select)
+     *     - product_scope-filter (Displays the scope like a select)
+     *     - select-row-filter (unused?)
+     *   - text-filter (Displays a choice contains/dies not contains... Only on process tracker "Type", "User")
+     *     - choice-filter (Displays a choice contains/does not contains/equals... and 1 text field. "SKU", all text fields)
+     *       - date-filter (Displays a choice between/not between/more/less and 2 datepickers. "Created at", "Release date")
+     *         - datetime-filter (unused?)
+     *       - number-filter (Displays choice =/>/</empty... and 1 text field. "Optical zoom", all number fields)
+     *         - metric-filter (Displays choice =/</empty..., a text field and a unit. All metric fields)
+     *         - price-filter (Displays choice =/>..., a text field and a currency field. All prices fields)
+     *         - product_category-filter (For category filter, special one)
+     *     - select2-choice-filter (Displays a multiple select2. "Group", "Brand"...)
+     *     - select2-rest-choice-filter (multiple select2 with ajax calls. Only "Family")
+     *
      * @export  oro/datafilter/abstract-filter
      * @class   oro.datafilter.AbstractFilter
      * @extends Backbone.View
@@ -438,6 +460,38 @@ function($, _, Backbone, app) {
                 e.preventDefault();
                 e.stopPropagation();
             }
-        }
+        },
+
+        /**
+         * There is a well known bug on browsers, forced us to not use the overflow-x and overflow-y with different
+         * values. With the design in columns, the criteria popups are not displayed correctly with the dropdown or
+         * multiselect libraries. So we sadly have to change the position of the popup to "fixed" and set manually
+         * their position.
+         *
+         * This next function will find the best position to display then (aligned with the current filter).
+         *
+         * {@param} DOMElement criteria
+         */
+        _updateCriteriaSelectorPosition(criteria) {
+            const body = $('body');
+
+            criteria.css({ position: 'fixed' });
+
+            let expectedLeft = this.$el.offset().left;
+            if ((expectedLeft + criteria.width() > body.width()) &&
+                expectedLeft + this.$el.width() - criteria.width() > 0) {
+                criteria.css({ left: expectedLeft + this.$el.width() - criteria.width() });
+            } else {
+                criteria.css({ left: expectedLeft });
+            }
+
+            let expectedTop = this.$el.offset().top;
+            if ((expectedTop + criteria.height() > body.height()) &&
+                expectedTop + this.$el.height() - criteria.height() > 0) {
+                criteria.css({ top: expectedTop + this.$el.height() - criteria.height() });
+            } else {
+                criteria.css({ top: expectedTop });
+            }
+        },
     });
 });

@@ -250,6 +250,7 @@ function($, _, __, AbstractFilter) {
          */
         _showCriteria: function() {
             this.$(this.criteriaSelector).show();
+            this._updateCriteriaSelectorPosition(this.$(this.criteriaSelector));
             this._focusCriteria();
             this._setButtonPressed(this.$(this.criteriaSelector), true);
             setTimeout(_.bind(function() {

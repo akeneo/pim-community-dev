@@ -190,6 +190,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
                     open: _.bind(function() {
                         this.selectWidget.onOpenDropdown();
                         this._setDropdownWidth();
+                        this._updateCriteriaSelectorPosition(this.selectWidget.getWidget());
                         this._setButtonPressed(this.$(this.containerSelector), true);
                         this.selectDropdownOpened = true;
                     }, this),

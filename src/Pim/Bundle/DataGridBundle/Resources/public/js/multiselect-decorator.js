@@ -97,14 +97,16 @@ function($, _, mediator) {
          * @protected
          */
         _setDropdownDesign: function() {
-            var widget = this.getWidget();
-            widget.addClass('dropdown-menu');
-            widget.addClass('AknDropdown-menu');
-            widget.removeClass('ui-widget-content');
-            widget.removeClass('ui-widget');
-            widget.find('.ui-widget-header').removeClass('ui-widget-header');
-            widget.find('.ui-multiselect-filter').removeClass('ui-multiselect-filter');
-            widget.find('ul li label').removeClass('ui-corner-all');
+            const widget = this.getWidget();
+
+            // TODO Check what classes are needed.
+            // widget.addClass('dropdown-menu');
+            // widget.addClass('AknDropdown-menu');
+            // widget.removeClass('ui-widget-content');
+            // widget.removeClass('ui-widget');
+            // widget.find('.ui-widget-header').removeClass('ui-widget-header');
+            // widget.find('.ui-multiselect-filter').removeClass('ui-multiselect-filter');
+            // widget.find('ul li label').removeClass('ui-corner-all');
         },
 
         /**
