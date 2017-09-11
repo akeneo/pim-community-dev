@@ -1,6 +1,6 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone'],
-function($, _, Backbone) {
+define(['jquery', 'underscore', 'backbone', 'pim/form'],
+function($, _, Backbone, BaseForm) {
     'use strict';
 
     /**
@@ -8,9 +8,9 @@ function($, _, Backbone) {
      *
      * @export  oro/datagrid/pagination
      * @class   oro.datagrid.Pagination
-     * @extends Backbone.View
+     * @extends BaseForm
      */
-    return Backbone.View.extend({
+    return BaseForm.extend({
         /** @property */
         tagName: 'div',
 
@@ -86,7 +86,7 @@ function($, _, Backbone) {
 
             this.hidden = options.hide == true;
 
-            Backbone.View.prototype.initialize.call(this, options);
+            BaseForm.prototype.initialize.call(this, options);
         },
 
         /**
@@ -202,7 +202,7 @@ function($, _, Backbone) {
          *
          * @return {*}
          */
-        render: function() {
+        renderPagination: function() {
             this.$el.empty();
 
             var state = this.collection.state;
