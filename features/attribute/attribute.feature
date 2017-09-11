@@ -33,6 +33,7 @@ Feature: Display available field options
     Given I am on the "description" attribute page
     And I check the "Read only" switch
     And I save the "attribute"
+    And I should not see the text "There are unsaved change"
     When I am on the "my-jacket" product page
     Then the field Description should be disabled
 
