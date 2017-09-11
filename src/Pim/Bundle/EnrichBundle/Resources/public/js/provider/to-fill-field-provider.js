@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Attribute group selector extension
+ * To fill field provider
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

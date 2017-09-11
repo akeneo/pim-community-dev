@@ -31,6 +31,7 @@ parameters:
     pim_enrich.controller.rest.job_instance.class:            Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController
     pim_enrich.controller.rest.job_execution.class:           Pim\Bundle\EnrichBundle\Controller\Rest\JobExecutionController
     pim_enrich.controller.rest.mass_edit.class:               Pim\Bundle\EnrichBundle\Controller\Rest\MassEditController
+    pim_enrich.controller.rest.sequential_edit.class:        Pim\Bundle\EnrichBundle\Controller\Rest\SequentialEditController
     pim_enrich.controller.rest.product_template.class:        Pim\Bundle\EnrichBundle\Controller\Rest\ProductTemplateController
     pim_enrich.controller.job_tracker.class:                  Pim\Bundle\EnrichBundle\Controller\JobTrackerController
     pim_enrich.controller.rest.api_client.class:              Pim\Bundle\EnrichBundle\Controller\Rest\ApiClientController
@@ -248,6 +249,13 @@ services:
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@pim_enrich.mass_edit_action.operation_job_launcher'
             - '@pim_enrich.converter.mass_operation'
+
+    pim_enrich.controller.rest.sequential_edit:
+        class: '%pim_enrich.controller.rest.sequential_edit.class%'
+        arguments:
+            - '@oro_datagrid.mass_action.parameters_parser'
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@pim_enrich.query.product_query_sequential_edit_builder_factory'
 
     pim_enrich.controller.rest.product_template:
         class: '%pim_enrich.controller.rest.product_template.class%'

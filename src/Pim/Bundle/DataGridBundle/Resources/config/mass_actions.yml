@@ -60,6 +60,12 @@ services:
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: edit }
 
+    pim_datagrid.extension.mass_action.type.sequential_edit:
+        class: Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\SequentialEditMassAction
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: sequential_edit }
+
     pim_datagrid.extension.mass_action.handler.delete:
         class: '%pim_datagrid.extension.mass_action.handler.delete.class%'
         arguments:

@@ -19,6 +19,7 @@ define(
         'pim/router',
         'pim/fetcher-registry',
         'pim/user-context',
+        'pim/provider/sequential-edit-provider',
         'bootstrap'
     ],
     function (
@@ -31,7 +32,8 @@ define(
         Routing,
         router,
         FetcherRegistry,
-        UserContext
+        UserContext,
+        sequentialEditProvider
     ) {
         return BaseForm.extend({
             id: 'sequentialEdit',
@@ -46,18 +48,9 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                FetcherRegistry.clear('sequential-edit');
+                this.model.set({objectSet: sequentialEditProvider.get()});
 
-                return $.when(
-                    FetcherRegistry.getFetcher('sequential-edit')
-                        .fetchAll()
-                        .then(
-                            function (sequentialEdit) {
-                                this.model.set(sequentialEdit);
-                            }.bind(this)
-                        ),
-                    BaseForm.prototype.configure.apply(this, arguments)
-                );
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
             addSaveButton: function () {
                 var objectSet    = this.model.get('objectSet');

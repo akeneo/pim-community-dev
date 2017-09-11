@@ -40,6 +40,7 @@ config:
         oro/datagrid/action-launcher:           pimdatagrid/js/datagrid/action-launcher
         oro/datagrid/abstract-action:           pimdatagrid/js/datagrid/action/abstract-action
         oro/datagrid/delete-action:             pimdatagrid/js/datagrid/action/delete-action
+        oro/datagrid/sequential_edit-action:    pimdatagrid/js/datagrid/action/sequential-edit-action
         oro/datagrid/revoke-action:             pimdatagrid/js/datagrid/action/revoke-action
         oro/datagrid/ajax-action:               pimdatagrid/js/datagrid/action/ajax-action
         oro/datagrid/mass-action:               pimdatagrid/js/datagrid/action/mass-action

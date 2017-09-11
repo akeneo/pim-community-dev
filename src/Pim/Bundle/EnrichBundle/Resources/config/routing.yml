@@ -10,6 +10,10 @@ mass_edit_rest:
     resource: '@PimEnrichBundle/Resources/config/routing/mass_edit/rest.yml'
     prefix: /rest/mass_edit
 
+sequential_edit_rest:
+    resource: '@PimEnrichBundle/Resources/config/routing/sequential_edit/rest.yml'
+    prefix: /rest/sequential_edit
+
 product_template_rest:
     resource: '@PimEnrichBundle/Resources/config/routing/product_template/rest.yml'
     prefix: /rest/product_template

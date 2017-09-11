@@ -1,0 +1,22 @@
+parameters:
+    pim_enrich.cursor.sequential_edit_cursor.class: Pim\Bundle\EnrichBundle\Cursor\SequentialEditProduct
+services:
+    pim_enrich.query.product_query_sequential_edit_builder_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_enrich.factory.sequential_edit_product_cursor'
+            - '@pim_catalog.query.product_query_builder_resolver'
+
+    pim_enrich.factory.sequential_edit_product_cursor:
+        class: '%akeneo_elasticsearch.cursor.cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client'
+            - '@pim_catalog.object_manager.product'
+            - '%pim_catalog.entity.product.class%'
+            - '%pim_enrich.cursor.sequential_edit_cursor.class%'
+            - 1000
+            - 'pim_catalog_product'
