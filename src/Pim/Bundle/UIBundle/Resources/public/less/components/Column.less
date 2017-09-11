@@ -2,14 +2,13 @@
 
 .AknColumn {
   @timing: 0.3s;
-  @width: 280px;
   @iconSize: 24px;
   @littleWidth: 40px;
   @transition: ease-in-out;
   @scrollbarWidth: 16px;
 
-  flex-basis: @width;
-  width: @width;
+  flex-basis: @AknSecondColumnWidth;
+  width: @AknSecondColumnWidth;
   position: relative;
   transition:
     flex-basis @timing @transition,
@@ -26,7 +25,7 @@
   }
 
   &-inner {
-    width: @width;
+    width: @AknSecondColumnWidth;
     height: ~"calc(100% - 20px - 24px - 20px)";
     display: flex;
     flex-direction: column;
@@ -152,7 +151,7 @@
 
   &-collapseButton {
     height: @iconSize + @AknPaddingLeftColumn;
-    width: @width;
+    width: @AknSecondColumnWidth;
     background: url("../../images/icon-panelClose.svg") no-repeat 20px 100%;
     background-size: @iconSize;
     cursor: pointer;

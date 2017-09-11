@@ -185,7 +185,7 @@ function($, _, Backbone, app) {
          * @return {*}
          */
         show: function() {
-            this.$el.css('display', 'inline-block');
+            this.$el.css('display', 'block');
             return this;
         },
 
