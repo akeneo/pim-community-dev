@@ -1,4 +1,11 @@
 <header class="AknSubsection-title">
     <%- label %>
-    <% if (0 < fieldCollection.toFill) { %><span class="AknBadge AknBadge--round AknBadge--highlight"></span> <span class="AknSubsection-comment"><%- __('pim_enrich.form.product.tab.attributes.attribute_group.to_fill_count', {count: fieldCollection.toFill}, fieldCollection.toFill) %></span><% } %>
+    <% if (0 < fieldCollection.toFill) { %>
+        <span class="required-attribute-indicator" data-group="<%- fieldCollection.attributeGroup.code %>">
+            <span class="AknBadge AknBadge--highlight"></span>
+            <span class="AknSubsection-comment">
+                <%- __('pim_enrich.form.product.tab.attributes.attribute_group.to_fill_count', {count: fieldCollection.toFill}, fieldCollection.toFill) %>
+            </span>
+        </span>
+    <% } %>
 </header>

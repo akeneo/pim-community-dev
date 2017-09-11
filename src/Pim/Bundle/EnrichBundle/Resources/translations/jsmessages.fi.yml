@@ -151,9 +151,6 @@ pim_enrich:
         logged_at: Kirjautunut
         from: Lähettäjä
         modified: Muutettu
-        property: Ominaisuus
-        old_values: Vanhat arvot
-        new_values: Uudet arvot
         actions: Toiminnot
       info:
         deletion_successful: Tuote poistettiin.
@@ -354,6 +351,7 @@ pim_enrich:
             no_match: Vastaavuuksia ei löydy
             load_more: Ladataan lisää tuloksia...
           attribute_group_selector: Attribuuttiryhmä
+          attribute_group_all: Kaikki
         categories:
           title: Kategoriat
       panel:
@@ -490,7 +488,7 @@ pim_enrich:
           table:
             name: Nimi
             type: Tyyppi
-            scope: Soveltamisala
+            scopable: Scopable
             localizable: Lokalisoitavissa
         history.title: Historia
     common:

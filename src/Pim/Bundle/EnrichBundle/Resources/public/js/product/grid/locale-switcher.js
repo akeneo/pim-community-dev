@@ -10,6 +10,7 @@
 define([
         'jquery',
         'underscore',
+        'oro/translator',
         'pim/form',
         'pim/template/product/grid/locale-switcher',
         'pim/fetcher-registry',
@@ -20,6 +21,7 @@ define([
     function (
         $,
         _,
+        __,
         BaseForm,
         template,
         FetcherRegistry,
@@ -31,7 +33,8 @@ define([
             template: _.template(template),
             config: {},
             locales: [],
-
+            id: 'locale-switcher',
+            className: 'AknDropdown AknColumn-block locale-switcher',
             events: {
                 'click [data-locale]': 'changeLocale'
             },
@@ -62,6 +65,7 @@ define([
                 const currentLocaleCode = UserContext.get('catalogLocale');
 
                 this.$el.empty().append(this.template({
+                    localeLabel: __('pim_enrich.entity.product.locale'),
                     locales: this.locales,
                     currentLocaleCode,
                     i18n,
@@ -75,9 +79,8 @@ define([
              */
             fetchLocales() {
                 const localeFetcher = FetcherRegistry.getFetcher('locale');
-                localeFetcher.clear();
 
-                return localeFetcher.search({ activated: true, cached: false });
+                return localeFetcher.fetchActivated();
             },
 
             /**

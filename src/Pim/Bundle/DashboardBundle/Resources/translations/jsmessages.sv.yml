@@ -1,0 +1,19 @@
+pim_dashboard:
+  widget:
+    last_operations:
+      empty: Inga händelser hittade
+      status: Status
+      date: Datum
+      type: Typ
+      profile_name: Profilnamn
+      details: Detaljer
+      warning_count: Varningar
+      job_type:
+        import: Import
+        export: Export
+        mass_edit: Massredigera
+        quick_export: Snabbexport
+    completeness:
+      load_more: 'Ladda fler...'
+    header:
+      view_all: Visa alla

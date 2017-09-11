@@ -8,91 +8,84 @@
   background: white;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
+  z-index: 900;
 
-  &--twoColumns {
-    flex-direction: row;
+  &--modal {
+    position: inherit;
   }
 
-  &-column {
-    flex-basis: 50%;
+  &-buttons {
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    padding: 40px;
+    justify-content: space-between;
+    padding: @AknFullPagePadding;
+  }
 
-    &--right {
-      background-color: lighten(@AknLightGray, 2.5%);
-      justify-content: flex-start;
-      padding-top: 70px;
+  &-content {
+    display: flex;
+    justify-content: center;
+    overflow: auto;
+
+    &--column {
+      flex-direction: column;
+      justify-content: space-around;
+      flex-grow: 1;
     }
   }
 
-  &-subTitle {
-    color: @AknLightPurple;
-    text-transform: uppercase;
-    font-size: @AknFontSizeBigger;
-    margin:auto;
-    text-align: center;
+  &-left {
+    width: 250px;
+    padding: 0 40px 20px 0;
   }
 
-  &--twoColumns &-subTitle {
-    text-align: right;
+  &-right {
+    width: 650px;
+    padding: 20px 0 0 40px;
+    border-left: 2px solid @AknLightPurple;
+  }
+
+  &-image {
+    width: 210px;
+    height: 210px;
+  }
+
+  &-bottom {
+    padding: @AknFullPagePadding;
+  }
+
+  &-subTitle {
+    color: @AknSlateGrey;
+    text-transform: uppercase;
+    font-size: @AknFontSizeBigger;
+  }
+
+  &-content--column &-subTitle,
+  &-content--column &-title {
+    margin:auto;
+    text-align: center;
   }
 
   &-title {
     font-size: @AknAltTitleFontSize;
-    line-height: 46px;
-    text-align: center;
+    line-height: 66px;
     color: @AknDarkBlue;
-    margin:auto;
-  }
 
-  &--twoColumns &-title {
-    text-align: right;
-  }
-
-  &-description {
-    font-size: @AknFontSizeBigger;
-    text-align: right;
-    margin: 60px 0 0 auto;
-    max-width: 500px;
-    line-height: 26px;
-  }
-
-  &-buttons {
-    position: fixed;
-    top: @AknFullPagePadding;
-    right: @AknFullPagePadding;
+    &--highlight {
+      color: @AknLightPurple;
+    }
   }
 
   &-cancel {
-    position: fixed;
-    top: @AknFullPagePadding;
-    left: @AknFullPagePadding;
+    display: inline-block;
     width: 32px;
     height: 32px;
     background: url("../../images/icon-delete-slategrey.svg") no-repeat 50% 50%;
     cursor: pointer;
   }
 
-  &-steps {
-    text-align: right;
-    margin-top: 60px;
-  }
-
-  &-confirm {
-    color: @AknRed;
-    margin-bottom: 20px;
+  &-description {
     font-size: @AknFontSizeBigger;
-    background-image: url("../../images/icon-warning_red.svg") no-repeat 0 0;
-    min-height:24px;
-    line-height: 24px;
-    padding: 0 0 0 30px;
-    font-weight: bold;
-  }
-
-  &-content {
-    margin-top: 20px;
+    line-height: 26px;
+    margin-bottom: 10px;
   }
 }

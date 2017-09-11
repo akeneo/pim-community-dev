@@ -77,7 +77,7 @@ define(
                             field.addElement(
                                 'badge',
                                 'completeness',
-                                '<span class="AknBadge AknBadge--round AknBadge--highlight"></span>'
+                                '<span class="AknBadge AknBadge--highlight"></span>'
                             );
                         }
 

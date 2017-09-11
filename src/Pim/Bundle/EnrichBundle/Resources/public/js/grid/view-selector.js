@@ -108,8 +108,8 @@ define(
                     this.$el.html(this.template({
                         __: __,
                         currentViewType: this.currentViewType,
-                        viewTypes: this.config.viewTypes,
-                        displayViewSwitcher: this.config.viewTypes.length > 1
+                        displaySwitcher: (this.config.viewTypes.length > 1),
+                        viewTypes: this.config.viewTypes
                     }));
 
                     this.initializeSelectWidget();
@@ -131,7 +131,7 @@ define(
                 var $select = this.$('input[type="hidden"]');
 
                 var options = {
-                    dropdownCssClass: 'select2--bigDrop grid-view-selector',
+                    dropdownCssClass: 'grid-view-selector',
                     closeOnSelect: false,
 
                     /**
@@ -217,9 +217,6 @@ define(
                     this.currentLoadingPage = null;
                     this.currentLoadingTerm = null;
                 }.bind(this));
-
-                var $search = this.$('.select2-search');
-                $search.prepend($('<i class="icon-search"></i>'));
             },
 
             /**

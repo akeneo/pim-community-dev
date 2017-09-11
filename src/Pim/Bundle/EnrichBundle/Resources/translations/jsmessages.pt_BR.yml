@@ -149,9 +149,6 @@ pim_enrich:
         logged_at: Registrado em
         from: De
         modified: Modificado
-        property: Propriedade
-        old_values: Valores antigos
-        new_values: Novos valores
         actions: Ações
       info:
         deletion_successful: Produto deletado com sucesso.
@@ -361,6 +358,7 @@ pim_enrich:
             no_match: Nenhum resultado encontrado
             load_more: A carregar mais resultados...
           attribute_group_selector: Grupo de atributos
+          attribute_group_all: Todos
         categories:
           title: Categorias
       panel:
@@ -497,7 +495,7 @@ pim_enrich:
           table:
             name: Nome
             type: Tipo
-            scope: Escopo
+            scopable: Com escopo definível
             localizable: Localizável
         history.title: Histórico
     common:

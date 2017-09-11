@@ -151,9 +151,6 @@ pim_enrich:
         logged_at: Gelogged op
         from: Van
         modified: Gewijzigd
-        property: Eigenschap
-        old_values: Oude waarden
-        new_values: Nieuwe waarden
         actions: Acties
       info:
         deletion_successful: Product met succes verwijderd.
@@ -371,6 +368,7 @@ pim_enrich:
             no_match: Geen overeenkomsten gevonden
             load_more: Meer resultaten laden...
           attribute_group_selector: Attribuutgroep
+          attribute_group_all: Alle
         categories:
           title: Categorieën
       panel:
@@ -505,7 +503,7 @@ pim_enrich:
           table:
             name: Naam
             type: Type
-            scope: Bereik
+            scopable: Bereik instelbaar
             localizable: Lokaliseerbaar
         history.title: Geschiedenis
     common:

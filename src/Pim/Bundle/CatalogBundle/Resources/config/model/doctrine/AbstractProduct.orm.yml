@@ -41,6 +41,7 @@ Pim\Component\Catalog\Model\AbstractProduct:
     manyToMany:
         groups:
             targetEntity: Pim\Component\Catalog\Model\GroupInterface
+            inversedBy: products
             joinTable:
                 name: pim_catalog_group_product
                 joinColumns:
@@ -53,6 +54,7 @@ Pim\Component\Catalog\Model\AbstractProduct:
                         onDelete: CASCADE
         categories:
             targetEntity: Pim\Component\Catalog\Model\CategoryInterface
+            inversedBy: products
             joinTable:
                 name: pim_catalog_category_product
                 joinColumns:

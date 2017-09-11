@@ -28,4 +28,4 @@ extensions:
             iconName: plus
             label: pim_enrich.index.attribute_group.create_btn
             route: pim_enrich_attributegroup_create
-            buttonClass: AknButton--apply
+            buttonClass: AknButton AknButton--apply

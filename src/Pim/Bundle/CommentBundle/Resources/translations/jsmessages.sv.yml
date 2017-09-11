@@ -1,0 +1,26 @@
+btn:
+  post: Lägg till ny kommentar
+  reply: Svara
+  cancel: Avbryt
+confirmation:
+  remove:
+    comment: Är du säker på att du vill ta bort den här kommentaren?
+flash:
+  comment:
+    create:
+      success: Din kommentar har lagts till.
+      error: Ett fel uppstod under skapandet av din kommentar.
+    delete:
+      success: Din kommentar har tagits bort.
+      error: Ett fel uppstod under raderande av din kommentar.
+    reply:
+      success: Ditt svar har skapats.
+      error: Ett fel uppstod under skapandet av ditt svar.
+comment:
+  index:
+    empty: Inga kommentarer hittades
+  placeholder:
+    new: Skriv en ny kommentar...
+    reply: Svara på denna kommentar...
+pim_comment:
+  product.panel.comment.title: Kommentarer

@@ -151,9 +151,6 @@ pim_enrich:
         logged_at: 登录
         from: 从
         modified: 已修改
-        property: 属性
-        old_values: 原值
-        new_values: 新值
         actions: 操作
       info:
         deletion_successful: 产品被成功删除。
@@ -352,6 +349,7 @@ pim_enrich:
             no_match: 未找到匹配项
             load_more: 正在加载更多的结果...
           attribute_group_selector: 属性组
+          attribute_group_all: 所有
         categories:
           title: 分类
       panel:
@@ -488,7 +486,7 @@ pim_enrich:
           table:
             name: 名称
             type: 类型
-            scope: 范围
+            scopable: 范围允许
             localizable: 可本地化
         history.title: 历史
     common:
