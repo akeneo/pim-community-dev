@@ -49,11 +49,12 @@ Feature: Product category back to the grid
   @unstable
   Scenario: Successfully display the no results found message
     Given I filter by "sku" with operator "is equal to" and value "novalues"
-    Then I should see the text "No results found. Try to change your search criteria."
+    Then I should see the text "Sorry, there is no result for your search."
 
   @jira https://akeneo.atlassian.net/browse/PIM-5638
   Scenario: Successfully apply category's filter on product grid without affecting other grids
-    Given I filter by "category" with operator "" and value "winter_collection"
+    Given I open the category tree
+    And I filter by "category" with operator "" and value "winter_collection"
     And I am on the imports page
     When I refresh the grid
     Then I should not see "Server error"

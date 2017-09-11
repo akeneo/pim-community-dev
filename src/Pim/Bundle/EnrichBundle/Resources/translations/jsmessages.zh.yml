@@ -151,9 +151,6 @@ pim_enrich:
         logged_at: 登录
         from: 从
         modified: 已修改
-        property: 属性
-        old_values: 原值
-        new_values: 新值
         actions: 操作
       info:
         deletion_successful: 产品被成功删除。
@@ -352,6 +349,7 @@ pim_enrich:
             no_match: 未找到匹配项
             load_more: 正在加载更多的结果...
           attribute_group_selector: 属性组
+          attribute_group_all: 所有
         categories:
           title: 分类
       panel:
@@ -488,7 +486,7 @@ pim_enrich:
           table:
             name: 名称
             type: 类型
-            scope: 范围
+            scopable: 范围允许
             localizable: 可本地化
         history.title: 历史
     common:
@@ -635,7 +633,6 @@ pim_enrich:
         attributes:
           title: 属性
           edit: 编辑
-          label: "{0} 所有产品 |{1} 一类别选择 |]1，Inf [{{ count }} 类别选择"
           help: 选择要导出的产品信息。例如︰ 仅导出有技术类的属性。
           empty: 将导出所有属性
           modal:
@@ -789,13 +786,12 @@ pim_enrich:
           label: 确认
       operation:
         change_status:
-          label: 更改状态 （启用 / 禁用）
+          label: 更改状态
           description: 将启用或禁用选定的产品。
           field: 启用
         edit_common:
           label: 编辑共同属性
         change_family:
-          label: 更改产品品类
           description: 选定产品的品类将更改为被选定的品类
           field: 产品族
         add_to_group:
@@ -807,13 +803,10 @@ pim_enrich:
           description: 选择一个款式组，将所选定的产品加入其中
           field: 分组
         add_to_category:
-          label: 在目录中为产品分类
           description: 产品将被放入以下目录，现存的位置也会保留。
         move_to_category:
-          label: 在目录中移动产品
           description: 产品将被放入以下目录，现存的位置不会保留。
         remove_from_category:
-          label: 在目录中移除产品
           description: 产品将从以下目录中删除。
     family:
       step:
@@ -825,10 +818,6 @@ pim_enrich:
           label: 配置
         confirm:
           label: 确认
-      operation:
-        set_requirements:
-          label: 设置属性要求
-          description: 下列属性要求将应用于所选的品类中
 pim_enrich.error:
   exception.title: 我靠 ！{{ status_code }} 出错了...
 page_title:
@@ -869,10 +858,6 @@ batch_jobs:
       label: 编辑共同属性
     cleaner:
       label: 为共同的属性清理文件
-  set_attribute_requirements:
-    label: 设置属性要求
-    perform:
-      label: 设置属性要求
   add_to_variant_group:
     label: 添加到款式组
     perform:

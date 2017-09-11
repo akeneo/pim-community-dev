@@ -158,7 +158,11 @@ define(
              * @returns {boolean}
              */
             canBeCopied: function (field) {
-                return field.attribute.localizable || field.attribute.scopable;
+                return (field.attribute.localizable || field.attribute.scopable) &&
+                    (
+                        !field.attribute.is_locale_specific ||
+                        _.contains(field.attribute.available_locales, this.getLocale())
+                    );
             },
 
             /**
@@ -311,7 +315,7 @@ define(
              * Mark all visible fields (from active attribute group) as selected
              */
             selectAllVisible: function () {
-                this.selectFields(FieldManager.getFields());
+                this.selectFields(FieldManager.getVisibleFields());
             },
 
             /**

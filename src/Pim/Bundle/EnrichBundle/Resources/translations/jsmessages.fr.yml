@@ -164,9 +164,6 @@ pim_enrich:
         logged_at: Connecté(e) le
         from: De
         modified: Modifié
-        property: Propriété
-        old_values: Anciennes valeurs
-        new_values: Nouvelles valeurs
         actions: Actions
       info:
         deletion_successful: Les produits ont bien été supprimés.
@@ -428,6 +425,7 @@ pim_enrich:
             no_match: Aucune correspondance trouvée
             load_more: Chargement de plus de résultats...
           attribute_group_selector: Groupe d'attributs
+          attribute_group_all: Tous
         categories:
           title: Catégories
       panel:
@@ -436,7 +434,6 @@ pim_enrich:
           info:
             no_family: Aucune famille définie. Merci de définir une famille pour calculer la complétude de ce produit.
             no_completeness: Vous venez de modifier la famille du produit. Merci de l'enregistrer en premier pour calculer la complétude de la nouvelle famille.
-          missing_values: "{1} 1 valeur manquante|] 1, Inf [{{ count }} valeurs manquantes"
         history:
           title: Historique
       switch:
@@ -569,7 +566,7 @@ pim_enrich:
           table:
             name: Nom
             type: Type
-            scope: Portée
+            scopable: Décliné par canal
             localizable: Localisable
         history.title: Historique
     common:
@@ -759,7 +756,6 @@ pim_enrich:
         attributes:
           title: Attributs
           edit: Modifier
-          label: "{0} Tous les attributs|{1} Un attribut sélectionné|]1,Inf[ {{ count }} attributs sélectionnés"
           help: 'Sélectionner les informations du produit à exporter. Par ex. : seulement les attributs techniques.'
           empty: Tous les attributs vont être exportés
           modal:
@@ -951,14 +947,11 @@ pim_enrich:
     cancel: Annuler
     confirm: Confirmer
     product:
-      title: "{1} Produit / Edition de masse (1 produit)|] 1, Inf [Produit / Edition de masse ({{ itemsCount }} produits)"
-      confirm: "{1} Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} produits avec les renseignements suivants, merci de confirmer."
       step:
         select:
           label: Choisir des produits
         choose:
           label: Choisir une opération
-          title: Edit de masse ({{ itemsCount }} produits)
         configure:
           label: Configurer
         confirm:
@@ -969,14 +962,13 @@ pim_enrich:
           label: L'action de masse "{{ operation }}" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
       operation:
         change_status:
-          label: Changer de statut (activé / désactivé)
+          label: Changer le statut
           description: Les produits sélectionnés vont être activés ou désactivés.
           field: Pour activer
         edit_common:
           label: Modifier les attributs communs
           description: Les attributs des produits séléctionnés vont être éditées avec les données suivantes, pour la locale {{ locale }} et le canal {{ scope }}, choisis dans la grille de produits.
         change_family:
-          label: Changer la famille des produits
           description: La famille des produits sélectionnés sera remplacée par la famille choisie
           field: Famille
         add_to_group:
@@ -988,33 +980,23 @@ pim_enrich:
           description: Choisissez le groupe de variantes auquel associer les produits sélectionnés
           field: Groupe
         add_to_category:
-          label: Classifier les produits dans des catégories
           description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé.
         move_to_category:
-          label: Déplacer des produits vers des catégories
           description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera perdu.
         remove_from_category:
-          label: Retirer des produits des catégories
           description: Les produits seront retirés des catégories suivantes.
     family:
-      title: "{1} Famille / Edition de masse (1 famille)|] 1, Inf [Famille / Edition de masse ({{ itemsCount }} familles)"
-      confirm: "{1} Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer.|] 1, Inf [Vous êtes sur le point de mettre à jour {{ itemsCount }} familles avec les renseignements suivants, merci de confirmer."
       step:
         select:
           label: Choisir des familles
         choose:
           label: Choisir une opération
-          title: Edit de masse ({{ itemsCount }} familles)
         configure:
           label: Configurer
         confirm:
           label: Confirmer
         launched:
           label: L'action de masse "{{ operation }}" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
-      operation:
-        set_requirements:
-          label: Choisir les attributs requis
-          description: Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées
 pim_enrich.error:
   exception.title: Oups! Une erreur {{ status_code }} s'est produite...
   http:
@@ -1070,10 +1052,6 @@ batch_jobs:
       label: Modifier les attributs communs
     cleaner:
       label: Nettoyer les fichiers pour les attributs communs
-  set_attribute_requirements:
-    label: Choisir les attributs requis
-    perform:
-      label: Choisir les attributs requis
   csv_product_quick_export:
     quick_export.label: Export rapide de produits en CSV
     perform:

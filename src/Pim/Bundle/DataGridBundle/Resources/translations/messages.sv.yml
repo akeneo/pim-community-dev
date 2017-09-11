@@ -1,0 +1,29 @@
+"oro_datagrid.no_data_hint %entityHint%": Inga %entityHint% finns.
+oro_datagrid.not_found_hint: Inga resultat hittades. Prova att ändra dina sökkriterier.
+oro_datagrid.label_add_filter: Hantera filter
+oro_datagrid.label_loading_mask: Laddar . . .
+oro.grid.mass_action.selected_rows: Markerade rader
+oro.grid.mass_action.confirm_title: Bekräfta massåtgärd
+oro.grid.mass_action.confirm_content: Är du säker på att du vill göra detta?
+oro.grid.mass_action.confirm_ok: Ja, gör det
+oro.grid.mass_action.error_title: Fel vid massåtgärd
+oro.grid.mass_action.error_content: Kan inte utföra massåtgärd
+oro.grid.mass_action.delete.label: Ta bort
+oro.grid.mass_action.delete.confirm_title: Bekräfta massborttagning
+oro.grid.mass_action.delete.confirm_content: Är du säker du vill ta bort markerade objekt?
+oro.grid.datagrid.page_size.all: Alla
+oro.grid.mass_action.delete.success_message: "{0} Inga entiteter togs bort|{1} En entitet togs bort|]1,Inf[ %count% entiteter togs bort"
+datagrid_view:
+  columns:
+    min_message: Du måste välja minst en tabellkolumn att visa
+  label:
+    unique_message: Etiketten måste vara unik
+    not_blank_message: Etiketten får inte vara tom
+grid.view_selector.flash:
+  created: Vy har skapats
+  removed: Vy har tagits bort
+  not_removable: Du har inte rättigheter att ta bort denna vy
+quick_export: Snabbexport
+import: Import
+export: Export
+mass_edit: Massredigera

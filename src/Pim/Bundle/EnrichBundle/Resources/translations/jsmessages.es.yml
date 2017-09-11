@@ -153,9 +153,6 @@ pim_enrich:
         logged_at: Registrado el
         from: De
         modified: Modificado
-        property: Propiedad
-        old_values: Valores anteriores
-        new_values: Nuevos valores
         actions: Acciones
       info:
         deletion_successful: Producto eliminado con éxito.
@@ -382,6 +379,7 @@ pim_enrich:
             no_match: No se encuentran coincidencias
             load_more: Cargando más resultados...
           attribute_group_selector: Grupo de atributos
+          attribute_group_all: Todos
         categories:
           title: Categorías
       panel:
@@ -518,7 +516,7 @@ pim_enrich:
           table:
             name: Nombre
             type: Tipo
-            scope: Ámbito
+            scopable: Scopable
             localizable: Localizable
         history.title: Histórico
     common:
@@ -691,7 +689,6 @@ pim_enrich:
         attributes:
           title: Atributos
           edit: Editar
-          label: "{0} Todos los atributos|{1} Un atributo seleccionado|]1,Inf[{{ count }} atributos seleccionadas"
           help: 'Seleccionar la información de producto a exportar. Ej.: solo atributos técnicos.'
           empty: Se exportarán todos los atributos
           modal:
@@ -855,13 +852,12 @@ pim_enrich:
           label: Confirmar
       operation:
         change_status:
-          label: Cambiar estado (habilitar / inhabilitar)
+          label: Cambiar el estado
           description: Los productos seleccionados serán habilitados o inhabilitados.
           field: Para habilitar
         edit_common:
           label: Editar atributos comunes
         change_family:
-          label: Cambiar la familia de los productos
           description: La familia de los productos seleccionados se cambiará a la familia elegida
           field: Familia
         add_to_group:
@@ -873,13 +869,10 @@ pim_enrich:
           description: Seleccione el grupo de variantes al cual agregar los productos seleccionados
           field: Grupo
         add_to_category:
-          label: Clasificar los productos en categorías
           description: Los productos se colocará en las siguientes categorías, la posición actual se mantendrá.
         move_to_category:
-          label: Mover productos a categorías
           description: Los productos se colocarán en las siguientes categorías, la posición actual se perderá.
         remove_from_category:
-          label: Quitar productos de categorías
           description: Se eliminarán los productos de las siguientes categorías.
     family:
       step:
@@ -891,10 +884,6 @@ pim_enrich:
           label: Configurar
         confirm:
           label: Confirmar
-      operation:
-        set_requirements:
-          label: Configurar requerimientos del atributo
-          description: Se aplicarán los siguientes requisitos de atributo a las familias seleccionadas
 pim_enrich.error:
   exception.title: Oups! Un error {{ status_code }} ha ocurrido...
 page_title:
@@ -935,10 +924,6 @@ batch_jobs:
       label: Editar atributos comunes
     cleaner:
       label: Limpiar archivos para los atributos comunes
-  set_attribute_requirements:
-    label: Configurar requerimientos del atributo
-    perform:
-      label: Configurar requerimientos del atributo
   add_to_variant_group:
     label: Agregar a un grupo de variantes
     perform:

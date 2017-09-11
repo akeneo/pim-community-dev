@@ -30,14 +30,14 @@ Feature: Display the completeness of a product
     And I should not see the text "There are unsaved changes."
     And I am on the products grid
     And I switch the locale to "en_US"
-    When I filter by "scope" with operator "equals" and value "Mobile"
+    When I switch the scope to "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | -     |
     And the row "sandals" should contain:
      | column   | value |
      | complete | 40%   |
-    When I filter by "scope" with operator "equals" and value "Tablet"
+    When I switch the scope to "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | -     |
@@ -45,14 +45,14 @@ Feature: Display the completeness of a product
      | column   | value |
      | complete | 25%   |
     When I switch the locale to "fr_FR"
-    And I filter by "scope" with operator "equals" and value "Mobile"
+    And I switch the scope to "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | -     |
     And the row "sandals" should contain:
      | column   | value |
      | complete | 60%   |
-    When I filter by "scope" with operator "equals" and value "Tablet"
+    When I switch the scope to "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | -     |
@@ -87,14 +87,14 @@ Feature: Display the completeness of a product
     Then I should see the text "Channel successfully updated."
     When I am on the products grid
     And I switch the locale to "en_US"
-    And I filter by "scope" with operator "equals" and value "Mobile"
+    And I switch the scope to "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
     And the row "sandals" should contain:
      | column   | value |
      | complete | 40%   |
-    When I filter by "scope" with operator "equals" and value "Tablet"
+    When I switch the scope to "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | -     |
@@ -102,14 +102,14 @@ Feature: Display the completeness of a product
      | column   | value |
      | complete | -     |
     When I switch the locale to "fr_FR"
-    And I filter by "scope" with operator "equals" and value "Mobile"
+    And I switch the scope to "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
     And the row "sandals" should contain:
      | column   | value |
      | complete | 60%   |
-    When I filter by "scope" with operator "equals" and value "Tablet"
+    When I switch the scope to "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 77%   |

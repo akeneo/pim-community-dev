@@ -12,10 +12,15 @@ extensions:
             tab: pim-menu-settings
             item: pim-menu-settings-group-type
 
-    pim-group-type-index-filters:
-        module: oro/datafilter-builder
+    pim-group-type-index-filters-list:
+        module: oro/datafilter/filters-list
         parent: pim-group-type-index
-        targetZone: content
+        targetZone: filters
+
+    pim-group-type-index-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-group-type-index
+        targetZone: filters
 
     pim-group-type-index-grid:
         module: pim/form/common/index/grid

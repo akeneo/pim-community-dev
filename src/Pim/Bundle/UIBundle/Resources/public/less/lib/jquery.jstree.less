@@ -1,46 +1,58 @@
 @import '../base/variables';
 
 .jstree.jstree-default {
+  @checkboxSize: 16px;
+
   padding: 0;
 
   & > ul {
-    padding: 10px 20px 50px 0;
+    padding: 20px 0 50px 0;
     margin-left: -20px;
 
-
     .jstree-icon(@url) {
-      background: url(@url) 0 0 no-repeat;
+      background: url(@url) 50% 50% no-repeat;
       height: 22px;
       width: 22px;
-      margin: 0 10px 0 0;
+      margin: 0 5px 0 0;
     }
 
     a {
-      height: 40px;
-      line-height: 40px;
+      height: 35px;
+      line-height: 26px;
       font-size: @AknFontSizeBig;
       padding: 0;
-      display: inline-flex;
       align-items: center;
-      color: @AknDefaultFontColor !important;
+      color: @AknDarkBlue !important;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      max-width: ~"calc(100% - 32px)";
+      overflow: hidden;
     }
 
     ins.jstree-checkbox {
-      height: 22px;
-      width: 22px;
+      height: @checkboxSize + 2px;
+      width: @checkboxSize + 2px;
       background-image: none;
       background: @AknLightGray;
       border: 1px solid @AknBorderColor;
-      border-radius: 2px;
+      border-radius: 4px;
       margin: 0 10px 0 0;
     }
 
     li {
-      margin-left: 40px;
+      margin-left: 20px;
+      line-height: 0;
+      min-height: 0;
+    }
+
+    & > li {
+      margin-left: 20px;
     }
 
     li.jstree-leaf > ins.jstree-icon {
-      margin-right: 14px;
+      margin-right: 9px;
+      margin-top: 0;
+      height: 0;
     }
 
     li.jstree-checked {
@@ -48,14 +60,16 @@
         background-color: @AknBlue;
         background-image: url("../../images/icon-checkwhite.svg");
         background-position: 0 0;
-        background-size: 20px 20px;
+        background-size: @checkboxSize @checkboxSize;
         background-repeat: no-repeat;
+        margin-top: 2px;
+        margin-bottom: 0;
       }
     }
 
     li.jstree-closed > .jstree-icon,
     li.jstree-open > .jstree-icon {
-      line-height: 40px + 4px;
+      line-height: 62px;
       cursor: pointer;
       opacity: 0.5;
     }
@@ -75,10 +89,12 @@
 
     li.jstree-closed > .jstree-icon {
       .jstree-icon("../../images/jstree/icon-right.svg");
+      background-size: 20px;
     }
 
     li.jstree-open > .jstree-icon {
       .jstree-icon("../../images/jstree/icon-down.svg");
+      background-size: 20px;
     }
 
     li.jstree-leaf.jstree-checked > a:not(.jstree-loading):not(.jstree-clicked) .jstree-icon,
@@ -123,9 +139,28 @@
   }
 
   .jstree-tree-toolbar {
-    padding: 6.5px;
-    margin-bottom: 10px;
-    background: lighten(@AknGrey, 25%);
+    .select2-container {
+      .select2-choice {
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        border-bottom: 1px solid @AknLightPurple;
+        color: @AknLightPurple;
+        padding: 0;
+        margin-top: -10px;
+        font-size: @AknFontSizeBig;
+
+        .select2-arrow {
+          border-left: none;
+          background: url("../../images/icon-down.svg") no-repeat 100% center;
+          background-size: 20px;
+
+          b {
+            display: none;
+          }
+        }
+      }
+    }
   }
 
   .jstree-footer {

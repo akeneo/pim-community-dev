@@ -338,6 +338,8 @@ class NavigationContext extends BaseNavigationContext
         $this->getMainContext()->spin(function () {
             return $this->getCurrentPage()->find('css', '.AknTitleContainer-title');
         }, 'Can not find any product label');
+
+        $this->currentPage = 'Product edit';
     }
 
     /**

@@ -8,6 +8,7 @@ extensions:
         targetZone: breadcrumbs
         config:
             tab: pim-menu-products
+            itemPath: identifier
 
     pim-product-edit-form-user-navigation:
         module: pim/menu/user-navigation
@@ -198,6 +199,22 @@ extensions:
         parent: pim-product-edit-form-attributes
         targetZone: other-actions
         position: 100
+
+    pim-product-edit-form-attribute-filter:
+        module: pim/product-edit-form/attribute-filter
+        parent: pim-product-edit-form-attributes
+        targetZone: other-actions
+        position: 110
+
+    pim-product-edit-form-attribute-filter-all:
+        module: pim/product-edit-form/attribute-filter-all
+        parent: pim-product-edit-form-attribute-filter
+        position: 100
+
+    pim-product-edit-form-attribute-filter-missing-required:
+        module: pim/product-edit-form/attribute-filter-missing-required
+        parent: pim-product-edit-form-attribute-filter
+        position: 110
 
     pim-product-edit-form-copy:
         module: pim/form/common/attributes/copy

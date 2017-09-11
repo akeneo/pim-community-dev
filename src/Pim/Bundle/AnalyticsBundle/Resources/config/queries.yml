@@ -1,0 +1,20 @@
+parameters:
+    pim_analytics.query.count_localizable_attribute.class: Pim\Bundle\AnalyticsBundle\Doctrine\Query\CountLocalizableAttribute
+    pim_analytics.query.count_scopable_attribute.class: Pim\Bundle\AnalyticsBundle\Doctrine\Query\CountScopableAttribute
+    pim_analytics.query.count_localizable_scopable_attribute.class: Pim\Bundle\AnalyticsBundle\Doctrine\Query\CountScopableAndLocalizableAttribute
+
+services:
+    pim_analytics.query.count_localizable_attribute:
+        class: '%pim_analytics.query.count_localizable_attribute.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_analytics.query.count_scopable_attribute:
+        class: '%pim_analytics.query.count_scopable_attribute.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_analytics.query.count_localizable_scopable_attribute:
+        class: '%pim_analytics.query.count_localizable_scopable_attribute.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'

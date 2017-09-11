@@ -164,9 +164,8 @@ pim_enrich:
         logged_at: Logget af
         from: Fra
         modified: Ændret
-        property: Ejendom
-        old_values: Gamle værdier
-        new_values: Nye værdier
+        old_value: Gamle værdier
+        new_value: Ny værdi
         actions: Aktioner
       info:
         deletion_successful: Produkt slettet.
@@ -428,6 +427,12 @@ pim_enrich:
             no_match: Ingen fundet
             load_more: Indlæs flere resultater...
           attribute_group_selector: Attributgruppe
+          attribute_group_all: Alle
+          attribute_group.to_fill_count: "{1}1 tom kræved attribut |] 1, Inf [{{ count }} tomme krævede attributter"
+          attribute_filter:
+            display: Vis
+            all: Alle attributter
+            missing_required: Alle manglende krævede attributter
         categories:
           title: Kategorier
       panel:
@@ -569,7 +574,7 @@ pim_enrich:
           table:
             name: Navn
             type: Type
-            scope: Omfang
+            scopable: Omfangbar
             localizable: Kan oversættes
         history.title: Historik
     common:
@@ -951,14 +956,14 @@ pim_enrich:
     cancel: Annuller
     confirm: Bekræft
     product:
-      title: "{1} produkt / masse redigere (1 produkt) |] 1, Inf [produkt / masse redigere ({{ itemsCount }} produkter)"
+      title: Produkter bulk handling
       confirm: "{1} Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere {{ itemsCount }} produkter med følgende oplysninger, bekræft venligst."
       step:
         select:
           label: Vælg produkter
         choose:
           label: Vælg handling
-          title: Masse redigere ({{ itemsCount }} produkter)
+          labelCount: "{1}Vælg den handling for <span class=\"AknFullPage-title--highlight\"> produktet</span> |] 1, Inf [Vælg din handling for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
         configure:
           label: Konfigurér
         confirm:
@@ -969,42 +974,50 @@ pim_enrich:
           label: Bulk-handlingen "{{ operation }}" er blevet igangsat. Du får besked, når den er afsluttet.
       operation:
         change_status:
-          label: Ændre status (aktiver / deaktiver)
+          label: Skift status
+          label_count: "{1}Ændre status af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Skift status af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
           description: De valgte produkter vil blive aktiveret eller deaktiveret.
           field: At aktivere
         edit_common:
           label: Rediger fælles attributter
+          label_count: "{1}Ret fælles attributter af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Rediger fælles attributter <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
           description: Den valgte produktattributter vil blive redigeret med følgende data for landestandard {{ locale }} og kanal {{ scope }}, valgt i gitteret produkter.
         change_family:
-          label: Ændre familie af produkter
+          label: Ændre familie
+          label_count: "{1}Ændre familie af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Skift familie af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
           description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
           field: Familie
         add_to_group:
           label: Tilføj til grupper
+          label_count: "{1}Tilføj <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> grupper |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til grupper"
           description: Vælg de grupper hvor de udvalgte produkter skal tilføjes til
           field: Grupper
         add_to_variant_group:
           label: Tilføj en variant gruppe
+          label_count: "{1}Tilføj <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> grupper |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til grupper"
           description: Vælg variantgruppen hvor de valgte produkter skal tilføjes
           field: Gruppe
         add_to_category:
-          label: Klassificere produkter i kategorier
+          label: Tilføje til kategorier
+          label_count: "{1}Tilføj <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> grupper |] 1, Inf [Tilføj <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> til grupper"
           description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering bibeholdes.
         move_to_category:
-          label: Flyt produkter til kategorier
+          label: Flyt mellem kategorier
+          label_count: "{1}Flyt <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> mellem kategorier |] 1, Inf [Flyt <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> mellem kategorier"
           description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
         remove_from_category:
-          label: Fjern produkter fra kategorier
+          label: Fjern fra kategorier
+          label_count: "{1}Fjern <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> fra kategorier |] 1, Inf [Fjern <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span> fra kategorier"
           description: Produkterne vil blive fjernet fra følgende kategorier.
     family:
-      title: "{1} produkt / masse redigere (1 produkt) |] 1, Inf [produkt / masse redigere ({{ itemsCount }} produkter)"
+      title: Familier massehandling
       confirm: "{1} Du er ved at opdatere et produkt med følgende oplysninger, bekræft venligst. |Du er ved at opdatere {{ itemsCount }} produkter med følgende oplysninger, bekræft venligst."
       step:
         select:
           label: Vælg familier
         choose:
           label: Vælg handling
-          title: Masse edit ({{ itemsCount }} familier)
+          labelCount: "{1}Vælg den handling for <span class=\"AknFullPage-title--highlight\"> produktet</span> |] 1, Inf [Vælg din handling for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
         configure:
           label: Konfigurér
         confirm:
@@ -1015,6 +1028,7 @@ pim_enrich:
         set_requirements:
           label: Indstil attribut krav
           description: Følgende attribut krav vil blive anvendt til de valgte familier
+          label_count: "Sæt attribut kravene for  <span class=\"AknFullPage-title--highlight\">1 familie</span>|] 1, Inf [Sæt attribut kravene for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} familier</span>"
 pim_enrich.error:
   exception.title: Beklager! Der opstod en {{ status_code }}...
   http:

@@ -11,10 +11,15 @@ extensions:
         config:
             tab: pim-menu-exports
 
-    pim-export-profile-index-filters:
-        module: oro/datafilter-builder
+    pim-export-profile-index-filters-list:
+        module: oro/datafilter/filters-list
         parent: pim-export-profile-index
-        targetZone: content
+        targetZone: filters
+
+    pim-export-profile-index-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-export-profile-index
+        targetZone: filters
 
     pim-export-profile-index-grid:
         module: pim/form/common/index/grid

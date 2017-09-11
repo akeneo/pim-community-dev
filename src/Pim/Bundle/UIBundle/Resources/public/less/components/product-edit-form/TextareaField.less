@@ -43,3 +43,11 @@
     z-index: 1;
   }
 }
+
+@-moz-document url-prefix() {
+  .AknTextareaField {
+    &-layer {
+      height: ~"calc(100% - 1px)";
+    }
+  }
+}

@@ -15,7 +15,7 @@ Feature: Edit common attributes of many products at once
 
   @info https://akeneo.atlassian.net/browse/PIM-5351
   Scenario: Successfully mass edit scoped product values
-    Given I filter by "scope" with operator "equals" and value "Print"
+    Given I switch the scope to "Print"
     And I select rows black_jacket and white_jacket
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
@@ -32,7 +32,7 @@ Feature: Edit common attributes of many products at once
   @info https://akeneo.atlassian.net/browse/PIM-5351
   Scenario: Successfully mass edit localized product values
     Given I switch the locale to "de_DE"
-    When I filter by "scope" with operator "equals" and value "Ecommerce"
+    When I switch the scope to "Ecommerce"
     And I select rows black_jacket and white_jacket
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
