@@ -326,6 +326,24 @@ function($, _, __, AbstractFilter) {
         _getCriteriaHint: function() {
             var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
             return value.value ? '"' + value.value + '"': this.placeholder;
+        },
+
+        /**
+         * Enables text input
+         *
+         * @protected
+         */
+        _enableInput: function() {
+            this.$(this.criteriaValueSelectors.value).show();
+        },
+
+        /**
+         * Disables text input
+         *
+         * @protected
+         */
+        _disableInput: function() {
+            this.$(this.criteriaValueSelectors.value).hide();
         }
     });
 });

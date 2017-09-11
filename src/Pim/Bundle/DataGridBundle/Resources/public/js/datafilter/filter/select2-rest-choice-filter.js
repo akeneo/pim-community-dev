@@ -60,16 +60,6 @@ define(
                 e.preventDefault();
             },
 
-            _enableInput: function() {
-                this.$(this.criteriaValueSelectors.value).select2(this._getSelect2Config());
-                this.$(this.criteriaValueSelectors.value).show();
-            },
-
-            _disableInput: function() {
-                this.$(this.criteriaValueSelectors.value).val('').select2('destroy');
-                this.$(this.criteriaValueSelectors.value).hide();
-            },
-
             _getSelect2Config: function() {
                 var config = {
                     multiple: true,
@@ -144,6 +134,8 @@ define(
                 );
 
                 initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config());
+
+                this.$(this.criteriaValueSelectors.value).addClass('AknTextField--select2');
             },
 
             _onClickCriteriaSelector: function(e) {
@@ -222,6 +214,24 @@ define(
                 var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
 
                 return !_.isEmpty(value.value) ? '"' + value.value + '"': this.placeholder;
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            _enableInput: function() {
+                this.$(this.criteriaValueSelectors.value).select2(this._getSelect2Config());
+
+                TextFilter.prototype._enableInput.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            _disableInput: function() {
+                this.$(this.criteriaValueSelectors.value).val('').select2('destroy');
+
+                TextFilter.prototype._disableInput.apply(this, arguments);
             }
         });
     }

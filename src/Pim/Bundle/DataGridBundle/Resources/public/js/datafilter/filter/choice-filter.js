@@ -160,7 +160,6 @@ define(
             return this;
         },
 
-
         /**
          * @inheritDoc
          */
@@ -249,14 +248,6 @@ define(
 
         _disableListSelection: function() {
             this.$(this.criteriaValueSelectors.value).select2('destroy').removeClass('AknTextField--select2');
-        },
-
-        _enableInput: function() {
-            this.$(this.criteriaValueSelectors.value).show();
-        },
-
-        _disableInput: function() {
-            this.$(this.criteriaValueSelectors.value).hide();
-        },
+        }
     });
 });
