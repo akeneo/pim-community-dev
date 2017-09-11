@@ -56,11 +56,11 @@ define(
              * @param options.locale String
              * @param options.scope  String
              */
-            render: function (options) {
-                options = _.extend({
+            render: function () {
+                const options = {
                     locale: UserContext.get('catalogLocale'),
                     scope: UserContext.get('catalogScope')
-                }, options);
+                };
                 this.$el.empty();
 
                 const ratio = this.getCurrentRatio(options);
@@ -74,6 +74,9 @@ define(
                         currentLocale: options.locale,
                         missingValues: 'pim_enrich.form.product.panel.completeness.missing_values'
                     }));
+                } else {
+                    // We drop the element for design issues, to avoid blank spaces.
+                    this.$el.remove();
                 }
 
                 return this;

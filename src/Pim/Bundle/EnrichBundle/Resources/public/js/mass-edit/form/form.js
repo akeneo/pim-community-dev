@@ -66,15 +66,16 @@ define(
                         break;
                 }
 
-                var itemsCount = this.getFormData().itemsCount;
+                const itemsCount = this.getFormData().itemsCount;
                 this.$el.html(this.template({
                     currentStep: this.currentStep,
                     currentStepNumber: currentStepNumber,
                     currentOperation: this.getCurrentOperation(),
                     label: step.getLabel(),
                     description: step.getDescription(),
-                    title: __(this.config.title, {itemsCount: itemsCount}, itemsCount),
-                    confirm: __(this.config.confirm, {itemsCount: itemsCount}, itemsCount),
+                    title: __(this.config.title),
+                    labelCount: step.getLabelCount(),
+                    confirm: __(this.config.confirm, {itemsCount}, itemsCount),
                     previousLabel: __('pim_enrich.mass_edit.previous'),
                     nextLabel: __('pim_enrich.mass_edit.next'),
                     confirmLabel: __('pim_enrich.mass_edit.confirm'),

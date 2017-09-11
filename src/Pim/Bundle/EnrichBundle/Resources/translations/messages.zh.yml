@@ -94,7 +94,7 @@ pim_enrich:
         third: 配置
         fourth: 确认
     change-status:
-      label: 更改状态 （启用 / 禁用）
+      label: 更改状态
       description: 将启用或禁用选定的产品。
       success_flash: 产品状态已更改
       launched_flash: 批量操作"更改状态"已经启动。完成后会通知您。
@@ -109,22 +109,18 @@ pim_enrich:
         invalid_attribute: 具有代码"attribute_code"属性在选定的产品中并不共用，该属性略过。
         no_valid_attribute: 没有选定的属性可以应用于这种产品。
     classify-add:
-      label: 在目录中为产品分类
       description: 产品将被放入以下目录，现存的位置也会保留。
       success_flash: 产品已经被分类到所选的目录中了。
       launched_flash: 批量操作"加入到目录"已经启动。完成后会通知您。
     classify-move:
-      label: 在目录中移动产品
       description: 产品将被放入以下目录，现存的位置不会保留。
       success_flash: 产品已经被移动到所选的目录中了。
       launched_flash: 批量操作"移动到目录"已经启动。完成后会通知您。
     classify-remove:
-      label: 在目录中移除产品
       description: 产品将从以下目录中删除。
       success_flash: 产品已经从所选的目录中移除了。
       launched_flash: 批量操作"从目录中移除"已经启动。完成后会通知您。
     change-family:
-      label: 更改产品品类
       description: 选定产品的品类将更改为被选定的品类
       success_flash: 所选产品的品被已经被成功更改。
       launched_flash: 批量操作"更改品类"已经启动。完成后会通知您。
@@ -143,7 +139,6 @@ pim_enrich:
       no_valid_variant_group: 没有款式组与所选产品共享属性。
       launched_flash: 批量操作"加入到款式组"已经启动。完成后会通知您。
     set-attribute-requirements:
-      label: 设置属性要求
       description: 下列属性要求将应用于所选的品类中
       success_flash: 属性要求将应用于所选的品类中
       launched_flash: 批量操作"设置属性要求"已经启动。当完成时，我们会通知您。
@@ -680,7 +675,7 @@ pim_enrich.mass_edit_action:
       third: 配置
       fourth: 确认
   change-status:
-    label: 更改状态 （启用 / 禁用）
+    label: 更改状态
     description: 将启用或禁用选定的产品。
     success_flash: 产品状态已更改
   edit-common-attributes:
@@ -692,11 +687,9 @@ pim_enrich.mass_edit_action:
     no_attribute.warning: 所选定的产品中没有共同的产品属性。请更改您的选择。
     truncated_by_variant_attribute.warning: 选定的产品中一些常见的属性从来自款式组。他们并不可用于批量编辑︰ %attributes%。
   classify:
-    label: 在目录中为产品分类
     description: 产品将被放入以下目录，现存的位置也会保留。
     success_flash: 产品已经被分类到所选的目录中了。
   change-family:
-    label: 更改产品品类
     description: 选定产品的品类将更改为被选定的品类
     success_flash: 所选产品的品被已经被成功更改。
     no_family: 没有品类
@@ -705,7 +698,6 @@ pim_enrich.mass_edit_action:
     description: 选择一个组，将所选定的产品加入其中
     success_flash: 产品已成功添加到所选的组
   set-attribute-requirements:
-    label: 设置属性要求
     description: 下列属性要求将应用于所选的品类中
     success_flash: 属性要求将应用于所选的品类中
 To enable: 启用
@@ -832,10 +824,6 @@ batch_jobs:
       label: 编辑共同属性
     clean:
       label: 为共同的属性清理文件
-  set_attribute_requirements:
-    label: 设置属性要求
-    perform:
-      label: 设置属性要求
   csv_product_quick_export:
     quick_export.label: Csv 产品快速导出
     perform:

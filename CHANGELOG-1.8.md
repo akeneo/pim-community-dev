@@ -9,6 +9,7 @@
 - GITHUB-4877: Update some tooltips messages of the export builder, Cheers @Milie44!
 - GITHUB-5949: Fix the deletion of a job instance (import\export) from the job edit page, cheers @BatsaxIV !
 - PIM-6531: Have English language as default language for new users
+- PIM-6761: Add filter on required attributes
 
 ## Technical improvements
 
@@ -23,8 +24,9 @@
 - TIP-732: Rework the attribute form using the PEF architecture
 - PIM-6448: Product model CRUD API
 - TIP-747: Migrate to Symfony 3.3
-- PIM-6740: Separe installation state (installed) from config file 
+- PIM-6740: Separe installation state (installed) from config file
 - API-359: Move notified user of a job into the configuration parameters of the job
+- TIP-733: Replace `oro/datafilter-builder` with `filters-list` and `filters-button`
 
 ## UI\UX Refactoring
 
@@ -324,8 +326,7 @@
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface`
 - Change the constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add `Akeneo\Component\Batch\Job\JobParametersValidator`
 - Change the constructor of `Pim\Bundle\ConnectorBundle\Launcher\AuthenticatedJobLauncher` to add `Akeneo\Component\Batch\Job\JobParametersValidator`
-- Change the constructor of `Pim\Bundle\AnalyticsBundle\DataCollector\VersionDataCollector` to replace `string` by `Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager` 
-- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `uploadTmpDir` (string)
+- Change the constructor of `Pim\Bundle\AnalyticsBundle\DataCollector\VersionDataCollector` to replace `string` by `Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager` - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `uploadTmpDir` (string)
 - Change the constructor of `Pim\Component\Connector\Processor\Denormalization\ProductProcessor` to add `Pim\Component\Catalog\Builder\ProductBuilderInterface` as the 3rd argument (variant product builder).
 
 ### Methods
@@ -504,3 +505,4 @@
 
 - GITHUB-6101: Fix Summernote (WYSIWYG) style
 - GITHUB-6337: Write invalid items process fails when it encounters a Date field in xlsx files thanks to @pablollorens!
+- GITHUB-6657: Fix mapping for Product and ProductUniqueData

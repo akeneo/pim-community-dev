@@ -102,6 +102,7 @@ Feature: Enforce ACL on history
     When I am on the "similar_boots" product group page
     Then I should not see "history"
 
+  @skip @info Will be removed in PIM-6444
   Scenario: Successfully hide variant group history when user doesn't have the rights
     Given a "footwear" catalog configuration
     And a "boot" product

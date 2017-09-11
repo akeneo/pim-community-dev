@@ -5,8 +5,28 @@ extensions:
         config:
             template: pim/template/product/index
             templateParams:
-                title: Products
+                titleKey: pim_enrich.entity.product.index_title
                 gridName: product-grid
+
+    pim-product-index-left-column:
+        module: pim/form/common/column
+        parent: pim-product-index
+        targetZone: column
+        config:
+          stateCode: product_index
+          navigationTitle: pim_enrich.entity.product.navigation
+
+    pim-product-index-column-inner:
+        module: pim/common/simple-view
+        parent: pim-product-index-left-column
+        targetZone: navigation
+        config:
+          template: pim/template/product/grid/column-inner
+
+    pim-product-index-category-switcher:
+        module: pim/grid/category-switcher
+        parent: pim-product-index-column-inner
+        targetZone: column-context-switcher
 
     pim-product-index-create-button:
         module: pim/form/common/index/create-button
@@ -14,13 +34,13 @@ extensions:
         targetZone: buttons
         aclResourceId: pim_enrich_product_create
         config:
-           title:     Create product
+           title:     pim_enrich.entity.product.create
            modalForm: pim-product-create-modal
 
     pim-product-index-locale-switcher:
         module: pim/grid/locale-switcher
-        parent: pim-product-index
-        targetZone: title-buttons
+        parent: pim-product-index-column-inner
+        targetZone: column-context-switcher
         position: 10
         config:
             routeName: pim_enrich_product_index
@@ -28,9 +48,8 @@ extensions:
 
     pim-product-index-view-selector:
         module: pim/grid/view-selector
-        parent: pim-product-index
-        targetZone: title-buttons
-        position: 20
+        parent: pim-product-index-column-inner
+        targetZone: view-selector
         config:
             gridName: product-grid
 
@@ -57,10 +76,15 @@ extensions:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
-    pim-product-index-grid-filters:
-        module: oro/datafilter-builder
+    pim-product-index-grid-filters-manage:
+        module: oro/datafilter/filters-button
         parent: pim-product-index
-        targetZone: grid
+        targetZone: filters
+
+    pim-product-index-grid-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pim-product-index
+        targetZone: filters
 
     pim-product-index-grid:
         module: pim/grid/table

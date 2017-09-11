@@ -151,9 +151,6 @@ pim_enrich:
         logged_at: Gelogged op
         from: Van
         modified: Gewijzigd
-        property: Eigenschap
-        old_values: Oude waarden
-        new_values: Nieuwe waarden
         actions: Acties
       info:
         deletion_successful: Product met succes verwijderd.
@@ -371,6 +368,7 @@ pim_enrich:
             no_match: Geen overeenkomsten gevonden
             load_more: Meer resultaten laden...
           attribute_group_selector: Attribuutgroep
+          attribute_group_all: Alle
         categories:
           title: Categorieën
       panel:
@@ -505,7 +503,7 @@ pim_enrich:
           table:
             name: Naam
             type: Type
-            scope: Bereik
+            scopable: Bereik instelbaar
             localizable: Lokaliseerbaar
         history.title: Geschiedenis
     common:
@@ -660,7 +658,6 @@ pim_enrich:
         attributes:
           title: Attributen
           edit: Bewerken
-          label: "{0} alle attributen|{1} 1 attribuut geselecteerd|]1,Inf[ {{ count }} attributen geselecteerd"
           help: Selecteer de product informatie om te exporteren. Bv. enkel technische attributen.
           empty: Alle attributen worden geëxporteerd
           modal:
@@ -815,11 +812,10 @@ pim_enrich:
           label: Kies bewerking
       operation:
         change_status:
-          label: Status wijzigen (inschakelen / uitschakelen)
+          label: Status wijzigen
           description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
           field: Om in te schakelen
         change_family:
-          label: Wijzigen van de productfamilie
           description: De familie van de geselecteerde producten zal worden gewijzigd in de gekozen familie
           field: Familie
         add_to_group:
@@ -831,21 +827,15 @@ pim_enrich:
           description: Selecteer de variant groep waarin u de geselecteerde producten wilt toevoegen
           field: Groep
         add_to_category:
-          label: Producten in categorieën indelen
           description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing wordt behouden.
         move_to_category:
-          label: Verplaats producten naar categorieën
           description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing gaat verloren.
         remove_from_category:
-          label: Verwijder producten van categorieën
           description: De producten zullen worden verwijderd uit de volgende categorieën.
     family:
       step:
         choose:
           label: Kies bewerking
-      operation:
-        set_requirements:
-          description: De volgende attribuutvereisten zullen worden toegepast op de geselecteerde families
 pim_enrich.error:
   exception.title: Oh, nee! Een {{ status_code }} fout deed zich voor...
 page_title:

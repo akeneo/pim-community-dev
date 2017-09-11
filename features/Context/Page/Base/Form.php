@@ -40,6 +40,7 @@ class Form extends Base
                 'Association type selector'       => ['css' => '.association-type-selector'],
                 'Tree selector'                   => ['css' => '.tree-selector'],
                 'Target selector'                 => ['css' => '.target-selector'],
+                'Attribute filter selector'       => ['css' => '.attribute-filter'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
                 'Available attributes form'       => ['css' => '#pim_available_attributes'],
                 'Available attributes button'     => ['css' => 'button:contains("Add attributes")'],
@@ -138,11 +139,55 @@ class Form extends Base
             }))) {
                 return false;
             }
-
+            $this->getGroup($groupName, $type)->click();
             $this->getGroup($groupName, $type)->click();
 
             return true;
-        }, sprintf('Can not visit group "%s"', $groupName));
+        }, sprintf('Cannot visit group "%s"', $groupName));
+    }
+
+    /**
+     * @param $filter
+     */
+    public function filterAttributes($filter)
+    {
+        $this->spin(function () use ($filter) {
+            $loadingMasks = $this->findAll('css', '.loading-wrapper');
+            if (0 < count(array_filter($loadingMasks, function ($loadingMask) {
+                return $loadingMask->isVisible();
+            }))) {
+                return false;
+            }
+
+            $this->getGroup($filter, 'Attribute filter')->click();
+
+            return true;
+        }, sprintf('Cannot filter attributes with "%s"', $filter));
+    }
+
+    /**
+     * @param $attributeGroup
+     */
+    public function clickOnAttributeGroupHeader($attributeGroup)
+    {
+        $this->spin(function () use ($attributeGroup) {
+            $loadingMasks = $this->findAll('css', '.loading-wrapper');
+            if (0 < count(array_filter($loadingMasks, function ($loadingMask) {
+                return $loadingMask->isVisible();
+            }))) {
+                return false;
+            }
+
+            $groupHeader = $this->find('css', sprintf('.required-attribute-indicator[data-group="%s"]', $attributeGroup));
+
+            if (null === $groupHeader) {
+                return false;
+            }
+
+            $groupHeader->click();
+
+            return true;
+        }, sprintf('Cannot click on attribute group "%s" header', $attributeGroup));
     }
 
     /**
@@ -150,6 +195,8 @@ class Form extends Base
      * @param string $type
      *
      * @return NodeElement
+     *
+     * //TODO: make it more generic, no logic is specific to groups here, it's just naming.
      */
     public function getGroup($groupName, $type = 'Group')
     {
@@ -842,7 +889,7 @@ class Form extends Base
         $field = $this->findPriceField($label->labelContent, $label->subLabelContent);
         $field->setValue($value);
     }
-    
+
     /**
      * @param string $type
      *

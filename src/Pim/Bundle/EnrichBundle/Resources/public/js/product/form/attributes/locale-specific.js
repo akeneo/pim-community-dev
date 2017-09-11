@@ -37,6 +37,8 @@ define(
 
                 if (!_.contains(field.attribute.available_locales, field.context.locale)) {
                     this.updateFieldElements(field);
+                } else {
+                    field.removeElement('field-input', 'input_placeholder');
                 }
 
                 return this;

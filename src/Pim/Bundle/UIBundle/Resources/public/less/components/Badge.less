@@ -1,6 +1,8 @@
 @import '../base/variables';
 
 .AknBadge {
+  @mediumBadge: 20px;
+
   line-height: @AknDefaultFontSize + 4px;
   height: @AknDefaultFontSize + 4px;
   font-size: @AknDefaultFontSize;
@@ -11,7 +13,7 @@
   padding: 0 8px;
   transition: background 0.1s ease-in, opacity 0.4s ease-in;
   white-space: nowrap;
-  margin: 0 4px;
+  margin: 2px 0 -2px 0;
   text-transform: uppercase;
   cursor: default;
 
@@ -99,20 +101,6 @@
     opacity: 0.2;
   }
 
-  &--round {
-    border-radius: 100px;
-    padding: 0 6px;
-    height: @AknDefaultFontSize;
-    line-height: @AknDefaultFontSize;
-
-    &:not(:empty) {
-      padding-left: 7px;
-      padding-right: 7px;
-      height: 18px;
-      line-height: 18px;
-    }
-  }
-
   &--grey &-icon {
     color: white;
   }
@@ -122,9 +110,9 @@
   }
 
   &--medium {
-    height: @AknSmallProgressBarHeight;
-    min-width: @AknSmallProgressBarHeight;
-    line-height: @AknSmallProgressBarHeight;
+    height: @mediumBadge;
+    min-width: @mediumBadge;
+    line-height: @mediumBadge;
     font-size: @AknDefaultFontSize;
     padding: 0 8px;
   }
@@ -135,6 +123,10 @@
     line-height: @AknLittleButtonSize;
     font-size: @AknDefaultFontSize;
     padding: 0 16px;
+  }
+
+  &--big &-icon {
+    margin: 4px -3px -9px 0
   }
 
   &--large {

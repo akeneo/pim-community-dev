@@ -120,8 +120,9 @@ define(
 
                     if (!options.silent) {
                         this.trigger('group:change');
-                        this.render();
                     }
+
+                    this.render();
                 }
             },
 
@@ -132,7 +133,7 @@ define(
                 if (_.isUndefined(this.getCurrent()) ||
                     !this.getElements()[this.getCurrent()]
                 ) {
-                    this.setCurrent(_.first(_.keys(this.getElements())), {silent: true});
+                    this.setCurrent(this.all.code, {silent: true});
                 }
             },
 
@@ -169,18 +170,6 @@ define(
                 }
 
                 this.badges[element][code]++;
-
-                this.render();
-            },
-
-            /**
-             * Remove badge for the given attribute group
-             *
-             * @param {String} element
-             * @param {String} code
-             */
-            removeBadge: function (element, code) {
-                delete this.badges[element][code];
 
                 this.render();
             },

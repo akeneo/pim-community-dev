@@ -151,9 +151,6 @@ pim_enrich:
         logged_at: Дата входа
         from: С
         modified: Изменен
-        property: Свойство
-        old_values: Старые значения
-        new_values: Новые значения
         actions: Действия
       info:
         deletion_successful: Продукт успешно удален.
@@ -354,6 +351,7 @@ pim_enrich:
             no_match: Совпадений не найдено
             load_more: Загрузка дополнительных результатов...
           attribute_group_selector: Группа атрибутов
+          attribute_group_all: Все
         categories:
           title: Категории
       panel:
@@ -490,7 +488,7 @@ pim_enrich:
           table:
             name: Имя
             type: Тип
-            scope: Область
+            scopable: Область назначаема
             localizable: Локализуемый
         history.title: Журнал
     common:
@@ -652,7 +650,6 @@ pim_enrich:
         attributes:
           title: Атрибуты
           edit: Редактировать
-          label: "{0} все атрибуты |{1} один атрибут выбран |] 1, Inf [{{ count }} атрибутов выделено"
           help: Выберите сведения о продукте для экспорта. На пример, только технические атрибуты.
           empty: Все атрибуты будут экспортированы
           modal:
@@ -815,13 +812,12 @@ pim_enrich:
           label: Подтверждение
       operation:
         change_status:
-          label: Изменить статус (включить / выключить)
+          label: Изменить статус
           description: Выбранные продукты будут активированы или деактивированы.
           field: Включить
         edit_common:
           label: Изменить общие атрибуты
         change_family:
-          label: Изменить семейство продуктов
           description: Семейство для выбранных продуктов будет изменено на выбранное семейство
           field: Семейство
         add_to_group:
@@ -833,13 +829,10 @@ pim_enrich:
           description: Выберите группу вариантов для добавления выбранных продуктов
           field: Группа
         add_to_category:
-          label: Классифицировать товары в категориях
           description: Продукты будут добавлены в следующие категории, исходное расположение сохраниться.
         move_to_category:
-          label: Переместить продуты в категории
           description: Продукты будут перемещены в следующие категории, существующее размещение потеряется.
         remove_from_category:
-          label: Удалить продукты из категорий
           description: Продукты будут удалены из следующих категорий.
     family:
       step:
@@ -851,10 +844,6 @@ pim_enrich:
           label: Настройка
         confirm:
           label: Подтверждение
-      operation:
-        set_requirements:
-          label: Установить требования к атрибутам
-          description: Следующие требования к атрибутам будут применены к выбранным семействам
 pim_enrich.error:
   exception.title: Ах, нет! Произошла ошибка {{ status_code }}...
 page_title:
@@ -895,10 +884,6 @@ batch_jobs:
       label: Изменить общие атрибуты
     cleaner:
       label: Редактировать файлы общих атрибутов
-  set_attribute_requirements:
-    label: Установить требования к атрибутам
-    perform:
-      label: Установить требования к атрибутам
   add_to_variant_group:
     label: Добавить в группу вариантов
     perform:

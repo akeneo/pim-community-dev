@@ -151,9 +151,6 @@ pim_enrich:
         logged_at: Prijavljen u
         from: Od
         modified: Promjenjeno
-        property: Svojstvo
-        old_values: Stare vrijednosti
-        new_values: Nove vrijednosti
         actions: Akcije
       info:
         deletion_successful: Proizvod je uspješno izbrisan.
@@ -359,6 +356,7 @@ pim_enrich:
             no_match: Nisu pronađeni rezultati
             load_more: Učitavanje više rezultata...
           attribute_group_selector: Grupa atributa
+          attribute_group_all: Sve
         categories:
           title: Kategorije
       panel:
@@ -495,7 +493,7 @@ pim_enrich:
           table:
             name: Ime
             type: Tip
-            scope: Djelokrug
+            scopable: Moguće je odrediti djelokrug
             localizable: Moguće je lokalizirati
         history.title: Povijest
     common:
@@ -657,7 +655,6 @@ pim_enrich:
         attributes:
           title: Atributi
           edit: Uredi
-          label: "{0} svi atributi |{1} jedan atribut odabran |] 1, Inf [{{ count }} atributa odabrano"
           help: 'Odaberite informacije o proizvodima za izvoz. Npr: samo tehnički atributi.'
           empty: Svi atributi će se izvesti
           modal:
@@ -821,13 +818,12 @@ pim_enrich:
           label: Potvrdi
       operation:
         change_status:
-          label: Promjeni status (Omogući / Onemogući)
+          label: Promjena statusa
           description: Odabrani proizvodi će biti omogućeni ili onemogućeni.
           field: Da se omogući
         edit_common:
           label: Uredi uobičajene atribute
         change_family:
-          label: Promjeni obitelj proizvoda
           description: Obitelj odabranih proizvoda će se promijeniti u odabranu obitelj
           field: Obitelj
         add_to_group:
@@ -839,13 +835,10 @@ pim_enrich:
           description: Odaberi varijantu grupe u koju će se dodati odabrani proizvodi
           field: Grupa
         add_to_category:
-          label: Klasificiraj proizvode u kategorije
           description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
         move_to_category:
-          label: Premjestiti proizvode u kategorije
           description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
         remove_from_category:
-          label: Uklanjanje proizvoda iz kategorija
           description: Proizvodi će biti uklonjeni iz sljedećih kategorija.
     family:
       step:
@@ -857,10 +850,6 @@ pim_enrich:
           label: Konfiguriraj
         confirm:
           label: Potvrdi
-      operation:
-        set_requirements:
-          label: Postavi zahtjeve za atribute
-          description: Sljedeći zahtjevi atributa će se primijeniti na odabrane obitelji
 pim_enrich.error:
   exception.title: Ups! Pojavila se pogreška u {{ status_code }}...
 page_title:
@@ -901,10 +890,6 @@ batch_jobs:
       label: Uredi uobičajene atribute
     cleaner:
       label: Obriši datoteke za uobičajene atribute
-  set_attribute_requirements:
-    label: Postavi zahtjeve za atribute
-    perform:
-      label: Postavi zahtjeve za atribute
   add_to_variant_group:
     label: Dodaj u varijantu grupe
     perform:

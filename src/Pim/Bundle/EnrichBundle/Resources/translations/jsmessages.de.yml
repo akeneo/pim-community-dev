@@ -153,9 +153,6 @@ pim_enrich:
         logged_at: Angemeldet am
         from: Von
         modified: Bearbeitet
-        property: Eigenschaft
-        old_values: Alte Werte
-        new_values: Neue Werte
         actions: Aktionen
       info:
         deletion_successful: Produkt erfolgreich gelöscht.
@@ -392,6 +389,7 @@ pim_enrich:
             no_match: Keine Treffer gefunden
             load_more: Weitere Ergebnisse werden geladen...
           attribute_group_selector: Attributgruppe
+          attribute_group_all: Alle
         categories:
           title: Kategorien
       panel:
@@ -530,7 +528,7 @@ pim_enrich:
           table:
             name: Name
             type: Typ
-            scope: Gültigkeitsbereich
+            scopable: Je Ausgabekanal individualisierbar
             localizable: Lokalisierbar
         history.title: Historie
     common:
@@ -708,7 +706,6 @@ pim_enrich:
         attributes:
           title: Attribute
           edit: Bearbeiten
-          label: "{0} alle Attribute |{1} ein Attribut ausgewählt |] 1, Inf [{{ count }} Attribute ausgewählt"
           help: Wählen Sie die Produktinformationen die exportiert werden sollen. (z.B. alle technischen Attribute)
           empty: Alle Attribute werden exportiert
           modal:
@@ -903,13 +900,12 @@ pim_enrich:
           label: Bestätigen
       operation:
         change_status:
-          label: Status ändern (aktivieren / deaktivieren)
+          label: Status ändern
           description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
           field: Aktivieren
         edit_common:
           label: Gemeinsame Attribute bearbeiten
         change_family:
-          label: Produktfamilie der Produkte ändern
           description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
           field: Produktfamilie
         add_to_group:
@@ -921,13 +917,10 @@ pim_enrich:
           description: Bitte wählen Sie die Variantengruppe aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
           field: Gruppe
         add_to_category:
-          label: Zuordnung von Produkten in Kategorien
           description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
         move_to_category:
-          label: Produkte in Kategorien verschieben
           description: Die Produkte werden folgenden Kategorien zugeordnet, die bestehende Zuordnung wird verworfen.
         remove_from_category:
-          label: Produkte aus Kategorien entfernen
           description: Die Produkte werden aus den folgenden Kategorien entfernt.
     family:
       step:
@@ -939,10 +932,6 @@ pim_enrich:
           label: Konfigurieren
         confirm:
           label: Bestätigen
-      operation:
-        set_requirements:
-          label: Benötigte Attribute auswählen
-          description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
 pim_enrich.error:
   exception.title: Oh nein! Ein {{ status_code }} Fehler ist aufgetreten...
   http:
@@ -995,10 +984,6 @@ batch_jobs:
       label: Gemeinsame Attribute bearbeiten
     cleaner:
       label: Bereinige Dateien für gemeinsame Attribute
-  set_attribute_requirements:
-    label: Benötigte Attribute auswählen
-    perform:
-      label: Benötigte Attribute auswählen
   csv_product_quick_export:
     quick_export.label: CSV Produkt-Schnellexport
     perform:

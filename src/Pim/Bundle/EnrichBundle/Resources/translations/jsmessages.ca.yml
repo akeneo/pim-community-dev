@@ -151,9 +151,6 @@ pim_enrich:
         logged_at: Connectat a
         from: Des de
         modified: Modificat
-        property: Propietat
-        old_values: Valors antics
-        new_values: Valors nous
         actions: Accions
       info:
         deletion_successful: Producte suprimit correctament.
@@ -359,6 +356,7 @@ pim_enrich:
             no_match: No s’han trobat coincidències
             load_more: Carregant més resultats...
           attribute_group_selector: Grup d'atributs
+          attribute_group_all: Tots
         categories:
           title: Categories
       panel:
@@ -495,7 +493,7 @@ pim_enrich:
           table:
             name: Nom
             type: Tipus
-            scope: Abast
+            scopable: Abastable
             localizable: Configurable regionalment
         history.title: Històric
     common:
@@ -657,7 +655,6 @@ pim_enrich:
         attributes:
           title: Atributs
           edit: Editar
-          label: "{0} Tots els atributs |{1} Un atribut seleccionat |] 1, Inf [{{ count }} atributs seleccionats"
           help: 'Seleccionar la informació del producte a exportar. Ex: només els atributs tècnics.'
           empty: S'exportaran tots els atributs
           modal:
@@ -821,13 +818,12 @@ pim_enrich:
           label: Confirmar
       operation:
         change_status:
-          label: Canviar l'estat (activar / desactivar)
+          label: Canviar l'estat
           description: Els productes seleccionats seran activats o desactivats.
           field: Per activar
         edit_common:
           label: Editar atributs comuns
         change_family:
-          label: Canviar la família de productes
           description: La família dels productes seleccionats es canviarà per la família escollida
           field: Família
         add_to_group:
@@ -839,13 +835,10 @@ pim_enrich:
           description: Seleccioneu el grup de variants on afegir els productes seleccionats
           field: Grup
         add_to_category:
-          label: Classificar els productes en categories
           description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
         move_to_category:
-          label: Moure els productes a les categories
           description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
         remove_from_category:
-          label: Eliminar productes de les categories
           description: Els productes s'eliminaran de les següents categories.
     family:
       step:
@@ -857,10 +850,6 @@ pim_enrich:
           label: Configurar
         confirm:
           label: Confirmar
-      operation:
-        set_requirements:
-          label: Establir els requeriments d'atribut
-          description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
 pim_enrich.error:
   exception.title: Oh no! S'ha produït un error de {{ status_code }}...
 page_title:
@@ -901,10 +890,6 @@ batch_jobs:
       label: Editar atributs comuns
     cleaner:
       label: Netejar arxius per atributs comuns
-  set_attribute_requirements:
-    label: Establir els requeriments d'atribut
-    perform:
-      label: Establir els requeriments d'atribut
   add_to_variant_group:
     label: Afegir a un grup de variants
     perform:

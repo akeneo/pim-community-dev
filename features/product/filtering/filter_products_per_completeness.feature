@@ -21,13 +21,13 @@ Feature: Filter products
     And I filter by "completeness" with operator "" and value "no"
     Then the grid should contain 5 elements
     And I should see products BOOTBXS, BOOTWXS, BOOTBS, BOOTBL, BOOTRXS
-    And I filter by "scope" with operator "" and value "Mobile"
+    And I switch the scope to "Mobile"
     Then the grid should contain 4 elements
     And I should see products BOOTWXS, BOOTBS, BOOTBL, BOOTRXS
 
   Scenario: Successfully filter complete products
     And I filter by "completeness" with operator "" and value "yes"
     Then the grid should contain 0 elements
-    And I filter by "scope" with operator "" and value "Mobile"
+    And I switch the scope to "Mobile"
     Then the grid should contain 1 elements
     And I should see products BOOTBXS

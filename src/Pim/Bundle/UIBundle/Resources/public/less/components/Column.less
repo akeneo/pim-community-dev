@@ -17,11 +17,12 @@
   transition:
     flex-basis @timing @transition,
     width @timing @transition;
-  order: -1;
+  order: -10;
   background: @AknLightGray;
   border-right: 1px solid @AknBorderColor;
   flex-shrink: 0;
   height: 100%;
+  z-index: 802;
 
   &:empty {
     display: none;
@@ -58,10 +59,35 @@
     padding-top: @padding;
   }
 
-  &-block:not(:empty) {
-    display: flex;
-    flex-direction: column;
-    margin: (@paddingBetweenBlocks - @padding) 0 @padding 0;
+  &-block {
+    &:not(:empty) {
+      display: flex;
+      flex-direction: column;
+      margin: (@paddingBetweenBlocks - @padding) 0 @padding 0;
+    }
+
+    &--inline:not(:empty) {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+
+  &-block--inline &-subtitle {
+    line-height: 38px;
+    white-space: nowrap;
+  }
+
+  &-block--inline &-value {
+    flex-grow: 1;
+    margin-top: 2px;
+    margin-bottom: -2px;
+  }
+
+  &-blockDropdown {
+    flex-shrink: 0;
+    flex-grow: 0;
+    margin-top: 4px;
   }
 
   &-title,
@@ -78,6 +104,20 @@
   &-value {
     color: @AknDarkBlue;
     font-size: 12px;
+
+    &--highlited {
+      color: @AknLightPurple;
+      font-weight: bold;
+    }
+  }
+
+  &-part {
+    border-bottom: 1px solid @AknBorderColor;
+    margin-left: -@padding;
+    margin-right: -@padding;
+    padding-left: @padding;
+    padding-right: @padding;
+    min-height: 52px;
   }
 
   &-navigationLink {
@@ -105,6 +145,12 @@
     opacity: 0;
     transition: opacity @timing @transition;
     z-index: 850;
+  }
+
+  &-resume {
+    margin-top: -20px;
+    margin-bottom: 20px;
+    font-size: @AknDefaultFontSize;
   }
 
   &-collapseButton {

@@ -94,7 +94,7 @@ pim_enrich:
         third: Configurar
         fourth: Confirmar
     change-status:
-      label: Canviar l'estat (activar / desactivar)
+      label: Canviar l'estat
       description: Els productes seleccionats seran activats o desactivats.
       success_flash: S'ha canviat l'estat del(s) producte(s)
       launched_flash: L'acció en massa "canviar estat" ja s'ha engegat. Se li notificarà una cop acabi.
@@ -109,22 +109,18 @@ pim_enrich:
         invalid_attribute: L'atribut amb codi "attribute_code" no és comú per als productes seleccionats, atribut omès.
         no_valid_attribute: No es pot aplicar cap dels atributs seleccions a aquest producte.
     classify-add:
-      label: Classificar els productes en categories
       description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
       success_flash: El(s) producte(s) han estat classificat(s) a les categories seleccionades
       launched_flash: L'acció en massa "afegir categories" ja s'ha engegat. Se li notificarà una cop acabi.
     classify-move:
-      label: Moure els productes a les categories
       description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
       success_flash: El(s) producte(s) ha(n) estat mogut(s) a les categories seleccionades
       launched_flash: L'acció en massa "moure a categories" ja s'ha engegat. Se li notificarà una cop acabi.
     classify-remove:
-      label: Eliminar productes de les categories
       description: Els productes s'eliminaran de les següents categories.
       success_flash: El(s) producte(s) ha(n) estat eliminat(s) de les categories seleccionades
       launched_flash: L'acció en massa "eliminar de categories" ja s'ha engegat. Se li notificarà una cop acabi.
     change-family:
-      label: Canviar la família de productes
       description: La família dels productes seleccionats es canviarà per la família escollida
       success_flash: La família del(s) producte(s) seleccionat(s) s'ha canviat correctament
       launched_flash: L'acció en massa "canviar família" ja s'ha engegat. Se li notificarà una cop acabi.
@@ -143,7 +139,6 @@ pim_enrich:
       no_valid_variant_group: Cap grup de variants comparteix atributs amb els productes seleccionats.
       launched_flash: L'acció en massa "afegir a grup de variants" ja s'ha engegat. Se li notificarà una cop acabi.
     set-attribute-requirements:
-      label: Establir els requeriments d'atribut
       description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
       success_flash: Els requisits d'atribut s'han aplicat a les famílies seleccionades
       launched_flash: L'acció en massa "definiu els requeriments d'atribut" ja s'ha engegat. Se li notificarà una cop acabi.
@@ -680,7 +675,7 @@ pim_enrich.mass_edit_action:
       third: Configurar
       fourth: Confirmar
   change-status:
-    label: Canviar l'estat (activar / desactivar)
+    label: Canviar l'estat
     description: Els productes seleccionats seran activats o desactivats.
     success_flash: S'ha canviat l'estat del(s) producte(s)
   edit-common-attributes:
@@ -692,11 +687,9 @@ pim_enrich.mass_edit_action:
     no_attribute.warning: No hi ha cap atribut en comú per als productes seleccionats. Canvieu la vostra selecció, si us plau.
     truncated_by_variant_attribute.warning: 'Alguns atributs comuns dels productes seleccionats provenen d''un grup de variants. No estan disponibles per a edició massiva: %attributes%.'
   classify:
-    label: Classificar els productes en categories
     description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
     success_flash: El(s) producte(s) han estat classificat(s) a les categories seleccionades
   change-family:
-    label: Canviar la família de productes
     description: La família dels productes seleccionats es canviarà per la família escollida
     success_flash: La família del(s) producte(s) seleccionat(s) s'ha canviat correctament
     no_family: Cap família
@@ -705,7 +698,6 @@ pim_enrich.mass_edit_action:
     description: Seleccioneu els grups on volgueu afegir els productes seleccionats
     success_flash: Els productes s'han afegit correctament als grups seleccionats
   set-attribute-requirements:
-    label: Establir els requeriments d'atribut
     description: Els següents requisits d'atribut s'aplicaran a les famílies seleccionades
     success_flash: Els requisits d'atribut s'han aplicat a les famílies seleccionades
 To enable: Per activar
@@ -832,10 +824,6 @@ batch_jobs:
       label: Editar atributs comuns
     clean:
       label: Netejar arxius per atributs comuns
-  set_attribute_requirements:
-    label: Establir els requeriments d'atribut
-    perform:
-      label: Establir els requeriments d'atribut
   csv_product_quick_export:
     quick_export.label: Exportació ràpida de producte en CSV
     perform:

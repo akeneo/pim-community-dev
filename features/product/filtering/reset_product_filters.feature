@@ -41,7 +41,7 @@ Feature: Reset product grid filters
     And the criteria of "groups" filter should be "All"
 
   Scenario: I successfully keep the scope I work on when I reset the defaut view
-    When I filter by "scope" with operator "equals" and value "Mobile"
+    When I switch the scope to "Mobile"
     And I reset the grid
     Then I should see the text "Mobile"
     When I reload the page
@@ -86,7 +86,8 @@ Feature: Reset product grid filters
     And the criteria of "groups" filter should be ""Similar boots""
 
   Scenario: I successfully keep the scope I work on when I reset an existing view
-    When I filter by "scope" with operator "equals" and value "Mobile"
+    When I open the category tree
+    And I switch the scope to "Mobile"
     And I create the view:
       | new-view-label | My products |
     Then I should see the text "My products"
@@ -96,4 +97,5 @@ Feature: Reset product grid filters
     When I reload the page
     Then I should see the text "My products"
     And the grid should contain 6 elements
+    And I open the category tree
     And I should see the text "Mobile"

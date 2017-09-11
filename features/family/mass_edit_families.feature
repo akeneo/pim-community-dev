@@ -11,7 +11,7 @@ Feature: Mass Edit Families
     # These families don't have attribute Length
     When I select rows Boots, Sneakers and Sandals
     And I press the "Change product information" button
-    And I choose the "Set attribute requirements" operation
+    And I choose the "Set attributes requirements" operation
     And I add available attributes Length
     And I switch the attribute "length" requirement in channel "mobile"
     And I confirm mass edit
@@ -30,7 +30,7 @@ Feature: Mass Edit Families
     # These families already have attribute Name
     When I select rows Boots, Sneakers and Sandals
     And I press the "Change product information" button
-    And I choose the "Set attribute requirements" operation
+    And I choose the "Set attributes requirements" operation
     And I display the Name attribute
     And I switch the attribute "name" requirement in channel "mobile"
     And I confirm mass edit
@@ -71,7 +71,7 @@ Feature: Mass Edit Families
     When I change the page size to 25
     And I select rows first, second, third, fourth, fifth, sixth, seventh, eight, ninth, tenth and eleventh
     And I press the "Change product information" button
-    Then I should see the text "Mass Edit (11 families)"
+    Then I should see the text "Select your action for the 11 families"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4203
   Scenario: Successfully mass edit families after sorting by label
@@ -81,7 +81,7 @@ Feature: Mass Edit Families
     When I sort by "label" value ascending
     And I select rows Boots, Sneakers and Sandals
     And I press the "Change product information" button
-    Then I should see the text "Mass Edit (3 families)"
+    Then I should see the text "Select your action for the 3 families"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6026
   Scenario: Successfully mass edit more families than the batch size limit
@@ -94,7 +94,7 @@ Feature: Mass Edit Families
     And I am on the families page
     When I select all entities
     And I press the "Change product information" button
-    And I choose the "Set attribute requirements" operation
+    And I choose the "Set attributes requirements" operation
     And I display the Name attribute
     And I confirm mass edit
     And I wait for the "set_attribute_requirements" job to finish
@@ -109,7 +109,7 @@ Feature: Mass Edit Families
     And I am on the families page
     When I select rows Boots, Sneakers and Sandals
     And I press the "Change product information" button
-    And I choose the "Set attribute requirements" operation
+    And I choose the "Set attributes requirements" operation
     And I add attributes by group "Marketing"
     And I should see attributes "Price, Rate of sale and Rating" in group "Marketing"
     And I confirm mass edit
@@ -129,7 +129,7 @@ Feature: Mass Edit Families
     And I am on the families page
     When I select rows Boots, Sneakers and Sandals
     And I press the "Change product information" button
-    And I choose the "Set attribute requirements" operation
+    And I choose the "Set attributes requirements" operation
     And I display the Name attribute
     And I switch the attribute "name" requirement in channel "mobile"
     And I move on to the next step
