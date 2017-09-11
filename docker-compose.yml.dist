@@ -33,7 +33,6 @@ services:
     user: node
     volumes:
       - ./:/srv/pim
-      - ~/.npm:/home/node/.npm
       - ~/.cache/yarn:/home/node/.yarn-cache
     working_dir: /srv/pim
     networks:
