@@ -176,7 +176,7 @@ define(
                 }
 
                 if (filters.pageSize) {
-                    urlParams[`${gridName}[_pager][_per_page]`] = filters.pageSize;
+                    urlParams[`${gridName}[_pager][_per_page]`] = 100
                 }
 
                 if (filters.currentPage) {

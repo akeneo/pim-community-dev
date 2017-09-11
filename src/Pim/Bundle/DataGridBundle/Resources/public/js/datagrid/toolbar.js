@@ -1,7 +1,6 @@
 /* global define */
-define(['underscore', 'backbone', 'oro/translator', 'oro/datagrid/pagination-input',
-    'oro/datagrid/page-size', 'oro/datagrid/actions-panel'],
-function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
+define(['underscore', 'backbone', 'oro/translator', 'oro/datagrid/actions-panel'],
+function(_, Backbone, __,  ActionsPanel) {
     'use strict';
 
     /**
@@ -19,9 +18,6 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
                 '<div class="AknGridToolbar-right"></div>' +
             '</div>'
         ),
-
-        /** @property */
-        pageSize: PageSize,
 
         /** @property */
         actionsPanel: ActionsPanel,
@@ -45,11 +41,6 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
             }
 
             this.collection = options.collection;
-
-            // this.pagination = new this.pagination(_.extend({}, options.pagination, { collection: this.collection }));
-
-            options.pageSize = options.pageSize || {};
-            this.pageSize = new this.pageSize(_.extend({}, options.pageSize, { collection: this.collection }));
 
             this.actionsPanel = new this.actionsPanel(_.extend({
                 className: 'AknGridToolbar-actionsPanel actions-panel'
@@ -81,7 +72,6 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
          * @return {*}
          */
         enable: function() {
-            this.pageSize.enable();
             this.actionsPanel.enable();
             this.massActionsPanel.enable();
             return this;
@@ -93,7 +83,6 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
          * @return {*}
          */
         disable: function() {
-            this.pageSize.disable();
             this.actionsPanel.disable();
             this.massActionsPanel.disable();
             return this;
@@ -116,8 +105,6 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
             this.$el.empty();
             this.$el.append(this.template());
 
-            // this.$('.AknGridToolbar-center').replaceWith(this.pagination.render().$el);
-            this.$('.AknGridToolbar-right').append(this.pageSize.render().$el);
             this.$('.AknGridToolbar-right').append(this.actionsPanel.render().$el);
             this.$('.mass-actions-panel').append(this.massActionsPanel.render().$el);
 

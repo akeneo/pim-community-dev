@@ -201,7 +201,7 @@ define([
                 }
 
                 if (undefined !== filters.pageSize) {
-                    this.urlParams[alias + '[_pager][_per_page]'] = filters.pageSize;
+                    this.urlParams[alias + '[_pager][_per_page]'] = 100;
                 }
 
                 if (undefined !== filters.currentPage) {
