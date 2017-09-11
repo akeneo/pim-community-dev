@@ -43,10 +43,10 @@ function(
          * @property
          */
         criteriaValueSelectors: {
-            type: '.AknFilterDate-select',
+            type: '.AknActionButton-highlight',
             value: {
-                start: '.AknFilterDate-start',
-                end: '.AknFilterDate-end'
+                start: '.from',
+                end: '.to'
             }
         },
 
@@ -97,6 +97,12 @@ function(
          */
         dateWidgetSelector: 'datepicker',
 
+        events: {
+            'click .filter-update': '_onClickUpdateCriteria',
+            'click .filter-criteria-selector': '_onClickCriteriaSelector',
+            'click .AknDropdown-menuLink': '_onSelectOperator'
+        },
+
         /**
          * @inheritDoc
          */
@@ -118,11 +124,19 @@ function(
         /**
          * @param {Event} e
          */
-        changeFilterType: function (e) {
-            var select = this.$el.find(e.currentTarget);
-            var selectedValue = select.val();
+        _onSelectOperator: function (e) {
+            this.$el.find('.AknDropdown-menuLink')
+                .removeClass('AknDropdown-menuLink--active')
+                .removeClass('active');
+            $(e.currentTarget)
+                .addClass('AknDropdown-menuLink--active')
+                .addClass('active');
+            this.$el.find('.AknActionButton-highlight').html($(e.currentTarget).text());
 
-            this._displayFilterType(selectedValue);
+            const value = $(e.currentTarget).find('.operator_choice').attr('data-value');
+            this._displayFilterType(value);
+
+            e.preventDefault();
         },
 
         /**
@@ -132,17 +146,17 @@ function(
          * @protected
          */
         _displayFilterType: function(type) {
-            this.$el.find('.AknFilterDate-separator').show();
+            this.$el.find('.AknFilterChoice-separator').show();
             this.$el.find(this.criteriaValueSelectors.value.end).show();
             this.$el.find(this.criteriaValueSelectors.value.start).show();
             if (this.typeValues.moreThan == parseInt(type)) {
-                this.$el.find('.AknFilterDate-separator').hide();
+                this.$el.find('.AknFilterChoice-separator').hide();
                 this.$el.find(this.criteriaValueSelectors.value.end).hide();
             } else if (this.typeValues.lessThan == parseInt(type)) {
-                this.$el.find('.AknFilterDate-separator').hide();
+                this.$el.find('.AknFilterChoice-separator').hide();
                 this.$el.find(this.criteriaValueSelectors.value.start).hide();
             } else if (_.contains(['empty', 'not empty'], type)) {
-                this.$el.find('.AknFilterDate-separator').hide();
+                this.$el.find('.AknFilterChoice-separator').hide();
                 this.$el.find(this.criteriaValueSelectors.value.end).hide();
                 this.$el.find(this.criteriaValueSelectors.value.start).hide();
             }
@@ -154,14 +168,18 @@ function(
         _renderCriteria: function(el) {
             $(el).append(
                 this.popupCriteriaTemplate({
+                    label: this.label,
                     name: this.name,
                     choices: this.choices,
                     selectedChoice: this.emptyValue.type,
-                    inputClass: this.inputClass
+                    inputClass: this.inputClass,
+                    selectedOperatorLabel: _.findWhere(this.choices, {value: this.emptyValue.type}).label,
+                    operatorLabel: __('pim.grid.choice_filter.operator'),
+                    updateLabel: __('Update'),
+                    fromLabel: __('from'),
+                    toLabel: __('to')
                 })
             );
-
-            $(el).find(this.criteriaValueSelectors.type).bind('change', _.bind(this.changeFilterType, this));
 
             _.each(this.criteriaValueSelectors.value, function(selector, name) {
                 this.dateWidgets[name] = Datepicker.init(this.$(selector), this.datetimepickerOptions);
@@ -274,8 +292,10 @@ function(
          * @inheritDoc
          */
         _readDOMValue: function() {
+            const operator = this.$('.active .operator_choice').data('value');
+
             return {
-                type: this._getInputValue(this.criteriaValueSelectors.type),
+                type: operator,
                 value: {
                     start: this._getInputValue(this.criteriaValueSelectors.value.start + ' input'),
                     end:   this._getInputValue(this.criteriaValueSelectors.value.end + ' input')
@@ -317,7 +337,7 @@ function(
         _onValueUpdated: function(newValue, oldValue) {
             ChoiceFilter.prototype._onValueUpdated.apply(this, arguments);
             if (_.contains(['empty', 'not empty'], newValue.type)) {
-                this.$el.find('.AknFilterDate-separator').hide().end()
+                this.$el.find('.AknFilterChoice-separator').hide().end()
                     .find(this.criteriaValueSelectors.value.end).hide().end()
                     .find(this.criteriaValueSelectors.value.start).hide();
             } else {
