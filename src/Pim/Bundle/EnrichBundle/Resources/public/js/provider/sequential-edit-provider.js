@@ -19,11 +19,9 @@ define(
             },
 
             get: function () {
-                return JSON.parse(
-                    null === sessionStorage.getItem('sequential_edit_entities') ?
+                return null === sessionStorage.getItem('sequential_edit_entities') ?
                     [] :
-                    sessionStorage.getItem('sequential_edit_entities')
-                );
+                    JSON.parse(sessionStorage.getItem('sequential_edit_entities'));
             }
         };
     }

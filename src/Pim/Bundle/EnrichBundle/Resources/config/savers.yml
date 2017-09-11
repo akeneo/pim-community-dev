@@ -1,7 +1,0 @@
-services:
-    pim_enrich.saver.sequential_edit:
-        class:  '%akeneo_storage_utils.saver.base.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '%pim_enrich.entity.sequential_edit.class%'
