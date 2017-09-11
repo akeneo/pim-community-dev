@@ -21,9 +21,8 @@ define(
             emptyChoice: false,
             resultsPerPage: 20,
             popupCriteriaTemplate: _.template(template),
-
             events: {
-                'click .operator_choice': '_onSelectOperator'
+                'click .AknDropdown-menuLink': '_onSelectOperator'
             },
 
             initialize: function(options) {
@@ -44,16 +43,20 @@ define(
             },
 
             _onSelectOperator: function(e) {
-                $(e.currentTarget).parent().parent().find('li').removeClass('active');
-                $(e.currentTarget).parent().addClass('active');
-                var parentDiv = $(e.currentTarget).parent().parent().parent();
+                this.$el.find('.AknDropdown-menuLink')
+                    .removeClass('AknDropdown-menuLink--active')
+                    .removeClass('active');
+                $(e.currentTarget)
+                    .addClass('AknDropdown-menuLink--active')
+                    .addClass('active');
+                this.$el.find('.AknActionButton-highlight').html($(e.currentTarget).text());
 
-                if (_.contains(['empty', 'not empty'], $(e.currentTarget).attr('data-value'))) {
+                const value = $(e.currentTarget).find('.operator_choice').attr('data-value');
+                if (_.contains(['empty', 'not empty'], value)) {
                     this._disableInput();
                 } else {
                     this._enableInput();
                 }
-                parentDiv.find('button').html($(e.currentTarget).html() + '<span class="caret"></span>');
                 e.preventDefault();
             },
 
@@ -113,7 +116,7 @@ define(
             },
 
             _readDOMValue: function() {
-                var operator = this.emptyChoice ? this.$('li.active .operator_choice').data('value') : 'in';
+                var operator = this.emptyChoice ? this.$('.active .operator_choice').data('value') : 'in';
 
                 return {
                     value: _.contains(['empty', 'not empty'], operator) ? {} : this._getInputValue(this.criteriaValueSelectors.value),
@@ -122,22 +125,21 @@ define(
             },
 
             _renderCriteria: function(el) {
-                const inKey = __('pim.grid.choice_filter.label_in_list');
-                const emptyKey = __('pim.grid.choice_filter.label_empty');
-                const notEmptyKey = __('pim.grid.choice_filter.label_not_empty');
-
                 this.operatorChoices = {
-                    'in': inKey,
-                    'empty': emptyKey,
-                    'not empty': notEmptyKey
+                    'in': __('pim.grid.choice_filter.label_in_list'),
+                    'empty': __('pim.grid.choice_filter.label_empty'),
+                    'not empty': __('pim.grid.choice_filter.label_not_empty')
                 };
 
                 $(el).append(
                     this.popupCriteriaTemplate({
-                        emptyChoice:           this.emptyChoice,
+                        label: this.label,
+                        operatorLabel: __('pim.grid.choice_filter.operator'),
+                        updateLabel: __('Update'),
+                        emptyChoice: this.emptyChoice,
                         selectedOperatorLabel: this.operatorChoices[this.emptyValue.type],
-                        operatorChoices:       this.operatorChoices,
-                        selectedOperator:      this.emptyValue.type
+                        operatorChoices: this.operatorChoices,
+                        selectedOperator: this.emptyValue.type
                     })
                 );
 
@@ -152,22 +154,6 @@ define(
                     this.$(this.criteriaValueSelectors.value).select2('open');
                 } else {
                     this._hideCriteria();
-                }
-            },
-
-            _onClickCloseCriteria: function() {
-                TextFilter.prototype._onClickCloseCriteria.apply(this, arguments);
-
-                this.$(this.criteriaValueSelectors.value).select2('close');
-            },
-
-            _onClickOutsideCriteria: function(e) {
-                var elem = this.$(this.criteriaSelector);
-
-                if (e.target != $('body').get(0) && e.target !== elem.get(0) && !elem.has(e.target).length) {
-                    this._hideCriteria();
-                    this.setValue(this._formatRawValue(this._readDOMValue()));
-                    e.stopPropagation();
                 }
             },
 
@@ -228,7 +214,7 @@ define(
             },
 
             _getCriteriaHint: function() {
-                var operator = this.$('li.active .operator_choice').data('value');
+                var operator = this.$('.active .operator_choice').data('value');
                 if (_.contains(['empty', 'not empty'], operator)) {
                     return this.operatorChoices[operator];
                 }

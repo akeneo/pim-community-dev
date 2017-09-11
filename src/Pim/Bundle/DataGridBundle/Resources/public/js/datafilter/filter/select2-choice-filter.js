@@ -2,6 +2,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'oro/datafilter/text-filter',
         'routing',
         'pim/template/datagrid/filter/select2-choice-filter',
@@ -9,7 +10,16 @@ define(
         'pim/user-context',
         'jquery.select2'
     ],
-    function($, _, TextFilter, Routing, template, initSelect2, UserContext) {
+    function(
+        $,
+        _,
+        __,
+        TextFilter,
+        Routing,
+        template,
+        initSelect2,
+        UserContext
+    ) {
         'use strict';
 
         return TextFilter.extend({
@@ -138,22 +148,21 @@ define(
             },
 
             _renderCriteria: function(el) {
-                const inKey = _.__('pim.grid.choice_filter.label_in_list');
-                const emptyKey = _.__('pim.grid.choice_filter.label_empty');
-                const notEmptyKey = _.__('pim.grid.choice_filter.label_not_empty');
-
                 this.operatorChoices = {
-                    'in': inKey,
-                    'empty': emptyKey,
-                    'not empty': notEmptyKey
+                    'in': __('pim.grid.choice_filter.label_in_list'),
+                    'empty': __('pim.grid.choice_filter.label_empty'),
+                    'not empty': __('pim.grid.choice_filter.label_not_empty')
                 };
 
                 $(el).append(
                     this.popupCriteriaTemplate({
-                        emptyChoice:           this.emptyChoice,
+                        label: this.label,
+                        operatorLabel: __('pim.grid.choice_filter.operator'),
+                        updateLabel: __('Update'),
+                        emptyChoice:this.emptyChoice,
                         selectedOperatorLabel: this.operatorChoices[this.emptyValue.type],
-                        operatorChoices:       this.operatorChoices,
-                        selectedOperator:      this.emptyValue.type
+                        operatorChoices: this.operatorChoices,
+                        selectedOperator: this.emptyValue.type
                     })
                 );
 

@@ -1,19 +1,27 @@
 <div class="AknFilterChoice choicefilter">
-    <div class="AknFilterChoice-operator AknDropdown">
+    <div class="AknFilterChoice-header">
+        <div class="AknFilterChoice-title"><%- label %></div>
         <% if (emptyChoice) { %>
-            <button type="button" class="AknActionButton AknActionButton--big AknActionButton--noRightBorder dropdown-toggle" data-toggle="dropdown">
-                <%= selectedOperatorLabel %>
-                <span class="AknCaret"></span>
-            </button>
-            <ul class="dropdown-menu">
+        <div class="AknDropdown">
+            <div class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
+                <span class="AknActionButton-highlight"><%- selectedOperatorLabel %></span>
+                <span class="AknActionButton-caret"></span>
+            </div>
+            <div class="AknDropdown-menu">
+                <div class="AknDropdown-menuTitle"><%- operatorLabel %></div>
                 <% _.each(operatorChoices, function (label, operator) { %>
-                    <li<% if (selectedOperator == operator) { %> class="active"<% } %>>
-                        <a class="operator_choice" href="#" data-value="<%= operator %>"><%= label %></a>
-                    </li>
+                <div class="AknDropdown-menuLink<% if (selectedOperator == operator) { %> AknDropdown-menuLink--active active<% } %>">
+                    <span class="label operator_choice" data-value="<%= operator %>"><%- label %></span>
+                </div>
                 <% }); %>
-            </ul>
+            </div>
+        </div>
         <% } %>
     </div>
-    <input type="text" name="value" class="AknTextField AknTextField--select2 AknTextField--noRadius AknFilterChoice-field select-field">
-    <button type="button" class="AknFilterChoice-button AknButton AknButton--apply AknButton--noLeftRadius filter-update"><%- _.__('Update') %></button>
+    <div>
+        <input type="text" name="value" class="AknTextField AknTextField--select2 select-field"/>
+    </div>
+    <div class="AknFilterChoice-button">
+        <button type="button" class="AknButton AknButton--apply filter-update"><%- updateLabel %></button>
+    </div>
 </div>

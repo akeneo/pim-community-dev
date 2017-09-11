@@ -178,22 +178,6 @@ function($, _, __, AbstractFilter) {
         },
 
         /**
-         * Handle click outside of criteria popup to hide it
-         *
-         * @param {Event} e
-         * @protected
-         */
-        _onClickOutsideCriteria: function(e) {
-            var elem = this.$(this.criteriaSelector);
-
-            if (elem.get(0) !== e.target && !elem.has(e.target).length) {
-                this._hideCriteria();
-                this.setValue(this._formatRawValue(this._readDOMValue()));
-                e.stopPropagation();
-            }
-        },
-
-        /**
          * Render filter view
          *
          * @return {*}
@@ -210,12 +194,6 @@ function($, _, __, AbstractFilter) {
                 })
             );
             this._renderCriteria(this.$(this.criteriaSelector));
-            this._clickOutsideCriteriaCallback = _.bind(function(e) {
-                if (this.popupCriteriaShowed) {
-                    this._onClickOutsideCriteria(e);
-                }
-            }, this);
-            $('body').on('click', this._clickOutsideCriteriaCallback);
 
             return this;
         },
@@ -263,14 +241,21 @@ function($, _, __, AbstractFilter) {
         /**
          * Closes the criteria if the user clicks on the rest of the document.
          *
+         * The condition is a combination of:
+         * - The click is outside of the criteria Selector,
+         * - The click is in the app (this is due to select2 it removes its full position layer, leading to a
+         *   event.target == body),
+         * - The popup is open.
+         *
          * @param {Event} event
          */
         outsideClickListener(event) {
-            if (!$(event.target).closest(this.criteriaSelector).length) {
-                if (this.popupCriteriaShowed) {
-                    this._hideCriteria();
-                    document.removeEventListener('click', this.outsideClickListener.bind(this));
-                }
+            if (!$(event.target).closest(this.criteriaSelector).length &&
+                $(event.target).closest('.app').length &&
+                this.popupCriteriaShowed) {
+                this._hideCriteria();
+                this.setValue(this._formatRawValue(this._readDOMValue()));
+                document.removeEventListener('click', this.outsideClickListener.bind(this));
             }
         },
 
