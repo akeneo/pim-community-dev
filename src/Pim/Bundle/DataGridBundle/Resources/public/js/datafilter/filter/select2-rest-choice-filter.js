@@ -9,18 +9,25 @@ define(
         'oro/datafilter/text-filter',
         'pim/formatter/choices/base',
         'pim/user-context',
-        'pim/template/datagrid/filter/select2-choice-filter',
         'pim/initselect2',
         'jquery.select2'
     ],
-    function($, _, __, Routing, TextFilter, ChoicesFormatter, UserContext, template, initSelect2) {
+    function(
+        $,
+        _,
+        __,
+        Routing,
+        TextFilter,
+        ChoicesFormatter,
+        UserContext,
+        initSelect2
+    ) {
         return TextFilter.extend({
             operatorChoices: [],
             choiceUrl: null,
             choiceUrlParams: {},
             emptyChoice: false,
             resultsPerPage: 20,
-            popupCriteriaTemplate: _.template(template),
             events: {
                 'click .AknDropdown-menuLink': '_onSelectOperator'
             },
@@ -38,6 +45,12 @@ define(
                         value: ''
                     };
                 }
+
+                this.operatorChoices = {
+                    'in': __('pim.grid.choice_filter.label_in_list'),
+                    'empty': __('pim.grid.choice_filter.label_empty'),
+                    'not empty': __('pim.grid.choice_filter.label_not_empty')
+                };
 
                 TextFilter.prototype.initialize.apply(this, arguments);
             },
@@ -114,28 +127,14 @@ define(
                 };
             },
 
+            /**
+             * {@inheritdoc}
+             */
             _renderCriteria: function(el) {
-                this.operatorChoices = {
-                    'in': __('pim.grid.choice_filter.label_in_list'),
-                    'empty': __('pim.grid.choice_filter.label_empty'),
-                    'not empty': __('pim.grid.choice_filter.label_not_empty')
-                };
-
-                $(el).append(
-                    this.popupCriteriaTemplate({
-                        label: this.label,
-                        operatorLabel: __('pim.grid.choice_filter.operator'),
-                        updateLabel: __('Update'),
-                        emptyChoice: this.emptyChoice,
-                        selectedOperatorLabel: this.operatorChoices[this.emptyValue.type],
-                        operatorChoices: this.operatorChoices,
-                        selectedOperator: this.emptyValue.type
-                    })
-                );
-
-                initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config());
+                TextFilter.prototype._renderCriteria.apply(this, arguments);
 
                 this.$(this.criteriaValueSelectors.value).addClass('AknTextField--select2');
+                initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config());
             },
 
             _onClickCriteriaSelector: function(e) {

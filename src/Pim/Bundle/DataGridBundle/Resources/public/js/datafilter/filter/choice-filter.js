@@ -7,7 +7,6 @@ define(
         'oro/app',
         'oro/datafilter/text-filter',
         'pim/initselect2',
-        'pim/template/datagrid/filter/select2-choice-filter',
         'jquery.select2'
     ], function(
         $,
@@ -16,7 +15,6 @@ define(
         app,
         TextFilter,
         initSelect2,
-        criteriaTemplate
     ) {
     'use strict';
 
@@ -28,15 +26,6 @@ define(
      * @extends oro.datafilter.TextFilter
      */
     return TextFilter.extend({
-        /**
-         * Template for filter criteria
-         *
-         * @property {function(Object, ?Object=): String}
-         */
-        popupCriteriaTemplate: _.template(
-            criteriaTemplate
-        ),
-
         /**
          * Selectors for filter criteria elements
          *
@@ -88,38 +77,6 @@ define(
             }
 
             TextFilter.prototype.initialize.apply(this, arguments);
-        },
-
-        /**
-         * @inheritDoc
-         */
-        _renderCriteria: function(el) {
-            var selectedChoice = this.emptyValue.type;
-            var selectedChoiceLabel = '';
-            if (!_.isEmpty(this.choices)) {
-                var foundChoice = _.find(this.choices, function(choice) {
-                    return (choice.value == selectedChoice);
-                });
-                selectedChoiceLabel = foundChoice.label;
-            }
-
-            let formattedChoices = {};
-            _.each(this.choices, function (choice) {
-                formattedChoices[choice.value] = choice.label;
-            });
-
-            $(el).append(
-                this.popupCriteriaTemplate({
-                    label: this.label,
-                    operatorChoices: formattedChoices,
-                    selectedOperator: selectedChoice,
-                    emptyChoice: this.emptyChoice,
-                    selectedOperatorLabel: selectedChoiceLabel,
-                    operatorLabel: __('pim.grid.choice_filter.operator'),
-                    updateLabel: __('Update'),
-                })
-            );
-            return this;
         },
 
         /**
@@ -248,6 +205,18 @@ define(
 
         _disableListSelection: function() {
             this.$(this.criteriaValueSelectors.value).select2('destroy').removeClass('AknTextField--select2');
-        }
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        _getOperatorChoices() {
+            let formattedChoices = {};
+            _.each(this.choices, function (choice) {
+                formattedChoices[choice.value] = choice.label;
+            });
+
+            return formattedChoices;
+        },
     });
 });

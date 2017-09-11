@@ -1,6 +1,18 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/translator', 'oro/datafilter/abstract-filter'],
-function($, _, __, AbstractFilter) {
+define(
+    [
+        'jquery',
+        'underscore',
+        'oro/translator',
+        'oro/datafilter/abstract-filter',
+        'pim/template/datagrid/filter/text-filter'
+    ], function(
+        $,
+        _,
+        __,
+        AbstractFilter,
+        criteriaTemplate
+    ) {
     'use strict';
 
     /**
@@ -33,18 +45,7 @@ function($, _, __, AbstractFilter) {
          *
          * @property
          */
-        popupCriteriaTemplate: _.template(
-            '<div>' +
-                '<div>' +
-                    '<input type="text" name="value" value=""/>' +
-                '</div>' +
-                '<div class="oro-action">' +
-                    '<div class="btn-group">' +
-                        '<button type="button" class="btn btn-primary filter-update"><%- _.__("Update") %></button>' +
-                    '</div>' +
-                '</div>' +
-            '</div>'
-        ),
+        popupCriteriaTemplate: _.template(criteriaTemplate),
 
         /**
          * @property {Boolean}
@@ -76,6 +77,8 @@ function($, _, __, AbstractFilter) {
                 end: 'input'
             }
         },
+
+        operatorChoices: [],
 
         /**
          * View events
@@ -206,8 +209,27 @@ function($, _, __, AbstractFilter) {
          * @return {*}
          */
         _renderCriteria: function(el) {
-            $(el).append(this.popupCriteriaTemplate());
+            $(el).append(
+                this.popupCriteriaTemplate({
+                    label: this.label,
+                    operatorChoices: this._getOperatorChoices(),
+                    selectedOperator: this.emptyValue.type,
+                    emptyChoice: this.emptyChoice,
+                    selectedOperatorLabel: this._getOperatorChoices()[this.emptyValue.type],
+                    operatorLabel: __('pim.grid.choice_filter.operator'),
+                    updateLabel: __('Update'),
+                })
+            );
             return this;
+        },
+
+        /**
+         * Returns a list of operator { key: label }
+         *
+         * @returns {Object}
+         */
+        _getOperatorChoices() {
+            return this.operatorChoices;
         },
 
         /**
