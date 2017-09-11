@@ -45,7 +45,7 @@ function($, _, Backbone, app) {
          *
          * @property {String}
          */
-        className: 'AknDropdown btn-group filter-item oro-drop',
+        className: 'AknFilterBox-filterContainer filter-item oro-drop',
 
         /**
          * Is filter can be disabled

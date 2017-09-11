@@ -100,7 +100,8 @@ function(
         events: {
             'click .filter-update': '_onClickUpdateCriteria',
             'click .filter-criteria-selector': '_onClickCriteriaSelector',
-            'click .AknDropdown-menuLink': '_onSelectOperator'
+            'click .AknDropdown-menuLink': '_onSelectOperator',
+            'click .disable-filter': '_onClickDisableFilter'
         },
 
         /**

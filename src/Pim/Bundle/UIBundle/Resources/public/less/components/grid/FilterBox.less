@@ -14,10 +14,6 @@
     background: url("../../../images/icon-filters.svg") no-repeat 50%;
   }
 
-  &-disableFilter {
-    display: none;
-  }
-
   &--search {
     min-height: @searchHeight;
     display: flex;
@@ -51,8 +47,26 @@
     display: flex;
   }
 
+  &-filterContainer {
+    margin-right: 30px;
+    cursor: pointer;
+    position: relative;
+  }
+
   &-filter {
     margin: (@AknPaddingBetweenBlocksLeftColumn - @AknPaddingLeftColumn) 0 @AknPaddingLeftColumn 0;
+  }
+
+  &-disableFilter {
+    position: absolute;
+    right: -30px;
+    top: 6px;
+    opacity: 0;
+    transition: opacity 0.2s ease-in;
+  }
+
+  &-filterContainer:hover &-disableFilter {
+    opacity: 1;
   }
 
   &-filterLabel {

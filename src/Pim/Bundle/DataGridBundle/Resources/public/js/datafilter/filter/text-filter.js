@@ -36,8 +36,8 @@ define(
                 '<span class="AknFilterBox-filterCriteria filter-criteria-hint"><%= criteriaHint %></span>' +
                 '<span class="AknFilterBox-filterCaret"></span>' +
             '</div>' +
-            '<% if (canDisable) { %><a href="<%= nullLink %>" class="AknFilterBox-disableFilter disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>' +
-            '<div class="filter-criteria dropdown-menu" />'
+            '<div class="filter-criteria dropdown-menu" />' +
+            '<% if (canDisable) { %><a href="<%= nullLink %>" class="AknFilterBox-disableFilter disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>'
         ),
 
         /**

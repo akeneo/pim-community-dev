@@ -25,8 +25,8 @@ function($, _, __, AbstractFilter) {
                 '<span class="filter-criteria-hint"><%= criteriaHint %></span>' +
                 '<span class="caret"></span>' +
             '</button>' +
-            '<% if (canDisable) { %><a href="<%= nullLink %>" class="AknFilterBox-disableFilter disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>' +
-            '<div class="filter-criteria dropdown-menu" />'
+            '<div class="filter-criteria dropdown-menu" />' +
+            '<% if (canDisable) { %><a href="<%= nullLink %>" class="AknFilterBox-disableFilter disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>'
         ),
 
         /**
