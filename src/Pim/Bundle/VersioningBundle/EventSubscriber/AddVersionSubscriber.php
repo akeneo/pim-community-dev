@@ -236,5 +236,7 @@ class AddVersionSubscriber implements EventSubscriber
         }
 
         $this->versions = [];
+        $this->versionableEntities = [];
+        $this->versionedEntities = [];
     }
 }
