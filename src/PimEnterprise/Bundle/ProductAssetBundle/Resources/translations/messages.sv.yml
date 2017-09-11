@@ -1,0 +1,245 @@
+pimee_product_asset:
+  acl:
+    asset:
+      index: Berika tillgången
+      create: Skapa en tillgång
+      remove: Ta bort tillgång
+      categories_view: Rådfråga kategorierna av en tillgång
+      mass_upload: Mass-upload tillgångar
+    category_asset_picker:
+      list: Lista tillgångs kategorier i väljaren för tillgångar
+    category:
+      create: Skapa en kategori som tillgången
+      edit: Redigera en tillgångs kategori
+      list: Lista tillgångs kategorier
+      remove: Ta bort en tillgångs kategori
+      manage: Hantera tillgångs kategoribehörigheter
+      history: Visa tillgånar kategori historia
+  acl_group:
+    asset: Produkt tillgångar
+    category: Tillgångskategorier
+  enrich_asset:
+    button:
+      upload: Ladda upp
+      delete: Ta bort
+      download: Ladda ner
+      generate_from_reference: Generera från referens
+      reset_variations: Återställa variationer
+    confirmation.remove: Är du säker du vill ta bort tillgången "%asset%"?
+    grid:
+      edit: Redigera egenskaper för tillgången
+    view:
+      title: Produkt tillgångar
+      code: Kod
+      description: Beskrivning
+      end_of_use: Slutet av användning på
+      reference: Referens
+      filename: Filnamn
+      width: Bredd
+      height: Höjd
+      resolution: Upplösning
+      colors: Färgrymd
+      filesize: Filstorlek
+      filetype: Filtyp
+      actions: Åtgärder
+      download: Ladda ner
+      tag: Taggar
+      no_reference: Ingen referensfil har laddats upp ännu.
+      no_variation: Ingen variation-fil har skapats ännu.
+    flash:
+      update:
+        success: Tillgången har uppdaterats.
+        error: Tillgången har inte uppdaterats. Ett fel uppstod.
+      create:
+        success: Tillgången har skapats.
+        error: Tillgången har inte uppdaterats. Ett fel uppstod.
+      remove:
+        success: Tillgången har tagits bort.
+  enrich_reference:
+    flash:
+      delete:
+        success: Referensfil har tagits bort bort.
+        error: Referensfil har inte tagits bort. Ett fel uppstod.
+  enrich_variation:
+    flash:
+      transformation:
+        invalid_options: Omöjligt att generera variant %channel% på grund av ogiltigt alternativ.
+        image_width_error: Omöjligt att generera variant %channel% eftersom den uppladdade bilden har en bredd mindre än den som krävs av omvandling.
+        image_height_error: Omöjligt att generera variant %channel% eftersom den uppladdade bilden har en bredd mindre än den som krävs av omvandling.
+        not_applicable: Omöjligt att generera variant %channel%.
+        non_registered: Ingen %transformation% förvandling registrerade för den mime-typ %mimeType%. Omöjligt att generera variant %channel%.
+        error: Omöjligt att generera variant %channel%.
+        success: Variationen filer har skapats framgångsrikt.
+      update:
+        success: Variation fil har uppdaterats.
+        error: Variant-fil har inte uppdaterats. Ett fel uppstod.
+      delete:
+        success: Variation fil har tagits bort.
+        error: Variant-fil har inte uppdaterats. Ett fel uppstod.
+  popin.create:
+    title: Skapa en ny tillgång
+    is_localized: Lokaliserbar
+  menu: Tillgångar
+  page_tab:
+    title:
+      view: Produkt tillgång %asset.code% | Visa
+      edit: Produkt tillgång %asset.code% | Redigera
+      index: Produkt tillgångar
+  code:
+    label: Kod
+  thumbnail:
+    label: Miniatyrbild
+  status:
+    label: Status
+  description:
+    label: Beskrivning
+  endOfUse:
+    label: Slutet av användning
+  createdAt:
+    label: Skapad den
+  updatedAt:
+    label: Uppdaterades senast
+  tags:
+    label: Taggar
+  tabs:
+    properties.title: Egenskaper
+    variations.title: Variationer
+    categories.title: Kategorier
+  validation:
+    code:
+      not_empty: Koden krävs. Det kan inte vara tomt.
+      unique: Koden måste vara unik.
+      new_generation: Vi genererade en ny till dig.
+  notAvailable:
+    label: inte tillgänglig
+  asset:
+    title: Tillgång
+  mass_upload:
+    menu: Överföra tillgångar
+    new: En ny tillgång kommer att skapas
+    add_files: lägga till filer
+    start: Börja ladda upp
+    cancel: Avbryt uppladdning
+    import: Import
+    executed: Massa uppladdning avrättades
+    error:
+      upload: Ett fel uppstod vid uppladdning
+      code: Ogiltig kodformat för tillgång
+      localizable: En tillgång finns men är inte lokaliserbar
+      invalid_locale: Lokalen är inaktiverad eller ogiltig
+  category:
+    menu: Tillgångskategorier
+    permissions:
+      view.label: Tillåtet att visa tillgångar
+      view.help: Tillåt för att visa tillgångar i denna kategori
+      edit.label: Får redigera tillgångar
+      edit.help: Tillåt för att redigera produkter i denna kategori (innebär behörigheten Visa)
+      no_access_to_products: Du har inte tillgång till tillgångar i något träd, kontakta administratören
+      apply_on_children.label: Tillämpa ändringar på elementen
+      apply_on_children.help: Kopiera behörigheter ändringarna på alla elementen, befintliga behörigheter för element hålls
+  mass_edit_action:
+    asset:
+      page_title: Tillgångar
+      page_subtitle: Massa redigera (1 tillgång) | Mass redigera (%count% tillgångar)
+      confirm: Du håller på att uppdatera en familj med följande information, bekräfta. | Du håller på att uppdatera %count% familjer med följande information, bekräfta.
+      steps:
+        first: Välja tillgångar
+        second: Konfigurera
+        third: Bekräfta
+pim_enrich:
+  mass_edit_action:
+    asset-classify-move:
+      label: Flytta tillgångar till kategorier
+      description: Tillgångarna kommer att vara placerad i följande kategorier, befintliga placeringen är förlorad
+      success_flash: Tillgång(ar) har flyttats till valda kategorier
+      launched_flash: Massåtgärd "flytta till kategorier" har inletts. Du meddelas när det är klart.
+    add-tags-to-assets:
+      label: Lägg till taggar till tillgångar
+      description: Taggar kommer att läggas till tillgångarna. Om vissa Taggar inte existerar, skapas de.
+      success_flash: Tag(ar) har lagts till tillgång(ar)
+      launched_flash: Massåtgärd "Lägg till taggar till tillgångar" har inletts. Du meddelas när det är gjort.
+      message.error: Medföljande etikett finns inte
+pim:
+  grid:
+    mass_action:
+      mass_classify_assets: Klassificera
+      add_tags_to_assets: Lägg till taggar
+      delete_assets: Ta bort tillgångar
+btn.create.asset: Skapa en tillgång
+btn.drag_or_upload: Dra och släpp för att ladda upp eller klicka här
+job_execution.summary:
+  variations_not_generated: Variationer genererades inte
+  pimee_product_asset.mass_upload.new: Tillgångar som skapas från fil
+  pimee_product_asset.mass_upload.updated: Tillgången uppdaterad
+  error: Fel på tillgången fil process
+  skipped_assets: Överhoppade tillgångar
+assets_mass_upload.steps:
+  asset_mass_upload.title: Tillgångar mas uppladdning
+import_asset.steps.channel_configuration_processor.title: Bearbeta kanal konfigurationer
+mass_upload: Massöverför tillgångar
+batch_jobs:
+  apply_assets_mass_upload:
+    label: Tillgångar massuppladdning
+    perform.label: Massa uppladdning
+  yml_asset_channel_configuration_import:
+    label: Importera tillgångs kanal konfiguration i Yaml
+    validation.label: Filvalidering
+    import_asset.label: Importera tillgångs kanal konfiguration i Yaml
+  yml_asset_channel_configuration_export:
+    label: Exportera tillgångs kanal konfiguration i Yaml
+    export.label: Exportera tillgångs kanal konfiguration i Yaml
+  csv_asset_import:
+    label: Importera tillgångar i CSV
+    validation.label: Filvalidering
+    import_tags.label: Tag import i CSV
+    import_asset.label: Importera tillgångar i CSV
+  csv_asset_export:
+    label: Exportera tillgångar i CSV
+    export.label: Exportera tillgångar i CSV
+  csv_asset_variation_export:
+    label: Tillgångs variationer exportera i CSV
+    export.label: Tillgångs variationer exportera i CSV
+  csv_tag_import:
+    label: Tag import i CSV
+    validation.label: Filvalidering
+    import.label: Tag import i CSV
+  csv_asset_category_import:
+    label: Importera tillgångs kategori i CSV
+    validation.label: Filvalidering
+    import_asset_category.label: Importera tillgångs kategori i CSV
+  csv_asset_configuration_import:
+    label: Tillgången kanal konfiguration import i CSV-
+    validation.label: Filvalidering
+    import_asset.label: Kanal tillgångar konfiguration import till CSV
+  csv_asset_category_export:
+    label: Tillgångs kategori exportera till CSV
+    export.label: Tillgångs kategori exportera till CSV
+  xlsx_tag_import:
+    label: Tag import i XLSX
+    validation.label: Filvalidering
+    import.label: Tag import i XLSX
+  xlsx_asset_import:
+    label: Tillgångs import i XLSX
+    validation.label: Filvalidering
+    import_tags.label: Tag import i XLSX
+    import_asset.label: Tillgångs import i XLSX
+  xlsx_asset_category_import:
+    label: Exportera tillgångs kategori till XLSX
+    validation.label: Filvalidering
+    import_asset_category.label: Exportera tillgångs kategori till XLSX
+  xlsx_asset_export:
+    label: Exportera tillgångar till XLSX
+    export.label: Exportera tillgångar till XLSX
+  xlsx_asset_category_export:
+    label: Exportera tillgångs kategori till XLSX
+    export.label: Exportera tillgångar till XLSX
+  xlsx_asset_variation_export:
+    label: Exportera tillgångar till XLSX
+    export.label: Exportera tillgångar till XLSX
+  classify_assets:
+    perform.label: Flytta tillgångar till kategorier
+  add_tags_to_assets:
+    perform.label: Lägga till taggar till tillgångar
+pim_analytics:
+  info_type:
+    nb_assets: Antal tillgångar

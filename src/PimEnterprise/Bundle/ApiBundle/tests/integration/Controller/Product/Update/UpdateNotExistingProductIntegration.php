@@ -16,12 +16,10 @@ class UpdateNotExistingProductIntegration extends AbstractProductTestCase
     "values": {
         "a_metric_without_decimal_negative": [
             {
-                "data": [
-                    {
-                        "amount": "-273",
-                        "unit": "CELSIUS"
-                    }
-                ],
+                "data": {
+                    "amount": "-273",
+                    "unit": "CELSIUS"
+                },
                 "locale": null,
                 "scope": null
             }

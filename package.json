@@ -5,12 +5,11 @@
   "homepage": "http://www.akeneo.com",
   "private": true,
   "scripts": {
-    "install": "npm install vendor/akeneo/pim-community-dev",
-    "webpack": "webpack --display-error-details --config vendor/akeneo/pim-community-dev/webpack.config.js --progress --env=prod",
-    "webpack-watch": "webpack --progress --config vendor/akeneo/pim-community-dev/webpack.config.js --watch",
+    "install": "npm install vendor/akeneo/pim-community-dev --no-save",
+    "webpack": "NODE_PATH=node_modules webpack --config vendor/akeneo/pim-community-dev/webpack.config.js --env=prod",
+    "webpack-watch": "NODE_PATH=node_modules webpack --progress --config vendor/akeneo/pim-community-dev/webpack.config.js --watch",
     "lint": "eslint 'src/**/*.js' --config vendor/akeneo/pim-community-dev/.eslintrc --ignore-path vendor/akeneo/pim-community-dev/.eslintignore --quiet",
     "lint-fix": "eslint 'src/**/*.js' --config vendor/akeneo/pim-community-dev/.eslintrc --ignore-path vendor/akeneo/pim-community-dev/.eslintignore --quiet --fix"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }

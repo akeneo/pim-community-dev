@@ -35,7 +35,7 @@ Feature: Classify many products at once for the tree I have access
   Scenario: Add several products to categories at once
     Given I select rows rangers and loafer
     And I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Classify products in categories" operation
+    And I choose the "Add to categories" operation
     Then I should not see the text "Boots"
     And I should not see the text "Master catalog"
     When I select the "Shoes" tree
@@ -45,6 +45,7 @@ Feature: Classify many products at once for the tree I have access
     And I confirm mass edit
     And I wait for the "add_product_value" job to finish
     And I am on the products grid
+    And I open the category tree
     And I select the "Shoes" tree
     Then I should see the text "2014 collection (2)"
     Then I should see the text "Vintage (2)"
@@ -53,7 +54,7 @@ Feature: Classify many products at once for the tree I have access
   Scenario: Move several products to categories at once
     Given I select rows rangers and loafer
     And I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Move products to categories" operation
+    And I choose the "Move between categories" operation
     Then I should not see "Boots"
     And I should not see "Master catalog"
     When I select the "Shoes" tree
@@ -63,6 +64,7 @@ Feature: Classify many products at once for the tree I have access
     And I confirm mass edit
     And I wait for the "update_product_value" job to finish
     And I am on the products grid
+    And I open the category tree
     And I select the "Shoes" tree
     Then I should see the text "2014 collection (0)"
     Then I should see the text "Sandals (2)"
@@ -72,7 +74,7 @@ Feature: Classify many products at once for the tree I have access
   Scenario: Failed to move several products to viewable categories
     Given I select rows rangers and loafer
     And I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Move products to categories" operation
+    And I choose the "Move between categories" operation
     Then I should not see "Boots"
     And I should not see "Master catalog"
     When I select the "Shoes" tree
@@ -82,6 +84,7 @@ Feature: Classify many products at once for the tree I have access
     And I confirm mass edit
     And I wait for the "update_product_value" job to finish
     And I am on the products grid
+    And I open the category tree
     And I select the "Shoes" tree
     Then I should see the text "2014 collection (2)"
     Then I should see the text "Vintage (0)"

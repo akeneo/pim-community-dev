@@ -1,0 +1,15 @@
+extensions:
+    pimee-product-index-secondary-actions:
+        module: pim/form/common/secondary-actions
+        parent: pim-product-index
+        targetZone: buttons
+        position: 50
+
+    pimee-product-index-redirect:
+        module: pim/common/redirect
+        parent: pimee-product-index-secondary-actions
+        targetZone: secondary-actions
+        config:
+            buttonClass: 'AknDropdown-menuLink'
+            route: pimee_workflow_published_product_index
+            label: pimee_enrich.entity.product.navigation

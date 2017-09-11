@@ -1,0 +1,316 @@
+<?php
+
+namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\Product\Update;
+
+use PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\Product\AbstractProductTestCase;
+use Symfony\Component\HttpFoundation\Response;
+
+class UpdateUncategorizedProductIntegration extends AbstractProductTestCase
+{
+    const DOC_PATCH_CODE = 'patch_products__code_';
+
+    public function testSuccessfullyUpdateAGrantedLocalizedValueOnUncategorizedProductEvenIfANotGrantedLocaleIsFilled()
+    {
+        $updatedData = [
+            'values' => [
+                'a_localized_and_scopable_text_area' => [
+                    ['locale' => 'de_DE', 'scope' => 'ecommerce', 'data' => 'DE ecommerce']
+                ]
+            ]
+        ];
+        $this->updateProduct($updatedData, 'product_without_category');
+
+        $data = <<<JSON
+{
+    "values": {
+        "a_localized_and_scopable_text_area": [
+            {
+                "locale": "en_US",
+                "scope": "ecommerce",
+                "data": "Awesome Data !"
+            }
+        ]
+    }
+}
+JSON;
+        $patchedValues = json_decode($data, true)['values'];
+        $expectedProduct = array_merge_recursive(
+            [
+                'identifier'    => 'product_without_category',
+                'family'        => null,
+                'groups'        => [],
+                'variant_group' => null,
+                'categories'    => [],
+                'enabled'       => true,
+                'values'        => [
+                    'a_localized_and_scopable_text_area' => $patchedValues['a_localized_and_scopable_text_area'],
+                    'sku'                                => [
+                        [
+                            'locale' => null,
+                            'scope'  => null,
+                            'data'   => 'product_without_category'
+                        ]
+                    ]
+                ],
+                'created'       => 'this is a date formatted to ISO-8601',
+                'updated'       => 'this is a date formatted to ISO-8601',
+                'associations'  => [
+                    'PACK' => [
+                        'groups'   => [],
+                        'products' => []
+                    ],
+                    'SUBSTITUTION' => [
+                        'groups'   => [],
+                        'products' => []
+                    ],
+                    'UPSELL' => [
+                        'groups'   => [],
+                        'products' => []
+                    ],
+                    'X_SELL' => [
+                        'groups'   => [],
+                        'products' => ['product_viewable_by_everybody_2', 'product_not_viewable_by_redactor']
+                    ]
+                ]
+            ],
+            $updatedData
+        );
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client->request('PATCH', 'api/rest/v1/products/product_without_category', [], [], [], $data);
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSameProducts($expectedProduct, 'product_without_category');
+    }
+
+    public function testFailedUpdateUncategorizedProductWithNotGrantedAttribute()
+    {
+        $this->updateProduct(
+            [
+                'values' => [
+                    'a_metric_without_decimal_negative' => [
+                        ['locale' => null, 'scope' => null, 'data' => ['amount' => '-42', 'unit' => 'CELSIUS']]
+                    ]
+                ]
+            ],
+            'product_without_category'
+        );
+
+        $data = <<<JSON
+{
+    "values": {
+        "a_metric_without_decimal_negative": [
+            {
+                "locale": null,
+                "scope": null,
+                "data": {
+                    "amount": "-273",
+                    "unit": "CELSIUS"
+                }
+            }
+        ]
+    }
+}
+JSON;
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client->request('PATCH', 'api/rest/v1/products/product_without_category', [], [], [], $data);
+
+        $expectedMessage = 'Property \"a_metric_without_decimal_negative\" does not exist';
+        $this->assertError422($client->getResponse(), $expectedMessage, static::DOC_PATCH_CODE);
+    }
+
+    public function testFailedUpdateUncategorizedProductWithOnlyViewableAttribute()
+    {
+        $this->updateProduct(
+            [
+                'values' => [
+                    'a_number_integer' => [
+                        ['locale' => null, 'scope' => null, 'data' => '42']
+                    ]
+                ]
+            ],
+            'product_without_category'
+        );
+
+        $data = <<<JSON
+{
+    "values": {
+        "a_number_integer": [
+            {
+                "locale": null,
+                "scope": null,
+                "data": "1"
+            }
+        ]
+    }
+}
+JSON;
+        $expectedMessage = <<<JSON
+{
+  "code": 403,
+  "message": "Attribute \"a_number_integer\" belongs to the attribute group \"attributeGroupB\" on which you only have view permission."
+}
+JSON;
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client->request('PATCH', 'api/rest/v1/products/product_without_category', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedMessage, $response->getContent());
+    }
+
+    public function testFailedToUpdateUncategorizedProductOnNotGrantedLocale()
+    {
+        $this->updateProduct(
+            [
+                'values' => [
+                    'a_localized_and_scopable_text_area' => [
+                        ['locale' => 'de_DE', 'scope' => 'ecommerce', 'data' => 'DE ecommerce']
+                    ]
+                ]
+            ],
+            'product_without_category'
+        );
+
+        $data = <<<JSON
+{
+    "values": {
+        "a_localized_and_scopable_text_area": [
+            {
+                "locale": "de_DE",
+                "scope": "ecommerce",
+                "data": "May the patch works without permission!"
+            }
+        ]
+    }
+}
+JSON;
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client->request('PATCH', 'api/rest/v1/products/product_without_category', [], [], [], $data);
+
+        $expectedMessage = 'Attribute \"a_localized_and_scopable_text_area\" expects an existing and ' .
+            'activated locale, \"de_DE\" given';
+        $this->assertError422($client->getResponse(), $expectedMessage, static::DOC_PATCH_CODE);
+    }
+
+    public function testFailedToUpdateUncategorizedProductOnOnlyViewableLocale()
+    {
+        $this->updateProduct(
+            [
+                'values' => [
+                    'a_localized_and_scopable_text_area' => [
+                        ['locale' => 'fr_FR', 'scope' => 'ecommerce', 'data' => 'Un texte français.']
+                    ]
+                ]
+            ],
+            'product_without_category'
+        );
+
+        $data = <<<JSON
+{
+    "values": {
+        "a_localized_and_scopable_text_area": [
+            {
+                "locale": "fr_FR",
+                "scope": "ecommerce",
+                "data": "Qui ne tente rien ..."
+            }
+        ]
+    }
+}
+JSON;
+
+        $expectedMessage = <<<JSON
+{
+  "code": 403,
+  "message": "You only have a view permission on the locale \"fr_FR\"."
+}
+JSON;
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client->request('PATCH', 'api/rest/v1/products/product_without_category', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedMessage, $response->getContent());
+    }
+
+    public function testFailedToUpdateUncategorizedProductWithNotGrantedCategory()
+    {
+        $data = <<<JSON
+{
+    "categories": ["categoryB"]
+}
+JSON;
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client->request('PATCH', 'api/rest/v1/products/product_without_category', [], [], [], $data);
+        $this->assertError422(
+            $client->getResponse(),
+            'Property \"categories\" expects a valid category code. The category does not exist, \"categoryB\" given',
+            static::DOC_PATCH_CODE
+        );
+    }
+
+    public function testUpdateUncategorizedProductWithViewableCategory()
+    {
+        $data = <<<JSON
+{
+    "categories": ["categoryA2"]
+}
+JSON;
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client->request('PATCH', 'api/rest/v1/products/product_without_category', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+
+    public function testFailedToUpdateUncategorizedProductWithGrantedCategory()
+    {
+        $data = <<<JSON
+{
+    "categories": ["categoryA"]
+}
+JSON;
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client->request('PATCH', 'api/rest/v1/products/product_without_category', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    }
+    /**
+    If the ‘associations’ field in the request body uses a product that cannot be viewed through categories,
+    a 403 error code is return
+    @API-352 @API-304 FAIL
+    HTTP 204 is received. Due to the Doctrine\ORM\Events::postLoad event the associated product is already in
+    entity manager and PimEnterprise\Bundle\CatalogBundle\EventSubscriber\FilterNotGrantedProductDataSubscriber
+    does not receive any event to check the data.
+    public function testFailedToUpdateNotViewableAssociatedProductOnAnUncategorizedProduct()
+    {
+    $data = <<<JSON
+    {
+    "associations": {
+    "PACK": {
+    "products": ["product_not_viewable_by_redactor"]
+    }
+    }
+    }
+    JSON;
+
+    $expectedMessage = <<<JSON
+    {
+    "code": 403,
+    "message": "You cannot associate a product on which you have not a view permission."
+    }
+    JSON;
+
+    $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+    $client->request('PATCH', 'api/rest/v1/products/product_without_category', [], [], [], $data);
+    $response = $client->getResponse();
+    $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+    $this->assertJsonStringEqualsJsonString($expectedMessage, $response->getContent());
+    }
+     */
+}

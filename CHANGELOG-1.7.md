@@ -1,3 +1,8 @@
+# 1.7.x
+- PIM-6780: Fix locale permissions on minimal catalog
+
+# 1.7.8 (2017-08-22)
+
 # 1.7.7 (2017-08-03)
 
 ## Bug fixes

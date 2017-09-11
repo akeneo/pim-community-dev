@@ -31,6 +31,6 @@ Feature: Show localized attributes in products form in view mode
   Scenario: Successfully show French format numbers for French UI
     Given I am logged in as "Julien"
     When I edit the "sandals" product
-    Then the field decimal_price should contain "10,12"
-    And the field decimal_number should contain "12,1234"
-    And the field decimal_metric should contain "10,3456"
+    Then the field [decimal_price] should contain "10,12"
+    And the field [decimal_number] should contain "12,1234"
+    And the field [decimal_metric] should contain "10,3456"

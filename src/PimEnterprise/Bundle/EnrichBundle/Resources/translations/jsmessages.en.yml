@@ -58,6 +58,8 @@ pimee_enrich:
                     added: The group {{ group }} will be allowed to {{ permission }} attribute group
     entity:
         product:
+            index_title: Published products
+            navigation: Published products
             history:
                 published: Published
                 revert:    Restore
@@ -174,11 +176,13 @@ pimee_enrich:
         product:
             operation:
                 publish:
-                    label: Publish products
+                    label: Publish
+                    label_count: "{1}Publish <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Publish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The products will be published
                     warning: The {{ itemsCount }} selected products will be published.
                 unpublish:
-                    label: Unpublish products
+                    label: Unpublish
+                    label_count: "{1}Unpublish <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Ubpublish <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The products will be unpublished
                     warning: The {{ itemsCount }} selected products will be unpublished.
         asset:

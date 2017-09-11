@@ -8,20 +8,30 @@ extensions:
                 view: 'datagrid-view'
                 project: 'project'
 
-    pimee-grid-view-selector-create-project:
-        module: teamwork-assistant/grid/view-selector/create-project
+    pim-grid-view-selector-secondary-actions:
+        module: pim/form/common/secondary-actions
         parent: pim-grid-view-selector
         targetZone: buttons
+
+    pimee-grid-view-selector-create-project:
+        module: teamwork-assistant/grid/view-selector/create-project
+        parent: pim-grid-view-selector-secondary-actions
+        targetZone: secondary-actions
         position: 115
 
     pimee-grid-view-selector-edit-project:
         module: teamwork-assistant/grid/view-selector/edit-project
-        parent: pim-grid-view-selector
-        targetZone: buttons
+        parent: pim-grid-view-selector-secondary-actions
+        targetZone: secondary-actions
         position: 120
 
     pimee-grid-view-selector-remove-project:
         module: teamwork-assistant/grid/view-selector/remove-project
-        parent: pim-grid-view-selector
-        targetZone: buttons
+        parent: pim-grid-view-selector-secondary-actions
+        targetZone: secondary-actions
         position: 130
+
+    pimee-grid-view-selector-project-status:
+        module: teamwork-assistant/grid/view-selector/project-status
+        parent: pim-grid-view-selector
+        targetZone: resume

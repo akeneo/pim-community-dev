@@ -1,0 +1,60 @@
+teamwork_assistant:
+  common:
+    required: Obligatorisk
+    warning: Oroa dig inte, projekt beräkning kan ta en stund, så ditt projekt inte kanske syns direkt.
+  grid:
+    view_selector:
+      create: Skapa projekt
+      edit: Redigera projekt
+      remove: Ta bort projekt
+      create_from_view: Skapa ett projekt från den här vyn
+      loading: Laddar...
+      start_new_project: Starta ett nytt projekt
+      confirmation:
+        remove: Är du säker du vill ta bort detta projekt?
+        delete: Bekräfta borttagning
+  project:
+    label: Namn
+    locale: Språk
+    channel: Kanal
+    label_maxlength: Detta värde är för långt. Det borde ha {{ max }} tecken eller mindre.
+    description: Beskrivning
+    due_date: Förfallodatum
+    due_date_past: Du kan inte välja ett datum i förflutnan.
+    leaving_scope: Du lämnar projektets omfattning.
+  edit_project_modal:
+    saved: Projektet har sparats.
+    title: Redigera projekt
+    confirm: Spara
+    cancel: Avbryt
+  create_project_modal:
+    saved: Projektet har sparats, du kommer att meddelas när beräkningen är klar.
+    title: Skapa projekt
+    confirm: Spara
+    cancel: Avbryt
+  widget:
+    no_project: Du har inga aktuella projekt
+    no_project_create: skapa ett nytt projekt
+    description: Beskrivning
+    due_date: Förfallodatum
+    todo: ATT GÖRA
+    in_progress: PÅGÅENDE
+    done: KLART
+    all_contributors: Alla bidragsgivare
+    display_products: Displayprodukter
+    placeholder:
+      contributor_selector: Sök medarbetare
+      project_selector: Sök projekt
+    completeness:
+      to_start: PRODUKTER TILL START
+      in_progress: PRODUKTER PÅGÅR
+      done: PRODUKTER SOM GJORT
+pim_datagrid:
+  view_selector:
+    project: Projekt
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Lagarbete assistent
+        project_calculation: Lagarbete assistent
