@@ -140,7 +140,3 @@ try {
 } catch (e) {
     console.log('Error checking dependencies'.yellow, e.message);
 }
-
-
-
-
