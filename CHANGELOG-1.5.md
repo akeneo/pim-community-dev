@@ -1,3 +1,9 @@
+# 1.5.x
+
+## Bug fixes
+
+- PIM-6792: Issue on Filter when using Underscore
+
 # 1.5.26 (2017-08-03)
 
 # 1.5.25 (2017-06-30)
