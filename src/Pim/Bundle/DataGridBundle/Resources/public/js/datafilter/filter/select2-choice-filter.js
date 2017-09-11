@@ -159,7 +159,7 @@ define(
                         label: this.label,
                         operatorLabel: __('pim.grid.choice_filter.operator'),
                         updateLabel: __('Update'),
-                        emptyChoice:this.emptyChoice,
+                        emptyChoice: this.emptyChoice,
                         selectedOperatorLabel: this.operatorChoices[this.emptyValue.type],
                         operatorChoices: this.operatorChoices,
                         selectedOperator: this.emptyValue.type

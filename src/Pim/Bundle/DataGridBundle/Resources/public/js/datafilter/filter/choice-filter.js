@@ -1,6 +1,23 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/datafilter/text-filter', 'pim/initselect2', 'jquery.select2'],
-function($, _, __, app, TextFilter, initSelect2) {
+define(
+    [
+        'jquery',
+        'underscore',
+        'oro/translator',
+        'oro/app',
+        'oro/datafilter/text-filter',
+        'pim/initselect2',
+        'pim/template/datagrid/filter/select2-choice-filter',
+        'jquery.select2'
+    ], function(
+        $,
+        _,
+        __,
+        app,
+        TextFilter,
+        initSelect2,
+        criteriaTemplate
+    ) {
     'use strict';
 
     /**
@@ -17,22 +34,7 @@ function($, _, __, app, TextFilter, initSelect2) {
          * @property {function(Object, ?Object=): String}
          */
         popupCriteriaTemplate: _.template(
-            '<div class="AknFilterChoice choicefilter">' +
-                '<div class="AknFilterChoice-operator AknDropdown">' +
-                    '<button class="AknActionButton AknActionButton--big AknActionButton--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
-                        '<%= selectedChoiceLabel %>' +
-                        '<span class="AknActionButton-caret AknCaret"></span>' +
-                    '</button>' +
-                    '<ul class="dropdown-menu">' +
-                        '<% _.each(choices, function (option) { %>' +
-                            '<li<% if (selectedChoice == option.value) { %> class="active"<% } %>><a class="choice_value" href="#" data-value="<%= option.value %>"><%= option.label %></a></li>' +
-                        '<% }); %>' +
-                    '</ul>' +
-                    '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= selectedChoice %>"/>' +
-                '</div>' +
-                '<input type="text" class="AknTextField AknTextField--noRadius AknFilterChoice-field select-field" name="value" value="">' +
-                '<button class="AknFilterChoice-button AknButton AknButton--apply AknButton--noLeftRadius filter-update" type="button"><%- _.__("Update") %></button>' +
-            '</div>'
+            criteriaTemplate
         ),
 
         /**
@@ -45,6 +47,8 @@ function($, _, __, app, TextFilter, initSelect2) {
             type: 'input[type="hidden"]'
         },
 
+        emptyChoice: true,
+
         /**
          * Filter events
          *
@@ -55,9 +59,7 @@ function($, _, __, app, TextFilter, initSelect2) {
             'keydown [type="text"]': '_preventEnterProcessing',
             'click .filter-update': '_onClickUpdateCriteria',
             'click .filter-criteria-selector': '_onClickCriteriaSelector',
-            'click .filter-criteria .filter-criteria-hide': '_onClickCloseCriteria',
-            'click .disable-filter': '_onClickDisableFilter',
-            'click .choice_value': '_onClickChoiceValue'
+            'click .AknDropdown-menuLink': '_onSelectOperator'
         },
 
         /**
@@ -100,12 +102,21 @@ function($, _, __, app, TextFilter, initSelect2) {
                 });
                 selectedChoiceLabel = foundChoice.label;
             }
+
+            let formattedChoices = {};
+            _.each(this.choices, function (choice) {
+                formattedChoices[choice.value] = choice.label;
+            });
+
             $(el).append(
                 this.popupCriteriaTemplate({
-                    name: this.name,
-                    choices: this.choices,
-                    selectedChoice: selectedChoice,
-                    selectedChoiceLabel: selectedChoiceLabel
+                    label: this.label,
+                    operatorChoices: formattedChoices,
+                    selectedOperator: selectedChoice,
+                    emptyChoice: this.emptyChoice,
+                    selectedOperatorLabel: selectedChoiceLabel,
+                    operatorLabel: __('pim.grid.choice_filter.operator'),
+                    updateLabel: __('Update'),
                 })
             );
             return this;
@@ -154,9 +165,11 @@ function($, _, __, app, TextFilter, initSelect2) {
          * @inheritDoc
          */
         _readDOMValue: function() {
+            var operator = this.emptyChoice ? this.$('.active .operator_choice').data('value') : 'in';
+
             return {
-                value: this._getInputValue(this.criteriaValueSelectors.value),
-                type: this._getInputValue(this.criteriaValueSelectors.type)
+                value: _.contains(['empty', 'not empty'], operator) ? {} : this._getInputValue(this.criteriaValueSelectors.value),
+                type: operator
             };
         },
 
@@ -199,27 +212,27 @@ function($, _, __, app, TextFilter, initSelect2) {
          * @param {Event} e
          * @protected
          */
-        _onClickChoiceValue: function(e) {
-            var dropdown = $(e.currentTarget).closest('.AknDropdown');
+        _onSelectOperator: function(e) {
+            this.$el.find('.AknDropdown-menuLink')
+                .removeClass('AknDropdown-menuLink--active')
+                .removeClass('active');
+            $(e.currentTarget)
+                .addClass('AknDropdown-menuLink--active')
+                .addClass('active');
+            this.$el.find('.AknActionButton-highlight').html($(e.currentTarget).text());
 
-            dropdown.find('li').each(function() {
-                $(this).removeClass('active');
-            });
-            $(e.currentTarget).parent().addClass('active');
-            dropdown.find('.name_input').val($(e.currentTarget).attr('data-value'));
-
-            var filterContainer = $(e.currentTarget).closest('.filter-item');
-            if ($(e.currentTarget).attr('data-value') === 'in') {
+            const value = $(e.currentTarget).find('.operator_choice').attr('data-value');
+            if (value === 'in') {
                 this._enableListSelection();
             } else {
                 this._disableListSelection();
             }
-            if (_.contains(['empty', 'not empty'], $(e.currentTarget).attr('data-value'))) {
-                filterContainer.find(this.criteriaValueSelectors.value).hide();
+            if (_.contains(['empty', 'not empty'], value)) {
+                this._disableInput();
             } else {
-                filterContainer.find(this.criteriaValueSelectors.value).show();
+                this._enableInput();
             }
-            dropdown.find('.AknActionButton').html($(e.currentTarget).html() + '<span class="AknActionButton-caret AknCaret"></span>');
+
             e.preventDefault();
         },
 
@@ -231,10 +244,19 @@ function($, _, __, app, TextFilter, initSelect2) {
                 width: '290px',
                 formatNoMatches: function() { return ''; }
             });
+            this.$(this.criteriaValueSelectors.value).addClass('AknTextField--select2');
         },
 
         _disableListSelection: function() {
-            this.$(this.criteriaValueSelectors.value).select2('destroy');
-        }
+            this.$(this.criteriaValueSelectors.value).select2('destroy').removeClass('AknTextField--select2');
+        },
+
+        _enableInput: function() {
+            this.$(this.criteriaValueSelectors.value).show();
+        },
+
+        _disableInput: function() {
+            this.$(this.criteriaValueSelectors.value).hide();
+        },
     });
 });
