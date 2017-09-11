@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'backbone', 'pim/template/datagrid/actions-group'],
-function(_, Backbone, groupTemplate) {
+define(['underscore', 'backbone', 'pim/template/datagrid/actions-group', 'pim/form', 'oro/mediator'],
+function(_, Backbone, groupTemplate, BaseForm, mediator) {
     'use strict';
 
     /**
@@ -8,9 +8,9 @@ function(_, Backbone, groupTemplate) {
      *
      * @export  oro/datagrid/actions-panel
      * @class   oro.datagrid.ActionsPanel
-     * @extends Backbone.View
+     * @extends BaseForm
      */
-    return Backbone.View.extend({
+    return BaseForm.extend({
         /** @property {Array} */
         actionsGroups: [],
 
@@ -29,18 +29,19 @@ function(_, Backbone, groupTemplate) {
          * @param {Object} options
          * @param {Array} [options.actions] List of actions
          */
-        initialize: function(options) {
-            options = options || {};
+        initialize: function() {
+            mediator.on('grid_load:complete', this.setupActions.bind(this));
+        },
 
-            if (options.actionsGroups) {
-                this.actionsGroups = options.actionsGroups;
-            }
+        /**
+         * Get the action options from the datagrid
+         */
+        setupActions: function(collection, datagrid) {
+            this.actionsGroups = datagrid.massActionsGroups;
+            this.setActions(datagrid.massActions, datagrid);
+            this.renderActions();
 
-            if (options.actions) {
-                this.setActions(options.actions);
-            }
-
-            Backbone.View.prototype.initialize.apply(this, arguments);
+            return BaseForm.prototype.initialize.apply(this, arguments);
         },
 
         /**
@@ -48,7 +49,7 @@ function(_, Backbone, groupTemplate) {
          *
          * @return {*}
          */
-        render: function () {
+        renderActions: function () {
             this.$el.empty();
 
             var simpleLaunchers = _.filter(this.launchers, function (launcher) {
@@ -120,11 +121,11 @@ function(_, Backbone, groupTemplate) {
          *
          * @param {Array.<oro.datagrid.AbstractAction>} actions
          */
-        setActions: function(actions) {
+        setActions: function(actions, datagrid) {
             this.actions = [];
             this.launchers = [];
             _.each(actions, function(action) {
-                this.addAction(action);
+                this.addAction(action, datagrid);
             }, this);
         },
 
@@ -133,9 +134,10 @@ function(_, Backbone, groupTemplate) {
          *
          * @param {oro.datagrid.AbstractAction} action
          */
-        addAction: function(action) {
-            this.actions.push(action);
-            this.launchers.push(action.createLauncher());
+        addAction: function(Action, datagrid) {
+            const actionModule = new Action({ datagrid });
+            this.actions.push(actionModule);
+            this.launchers.push(actionModule.createLauncher());
         },
 
         /**

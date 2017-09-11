@@ -11,12 +11,9 @@ define(
         'oro/loading-mask',
         'oro/datagrid/header',
         'oro/datagrid/body',
-        'oro/datagrid/toolbar',
         'oro/datagrid/action-column',
         'oro/datagrid/select-row-cell',
         'oro/datagrid/select-all-header-cell',
-        'oro/datagrid/refresh-collection-action',
-        'oro/datagrid/reset-collection-action',
         'pim/template/common/no-data'
     ],
     function (
@@ -29,12 +26,9 @@ define(
         LoadingMask,
         GridHeader,
         GridBody,
-        Toolbar,
         ActionColumn,
         SelectRowCell,
         SelectAllHeaderCell,
-        RefreshCollectionAction,
-        ResetCollectionAction,
         noDataTemplate
     ) {
         'use strict';
@@ -64,7 +58,6 @@ define(
 
             /** @property */
             template: _.template(
-                '<div class="toolbar"></div>' +
                 '<div class="AknGridContainer grid-container container-fluid">' +
                     '<table class="AknGrid grid"></table>' +
                     '<div class="no-data"></div>' +
@@ -78,7 +71,6 @@ define(
             /** @property {Object} */
             selectors: {
                 grid:        '.grid',
-                toolbar:     '.toolbar',
                 noDataBlock: '.no-data',
                 loadingMask: '.loading-mask',
                 filterBox:   '.filter-box'
@@ -89,9 +81,6 @@ define(
 
             /** @property {oro.datagrid.Body} */
             body: GridBody,
-
-            /** @property {oro.datagrid.Toolbar} */
-            toolbar: Toolbar,
 
             /** @property {oro.LoadingMask} */
             loadingMask: LoadingMask,
@@ -105,7 +94,7 @@ define(
             defaults: {
                 rowClickActionClass: 'row-click-action',
                 rowClassName:        'AknGrid-bodyRow',
-                toolbarOptions:      {addResetAction: true, addRefreshAction: true},
+                // toolbarOptions:      {},
                 rowClickAction:      undefined,
                 multipleSorting:     true,
                 rowActions:          [],
@@ -121,7 +110,6 @@ define(
              * @param {(Backbone.Collection|Array)} options.columns
              * @param {String} [options.rowClickActionClass] CSS class for row with click action
              * @param {String} [options.rowClassName] CSS class for row
-             * @param {Object} [options.toolbarOptions] Options for toolbar
              * @param {Array<oro.datagrid.AbstractAction>} [options.rowActions] Array of row actions prototypes
              * @param {Array<oro.datagrid.AbstractAction>} [options.massActions] Array of mass actions prototypes
              * @param {oro.datagrid.AbstractAction} [options.rowClickAction] Prototype for action that handles row click
@@ -142,8 +130,8 @@ define(
 
                 // Init properties values based on options and defaults
                 _.extend(this, this.defaults, options);
-                this.toolbarOptions = {};
-                _.extend(this.toolbarOptions, this.defaults.toolbarOptions, options.toolbarOptions);
+                // this.toolbarOptions = {};
+                // _.extend(this.toolbarOptions, this.defaults.toolbarOptions, options.toolbarOptions);
 
                 this.collection.multipleSorting = this.multipleSorting;
 
@@ -158,7 +146,7 @@ define(
                 options.columns.unshift(this._getMassActionsColumn());
 
                 this.loadingMask = this._createLoadingMask();
-                this.toolbar = this._createToolbar(this.toolbarOptions);
+                // this.toolbar = this._createToolbar(this.toolbarOptions);
 
                 Backgrid.Grid.prototype.initialize.apply(this, arguments);
 
@@ -244,52 +232,35 @@ define(
                 return new this.loadingMask();
             },
 
-            /**
-             * Creates instance of toolbar
-             *
-             * @return {oro.datagrid.Toolbar}
-             * @private
-             */
-            _createToolbar: function (toolbarOptions) {
-                return new this.toolbar(_.extend({}, toolbarOptions, {
-                    collection:        this.collection,
-                    actions:           this._getToolbarActions(),
-                    massActionsGroups: this.massActionsGroups,
-                    massActions:       this._getToolbarMassActions()
-                }));
-            },
+            // /**
+            //  * Creates instance of toolbar
+            //  *
+            //  * @return {oro.datagrid.Toolbar}
+            //  * @private
+            //  */
+            // _createToolbar: function (toolbarOptions) {
+            //     return new this.toolbar(_.extend({}, toolbarOptions, {
+            //         collection:        this.collection,
+            //         actions:           {},
+            //         massActionsGroups: this.massActionsGroups,
+            //         massActions:       this._getToolbarMassActions()
+            //     }));
+            // },
 
-            /**
-             * Get actions of toolbar
-             *
-             * @return {Array}
-             * @private
-             */
-            _getToolbarActions: function () {
-                var result = [];
-                if (this.toolbarOptions.addRefreshAction) {
-                    result.push(this.getRefreshAction());
-                }
-                if (this.toolbarOptions.addResetAction) {
-                    result.push(this.getResetAction());
-                }
-                return result;
-            },
+            // /**
+            //  * Get mass actions of toolbar
+            //  *
+            //  * @return {Array}
+            //  * @private
+            //  */
+            // _getToolbarMassActions: function () {
+            //     var result = [];
+            //     _.each(this.massActions, function (action) {
+            //         result.push(this.createMassAction(action));
+            //     }, this);
 
-            /**
-             * Get mass actions of toolbar
-             *
-             * @return {Array}
-             * @private
-             */
-            _getToolbarMassActions: function () {
-                var result = [];
-                _.each(this.massActions, function (action) {
-                    result.push(this.createMassAction(action));
-                }, this);
-
-                return result;
-            },
+            //     return result;
+            // },
 
             /**
              * Creates action
@@ -297,72 +268,11 @@ define(
              * @param {Function} ActionPrototype
              * @protected
              */
-            createMassAction: function (ActionPrototype) {
-                return new ActionPrototype({
-                    datagrid: this
-                });
-            },
-
-            /**
-             * Get action that refreshes grid's collection
-             *
-             * @return oro.datagrid.RefreshCollectionAction
-             */
-            getRefreshAction: function () {
-                var grid = this;
-
-                if (!grid.refreshAction) {
-                    grid.refreshAction = new RefreshCollectionAction({
-                        datagrid: grid,
-                        launcherOptions: {
-                            label: 'oro.datagrid.action.refresh',
-                            iconClassName: 'icon-refresh',
-                            className: 'AknActionButton AknActionButton--glued'
-                        }
-                    });
-
-                    mediator.off('datagrid:doRefresh:' + grid.name);
-                    mediator.on('datagrid:doRefresh:' + grid.name, function () {
-                        grid.refreshAction.execute();
-                    });
-
-                    grid.refreshAction.on('preExecute', function (action, options) {
-                        grid.$el.trigger('preExecute:refresh:' + grid.name, [action, options]);
-                    });
-                }
-
-                return grid.refreshAction;
-            },
-
-            /**
-             * Get action that resets grid's collection
-             *
-             * @return oro.datagrid.ResetCollectionAction
-             */
-            getResetAction: function () {
-                var grid = this;
-
-                if (!grid.resetAction) {
-                    grid.resetAction = new ResetCollectionAction({
-                        datagrid: grid,
-                        launcherOptions: {
-                            label: 'oro.datagrid.action.reset',
-                            iconClassName: 'icon-repeat',
-                            className: 'AknActionButton AknActionButton--glued'
-                        }
-                    });
-
-                    mediator.on('datagrid:doReset:' + grid.name, function () {
-                        grid.resetAction.execute();
-                    });
-
-                    grid.resetAction.on('preExecute', function (action, options) {
-                        grid.$el.trigger('preExecute:reset:' + grid.name, [action, options]);
-                    });
-                }
-
-                return grid.resetAction;
-            },
+            // createMassAction: function (ActionPrototype) {
+            //     return new ActionPrototype({
+            //         datagrid: this
+            //     });
+            // },
 
             /**
              * Listen to events of collection
@@ -454,7 +364,7 @@ define(
 
                 this.$el = this.$el.append($(this.template()));
 
-                this.renderToolbar();
+                // this.renderToolbar();
                 this.renderGrid();
                 this.renderNoDataBlock();
                 this.renderLoadingMask();
@@ -481,12 +391,12 @@ define(
                 $el.append(this.body.render().$el);
             },
 
-            /**
-             * Renders grid toolbar.
-             */
-            renderToolbar: function () {
-                this.$(this.selectors.toolbar).append(this.toolbar.render().$el);
-            },
+            // /**
+            //  * Renders grid toolbar.
+            //  */
+            // renderToolbar: function () {
+            //     this.$(this.selectors.toolbar).append(this.toolbar.render().$el);
+            // },
 
             /**
              * Renders loading mask.
@@ -540,7 +450,7 @@ define(
                      * Backbone event. Fired when data for grid has been successfully rendered.
                      * @event grid_load:complete
                      */
-                    mediator.trigger("grid_load:complete", this.collection);
+                    mediator.trigger("grid_load:complete", this.collection, this);
                 }
             },
 
@@ -549,7 +459,7 @@ define(
              */
             showLoading: function () {
                 this.loadingMask.show();
-                this.toolbar.disable();
+                // this.toolbar.disable();
             },
 
             /**
@@ -557,7 +467,7 @@ define(
              */
             hideLoading: function () {
                 this.loadingMask.hide();
-                this.toolbar.enable();
+                // this.toolbar.enable();
             },
 
             /**
@@ -567,13 +477,13 @@ define(
              */
             _updateNoDataBlock: function () {
                 if (this.collection.models.length > 0) {
-                    this.$(this.selectors.toolbar).show();
+                    // this.$(this.selectors.toolbar).show();
                     this.$(this.selectors.grid).show();
                     this.$(this.selectors.filterBox).show();
                     this.$(this.selectors.noDataBlock).hide();
                 } else {
                     this.$(this.selectors.grid).hide();
-                    this.$(this.selectors.toolbar).hide();
+                    // this.$(this.selectors.toolbar).hide();
                     this.$(this.selectors.filterBox).hide();
                     this.$(this.selectors.noDataBlock).show();
                 }

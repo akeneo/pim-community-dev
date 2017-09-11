@@ -86,6 +86,11 @@ extensions:
         parent: pim-product-index
         targetZone: filters
 
+    pim-product-index-mass-actions:
+        module: oro/datagrid/actions-panel
+        parent: pim-product-index
+        targetZone: toolbar
+
     pim-product-index-pagination:
         module: oro/datagrid/pagination-input
         parent: pim-product-index
