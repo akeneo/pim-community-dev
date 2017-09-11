@@ -20,6 +20,8 @@ function(_, Backbone, groupTemplate, BaseForm, mediator) {
         /** @property {Array.<oro.datagrid.ActionLauncher>} */
         launchers: [],
 
+        className: 'AknGridToolbar-left mass-actions-panel',
+
         /** @property {Function} */
         groupTemplate: _.template(groupTemplate),
 

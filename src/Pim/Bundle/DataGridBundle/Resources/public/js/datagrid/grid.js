@@ -73,7 +73,7 @@ define(
                 grid:        '.grid',
                 noDataBlock: '.no-data',
                 loadingMask: '.loading-mask',
-                filterBox:   '.filter-box'
+                toolbar:   '[data-drop-zone="toolbar"]'
             },
 
             /** @property {oro.datagrid.Header} */
@@ -94,7 +94,6 @@ define(
             defaults: {
                 rowClickActionClass: 'row-click-action',
                 rowClassName:        'AknGrid-bodyRow',
-                // toolbarOptions:      {},
                 rowClickAction:      undefined,
                 multipleSorting:     true,
                 rowActions:          [],
@@ -130,8 +129,6 @@ define(
 
                 // Init properties values based on options and defaults
                 _.extend(this, this.defaults, options);
-                // this.toolbarOptions = {};
-                // _.extend(this.toolbarOptions, this.defaults.toolbarOptions, options.toolbarOptions);
 
                 this.collection.multipleSorting = this.multipleSorting;
 
@@ -146,7 +143,6 @@ define(
                 options.columns.unshift(this._getMassActionsColumn());
 
                 this.loadingMask = this._createLoadingMask();
-                // this.toolbar = this._createToolbar(this.toolbarOptions);
 
                 Backgrid.Grid.prototype.initialize.apply(this, arguments);
 
@@ -231,48 +227,6 @@ define(
             _createLoadingMask: function () {
                 return new this.loadingMask();
             },
-
-            // /**
-            //  * Creates instance of toolbar
-            //  *
-            //  * @return {oro.datagrid.Toolbar}
-            //  * @private
-            //  */
-            // _createToolbar: function (toolbarOptions) {
-            //     return new this.toolbar(_.extend({}, toolbarOptions, {
-            //         collection:        this.collection,
-            //         actions:           {},
-            //         massActionsGroups: this.massActionsGroups,
-            //         massActions:       this._getToolbarMassActions()
-            //     }));
-            // },
-
-            // /**
-            //  * Get mass actions of toolbar
-            //  *
-            //  * @return {Array}
-            //  * @private
-            //  */
-            // _getToolbarMassActions: function () {
-            //     var result = [];
-            //     _.each(this.massActions, function (action) {
-            //         result.push(this.createMassAction(action));
-            //     }, this);
-
-            //     return result;
-            // },
-
-            /**
-             * Creates action
-             *
-             * @param {Function} ActionPrototype
-             * @protected
-             */
-            // createMassAction: function (ActionPrototype) {
-            //     return new ActionPrototype({
-            //         datagrid: this
-            //     });
-            // },
 
             /**
              * Listen to events of collection
@@ -364,7 +318,6 @@ define(
 
                 this.$el = this.$el.append($(this.template()));
 
-                // this.renderToolbar();
                 this.renderGrid();
                 this.renderNoDataBlock();
                 this.renderLoadingMask();
@@ -390,13 +343,6 @@ define(
                 }
                 $el.append(this.body.render().$el);
             },
-
-            // /**
-            //  * Renders grid toolbar.
-            //  */
-            // renderToolbar: function () {
-            //     this.$(this.selectors.toolbar).append(this.toolbar.render().$el);
-            // },
 
             /**
              * Renders loading mask.
@@ -459,7 +405,6 @@ define(
              */
             showLoading: function () {
                 this.loadingMask.show();
-                // this.toolbar.disable();
             },
 
             /**
@@ -467,7 +412,6 @@ define(
              */
             hideLoading: function () {
                 this.loadingMask.hide();
-                // this.toolbar.enable();
             },
 
             /**
@@ -477,14 +421,12 @@ define(
              */
             _updateNoDataBlock: function () {
                 if (this.collection.models.length > 0) {
-                    // this.$(this.selectors.toolbar).show();
                     this.$(this.selectors.grid).show();
-                    this.$(this.selectors.filterBox).show();
+                    $(this.selectors.toolbar).show();
                     this.$(this.selectors.noDataBlock).hide();
                 } else {
                     this.$(this.selectors.grid).hide();
-                    // this.$(this.selectors.toolbar).hide();
-                    this.$(this.selectors.filterBox).hide();
+                    $(this.selectors.toolbar).hide();
                     this.$(this.selectors.noDataBlock).show();
                 }
             },

@@ -96,6 +96,11 @@ extensions:
         parent: pim-product-index
         targetZone: toolbar
 
+    pim-product-index-columns:
+        module: pim/datagrid/configure-columns-action
+        parent: pim-product-index
+        targetZone: toolbar
+
     pim-product-index-grid:
         module: pim/grid/table
         parent: pim-product-index

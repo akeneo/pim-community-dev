@@ -10,8 +10,7 @@ define(
         'pim/form',
         'pim/user-context',
         'pim/fetcher-registry',
-        'pim/datagrid/state-listener',
-        'pim/datagrid/configure-columns-action'
+        'pim/datagrid/state-listener'
     ],
     function(
         _,
@@ -24,8 +23,7 @@ define(
         BaseForm,
         UserContext,
         FetcherRegistry,
-        StateListener,
-        ConfigureColumnsAction
+        StateListener
     ) {
         return BaseForm.extend({
             config: {},
@@ -92,11 +90,7 @@ define(
                 const localeParam = $.param({ dataLocale });
                 resp.metadata.options.url =  `${url}?${localeParam}`;
 
-                // Move to form extensions in TIP-733-2
-                datagridBuilder([
-                    StateListener,
-                    ConfigureColumnsAction
-                ]);
+                datagridBuilder([ StateListener ]);
             },
 
             /**
@@ -176,7 +170,7 @@ define(
                 }
 
                 if (filters.pageSize) {
-                    urlParams[`${gridName}[_pager][_per_page]`] = 100
+                    urlParams[`${gridName}[_pager][_per_page]`] = 100;
                 }
 
                 if (filters.currentPage) {
