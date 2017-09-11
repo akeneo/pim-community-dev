@@ -15,6 +15,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\Workflow\Model\PublishedProductInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -55,7 +56,11 @@ class FilterNotGrantedProductDataSubscriber implements EventSubscriber
             return;
         }
 
-        $this->container->get('pimee_catalog.security.filter.not_granted_associated_product')->filter($product);
+        $associatedProductFilter = $product instanceof PublishedProductInterface ?
+            $this->container->get('pimee_catalog.security.filter.not_granted_associated_published_product') :
+            $this->container->get('pimee_catalog.security.filter.not_granted_associated_product');
+
+        $associatedProductFilter->filter($product);
 
         if (0 !== $product->getCategories()->count()) {
             $this->container->get('pimee_catalog.security.filter.not_granted_category')->filter($product);
