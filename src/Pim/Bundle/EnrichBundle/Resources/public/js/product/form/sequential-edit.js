@@ -69,8 +69,12 @@ define(
                 });
             },
             render: function () {
-                if (!this.configured || !this.model.get('objectSet')) {
+                if (!this.configured || !this.model.get('objectSet') || 0 === this.model.get('objectSet').length) {
+                    this.$el.addClass('AknSequentialEdit--hidden');
+
                     return this;
+                } else {
+                    this.$el.removeClass('AknSequentialEdit--hidden');
                 }
 
                 this.addSaveButton();

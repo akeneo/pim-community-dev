@@ -1,24 +1,20 @@
-<span class="AknSequentialEdit-previous">
-    <% if (previousObject) { %>
-        <a href="javascript:void(0);" class="previous" data-id="<%- previousObject.id %>" data-original-title="<%- _.__('pim_enrich.form.product.sequential_edit.info.previous', { product: previousObject.label }) %>" data-toggle="tooltip" data-placement="bottom">
-            <i class="icon-chevron-left"></i>
-            &nbsp;&nbsp;
+<% if (previousObject) { %>
+    <span class="AknSequentialEdit-previous">
+        <span class="previous" data-id="<%- previousObject.id %>">
             <%- previousObject.shortLabel %>
-        </a>
-    <% } %>
-</span>
-<span class="AknSequentialEdit-progress AknProgress progress progress-bar">
+        </span>
+    </span>
+<% } %>
+<span class="AknSequentialEdit-progress AknProgress--info AknProgress progress progress-bar">
     <div class="AknProgress-bar bar" style="width: <%- ratio %>%;">
     <% if (ratio < 30) { %></div>&nbsp;&nbsp;<% } %>
     <%- currentIndex %> / <%- objectCount %> <%- _.__('pim_enrich.form.product.sequential_edit.info.products') %>
     <% if (ratio >= 30) { %></div><% } %>
 </span>
-<span class="AknSequentialEdit-next">
-    <% if (nextObject) { %>
-        <a href="javascript:void(0);" class="next" data-id="<%- nextObject.id %>" data-original-title="<%- _.__('pim_enrich.form.product.sequential_edit.info.next', { product: nextObject.label }) %>" data-toggle="tooltip" data-placement="bottom">
+<% if (nextObject) { %>
+    <span class="AknSequentialEdit-next">
+        <span class="next" data-id="<%- nextObject.id %>">
             <%- nextObject.shortLabel %>
-            &nbsp;&nbsp;
-            <i class="icon-chevron-right"></i>
-        </a>
-    <% } %>
-</span>
+        </span>
+    </span>
+<% } %>

@@ -52,12 +52,13 @@ class SequentialEditController
         $filters = $this->filterAdapter->adapt($parameters);
         $products = [];
         $cursor = $this->getProductsCursor($filters);
+
         while ($cursor->valid() && $cursor->key() < 1000) {
             $products[] = $cursor->current();
             $cursor->next();
         }
 
-        return new JsonResponse($products);
+        return new JsonResponse(['entities' => $products, 'total' => $cursor->count()]);
     }
 
     /**
