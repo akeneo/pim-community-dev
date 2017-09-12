@@ -4,6 +4,15 @@ No products to remove: No products to remove
 
 pim_catalog:
     constraint:
+        family_variant_attributes_unique: Attributes must be unique, "%attributes%" are used several times in variant attributes sets
+        family_variant_axes_unique: Variant axes must be unique, "%attributes%" are used several times in variant attributes sets
+        family_variant_axes_attribute_type: Variant axes "%axis%" must be a boolean, a simple select, a simple reference data or a metric
+        family_variant_axes_wrong_type: Variant axes "%axis%" cannot be localizable, not scopable and not locale specific
+        family_variant_axes_number_of_axes: A variant attribute set cannot have more than 5 attributes
+        family_variant_axis_level: Attribute "%axis%" must be set as attribute in the same variant attribute set it was set as axis
+        family_variant_has_family_attribute: '"%attribute%" attribute cannot be added to "%family_variant%" family variant, as it is not an attribute of the "%family%" family'
+        family_variant_level_do_not_exist: There is no variant attribute set for level "%level%"
+        family_variant_unique_attributes_in_last_level: Unique attribute "%attribute%" must be set at the product level
         product_identifier: These identifiers "%s" don't exist.
         0: An unexpected error occurred.
         100: Non-expected value

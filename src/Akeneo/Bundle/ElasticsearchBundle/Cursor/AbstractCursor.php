@@ -104,7 +104,8 @@ abstract class AbstractCursor implements CursorInterface
 
         foreach ($identifiers as $identifier) {
             foreach ($hydratedItems as $hydratedItem) {
-                if ($identifier === $hydratedItem->getIdentifier()) {
+                // sometimes $identifier is only numerical whereas getIdentifer() returns a string
+                if ((string) $identifier === $hydratedItem->getIdentifier()) {
                     $orderedItems[] = $hydratedItem;
                     break;
                 }

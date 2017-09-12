@@ -5,7 +5,10 @@ namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch;
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
+use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\FilterRegistryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilder;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderOptionsResolverInterface;
 use Pim\Component\Catalog\Query\Sorter\SorterRegistryInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
@@ -21,7 +24,7 @@ class ProductQueryBuilderFactorySpec extends ObjectBehavior
         ProductQueryBuilderOptionsResolverInterface $optionsResolver
     ) {
         $this->beConstructedWith(
-            'Pim\Component\Catalog\Query\ProductQueryBuilder',
+            ProductQueryBuilder::class,
             $attRepository,
             $filterRegistry,
             $sorterRegistry,
@@ -32,31 +35,49 @@ class ProductQueryBuilderFactorySpec extends ObjectBehavior
 
     function it_is_a_product_query_factory()
     {
-        $this->shouldImplement('Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface');
+        $this->shouldImplement(ProductQueryBuilderFactoryInterface::class);
     }
 
     function it_creates_a_product_query_builder()
     {
         $pqb = $this->create(['default_locale' => 'en_US', 'default_scope' => 'print']);
         $pqb->getQueryBuilder()->shouldBeAnInstanceOf(SearchQueryBuilder::class);
+        $pqb->shouldBeAnInstanceOf(ProductQueryBuilder::class);
     }
 
-    //TODO TIP-706: enable this when we'll merge the PQB family family
-//    function it_creates_a_product_query_builder_with_filters()
-//    {
-//        $pqb = $this->create(
-//            [
-//                'default_locale' => 'en_US',
-//                'default_scope'  => 'print',
-//                'filters'        => [
-//                    [
-//                        'field'    => 'family',
-//                        'operator' => 'CONTAINS',
-//                        'value'    => 'foo'
-//                    ],
-//                ]
-//            ]
-//        );
-//        $pqb->getQueryBuilder()->shouldBeAnInstanceOf(SearchQueryBuilder::class);
-//    }
+    function it_creates_a_product_query_builder_with_filters(
+        $attRepository,
+        $filterRegistry,
+        $optionsResolver,
+        FieldFilterInterface $filter
+    ) {
+        $attRepository->findOneByIdentifier('family')->willReturn(null);
+        $filterRegistry->getFieldFilter('family', 'CONTAINS')->willReturn($filter);
+        $optionsResolver->resolve(Argument::any())->willReturn(['locale' => 'en_US', 'scope' => 'print']);
+
+        $pqb = $this->create(
+            [
+                'default_locale' => 'en_US',
+                'default_scope'  => 'print',
+                'filters'        => [
+                    [
+                        'field'    => 'family',
+                        'operator' => 'CONTAINS',
+                        'value'    => 'foo'
+                    ],
+                ]
+            ]
+        );
+
+        $expectedRawFilter = [
+            'field'    => 'family',
+            'operator' => 'CONTAINS',
+            'value'    => 'foo',
+            'context'  => ['locale' => 'en_US', 'scope' => 'print'],
+            'type'     => 'field'
+        ];
+
+        $pqb->getRawFilters()->shouldHaveCount(1);
+        $pqb->getRawFilters()->shouldHaveKeyWithValue(0, $expectedRawFilter);
+    }
 }

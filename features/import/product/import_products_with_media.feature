@@ -11,14 +11,17 @@ Feature: Import media with products
       | Front view  | pim_catalog_image | gif, jpg           | 1             | other | frontView  |
       | User manual | pim_catalog_file  | txt, pdf           | 1             | other | userManual |
       | Warranty    | pim_catalog_file  | txt, pdf           | 1             | other | warranty   |
+    And the following family:
+      | code         | attributes                         |
+      | media_family | frontView,name,userManual,warranty |
     And I am logged in as "Julia"
 
   Scenario: Successfully import media
     Given the following CSV file to import:
       """
       sku;family;groups;frontView;name-en_US;userManual;categories
-      bic-core-148;sneakers;;bic-core-148.gif;"Bic Core 148";bic-core-148.txt;2014_collection
-      fanatic-freewave-76;sneakers;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
+      bic-core-148;media_family;;bic-core-148.gif;"Bic Core 148";bic-core-148.txt;2014_collection
+      fanatic-freewave-76;media_family;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
       """
     And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -42,8 +45,8 @@ Feature: Import media with products
     Given the following CSV file to import:
       """
       sku;family;groups;frontView;name-en_US;userManual;categories
-      bic-core-148;sneakers;;bic-core-148.gif;"Bic Core 148";bic-core-148.txt;2014_collection
-      fanatic-freewave-76;sneakers;;;"Fanatic Freewave 76";;2014_collection
+      bic-core-148;media_family;;bic-core-148.gif;"Bic Core 148";bic-core-148.txt;2014_collection
+      fanatic-freewave-76;media_family;;;"Fanatic Freewave 76";;2014_collection
       """
     And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -65,8 +68,8 @@ Feature: Import media with products
     Given the following CSV file to import:
       """
       sku;family;groups;frontView;name-en_US;userManual;categories
-      bic-core-148;sneakers;;bic-core-148.txt;"Bic Core 148";;2014_collection
-      fanatic-freewave-76;sneakers;;;"Fanatic Freewave 76";sneakers-manual.txt;2014_collection
+      bic-core-148;media_family;;bic-core-148.txt;"Bic Core 148";;2014_collection
+      fanatic-freewave-76;media_family;;;"Fanatic Freewave 76";sneakers-manual.txt;2014_collection
       """
     And the following random files:
       | filename            | size |
@@ -88,8 +91,8 @@ Feature: Import media with products
     Given the following CSV file to import:
       """
       sku;family;groups;warranty;name-en_US;userManual;categories
-      bic-core-148;sneakers;;warranty.txt;"Bic Core 148";warranty.txt;2014_collection
-      fanatic-freewave-76;sneakers;;warranty.txt;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
+      bic-core-148;media_family;;warranty.txt;"Bic Core 148";warranty.txt;2014_collection
+      fanatic-freewave-76;media_family;;warranty.txt;"Fanatic Freewave 76";fanatic-freewave-76.txt;2014_collection
       """
     And the following random files:
       | filename            | size |

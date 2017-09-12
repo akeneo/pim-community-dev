@@ -6,13 +6,13 @@ Feature: Filter products per price
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code      |
-      | furniture |
-      | library   |
     And the following attributes:
       | label-en_US | scopable | type                         | useable_as_grid_filter | decimals_allowed | group | code  |
       | Price       | 1        | pim_catalog_price_collection | 1                      | 1                | other | price |
+    And the following family:
+      | code      | attributes |
+      | furniture | price      |
+      | library   | price      |
     And the following products:
       | sku    | family    | enabled | price-mobile | price-ecommerce |
       | postit | furniture | yes     | 10.5 EUR     | 12.5 EUR        |
@@ -42,6 +42,6 @@ Feature: Filter products per price
       | price  | >        | 40.5 EUR |                 |
     When I show the filter "price"
     And I filter by "price" with operator "is empty" and value " EUR"
-    And I should see product mug and pen
+    And I should see product mug
     And I filter by "price" with operator "is not empty" and value " EUR"
-    And I should see product postit and book
+    And I should see product postit

@@ -102,7 +102,7 @@ class ProductEditForm extends Form
         }
 
         $labelNode = $this->spin(function () use ($label) {
-            $labels = $this->findAll('css', sprintf('.AknComparableFields .AknFieldContainer-label:contains("%s")', $label));
+            $labels = $this->findAll('css', '.AknComparableFields .AknFieldContainer-label');
 
             foreach ($labels as $labelContainer) {
                 if ($labelContainer->getText() === $label) {

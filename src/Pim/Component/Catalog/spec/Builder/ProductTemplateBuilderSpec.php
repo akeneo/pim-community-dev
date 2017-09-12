@@ -9,13 +9,15 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 
 class ProductTemplateBuilderSpec extends ObjectBehavior
 {
-    function let(ProductBuilderInterface $productBuilder)
+    function let(ProductBuilderInterface $productBuilder, EntityWithFamilyValuesFillerInterface $productValuesFiller)
     {
         $this->beConstructedWith(
             $productBuilder,
+            $productValuesFiller,
             'Pim\Bundle\CatalogBundle\Entity\ProductTemplate'
         );
     }
@@ -32,6 +34,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
 
     function it_adds_attributes_to_a_product_template(
         $productBuilder,
+        $productValuesFiller,
         ProductTemplateInterface $template,
         AttributeInterface $name,
         ValueCollectionInterface $originalValues,
@@ -44,7 +47,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $product->setValues($originalValues)->shouldBeCalled();
 
         $productBuilder->addAttribute($product, $name)->shouldBeCalled();
-        $productBuilder->addMissingProductValues($product)->shouldBeCalled();
+        $productValuesFiller->fillMissingValues($product)->shouldBeCalled();
 
         $product->getValues()->willReturn($newValues);
 

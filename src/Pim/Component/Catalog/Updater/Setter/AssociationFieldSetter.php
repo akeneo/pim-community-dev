@@ -2,11 +2,13 @@
 
 namespace Pim\Component\Catalog\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AssociationInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -60,12 +62,16 @@ class AssociationFieldSetter extends AbstractFieldSetter
      *     },
      * }
      */
-    public function setFieldData(ProductInterface $product, $field, $data, array $options = [])
+    public function setFieldData($entity, $field, $data, array $options = [])
     {
+        if (!$entity instanceof EntityWithValuesInterface) {
+            throw InvalidObjectException::objectExpected($entity, EntityWithValuesInterface::class);
+        }
+
         $this->checkData($field, $data);
-        $this->clearAssociations($product, $data);
-        $this->addMissingAssociations($product);
-        $this->setProductsAndGroupsToAssociations($product, $data);
+        $this->clearAssociations($entity, $data);
+        $this->addMissingAssociations($entity);
+        $this->setProductsAndGroupsToAssociations($entity, $data);
     }
 
     /**

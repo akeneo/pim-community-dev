@@ -281,10 +281,7 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * @param int $offset
-     * @param int $size
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function findAllWithOffsetAndSize($offset = 0, $size = 100)
     {

@@ -52,6 +52,22 @@ class InvalidPropertyException extends PropertyException
     }
 
     /**
+     * @param string $message
+     * @param string $className
+     *
+     * @return InvalidPropertyException
+     */
+    public static function expected($message, $className)
+    {
+        return new static(
+            null,
+            null,
+            $className,
+            $message
+        );
+    }
+
+    /**
      * Build an exception when the data is empty and should not.
      *
      * @param string $propertyName

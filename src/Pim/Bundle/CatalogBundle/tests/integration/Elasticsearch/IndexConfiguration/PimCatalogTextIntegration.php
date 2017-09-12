@@ -330,6 +330,6 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
             ],
         ];
 
-        $this->indexProducts($products);
+        $this->indexProductDocuments($products);
     }
 }

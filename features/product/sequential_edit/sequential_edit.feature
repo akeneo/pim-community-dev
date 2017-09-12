@@ -18,7 +18,7 @@ Feature: Edit sequentially some products
     And I switch the locale to "en_US"
 
   Scenario: Successfully sequentially edit some products
-    Given I sort by "SKU" value ascending
+    Given I sort by "ID" value ascending
     And I select rows white_sandal, boot and sneaker
     When I press "Edit products sequentially" on the "Bulk Actions" dropdown button
     Then I should be on the product "boot" edit page
@@ -40,7 +40,7 @@ Feature: Edit sequentially some products
 
     @jira https://akeneo.atlassian.net/browse/PIM-4647
     Scenario: Successfully show product edit progression
-      Given I sort by "SKU" value ascending
+      Given I sort by "ID" value ascending
       And I select rows white_sandal, boot and sneaker
       When I press "Edit products sequentially" on the "Bulk Actions" dropdown button
       Then I should be on the product "boot" edit page

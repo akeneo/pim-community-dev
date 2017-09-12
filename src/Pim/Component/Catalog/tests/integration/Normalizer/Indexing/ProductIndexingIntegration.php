@@ -4,10 +4,11 @@ namespace tests\integration\Pim\Component\Catalog\Normalizer\Indexing;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
 /**
- * Integration tests to verify data from database are well formatted in the indexing format
+ * Integration tests to verify data from database are well formatted in the "indexing_product" format
  */
 class ProductIndexingIntegration extends TestCase
 {
@@ -319,7 +320,7 @@ class ProductIndexingIntegration extends TestCase
         $product = $repository->findOneByIdentifier($identifier);
 
         $serializer = $this->get('pim_serializer');
-        $actual = $serializer->normalize($product, 'indexing');
+        $actual = $serializer->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX);
 
         NormalizedProductCleaner::clean($actual);
         NormalizedProductCleaner::clean($expected);

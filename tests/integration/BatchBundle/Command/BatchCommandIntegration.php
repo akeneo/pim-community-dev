@@ -132,7 +132,7 @@ class BatchCommandIntegration extends TestCase
         $this->assertEquals(BatchStatus::COMPLETED, $result['status']);
 
         $output = $this->launchJob(['execution' => $result['id']]);
-        $this->assertContains('Job execution "18" has invalid status: COMPLETED', $output->fetch());
+        $this->assertContains('Job execution "20" has invalid status: COMPLETED', $output->fetch());
     }
 
     public function testLaunchJobExecutionWithConfigOverridden()
@@ -186,7 +186,7 @@ class BatchCommandIntegration extends TestCase
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->get('akeneo_elasticsearch.client')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
 
         return $product;
     }

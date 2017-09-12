@@ -1,0 +1,36 @@
+Pim\Component\Catalog\Model\VariantAttributeSet:
+    type: entity
+    table: pim_catalog_family_variant_attribute_set
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        level:
+            type: integer
+            column: level
+
+    manyToMany:
+        attributes:
+            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
+            joinTable:
+                name: pim_catalog_variant_attribute_set_has_attributes
+                joinColumns:
+                    variant_attribute_set_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    attributes_id:
+                        referencedColumnName: id
+        axes:
+            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
+            joinTable:
+                name: pim_catalog_variant_attribute_set_has_axes
+                joinColumns:
+                    variant_attribute_set_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    axes_id:
+                        referencedColumnName: id

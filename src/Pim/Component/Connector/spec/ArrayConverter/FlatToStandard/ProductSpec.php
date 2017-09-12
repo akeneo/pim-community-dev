@@ -7,6 +7,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\ArrayConverterInterface;
 use Pim\Component\Connector\ArrayConverter\FieldsRequirementChecker;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\ColumnsMapper;
@@ -54,7 +55,11 @@ class ProductSpec extends ObjectBehavior
         AttributeInterface $attribute5,
         AttributeInterface $attribute6,
         AttributeInterface $attribute7,
-        ValueConverterInterface $converter
+        ConvertedField $categories,
+        ConvertedField $enable,
+        ConvertedField $xSellGroup,
+        ConvertedField $xSellProduct,
+        ConvertedField $substitution
     ) {
         $item = [
             'sku'                    => '1069978',
@@ -114,19 +119,63 @@ class ProductSpec extends ObjectBehavior
         $fieldConverter->supportsColumn('X_SELL-products')->willReturn(true);
         $fieldConverter->supportsColumn('SUBSTITUTION-products')->willReturn(true);
 
-        $fieldConverter->convert('categories', 'audio_video_sales,loudspeakers,sony')->willReturn(
-            ['categories' => ['audio_video_sales', 'loudspeakers', 'sony']]
-        );
-        $fieldConverter->convert('enabled', '1')->willReturn(['enabled' => true]);
-        $fieldConverter->convert('X_SELL-groups', 'group-A')->willReturn(
-            ['associations' => ['X_SELL' => ['groups' => ['group-A']]]]
-        );
-        $fieldConverter->convert('X_SELL-products', 'sku-A, sku-B')->willReturn(
-            ['associations' => ['X_SELL' => ['products' => ['sku-A', 'sku-B']]]]
-        );
-        $fieldConverter->convert('SUBSTITUTION-products', 'sku-C')->willReturn(
-            ['associations' => ['SUBSTITUTION' => ['products' => ['sku-C']]]]
-        );
+        $fieldConverter->convert('categories', 'audio_video_sales,loudspeakers,sony')->willReturn([$categories]);
+        $categories->appendTo([])->willReturn(['categories' => ['audio_video_sales', 'loudspeakers', 'sony']]);
+
+        $fieldConverter->convert('enabled', '1')->willReturn([$enable]);
+        $enable->appendTo(['categories' => ['audio_video_sales', 'loudspeakers', 'sony']])
+            ->willReturn([
+                'categories' => ['audio_video_sales', 'loudspeakers', 'sony'],
+                'enabled' => true
+            ]);
+
+        $fieldConverter->convert('X_SELL-groups', 'group-A')->willReturn([$xSellGroup]);
+        $xSellGroup->appendTo([
+            'categories' => ['audio_video_sales', 'loudspeakers', 'sony'],
+            'enabled' => true
+        ])->willReturn([
+            'categories' => ['audio_video_sales', 'loudspeakers', 'sony'],
+            'enabled' => true,
+            'associations' => ['X_SELL' => ['groups' => ['group-A']]]
+        ]);
+
+        $fieldConverter->convert('X_SELL-products', 'sku-A, sku-B')->willReturn([$xSellProduct]);
+        $xSellProduct->appendTo([
+            'categories' => ['audio_video_sales', 'loudspeakers', 'sony'],
+            'enabled' => true,
+            'associations' => ['X_SELL' => ['groups' => ['group-A']]]
+        ])->willReturn([
+            'categories' => ['audio_video_sales', 'loudspeakers', 'sony'],
+            'enabled' => true,
+            'associations' => [
+                'X_SELL' => [
+                    'groups' => ['group-A'],
+                    'products' => ['sku-A', 'sku-B'],
+                ],
+            ]
+        ]);
+
+        $fieldConverter->convert('SUBSTITUTION-products', 'sku-C')->willReturn([$substitution]);
+        $substitution->appendTo([
+            'categories' => ['audio_video_sales', 'loudspeakers', 'sony'],
+            'enabled' => true,
+            'associations' => [
+                'X_SELL' => [
+                    'groups' => ['group-A'],
+                    'products' => ['sku-A', 'sku-B'],
+                ],
+            ]
+        ])->willReturn([
+            'categories' => ['audio_video_sales', 'loudspeakers', 'sony'],
+            'enabled' => true,
+            'associations' => [
+                'X_SELL' => [
+                    'groups' => ['group-A'],
+                    'products' => ['sku-A', 'sku-B'],
+                ],
+                'SUBSTITUTION' => ['products' => ['sku-C']]
+            ]
+        ]);
 
         $attribute1->getType()->willReturn('sku');
         $attribute2->getType()->willReturn('categories');
@@ -257,7 +306,7 @@ class ProductSpec extends ObjectBehavior
         $columnsMerger,
         $attributeRepository,
         $productValueConverter,
-        ValueConverterInterface $converter,
+        ConvertedField $enable,
         AttributeInterface $attribute
     ) {
         $item = ['sku' => '1069978', 'enabled' => true, 'unknown-products' => ['sku2'], 'unknown-groups' => 'groupcode'];
@@ -274,7 +323,11 @@ class ProductSpec extends ObjectBehavior
         $fieldConverter->supportsColumn('sku')->willReturn(false);
         $fieldConverter->supportsColumn('enabled')->willReturn(true);
 
-        $fieldConverter->convert('enabled', true)->willReturn(['enabled' => true]);
+        $fieldConverter->convert('enabled', '1')->willReturn([$enable]);
+        $enable->appendTo([])
+            ->willReturn([
+                'enabled' => true
+            ]);
 
         $attributeRepository->getIdentifierCode()->willReturn('sku');
 

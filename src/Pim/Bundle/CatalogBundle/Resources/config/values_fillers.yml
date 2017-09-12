@@ -1,0 +1,19 @@
+parameters:
+    pim_catalog.values_filler.product.class: Pim\Component\Catalog\ValuesFiller\ProductValuesFiller
+    pim_catalog.values_filler.entity_with_family_variant.class: Pim\Component\Catalog\ValuesFiller\EntityWithFamilyVariantValuesFiller
+
+services:
+    pim_catalog.values_filler.product:
+        class: '%pim_catalog.values_filler.product.class%'
+        arguments:
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.resolver.attribute_values'
+            - '@pim_catalog.repository.currency'
+
+    pim_catalog.values_filler.entity_with_family_variant:
+        class: '%pim_catalog.values_filler.entity_with_family_variant.class%'
+        arguments:
+            - '@pim_catalog.builder.entity_with_values'
+            - '@pim_catalog.resolver.attribute_values'
+            - '@pim_catalog.repository.currency'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'

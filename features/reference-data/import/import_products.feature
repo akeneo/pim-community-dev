@@ -9,24 +9,27 @@ Feature: Execute a job
     And the following "sole_fabric" attribute reference data: PVC, Nylon, Neoprene
     And the following "lace_fabric" attribute reference data: Spandex, Wool, Kevlar, Jute
     And the following "heel_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan, Magenta, Black, White
+    And the following family:
+      | code      | attributes                         |
+      | new_heels | sole_fabric,lace_fabric,heel_color |
     And I am logged in as "Julia"
 
   Scenario: Successfully import a csv file of products with reference data
     Given the following CSV file to import:
-    """
-    sku;family;heel_color;sole_fabric;lace_fabric-en_US-tablet;lace_fabric-en_US-mobile
-    SKU-001;heels;Red;PVC,Nylon;;Kevlar
-    SKU-002;heels;;;Jute,Spandex;Wool,Kevlar
-    SKU-003;heels;Magenta;Neoprene;Wool;Jute
-    SKU-004;heels;Black;Neoprene;Spandex;Spandex
-    """
+      """
+      sku;family;heel_color;sole_fabric;lace_fabric-en_US-tablet;lace_fabric-en_US-mobile
+      SKU-001;new_heels;Red;PVC,Nylon;;Kevlar
+      SKU-002;new_heels;;;Jute,Spandex;Wool,Kevlar
+      SKU-003;new_heels;Magenta;Neoprene;Wool;Jute
+      SKU-004;new_heels;Black;Neoprene;Spandex;Spandex
+      """
     And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
     Then there should be 4 products
-    And the family of the product "SKU-001" should be "heels"
+    And the family of the product "SKU-001" should be "new_heels"
     And product "SKU-002" should be enabled
     And the product "SKU-001" should have the following values:
       | heel_color               | Red        |
@@ -56,7 +59,7 @@ Feature: Execute a job
     And the following CSV file to import:
     """
     sku;family;heel_color;sole_fabric;lace_fabric-en_US-tablet;lace_fabric-en_US-mobile
-    SKU-001;heels;Magenta;;Kevlar,Jute;Kevlar,Jute
+    SKU-001;new_heels;Magenta;;Kevlar,Jute;Kevlar,Jute
     """
     And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -76,10 +79,10 @@ Feature: Execute a job
       | sku     | sole_fabric |
       | SKU-001 |             |
     And the following CSV file to import:
-    """
-    sku;sole_fabric
-    SKU-001;PVC,PVC
-    """
+      """
+      sku;sole_fabric
+      SKU-001;PVC,PVC
+      """
     And the following job "csv_footwear_product_import" configuration:
       | filePath | %file to import% |
     When I am on the "csv_footwear_product_import" import job page
@@ -89,4 +92,4 @@ Feature: Execute a job
     And I should see the text "skipped product (no differences) 1"
     And there should be 1 product
     And the product "SKU-001" should have the following values:
-      | sole_fabric              | PVC          |
+      | sole_fabric | PVC |

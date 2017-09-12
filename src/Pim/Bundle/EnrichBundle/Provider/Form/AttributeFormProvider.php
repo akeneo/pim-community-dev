@@ -25,7 +25,7 @@ class AttributeFormProvider implements FormProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getForm($attribute)
+    public function getForm($attribute): string
     {
         return $this->formConfig[$attribute->getType()];
     }
@@ -33,7 +33,7 @@ class AttributeFormProvider implements FormProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($element)
+    public function supports($element): bool
     {
         return $element instanceof AttributeInterface && isset($this->formConfig[$element->getType()]);
     }

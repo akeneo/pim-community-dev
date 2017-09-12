@@ -12,7 +12,10 @@ use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ProductTemplateInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 class ProductSpec extends ObjectBehavior
 {
@@ -190,5 +193,181 @@ class ProductSpec extends ObjectBehavior
     function it_is_attribute_removable(AttributeInterface $attribute)
     {
         $this->isAttributeRemovable($attribute)->shouldReturn(true);
+    }
+
+    function it_gets_the_label_of_the_product(
+        FamilyInterface $family,
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values,
+        ValueInterface $nameValue,
+        ValueInterface $identifier
+    ) {
+        $identifier->getData()->willReturn('shovel');
+        $identifier->getAttribute()->willReturn($attributeAsLabel);
+
+        $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
+        $family->getId()->willReturn(42);
+        $attributeAsLabel->getCode()->willReturn('name');
+        $attributeAsLabel->isLocalizable()->willReturn(true);
+
+        $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
+        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->add($identifier)->shouldBeCalled();
+
+        $nameValue->getData()->willReturn('Petit outil agricole authentique');
+
+        $this->setFamily($family);
+        $this->setValues($values);
+        $this->setIdentifier($identifier);
+
+        $this->getLabel('fr_FR')->shouldReturn('Petit outil agricole authentique');
+    }
+
+    function it_gets_the_identifier_as_label_if_there_is_no_family(
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values,
+        ValueInterface $identifier
+    ) {
+        $identifier->getData()->willReturn('shovel');
+        $identifier->getAttribute()->willReturn($attributeAsLabel);
+
+        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->add($identifier)->shouldBeCalled();
+
+        $this->setFamily(null);
+        $this->setValues($values);
+        $this->setIdentifier($identifier);
+
+        $this->getLabel('fr_FR')->shouldReturn('shovel');
+    }
+
+    function it_gets_the_identifier_as_label_if_there_is_no_attribute_as_label(
+        FamilyInterface $family,
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values,
+        ValueInterface $identifier
+    ) {
+        $family->getAttributeAsLabel()->willReturn(null);
+        $family->getId()->willReturn(42);
+
+        $identifier->getData()->willReturn('shovel');
+        $identifier->getAttribute()->willReturn($attributeAsLabel);
+
+        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->add($identifier)->shouldBeCalled();
+
+        $this->setFamily($family);
+        $this->setValues($values);
+        $this->setIdentifier($identifier);
+
+        $this->getLabel('fr_FR')->shouldReturn('shovel');
+    }
+
+    function it_gets_the_identifier_as_label_if_the_label_value_is_null(
+        FamilyInterface $family,
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values,
+        ValueInterface $nameValue,
+        ValueInterface $identifier
+    ) {
+        $identifier->getData()->willReturn('shovel');
+        $identifier->getAttribute()->willReturn($attributeAsLabel);
+
+        $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
+        $family->getId()->willReturn(42);
+        $attributeAsLabel->getCode()->willReturn('name');
+        $attributeAsLabel->isLocalizable()->willReturn(true);
+
+        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->add($identifier)->shouldBeCalled();
+        $values->getByCodes('name', null, 'fr_FR')->willReturn(null);
+
+        $this->setFamily($family);
+        $this->setValues($values);
+        $this->setIdentifier($identifier);
+
+        $this->getLabel('fr_FR')->shouldReturn('shovel');
+    }
+
+    function it_gets_the_identifier_as_label_if_the_label_value_data_is_empty(
+        FamilyInterface $family,
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values,
+        ValueInterface $nameValue,
+        ValueInterface $identifier
+    ) {
+        $identifier->getData()->willReturn('shovel');
+        $identifier->getAttribute()->willReturn($attributeAsLabel);
+
+        $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
+        $family->getId()->willReturn(42);
+        $attributeAsLabel->getCode()->willReturn('name');
+        $attributeAsLabel->isLocalizable()->willReturn(true);
+
+        $values->getByCodes('name', null, 'fr_FR')->willReturn($nameValue);
+        $values->removeByAttribute($attributeAsLabel)->shouldBeCalled();
+        $values->add($identifier)->shouldBeCalled();
+
+        $nameValue->getData()->willReturn(null);
+
+        $this->setFamily($family);
+        $this->setValues($values);
+        $this->setIdentifier($identifier);
+
+        $this->getLabel('fr_FR')->shouldReturn('shovel');
+    }
+
+    function it_gets_the_image_of_the_product(
+        FamilyInterface $family,
+        AttributeInterface $attributeAsImage,
+        ValueCollectionInterface $values,
+        ValueInterface $pictureValue
+    ) {
+        $attributeAsImage->getCode()->willReturn('picture');
+
+        $family->getAttributeAsImage()->willReturn($attributeAsImage);
+        $family->getId()->willReturn(42);
+
+        $values->getByCodes('picture', null, null)->willReturn($pictureValue);
+
+        $this->setFamily($family);
+        $this->setValues($values);
+
+        $this->getImage()->shouldReturn($pictureValue);
+    }
+
+    function it_gets_no_image_if_there_is_no_family()
+    {
+        $this->setFamily(null);
+        $this->getImage()->shouldReturn(null);
+    }
+
+    function it_gets_no_image_if_there_is_no_attribute_as_image(
+        FamilyInterface $family
+    ) {
+        $family->getAttributeAsImage()->willReturn(null);
+        $family->getId()->willReturn(42);
+
+        $this->setFamily($family);
+
+        $this->getImage()->shouldReturn(null);
+    }
+
+    function it_gets_no_image_if_the_value_of_image_is_empty(
+        FamilyInterface $family,
+        AttributeInterface $attributeAsImage,
+        ValueCollectionInterface $values
+    ) {
+        $attributeAsImage->getCode()->willReturn('picture');
+
+        $family->getAttributeAsImage()->willReturn($attributeAsImage);
+        $family->getId()->willReturn(42);
+
+        $values->getByCodes('picture', null, null)->willReturn(null);
+
+        $this->setFamily($family);
+        $this->setValues($values);
+
+        $this->getImage()->shouldReturn(null);
     }
 }

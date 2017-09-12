@@ -8,6 +8,10 @@ datagrid:
             type:              pim_datasource_product
             entity:            '%pim_catalog.entity.product.class%'
         columns:
+            ID:
+                label: ID
+                data_name:     identifier
+                type:          field
             image:
                 label:         Image
                 data_name:     image
@@ -37,14 +41,16 @@ datagrid:
                 label:         Groups
                 data_name:     groups
                 type:          field
+            variant_products:
+                label:         Variant products
+                data_name:     variant_products
+                type:          field
         properties:
-            id: ~
-            edit_link:
-                type: url
-                route: pim_enrich_product_edit
-                params:
-                    - id
-                    - dataLocale
+            id:
+                type:          field
+                data_name:     search_id
+            document_type: ~
+            technical_id: ~
             delete_link:
                 type: url
                 route: pim_enrich_product_rest_remove
@@ -57,10 +63,9 @@ datagrid:
                     - id
         actions:
             edit:
-                type:      navigate
+                type:      navigate-product-and-product-model
                 label:
                 icon:
-                link:      edit_link
                 rowAction: true
             edit_attributes:
                 type:      tab-redirect
@@ -191,6 +196,9 @@ datagrid:
                     group: quick_export
         sorters:
             columns:
+                ID:
+                    data_name: identifier
+                    sorter: product_field
                 family:
                     data_name: familyLabel
                     sorter:    product_family

@@ -9,13 +9,15 @@ Feature: Filter products by reference data
     And the following "sole_color" attribute reference data: Red, Blue and Green
     And the following "sole_fabric" attribute reference data: Cashmerewool, Neoprene and Silk
     And the following products:
-      | sku    |
-      | postit |
-      | mug    |
+      | sku    | family |
+      | postit | heels  |
+      | mug    | heels  |
+      | book   | heels  |
     And the following product values:
       | product | attribute   | value             |
       | postit  | sole_color  | Red               |
       | postit  | sole_fabric | Cashmerewool,Silk |
+    And the "mug" product has the "sole_fabric" attributes
     And I am logged in as "Mary"
     And I am on the products grid
 

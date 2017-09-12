@@ -28,20 +28,6 @@ interface ProductBuilderInterface extends EntityWithValuesBuilderInterface
     public function createProduct($identifier = null, $familyCode = null);
 
     /**
-     * Add empty values for family and product-specific attributes for relevant scopes and locales
-     *
-     * It makes sure that if an attribute is localizable/scopable, then all values in the required locales/channels
-     * exist. If the attribute is not scopable or localizable, makes sure that a single value exists.
-     *
-     * @param ProductInterface   $product
-     * @param ChannelInterface[] $channels
-     * @param LocaleInterface[]  $locales
-     *
-     * @return EntityWithValuesBuilderInterface
-     */
-    public function addMissingProductValues(ProductInterface $product, array $channels = null, array $locales = null);
-
-    /**
      * Add empty associations for each association types when they don't exist yet
      *
      * @param ProductInterface $product

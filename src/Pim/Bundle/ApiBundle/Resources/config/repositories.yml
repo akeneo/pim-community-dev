@@ -15,7 +15,7 @@ services:
         class: '%pim_api.repository.product.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '%pim_catalog.entity.product.class%'
+            - '%pim_catalog.entity.abstract_product.class%'
             - '@pim_catalog.repository.product'
 
     pim_api.repository.attribute:

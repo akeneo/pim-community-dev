@@ -1,8 +1,8 @@
 parameters:
     pim_catalog.updater.product.class:                        Pim\Component\Catalog\Updater\ProductUpdater
-    pim_catalog.updater.entity_with_values.class:               Pim\Component\Catalog\Updater\EntityWithValuesUpdater
-    pim_catalog.updater.product_property_setter.class:        Pim\Component\Catalog\Updater\ProductPropertySetter
-    pim_catalog.updater.entity_with_values_property_setter.class: Pim\Component\Catalog\Updater\EntityWithValuesPropertySetter
+    pim_catalog.updater.product_model.class:                  Pim\Component\Catalog\Updater\ProductModelUpdater
+    pim_catalog.updater.entity_with_values.class:             Pim\Component\Catalog\Updater\EntityWithValuesUpdater
+    pim_catalog.updater.property_setter.class:                Pim\Component\Catalog\Updater\PropertySetter
     pim_catalog.updater.product_property_adder.class:         Pim\Component\Catalog\Updater\ProductPropertyAdder
     pim_catalog.updater.product_property_copier.class:        Pim\Component\Catalog\Updater\ProductPropertyCopier
     pim_catalog.updater.product_property_remover.class:       Pim\Component\Catalog\Updater\ProductPropertyRemover
@@ -13,6 +13,7 @@ parameters:
     pim_catalog.updater.group.class:                          Pim\Component\Catalog\Updater\GroupUpdater
     pim_catalog.updater.association_type.class:               Pim\Component\Catalog\Updater\AssociationTypeUpdater
     pim_catalog.updater.family.class:                         Pim\Component\Catalog\Updater\FamilyUpdater
+    pim_catalog.updater.family_variant.class:                 Pim\Component\Catalog\Updater\FamilyVariantUpdater
     pim_catalog.updater.channel.class:                        Pim\Component\Catalog\Updater\ChannelUpdater
     pim_catalog.updater.locale.class:                         Pim\Component\Catalog\Updater\LocaleUpdater
     pim_catalog.updater.attribute_group.class:                Pim\Component\Catalog\Updater\AttributeGroupUpdater
@@ -26,6 +27,7 @@ parameters:
     pim_catalog.updater.setter.group_field.class:             Pim\Component\Catalog\Updater\Setter\GroupFieldSetter
     pim_catalog.updater.setter.variant_group_field.class:     Pim\Component\Catalog\Updater\Setter\VariantGroupFieldSetter
     pim_catalog.updater.setter.family_field.class:            Pim\Component\Catalog\Updater\Setter\FamilyFieldSetter
+    pim_catalog.updater.setter.parent_field.class:            Pim\Component\Catalog\Updater\Setter\ParentFieldSetter
     pim_catalog.updater.setter.association_field.class:       Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter
     pim_catalog.updater.setter.enabled_field.class:           Pim\Component\Catalog\Updater\Setter\EnabledFieldSetter
     pim_catalog.updater.setter.media_value.class:             Pim\Component\Catalog\Updater\Setter\MediaAttributeSetter
@@ -55,25 +57,29 @@ services:
     pim_catalog.updater.product:
         class: '%pim_catalog.updater.product.class%'
         arguments:
-            - '@pim_catalog.updater.product_property_setter'
+            - '@pim_catalog.updater.property_setter'
             - '@pim_catalog.updater.product_template'
             - '@pim_catalog.updater.entity_with_values'
-            - ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations']
+            - ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations', 'parent']
+            - ['identifier', 'created', 'updated']
+
+    pim_catalog.updater.product_model:
+        class: '%pim_catalog.updater.product_model.class%'
+        arguments:
+            - '@pim_catalog.updater.property_setter'
+            - '@pim_catalog.updater.entity_with_values'
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_catalog.repository.product_model'
+            - ['categories']
             - ['identifier', 'created', 'updated']
 
     pim_catalog.updater.entity_with_values:
         class: '%pim_catalog.updater.entity_with_values.class%'
         arguments:
-            - '@pim_catalog.updater.entity_with_values_property_setter'
+            - '@pim_catalog.updater.property_setter'
 
-    pim_catalog.updater.product_property_setter:
-        class: '%pim_catalog.updater.product_property_setter.class%'
-        arguments:
-            - '@pim_catalog.repository.cached_attribute'
-            - '@pim_catalog.updater.setter.registry'
-
-    pim_catalog.updater.entity_with_values_property_setter:
-        class: '%pim_catalog.updater.entity_with_values_property_setter.class%'
+    pim_catalog.updater.property_setter:
+        class: '%pim_catalog.updater.property_setter.class%'
         arguments:
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.updater.setter.registry'
@@ -99,7 +105,7 @@ services:
     pim_catalog.updater.product_template:
         class: '%pim_catalog.updater.product_template.class%'
         arguments:
-            - '@pim_catalog.updater.product_property_setter'
+            - '@pim_catalog.updater.property_setter'
             - '@pim_serializer'
 
     pim_catalog.updater.attribute_option:
@@ -137,6 +143,14 @@ services:
             - '@pim_catalog.factory.attribute_requirement'
             - '@pim_catalog.repository.attribute_requirement'
             - '@pim_localization.updater.translatable'
+
+    pim_catalog.updater.family_variant:
+        class: '%pim_catalog.updater.family_variant.class%'
+        arguments:
+            - '@pim_catalog.factory.variant_attribute_set'
+            - '@pim_localization.updater.translatable'
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.attribute'
 
     pim_catalog.updater.channel:
         class: '%pim_catalog.updater.channel.class%'
@@ -270,6 +284,14 @@ services:
         arguments:
             - '@pim_catalog.repository.group'
             - ['variant_group']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.parent_field:
+        class: '%pim_catalog.updater.setter.parent_field.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - ['parent']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 

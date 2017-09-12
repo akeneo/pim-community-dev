@@ -202,6 +202,9 @@ pim_enrich:
                 family:
                     title: Family
                     none: None
+                family_variant:
+                    title: Variant
+                    none: None
                 groups:
                     title: Groups
                     modal:
@@ -241,7 +244,13 @@ pim_enrich:
             message:
                 created: Product successfully created
             completeness: Complete
-
+        product_model:
+            info:
+                update_successful: Product model successfully updated.
+                update_failed: The product model could not be updated.
+                field_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
+            read_only_parent_attribute_from_common: This attribute can be updated on the common attributes.
+            variant_axis: Variant axis
         association_type:
             info:
                 deletion_successful: Association type successfully deleted.
@@ -701,6 +710,8 @@ pim_enrich:
                     real_time_versioning:
                         title: Real time history update
                         help: Means that the product history is automatically updated, can be switched off to improve performances
+                    family_variant_column:
+                        title: Family variant column
                 history:
                     title: History
             file_path: File path
@@ -1071,6 +1082,7 @@ page_title:
     pim_enrich_attribute_edit:             Attributes {{ attribute.label }} | Edit
     pim_enrich_product_index:              Products
     pim_enrich_product_edit:               Products {{ product.sku }} | Edit
+    pim_enrich_product_model_edit:         Product models {{ product.sku }} | Edit
     pim_enrich_family_index:               Families
     pim_enrich_family_edit:                Families {{ family.label }} | Edit
     pim_enrich_channel_index:              Channels
@@ -1158,11 +1170,16 @@ batch_jobs:
     csv_family_export:
         label: Family export in CSV
         export.label: Family export
+    csv_family_variant_export:
+        label: Family variant export in CSV
+        export.label: Family variant export
     csv_product_import:
         label: Product import in CSV
         validation.label: File validation
         import.label: Product import
         import_associations.label: Association import
+    csv_product_model_import:
+        label: Product model import in CSV
     csv_category_import:
         label: Category import in CSV
         validation.label: File validation
@@ -1183,6 +1200,10 @@ batch_jobs:
         label: Family import in CSV
         validation.label: File validation
         import.label: Family import
+    csv_family_variant_import:
+        label: Family variant import in CSV
+        validation.label: File validation
+        import.label: Family variant import
     csv_group_import:
         label: Group import in CSV
         validation.label: File validation
@@ -1246,6 +1267,10 @@ batch_jobs:
         label: Family import in XLSX
         validation.label: File validation
         import.label: Family import
+    xlsx_family_variant_import:
+        label: Family variant import in XLSX
+        validation.label: File validation
+        import.label: Family variant import
     xlsx_product_export:
         label: Product export in XLSX
         export.label: Product export
@@ -1254,6 +1279,8 @@ batch_jobs:
         validation.label: File validation
         import.label: Product import
         import_associations.label: Association import
+    xlsx_product_model_import:
+        label: Product model import in XSLX
     xlsx_group_export:
         label: Group export in XLSX
         export.label: Group export
@@ -1271,6 +1298,9 @@ batch_jobs:
     xlsx_family_export:
         label: Family export in XLSX
         export.label: Family export
+    xlsx_family_variant_export:
+        label: Family variant export in XLSX
+        export.label: Family variant export
     xlsx_category_export:
         label: Category export in XLSX
         export.label: Category export
