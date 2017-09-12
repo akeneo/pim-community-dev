@@ -2,10 +2,7 @@
 
 namespace Pim\Component\Connector\Reader\Database;
 
-use Akeneo\Component\Batch\Item\InitializableInterface;
-use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
-use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
@@ -21,7 +18,7 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface
+class ProductReader implements DatabaseProductReaderInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
     protected $pqbFactory;
@@ -86,10 +83,10 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     {
         $product = null;
 
-        if ($this->products->valid()) {
-            $product = $this->products->current();
+        if ($this->isProductValid()) {
+            $product = $this->getCurrentProduct();
             $this->stepExecution->incrementSummaryInfo('read');
-            $this->products->next();
+            $this->nextProduct();
         }
 
         if (null !== $product) {
@@ -108,6 +105,30 @@ class ProductReader implements ItemReaderInterface, InitializableInterface, Step
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCurrentProduct()
+    {
+        return $this->products->current();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isProductValid()
+    {
+        return $this->products->valid();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function nextProduct()
+    {
+        $this->products->next();
     }
 
     /**
