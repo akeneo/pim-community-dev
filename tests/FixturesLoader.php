@@ -89,6 +89,9 @@ class FixturesLoader
 
             $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
 
+            $this->indexProductModels();
+            $this->indexProducts();
+
             return;
         }
 
@@ -388,5 +391,17 @@ class FixturesLoader
     {
         $aclCache = $this->container->get('security.acl.cache');
         $aclCache->clearCache();
+    }
+
+    protected function indexProducts()
+    {
+        $products = $this->container->get('pim_catalog.repository.product')->findAll();
+        $this->container->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
+    }
+
+    protected function indexProductModels()
+    {
+        $productModels = $this->container->get('pim_catalog.repository.product_model')->findAll();
+        $this->container->get('pim_catalog.elasticsearch.indexer.product_model')->indexAll($productModels);
     }
 }

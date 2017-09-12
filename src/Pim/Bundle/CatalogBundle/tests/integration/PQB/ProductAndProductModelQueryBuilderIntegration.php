@@ -530,4 +530,16 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
         $this->indexProductModels();
         $this->indexProducts();
     }
+
+    private function indexProducts()
+    {
+        $products = $this->get('pim_catalog.repository.product')->findAll();
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
+    }
+
+    private function indexProductModels()
+    {
+        $productModels = $this->get('pim_catalog.repository.product_model')->findAll();
+        $this->get('pim_catalog.elasticsearch.indexer.product_model')->indexAll($productModels);
+    }
 }

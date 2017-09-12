@@ -17,14 +17,14 @@ Feature: Export family variants in CSV
     And exported file of "csv_catalog_modeling_family_variant_export" should contain:
       """
       code;family;label-de_DE;label-en_US;label-fr_FR;variant-axes_1;variant-axes_2;variant-attributes_1;variant-attributes_2
-      clothing_color_size;clothing;"Kleidung nach Farbe und Größe";"Clothing by color and size";"Vêtements par couleur et taille";color;size;image,variation_name,variation_image,composition,color,material;sku,weight,size,ean
-      shoes_size;shoes;"Schuhe nach Größe";"Shoes by size";"Chaussures par taille";eu_shoes_size;;weight,size;
-      clothing_colorsize;clothing;"Kleidung nach Farbe/Größe";"Clothing by color/size";"Vêtements par couleur/taille";color,size;;image,variation_name,variation_image,composition;
+      clothing_color_size;clothing;"Kleidung nach Farbe und Größe";"Clothing by color and size";"Vêtements par couleur et taille";color;size;variation_name,variation_image,composition,color,material;sku,weight,size,ean
+      shoes_size;shoes;"Schuhe nach Größe";"Shoes by size";"Chaussures par taille";eu_shoes_size;;weight,size,eu_shoes_size;
+      clothing_colorsize;clothing;"Kleidung nach Farbe/Größe";"Clothing by color/size";"Vêtements par couleur/taille";color,size;;variation_name,variation_image,composition,color,size;
       clothing_size;clothing;"Kleidung nach Größe";"Clothing by size";"Vêtements par taille";size;;sku,weight,size,ean;
-      clothing_color;clothing;"Kleidung nach Farbe";"Clothing by color";"Vêtements par couleur";color;;sku,image,variation_name,variation_image,composition,color,ean;
+      clothing_color;clothing;"Kleidung nach Farbe";"Clothing by color";"Vêtements par couleur";color;;sku,variation_name,variation_image,composition,color,ean;
       accessories_size;accessories;"Accessories by size";"Accessories by size";"Accessoires par taille";size;;sku,weight,size,ean;
       shoes_size_color;shoes;"Schuhe nach Größe und Farbe";"Shoes by size and color";"Chaussures par taille et couleur";size;color;weight,variation_name,size,eu_shoes_size;sku,image,variation_image,composition,color,ean
-      clothing_material_size;clothing;"Clothing by material and size";"Clothing by material and size";"Vêtements par matière et taille";material;size;image,variation_name,variation_image,composition,color,material;sku,weight,size,ean
+      clothing_material_size;clothing;"Clothing by material and size";"Clothing by material and size";"Vêtements par matière et taille";material;size;variation_name,variation_image,composition,color,material;sku,weight,size,ean
       """
 
   Scenario: I successfully create and use a family variant export in CSV
@@ -45,12 +45,12 @@ Feature: Export family variants in CSV
     Then exported file of "family_variant_export" should contain:
       """
       code;family;label-de_DE;label-en_US;label-fr_FR;variant-axes_1;variant-axes_2;variant-attributes_1;variant-attributes_2
-      clothing_color_size;clothing;"Kleidung nach Farbe und Größe";"Clothing by color and size";"Vêtements par couleur et taille";color;size;image,variation_name,variation_image,composition,color,material;sku,weight,size,ean
-      shoes_size;shoes;"Schuhe nach Größe";"Shoes by size";"Chaussures par taille";eu_shoes_size;;weight,size;
-      clothing_colorsize;clothing;"Kleidung nach Farbe/Größe";"Clothing by color/size";"Vêtements par couleur/taille";color,size;;image,variation_name,variation_image,composition;
+      clothing_color_size;clothing;"Kleidung nach Farbe und Größe";"Clothing by color and size";"Vêtements par couleur et taille";color;size;variation_name,variation_image,composition,color,material;sku,weight,size,ean
+      shoes_size;shoes;"Schuhe nach Größe";"Shoes by size";"Chaussures par taille";eu_shoes_size;;weight,size,eu_shoes_size;
+      clothing_colorsize;clothing;"Kleidung nach Farbe/Größe";"Clothing by color/size";"Vêtements par couleur/taille";color,size;;variation_name,variation_image,composition,color,size;
       clothing_size;clothing;"Kleidung nach Größe";"Clothing by size";"Vêtements par taille";size;;sku,weight,size,ean;
-      clothing_color;clothing;"Kleidung nach Farbe";"Clothing by color";"Vêtements par couleur";color;;sku,image,variation_name,variation_image,composition,color,ean;
+      clothing_color;clothing;"Kleidung nach Farbe";"Clothing by color";"Vêtements par couleur";color;;sku,variation_name,variation_image,composition,color,ean;
       accessories_size;accessories;"Accessories by size";"Accessories by size";"Accessoires par taille";size;;sku,weight,size,ean;
       shoes_size_color;shoes;"Schuhe nach Größe und Farbe";"Shoes by size and color";"Chaussures par taille et couleur";size;color;weight,variation_name,size,eu_shoes_size;sku,image,variation_image,composition,color,ean
-      clothing_material_size;clothing;"Clothing by material and size";"Clothing by material and size";"Vêtements par matière et taille";material;size;image,variation_name,variation_image,composition,color,material;sku,weight,size,ean
+      clothing_material_size;clothing;"Clothing by material and size";"Clothing by material and size";"Vêtements par matière et taille";material;size;variation_name,variation_image,composition,color,material;sku,weight,size,ean
       """

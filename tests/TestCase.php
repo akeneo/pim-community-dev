@@ -29,9 +29,6 @@ abstract class TestCase extends KernelTestCase
 
         $fixturesLoader = $this->getFixturesLoader($configuration, $databaseSchemaHandler);
         $fixturesLoader->load();
-
-        $this->indexProductModels();
-        $this->indexProducts();
     }
 
     /**
@@ -113,18 +110,5 @@ abstract class TestCase extends KernelTestCase
         }
 
         throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
-    }
-
-    protected function indexProducts()
-    {
-        $products = $this->get('pim_catalog.repository.product')->findAll();
-        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
-    }
-
-    protected function indexProductModels()
-    {
-        $productModels = $this->get('pim_catalog.repository.product_model')->findAll();
-        $this->get('pim_catalog.elasticsearch.indexer.product_model')->indexAll($productModels);
-        $this->get('pim_catalog.elasticsearch.indexer.product_model_descendance')->indexAll($productModels);
     }
 }
