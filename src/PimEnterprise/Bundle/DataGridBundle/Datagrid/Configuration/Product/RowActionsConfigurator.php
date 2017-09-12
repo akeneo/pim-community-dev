@@ -98,23 +98,11 @@ class RowActionsConfigurator implements ConfiguratorInterface
      */
     protected function addCustomEditAction()
     {
-        $properties = $this->configuration->offsetGetByPath('[properties]');
-        $properties['row_action_link'] = [
-            'type'   => 'url',
-            'route'  => 'pim_enrich_product_edit',
-            'params' => ['id', 'dataLocale']
-        ];
-        $this->configuration->offsetSetByPath('[properties]', $properties);
-
         $actions = $this->configuration->offsetGetByPath('[actions]');
         unset($actions['edit']['rowAction']);
         $actions['row_action'] = [
-            'type'      => 'tab-redirect',
-            'label'     => 'Dispatch a product',
-            'tab'       => 'attributes',
-            'link'      => 'row_action_link',
+            'type'      => 'navigate-product-and-product-model',
             'rowAction' => true,
-            'hidden'    => true
         ];
         $this->configuration->offsetSetByPath('[actions]', $actions);
     }
@@ -125,7 +113,6 @@ class RowActionsConfigurator implements ConfiguratorInterface
     protected function addRowActions()
     {
         $this->addShowRowAction();
-        $this->addShowLinkProperty();
         $this->configuration->offsetSetByPath(
             '[action_configuration]',
             $this->getActionConfigurationClosure()
@@ -150,31 +137,12 @@ class RowActionsConfigurator implements ConfiguratorInterface
     protected function addShowRowAction()
     {
         $viewAction = [
-            'type'      => 'tab-redirect',
+            'type' =>      'navigate-product-and-product-model',
             'label'     => 'View the product',
-            'tab'       => 'attributes',
             'icon'      => 'eye-open',
-            'link'      => 'show_link',
             'rowAction' => true,
         ];
         $this->configuration->offsetSetByPath('[actions][show]', $viewAction);
-
-        return $this;
-    }
-
-    /**
-     * Add show link property to the configuration.
-     *
-     * @return RowActionsConfigurator
-     */
-    protected function addShowLinkProperty()
-    {
-        $showLink = [
-            'type'   => 'url',
-            'route'  => 'pim_enrich_product_edit',
-            'params' => ['id', 'dataLocale'],
-        ];
-        $this->configuration->offsetSetByPath('[properties][show_link]', $showLink);
 
         return $this;
     }
