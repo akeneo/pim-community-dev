@@ -12,10 +12,15 @@ extensions:
             tab: pim-menu-settings
             item: pim-menu-settings-family
 
-    pim-family-index-filters:
-        module: oro/datafilter-builder
+    pim-family-index-filters-list:
+        module: oro/datafilter/filters-list
         parent: pim-family-index
-        targetZone: content
+        targetZone: filters
+
+    pim-family-index-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-family-index
+        targetZone: filters
 
     pim-family-index-grid:
         module: pim/form/common/index/grid

@@ -12,10 +12,15 @@ extensions:
             tab: pim-menu-system
             item: pim-menu-system-user-group
 
-    pim-user-group-index-filters:
-        module: oro/datafilter-builder
+    pim-user-group-index-filters-list:
+        module: oro/datafilter/filters-list
         parent: pim-user-group-index
-        targetZone: content
+        targetZone: filters
+
+    pim-user-group-index-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-user-group-index
+        targetZone: filters
 
     pim-user-group-index-grid:
         module: pim/form/common/index/grid

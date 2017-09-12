@@ -11,10 +11,15 @@ extensions:
         config:
             tab: pim-menu-imports
 
-    pim-import-execution-index-filters:
-        module: oro/datafilter-builder
+    pim-import-execution-index-filters-list:
+        module: oro/datafilter/filters-list
         parent: pim-import-execution-index
-        targetZone: content
+        targetZone: filters
+
+    pim-import-execution-index-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-import-execution-index
+        targetZone: filters
 
     pim-import-execution-index-grid:
         module: pim/form/common/index/grid
