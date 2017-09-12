@@ -51,7 +51,11 @@ class SequentialEditController
         $parameters = $this->parameterParser->parse($request);
         $filters = $this->filterAdapter->adapt($parameters);
         $products = [];
-        $cursor = $this->getProductsCursor($filters);
+        $cursor = $this->getProductsCursor($filters, [
+            'locale' => $parameters['dataLocale'],
+            'scope'  => $parameters['dataScope'],
+            'sort'   => $parameters['sort']
+        ]);
 
         while ($cursor->valid() && $cursor->key() < 1000) {
             $products[] = $cursor->current();
@@ -63,19 +67,19 @@ class SequentialEditController
 
     /**
      * @param array            $filters
-     * @param ChannelInterface $channel
      *
      * @return CursorInterface
      */
-    protected function getProductsCursor(array $filters, ChannelInterface $channel = null)
+    protected function getProductsCursor(array $filters, $context)
     {
         $options = ['filters' => $filters];
 
-        if (null !== $channel) {
-            $options['default_scope'] = $channel->getCode();
-        }
-
         $productQueryBuilder = $this->pqbFactory->create($options);
+
+        if (null !== $context['sort']) {
+            $field = each($context['sort'])['key'];
+            $productQueryBuilder->addSorter($field, $context['sort'][$field], $context);
+        }
 
         return $productQueryBuilder->execute();
     }

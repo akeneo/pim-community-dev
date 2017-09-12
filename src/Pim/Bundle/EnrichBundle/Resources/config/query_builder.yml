@@ -14,7 +14,7 @@ services:
     pim_enrich.factory.sequential_edit_product_cursor:
         class: '%akeneo_elasticsearch.cursor.cursor_factory.class%'
         arguments:
-            - '@akeneo_elasticsearch.client'
+            - 'akeneo_elasticsearch.client.product'
             - '@pim_catalog.object_manager.product'
             - '%pim_catalog.entity.product.class%'
             - '%pim_enrich.cursor.sequential_edit_cursor.class%'
