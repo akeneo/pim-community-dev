@@ -179,6 +179,13 @@ define(
         },
 
         /**
+         * Closes the panel when the user clicks on Done button
+         */
+        _onDone() {
+            this.selectWidget.multiselect('close');
+        },
+
+        /**
          * Enable filter
          *
          * @param {oro.datafilter.AbstractFilter} filter
@@ -332,6 +339,8 @@ define(
                     classes: 'AknFilterBox-addFilterButton filter-list select-filter-widget',
                     beforeopen: $.proxy(function () {
                         this.selectWidget.getWidget().css({ left: this._getLeftStartPosition() });
+                        this._addDoneButton();
+
                         return true;
                     }, this),
                     open: $.proxy(function () {
@@ -360,6 +369,24 @@ define(
             this.$('.filter-list span:first').replaceWith(
                 '<div id="add-filter-button" >Filters</div>'
             );
+        },
+
+        /**
+         * Adds a done button in the bottom of the multiselect
+         */
+        _addDoneButton() {
+            if (!this.selectWidget.getWidget().find('.done-button').length) {
+                const button = $(
+                    '<div class="AknButton AknButton--apply done-button">'
+                    + __('pim.grid.category_filter.done') +
+                    '</div>'
+                );
+                button.on('click', () => this._onDone());
+                
+                const container = $('<div class="AknColumn-bottomButtonContainer"></div>');
+                container.append(button);
+                this.selectWidget.getWidget().append(container);
+            }
         },
 
         /**

@@ -54,6 +54,8 @@ pim.grid.choice_filter:
     operator: Operator
 pim.grid.price_filter:
     label: Currency
+pim.grid.category_filter:
+    done: Done
 
 # Column configuration
 Available Columns:                 Available Columns
