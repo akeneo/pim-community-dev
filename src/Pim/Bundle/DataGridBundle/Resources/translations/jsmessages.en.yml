@@ -52,6 +52,8 @@ pim.grid.choice_filter:
     label_not_empty: is not empty
     label_in_list: in list
     operator: Operator
+pim.grid.price_filter:
+    label: Currency
 
 # Column configuration
 Available Columns:                 Available Columns

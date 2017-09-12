@@ -68,7 +68,6 @@ define(
                     return {value: i.toString(), label: option};
                 });
             }
-
             // init empty value object if it was not initialized so far
             if (_.isUndefined(this.emptyValue)) {
                 this.emptyValue = {
@@ -115,7 +114,27 @@ define(
         _writeDOMValue: function(value) {
             this._setInputValue(this.criteriaValueSelectors.value, value.value);
             this._setInputValue(this.criteriaValueSelectors.type, value.type);
+            this._highlightOperator(value.type);
+
             return this;
+        },
+
+        /**
+         * Highlights the current operator
+         *
+         * @param operator
+         */
+        _highlightOperator(operator) {
+            this.$el.find('.operator .AknDropdown-menuLink')
+                .removeClass('AknDropdown-menuLink--active')
+                .removeClass('active');
+
+            const currentOperatorChoice = this.$el.find('.operator .operator_choice[data-value=' + operator + ']');
+            currentOperatorChoice.parent()
+                .addClass('AknDropdown-menuLink--active')
+                .addClass('active');
+
+            this.$el.find('.operator .AknActionButton-highlight').html(currentOperatorChoice.text());
         },
 
         /**
@@ -164,21 +183,15 @@ define(
         },
 
         /**
-         * Open/close select dropdown
+         * Updates the select classes and hide/show sub-elements
          *
          * @param {Event} e
          * @protected
          */
         _onSelectOperator: function(e) {
-            this.$el.find('.AknDropdown-menuLink')
-                .removeClass('AknDropdown-menuLink--active')
-                .removeClass('active');
-            $(e.currentTarget)
-                .addClass('AknDropdown-menuLink--active')
-                .addClass('active');
-            this.$el.find('.AknActionButton-highlight').html($(e.currentTarget).text());
-
             const value = $(e.currentTarget).find('.operator_choice').attr('data-value');
+            this._highlightOperator(value);
+
             if (value === 'in') {
                 this._enableListSelection();
             } else {

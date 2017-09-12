@@ -134,6 +134,7 @@ config:
         pim/template/datagrid/add-filter-select:         pimdatagrid/templates/datagrid/add-filter-select.html
         pim/template/datagrid/configure-columns-action:  pimdatagrid/templates/configure-columns-action.html
         pim/template/datagrid/filter/text-filter:        pimdatagrid/templates/filter/text-filter.html
+        pim/template/datagrid/filter/price-filter:       pimdatagrid/templates/filter/price-filter.html
         pim/template/datagrid/filter/date-filter:        pimdatagrid/templates/filter/date-filter.html
         pim/template/datagrid/filter/metric-filter:      pimdatagrid/templates/filter/metric-filter.html
         pim/template/datagrid/filter/search-filter:      pimdatagrid/templates/filter/search-filter.html

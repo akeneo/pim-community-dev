@@ -217,7 +217,7 @@ define(
                     emptyChoice: this.emptyChoice,
                     selectedOperatorLabel: this._getOperatorChoices()[this.emptyValue.type],
                     operatorLabel: __('pim.grid.choice_filter.operator'),
-                    updateLabel: __('Update'),
+                    updateLabel: __('Update')
                 })
             );
             return this;

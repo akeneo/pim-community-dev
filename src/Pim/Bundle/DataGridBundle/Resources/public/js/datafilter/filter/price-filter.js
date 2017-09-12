@@ -1,6 +1,19 @@
 define(
-    ['jquery', 'underscore', 'oro/datafilter/number-filter', 'oro/app'],
-    function ($, _, NumberFilter, app) {
+    [
+        'jquery',
+        'underscore',
+        'oro/translator',
+        'oro/datafilter/number-filter',
+        'oro/app',
+        'pim/template/datagrid/filter/price-filter'
+    ], function (
+        $,
+        _,
+        __,
+        NumberFilter,
+        app,
+        popupCriteriaTemplate
+    ) {
         'use strict';
 
         /**
@@ -15,31 +28,62 @@ define(
          * @extends oro.datafilter.NumberFilter
          */
         return NumberFilter.extend({
+            popupCriteriaTemplate: _.template(popupCriteriaTemplate),
+            currencies: [],
+            criteriaValueSelectors: {
+                currency: 'input[name="currency_currency"]',
+                type:     'input[name="currency_type"]',
+                value:    'input[name="value"]'
+            },
+            events: {
+                'keyup input': '_onReadCriteriaInputKey',
+                'keydown [type="text"]': '_preventEnterProcessing',
+                'click .filter-update': '_onClickUpdateCriteria',
+                'click .filter-criteria-selector': '_onClickCriteriaSelector',
+                'click .operator .AknDropdown-menuLink': '_onSelectOperator',
+                'click .currency .AknDropdown-menuLink': '_onSelectCurrency',
+                'click .disable-filter': '_onClickDisableFilter'
+            },
+
             /**
              * @inheritDoc
              */
             initialize: function() {
                 NumberFilter.prototype.initialize.apply(this, arguments);
 
-                this.on('disable', this._onDisable, this);
+                this.emptyValue = {
+                    currency: _.first(_.keys(this.currencies)),
+                    type: _.findWhere(this.choices, { label: '=' }).data,
+                    value: ''
+                };
 
+                this.on('disable', this._onDisable, this);
             },
 
             _onDisable: function() {
-                this.$('.choicefilter button.dropdown-toggle').first().html(_.__('Action') + '<span class="AknActionButton-caret AknCaret"></span>');
-                this.$('.choicefilter button.dropdown-toggle').last().html(_.__('Currency') + '<span class="AknActionButton-caret AknCaret"></span>');
+                this.$('.choicefilter button.dropdown-toggle').first().html(__('Action') + '<span class="AknActionButton-caret AknCaret"></span>');
+                this.$('.choicefilter button.dropdown-toggle').last().html(__('Currency') + '<span class="AknActionButton-caret AknCaret"></span>');
             },
 
             /**
              * @inheritDoc
              */
-            _renderCriteria: function (el) {
-                $(el).append(this.popupCriteriaTemplate({
-                    name: this.name,
-                    choices: this.choices,
-                    currencies: this.currencies
-                }));
-
+            _renderCriteria: function(el) {
+                $(el).append(
+                    this.popupCriteriaTemplate({
+                        label: this.label,
+                        operatorChoices: this._getOperatorChoices(),
+                        selectedOperator: this._getDisplayValue().type,
+                        emptyChoice: this.emptyChoice,
+                        selectedOperatorLabel: this._getOperatorChoices()[this._getDisplayValue().type],
+                        operatorLabel: __('pim.grid.choice_filter.operator'),
+                        updateLabel: __('Update'),
+                        currencies: this.currencies,
+                        currencyLabel: __('pim.grid.price_filter.label'),
+                        selectedCurrency: this._getDisplayValue().currency,
+                        value: this._getDisplayValue().value
+                    })
+                );
                 return this;
             },
 
@@ -47,22 +91,39 @@ define(
              * @inheritDoc
              */
             _writeDOMValue: function (value) {
-                this._setInputValue(this.criteriaValueSelectors.value, value.value);
-                this._setInputValue(this.criteriaValueSelectors.type, value.type);
+                NumberFilter.prototype._writeDOMValue.apply(this, arguments);
                 this._setInputValue(this.criteriaValueSelectors.currency, value.currency);
+                this._highlightCurrency(value.currency);
 
                 return this;
+            },
+
+            /**
+             * Highlights the current currency
+             *
+             * @param currency
+             */
+            _highlightCurrency(currency) {
+                this.$el.find('.currency .AknDropdown-menuLink')
+                    .removeClass('AknDropdown-menuLink--active')
+                    .removeClass('active');
+
+                const currentCurrencyChoice = this.$el.find('.currency .currency_choice[data-value=' + currency + ']');
+                currentCurrencyChoice.parent()
+                    .addClass('AknDropdown-menuLink--active')
+                    .addClass('active');
+
+                this.$el.find('.currency .AknActionButton-highlight').html(currentCurrencyChoice.text());
             },
 
             /**
              * @inheritDoc
              */
             _readDOMValue: function () {
-                return {
-                    value: this._getInputValue(this.criteriaValueSelectors.value),
-                    type: this._getInputValue(this.criteriaValueSelectors.type),
-                    currency: this._getInputValue(this.criteriaValueSelectors.currency)
-                };
+                let value = NumberFilter.prototype._readDOMValue.apply(this, arguments);
+                value.currency = this._getInputValue(this.criteriaValueSelectors.currency);
+
+                return value;
             },
 
             /**
@@ -79,62 +140,6 @@ define(
                     var option = this._getChoiceOption(value.type);
                     return option.label + ' ' + value.value + ' ' + value.currency;
                 }
-            },
-
-            /**
-             * @inheritDoc
-             */
-            popupCriteriaTemplate: _.template(
-                '<div class="AknFilterChoice currencyfilter choicefilter">' +
-                    '<div class="AknFilterChoice-operator AknDropdown">' +
-                        '<button class="AknActionButton AknActionButton--big AknActionButton--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
-                            '<%= _.__("Action") %>' +
-                            '<span class="AknActionButton-caret AknCaret"></span>' +
-                        '</button>' +
-                        '<ul class="dropdown-menu">' +
-                            '<% _.each(choices, function (option) { %>' +
-                                '<li><a class="choice_value" href="#" data-value="<%= option.value %>" data-input-toggle="true"><%= option.label %></a></li>' +
-                            '<% }); %>' +
-                        '</ul>' +
-                        '<input class="name_input" type="hidden" name="currency_type" value=""/>' +
-                    '</div>' +
-                    '<input class="AknTextField AknTextField--noRadius AknFilterChoice-field" type="text" name="value" value="">' +
-                    '<div class="AknDropdown">' +
-                        '<button class="AknActionButton AknActionButton--big AknActionButton--noRightBorder AknActionButton--noLeftBorder dropdown-toggle" data-toggle="dropdown">' +
-                            '<%= _.__("Currency") %>' +
-                            '<span class="AknActionButton-caret AknCaret"></span>' +
-                        '</button>' +
-                        '<ul class="dropdown-menu">' +
-                            '<% _.each(currencies, function (currency) { %>' +
-                                '<li><a class="choice_value" href="#" data-value="<%= currency %>"><%= currency %></a></li>' +
-                            '<% }); %>' +
-                        '</ul>' +
-                        '<input class="name_input" type="hidden" name="currency_currency" value=""/>' +
-                    '</div>' +
-                    '<button class="AknFilterChoice-button AknButton AknButton--apply AknButton--noLeftRadius filter-update" type="button"><%= _.__("Update") %></button>' +
-                '</div>'
-            ),
-
-            /**
-             * Selectors for filter criteria elements
-             *
-             * @property {Object}
-             */
-            criteriaValueSelectors: {
-                currency: 'input[name="currency_currency"]',
-                type:     'input[name="currency_type"]',
-                value:    'input[name="value"]'
-            },
-
-            /**
-             * Empty value object
-             *
-             * @property {Object}
-             */
-            emptyValue: {
-                currency: '',
-                type:     '',
-                value:    ''
             },
 
             /**
@@ -226,7 +231,20 @@ define(
                 this.trigger('update');
 
                 return this;
-            }
+            },
+
+            /**
+             * Update the currency after clicking in the dropdown
+             *
+             * @param {Event} e
+             */
+            _onSelectCurrency: function(e) {
+                const value = $(e.currentTarget).find('.currency_choice').attr('data-value');
+                $(this.criteriaValueSelectors.currency).val(value);
+                this._highlightCurrency(value);
+
+                e.preventDefault();
+            },
         });
     }
 );
