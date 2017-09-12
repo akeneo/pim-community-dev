@@ -27,10 +27,10 @@ Feature: Edit a product model
     And I edit the "apollon_blue" product model
     And I visit the "Marketing" group
     And I fill in the following information:
-      | Name | Apollonito blue |
+      | Variation Name | Apollonito blue |
     When I press the "Save" button
     Then I should not see the text "There are unsaved changes."
-    And the product Name should be "Apollonito blue"
+    And the product Variation Name should be "Apollonito blue"
 
   Scenario: Parent attributes of a sub product model are read only
     Given I am logged in as "Mary"

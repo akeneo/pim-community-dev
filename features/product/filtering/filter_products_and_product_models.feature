@@ -26,10 +26,10 @@ Feature: Filter product and product models
     And the row "running-shoes-xxs-crimson-red" should contain:
       | column           | value                         |
       | ID               | running-shoes-xxs-crimson-red |
-      | label            | running-shoes-xxs-crimson-red |
+      | label            | Running shoes XXS             |
       | family           | Shoes                         |
       | Status           | Enabled                       |
-      | complete         | 25%                           |
+      | complete         | 62%                           |
       | groups           |                               |
       | variant products |                               |
 
