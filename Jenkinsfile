@@ -92,7 +92,12 @@ stage("Build") {
                 sh "npm run webpack --color=always"
             }
             container("docker") {
+                // Compatibility layer while the EE is not up to date with the new CI
                 sh "cp vendor/akeneo/pim-community-dev/Dockerfile ."
+                sh "cp -R vendor/akeneo/pim-community-dev/.ci ."
+                sh "sed -i \"s#http://akeneo#http://127.0.0.1#g\" behat.ci.yml"
+                sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.ci.yml"
+
                 sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee ."
                 sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee"
             }
@@ -105,18 +110,32 @@ stage("Test") {
         parallel(
             "phpunit": {
                 withPhp({
-                    sh "cd /home/jenkins/pim && vendor/bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test"
+                    try {
+                        sh "cd /home/jenkins/pim && vendor/bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit ${env.WORKSPACE}/junit_output.xml"
+                    } finally {
+                        junit "junit_output.xml"
+                    }
                 })
             },
             "phpspec": {
                 withPhp({
                     sh "cd /home/jenkins/pim && chown -R phpuser ."
-                    sh "cd /home/jenkins/pim && su phpuser -c 'vendor/bin/phpspec run --format=dot'"
+
+                    try {
+                        sh "cd /home/jenkins/pim && su phpuser -c 'vendor/bin/phpspec run --format=junit > junit_output.xml'"
+                        sh "mv /home/jenkins/pim/junit_output.xml ${env.WORKSPACE}/"
+                    } finally {
+                        junit "junit_output.xml"
+                    }
                 })
             },
             "php-cs-fixer": {
                 withPhp({
-                    sh "cd /home/jenkins/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php"
+                    try {
+                        sh "cd /home/jenkins/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ${env.WORKSPACE}/junit_output.xml"
+                    } finally {
+                        junit "junit_output.xml"
+                    }
                 })
             },
             "grunt": {
@@ -141,12 +160,16 @@ stage("Test") {
                             [container: "php", script: "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"],
                             [container: "php", script: "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"],
                             [container: "php", script: "bin/console --env=test pim:install --force"],
-                            [container: "php", script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist " + file]
+                            [
+                                container: "php",
+                                junit: [in: "/home/jenkins/pim/", name: "junit_output.xml"],
+                                script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist " + file + " --log-junit junit_output.xml"
+                            ]
                         ])
                     }
 
                     return messages
-                }, 30, "ce")
+                }, 40, "ce")
             },
             "behat-ce": {
                 queue({
@@ -166,7 +189,13 @@ stage("Test") {
                             [container: "php", script: "chmod 777 -R var/cache/behat"],
                             [container: "php", script: "touch var/logs/behat.log"],
                             [container: "php", script: "chmod 777 -R var/logs/behat.log"],
-                            [container: "php", script: "php vendor/bin/behat --tags=\"~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app\" --format progress --strict -vv " + line]
+                            [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/screenshots"],
+                            [
+                                container: "php",
+                                junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
+                                artifacts: [in: "/home/jenkins/pim/app/build", name: "*.png"],
+                                script: "php vendor/bin/behat -c behat.ci.yml --tags=\"~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app\" --strict -vv " + line
+                            ]
                         ])
                     }
 
@@ -184,12 +213,16 @@ stage("Test") {
                             [container: "php", script: "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"],
                             [container: "php", script: "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"],
                             [container: "php", script: "bin/console --env=test pim:install --force"],
-                            [container: "php", script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist " + file]
+                            [
+                                container: "php",
+                                junit: [in: "/home/jenkins/pim/", name: "junit_output.xml"],
+                                script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist " + file + " --log-junit junit_output.xml"
+                            ]
                         ])
                     }
 
                     return messages
-                }, 30, "ee")
+                }, 20, "ee")
             },
             "behat-ee": {
                 queue({
@@ -209,12 +242,18 @@ stage("Test") {
                             [container: "php", script: "chmod 777 -R var/cache/behat"],
                             [container: "php", script: "touch var/logs/behat.log"],
                             [container: "php", script: "chmod 777 -R var/logs/behat.log"],
-                            [container: "php", script: "php vendor/bin/behat --tags=\"~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce\" --format progress --strict -vv " + line]
+                            [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/screenshots"],
+                            [
+                                container: "php",
+                                junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
+                                artifacts: [in: "/home/jenkins/pim/app/build", name: "*.png"],
+                                script: "php vendor/bin/behat -c behat.ci.yml --tags=\"~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce\" -f progress --strict -vv " + line
+                            ]
                         ])
                     }
 
                     return messages
-                }, 150, "ee")
+                }, 200, "ee")
             }
         )
     } finally {
@@ -301,7 +340,8 @@ def withDockerScm(body) {
 
 def queue(body, scale, edition) {
     clearTemplateNames()
-    podTemplate(label: "pubsub", containers: [
+    def uuid = UUID.randomUUID().toString()
+    podTemplate(label: "pubsub-" + uuid, containers: [
         containerTemplate(name: "gcloud", alwaysPullImage: true, ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud", envVars: [containerEnvVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
@@ -309,7 +349,7 @@ def queue(body, scale, edition) {
         hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock"),
         hostPathVolume(hostPath: "/usr/bin/docker", mountPath: "/usr/bin/docker")
     ]) {
-        node("pubsub") {
+        node("pubsub-" + uuid) {
             container("gcloud") {
                 sh "gcloud.phar pubsub:topic:create ${NODE_NAME}"
                 sh "gcloud.phar pubsub:topic:create ${NODE_NAME}-results"
@@ -330,13 +370,16 @@ def queue(body, scale, edition) {
                 try {
                     sh "kubectl apply -f /home/jenkins/pim/.ci/k8s/"
                     sh "kubectl scale --replicas=${scale} jobs/${NODE_NAME}"
-                    sh "gcloud.phar job:wait ${NODE_NAME}-results-subscription ${size} --ansi"
+                    sh "gcloud.phar job:wait ${NODE_NAME}-results-subscription ${size} ${env.WORKSPACE} --ansi"
                 } finally {
                     sh "kubectl delete job ${NODE_NAME} || true"
                     sh "gcloud.phar pubsub:topic:delete ${NODE_NAME} || true"
                     sh "gcloud.phar pubsub:topic:delete ${NODE_NAME}-results || true"
                     sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-subscription || true"
                     sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-results-subscription || true"
+
+                    junit allowEmptyResults: true, testResults: 'junit/**/*.xml'
+                    archiveArtifacts allowEmptyArchive: true, artifacts: 'artifacts/**/*.png'
                 }
             }
         }
