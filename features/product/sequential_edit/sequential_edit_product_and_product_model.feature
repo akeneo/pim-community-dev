@@ -10,6 +10,7 @@ Feature: Edit sequentially some products
     And I am on the products page
 
   # PIM-6360: Those tests will be refactored once the sequential edit for product models works.
+  @ce
   Scenario: Successfully sequentially edit some products but not the product models 1/2
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Crimson red"
@@ -19,6 +20,7 @@ Feature: Edit sequentially some products
     Then I should see the text "running-shoes-xxs-crimson-red"
     And I should see the text "Save and finish"
 
+  @ce
   Scenario: Successfully sequentially edit some products but not the product models 2/2
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Crimson red"

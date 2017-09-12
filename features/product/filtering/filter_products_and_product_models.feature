@@ -8,6 +8,7 @@ Feature: Filter product and product models
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Mary"
 
+  @ce
   Scenario: Successfully filter and display both products and product models
     Given I am on the products page
     When I show the filter "color"
