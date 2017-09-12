@@ -9,7 +9,7 @@ Feature: Delete a family
     And I am logged in as "Peter"
 
   Scenario: Successfully delete a family from the grid
-    Given I am on the families page
+    Given I am on the families grid
     Then I should see family Boots
     When I click on the "Delete" action of the row which contains "Boots"
     And I confirm the deletion

@@ -7,7 +7,7 @@ Feature: Display jobs execution in job tracker
   Background:
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the exports page
+    And I am on the exports grid
     And I am on the "csv_footwear_product_export" export job page
     And I launch the export job
     And I wait for the "csv_footwear_product_export" job to finish

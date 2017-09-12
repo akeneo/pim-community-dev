@@ -86,10 +86,6 @@ class DataGridContext extends PimContext implements PageObjectAware
 
         $this->theGridToolbarCountShouldBe($count);
 
-        if ($count > 10) {
-            $this->getCurrentPage()->getCurrentGrid()->setPageSize(100);
-        }
-
         $this->spin(function () use ($count) {
             assertEquals(
                 $count,
@@ -690,10 +686,6 @@ class DataGridContext extends PimContext implements PageObjectAware
     public function iShouldSeeEntities($elements)
     {
         $elements = $this->getMainContext()->listToArray($elements);
-
-        if (count($elements) > 10) {
-            $this->getCurrentPage()->getCurrentGrid()->setPageSize(100);
-        }
 
         foreach ($elements as $element) {
             if (!$this->getDatagrid()->getRow($element)) {

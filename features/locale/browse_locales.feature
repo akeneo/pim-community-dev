@@ -8,7 +8,6 @@ Feature: Browse locales
     Given the "default" catalog configuration
     And I am logged in as "Peter"
     When I am on the locales page
-    And I change the page size to 10
     Then I should see the columns Code and Activated
     And the rows should be sorted ascending by Code
 

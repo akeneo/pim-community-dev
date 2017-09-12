@@ -15,7 +15,7 @@ Feature: Display the family history
       | Description | General | pim_catalog_text | description |
 
   Scenario: Successfully create a family and see the history
-    Given I am on the families page
+    Given I am on the families grid
     And I create a new family
     And I fill in the following information in the popin:
       | Code | Flyer |

@@ -8,8 +8,7 @@ Feature: Delete export
   Background:
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
-    And I am on the exports page
-    When I change the page size to 100
+    And I am on the exports grid
     Then the grid should contain 23 elements
 
   Scenario: Successfully delete an export job from the export grid

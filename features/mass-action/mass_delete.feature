@@ -54,7 +54,6 @@ Feature: Delete many product at once
 
   Scenario: Successfully mass delete visible products
     Given I sort by "SKU" value ascending
-    And I change the page size to 10
     And I select all visible entities
     Then I press "Delete" on the "Bulk Actions" dropdown button
     And I should see the text "Are you sure you want to delete selected products?"

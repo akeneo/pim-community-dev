@@ -47,7 +47,6 @@ Feature: Products back to the grid
       | sneakers_8 |
       | sneakers_9 |
     And I should be able to sort the rows by SKU
-    And I change the page size to 10
     When I change the page number to 2
     And I click on the "boots_1" row
     And I should be on the product "boots_1" edit page

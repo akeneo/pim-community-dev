@@ -7,7 +7,7 @@ Feature: Browse families
   Background:
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
-    When I am on the families page
+    When I am on the families grid
     Then the grid should contain 5 elements
 
   Scenario: Successfully view and sort families

@@ -43,13 +43,11 @@ Feature: When I mass edit I should be able to see how many items will be edited
     Then I should see the text "Select your action for the 19 products"
 
   Scenario: Successfully count the number of mass-edited items when click on all visible products
-    Given I change the page size to 10
     And I select all visible entities
     When I press "Change product information" on the "Bulk Actions" dropdown button
-    Then I should see the text "Select your action for the 10 products"
+    Then I should see the text "Select your action for the 18 products"
 
   Scenario: Successfully count the number of mass-edited items by select them one by one
-    Given I change the page size to 50
     When I select rows boots, shoe_1, shoe_14
     And I press "Change product information" on the "Bulk Actions" dropdown button
     Then I should see the text "Select your action for the 3 products"

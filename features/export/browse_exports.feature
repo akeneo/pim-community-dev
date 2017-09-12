@@ -7,8 +7,7 @@ Feature: Browse export profiles
   Background:
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the exports page
-    And I change the page size to 100
+    And I am on the exports grid
 
   Scenario: Successfully view and sort export jobs
     And I should see the columns Label, Job, Connector and Status
