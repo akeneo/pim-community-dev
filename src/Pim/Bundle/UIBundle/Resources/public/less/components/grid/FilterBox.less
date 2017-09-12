@@ -4,14 +4,14 @@
   @searchHeight: 44px;
 
   &-addFilterButton {
-    line-height: @AknLittleButtonSize;
-    min-height: @searchHeight;
-    min-width: @searchHeight;
+    background: url("../../../images/icon-plus.svg") no-repeat right center;
+    background-size: 19px;
+    width: 100% !important; // Width is set by multiselect
+    padding: 0 !important; // Padding is set by multiselect
     border: none;
-    order: 2;
-    width: auto !important; // The width is updated by JS method.
-    background-color: white;
-    background: url("../../../images/icon-filters.svg") no-repeat 50%;
+    height: 50px;
+    font-size: @AknFontSizeBig;
+    color: @AknDarkBlue;
   }
 
   &--search {
@@ -136,12 +136,21 @@
     display: none;
   }
 
-  &--manage {
-    float: left;
-  }
-
   &--search &-list {
     display: flex;
     flex-grow: 1;
+  }
+
+  &--search &-addFilterButton {
+    line-height: @AknLittleButtonSize;
+    min-height: @searchHeight;
+    min-width: @searchHeight;
+    border: none;
+    order: -1;
+    width: auto !important; // The width is updated by JS method.
+    background-color: white;
+    background: url("../../../images/icon-filters.svg") no-repeat left 50%;
+    flex-grow: 1;
+    padding-left: 35px !important; // The padding is updated by JS method.
   }
 }

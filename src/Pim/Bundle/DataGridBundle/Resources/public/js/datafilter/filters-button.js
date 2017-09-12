@@ -1,8 +1,16 @@
-define(['underscore', 'pim/form', 'oro/mediator', 'oro/datafilter/collection-filters-manager'],
-    function (_, BaseForm, mediator, FiltersManager) {
+define(
+    [
+        'underscore',
+        'pim/form',
+        'oro/mediator',
+        'oro/datafilter/collection-filters-manager'
+    ], function (
+        _,
+        BaseForm,
+        mediator,
+        FiltersManager
+    ) {
         return BaseForm.extend({
-            className: 'AknFilterBox--manage',
-
             /**
              * @inheritdoc
              */

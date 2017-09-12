@@ -326,7 +326,14 @@ define(
                 parameters: {
                     multiple: true,
                     selectedList: 0,
+                    position: {
+                        left: this._getLeftStartPosition()
+                    },
                     classes: 'AknFilterBox-addFilterButton filter-list select-filter-widget',
+                    beforeopen: $.proxy(function () {
+                        this.selectWidget.getWidget().css({ left: this._getLeftStartPosition() });
+                        return true;
+                    }, this),
                     open: $.proxy(function () {
                         if (this.$el.is(':visible')) {
                             this.selectWidget.onOpenDropdown();
@@ -351,7 +358,7 @@ define(
             this.selectWidget.getWidget().addClass('pimmultiselect');
 
             this.$('.filter-list span:first').replaceWith(
-                '<a id="add-filter-button" href="javascript:void(0);"></a>'
+                '<div id="add-filter-button" >Filters</div>'
             );
         },
 
