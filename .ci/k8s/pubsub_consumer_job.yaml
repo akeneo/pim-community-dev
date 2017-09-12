@@ -42,6 +42,17 @@ spec:
           imagePullPolicy: Always
           env:
             - { name: ES_JAVA_OPTS, value: "-Xms512m -Xmx512m" }
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9200
+              httpHeaders:
+                - name: Authorization
+                  value: Basic ZWxhc3RpYzpjaGFuZ2VtZQ==
+            timeoutSeconds: 1
+            successThreshold: 2
+            initialDelaySeconds: 5
+            failureThreshold: 30
         - name: php
           image: eu.gcr.io/akeneo-ci/php:7.1-fpm
           workingDir: /home/jenkins/pim
@@ -70,6 +81,7 @@ spec:
             - { name: POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
           volumeMounts:
             - { name: docker, mountPath: /var/run/docker.sock }
+            - { name: pim, mountPath: /home/jenkins }
       volumes:
         - name: pim
           emptyDir: {}

@@ -104,3 +104,7 @@ default:
                 page_parameters:
                     base_url: 'http://127.0.0.1/'
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+
+    formatters:
+        pim:
+            output_path: app/build/logs/behat/
