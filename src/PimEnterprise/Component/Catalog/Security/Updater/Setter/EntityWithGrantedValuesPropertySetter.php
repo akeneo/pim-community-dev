@@ -68,7 +68,9 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($field);
         if (null === $attribute) {
-            throw UnknownPropertyException::unknownProperty($field);
+            $this->propertySetter->setData($entityWithValues, $field, $data, $options);
+
+            return;
         }
 
         $channelCode = $options['scope'];
@@ -108,6 +110,10 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
         $this->checkEditableAttribute($attribute, $permissions, $oldValue, $newValue);
     }
 
+    /**
+     * @param AttributeInterface $attribute
+     * @param array              $permissions
+     */
     private function checkViewableAttributeGroup(AttributeInterface $attribute, array $permissions): void
     {
         if (!$permissions['view_attribute'] && !$permissions['edit_attribute']) {
@@ -115,6 +121,11 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
         }
     }
 
+    /**
+     * @param AttributeInterface $attribute
+     * @param array              $permissions
+     * @param string             $localeCode
+     */
     private function checkViewableLocalizableAttribute(
         AttributeInterface $attribute,
         array $permissions,
@@ -129,6 +140,12 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
         }
     }
 
+    /**
+     * @param AttributeInterface  $attribute
+     * @param array               $permissions
+     * @param ValueInterface|null $oldValue
+     * @param ValueInterface|null $newValue
+     */
     private function checkEditableAttribute(
         AttributeInterface $attribute,
         array $permissions,
@@ -151,7 +168,10 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
             ));
         }
 
-        if (null !== $newValue->getLocale() && true === $permissions['view_locale'] && false === $permissions['edit_locale']) {
+        if (null !== $newValue->getLocale() &&
+            true === $permissions['view_locale'] &&
+            false === $permissions['edit_locale']
+        ) {
             throw new ResourceAccessDeniedException($newValue, sprintf(
                 'You only have a view permission on the locale "%s".',
                 $newValue->getLocale()

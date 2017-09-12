@@ -1,4 +1,5 @@
 job_profile;execute_job_profile;edit_job_profile
+csv_product_model_import;All;IT support,Manager
 csv_product_import;All;IT support,Manager
 csv_product_import_with_rules;All;IT support,Manager
 csv_product_export;All;IT support,Manager
@@ -42,6 +43,8 @@ csv_published_product_quick_export;All;
 csv_published_product_grid_context_quick_export;All;
 csv_family_import;All;IT support,Manager
 csv_family_export;All;IT support,Manager
+csv_family_variant_import;All;IT support,Manager
+csv_family_variant_export;All;IT support,Manager
 xlsx_product_export;All;IT support,Manager
 xlsx_published_product_export;All;IT support,Manager
 xlsx_product_quick_export;All;
@@ -49,6 +52,7 @@ xlsx_product_grid_context_quick_export;All
 xlsx_published_product_quick_export;All;
 xlsx_published_product_grid_context_quick_export;All;
 rule_impacted_product_count;All;
+xlsx_product_model_import;All;IT support,Manager
 xlsx_product_import;All;IT support,Manager
 xlsx_product_import_with_rules;All;IT support,Manager
 xlsx_product_proposal_import;All;IT support,Manager
@@ -57,6 +61,7 @@ xlsx_association_type_import;All;IT support
 xlsx_attribute_import;All;IT support,Manager
 xlsx_option_import;All;IT support,Manager
 xlsx_family_import;All;IT support,Manager
+xlsx_family_variant_import;All;IT support,Manager
 xlsx_variant_group_export;All;All
 xlsx_group_export;All;All
 xlsx_group_import;All;IT support
@@ -66,6 +71,7 @@ xlsx_asset_category_import;All;IT support,Manager
 xlsx_attribute_export;All;IT support,Manager
 xlsx_option_export;All;IT support,Manager
 xlsx_family_export;All;IT support,Manager
+xlsx_family_variant_export;All;IT support,Manager
 xlsx_association_type_export;All;IT support
 xlsx_category_export;All;IT support,Manager
 xlsx_asset_export;All;IT support,Manager

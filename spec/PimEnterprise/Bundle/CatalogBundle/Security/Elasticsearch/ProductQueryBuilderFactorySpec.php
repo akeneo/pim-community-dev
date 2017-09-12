@@ -8,6 +8,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
+use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -47,17 +48,17 @@ class ProductQueryBuilderFactorySpec extends ObjectBehavior
 
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
-        $tokenStorage->getToken()->willReturn($token);
 
         $pqb->addFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, $categoryCodes)->shouldBeCalled();
-        $pqb = $this->create([])->shouldReturn($pqb);
+        $this->create([])->shouldReturn($pqb);
     }
 
     function it_throws_an_exception_if_token_is_not_found($tokenStorage)
     {
         $tokenStorage->getToken()->willReturn(null);
 
-        $this->shouldThrow(new \LogicException('Token cannot be null on the instantiation of the Product Query Builder.'))
-            ->during('create');
+        $this->shouldThrow(
+            new \LogicException('Token cannot be null on the instantiation of the Product Query Builder.')
+        )->during('create');
     }
 }

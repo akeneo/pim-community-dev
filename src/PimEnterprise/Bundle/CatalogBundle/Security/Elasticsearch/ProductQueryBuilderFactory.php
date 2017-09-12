@@ -56,14 +56,14 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
      *
      * @return ProductQueryBuilderInterface
      */
-    public function create(array $options = [])
+    public function create(array $options = []): ProductQueryBuilderInterface
     {
-        $pqb = $this->pqbFactory->create($options);
-
         $token = $this->tokenStorage->getToken();
         if (null === $token) {
             throw new \LogicException('Token cannot be null on the instantiation of the Product Query Builder.');
         }
+
+        $pqb = $this->pqbFactory->create($options);
 
         $grantedCategories = $this->categoryAccessRepository->getGrantedCategoryCodes(
             $token->getUser(),

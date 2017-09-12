@@ -127,6 +127,13 @@ akeneo_storage_utils:
             override: PimEnterprise\Bundle\UserBundle\Entity\User
 
 akeneo_elasticsearch:
-    index_name: "%index_name%"
     hosts: "%index_hosts%"
-    configuration_files: "%elasticsearch_index_configuration_files%"
+    indexes:
+        -
+            service_name: "akeneo_elasticsearch.client.product"
+            index_name: "%product_index_name%"
+            configuration_files: "%elasticsearch_index_configuration_files%"
+        -
+            service_name: "akeneo_elasticsearch.client.product_and_product_model"
+            index_name: "%product_and_product_model_index_name%"
+            configuration_files: "%elasticsearch_index_configuration_files%"

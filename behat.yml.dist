@@ -2,8 +2,8 @@ default:
     suites:
         TEST-enterprise-pim:
             paths:
-                - %paths.base%/features
-                - %paths.base%/vendor/akeneo/pim-community-dev/features
+                - '%paths.base%/features'
+                - '%paths.base%/vendor/akeneo/pim-community-dev/features'
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
                 - Context\EnterpriseFeatureContext:
@@ -45,6 +45,10 @@ default:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Enrich\VariantGroupContext:
                     - 'Context\EnterpriseFeatureContext'
+                - Pim\Behat\Context\Domain\Enrich\ProductModelContext:
+                    - 'Context\EnterpriseFeatureContext'
+                    - '@pim_catalog.repository.product_model'
+                    - '@doctrine.orm.entity_manager'
                 - Pim\Behat\Context\Domain\Spread\ExportBuilderContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Spread\ExportProfilesContext:
@@ -58,8 +62,6 @@ default:
                 - Pim\Behat\Context\Domain\TreeContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Storage\FileInfoStorage:
-                    - 'Context\EnterpriseFeatureContext'
-                - Pim\Behat\Context\Storage\ProductStorage:
                     - 'Context\EnterpriseFeatureContext'
                 - PimEnterprise\Behat\Context\ViewSelectorContext:
                     - 'Context\EnterpriseFeatureContext'
@@ -78,6 +80,18 @@ default:
                 - PimEnterprise\Behat\Context\NavigationContext:
                     - 'Context\EnterpriseFeatureContext'
                     - 'http://akeneo-pim-enterprise-behat.local/'
+                - Pim\Behat\Context\Storage\ProductStorage:
+                    - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+                    - '@pim_catalog.repository.product'
+                    - '@doctrine.orm.default_entity_manager'
+                - Pim\Behat\Context\Storage\ProductModelStorage:
+                    - '@pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor'
+                    - '@pim_catalog.repository.product_model'
+                    - '@pim_catalog.repository.family_variant'
+                    - '@pim_catalog.factory.product_model'
+                    - '@pim_catalog.updater.product_model'
+                    - '@pim_catalog.validator.product_model'
+                    - '@pim_catalog.saver.product_model'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:

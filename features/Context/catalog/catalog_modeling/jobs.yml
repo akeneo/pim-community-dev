@@ -1,0 +1,74 @@
+jobs:
+    publish_product:
+        connector: Akeneo Mass Edit Connector
+        alias:     publish_product
+        label:     Mass publish products
+        type:      mass_edit
+    unpublish_product:
+        connector: Akeneo Mass Edit Connector
+        alias:     unpublish_product
+        label:     Mass unpublish products
+        type:      mass_edit
+    csv_published_product_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias: csv_published_product_quick_export
+        label: CSV published product quick export
+        type: quick_export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/published_products_export_%locale%_%scope%.csv
+    csv_published_product_grid_context_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias: csv_published_product_grid_context_quick_export
+        label: CSV published product quick export grid context
+        type: quick_export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/published_products_export_grid_context_%locale%_%scope%.csv
+    xlsx_published_product_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias: xlsx_published_product_quick_export
+        label: XLSX published product quick export
+        type: quick_export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filePath:   /tmp/published_products_export_%locale%_%scope%.xlsx
+    xlsx_published_product_grid_context_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias:     xlsx_published_product_grid_context_quick_export
+        label:     XLSX published product quick export grid context
+        type:      quick_export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filePath:   /tmp/published_products_export_grid_context_%locale%_%scope%.xlsx
+    rule_impacted_product_count:
+        connector: Akeneo Rule Engine Connector
+        alias:     rule_impacted_product_count
+        label:     Calculation the affected products for the rules
+        type:      mass_edit_rule
+    classify_assets:
+        connector: Akeneo Product Asset Connector
+        alias:     classify_assets
+        label:     Mass classify product assets
+        type:      mass_edit
+    add_tags_to_assets:
+        connector: Akeneo Product Asset Connector
+        alias:     add_tags_to_assets
+        label:     Add tags to assets
+        type:      mass_edit
+    project_calculation:
+        connector: teamwork assistant
+        alias:     project_calculation
+        label:     Project calculation
+        type:      project_calculation
+    refresh_project_completeness_calculation:
+        connector: teamwork assistant
+        alias:     refresh_project_completeness_calculation
+        label:     Refresh project completeness
+        type: refresh_project_completeness_calculation

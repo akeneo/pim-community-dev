@@ -16,7 +16,7 @@ namespace PimEnterprise\Component\Catalog\Security\Updater;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
+use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -35,10 +35,10 @@ class GrantedProductUpdater implements ObjectUpdaterInterface
     /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
 
-    /** @var ProductFilterInterface */
+    /** @var FilterInterface */
     private $productFieldFilter;
 
-    /** @var ProductFilterInterface */
+    /** @var FilterInterface */
     private $productAssociationFilter;
 
     /** @var array */
@@ -50,16 +50,16 @@ class GrantedProductUpdater implements ObjectUpdaterInterface
     /**
      * @param ObjectUpdaterInterface        $productUpdater
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param ProductFilterInterface        $productFieldFilter
-     * @param ProductFilterInterface        $productAssociationFilter
+     * @param FilterInterface               $productFieldFilter
+     * @param FilterInterface               $productAssociationFilter
      * @param array                         $supportedFields
      * @param array                         $supportedAssociations
      */
     public function __construct(
         ObjectUpdaterInterface $productUpdater,
         AuthorizationCheckerInterface $authorizationChecker,
-        ProductFilterInterface $productFieldFilter,
-        ProductFilterInterface $productAssociationFilter,
+        FilterInterface $productFieldFilter,
+        FilterInterface $productAssociationFilter,
         array $supportedFields,
         array $supportedAssociations
     ) {
@@ -88,7 +88,7 @@ class GrantedProductUpdater implements ObjectUpdaterInterface
         }
 
         $this->productUpdater->update($product, $data, $options);
-        
+
         return $this;
     }
 

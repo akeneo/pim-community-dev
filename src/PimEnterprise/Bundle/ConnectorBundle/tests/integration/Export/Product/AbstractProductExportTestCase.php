@@ -94,7 +94,7 @@ abstract class AbstractProductExportTestCase extends TestCase
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->get('akeneo_elasticsearch.client')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
 
         return $product;
     }
@@ -106,8 +106,11 @@ abstract class AbstractProductExportTestCase extends TestCase
      *
      * @return ProductDraftInterface
      */
-    protected function createProductDraft(string $userName, ProductInterface $product, array $changes) : ProductDraftInterface
-    {
+    protected function createProductDraft(
+        string $userName,
+        ProductInterface $product,
+        array $changes
+    ) : ProductDraftInterface {
         $this->get('pim_catalog.updater.product')->update($product, $changes);
 
         $productDraft = $this->get('pimee_workflow.builder.draft')->build($product, $userName);

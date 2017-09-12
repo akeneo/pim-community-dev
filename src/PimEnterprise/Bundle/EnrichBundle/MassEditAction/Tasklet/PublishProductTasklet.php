@@ -15,6 +15,7 @@ use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
@@ -117,6 +118,15 @@ class PublishProductTasklet extends AbstractProductPublisherTasklet implements T
      */
     protected function getProductQueryBuilder(array $filters = [])
     {
-        return $this->pqbFactory->create(['filters' => $filters]);
+        $pqb = $this->pqbFactory->create(['filters' => $filters]);
+
+        // dirty trick to skip the product models
+        // TODO: revert when PIM-6565 is done properly
+        $searchQueryBuilder = $pqb->getQueryBuilder();
+        $searchQueryBuilder->addFilter(['term' => ['document_type' => ProductInterface::class]]);
+
+        $pqb->setQueryBuilder($searchQueryBuilder);
+
+        return $pqb;
     }
 }

@@ -71,3 +71,4 @@
 - Change the constructor `PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController` to add `Pim\Component\Catalog\Builder\ProductBuilderInterface`.
 - Remove class `Pim\Bundle\InstallerBundle\Persister\YamlPersister`
 - Remove service `pim_installer.yaml_persister` 
+- Change the constructor of `PimEnterprise\Bundle\EnrichBundle\Controller\ProductController` to add `Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface`

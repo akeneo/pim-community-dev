@@ -24,7 +24,7 @@ class PublishedProductFormProvider implements FormProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getForm($product)
+    public function getForm($product): string
     {
         return 'pimee-published-product-view-form';
     }
@@ -32,7 +32,7 @@ class PublishedProductFormProvider implements FormProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($element)
+    public function supports($element): bool
     {
         return $element instanceof PublishedProductInterface;
     }

@@ -6,6 +6,12 @@ Feature: Adapt notification for redactor depending on action on their proposal
 
   Background:
     Given a "clothing" catalog configuration
+    And I am logged in as "Julia"
+    And I am on the "hoodies" family page
+    And I visit the "Attributes" tab
+    And I add available attribute Weather conditions
+    And I save the family
+    And I logout
     And the following attribute group accesses:
       | attribute group | user group | access |
       | sizes           | Manager    | view   |

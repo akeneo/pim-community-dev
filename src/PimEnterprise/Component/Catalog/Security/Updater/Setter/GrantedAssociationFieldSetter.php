@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Component\Catalog\Security\Updater\Setter;
 
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\AbstractFieldSetter;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
@@ -41,7 +40,7 @@ class GrantedAssociationFieldSetter extends AbstractFieldSetter implements Field
     /**
      * {@inheritdoc}
      */
-    public function setFieldData(ProductInterface $product, $field, $data, array $options = [])
+    public function setFieldData($product, $field, $data, array $options = [])
     {
         try {
             $this->associationFieldSetter->setFieldData($product, $field, $data, $options);

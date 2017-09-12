@@ -28,7 +28,7 @@ services:
 
     pimee_catalog.security.updater.entity_with_granted_values_property_setter:
         class: '%pimee_catalog.security.updater.entity_with_granted_values_property_setter.class%'
-        decorates: pim_catalog.updater.entity_with_values_property_setter
+        decorates: pim_catalog.updater.property_setter
         decoration_inner_name: pim_catalog.updater.entity_with_values_property_setter_without_permission
         arguments:
             - '@pim_catalog.updater.entity_with_values_property_setter_without_permission'
@@ -56,7 +56,7 @@ services:
     pim_catalog.updater.product_without_permission:
         class: '%pim_catalog.updater.product.class%'
         arguments:
-            - '@pim_catalog.updater.product_property_setter'
+            - '@pim_catalog.updater.property_setter'
             - '@pim_catalog.updater.product_template'
             - '@pim_catalog.updater.entity_with_values_without_permission'
             - ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations']
