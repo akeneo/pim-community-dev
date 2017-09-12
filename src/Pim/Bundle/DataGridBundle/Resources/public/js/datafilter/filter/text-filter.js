@@ -27,6 +27,8 @@ define(
      * @extends oro.datafilter.AbstractFilter
      */
     return AbstractFilter.extend({
+        outsideEventListener: null,
+
         /** @property */
         template: _.template(
             '<div class="AknFilterBox-filter filter-criteria-selector oro-drop-opener oro-dropdown-toggle">' +
@@ -257,7 +259,8 @@ define(
                 this.popupCriteriaShowed = true;
             }, this), 100);
 
-            document.addEventListener('click', this.outsideClickListener.bind(this))
+            this.outsideEventListener = this.outsideClickListener.bind(this)
+            document.addEventListener('click', this.outsideEventListener);
         },
 
         /**
@@ -277,7 +280,8 @@ define(
                 this.popupCriteriaShowed) {
                 this._hideCriteria();
                 this.setValue(this._formatRawValue(this._readDOMValue()));
-                document.removeEventListener('click', this.outsideClickListener.bind(this));
+
+                document.removeEventListener('mousedown', this.outsideEventListener);
             }
         },
 
