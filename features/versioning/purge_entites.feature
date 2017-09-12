@@ -22,5 +22,5 @@ Feature: purge versions
     When I launch the purge versions command for entity "Pim\Bundle\CatalogBundle\Entity\Family"
     And I am on the "heels" family page
     And I visit the "History" tab
-    And I reset the grid
+    And I refresh current page
     Then there should be 2 updates

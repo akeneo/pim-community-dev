@@ -19,6 +19,7 @@ Feature: Filter products by reference data
     And I am logged in as "Mary"
     And I am on the products grid
 
+  @skip @info To be unskipped in PIM-6574
   Scenario: Successfully filter products by reference data
     Given I should not see the filter sole_color
     And the grid should contain 2 elements

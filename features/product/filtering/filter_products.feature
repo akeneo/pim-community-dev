@@ -61,20 +61,6 @@ Feature: Filter products
     And I should not see the filters name, image and info
     Then I should see available filters in the following order "sku,name,info,image"
 
-  Scenario: Successfully reset the filters
-    Given I am on the products grid
-    Then I filter by "enabled" with operator "" and value "Enabled"
-    And the grid should contain 5 elements
-    When I reset the grid
-    Then the grid should contain 6 elements
-
-  Scenario: Successfully refresh the grid
-    Given I am on the products grid
-    Then I filter by "enabled" with operator "" and value "Enabled"
-    And the grid should contain 5 elements
-    When I refresh the grid
-    Then the grid should contain 5 elements
-
   @jira https://akeneo.atlassian.net/browse/PIM-5208
   Scenario: View only attribute filters that are usable as grid filters
     Given I am on the products grid

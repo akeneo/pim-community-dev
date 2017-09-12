@@ -59,8 +59,7 @@ Feature: Delete many product at once
     And I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
     And I refresh current page
-    Then the grid should contain 1 element
-    And I should see product sneakers_S43
+    Then the grid should contain 0 elements
 
   Scenario: Successfully mass delete all products
     Given I select all entities
