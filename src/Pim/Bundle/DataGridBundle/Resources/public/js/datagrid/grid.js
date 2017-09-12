@@ -308,6 +308,8 @@ define(
                         }
                     });
                 });
+
+                mediator.on('datagrid:doRefresh:' + grid.name, this.refreshCollection.bind(this));
             },
 
             /**
@@ -371,6 +373,12 @@ define(
                 }))).hide();
 
                 this._updateNoDataBlock();
+            },
+
+            refreshCollection: function() {
+                this.setAdditionalParameter('refresh', true);
+                this.collection.fetch();
+                this.removeAdditionalParameter('refresh');
             },
 
             /**
