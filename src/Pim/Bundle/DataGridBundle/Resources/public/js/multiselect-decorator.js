@@ -92,28 +92,9 @@ function($, _, mediator) {
         },
 
         /**
-         * Fix dropdown design
-         *
-         * @protected
-         */
-        _setDropdownDesign: function() {
-            const widget = this.getWidget();
-
-            // TODO Check what classes are needed.
-            // widget.addClass('dropdown-menu');
-            // widget.addClass('AknDropdown-menu');
-            // widget.removeClass('ui-widget-content');
-            // widget.removeClass('ui-widget');
-            // widget.find('.ui-widget-header').removeClass('ui-widget-header');
-            // widget.find('.ui-multiselect-filter').removeClass('ui-multiselect-filter');
-            // widget.find('ul li label').removeClass('ui-corner-all');
-        },
-
-        /**
          * Action performed on dropdown open
          */
         onOpenDropdown: function() {
-            this._setDropdownDesign();
             this.getWidget().find('input[type="search"]').focus();
             $('body').trigger('click');
         },

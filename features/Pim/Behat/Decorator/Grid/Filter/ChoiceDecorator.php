@@ -23,10 +23,15 @@ class ChoiceDecorator extends ElementDecorator
 
         $field = $this->decorate($field, ['Pim\Behat\Decorator\Field\MultiSelectDecorator']);
         $field->setValue($value);
+
+        // Trigger a mousedown Event to close the Choice filter
+        $this->getSession()->executeScript("$(document)[0].dispatchEvent(new Event('mousedown'))");
     }
 
     /**
      * Get all available values in this filter
+     *
+     * @throws \Exception
      *
      * @return array
      */

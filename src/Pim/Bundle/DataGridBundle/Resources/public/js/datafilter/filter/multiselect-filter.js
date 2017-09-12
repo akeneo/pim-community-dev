@@ -65,11 +65,8 @@ function(_, __, SelectFilter) {
             this.setValue(this._formatRawValue(data));
 
             // update dropdown
-            var widget = this.$(this.containerSelector);
             this._setDropdownWidth();
-            if (null !== widget) {
-                this._updateCriteriaSelectorPosition(widget.getWidget());
-            }
+            this._updateCriteriaSelectorPosition(this.selectWidget.getWidget());
         }
     });
 });

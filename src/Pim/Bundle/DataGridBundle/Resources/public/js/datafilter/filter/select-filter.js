@@ -286,7 +286,9 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
             this.setValue(this._formatRawValue(this._readDOMValue()));
 
             // update dropdown
-            this._updateCriteriaSelectorPosition(this.selectWidget.getWidget());
+            if (null !== this.selectWidget) {
+                this._updateCriteriaSelectorPosition(this.selectWidget.getWidget());
+            }
         },
 
         /**
@@ -312,9 +314,8 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
         _onValueUpdated: function(newValue, oldValue) {
             AbstractFilter.prototype._onValueUpdated.apply(this, arguments);
 
-            this._updateCriteriaSelectorPosition(this.selectWidget.getWidget());
-
             if (this.selectWidget) {
+                this._updateCriteriaSelectorPosition(this.selectWidget.getWidget());
                 this.selectWidget.multiselect('refresh');
             }
         },

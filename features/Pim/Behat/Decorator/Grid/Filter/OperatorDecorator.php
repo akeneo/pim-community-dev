@@ -32,7 +32,6 @@ class OperatorDecorator extends ElementDecorator
             );
 
             foreach ($operatorChoices as $choice) {
-                var_dump($choice->getText());
                 if (strtolower($value) === strtolower(trim($choice->getText()))) {
                     $choice->click();
 

@@ -13,6 +13,8 @@ class MultiSelectDecorator extends ElementDecorator
     /**
      * Set the given value to the multi select
      *
+     * @throws \Exception
+     *
      * @param string $value
      */
     public function setValue($value)
