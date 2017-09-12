@@ -48,7 +48,7 @@ pim_enrich:
         third: Configura
         fourth: Conferma
     publish:
-      label: Pubblica i prodotti
+      label: Pubblica
       description: Pubblica i prodotti selezionati, i dati correnti pubblicati verranno cancellati dalla attuale copia di lavoro.
       success_flash: I prodotti selezionati sono stati pubblicati con successo.
       launched_flash: Il job di pubblicazione del(i) prodotto(i) è attualmente in esecuzione.
@@ -58,7 +58,7 @@ pim_enrich:
         info: I %nbProducts% prodotti selezionati saranno pubblicati.
       not_editable: Non hai il permesso di modificare i prodotti "%identifiers%".
     unpublish:
-      label: Annulla la pubblicazione dei prodotti
+      label: Annulla la pubblicazione
       description: 'Annulla la pubblicazione dei prodotti selezionati: gli attuali dati pubblicati verranno cancellati.'
       success_flash: I prodotti selezionati sono stati ritirati con successo.
       launched_flash: Il job di annullamento della pubblicazione del(i) prodotto(i) è attualmente in esecuzione.

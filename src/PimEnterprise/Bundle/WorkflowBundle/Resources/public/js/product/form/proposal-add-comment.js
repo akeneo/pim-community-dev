@@ -20,7 +20,6 @@ define(
         AbstractCommentForm
     ) {
         return AbstractCommentForm.extend({
-
             /**
              * {@inheritdoc}
              */

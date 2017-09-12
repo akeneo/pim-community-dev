@@ -38,12 +38,12 @@ pim_enrich:
       steps:
         second: Kies bewerking
     publish:
-      label: Product publiceren
+      label: Publiceren
       description: Publiceer de geselecteerde producten, de huidige gepubliceerde data zal overgeschreven worden door de huidige werkkopie.
       success_flash: De geselecteerde producten zijn succesvol gepubliceerd.
       not_editable: U heeft geen machtiging om de producten "%identifiers%" te bewerken.
     unpublish:
-      label: Depubliceer producten
+      label: Depubliceer
       description: De geselecteerde producten de publicatie ongedaan maken, de huidige gepubliceerde gegevens worden gewist.
       not_editable: U heeft geen machtiging om de producten "%identifiers%" te bewerken.
 flash.product_draft.updated: Concept is succesvol opgeslagen

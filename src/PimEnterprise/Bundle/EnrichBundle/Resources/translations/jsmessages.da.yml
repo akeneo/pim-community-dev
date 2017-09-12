@@ -169,11 +169,13 @@ pimee_enrich:
     product:
       operation:
         publish:
-          label: Udgiv produkter
+          label: Publicér
+          label_count: "{1}Udgiv <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Udgiv <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
           description: Produkterne vil blive offentliggjort
           warning: '{{ itemsCount }} udvalgte produkter vil blive offentliggjort.'
         unpublish:
-          label: Af-publisering af produkter
+          label: Afpublisér
+          label_count: "{1}Afpubliser <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Afpubliser <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
           description: Produkterne vil blive afpubliseret
           warning: '{{ itemsCount }} udvalgte produkter vil blive afpubliseret.'
     asset:

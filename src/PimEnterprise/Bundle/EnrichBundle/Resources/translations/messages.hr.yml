@@ -48,7 +48,6 @@ pim_enrich:
         third: Konfiguriraj
         fourth: Potvrdi
     publish:
-      label: Objavljivanje proizvoda
       description: Objavi odabrane proizvode, trenutno objavljeni podaci biti će obrisani prema trenutnoj radnoj kopiji.
       success_flash: Odabrani proizvodi su uspješno objavljeni.
       launched_flash: Proces objavljivanja proizvoda se trenutno izvodi.
@@ -58,7 +57,6 @@ pim_enrich:
         info: '%nbProducts% odabranih proizvoda će biti objavljeno.'
       not_editable: Nemate dozvolu za uređivanje proizvoda "%identifiers%".
     unpublish:
-      label: Poništi objave proizvoda
       description: Poništi objavu odabranih proizvoda, trenutno objavljeni podaci će biti izbrisani.
       success_flash: Uspješno je poništena objava odabranih proizvoda.
       launched_flash: Trenutno se izvodi proces poništavanja obavljivanja proizvoda.

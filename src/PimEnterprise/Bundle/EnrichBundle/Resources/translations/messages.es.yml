@@ -48,7 +48,7 @@ pim_enrich:
         third: Configurar
         fourth: Confirmar
     publish:
-      label: Productos publicados
+      label: Publicar
       description: Publicar los productos seleccionados, la presente información publicada será eliminada por la copia de trabajo actual.
       success_flash: Productos seleccionados han sido publicados con éxito.
       launched_flash: El trabajo de publicación de productos está ejecutándose.
@@ -58,7 +58,7 @@ pim_enrich:
         info: Los productos %nbProducts% seleccionados serán publicados.
       not_editable: Usted no tiene el permiso para editar los productos "%identifiers%".
     unpublish:
-      label: Quitar publicación de productos
+      label: Despublicar
       description: Quitar publicación de los productos seleccionados, la información publicada será eliminada.
       success_flash: Se ha quitado la publicación de los productos seleccionados.
       launched_flash: El trabajo de quitar la publicación de productos está actualmente en ejecución.
