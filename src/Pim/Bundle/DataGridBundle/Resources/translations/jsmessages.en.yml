@@ -34,7 +34,8 @@ Yes: Yes
 No: No
 oro.datagrid.entityHint: Entity
 oro.datagrid.noentities: No records found
-oro.datagrid.noresults: "No results found. Try to change your search criteria."
+oro.datagrid.noresults: "Sorry, there is no result for your search."
+oro.datagrid.noresults_subTitle: "Try again with new search criteria."
 oro.datagrid.nocolumns: No columns configured for this grid
 oro.datagrid.pagination.label: "Page"
 oro.datagrid.pagination.totalPages: "of {{ totalPages }}"

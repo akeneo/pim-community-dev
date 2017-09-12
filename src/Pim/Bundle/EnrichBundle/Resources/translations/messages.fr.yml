@@ -94,7 +94,7 @@ pim_enrich:
         third: Configurer
         fourth: Confirmer
     change-status:
-      label: Changer de statut (activé / désactivé)
+      label: Changer le statut
       description: Les produits sélectionnés vont être activés ou désactivés.
       success_flash: Le statut des produits ont été changés
       launched_flash: L'action de masse "changement de statut" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
@@ -109,22 +109,18 @@ pim_enrich:
         invalid_attribute: L'attribut ayant pour code "attribute_code" n'est pas un attribut commun aux produits sélectionnés, attribut ignoré.
         no_valid_attribute: Aucun des attributs sélectionnés ne peut être appliqué à ce produit.
     classify-add:
-      label: Classifier les produits dans des catégories
       description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé.
       success_flash: Le(s) produit(s) ont été classifiés dans les catégories sélectionnées
       launched_flash: L'action de masse "ajout aux catégories" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
     classify-move:
-      label: Déplacer des produits vers des catégories
       description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera perdu.
       success_flash: Le(s) produit(s) ont été déplacés dans les catégories sélectionnées
       launched_flash: L'action de masse "déplacement dans les catégories" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
     classify-remove:
-      label: Retirer des produits des catégories
       description: Les produits seront retirés des catégories suivantes.
       success_flash: Le(s) produit(s) ont été supprimés des catégories sélectionnées
       launched_flash: L'action de masse "suppression des catégories" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
     change-family:
-      label: Changer la famille des produits
       description: La famille des produits sélectionnés sera remplacée par la famille choisie
       success_flash: La famille de(s) produit(s) sélectionné(s) a été modifiée avec succès
       launched_flash: L'action de masse "changement de famille" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
@@ -144,7 +140,6 @@ pim_enrich:
       some_variant_groups_are_skipped: 'Les groupes variant suivants ont été ignorés parce qu’ils ne partagent des attributs avec des produits sélectionnés : %groups%'
       launched_flash: L'action de masse "ajout au groupe de variantes" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
     set-attribute-requirements:
-      label: Choisir les attributs requis
       description: Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées
       success_flash: Les exigences d'attributs ont été appliquées aux familles sélectionnées
       launched_flash: L'action de masse "définition des attributs requis" a été lancée. Vous serez notifié(e) lorsque la modification sera terminée.
@@ -684,7 +679,7 @@ pim_enrich.mass_edit_action:
       third: Configurer
       fourth: Confirmer
   change-status:
-    label: Changer de statut (activé / désactivé)
+    label: Changer le statut
     description: Les produits sélectionnés vont être activés ou désactivés.
     success_flash: Le statut des produits ont été changés
   edit-common-attributes:
@@ -696,11 +691,9 @@ pim_enrich.mass_edit_action:
     no_attribute.warning: Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection.
     truncated_by_variant_attribute.warning: 'Certains attributs des produits sélectionnés sont liés à un groupe de variantes. Ils ne sont pas disponibles pour l''édition en masse : %attributes%.'
   classify:
-    label: Classifier les produits dans des catégories
     description: Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé.
     success_flash: Le(s) produit(s) ont été classifiés dans les catégories sélectionnées
   change-family:
-    label: Changer la famille des produits
     description: La famille des produits sélectionnés sera remplacée par la famille choisie
     success_flash: La famille de(s) produit(s) sélectionné(s) a été modifiée avec succès
     no_family: Aucune famille
@@ -709,7 +702,6 @@ pim_enrich.mass_edit_action:
     description: Sélectionnez les groupes dans lesquels ajouter les produits sélectionnés
     success_flash: Les produits ont été ajoutés aux groupes sélectionnés
   set-attribute-requirements:
-    label: Choisir les attributs requis
     description: Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées
     success_flash: Les exigences d'attributs ont été appliquées aux familles sélectionnées
 To enable: Pour activer
@@ -837,10 +829,6 @@ batch_jobs:
       label: Modifier les attributs communs
     clean:
       label: Nettoyer les fichiers pour les attributs communs
-  set_attribute_requirements:
-    label: Choisir les attributs requis
-    perform:
-      label: Choisir les attributs requis
   csv_product_quick_export:
     quick_export.label: Export rapide de produits en CSV
     perform:

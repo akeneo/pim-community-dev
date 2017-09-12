@@ -937,6 +937,7 @@ config:
         # Templates
         pim/template/common/drop-zone:                            pimenrich/templates/common/drop-zone.html
         pim/template/common/form-container:                       pimenrich/templates/common/form-container.html
+        pim/template/common/no-data:                              pimenrich/templates/common/no-data.html
 
         pim/template/form/group-selector:                         pimenrich/templates/form/group-selector.html
         pim/template/form/save:                                   pimenrich/templates/form/save.html
@@ -972,6 +973,7 @@ config:
         pim/template/form/index/index:                            pimenrich/templates/form/index/index.html
         pim/template/form/index/create-button:                    pimenrich/templates/form/index/create-button.html
         pim/template/form/index/confirm-button:                   pimenrich/templates/form/index/confirm-button.html
+        pim/template/form/creation/modal:                         pimenrich/templates/form/creation/modal.html
 
         pim/template/form/creation/field:                         pimenrich/templates/form/creation/field.html
         pim/template/form/creation/family:                        pimenrich/templates/form/creation/family.html
