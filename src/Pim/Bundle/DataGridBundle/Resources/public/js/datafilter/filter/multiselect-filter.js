@@ -67,7 +67,9 @@ function(_, __, SelectFilter) {
             // update dropdown
             var widget = this.$(this.containerSelector);
             this._setDropdownWidth();
-            this._updateCriteriaSelectorPosition(widget);
+            if (null !== widget) {
+                this._updateCriteriaSelectorPosition(widget.getWidget());
+            }
         }
     });
 });

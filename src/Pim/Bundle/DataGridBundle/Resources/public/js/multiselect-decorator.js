@@ -128,14 +128,12 @@ function($, _, mediator) {
                 const margin = 100;
                 const elements = this.getWidget().find('.ui-multiselect-checkboxes li');
                 const longest = _.max(_.map(elements, function (element) {
-                    console.log($(element).find('span:first').width());
                     return $(element).find('span:first').width();
                 }));
 
                 this.minimumWidth = longest + margin;
             }
 
-            console.log(this.minimumWidth);
             return this.minimumWidth;
         },
 
