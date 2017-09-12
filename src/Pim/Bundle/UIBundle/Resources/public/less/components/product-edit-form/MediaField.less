@@ -1,16 +1,16 @@
 @import '../../base/variables';
 
 .AknMediaField {
-  @height: 100px;
+  @height: 140px;
 
   height: @height;
-  background: lighten(@AknGrey, 25%);
   width: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border-radius: 2px;
+  border-radius: 3px;
+  border: 1px solid @AknMediumGrey;
 
   &-fileUploaderInput {
     position: absolute;
@@ -20,25 +20,39 @@
   }
 
   &-emptyContainer {
-    padding-top: @AknMicroProgressBarHeight + 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     flex-grow: 1;
+    cursor: pointer;
   }
 
   &-preview {
     display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100%;
     align-items: center;
+  }
+
+  &-remove {
+    width: 20px;
+    height: 20px;
+    margin-top: 3px;
+    margin-left: 5px;
+    cursor: pointer;
+    background-image: url("../../../images/icon-delete-slategrey.svg");
+    background-size: 100%;
+    display: block;
+    background-repeat: no-repeat;
   }
 
   &-thumb {
     flex-basis: @height;
     margin: 5px 5px 0 5px;
     text-align: center;
+    height: 100px;
   }
 
   &-image {
@@ -48,6 +62,7 @@
   &-info {
     flex-grow: 1;
     text-align: center;
+    display: flex;
   }
 
   &-progress {
@@ -62,7 +77,12 @@
   }
 
   &-uploadIcon {
-    height: 50px;
+    height: 100px;
+    width: 100px;
+    display: block;
+    margin-top: 2px;
+    background-size: 100%;
+    background-image: url("../../../images/illustration-import.svg");
   }
 
   &-trashIcon {

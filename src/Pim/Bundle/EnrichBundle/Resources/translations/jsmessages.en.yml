@@ -735,7 +735,7 @@ pim_enrich:
                         attributes_groups_selected: '{{ itemsCount }} group(s) selected'
 
     job:
-        upload: Drag and drop file or click here
+        upload: Drop your {{ type }} file here, or click to browse disk
     export:
         product:
             data:
