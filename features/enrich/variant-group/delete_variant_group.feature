@@ -1,4 +1,4 @@
-@javascript
+@javascript @skip
 Feature: Delete a variant group
   In order to manager variant groups for the catalog
   As a product manager

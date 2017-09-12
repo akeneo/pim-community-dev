@@ -17,6 +17,23 @@ jobs:
             realTimeVersioning: true
             decimalSeparator: .
             dateFormat: yyyy-MM-dd
+    csv_product_model_import:
+        connector: Akeneo CSV Connector
+        alias: csv_product_model_import
+        label: Demo CSV product model import
+        type: import
+        configuration:
+            filePath: /tmp/product_model.csv
+            uploadAllowed: true
+            delimiter: ;
+            enclosure: '"'
+            escape: '\'
+            enabled: true
+            categoriesColumn: categories
+            familyVariantColumn: familyVariant
+            realTimeVersioning: true
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
     csv_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export
@@ -175,6 +192,17 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
+    csv_family_variant_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_family_variant_import
+        label:     Demo CSV family variant import
+        type:      import
+        configuration:
+            filePath:      /tmp/family_variant.csv
+            uploadAllowed: true
+            delimiter:     ;
+            enclosure:     '"'
+            escape:        '\'
     csv_attribute_option_export:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_export
@@ -247,6 +275,16 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/family.csv
+    csv_family_variant_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_family_variant_export
+        label:     Demo CSV family variant export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/family_variant.csv
     xlsx_product_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_export
@@ -328,6 +366,20 @@ jobs:
             realTimeVersioning: true
             decimalSeparator: .
             dateFormat: yyyy-MM-dd
+    xlsx_product_model_import:
+        connector: Akeneo XLSX Connector
+        alias: xlsx_product_model_import
+        label: Demo XLSX product model import
+        type: import
+        configuration:
+            filePath: /tmp/product_model.xlsx
+            uploadAllowed: true
+            enabled: true
+            categoriesColumn: categories
+            familyVariantColumn: family_variant
+            realTimeVersioning: true
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
     xlsx_category_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_category_import
@@ -368,6 +420,14 @@ jobs:
         configuration:
             filePath:      /tmp/family.xlsx
             uploadAllowed: true
+    xlsx_family_variant_import:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_family_variant_import
+        label:     Demo XLSX family variant import
+        type:      import
+        configuration:
+            filePath:      /tmp/family_variant.xlsx
+            uploadAllowed: true
     xlsx_group_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_group_import
@@ -393,6 +453,15 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             filePath: /tmp/family.xlsx
+    xlsx_family_variant_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_family_variant_export
+        label:     Demo XLSX family variant export
+        type:      export
+        configuration:
+            withHeader: true
+            linesPerFile: 10000
+            filePath: /tmp/family_variant.xlsx
     xlsx_category_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_category_export

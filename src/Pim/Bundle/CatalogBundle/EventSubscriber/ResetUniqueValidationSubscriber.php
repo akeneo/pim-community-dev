@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
+use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
 use Pim\Component\Catalog\Validator\UniqueValuesSet;
 
 /**
@@ -19,12 +20,17 @@ class ResetUniqueValidationSubscriber
     /** @var UniqueValuesSet */
     protected $uniqueValueSet;
 
+    /** @var UniqueAxesCombinationSet */
+    protected $uniqueAxesCombinationSet;
+
     /**
-     * @param UniqueValuesSet $uniqueValueSet
+     * @param UniqueValuesSet          $uniqueValueSet
+     * @param UniqueAxesCombinationSet $uniqueAxesCombinationSet
      */
-    public function __construct(UniqueValuesSet $uniqueValueSet)
+    public function __construct(UniqueValuesSet $uniqueValueSet, UniqueAxesCombinationSet $uniqueAxesCombinationSet)
     {
         $this->uniqueValueSet = $uniqueValueSet;
+        $this->uniqueAxesCombinationSet = $uniqueAxesCombinationSet;
     }
 
     /**
@@ -34,5 +40,6 @@ class ResetUniqueValidationSubscriber
     public function onAkeneoStoragePostsaveall()
     {
         $this->uniqueValueSet->reset();
+        $this->uniqueAxesCombinationSet->reset();
     }
 }

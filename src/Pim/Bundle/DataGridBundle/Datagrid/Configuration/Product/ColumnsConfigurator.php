@@ -32,9 +32,6 @@ class ColumnsConfigurator implements ConfiguratorInterface
     protected $primaryColumns;
 
     /** @var array */
-    protected $identifierColumn;
-
-    /** @var array */
     protected $attributesColumns;
 
     /** @var array */
@@ -95,7 +92,6 @@ class ColumnsConfigurator implements ConfiguratorInterface
         $path = sprintf(self::SOURCE_PATH, self::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
         $attributes = ($attributes === null) ? [] : $attributes;
-        $this->identifierColumn = [];
         $this->attributesColumns = [];
 
         foreach ($attributes as $attributeCode => $attribute) {
@@ -121,11 +117,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
                     'groupOrder' => $attribute['groupOrder']
                 ];
 
-                if (AttributeTypes::IDENTIFIER === $attributeType) {
-                    $this->identifierColumn['identifier'] = $columnConfig;
-                } else {
-                    $this->attributesColumns[$attributeCode] = $columnConfig;
-                }
+                $this->attributesColumns[$attributeCode] = $columnConfig;
             }
         }
 
@@ -146,8 +138,8 @@ class ColumnsConfigurator implements ConfiguratorInterface
             sprintf(self::SOURCE_PATH, self::DISPLAYED_COLUMNS_KEY)
         );
 
-        $this->availableColumns = $this->editableColumns + $this->primaryColumns + $this->identifierColumn
-            + $this->propertiesColumns + $this->attributesColumns;
+        $this->availableColumns = $this->editableColumns + $this->primaryColumns + $this->propertiesColumns +
+            $this->attributesColumns;
 
         if (!empty($userColumns)) {
             $this->displayedColumns = $this->editableColumns  + $this->primaryColumns;
@@ -158,8 +150,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
                 }
             }
         } else {
-            $this->displayedColumns = $this->editableColumns + $this->primaryColumns + $this->identifierColumn
-                + $this->propertiesColumns;
+            $this->displayedColumns = $this->editableColumns + $this->primaryColumns + $this->propertiesColumns;
         }
     }
 

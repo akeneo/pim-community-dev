@@ -1,4 +1,4 @@
-@javascript
+@javascript @skip
 Feature: Editing attribute values of a variant group also updates products
   In order to easily edit common attributes of variant group products
   As a product manager

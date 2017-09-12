@@ -22,6 +22,12 @@ mappings:
             identifier:
                 type: 'keyword'
                 normalizer: 'identifier_normalizer'
+            document_type:
+                type: 'keyword'
+            attributes_for_this_level:
+                type: 'keyword'
+            parent:
+                type: 'keyword'
         dynamic_templates:
             -
                 family:

@@ -17,7 +17,7 @@ class DateConverter extends AbstractValueConverter implements ValueConverterInte
      *     [
      *         'locale' => null,
      *         'scope'  => null,
-     *         'data'   => '2005-08-15'
+     *         'data'   => '2005-08-15',
      *     ],
      * ]
      *

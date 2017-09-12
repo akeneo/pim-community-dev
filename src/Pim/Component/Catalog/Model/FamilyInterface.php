@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -178,4 +179,14 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
      * @return array
      */
     public function getAttributeAsLabelChoices();
+
+    /**
+     * @return Collection
+     */
+    public function getFamilyVariants(): Collection;
+
+    /**
+     * @param Collection $familyVariants
+     */
+    public function setFamilyVariants(Collection $familyVariants): void;
 }

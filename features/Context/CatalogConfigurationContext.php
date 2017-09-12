@@ -61,6 +61,47 @@ class CatalogConfigurationContext extends PimContext
         $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
     }
 
+
+    /**
+     * @param string $entity
+     *
+     * @Given /^there is no "([^"]*)" in the catalog$/
+     */
+    public function thereIsNoSuchEntityInTheCatalog($entity)
+    {
+        $db = $this->getMainContext()->getContainer()->get('doctrine.dbal.default_connection');
+        $tablesToPurge = [];
+
+        switch ($entity) {
+            case 'product':
+                $tablesToPurge = [
+                    'pim_catalog_completeness_missing_attribute',
+                    'pim_catalog_completeness',
+                    'pim_catalog_association_product',
+                    'pim_catalog_category_product',
+                    'pim_catalog_group_product',
+                    'pim_catalog_product_unique_data',
+                    'pim_catalog_product',
+                ];
+                $this->getContainer()->get('akeneo_elasticsearch.client.product')->refreshIndex();
+                break;
+            case 'product model':
+                $tablesToPurge = ['pim_catalog_category_product_model', 'pim_catalog_product_model'];
+                $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+                break;
+            default:
+                throw new \InvalidArgumentException(
+                    sprintf('The purge of "%s" in the catalog has not been implemented yet.')
+                );
+        }
+
+        foreach ($tablesToPurge as $tableToPurge) {
+            $db->exec('SET FOREIGN_KEY_CHECKS = 0;');
+            $db->exec(sprintf('TRUNCATE TABLE %s', $tableToPurge));
+            $db->exec('SET FOREIGN_KEY_CHECKS = 1;');
+        }
+    }
+
     /**
      * @param string[] $files Catalog configuration files to load
      *
@@ -119,7 +160,7 @@ class CatalogConfigurationContext extends PimContext
             $referenceDataLoader->load($this->getEntityManager());
         }
 
-        $this->getElasticsearchClient()->refreshIndex();
+        $this->getElasticsearchProductClient()->refreshIndex();
     }
 
     /**
@@ -133,9 +174,9 @@ class CatalogConfigurationContext extends PimContext
     /**
      * @return Client
      */
-    protected function getElasticsearchClient()
+    protected function getElasticsearchProductClient()
     {
-        return $this->getContainer()->get('akeneo_elasticsearch.client');
+        return $this->getContainer()->get('akeneo_elasticsearch.client.product');
     }
 
     /**

@@ -28,28 +28,28 @@ Feature: Filter products by reference data with locale and scope
       | filter      | operator     | value        | result |
       | cap_color   | in list      | Black        | postit |
       | cap_color   | in list      | Black,Orange | postit |
-      | cap_color   | is empty     |              | mug    |
+      | cap_color   | is empty     |              |        |
       | cap_color   | is not empty |              | postit |
       | cap_color   | in list      | Orange       |        |
       | lace_fabric | in list      | Cotton       | postit |
       | lace_fabric | in list      | Cotton,Straw | postit |
       | lace_fabric | in list      | Flax         | postit |
       | lace_fabric | in list      | Straw        |        |
-      | lace_fabric | is empty     |              | mug    |
+      | lace_fabric | is empty     |              |        |
       | lace_fabric | is not empty |              | postit |
     When I switch the scope to "Mobile"
     Then I should be able to use the following filters:
       | filter      | operator     | value         | result |
       | cap_color   | in list      | Purple        | postit |
       | cap_color   | in list      | Purple,Orange | postit |
-      | cap_color   | is empty     |               | mug    |
+      | cap_color   | is empty     |               |        |
       | cap_color   | is not empty |               | postit |
       | cap_color   | in list      | Orange        |        |
       | lace_fabric | in list      | Straw         | postit |
       | lace_fabric | in list      | Cotton,Straw  | postit |
       | lace_fabric | in list      | Flax          |        |
       | lace_fabric | in list      | Cotton        |        |
-      | lace_fabric | is empty     |               | mug    |
+      | lace_fabric | is empty     |               |        |
       | lace_fabric | is not empty |               | postit |
 
   Scenario: Successfully filter product with multi reference data filters

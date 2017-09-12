@@ -2,10 +2,9 @@
 
 namespace Context;
 
-use Behat\ChainedStepsExtension\Then;
+use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
-use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Context\Spin\SpinCapableTrait;

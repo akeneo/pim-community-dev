@@ -54,6 +54,9 @@ class Family implements FamilyInterface
     /** @var \DateTime */
     protected $updated;
 
+    /** @var Collection */
+    protected $familyVariants;
+
     /**
      * Constructor
      */
@@ -441,5 +444,21 @@ class Family implements FamilyInterface
     public function getReference()
     {
         return $this->code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFamilyVariants(): Collection
+    {
+        return $this->familyVariants;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFamilyVariants(Collection $familyVariants): void
+    {
+        $this->familyVariants = $familyVariants;
     }
 }

@@ -43,11 +43,14 @@ job_execution.summary:
     skip_products: skipped products
     displayed: first warnings displayed
     charset_validator:
-        title: File encoding:
+        title: 'File encoding:'
         skipped: skipped, extension in white list
     product_skipped_no_diff: skipped product (no differences)
     product_skipped_no_associations: skipped product (no associations detected)
+    product_model_skipped_no_diff: skipped product model (no differences)
     item_position: read lines
+    skipped_in_root_product_model: skipped product model with parent
+    skipped_in_sub_product_model: skipped product model without parent
 
 # Job labels
 batch_jobs:
@@ -75,11 +78,19 @@ batch_jobs:
     csv_family_export:
         label: Family export in CSV
         export.label: Family export
+    csv_family_variant_export:
+        label: Family variant export in CSV
+        export.label: Family variant export
     csv_product_import:
         label: Product import in CSV
         validation.label: File validation
         import.label: Product import
         import_associations.label: Association import
+    csv_product_model_import:
+        label: Product model import in CSV
+        validation.label: File validation
+        import_root_product_model.label: Root product model import
+        import_sub_product_model.label: Sub product model import
     csv_category_import:
         label: Category import in CSV
         validation.label: File validation
@@ -100,6 +111,10 @@ batch_jobs:
         label: Family import in CSV
         validation.label: File validation
         import.label: Family import
+    csv_family_variant_import:
+        label: Family variant import in CSV
+        validation.label: File validation
+        import.label: Family variant import
     csv_group_import:
         label: Group import in CSV
         validation.label: File validation
@@ -163,6 +178,10 @@ batch_jobs:
         label: Family import in XLSX
         validation.label: File validation
         import.label: Family import
+    xlsx_family_variant_import:
+        label: Family variant import in XLSX
+        validation.label: File validation
+        import.label: Family variant import
     xlsx_product_export:
         label: Product export in XLSX
         export.label: Product export
@@ -171,6 +190,11 @@ batch_jobs:
         validation.label: File validation
         import.label: Product import
         import_associations.label: Association import
+    xlsx_product_model_import:
+        label: Product model import in XSLX
+        validation.label: File validation
+        import_root_product_model.label: Root product model import
+        import_sub_product_model.label: Sub product model import
     xlsx_group_export:
         label: Group export in XLSX
         export.label: Group export
@@ -188,6 +212,9 @@ batch_jobs:
     xlsx_family_export:
         label: Family export in XLSX
         export.label: Family export
+    xlsx_family_variant_export:
+        label: Family variant export in XLSX
+        export.label: Family variant export
     xlsx_category_export:
         label: Category export in XLSX
         export.label: Category export

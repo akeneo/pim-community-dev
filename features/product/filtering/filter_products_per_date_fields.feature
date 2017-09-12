@@ -22,9 +22,9 @@ Feature: Filter products by date field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter  | operator     | value | result       |
-      | release | is empty     |       | book and mug |
-      | release | is not empty |       | postit       |
+      | filter  | operator     | value | result |
+      | release | is empty     |       | book   |
+      | release | is not empty |       | postit |
 
   Scenario: Successfully filter products by date attributes
     Given the following products:

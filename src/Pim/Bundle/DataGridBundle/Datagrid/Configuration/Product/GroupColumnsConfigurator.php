@@ -127,6 +127,6 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
         }
 
         $this->displayedColumns = $this->editableColumns + $inGroupColumn + $this->primaryColumns
-            + $this->identifierColumn + $this->axisColumns + $this->propertiesColumns;
+            + $this->axisColumns + $this->propertiesColumns;
     }
 }

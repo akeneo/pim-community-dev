@@ -62,10 +62,18 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         }
 
         $data[self::FIELD_COMPLETENESS] = !$product->getCompletenesses()->isEmpty()
-            ? $this->serializer->normalize($product->getCompletenesses(), 'indexing', $context) : [];
+            ? $this->serializer->normalize(
+                $product->getCompletenesses(),
+                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
+                $context
+            ) : [];
 
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$product->getValues()->isEmpty()
-            ? $this->serializer->normalize($product->getValues(), 'indexing', $context) : [];
+            ? $this->serializer->normalize(
+                $product->getValues(),
+                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
+                $context
+            ) : [];
 
         return $data;
     }
@@ -75,6 +83,6 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductInterface && 'indexing' === $format;
+        return $data instanceof ProductInterface && ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX === $format;
     }
 }

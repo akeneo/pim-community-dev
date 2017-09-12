@@ -6,14 +6,14 @@ Feature: Filter products
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code      |
-      | furniture |
-      | library   |
     And the following attributes:
       | code     | label-en_US | type             | useable_as_grid_filter | group |
       | delivery | Delivery    | pim_catalog_date | 1                      | other |
       | supply   | Supply      | pim_catalog_date | 1                      | other |
+    And the following family:
+      | code      | attributes      |
+      | furniture | delivery,supply |
+      | library   | delivery,supply |
     And the following products:
       | sku    | family    | supply     | delivery   |
       | BOOK   | library   |            |            |

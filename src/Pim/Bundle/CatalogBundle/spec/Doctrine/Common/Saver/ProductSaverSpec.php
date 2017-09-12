@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
@@ -24,12 +26,12 @@ class ProductSaverSpec extends ObjectBehavior
 
     function it_is_a_saver()
     {
-        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\SaverInterface');
+        $this->shouldHaveType(SaverInterface::class);
     }
 
     function it_is_a_bulk_saver()
     {
-        $this->shouldHaveType('Akeneo\Component\StorageUtils\Saver\BulkSaverInterface');
+        $this->shouldHaveType(BulkSaverInterface::class);
     }
 
     function it_saves_a_product_after_droping_its_previous_completenesses(

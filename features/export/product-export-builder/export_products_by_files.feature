@@ -7,8 +7,8 @@ Feature: Export products according to file media attribute
   Background:
     Given an "apparel" catalog configuration
     And the following family:
-      | code    | requirements-ecommerce | attributes                        |
-      | rangers | sku,name               | attachment,description,name,price |
+      | code    | requirements-ecommerce | attributes                              |
+      | rangers | sku,name               | attachment,description,image,name,price |
     And the following products:
       | sku        | enabled | family  | categories      | image                     | attachment             |
       | SNKRS-1C-s | 1       | rangers | 2014_collection | %fixtures%/SNKRS-1C-s.png | %fixtures%/akeneo.txt  |

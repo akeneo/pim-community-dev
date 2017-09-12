@@ -65,10 +65,16 @@ class FixturesLoader
     /**
      * Loads test catalog.
      *
+     * The elastic search indexes are reset here, at the same time than the database.
+     * However, the second index is not reset directly after the first one, as it could
+     * prevent the first one to be correctly dilated.
+     *
      * @throws \Exception
      */
     public function load()
     {
+        $this->container->get('akeneo_elasticsearch.client.product')->resetIndex();
+
         $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
 
@@ -81,10 +87,17 @@ class FixturesLoader
             $this->clearAclCache();
             $this->createUserSystem();
 
+            $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
+
+            $this->indexProductModels();
+            $this->indexProducts();
+
             return;
         }
 
         $this->databaseSchemaHandler->reset();
+        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
+
         $this->loadData();
         $this->dumpDatabase($dumpFile);
     }
@@ -378,5 +391,17 @@ class FixturesLoader
     {
         $aclCache = $this->container->get('security.acl.cache');
         $aclCache->clearCache();
+    }
+
+    protected function indexProducts()
+    {
+        $products = $this->container->get('pim_catalog.repository.product')->findAll();
+        $this->container->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
+    }
+
+    protected function indexProductModels()
+    {
+        $productModels = $this->container->get('pim_catalog.repository.product_model')->findAll();
+        $this->container->get('pim_catalog.elasticsearch.indexer.product_model')->indexAll($productModels);
     }
 }

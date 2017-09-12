@@ -49,7 +49,7 @@ class UniqueValueValidator extends ConstraintValidator
      * @param ValueInterface $value
      * @param Constraint     $constraint
      *
-     * @see Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UniqueValueGuesser
+     * @see \Pim\Component\Catalog\Validator\ConstraintGuesser\UniqueValueGuesser
      */
     public function validate($value, Constraint $constraint)
     {

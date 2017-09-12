@@ -208,6 +208,8 @@ pim_enrich:
             comment: Comment products
             download: Download the product as PDF
             history: View product history
+        product_model:
+            edit_attributes: Edit attributes of a product model
         category:
             list: List categories
             create: Create a category
@@ -290,6 +292,7 @@ pim_enrich:
         group_type: Group types
         locale: Locales
         product: Products
+        product_model: Product models
     product_value:
         tooltip:
             from_variant:

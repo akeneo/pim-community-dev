@@ -6,14 +6,14 @@ Feature: Filter products with multiples text fields filters
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code      |
-      | furniture |
-      | library   |
     And the following attributes:
       | code        | label-en_US | type             | useable_as_grid_filter | group |
       | name        | Name        | pim_catalog_text | 1                      | other |
       | description | Description | pim_catalog_text | 1                      | other |
+    And the following family:
+      | code      | attributes       |
+      | furniture | name,description |
+      | library   | name,description |
     And the following products:
       | sku    | family    | description    | name   |
       | BOOK   | library   |                |        |
@@ -33,15 +33,15 @@ Feature: Filter products with multiples text fields filters
   Scenario: Successfully filter products with the sames attributes
     Given I filter by "description" with operator "contains" and value "Red"
     And I should be able to use the following filters:
-      | filter | operator         | value | result                                 |
-      | name   | is empty         |       | POST-1 and POST-2                      |
-      | name   | is not empty     |       | MUG-2, MUG-3 and MUG-4                 |
-      | name   | contains         | in    | MUG-2, MUG-3 and MUG-4                 |
-      | name   | starts with      | in    | MUG-2 and MUG-3                        |
-      | name   | does not contain | in    |                                        |
-      | name   | does not contain | green | MUG-2, MUG-3 and MUG-4                 |
-      | name   | is equal to      | in    |                                        |
-      | name   | is equal to      | pink  | MUG-4                                  |
+      | filter | operator         | value | result                 |
+      | name   | is empty         |       | POST-1 and POST-2      |
+      | name   | is not empty     |       | MUG-2, MUG-3 and MUG-4 |
+      | name   | contains         | in    | MUG-2, MUG-3 and MUG-4 |
+      | name   | starts with      | in    | MUG-2 and MUG-3        |
+      | name   | does not contain | in    |                        |
+      | name   | does not contain | green | MUG-2, MUG-3 and MUG-4 |
+      | name   | is equal to      | in    |                        |
+      | name   | is equal to      | pink  | MUG-4                  |
     And I hide the filter "description"
     And I hide the filter "name"
 

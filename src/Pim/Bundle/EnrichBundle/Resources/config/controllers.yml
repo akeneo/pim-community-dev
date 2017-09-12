@@ -24,6 +24,7 @@ parameters:
     pim_enrich.controller.rest.measures.class:                Pim\Bundle\EnrichBundle\Controller\Rest\MeasuresController
     pim_enrich.controller.rest.media.class:                   Pim\Bundle\EnrichBundle\Controller\Rest\MediaController
     pim_enrich.controller.rest.product.class:                 Pim\Bundle\EnrichBundle\Controller\Rest\ProductController
+    pim_enrich.controller.rest.product_model.class:           Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController
     pim_enrich.controller.rest.product_category.class:        Pim\Bundle\EnrichBundle\Controller\Rest\ProductCategoryController
     pim_enrich.controller.rest.product_comment.class:         Pim\Bundle\EnrichBundle\Controller\Rest\ProductCommentController
     pim_enrich.controller.rest.variant_group.class:           Pim\Bundle\EnrichBundle\Controller\Rest\VariantGroupController
@@ -95,6 +96,7 @@ services:
             - '@pim_catalog.saver.product'
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.builder.product'
+            - '@pim_catalog.values_filler.product'
             - '%pim_catalog.entity.category.class%'
 
     pim_enrich.controller.group:
@@ -332,6 +334,21 @@ services:
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_catalog.comparator.filter.product'
             - '@pim_enrich.converter.enrich_to_standard.product_value'
+            - '@pim_enrich.normalizer.product_violation'
+
+    pim_enrich.controller.rest.product_model:
+        class: '%pim_enrich.controller.rest.product_model.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_internal_api_serializer'
+            - '@pim_user.context.user'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.localization.localizer.converter'
+            - '@pim_catalog.comparator.filter.product_model'
+            - '@pim_enrich.converter.enrich_to_standard.product_value'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.validator.product'
+            - '@pim_catalog.saver.product_model'
             - '@pim_enrich.normalizer.product_violation'
 
     pim_enrich.controller.rest.product_category:

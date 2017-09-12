@@ -40,6 +40,7 @@ class PimCatalogExtension extends Extension
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
+        $loader->load('family_variant.yml');
         $loader->load('filters.yml');
         $loader->load('localization/factories.yml');
         $loader->load('localization/localizers.yml');
@@ -56,6 +57,7 @@ class PimCatalogExtension extends Extension
         $loader->load('savers.yml');
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
+        $loader->load('values_fillers.yml');
         $loader->load('versions.yml');
         $loader->load('serializers.yml');
         $loader->load('serializers_indexing.yml');

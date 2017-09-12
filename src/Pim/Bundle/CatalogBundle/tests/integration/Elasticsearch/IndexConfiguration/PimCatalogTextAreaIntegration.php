@@ -261,6 +261,6 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
             ],
         ];
 
-        $this->indexProducts($products);
+        $this->indexProductDocuments($products);
     }
 }

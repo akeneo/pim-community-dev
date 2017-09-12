@@ -39,13 +39,15 @@ That allows, for instance, to add a custom configuration in top of Akeneo's defa
 # Default configuration for extension with alias: "akeneo_elasticsearch"
 akeneo_elasticsearch:
 
-    # The index name.
-    index_name:           ~ # Required
-
     # Inline hosts of the Elasticsearch nodes. See https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_configuration.html#_inline_host_configuration. If you have a single host, you can use a string here. Otherwise, use an array.
     hosts:                [] # Required
+    indexes:
+        # An index name.
+        index_name:           ~ # Required
 
-    # Paths of the YAML files to configure the index. See https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html and src/Akeneo/Bundle/ElasticsearchBundle/IndexConfiguration/IndexConfiguration.php.
-    configuration_files:  [] # Required
+        # Paths of the YAML files to configure the index. See https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html and src/Akeneo/Bundle/ElasticsearchBundle/IndexConfiguration/IndexConfiguration.php.
+        configuration_files:  [] # Required
 
+        # Name of the symfony service for this client that will be automatically registered in the symfony container.
+        service_name:         ~ # Required
 ```

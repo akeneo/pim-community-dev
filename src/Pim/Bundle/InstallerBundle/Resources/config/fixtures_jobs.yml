@@ -89,6 +89,15 @@ jobs:
         configuration:
             filePath: families.csv
 
+    fixtures_family_variant_csv:
+        order: 60
+        connector: Data fixtures
+        alias:     fixtures_family_variant_csv
+        label:     Family variants data fixtures
+        type:      fixtures
+        configuration:
+            filePath: family_variants.csv
+
     fixtures_variant_group_csv:
         order: 70
         connector: Data fixtures
@@ -141,17 +150,28 @@ jobs:
         configuration:
             filePath: users.csv
 
-    fixtures_job_yml:
-        order: 100
+    fixtures_product_model_csv:
+        order: 80
         connector: Data fixtures
-        alias:     fixtures_job_yml
-        label:     Jobs data fixtures
+        alias:     fixtures_product_model_csv
+        label:     Product model data fixtures
         type:      fixtures
         configuration:
-            filePath: jobs.yml
+            filePath: product_models.csv
+            withHeader: true
+            delimiter: ;
+            enclosure: '"'
+            escape: '\'
+            enabled: true
+            categoriesColumn: categories
+            familyVariantColumn: family_variant
+            realTimeVersioning: true
+            enabledComparison: true
+            decimalSeparator: .
+            dateFormat: yyyy-MM-dd
 
     fixtures_product_csv:
-        order: 180
+        order: 85
         connector: Data fixtures
         alias:     fixtures_product_csv
         label:     Product data fixtures
@@ -171,3 +191,11 @@ jobs:
             decimalSeparator: .
             dateFormat: yyyy-MM-dd
 
+    fixtures_job_yml:
+        order: 100
+        connector: Data fixtures
+        alias:     fixtures_job_yml
+        label:     Jobs data fixtures
+        type:      fixtures
+        configuration:
+            filePath: jobs.yml

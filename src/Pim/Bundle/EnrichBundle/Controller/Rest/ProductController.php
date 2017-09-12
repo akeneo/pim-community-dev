@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
+use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -71,7 +71,7 @@ class ProductController
     /** @var AttributeConverterInterface */
     protected $localizedConverter;
 
-    /** @var ProductFilterInterface */
+    /** @var FilterInterface */
     protected $emptyValuesFilter;
 
     /** @var ConverterInterface */
@@ -93,7 +93,7 @@ class ProductController
      * @param RemoverInterface             $productRemover
      * @param ProductBuilderInterface      $productBuilder
      * @param AttributeConverterInterface  $localizedConverter
-     * @param ProductFilterInterface       $emptyValuesFilter
+     * @param FilterInterface              $emptyValuesFilter
      * @param ConverterInterface           $productValueConverter
      * @param NormalizerInterface          $constraintViolationNormalizer
      */
@@ -110,7 +110,7 @@ class ProductController
         RemoverInterface $productRemover,
         ProductBuilderInterface $productBuilder,
         AttributeConverterInterface $localizedConverter,
-        ProductFilterInterface $emptyValuesFilter,
+        FilterInterface $emptyValuesFilter,
         ConverterInterface $productValueConverter,
         NormalizerInterface $constraintViolationNormalizer
     ) {

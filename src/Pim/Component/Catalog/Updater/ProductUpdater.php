@@ -142,7 +142,7 @@ class ProductUpdater implements ObjectUpdaterInterface
                 throw UnknownPropertyException::unknownProperty($code);
             }
         }
-        $this->updateProductVariantValues($product, $data);
+        $this->updateVariantProductValues($product, $data);
 
         return $this;
     }
@@ -166,7 +166,7 @@ class ProductUpdater implements ObjectUpdaterInterface
      * @param ProductInterface $product
      * @param array            $data
      */
-    protected function updateProductVariantValues(ProductInterface $product, array $data)
+    protected function updateVariantProductValues(ProductInterface $product, array $data)
     {
         $variantGroup = $product->getVariantGroup();
         $shouldEraseData = false;

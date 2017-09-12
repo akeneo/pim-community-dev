@@ -9,6 +9,7 @@ parameters:
     pim_enrich.provider.empty_value.base.class:    Pim\Bundle\EnrichBundle\Provider\EmptyValue\BaseEmptyValueProvider
     pim_enrich.provider.form.chained.class:        Pim\Bundle\EnrichBundle\Provider\Form\FormChainedProvider
     pim_enrich.provider.form.product.class:        Pim\Bundle\EnrichBundle\Provider\Form\ProductFormProvider
+    pim_enrich.provider.form.product_model.class:  Pim\Bundle\EnrichBundle\Provider\Form\ProductModelFormProvider
     pim_enrich.provider.form.job_instance.class:   Pim\Bundle\EnrichBundle\Provider\Form\JobInstanceFormProvider
     pim_enrich.provider.form.attribute.class:      Pim\Bundle\EnrichBundle\Provider\Form\AttributeFormProvider
     pim_enrich.provider.structure_version.class:   Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProvider
@@ -59,6 +60,11 @@ services:
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
 
+    pim_enrich.provider.form.product_model:
+        class: '%pim_enrich.provider.form.product_model.class%'
+        tags:
+            - { name: pim_enrich.provider.form, priority: 100 }
+
     pim_enrich.provider.form.job_instance:
         class: '%pim_enrich.provider.form.job_instance.class%'
         arguments:
@@ -71,6 +77,7 @@ services:
                 csv_channel_export: pim-job-instance-csv-base-export
                 csv_currency_export: pim-job-instance-csv-base-export
                 csv_family_export: pim-job-instance-csv-base-export
+                csv_family_variant_export: pim-job-instance-csv-base-export
                 csv_group_export: pim-job-instance-csv-base-export
                 csv_group_type_export: pim-job-instance-csv-base-export
                 csv_locale_export: pim-job-instance-csv-base-export
@@ -84,6 +91,7 @@ services:
                 xlsx_channel_export: pim-job-instance-xlsx-base-export
                 xlsx_currency_export: pim-job-instance-xlsx-base-export
                 xlsx_family_export: pim-job-instance-xlsx-base-export
+                xlsx_family_variant_export: pim-job-instance-xlsx-base-export
                 xlsx_group_export: pim-job-instance-xlsx-base-export
                 xlsx_group_type_export: pim-job-instance-xlsx-base-export
                 xlsx_locale_export: pim-job-instance-xlsx-base-export
@@ -97,10 +105,12 @@ services:
                 csv_channel_import: pim-job-instance-csv-base-import
                 csv_currency_import: pim-job-instance-csv-base-import
                 csv_family_import: pim-job-instance-csv-base-import
+                csv_family_variant_import: pim-job-instance-csv-base-import
                 csv_group_import: pim-job-instance-csv-base-import
                 csv_group_type_import: pim-job-instance-csv-base-import
                 csv_locale_import: pim-job-instance-csv-base-import
                 csv_product_import: pim-job-instance-csv-product-import
+                csv_product_model_import: pim-job-instance-csv-product-model-import
                 csv_variant_group_import: pim-job-instance-csv-base-import
                 xlsx_association_type_import: pim-job-instance-xlsx-base-import
                 xlsx_attribute_import: pim-job-instance-xlsx-base-import
@@ -110,10 +120,12 @@ services:
                 xlsx_channel_import: pim-job-instance-xlsx-base-import
                 xlsx_currency_import: pim-job-instance-xlsx-base-import
                 xlsx_family_import: pim-job-instance-xlsx-base-import
+                xlsx_family_variant_import: pim-job-instance-xlsx-base-import
                 xlsx_group_import: pim-job-instance-xlsx-base-import
                 xlsx_group_type_import: pim-job-instance-xlsx-base-import
                 xlsx_locale_import: pim-job-instance-xlsx-base-import
                 xlsx_product_import: pim-job-instance-xlsx-product-import
+                xlsx_product_model_import: pim-job-instance-xlsx-product-model-import
                 xlsx_variant_group_import: pim-job-instance-xlsx-base-import
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
