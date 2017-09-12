@@ -27,7 +27,6 @@ Feature: Display many datagrid filters
       | length | length      | pim_catalog_text | 1                      | other |
     When I am logged in as "Mary"
     And I am on the products grid
-    And I refresh the grid
     Then I should see product les-paul
 
   @jira https://akeneo.atlassian.net/browse/PIM-5536
@@ -52,5 +51,4 @@ Feature: Display many datagrid filters
       | ID   | ID          | pim_catalog_metric | Length        | CENTIMETER          | 1                      | other | 0                | 0                |
     When I am logged in as "Mary"
     And I am on the products grid
-    And I refresh the grid
     Then I should see product les-paul

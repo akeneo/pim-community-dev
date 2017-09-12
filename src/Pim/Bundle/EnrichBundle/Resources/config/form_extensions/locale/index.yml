@@ -22,6 +22,11 @@ extensions:
         parent: pim-locale-index
         targetZone: filters
 
+    pim-locale-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-locale-index
+        targetZone: toolbar
+
     pim-locale-index-grid:
         module: pim/form/common/index/grid
         parent: pim-locale-index

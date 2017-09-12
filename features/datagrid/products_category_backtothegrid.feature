@@ -56,5 +56,4 @@ Feature: Product category back to the grid
     Given I open the category tree
     And I filter by "category" with operator "" and value "winter_collection"
     And I am on the imports page
-    When I refresh the grid
     Then I should not see "Server error"

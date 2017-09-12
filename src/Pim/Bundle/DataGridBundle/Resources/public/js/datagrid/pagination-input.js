@@ -10,7 +10,7 @@ function($, mediator, _, Pagination) {
      * @class   oro.datagrid.PaginationInput
      * @extends oro.datagrid.Pagination
      */
-    return Pagination.extend({
+    const PaginationInput = Pagination.extend({
         collection: {},
         /** @property */
         template: _.template(
@@ -54,15 +54,25 @@ function($, mediator, _, Pagination) {
         /**
          * @inheritDoc
          */
-        initialize: function () {
-            mediator.on('grid_load:complete', collection => {
-                this.collection = collection;
-                this.renderPagination();
+        initialize: function (options) {
+            this.appendToGrid = options.appendToGrid;
+            this.gridElement = options.gridElement;
 
-                return Pagination.prototype.initialize.call(this, {
-                    collection: this.collection,
-                    enabled: true
-                });
+            if (this.appendToGrid) {
+                mediator.on('datagrid_collection_set_after', this.setupPagination.bind(this));
+            }
+
+            mediator.once('grid_load:start', this.setupPagination.bind(this));
+            mediator.on('grid_load:complete', this.setupPagination.bind(this));
+        },
+
+        setupPagination(collection) {
+            this.collection = collection;
+            this.renderPagination();
+
+            return Pagination.prototype.initialize.call(this, {
+                collection: this.collection,
+                enabled: true
             });
         },
 
@@ -118,7 +128,20 @@ function($, mediator, _, Pagination) {
         renderPagination: function() {
             Pagination.prototype.renderPagination.apply(this, arguments);
             this.$('input').numeric({ decimal: false, negative: false });
+
+
+            if (this.options.appendToGrid) {
+                this.gridElement.prepend(this.$el);
+            }
+
             return this;
         }
     });
+
+    PaginationInput.init = function(gridContainer) {
+        return new PaginationInput({ appendToGrid: true, gridElement: $(gridContainer).find('.grid-container') });
+    };
+
+    return PaginationInput;
+
 });

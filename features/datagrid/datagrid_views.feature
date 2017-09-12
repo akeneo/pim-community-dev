@@ -111,16 +111,6 @@ Feature: Datagrid views
     When I filter by "family" with operator "in list" and value "Sneakers"
     Then I should not be able to save the view
 
-  Scenario: Keep view per page
-    Given I am on the products grid
-    When I change the page size to 25
-    And I am on the attributes page
-    And I change the page size to 50
-    When I am on the products grid
-    Then the page size should be 25
-    When I am on the attributes page
-    Then the page size should be 50
-
   Scenario: Successfully choose my default view
     Given I am on the products grid
     And I filter by "family" with operator "in list" and value "Sneakers"

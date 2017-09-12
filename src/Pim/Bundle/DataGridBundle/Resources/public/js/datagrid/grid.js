@@ -150,6 +150,8 @@ define(
                 this._listenToCollectionEvents();
                 this._listenToBodyEvents();
                 this._listenToCommands();
+
+                mediator.trigger('grid_load:start', this.collection, this);
             },
 
             /**

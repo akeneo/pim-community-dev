@@ -21,6 +21,11 @@ extensions:
         parent: pim-export-profile-index
         targetZone: filters
 
+    pim-export-profile-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-export-profile-index
+        targetZone: toolbar
+
     pim-export-profile-index-grid:
         module: pim/form/common/index/grid
         parent: pim-export-profile-index

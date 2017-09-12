@@ -22,6 +22,11 @@ extensions:
         parent: pim-group-type-index
         targetZone: filters
 
+    pim-group-type-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-group-type-index
+        targetZone: toolbar
+
     pim-group-type-index-grid:
         module: pim/form/common/index/grid
         parent: pim-group-type-index

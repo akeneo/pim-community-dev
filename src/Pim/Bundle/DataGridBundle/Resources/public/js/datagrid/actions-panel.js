@@ -32,6 +32,7 @@ function(_, Backbone, groupTemplate, BaseForm, mediator) {
          * @param {Array} [options.actions] List of actions
          */
         initialize: function() {
+            mediator.once('grid_load:start', this.setupActions.bind(this));
             mediator.on('grid_load:complete', this.setupActions.bind(this));
         },
 

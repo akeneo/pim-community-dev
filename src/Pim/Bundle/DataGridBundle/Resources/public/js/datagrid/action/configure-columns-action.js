@@ -71,7 +71,7 @@ define(
             ),
 
             initialize: function () {
-                mediator.once('grid_load:complete', this.setupOptions.bind(this));
+                mediator.once('grid_load:start', this.setupOptions.bind(this));
             },
 
             setupOptions: function(collection, gridContainer) {
@@ -98,7 +98,7 @@ define(
             },
 
             renderAction: function() {
-                this.$el.append(
+                this.$el.empty().append(
                         this.template({
                             icon: this.icon,
                             label: this.label
@@ -129,7 +129,7 @@ define(
                     if (displayedCodes) {
                         displayedCodes = displayedCodes.split(',');
                     } else {
-                        displayedCodes = _.pluck(this.options.metadata.columns, 'name');
+                        displayedCodes = _.pluck(this.options.columns, 'name');
                     }
 
                     displayedCodes = _.map(displayedCodes, function(displayedCode, index) {
