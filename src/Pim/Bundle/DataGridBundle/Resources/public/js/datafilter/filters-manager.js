@@ -330,9 +330,23 @@ define(
                     open: $.proxy(function () {
                         if (this.$el.is(':visible')) {
                             this.selectWidget.onOpenDropdown();
-                            this._setDropdownWidth();
                             this._updateDropdownPosition();
                         }
+                    }, this),
+                    beforeclose: $.proxy(function() {
+                        if (this.selectWidget.getWidget().position().left <= this._getLeftStartPosition()) {
+                            return true;
+                        }
+
+                        this.selectWidget.getWidget().css({
+                            left: this._getLeftEndPosition() + 'px'
+                        }).animate({
+                            left: this._getLeftStartPosition() + 'px'
+                        }, 400, 'swing', () => {
+                            this.selectWidget.multiselect('close');
+                        });
+
+                        return false;
                     }, this)
                 }
             });
@@ -346,55 +360,53 @@ define(
         },
 
         /**
-         * Set design for select dropdown
-         *
-         * @protected
-         */
-        _setDropdownWidth: function () {
-            var widget = this.selectWidget.getWidget();
-            var requiredWidth = this.selectWidget.getMinimumDropdownWidth() + 24;
-            widget.width(requiredWidth).css('min-width', requiredWidth + 'px');
-            widget.find('input[type="search"]').width(requiredWidth - 22);
-        },
-
-        /**
          * Activate/deactivate all filter depends on its status
          *
          * @protected
          */
         _processFilterStatus: function () {
-            var activeFilters = this.$(this.filterSelector).val();
+            const activeFilters = this.$(this.filterSelector).val();
 
             _.each(this.filters, function (filter, name) {
-                if (!filter.enabled && _.indexOf(activeFilters, name) != -1) {
+                if (!filter.enabled && _.indexOf(activeFilters, name) !== -1) {
                     this.enableFilter(filter);
-                } else if (filter.enabled && _.indexOf(activeFilters, name) == -1) {
+                } else if (filter.enabled && _.indexOf(activeFilters, name) === -1) {
                     this.disableFilter(filter);
                 }
             }, this);
-
-            this._updateDropdownPosition();
         },
 
         /**
-         * Set dropdown position according to current element
-         *
-         * @protected
+         * Set dropdown position according to current element. This methods animates the panel to be displayed
+         * like the other columns.
          */
         _updateDropdownPosition: function () {
-            var button = this.$(this.buttonSelector);
-            var buttonPosition = button.offset();
-            var widgetWidth = this.selectWidget.getWidget().outerWidth();
-            var windowWidth = $(window).width();
-            var widgetLeftOffset = buttonPosition.left;
-            if (buttonPosition.left + widgetWidth > windowWidth) {
-                widgetLeftOffset = buttonPosition.left + button.outerWidth() - widgetWidth;
-            }
+            const mainPanelLeft = $('.AknDefault-mainContent').position().left;
 
             this.selectWidget.getWidget().css({
-                top: buttonPosition.top + button.outerHeight(),
-                left: widgetLeftOffset
+                left: this._getLeftStartPosition() + 'px'
+            }).animate({
+                left: this._getLeftEndPosition() + 'px'
             });
+        },
+
+        /**
+         * Returns the left absolute position for the animation start
+         *
+         * @returns {number}
+         */
+        _getLeftStartPosition() {
+            return $('.AknDefault-mainContent').position().left - 300;
+        },
+
+        /**
+         * Returns the left absolute position for the animation end
+         *
+         * @returns {number}
+         */
+        _getLeftEndPosition() {
+            return $('.AknDefault-mainContent').position().left;
         }
+
     });
 });
