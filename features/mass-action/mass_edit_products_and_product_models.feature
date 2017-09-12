@@ -21,8 +21,8 @@ Feature: Apply a mass action on products and product models
     And I select rows tshirt-unique-color and tshirt-kurt-cobain-s
     And I press "Change product information" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
-    And I display the Description attribute
-    And I change the "Description" to "a tee"
+    And I display the Model description attribute
+    And I change the "Model description" to "a tee"
     When I move to the confirm page
     Then I should see the text "You are about to update 2 products with the following information, please confirm."
 
