@@ -90,9 +90,9 @@ pimee_enrich:
     product:
       operation:
         publish:
-          label: Product publiceren
+          label: Publiceren
         unpublish:
-          label: Depubliceer producten
+          label: Depubliceer
     asset:
       step:
         choose:

@@ -4,10 +4,15 @@ extensions:
         config:
             title: pimee_workflow.proposal.overview
 
-    pim-proposal-index-filters:
-        module: oro/datafilter-builder
+    pim-proposal-index-filters-manage:
+        module: oro/datafilter/filters-button
         parent: pim-proposal-index
-        targetZone: content
+        targetZone: filters
+
+    pim-proposal-index-grid-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pim-proposal-index
+        targetZone: filters
 
     pim-proposal-index-grid:
         module: pim/form/common/index/grid

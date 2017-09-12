@@ -159,9 +159,9 @@ pimee_enrich:
     product:
       operation:
         publish:
-          label: Опубликовать продукты
+          label: Опубликовать
         unpublish:
-          label: Снять продукты с публикации
+          label: Снять с публикации
     asset:
       step:
         select:

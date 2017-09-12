@@ -48,7 +48,7 @@ pim_enrich:
         third: Konfigurér
         fourth: Bekræft
     publish:
-      label: Udgiv produkter
+      label: Publicér
       description: Udgiv de udvalgte produkter, de nuværende offentliggjorte data vil blive slettet af de aktuelle data.
       success_flash: Udvalgte produkter har været publiceret.
       launched_flash: Jobbet "Publisering af produkt(er)" kører i øjeblikket.
@@ -58,7 +58,7 @@ pim_enrich:
         info: '%nbProducts% udvalgte produkter vil blive offentliggjort.'
       not_editable: Du har ikke tilladelse til at redigere produkterne "%identifiers%".
     unpublish:
-      label: Af-publicer af produkter
+      label: Afpublisér
       description: Af publicer de valgte produkter, de nuværende offentliggjorte data vil blive slettet.
       success_flash: De udvalgte produkter er ikke længere synlige.
       launched_flash: Jobbet "Publisering af produkt(er)" kører i øjeblikket.
