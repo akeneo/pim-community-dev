@@ -18,7 +18,7 @@ class StringDecorator extends ElementDecorator
     public function filter($operator, $value)
     {
         $operatorDropdown = $this->decorate(
-            $this->find('css', '.dropdown-toggle'),
+            $this->find('css', '*[data-toggle="dropdown"]'),
             ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
         );
         $operatorDropdown->setValue($operator);

@@ -20,7 +20,7 @@ class MultiSelectDecorator extends ElementDecorator
         // The multiselect plugin can put many widgets in the DOM.
         // We have to find the one that is visible and active.
         $multiSelectWidgets = $this->spin(function () {
-            return $this->getBody()->findAll('css', '.select-filter-widget.dropdown-menu');
+            return $this->getBody()->findAll('css', '.select-filter-widget');
         }, sprintf('Could not find any multiselect widget for filter "%s"', $value));
 
         $visibleWidgets = array_filter($multiSelectWidgets, function ($widget) {

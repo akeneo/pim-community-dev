@@ -73,7 +73,8 @@
     display: block;
     color: @AknGrey;
     text-transform: uppercase;
-    font-size: @AknFontSizeSmall;
+    font-size: @AknDefaultFontSize;
+    white-space: nowrap;
   }
 
   &-filterCriteria {
@@ -125,6 +126,14 @@
       margin-right: 3px;
       color: @AknDefaultFontColor;
     }
+  }
+
+  &--search &-filterContainer {
+    margin-right: 0;
+  }
+
+  &--search &-disableFilter {
+    display: none;
   }
 
   &--manage {
