@@ -338,13 +338,9 @@ define(
                             return true;
                         }
 
-                        this.selectWidget.getWidget().css({
-                            left: this._getLeftEndPosition() + 'px'
-                        }).animate({
-                            left: this._getLeftStartPosition() + 'px'
-                        }, 400, 'swing', () => {
-                            this.selectWidget.multiselect('close');
-                        });
+                        this.selectWidget.getWidget().css({ left: this._getLeftEndPosition() + 'px' });
+                        this.selectWidget.getWidget().css({ left: this._getLeftStartPosition() + 'px' });
+                        setTimeout(() => this.selectWidget.multiselect('close'), 500);
 
                         return false;
                     }, this)
@@ -383,11 +379,8 @@ define(
         _updateDropdownPosition: function () {
             const mainPanelLeft = $('.AknDefault-mainContent').position().left;
 
-            this.selectWidget.getWidget().css({
-                left: this._getLeftStartPosition() + 'px'
-            }).animate({
-                left: this._getLeftEndPosition() + 'px'
-            });
+            this.selectWidget.getWidget().css({ left: this._getLeftStartPosition() + 'px' });
+            this.selectWidget.getWidget().css({ left: this._getLeftEndPosition() + 'px' });
         },
 
         /**

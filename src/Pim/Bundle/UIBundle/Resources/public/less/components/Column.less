@@ -1,18 +1,16 @@
 @import '../base/variables';
 
 .AknColumn {
-  @timing: 0.3s;
   @iconSize: 24px;
   @littleWidth: 40px;
-  @transition: ease-in-out;
   @scrollbarWidth: 16px;
 
   flex-basis: @AknSecondColumnWidth;
   width: @AknSecondColumnWidth;
   position: relative;
   transition:
-    flex-basis @timing @transition,
-    width @timing @transition;
+    flex-basis @AknColumnTiming @AknColumnTransition,
+    width @AknColumnTiming @AknColumnTransition;
   order: -10;
   background: @AknLightGray;
   border-right: 1px solid @AknBorderColor;
@@ -34,7 +32,7 @@
     position: absolute;
     right: 0;
     overflow-x: auto;
-    transition: right @timing @transition;
+    transition: right @AknColumnTiming @AknColumnTransition;
   }
 
   &-innerTop:not(:empty),
@@ -42,8 +40,8 @@
     padding: 0 @AknPaddingLeftColumn @AknPaddingLeftColumn @AknPaddingLeftColumn;
     line-height: 14px;
     transition:
-      margin-right @timing @transition,
-      margin-left @timing @transition;
+      margin-right @AknColumnTiming @AknColumnTransition,
+      margin-left @AknColumnTiming @AknColumnTransition;
   }
 
   &-innerTop {
@@ -139,7 +137,7 @@
     margin-top: 10px;
     left: @AknMainMenuWidth + (@littleWidth - @AknDefaultButtonSize) / 2;
     opacity: 0;
-    transition: opacity @timing @transition;
+    transition: opacity @AknColumnTiming @AknColumnTransition;
     z-index: 850;
   }
 
@@ -161,9 +159,9 @@
     right: 0;
     border-top: 1px solid @AknBorderColor;
     transition:
-      opacity 0.2s @transition,
-      width @timing @transition,
-      background-position @timing @transition;
+      opacity 0.2s @AknColumnTransition,
+      width @AknColumnTiming @AknColumnTransition,
+      background-position @AknColumnTiming @AknColumnTransition;
 
     &:hover {
       opacity: 1;
