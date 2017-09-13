@@ -90,7 +90,7 @@ define(
                 const localeParam = $.param({ dataLocale });
                 resp.metadata.options.url =  `${url}?${localeParam}`;
 
-                datagridBuilder([ StateListener ]);
+                datagridBuilder([StateListener]);
             },
 
             /**
