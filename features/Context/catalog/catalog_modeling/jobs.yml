@@ -67,11 +67,36 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/products_export_grid_context_%locale%_%scope%.xlsx
-    csv_default_product_import:
+
+    csv_catalog_modeling_product_import:
         connector: Akeneo CSV Connector
         alias:     csv_product_import
-        label:     CSV default product import
+        label:     CSV catalog modeling product import
         type:      import
+        configuration:
+            uploadAllowed:     true
+            delimiter:         ;
+            enclosure:         '"'
+            escape:            '\'
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator:   .
+    xlsx_catalog_modeling_product_import:
+        connector: Akeneo CSV Connector
+        alias:     xlsx_product_import
+        label:     XLSX catalog modeling product import
+        type:      import
+        configuration:
+            uploadAllowed:      true
+            enabled:            true
+            categoriesColumn:   categories
+            familyColumn:       family
+            groupsColumn:       groups
+            realTimeVersioning: true
+            decimalSeparator:   .
 
     csv_catalog_modeling_family_variant_import:
         connector: Akeneo CSV Connector
