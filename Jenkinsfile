@@ -4,6 +4,11 @@ import org.csanchez.jenkins.plugins.kubernetes.pipeline.PodTemplateAction
 import org.apache.commons.lang.ArrayUtils
 
 stage("PreBuild") {
+
+    milestone 1
+    input 'Launch your build?'
+    milestone 2
+
     tasks = [:]
 
     if (hasChanged(".ci/Dockerfiles/httpd/2.4")) {
@@ -73,6 +78,7 @@ stage("Build") {
             sh "mkdir -m 777 vendor"
 
             container("php") {
+                sh "composer config --global process-timeout 900"
                 sh "php -d memory_limit=-1 /usr/bin/composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-scripts --ignore-platform-reqs --no-suggest"
                 // Required to avoid permission error when "deleteDir()"
                 sh "chmod 777 -R vendor/akeneo"
@@ -280,7 +286,7 @@ def withBuildNode(body) {
         containerTemplate(name: "php", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", envVars: [containerEnvVar(key: "COMPOSER_HOME", value: "/shared/.composer")]),
         containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8")
     ], volumes: [
-        nfsVolume(mountPath: '/shared', serverAddress: '10.3.248.208', serverPath: '/exports', readOnly: false),
+        nfsVolume(mountPath: '/shared', serverAddress: "${env.NFS_IP}", serverPath: '/exports', readOnly: false),
         hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
     ]) {
         node("build") {
