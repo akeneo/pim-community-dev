@@ -14,7 +14,6 @@ services:
                 - 'update_product_value_with_permission_and_rules'
                 - 'remove_product_value_with_permission_and_rules'
                 - 'edit_common_attributes_with_permission_and_rules'
-                - 'add_to_variant_group_with_rules'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 

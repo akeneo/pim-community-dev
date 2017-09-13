@@ -21,7 +21,6 @@ remove_product_value;All;
 publish_product;All;
 unpublish_product;All;
 edit_common_attributes;All;
-add_to_variant_group;All;
 set_attribute_requirements;All;
 csv_product_quick_export;All;
 csv_published_product_quick_export;All;

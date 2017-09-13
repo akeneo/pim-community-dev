@@ -23,7 +23,6 @@ remove_product_value;IT support,Manager,Redactor;
 publish_product;IT support,Manager,Redactor;
 unpublish_product;IT support,Manager,Redactor;
 edit_common_attributes;IT support,Manager,Redactor;
-add_to_variant_group;IT support,Manager,Redactor;
 set_attribute_requirements;IT support,Manager,Redactor;
 csv_product_quick_export;IT support,Manager,Redactor;
 xlsx_tablet_product_export;IT support,Manager,Redactor;

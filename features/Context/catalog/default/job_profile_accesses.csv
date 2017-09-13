@@ -5,7 +5,6 @@ remove_product_value;All;
 publish_product;All;
 unpublish_product;All;
 edit_common_attributes;All;
-add_to_variant_group;All;
 set_attribute_requirements;All;
 approve_product_draft;All;
 refuse_product_draft;All;
