@@ -33,7 +33,7 @@ define(
 
         return SelectFilter.extend({
             template: _.template(template),
-            className: 'AknDropdown AknColumn-block filter-item scope-switcher',
+            className: 'AknDropdown AknFilterBox-filterContainer filter-select filter-criteria-selector',
             events: {
                 'keydown select': '_preventEnterProcessing',
                 'click .AknDropdown-menuLink': '_onSelectChange'
