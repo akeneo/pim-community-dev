@@ -15,8 +15,7 @@ use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
 use Pim\Behat\Context\PimContext;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
-use Pim\Component\Catalog\Model\Product;
+use Pim\Component\Catalog\Model\ProductInterface;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
@@ -1791,13 +1790,13 @@ class WebUser extends PimContext
     }
 
     /**
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @Given /^(product "([^"]*)") should be disabled$/
      *
      * @throws ExpectationException
      */
-    public function productShouldBeDisabled(Product $product)
+    public function productShouldBeDisabled(ProductInterface $product)
     {
         $this->spin(function () use ($product) {
             $this->getMainContext()->getEntityManager()->refresh($product);
@@ -1807,13 +1806,13 @@ class WebUser extends PimContext
     }
 
     /**
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @Given /^(product "([^"]*)") should be enabled$/
      *
      * @throws ExpectationException
      */
-    public function productShouldBeEnabled(Product $product)
+    public function productShouldBeEnabled(ProductInterface $product)
     {
         $this->spin(function () use ($product) {
             $this->getMainContext()->getEntityManager()->refresh($product);
