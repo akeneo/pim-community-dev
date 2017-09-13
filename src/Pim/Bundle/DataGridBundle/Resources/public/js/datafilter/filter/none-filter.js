@@ -20,7 +20,7 @@ function($, _, __, AbstractFilter) {
          * @property
          */
         template: _.template(
-            '<button type="button" class="btn filter-criteria-selector oro-drop-opener oro-dropdown-toggle">' +
+            '<button type="button" class="btn filter-criteria-selector oro-drop-opener">' +
                 '<% if (showLabel) { %><%= label %>: <% } %>' +
                 '<span class="filter-criteria-hint"><%= criteriaHint %></span>' +
                 '<span class="caret"></span>' +

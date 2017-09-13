@@ -31,7 +31,7 @@ define(
 
         /** @property */
         template: _.template(
-            '<div class="AknFilterBox-filter filter-criteria-selector oro-drop-opener oro-dropdown-toggle">' +
+            '<div class="AknFilterBox-filter filter-criteria-selector oro-drop-opener">' +
                 '<% if (showLabel) { %>' +
                     '<span class="AknFilterBox-filterLabel"><%= label %></span>' +
                 '<% } %>' +

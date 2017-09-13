@@ -324,17 +324,6 @@ function(
         /**
          * @inheritDoc
          */
-        _isValueValid: function(value) {
-            if (_.isEqual(value, this.emptyValue) && !_.isEqual(this.value, value)) {
-                return true;
-            }
-
-            return _.contains(['empty', 'not empty'], value.type) || value.value.start || value.value.end;
-        },
-
-        /**
-         * @inheritDoc
-         */
         _onValueUpdated: function(newValue, oldValue) {
             ChoiceFilter.prototype._onValueUpdated.apply(this, arguments);
             if (_.contains(['empty', 'not empty'], newValue.type)) {

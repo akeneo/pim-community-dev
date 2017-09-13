@@ -129,7 +129,7 @@ define(
                 .removeClass('AknDropdown-menuLink--active')
                 .removeClass('active');
 
-            const currentOperatorChoice = this.$el.find('.operator .operator_choice[data-value=' + operator + ']');
+            const currentOperatorChoice = this.$el.find('.operator .operator_choice[data-value="' + operator + '"]');
             currentOperatorChoice.parent()
                 .addClass('AknDropdown-menuLink--active')
                 .addClass('active');
@@ -141,7 +141,7 @@ define(
          * @inheritDoc
          */
         _readDOMValue: function() {
-            var operator = this.emptyChoice ? this.$('.active .operator_choice').data('value') : 'in';
+            const operator = this.emptyChoice ? this.$('.active .operator_choice').data('value') : 'in';
 
             return {
                 value: _.contains(['empty', 'not empty'], operator) ? {} : this._getInputValue(this.criteriaValueSelectors.value),

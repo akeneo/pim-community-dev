@@ -137,21 +137,9 @@ define(
                 if (!value.value) {
                     return this.placeholder;
                 } else {
-                    var option = this._getChoiceOption(value.type);
+                    const option = this._getChoiceOption(value.type);
                     return option.label + ' ' + value.value + ' ' + value.currency;
                 }
-            },
-
-            /**
-             * Check if all properties of the value have been specified or all are empty (for reseting filter)
-             *
-             * @param value
-             * @return boolean
-             */
-            _isValueValid: function(value) {
-                return (value.currency && value.type && !_.isUndefined(value.value)) ||
-                       (!value.currency && !value.type && _.isUndefined(value.value)) ||
-                       (_.contains(['empty', 'not empty'], value.type) && value.currency);
             },
 
             /**
@@ -199,7 +187,7 @@ define(
             setValue: function(value) {
                 value = this._formatRawValue(value);
                 if (this._isNewValueUpdated(value)) {
-                    var oldValue = this.value;
+                    const oldValue = this.value;
                     this.value = app.deepClone(value);
                     this._updateDOMValue();
                     this._onValueUpdated(this.value, oldValue);
@@ -214,7 +202,7 @@ define(
             _onClickChoiceValue: function(e) {
                 NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
                 if ($(e.currentTarget).attr('data-input-toggle')) {
-                    var filterContainer = $(e.currentTarget).closest('.filter-item');
+                    const filterContainer = $(e.currentTarget).closest('.filter-item');
                     if (_.contains(['empty', 'not empty'], $(e.currentTarget).attr('data-value'))) {
                         filterContainer.find(this.criteriaValueSelectors.value).hide();
                     } else {
@@ -244,7 +232,7 @@ define(
                 this._highlightCurrency(value);
 
                 e.preventDefault();
-            },
+            }
         });
     }
 );
