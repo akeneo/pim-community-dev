@@ -39,7 +39,6 @@ Feature: Edit common attributes of many products at once
     And I should see available attribute Weight in group "Other"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6273
-
   Scenario: Successfully remove product attribute fields
     Given I am on the products grid
     And I select rows boots, sandals and sneakers
@@ -81,7 +80,6 @@ Feature: Edit common attributes of many products at once
       | hot   |
 
   @info https://akeneo.atlassian.net/browse/PIM-2163
-
   Scenario: Successfully mass edit product values that does not belong yet to the product
     Given I am on the products grid
     And I set product "pump" family to "sneakers"
@@ -96,7 +94,6 @@ Feature: Edit common attributes of many products at once
     And the english localizable value name of "sneakers" should be "boots"
 
   @info https://akeneo.atlassian.net/browse/PIM-3070
-
   Scenario: Successfully mass edit a price not added to the product
     Given I am on the products grid
     And I create a new product
@@ -120,7 +117,6 @@ Feature: Edit common attributes of many products at once
       | 150    | EUR      |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3426
-
   Scenario: Successfully update multi-valued value at once where the product have already one of the value
     Given the following product values:
       | product | attribute          | value   |
@@ -139,7 +135,6 @@ Feature: Edit common attributes of many products at once
       | hot   |
 
   @jira https://akeneo.atlassian.net/browse/PIM-4528
-
   Scenario: See previously selected fields on mass edit error
     Given I am on the products grid
     And I select rows boots and sandals
@@ -162,7 +157,6 @@ Feature: Edit common attributes of many products at once
     And I should not see the text "Name"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6008
-
   Scenario: Successfully mass edit scoped product values with special chars
     Given I am on the products grid
     And I set product "pump" family to "boots"
@@ -219,7 +213,6 @@ Feature: Edit common attributes of many products at once
       | mobile  | en_US  | warning | 1              | 80%   |
 
   @jira https://akeneo.atlassian.net/browse/PIM-6022
-
   Scenario: Successfully mass edit product values preventing Shell Command Injection
     Given I am on the "boots" family page
     And I visit the "Attributes" tab
@@ -259,7 +252,6 @@ Feature: Edit common attributes of many products at once
     And file "%web%shell_injection.txt" should not exist
 
   @jira https://akeneo.atlassian.net/browse/PIM-6240
-
   Scenario: Allow editing all attributes on configuration screen
     Given I am on the "tablet" channel page
     Then I should see the Code field
@@ -276,7 +268,6 @@ Feature: Edit common attributes of many products at once
     And I should not see the text "undefined"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6274
-
   Scenario: Successfully validate products with a custom validation on identifier
     Given I am on the "SKU" attribute page
     When I fill in the following information:
@@ -293,7 +284,6 @@ Feature: Edit common attributes of many products at once
     Then I should not see the text "There are errors in the attributes form"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6199
-
   Scenario: Successfully disable form when we are in validation step on mass edit products
     Given I am on the products grid
     And I select rows boots, sandals and sneakers
@@ -306,7 +296,6 @@ Feature: Edit common attributes of many products at once
     Then I should not see the text "Add Attribute"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6271
-
   Scenario: Successfully keep mass edit form fields disabled after switching groups
     Given I am on the products grid
     And I select rows boots, sandals and sneakers

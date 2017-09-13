@@ -102,21 +102,6 @@ Feature: Enforce ACL on history
     When I am on the "similar_boots" product group page
     Then I should not see "history"
 
-  @skip @info Will be removed in PIM-6444
-  Scenario: Successfully hide variant group history when user doesn't have the rights
-    Given a "footwear" catalog configuration
-    And a "boot" product
-    And I am logged in as "admin"
-    And I am on the "caterpillar_boots" variant group page
-    And I should see the text "history"
-    And I am on the "Administrator" role page
-    And I visit the "Permissions" tab
-    And I revoke rights to resource View group variant history
-    And I save the role
-    Then I should not see the text "There are unsaved changes."
-    When I am on the "caterpillar_boots" variant group page
-    Then I should not see "history"
-
   Scenario: Successfully hide product history when user doesn't have the rights
     Given a "footwear" catalog configuration
     And a "boot" product

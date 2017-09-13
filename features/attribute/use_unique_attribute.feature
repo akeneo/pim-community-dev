@@ -33,10 +33,3 @@ Feature: Use an unique attribute
     When I choose the "Edit common attributes" operation
     Then I should not see available attribute Unique attribute
     And I should see available attribute Name
-
-  @jira https://akeneo.atlassian.net/browse/PIM-6428
-  Scenario: Successfully hide unique attributes on variant groups
-    Given I am on the "caterpillar_boots" variant group page
-    When I visit the "Attributes" tab
-    Then I should not see available attribute Unique attribute
-    And I should see available attribute Name

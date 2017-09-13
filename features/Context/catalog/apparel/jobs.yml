@@ -224,36 +224,6 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/xlsx_group_export.xlsx
-    variant_group_import:
-        connector: Akeneo CSV Connector
-        alias:     csv_variant_group_import
-        label:     Variant group import
-        type:      import
-        configuration:
-            uploadAllowed: true
-            delimiter:     ;
-            enclosure:     '"'
-            escape:        '\'
-            copyValues: true
-    variant_group_export:
-        connector: Akeneo CSV Connector
-        alias:     csv_variant_group_export
-        label:     Variant group export
-        type:      export
-        configuration:
-            delimiter:  ;
-            enclosure:  '"'
-            withHeader: true
-            filePath: /tmp/variant_group.csv
-    xlsx_variant_group_export:
-        connector: Akeneo XLSX Connector
-        alias:     xlsx_variant_group_export
-        label:     Variant group export
-        type:      export
-        configuration:
-            filePath:   /tmp/xlsx_variant_group_export.xlsx
-            linesPerFile: 10000
-            withHeader: true
     attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import

@@ -3,6 +3,7 @@
 namespace Context;
 
 use Pim\Behat\Context\PimContext;
+use Pim\Component\Catalog\Model\GroupInterface;
 
 /**
  * Context for data transformations
@@ -77,7 +78,6 @@ class TransformationContext extends PimContext
      * @param string $code
      *
      * @Transform /^"([^"]*)" product group$/
-     * @Transform /^"([^"]*)" variant group$/
      *
      * @return GroupInterface
      */

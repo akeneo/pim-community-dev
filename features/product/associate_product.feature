@@ -6,6 +6,9 @@ Feature: Associate a product
 
   Background:
     Given a "footwear" catalog configuration
+    And the following product groups:
+      | code              | label-en_US      | type    |
+      | caterpillar_boots | Caterpillar boots| RELATED |
     And the following products:
       | sku            | categories        |
       | charcoal-boots | Summer_collection |

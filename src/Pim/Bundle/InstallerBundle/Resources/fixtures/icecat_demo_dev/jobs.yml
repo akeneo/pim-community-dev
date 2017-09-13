@@ -117,17 +117,6 @@ jobs:
             delimiter:     ;
             enclosure:     '"'
             escape:        '\'
-    csv_variant_group_import:
-        connector: Akeneo CSV Connector
-        alias:     csv_variant_group_import
-        label:     Demo CSV variant group import
-        type:      import
-        configuration:
-            filePath:      /tmp/variant_group.csv
-            uploadAllowed: true
-            delimiter:     ;
-            enclosure:     '"'
-            escape:        '\'
     csv_group_export:
         connector: Akeneo CSV Connector
         alias:     csv_group_export
@@ -138,17 +127,6 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/group.csv
-    csv_variant_group_export:
-        connector: Akeneo CSV Connector
-        alias:     csv_variant_group_export
-        label:     Demo CSV variant group export
-        type:      export
-        configuration:
-            delimiter:  ;
-            enclosure:  '"'
-            withHeader: true
-            filePath:   /tmp/variant_group.csv
-            decimalSeparator: .
     csv_attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
@@ -317,15 +295,6 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             filePath:   /tmp/group.xlsx
-    xlsx_variant_group_export:
-        connector: Akeneo XLSX Connector
-        alias:     xlsx_variant_group_export
-        label:     Demo XLSX variant group export
-        type:      export
-        configuration:
-            withHeader: true
-            linesPerFile: 10000
-            filePath:   /tmp/variant_group.xlsx
     xlsx_product_quick_export:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_quick_export
@@ -430,14 +399,6 @@ jobs:
         type:      import
         configuration:
             filePath:      /tmp/group.xlsx
-            uploadAllowed: true
-    xlsx_variant_group_import:
-        connector: Akeneo XLSX Connector
-        alias:     xlsx_variant_group_import
-        label:     Demo XLSX variant group import
-        type:      import
-        configuration:
-            filePath:      /tmp/variant_group.xlsx
             uploadAllowed: true
     xlsx_family_export:
         connector: Akeneo XLSX Connector

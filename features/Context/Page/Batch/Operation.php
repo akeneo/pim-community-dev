@@ -21,7 +21,6 @@ class Operation extends Wizard
         'Modifier les attributs communs'   => 'Batch EditCommonAttributes',
         'Change family'                    => 'Batch ChangeFamily',
         'Add to groups'                    => 'Batch AddToGroups',
-        'Add to a variant group'           => 'Batch AddToVariantGroup',
         'Set attributes requirements'      => 'Batch SetAttributeRequirements',
         'Add to categories'                => 'Batch Classify',
         'Move between categories'          => 'Batch Classify',

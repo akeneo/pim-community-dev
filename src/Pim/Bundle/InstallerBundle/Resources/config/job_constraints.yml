@@ -42,15 +42,6 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
-    pim_installer.job_parameters.constraints.variant_group_csv_import:
-        class: '%pim_connector.job.job_parameters.constraint_collection_provider.variant_group_csv_import.class%'
-        arguments:
-            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import'
-            -
-                - 'fixtures_variant_group_csv'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
-
     pim_installer.job_parameters.constraints.simple_yaml_import:
         class: '%pim_connector.job.job_parameters.constraint_collection_provider.simple_yaml_import.class%'
         arguments:

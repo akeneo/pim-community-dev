@@ -130,16 +130,6 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/group.csv
-    csv_footwear_variant_group_export:
-        connector: Akeneo CSV Connector
-        alias:     csv_variant_group_export
-        label:     CSV footwear variant group export
-        type:      export
-        configuration:
-            delimiter:  ;
-            enclosure:  '"'
-            withHeader: true
-            filePath: /tmp/variant_group.csv
     csv_footwear_attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
@@ -240,26 +230,6 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath: /tmp/attribute_group.csv
-    csv_footwear_variant_group_import:
-        connector: Akeneo CSV Connector
-        alias:     csv_variant_group_import
-        label:     CSV footwear variant group import
-        type:      import
-        configuration:
-            uploadAllowed: true
-            delimiter:     ;
-            enclosure:     '"'
-            escape:        '\'
-            copyValues:    true
-            filePath:      /tmp/footwear_variant_group.csv
-    xlsx_footwear_variant_group_import:
-        connector: Akeneo XLSX Connector
-        alias:     xlsx_variant_group_import
-        label:     XLSX footwear variant group import
-        type:      import
-        configuration:
-            uploadAllowed: true
-            filePath:      /tmp/variant_group.xlsx
     csv_footwear_family_import:
         connector: Akeneo CSV Connector
         alias:     csv_family_import

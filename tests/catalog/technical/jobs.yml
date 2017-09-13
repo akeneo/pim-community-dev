@@ -24,11 +24,6 @@ jobs:
         alias:     set_attribute_requirements
         label:     Set family attribute requirements
         type:      mass_edit
-    add_to_variant_group:
-        connector: Akeneo Mass Edit Connector
-        alias:     add_to_variant_group
-        label:     Mass add products to variant group
-        type:      mass_edit
     csv_product_import:
         connector: Akeneo CSV Connector
         alias:     csv_product_import

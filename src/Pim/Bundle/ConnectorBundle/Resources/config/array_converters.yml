@@ -6,7 +6,6 @@ parameters:
     pim_connector.array_converter.flat_to_standard.product_value.class:                           Pim\Component\Connector\ArrayConverter\FlatToStandard\Value
     pim_connector.array_converter.flat_to_standard.entity_with_values_delocalized.class:          Pim\Component\Connector\ArrayConverter\FlatToStandard\EntityWithValuesDelocalized
     pim_connector.array_converter.flat_to_standard.product_association.class:                     Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductAssociation
-    pim_connector.array_converter.flat_to_standard.variant_group.class:                           Pim\Component\Connector\ArrayConverter\FlatToStandard\VariantGroup
     pim_connector.array_converter.flat_to_standard.group.class:                                   Pim\Component\Connector\ArrayConverter\FlatToStandard\Group
     pim_connector.array_converter.flat_to_standard.category.class:                                Pim\Component\Connector\ArrayConverter\FlatToStandard\Category
     pim_connector.array_converter.flat_to_standard.association_type.class:                        Pim\Component\Connector\ArrayConverter\FlatToStandard\AssociationType
@@ -34,7 +33,6 @@ parameters:
     pim_connector.array_converter.standard_to_flat.product.class:                                 Pim\Component\Connector\ArrayConverter\StandardToFlat\Product
     pim_connector.array_converter.standard_to_flat.product_localized.class:                       Pim\Component\Connector\ArrayConverter\StandardToFlat\ProductLocalized
     pim_connector.array_converter.standard_to_flat.user.class:                                    Pim\Component\Connector\ArrayConverter\StandardToFlat\User
-    pim_connector.array_converter.standard_to_flat.variant_group.class:                           Pim\Component\Connector\ArrayConverter\StandardToFlat\VariantGroup
 
     pim_connector.array_converter.standard_to_flat.product.product_value_converter.class:         Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter
 
@@ -204,14 +202,6 @@ services:
         arguments:
             - '@pim_connector.array_converter.flat_to_standard.product'
 
-    pim_connector.array_converter.flat_to_standard.variant_group:
-        class: '%pim_connector.array_converter.flat_to_standard.variant_group.class%'
-        arguments:
-            - '@pim_catalog.repository.locale'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_connector.array_converter.flat_to_standard.product_value'
-            - '@pim_connector.array_convertor.checker.fields_requirement'
-
     pim_connector.array_converter.flat_to_standard.group:
         class: '%pim_connector.array_converter.flat_to_standard.group.class%'
         arguments:
@@ -295,19 +285,8 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.product'
             - '@pim_catalog.localization.localizer.converter'
 
-    pim_connector.array_converter.standard_to_flat.variant_group_localized:
-        class: '%pim_connector.array_converter.standard_to_flat.product_localized.class%'
-        arguments:
-            - '@pim_connector.array_converter.standard_to_flat.variant_group'
-            - '@pim_catalog.localization.localizer.converter'
-
     pim_connector.array_converter.standard_to_flat.user:
         class: '%pim_connector.array_converter.standard_to_flat.user.class%'
-
-    pim_connector.array_converter.standard_to_flat.variant_group:
-        class: '%pim_connector.array_converter.standard_to_flat.variant_group.class%'
-        arguments:
-            - '@pim_connector.array_converter.standard_to_flat.product.product_value_converter'
 
     pim_connector.array_converter.standard_to_flat.product.product_value_converter:
         class: '%pim_connector.array_converter.standard_to_flat.product.product_value_converter.class%'

@@ -19,7 +19,7 @@ class GetProductIntegration extends AbstractProductTestCase
             'family'        => 'familyA',
             'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => 'variantA',
+            'variant_group' => null,
             'categories'    => ['categoryA1', 'categoryB'],
             'enabled'       => true,
             'values'        => [

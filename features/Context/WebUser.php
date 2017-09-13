@@ -707,8 +707,6 @@ class WebUser extends PimContext
      *
      * @Then /^the product ([^"]*) should be empty$/
      * @Then /^the product ([^"]*) should be "([^"]*)"$/
-     * @Then /^the variant group ([^"]*) should be empty$/
-     * @Then /^the variant group ([^"]*) should be "([^"]*)"$/
      *
      * @throws \LogicException
      * @throws ExpectationException

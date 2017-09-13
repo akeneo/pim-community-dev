@@ -27,7 +27,7 @@ class ProductIntegration extends TestCase
 
         $expected = [
             'family'                                             => 'familyA',
-            'groups'                                             => 'groupA,groupB,variantA',
+            'groups'                                             => 'groupA,groupB',
             'categories'                                         => 'categoryA1,categoryB',
             'X_SELL-groups'                                      => 'groupB',
             'X_SELL-products'                                    => 'bar',
