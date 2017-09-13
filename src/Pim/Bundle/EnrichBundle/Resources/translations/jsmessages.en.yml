@@ -1024,11 +1024,6 @@ pim_enrich:
                     label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
                     description: Select the groups in which to add the selected products
                     field: Groups
-                add_to_variant_group:
-                    label: Add to a variant group
-                    label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span>to a variant group|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to a variant group"
-                    description: Select the variant group in which to add the selected products
-                    field: Group
                 add_to_category:
                     label: Add to categories
                     label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
@@ -1142,10 +1137,6 @@ batch_jobs:
         quick_export.label: XSLX product grid context quick export
         perform:
             label: XSLX product grid context quick export
-    add_to_variant_group:
-        label: Add to variant group
-        perform:
-            label: Add to variant group
     csv_product_export:
         label: Product export in CSV
         export.label: Product export

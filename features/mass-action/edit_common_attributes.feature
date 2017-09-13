@@ -16,20 +16,14 @@ Feature: Edit common attributes of many products at once
       | boots      | sku,name,manufacturer,description,weather_conditions,price,rating,side_view,top_view,size,color,lace_color,weight |
       | sneakers   | sku,name,manufacturer,description,weather_conditions,price,rating,side_view,top_view,size,color,lace_color,weight |
       | sandals    | sku,name,manufacturer,description,price,rating,side_view,size,color,weight,heel_height                            |
-    And the following variant groups:
-      | code          | label-en_US   | axis  | type    |
-      | variant_heels | Variant Heels | color | VARIANT |
-    And the following variant group values:
-      | group         | attribute   | value         |
-      | variant_heels | heel_height | 12 CENTIMETER |
     And the following products:
-      | sku            | family     | color | groups        |
-      | boots          | boots      |       |               |
-      | sneakers       | sneakers   |       |               |
-      | sandals        | sandals    |       |               |
-      | pump           |            |       |               |
-      | highheels      | high_heels | red   | variant_heels |
-      | blue_highheels | high_heels | blue  | variant_heels |
+      | sku            | family     | color | heel_height   | groups |
+      | boots          | boots      |       |               |        |
+      | sneakers       | sneakers   |       |               |        |
+      | sandals        | sandals    |       |               |        |
+      | pump           |            |       |               |        |
+      | highheels      | high_heels | red   | 12 CENTIMETER |        |
+      | blue_highheels | high_heels | blue  | 12 CENTIMETER |        |
     And I am logged in as "Julia"
 
   Scenario: Allow editing all attributes on configuration screen
@@ -45,6 +39,7 @@ Feature: Edit common attributes of many products at once
     And I should see available attribute Weight in group "Other"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6273
+
   Scenario: Successfully remove product attribute fields
     Given I am on the products grid
     And I select rows boots, sandals and sneakers
@@ -86,6 +81,7 @@ Feature: Edit common attributes of many products at once
       | hot   |
 
   @info https://akeneo.atlassian.net/browse/PIM-2163
+
   Scenario: Successfully mass edit product values that does not belong yet to the product
     Given I am on the products grid
     And I set product "pump" family to "sneakers"
@@ -100,6 +96,7 @@ Feature: Edit common attributes of many products at once
     And the english localizable value name of "sneakers" should be "boots"
 
   @info https://akeneo.atlassian.net/browse/PIM-3070
+
   Scenario: Successfully mass edit a price not added to the product
     Given I am on the products grid
     And I create a new product
@@ -123,6 +120,7 @@ Feature: Edit common attributes of many products at once
       | 150    | EUR      |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3426
+
   Scenario: Successfully update multi-valued value at once where the product have already one of the value
     Given the following product values:
       | product | attribute          | value   |
@@ -141,6 +139,7 @@ Feature: Edit common attributes of many products at once
       | hot   |
 
   @jira https://akeneo.atlassian.net/browse/PIM-4528
+
   Scenario: See previously selected fields on mass edit error
     Given I am on the products grid
     And I select rows boots and sandals
@@ -162,20 +161,8 @@ Feature: Edit common attributes of many products at once
     And I should not see the text "Weight"
     And I should not see the text "Name"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-4777
-  Scenario: Doing a mass edit of an attribute from a variant group does not override group value
-    Given I am on the products grid
-    And I select rows highheels, blue_highheels and sandals
-    And I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Edit common attributes" operation
-    And I display the Heel Height attribute
-    And I change the "Heel Height" to "3"
-    And I confirm mass edit
-    And I wait for the "edit_common_attributes" job to finish
-    Then the metric "heel_height" of products highheels, blue_highheels should be "12"
-    And the metric "heel_height" of products sandals should be "3"
-
   @jira https://akeneo.atlassian.net/browse/PIM-6008
+
   Scenario: Successfully mass edit scoped product values with special chars
     Given I am on the products grid
     And I set product "pump" family to "boots"
@@ -232,6 +219,7 @@ Feature: Edit common attributes of many products at once
       | mobile  | en_US  | warning | 1              | 80%   |
 
   @jira https://akeneo.atlassian.net/browse/PIM-6022
+
   Scenario: Successfully mass edit product values preventing Shell Command Injection
     Given I am on the "boots" family page
     And I visit the "Attributes" tab
@@ -271,12 +259,13 @@ Feature: Edit common attributes of many products at once
     And file "%web%shell_injection.txt" should not exist
 
   @jira https://akeneo.atlassian.net/browse/PIM-6240
+
   Scenario: Allow editing all attributes on configuration screen
     Given I am on the "tablet" channel page
     Then I should see the Code field
     And the field Code should be disabled
     When I fill in the following information:
-      | English (United States) | |
+      | English (United States) |  |
     And I press the "Save" button
     Then I should not see the text "My tablet"
     And I am on the products grid
@@ -287,6 +276,7 @@ Feature: Edit common attributes of many products at once
     And I should not see the text "undefined"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6274
+
   Scenario: Successfully validate products with a custom validation on identifier
     Given I am on the "SKU" attribute page
     When I fill in the following information:
@@ -303,6 +293,7 @@ Feature: Edit common attributes of many products at once
     Then I should not see the text "There are errors in the attributes form"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6199
+
   Scenario: Successfully disable form when we are in validation step on mass edit products
     Given I am on the products grid
     And I select rows boots, sandals and sneakers
@@ -315,6 +306,7 @@ Feature: Edit common attributes of many products at once
     Then I should not see the text "Add Attribute"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6271
+
   Scenario: Successfully keep mass edit form fields disabled after switching groups
     Given I am on the products grid
     And I select rows boots, sandals and sneakers

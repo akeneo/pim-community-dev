@@ -1,22 +1,7 @@
 parameters:
-    pim_enrich.connector.reader.mass_edit.family.class:                Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredFamilyReader
-    pim_enrich.connector.reader.mass_edit.variant_group_product.class: Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredVariantGroupProductReader
+    pim_enrich.connector.reader.mass_edit.family.class: Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredFamilyReader
 
 services:
-    pim_enrich.connector.reader.mass_edit.variant_group_product:
-        class: '%pim_enrich.connector.reader.mass_edit.variant_group_product.class%'
-        arguments:
-            - '@pim_catalog.query.product_query_builder_factory'
-            - '@pim_catalog.repository.channel'
-            - '@pim_catalog.manager.completeness'
-            - '@pim_catalog.converter.metric'
-            - true
-            - '@pim_enrich.product.paginator'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@pim_catalog.repository.group'
-            - '@pim_catalog.repository.product'
-            - '@translator'
-
     pim_enrich.connector.reader.mass_edit.family:
         class: '%pim_enrich.connector.reader.mass_edit.family.class%'
         arguments:

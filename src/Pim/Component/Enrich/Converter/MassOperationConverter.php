@@ -38,7 +38,6 @@ class MassOperationConverter implements ConverterInterface
         'categories'    => 'pim_enrich_product_categories_view',
         'enabled'       => 'pim_enrich_product_change_state',
         'groups'        => 'pim_enrich_product_add_to_groups',
-        'variant_group' => 'pim_enrich_product_add_to_variant_group'
     ];
 
     /**

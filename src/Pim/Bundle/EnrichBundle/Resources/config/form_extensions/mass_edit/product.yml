@@ -69,19 +69,6 @@ extensions:
             jobInstanceCode: add_product_value
             icon: icon-groups
 
-    pim-mass-product-edit-configure-add-to-variant-group:
-        module: pim/mass-edit-form/product/add-to-variant-group
-        parent: pim-mass-product-edit
-        position: 150
-        aclResourceId: pim_enrich_product_add_to_variant_group
-        config:
-            label: pim_enrich.mass_edit.product.operation.add_to_variant_group.label
-            labelCount: pim_enrich.mass_edit.product.operation.add_to_variant_group.label_count
-            description: pim_enrich.mass_edit.product.operation.add_to_variant_group.description
-            code: add_to_variant_group
-            jobInstanceCode: add_to_variant_group
-            icon: icon-variant
-
     pim-mass-product-edit-configure-add-to-category:
         module: pim/mass-edit-form/product/category
         parent: pim-mass-product-edit

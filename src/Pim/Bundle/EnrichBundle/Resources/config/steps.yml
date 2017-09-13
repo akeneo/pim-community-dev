@@ -77,16 +77,6 @@ services:
             - '@pim_enrich.connector.processor.mass_edit.family.set_requirements'
             - '@pim_connector.writer.database.family'
 
-    pim_enrich.step.add_to_variant_group.mass_edit:
-        class: '%pim_connector.step.item_step.class%'
-        arguments:
-            - 'perform'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            - '@pim_enrich.connector.reader.mass_edit.variant_group_product'
-            - '@pim_enrich.connector.processor.mass_edit.product.add_to_variant_group'
-            - '@pim_connector.writer.database.product'
-
     # Cleaner steps -------------------------------------------------------------------------------------------------
     pim_enrich.step.clean:
         class: '%pim_enrich.step.mass_edit.step.class%'

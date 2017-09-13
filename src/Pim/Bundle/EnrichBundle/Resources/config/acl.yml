@@ -60,10 +60,6 @@ pim_enrich_product_add_to_groups:
     type: action
     label: pim_enrich.acl.product.add_to_groups
     group_name: pim_enrich.acl_group.product
-pim_enrich_product_add_to_variant_group:
-    type: action
-    label: pim_enrich.acl.product.add_to_variant_group
-    group_name: pim_enrich.acl_group.product
 pim_enrich_product_comment:
     type: action
     label: pim_enrich.acl.product.comment

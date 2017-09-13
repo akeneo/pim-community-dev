@@ -1,5 +1,4 @@
 parameters:
-    pim_enrich.form.subscriber.add_attribute_type.class:                Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
     pim_enrich.form.subscriber.set_attribute_group_sort_order.class:    Pim\Bundle\EnrichBundle\Form\Subscriber\SetAttributeGroupSortOrderSubscriber
     pim_enrich.form.subscriber.add_variant_group_axes.class:            Pim\Bundle\EnrichBundle\Form\Subscriber\AddVariantGroupAxesSubscriber
 

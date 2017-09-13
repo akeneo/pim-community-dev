@@ -229,6 +229,10 @@
 - PIM-6333: Rename `Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface` to `Pim\Component\Catalog\Comparator\Filter\FilterInterface`
 - PIM-6333: Rename `Pim\Component\Catalog\Comparator\Filter\ProductFilter` to `Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFilter`
 - PIM-6333: Rename `Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductDelocalized` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\EntityWithValuesDelocalized`
+- PIM-6732: Remove `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductToVariantGroupProcessor`
+- PIM-6732: Remove `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredVariantGroupProductReader`
+- PIM-6732: Remove `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
+- PIM-6732: Remove `Pim\Component\Enrich\Converter\MassOperationConverter`
 
 ### Constructors
 
@@ -336,6 +340,7 @@
 - Change `Pim\Component\Catalog\Model\FamilyInterface` to add `setAttributeAsImage` and `getAttributeAsImage`
 - Remove method `addMissingProductValues` of `Pim\Component\Catalog\Builder\ProductBuilderInterface` (this method is now handled by `Pim\Component\Catalog\ValuesFiller\ProductValuesFiller::fillMissingValues`)
 - Remove method `getFamily` of `Pim\Component\Catalog\Model\ProductInterface`
+- PIM-6732: Remove `AddProductToVariantGroupProcessor` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
 
 ### Type hint
 

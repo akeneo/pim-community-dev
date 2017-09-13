@@ -775,7 +775,6 @@ config:
         pim/mass-edit-form/product/edit-common-attributes: pimenrich/js/mass-edit/form/product/edit-common-attributes
         pim/mass-edit-form/product/change-family:          pimenrich/js/mass-edit/form/product/change-family
         pim/mass-edit-form/product/add-to-group:           pimenrich/js/mass-edit/form/product/add-to-group
-        pim/mass-edit-form/product/add-to-variant-group:   pimenrich/js/mass-edit/form/product/add-to-variant-group
         pim/mass-edit-form/product/category:               pimenrich/js/mass-edit/form/product/category
         pim/mass-edit-form/family/set-requirements:        pimenrich/js/mass-edit/form/family/set-requirements
 
@@ -1056,7 +1055,6 @@ config:
         pim/template/mass-edit/product/edit-common-attributes: pimenrich/templates/mass-edit/product/edit-common-attributes.html
         pim/template/mass-edit/product/change-family:          pimenrich/templates/mass-edit/product/change-family.html
         pim/template/mass-edit/product/add-to-group:           pimenrich/templates/mass-edit/product/add-to-group.html
-        pim/template/mass-edit/product/add-to-variant-group:   pimenrich/templates/mass-edit/product/add-to-variant-group.html
         pim/template/mass-edit/product/category:               pimenrich/templates/mass-edit/product/category.html
         pim/template/mass-edit/family/set-requirements:        pimenrich/templates/mass-edit/family/set-requirements.html
 

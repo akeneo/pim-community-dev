@@ -158,16 +158,6 @@ pim_enrich:
             launched_flash: The bulk action "add to groups" has been launched. You will be notified when it is done.
             no_group:       No group for now. Please start by creating a group.
 
-        add-to-variant-group:
-            label:                                 Add to a variant group
-            description:                           Select the variant group in which to add the selected products
-            success_flash:                         Products were successfully added to the selected variant group
-            already_in_variant_group_or_not_valid: You cannot group the following product because it is already in a variant group or doesn't have the group axis.
-            no_variant_group:                      No variant group for now. Please start by creating a variant group.
-            no_valid_variant_group:                No variant group is sharing attributes with selected products.
-            some_variant_groups_are_skipped:       "The following variant groups have been skipped because they don't share attributes with selected products : %groups%"
-            launched_flash:                        The bulk action "add to variant group" has been launched. You will be notified when it is done.
-
         set-attribute-requirements:
             label:         Set attributes requirements
             description:   The following attribute requirements will be applied to the selected families
@@ -203,7 +193,6 @@ pim_enrich:
             change_family: Change product family
             change_state: Change state of product
             add_to_groups: Add product to groups
-            add_to_variant_group: Add product to a variant group
             mass_edit: Product mass edit actions
             comment: Comment products
             download: Download the product as PDF
@@ -933,11 +922,6 @@ pim_mass_edit_execution_show:  Mass edit executions | Details
 edit_common_attributes.steps.edit_common_attributes_processor.title: Edit common attributes
 update_product_value.steps.update_product_value_processor.title: Update product value
 remove_product_value.steps.update_product_value_processor.title: Remove product value
-add_to_variant_group_clean.steps.excluded.title: Excluded product
-add_to_variant_group_clean.steps.duplicated.title: Duplicated Axis
-add_to_variant_group.steps.excluded.title: Excluded product
-add_to_variant_group.steps.duplicated.title: Duplicated Axis
-add_to_variant_group.steps.cleaner.warning.description: "Product can't be set in the selected variant group: duplicate variation axis values with another product in selection"
 edit_common_attributes: Edit common attributes
 edit_common_attributes_clean: Clean files for common attributes
 perform.steps.duplicated.title: Duplicated Axis
@@ -979,10 +963,6 @@ batch_jobs:
         quick_export.label: Xlsx product grid context quick export
         perform:
             label: Xlsx product grid context quick export
-    add_to_variant_group:
-        label: Add to variant group
-        perform:
-            label: Add to variant group
 
 mass_edit report:
     overview: Mass edit reports
