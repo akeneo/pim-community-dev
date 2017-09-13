@@ -56,21 +56,33 @@ define(
             },
 
             _onSelectOperator: function(e) {
-                this.$el.find('.AknDropdown-menuLink')
-                    .removeClass('AknDropdown-menuLink--active')
-                    .removeClass('active');
-                $(e.currentTarget)
-                    .addClass('AknDropdown-menuLink--active')
-                    .addClass('active');
-                this.$el.find('.AknActionButton-highlight').html($(e.currentTarget).text());
-
                 const value = $(e.currentTarget).find('.operator_choice').attr('data-value');
+                this._highlightOperator(value);
+
                 if (_.contains(['empty', 'not empty'], value)) {
                     this._disableInput();
                 } else {
                     this._enableInput();
                 }
                 e.preventDefault();
+            },
+
+            /**
+             * Highlights the current operator
+             *
+             * @param operator
+             */
+            _highlightOperator(operator) {
+                this.$el.find('.operator .AknDropdown-menuLink')
+                    .removeClass('AknDropdown-menuLink--active')
+                    .removeClass('active');
+
+                const currentOperatorChoice = this.$el.find('.operator .operator_choice[data-value="' + operator + '"]');
+                currentOperatorChoice.parent()
+                    .addClass('AknDropdown-menuLink--active')
+                    .addClass('active');
+
+                this.$el.find('.operator .AknActionButton-highlight').html(currentOperatorChoice.text());
             },
 
             _getSelect2Config: function() {
@@ -107,13 +119,13 @@ define(
             },
 
             _writeDOMValue: function(value) {
-                this.$('li .operator_choice[data-value="' + value.type + '"]').trigger('click');
-                var operator = this.$('li.active .operator_choice').data('value');
-                if (_.contains(['empty', 'not empty'], operator)) {
+                if (_.contains(['empty', 'not empty'], value.type)) {
                     this._setInputValue(this.criteriaValueSelectors.value, []);
                 } else {
                     this._setInputValue(this.criteriaValueSelectors.value, value.value);
                 }
+                this._setInputValue(this.criteriaValueSelectors.type, value.type);
+                this._highlightOperator(value.type);
 
                 return this;
             },
