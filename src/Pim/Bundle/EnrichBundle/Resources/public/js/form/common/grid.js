@@ -106,6 +106,8 @@ define([
                     });
 
                     var modules = response.metadata.requireJSModules.concat('pim/datagrid/state-listener');
+                    modules = modules.concat(this.options.modules || []);
+
                     var resolvedModules = []
                     _.each(modules, function(module) {
                         resolvedModules.push(requireContext(module))
