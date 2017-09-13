@@ -5,5 +5,8 @@ design;IT support,Manager,Redactor;IT support,Manager
 manufacturing;IT support,Manager,Redactor;IT support
 color;IT support,Manager,Redactor;IT support,Manager
 size;IT support,Manager,Redactor;IT support,Manager
-media;IT support,Manager,Redactor;IT support,Manager
+medias;IT support,Manager,Redactor;IT support,Manager
 other;IT support,Manager;IT support
+erp;IT support,Manager,Redactor;IT support,Manager,Redactor
+ecommerce;IT support,Manager,Redactor;IT support,Manager,Redactor
+product;IT support,Manager,Redactor;IT support,Manager,Redactor
