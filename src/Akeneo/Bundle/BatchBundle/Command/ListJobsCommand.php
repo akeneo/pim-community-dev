@@ -3,6 +3,7 @@
 namespace Akeneo\Bundle\BatchBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -50,25 +51,24 @@ class ListJobsCommand extends ContainerAwareCommand
         }
         $jobs = $this->getJobManager()->getRepository('Akeneo\Component\Batch\Model\JobInstance')
             ->findBy($criteria, ['type' => 'asc', 'code' => 'asc']);
-        $table = $this->buildTable($jobs);
+        $table = $this->buildTable($jobs, $output);
         $table->render($output);
     }
 
     /**
-     * @param array $jobs
+     * @param array           $jobs
+     * @param OutputInterface $output
      *
      * @return \Symfony\Component\Console\Helper\HelperInterface
      */
-    protected function buildTable(array $jobs)
+    protected function buildTable(array $jobs, OutputInterface $output)
     {
-        $helperSet = $this->getHelperSet();
         $rows = [];
-        $ind = 0;
         foreach ($jobs as $job) {
             $rows[] = [$job->getType(), $job->getCode()];
         }
         $headers = ['type', 'code'];
-        $table = $helperSet->get('table');
+        $table = new Table($output);
         $table->setHeaders($headers)->setRows($rows);
 
         return $table;
