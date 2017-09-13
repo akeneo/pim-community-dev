@@ -132,22 +132,24 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $value = '';
         }
 
+        $likeValue = str_replace(['%', '_'], ['\\%', '\\_'], $value);
+
         switch ($operator) {
             case Operators::STARTS_WITH:
                 $operator = Operators::IS_LIKE;
-                $value = $value . '%';
+                $value = $likeValue . '%';
                 break;
             case Operators::ENDS_WITH:
                 $operator = Operators::IS_LIKE;
-                $value = '%' . $value;
+                $value = '%' . $likeValue;
                 break;
             case Operators::CONTAINS:
                 $operator = Operators::IS_LIKE;
-                $value = '%' . $value . '%';
+                $value = '%' . $likeValue . '%';
                 break;
             case Operators::DOES_NOT_CONTAIN:
                 $operator = Operators::NOT_LIKE;
-                $value = '%' . $value . '%';
+                $value = '%' . $likeValue . '%';
                 break;
             case Operators::EQUALS:
                 $operator = Operators::IS_LIKE;
