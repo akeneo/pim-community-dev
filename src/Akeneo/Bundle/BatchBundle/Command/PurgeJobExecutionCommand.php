@@ -25,7 +25,9 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('akeneo:batch:purge-job-execution');
-        $this->setDescription('Purge jobs execution older than number of days you want, by default 90 days');
+        $this->setDescription(
+            'Purge jobs execution older than number of days you want except the last one, by default 90 days'
+        );
         $this->addOption(
             'days',
             'd',
@@ -46,6 +48,7 @@ class PurgeJobExecutionCommand extends ContainerAwareCommand
         if (!empty($jobsExecutions)) {
             //TODO TIP-385: re-wite this implementation to use 'akeneo_batch.remover.job_execution'
             $this->getJobExecutionRepository()->remove($jobsExecutions);
+            $output->write(sprintf("%s jobs execution deleted ...\n", count($jobsExecutions)));
         }
     }
 
