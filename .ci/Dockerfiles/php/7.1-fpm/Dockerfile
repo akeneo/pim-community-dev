@@ -1,6 +1,7 @@
 FROM php:7.1-fpm
 
 RUN apt-get update && apt-get install -y \
+    git \
     imagemagick \
     libcurl4-gnutls-dev \
     libicu-dev \
