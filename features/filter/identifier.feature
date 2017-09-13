@@ -31,8 +31,8 @@ Feature: Filter on identifier
       | BOOT_BOOT1 |
       | BOOT%BOOT2 |
     Then I should get the following results for the given filters:
-      | filter                                                                            | result         |
-      | [{"field":"sku", "operator":"DOES NOT CONTAIN", "value": "_", "locale": "en_US"}] | ["BOOT%BOOT2"] |
-      | [{"field":"sku", "operator":"DOES NOT CONTAIN", "value": "%", "locale": "en_US"}] | ["BOOT_BOOT1"] |
-      | [{"field":"sku", "operator":"CONTAINS", "value": "_",         "locale": "en_US"}] | ["BOOT_BOOT1"] |
-      | [{"field":"sku", "operator":"CONTAINS", "value": "%",         "locale": "en_US"}] | ["BOOT%BOOT2"] |
+      | filter                                                                                         | result         |
+      | [{"field":"sku", "operator":"DOES NOT CONTAIN", "value": "_", "context": {"locale": "en_US"}}] | ["BOOT%BOOT2"] |
+      | [{"field":"sku", "operator":"DOES NOT CONTAIN", "value": "%", "context": {"locale": "en_US"}}] | ["BOOT_BOOT1"] |
+      | [{"field":"sku", "operator":"CONTAINS", "value": "_",         "context": {"locale": "en_US"}}] | ["BOOT_BOOT1"] |
+      | [{"field":"sku", "operator":"CONTAINS", "value": "%",         "context": {"locale": "en_US"}}] | ["BOOT%BOOT2"] |
