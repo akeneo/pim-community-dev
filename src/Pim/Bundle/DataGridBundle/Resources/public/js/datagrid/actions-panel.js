@@ -10,7 +10,8 @@ function(_, Backbone, groupTemplate, BaseForm, mediator) {
      * @class   oro.datagrid.ActionsPanel
      * @extends BaseForm
      */
-    return BaseForm.extend({
+    const ActionsPanel = BaseForm.extend({
+        appendToGrid: false,
         /** @property {Array} */
         actionsGroups: [],
 
@@ -31,7 +32,10 @@ function(_, Backbone, groupTemplate, BaseForm, mediator) {
          * @param {Object} options
          * @param {Array} [options.actions] List of actions
          */
-        initialize: function() {
+        initialize: function(options) {
+            this.appendToGrid = options.appendToGrid;
+            this.gridElement = options.gridElement;
+
             mediator.once('grid_load:start', this.setupActions.bind(this));
             mediator.on('grid_load:complete', this.setupActions.bind(this));
         },
@@ -73,6 +77,10 @@ function(_, Backbone, groupTemplate, BaseForm, mediator) {
 
             if (groupedLaunchers.length) {
                 this.renderGroupedLaunchers(groupedLaunchers);
+            }
+
+            if (this.appendToGrid) {
+                this.gridElement.prepend(this.$el);
             }
 
             return this;
@@ -169,4 +177,10 @@ function(_, Backbone, groupTemplate, BaseForm, mediator) {
             return this;
         }
     });
+
+    ActionsPanel.init = (gridContainer, gridName) => {
+        return new ActionsPanel({ appendToGrid: true, gridElement: $(gridContainer).find('.grid-container') });
+    }
+
+    return ActionsPanel;
 });
