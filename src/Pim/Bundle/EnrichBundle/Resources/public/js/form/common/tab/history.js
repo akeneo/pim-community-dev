@@ -45,10 +45,7 @@ define([
                         'history-grid',
                         {
                             object_class: this.config.class,
-                            object_id: this.getFormData().meta.id,
-                            modules: [
-                              'oro/datagrid/pagination-input'
-                            ]
+                            object_id: this.getFormData().meta.id
                         }
                     );
                 }
