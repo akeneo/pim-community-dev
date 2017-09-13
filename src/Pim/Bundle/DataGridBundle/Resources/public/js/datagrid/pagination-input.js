@@ -129,7 +129,6 @@ function($, mediator, _, Pagination) {
             Pagination.prototype.renderPagination.apply(this, arguments);
             this.$('input').numeric({ decimal: false, negative: false });
 
-
             if (this.options.appendToGrid) {
                 this.gridElement.prepend(this.$el);
             }

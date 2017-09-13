@@ -53,6 +53,7 @@ Feature: Filter products by reference data with locale and scope
       | lace_fabric | is empty     |               |        |
       | lace_fabric | is not empty |               | postit |
 
+  @skip @info To be unskipped in PIM-6574
   Scenario: Successfully filter product with multi reference data filters
     Given I show the filter "cap_color"
     And I filter by "cap_color" with operator "in list" and value "Black"
