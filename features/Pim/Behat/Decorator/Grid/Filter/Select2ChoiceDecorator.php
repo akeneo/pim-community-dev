@@ -28,11 +28,14 @@ class Select2ChoiceDecorator extends ElementDecorator
             $field->setValue($value);
         }
 
-        $operatorDropdown = $this->decorate(
-            $this->find('css', '*[data-toggle="dropdown"]'),
-            ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
-        );
-        $operatorDropdown->setValue($operator);
+        $operatorDropdown = $this->find('css', '*[data-toggle="dropdown"]');
+        if (null !== $operatorDropdown) {
+            $operatorDropdown = $this->decorate(
+                $operatorDropdown,
+                ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
+            );
+            $operatorDropdown->setValue($operator);
+        }
 
         $this->spin(function () {
             if (!$this->find('css', '.filter-criteria')->isVisible()) {

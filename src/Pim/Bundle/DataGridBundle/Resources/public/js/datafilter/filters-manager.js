@@ -382,7 +382,7 @@ define(
                     '</div>'
                 );
                 button.on('click', () => this._onDone());
-                
+
                 const container = $('<div class="AknColumn-bottomButtonContainer"></div>');
                 container.append(button);
                 this.selectWidget.getWidget().append(container);

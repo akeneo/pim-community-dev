@@ -46,9 +46,12 @@ class MetricDecorator extends ElementDecorator
 
         // We submit the filter
         $this->spin(function () {
+            if (!$this->find('css', '.filter-criteria')->isVisible()) {
+                return true;
+            }
             $this->find('css', '.filter-update')->click();
 
-            return true;
+            return false;
         }, 'Cannot update the filter');
     }
 }

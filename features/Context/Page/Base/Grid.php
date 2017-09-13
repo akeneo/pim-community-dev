@@ -730,6 +730,7 @@ class Grid extends Index
 
             if (null !== $filterElement && $filterElement->isVisible()) {
                 $filterElement->click();
+                $manageFilters->find('css', '.done-button')->click();
 
                 return true;
             }
@@ -740,6 +741,7 @@ class Grid extends Index
 
             if (null !== $filterElement && $filterElement->isVisible()) {
                 $filterElement->click();
+                $manageFilters->find('css', '.done-button')->click();
 
                 return true;
             }

@@ -28,7 +28,7 @@ class OperatorDecorator extends ElementDecorator
             $this->click();
             $operatorChoices = $this->getClosest($this, 'AknDropdown')->findAll(
                 'css',
-                '.AknDropdown-menu .choice_value, .AknDropdown-menu .operator_choice'
+                '.label, .AknDropdown-menu .choice_value, .AknDropdown-menu .operator_choice'
             );
 
             foreach ($operatorChoices as $choice) {
