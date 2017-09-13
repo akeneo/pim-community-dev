@@ -1,0 +1,26 @@
+Pim\Component\Catalog\Model\ProductModel:
+    constraints:
+        - Pim\Component\Catalog\Validator\Constraints\ProductModelPositionInTheVariantTree: ~
+        - Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributes: ~
+        - Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxes: ~
+        - Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues: ~
+        - Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxes: ~
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: ['code']
+            message: 'product_model.code.unique.message'
+    properties:
+        code:
+            - NotBlank:
+                message: 'product_model.code.not_blank.message'
+            - Regex:
+                pattern: '/^[^,;]+$/'
+                message: 'regex.comma_or_semicolon.message'
+            - Length:
+                max: 255
+        familyVariant:
+            - NotBlank:
+                message: 'product_model.family_variant.not_blank.message'
+    getters:
+        values:
+            - Symfony\Component\Validator\Constraints\Valid:
+                traverse: true

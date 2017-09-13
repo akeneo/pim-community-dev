@@ -47,6 +47,15 @@ parameters:
     pim_catalog.validator.mapping.delegating_class_metadata_factory.class: Pim\Component\Catalog\Validator\Mapping\DelegatingClassMetadataFactory
     pim_catalog.validator.mapping.product_value_metadata_factory.class:    Pim\Component\Catalog\Validator\Mapping\ProductValueMetadataFactory
     pim_catalog.validator.unique_value_set.class:                          Pim\Component\Catalog\Validator\UniqueValuesSet
+    pim_catalog.validator.unique_axes_combination_set.class:               Pim\Component\Catalog\Validator\UniqueAxesCombinationSet
+    pim_catalog.validator.constraint.family_variant_axes.class:            Pim\Component\Catalog\Validator\Constraints\FamilyVariantValidator
+    pim_catalog.validator.constraint.only_expected_attributes.class:       Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributesValidator
+    pim_catalog.validator.constraint.sibling_unique_variant_axes.class:    Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxesValidator
+    pim_catalog.validator.constraint.not_empty_variant_axes.class:         Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxesValidator
+    pim_catalog.validator.constraint.has_a_root_product_model_as_parent.class: Pim\Component\Catalog\Validator\Constraints\ProductModelPositionInTheVariantTreeValidator
+    pim_catalog.validator.constraint.family_same_family_than_parent.class: Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParentValidator
+    pim_catalog.validator.constraint.invalid_variant_product_parent.class: Pim\Component\Catalog\Validator\Constraints\VariantProductParentValidator
+    pim_catalog.validator.constraint.immutable_variant_axis_values.class:  Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValuesValidator
 
 services:
     # Helpers
@@ -61,7 +70,65 @@ services:
         class: '%pim_catalog.validator.unique_value_set.class%'
         public: true
 
+    pim_catalog.validator.unique_axes_combination_set:
+        class: '%pim_catalog.validator.unique_axes_combination_set.class%'
+        public: true
+
     # Validators
+    pim_catalog.validator.constraint.family_variant_axes:
+        class: '%pim_catalog.validator.constraint.family_variant_axes.class%'
+        arguments:
+            - '@translator'
+            -
+                - 'pim_catalog_metric'
+                - 'pim_catalog_simpleselect'
+                - 'pim_catalog_boolean'
+                - 'pim_reference_data_simpleselect'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_variant }
+
+    pim_catalog.validator.constraint.only_expected_attributes:
+        class: '%pim_catalog.validator.constraint.only_expected_attributes.class%'
+        arguments:
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_only_expected_attributes }
+
+    pim_catalog.validator.constraint.sibling_unique_variant_axes:
+        class: '%pim_catalog.validator.constraint.sibling_unique_variant_axes.class%'
+        arguments:
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_catalog.repository.entity_with_family_variant'
+            - '@pim_catalog.validator.unique_axes_combination_set'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_sibling_unique_variant_axes_validator }
+
+    pim_catalog.validator.constraint.not_empty_variant_axes:
+        class: '%pim_catalog.validator.constraint.not_empty_variant_axes.class%'
+        arguments:
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_not_empty_axes_validator }
+
+    pim_catalog.validator.constraint.has_a_root_product_model_as_parent:
+        class: '%pim_catalog.validator.constraint.has_a_root_product_model_as_parent.class%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_has_a_root_product_model_as_parent }
+
+    pim_catalog.validator.constraint.invalid_variant_product_parent:
+        class: '%pim_catalog.validator.constraint.invalid_variant_product_parent.class%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_invalid_variant_product_parent }
+
+    pim_catalog.validator.constraint.immutable_variant_axis_values:
+        class: '%pim_catalog.validator.constraint.immutable_variant_axis_values.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_catalog.factory.value_collection'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_immutable_variant_axis_values_validator }
+
     pim_catalog.validator.constraint.valid_metric:
         class: '%pim_catalog.validator.constraint.valid_metric.class%'
         arguments:
@@ -356,9 +423,17 @@ services:
             - '@validator.validator_factory'
             - []
 
+    pim_catalog.validator.product_model:
+        alias: 'pim_catalog.validator.product'
+
     pim_catalog.validator.constraint.unique_variant_group_type:
         class: '%pim_catalog.validator.constraint.unique_variant_group_type.class%'
         arguments:
             - '@pim_catalog.repository.group_type'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_variant_group_type_validator }
+
+    pim_catalog.validator.constraint.family_same_family_than_parent:
+        class: '%pim_catalog.validator.constraint.family_same_family_than_parent.class%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_same_family_than_parent }

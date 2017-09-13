@@ -2,8 +2,6 @@
 
 namespace Akeneo\Test\Integration;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 /**
@@ -13,12 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 abstract class TestCase extends KernelTestCase
 {
-    /** @var Client */
-    protected $esClient;
-
-    /** @var Loader */
-    protected $esConfigurationLoader;
-
     /**
      * @return Configuration
      */
@@ -33,14 +25,10 @@ abstract class TestCase extends KernelTestCase
 
         $configuration = $this->getConfiguration();
 
-        $this->esClient = $this->get('akeneo_elasticsearch.client');
-        $this->esConfigurationLoader = $this->get('akeneo_elasticsearch.index_configuration.loader');
         $databaseSchemaHandler = $this->getDatabaseSchemaHandler();
 
         $fixturesLoader = $this->getFixturesLoader($configuration, $databaseSchemaHandler);
         $fixturesLoader->load();
-
-        $this->resetIndex();
     }
 
     /**
@@ -122,22 +110,5 @@ abstract class TestCase extends KernelTestCase
         }
 
         throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
-    }
-
-    /**
-     * Resets the index used for the integration tests
-     */
-    private function resetIndex()
-    {
-        $conf = $this->esConfigurationLoader->load();
-
-        if ($this->esClient->hasIndex()) {
-            $this->esClient->deleteIndex();
-        }
-
-        $this->esClient->createIndex($conf->buildAggregated());
-
-        $products = $this->get('pim_catalog.repository.product')->findAll();
-        $this->get('pim_catalog.elasticsearch.product_indexer')->indexAll($products);
     }
 }

@@ -8,11 +8,14 @@ Feature: Add products with reference data to a variant group
     Given the "footwear" catalog configuration
     And the following "sole_color" attribute reference data: Red, Yellow, Cyan, Magenta
     And the following "heel_color" attribute reference data: Green, Light green, Blue, Black, White
+    Given the following family:
+      | code       | attributes          |
+      | my_sandals | sku,size,sole_color |
     And the following products:
-      | sku           | family  | categories        | size | sole_color |
-      | sandal-red-37 | sandals | winter_collection | 37   | Red        |
-      | sandal-red-38 | sandals | winter_collection | 38   | Red        |
-      | sandal-red-39 | sandals | winter_collection | 39   | Red        |
+      | sku           | family     | categories        | size | sole_color |
+      | sandal-red-37 | my_sandals | winter_collection | 37   | Red        |
+      | sandal-red-38 | my_sandals | winter_collection | 38   | Red        |
+      | sandal-red-39 | my_sandals | winter_collection | 39   | Red        |
     And the following variant groups:
       | code   | label-en_US | axis            | type    |
       | SANDAL | Sandal      | size,sole_color | VARIANT |
@@ -29,8 +32,8 @@ Feature: Add products with reference data to a variant group
 
   Scenario: Do not see a product already present in another variant group
     Given the following family:
-      | code       | attributes                |
-      | high_heels | sku,sole_color,heel_color |
+      | code       | attributes                     |
+      | high_heels | sku,sole_color,heel_color,size |
     And the following variant groups:
       | code       | label-en_US | axis                       | type    |
       | HIGH_HEELS | High heels  | size,sole_color,heel_color | VARIANT |

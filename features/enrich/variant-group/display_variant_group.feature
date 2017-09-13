@@ -1,4 +1,4 @@
-@javascript
+@javascript @skip
 Feature: Display a variant group
   In order to display information about a variant group
   As a product manager

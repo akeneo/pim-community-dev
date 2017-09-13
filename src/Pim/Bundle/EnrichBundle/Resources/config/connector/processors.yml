@@ -11,7 +11,7 @@ services:
     pim_enrich.connector.processor.mass_edit.product.update_value:
         class: '%pim_enrich.connector.processor.mass_edit.product.update_value.class%'
         arguments:
-            - '@pim_catalog.updater.product_property_setter'
+            - '@pim_catalog.updater.property_setter'
             - '@pim_catalog.validator.product'
 
     pim_enrich.connector.processor.mass_edit.product.add_value:
@@ -56,7 +56,7 @@ services:
             - '@pim_catalog.normalizer.standard.product'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.builder.product'
+            - '@pim_catalog.values_filler.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_user.provider.user'
             - '@security.token_storage'

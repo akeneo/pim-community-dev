@@ -174,7 +174,7 @@ class Product implements ArrayConverterInterface
      *      }
      * }
      */
-    public function convert(array $item, array $options = [])
+    public function convert(array $item, array $options = []): array
     {
         $options = $this->prepareOptions($options);
 
@@ -183,7 +183,7 @@ class Product implements ArrayConverterInterface
         $this->validateItem($filteredItem);
 
         $mergedItem = $this->columnsMerger->merge($filteredItem);
-        $convertedItem = $this->convertItem($mergedItem, $options);
+        $convertedItem = $this->convertItem($mergedItem);
 
         return $convertedItem;
     }
@@ -193,7 +193,7 @@ class Product implements ArrayConverterInterface
      *
      * @return array
      */
-    protected function prepareOptions(array $options)
+    protected function prepareOptions(array $options): array
     {
         $options['with_associations'] = isset($options['with_associations']) ? $options['with_associations'] : true;
         $options['default_values'] = isset($options['default_values']) ? $options['default_values'] : [];
@@ -207,7 +207,7 @@ class Product implements ArrayConverterInterface
      *
      * @return array
      */
-    protected function mapFields(array $item, array $options)
+    protected function mapFields(array $item, array $options): array
     {
         if (isset($options['mapping'])) {
             $item = $this->columnsMapper->map($item, $options['mapping']);
@@ -222,7 +222,7 @@ class Product implements ArrayConverterInterface
      *
      * @return array
      */
-    protected function filterFields(array $mappedItem, $withAssociations)
+    protected function filterFields(array $mappedItem, $withAssociations): array
     {
         if (false === $withAssociations) {
             $isGroupAssPattern = '/^\w+'.AssociationColumnsResolver::GROUP_ASSOCIATION_SUFFIX.'$/';
@@ -244,15 +244,21 @@ class Product implements ArrayConverterInterface
      *
      * @return array
      */
-    protected function convertItem(array $item)
+    protected function convertItem(array $item): array
     {
         $convertedItem = [];
         $convertedValues = [];
 
         foreach ($item as $column => $value) {
             if ($this->fieldConverter->supportsColumn($column)) {
-                $value = $this->fieldConverter->convert($column, $value);
-                $convertedItem = $this->mergeValueToItem($convertedItem, $value);
+                $convertedFields = $this->fieldConverter->convert($column, $value);
+                /**
+                 * TODO: PIM-6444, when the variant group will be removed, we should remove this loop because
+                 * the field converter should return a simple object instead an array.
+                 */
+                foreach ($convertedFields as $convertedField) {
+                    $convertedItem = $convertedField->appendTo($convertedItem);
+                }
             } else {
                 $convertedValues[$column] = $value;
             }
@@ -277,35 +283,9 @@ class Product implements ArrayConverterInterface
     }
 
     /**
-     * Merge the structured value inside the passed item
-     *
-     * @param array $item   The item in which we add the element
-     * @param array $value  The structured value to add to the item
-     *
-     * @return array
-     */
-    protected function mergeValueToItem(array $item, array $value)
-    {
-        if (empty($value)) {
-            return $item;
-        }
-
-        foreach ($value as $code => $data) {
-            if (array_key_exists($code, $item)) {
-                $item[$code] = array_merge_recursive($item[$code], $data);
-            } else {
-                $item[$code] = $data;
-            }
-        }
-
-        return $item;
-    }
-
-    /**
      * @param array $item
-     * @param bool  $withRequiredSku
      */
-    protected function validateItem(array $item)
+    protected function validateItem(array $item): void
     {
         $requiredField = $this->attrColumnsResolver->resolveIdentifierField();
         $this->fieldChecker->checkFieldsPresence($item, [$requiredField]);
@@ -318,10 +298,10 @@ class Product implements ArrayConverterInterface
      *
      * @throws StructureArrayConversionException
      */
-    protected function validateOptionalFields(array $item)
+    protected function validateOptionalFields(array $item): void
     {
         $optionalFields = array_merge(
-            ['family', 'enabled', 'categories', 'groups'],
+            ['family', 'enabled', 'categories', 'groups', 'parent'],
             $this->attrColumnsResolver->resolveAttributeColumns(),
             $this->getOptionalAssociationFields()
         );
@@ -348,7 +328,7 @@ class Product implements ArrayConverterInterface
      *
      * @throws DataArrayConversionException
      */
-    protected function validateFieldValueTypes(array $item)
+    protected function validateFieldValueTypes(array $item): void
     {
         $stringFields = ['family', 'categories', 'groups'];
 
@@ -366,7 +346,7 @@ class Product implements ArrayConverterInterface
      *
      * @return array
      */
-    protected function getOptionalAssociationFields()
+    protected function getOptionalAssociationFields(): array
     {
         if (empty($this->optionalAssocFields)) {
             $this->optionalAssocFields = $this->assocColumnsResolver->resolveAssociationColumns();

@@ -1,0 +1,47 @@
+Pim\Component\Catalog\Model\FamilyVariant:
+    type: entity
+    table: pim_catalog_family_variant
+    changeTrackingPolicy: DEFERRED_EXPLICIT
+
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+
+    oneToMany:
+        translations:
+            targetEntity: Pim\Component\Catalog\Model\FamilyVariantTranslationInterface
+            mappedBy: foreignKey
+            cascade:
+                - persist
+                - detach
+            orphanRemoval: true
+
+    # oneToMany Unidirectional
+    manyToMany:
+        variantAttributeSets:
+            targetEntity: Pim\Component\Catalog\Model\VariantAttributeSetInterface
+            joinTable:
+                name: pim_catalog_family_variant_has_variant_attribute_sets
+                joinColumns:
+                    family_variant_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    variant_attribute_sets_id:
+                        referencedColumnName: id
+                        unique: true
+            cascade:
+                - persist
+                - detach
+
+    manyToOne:
+        family:
+            targetEntity: Pim\Component\Catalog\Model\FamilyInterface
+            inversedBy: familyVariants
+            joinColumn:
+              name: family_id
+              referencedColumnName: id

@@ -7,6 +7,7 @@ use Pim\Component\Catalog\Factory\ValueFactory;
 use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
  * @author    Julien Janvier <julien.janvier@akeneo.com>
@@ -64,7 +65,10 @@ class EntityWithValuesBuilder implements EntityWithValuesBuilderInterface
         $entityWithValues->addValue($value);
 
         // TODO: TIP-722: This is a temporary fix, Product identifier should be used only as a field
-        if (AttributeTypes::IDENTIFIER === $attribute->getType() && null !== $data) {
+        if (AttributeTypes::IDENTIFIER === $attribute->getType() &&
+            null !== $data &&
+            $entityWithValues instanceof ProductInterface
+        ) {
             $entityWithValues->setIdentifier($value);
         }
 

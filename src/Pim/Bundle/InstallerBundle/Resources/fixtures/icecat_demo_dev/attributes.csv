@@ -1,56 +1,78 @@
-type;code;label-de_DE;label-en_US;label-fr_FR;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;sort_order;decimals_allowed;negative_allowed
-pim_catalog_identifier;sku;SKU;SKU;SKU;marketing;1;1;;;;;0;0;1;;
-pim_catalog_text;name;Name;Name;Nom;marketing;0;1;;;;;0;0;2;;
-pim_catalog_textarea;description;Beschreibung;Description;Description;marketing;0;1;;;;;1;1;3;;
-pim_catalog_number;response_time;Erscheinungstermin;Response time (ms);Temps de réponse (ms);marketing;0;1;;;;;0;0;4;0;0
-pim_catalog_date;release_date;Erscheinungstermin;Release date;Date de sortie;marketing;0;1;;;;;0;1;5;;
-pim_catalog_price_collection;price;Preis;Price;Prix;marketing;0;1;;;;;0;0;6;0;
-pim_catalog_metric;weight;Gewicht;Weight;Poids;technical;0;1;;Weight;KILOGRAM;;0;0;1;0;0
-pim_catalog_metric;maximum_scan_size;Maximale Scan-Abmessung;Maximum scan size;Surface maximal de numérisation;technical;0;1;;Length;MILLIMETER;;0;0;2;0;0
-pim_catalog_boolean;color_scanning;Farbscannen;Color scanning;Numérisation couleur;technical;0;1;;;;;0;0;3;;
-pim_catalog_text;power_requirements;Energiebedarf;Power requirements;Exigences d'alimentation;technical;0;1;;;;;0;0;4;;
-pim_catalog_simpleselect;maximum_print_size;Maximale Druckgröße;Maximum print size;Format d’impression maximale;technical;0;1;;;;;0;0;5;;
-pim_catalog_simpleselect;sensor_type;CCD-Bildsensor;Sensor type;Type de capteur;technical;0;1;;;;;0;0;6;;
-pim_catalog_text;total_megapixels;Total megapixels;Total megapixels;Total des megapixels;technical;0;1;;;;;0;0;7;;
-pim_catalog_number;optical_zoom;Optischer Zoom;Optical zoom;Zoom optique;technical;0;1;;;;;0;0;8;0;0
-pim_catalog_boolean;image_stabilizer;Bildstabilisator;Image stabilizer;Stabilisateur d'image;technical;0;1;;;;;0;0;9;;
-pim_catalog_simpleselect;camera_type;Kamera-Typ;Camera type;Type d'appareil photo;technical;0;1;;;;;0;0;10;;
-pim_catalog_number;thd;THD, totalklirren;Total Harmonic Distortion (THD);DHT, distorsion harmonique totale;technical;0;1;;;;;0;0;11;0;0
-pim_catalog_number;snr;Signal-zu-Geräusche Verhältnis (SNR);Signal-to-Noise Ratio (SNR);Rapport de signal-à-bruit;technical;0;1;;;;;0;0;12;0;0
-pim_catalog_simpleselect;headphone_connectivity;Kopfhörerausgang;Headphone connectivity;Casque;technical;0;1;;;;;0;0;13;;
-pim_catalog_simpleselect;maximum_video_resolution;Maximale Video-Auflösung;Maximum video resolution;Résolution vidéo maximale;technical;0;1;;;;;0;0;14;;
-pim_catalog_number;maximum_frame_rate;Maximale Bildfrequenz;Maximum frame rate;Cadence maximale;technical;0;1;;;;;0;0;15;0;0
-pim_catalog_multiselect;multifunctional_functions;Functies all-in-one;All-in-one functions;Fonctions tout-en-un;technical;0;1;;;;;0;0;16;;
-pim_catalog_boolean;display_srgb;sRGB;Display sRGB;sRGB;technical;0;1;;;;;0;0;17;;
-pim_catalog_boolean;display_color;Farbe;Color;Couleur;technical;0;1;;;;;0;0;18;;
-pim_catalog_metric;display_diagonal;Bildschirmdiagonale;Display diagonal;Taille de l'écran;technical;0;1;;Length;INCH;;0;0;19;0;0
-pim_catalog_metric;viewing_area;Effektive Bildfläche;Effective viewing area;Zone d'affichage active;technical;0;1;;Length;MILLIMETER;;0;0;20;0;0
-pim_catalog_simpleselect;camera_brand;Hersteller;Brand;Marque;technical;0;1;;;;;0;0;21;;
-pim_catalog_text;camera_model_name;Modelname;Model name;Modèle;technical;0;1;;;;;0;0;22;;
-pim_catalog_textarea;short_description;Kurze Beschreibung;Short description;Description courte;technical;0;1;;;;;1;1;23;;
-pim_catalog_text;max_image_resolution;Maximale Bildauflösung;Maximum image resolution;Résolution maximum;technical;0;1;;;;;0;0;24;;
-pim_catalog_text;image_resolutions;Festbild Auflösung(en);Still image resolution(s);Résolution de la capture Photo;technical;0;1;;;;;0;0;25;;
-pim_catalog_text;supported_aspect_ratios;Unterstützte Seitenverhältnisse;Supported aspect ratios;Rapports d'aspect pris en charge;technical;0;1;;;;;0;0;26;;
-pim_catalog_text;supported_image_format;Unterstützte Bildformate;Supported image format;Format d'image supportée;technical;0;1;;;;;0;0;27;;
-pim_catalog_text;lens_mount_interface;Linsen Montageanschluss;Lens mount interface;Monture d'objectif d'interface;technical;0;1;;;;;0;0;28;;
-pim_catalog_text;focus;Fokus;Focus;Mise au point;technical;0;1;;;;;0;0;29;;
-pim_catalog_text;focus_adjustement;Fokus-Apassung;Focus adjustment;Ajustement mise au point;technical;0;1;;;;;1;0;30;;
-pim_catalog_text;auto_focus_modes;Auto focus modes;Auto focus modes;Auto focus modes;technical;0;1;;;;;1;0;31;;
-pim_catalog_number;auto_focus_points;Auto focus points;Auto focus points;Auto focus points;technical;0;1;;;;;0;0;32;0;0
-pim_catalog_boolean;auto_focus_lock;Auto focus lock;Auto focus lock;Auto focus lock;technical;0;1;;;;;0;0;33;;
-pim_catalog_boolean;auto_focus_assist_beam;Auto focus beam;Auto focus beam;Auto focus beam;technical;0;1;;;;;0;0;34;;
-pim_catalog_text;iso_sensitivity;Iso sensitivity;Iso sensitivity;Iso sensitivity;technical;0;1;;;;;0;0;35;;
-pim_catalog_text;light_exposure_modes;Light exposure modes;Light exposure modes;Light exposure modes;technical;0;1;;;;;1;0;36;;
-pim_catalog_text;light_exposure_corrections;Light exposure corrections;Light exposure corrections;Light exposure corrections;technical;0;1;;;;;0;0;37;;
-pim_catalog_text;light_metering;Light metering;Light metering;Light metering;technical;0;1;;;;;1;0;38;;
-pim_catalog_boolean;auto_exposure;Auto exposure;Auto exposure;Auto exposure;technical;0;1;;;;;0;0;39;;
-pim_catalog_number;iso_sensitivity_max;ISO sensitivity (max);ISO sensitivity (max);ISO sensitivity (max);technical;0;1;;;;;0;0;40;0;0
-pim_catalog_number;iso_sensitivity_min;ISO sensitivity (min);ISO sensitivity (min);ISO sensitivity (min);technical;0;1;;;;;0;0;41;0;0
-pim_catalog_image;picture;Photography;Picture;Photographie;media;0;1;jpg,jpeg,gif,png;;;;0;0;1;;
-pim_catalog_file;pdf_description;PDF Bezeichnung;PDF description;Description PDF;media;0;1;pdf;;;;0;0;2;;
-pim_catalog_simpleselect;container_material;Behältermaterial;Container material;Matériau du récipient;manufacturing;0;1;;;;;0;0;1;;
-pim_catalog_simpleselect;tshirt_materials;T-Shirt gewebe;T-Shirt material;Matière T-Shirt;manufacturing;0;1;;;;;0;0;2;;
-pim_catalog_simpleselect;main_color;Hauptfarbe;Main color;Couleur principale;color;0;1;;;;;0;0;1;;
-pim_catalog_simpleselect;secondary_color;Sekundärfarbe;Secondary color;Couleur secondaire;color;0;1;;;;;0;0;2;;
-pim_catalog_simpleselect;clothing_size;Größe Kleidung;Clothing size;Taille du vêtement;size;0;1;;;;;0;0;1;;
-pim_catalog_multiselect;tshirt_style;T-Shirt stil;T-Shirt style;Style du T-Shirt;design;0;1;;;;;0;0;1;;
+type;code;label-de_DE;label-en_US;label-fr_FR;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;sort_order;decimals_allowed;negative_allowed;wysiwyg_enabled
+pim_catalog_identifier;sku;SKU;SKU;SKU;erp;1;1;;;;;0;0;1;;;
+pim_catalog_text;name;Name;Name;Nom;marketing;0;1;;;;;0;0;2;;;
+pim_catalog_textarea;description;Beschreibung;Description;Description;marketing;0;1;;;;;1;1;3;;;1
+pim_catalog_number;response_time;Erscheinungstermin;Response time (ms);Temps de réponse (ms);marketing;0;1;;;;;0;0;4;0;0;
+pim_catalog_date;release_date;Erscheinungstermin;Release date;Date de sortie;marketing;0;1;;;;;0;1;5;;;
+pim_catalog_price_collection;price;Preis;Price;Prix;erp;0;1;;;;;0;0;6;0;;
+pim_catalog_metric;weight;Gewicht;Weight;Poids;technical;0;1;;Weight;KILOGRAM;;0;0;1;0;0;
+pim_catalog_metric;maximum_scan_size;Maximale Scan-Abmessung;Maximum scan size;Surface maximal de numérisation;technical;0;1;;Length;MILLIMETER;;0;0;2;0;0;
+pim_catalog_boolean;color_scanning;Farbscannen;Color scanning;Numérisation couleur;technical;0;1;;;;;0;0;3;;;
+pim_catalog_text;power_requirements;Energiebedarf;Power requirements;Exigences d'alimentation;technical;0;1;;;;;0;0;4;;;
+pim_catalog_simpleselect;maximum_print_size;Maximale Druckgröße;Maximum print size;Format d’impression maximale;technical;0;1;;;;;0;0;5;;;
+pim_catalog_simpleselect;sensor_type;CCD-Bildsensor;Sensor type;Type de capteur;technical;0;1;;;;;0;0;6;;;
+pim_catalog_text;total_megapixels;Total megapixels;Total megapixels;Total des megapixels;technical;0;1;;;;;0;0;7;;;
+pim_catalog_number;optical_zoom;Optischer Zoom;Optical zoom;Zoom optique;technical;0;1;;;;;0;0;8;0;0;
+pim_catalog_boolean;image_stabilizer;Bildstabilisator;Image stabilizer;Stabilisateur d'image;technical;0;1;;;;;0;0;9;;;
+pim_catalog_simpleselect;camera_type;Kamera-Typ;Camera type;Type d'appareil photo;technical;0;1;;;;;0;0;10;;;
+pim_catalog_number;thd;THD, totalklirren;Total Harmonic Distortion (THD);DHT, distorsion harmonique totale;technical;0;1;;;;;0;0;11;0;0;
+pim_catalog_number;snr;Signal-zu-Geräusche Verhältnis (SNR);Signal-to-Noise Ratio (SNR);Rapport de signal-à-bruit;technical;0;1;;;;;0;0;12;0;0;
+pim_catalog_simpleselect;headphone_connectivity;Kopfhörerausgang;Headphone connectivity;Casque;technical;0;1;;;;;0;0;13;;;
+pim_catalog_simpleselect;maximum_video_resolution;Maximale Video-Auflösung;Maximum video resolution;Résolution vidéo maximale;technical;0;1;;;;;0;0;14;;;
+pim_catalog_number;maximum_frame_rate;Maximale Bildfrequenz;Maximum frame rate;Cadence maximale;technical;0;1;;;;;0;0;15;0;0;
+pim_catalog_multiselect;multifunctional_functions;Functies all-in-one;All-in-one functions;Fonctions tout-en-un;technical;0;1;;;;;0;0;16;;;
+pim_catalog_boolean;display_srgb;sRGB;Display sRGB;sRGB;technical;0;1;;;;;0;0;17;;;
+pim_catalog_boolean;display_color;Farbe;Color;Couleur;technical;0;1;;;;;0;0;18;;;
+pim_catalog_metric;display_diagonal;Bildschirmdiagonale;Display diagonal;Taille de l'écran;technical;0;1;;Length;INCH;;0;0;19;0;0;
+pim_catalog_metric;viewing_area;Effektive Bildfläche;Effective viewing area;Zone d'affichage active;technical;0;1;;Length;MILLIMETER;;0;0;20;0;0;
+pim_catalog_simpleselect;camera_brand;Hersteller;Brand;Marque;technical;0;1;;;;;0;0;21;;;
+pim_catalog_text;camera_model_name;Modelname;Model name;Modèle;technical;0;1;;;;;0;0;22;;;
+pim_catalog_textarea;short_description;Kurze Beschreibung;Short description;Description courte;technical;0;1;;;;;1;1;23;;;
+pim_catalog_text;max_image_resolution;Maximale Bildauflösung;Maximum image resolution;Résolution maximum;technical;0;1;;;;;0;0;24;;;
+pim_catalog_text;image_resolutions;Festbild Auflösung(en);Still image resolution(s);Résolution de la capture Photo;technical;0;1;;;;;0;0;25;;;
+pim_catalog_text;supported_aspect_ratios;Unterstützte Seitenverhältnisse;Supported aspect ratios;Rapports d'aspect pris en charge;technical;0;1;;;;;0;0;26;;;
+pim_catalog_text;supported_image_format;Unterstützte Bildformate;Supported image format;Format d'image supportée;technical;0;1;;;;;0;0;27;;;
+pim_catalog_text;lens_mount_interface;Linsen Montageanschluss;Lens mount interface;Monture d'objectif d'interface;technical;0;1;;;;;0;0;28;;;
+pim_catalog_text;focus;Fokus;Focus;Mise au point;technical;0;1;;;;;0;0;29;;;
+pim_catalog_text;focus_adjustement;Fokus-Apassung;Focus adjustment;Ajustement mise au point;technical;0;1;;;;;1;0;30;;;
+pim_catalog_text;auto_focus_modes;Auto focus modes;Auto focus modes;Auto focus modes;technical;0;1;;;;;1;0;31;;;
+pim_catalog_number;auto_focus_points;Auto focus points;Auto focus points;Auto focus points;technical;0;1;;;;;0;0;32;0;0;
+pim_catalog_boolean;auto_focus_lock;Auto focus lock;Auto focus lock;Auto focus lock;technical;0;1;;;;;0;0;33;;;
+pim_catalog_boolean;auto_focus_assist_beam;Auto focus beam;Auto focus beam;Auto focus beam;technical;0;1;;;;;0;0;34;;;
+pim_catalog_text;iso_sensitivity;Iso sensitivity;Iso sensitivity;Iso sensitivity;technical;0;1;;;;;0;0;35;;;
+pim_catalog_text;light_exposure_modes;Light exposure modes;Light exposure modes;Light exposure modes;technical;0;1;;;;;1;0;36;;;
+pim_catalog_text;light_exposure_corrections;Light exposure corrections;Light exposure corrections;Light exposure corrections;technical;0;1;;;;;0;0;37;;;
+pim_catalog_text;light_metering;Light metering;Light metering;Light metering;technical;0;1;;;;;1;0;38;;;
+pim_catalog_boolean;auto_exposure;Auto exposure;Auto exposure;Auto exposure;technical;0;1;;;;;0;0;39;;;
+pim_catalog_number;iso_sensitivity_max;ISO sensitivity (max);ISO sensitivity (max);ISO sensitivity (max);technical;0;1;;;;;0;0;40;0;0;
+pim_catalog_number;iso_sensitivity_min;ISO sensitivity (min);ISO sensitivity (min);ISO sensitivity (min);technical;0;1;;;;;0;0;41;0;0;
+pim_catalog_image;picture;Photography;Picture;Photographie;medias;0;1;jpg,jpeg,gif,png;;;;0;0;1;;;
+pim_catalog_file;pdf_description;PDF Bezeichnung;PDF description;Description PDF;medias;0;1;pdf;;;;0;0;2;;;
+pim_catalog_simpleselect;container_material;Behältermaterial;Container material;Matériau du récipient;manufacturing;0;1;;;;;0;0;1;;;
+pim_catalog_simpleselect;tshirt_materials;T-Shirt gewebe;T-Shirt material;Matière T-Shirt;manufacturing;0;1;;;;;0;0;2;;;
+pim_catalog_simpleselect;main_color;Hauptfarbe;Main color;Couleur principale;color;0;1;;;;;0;0;1;;;
+pim_catalog_simpleselect;secondary_color;Sekundärfarbe;Secondary color;Couleur secondaire;color;0;1;;;;;0;0;2;;;
+pim_catalog_simpleselect;clothing_size;Größe Kleidung;Clothing size;Taille du vêtement;size;0;1;;;;;0;0;1;;;
+pim_catalog_multiselect;tshirt_style;T-Shirt stil;T-Shirt style;Style du T-Shirt;design;0;1;;;;;0;0;1;;;
+pim_catalog_text;erp_name;ERP-Produktname;ERP name;Nom ERP;erp;0;1;;;;;1;0;10;;;
+pim_catalog_text;meta_title;Meta title;Meta title;Meta titre;ecommerce;0;1;;;;;1;0;10;;;
+pim_catalog_textarea;meta_description;Meta description;Meta description;Meta description;ecommerce;0;1;;;;;1;0;10;;;
+pim_catalog_textarea;keywords;Keywords;Keywords;Mots clés;ecommerce;0;1;;;;;1;0;20;;;
+pim_catalog_image;image;Model bild;Model picture;Image du modèle;medias;0;1;png,jpeg,jpg;;;;0;0;11;;;
+pim_catalog_file;notice;Notice;Notice;Notice;medias;0;1;pdf;;;;0;0;15;;;
+pim_catalog_text;variation_name;Variation Name;Variation Name;Nom de la variation;marketing;0;1;;;;;1;0;4;;;
+pim_catalog_textarea;variation_description;Variation beschreibung;Variation description;Description de la variation;marketing;0;1;;;;;1;0;5;;;
+pim_catalog_image;variation_image;Variation bild;Variation picture;Image de la variation;medias;0;1;png,jpeg,jpg;;;;0;0;20;;;
+pim_catalog_multiselect;collection;Collection;Collection;Collection;marketing;0;1;;;;;0;0;2;;;
+pim_catalog_textarea;composition;Composition;Composition;Composition;product;0;1;;;;;0;0;5;;;
+pim_catalog_simpleselect;wash_temperature;Wash temperature;Wash temperature;Température de lavage;product;0;1;;;;;0;0;6;;;
+pim_catalog_textarea;care_instructions;Care instructions;Care instructions;Instructions d'entretien;product;0;1;;;;;0;0;7;;;
+pim_catalog_simpleselect;color;Color;Color;Couleur;product;0;1;;;;;0;0;1;;;
+pim_catalog_simpleselect;size;Size;Size;Taille;product;0;1;;;;;0;0;2;;;
+pim_catalog_simpleselect;eu_shoes_size;EU Shoes Size;EU Shoes Size;Taille chaussures EU;product;0;1;;;;;0;0;3;;;
+pim_catalog_text;sole_composition;Sole composition;Sole composition;Composition semelle;product;0;1;;;;;0;0;4;;;
+pim_catalog_text;top_composition;Top composition;Top composition;Composition dessus;product;0;1;;;;;0;0;8;;;
+pim_catalog_simpleselect;brand;Brand;Brand;Marque;marketing;0;0;;;;;0;0;3;;;
+pim_catalog_text;ean;EAN;EAN;EAN;erp;1;1;;;;;0;0;0;;;
+pim_catalog_simpleselect;supplier;Lieferant;Supplier;Fournisseur;erp;0;1;;;;;0;0;2;;;
+pim_catalog_simpleselect;material;Material;Material;Matière;product;0;1;;;;;0;0;22;;;

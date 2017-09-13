@@ -68,6 +68,8 @@ config:
             url: pim_enrich_variant_group_rest_post
         pim/saver/product:
             url: pim_enrich_product_rest_post
+        pim/saver/product-model:
+            url: pim_enrich_product_model_rest_post
         pim/saver/group:
             url: pim_enrich_group_rest_post
         pim/saver/job-instance-import:
@@ -178,6 +180,11 @@ config:
                     options:
                         urls:
                             get: pim_enrich_product_rest_get
+                product_model:
+                    module: pim/product-fetcher
+                    options:
+                        urls:
+                            get: pim_enrich_product_model_rest_get
                 category:
                     module: pim/base-fetcher
                     options:
@@ -263,7 +270,13 @@ config:
                     module: pim/controller/group-type
                     aclResourceId: pim_enrich_grouptype_edit
                 pim_enrich_product_edit:
-                    module: pim/controller/product
+                    module: pim/controller/entity-with-family-variant
+                    config:
+                        entity: product
+                pim_enrich_product_model_edit:
+                    module: pim/controller/entity-with-family-variant
+                    config:
+                        entity: product_model
                 pim_enrich_group_edit:
                     module: pim/controller/group
                     aclResourceId: pim_enrich_group_edit
@@ -508,6 +521,7 @@ config:
         # @TODO - Rename this to pimenrich/js/controller/product/edit and move the file
         pim/controller/product:                pimenrich/js/controller/product
         pim/controller/product/index:          pimenrich/js/controller/product/index
+        pim/controller/entity-with-family-variant: pimenrich/js/controller/entity-with-family-variant
         pim/controller/family:                 pimenrich/js/controller/family
         pim/controller/channel/edit:           pimenrich/js/controller/channel/edit
         pim/controller/common/index:           pimenrich/js/controller/common/index
@@ -590,6 +604,7 @@ config:
         pim/saver/channel:             pimenrich/js/saver/channel
         pim/saver/family:              pimenrich/js/saver/family
         pim/saver/product:             pimenrich/js/saver/product-saver
+        pim/saver/product-model:       pimenrich/js/saver/product-model-saver
         pim/saver/variant-group:       pimenrich/js/saver/variant-group-saver
         pim/saver/group:               pimenrich/js/saver/group-saver
         pim/saver/job-instance-export: pimenrich/js/saver/job-instance-export-saver
@@ -686,6 +701,13 @@ config:
         pim/product-edit-form/download-pdf:                      pimenrich/js/product/form/download-pdf
         pim/product-edit-form/attributes:                        pimenrich/js/product/form/attributes
         pim/product-edit-form/creation/identifier:               pimenrich/js/product/form/creation/identifier
+
+        # Product model
+        pim/product-model-edit-form/meta/family-variant: pimenrich/js/product-model/form/meta/family-variant
+        pim/product-model-edit-form/product-model-label: pimenrich/js/product-model/form/product-model-label
+        pim/product-model-edit-form/save: pimenrich/js/product-model/form/save
+        pim/product-model-edit-form/attributes/read-only-parent-attributes: pimenrich/js/product-model/form/attributes/read-only-parent-attributes
+        pim/product-model-edit-form/attributes/variant-axes: pimenrich/js/product-model/form/attributes/variant-axes
 
         # Attribute group
         pim/attribute-group-form/tab/attribute: pimenrich/js/attribute-group/form/tab/attribute
@@ -999,6 +1021,7 @@ config:
         pim/template/product/download-pdf:                   pimenrich/templates/product/download-pdf.html
         pim/template/product/meta/status-switcher:           pimenrich/templates/product/meta/status-switcher.html
         pim/template/product/meta/family:                    pimenrich/templates/product/meta/family.html
+        pim/template/product/meta/family-variant:            pimenrich/templates/product/meta/family-variant.html
         pim/template/product/meta/change-family-modal:       pimenrich/templates/product/meta/change-family-modal.html
         pim/template/product/meta/groups:                    pimenrich/templates/product/meta/groups.html
         pim/template/product/meta/group-modal:               pimenrich/templates/product/meta/group-modal.html
@@ -1132,3 +1155,5 @@ config:
         pimcommunity/grid/view-selector/selector: pimenrich/js/grid/view-selector
         pimcommunity/grid/view-selector/line:     pimenrich/js/grid/view-selector-line
         pimcommunity/grid/view-selector/current:  pimenrich/js/grid/view-selector-current
+
+        oro/datagrid/navigate-product-and-product-model-action: pimenrich/js/datagrid/action/navigate-product-and-product-model-action

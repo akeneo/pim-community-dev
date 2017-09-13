@@ -6,16 +6,16 @@ Feature: Filter products
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code      |
-      | furniture |
-      | library   |
     And the following attributes:
       | label-en_US | localizable | scopable | useable_as_grid_filter | group | type             | code        | sort_order |
       | Name        | 1           | 0        | 1                      | other | pim_catalog_text | name        | 1          |
       | Image       | 0           | 1        | 1                      | other | pim_catalog_text | image       | 4          |
       | Info        | 1           | 1        | 1                      | other | pim_catalog_text | info        | 3          |
       | Description | 0           | 0        | 0                      | other | pim_catalog_text | description | 2          |
+    And the following family:
+      | code      | attributes                  |
+      | furniture | name,image,info,description |
+      | library   | name,image,info,description |
     And the following products:
       | sku    | family    | enabled | name-en_US  | name-fr_FR   | info-en_US-ecommerce    | info-fr_FR-ecommerce     | info-fr_FR-mobile     | image-ecommerce  | image-mobile     |
       | postit | furniture | yes     | Post it     | Etiquette    | My ecommerce info       | Ma info ecommerce        | Ma info mobile        | large.jpeg       | small.jpeg       |

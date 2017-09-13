@@ -1,0 +1,31 @@
+pim_enrich_product_model_edit:
+    path: /{id}
+    methods: [GET, POST]
+
+pim_enrich_product_model_rest_get:
+    path: /rest/{id}
+    defaults: { _controller: pim_enrich.controller.rest.product_model:getAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [GET]
+
+pim_enrich_product_model_rest_post:
+    path: /rest/{id}
+    defaults: { _controller: pim_enrich.controller.rest.product_model:postAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [POST]
+
+pim_enrich_product_model_category_rest_list:
+    path: /rest/{id}/categories
+    defaults: { _controller: pim_enrich.controller.rest.product_category:listAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [GET]
+
+pim_enrich_product_model_history_rest_get:
+    path: /rest/{entityId}/history
+    defaults: { _controller: pim_enrich.controller.rest.versioning:getAction, entityType: product }
+    requirements:
+        entityId: '[0-9a-f]+'
+    methods: [GET]

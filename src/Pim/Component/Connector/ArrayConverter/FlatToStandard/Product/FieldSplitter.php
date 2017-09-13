@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
 
+use Pim\Component\Connector\ArrayConverter\FieldSplitter as BaseFieldSplitter;
+
 /**
  * Split fields
  *
@@ -9,7 +11,7 @@ namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FieldSplitter
+class FieldSplitter extends BaseFieldSplitter
 {
     /**
      * Split a value with it's unit/currency:
@@ -82,18 +84,5 @@ class FieldSplitter
         }
 
         return $prices;
-    }
-
-    /**
-     * Split a field name:
-     * 'description-en_US-mobile' => ['description', 'en_US', 'mobile']
-     *
-     * @param string $field Raw field name
-     *
-     * @return array
-     */
-    public function splitFieldName($field)
-    {
-        return '' === $field ? [] : explode(AttributeColumnInfoExtractor::FIELD_SEPARATOR, $field);
     }
 }

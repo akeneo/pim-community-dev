@@ -13,6 +13,8 @@
 
 ## Technical improvements
 
+- PIM-6445: Family variant design
+- PIM-6446: Family variant CRUD API
 - TIP-711: Rework job execution reporting page with the new PEF architecture
 - TIP-724: Refactoring of the 'Settings\Association types' index screen using 'pim\common\grid'
 - TIP-725: Generalization of the refactoring made in the TIP-724 for all screen containing a simple grid
@@ -20,6 +22,7 @@
 - GITHUB-6174: Show a loading mask during the file upload in the import jobs
 - TIP-730: Reworking of the creation popin for basic entities
 - TIP-732: Rework the attribute form using the PEF architecture
+- PIM-6448: Product model CRUD API
 - TIP-747: Migrate to Symfony 3.3
 - PIM-6740: Separe installation state (installed) from config file
 - API-359: Move notified user of a job into the configuration parameters of the job
@@ -49,7 +52,7 @@
 - Remove model `src/Pim/Bundle/CatalogBundle/Resources/config/model/doctrine/Product.mongodb.yml`
 - Remove model `src/Pim/Bundle/VersioningBundle/Resources/config/model/doctrine/Version.mongodb.yml`
 
-- Remove constants `DOCTRINE_ORM` and `` from `DOCTRINE_MONGODB_ODM` from `Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension`
+- Remove constants `DOCTRINE_ORM` and `DOCTRINE_MONGODB_ODM` from `Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension`
 
 - Remove class `Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry`
 - Remove service `akeneo_storage_utils.doctrine.smart_manager_registry`
@@ -187,6 +190,10 @@
 
 ## BC breaks
 
+### Doctrine mapping
+
+- PIM-6448: `Pim\Component\Catalog\Model\AbstractProduct` becomes a Doctrine mapped superclass
+
 ### Classes
 
 - Remove class `Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType`
@@ -219,6 +226,9 @@
 - PIM-6442: Rename `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductValueValueFactoryPass` to `Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterValueFactoryPass`
 - TIP-764: Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface` and all inherited classes
 - PIM-6740: Remove `Pim\Bundle\InstallerBundle\Persister\YamlPersister`
+- PIM-6333: Rename `Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface` to `Pim\Component\Catalog\Comparator\Filter\FilterInterface`
+- PIM-6333: Rename `Pim\Component\Catalog\Comparator\Filter\ProductFilter` to `Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFilter`
+- PIM-6333: Rename `Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductDelocalized` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\EntityWithValuesDelocalized`
 
 ### Constructors
 
@@ -301,18 +311,31 @@
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` to add `Pim\Bundle\VersioningBundle\Manager\VersionManager`, `Symfony\Component\Serializer\Normalizer\NormalizerInterface`, `Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface`, `Akeneo\Component\Localization\Localizer\LocalizerInterface`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer` to add `Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `uploadTmpDir` (string)
+- Change the constructor of `Pim\Component\Connector\Processor\Denormalization\ProductProcessor` to add `Pim\Component\Catalog\Builder\ProductBuilderInterface` as the 3rd argument (variant product builder).
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `uploadTmpDir` (string)
 - Change the constructor of `Pim\Bundle\ApiBundle\Controller\ProductController` to remove `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface` and to add `Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface` and `Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface`
 - Change the constructor of `Pim\Component\Catalog\Builder\ProductBuilder` to replace `Pim\Component\Catalog\Manager\AttributeValuesResolver` by `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface`
 - Change the constructor of `Pim\Component\Connector\ArrayConverter\FlatToStandard\Product\AttributeColumnsResolver` to replace `Pim\Component\Catalog\Manager\AttributeValuesResolver` by `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface`
 - Change the constructor of `Pim\Component\Catalog\Builder\EntityWithValuesBuilder` to replace `Pim\Component\Catalog\Manager\AttributeValuesResolver` by `Pim\Component\Catalog\Manager\AttributeValuesResolverInterface`
 - Change the constructor of `Pim\Bundle\ApiBundle\Controller\LocaleController` to add `Pim\Bundle\ApiBundle\Checker\QueryParametersCheckerInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer` to add `Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface`
+- Change the constructor of `Pim\Component\Catalog\Builder\ProductBuilder` to remove `Pim\Component\Catalog\Repository\CurrencyRepositoryInterface` and `Pim\Component\Catalog\Factory\ValueFactory`
+- Change the constructor of `Pim\Component\Catalog\Builder\ProductTemplateBuilder` to add `Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface`
+- Change the constructor of `Pim\Component\Connector\Processor\Normalization\ProductProcessor` to remove `Pim\Component\Catalog\Builder\ProductBuilderInterface` and add `Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductProcessor` to replace `Pim\Component\Catalog\Builder\ProductBuilder` by `Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface`
 - Change the constructor of `Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher` to add `Akeneo\Component\Batch\Job\JobParametersValidator`
 - Change the constructor of `Pim\Bundle\ConnectorBundle\Launcher\AuthenticatedJobLauncher` to add `Akeneo\Component\Batch\Job\JobParametersValidator`
-- Change the constructor of `Pim\Bundle\AnalyticsBundle\DataCollector\VersionDataCollector` to replace `string` by `Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager`
+- Change the constructor of `Pim\Bundle\AnalyticsBundle\DataCollector\VersionDataCollector` to replace `string` by `Pim\Bundle\InstallerBundle\InstallStatusManager\InstallStatusManager` - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `uploadTmpDir` (string)
+- Change the constructor of `Pim\Component\Connector\Processor\Denormalization\ProductProcessor` to add `Pim\Component\Catalog\Builder\ProductBuilderInterface` as the 3rd argument (variant product builder).
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `uploadTmpDir` (string)
+- Change the constructor of `Pim\Component\Connector\Processor\Denormalization\ProductProcessor` to add `Pim\Component\Catalog\Builder\ProductBuilderInterface` as the 3rd argument (variant product builder).
 
 ### Methods
 
 - Change `Pim\Component\Catalog\Model\FamilyInterface` to add `setAttributeAsImage` and `getAttributeAsImage`
+- Remove method `addMissingProductValues` of `Pim\Component\Catalog\Builder\ProductBuilderInterface` (this method is now handled by `Pim\Component\Catalog\ValuesFiller\ProductValuesFiller::fillMissingValues`)
+- Remove method `getFamily` of `Pim\Component\Catalog\Model\ProductInterface`
 
 ### Type hint
 
@@ -474,6 +497,7 @@
 - Remove several UI related classes for attributes: `Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber`, `Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\AvailableLocalesType`, `Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\OptionsType`, `Pim\Bundle\EnrichBundle\Form\Type\AttributeType`
 - Remove services `pim_enrich.form.subscriber.attribute`, `pim_enrich.form.type.attribute`, `pim_enrich.form.type.available_locales`, `pim_enrich.form.type.options`, `pim_enrich.form.attribute`, `pim_enrich.form.handler.attribute`
 - Add subscriber to lock/unlock batch job commands thanks to @bOnepain
+- Rename class `pim_connector.array_converter.flat_to_standard.product_delocalized.class` to `pim_connector.array_converter.flat_to_standard.entity_with_values_delocalized.class`
 
 ## Requirements
 

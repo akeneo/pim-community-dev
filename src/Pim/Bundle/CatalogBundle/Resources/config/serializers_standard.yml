@@ -1,5 +1,6 @@
 parameters:
     pim_catalog.normalizer.standard.product.class: Pim\Component\Catalog\Normalizer\Standard\ProductNormalizer
+    pim_catalog.normalizer.standard.product_model.class: Pim\Component\Catalog\Normalizer\Standard\ProductModelNormalizer
     pim_catalog.normalizer.standard.product.properties.class: Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer
     pim_catalog.normalizer.standard.product.associations.class: Pim\Component\Catalog\Normalizer\Standard\Product\AssociationsNormalizer
     pim_catalog.normalizer.standard.product.product_values.class: Pim\Component\Catalog\Normalizer\Standard\Product\ProductValuesNormalizer
@@ -16,6 +17,7 @@ parameters:
     pim_catalog.normalizer.standard.channel.class: Pim\Component\Catalog\Normalizer\Standard\ChannelNormalizer
     pim_catalog.normalizer.standard.currency.class: Pim\Component\Catalog\Normalizer\Standard\CurrencyNormalizer
     pim_catalog.normalizer.standard.family.class: Pim\Component\Catalog\Normalizer\Standard\FamilyNormalizer
+    pim_catalog.normalizer.standard.family_variant.class: Pim\Component\Catalog\Normalizer\Standard\FamilyVariantNormalizer
     pim_catalog.normalizer.standard.proxy_group.class: Pim\Component\Catalog\Normalizer\Standard\ProxyGroupNormalizer
     pim_catalog.normalizer.standard.group.class: Pim\Component\Catalog\Normalizer\Standard\GroupNormalizer
     pim_catalog.normalizer.standard.group_type.class: Pim\Component\Catalog\Normalizer\Standard\GroupTypeNormalizer
@@ -27,6 +29,14 @@ parameters:
 services:
     pim_catalog.normalizer.standard.product:
         class: '%pim_catalog.normalizer.standard.product.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.properties'
+            - '@pim_catalog.normalizer.standard.product.associations'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.product_model:
+        class: '%pim_catalog.normalizer.standard.product_model.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.product.properties'
             - '@pim_catalog.normalizer.standard.product.associations'
@@ -129,6 +139,13 @@ services:
             - '@pim_catalog.filter.chained'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.attribute_requirement'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.family_variant:
+        class: '%pim_catalog.normalizer.standard.family_variant.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

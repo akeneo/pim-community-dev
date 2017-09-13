@@ -3,15 +3,17 @@
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
 
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField;
+use Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface;
 
 /**
- * Converts a flat field to a structured one
+ * Converts a flat product field to a structured format
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FieldConverter
+class FieldConverter implements FieldConverterInterface
 {
     /** @var AssociationColumnsResolver */
     protected $assocFieldResolver;
@@ -38,35 +40,30 @@ class FieldConverter
     }
 
     /**
-     * Converts a flat field to a structured one
-     *
-     * @param string $column
-     * @param string $value
-     *
-     * @throws \LogicException
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function convert($column, $value)
+    public function convert(string $fieldName, string $value): array
     {
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
 
-        if (in_array($column, $associationFields)) {
+        if (in_array($fieldName, $associationFields)) {
             $value = $this->fieldSplitter->splitCollection($value);
-            list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($column);
+            list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($fieldName);
 
-            return ['associations' => [$associationTypeCode => [$associatedWith => $value]]];
-        } elseif (in_array($column, ['categories'])) {
-            return [$column => $this->fieldSplitter->splitCollection($value)];
-        } elseif (in_array($column, ['groups'])) {
+            return [new ConvertedField('associations', [$associationTypeCode => [$associatedWith => $value]])];
+        } elseif (in_array($fieldName, ['categories'])) {
+            $categories = $this->fieldSplitter->splitCollection($value);
+
+            return [new ConvertedField($fieldName, $categories)];
+        } elseif (in_array($fieldName, ['groups'])) {
             return $this->extractVariantGroup($value);
-        } elseif ('enabled' === $column) {
-            return [$column => (bool) $value];
-        } elseif ('family' === $column) {
-            return [$column => $value];
+        } elseif ('enabled' === $fieldName) {
+            return [new ConvertedField($fieldName, (bool) $value)];
+        } elseif (in_array($fieldName, ['family', 'parent'])) {
+            return [new ConvertedField($fieldName, $value)];
         }
 
-        throw new \LogicException(sprintf('No converters found for attribute type "%s"', $column));
+        throw new \LogicException(sprintf('No converters found for attribute type "%s"', $fieldName));
     }
 
     /**
@@ -74,11 +71,11 @@ class FieldConverter
      *
      * @return bool
      */
-    public function supportsColumn($column)
+    public function supportsColumn($column): bool
     {
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
 
-        $fields = array_merge(['categories', 'groups', 'enabled', 'family'], $associationFields);
+        $fields = array_merge(['categories', 'groups', 'enabled', 'family', 'parent'], $associationFields);
 
         return in_array($column, $fields);
     }
@@ -90,26 +87,32 @@ class FieldConverter
      *
      * @return array
      */
-    protected function extractVariantGroup($value)
+    protected function extractVariantGroup($value): array
     {
-        $data = [];
+        $data = $variantGroups = $productGroups = [];
         $groups = $this->fieldSplitter->splitCollection($value);
 
         foreach ($groups as $group) {
             $isVariant = $this->groupTypeRepository->getTypeByGroup($group);
             if ('1' === $isVariant) {
-                $data['variant_group'][] = $group;
+                $variantGroups[] = $group;
             } else {
-                $data['groups'][] = $group;
+                $productGroups[] = $group;
             }
         }
 
-        if (isset($data['variant_group']) && 1 < count($data['variant_group'])) {
+        if (1 < count($variantGroups)) {
             throw new \InvalidArgumentException(
-                sprintf('The product cannot belong to many variant groups: %s', implode(', ', $data['variant_group']))
+                sprintf('The product cannot belong to many variant groups: %s', implode(', ', $variantGroups))
             );
-        } elseif (isset($data['variant_group'])) {
-            $data['variant_group'] = current($data['variant_group']);
+        }
+
+        if (0 < count($variantGroups)) {
+            $data[] = new ConvertedField('variant_group', current($variantGroups));
+        }
+
+        if (0 < count($productGroups)) {
+            $data[] = new ConvertedField('groups', $productGroups);
         }
 
         return $data;

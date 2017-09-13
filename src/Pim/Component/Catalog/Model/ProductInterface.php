@@ -25,7 +25,7 @@ interface ProductInterface extends
     CommentSubjectInterface,
     ReferableInterface,
     CategoryAwareInterface,
-    EntityWithValuesInterface
+    EntityWithFamilyInterface
 {
     /**
      * Get the ID of the product
@@ -246,13 +246,6 @@ interface ProductInterface extends
      * @return ProductInterface
      */
     public function setFamily(FamilyInterface $family = null);
-
-    /**
-     * Get family
-     *
-     * @return FamilyInterface
-     */
-    public function getFamily();
 
     /**
      * Get family id

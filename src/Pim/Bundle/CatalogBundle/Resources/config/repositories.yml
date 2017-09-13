@@ -8,6 +8,7 @@ parameters:
     pim_catalog.repository.channel.class:               Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ChannelRepository
     pim_catalog.repository.currency.class:              Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CurrencyRepository
     pim_catalog.repository.family.class:                Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyRepository
+    pim_catalog.repository.family_variant.class:        Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\FamilyVariantRepository
     pim_catalog.repository.group.class:                 Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupRepository
     pim_catalog.repository.group_type.class:            Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupTypeRepository
     pim_catalog.repository.locale.class:                Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository
@@ -15,9 +16,11 @@ parameters:
     pim_catalog.repository.product_unique_data.class:   Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductUniqueDataRepository
     pim_catalog.repository.association.class:           Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationRepository
     pim_catalog.repository.product.class:               Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository
+    pim_catalog.repository.product_model.class:         Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelRepository
     pim_catalog.repository.completeness.class:          Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CompletenessRepository
     pim_catalog.repository.product_mass_action.class:   Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository
     pim_catalog.repository.product_category.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductCategoryRepository
+    pim_catalog.repository.entity_with_family_variant.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithFamilyVariantRepository
 
 services:
     # Base repositories
@@ -84,6 +87,13 @@ services:
         tags:
             - { name: 'pim_repository' }
 
+    pim_catalog.repository.family_variant:
+        class: '%pim_catalog.repository.family_variant.class%'
+        factory: 'doctrine.orm.entity_manager:getRepository'
+        arguments: ['%pim_catalog.entity.family_variant.class%']
+        tags:
+            - { name: 'pim_repository' }
+
     pim_catalog.repository.group:
         class: '%pim_catalog.repository.group.class%'
         factory: 'doctrine.orm.entity_manager:getRepository'
@@ -116,6 +126,13 @@ services:
         class: '%pim_catalog.repository.product_unique_data.class%'
         factory: 'doctrine.orm.entity_manager:getRepository'
         arguments: ['%pim_catalog.entity.product_unique_data.class%']
+        tags:
+            - { name: 'pim_repository' }
+
+    pim_catalog.repository.product_model:
+        class: '%pim_catalog.repository.product_model.class%'
+        factory: 'doctrine.orm.entity_manager:getRepository'
+        arguments: ['%pim_catalog.entity.product_model.class%']
         tags:
             - { name: 'pim_repository' }
 
@@ -154,11 +171,11 @@ services:
         class: '%akeneo_storage_utils.repository.base_cached_object.class%'
         arguments:
             - '@pim_catalog.repository.currency'
-            
+
     pim_catalog.repository.product:
         class: '%pim_catalog.repository.product.class%'
         factory: 'doctrine.orm.entity_manager:getRepository'
-        arguments: ['%pim_catalog.entity.product.class%']
+        arguments: ['%pim_catalog.entity.abstract_product.class%']
         calls:
             - [setProductQueryBuilderFactory, ['@pim_catalog.query.product_query_builder_factory']]
             - [setGroupRepository, ['@pim_catalog.repository.group']]
@@ -170,14 +187,14 @@ services:
         class: '%pim_catalog.repository.product_mass_action.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '%pim_catalog.entity.product.class%'
+            - '%pim_catalog.entity.abstract_product.class%'
 
     pim_catalog.repository.product_category:
         class:  '%pim_catalog.repository.product_category.class%'
         parent: akeneo_classification.repository.abstract_item_category
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '%pim_catalog.entity.product.class%'
+            - '%pim_catalog.entity.abstract_product.class%'
             - '%pim_catalog.entity.category.class%'
 
     pim_catalog.repository.association:
@@ -191,4 +208,9 @@ services:
         class: '%pim_catalog.repository.completeness.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '%pim_catalog.entity.product.class%'
+            - '%pim_catalog.entity.abstract_product.class%'
+
+    pim_catalog.repository.entity_with_family_variant:
+        class: '%pim_catalog.repository.entity_with_family_variant.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'

@@ -38,6 +38,9 @@ Pim\Bundle\CatalogBundle\Entity\Family:
                         referencedColumnName: id
                         onDelete: CASCADE
     oneToMany:
+        familyVariants:
+            targetEntity: Pim\Component\Catalog\Model\FamilyVariantInterface
+            mappedBy: family
         translations:
             targetEntity: Pim\Component\Catalog\Model\FamilyTranslationInterface
             mappedBy: foreignKey

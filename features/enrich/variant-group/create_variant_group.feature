@@ -1,4 +1,4 @@
-@javascript
+@javascript @skip
 Feature: Variant group creation
   In order to manage relations between products
   As a product manager

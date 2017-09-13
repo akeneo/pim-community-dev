@@ -236,14 +236,8 @@ abstract class ApiTestCase extends WebTestCase
      */
     private function resetIndex()
     {
-        $esClient = $this->get('akeneo_elasticsearch.client');
-        $conf = $this->get('akeneo_elasticsearch.index_configuration.loader')->load();
-
-        if ($esClient->hasIndex()) {
-            $esClient->deleteIndex();
-        }
-
-        $esClient->createIndex($conf->buildAggregated());
+        $this->get('akeneo_elasticsearch.client.product')->resetIndex();
+        $this->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
     }
 
     /**

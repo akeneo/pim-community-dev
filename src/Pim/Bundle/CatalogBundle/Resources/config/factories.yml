@@ -29,10 +29,25 @@ services:
             - '@pim_catalog.repository.attribute'
             - '%pim_catalog.entity.family.class%'
 
+    pim_catalog.factory.family_variant:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.family_variant.class%'
+
+    pim_catalog.factory.variant_attribute_set:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.variant_attribute_set.class%'
+
     pim_catalog.factory.channel:
         class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
             - '%pim_catalog.entity.channel.class%'
+
+    pim_catalog.factory.product_model:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.product_model.class%'
 
     pim_catalog.factory.locale:
         class: '%akeneo_storage_utils.factory.simple.class%'

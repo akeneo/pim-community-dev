@@ -73,7 +73,7 @@ Feature: Associate a product
     And the row "shoelaces" should be checked
     And the row "black-boots" should be checked
     And I should be able to sort the rows by Is associated
-    And I should be able to sort the rows by SKU
+    And I should be able to sort the rows by ID
 
   @jira https://akeneo.atlassian.net/browse/PIM-4670
   Scenario: Keep association selection between tabs

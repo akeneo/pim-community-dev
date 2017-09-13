@@ -1,5 +1,6 @@
 parameters:
     pim_datagrid.normalizer.product.class: Pim\Bundle\DataGridBundle\Normalizer\ProductNormalizer
+    pim_datagrid.normalizer.product_model.class: Pim\Bundle\DataGridBundle\Normalizer\ProductModelNormalizer
     pim_datagrid.normalizer.product_association.class: Pim\Bundle\DataGridBundle\Normalizer\ProductAssociationNormalizer
     pim_datagrid.normalizer.product.product_values.class: Pim\Bundle\DataGridBundle\Normalizer\Product\ProductValuesNormalizer
     pim_datagrid.normalizer.product.product_value.class: Pim\Bundle\DataGridBundle\Normalizer\Product\ValueNormalizer
@@ -12,6 +13,13 @@ parameters:
 services:
     pim_datagrid.normalizer.product:
         class: '%pim_datagrid.normalizer.product.class%'
+        arguments:
+            - '@pim_catalog.filter.chained'
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_datagrid.normalizer.product_model:
+        class: '%pim_datagrid.normalizer.product_model.class%'
         arguments:
             - '@pim_catalog.filter.chained'
         tags:

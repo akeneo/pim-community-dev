@@ -684,6 +684,9 @@ class Grid extends Index
      */
     public function clickOnResetButton()
     {
+        // Temporary solution waiting for Category tree moving (PIM-6574)
+        $this->getSession()->executeScript('$(".AknDefault-mainContent").scrollLeft(1000)');
+
         $resetBtn = $this->spin(function () {
             return $this
                 ->getElement('Grid toolbar')
