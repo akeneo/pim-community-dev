@@ -7,6 +7,22 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UpdateProductIntegration extends AbstractProductTestCase
 {
+    public function testSuccessfullyUpdateProductWithDataFromTheGet()
+    {
+        $getClient = $this->createAuthenticatedClient();
+        $getClient->request('GET', 'api/rest/v1/products/product_viewable_by_everybody_1');
+
+        $getResponse = $getClient->getResponse();
+        $getContent = $getResponse->getContent();
+        $data = json_decode($getContent, true);
+        $data['family'] = 'familyA';
+
+        $patchClient = $this->createAuthenticatedClient();
+        $patchClient->request('PATCH', 'api/rest/v1/products/product_viewable_by_everybody_1', [], [], [], json_encode($data));
+        $patchResponse = $patchClient->getResponse();
+        $this->assertSame(Response::HTTP_NO_CONTENT, $patchResponse->getStatusCode());
+    }
+
     public function testFailedToUpdateProductNotViewableByUser()
     {
         $expectedResponseContent =
