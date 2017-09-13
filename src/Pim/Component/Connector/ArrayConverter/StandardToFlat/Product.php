@@ -44,7 +44,9 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 $convertedItem[$property] = (string) $data;
                 break;
             case 'parent':
-                $convertedItem[$property] = (string) $data;
+                if (null !== $data && '' !== $data) {
+                    $convertedItem[$property] = (string) $data;
+                }
                 break;
             case 'groups':
             case 'variant_group':
