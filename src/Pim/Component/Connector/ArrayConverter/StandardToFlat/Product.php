@@ -43,6 +43,9 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
             case 'family':
                 $convertedItem[$property] = (string) $data;
                 break;
+            case 'parent':
+                $convertedItem[$property] = (string) $data;
+                break;
             case 'groups':
             case 'variant_group':
                 $convertedItem = $this->convertGroups($data, $convertedItem);

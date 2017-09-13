@@ -52,6 +52,7 @@ class ProductSpec extends ObjectBehavior
             'categories'              => 'audio_video_sales,loudspeakers,sony',
             'enabled'                 => '1',
             'family'                  => 'loudspeakers',
+            'parent'                  => 'parent_model_code',
             'groups'                  => 'sound,audio,mp3,speakers',
             'UPSELL-groups'           => '',
             'UPSELL-products'         => '',
@@ -66,6 +67,7 @@ class ProductSpec extends ObjectBehavior
             'categories'        => ['audio_video_sales', 'loudspeakers', 'sony'],
             'enabled'           => true,
             'family'            => 'loudspeakers',
+            'parent'            => 'parent_model_code',
             'groups'            => ['sound', 'audio', 'mp3'],
             'variant_group'     => 'speakers',
             'associations'      => [
