@@ -24,8 +24,7 @@ class ChoiceDecorator extends ElementDecorator
         $field = $this->decorate($field, ['Pim\Behat\Decorator\Field\MultiSelectDecorator']);
         $field->setValue($value);
 
-        // Trigger a mousedown Event to close the Choice filter
-        $this->getSession()->executeScript("$(document)[0].dispatchEvent(new Event('mousedown'))");
+        $this->close();
     }
 
     /**
@@ -40,7 +39,7 @@ class ChoiceDecorator extends ElementDecorator
         // The multiselect plugin can put many widgets in the DOM.
         // We have to find the one that is visible and active.
         $multiSelectWidgets = $this->spin(function () {
-            return $this->getBody()->findAll('css', '.select-filter-widget.dropdown-menu');
+            return $this->getBody()->findAll('css', '.ui-multiselect-menu.select-filter-widget');
         }, 'Could not find any multiselect widget');
 
         $visibleWidgets = array_filter($multiSelectWidgets, function ($widget) {
@@ -62,5 +61,13 @@ class ChoiceDecorator extends ElementDecorator
         }
 
         return array_filter($values);
+    }
+
+    /**
+     * Closes the current choice filter
+     */
+    public function close()
+    {
+        $this->getSession()->executeScript("$(document)[0].dispatchEvent(new Event('mousedown'))");
     }
 }
