@@ -22,6 +22,16 @@ extensions:
         parent: pim-rule-index
         targetZone: filters
 
+    pim-rule-index-mass-actions:
+        module: oro/datagrid/actions-panel
+        parent: pim-rule-index
+        targetZone: toolbar
+
+    pim-rule-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-rule-index
+        targetZone: toolbar
+
     pim-rule-index-grid:
         module: pim/form/common/index/grid
         parent: pim-rule-index

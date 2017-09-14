@@ -16,7 +16,6 @@ Feature: Remove product assets
     Given I am on the "shirt" product page
     And I visit the "Media" group
     And I start to manage assets for "Front view"
-    And I change the page size to 100
     And I check the row "chicagoskyline"
     And I check the row "akene"
     And I confirm the asset modification
@@ -35,7 +34,6 @@ Feature: Remove product assets
     Given I am on the "shirt" product page
     And I visit the "Media" group
     And I start to manage assets for "Front view"
-    And I change the page size to 100
     And I check the row "chicagoskyline"
     And I check the row "akene"
     And I confirm the asset modification

@@ -14,6 +14,16 @@ extensions:
         parent: pim-proposal-index
         targetZone: filters
 
+    pim-proposal-index-mass-actions:
+        module: oro/datagrid/actions-panel
+        parent: pim-proposal-index
+        targetZone: toolbar
+
+    pim-proposal-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-proposal-index
+        targetZone: toolbar
+
     pim-proposal-index-grid:
         module: pim/form/common/index/grid
         parent: pim-proposal-index

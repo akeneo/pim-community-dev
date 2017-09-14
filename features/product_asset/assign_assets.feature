@@ -17,7 +17,6 @@ Feature: Assign assets to a product
     And I visit the "Media" group
     And I start to manage assets for "Front view"
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
-    And I change the page size to 100
     And I check the row "paint"
     And I check the row "machine"
     Then the asset basket should contain paint, machine
@@ -26,7 +25,6 @@ Feature: Assign assets to a product
     And I save the product
     Then the "Front view" asset gallery should contain paint, machine
     And I start to manage assets for "Front view"
-    And I change the page size to 100
     And I uncheck the row "paint"
     And I check the row "dog"
     And I check the row "akene"
@@ -149,7 +147,6 @@ Feature: Assign assets to a product
     And I visit the "Media" group
     And I start to manage assets for "Front view"
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
-    And I change the page size to 100
     And I check the row "video_20"
     And I check the row "video_21"
     Then the asset basket should contain video_20, video_21

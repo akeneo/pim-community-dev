@@ -104,7 +104,6 @@ Feature: Mass uploads assets
     Then I should see the text "Mass Upload Assets"
     And I should see the text "COMPLETED"
     When I am on the assets grid
-    And I change the page size to 25
     Then I should see the text "akeneo"
     And I should see the text "akeneo2"
     And I should see the text "logo_akeneo"

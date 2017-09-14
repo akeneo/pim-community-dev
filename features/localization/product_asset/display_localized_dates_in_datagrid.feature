@@ -18,7 +18,6 @@ Feature: Localize dates in asset picker
     And I am on the "shirt" product page
     And I visit the "Media" group
     And I start to manage assets for "Front view"
-    And I change the page size to 25
     Then the row "mascot" should contain:
       | column     | value      |
       | END OF USE | 12/25/2017 |
@@ -28,7 +27,6 @@ Feature: Localize dates in asset picker
     And I am on the "shirt" product page
     And I visit the "[media]" group
     And I start to manage assets for "Vue de face"
-    And I change the page size to 25
     Then the row "mascot" should contain:
       | column               | value      |
       | FIN DE L'UTILISATION | 25/12/2017 |

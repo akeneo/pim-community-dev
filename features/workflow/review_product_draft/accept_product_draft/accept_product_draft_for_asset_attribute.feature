@@ -31,7 +31,6 @@ Feature: Review a product draft
     And I edit the "my-jacket" product
     And I visit the "Media" group
     And I start to manage assets for "gallery"
-    And I change the page size to 100
     When I check the row "paint"
     And I check the row "machine"
     Then the asset basket should contain paint, machine

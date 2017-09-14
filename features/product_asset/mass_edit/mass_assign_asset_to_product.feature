@@ -24,7 +24,6 @@ Feature: Edit asset collection of many products at once
     And I display the Front view attribute
     And I start to manage assets for "Front view"
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
-    And I change the page size to 100
     And I check the row "paint"
     And I check the row "machine"
     Then the asset basket should contain paint, machine

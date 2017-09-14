@@ -15,7 +15,6 @@ Feature: Apply defined asset category permissions on asset grid row actions
   Scenario: Display the asset classification action only if the user owns the asset
     Given I am logged in as "Pamela"
     And I am on the assets grid
-    And I change the page size to 25
     Then the grid should contain 17 elements
     And I should see assets logo and other_image
     And I should be able to view the "Classify the asset" action of the row which contains "other_image"

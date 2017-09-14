@@ -113,7 +113,8 @@ define(
                     );
 
                     var resolvedModules = []
-                    response.metadata.requireJSModules.forEach(function(module) {
+                    response.metadata.requireJSModules.concat(['oro/datagrid/pagination-input'])
+                    .forEach(function(module) {
                         resolvedModules.push(requireContext(module))
                     })
 

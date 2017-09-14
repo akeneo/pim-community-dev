@@ -2,6 +2,9 @@ datagrid:
     asset-grid:
         options:
             entityHint: asset
+            requireJSModules:
+                - oro/datagrid/actions-panel
+                - oro/datagrid/pagination-input
         source:
             acl_resource:      pimee_product_asset_index
             type:              pimee_datasource_asset

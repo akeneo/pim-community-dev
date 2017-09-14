@@ -15,7 +15,6 @@ Feature: Apply permissions on assets picker
     And I am on the "shirt" product page
     And I visit the "Media" group
     And I start to manage assets for "Front view"
-    And I change the page size to 25
     Then the grid should contain 11 elements
 
   Scenario: Successfully show granted assets in asset picket as a manager
@@ -23,5 +22,4 @@ Feature: Apply permissions on assets picker
     And I am on the "shirt" product page
     And I visit the "Media" group
     And I start to manage assets for "Front view"
-    And I change the page size to 25
     Then the grid should contain 15 elements

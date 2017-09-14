@@ -79,6 +79,21 @@ extensions:
         parent: pimee-published-product-index
         targetZone: filters
 
+    pimee-published-product-index-mass-actions:
+        module: oro/datagrid/actions-panel
+        parent: pimee-published-product-index
+        targetZone: toolbar
+
+    pimee-published-product-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pimee-published-product-index
+        targetZone: toolbar
+
+    pimee-published-product-index-columns:
+        module: pim/datagrid/configure-columns-action
+        parent: pimee-published-product-index
+        targetZone: toolbar
+
     pimee-published-product-index-grid:
         module: pim/grid/table
         parent: pimee-published-product-index

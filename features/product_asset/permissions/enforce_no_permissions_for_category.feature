@@ -16,7 +16,6 @@ Feature: Enforce no permissions for an asset category
   Scenario: Display only granted assets in assets grid, I see all assets
     Given I am logged in as "Mary"
     And I am on the assets grid
-    And I change the page size to 25
     And the grid should contain 15 elements
 
   Scenario: Display only granted assets in assets grid, I see a sub set of assets
@@ -28,7 +27,6 @@ Feature: Enforce no permissions for an asset category
       | Allowed to edit assets | Manager |
     And I save the category
     And I am on the assets grid
-    And I change the page size to 25
     And the grid should contain 13 elements
 
   Scenario: Display only granted assets in assets grid when filtering by unclassified
@@ -48,14 +46,12 @@ Feature: Enforce no permissions for an asset category
   Scenario: Redirect user on view of the asset if he has no permission to edit it
     Given I am logged in as "Mary"
     And I am on the assets grid
-    And I change the page size to 25
     And I click on the "notEdit" row
     And I should not see the "Save" button
 
   Scenario: Go to edit form of the asset if he has permission to edit it
     Given I am logged in as "Mary"
     And I am on the assets grid
-    And I change the page size to 25
     And I click on the "grantedOne" row
     And I should see the "Save" button
 

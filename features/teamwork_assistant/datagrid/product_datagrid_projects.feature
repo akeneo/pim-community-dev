@@ -160,8 +160,6 @@ Feature: Products datagrid projects
     And I am on the products grid
     And I switch view selector type to "Projects"
     Then I should see the text "My TShirts Project"
-    When I change the page size to 10
-    Then I should not see the text "My TShirts Project *"
     When I change the page number to 2
     Then I should not see the text "My TShirts Project *"
 
