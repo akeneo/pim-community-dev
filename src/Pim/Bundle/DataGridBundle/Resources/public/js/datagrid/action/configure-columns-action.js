@@ -70,12 +70,20 @@ define(
                 '<div id="column-configurator" class="AknColumnConfigurator"></div>'
             ),
 
+            /**
+             * @inheritdoc
+             */
             initialize: function () {
                 mediator.once('grid_load:start', this.setupOptions.bind(this));
 
                  BaseForm.prototype.initialize.apply(this, arguments);
             },
 
+            /**
+             * Pass options to datagrid collection and render the column selector
+             * @param  {Backbone.Collection} collection    Datagrid collection
+             * @param  {HTMLElement} gridContainer The datagrid div
+             */
             setupOptions: function(collection, gridContainer) {
                 const options = gridContainer.options;
                 this.options = options;
@@ -97,6 +105,9 @@ define(
                 this.renderAction();
             },
 
+            /**
+             * Render the configure columns button
+             */
             renderAction: function() {
                 this.$el.empty().append(
                         this.template({
@@ -107,10 +118,17 @@ define(
                 this.subscribe();
             },
 
+            /**
+             * Subscribe to click event
+             */
             subscribe: function() {
                 $('#configure-columns').one('click', this.execute.bind(this));
             },
 
+            /**
+             * Get columns, set datagrid state, initialize the columns list
+             * @param  {jQueryEvent} e
+             */
             execute: function(e) {
                 e.preventDefault();
                 var url = Routing.generate('pim_datagrid_view_list_available_columns', {
