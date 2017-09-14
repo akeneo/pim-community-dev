@@ -79,7 +79,7 @@ abstract class AbstractProduct implements ProductInterface
     protected $normalizedData;
 
     /** @var string */
-    private $identifierAttributeCode;
+    protected $identifierAttributeCode;
 
     /**
      * Constructor
