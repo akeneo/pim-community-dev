@@ -17,6 +17,7 @@ class GetProductIntegration extends AbstractProductTestCase
         $standardProduct = [
             'identifier'    => 'foo',
             'family'        => 'familyA',
+            'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
             'variant_group' => 'variantA',
             'categories'    => ['categoryA1', 'categoryB'],
