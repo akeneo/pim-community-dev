@@ -166,3 +166,57 @@ jobs:
             realTimeVersioning: true
             decimalSeparator: .
             dateFormat: yyyy-MM-dd
+    csv_summer_2016_shoes_products_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_export
+        label:     CSV summer 2016 shoes for ecommerce
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath: /tmp/products.csv
+            filters:
+                data:
+                    -
+                        field: family
+                        operator: 'IN'
+                        value: ['shoes']
+                    -
+                        field: completeness
+                        operator: '<='
+                        value: 100
+                    -
+                        field: collection.code
+                        operator: 'IN'
+                        value: ['summer_2016']
+                structure:
+                    scope: ecommerce
+                    locales:
+                        - en_US
+    xlsx_summer_2016_shoes_products_export:
+        connector: Akeneo XLSX Connector
+        alias:     xlsx_product_export
+        label:     XLSX summer 2016 shoes for ecommerce
+        type:      export
+        configuration:
+            withHeader: true
+            filePath: /tmp/products.xlsx
+            filters:
+                data:
+                    -
+                        field: family
+                        operator: 'IN'
+                        value: ['shoes']
+                    -
+                        field: completeness
+                        operator: '<='
+                        value: 100
+                    -
+                        field: collection.code
+                        operator: 'IN'
+                        value: ['summer_2016']
+                structure:
+                    scope: ecommerce
+                    locales:
+                        - en_US
