@@ -45,6 +45,11 @@ class PublishedProductNormalizer implements NormalizerInterface
             unset($normalizedPublishedProduct['variant_group']);
         }
 
+        // TODO: PIM-6564 will be done when we'll publish product model
+        if (array_key_exists('parent', $normalizedPublishedProduct)) {
+            unset($normalizedPublishedProduct['parent']);
+        }
+
         return $normalizedPublishedProduct;
     }
 
