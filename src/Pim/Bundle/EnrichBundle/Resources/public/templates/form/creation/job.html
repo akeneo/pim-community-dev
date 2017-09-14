@@ -6,7 +6,6 @@
     </div>
     <div class="AknFieldContainer-inputContainer">
         <select name="job" id="job">
-            <option value="">Select a job</option>
             <% for (var job in jobs) { %>
                 <optgroup label="<%- job %>">
                     <% for (var name in jobs[job]) { %>
