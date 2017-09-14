@@ -23,8 +23,6 @@ Feature: Filter products by reference data
 
   @skip @info To be unskipped in PIM-6574
   Scenario: Successfully filter product with multi reference data filters
-    Given I show the filter "sole_color"
-    And I filter by "sole_color" with operator "in list" and value "Red"
     And I should be able to use the following filters:
       | filter      | operator     | value                 | result |
       | sole_fabric | in list      | Cashmerewool          | postit |
