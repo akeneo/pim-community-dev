@@ -375,6 +375,9 @@ define(
                 this._updateNoDataBlock();
             },
 
+            /**
+             * Refresh datagrid collection, triggers for datagrid:doRefresh events
+             */
             refreshCollection: function() {
                 this.setAdditionalParameter('refresh', true);
                 this.collection.fetch();

@@ -38,6 +38,8 @@ function(_, Backbone, groupTemplate, BaseForm, mediator) {
 
             mediator.once('grid_load:start', this.setupActions.bind(this));
             mediator.on('grid_load:complete', this.setupActions.bind(this));
+
+            return BaseForm.prototype.initialize.apply(this, arguments);
         },
 
         /**
@@ -47,8 +49,6 @@ function(_, Backbone, groupTemplate, BaseForm, mediator) {
             this.actionsGroups = datagrid.massActionsGroups;
             this.setActions(datagrid.massActions, datagrid);
             this.renderActions();
-
-            return BaseForm.prototype.initialize.apply(this, arguments);
         },
 
         /**

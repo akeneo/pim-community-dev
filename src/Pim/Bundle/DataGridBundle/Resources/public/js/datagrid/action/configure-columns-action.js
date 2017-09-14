@@ -43,7 +43,7 @@ define(
          *
          * @export  pim/datagrid/configure-columns-action
          * @class   pim.datagrid.ConfigureColumnsAction
-         * @extends Backbone.View
+         * @extends BaseForm
          */
         var ConfigureColumnsAction = BaseForm.extend({
 
@@ -72,6 +72,8 @@ define(
 
             initialize: function () {
                 mediator.once('grid_load:start', this.setupOptions.bind(this));
+
+                 BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             setupOptions: function(collection, gridContainer) {
@@ -91,8 +93,6 @@ define(
                 const gridFilters = filters[this.gridName] || {};
 
                 this.locale = filters.dataLocale || gridFilters.dataLocale;
-
-                Backbone.View.prototype.initialize.apply(this, arguments);
 
                 this.renderAction();
             },
