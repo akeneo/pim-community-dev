@@ -9,7 +9,6 @@ confirmation:
         product:          Are you sure you want to delete this product?
         channel:          Are you sure you want to delete this channel?
         group:            Are you sure you want to delete this group?
-        variant group:    Are you sure you want to delete this variant group?
         group_type:       Are you sure you want to delete this group type?
         import profile:   Are you sure you want to delete this import profile?
         export profile:   Are you sure you want to delete this export profile?
@@ -52,8 +51,6 @@ flash:
         removed: Channel successfully removed
     group:
         removed: Group successfully removed
-    variant group:
-        removed: Variant group successfully removed
     group_type:
         removed: Group type successfully removed
     import profile:
@@ -81,7 +78,6 @@ error:
         product:          Cannot delete this product
         channel:          Cannot delete this channel
         group:            Cannot delete this group
-        variant group:    Cannot delete this variant group
         group type:       Cannot delete this group type
         import profile:   Cannot delete this import profile
         export profile:   Cannot delete this export profile
@@ -222,11 +218,6 @@ pim_enrich:
                 all_visible: All visible
                 none: None
                 copy: Copy
-            variant_group:
-                updated_by: Updated by variant group
-                switch:
-                    "yes": "Yes"
-                    "no": "No"
             optional_attribute:
                 remove: Remove this attribute
             locale_specific_attribute:
@@ -330,28 +321,6 @@ pim_enrich:
             code: Code
             label: Label
             actions: Actions
-        variant_group:
-            title: Variant group
-            info:
-                deletion_successful: Variant group successfully deleted.
-                deletion_failed: The variant group could not be deleted.
-                update_successful: Variant group successfully updated.
-                update_failed: The variant group could not be updated.
-                field_not_ready: "The variant group cannot be saved right now. The following fields are not ready: {{ fields }}"
-                already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
-                no_attributes: This variant group has no attributes yet
-            btn:
-                save: Save
-            meta:
-                product_count: Products
-                created: Created
-                created_by: Created by
-                updated: Updated
-                updated_by: Updated by
-            create_popin:
-                title: Create a new variant group
-            message:
-                created: Variant group successfully created
         group:
             title: Group
             info:
@@ -563,22 +532,6 @@ pim_enrich:
             switch:
                 "no": "No"
                 "yes": "Yes"
-        variant_group:
-            axis.help: Axis define the attributes over which the products of the group should vary. Axis are attributes with options, not localizable and not scoped. They cannot be changed after the creation of the variant group
-            tab:
-                properties:
-                    title: Properties
-                    general: General properties
-                    code: Code
-                    type: Type
-                    axis: Axis
-                    label_translations: Label translations
-                history:
-                    title: History
-                products:
-                    title: Products
-                attributes:
-                    title: Attributes
         group:
             tab:
                 properties:
@@ -933,9 +886,6 @@ pim_enrich:
                 created: Import profile successfully created
         import_history:
             title:      Import reports
-        variant_group:
-            title:      Variant group overview
-            create_btn: Create variant group
         group:
             title:      Group overview
             create_btn: Create group
@@ -1087,8 +1037,6 @@ page_title:
     pim_enrich_locale_index:               Locales
     pim_enrich_group_index:                Groups
     pim_enrich_group_edit:                 Groups {{ group.label }} | Edit
-    pim_enrich_variant_group_index:        Variant groups
-    pim_enrich_variant_group_edit:         Variant groups {{ group.label }} | Edit
     pim_enrich_associationtype_index:      Association types
     pim_enrich_associationtype_edit:       Association types {{ association type.label }} | Edit
     pim_enrich_grouptype_index:            Group types
@@ -1155,9 +1103,6 @@ batch_jobs:
     csv_group_export:
         label: Group export in CSV
         export.label: Group export
-    csv_variant_group_export:
-        label: Variant group export in CSV
-        export.label: Variant group export
     csv_family_export:
         label: Family export in CSV
         export.label: Family export
@@ -1199,10 +1144,6 @@ batch_jobs:
         label: Group import in CSV
         validation.label: File validation
         import.label: Group import
-    csv_variant_group_import:
-        label: Variant group import in CSV
-        validation.label: File validation
-        import.label: Variant group import
     csv_channel_export:
         label: Channel export in CSV
         export.label: Channel export
@@ -1275,17 +1216,10 @@ batch_jobs:
     xlsx_group_export:
         label: Group export in XLSX
         export.label: Group export
-    xlsx_variant_group_export:
-        label: Variant group export in XLSX
-        export.label: Variant group export
     xlsx_group_import:
         label: Group import in XLSX
         validation.label: File validation
         import.label: Group import
-    xlsx_variant_group_import:
-        label: Variant group import in XLSX
-        validation.label: File validation
-        import.label: Variant Group import
     xlsx_family_export:
         label: Family export in XLSX
         export.label: Family export
@@ -1369,7 +1303,6 @@ pim_menu:
         group_type: Group types
         locale: Locales
         product: Products
-        variant_group: Variant groups
         export_history: Exports history
         export_profile: Export profiles
         import_history: Imports history

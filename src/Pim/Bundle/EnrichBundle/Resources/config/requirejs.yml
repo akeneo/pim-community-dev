@@ -30,13 +30,8 @@ config:
         pim/grid/view-selector/selector:
             forwarded-events:
                 'grid:product-grid:state_changed': 'grid:product-grid:state_changed'
-        pim/variant-group-manager:
-            urls:
-                get: pim_enrich_variant_group_rest_get
         pim/controller/group:
             fetcher: group
-        pim/controller/variant-group:
-            fetcher: variant-group
         pim/remover/association-type:
             url: pim_enrich_associationtype_rest_remove
         pim/remover/attribute-group:
@@ -47,8 +42,6 @@ config:
             url: pim_enrich_channel_rest_remove
         pim/remover/family:
             url: pim_enrich_family_rest_remove
-        pim/remover/variant-group:
-            url: pim_enrich_variant_group_rest_remove
         pim/remover/group:
             url: pim_enrich_group_rest_remove
         pim/remover/product:
@@ -64,8 +57,6 @@ config:
             putUrl: pim_enrich_channel_rest_put
         pim/saver/family:
             putUrl: pim_enrich_family_rest_put
-        pim/saver/variant-group:
-            url: pim_enrich_variant_group_rest_post
         pim/saver/product:
             url: pim_enrich_product_rest_post
         pim/saver/product-model:
@@ -159,12 +150,6 @@ config:
                         urls:
                             list: pim_enrich_group_rest_index
                             get: pim_enrich_group_rest_get
-                variant-group:
-                    module: pim/variant-group-fetcher
-                    options:
-                        urls:
-                            list: pim_enrich_variant_group_rest_index
-                            get: pim_enrich_variant_group_rest_get
                 sequential-edit:
                     module: pim/base-fetcher
                     options:
@@ -280,9 +265,6 @@ config:
                 pim_enrich_group_edit:
                     module: pim/controller/group
                     aclResourceId: pim_enrich_group_edit
-                pim_enrich_variant_group_edit:
-                    module: pim/controller/variant-group
-                    aclResourceId: pim_enrich_variant_group_edit
                 pim_enrich_channel_index:
                     module: pim/controller/common/index
                     aclResourceId: pim_enrich_channel_index
@@ -396,14 +378,6 @@ config:
                 pim_enrich_product_create:
                     module: pim/controller/template
                     aclResourceId: pim_enrich_product_create
-                pim_enrich_variant_group_index:
-                    module: pim/controller/common/index
-                    aclResourceId: pim_enrich_variant_group_index
-                    config:
-                        entity: variant-group
-                pim_enrich_variant_group_create:
-                    module: pim/controller/template
-                    aclResourceId: pim_enrich_variant_group_create
                 pim_enrich_group_index:
                     module: pim/controller/common/index
                     aclResourceId: pim_enrich_group_index
@@ -529,7 +503,6 @@ config:
         pim/controller/redirect:               pimenrich/js/controller/redirect
         pim/controller/job-instance:           pimenrich/js/controller/job-instance
         pim/controller/group:                  pimenrich/js/controller/group
-        pim/controller/variant-group:          pimenrich/js/controller/variant-group
         pim/controller/role:                   pimenrich/js/controller/role
         pim/controller/job-execution:          pimenrich/js/controller/job-execution
         pim/controller/group-type:             pimenrich/js/controller/group-type
@@ -570,7 +543,6 @@ config:
         pim/security-context: pimenrich/js/security-context
 
         # Managers
-        pim/variant-group-manager:   pimenrich/js/manager/variant-group-manager
         pim/group-manager:           pimenrich/js/manager/group-manager
         pim/attribute-manager:       pimenrich/js/manager/attribute-manager
         pim/attribute-group-manager: pimenrich/js/manager/attribute-group-manager
@@ -582,7 +554,6 @@ config:
         pim/attribute-group-fetcher: pimenrich/js/fetcher/attribute-group-fetcher
         pim/locale-fetcher:          pimenrich/js/fetcher/locale-fetcher
         pim/product-fetcher:         pimenrich/js/fetcher/product-fetcher
-        pim/variant-group-fetcher:   pimenrich/js/fetcher/variant-group-fetcher
 
         # Remover
         pim/remover/base:                pimenrich/js/remover/base-remover
@@ -592,7 +563,6 @@ config:
         pim/remover/channel:             pimenrich/js/remover/channel
         pim/remover/family:              pimenrich/js/remover/family
         pim/remover/product:             pimenrich/js/remover/product-remover
-        pim/remover/variant-group:       pimenrich/js/remover/variant-group-remover
         pim/remover/group:               pimenrich/js/remover/group-remover
         pim/remover/job-instance-import: pimenrich/js/remover/job-instance-import-remover
         pim/remover/job-instance-export: pimenrich/js/remover/job-instance-export-remover
@@ -605,7 +575,6 @@ config:
         pim/saver/family:              pimenrich/js/saver/family
         pim/saver/product:             pimenrich/js/saver/product-saver
         pim/saver/product-model:       pimenrich/js/saver/product-model-saver
-        pim/saver/variant-group:       pimenrich/js/saver/variant-group-saver
         pim/saver/group:               pimenrich/js/saver/group-saver
         pim/saver/job-instance-export: pimenrich/js/saver/job-instance-export-saver
         pim/saver/job-instance-import: pimenrich/js/saver/job-instance-import-saver
@@ -654,9 +623,6 @@ config:
         pim/family-edit-form/properties/general:                            pimenrich/js/family/form/properties/general
         pim/family-edit-form/attributes:                                    pimenrich/js/family/form/attributes
 
-        # Variant group
-        pim/variant-group-edit-form/save: pimenrich/js/variant-group/form/save
-
         # Exports
         pim/job-instance-edit-form/save:        pimenrich/js/job/common/edit/save
         pim/job-instance-export-edit-form/save: pimenrich/js/job/export/edit/save
@@ -677,7 +643,6 @@ config:
         pim/product-edit-form/attribute-filter-missing-required: pimenrich/js/product/form/attribute-filter-missing-required
         pim/product-edit-form/attributes/validation:             pimenrich/js/product/form/attributes/validation
         pim/product-edit-form/attributes/validation-error:       pimenrich/js/product/form/attributes/validation-error
-        pim/product-edit-form/attributes/variant-group:          pimenrich/js/product/form/attributes/variant-group
         pim/product-edit-form/attributes/locale-specific:        pimenrich/js/product/form/attributes/locale-specific
         pim/product-edit-form/attributes/read-only-form:         pimenrich/js/product/form/attributes/read-only-form
         pim/product-edit-form/attributes/completeness:           pimenrich/js/product/form/attributes/completeness
@@ -794,13 +759,6 @@ config:
         # Attribute option form
         pim/attribute-option-form:          pimenrich/js/attribute-option/form
         pim/attribute-option/create:        pimenrich/js/attribute-option/create
-
-        # Variant group
-        pim/variant-group-edit-form/delete:                 pimenrich/js/variant-group/form/delete
-        pim/variant-group-edit-form/no-attribute:           pimenrich/js/variant-group/form/no-attribute
-        pim/variant-group-edit-form/properties/general:     pimenrich/js/variant-group/form/properties/general
-        pim/variant-group-edit-form/add-select/attribute:   pimenrich/js/variant-group/form/attributes/add-select/attribute/select
-        pim/variant-group-edit-form/form/axis:              pimenrich/js/variant-group/form/axis
 
         # Group
         pim/group-edit-form/products:               pimenrich/js/group/form/products
@@ -1009,7 +967,6 @@ config:
         pim/template/product/tab/categories:                 pimenrich/templates/product/tab/categories.html
         pim/template/product/tab/catalog-switcher:           pimenrich/templates/product/tab/catalog-switcher.html
         pim/template/product/tab/attribute/validation-error: pimenrich/templates/product/tab/attributes/validation-error.html
-        pim/template/product/tab/attribute/variant-group:    pimenrich/templates/product/tab/attributes/variant-group.html
         pim/template/product/tab/associations:               pimenrich/templates/product/tab/associations.html
         pim/template/product/tab/association-panes:          pimenrich/templates/product/tab/association-panes.html
         pim/template/product/completeness:                   pimenrich/templates/product/completeness.html
@@ -1068,10 +1025,6 @@ config:
         pim/template/app:                                    pimenrich/templates/app.html
         pim/template/common/flash:                           pimenrich/templates/common/flash.html
         pim/template/common/breadcrumbs:                     pimenrich/templates/common/breadcrumbs.html
-
-        pim/template/variant-group/tab/properties/general:   pimenrich/templates/variant-group/tab/properties/general.html
-        pim/template/variant-group/form/no-attribute:        pimenrich/templates/variant-group/form/no-attribute.html
-        pim/template/variant-group/form/axis:                pimenrich/templates/variant-group/form/axis.html
 
         pim/template/group/tab/properties/general:           pimenrich/templates/group/tab/properties/general.html
         pim/template/group/meta/product-count:               pimenrich/templates/group/meta/product-count.html

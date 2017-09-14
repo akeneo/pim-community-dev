@@ -141,15 +141,6 @@ extensions:
             title: pim_menu.item.group
             to: pim_enrich_group_index
 
-    pim-menu-settings-variant-group:
-        module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        aclResourceId: pim_enrich_variant_group_index
-        position: 160
-        config:
-            title: pim_menu.item.variant_group
-            to: pim_enrich_variant_group_index
-
     pim-menu-settings-association-type:
         module: pim/menu/item
         parent: pim-menu-settings-navigation-block

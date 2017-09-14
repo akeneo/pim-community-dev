@@ -59,21 +59,6 @@ pim_enrich:
             product.title:  Products
             property.title: Properties
             history.title:  History
-    # Variant group
-    variant_group:
-        type:
-            VARIANT:    Variant
-            X_SELL:     X-Sell
-            ADDITIONAL: Additional
-            RELATED:    Related
-        tab:
-            product.title:  Products
-            property.title: Properties
-            history.title:  History
-            attribute.title: Attributes
-        info:
-            no_attributes: This variant group has no attributes yet
-            no_attributes_in_selected_locale: This variant group has no attributes in this locale
 
     # Product completeness
     completeness:
@@ -243,15 +228,6 @@ pim_enrich:
             edit: Edit a group
             remove: Remove a group
             history: View group history
-        variant_group:
-            index: List variant groups
-            create: Create a variant group
-            edit: Edit a variant group
-            remove: Remove a variant group
-            history: View group variant history
-            edit_attributes: Edit attributes of variant groups
-            add_attributes: Add attributes to variant groups
-            remove_attribute: Remove attributes from variant groups
         group_type:
             index: List group types
             create: Create a group type
@@ -277,16 +253,10 @@ pim_enrich:
         currency: Currencies
         family: Families
         group: Groups
-        variant_group: Variant groups
         group_type: Group types
         locale: Locales
         product: Products
         product_model: Product models
-    product_value:
-        tooltip:
-            from_variant:
-                title: Updated by a variant group
-                content: This field is updated by the following variant group
 
     reference_data:
         empty_value:
@@ -346,9 +316,6 @@ group:
 group type:
     title:    group type
     edit:     edit group type
-variant group:
-    title:    variant group
-    edit:     edit variant group
 association type:
     title:    association type
     create:   create association type
@@ -370,7 +337,6 @@ btn:
         locale:           create locale
         product:          create product
         group:            create group
-        variant group:    create variant group
         association type: create association type
         group type:       create group type
         drag_or_upload:   Drag and drop to upload or click here
@@ -404,7 +370,6 @@ confirmation:
         family:           Are you sure you want to delete the family %name%?
         product:          Are you sure you want to delete the product %name%?
         group:            Are you sure you want to delete the group %name%?
-        variant group:    Are you sure you want to delete the variant group %name%?
         group type:       Are you sure you want to delete the group type %name%?
         user:             Are you sure you want to delete the user %name%?
     attribute group:
@@ -413,8 +378,6 @@ confirmation:
         remove attribute: Are you sure you want to remove the attribute %name% from this family?
     product:
         remove attribute: Are you sure you want to remove the attribute %name% from this product?
-    variant_group:
-        remove_attribute: Are you sure you want to remove the attribute %name% from this variant group?
 
 # Flash messages
 flash:
@@ -425,7 +388,6 @@ flash:
         updated:                  Attribute successfully updated
         removed:                  Attribute successfully removed
         identifier not removable: Identifier attribute can not be removed
-        used by groups:           This attribute can not be removed because it is used by %count% variant groups
     attribute group:
         created:           Attribute group successfully created
         updated:           Attribute group successfully updated
@@ -468,17 +430,10 @@ flash:
     group:
         updated: Group successfully updated
         removed: Group successfully removed
-    variant group:
-        created: Variant group successfully created
-        updated: Variant group successfully updated
-        removed: Variant group successfully removed
-        attributes_added: Attributes successfully added to the variant group
-        attribute_removed: Attribute successfully removed from the variant group
     group type:
         created: Group type successfully created
         updated: Group type successfully updated
         removed: Group type successfully removed
-        cant remove variant: Group type variant can't be removed
         cant remove used: Group type is used by some groups and can't be removed
     association type:
         created: Association type successfully created
@@ -686,10 +641,6 @@ pim_title.group:
     index: "Groups"
     edit: "Groups %group.label% | Edit"
 
-pim_title.variant_group:
-    index: "Variant groups"
-    edit: "Variant groups %group.label% | Edit"
-
 pim_title.association_type:
     index: "Association types"
     edit: "Association types %association type.label% | Edit"
@@ -778,7 +729,6 @@ pim_enrich.mass_edit_action:
         success_flash: Product(s) attribute(s) have been updated
         message.warning: There is no attribute in common for the selected products. Please change your selection.
         no_attribute.warning: There is no attribute in common for the selected products. Please change your selection.
-        truncated_by_variant_attribute.warning: "Some common attributes from selected products come from a variant group. They are not available for mass edition: %attributes%."
     classify:
         label:         Add to categories
         description:   The products will be positioned into following categories, the existing placement is kept.
@@ -833,7 +783,6 @@ popin.create:
     association_type.title: Create a new association type
     group.title: Create a new group
     product.title: Create a new product
-    variant_group.title: Create a new variant group
     option.title: Create a new option
 
 # Datagrid contents

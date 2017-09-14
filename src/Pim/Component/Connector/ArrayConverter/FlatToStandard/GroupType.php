@@ -32,19 +32,19 @@ class GroupType implements ArrayConverterInterface
      *
      * Before:
      * [
-     *     'code'        => 'VARIANT',
-     *     'is_variant'  => 1,
-     *     'label-en_US' => 'variant',
-     *     'label-fr_FR' => 'variantes',
+     *     'code'        => 'GROUP',
+     *     'is_variant'  => 0,
+     *     'label-en_US' => 'Group',
+     *     'label-fr_FR' => 'Groupe',
      * ]
      *
      * After:
      * [
-     *     'code'        => 'VARIANT',
-     *     'is_variant'  => true,
+     *     'code'        => 'GROUP',
+     *     'is_variant'  => false,
      *     'label'       => [
-     *         'en_US' => 'variant',
-     *         'fr_FR' => 'variantes',
+     *         'en_US' => 'Group',
+     *         'fr_FR' => 'Groupe',
      *     ]
      * ]
      */

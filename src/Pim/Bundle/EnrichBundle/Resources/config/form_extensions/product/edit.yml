@@ -244,12 +244,6 @@ extensions:
         targetZone: header
         position: 100
 
-    pim-product-edit-form-variant-group:
-        module: pim/product-edit-form/attributes/variant-group
-        parent: pim-product-edit-form-attributes
-        targetZone: self
-        position: 100
-
     pim-product-edit-form-locale-specific:
         module: pim/product-edit-form/attributes/locale-specific
         parent: pim-product-edit-form-attributes

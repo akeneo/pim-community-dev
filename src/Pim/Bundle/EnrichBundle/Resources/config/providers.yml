@@ -82,7 +82,6 @@ services:
                 csv_group_type_export: pim-job-instance-csv-base-export
                 csv_locale_export: pim-job-instance-csv-base-export
                 csv_product_export: pim-job-instance-csv-product-export
-                csv_variant_group_export: pim-job-instance-csv-base-export
                 xlsx_association_type_export: pim-job-instance-xlsx-base-export
                 xlsx_attribute_export: pim-job-instance-xlsx-base-export
                 xlsx_attribute_group_export: pim-job-instance-xlsx-base-export
@@ -96,7 +95,6 @@ services:
                 xlsx_group_type_export: pim-job-instance-xlsx-base-export
                 xlsx_locale_export: pim-job-instance-xlsx-base-export
                 xlsx_product_export: pim-job-instance-xlsx-product-export
-                xlsx_variant_group_export: pim-job-instance-xlsx-base-export
                 csv_association_type_import: pim-job-instance-csv-base-import
                 csv_attribute_import: pim-job-instance-csv-base-import
                 csv_attribute_group_import: pim-job-instance-csv-base-import
@@ -111,7 +109,6 @@ services:
                 csv_locale_import: pim-job-instance-csv-base-import
                 csv_product_import: pim-job-instance-csv-product-import
                 csv_product_model_import: pim-job-instance-csv-product-model-import
-                csv_variant_group_import: pim-job-instance-csv-base-import
                 xlsx_association_type_import: pim-job-instance-xlsx-base-import
                 xlsx_attribute_import: pim-job-instance-xlsx-base-import
                 xlsx_attribute_group_import: pim-job-instance-xlsx-base-import
@@ -126,7 +123,6 @@ services:
                 xlsx_locale_import: pim-job-instance-xlsx-base-import
                 xlsx_product_import: pim-job-instance-xlsx-product-import
                 xlsx_product_model_import: pim-job-instance-xlsx-product-model-import
-                xlsx_variant_group_import: pim-job-instance-xlsx-base-import
         tags:
             - { name: pim_enrich.provider.form, priority: 100 }
 
@@ -145,7 +141,7 @@ services:
             - [addResource, ['%pim_catalog.entity.group.class%']]
             - [addResource, ['%pim_catalog.entity.locale.class%']]
 
-    pim_enrich.provider.structure_version.variant_group:
+    pim_enrich.provider.structure_version.group:
         class: '%pim_enrich.provider.structure_version.class%'
         arguments:
             - '@pim_versioning.repository.version'

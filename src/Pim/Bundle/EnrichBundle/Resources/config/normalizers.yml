@@ -19,7 +19,7 @@ parameters:
     pim_enrich.normalizer.group.class:                             Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer
     pim_enrich.normalizer.file.class:                              Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer
     pim_enrich.normalizer.product_violation.class:                 Pim\Bundle\EnrichBundle\Normalizer\ProductViolationNormalizer
-    pim_enrich.normalizer.variant_group_violation.class:           Pim\Bundle\EnrichBundle\Normalizer\VariantGroupViolationNormalizer
+    pim_enrich.normalizer.group_violation.class:                   Pim\Bundle\EnrichBundle\Normalizer\GroupViolationNormalizer
     pim_enrich.normalizer.violation.class:                         Pim\Bundle\EnrichBundle\Normalizer\ViolationNormalizer
     pim_enrich.normalizer.datagrid_view.class:                     Pim\Bundle\EnrichBundle\Normalizer\DatagridViewNormalizer
     pim_enrich.normalizer.category.class:                          Pim\Bundle\EnrichBundle\Normalizer\CategoryNormalizer
@@ -187,11 +187,9 @@ services:
         class: '%pim_enrich.normalizer.group.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.proxy_group'
-            - '@pim_enrich.provider.structure_version.variant_group'
+            - '@pim_enrich.provider.structure_version.group'
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.version'
-            - '@pim_catalog.localization.localizer.converter'
-            - '@pim_enrich.converter.standard_to_enrich.product_value'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -205,18 +203,13 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
 
-    pim_enrich.normalizer.variant_group_violation:
-        class: '%pim_enrich.normalizer.variant_group_violation.class%'
-        arguments:
-            - '@pim_enrich.normalizer.product_violation'
-
     pim_enrich.normalizer.violation:
         class: '%pim_enrich.normalizer.violation.class%'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 100 }
 
     pim_enrich.normalizer.group_violation:
-        class: '%pim_enrich.normalizer.variant_group_violation.class%'
+        class: '%pim_enrich.normalizer.group_violation.class%'
         arguments:
             - '@pim_internal_api_serializer'
 

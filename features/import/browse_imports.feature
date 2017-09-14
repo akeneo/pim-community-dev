@@ -24,10 +24,10 @@ Feature: Browse imports
     And I should see entities <result>
 
     Examples:
-      | filter    | operator | value                | result                                                                                                                                                | count |
-      | job_name  | contains | Group import in CSV  | group_import                                                                                                                                          | 1     |
-      | connector | contains | Akeneo CSV Connector | product_import, category_import, association_type_import, group_import, attribute_import, option_import                         | 7     |
-      | status    | contains | Ready                | product_import, category_import, association_type_import, group_import, attribute_import, option_import and xlsx_product_import | 8     |
+      | filter    | operator | value                | result                                                                                                                          | count |
+      | job_name  | contains | Group import in CSV  | group_import                                                                                                                    | 1     |
+      | connector | contains | Akeneo CSV Connector | product_import, category_import, association_type_import, group_import, attribute_import, option_import                         | 6     |
+      | status    | contains | Ready                | product_import, category_import, association_type_import, group_import, attribute_import, option_import and xlsx_product_import | 7     |
 
   @ce
   Scenario: Successfully search on label
