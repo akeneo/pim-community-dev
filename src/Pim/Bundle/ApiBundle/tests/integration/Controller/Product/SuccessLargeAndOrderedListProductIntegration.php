@@ -91,6 +91,7 @@ JSON;
     },
     "identifier": "{$identifier}",
     "family": null,
+    "parent": null,
     "groups": [],
     "variant_group": null,
     "categories": [],

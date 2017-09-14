@@ -26,7 +26,7 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - '@event_dispatcher'
-            - '%pim_catalog.entity.product.class%'
+            - 'Pim\Component\Catalog\Model\ProductInterface'
 
     pim_catalog.remover.association_type:
         class: '%pim_catalog.remover.base.class%'

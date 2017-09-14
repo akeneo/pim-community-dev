@@ -92,6 +92,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_create_with_identifier',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -129,6 +130,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_create_without_identifier',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -194,6 +196,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => ['master'],
@@ -231,6 +234,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => ['master'],
@@ -273,6 +277,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'new_product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => ['master'],
@@ -351,6 +356,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_family',
             'family'        => 'familyA',
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -389,6 +395,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_family',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -427,6 +434,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_groups',
             'family'        => null,
+            'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
             'variant_group' => null,
             'categories'    => [],
@@ -465,6 +473,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_groups',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -503,6 +512,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => ["categoryA", "categoryA1"],
@@ -541,6 +551,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -586,6 +597,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_variant_group',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => "variantB",
             'categories'    => [],
@@ -631,6 +643,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_variant_group',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -681,6 +694,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_associations',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -728,6 +742,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_associations',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -780,6 +795,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_associations',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -823,6 +839,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => ['master'],
@@ -869,6 +886,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'localizable',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -920,6 +938,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'localizable',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -968,6 +987,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'localizable',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -1087,6 +1107,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'complete',
             'family'        => 'familyA2',
+            'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
             'variant_group' => 'variantB',
             'categories'    => ['categoryA', 'master'],
@@ -1196,6 +1217,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => ['master'],
