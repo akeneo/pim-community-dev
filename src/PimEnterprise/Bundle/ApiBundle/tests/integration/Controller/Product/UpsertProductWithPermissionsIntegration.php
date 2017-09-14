@@ -46,6 +46,7 @@ class UpsertProductWithPermissionsIntegration extends AbstractProductTestCase
         $expected = [
             'identifier'    => 'product_editable_by_redactor',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'enabled'       => true,
@@ -85,6 +86,7 @@ JSON;
         $expected = [
             'identifier'    => 'product_without_category',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'enabled'       => true,
@@ -139,6 +141,7 @@ JSON;
         $expected = [
             'identifier'    => 'product_editable_by_redactor',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'enabled'       => true,

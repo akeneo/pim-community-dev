@@ -75,6 +75,7 @@ class ClassifyCategoryOnProductWithPermissionsIntegration extends AbstractProduc
         $expectedProduct = [
             'identifier'    => $identifier,
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => $categories,
