@@ -73,7 +73,7 @@ define(
                     currentOperation: this.getCurrentOperation(),
                     label: step.getLabel(),
                     description: step.getDescription(),
-                    title: __(this.config.title),
+                    title: step.getTitle(),
                     labelCount: step.getLabelCount(),
                     confirm: __(this.config.confirm, {itemsCount}, itemsCount),
                     previousLabel: __('pim_enrich.mass_edit.previous'),

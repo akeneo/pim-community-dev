@@ -945,8 +945,9 @@ pim_enrich:
                 select:
                     label: Choose products
                 choose:
-                    label: Choose operation
-                    labelCount: "{1}Select your action for <span class=\"AknFullPage-title--highlight\">the product</span>|] 1, Inf [Select your action for the <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    title: Products bulk actions
+# Do the same for families and EE
+                    label_count: Select your action
                 configure:
                     label: Configure
                 confirm:
@@ -958,16 +959,16 @@ pim_enrich:
             operation:
                 change_status:
                     label: Change status
-                    label_count: "{1}Change status of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    label_count: "{1}Change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The selected products will be enabled or disabled.
                     field: To enable
                 edit_common:
                     label: Edit common attributes
-                    label_count: "{1}Edit common attributes of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit common attributes <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    label_count: "{1}Edit common attributes of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit common attributes of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The selected product's attributes will be edited with the following data for the locale {{ locale }} and the channel {{ scope }}, chosen in the products grid.
                 change_family:
                     label: Change family
-                    label_count: "{1}Change family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The family of the selected products will be changed to the chosen family
                     field: Family
                 add_to_group:
@@ -994,8 +995,8 @@ pim_enrich:
                 select:
                     label: Choose families
                 choose:
-                    label: Choose operation
-                    labelCount: "{1}Select your action for <span class=\"AknFullPage-title--highlight\">the family</span>|] 1, Inf [Select your action for the <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
+                    title: Families bulk actions
+                    label_count: Select your action
                 configure:
                     label: Configure
                 confirm:
