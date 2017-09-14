@@ -17,6 +17,11 @@
   "bugs": {
     "url": "https://github.com/akeneo/pim-community-dev/issues"
   },
+  "devDependencies": {
+    "colors": "1.1.2",
+    "dep-diff": "1.0.1",
+    "read-pkg": "2.0.0"
+  },
   "dependencies": {
     "JSON2": "0.1.0",
     "babel-cli": "6.26.0",
@@ -33,14 +38,12 @@
     "eslint": "4.5.0",
     "exports-loader": "0.6.4",
     "expose-loader": "0.7.3",
-    "glob-to-regexp": "0.3.0",
     "html-loader": "0.5.1",
     "imports-loader": "0.7.1",
     "jquery": "1.11.0",
     "loader-utils": "1.1.0",
     "lodash": "4.17.4",
     "merge-objects": "1.0.5",
-    "pascal-case": "2.0.1",
     "raw-loader": "0.5.1",
     "regexp-replace-loader": "1.0.0",
     "summernote": "0.6.5",
