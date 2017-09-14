@@ -62,13 +62,6 @@ Feature: Ensure that a published product is safe
     And I confirm the deletion
     Then I should see the text "Similar jackets"
 
-  Scenario: Successfully remove a group that is not linked to a published product
-    Given I am on the "hm_jackets" variant group page
-    And I press the secondary action "Delete"
-    And I confirm the removal
-    When I am on the variant groups page
-    Then I should not see group H&M jackets
-
   Scenario: Fail to remove an attribute that is linked to a published product
     Given I am on the "handmade" attribute page
     And I press the secondary action "Delete"

@@ -3,14 +3,6 @@ parameters:
     pimee_catalog_attribute.view_element.common.from_modified.template: 'PimEnterpriseCatalogRuleBundle:Common:from-modified.js.twig'
 
 services:
-    pimee_catalog_rule.view_element.common.variant_attribute_from_smart:
-        parent: pim_enrich.view_element.base
-        arguments:
-            - 'pimee_catalog_rule.product.tooltip.variant_attribute_affected_by_a_rule.content'
-            - '%pimee_catalog_rule.view_element.common.from_smart.template%'
-        tags:
-            - { name: pim_enrich.view_element, type: pim_enrich_variant_edit.after_form_init, position: 100 }
-
     pimee_catalog_rule.view_element.common.product_attribute_from_smart:
         parent: pim_enrich.view_element.base
         arguments:

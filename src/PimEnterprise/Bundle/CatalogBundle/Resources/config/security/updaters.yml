@@ -50,7 +50,7 @@ services:
             - '@security.authorization_checker'
             - '@pim_catalog.comparator.filter.product_field'
             - '@pim_catalog.comparator.filter.product_association'
-            - ['enabled', 'family', 'categories', 'variant_group', 'groups']
+            - ['enabled', 'family', 'categories', 'groups']
             - ['associations']
 
     pim_catalog.updater.product_without_permission:
@@ -59,7 +59,7 @@ services:
             - '@pim_catalog.updater.property_setter'
             - '@pim_catalog.updater.product_template'
             - '@pim_catalog.updater.entity_with_values_without_permission'
-            - ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations']
+            - ['enabled', 'family', 'categories', 'groups', 'associations']
             - ['identifier', 'created', 'updated', 'metadata']
 
     pim_catalog.updater.product:
@@ -68,5 +68,5 @@ services:
             - '@pim_catalog.updater.property_setter'
             - '@pim_catalog.updater.product_template'
             - '@pim_catalog.updater.entity_with_values'
-            - ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations', 'parent']
+            - ['enabled', 'family', 'categories', 'groups', 'associations', 'parent']
             - ['identifier', 'created', 'updated', 'metadata']

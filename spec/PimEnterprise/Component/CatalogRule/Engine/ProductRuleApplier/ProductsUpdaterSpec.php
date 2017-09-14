@@ -63,29 +63,4 @@ class ProductsUpdaterSpec extends ObjectBehavior
 
         $this->update($rule, [$product]);
     }
-
-    function it_ensures_priority_of_variant_group_values_over_the_rule(
-        $applierRegistry,
-        $templateUpdater,
-        RuleInterface $rule,
-        ProductInterface $product,
-        ProductCopyActionInterface $action,
-        GroupInterface $group,
-        ProductTemplateInterface $productTemplate,
-        ActionApplierInterface $actionApplier
-    ) {
-        $action->getFromField()->willReturn('sku');
-        $action->getToField()->willReturn('description');
-        $rule->getActions()->willReturn([$action]);
-
-        $applierRegistry->getActionApplier($action)->willReturn($actionApplier);
-        $actionApplier->applyAction($action, [$product]);
-
-        $product->getVariantGroup()->willReturn($group);
-        $group->getProductTemplate()->willReturn($productTemplate);
-        $templateUpdater->update($productTemplate, [$product])
-            ->shouldBeCalled();
-
-        $this->update($rule, [$product]);
-    }
 }

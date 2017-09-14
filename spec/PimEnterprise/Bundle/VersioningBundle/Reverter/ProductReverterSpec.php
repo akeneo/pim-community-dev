@@ -126,34 +126,4 @@ class ProductReverterSpec extends ObjectBehavior
             )
             ->during('revert', [$version]);
     }
-
-    function it_throws_an_exception_if_the_product_is_affected_by_a_variant_group(
-        $registry,
-        $translator,
-        Version $version,
-        ObjectRepository $repository,
-        ProductInterface $product,
-        GroupInterface $group
-    ) {
-        $version->getResourceName()->willReturn('foo');
-        $version->getSnapshot()->willReturn('bar');
-        $version->getResourceId()->willReturn('baz');
-        $version->getChangeset()->willReturn(['name' => 'value']);
-
-        $translator->trans('flash.error.revert.product_has_variant')->willReturn('Product can not be reverted because it belongs to a variant group');
-        $translator->trans('flash.error.revert.product')->willReturn('This version can not be restored. Some errors occurred during the validation.');
-
-        $registry->getRepository('foo')->willReturn($repository);
-        $repository->find('baz')->willReturn($product);
-
-        $product->getVariantGroup()->willReturn($group);
-
-        $this
-            ->shouldThrow(
-                new RevertException(
-                    'Product can not be reverted because it belongs to a variant group'
-                )
-            )
-            ->during('revert', [$version]);
-    }
 }

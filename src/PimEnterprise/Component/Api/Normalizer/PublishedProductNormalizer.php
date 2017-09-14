@@ -41,13 +41,10 @@ class PublishedProductNormalizer implements NormalizerInterface
     {
         $normalizedPublishedProduct = $this->productNormalizer->normalize($product, $format, $context);
 
-        if (array_key_exists('variant_group', $normalizedPublishedProduct)) {
-            unset($normalizedPublishedProduct['variant_group']);
-        }
-
         // TODO: PIM-6564 will be done when we'll publish product model
         if (array_key_exists('parent', $normalizedPublishedProduct)) {
             unset($normalizedPublishedProduct['parent']);
+            unset($normalizedPublishedProduct['variant_group']);
         }
 
         return $normalizedPublishedProduct;

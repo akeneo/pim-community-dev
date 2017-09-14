@@ -123,31 +123,6 @@ Feature: Revert a product to a previous version
     When I revert the product version number 2
     Then the category of "sandals" should be "winter_collection"
 
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-3765
-  Scenario: Fail to revert attribute affected by a variant group
-    Given the following product:
-      | sku          | family  | size |
-      | helly-hansen | Jackets | XS   |
-    And the following variant groups:
-      | code       | label-en_US          | axis | type    |
-      | hh_jackets | Helly Hansen jackets | size | VARIANT |
-    And the following variant group values:
-      | group      | attribute | value | locale | scope |
-      | hh_jackets | name      | a     | en_US  |       |
-    Then I am on the "hh_jackets" variant group page
-    Then the grid should contain 1 elements
-    And I should see products helly-hansen
-    And I check the row "helly-hansen"
-    # TODO: see with @nidup => temporary fix (broken since the deferred explicit persist of Doctrine)
-    And I save the variant group
-    Then I should not see the text "There are unsaved changes."
-    And the row "helly-hansen" should be checked
-    Then I am on the "helly-hansen" product page
-    And the history of the product "helly-hansen" has been built
-    And I visit the "History" column tab
-    When I revert the product version number 1
-    Then I should see the flash message "Product can not be reverted because it belongs to a variant group"
-
   @skip-nav @jira https://akeneo.atlassian.net/browse/PIM-5796
   Scenario: Hide revert button if user cannot revert a product
     Given the following product:

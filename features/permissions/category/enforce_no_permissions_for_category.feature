@@ -94,23 +94,6 @@ Feature: Enforce no permissions for a category
     And I visit the "Associations" column tab
     Then the grid should contain 1 elements
 
-  Scenario: Display only granted products in variant group products grid, I see all products
-    Given I am logged in as "Mary"
-    And I am on the "hm_jackets" variant group page
-    Then the grid should contain 1 elements
-
-  Scenario: Display only granted products in variant group products grid, I see a sub set of products
-    Given I am logged in as "Mary"
-    And I am on the "summer_collection" category page
-    And I visit the "Permissions" tab
-    And I fill in the following information:
-      | Allowed to view products | Manager |
-      | Allowed to edit products | Manager |
-      | Allowed to own products  | Manager |
-    And I save the category
-    Given I am on the "hm_jackets" variant group page
-    Then the grid should contain 0 elements
-
   @jira https://akeneo.atlassian.net/browse/PIM-5402
   Scenario: Successfully manage a product category when there is no permission
     Given I am logged in as "Mary"
