@@ -32,6 +32,7 @@ define(
         template
     ) {
         return BaseOperation.extend({
+            className: 'AknGridContainer--withoutNoDataPanel',
             template: _.template(template),
             errors: null,
             formPromise: null,
