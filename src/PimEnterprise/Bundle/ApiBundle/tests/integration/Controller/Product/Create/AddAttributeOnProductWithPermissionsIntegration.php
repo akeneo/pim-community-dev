@@ -91,6 +91,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'my_product',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -168,6 +169,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'my_product',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -205,6 +207,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'my_product',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],

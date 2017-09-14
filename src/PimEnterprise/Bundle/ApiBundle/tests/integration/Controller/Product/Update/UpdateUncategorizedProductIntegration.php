@@ -38,6 +38,7 @@ JSON;
             [
                 'identifier'    => 'product_without_category',
                 'family'        => null,
+                'parent'        => null,
                 'groups'        => [],
                 'variant_group' => null,
                 'categories'    => [],

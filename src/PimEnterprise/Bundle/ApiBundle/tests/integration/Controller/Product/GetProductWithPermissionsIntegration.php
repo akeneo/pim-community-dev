@@ -36,6 +36,7 @@ class GetProductWithPermissionsIntegration extends AbstractProductTestCase
 {
     "identifier": "product_viewable_by_everybody_1",
     "family": null,
+    "parent": null,
     "groups": [],
     "variant_group": null,
     "categories": ["categoryA2"],

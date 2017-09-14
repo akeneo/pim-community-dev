@@ -85,6 +85,8 @@ class ProductPublisher implements PublisherInterface
         $options = array_merge(['with_associations' => true], $options);
         $standardProduct = $this->normalizer->normalize($object, 'standard');
         unset($standardProduct['associations']);
+        // TODO: will be doable once PIM-6564 done
+        unset($standardProduct['parent']);
 
         $familyCode = null !== $object->getFamily() ? $object->getFamily()->getCode() : null;
         $publishedProduct = $this->productBuilder->createProduct($object->getIdentifier(), $familyCode);
