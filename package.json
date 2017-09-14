@@ -4,12 +4,54 @@
   "description": "Akeneo PIM Enterprise Application",
   "homepage": "http://www.akeneo.com",
   "private": true,
-  "scripts": {
-    "install": "npm install vendor/akeneo/pim-community-dev --no-save",
-    "webpack": "NODE_PATH=node_modules webpack --config vendor/akeneo/pim-community-dev/webpack.config.js --env=prod",
-    "webpack-watch": "NODE_PATH=node_modules webpack --progress --config vendor/akeneo/pim-community-dev/webpack.config.js --watch",
-    "lint": "eslint 'src/**/*.js' --config vendor/akeneo/pim-community-dev/.eslintrc --ignore-path vendor/akeneo/pim-community-dev/.eslintignore --quiet",
-    "lint-fix": "eslint 'src/**/*.js' --config vendor/akeneo/pim-community-dev/.eslintrc --ignore-path vendor/akeneo/pim-community-dev/.eslintignore --quiet --fix"
+  "config": {
+    "source": "vendor/akeneo/pim-community-dev",
+    "check": "vendor/akeneo/pim-community-dev/webpack/check-dependencies.js"
   },
-  "dependencies": {}
+  "scripts": {
+    "sync": "NODE_PATH=node_modules node $npm_package_config_check --source=$npm_package_config_source",
+    "webpack": "yarn run sync && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
+    "webpack-watch": "yarn run sync && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch",
+    "lint": "eslint 'src/**/*.js' --config $npm_package_config_source/.eslintrc --ignore-path $npm_package_config_source/.eslintignore --quiet",
+    "lint-fix": "eslint 'src/**/*.js' --config $npm_package_config_source/.eslintrc --ignore-path $npm_package_config_source/.eslintignore --quiet --fix"
+  },
+  "devDependencies": {
+    "colors": "1.1.2",
+    "dep-diff": "1.0.1",
+    "read-pkg": "2.0.0"
+  },
+  "dependencies": {
+    "JSON2": "0.1.0",
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.0",
+    "babel-eslint": "7.2.3",
+    "babel-loader": "7.1.2",
+    "babel-minify": "0.2.0",
+    "babel-polyfill": "6.26.0",
+    "babel-preset-env": "1.6.0",
+    "backbone": "0.9.10",
+    "bundle-loader": "0.5.5",
+    "codemirror": "5.25.2",
+    "deepmerge": "1.5.1",
+    "eslint": "4.5.0",
+    "exports-loader": "0.6.4",
+    "expose-loader": "0.7.3",
+    "html-loader": "0.5.1",
+    "imports-loader": "0.7.1",
+    "jquery": "1.11.0",
+    "loader-utils": "1.1.0",
+    "lodash": "4.17.4",
+    "merge-objects": "1.0.5",
+    "raw-loader": "0.5.1",
+    "regexp-replace-loader": "1.0.0",
+    "summernote": "0.6.5",
+    "text-loader": "0.0.1",
+    "underscore": "1.8.3",
+    "webpack": "3.5.5",
+    "webpack-cleanup-plugin": "0.5.1",
+    "webpack-dev-server": "2.7.1",
+    "webpack-livereload-plugin": "0.11.0",
+    "write-file-webpack-plugin": "4.1.0",
+    "yamljs": "0.3.0"
+  }
 }

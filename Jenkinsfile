@@ -59,11 +59,13 @@ stage("Checkout") {
             stash "project_files_full"
         }
 
-        docker.image('node:8').inside {
+        sh "mkdir -p /home/akeneo/.yarn-cache"
+
+        docker.image('node:8').inside("-v /home/akeneo/.yarn-cache:/home/node/.yarn-cache -e YARN_CACHE_FOLDER=/home/node/.yarn-cache") {
             unstash "project_files_full"
 
-            sh "npm install"
-            sh "npm run webpack"
+            sh "yarn install"
+            sh "yarn run webpack"
 
             stash "project_files_full"
         }
@@ -121,9 +123,11 @@ def runGruntTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image('node:8').inside("") {
+            sh "mkdir -p /home/akeneo/.yarn-cache"
+
+            docker.image('node:8').inside("-v /home/akeneo/.yarn-cache:/home/node/.yarn-cache -e YARN_CACHE_FOLDER=/home/node/.yarn-cache") {
                 unstash "project_files_full"
-                sh "npm run lint"
+                sh "yarn run lint"
             }
         } finally {
             sh "docker stop \$(docker ps -a -q) || true"
