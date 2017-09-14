@@ -62,11 +62,13 @@ stage("Checkout") {
                 stash "pim_community_dev_full"
             }
 
-            docker.image('node:8').inside {
+            sh "mkdir -p /home/akeneo/.yarn-cache"
+
+            docker.image('node:8').inside("-v /home/akeneo/.yarn-cache:/home/node/.yarn-cache -e YARN_CACHE_FOLDER=/home/node/.yarn-cache") {
                 unstash "pim_community_dev_full"
 
-                sh "npm install"
-                sh "npm run webpack"
+                sh "yarn install"
+                sh "yarn run webpack"
 
                 stash "pim_community_dev_full"
             }
@@ -107,11 +109,13 @@ stage("Checkout") {
                     stash "pim_enterprise_dev_full"
                 }
 
-                docker.image('node:8').inside {
+                sh "mkdir -p /home/akeneo/.yarn-cache"
+
+                docker.image('node:8').inside("-v /home/akeneo/.yarn-cache:/home/node/.yarn-cache -e YARN_CACHE_FOLDER=/home/node/.yarn-cache") {
                     unstash "pim_enterprise_dev_full"
 
-                    sh "npm install"
-                    sh "npm run webpack"
+                    sh "yarn install"
+                    sh "yarn run webpack"
 
                     stash "pim_enterprise_dev_full"
                 }
@@ -187,7 +191,7 @@ def runGruntTest() {
         try {
             docker.image('node:8').inside("") {
                 unstash "pim_community_dev_full"
-                sh "npm run lint"
+                sh "yarn run lint"
             }
         } finally {
             sh "docker stop \$(docker ps -a -q) || true"
