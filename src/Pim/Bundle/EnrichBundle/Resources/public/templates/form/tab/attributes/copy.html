@@ -1,6 +1,4 @@
-<% if (!copying) { %>
-    <div class="AknButton AknButton--grey AknButton--small start-copying"><%- _.__('pim_enrich.entity.product.btn.compare_translate') %></div>
-<% } else { %>
+<% if (copying) { %>
     <div data-drop-zone="context-selectors" class="AknButtonList AknAttributeActions-contextSelectors context-selectors"></div>
     <div data-drop-zone="other-actions" class="AknAttributeActions-otherActions AknButtonList AknButtonList--right other-actions">
         <div data-drop-zone="copy-actions" class="AknButtonList AknButtonList--right copy-actions">

@@ -666,6 +666,7 @@ config:
         pim/product-edit-form/download-pdf:                      pimenrich/js/product/form/download-pdf
         pim/product-edit-form/attributes:                        pimenrich/js/product/form/attributes
         pim/product-edit-form/creation/identifier:               pimenrich/js/product/form/creation/identifier
+        pim/product-edit-form/start-copy:                        pimenrich/js/product/form/start-copy
 
         # Product model
         pim/product-model-edit-form/meta/family-variant: pimenrich/js/product-model/form/meta/family-variant
@@ -975,6 +976,7 @@ config:
         pim/template/product/locale-switcher:                pimenrich/templates/product/locale-switcher.html
         pim/template/product/sequential-edit:                pimenrich/templates/product/sequential-edit.html
         pim/template/product/download-pdf:                   pimenrich/templates/product/download-pdf.html
+        pim/template/product/start-copy:                     pimenrich/templates/product/start-copy.html
         pim/template/product/meta/status-switcher:           pimenrich/templates/product/meta/status-switcher.html
         pim/template/product/meta/family:                    pimenrich/templates/product/meta/family.html
         pim/template/product/meta/family-variant:            pimenrich/templates/product/meta/family-variant.html

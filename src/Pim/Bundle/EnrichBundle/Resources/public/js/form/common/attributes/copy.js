@@ -44,7 +44,6 @@ define(
             scope: null,
             scopeLabel: null,
             events: {
-                'click .start-copying': 'startCopying',
                 'click .stop-copying': 'stopCopying',
                 'click .select-all': 'selectAll',
                 'click .select-all-visible': 'selectAllVisible',
@@ -77,6 +76,7 @@ define(
                         this.setLocale(eventLocale.localeCode);
                     }
                 }.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:start_copy', this.startCopying.bind(this));
 
                 return this.getScopeLabel(this.scope).then(function (scopeLabel) {
                     this.scopeLabel = scopeLabel;
@@ -209,6 +209,7 @@ define(
              * Close copy mode
              */
             stopCopying: function () {
+                this.getRoot().trigger('pim_enrich:form:stop_copy');
                 this.copying = false;
                 this.triggerContextChange();
             },
