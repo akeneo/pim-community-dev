@@ -59,6 +59,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_creation_family',
             'family'        => 'familyA',
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -97,6 +98,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_creation_groups',
             'family'        => null,
+            'parent'        => null,
             'groups'        => ["groupA", "groupB"],
             'variant_group' => null,
             'categories'    => [],
@@ -142,6 +144,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_creation_variant_group',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => "variantA",
             'categories'    => [],
@@ -188,6 +191,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_creation_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => ["categoryA", "master"],
@@ -231,6 +235,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_creation_associations',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -466,6 +471,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_creation_product_values',
             'family'        => 'familyA',
+            'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
             'variant_group' => 'variantA',
             'categories'    => ['categoryA', 'master'],
@@ -656,6 +662,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'foo',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],

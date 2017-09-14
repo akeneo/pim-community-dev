@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
@@ -24,6 +25,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
 
     const FIELD_IDENTIFIER = 'identifier';
     const FIELD_FAMILY = 'family';
+    const FIELD_PARENT = 'parent';
     const FIELD_GROUPS = 'groups';
     const FIELD_VARIANT_GROUP = 'variant_group';
     const FIELD_CATEGORIES = 'categories';
@@ -57,6 +59,11 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
 
         $data[self::FIELD_IDENTIFIER] = $product->getIdentifier();
         $data[self::FIELD_FAMILY] = $product->getFamily() ? $product->getFamily()->getCode() : null;
+        if ($product instanceof VariantProductInterface && null !== $product->getParent()) {
+            $data[self::FIELD_PARENT] = $product->getParent()->getCode();
+        } else {
+            $data[self::FIELD_PARENT] = null;
+        }
         $data[self::FIELD_GROUPS] = $this->normalizeGroups($product);
         $data[self::FIELD_VARIANT_GROUP] = $product->getVariantGroup() ? $product->getVariantGroup()->getCode() : null;
         $data[self::FIELD_CATEGORIES] = $product->getCategoryCodes();

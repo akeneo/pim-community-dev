@@ -459,4 +459,4 @@ services:
             - '@pim_connector.array_converter.flat_to_standard.product.field_splitter'
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.association_type'
-            - ['categories', 'enabled', 'family', 'groups']
+            - ['categories', 'enabled', 'family', 'parent', 'groups']
