@@ -17,21 +17,6 @@ use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 class SequentialEditProduct extends Cursor implements CursorInterface
 {
     /**
-     * {@inheritdoc}
-     */
-    public function __construct(
-        Client $esClient,
-        CursorableRepositoryInterface $repository,
-        array $esQuery,
-        $indexType,
-        $pageSize
-    ) {
-        $esQuery['_source'] = ['id'];
-
-        parent::__construct($esClient, $repository, $esQuery, $indexType, $pageSize);
-    }
-
-    /**
      * Get the next items (hydrated from doctrine repository).
      *
      * @param array $esQuery
@@ -62,6 +47,7 @@ class SequentialEditProduct extends Cursor implements CursorInterface
         }
 
         $sort = ['_uid' => 'asc'];
+        $esQuery['_source'] = ['id'];
 
         if (isset($esQuery['sort'])) {
             $sort = array_merge($esQuery['sort'], $sort);
@@ -78,10 +64,7 @@ class SequentialEditProduct extends Cursor implements CursorInterface
 
         $identifiers = [];
         foreach ($response['hits']['hits'] as $hit) {
-            // if the id is an integer, we convert it from a string to integer
-            $identifiers[] = $hit['_source']['id'] == intval($hit['_source']['id']) ?
-                intval($hit['_source']['id']) :
-                $hit['_source']['id'];
+            $identifiers[] = $hit['_source']['id'];
         }
 
         $lastResult = end($response['hits']['hits']);

@@ -27,6 +27,7 @@
 - PIM-6740: Separe installation state (installed) from config file
 - API-359: Move notified user of a job into the configuration parameters of the job
 - TIP-733: Replace `oro/datafilter-builder` with `filters-list` and `filters-button`
+- PIM-6645: removed all backend related sequential edit classes. It's now managed in the frontend.
 
 ## UI\UX Refactoring
 
@@ -315,6 +316,14 @@
 - PIM-6732: Remove `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredVariantGroupProductReader`
 - PIM-6732: Remove `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
 - PIM-6732: Remove `Pim\Component\Enrich\Converter\MassOperationConverter`
+- PIM-6645: Remove `Pim\Bundle\EnrichBundle\Controller\SequentialEditController`
+- PIM-6645: Remove `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager`
+- PIM-6645: Remove `Pim\Bundle\EnrichBundle\Helper\SortHelper`
+- PIM-6645: Remove `Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory`
+- PIM-6645: Remove `Pim\Bundle\EnrichBundle\Entity\SequentialEdit`
+- PIM-6645: Remove `Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository`
+- PIM-6645: Remove `Pim\Bundle\EnrichBundle\ParamConverter\ConfigurableParamConverter`
+- PIM-6645: Remove `Pim\Bundle\EnrichBundle\Normalizer\SequentialEditNormalizer`
 
 ### Constructors
 
@@ -416,6 +425,13 @@
 - Change the constructor of `Pim\Component\Connector\Processor\Denormalization\ProductProcessor` to add `Pim\Component\Catalog\Builder\ProductBuilderInterface` as the 3rd argument (variant product builder).
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `uploadTmpDir` (string)
 - Change the constructor of `Pim\Component\Connector\Processor\Denormalization\ProductProcessor` to add `Pim\Component\Catalog\Builder\ProductBuilderInterface` as the 3rd argument (variant product builder).
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to remove
+    `Symfony\Component\Routing\RouterInterface`,
+    `Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface`,
+    `Symfony\Component\Form\FormFactoryInterface`,
+    `Pim\Bundle\UserBundle\Context\UserContext`,
+    `Oro\Bundle\SecurityBundle\SecurityFacade`,
+    `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager`,
 
 ### Methods
 

@@ -119,7 +119,7 @@ class ProductDatasource extends Datasource
             'enabled'          => null,
             'completeness'     => null,
             'variant_products' => null,
-            'document_type'     => null,
+            'document_type'    => null,
         ];
 
         $normalizedItem = array_merge(

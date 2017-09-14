@@ -1,6 +1,6 @@
 <% if (previousObject) { %>
     <span class="AknSequentialEdit-previous">
-        <span class="previous" data-id="<%- previousObject.id %>">
+        <span class="previous" data-id="<%- previousObject.id %>" data-type="<%- previousObject.type %>">
             <%- previousObject.shortLabel %>
         </span>
     </span>
@@ -13,7 +13,7 @@
 </span>
 <% if (nextObject) { %>
     <span class="AknSequentialEdit-next">
-        <span class="next" data-id="<%- nextObject.id %>">
+        <span class="next" data-id="<%- nextObject.id %>" data-type="<%- nextObject.type %>">
             <%- nextObject.shortLabel %>
         </span>
     </span>

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\DataGridBundle\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
@@ -60,9 +61,9 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $data['groups'] = null;
         $data['enabled'] = null;
         $data['completeness'] = null;
-        $data['document_type'] = 'product_model';
+        $data['document_type'] = IdEncoder::PRODUCT_MODEL_TYPE;
         $data['technical_id'] = $productModel->getId();
-        $data['search_id'] = sprintf('%s_%s', $data['document_type'], $data['technical_id']);
+        $data['search_id'] = IdEncoder::encode($data['document_type'], $data['technical_id']);
 
         return $data;
     }

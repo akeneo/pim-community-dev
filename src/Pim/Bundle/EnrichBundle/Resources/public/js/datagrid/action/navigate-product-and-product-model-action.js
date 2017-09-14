@@ -15,24 +15,14 @@ define(
             getLink: function() {
                 return null;
             },
+
             /**
              * {@inheritdoc}
              */
             execute: function() {
-                var route = null;
                 var productType = this.model.get('document_type');
 
-                if ('product' === productType) {
-                    route = 'pim_enrich_product_edit';
-                } else if ('product_model' === productType) {
-                    route = 'pim_enrich_product_model_edit';
-                } else {
-                    Router.displayErrorPage(__('error.common'), 400);
-
-                    return;
-                }
-
-                Router.redirectToRoute(route, {id: this.model.get('technical_id')});
+                Router.redirectToRoute('pim_enrich_' + productType + '_edit', {id: this.model.get('technical_id')});
             }
         });
     }

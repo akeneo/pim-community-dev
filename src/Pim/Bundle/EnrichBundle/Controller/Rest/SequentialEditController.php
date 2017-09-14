@@ -1,9 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
+use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +20,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class SequentialEditController
 {
+    private const MAX_PRODUCT_COUNT = 1000;
+
     /** @var MassActionParametersParser */
     protected $parameterParser;
 
@@ -46,10 +51,11 @@ class SequentialEditController
      *
      * @return JsonResponse
      */
-    public function getIdsAction(Request $request)
+    public function getIdsAction(Request $request): JsonResponse
     {
         $parameters = $this->parameterParser->parse($request);
         $filters = $this->filterAdapter->adapt($parameters);
+
         $products = [];
         $cursor = $this->getProductsCursor($filters, [
             'locale' => $parameters['dataLocale'],
@@ -57,8 +63,8 @@ class SequentialEditController
             'sort'   => $parameters['sort']
         ]);
 
-        while ($cursor->valid() && $cursor->key() < 1000) {
-            $products[] = $cursor->current();
+        while ($cursor->valid() && $cursor->key() < self::MAX_PRODUCT_COUNT) {
+            $products[] = IdEncoder::decode($cursor->current());
             $cursor->next();
         }
 
@@ -70,12 +76,9 @@ class SequentialEditController
      *
      * @return CursorInterface
      */
-    protected function getProductsCursor(array $filters, $context)
+    protected function getProductsCursor(array $filters, $context): CursorInterface
     {
-        $options = ['filters' => $filters];
-
-        $productQueryBuilder = $this->pqbFactory->create($options);
-
+        $productQueryBuilder = $this->pqbFactory->create(['filters' => $filters]);
         if (null !== $context['sort']) {
             $field = each($context['sort'])['key'];
             $productQueryBuilder->addSorter($field, $context['sort'][$field], $context);
