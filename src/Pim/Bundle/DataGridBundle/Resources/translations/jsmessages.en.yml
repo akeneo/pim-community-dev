@@ -107,7 +107,7 @@ grid.view_selector:
     placeholder: Name of new view
     choose_label: Choose a label for the view
     confirmation:
-        remove: Are you sure you want to delete this datagrid view?
+        remove: Are you sure you want to delete this view?
         delete: Delete confirmation
 
 # View selector flash messages
