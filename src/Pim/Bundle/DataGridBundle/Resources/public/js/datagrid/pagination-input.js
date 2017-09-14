@@ -1,6 +1,6 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/datagrid/pagination', 'jquery.numeric'],
-function($, _, Pagination) {
+define(['jquery', 'oro/mediator', 'underscore', 'oro/datagrid/pagination', 'jquery.numeric'],
+function($, mediator, _, Pagination) {
     'use strict';
 
     /**
@@ -10,7 +10,8 @@ function($, _, Pagination) {
      * @class   oro.datagrid.PaginationInput
      * @extends oro.datagrid.Pagination
      */
-    return Pagination.extend({
+    const PaginationInput = Pagination.extend({
+        collection: {},
         /** @property */
         template: _.template(
             '<label class="AknGridToolbar-label"><%= _.__("oro.datagrid.pagination.label") %>:</label>' +
@@ -54,7 +55,25 @@ function($, _, Pagination) {
          * @inheritDoc
          */
         initialize: function (options) {
-            Pagination.prototype.initialize.call(this, options);
+            this.appendToGrid = options.appendToGrid;
+            this.gridElement = options.gridElement;
+
+            if (this.appendToGrid) {
+                mediator.on('datagrid_collection_set_after', this.setupPagination.bind(this));
+            }
+
+            mediator.once('grid_load:start', this.setupPagination.bind(this));
+            mediator.on('grid_load:complete', this.setupPagination.bind(this));
+        },
+
+        setupPagination(collection) {
+            this.collection = collection;
+            this.renderPagination();
+
+            return Pagination.prototype.initialize.call(this, {
+                collection: this.collection,
+                enabled: true
+            });
         },
 
         /**
@@ -96,8 +115,6 @@ function($, _, Pagination) {
          */
         makeHandles: function () {
             var handles = [];
-            var collection = this.collection;
-            var ffConfig = this.fastForwardHandleConfig;
 
             handles.push({
                 type: 'input'
@@ -108,10 +125,22 @@ function($, _, Pagination) {
         /**
          * Render pagination view and add validation for input with positive integer value
          */
-        render: function() {
-            Pagination.prototype.render.apply(this, arguments);
+        renderPagination: function() {
+            Pagination.prototype.renderPagination.apply(this, arguments);
             this.$('input').numeric({ decimal: false, negative: false });
+
+            if (this.options.appendToGrid) {
+                this.gridElement.prepend(this.$el);
+            }
+
             return this;
         }
     });
+
+    PaginationInput.init = function(gridContainer) {
+        return new PaginationInput({ appendToGrid: true, gridElement: $(gridContainer).find('.grid-container') });
+    };
+
+    return PaginationInput;
+
 });

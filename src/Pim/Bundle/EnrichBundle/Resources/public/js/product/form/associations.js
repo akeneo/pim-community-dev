@@ -341,6 +341,7 @@ define(
                     var gridModules = metadata.requireJSModules;
                     gridModules.push('pim/datagrid/state-listener');
                     gridModules.push('oro/datafilter-builder');
+                    gridModules.push('oro/datagrid/pagination-input');
 
                     var resolvedModules = []
                     _.each(gridModules, function(module) {

@@ -22,6 +22,11 @@ extensions:
         parent: pim-process-index
         targetZone: filters
 
+    pim-process-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-process-index
+        targetZone: toolbar
+
     pim-process-index-grid:
         module: pim/form/common/index/grid
         parent: pim-process-index

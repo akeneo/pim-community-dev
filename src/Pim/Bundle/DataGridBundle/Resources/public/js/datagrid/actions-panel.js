@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'backbone', 'pim/template/datagrid/actions-group'],
-function(_, Backbone, groupTemplate) {
+define(['underscore', 'backbone', 'pim/template/datagrid/actions-group', 'pim/form', 'oro/mediator'],
+function(_, Backbone, groupTemplate, BaseForm, mediator) {
     'use strict';
 
     /**
@@ -8,9 +8,10 @@ function(_, Backbone, groupTemplate) {
      *
      * @export  oro/datagrid/actions-panel
      * @class   oro.datagrid.ActionsPanel
-     * @extends Backbone.View
+     * @extends BaseForm
      */
-    return Backbone.View.extend({
+    const ActionsPanel = BaseForm.extend({
+        appendToGrid: false,
         /** @property {Array} */
         actionsGroups: [],
 
@@ -19,6 +20,8 @@ function(_, Backbone, groupTemplate) {
 
         /** @property {Array.<oro.datagrid.ActionLauncher>} */
         launchers: [],
+
+        className: 'AknGridToolbar-left mass-actions-panel',
 
         /** @property {Function} */
         groupTemplate: _.template(groupTemplate),
@@ -30,17 +33,22 @@ function(_, Backbone, groupTemplate) {
          * @param {Array} [options.actions] List of actions
          */
         initialize: function(options) {
-            options = options || {};
+            this.appendToGrid = options.appendToGrid;
+            this.gridElement = options.gridElement;
 
-            if (options.actionsGroups) {
-                this.actionsGroups = options.actionsGroups;
-            }
+            mediator.once('grid_load:start', this.setupActions.bind(this));
+            mediator.on('grid_load:complete', this.setupActions.bind(this));
 
-            if (options.actions) {
-                this.setActions(options.actions);
-            }
+            return BaseForm.prototype.initialize.apply(this, arguments);
+        },
 
-            Backbone.View.prototype.initialize.apply(this, arguments);
+        /**
+         * Get the action options from the datagrid
+         */
+        setupActions: function(collection, datagrid) {
+            this.actionsGroups = datagrid.massActionsGroups;
+            this.setActions(datagrid.massActions, datagrid);
+            this.renderActions();
         },
 
         /**
@@ -48,7 +56,7 @@ function(_, Backbone, groupTemplate) {
          *
          * @return {*}
          */
-        render: function () {
+        renderActions: function () {
             this.$el.empty();
 
             var simpleLaunchers = _.filter(this.launchers, function (launcher) {
@@ -69,6 +77,10 @@ function(_, Backbone, groupTemplate) {
 
             if (groupedLaunchers.length) {
                 this.renderGroupedLaunchers(groupedLaunchers);
+            }
+
+            if (this.appendToGrid) {
+                this.gridElement.prepend(this.$el);
             }
 
             return this;
@@ -120,11 +132,11 @@ function(_, Backbone, groupTemplate) {
          *
          * @param {Array.<oro.datagrid.AbstractAction>} actions
          */
-        setActions: function(actions) {
+        setActions: function(actions, datagrid) {
             this.actions = [];
             this.launchers = [];
             _.each(actions, function(action) {
-                this.addAction(action);
+                this.addAction(action, datagrid);
             }, this);
         },
 
@@ -133,9 +145,10 @@ function(_, Backbone, groupTemplate) {
          *
          * @param {oro.datagrid.AbstractAction} action
          */
-        addAction: function(action) {
-            this.actions.push(action);
-            this.launchers.push(action.createLauncher());
+        addAction: function(Action, datagrid) {
+            const actionModule = new Action({ datagrid });
+            this.actions.push(actionModule);
+            this.launchers.push(actionModule.createLauncher());
         },
 
         /**
@@ -164,4 +177,10 @@ function(_, Backbone, groupTemplate) {
             return this;
         }
     });
+
+    ActionsPanel.init = (gridContainer, gridName) => {
+        return new ActionsPanel({ appendToGrid: true, gridElement: $(gridContainer).find('.grid-container') });
+    }
+
+    return ActionsPanel;
 });

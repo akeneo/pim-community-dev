@@ -54,14 +54,12 @@ Feature: Delete many product at once
 
   Scenario: Successfully mass delete visible products
     Given I sort by "ID" value ascending
-    And I change the page size to 10
     And I select all visible entities
     Then I press "Delete" on the "Bulk Actions" dropdown button
     And I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
     And I refresh current page
-    Then the grid should contain 1 element
-    And I should see product sneakers_S43
+    Then the grid should contain 0 elements
 
   Scenario: Successfully mass delete all products
     Given I select all entities

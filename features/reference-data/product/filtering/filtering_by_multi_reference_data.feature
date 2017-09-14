@@ -21,9 +21,8 @@ Feature: Filter products by reference data
     And I am logged in as "Mary"
     And I am on the products grid
 
+  @skip @info To be unskipped in PIM-6574
   Scenario: Successfully filter product with multi reference data filters
-    # Given I show the filter "sole_color"
-    # And I filter by "sole_color" with operator "in list" and value "Red"
     And I should be able to use the following filters:
       | filter      | operator     | value                 | result |
       | sole_fabric | in list      | Cashmerewool          | postit |

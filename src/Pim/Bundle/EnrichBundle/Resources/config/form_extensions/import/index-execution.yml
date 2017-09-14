@@ -21,6 +21,11 @@ extensions:
         parent: pim-import-execution-index
         targetZone: filters
 
+    pim-import-execution-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-import-execution-index
+        targetZone: toolbar
+
     pim-import-execution-index-grid:
         module: pim/form/common/index/grid
         parent: pim-import-execution-index

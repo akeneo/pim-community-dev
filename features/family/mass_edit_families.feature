@@ -7,7 +7,7 @@ Feature: Mass Edit Families
   Scenario: Successfully add many attributes with their requirements to many families
     Given the "footwear" catalog configuration
     And I am logged in as "Peter"
-    And I am on the families page
+    And I am on the families grid
     # These families don't have attribute Length
     When I select rows Boots, Sneakers and Sandals
     And I press the "Change product information" button
@@ -26,7 +26,7 @@ Feature: Mass Edit Families
   Scenario: Successfully set existing attribute requirements of many families
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the families page
+    And I am on the families grid
     # These families already have attribute Name
     When I select rows Boots, Sneakers and Sandals
     And I press the "Change product information" button
@@ -45,7 +45,7 @@ Feature: Mass Edit Families
   Scenario: Successfully return to the family page when cancelling family mass edit
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the families page
+    And I am on the families grid
     When I select rows Boots and Sneakers
     And I press the "Change product information" button
     And I click on the cancel button of the mass edit
@@ -67,8 +67,7 @@ Feature: Mass Edit Families
       | tenth    |
       | eleventh |
     And I am logged in as "Julia"
-    And I am on the families page
-    When I change the page size to 25
+    And I am on the families grid
     And I select rows first, second, third, fourth, fifth, sixth, seventh, eight, ninth, tenth and eleventh
     And I press the "Change product information" button
     Then I should see the text "Select your action for the 11 families"
@@ -77,7 +76,7 @@ Feature: Mass Edit Families
   Scenario: Successfully mass edit families after sorting by label
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the families page
+    And I am on the families grid
     When I sort by "label" value ascending
     And I select rows Boots, Sneakers and Sandals
     And I press the "Change product information" button
@@ -91,7 +90,7 @@ Feature: Mass Edit Families
       | code | label-en_US | type             | group |
       | name | Name        | pim_catalog_text | other |
     And I am logged in as "Julia"
-    And I am on the families page
+    And I am on the families grid
     When I select all entities
     And I press the "Change product information" button
     And I choose the "Set attributes requirements" operation
@@ -106,7 +105,7 @@ Feature: Mass Edit Families
   Scenario: Successfully mass edit attribute requirements by attribute group
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the families page
+    And I am on the families grid
     When I select rows Boots, Sneakers and Sandals
     And I press the "Change product information" button
     And I choose the "Set attributes requirements" operation
@@ -126,7 +125,7 @@ Feature: Mass Edit Families
   Scenario: Successfully disable form when we are in validation step on mass edit families
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the families page
+    And I am on the families grid
     When I select rows Boots, Sneakers and Sandals
     And I press the "Change product information" button
     And I choose the "Set attributes requirements" operation

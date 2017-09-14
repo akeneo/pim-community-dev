@@ -22,6 +22,11 @@ extensions:
         parent:  pim-user-role-index
         targetZone: filters
 
+    pim-user-role-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-user-role-index
+        targetZone: toolbar
+
     pim-user-role-index-grid:
         module: pim/form/common/index/grid
         parent: pim-user-role-index

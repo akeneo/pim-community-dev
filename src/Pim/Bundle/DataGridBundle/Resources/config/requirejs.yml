@@ -74,14 +74,12 @@ config:
         oro/datagrid/abstract-listener:         pimdatagrid/js/datagrid/listener/abstract-listener
         oro/datagrid/column-form-listener:      pimdatagrid/js/datagrid/listener/oro-column-form-listener
         oro/datagrid/callback-listener:         pimdatagrid/js/datagrid/listener/callback-listener
-        oro/datagrid/page-size:                 pimdatagrid/js/datagrid/page-size
         oro/datagrid/grid-views/view:           pimdatagrid/js/datagrid/grid-views/view
         oro/datagrid/grid-views/model:          pimdatagrid/js/datagrid/grid-views/model
         oro/datagrid/grid-views/collection:     pimdatagrid/js/datagrid/grid-views/collection
         oro/datagrid/pagination-input:          pimdatagrid/js/datagrid/pagination-input
         oro/datagrid/pagination:                pimdatagrid/js/datagrid/pagination
         oro/datagrid/row:                       pimdatagrid/js/datagrid/row
-        oro/datagrid/toolbar:                   pimdatagrid/js/datagrid/toolbar
         oro/datagrid-builder:                   pimdatagrid/js/datagrid-builder
         oro/loading-mask:                       pimdatagrid/js/loading-mask
         oro/pageable-collection:                pimdatagrid/js/pageable-collection

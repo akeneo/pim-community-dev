@@ -22,6 +22,16 @@ extensions:
         parent: pim-family-index
         targetZone: filters
 
+    pim-family-index-mass-actions:
+        module: oro/datagrid/actions-panel
+        parent: pim-family-index
+        targetZone: toolbar
+
+    pim-family-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-family-index
+        targetZone: toolbar
+
     pim-family-index-grid:
         module: pim/form/common/index/grid
         parent: pim-family-index

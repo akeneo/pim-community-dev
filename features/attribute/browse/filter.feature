@@ -7,7 +7,7 @@ Feature: Filter attributes
   Background:
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I am on the attributes page
+    And I am on the attributes grid
 
   Scenario Outline: Successfully filter attributes
     When I show the filter "<filter>"

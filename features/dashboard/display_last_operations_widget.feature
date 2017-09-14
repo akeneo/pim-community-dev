@@ -33,8 +33,6 @@ Feature: Display last operations widget
     When I am on the dashboard page
     Then I should see the text "Last operations"
     When I am on the job tracker page
-    Then I should see the "Refresh" button
-    And I should see the "Reset" button
     And I should see the columns Job, Type, User, Started at, Status and Warnings
 
   Scenario: Show job tracker

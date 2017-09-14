@@ -55,7 +55,7 @@ define(
                     this.listenTo(filtersManager, 'collection-filters:createState.post', function(filtersState) {
                         _.extend(filtersState, {category: this._getTreeState()});
                     });
-                    filtersManager.listenTo(this, "update", filtersManager._onFilterUpdated);
+                    filtersManager.listenTo(this, 'update', filtersManager._onFilterUpdated);
                 });
 
                 mediator.on('grid_action_execute:product-grid:delete', function() {

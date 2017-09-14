@@ -8,6 +8,8 @@ define(
         'routing',
         'oro/loading-mask',
         'pim/datagrid/state',
+        'pim/form',
+        'oro/mediator',
         'pim/common/column-list-view',
         'bootstrap-modal',
         'jquery-ui'
@@ -21,7 +23,9 @@ define(
         Routing,
         LoadingMask,
         DatagridState,
-        ColumnListView
+        BaseForm,
+        mediator,
+        ColumnListView,
     ) {
         var Column = Backbone.Model.extend({
             defaults: {
@@ -39,15 +43,17 @@ define(
          *
          * @export  pim/datagrid/configure-columns-action
          * @class   pim.datagrid.ConfigureColumnsAction
-         * @extends Backbone.View
+         * @extends BaseForm
          */
-        var ConfigureColumnsAction = Backbone.View.extend({
+        var ConfigureColumnsAction = BaseForm.extend({
 
             locale: null,
 
             label: _.__('pim_datagrid.column_configurator.label'),
 
             icon: 'th',
+
+            className: 'AknGridToolbar-right',
 
             target: '.AknGridToolbar .actions-panel',
 
@@ -64,7 +70,24 @@ define(
                 '<div id="column-configurator" class="AknColumnConfigurator"></div>'
             ),
 
-            initialize: function (options) {
+            /**
+             * @inheritdoc
+             */
+            initialize: function () {
+                mediator.once('grid_load:start', this.setupOptions.bind(this));
+
+                 BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * Pass options to datagrid collection and render the column selector
+             * @param  {Backbone.Collection} collection    Datagrid collection
+             * @param  {HTMLElement} gridContainer The datagrid div
+             */
+            setupOptions: function(collection, gridContainer) {
+                const options = gridContainer.options;
+                this.options = options;
+
                 if (_.has(options, 'label')) {
                     this.label = _.__(options.label);
                 }
@@ -72,27 +95,21 @@ define(
                     this.icon = options.icon;
                 }
 
-                if (!options.$gridContainer) {
-                    throw new Error('Grid selector is not specified');
-                }
+                this.gridName = gridContainer.name;
 
-                this.$gridContainer = options.$gridContainer;
-                this.gridName = options.gridName;
-
-                const filters = PageableCollection.prototype.decodeStateData(options.url.split('?')[1]);
+                const filters = PageableCollection.prototype.decodeStateData(collection.url.split('?')[1]);
                 const gridFilters = filters[this.gridName] || {};
 
                 this.locale = filters.dataLocale || gridFilters.dataLocale;
 
-                Backbone.View.prototype.initialize.apply(this, arguments);
-
-                this.render();
+                this.renderAction();
             },
 
-            render: function() {
-                this.$gridContainer
-                    .find(this.target)
-                    .append(
+            /**
+             * Render the configure columns button
+             */
+            renderAction: function() {
+                this.$el.empty().append(
                         this.template({
                             icon: this.icon,
                             label: this.label
@@ -101,10 +118,17 @@ define(
                 this.subscribe();
             },
 
+            /**
+             * Subscribe to click event
+             */
             subscribe: function() {
                 $('#configure-columns').one('click', this.execute.bind(this));
             },
 
+            /**
+             * Get columns, set datagrid state, initialize the columns list
+             * @param  {jQueryEvent} e
+             */
             execute: function(e) {
                 e.preventDefault();
                 var url = Routing.generate('pim_datagrid_view_list_available_columns', {
@@ -123,7 +147,7 @@ define(
                     if (displayedCodes) {
                         displayedCodes = displayedCodes.split(',');
                     } else {
-                        displayedCodes = _.pluck(this.$gridContainer.data('metadata').columns, 'name');
+                        displayedCodes = _.pluck(this.options.columns, 'name');
                     }
 
                     displayedCodes = _.map(displayedCodes, function(displayedCode, index) {
@@ -182,14 +206,6 @@ define(
                 }, this));
             }
         });
-
-        ConfigureColumnsAction.init = function ($gridContainer, gridName) {
-            var metadata = $gridContainer.data('metadata');
-            var options = metadata.options || {};
-            new ConfigureColumnsAction(
-                _.extend({ $gridContainer: $gridContainer, gridName: gridName, url: options.url }, options.configureColumns)
-            );
-        };
 
         return ConfigureColumnsAction;
     }

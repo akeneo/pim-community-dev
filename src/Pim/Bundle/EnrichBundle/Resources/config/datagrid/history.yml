@@ -4,6 +4,9 @@ datagrid:
             type: pim_datasource_smart
             entity: '%pim_versioning.entity.version.class%'
             repository_method: createDatagridQueryBuilder
+        options:
+            requireJSModules:
+                - oro/datagrid/pagination-input
         columns:
             version:
                 label: Version

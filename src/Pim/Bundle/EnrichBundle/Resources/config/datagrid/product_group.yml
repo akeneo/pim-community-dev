@@ -4,6 +4,7 @@ datagrid:
             entityHint: product
             requireJSModules:
                 - pim/datagrid/column-form-listener
+                - oro/datagrid/pagination-input
             columnListener:
                 dataField: id
                 columnName: is_checked

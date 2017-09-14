@@ -22,6 +22,11 @@ extensions:
         parent: pim-api-connection-index
         targetZone: filters
 
+    pim-api-connection-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-api-connection-index
+        targetZone: toolbar
+
     pim-api-connection-index-grid:
         module: pim/form/common/index/grid
         parent: pim-api-connection-index

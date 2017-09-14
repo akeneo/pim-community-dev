@@ -423,7 +423,6 @@ class Grid extends Index
     {
         return $this->spin(function () {
             $pagination = $this
-                ->getElement('Grid toolbar')
                 ->find('css', '.AknGridToolbar-label:contains("record")');
 
             if (null === $pagination) {

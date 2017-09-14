@@ -7,7 +7,7 @@ Feature: Browse export executions
   Background:
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    When I am on the exports page
+    When I am on the exports grid
     And I am on the "csv_footwear_product_export" export job page
     And I launch the "csv_footwear_product_export" export job
     And I wait for the "csv_footwear_product_export" job to finish

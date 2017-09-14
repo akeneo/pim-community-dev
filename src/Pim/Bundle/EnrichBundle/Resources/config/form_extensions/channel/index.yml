@@ -22,6 +22,11 @@ extensions:
         parent: pim-channel-index
         targetZone: filters
 
+    pim-channel-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-channel-index
+        targetZone: toolbar
+
     pim-channel-index-grid:
         module: pim/form/common/index/grid
         parent: pim-channel-index
