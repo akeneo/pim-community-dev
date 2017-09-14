@@ -26,9 +26,9 @@ Feature: Browse currencies
 
   Scenario: Successfully activate a currency
     Given I search "GBP"
+    Then the grid should contain 1 element
     And I activate the GBP currency
     And I search " "
-    Then the grid should contain 1 element
     When I filter by "activated" with operator "equals" and value "yes"
     Then the grid should contain 3 elements
     Then I should see currencies GBP, USD and EUR
