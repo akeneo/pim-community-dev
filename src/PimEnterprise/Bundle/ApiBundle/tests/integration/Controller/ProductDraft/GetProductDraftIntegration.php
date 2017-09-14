@@ -31,6 +31,7 @@ class GetProductDraftIntegration extends ApiTestCase
 {
   "identifier": "product_with_draft",
   "family": null,
+  "parent": null,
   "groups": [],
   "variant_group": null,
   "categories": ["categoryA"],
