@@ -129,6 +129,7 @@ pim:
 
 # Jstree context menu actions
 jstree.create: Create
+jstree.done: Done
 switch_on: "Yes"
 switch_off: "No"
 
