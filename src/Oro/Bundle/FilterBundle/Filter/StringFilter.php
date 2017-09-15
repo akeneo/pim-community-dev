@@ -52,6 +52,10 @@ class StringFilter extends AbstractFilter
         }
 
         $data['type'] = isset($data['type']) ? $data['type'] : null;
+
+        if (null !== $data['type'] && $data['type'] !== TextFilterType::TYPE_EQUAL) {
+            $data['value'] = str_replace(['%', '_'], ['\\%', '\\_'], $data['value']);
+        }
         $data['value'] = sprintf($this->getFormatByComparisonType($data['type']), $data['value']);
 
         return $data;
