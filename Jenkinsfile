@@ -65,6 +65,12 @@ stage("Build") {
                 sh "yarn run webpack"
             }
             container("docker") {
+                sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
+                sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
+                sh "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"
+                sh "sed \"\$a    installer_data: 'PimInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
+                sh "cp behat.ci.yml behat.yml"
+
                 sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce ."
                 sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce"
             }
@@ -103,6 +109,12 @@ stage("Build") {
                 sh "cp -R vendor/akeneo/pim-community-dev/.ci ."
                 sh "sed -i \"s#http://akeneo#http://127.0.0.1#g\" behat.ci.yml"
                 sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.ci.yml"
+
+                sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
+                sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
+                sh "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"
+                sh "sed \"\$a    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
+                sh "cp behat.ci.yml behat.yml"
 
                 sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee ."
                 sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee"
@@ -179,18 +191,12 @@ stage("Test") {
             },
             "behat-ce": {
                 queue({
-                    scenarios = sh (returnStdout: true, script: 'find /home/jenkins/pim/features -name "*.feature" -exec grep -En "(Scenario|Scenario Outline): " {} +').tokenize('\n')
+                    def tags = "~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app"
+                    scenarios = sh (returnStdout: true, script: "cd /home/jenkins/pim && php vendor/bin/behat --list-scenarios -c behat.ci.yml --tags=\"${tags}\"").tokenize('\n')
                     messages = new net.sf.json.JSONArray()
 
                     for (scenario in scenarios) {
-                        line = scenario.trim().substring(0, scenario.indexOf(":", scenario.indexOf(":") + 1))
-
                         messages.add([
-                            [container: "php", script: "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"],
-                            [container: "php", script: "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"],
-                            [container: "php", script: "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"],
-                            [container: "php", script: "sed \"\$a    installer_data: 'PimInstallerBundle:minimal'\n\" app/config/parameters_test.yml"],
-                            [container: "php", script: "cp behat.ci.yml behat.yml"],
                             [container: "php", script: "bin/console --env=behat --quiet pim:install --force"],
                             [container: "php", script: "chmod 777 -R var/cache/behat"],
                             [container: "php", script: "touch var/logs/behat.log"],
@@ -200,7 +206,7 @@ stage("Test") {
                                 container: "php",
                                 junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                                 artifacts: [in: "/home/jenkins/pim/app/build", name: "*.png"],
-                                script: "php vendor/bin/behat -c behat.ci.yml --tags=\"~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app\" --strict -vv " + line
+                                script: "php vendor/bin/behat -c behat.ci.yml --tags=\"${tag}\" --strict -vv " + scenario
                             ]
                         ])
                     }
@@ -232,18 +238,12 @@ stage("Test") {
             },
             "behat-ee": {
                 queue({
-                    scenarios = sh (returnStdout: true, script: 'find /home/jenkins/pim/features /home/jenkins/pim/vendor/akeneo/pim-community-dev/features -name "*.feature" -exec grep -En "(Scenario|Scenario Outline): " {} +').tokenize('\n')
+                    def tags = "~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
+                    scenarios = sh (returnStdout: true, script: "cd /home/jenkins/pim && php vendor/bin/behat --list-scenarios -c behat.ci.yml --tags=\"${tags}\"").tokenize('\n')
                     messages = new net.sf.json.JSONArray()
 
                     for (scenario in scenarios) {
-                        line = scenario.trim().substring(0, scenario.indexOf(":", scenario.indexOf(":") + 1))
-
                         messages.add([
-                            [container: "php", script: "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"],
-                            [container: "php", script: "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"],
-                            [container: "php", script: "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"],
-                            [container: "php", script: "sed \"\$a    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" app/config/parameters_test.yml"],
-                            [container: "php", script: "cp behat.ci.yml behat.yml"],
                             [container: "php", script: "bin/console --env=behat --quiet pim:install --force"],
                             [container: "php", script: "chmod 777 -R var/cache/behat"],
                             [container: "php", script: "touch var/logs/behat.log"],
@@ -253,7 +253,7 @@ stage("Test") {
                                 container: "php",
                                 junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                                 artifacts: [in: "/home/jenkins/pim/app/build", name: "*.png"],
-                                script: "php vendor/bin/behat -c behat.ci.yml --tags=\"~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce\" -f progress --strict -vv " + line
+                                script: "php vendor/bin/behat -c behat.ci.yml --tags=\"${tag}\" --strict -vv " + scenario
                             ]
                         ])
                     }
@@ -348,6 +348,7 @@ def queue(body, scale, edition) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "pubsub-" + uuid, containers: [
+        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm"),
         containerTemplate(name: "gcloud", alwaysPullImage: true, ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud", envVars: [containerEnvVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
@@ -356,13 +357,16 @@ def queue(body, scale, edition) {
         hostPathVolume(hostPath: "/usr/bin/docker", mountPath: "/usr/bin/docker")
     ]) {
         node("pubsub-" + uuid) {
+            container("php") {
+                def messages = body()
+            }
+
             container("gcloud") {
                 sh "gcloud.phar pubsub:topic:create ${NODE_NAME}"
                 sh "gcloud.phar pubsub:topic:create ${NODE_NAME}-results"
                 sh "gcloud.phar pubsub:subscription:create ${NODE_NAME} ${NODE_NAME}-subscription"
                 sh "gcloud.phar pubsub:subscription:create ${NODE_NAME}-results ${NODE_NAME}-results-subscription"
 
-                def messages = body()
                 def size = messages.size()
 
                 writeJSON file: 'output.json', json: messages
