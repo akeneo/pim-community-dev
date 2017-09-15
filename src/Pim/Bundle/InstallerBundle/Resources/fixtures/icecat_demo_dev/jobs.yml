@@ -64,6 +64,15 @@ jobs:
                         - fr_FR
                         - en_US
                         - de_DE
+    csv_product_model_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_model_export
+        label:     Demo CSV product model export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
     csv_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import

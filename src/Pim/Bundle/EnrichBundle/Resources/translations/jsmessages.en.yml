@@ -1090,6 +1090,9 @@ batch_jobs:
     csv_product_export:
         label: Product export in CSV
         export.label: Product export
+    csv_product_model_export:
+        label: Product model export in CSV
+        export.label: Product export
     csv_category_export:
         label: Category export in CSV
         export.label: Category export

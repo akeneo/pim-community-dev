@@ -82,6 +82,7 @@ services:
                 csv_group_type_export: pim-job-instance-csv-base-export
                 csv_locale_export: pim-job-instance-csv-base-export
                 csv_product_export: pim-job-instance-csv-product-export
+                csv_product_model_export: pim-job-instance-csv-base-export
                 xlsx_association_type_export: pim-job-instance-xlsx-base-export
                 xlsx_attribute_export: pim-job-instance-xlsx-base-export
                 xlsx_attribute_group_export: pim-job-instance-xlsx-base-export
