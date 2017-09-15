@@ -347,11 +347,7 @@ class Job implements JobInterface
             $this->filesystem->mkdir($path);
         } catch (IOException $e) {
             // this exception will be catched by {Job->execute()} and will set the batch as failed
-            throw new RuntimeErrorException(
-                sprintf('Unable to create the working directory "%s".', $path),
-                $e->getCode(),
-                $e
-            );
+            throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $path]);
         }
 
         return $path;
