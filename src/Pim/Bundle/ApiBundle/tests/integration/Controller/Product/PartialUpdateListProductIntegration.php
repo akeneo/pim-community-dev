@@ -35,7 +35,6 @@ JSON;
 {"line":2,"identifier":"my_identifier","status_code":201}
 JSON;
 
-
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
@@ -48,6 +47,7 @@ JSON;
             'product_family' => [
                 'identifier'    => 'product_family',
                 'family'        => 'familyA1',
+                'parent'        => null,
                 'groups'        => [],
                 'variant_group' => null,
                 'categories'    => [],
@@ -64,6 +64,7 @@ JSON;
             'my_identifier'  => [
                 'identifier'    => 'my_identifier',
                 'family'        => 'familyA2',
+                'parent'        => null,
                 'groups'        => [],
                 'variant_group' => null,
                 'categories'    => [],
