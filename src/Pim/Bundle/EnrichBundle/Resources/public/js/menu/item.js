@@ -52,9 +52,10 @@ define(
              */
             configure: function () {
                 this.trigger('pim_menu:column:register_navigation_item', {
-                    code: this.getRoute(),
+                    route: this.getRoute(),
                     label: this.getLabel(),
-                    position: this.position
+                    position: this.position,
+                    routeParams: this.getRouteParams()
                 });
 
                 BaseForm.prototype.configure.apply(this, arguments);
@@ -107,7 +108,7 @@ define(
              * @returns {Object}
              */
             getRouteParams: function () {
-                return this.config.routeParams;
+                return this.config.routeParams !== 'undefined' ? this.config.routeParams : {};
             },
 
             /**
