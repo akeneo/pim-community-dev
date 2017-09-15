@@ -11,7 +11,6 @@ parameters:
     pim_installer.job_name.fixtures_attribute_options_csv: 'fixtures_attribute_options_csv'
     pim_installer.job_name.fixtures_family_csv: 'fixtures_family_csv'
     pim_installer.job_name.fixtures_family_variant_csv: 'fixtures_family_variant_csv'
-    pim_installer.job_name.fixtures_variant_group_csv: 'fixtures_variant_group_csv'
     pim_installer.job_name.fixtures_product_model_csv: 'fixtures_product_model_csv'
     pim_installer.job_name.fixtures_product_csv: 'fixtures_product_csv'
     pim_installer.job_name.fixtures_job_yml: 'fixtures_job_yml'
@@ -152,18 +151,6 @@ services:
             -
                 - '@pim_connector.step.charset_validator'
                 - '@pim_connector.step.csv_family_variant.import'
-        tags:
-            - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
-
-    pim_installer.job.fixtures_variant_group_csv:
-        class: '%pim_connector.job.simple_job.class%'
-        arguments:
-            - '%pim_installer.job_name.fixtures_variant_group_csv%'
-            - '@event_dispatcher'
-            - '@akeneo_batch.job_repository'
-            -
-                - '@pim_connector.step.charset_validator'
-                - '@pim_connector.step.csv_variant_group.import'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_installer.connector_name.data_fixtures%', type: '%pim_installer.job.fixture_type%' }
 

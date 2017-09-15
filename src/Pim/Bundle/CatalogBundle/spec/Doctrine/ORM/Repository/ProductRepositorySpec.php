@@ -82,64 +82,6 @@ class ProductRepositorySpec extends ObjectBehavior
         $this->getEligibleProductsForVariantGroup(10)->shouldReturn([$product1, $product2, $product3]);
     }
 
-    function it_checks_if_the_product_has_an_attribute_in_its_variant_group(
-        $em,
-        GroupRepositoryInterface $groupRepository,
-        QueryBuilder $queryBuilder,
-        AbstractQuery $query
-    ) {
-        $this->setGroupRepository($groupRepository);
-
-        $em->createQueryBuilder()->willReturn($queryBuilder);
-        $queryBuilder->select('p')->willReturn($queryBuilder);
-        $queryBuilder->select('g.id')->willReturn($queryBuilder);
-        $queryBuilder->from(Argument::type('string'), "p", null)->willReturn($queryBuilder);
-        $queryBuilder->leftJoin('p.groups', 'g')->willReturn($queryBuilder);
-        $queryBuilder->where('p.id = :id')->willReturn($queryBuilder);
-        $queryBuilder->setParameters([
-            'id' => 10,
-        ])->willReturn($queryBuilder);
-
-        $queryBuilder->getQuery()->willReturn($query);
-        $query->getScalarResult()->willReturn([
-            ['id' => 1],
-            ['id' => 2]
-        ]);
-
-        $groupRepository->hasAttribute([1, 2], 'attribute_code')->willReturn(true);
-
-        $this->hasAttributeInVariantGroup(10, 'attribute_code')->shouldReturn(true);
-    }
-
-    function it_checks_if_the_product_has_an_attribute_in_its_variant_group_but_it_has_not_group(
-        $em,
-        GroupRepositoryInterface $groupRepository,
-        QueryBuilder $queryBuilder,
-        AbstractQuery $query
-    ) {
-        $this->setGroupRepository($groupRepository);
-
-        $em->createQueryBuilder()->willReturn($queryBuilder);
-        $queryBuilder->select('p')->willReturn($queryBuilder);
-        $queryBuilder->select('g.id')->willReturn($queryBuilder);
-        $queryBuilder->from(Argument::type('string'), "p", null)->willReturn($queryBuilder);
-        $queryBuilder->leftJoin('p.groups', 'g')->willReturn($queryBuilder);
-        $queryBuilder->where('p.id = :id')->willReturn($queryBuilder);
-        $queryBuilder->setParameters([
-            'id' => 10,
-        ])->willReturn($queryBuilder);
-
-        $queryBuilder->getQuery()->willReturn($query);
-
-        $query->getScalarResult()->willReturn([
-            ['id' => null],
-        ]);
-
-        $groupRepository->hasAttribute(Argument::cetera())->shouldNotBeCalled();
-
-        $this->hasAttributeInVariantGroup(10, 'attribute_code')->shouldReturn(false);
-    }
-
     function it_checks_if_the_product_has_an_attribute_in_its_family(
         $em,
         QueryBuilder $queryBuilder,

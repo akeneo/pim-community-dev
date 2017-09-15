@@ -22,7 +22,6 @@ class GroupNormalizerSpec extends ObjectBehavior
         StructureVersionProviderInterface $structureVersionProvider,
         VersionManager $versionManager,
         NormalizerInterface $versionNormalizer,
-        AttributeConverterInterface $localizedConverter,
         ConverterInterface $converter
     ) {
         $this->beConstructedWith(
@@ -30,7 +29,6 @@ class GroupNormalizerSpec extends ObjectBehavior
             $structureVersionProvider,
             $versionManager,
             $versionNormalizer,
-            $localizedConverter,
             $converter
         );
     }
@@ -45,10 +43,7 @@ class GroupNormalizerSpec extends ObjectBehavior
         $structureVersionProvider,
         $versionManager,
         $versionNormalizer,
-        $localizedConverter,
-        $converter,
         GroupInterface $tshirt,
-        GroupTypeInterface $groupType,
         Version $oldestLog,
         Version $newestLog,
         ArrayCollection $products,
@@ -60,32 +55,12 @@ class GroupNormalizerSpec extends ObjectBehavior
             'date_format'       => 'dd/MM/yyyy',
         ];
 
-        $tshirt->getType()->willReturn($groupType);
-        $groupType->isVariant()->willReturn(true);
-
-        $variantNormalized = [
-            'code' => 'my_variant',
-            'axis' => ['color', 'size'],
-            'type' => 'variant',
-            'values' => [
-                'number' => ['amount' => 12.5000, 'locale' => null, 'scope' => null],
-                'metric' => ['amount' => 12.5000, 'locale' => null, 'scope' => null],
-                'prices' => ['amount' => 12.5, 'locale' => null, 'scope' => null],
-                'date'   => ['data' => '2015-01-31', 'locale' => null, 'scope' => null],
-            ]
+        $groupNormalized = [
+            'code' => 'my_group',
+            'type' => 'related',
         ];
 
-        $valuesLocalized = [
-            'number' => ['amount' => '12,5000', 'locale' => null, 'scope' => null],
-            'metric' => ['amount' => '12,5000', 'locale' => null, 'scope' => null],
-            'prices' => ['amount' => '12,50', 'locale' => null, 'scope' => null],
-            'date'   => ['data' => '31/01/2015', 'locale' => null, 'scope' => null],
-        ];
-
-        $normalizer->normalize($tshirt, 'standard', $options)->willReturn($variantNormalized);
-        $localizedConverter->convertToLocalizedFormats($variantNormalized['values'], $options)
-            ->willReturn($valuesLocalized);
-        $converter->convert($valuesLocalized)->willReturn($valuesLocalized);
+        $normalizer->normalize($tshirt, 'standard', $options)->willReturn($groupNormalized);
 
         $structureVersionProvider->getStructureVersion()->willReturn(1);
         $versionManager->getOldestLogEntry($tshirt)->willReturn($oldestLog);
@@ -110,16 +85,14 @@ class GroupNormalizerSpec extends ObjectBehavior
 
         $this->normalize($tshirt, 'internal_api', $options)->shouldReturn(
             [
-                'code'     => 'my_variant',
-                'axis'     => ['color', 'size'],
-                'type'     => 'variant',
-                'values'   => $valuesLocalized,
+                'code'     => 'my_group',
+                'type'     => 'related',
                 'products' => [42],
                 'meta'     => [
                     'id'                => 12,
-                    'form'              => 'pim-variant-group-edit-form',
+                    'form'              => 'pim-group-edit-form',
                     'structure_version' => 1,
-                    'model_type'        => 'variant_group',
+                    'model_type'        => 'group',
                     'created'           => 'normalized_oldest_log',
                     'updated'           => 'normalized_newest_log',
                 ]

@@ -4,7 +4,6 @@ Feature: Navigate to product model and product edit pages
   As a regular user
   I need to be able to navigate to the product model and product edit pages
 
-  @ce
   Scenario: Successfully navigate to a product model and a product edit page
     Given a "catalog_modeling" catalog configuration
     And I am logged in as "Julia"

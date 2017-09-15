@@ -14,8 +14,6 @@ pim_enrich.acl_group.family:
     order: 70
 pim_enrich.acl_group.group:
     order: 80
-pim_enrich.acl_group.variant_group:
-    order: 85
 pim_enrich.acl_group.group_type:
     order: 90
 pim_enrich.acl_group.locale:

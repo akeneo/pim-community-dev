@@ -50,7 +50,6 @@ class NavigationContext extends PimContext implements PageObjectAware
         'user groups'              => 'UserGroup index',
         'user groups creation'     => 'UserGroup creation',
         'user groups edit'         => 'UserGroup edit',
-        'variant groups'           => 'VariantGroup index',
         'attribute groups'         => 'AttributeGroup index',
         'attribute group creation' => 'AttributeGroup creation',
         'dashboard'                => 'Dashboard index',

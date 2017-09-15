@@ -8,7 +8,6 @@ Feature: Filter product and product models
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Mary"
 
-  @ce
   Scenario: Successfully filter and display both products and product models
     Given I am on the products page
     When I show the filter "color"
@@ -23,7 +22,6 @@ Feature: Filter product and product models
       | Status           |                                  |
       | complete         | N/A                              |
       | groups           |                                  |
-      | variant products |                                  |
     And the row "running-shoes-xxs-crimson-red" should contain:
       | column           | value                         |
       | ID               | running-shoes-xxs-crimson-red |
@@ -32,7 +30,6 @@ Feature: Filter product and product models
       | Status           | Enabled                       |
       | complete         | 62%                           |
       | groups           |                               |
-      | variant products |                               |
 
   Scenario: View products and product models with the same ID in the grid
     Given there is no "product" in the catalog

@@ -60,10 +60,6 @@ pim_enrich_product_add_to_groups:
     type: action
     label: pim_enrich.acl.product.add_to_groups
     group_name: pim_enrich.acl_group.product
-pim_enrich_product_add_to_variant_group:
-    type: action
-    label: pim_enrich.acl.product.add_to_variant_group
-    group_name: pim_enrich.acl_group.product
 pim_enrich_product_comment:
     type: action
     label: pim_enrich.acl.product.comment
@@ -238,40 +234,6 @@ pim_enrich_group_history:
     type: action
     label: pim_enrich.acl.group.history
     group_name: pim_enrich.acl_group.group
-
-# Variant group
-pim_enrich_variant_group_index:
-    type: action
-    label: pim_enrich.acl.variant_group.index
-    group_name: pim_enrich.acl_group.variant_group
-pim_enrich_variant_group_create:
-    type: action
-    label: pim_enrich.acl.variant_group.create
-    group_name: pim_enrich.acl_group.variant_group
-pim_enrich_variant_group_edit:
-    type: action
-    label: pim_enrich.acl.variant_group.edit
-    group_name: pim_enrich.acl_group.variant_group
-pim_enrich_variant_group_remove:
-    type: action
-    label: pim_enrich.acl.variant_group.remove
-    group_name: pim_enrich.acl_group.variant_group
-pim_enrich_variant_group_history:
-    type: action
-    label: pim_enrich.acl.variant_group.history
-    group_name: pim_enrich.acl_group.variant_group
-pim_enrich_variant_group_edit_attributes:
-    type: action
-    label: pim_enrich.acl.variant_group.edit_attributes
-    group_name: pim_enrich.acl_group.variant_group
-pim_enrich_variant_group_add_attributes:
-    type: action
-    label: pim_enrich.acl.variant_group.add_attributes
-    group_name: pim_enrich.acl_group.variant_group
-pim_enrich_variant_group_remove_attribute:
-    type: action
-    label: pim_enrich.acl.variant_group.remove_attribute
-    group_name: pim_enrich.acl_group.variant_group
 
 # Group type
 pim_enrich_grouptype_index:

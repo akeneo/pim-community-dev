@@ -33,7 +33,6 @@ Feature: Well display navigation titles
       | "info" attribute group                        | Attribute groups Product information \| Edit        |
       | locales                                       | Locales                                             |
       | products                                      | Products                                            |
-      | "caterpillar_boots" variant group             | Variant groups Caterpillar boots \| Edit            |
       | product groups                                | Groups                                              |
       | "similar_boots" product group                 | Groups Similar boots \| Edit                        |
       | group types                                   | Group types                                         |
@@ -46,6 +45,5 @@ Feature: Well display navigation titles
       | "csv_footwear_product_import" import job edit | Import profiles CSV footwear product import \| Edit |
       | import executions                             | Import executions history                           |
       | export executions                             | Export executions history                           |
-      | variant groups                                | Variant groups                                      |
       | "sandals" product                             | Products sandals \| Edit                            |
       | "'quote'" product                             | Products 'quote' \| Edit                            |

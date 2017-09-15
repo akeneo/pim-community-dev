@@ -178,23 +178,3 @@ Feature: Handle import of invalid XLSX data
       SKU-001;NO_FAMILY
       SKU-008;OTHER_FAMILY
       """
-
-  Scenario: From a variant group XLSX import, create an invalid data file and be able to download it
-    Given the following XLSX file to import:
-      """
-      code;type;label-en_US;axis
-      caterpillar_boots;VARIANT;Caterpillar boots;color,size
-      caterpil ar;VARIANT;Caterpillar;color,size
-      """
-    And the following job "xlsx_footwear_variant_group_import" configuration:
-      | filePath | %file to import% |
-    And I am logged in as "Julia"
-    And I am on the "xlsx_footwear_variant_group_import" export job page
-    And I launch the "xlsx_footwear_variant_group_import" import job
-    And I wait for the "xlsx_footwear_variant_group_import" job to finish
-    Then I should see the secondary action "Download invalid data"
-    And the invalid data file of "xlsx_footwear_variant_group_import" should contain:
-      """
-      code;type;label-en_US;axis
-      caterpil ar;VARIANT;Caterpillar;color,size
-      """

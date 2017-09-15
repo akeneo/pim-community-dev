@@ -205,11 +205,11 @@ class ProductAndProductModelIndexingIntegration extends TestCase
             ],
             'enabled'        => true,
             'categories'     => ['categoryA1', 'categoryB'],
-            'groups'         => ['groupA', 'groupB', 'variantA'],
+            'groups'         => ['groupA', 'groupB'],
+            'groups'         => ['groupA', 'groupB'],
             'in_group'       => [
                 'groupA'   => true,
                 'groupB'   => true,
-                'variantA' => true,
             ],
             'completeness'   => [
                 'ecommerce' => ['en_US' => 100],

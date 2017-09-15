@@ -3,7 +3,6 @@ parameters:
     pim_enrich.connector.processor.mass_edit.product.add_value.class:              Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor
     pim_enrich.connector.processor.mass_edit.product.remove_value.class:           Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\RemoveProductValueProcessor
     pim_enrich.connector.processor.mass_edit.product.edit_common_attributes.class: Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor
-    pim_enrich.connector.processor.mass_edit.product.add_to_variant_group.class:   Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductToVariantGroupProcessor
     pim_enrich.connector.processor.mass_edit.family.set_requirements.class:        Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements
     pim_enrich.connector.processor.quick_export.product.class:                     Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductProcessor
 
@@ -42,13 +41,6 @@ services:
             - '@pim_catalog.factory.attribute_requirement'
             - '@validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
-
-    pim_enrich.connector.processor.mass_edit.product.add_to_variant_group:
-        class: '%pim_enrich.connector.processor.mass_edit.product.add_to_variant_group.class%'
-        arguments:
-            - '@pim_catalog.validator.product'
-            - '@pim_catalog.repository.group'
-            - '@pim_catalog.updater.product_template'
 
     pim_enrich.connector.processor.quick_export.product:
         class: '%pim_enrich.connector.processor.quick_export.product.class%'

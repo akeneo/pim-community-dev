@@ -4,8 +4,6 @@ parameters:
     pim_connector.job.job_parameters.default_values_provider.simple_yaml_export.class:        Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleYamlExport
     pim_connector.job.job_parameters.default_values_provider.product_csv_export.class:        Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvExport
     pim_connector.job.job_parameters.default_values_provider.product_xlsx_export.class:       Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductXlsxExport
-    pim_connector.job.job_parameters.default_values_provider.variant_group_csv_export.class:  Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\VariantGroupCsvExport
-    pim_connector.job.job_parameters.default_values_provider.variant_group_xlsx_export.class: Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\VariantGroupXlsxExport
 
     pim_connector.job.job_parameters.default_values_provider.simple_csv_import.class:         Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport
     pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import.class:        Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxImport
@@ -14,8 +12,6 @@ parameters:
     pim_connector.job.job_parameters.default_values_provider.product_model_csv_import.class:  Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport
     pim_connector.job.job_parameters.default_values_provider.product_xlsx_import.class:       Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport
     pim_connector.job.job_parameters.default_values_provider.product_model_xlsx_import.class: Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport
-    pim_connector.job.job_parameters.default_values_provider.variant_group_csv_import.class:  Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\VariantGroupCsvImport
-    pim_connector.job.job_parameters.default_values_provider.variant_group_xlsx_import.class: Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\VariantGroupXlsxImport
 
 services:
     # Default Parameters for Exports ----------------------------------------------------------------------------------
@@ -76,24 +72,6 @@ services:
             - '@pim_catalog.repository.locale'
             -
                 - 'xlsx_product_export'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.default_values_provider }
-
-    pim_connector.job.job_parameters.default_values_provider.variant_group_csv_export:
-        class: '%pim_connector.job.job_parameters.default_values_provider.variant_group_csv_export.class%'
-        arguments:
-            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_export'
-            -
-                - 'csv_variant_group_export'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.default_values_provider }
-
-    pim_connector.job.job_parameters.default_values_provider.variant_group_xlsx_export:
-        class: '%pim_connector.job.job_parameters.default_values_provider.variant_group_xlsx_export.class%'
-        arguments:
-            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_export'
-            -
-                - 'xlsx_variant_group_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -169,23 +147,5 @@ services:
             - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import'
             -
                 - 'xlsx_product_model_import'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.default_values_provider }
-
-    pim_connector.job.job_parameters.default_values_provider.variant_group_csv_import:
-        class: '%pim_connector.job.job_parameters.default_values_provider.variant_group_csv_import.class%'
-        arguments:
-            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
-            -
-                - 'csv_variant_group_import'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.default_values_provider }
-
-    pim_connector.job.job_parameters.default_values_provider.variant_group_xlsx_import:
-        class: '%pim_connector.job.job_parameters.default_values_provider.variant_group_xlsx_import.class%'
-        arguments:
-            - '@pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import'
-            -
-                - 'xlsx_variant_group_import'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }

@@ -47,7 +47,6 @@ define(
                 var product = $.extend(true, {}, this.getFormData());
                 var productId = product.meta.id;
 
-                delete product.variant_group;
                 delete product.meta;
 
                 var notReadyFields = FieldManager.getNotReadyFields();

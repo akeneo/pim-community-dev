@@ -98,22 +98,6 @@ jobs:
         configuration:
             filePath: family_variants.csv
 
-    fixtures_variant_group_csv:
-        order: 70
-        connector: Data fixtures
-        alias:     fixtures_variant_group_csv
-        label:     Variant groups data fixtures
-        type:      fixtures
-        configuration:
-            filePath: variant_groups.csv
-            delimiter: ;
-            enclosure: '"'
-            escape: '\'
-            decimalSeparator: .
-            dateFormat: Y-m-d
-            withHeader: true
-            copyValues: true
-
     fixtures_group_csv:
         order: 70
         connector: Data fixtures

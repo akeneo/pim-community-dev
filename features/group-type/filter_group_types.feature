@@ -12,7 +12,7 @@ Feature: Filter group types
       | special | Special     |
     And I am logged in as "Peter"
     Given I am on the group types page
-    Then the grid should contain 4 elements
+    Then the grid should contain 3 elements
 
   Scenario: Successfully search on label
     When I search "Spec"

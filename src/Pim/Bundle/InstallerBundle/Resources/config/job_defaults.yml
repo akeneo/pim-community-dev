@@ -42,15 +42,6 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
-    pim_installer.job_parameters.defaults.variant_group_csv_import:
-        class: '%pim_connector.job.job_parameters.default_values_provider.variant_group_csv_import.class%'
-        arguments:
-            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_import'
-            -
-                - 'fixtures_variant_group_csv'
-        tags:
-            - { name: akeneo_batch.job.job_parameters.default_values_provider }
-
     pim_installer.job_parameters.defaults.simple_yaml_import:
         class: '%pim_connector.job.job_parameters.default_values_provider.simple_yaml_import.class%'
         arguments:

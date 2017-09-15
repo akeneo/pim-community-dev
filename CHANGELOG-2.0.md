@@ -1,4 +1,4 @@
-# 1.8.*
+# 2.0
 
 ## Functional improvements
 
@@ -188,6 +188,88 @@
 - Change the constructor of `Pim\Bundle\DataGridBundle\EventListener\ConfigureSortersListener` to remove `Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver`
 - Change the constructor of `Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver` to remove `Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver`
 
+## Remove variant groups
+
+- Remove methods `countVariantGroupAxis`, `getAllGroupsExceptVariant`, ``, `getAllVariantGroups`, `hasAttribute` and `getVariantGroupByProductTemplate` from `Pim\Component\Catalog\Repository\GroupRepositoryInterface`
+- Remove method `hasAttributeInVariantGroup` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
+
+- Remove class `Pim\Component\Connector\ArrayConverter\FlatToStandard\VariantGroup`
+- Remove class `Pim\Component\Connector\ArrayConverter\StandardToFlat\VariantGroup`
+- Remove class `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\VariantGroupCsvExport`
+- Remove class `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\VariantGroupXlsxExport`
+- Remove class `Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\VariantGroupCsvImport`
+- Remove class `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\VariantGroupCsvExport`
+- Remove class `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\VariantGroupXlsxExport`
+- Remove class `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\VariantGroupCsvImport`
+- Remove class `Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\VariantGroupXlsxImport`
+- Remove class `Pim\Component\Connector\Processor\Denormalization\VariantGroupProcessor`
+- Remove class `Pim\Component\Connector\Processor\Normalization\VariantGroupProcessor`
+- Remove class `Pim\Component\Connector\Reader\Database\VariantGroupReader`
+- Remove class `Pim\Component\Connector\Reader\File\Csv\VariantGroupReader`
+- Remove class `Pim\Component\Connector\Writer\Database\VariantGroupWriter`
+- Remove class `Pim\Component\Connector\Writer\File\CSV\VariantGroupWriter`
+- Remove class `Pim\Component\Connector\Writer\File\XLSX\VariantGroupWriter`
+- Remove class `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductToVariantGroupProcessor`
+- Remove class `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredVariantGroupProductReader`
+- Remove class `Pim\Bundle\EnrichBundle\Controller\Rest\VariantGroupAttributeController`
+- Remove class `Pim\Bundle\EnrichBundle\Controller\Rest\VariantGroupController`
+- Remove class `Pim\Bundle\EnrichBundle\Filter\VariantGroupEditDataFilter`
+- Remove class `Pim\Bundle\EnrichBundle\Form\Subscriber\AddVariantGroupAxesSubscriber`
+- Remove class `Pim\Bundle\EnrichBundle\Form\Type\VariantGroupType`
+- Remove class `Pim\Bundle\VersioningBundle\UpdateGuesser\VariantGroupUpdateGuesser`
+
+- Rename class `Pim\Bundle\EnrichBundle\Normalizer\VariantGroupNormalizer` into `Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer`
+
+- Remove service `pim_connector.array_converter.flat_to_standard.variant_group` and class parameter `pim_connector.array_converter.flat_to_standard.variant_group.class`
+- Remove service `pim_connector.array_converter.standard_to_flat.variant_group` and class parameter `pim_connector.array_converter.standard_to_flat.variant_group.class`
+- Remove service `pim_connector.job.job_parameters.constraint_collection_provider.variant_group_csv_export` and class parameter `pim_connector.job.job_parameters.constraint_collection_provider.variant_group_csv_export.class`
+- Remove service `pim_connector.job.job_parameters.constraint_collection_provider.variant_group_xlsx_export` and class parameter `pim_connector.job.job_parameters.constraint_collection_provider.variant_group_xlsx_export.class`
+- Remove service `pim_connector.job.job_parameters.constraint_collection_provider.variant_group_csv_import` and class parameter `pim_connector.job.job_parameters.constraint_collection_provider.variant_group_csv_import.class`
+- Remove service `pim_connector.job.job_parameters.constraint_collection_provider.variant_group_xlsx_import` and class parameter `pim_connector.job.job_parameters.constraint_collection_provider.variant_group_xlsx_import.class`
+- Remove service `pim_connector.job.job_parameters.default_values_provider.variant_group_csv_export` and class parameter `pim_connector.job.job_parameters.default_values_provider.variant_group_csv_export.class`
+- Remove service `pim_connector.job.job_parameters.default_values_provider.variant_group_xlsx_export` and class parameter `pim_connector.job.job_parameters.default_values_provider.variant_group_xlsx_export.class`
+- Remove service `pim_connector.job.job_parameters.default_values_provider.variant_group_csv_import` and class parameter `pim_connector.job.job_parameters.default_values_provider.variant_group_csv_import.class`
+- Remove service `pim_connector.job.job_parameters.default_values_provider.variant_group_xlsx_import` and class parameter `pim_connector.job.job_parameters.default_values_provider.variant_group_xlsx_import.class`
+- Remove service `pim_connector.processor.denormalization.variant_group` and class parameter `pim_connector.processor.denormalization.variant_group.class`
+- Remove service `pim_connector.processor.normalization.variant_group` and class parameter `pim_connector.processor.normalization.variant_group.class`
+- Remove service `pim_connector.reader.database.variant_group` and class parameter `pim_connector.reader.database.variant_group.class`
+- Remove service `pim_connector.reader.file.csv_variant_group` and class parameter `pim_connector.reader.file.csv_variant_group.class`
+- Remove service `pim_connector.writer.database.variant_group` and class parameter `pim_connector.writer.database.variant_group.class`
+- Remove service `pim_connector.writer.file.csv_variant_group` and class parameter `pim_connector.writer.file.csv_variant_group.class`
+- Remove service `pim_connector.writer.file.xlsx_variant_group` and class parameter `pim_connector.writer.file.xlsx_variant_group.class`
+- Remove service `pim_enrich.connector.processor.mass_edit.product.add_to_variant_group` and class parameter `pim_enrich.connector.processor.mass_edit.product.add_to_variant_group.class`
+- Remove service `pim_enrich.connector.reader.mass_edit.variant_group_product` and class parameter `pim_enrich.connector.reader.mass_edit.variant_group_product.class`
+- Remove service `pim_enrich.controller.rest.variant_group` and class parameter `pim_enrich.controller.rest.variant_group.class`
+- Remove service `pim_enrich.controller.rest.variant_group_attribute` and class parameter `pim_enrich.controller.rest.variant_group_attribute.class`
+- Remove service `pim_enrich.filter.variant_group_edit_data` and class parameter `pim_enrich.filter.variant_group_edit_data.class`
+- Remove service `pim_enrich.form.subscriber.add_variant_group_axes` and class parameter `pim_enrich.form.subscriber.add_variant_group_axes.class`
+- Remove service `pim_enrich.form.type.variant_group` and class parameter `pim_enrich.form.type.variant_group.class`
+- Remove service `pim_versioning.update_guesser.variant_group` and class parameter `pim_versioning.update_guesser.variant_group.class`
+
+- Remove service `pim_connector.reader.file.xlsx_variant_group`
+- Remove service `pim_connector.job.csv_variant_group_export`
+- Remove service `pim_connector.job.xlsx_variant_group_export`
+- Remove service `pim_connector.job.csv_variant_group_import`
+- Remove service `pim_connector.job.xlsx_variant_group_import`
+- Remove service `pim_connector.step.csv_variant_group.import`
+- Remove service `pim_connector.step.xlsx_variant_group.import`
+- Remove service `pim_connector.step.csv_variant_group.export`
+- Remove service `pim_connector.step.xlsx_variant_group.export`
+- Remove service `pim_enrich.form.variant_group`
+- Remove service `pim_enrich.form.handler.variant_group`
+- Remove service `pim_enrich.job.add_to_variant_group`
+- Remove service `pim_enrich.normalizer.variant_group_violation`
+- Remove service `pim_enrich.step.add_to_variant_group.mass_edit`
+- Remove service `pim_installer.job_parameters.constraints.variant_group_csv_import`
+- Remove service `pim_installer.job_parameters.defaults.variant_group_csv_import`
+- Remove service `pim_installer.job.fixtures_variant_group_csv`
+
+- Rename service `pim_enrich.provider.structure_version.variant_group` into `pim_enrich.provider.structure_version.group`
+
+- Remove parameter `pim_installer.job_name.fixtures_variant_group_csv`
+
+- Rename class parameter `pim_enrich.normalizer.variant_group_violation.class` into `pim_enrich.normalizer.group_violation.class`
+
 ## BC breaks
 
 ### Doctrine mapping
@@ -229,6 +311,10 @@
 - PIM-6333: Rename `Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface` to `Pim\Component\Catalog\Comparator\Filter\FilterInterface`
 - PIM-6333: Rename `Pim\Component\Catalog\Comparator\Filter\ProductFilter` to `Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFilter`
 - PIM-6333: Rename `Pim\Component\Connector\ArrayConverter\FlatToStandard\ProductDelocalized` to `Pim\Component\Connector\ArrayConverter\FlatToStandard\EntityWithValuesDelocalized`
+- PIM-6732: Remove `Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductToVariantGroupProcessor`
+- PIM-6732: Remove `Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredVariantGroupProductReader`
+- PIM-6732: Remove `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
+- PIM-6732: Remove `Pim\Component\Enrich\Converter\MassOperationConverter`
 
 ### Constructors
 
@@ -336,6 +422,7 @@
 - Change `Pim\Component\Catalog\Model\FamilyInterface` to add `setAttributeAsImage` and `getAttributeAsImage`
 - Remove method `addMissingProductValues` of `Pim\Component\Catalog\Builder\ProductBuilderInterface` (this method is now handled by `Pim\Component\Catalog\ValuesFiller\ProductValuesFiller::fillMissingValues`)
 - Remove method `getFamily` of `Pim\Component\Catalog\Model\ProductInterface`
+- PIM-6732: Remove `AddProductToVariantGroupProcessor` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
 
 ### Type hint
 
@@ -493,7 +580,7 @@
 - Rename service `pim_versioning.serializer.normalizer.flat.product_value` to `pim_versioning.serializer.normalizer.flat.value`
 - Remove interface `Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeInterface`, attribute type classes must now implement directly `Pim\Component\Catalog\AttributeTypeInterface`
 - Remove class `Pim\Bundle\EnrichBundle\Controller\AttributeController`
-- Remove service `pim_enrich.controller.attribute`
+- Remove service `pim_enrich.controller.attribute` and parameter `pim_enrich.controller.attribute.class`
 - Remove several UI related classes for attributes: `Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber`, `Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\AvailableLocalesType`, `Pim\Bundle\EnrichBundle\Form\Type\AttributeProperty\OptionsType`, `Pim\Bundle\EnrichBundle\Form\Type\AttributeType`
 - Remove services `pim_enrich.form.subscriber.attribute`, `pim_enrich.form.type.attribute`, `pim_enrich.form.type.available_locales`, `pim_enrich.form.type.options`, `pim_enrich.form.attribute`, `pim_enrich.form.handler.attribute`
 - Add subscriber to lock/unlock batch job commands thanks to @bOnepain

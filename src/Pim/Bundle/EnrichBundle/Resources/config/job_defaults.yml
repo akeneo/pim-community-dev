@@ -12,7 +12,6 @@ services:
                 - 'add_product_value'
                 - 'remove_product_value'
                 - 'edit_common_attributes'
-                - 'add_to_variant_group'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 

@@ -941,22 +941,6 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following variant groups?:$/
-     */
-    public function theFollowingVariantGroups(TableNode $table)
-    {
-        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.variant_group');
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.variant_group');
-        $saver     = $this->getContainer()->get('pim_catalog.saver.group');
-
-        foreach ($table->getHash() as $data) {
-            $saver->save($processor->process($converter->convert($data)));
-        }
-    }
-
-    /**
-     * @param TableNode $table
-     *
      * @Given /^the following association types?:$/
      */
     public function theFollowingAssociationTypes(TableNode $table)

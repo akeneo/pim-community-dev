@@ -1,7 +1,6 @@
 parameters:
     pim_enrich.controller.category_tree.class:                Pim\Bundle\EnrichBundle\Controller\CategoryTreeController
     pim_enrich.controller.currency.class:                     Pim\Bundle\EnrichBundle\Controller\CurrencyController
-    pim_enrich.controller.attribute.class:                    Pim\Bundle\EnrichBundle\Controller\AttributeController
     pim_enrich.controller.family.class:                       Pim\Bundle\EnrichBundle\Controller\FamilyController
     pim_enrich.controller.attribute_option.class:             Pim\Bundle\EnrichBundle\Controller\AttributeOptionController
     pim_enrich.controller.product.class:                      Pim\Bundle\EnrichBundle\Controller\ProductController
@@ -27,8 +26,6 @@ parameters:
     pim_enrich.controller.rest.product_model.class:           Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController
     pim_enrich.controller.rest.product_category.class:        Pim\Bundle\EnrichBundle\Controller\Rest\ProductCategoryController
     pim_enrich.controller.rest.product_comment.class:         Pim\Bundle\EnrichBundle\Controller\Rest\ProductCommentController
-    pim_enrich.controller.rest.variant_group.class:           Pim\Bundle\EnrichBundle\Controller\Rest\VariantGroupController
-    pim_enrich.controller.rest.variant_group_attribute.class: Pim\Bundle\EnrichBundle\Controller\Rest\VariantGroupAttributeController
     pim_enrich.controller.rest.versioning.class:              Pim\Bundle\EnrichBundle\Controller\Rest\VersioningController
     pim_enrich.controller.rest.attribute_option.class:        Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController
     pim_enrich.controller.rest.job_instance.class:            Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController
@@ -371,31 +368,6 @@ services:
             - '@validator'
             - '@pim_catalog.localization.presenter.datetime'
             - '@pim_enrich.resolver.locale'
-
-    pim_enrich.controller.rest.variant_group:
-        class: '%pim_enrich.controller.rest.variant_group.class%'
-        arguments:
-            - '@pim_catalog.repository.group'
-            - '@pim_internal_api_serializer'
-            - '@pim_catalog.updater.variant_group'
-            - '@pim_catalog.saver.group'
-            - '@pim_catalog.remover.group'
-            - '@pim_user.context.user'
-            - '@pim_catalog.localization.localizer.converter'
-            - '@pim_catalog.validator.product'
-            - '@pim_enrich.normalizer.variant_group_violation'
-            - '@pim_enrich.filter.variant_group_edit_data'
-            - '@pim_enrich.converter.enrich_to_standard.product_value'
-            - '@pim_catalog.factory.group'
-            - '@pim_enrich.normalizer.violation'
-
-    pim_enrich.controller.rest.variant_group_attribute:
-        class: '%pim_enrich.controller.rest.variant_group_attribute.class%'
-        arguments:
-            - '@pim_catalog.repository.group'
-            - '@pim_catalog.saver.group'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.builder.product_template'
 
     pim_enrich.controller.rest.versioning:
         class: '%pim_enrich.controller.rest.versioning.class%'

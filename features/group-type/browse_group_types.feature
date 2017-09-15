@@ -8,6 +8,6 @@ Feature: Browse group types
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
     When I am on the group types page
-    Then the grid should contain 3 elements
+    Then the grid should contain 2 elements
     And I should see the columns Label
-    And I should see group types [VARIANT], [RELATED] and [XSELL]
+    And I should see group types [RELATED] and [XSELL]

@@ -773,18 +773,18 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 ### Group Type
         
         array:3 [
-          "code" => "VARIANT"
-          "is_variant" => true
+          "code" => "GROUP"
+          "is_variant" => false
           "labels" => array:1 [
-            "en_US" => "Variant type"
+            "en_US" => "Group type"
           ]
         ]
         
 | type       | data structure | data example                  | notes                                                                                            |
 | ---------- | -------------- | ----------------------------- | ------------------------------------------------------------------------------------------------ |
-| code       | string         | `"VARIANT"`                   | it's the identifier of the group type                                                            |
+| code       | string         | `"GROUP"`                     | it's the identifier of the group type                                                            |
 | is_variant | boolean        | `false`                       |                                                                                                  |
-| labels     | array          | `["en_US" => "Variant type"]` | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface* |
+| labels     | array          | `["en_US" => "GROUP type"]`   | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface* |
 
     
 ### Locale

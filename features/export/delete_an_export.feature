@@ -9,19 +9,19 @@ Feature: Delete export
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
     And I am on the exports grid
-    Then the grid should contain 23 elements
+    Then the grid should contain 22 elements
 
   Scenario: Successfully delete an export job from the export grid
     Given I delete the "CSV footwear product export" job
     When I confirm the deletion
     Then I should see the flash message "Export profile successfully removed"
-    And the grid should contain 22 elements
+    And the grid should contain 21 elements
     And I should not see export profile "CSV footwear product export"
 
   Scenario: Successfully cancel the deletion of an export job
     Given I delete the "CSV footwear product export" job
     When I cancel the deletion
-    Then the grid should contain 23 elements
+    Then the grid should contain 22 elements
     And I should see export profile "CSV footwear product export"
 
   Scenario: Successfully delete an export job from the job edit page
@@ -29,5 +29,5 @@ Feature: Delete export
     When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should see the flash message "Job instance successfully removed"
-    And the grid should contain 22 elements
+    And the grid should contain 21 elements
     And I should not see export profile "CSV footwear product export"
