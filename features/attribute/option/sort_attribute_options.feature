@@ -63,7 +63,7 @@ Feature: Sort attribute options
     And I fill in the following information:
       | Code            | size  |
       | Attribute group | Other |
-    And I visit the "Values" tab
+    When I visit the "Values" tab
     Then I should see the "Options" section
     And I should see "To manage options, please save the attribute first"
     When I save the attribute
@@ -81,9 +81,10 @@ Feature: Sort attribute options
     And I fill in the following information in the popin:
       | SKU | a_product |
     And I press the "Save" button in the popin
+    Then I should be on the product "a_product" edit page
     When I am on the "a_product" product page
     And I switch the locale to "en_US"
     And I add available attributes size
     Then I should see the ordered choices Alarge, Bmedium, Csmall in size
-    And I switch the locale to "fr_FR"
+    When I switch the locale to "fr_FR"
     Then I should see the ordered choices [medium_size], Apetit, Cgrand in size
