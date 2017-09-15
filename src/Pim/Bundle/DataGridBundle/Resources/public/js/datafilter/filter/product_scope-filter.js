@@ -33,7 +33,7 @@ define(
 
         return SelectFilter.extend({
             template: _.template(template),
-            className: 'AknDropdown AknFilterBox-filterContainer filter-select filter-criteria-selector',
+            className: 'AknDropdown AknFilterBox-filterContainer filter-select filter-criteria-selector scope-switcher',
             events: {
                 'keydown select': '_preventEnterProcessing',
                 'click .AknDropdown-menuLink': '_onSelectChange'
@@ -64,7 +64,7 @@ define(
              * @param {Array} collection
              */
             moveFilter: function (collection) {
-                this.$el.appendTo($('[data-drop-zone="column-context-switcher"]'));
+                this.$el.prependTo($('[data-drop-zone="column-context-switcher"]'));
 
                 let $grid = $('#grid-' + collection.inputName);
 
