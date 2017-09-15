@@ -80,3 +80,4 @@
 - Remove class `Pim\Bundle\InstallerBundle\Persister\YamlPersister`
 - Remove service `pim_installer.yaml_persister` 
 - Change the constructor of `PimEnterprise\Bundle\EnrichBundle\Controller\ProductController` to add `Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface`
+- PIM-6228: remove escape parameter from csv imports.
