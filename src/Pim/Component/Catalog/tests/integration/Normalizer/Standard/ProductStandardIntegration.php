@@ -27,6 +27,7 @@ class ProductStandardIntegration extends TestCase
         $expected = [
             'identifier'    => 'bar',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -53,6 +54,7 @@ class ProductStandardIntegration extends TestCase
         $expected = [
             'identifier'    => 'baz',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => null,
             'categories'    => [],
@@ -80,6 +82,7 @@ class ProductStandardIntegration extends TestCase
             [
                 'identifier'    => 'foo',
                 'family'        => 'familyA',
+                'parent'        => null,
                 'groups'        => ['groupA', 'groupB'],
                 'variant_group' => 'variantA',
                 'categories'    => ['categoryA1', 'categoryB'],
