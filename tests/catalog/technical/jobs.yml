@@ -34,7 +34,6 @@ jobs:
             uploadAllowed:      true
             delimiter:          ;
             enclosure:          '"'
-            escape:             '\'
             enabled:            true
             categoriesColumn:   categories
             familyColumn:       family
