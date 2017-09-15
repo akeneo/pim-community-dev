@@ -87,6 +87,7 @@ class ProductPublisher implements PublisherInterface
         unset($standardProduct['associations']);
         // TODO: will be doable once PIM-6564 done
         unset($standardProduct['parent']);
+        unset($standardProduct['variant_group']);
 
         $familyCode = null !== $object->getFamily() ? $object->getFamily()->getCode() : null;
         $publishedProduct = $this->productBuilder->createProduct($object->getIdentifier(), $familyCode);

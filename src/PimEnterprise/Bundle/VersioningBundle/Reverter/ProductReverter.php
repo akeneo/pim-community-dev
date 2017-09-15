@@ -84,12 +84,6 @@ class ProductReverter
 
         $currentObject = $this->registry->getRepository($class)->find($resourceId);
 
-        if ($this->isImpactedByVariantGroup($currentObject)) {
-            throw new RevertException(
-                $this->translator->trans('flash.error.revert.product_has_variant')
-            );
-        }
-
         $currentObject->getValues()->clear();
 
         $standardProduct = $this->converter->convert($version->getSnapshot());
@@ -105,15 +99,5 @@ class ProductReverter
         }
 
         $this->productSaver->save($currentObject);
-    }
-
-    /**
-     * @param mixed $object
-     *
-     * @return bool
-     */
-    protected function isImpactedByVariantGroup($object)
-    {
-        return $object instanceof ProductInterface && null !== $object->getVariantGroup();
     }
 }

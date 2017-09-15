@@ -83,6 +83,8 @@ class GrantedProductUpdater implements ObjectUpdaterInterface
             );
         }
 
+        // TODO: PIM-6564 will be done when we'll publish product model
+        unset($data['variant_group']);
         if (null !== $product->getId()) {
             $this->checkGrantedFieldsForProductDraft($product, $data);
         }

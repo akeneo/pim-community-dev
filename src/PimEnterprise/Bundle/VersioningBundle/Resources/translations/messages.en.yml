@@ -1,5 +1,4 @@
 flash.version.revert.product: Successfully restore the product to the previous version
 flash.error.revert.product: This version can not be restored. Some errors occurred during the validation.
-flash.error.revert.product_has_variant: Product can not be restored because it belongs to a variant group
 
 pimee_versioning.acl.product_version.revert: Restore a product

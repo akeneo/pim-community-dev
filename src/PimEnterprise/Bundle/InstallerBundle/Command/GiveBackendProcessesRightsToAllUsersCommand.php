@@ -76,8 +76,6 @@ class GiveBackendProcessesRightsToAllUsersCommand extends ContainerAwareCommand
             'edit_common_attributes',
             'edit_common_attributes_with_permission',
             'edit_common_attributes_with_permission_and_rules',
-            'add_to_variant_group',
-            'add_to_variant_group_with_rules',
             'set_attribute_requirements',
             'approve_product_draft',
             'refuse_product_draft',

@@ -31,7 +31,6 @@ class ProductCategoryAccessSubscriberSpec extends ObjectBehavior
     public function it_subscribes_events()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            'oro_datagrid.datgrid.build.after.product-variant-group-grid' => 'filter',
             'oro_datagrid.datgrid.build.after.product-group-grid'         => 'filter',
             'oro_datagrid.datgrid.build.after.association-product-grid'   => 'filter',
             'oro_datagrid.datgrid.build.after.product-grid'               => 'filter',

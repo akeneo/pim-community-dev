@@ -9,9 +9,7 @@ csv_category_export;All;IT support,Manager
 csv_association_type_import;All;IT support
 csv_association_type_export;All;IT support
 csv_group_import;All;IT support
-csv_variant_group_import;All;IT support
 csv_group_export;All;IT support
-csv_variant_group_export;All;IT support
 csv_attribute_import;All;IT support,Manager
 csv_attribute_export;All;IT support,Manager
 csv_option_import;All;IT support,Manager
@@ -32,7 +30,6 @@ remove_product_value;All;
 publish_product;All;
 unpublish_product;All;
 edit_common_attributes;All;
-add_to_variant_group;All;
 set_attribute_requirements;All;
 approve_product_draft;All;
 refuse_product_draft;All;
@@ -62,10 +59,8 @@ xlsx_attribute_import;All;IT support,Manager
 xlsx_option_import;All;IT support,Manager
 xlsx_family_import;All;IT support,Manager
 xlsx_family_variant_import;All;IT support,Manager
-xlsx_variant_group_export;All;All
 xlsx_group_export;All;All
 xlsx_group_import;All;IT support
-xlsx_variant_group_import;All;IT support
 xlsx_asset_import;All;IT support,Manager
 xlsx_asset_category_import;All;IT support,Manager
 xlsx_attribute_export;All;IT support,Manager

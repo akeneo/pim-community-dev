@@ -43,8 +43,6 @@ default:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Enrich\ProductGroupContext:
                     - 'Context\EnterpriseFeatureContext'
-                - Pim\Behat\Context\Domain\Enrich\VariantGroupContext:
-                    - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Enrich\ProductModelContext:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product_model'
