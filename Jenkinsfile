@@ -3,8 +3,9 @@
 import org.csanchez.jenkins.plugins.kubernetes.pipeline.PodTemplateAction
 import org.apache.commons.lang.ArrayUtils
 
-def builded_image = [:]
+def builded_image = []
 docker_registry = "eu.gcr.io/akeneo-ci/"
+
 
 stage("PreBuild") {
 
@@ -14,24 +15,20 @@ stage("PreBuild") {
 
     tasks = [:]
 
-    builded_image["httpd"] =  "httpd:2.4"
-    builded_image["php"] =  "php:7.1-fpm"
-    builded_image["elasticsearch"] =  "elasticsearch:5.5"
-    builded_image["selenium-standalone-firefox"] =  "selenium:standalone-firefox-2.53.1-beryllium"
+    def taskImageBuild = { image, base_version ->
+            withDockerScm({
+                image_name = "${docker_registry}${image}:${base_version}-${env_BRANCH_NAME}"
+                sh "gcloud -- pull ${image_name_base}"
+                sh "docker build -t ${image_name} --pull .ci/Dockerfiles/${image}/${base_version}/"
+                sh "gcloud docker -- push ${image_name}"
+                builded_image.push(image_name)
+            })
+        }
 
-    for (element in builded_image) {
-    taskName =element.key
-    image_name_base = element.value
-      tasks["${taskName}"] = {
-          withDockerScm({
-              image_name = "${docker_registry}${image_name_base}-${env_BRANCH_NAME}"
-              sh "gcloud -- pull ${image_name_base}"
-              sh "docker build -t ${image_name} .ci/Dockerfiles/${taskName}/"
-              sh "gcloud docker -- push ${image_name}"
-          })
-      }
-
-    }
+    tasks["httpd"] =  taskImageBuild("httpd","2.4")
+    tasks["php"] =  taskImageBuild("php","7.1-fpm")
+    tasks["elasticsearch"] =  taskImageBuild("elasticsearch","5.5")
+    tasks["selenium"] =  taskImageBuild("selenium","standalone-firefox-2.53.1-beryllium")
 
     parallel tasks
 }
