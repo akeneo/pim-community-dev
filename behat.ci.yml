@@ -22,7 +22,7 @@ default:
                     - 'Context\FeatureContext'
                 - Context\NavigationContext:
                     - 'Context\FeatureContext'
-                    - 'http://akeneo/'
+                    - 'http://127.0.0.1/'
                 - Context\TransformationContext:
                     - 'Context\FeatureContext'
                 - Context\AssertionContext:
@@ -102,6 +102,7 @@ default:
                 page_parameters:
                     base_url: 'http://127.0.0.1/'
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
+        Liuggio\Fastest\Behat\ListFeaturesExtension\Extension: ~
 
     formatters:
         pretty: true
