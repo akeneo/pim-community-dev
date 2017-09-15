@@ -31,6 +31,7 @@ services:
                 - 'csv_attribute_group_export'
                 - 'csv_currency_export'
                 - 'csv_group_type_export'
+                - 'csv_product_model_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 

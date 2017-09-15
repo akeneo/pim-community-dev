@@ -252,6 +252,17 @@ services:
             - '@pim_connector.writer.file.csv_product'
             - 10
 
+    pim_connector.step.csv_product_model.export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_connector.reader.database.product_model'
+            - '@pim_connector.processor.normalization.product_model'
+            - '@pim_connector.writer.file.csv_product_model'
+            - 10
+
     pim_connector.step.csv_category.export:
         class: '%pim_connector.step.item_step.class%'
         arguments:

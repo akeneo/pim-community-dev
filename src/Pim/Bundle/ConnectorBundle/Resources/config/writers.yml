@@ -171,6 +171,11 @@ services:
         arguments:
              - '@pim_connector.writer.file.product.column_sorter'
 
+    pim_connector.writer.file.product_model.flat_item_buffer_flusher:
+        class: '%pim_connector.writer.file.flat_item_buffer_flusher.class%'
+        arguments:
+             - '@pim_connector.writer.file.product_model.column_sorter'
+
     # CSV
     pim_connector.writer.file.csv:
         class: '%pim_connector.writer.file.csv.class%'
@@ -192,6 +197,16 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.product_localized'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.product.flat_item_buffer_flusher'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+            - ['pim_catalog_file', 'pim_catalog_image']
+
+    pim_connector.writer.file.csv_product_model:
+        class: '%pim_connector.writer.file.csv_product.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product_model_localized'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.product_model.flat_item_buffer_flusher'
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - ['pim_catalog_file', 'pim_catalog_image']
@@ -430,3 +445,9 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.association_type'
             - ['categories', 'enabled', 'family', 'parent', 'groups']
+
+    pim_connector.writer.file.product_model.column_sorter:
+        class: '%pim_connector.writer.file.default.column_sorter.class%'
+        arguments:
+            - '@pim_connector.array_converter.flat_to_standard.product.field_splitter'
+            - ['code', 'family_variant', 'parent', 'categories']
