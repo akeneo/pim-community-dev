@@ -104,5 +104,6 @@ default:
         Pim\Behat\Extension\PimFormatter\PimFormatterExtension: ~
 
     formatters:
+        pretty: true
         pim:
             output_path: app/build/logs/behat/
