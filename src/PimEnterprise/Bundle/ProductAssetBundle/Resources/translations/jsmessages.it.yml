@@ -58,7 +58,7 @@ pimee_product_asset:
     status:
       added: Aggiunto
       queued: Accodato
-      uploading: Caricamento…
+      uploading: Caricamento
       error: Errore
       success: Successo
     drag_and_drop: Trascina e rilascia qui i tuoi asset per caricarli o fai click qui
