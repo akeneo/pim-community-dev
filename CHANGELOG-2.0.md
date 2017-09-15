@@ -523,6 +523,7 @@
     The arguments of the old normalizer are now divided between both normalizers, also `Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer` is injected into `Pim\Bundle\EnrichBundle\Normalizer\VersionedAttributeNormalizer`.
 - PIM-6740: Remove service `pim_installer.yaml_persister`
 - PIM-6740: Add exception `Pim\Bundle\InstallerBundle\Exception\UnavailableCreationTimeException`
+- PIM-6228: remove escape parameter from csv imports.
 
 ### Methods
 
