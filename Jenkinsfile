@@ -60,9 +60,9 @@ stage("Build") {
                 sh "bin/console --ansi pim:installer:dump-require-paths"
             }
             container("node") {
-                sh "npm config set cache /shared/.npm --global"
-                sh "npm install --color=always"
-                sh "npm run webpack --color=always"
+                sh "yarn config set cache-folder /shared/.yarn"
+                sh "yarn install --no-progress"
+                sh "yarn run webpack"
             }
             container("docker") {
                 sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce ."
@@ -78,24 +78,24 @@ stage("Build") {
             sh "mkdir -m 777 vendor"
 
             container("php") {
-                sh "composer config --global process-timeout 900"
-                sh "php -d memory_limit=-1 /usr/bin/composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-scripts --ignore-platform-reqs --no-suggest"
+                sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-scripts --ignore-platform-reqs --no-suggest"
+
                 // Required to avoid permission error when "deleteDir()"
                 sh "chmod 777 -R vendor/akeneo"
+
                 dir('vendor/akeneo/pim-community-dev') {
                     deleteDir()
                     checkout scm
                 }
+
                 sh "php -d memory_limit=-1 /usr/bin/composer --ansi -n run-script post-update-cmd"
                 sh "bin/console --ansi assets:install"
                 sh "bin/console --ansi pim:installer:dump-require-paths"
             }
             container("node") {
-                sh "npm config set cache /shared/.npm --global"
-                // Required to avoid permission error
-                sh "npm config set unsafe-perm true"
-                sh "npm install --color=always"
-                sh "npm run webpack --color=always"
+                sh "yarn config set cache-folder /shared/.yarn"
+                sh "yarn install --no-progress"
+                sh "yarn run webpack"
             }
             container("docker") {
                 // Compatibility layer while the EE is not up to date with the new CI
@@ -146,8 +146,8 @@ stage("Test") {
             },
             "grunt": {
                 withNode({
-                    sh "cd /home/jenkins/pim && npm run webpack --color=always"
-                    sh "cd /home/jenkins/pim && npm run lint --color=always"
+                    sh "cd /home/jenkins/pim && yarn run webpack --no-progress"
+                    sh "cd /home/jenkins/pim && yarn run lint"
                 })
             },
             "php-coupling-detector": {
