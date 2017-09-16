@@ -27,11 +27,13 @@ Action performed.: Acció realitzada.
 Action is not performed.: Acció no realitzada.
 Please, select item to perform action.: Si us plau, seleccioneu l'element per realitzar l'acció.
 View per page: Vista per pàgina
+Enabled: Habilitat
+Disabled: Deshabilitat
+not_available: N/D
 "Yes": true
 "No": false
 oro.datagrid.entityHint: Entitat
 oro.datagrid.noentities: No s'han trobat registres
-oro.datagrid.noresults: "No s'han trobat resultats. Intenti canviar els criteris de cerca."
 oro.datagrid.nocolumns: Sense columnes configurades per aquesta graella
 oro.datagrid.pagination.label: "Pàgina"
 oro.datagrid.pagination.totalPages: "de {{ totalPages }}"

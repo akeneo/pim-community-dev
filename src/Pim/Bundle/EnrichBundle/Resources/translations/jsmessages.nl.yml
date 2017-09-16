@@ -137,7 +137,10 @@ pim_enrich:
         save: Opslaan
         cancel: Annuleren
     product:
+      index_title: Producten
       title: product
+      locale: Lokalisatie
+      category: Categorie
       btn:
         enabled: Ingeschakeld
         disabled: Uitgeschakeld
@@ -167,6 +170,9 @@ pim_enrich:
         updated: Laatst bijgewerkt
         family:
           title: Familie
+          none: Geen
+        family_variant:
+          title: Variant
           none: Geen
         groups:
           title: Groepen
@@ -908,6 +914,8 @@ batch_jobs:
     import.label: Associatietype-import
   csv_family_import:
     validation.label: Bestandsvalidatie
+  csv_family_variant_import:
+    validation.label: Bestandsvalidatie
   csv_group_import:
     label: Groep importeren in CSV
     validation.label: Bestandsvalidatie
@@ -969,6 +977,8 @@ batch_jobs:
     import.label: Attribuutoptie-import
   xlsx_family_import:
     label: Familie import in XLSX
+    validation.label: Bestandsvalidatie
+  xlsx_family_variant_import:
     validation.label: Bestandsvalidatie
   xlsx_product_export:
     label: Product export in XLSX

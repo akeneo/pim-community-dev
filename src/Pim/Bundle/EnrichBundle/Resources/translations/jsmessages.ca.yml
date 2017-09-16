@@ -137,7 +137,10 @@ pim_enrich:
         save: Desar
         cancel: Cancelar
     product:
+      index_title: Productes
       title: producte
+      locale: Configuració Regional
+      category: Categoria
       btn:
         enabled: Habilitat
         disabled: Deshabilitat
@@ -167,6 +170,9 @@ pim_enrich:
         updated: Darrera actualització
         family:
           title: Família
+          none: Cap
+        family_variant:
+          title: Variant
           none: Cap
         groups:
           title: Grups
@@ -943,6 +949,8 @@ batch_jobs:
     label: Importar famílies en CSV
     validation.label: Validar arxius
     import.label: Importar família
+  csv_family_variant_import:
+    validation.label: Validar arxius
   csv_group_import:
     label: Importar grups en CSV
     validation.label: Validar arxius
@@ -1006,6 +1014,8 @@ batch_jobs:
     label: Importació de família en XLSX
     validation.label: Validar arxius
     import.label: Importar família
+  xlsx_family_variant_import:
+    validation.label: Validar arxius
   xlsx_product_export:
     label: Exportació de producte en XLSX
     export.label: Exportar productes

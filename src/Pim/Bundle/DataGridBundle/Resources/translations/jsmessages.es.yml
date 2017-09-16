@@ -27,11 +27,13 @@ Action performed.: Acción realizada.
 Action is not performed.: Acción no realizada.
 Please, select item to perform action.: Por favor, seleccione elemento para realizar la acción.
 View per page: Vista por página
+Enabled: Habilitado
+Disabled: Inhabilitado
+not_available: N / A
 "Yes": true
 "No": false
 oro.datagrid.entityHint: Entidad
 oro.datagrid.noentities: No se encontraron registros
-oro.datagrid.noresults: "No se encontraron resultados. Intente cambiar el criterio de búsqueda."
 oro.datagrid.nocolumns: Sin columnas configuradas para esta grilla
 oro.datagrid.pagination.label: "Página"
 oro.datagrid.pagination.totalPages: "de {{ totalPages }}"

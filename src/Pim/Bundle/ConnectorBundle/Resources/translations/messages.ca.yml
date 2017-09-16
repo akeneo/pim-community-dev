@@ -72,6 +72,8 @@ batch_jobs:
     validation.label: Validar arxius
     import.label: Importar productes
     import_associations.label: Importar associacions
+  csv_product_model_import:
+    validation.label: Validar arxius
   csv_category_import:
     label: Importar categories en CSV
     validation.label: Validar arxius
@@ -92,6 +94,8 @@ batch_jobs:
     label: Importar famílies en CSV
     validation.label: Validar arxius
     import.label: Importar família
+  csv_family_variant_import:
+    validation.label: Validar arxius
   csv_group_import:
     label: Importar grups en CSV
     validation.label: Validar arxius
@@ -155,6 +159,8 @@ batch_jobs:
     label: Importació de família en XLSX
     validation.label: Validar arxius
     import.label: Importar família
+  xlsx_family_variant_import:
+    validation.label: Validar arxius
   xlsx_product_export:
     label: Exportació de producte en XLSX
     export.label: Exportar productes
@@ -163,6 +169,8 @@ batch_jobs:
     validation.label: Validar arxius
     import.label: Importar productes
     import_associations.label: Importar associacions
+  xlsx_product_model_import:
+    validation.label: Validar arxius
   xlsx_group_export:
     label: Exportació de grup en XLSX
     export.label: Exportar grups

@@ -137,7 +137,10 @@ pim_enrich:
         save: Spremi
         cancel: Poništi
     product:
+      index_title: Proizvodi
       title: proizvod
+      locale: Postavke jezika i regije
+      category: Kategorija
       btn:
         enabled: Omogućeno
         disabled: Onemogućeno
@@ -167,6 +170,9 @@ pim_enrich:
         updated: Posljednje Ažuriranje
         family:
           title: Obitelj
+          none: Niti jedan
+        family_variant:
+          title: Varijanta
           none: Niti jedan
         groups:
           title: Grupe
@@ -943,6 +949,8 @@ batch_jobs:
     label: Izvoz porodice u CSV
     validation.label: Provjera valjanosti datoteke
     import.label: Uvoz porodice
+  csv_family_variant_import:
+    validation.label: Provjera valjanosti datoteke
   csv_group_import:
     label: Uvoz grupa iz CSV
     validation.label: Provjera valjanosti datoteke
@@ -1006,6 +1014,8 @@ batch_jobs:
     label: Uvoz obitelji iz XLSX
     validation.label: Provjera valjanosti datoteke
     import.label: Uvoz porodice
+  xlsx_family_variant_import:
+    validation.label: Provjera valjanosti datoteke
   xlsx_product_export:
     label: Izvoz proizvoda u XLSX
     export.label: Izvoz proizvoda

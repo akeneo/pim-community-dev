@@ -1,5 +1,4 @@
 "oro_datagrid.no_data_hint %entityHint%": Сущность %entityHint% не существует.
-oro_datagrid.not_found_hint: Ничего не найдено. Попробуйте изменить критерии поиска.
 oro_datagrid.label_add_filter: Управление фильтрами
 oro_datagrid.label_loading_mask: Загрузка . . .
 oro.grid.mass_action.selected_rows: Выбранные строки
