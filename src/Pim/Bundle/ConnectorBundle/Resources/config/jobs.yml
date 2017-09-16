@@ -44,6 +44,7 @@ parameters:
     pim_connector.job_name.xlsx_product_export: 'xlsx_product_export'
     pim_connector.job_name.xlsx_product_import: 'xlsx_product_import'
     pim_connector.job_name.xlsx_product_model_import: 'xlsx_product_model_import'
+    pim_connector.job_name.xlsx_product_model_export: 'xlsx_product_model_export'
     pim_connector.job_name.xlsx_category_export: 'xlsx_category_export'
     pim_connector.job_name.xlsx_category_import: 'xlsx_category_import'
     pim_connector.job_name.xlsx_channel_export: 'xlsx_channel_export'
@@ -637,6 +638,17 @@ services:
             - '@akeneo_batch.job_repository'
             -
                 - '@pim_connector.step.xlsx_product.export'
+        tags:
+            - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
+
+    pim_connector.job.xlsx_product_model_export:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_connector.job_name.xlsx_product_model_export%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_connector.step.xlsx_product_model.export'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_connector.job.export_type%' }
 

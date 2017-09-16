@@ -96,6 +96,7 @@ services:
                 xlsx_group_type_export: pim-job-instance-xlsx-base-export
                 xlsx_locale_export: pim-job-instance-xlsx-base-export
                 xlsx_product_export: pim-job-instance-xlsx-product-export
+                xlsx_product_model_export: pim-job-instance-xlsx-product-model-export
                 csv_association_type_import: pim-job-instance-csv-base-import
                 csv_attribute_import: pim-job-instance-csv-base-import
                 csv_attribute_group_import: pim-job-instance-csv-base-import
