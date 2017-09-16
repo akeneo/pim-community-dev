@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Connector\Processor\Normalization;
 
 use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Item\ExecutionContext;
+use Akeneo\Component\Batch\Item\ItemProcessorInterface;
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\JobExecution;
@@ -16,6 +17,7 @@ use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Connector\Processor\BulkMediaFetcher;
+use Pim\Component\Connector\Processor\Normalization\ProductModelProcessor;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -42,12 +44,12 @@ class ProductModelProcessorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('\Pim\Component\Connector\Processor\Normalization\ProductModelProcessor');
+        $this->shouldHaveType(ProductModelProcessor::class);
     }
 
     function it_is_an_item_processor()
     {
-        $this->shouldImplement('\Akeneo\Component\Batch\Item\ItemProcessorInterface');
+        $this->shouldImplement(ItemProcessorInterface::class);
     }
 
     function it_processes_product_model_without_media(

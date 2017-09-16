@@ -4,6 +4,7 @@ parameters:
     pim_connector.job.job_parameters.default_values_provider.simple_yaml_export.class:        Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleYamlExport
     pim_connector.job.job_parameters.default_values_provider.product_csv_export.class:        Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvExport
     pim_connector.job.job_parameters.default_values_provider.product_xlsx_export.class:       Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductXlsxExport
+    pim_connector.job.job_parameters.default_values_provider.product_model_csv_export.class:  Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvExport
 
     pim_connector.job.job_parameters.default_values_provider.simple_csv_import.class:         Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvImport
     pim_connector.job.job_parameters.default_values_provider.simple_xlsx_import.class:        Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleXlsxImport
@@ -31,7 +32,6 @@ services:
                 - 'csv_attribute_group_export'
                 - 'csv_currency_export'
                 - 'csv_group_type_export'
-                - 'csv_product_model_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 
@@ -73,6 +73,15 @@ services:
             - '@pim_catalog.repository.locale'
             -
                 - 'xlsx_product_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_connector.job.job_parameters.default_values_provider.product_model_csv_export:
+        class: '%pim_connector.job.job_parameters.default_values_provider.product_model_csv_export.class%'
+        arguments:
+            - '@pim_connector.job.job_parameters.default_values_provider.simple_csv_export'
+            -
+                - 'csv_product_model_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
 

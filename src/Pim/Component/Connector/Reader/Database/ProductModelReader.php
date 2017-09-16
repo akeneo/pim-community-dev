@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Connector\Reader\Database;
 
 use Akeneo\Component\Batch\Item\InitializableInterface;

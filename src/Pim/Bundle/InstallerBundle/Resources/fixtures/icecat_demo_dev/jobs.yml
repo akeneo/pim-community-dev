@@ -73,6 +73,7 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+            with_media: true
     csv_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import

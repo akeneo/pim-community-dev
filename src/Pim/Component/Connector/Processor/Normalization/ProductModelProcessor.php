@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Connector\Processor\Normalization;
 
 use Akeneo\Component\Batch\Item\DataInvalidItem;
@@ -110,7 +112,7 @@ class ProductModelProcessor implements ItemProcessorInterface, StepExecutionAwar
      * @param ProductModelInterface $productModel
      * @param string                $directory
      */
-    protected function fetchMedia(ProductModelInterface $productModel, $directory)
+    private function fetchMedia(ProductModelInterface $productModel, $directory)
     {
         $identifier = $productModel->getCode();
         $this->mediaFetcher->fetchAll($productModel->getValues(), $directory, $identifier);
