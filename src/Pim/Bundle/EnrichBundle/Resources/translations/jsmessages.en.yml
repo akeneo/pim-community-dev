@@ -1211,6 +1211,9 @@ batch_jobs:
     xlsx_product_export:
         label: Product export in XLSX
         export.label: Product export
+    xlsx_product_model_export:
+        label: Product model export in XLSX
+        export.label: Product model export
     xlsx_product_import:
         label: Product import in XLSX
         validation.label: File validation

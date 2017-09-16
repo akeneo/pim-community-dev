@@ -12,6 +12,7 @@ parameters:
     pim_connector.writer.file.yaml.class:                          Pim\Component\Connector\Writer\File\Yaml\Writer
     pim_connector.writer.file.media_exporter_path_generator.class: Pim\Component\Connector\Writer\File\MediaExporterPathGenerator
     pim_connector.writer.file.xlsx_product.class:                  Pim\Component\Connector\Writer\File\Xlsx\ProductWriter
+    pim_connector.writer.file.xlsx_product_model.class:            Pim\Component\Connector\Writer\File\Xlsx\ProductModelWriter
     pim_connector.writer.file.xlsx.class:                          Pim\Component\Connector\Writer\File\Xlsx\Writer
     pim_connector.writer.file.default.column_sorter.class:         Pim\Component\Connector\Writer\File\DefaultColumnSorter
     pim_connector.writer.file.product.column_sorter.class:         Pim\Component\Connector\Writer\File\ProductColumnSorter
@@ -320,6 +321,16 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.product_localized'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.product.flat_item_buffer_flusher'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+            - ['pim_catalog_file', 'pim_catalog_image']
+
+    pim_connector.writer.file.xlsx_product_model:
+        class: '%pim_connector.writer.file.xlsx_product_model.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product_model_localized'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.product_model.flat_item_buffer_flusher'
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - ['pim_catalog_file', 'pim_catalog_image']
