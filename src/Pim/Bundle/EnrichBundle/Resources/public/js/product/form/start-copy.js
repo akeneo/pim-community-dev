@@ -23,7 +23,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'AknDropdown-menuLink',
+            className: 'AknDropdown-menuLink start-copying',
             events: {
                 'click': 'startCopy'
             },

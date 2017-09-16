@@ -947,7 +947,7 @@ pim_enrich:
                     label: Choose products
                 choose:
                     title: Products bulk actions
-                    label_count: Select your action
+                    label_count: "] 0, Inf [Select your action"
                 configure:
                     label: Configure
                 confirm:
@@ -996,7 +996,7 @@ pim_enrich:
                     label: Choose families
                 choose:
                     title: Families bulk actions
-                    label_count: Select your action
+                    label_count: "] 0, Inf [Select your action"
                 configure:
                     label: Configure
                 confirm:

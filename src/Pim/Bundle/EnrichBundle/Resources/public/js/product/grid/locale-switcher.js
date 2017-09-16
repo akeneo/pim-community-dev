@@ -63,7 +63,10 @@ define(
              */
             render() {
                 const currentLocaleCode = UserContext.get('catalogLocale');
-                const currentLocale = _.find(this.locales, { code: currentLocaleCode });
+                let currentLocale = _.find(this.locales, { code: currentLocaleCode });
+                if (undefined === currentLocale) {
+                    currentLocale = _.first(this.locales);
+                }
 
                 this.$el.empty().append(this.template({
                     localeLabel: __('pim_enrich.entity.product.locale'),

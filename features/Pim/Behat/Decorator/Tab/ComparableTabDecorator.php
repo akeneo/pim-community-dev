@@ -14,7 +14,7 @@ class ComparableTabDecorator extends ElementDecorator
     use SpinCapableTrait;
 
     protected $selectors = [
-        'Start copy button' => '.attribute-copy-actions .start-copying',
+        'Start copy button' => '.start-copying',
         'Stop copy button'  => '.attribute-copy-actions .stop-copying'
     ];
 
@@ -23,10 +23,23 @@ class ComparableTabDecorator extends ElementDecorator
      */
     public function startComparison()
     {
-        $startCopyBtn = $this->spin(function () {
-            return $this->find('css', $this->selectors['Start copy button']);
-        }, 'Cannot find the start copy button');
-        $startCopyBtn->click();
+        $this->spin(function () {
+            $dropdown = $this->getBody()->find('css', '.secondary-actions');
+            if (null === $dropdown) {
+                return false;
+            }
+            if (!$dropdown->hasClass('open')) {
+                $dropdown->click();
+            }
+
+            $start = $dropdown->find('css', $this->selectors['Start copy button']);
+            if (null === $start) {
+                return false;
+            }
+            $start->click();
+
+            return true;
+        }, 'Can not click on start copy button');
     }
 
     /**
