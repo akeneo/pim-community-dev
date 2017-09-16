@@ -39,7 +39,7 @@ define(
                 '<span class="AknFilterBox-filterCaret"></span>' +
             '</div>' +
             '<div class="filter-criteria dropdown-menu" />' +
-            '<% if (canDisable) { %><a href="<%= nullLink %>" class="AknFilterBox-disableFilter disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>'
+            '<% if (canDisable) { %><div class="AknFilterBox-disableFilter disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></div><% } %>'
         ),
 
         /**
@@ -188,6 +188,8 @@ define(
          * @return {*}
          */
         render: function () {
+            AbstractFilter.prototype.render.apply(this, arguments);
+
             this.$el.empty();
             this.$el.append(
                 this.template({
@@ -252,7 +254,7 @@ define(
          */
         _showCriteria: function() {
             this.$(this.criteriaSelector).show();
-            this._updateCriteriaSelectorPosition(this.$(this.criteriaSelector));
+            this._updateCriteriaSelectorPosition();
             this._focusCriteria();
             this._setButtonPressed(this.$(this.criteriaSelector), true);
             setTimeout(_.bind(function() {

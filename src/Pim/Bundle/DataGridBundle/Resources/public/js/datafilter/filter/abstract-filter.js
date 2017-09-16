@@ -165,6 +165,13 @@ function($, _, Backbone, app) {
         },
 
         /**
+         * {@inheritdoc}
+         */
+        render() {
+            $('.column-inner').scroll(this._updateCriteriaSelectorPosition.bind(this));
+        },
+
+        /**
          * Disable filter
          *
          * @return {*}
@@ -439,14 +446,6 @@ function($, _, Backbone, app) {
             } else {
                 element.parent().removeClass(this.buttonActiveClass);
             }
-
-            if (rightOffset < 0) {
-                $element.addClass('AknDropdown-menu--right');
-                $element.removeClass('AknDropdown-menu--alignLeft');
-            } else {
-                $element.addClass('AknDropdown-menu--alignLeft');
-                $element.removeClass('AknDropdown-menu--right');
-            }
         },
 
         /**
@@ -469,29 +468,58 @@ function($, _, Backbone, app) {
          * their position.
          *
          * This next function will find the best position to display then (aligned with the current filter).
-         *
-         * {@param} DOMElement criteria
          */
-        _updateCriteriaSelectorPosition(criteria) {
+        _updateCriteriaSelectorPosition() {
             const body = $('body');
 
-            criteria.css({ position: 'fixed' });
+            const criteria = this.getCriteria();
+            if (criteria.is(':visible')) {
+                criteria.css({ position: 'fixed' });
 
-            let expectedLeft = this.$el.offset().left;
-            if ((expectedLeft + criteria.outerWidth() > body.width()) &&
-                expectedLeft + this.$el.width() - criteria.outerWidth() > 0) {
-                criteria.css({ left: expectedLeft + this.$el.width() - criteria.outerWidth() });
-            } else {
-                criteria.css({ left: expectedLeft });
-            }
+                let expectedLeft = this.$el.offset().left;
+                if ((expectedLeft + criteria.outerWidth() > body.width()) &&
+                    expectedLeft + this.$el.width() - criteria.outerWidth() > 0) {
+                    criteria.css({ left: expectedLeft + this.$el.width() - criteria.outerWidth() });
+                } else {
+                    criteria.css({ left: expectedLeft });
+                }
 
-            let expectedTop = this.$el.offset().top;
-            if ((expectedTop + criteria.outerHeight() > body.height()) &&
-                expectedTop + this.$el.height() - criteria.outerHeight() > 0) {
-                criteria.css({ top: expectedTop + this.$el.height() - criteria.outerHeight() });
-            } else {
-                criteria.css({ top: expectedTop });
+                let expectedTop = this.$el.offset().top;
+                if ((expectedTop + criteria.outerHeight() > body.height()) &&
+                    expectedTop + this.$el.height() - criteria.outerHeight() > 0) {
+                    criteria.css({ top: expectedTop + this.$el.height() - criteria.outerHeight() });
+                } else {
+                    criteria.css({ top: expectedTop });
+                }
             }
         },
+
+        /**
+         * Returns the DOM element of the criteria
+         *
+         * @returns {*}
+         */
+        getCriteria() {
+            return this.$(this.criteriaSelector);
+        },
+
+        /**
+         * Highlights the current dropdown
+         *
+         * @param {String} value
+         * @param {String} selector (ex: '.operator')
+         */
+        _highlightDropdown(value, selector) {
+            this.$el.find(selector + ' .AknDropdown-menuLink')
+                .removeClass('AknDropdown-menuLink--active')
+                .removeClass('active');
+
+            const currentChoice = this.$el.find(selector + ' *[data-value="' + value + '"]');
+            currentChoice.parent()
+                .addClass('AknDropdown-menuLink--active')
+                .addClass('active');
+
+            this.$el.find(selector + ' .AknActionButton-highlight').html(currentChoice.text());
+        }
     });
 });

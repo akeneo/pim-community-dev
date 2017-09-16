@@ -84,6 +84,7 @@ define(
                         value: this._getDisplayValue().value
                     })
                 );
+
                 return this;
             },
 
@@ -92,28 +93,13 @@ define(
              */
             _writeDOMValue: function (value) {
                 NumberFilter.prototype._writeDOMValue.apply(this, arguments);
+                if (typeof(value.value) === 'object') {
+                    this._setInputValue(this.criteriaValueSelectors.value, '');
+                }
                 this._setInputValue(this.criteriaValueSelectors.currency, value.currency);
-                this._highlightCurrency(value.currency);
+                this._highlightDropdown(value.currency, '.currency');
 
                 return this;
-            },
-
-            /**
-             * Highlights the current currency
-             *
-             * @param currency
-             */
-            _highlightCurrency(currency) {
-                this.$el.find('.currency .AknDropdown-menuLink')
-                    .removeClass('AknDropdown-menuLink--active')
-                    .removeClass('active');
-
-                const currentCurrencyChoice = this.$el.find('.currency .currency_choice[data-value=' + currency + ']');
-                currentCurrencyChoice.parent()
-                    .addClass('AknDropdown-menuLink--active')
-                    .addClass('active');
-
-                this.$el.find('.currency .AknActionButton-highlight').html(currentCurrencyChoice.text());
             },
 
             /**
@@ -138,6 +124,7 @@ define(
                     return this.placeholder;
                 } else {
                     const option = this._getChoiceOption(value.type);
+
                     return option.label + ' ' + value.value + ' ' + value.currency;
                 }
             },
@@ -155,26 +142,11 @@ define(
              * @inheritDoc
              */
             _onValueUpdated: function(newValue, oldValue) {
-                var menu = this.$('.choicefilter .dropdown-menu');
-
-                menu.find('li a').each(function() {
-                    var item = $(this),
-                        value = item.data('value');
-
-                    if (item.parent().hasClass('active')) {
-                        if (value == newValue.type || value == newValue.currency) {
-                            item.parent().removeClass('active');
-                        } else {
-                        }
-                    } else if (value == newValue.type || value == newValue.currency) {
-                        item.parent().addClass('active');
-                        item.closest('.AknDropdown').find('AknActionButton').html(item.html() + '<span class="AknActionButton-caret AknCaret"></span>');
-                    }
-                });
+                this._highlightDropdown(newValue.currency, '.currency');
                 if (_.contains(['empty', 'not empty'], newValue.type)) {
-                    this.$(this.criteriaValueSelectors.value).hide();
+                    this._disableInput();
                 } else {
-                    this.$(this.criteriaValueSelectors.value).show();
+                    this._enableInput();
                 }
 
                 this._triggerUpdate(newValue, oldValue);
@@ -202,11 +174,10 @@ define(
             _onClickChoiceValue: function(e) {
                 NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
                 if ($(e.currentTarget).attr('data-input-toggle')) {
-                    const filterContainer = $(e.currentTarget).closest('.filter-item');
                     if (_.contains(['empty', 'not empty'], $(e.currentTarget).attr('data-value'))) {
-                        filterContainer.find(this.criteriaValueSelectors.value).hide();
+                        this._disableInput();
                     } else {
-                        filterContainer.find(this.criteriaValueSelectors.value).show();
+                        this._enableInput();
                     }
                 }
             },
@@ -229,9 +200,27 @@ define(
             _onSelectCurrency: function(e) {
                 const value = $(e.currentTarget).find('.currency_choice').attr('data-value');
                 $(this.criteriaValueSelectors.currency).val(value);
-                this._highlightCurrency(value);
+                this._highlightDropdown(value, '.currency');
 
                 e.preventDefault();
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            _disableInput() {
+                this.$el.find(this.criteriaValueSelectors.value).hide();
+                this.$el.find('.AknFilterChoice-currency')
+                    .addClass('AknFilterChoice-currency--centered');
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            _enableInput() {
+                this.$el.find(this.criteriaValueSelectors.value).show();
+                this.$el.find('.AknFilterChoice-currency')
+                    .removeClass('AknFilterChoice-currency--centered');
             }
         });
     }

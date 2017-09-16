@@ -19,12 +19,12 @@
     <div class="AknFilterChoice-inputContainer">
         <input type="text" name="value" class="AknTextField select-field" value="<%- value %>"/>
         <div class="AknFilterChoice-currency">
-            <div class="AknDropdown  currency">
+            <div class="AknDropdown currency">
                 <div class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
                     <span class="AknActionButton-highlight"><%- selectedCurrency %></span>
                     <span class="AknActionButton-caret"></span>
                 </div>
-                <div class="AknDropdown-menu currency">
+                <div class="AknDropdown-menu">
                     <div class="AknDropdown-menuTitle"><%- currencyLabel %></div>
                     <% _.each(currencies, function (currency) { %>
                     <div class="AknDropdown-menuLink<% if (selectedCurrency == currency) { %> AknDropdown-menuLink--active active<% } %>">

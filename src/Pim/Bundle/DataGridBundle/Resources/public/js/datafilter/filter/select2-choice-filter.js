@@ -66,7 +66,7 @@ define(
 
             _onSelectOperator: function(e) {
                 const value = $(e.currentTarget).find('.operator_choice').attr('data-value');
-                this._highlightOperator(value);
+                this._highlightDropdown(value, '.operator');
 
                 if (_.contains(['empty', 'not empty'], value)) {
                     this._disableInput();
@@ -81,18 +81,7 @@ define(
              *
              * @param operator
              */
-            _highlightOperator(operator) {
-                this.$el.find('.operator .AknDropdown-menuLink')
-                    .removeClass('AknDropdown-menuLink--active')
-                    .removeClass('active');
 
-                const currentOperatorChoice = this.$el.find('.operator .operator_choice[data-value="' + operator + '"]');
-                currentOperatorChoice.parent()
-                    .addClass('AknDropdown-menuLink--active')
-                    .addClass('active');
-
-                this.$el.find('.operator .AknActionButton-highlight').html(currentOperatorChoice.text());
-            },
 
             _getSelect2Config: function() {
                 var config = {
@@ -140,8 +129,7 @@ define(
                 } else {
                     this._setInputValue(this.criteriaValueSelectors.value, value.value);
                 }
-                this._setInputValue(this.criteriaValueSelectors.type, value.type);
-                this._highlightOperator(value.type);
+                this._highlightDropdown(value.type, '.operator');
 
                 return this;
             },

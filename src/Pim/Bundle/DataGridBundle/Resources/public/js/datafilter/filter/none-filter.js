@@ -15,21 +15,6 @@ function($, _, __, AbstractFilter) {
      */
     return AbstractFilter.extend({
         /**
-         * Filter template
-         *
-         * @property
-         */
-        template: _.template(
-            '<button type="button" class="btn filter-criteria-selector oro-drop-opener">' +
-                '<% if (showLabel) { %><%= label %>: <% } %>' +
-                '<span class="filter-criteria-hint"><%= criteriaHint %></span>' +
-                '<span class="caret"></span>' +
-            '</button>' +
-            '<div class="filter-criteria dropdown-menu" />' +
-            '<% if (canDisable) { %><a href="<%= nullLink %>" class="AknFilterBox-disableFilter disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>'
-        ),
-
-        /**
          * Template for filter criteria
          *
          * @property

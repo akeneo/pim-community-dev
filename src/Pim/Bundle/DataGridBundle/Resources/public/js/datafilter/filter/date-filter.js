@@ -126,15 +126,8 @@ function(
          * @param {Event} e
          */
         _onSelectOperator: function (e) {
-            this.$el.find('.AknDropdown-menuLink')
-                .removeClass('AknDropdown-menuLink--active')
-                .removeClass('active');
-            $(e.currentTarget)
-                .addClass('AknDropdown-menuLink--active')
-                .addClass('active');
-            this.$el.find('.AknActionButton-highlight').html($(e.currentTarget).text());
-
             const value = $(e.currentTarget).find('.operator_choice').attr('data-value');
+            this._highlightDropdown(value, '.operator');
             this._displayFilterType(value);
 
             e.preventDefault();

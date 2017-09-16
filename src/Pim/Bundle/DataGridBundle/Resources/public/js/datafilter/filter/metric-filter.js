@@ -90,27 +90,9 @@ define(
             _writeDOMValue: function (value) {
                 NumberFilter.prototype._writeDOMValue.apply(this, arguments);
                 this._setInputValue(this.criteriaValueSelectors.unit, value.unit);
-                this._highlightUnit(value.unit);
+                this._highlightDropdown(value.unit, '.unit');
 
                 return this;
-            },
-
-            /**
-             * Highlights the current unit
-             *
-             * @param unit
-             */
-            _highlightUnit(unit) {
-                this.$el.find('.unit .AknDropdown-menuLink')
-                    .removeClass('AknDropdown-menuLink--active')
-                    .removeClass('active');
-
-                const currentUnitChoice = this.$el.find('.unit .unit_choice[data-value=' + unit + ']');
-                currentUnitChoice.parent()
-                    .addClass('AknDropdown-menuLink--active')
-                    .addClass('active');
-
-                this.$el.find('.unit .AknActionButton-highlight').html(currentUnitChoice.text());
             },
 
             /**
@@ -179,22 +161,7 @@ define(
              * @inheritDoc
              */
             _onValueUpdated: function(newValue, oldValue) {
-                var menu = this.$('.choicefilter .dropdown-menu');
-
-                menu.find('li a').each(function() {
-                    var item = $(this),
-                        value = item.data('value');
-
-                    if (item.parent().hasClass('active')) {
-                        if (value == newValue.type || value == newValue.unit) {
-                            item.parent().removeClass('active');
-                        } else {
-                        }
-                    } else if (value == newValue.type || value == newValue.unit) {
-                        item.parent().addClass('active');
-                        item.closest('.btn-group').find('button').html(item.html() + '<span class="caret"></span>');
-                    }
-                });
+                this._highlightDropdown(newValue.unit, '.unit');
                 if (_.contains(['empty', 'not empty'], newValue.type)) {
                     this.$(this.criteriaValueSelectors.value).hide();
                     this.$('.AknFilterChoice-unit').hide();
@@ -255,7 +222,7 @@ define(
             _onSelectUnit: function(e) {
                 const value = $(e.currentTarget).find('.unit_choice').attr('data-value');
                 $(this.criteriaValueSelectors.unit).val(value);
-                this._highlightUnit(value);
+                this._highlightDropdown(value.unit, '.unit');
 
                 e.preventDefault();
             },

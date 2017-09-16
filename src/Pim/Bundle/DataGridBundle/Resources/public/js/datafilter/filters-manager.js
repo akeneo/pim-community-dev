@@ -6,7 +6,10 @@ define(
         'backbone',
         'oro/mediator',
         'oro/multiselect-decorator',
-        'pim/template/datagrid/add-filter-select'
+        'pim/template/datagrid/add-filter-select',
+        'pim/template/datagrid/add-filter-button',
+        'pim/template/datagrid/done-container',
+        'pim/template/datagrid/done-button'
     ],
     function(
         __,
@@ -15,7 +18,10 @@ define(
         Backbone,
         mediator,
         MultiselectDecorator,
-        addFilterSelectTemplate
+        addFilterSelectTemplate,
+        addFilterButtonTemplate,
+        doneContainerTemplate,
+        doneButtonTemplate
     ) {
     /**
      * View that represents all grid filters
@@ -37,13 +43,6 @@ define(
         filters: {},
 
         /**
-         * Container tag name
-         *
-         * @property
-         */
-        tagName: 'div',
-
-        /**
          * Display the 'manage filters' button or not
          *
          * @property
@@ -61,12 +60,10 @@ define(
             return _.result(this.options, 'filtersAsColumn', false);
         },
 
-        /**
-         * Filter list template
-         *
-         * @property
-         */
         addButtonTemplate: _.template(addFilterSelectTemplate),
+        addFilterButtonTemplate: _.template(addFilterButtonTemplate),
+        doneContainerTemplate: _.template(doneContainerTemplate),
+        doneButtonTemplate: _.template(doneButtonTemplate),
 
         /**
          * Filter list input selector
@@ -181,7 +178,7 @@ define(
         /**
          * Closes the panel when the user clicks on Done button
          */
-        _onDone() {
+        _onClose() {
             this.selectWidget.multiselect('close');
         },
 
@@ -337,19 +334,19 @@ define(
                         left: this._getLeftStartPosition()
                     },
                     classes: 'AknFilterBox-addFilterButton filter-list select-filter-widget',
-                    beforeopen: $.proxy(function () {
+                    beforeopen: () => {
                         this.selectWidget.getWidget().css({ left: this._getLeftStartPosition() });
                         this._addDoneButton();
 
                         return true;
-                    }, this),
-                    open: $.proxy(function () {
+                    },
+                    open: () => {
                         if (this.$el.is(':visible')) {
                             this.selectWidget.onOpenDropdown();
                             this._updateDropdownPosition();
                         }
-                    }, this),
-                    beforeclose: $.proxy(function() {
+                    },
+                    beforeclose: () => {
                         if (this.selectWidget.getWidget().position().left <= this._getLeftStartPosition()) {
                             return true;
                         }
@@ -359,7 +356,7 @@ define(
                         setTimeout(() => this.selectWidget.multiselect('close'), 500);
 
                         return false;
-                    }, this)
+                    }
                 }
             });
 
@@ -367,23 +364,23 @@ define(
             this.selectWidget.getWidget().addClass('pimmultiselect');
 
             this.$('.filter-list span:first').replaceWith(
-                '<div id="add-filter-button" >Filters</div>'
+                this.addFilterButtonTemplate({
+                    label: __('pim_enrich.entity.product.filters')
+                })
             );
+
         },
 
         /**
          * Adds a done button in the bottom of the multiselect
          */
         _addDoneButton() {
-            if (!this.selectWidget.getWidget().find('.done-button').length) {
-                const button = $(
-                    '<div class="AknButton AknButton--apply done-button">'
-                    + __('pim.grid.category_filter.done') +
-                    '</div>'
-                );
-                button.on('click', () => this._onDone());
-
-                const container = $('<div class="AknColumn-bottomButtonContainer"></div>');
+            if (!this.selectWidget.getWidget().find('.close').length) {
+                const button = $(this.doneButtonTemplate({
+                    label: __('pim.grid.category_filter.done')
+                }));
+                button.on('click', () => this._onClose());
+                const container = $(this.doneContainerTemplate());
                 container.append(button);
                 this.selectWidget.getWidget().append(container);
             }

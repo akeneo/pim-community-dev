@@ -690,6 +690,7 @@
           $('<div class="dropdown-backdrop"/>').insertBefore($(this)).on('click', clearMenus)
         }
 
+        // This little code block will set correct position for dropdown elements.
         const gap = 30;
         const outerWidth = $parent.find('.AknDropdown-menu').outerWidth();
         const outerHeight = $parent.find('.AknDropdown-menuLink').length * 26 + 44;

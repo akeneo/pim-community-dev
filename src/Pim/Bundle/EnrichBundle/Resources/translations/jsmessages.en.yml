@@ -165,6 +165,7 @@ pim_enrich:
             locale: Locale
             category: Category
             create: Create product
+            filters: Filters
             btn:
                 enabled: Enabled
                 disabled: Disabled
