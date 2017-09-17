@@ -46,9 +46,24 @@
 .select2-drop {
   border-radius: 0 0 2px 2px;
   color: @AknDefaultFontColor;
+  padding: 15px 20px;
 
   &.select2-drop-above.select2-drop-active {
     border-color: @AknBorderColor;
+  }
+
+  .select2-search {
+    border-bottom: 1px solid @AknLightPurple;
+
+    .select2-input {
+      height: 30px;
+      line-height: 30px;
+      background: url("../../images/icon-search-purple.svg") no-repeat 0 5px;
+      background-size: 20px;
+      border: none;
+      padding-left: 25px;
+      color: @AknLightPurple;
+    }
   }
 }
 
@@ -59,7 +74,7 @@
   }
 
   .select2-result-label {
-    line-height: 24px;
+    line-height: 40px;
     padding: 0 4px;
     min-height: 0;
   }
@@ -80,13 +95,6 @@
   padding-top: 4px;
 
   input {
-    line-height: @AknFormHeight;
-    color: @AknDefaultFontColor;
-    border: 1px solid @AknBorderColor;
-    border-radius: 2px;
-    padding: 0 8px;
-    background: none;
-
     &.select2-active {
       background: none;
     }
@@ -264,35 +272,9 @@
     border-top: 1px solid @AknBorderColor;
     border-radius: 2px;
 
-    .select2-search {
-      padding: 15px 0 5px 0;
-      border-bottom: 1px solid @AknLightPurple;
-      margin-left: 20px;
-      width: ~"calc(100% - 40px)";
-      display: flex;
-
-      input {
-        height: 30px;
-        line-height: 30px;
-        background: url("../../images/icon-search-purple.svg") no-repeat 0 5px;
-        background-size: 20px;
-        border: none;
-        padding-left: 25px;
-        color: @AknLightPurple;
-      }
-    }
-
     .select2-results {
-      margin: 0;
-      padding: 15px 20px;
-
       li.select2-result {
         font-size: @AknFontSizeBig;
-        line-height: 40px;
-
-        .select2-result-label {
-          line-height: 40px;
-        }
 
         &.select2-highlighted {
           color: @AknLightPurple;

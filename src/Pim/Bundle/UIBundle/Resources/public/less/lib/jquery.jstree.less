@@ -8,6 +8,8 @@
   & > ul {
     padding: 20px 0 50px 0;
     margin-left: -20px;
+    overflow: auto;
+    max-height: ~"calc(100vh - 223px)";
 
     .jstree-icon(@url) {
       background: url(@url) 50% 50% no-repeat;
@@ -164,16 +166,22 @@
   }
 
   .jstree-footer {
-    background: lighten(@AknGrey, 25%);;
+    position: absolute;
+    width: ~"calc(100% - 40px)";
     border-top: 1px solid @AknBorderColor;
     bottom: 0;
     display: block;
-    width: 100%;
     line-height: 32px;
     overflow: hidden;
+    padding: 10px 0 20px 0;
 
-    label {
-      padding: 0 10px;
+    .control-label {
+      display: block;
+      line-height: 20px;
+    }
+
+    .pull-left, .pull-right {
+      float: none;
     }
   }
 }

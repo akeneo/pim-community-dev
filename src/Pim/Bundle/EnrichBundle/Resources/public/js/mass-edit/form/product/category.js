@@ -29,7 +29,6 @@ define(
     ) {
         return BaseOperation.extend({
             template: _.template(template),
-            events: {},
             currentTree: null,
             categoryCache: {},
             selectedCategories: [],

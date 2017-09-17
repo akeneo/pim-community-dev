@@ -36,6 +36,7 @@ define(
              */
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:category_updated', this.updateValue);
+                this.listenTo(this.getRoot(), 'grid:third_column:toggle', this.updateHighlight);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -92,6 +93,14 @@ define(
                 this.categoryLabel = value.categoryLabel;
                 this.treeLabel = value.treeLabel;
 
+                this.render();
+            },
+
+            /**
+             * Updates the highlighted categories
+             */
+            updateHighlight() {
+                this.isHighlited = !this.isHighlited;
                 this.render();
             }
         });

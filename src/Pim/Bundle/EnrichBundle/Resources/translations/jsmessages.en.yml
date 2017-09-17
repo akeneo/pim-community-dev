@@ -129,6 +129,7 @@ pim:
 
 # Jstree context menu actions
 jstree.create: Create
+jstree.done: Done
 switch_on: "Yes"
 switch_off: "No"
 
@@ -228,7 +229,7 @@ pim_enrich:
             media:
                 upload: Drag and drop to upload or click here
             create_popin:
-                title: Create a new product
+                title: Create
                 labels:
                     family: Choose a family
                     save: Save
@@ -259,7 +260,7 @@ pim_enrich:
                 save: Save
             title: association type
             create_popin:
-                title: Create a new association type
+                title: Create
             message:
                 created: Association type successfully created
         group_type:
@@ -278,7 +279,7 @@ pim_enrich:
                 save: Save
             title: group type
             create_popin:
-                title: Create a new group type
+                title: Create
             message:
                 created: Group type successfully created
         channel:
@@ -315,7 +316,7 @@ pim_enrich:
             btn:
                 save: Save
             create_popin:
-                title: Create a new family
+                title: Create
             message:
                 created: Family successfully created
         attribute_option:
@@ -339,7 +340,7 @@ pim_enrich:
                 updated: Updated
                 updated_by: Updated by
             create_popin:
-                title: Create a new group
+                title: Create
             message:
                 created: Group successfully created
         job_instance:
@@ -381,7 +382,7 @@ pim_enrich:
                 update_successful: Attribute group successfully updated
         api_connection:
             create_popin:
-                title: Create a new API connection
+                title: Create
             message:
                 created: API connection successfully created
     confirmation:
@@ -882,7 +883,7 @@ pim_enrich:
             create_btn: Create import profile
             list:       Select a job
             create_popin:
-                title: Create a new import profile
+                title: Create
             message:
                 created: Import profile successfully created
         import_history:
@@ -894,7 +895,7 @@ pim_enrich:
             title:      Export profile overview
             create_btn: Create export profile
             create_popin:
-                title: Create a new export profile
+                title: Create
             message:
                 created: Export profile successfully created
         export_history:
@@ -945,8 +946,8 @@ pim_enrich:
                 select:
                     label: Choose products
                 choose:
-                    label: Choose operation
-                    labelCount: "{1}Select your action for <span class=\"AknFullPage-title--highlight\">the product</span>|] 1, Inf [Select your action for the <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    title: Products bulk actions
+                    label_count: "] 0, Inf [Select your action"
                 configure:
                     label: Configure
                 confirm:
@@ -958,16 +959,16 @@ pim_enrich:
             operation:
                 change_status:
                     label: Change status
-                    label_count: "{1}Change status of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    label_count: "{1}Change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The selected products will be enabled or disabled.
                     field: To enable
                 edit_common:
                     label: Edit common attributes
-                    label_count: "{1}Edit common attributes of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit common attributes <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    label_count: "{1}Edit common attributes of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit common attributes of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The selected product's attributes will be edited with the following data for the locale {{ locale }} and the channel {{ scope }}, chosen in the products grid.
                 change_family:
                     label: Change family
-                    label_count: "{1}Change family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The family of the selected products will be changed to the chosen family
                     field: Family
                 add_to_group:
@@ -994,8 +995,8 @@ pim_enrich:
                 select:
                     label: Choose families
                 choose:
-                    label: Choose operation
-                    labelCount: "{1}Select your action for <span class=\"AknFullPage-title--highlight\">the family</span>|] 1, Inf [Select your action for the <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
+                    title: Families bulk actions
+                    label_count: "] 0, Inf [Select your action"
                 configure:
                     label: Configure
                 confirm:

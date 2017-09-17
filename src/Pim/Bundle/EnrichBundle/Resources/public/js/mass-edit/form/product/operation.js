@@ -46,6 +46,15 @@ define(
             },
 
             /**
+             * Returns the title of the operation
+             *
+             * @returns {string}
+             */
+            getTitle() {
+                return __(this.config.title);
+            },
+
+            /**
              * Returns the label with the count of impacted elements
              *
              * @returns {String}

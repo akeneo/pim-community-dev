@@ -7,6 +7,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    line-height: 32px;
   }
 
   &-noDataImage {
@@ -29,5 +30,9 @@
     font-size: @AknFontSizeBigger;
     line-height: 24px;
     text-align: center;
+  }
+
+  &--withoutNoDataPanel &-noData {
+    display: none;
   }
 }

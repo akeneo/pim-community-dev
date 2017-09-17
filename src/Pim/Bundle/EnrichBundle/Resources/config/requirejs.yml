@@ -666,6 +666,7 @@ config:
         pim/product-edit-form/download-pdf:                      pimenrich/js/product/form/download-pdf
         pim/product-edit-form/attributes:                        pimenrich/js/product/form/attributes
         pim/product-edit-form/creation/identifier:               pimenrich/js/product/form/creation/identifier
+        pim/product-edit-form/start-copy:                        pimenrich/js/product/form/start-copy
 
         # Product model
         pim/product-model-edit-form/meta/family-variant: pimenrich/js/product-model/form/meta/family-variant
@@ -879,7 +880,8 @@ config:
         pim/grid/category-switcher: pimenrich/js/product/grid/category-switcher
 
         # Category tree
-        pim/grid/category-tree: pimenrich/js/product/grid/category-tree
+        pim/grid/category-tree:      pimenrich/js/product/grid/category-tree
+        pim/grid/category-tree-done: pimenrich/js/product/grid/category-tree-done
 
         # Grid view selector
         pim/grid/view-selector: pimenrich/js/product/grid/view-selector
@@ -963,6 +965,7 @@ config:
         pim/template/product/grid/locale-switcher:           pimenrich/templates/product/grid/locale-switcher.html
         pim/template/product/grid/column-inner:              pimenrich/templates/product/grid/column-inner.html
         pim/template/product/grid/category-switcher:         pimenrich/templates/product/grid/category-switcher.html
+        pim/template/product/grid/category-tree-done:        pimenrich/templates/product/grid/category-tree-done.html
         pim/template/product/index:                          pimenrich/templates/product/index.html
         pim/template/product/tab/categories:                 pimenrich/templates/product/tab/categories.html
         pim/template/product/tab/catalog-switcher:           pimenrich/templates/product/tab/catalog-switcher.html
@@ -975,6 +978,7 @@ config:
         pim/template/product/locale-switcher:                pimenrich/templates/product/locale-switcher.html
         pim/template/product/sequential-edit:                pimenrich/templates/product/sequential-edit.html
         pim/template/product/download-pdf:                   pimenrich/templates/product/download-pdf.html
+        pim/template/product/start-copy:                     pimenrich/templates/product/start-copy.html
         pim/template/product/meta/status-switcher:           pimenrich/templates/product/meta/status-switcher.html
         pim/template/product/meta/family:                    pimenrich/templates/product/meta/family.html
         pim/template/product/meta/family-variant:            pimenrich/templates/product/meta/family-variant.html

@@ -87,6 +87,8 @@ define([
                 __
             }));
 
+            this.$el.find('.job-input').select2();
+
             this.delegateEvents();
         }
     });

@@ -70,7 +70,7 @@ Feature: Mass Edit Families
     And I am on the families grid
     And I select rows first, second, third, fourth, fifth, sixth, seventh, eight, ninth, tenth and eleventh
     And I press the "Change product information" button
-    Then I should see the text "Select your action for the 11 families"
+    Then I should see the text "Select your action"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4203
   Scenario: Successfully mass edit families after sorting by label
@@ -80,7 +80,7 @@ Feature: Mass Edit Families
     When I sort by "label" value ascending
     And I select rows Boots, Sneakers and Sandals
     And I press the "Change product information" button
-    Then I should see the text "Select your action for the 3 families"
+    Then I should see the text "Select your action"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6026
   Scenario: Successfully mass edit more families than the batch size limit

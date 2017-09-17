@@ -61,6 +61,12 @@ extensions:
         config:
             gridName: product-grid
 
+    pim-product-index-category-tree-done:
+        module: pim/grid/category-tree-done
+        parent: pim-product-index
+        targetZone: tree
+        aclResourceId: pim_enrich_product_category_list
+
     pim-product-index-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-product-index
