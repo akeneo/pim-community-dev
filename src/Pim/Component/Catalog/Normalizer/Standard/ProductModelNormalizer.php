@@ -20,6 +20,7 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
     private const FIELD_VALUES = 'values';
     private const FIELD_CREATED = 'created';
     private const FIELD_UPDATED = 'updated';
+    private const FIELD_PARENT = 'parent';
 
     /**
      * {@inheritdoc}
@@ -34,6 +35,7 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
 
         $data[self::FIELD_CODE] = $productModel->getCode();
         $data[self::FIELD_FAMILY_VARIANT] = $productModel->getFamilyVariant()->getCode();
+        $data[self::FIELD_PARENT] = null !== $productModel->getParent() ? $productModel->getParent()->getCode() : null;
         $data[self::FIELD_CATEGORIES] = $productModel->getCategoryCodes();
         $data[self::FIELD_VALUES] = $this->serializer->normalize($productModel->getValues(), $format, $context);
         $data[self::FIELD_CREATED] = $this->serializer->normalize($productModel->getCreated(), $format, $context);

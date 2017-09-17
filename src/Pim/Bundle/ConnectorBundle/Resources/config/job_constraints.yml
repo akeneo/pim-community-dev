@@ -4,6 +4,8 @@ parameters:
     pim_connector.job.job_parameters.constraint_collection_provider.simple_yaml_export.class:        Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleYamlExport
     pim_connector.job.job_parameters.constraint_collection_provider.product_csv_export.class:        Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductCsvExport
     pim_connector.job.job_parameters.constraint_collection_provider.product_xlsx_export.class:       Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductXlsxExport
+    pim_connector.job.job_parameters.constraint_collection_provider.product_model_csv_export.class:  Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvExport
+    pim_connector.job.job_parameters.constraint_collection_provider.product_model_xlsx_export.class: Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelCsvExport
 
     pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_import.class:         Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleCsvImport
     pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_import.class:        Pim\Component\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleXlsxImport
@@ -68,6 +70,24 @@ services:
             - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_export'
             -
                 - 'xlsx_product_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_connector.job.job_parameters.constraint_collection_provider.product_model_csv_export:
+        class: '%pim_connector.job.job_parameters.constraint_collection_provider.product_model_csv_export.class%'
+        arguments:
+            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_export'
+            -
+                - 'csv_product_model_export'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_connector.job.job_parameters.constraint_collection_provider.product_model_xlsx_export:
+        class: '%pim_connector.job.job_parameters.constraint_collection_provider.product_model_xlsx_export.class%'
+        arguments:
+            - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_export'
+            -
+                - 'xlsx_product_model_export'
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 

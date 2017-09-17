@@ -1,0 +1,65 @@
+extensions:
+    pim-job-instance-csv-product-model-export-show:
+        module: pim/form/common/edit-form
+
+    pim-job-instance-csv-product-model-export-show-main-image:
+        module: pim/form/common/main-image
+        parent: pim-job-instance-csv-product-model-export-show
+        targetZone: main-image
+        config:
+            path: bundles/pimui/images/illustration-export-csv.svg
+
+    pim-job-instance-csv-product-model-export-show-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-job-instance-csv-product-model-export-show
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-exports
+
+    pim-job-instance-csv-product-model-export-show-launch:
+        module: pim/job/common/edit/launch
+        parent: pim-job-instance-csv-product-model-export-show
+        targetZone: meta
+        position: 110
+        config:
+            label: pim_enrich.form.job_instance.button.export.title
+            route: pim_enrich_job_instance_rest_export_launch
+            identifier:
+                path: code
+                name: code
+
+    pim-job-instance-csv-product-model-export-show-label:
+        module: pim/job/common/edit/label
+        parent: pim-job-instance-csv-product-model-export-show
+        targetZone: title
+        position: 100
+
+    pim-job-instance-csv-product-model-export-show-edit:
+        module: pim/common/redirect
+        parent: pim-job-instance-csv-product-model-export-show
+        targetZone: buttons
+        position: 100
+        config:
+            label: pim_enrich.form.job_instance.button.edit.title
+            route: pim_importexport_export_profile_edit
+            buttonClass: AknButton AknButton--action
+            identifier:
+                path: code
+                name: code
+
+    pim-job-instance-csv-product-model-export-show-subsection:
+        module: pim/form/common/subsection
+        parent: pim-job-instance-csv-product-model-export-show
+        targetZone: content
+        config:
+            title: pim_enrich.form.job_instance.subsection.last_executions
+
+    pim-job-instance-csv-product-model-export-show-grid:
+        module: pim/job/common/grid
+        parent: pim-job-instance-csv-product-model-export-show-subsection
+        position: 1000
+        targetZone: content
+        config:
+            alias: last-export-executions-grid
+            metadata:
+                jobType: export
