@@ -17,8 +17,11 @@ class DateDecorator extends ElementDecorator
      */
     public function filter($operator, $value)
     {
-        // We set the operator
-        $this->find('css', '.filter-select-oro, .AknFilterDate-select')->selectOption($operator);
+        $operatorDropdown = $this->decorate(
+            $this->find('css', '*[data-toggle="dropdown"]'),
+            ['Pim\Behat\Decorator\Grid\Filter\OperatorDecorator']
+        );
+        $operatorDropdown->setValue($operator);
 
         if (false !== strstr($value, 'and')) {
             $dates = explode(' and ', $value);
@@ -56,9 +59,12 @@ class DateDecorator extends ElementDecorator
 
         // We submit the filter
         $this->spin(function () {
+            if (!$this->find('css', '.filter-criteria')->isVisible()) {
+                return true;
+            }
             $this->find('css', '.filter-update')->click();
 
-            return true;
+            return false;
         }, 'Cannot update the filter');
     }
 }

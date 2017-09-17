@@ -3,35 +3,16 @@
 .AknFilterBox {
   @searchHeight: 44px;
 
-  background: lighten(@AknGrey, 20%);;
-  padding: 20px 20px 10px 140px;
-  z-index: 800;
-  position: relative;
-  min-height: 64px;
-
   &-addFilterButton {
-    line-height: @AknLittleButtonSize;
-    min-height: @searchHeight;
-    min-width: @searchHeight;
+    background: url("../../../images/icon-plus.svg") no-repeat right center;
+    background-size: 19px;
+    width: 100% !important; // Width is set by multiselect
+    padding: 0 !important; // Padding is set by multiselect
     border: none;
-    order: 2;
-    width: auto !important; // The width is updated by JS method.
-    background-color: white;
-    background: url("../../../images/icon-filters.svg") no-repeat 50%;
-  }
-
-  &-filterContainer {
-    display: inline-block;
-
-    &--inline {
-      margin-bottom: 0;
-    }
-  }
-
-  &-disableFilter {
-    text-align: center;
-    display: inline-block;
-    width: 20px;
+    height: 50px;
+    font-size: @AknFontSizeBig;
+    color: @AknDarkBlue;
+    transition: color 0.1s ease-in;
   }
 
   &--search {
@@ -67,34 +48,48 @@
     display: flex;
   }
 
-  &--search &-disableFilter {
-    display: none;
-  }
-
-  &-filterLabel {
-    &:after {
-      content: ':';
-      margin-right: 3px;
-    }
+  &-filterContainer {
+    margin-right: 30px;
+    cursor: pointer;
+    position: relative;
   }
 
   &-filter {
-    background: white;
-    border: 1px solid @AknBorderColor;
-    height: 28px;
-    line-height: 28px;
-    padding: 0 10px;
-    border-radius: 2px;
-    display: inline-block;
+    margin: (@AknPaddingBetweenBlocksLeftColumn - @AknPaddingLeftColumn) 0 @AknPaddingLeftColumn 0;
+  }
+
+  &-disableFilter {
+    position: absolute;
+    right: -30px;
+    top: 6px;
+    opacity: 0;
+    transition: opacity 0.2s ease-in;
+  }
+
+  &-filterContainer:hover &-disableFilter {
+    opacity: 1;
+  }
+
+  &-filterLabel {
+    display: block;
+    color: @AknGrey;
+    text-transform: uppercase;
+    font-size: @AknDefaultFontSize;
+    white-space: nowrap;
   }
 
   &-filterCriteria {
+    color: @AknDarkBlue;
+    font-size: @AknDefaultFontSize;
+
     &.ui-multiselect {
       // jQuery select adds style for the button, we need to remove it for the filters.
       width: auto !important;
       padding: 0 !important;
       border: none;
       background: none;
+      line-height: 0;
+      height: 0;
     }
   }
 
@@ -105,6 +100,7 @@
     cursor: pointer;
     background: none;
     border: none;
+    margin: 0 10px;
   }
 
   &--search &-filterCriteria {
@@ -123,12 +119,39 @@
     margin-left: 3px;
   }
 
-  &--manage {
-    float: left;
+  &--search &-filterLabel {
+    text-transform: none;
+    
+    &:after {
+      content: ' : ';
+      margin-right: 3px;
+      color: @AknDefaultFontColor;
+    }
   }
 
-  &--list {
+  &--search &-filterContainer {
+    margin-right: 0;
+  }
+
+  &--search &-disableFilter {
+    display: none;
+  }
+
+  &--search &-list {
     display: flex;
     flex-grow: 1;
+  }
+
+  &--search &-addFilterButton {
+    line-height: @AknLittleButtonSize;
+    min-height: @searchHeight;
+    min-width: @searchHeight;
+    border: none;
+    order: -1;
+    width: auto !important; // The width is updated by JS method.
+    background-color: white;
+    background: url("../../../images/icon-filters.svg") no-repeat left 50%;
+    flex-grow: 1;
+    padding-left: 35px !important; // The padding is updated by JS method.
   }
 }

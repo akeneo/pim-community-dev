@@ -56,7 +56,7 @@ define([
          * {@inheritdoc}
          */
         render: function () {
-            var templateParams = this.config.templateParams || {};
+            let templateParams = this.config.templateParams || {};
             templateParams = _.extend({}, {__: __}, templateParams);
 
             this.$el.html(
@@ -67,7 +67,7 @@ define([
         },
 
         /**
-         * Toggle the thrid column
+         * Toggle the third column
          */
         toggleThirdColumn() {
             const thirdColumn = this.$el.find('.AknDefault-thirdColumnContainer');

@@ -26,9 +26,10 @@ define(
             events: {
                 'click': 'toggleThirdColumn'
             },
-            isHighlited: false,
+            isOpen: false,
             categoryLabel: null,
             treeLabel: null,
+            outsideEventListener: null,
 
             /**
              * {@inheritdoc}
@@ -45,7 +46,7 @@ define(
             render() {
                 this.$el.html(this.template({
                     label: __('pim_enrich.entity.product.category'),
-                    isHighlited: this.isHighlited,
+                    isOpen: this.isOpen,
                     categoryLabel: this.categoryLabel,
                     treeLabel: this.treeLabel
                 }));
@@ -57,10 +58,27 @@ define(
              * Toggle the thrid column
              */
             toggleThirdColumn() {
-                this.isHighlited = !this.isHighlited;
                 this.getRoot().trigger('grid:third_column:toggle');
 
+                if (!this.isOpen) {
+                    this.outsideEventListener = this.outsideClickListener.bind(this)
+                    document.addEventListener('mousedown', this.outsideEventListener);
+                }
+                this.isOpen = !this.isOpen;
+
                 this.render();
+            },
+
+            /**
+             * Closes the criteria if the user clicks on the rest of the document.
+             *
+             * @param {Event} event
+             */
+            outsideClickListener(event) {
+                if (this.isOpen && !$(event.target).closest('.AknDefault-thirdColumn').length) {
+                    this.toggleThirdColumn();
+                    document.removeEventListener('mousedown', this.outsideEventListener);
+                }
             },
 
             /**

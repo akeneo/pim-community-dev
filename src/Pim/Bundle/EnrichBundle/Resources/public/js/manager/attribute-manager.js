@@ -1,6 +1,7 @@
 'use strict';
 
-define([
+define(
+    [
         'jquery',
         'underscore',
         'pim/fetcher-registry'

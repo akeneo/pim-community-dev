@@ -1,18 +1,56 @@
 @import '../../base/variables';
 
 .AknFilterChoice {
-  display: flex;
-  padding: 0 5px;
+  padding: 10px 20px;
+  cursor: default;
 
-  &-operator {
-    flex-shrink: 0;
+  &-header {
+    border-bottom: 1px solid @AknLightPurple;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
   }
 
-  &-field {
-    min-width: 150px;
+  &-title {
+    color: @AknLightPurple;
+    text-transform: uppercase;
+    font-size: @AknDefaultFontSize;
+    line-height: 30px;
+    padding-bottom: 5px;
+    margin-right: 30px;
   }
 
   &-button {
-    flex-shrink: 0;
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  &-dates {
+    display: flex;
+  }
+
+  &-separator {
+    margin-left: 5px;
+    margin-right: 5px;
+    line-height: @AknFormHeight;
+  }
+
+  &-date {
+    flex-grow: 1;
+    min-width: 100px;
+  }
+
+  &-currency, &-unit {
+    right: 30px;
+    position: absolute;
+    top: 76px;
+
+    &--centered {
+      right: auto;
+    }
+  }
+
+  &-inputContainer {
+    height: 40px;
   }
 }

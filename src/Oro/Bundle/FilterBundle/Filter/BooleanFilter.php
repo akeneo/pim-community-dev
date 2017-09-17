@@ -20,16 +20,6 @@ class BooleanFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    public function init($name, array $params)
-    {
-        // static option for metadata
-        $params['contextSearch'] = false;
-        parent::init($name, $params);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
