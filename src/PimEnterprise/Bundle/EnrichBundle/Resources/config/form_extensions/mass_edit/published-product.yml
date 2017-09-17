@@ -23,6 +23,7 @@ extensions:
         position: 200
         config:
             title: pim_enrich.mass_edit.product.title
+            label: pimee_enrich.mass_edit.product.operation.unpublish.label
             labelCount: pimee_enrich.mass_edit.product.operation.unpublish.label_count
             description: pimee_enrich.mass_edit.product.operation.unpublish.description
             code: unpublish
