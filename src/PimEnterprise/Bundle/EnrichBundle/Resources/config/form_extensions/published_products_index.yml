@@ -71,12 +71,12 @@ extensions:
 
     pimee-published-product-index-filters-manage:
         module: oro/datafilter/filters-button
-        parent: pimee-published-product-index
-        targetZone: filters
+        parent: pimee-published-product-index-column-inner
+        targetZone: manage-filters-button
 
     pimee-published-product-index-grid-filters-list:
         module: oro/datafilter/filters-list
-        parent: pimee-published-product-index
+        parent: pimee-published-product-index-column-inner
         targetZone: filters
 
     pimee-published-product-index-mass-actions:
