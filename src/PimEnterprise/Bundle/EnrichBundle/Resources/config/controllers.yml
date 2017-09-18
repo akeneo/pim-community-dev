@@ -10,16 +10,10 @@ services:
     pim_enrich.controller.product:
         class: '%pim_enrich.controller.product.class%'
         arguments:
-            - '@router'
-            - '@security.token_storage'
-            - '@form.factory'
             - '@translator'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.category'
-            - '@pim_user.context.user'
-            - '@oro_security.security_facade'
             - '@pim_catalog.saver.product'
-            - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.values_filler.product'
             - '@pim_catalog.manager.category'

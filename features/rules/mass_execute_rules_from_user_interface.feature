@@ -67,7 +67,8 @@ Feature: Execute rules from the user interface
     Then I should see the text "Calculation confirmation"
     When I confirm the rules calculation
     And I am on the rules page
-    Then I should have 1 new notification
+    Then I am on the dashboard page
+    And I should have 1 new notification
     And I should see notification:
       | type    | message                                                     |
       | success | Calculation of the affected products for the rules finished |
