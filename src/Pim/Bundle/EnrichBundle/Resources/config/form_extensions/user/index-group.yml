@@ -1,6 +1,11 @@
 extensions:
     pim-user-group-index:
         module: pim/form/common/index/index
+
+    pim-user-group-grid-title:
+        module: pim/common/grid-title
+        parent: pim-user-group-index
+        targetZone: title
         config:
             title: pim_enrich.index.user_group.title
 

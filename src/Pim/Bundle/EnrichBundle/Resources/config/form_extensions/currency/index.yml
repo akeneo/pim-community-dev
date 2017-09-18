@@ -1,6 +1,11 @@
 extensions:
     pim-currency-index:
         module: pim/form/common/index/index
+
+    pim-currency-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-currency-index
+        targetZone: title
         config:
             title: pim_enrich.index.currency.title
 

@@ -1,11 +1,5 @@
-<label class="AknGridToolbar-label"><%= _.__("oro.datagrid.pagination.label") %>:</label>
-<div>
-    <% _.each(handles, function (handle) { %>
-        <a class="AknActionButton <% if (handle.className || disabled) { %><%= handle.className %> <% if (disabled) { %>disabled<% } %><% } %>" href="#" <% if (handle.title) {%> title="<%= handle.title %>"<% } %>>
-            <span <% if (handle.wrapClass) { %>class="<%= handle.wrapClass %>"<% } %>>
-            <%= handle.label %>
-            </span>
-        </a>
-    <% }); %>
-</div>
-<label class="AknGridToolbar-label"><%= _.__("oro.datagrid.pagination.totalPages", {totalPages: state.totalPages || 1}) %> | <%= _.__("oro.datagrid.pagination.totalRecords", {totalRecords: state.totalRecords}) %></label>
+<% _.each(handles, function (handle) { %>
+<a class="AknActionButton AknGridToolbar-actionButton <% if (handle.className || disabled) { %><%= handle.className %> <% if (disabled) { %>disabled<% } %><% } %>" href="#" <% if (handle.title) {%> title="<%= handle.title %>"<% } %>>
+    <span <% if (handle.wrapClass) { %>class="<%= handle.wrapClass %>"<% } %>><%= handle.label %></span>
+</a>
+<% }); %>

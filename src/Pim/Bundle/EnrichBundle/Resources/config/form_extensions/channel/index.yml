@@ -1,6 +1,11 @@
 extensions:
     pim-channel-index:
         module: pim/form/common/index/index
+
+    pim-channel-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-channel-index
+        targetZone: title
         config:
             title: pim_enrich.index.channel.title
 

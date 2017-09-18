@@ -1,6 +1,11 @@
 extensions:
     pim-api-connection-index:
         module: pim/form/common/index/index
+
+    pim-api-connection-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-api-connection-index
+        targetZone: title
         config:
             title: pim_enrich.index.api_connection.title
 

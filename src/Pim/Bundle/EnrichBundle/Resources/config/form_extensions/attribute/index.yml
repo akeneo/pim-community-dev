@@ -1,6 +1,11 @@
 extensions:
     pim-attribute-index:
         module: pim/form/common/index/index
+
+    pim-attribute-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-attribute-index
+        targetZone: title
         config:
             title: pim_enrich.index.attribute.title
 

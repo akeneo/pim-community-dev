@@ -806,6 +806,7 @@ config:
         pim/common/add-select/footer:      pimenrich/js/form/common/add-select/footer
         pim/create/properties/general:     pimenrich/js/create/form/properties/general
         pim/common/simple-view:            pimenrich/js/form/common/simple-view
+        pim/common/grid-title:             pimenrich/js/form/common/grid-title
 
         # Root
         pim/form/common/edit-form: pimenrich/js/form/common/edit-form

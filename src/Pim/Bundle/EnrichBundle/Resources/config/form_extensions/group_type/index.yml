@@ -2,6 +2,12 @@ extensions:
     pim-group-type-index:
         module: pim/form/common/index/index
         config:
+
+    pim-group-type-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-group-type-index
+        targetZone: title
+        config:
             title: pim_enrich.index.grouptype.title
 
     pim-group-type-index-breadcrumbs:

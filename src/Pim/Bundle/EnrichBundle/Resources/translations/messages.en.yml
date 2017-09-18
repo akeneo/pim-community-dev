@@ -278,7 +278,7 @@ attribute group:
     create new: Create a new attribute group
 category:
     title:    category
-    overview: category overview
+    overview: Categories
     create:   create category
     edit:     edit category
     suggest selection: Please select a category on the left

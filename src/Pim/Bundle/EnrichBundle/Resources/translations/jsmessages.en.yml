@@ -161,7 +161,7 @@ pim_enrich:
         product:
             navigation: Product navigation
             infos: Product infos
-            index_title: Products
+            index_title: "] -Inf, 1] {{ count }} product|] 1, Inf [{{ count }} products"
             title: product
             locale: Locale
             category: Category
@@ -879,10 +879,10 @@ pim_enrich:
             description: The selected product's attributes will be edited with the following data for the locale <span class="highlight">{{ locale }}</span> and the channel <span class="highlight">{{ channel }}</span>, chosen in the products grid.
     index:
         association_type:
-            title:      Association type overview
+            title:      "] -Inf, 1] {{ count }} association type|] 1, Inf [{{ count }} association types"
             create_btn: Create association type
         import_profiles:
-            title:      Import profile overview
+            title:      "] -Inf, 1] {{ count }} import profile|] 1, Inf [{{ count }} import profiles"
             create_btn: Create import profile
             list:       Select a job
             create_popin:
@@ -892,10 +892,10 @@ pim_enrich:
         import_history:
             title:      Import reports
         group:
-            title:      Group overview
+            title:       "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"
             create_btn: Create group
         export_profiles:
-            title:      Export profile overview
+            title:      "] -Inf, 1] {{ count }} export profile|] 1, Inf [{{ count }} export profiles"
             create_btn: Create export profile
             create_popin:
                 title: Create
@@ -904,38 +904,38 @@ pim_enrich:
         export_history:
             title:      Export reports
         family:
-            title:      Family overview
+            title:       "] -Inf, 1] {{ count }} family|] 1, Inf [{{ count }} families"
             create_btn: Create family
         grouptype:
-            title:      Group type overview
+            title:       "] -Inf, 1] {{ count }} group type|] 1, Inf [{{ count }} group types"
             create_btn: Create group type
         currency:
-            title:      Currency overview
+            title:      "] -Inf, 1] {{ count }} currency|] 1, Inf [{{ count }} currencies"
         locale:
-            title:      Locale overview
+            title:      "] -Inf, 1] {{ count }} locale|] 1, Inf [{{ count }} locales"
         user:
-            title:      User
+            title:      "] -Inf, 1] {{ count }} user|] 1, Inf [{{ count }} users"
             create_btn: Create user
         user_role:
-            title:      Role
+            title:      "] -Inf, 1] {{ count }} role|] 1, Inf [{{ count }} roles"
             create_btn: Create role
         user_group:
-            title:      Groups
+            title:      "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"
             create_btn: Create group
         process_tracker:
-            title:      Process tracker
+            title:      "] -Inf, 1] {{ count }} process tracker|] 1, Inf [{{ count }} process trackers"
         channel:
-            title:      Channel overview
+            title:      "] -Inf, 1] {{ count }} channel|] 1, Inf [{{ count }} channels"
             create_btn: Create channel
         attribute:
-            title:       Attribute overview
+            title:       "] -Inf, 1] {{ count }} attribute|] 1, Inf [{{ count }} attributes"
             create_btn:  Create attribute
             modal_title: Choose the attribute type
         attribute_group:
-            title:       Attribute group overview
+            title:       Attribute groups
             create_btn:  Create
         api_connection:
-            title:       API connections
+            title:       "] -Inf, 1] {{ count }} API connection|] 1, Inf [{{ count }} API connections"
             create_btn:  Create
     mass_edit:
         next: Next

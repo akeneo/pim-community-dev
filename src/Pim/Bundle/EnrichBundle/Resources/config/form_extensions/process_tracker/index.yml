@@ -1,6 +1,11 @@
 extensions:
     pim-process-index:
         module: pim/form/common/index/index
+
+    pim-process-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-process-index
+        targetZone: title
         config:
             title: pim_enrich.index.process_tracker.title
 
