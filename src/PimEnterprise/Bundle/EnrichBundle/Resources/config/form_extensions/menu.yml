@@ -37,10 +37,10 @@ extensions:
             title: pim_menu.item.upload_asset
             to: pimee_product_asset_mass_upload
 
-    pim-menu-settings-proposal:
+    pim-menu-activity-proposal:
         module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        position: 140
+        parent: pim-menu-activity-navigation-block
+        position: 105
         config:
             title: pim_menu.item.proposal
             to: pimee_workflow_proposal_index
