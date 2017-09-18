@@ -45,7 +45,6 @@ class MassActionController
     {
         $parameters = $this->parameterParser->parse($request);
         $response = $this->massActionDispatcher->dispatch($parameters);
-
         $data = [
             'successful' => $response->isSuccessful(),
             'message'    => $response->getMessage()

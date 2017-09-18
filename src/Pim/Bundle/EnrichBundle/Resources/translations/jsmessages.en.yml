@@ -237,6 +237,9 @@ pim_enrich:
             message:
                 created: Product successfully created
             completeness: Complete
+            sequential_edit:
+                item_limit: Only first 1000 items shown in this sequential edit ({{ count }} selected)
+                empty: Your selection is empty, please change your search criteria
         product_model:
             info:
                 update_successful: Product model successfully updated.

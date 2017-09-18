@@ -15,7 +15,6 @@ parameters:
     pim_enrich.normalizer.attribute.versioned.class:               Pim\Bundle\EnrichBundle\Normalizer\VersionedAttributeNormalizer
     pim_enrich.normalizer.locale.class:                            Pim\Bundle\EnrichBundle\Normalizer\LocaleNormalizer
     pim_enrich.normalizer.channel.class:                           Pim\Bundle\EnrichBundle\Normalizer\ChannelNormalizer
-    pim_enrich.normalizer.sequential_edit.class:                   Pim\Bundle\EnrichBundle\Normalizer\SequentialEditNormalizer
     pim_enrich.normalizer.group.class:                             Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer
     pim_enrich.normalizer.file.class:                              Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer
     pim_enrich.normalizer.product_violation.class:                 Pim\Bundle\EnrichBundle\Normalizer\ProductViolationNormalizer
@@ -173,13 +172,6 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.version'
             - '@pim_enrich.provider.structure_version.attribute'
-        tags:
-            - { name: pim_internal_api_serializer.normalizer }
-
-    pim_enrich.normalizer.sequential_edit:
-        class: '%pim_enrich.normalizer.sequential_edit.class%'
-        arguments:
-            - '@pim_serializer'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

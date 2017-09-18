@@ -6,23 +6,16 @@ use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\EnrichBundle\Manager\SequentialEditManager;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -34,40 +27,14 @@ use Symfony\Component\Translation\TranslatorInterface;
  */
 class ProductController
 {
-    const BACK_TO_GRID = 'BackGrid';
-
-    const CREATE = 'Create';
-
-    const SAVE_AND_NEXT = 'SaveAndNext';
-
-    const SAVE_AND_FINISH = 'SaveAndFinish';
-
-    /** @var RouterInterface */
-    protected $router;
-
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
-
-    /** @var FormFactoryInterface */
-    protected $formFactory;
-
     /** @var TranslatorInterface */
     protected $translator;
 
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /** @var UserContext */
-    protected $userContext;
-
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
     /** @var SaverInterface */
     protected $productSaver;
-
-    /** @var SequentialEditManager */
-    protected $seqEditManager;
 
     /** @var ProductBuilderInterface */
     protected $productBuilder;
@@ -82,81 +49,30 @@ class ProductController
     protected $valuesFiller;
 
     /**
-     * @param RouterInterface                       $router
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param FormFactoryInterface                  $formFactory
      * @param TranslatorInterface                   $translator
      * @param ProductRepositoryInterface            $productRepository
      * @param CategoryRepositoryInterface           $categoryRepository
-     * @param UserContext                           $userContext
-     * @param SecurityFacade                        $securityFacade
      * @param SaverInterface                        $productSaver
-     * @param SequentialEditManager                 $seqEditManager
      * @param ProductBuilderInterface               $productBuilder
      * @param EntityWithFamilyValuesFillerInterface $valuesFiller
      * @param string                                $categoryClass
      */
     public function __construct(
-        RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
-        FormFactoryInterface $formFactory,
         TranslatorInterface $translator,
         ProductRepositoryInterface $productRepository,
         CategoryRepositoryInterface $categoryRepository,
-        UserContext $userContext,
-        SecurityFacade $securityFacade,
         SaverInterface $productSaver,
-        SequentialEditManager $seqEditManager,
         ProductBuilderInterface $productBuilder,
         EntityWithFamilyValuesFillerInterface $valuesFiller,
         $categoryClass
     ) {
-        $this->router = $router;
-        $this->tokenStorage = $tokenStorage;
-        $this->formFactory = $formFactory;
-        $this->translator = $translator;
-        $this->productRepository = $productRepository;
-        $this->userContext = $userContext;
-        $this->securityFacade = $securityFacade;
-        $this->productSaver = $productSaver;
-        $this->seqEditManager = $seqEditManager;
-        $this->productBuilder = $productBuilder;
+        $this->translator         = $translator;
+        $this->productRepository  = $productRepository;
+        $this->productSaver       = $productSaver;
+        $this->productBuilder     = $productBuilder;
         $this->categoryRepository = $categoryRepository;
-        $this->valuesFiller = $valuesFiller;
-        $this->categoryClass = $categoryClass;
-    }
-
-    /**
-     * List products
-     *
-     * @AclAncestor("pim_enrich_product_index")
-     * @Template
-     *
-     * @param Request $request
-     *
-     * @return array
-     */
-    public function indexAction(Request $request)
-    {
-        $this->seqEditManager->removeByUser($this->tokenStorage->getToken()->getUser());
-
-        return [
-            'locales'    => $this->getUserLocales(),
-            'dataLocale' => $this->getDataLocale(),
-        ];
-    }
-
-    /**
-     * Edit product
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_product_index")
-     *
-     * @return array
-     */
-    public function editAction()
-    {
-        return [];
+        $this->valuesFiller       = $valuesFiller;
+        $this->categoryClass      = $categoryClass;
     }
 
     /**
@@ -233,51 +149,6 @@ class ProductController
         return $this->categoryRepository->getFilledTree($parent, $categories);
     }
 
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function redirectToRoute($route, $parameters = [])
-    {
-        if (!isset($parameters['dataLocale'])) {
-            $parameters['dataLocale'] = $this->userContext->getCurrentLocaleCode();
-        }
-
-        return new JsonResponse(['route' => $route, 'params' => $parameters]);
-    }
-
-    /**
-     * @return LocaleInterface[]
-     */
-    protected function getUserLocales()
-    {
-        return $this->userContext->getUserLocales();
-    }
-
-    /**
-     * Get data locale code
-     *
-     * @throws \Exception
-     *
-     * @return string
-     */
-    protected function getDataLocaleCode()
-    {
-        return $this->userContext->getCurrentLocaleCode();
-    }
-
-    /**
-     * Get data locale object
-     *
-     * @throws \Exception
-     *
-     * @return LocaleInterface
-     */
-    protected function getDataLocale()
-    {
-        return $this->userContext->getCurrentLocale();
-    }
-
     /**
      * Find a product by its id or return a 404 response
      *
@@ -300,15 +171,5 @@ class ProductController
         $this->productBuilder->addMissingAssociations($product);
 
         return $product;
-    }
-
-    /**
-     * Returns the options for the create form
-     *
-     * @return array
-     */
-    protected function getCreateFormOptions()
-    {
-        return [];
     }
 }
