@@ -32,6 +32,8 @@ parameters:
     pim_connector.array_converter.standard_to_flat.group_type.class:                              Pim\Component\Connector\ArrayConverter\StandardToFlat\GroupType
     pim_connector.array_converter.standard_to_flat.product.class:                                 Pim\Component\Connector\ArrayConverter\StandardToFlat\Product
     pim_connector.array_converter.standard_to_flat.product_localized.class:                       Pim\Component\Connector\ArrayConverter\StandardToFlat\ProductLocalized
+    pim_connector.array_converter.standard_to_flat.product_model.class:                           Pim\Component\Connector\ArrayConverter\StandardToFlat\ProductModel
+    pim_connector.array_converter.standard_to_flat.product_model_localized.class:                 Pim\Component\Connector\ArrayConverter\StandardToFlat\ProductLocalized
     pim_connector.array_converter.standard_to_flat.user.class:                                    Pim\Component\Connector\ArrayConverter\StandardToFlat\User
 
     pim_connector.array_converter.standard_to_flat.product.product_value_converter.class:         Pim\Component\Connector\ArrayConverter\StandardToFlat\Product\ProductValueConverter
@@ -283,6 +285,17 @@ services:
         class: '%pim_connector.array_converter.standard_to_flat.product_localized.class%'
         arguments:
             - '@pim_connector.array_converter.standard_to_flat.product'
+            - '@pim_catalog.localization.localizer.converter'
+
+    pim_connector.array_converter.standard_to_flat.product_model:
+        class: '%pim_connector.array_converter.standard_to_flat.product_model.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product.product_value_converter'
+
+    pim_connector.array_converter.standard_to_flat.product_model_localized:
+        class: '%pim_connector.array_converter.standard_to_flat.product_localized.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product_model'
             - '@pim_catalog.localization.localizer.converter'
 
     pim_connector.array_converter.standard_to_flat.user:

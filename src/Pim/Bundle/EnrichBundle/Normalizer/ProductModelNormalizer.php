@@ -100,6 +100,9 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->entityValuesFiller->fillMissingValues($productModel);
 
         $normalizedProductModel = $this->normalizer->normalize($productModel, 'standard', $context);
+        // TODO: will be handled by PIM-6741
+        unset($normalizedProductModel['parent']);
+
         $normalizedProductModel['values'] = $this->localizedConverter->convertToLocalizedFormats(
             $normalizedProductModel['values'],
             $context
