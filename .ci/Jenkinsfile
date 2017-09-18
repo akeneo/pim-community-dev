@@ -3,10 +3,6 @@
 import org.csanchez.jenkins.plugins.kubernetes.pipeline.PodTemplateAction
 import org.apache.commons.lang.ArrayUtils
 
-def builded_image = []
-docker_registry = "eu.gcr.io/akeneo-ci/"
-
-
 stage("PreBuild") {
 
     milestone 1
@@ -15,20 +11,41 @@ stage("PreBuild") {
 
     tasks = [:]
 
-    def taskImageBuild = { image, base_version ->
+    if (hasChanged(".ci/Dockerfiles/httpd/2.4")) {
+        tasks['httpd-2.4'] = {
             withDockerScm({
-                image_name = "${docker_registry}${image}:${base_version}-${env_BRANCH_NAME}"
-                sh "gcloud -- pull ${image_name_base}"
-                sh "docker build -t ${image_name} --pull .ci/Dockerfiles/${image}/${base_version}/"
-                sh "gcloud docker -- push ${image_name}"
-                builded_image.push(image_name)
+                sh "docker build -t eu.gcr.io/akeneo-ci/httpd:2.4 .ci/Dockerfiles/httpd/2.4"
+                sh "gcloud docker -- push eu.gcr.io/akeneo-ci/httpd:2.4"
             })
         }
+    }
 
-    tasks["httpd"] =  taskImageBuild("httpd","2.4")
-    tasks["php"] =  taskImageBuild("php","7.1-fpm")
-    tasks["elasticsearch"] =  taskImageBuild("elasticsearch","5.5")
-    tasks["selenium"] =  taskImageBuild("selenium","standalone-firefox-2.53.1-beryllium")
+    if (hasChanged(".ci/Dockerfiles/php/7.1-fpm")) {
+        tasks['php-7.1-fpm'] = {
+            withDockerScm({
+                sh "docker build -t eu.gcr.io/akeneo-ci/php:7.1-fpm .ci/Dockerfiles/php/7.1-fpm"
+                sh "gcloud docker -- push eu.gcr.io/akeneo-ci/php:7.1-fpm"
+            })
+        }
+    }
+
+    if (hasChanged(".ci/Dockerfiles/elasticsearch/5.5")) {
+        tasks['elasticsearch-5.5'] = {
+            withDockerScm({
+                sh "docker build -t eu.gcr.io/akeneo-ci/elasticsearch:5.5 .ci/Dockerfiles/elasticsearch/5.5"
+                sh "gcloud docker -- push eu.gcr.io/akeneo-ci/elasticsearch:5.5"
+            })
+        }
+    }
+
+    if (hasChanged(".ci/Dockerfiles/selenium/standalone-firefox-2.53.1-beryllium")) {
+        tasks['selenium-standalone-firefox-2.53.1-beryllium'] = {
+            withDockerScm({
+                sh "docker build -t eu.gcr.io/akeneo-ci/selenium:standalone-firefox-2.53.1-beryllium .ci/Dockerfiles/selenium/standalone-firefox-2.53.1-beryllium"
+                sh "gcloud docker -- push eu.gcr.io/akeneo-ci/selenium:standalone-firefox-2.53.1-beryllium"
+            })
+        }
+    }
 
     parallel tasks
 }
@@ -256,9 +273,6 @@ stage("Test") {
                 container("docker") {
                     sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce"
                     sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee"
-                    builded_image.each{ image_name ->
-                        sh "gcloud -q container images delete ${image_name}-${env.BRANCH_NAME}"
-                    }
                 }
             }
         }
