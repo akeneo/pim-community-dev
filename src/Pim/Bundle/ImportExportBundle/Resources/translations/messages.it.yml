@@ -6,16 +6,16 @@ pim_import_export:
   status:
     - Pronto
   batch_status:
-    1: COMPLETATO
-    2: A PARTIRE DA
-    3: INIZIATO
-    4: ARRESTO
-    5: FERMATO
-    6: NON RIUSCITA
-    7: ABBANDONATO
-    8: SCONOSCIUTO
+    1: Completato
+    2: In avvio
+    3: Avviato
+    4: In fase di interruzione
+    5: Fermato
+    6: Fallito
+    7: Abbandonato
+    8: Sconosciuto
   download_archive:
-    archive: scarica l'archivio generato |scarica gli archivi generati
+    archive: scaricar l'arhivio generato |scarica gli archivi generati
     output: scarica il file generato |scarica i files generati
     input: scarica il file letto |scarica i files letti
     invalid_xlsx: Scarica dati non validi
@@ -29,7 +29,7 @@ pim_import_export:
       error: Importazione <strong>%label%</strong> non riuscita
       warning: Importazione <strong>%label%</strong> completata con alcuni avvisi
       success: Importazione <strong>%label%</strong> completata
-  list: Seleziona un job
+  list: Seleziona un lavoro
   job_profile:
     tab:
       property.title: Proprietà generali
@@ -96,7 +96,7 @@ pim_importexport:
     import: Profili di importazione
 btn:
   create:
-    export profile: crea un profilo di esportazione
+    export profile: crea il profilo di esportazione
     import profile: crea un profilo di importazione
 Upload and import now: Carica e importa ora
 import now: Importa ora
@@ -152,16 +152,17 @@ job_execution.summary:
     skipped: saltato, estensione nella white list
 Step: Passo
 Status: Stato
+Warnings: Avvisi
 Summary: Riepilogo
 Start: Inizio
 End: Fine
 set_attribute_requirements: Impostare gli attributi richiesti
-COMPLETED: COMPLETATO
-STARTING: A PARTIRE DA
-STARTED: INIZIATO
-STOPPING: ARRESTO
-STOPPED: FERMATO
-FAILED: NON RIUSCITA
-ABANDONED: ABBANDONATO
-UNKNOWN: SCONOSCIUTO
+COMPLETED: Completato
+STARTING: In avvio
+STARTED: Avviato
+STOPPING: In fase di interruzione
+STOPPED: Fermato
+FAILED: Fallito
+ABANDONED: Abbandonato
+UNKNOWN: Sconosciuto
 warning.label: Attenzione
