@@ -137,6 +137,7 @@ config:
         pim/template/datagrid/add-filter-button:         pimdatagrid/templates/datagrid/add-filter-button.html
         pim/template/datagrid/done-container:            pimdatagrid/templates/datagrid/done-container.html
         pim/template/datagrid/done-button:               pimdatagrid/templates/datagrid/done-button.html
+        pim/template/datagrid/pagination:                pimdatagrid/templates/datagrid/pagination.html
         pim/template/datagrid/configure-columns-action:  pimdatagrid/templates/configure-columns-action.html
         pim/template/datagrid/filter/text-filter:        pimdatagrid/templates/filter/text-filter.html
         pim/template/datagrid/filter/price-filter:       pimdatagrid/templates/filter/price-filter.html

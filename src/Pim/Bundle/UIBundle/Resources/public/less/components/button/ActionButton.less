@@ -3,7 +3,7 @@
 .AknActionButton {
   height: @AknMicroButtonSize;
   min-width: @AknMicroButtonSize;
-  line-height: @AknMicroButtonSize;
+  line-height: @AknMicroButtonSize - 2;
   font-size: @AknDefaultFontSize;
   border: 1px solid @AknBorderColor;
   color: @AknDefaultFontColor;
@@ -17,6 +17,7 @@
   white-space: nowrap;
   outline: none;
   text-transform: uppercase;
+  transition: background 0.1s ease-in;
 
   &-caret {
     display: inline-block;
@@ -75,8 +76,7 @@
   }
 
   &--disabled {
-    color: @AknLightFontColor;
-    background: @AknDisabledInputColor;
+    opacity: 0.5;
     cursor: not-allowed;
   }
 
@@ -106,6 +106,11 @@
 
   &-highlight {
     color: @AknLightPurple;
+  }
+
+  &--highlight {
+    color: @AknLightPurple;
+    border-color: @AknLightPurple;
   }
 
   &--important {
