@@ -90,6 +90,8 @@ abstract class AbstractExportTestCase extends TestCase
         $this->get('pim_catalog.validator.product')->validate($productModel);
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
+        $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
+
         return $productModel;
     }
 

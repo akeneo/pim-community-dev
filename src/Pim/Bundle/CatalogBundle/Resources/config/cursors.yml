@@ -37,3 +37,13 @@ services:
             - '%akeneo_elasticsearch.cursor.from_size_cursor.class%'
             - '%pim_catalog.factory.product_cursor.page_size%'
             - 'pim_catalog_product'
+
+    pim_catalog.factory.product_model_cursor:
+        class: '%akeneo_elasticsearch.cursor.cursor_factory.class%'
+        arguments:
+            - '@akeneo_elasticsearch.client.product_model'
+            - '@pim_catalog.object_manager.product'
+            - '%pim_catalog.entity.product_model.class%'
+            - '%akeneo_elasticsearch.cursor.cursor.class%'
+            - '%pim_catalog.factory.product_cursor.page_size%'
+            - 'pim_catalog_product'

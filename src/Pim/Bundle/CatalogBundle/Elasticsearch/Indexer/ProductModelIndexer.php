@@ -10,8 +10,8 @@ use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductModel;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductModel;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

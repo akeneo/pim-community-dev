@@ -74,7 +74,7 @@ services:
     pim_connector.reader.database.product_model:
         class: '%pim_connector.reader.database.product_model.class%'
         arguments:
-            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.query.product_model_query_builder_factory'
 
     pim_connector.reader.database.channel:
         class: '%pim_connector.reader.database.class%'

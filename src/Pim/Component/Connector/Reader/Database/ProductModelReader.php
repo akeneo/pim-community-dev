@@ -6,38 +6,72 @@ namespace Pim\Component\Connector\Reader\Database;
 
 use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
+use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
-use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 
 /**
- * The product model repository reader
+ * The product model reader using the Product Model Query Builder
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductModelReader extends AbstractReader implements
-    ItemReaderInterface,
-    InitializableInterface,
-    StepExecutionAwareInterface
+class ProductModelReader implements ItemReaderInterface, InitializableInterface, StepExecutionAwareInterface
 {
-    /** @var ProductModelRepositoryInterface */
-    protected $repository;
+    /** @var ProductQueryBuilderFactoryInterface */
+    protected $pqbFactory;
+
+    /** @var CursorInterface */
+    protected $productModels;
 
     /**
-     * @param ProductModelRepositoryInterface $repository
+     * @param ProductQueryBuilderFactoryInterface $pqbFactory
      */
-    public function __construct(ProductModelRepositoryInterface $repository)
+    public function __construct(ProductQueryBuilderFactoryInterface $pqbFactory)
     {
-        $this->repository = $repository;
+        $this->pqbFactory = $pqbFactory;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getResults()
+    public function initialize()
     {
-        // TODO PIM-6737: temporary until we discuss how to fetch all models, needs a new elastic search index
-        return new \ArrayIterator($this->repository->findAll());
+        $this->productModels = $this->getProductModelsCursor();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function read()
+    {
+        $productModel = null;
+
+        if ($this->productModels->valid()) {
+            $productModel = $this->productModels->current();
+            $this->stepExecution->incrementSummaryInfo('read');
+            $this->productModels->next();
+        }
+
+        return $productModel;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * @return CursorInterface
+     */
+    private function getProductModelsCursor()
+    {
+        $productQueryBuilder = $this->pqbFactory->create([]);
+
+        return $productQueryBuilder->execute();
     }
 }
