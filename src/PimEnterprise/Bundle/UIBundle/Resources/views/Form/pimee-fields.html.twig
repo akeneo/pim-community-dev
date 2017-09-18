@@ -18,13 +18,6 @@
                        data-title="{{ 'pimee_catalog_rule.product_value.tooltip.affected_by.title'|trans }}"
                        data-async-content="{{ smart }}" data-container="body" data-html="true"></i>
                 {% endif %}
-                {% if from_variant is defined %}
-                    <i class="icon-lock"
-                       data-trigger="hover" data-toggle="popover" data-placement="right"
-                       data-title="{{ 'pim_enrich.product_value.tooltip.from_variant.title'|trans }}"
-                       data-content="{{ 'pim_enrich.product_value.tooltip.from_variant.content'|trans }} : {{ from_variant.code }}"
-                       data-container="body"></i>
-                {% endif %}
                 {{ form_errors(form) }}
             </div>
             {% if info is defined %}

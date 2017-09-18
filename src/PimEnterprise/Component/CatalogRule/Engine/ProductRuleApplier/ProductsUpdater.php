@@ -48,7 +48,6 @@ class ProductsUpdater
     public function update(RuleInterface $rule, array $products)
     {
         $this->updateFromRule($products, $rule);
-        $this->updateFromVariantGroup($products);
     }
 
     /**
@@ -60,20 +59,6 @@ class ProductsUpdater
         $actions = $rule->getActions();
         foreach ($actions as $action) {
             $this->applierRegistry->getActionApplier($action)->applyAction($action, $products);
-        }
-    }
-
-    /**
-     * @param ProductInterface[] $products
-     */
-    protected function updateFromVariantGroup(array $products)
-    {
-        foreach ($products as $product) {
-            $variantGroup = $product->getVariantGroup();
-            $template = $variantGroup !== null ? $variantGroup->getProductTemplate() : null;
-            if (null !== $template) {
-                $this->templateUpdater->update($template, [$product]);
-            }
         }
     }
 }

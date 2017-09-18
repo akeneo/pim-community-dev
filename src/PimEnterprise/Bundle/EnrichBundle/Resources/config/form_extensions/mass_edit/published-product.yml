@@ -5,7 +5,6 @@ extensions:
             backRoute: pimee_workflow_published_product_index
             launchedLabel: pim_enrich.mass_edit.product.step.launched.label
             launchErrorLabel: pim_enrich.mass_edit.product.step.launch_error.label
-            title: pim_enrich.mass_edit.product.title
             confirm: pim_enrich.mass_edit.product.confirm
 
     pim-mass-published-product-edit-choose:
@@ -15,6 +14,7 @@ extensions:
         targetZone: choose
         config:
             title: pim_enrich.mass_edit.product.step.choose.title
+            labelCount: pim_enrich.mass_edit.product.step.choose.label_count
 
     pim-mass-published-product-edit-configure-unpublish:
         module: pimee/mass-edit-form/product/publish
@@ -22,7 +22,9 @@ extensions:
         aclResourceId: pimee_workflow_published_product_index
         position: 200
         config:
+            title: pim_enrich.mass_edit.product.title
             label: pimee_enrich.mass_edit.product.operation.unpublish.label
+            labelCount: pimee_enrich.mass_edit.product.operation.unpublish.label_count
             description: pimee_enrich.mass_edit.product.operation.unpublish.description
             code: unpublish
             jobInstanceCode: unpublish_product

@@ -50,4 +50,3 @@ services:
             - [addProductDatasource, ['pim_datasource_associated_product']]
             - [addProductDatasource, ['pimee_datasource_published_product']]
             - [addProductDatasource, ['pim_datasource_group_product']]
-            - [addProductDatasource, ['pim_datasource_variant_group_product']]

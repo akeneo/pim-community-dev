@@ -5,7 +5,9 @@ extensions:
         position: 190
         aclResourceId: pimee_workflow_published_product_index
         config:
+            title: pim_enrich.mass_edit.product.title
             label: pimee_enrich.mass_edit.product.operation.publish.label
+            labelCount: pimee_enrich.mass_edit.product.operation.publish.label_count
             description: pimee_enrich.mass_edit.product.operation.publish.description
             code: publish
             jobInstanceCode: publish_product

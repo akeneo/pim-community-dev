@@ -13,8 +13,6 @@ mappings:
                 type: 'boolean'
             groups:
                 type: 'keyword'
-            variant_group:
-                type: 'keyword'
             is_associated:
                 type: 'boolean'
             created:

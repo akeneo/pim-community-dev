@@ -1,6 +1,6 @@
-# 1.8
+# 2.0
 
-## Drop MongoDB product storage
+## Remove MongoDB product storage
 
 - Remove container parameter `pim_catalog_product_storage_driver`
 - Remove repository `PimEnterprise\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductMassActionRepository`
@@ -18,6 +18,14 @@
 - Remove model `src/PimEnterprise/Bundle/WorkflowBundle/Resources/config/model/doctrine/PublishedProductAssociation.mongodb.yml`
 - Remove model `src/PimEnterprise/Bundle/WorkflowBundle/Resources/config/model/doctrine/PublishedProductCompleteness.mongodb.yml`
 - Remove model `src/PimEnterprise/Bundle/WorkflowBundle/Resources/config/model/doctrine/PublishedProduct.mongodb.yml`
+
+## Remove variant groups
+
+- Remove service `pimee_enrich.step.add_to_variant_group_with_rules.perform`
+- Remove service `pim_enrich.job.add_to_variant_group`
+- Remove service `pimee_catalog_rule.view_element.common.variant_attribute_from_smart`
+
+- Remove parameter `pimee_enrich.job_name.add_to_variant_group_with_rules`
 
 ## BC breaks
 

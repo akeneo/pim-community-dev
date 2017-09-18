@@ -11,7 +11,6 @@ use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
 use Pim\Behat\Context\Domain\Enrich\CompletenessContext;
 use Pim\Behat\Context\Domain\Enrich\GridPaginationContext;
 use Pim\Behat\Context\Domain\Enrich\ProductGroupContext;
-use Pim\Behat\Context\Domain\Enrich\VariantGroupContext;
 use Pim\Behat\Context\Domain\SecondaryActionsContext;
 use Pim\Behat\Context\Domain\Spread\ExportBuilderContext;
 use Pim\Behat\Context\Domain\Spread\ExportProfilesContext;
@@ -58,7 +57,6 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->contexts['domain-tree'] = $environment->getContext(TreeContext::class);
         $this->contexts['domain-secondary-actions'] = $environment->getContext(SecondaryActionsContext::class);
         $this->contexts['domain-group'] = $environment->getContext(ProductGroupContext::class);
-        $this->contexts['domain-variant-group'] = $environment->getContext(VariantGroupContext::class);
         $this->contexts['asset'] = $environment->getContext(EnterpriseAssetContext::class);
         $this->contexts['file_transformer'] = $environment->getContext(EnterpriseFileTransformerContext::class);
         $this->contexts['hook'] = $environment->getContext(HookContext::class);
