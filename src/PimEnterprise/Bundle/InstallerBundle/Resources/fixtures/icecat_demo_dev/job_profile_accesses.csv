@@ -3,6 +3,7 @@ csv_product_model_import;All;IT support,Manager
 csv_product_import;All;IT support,Manager
 csv_product_import_with_rules;All;IT support,Manager
 csv_product_export;All;IT support,Manager
+csv_product_model_export;All;IT support,Manager
 csv_published_product_export;All;IT support,Manager
 csv_category_import;All;IT support,Manager
 csv_category_export;All;IT support,Manager
@@ -43,6 +44,7 @@ csv_family_export;All;IT support,Manager
 csv_family_variant_import;All;IT support,Manager
 csv_family_variant_export;All;IT support,Manager
 xlsx_product_export;All;IT support,Manager
+xlsx_product_model_export;All;IT support,Manager
 xlsx_published_product_export;All;IT support,Manager
 xlsx_product_quick_export;All;
 xlsx_product_grid_context_quick_export;All
