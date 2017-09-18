@@ -150,7 +150,10 @@ pim_enrich:
     product:
       navigation: Produkt navigation
       infos: Produkt info
+      index_title: Produkter
       title: produkt
+      locale: Landestandard
+      category: Kategori
       btn:
         enabled: Aktiveret
         disabled: Deaktiveret
@@ -183,6 +186,9 @@ pim_enrich:
         updated: Sidst opdateret
         family:
           title: Familie
+          none: Ingen
+        family_variant:
+          title: Variant
           none: Ingen
         groups:
           title: Grupper
@@ -1157,6 +1163,8 @@ batch_jobs:
     label: Familie import i CSV
     validation.label: Filvalidering
     import.label: Familie import
+  csv_family_variant_import:
+    validation.label: Filvalidering
   csv_group_import:
     label: Gruppe import fra CSV
     validation.label: Filvalidering
@@ -1220,6 +1228,8 @@ batch_jobs:
     label: Familie import i XLSX
     validation.label: Filvalidering
     import.label: Familie import
+  xlsx_family_variant_import:
+    validation.label: Filvalidering
   xlsx_product_export:
     label: Produkt eksport til XLSX
     export.label: Produkt eksport

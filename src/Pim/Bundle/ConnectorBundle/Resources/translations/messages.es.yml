@@ -75,6 +75,8 @@ batch_jobs:
     validation.label: Validación de archivo
     import.label: Importar productos
     import_associations.label: Importar asociaciones
+  csv_product_model_import:
+    validation.label: Validación de archivo
   csv_category_import:
     label: Importar categorías desde CSV
     validation.label: Validación de archivo
@@ -95,6 +97,8 @@ batch_jobs:
     label: Importar familias en CSV
     validation.label: Validación de archivo
     import.label: Importe de familias
+  csv_family_variant_import:
+    validation.label: Validación de archivo
   csv_group_import:
     label: Importar grupos desde CSV
     validation.label: Validación de archivo
@@ -158,6 +162,8 @@ batch_jobs:
     label: Importar familias en XLSX
     validation.label: Validación de archivo
     import.label: Importe de familias
+  xlsx_family_variant_import:
+    validation.label: Validación de archivo
   xlsx_product_export:
     label: Exportar producto en XLSX
     export.label: Exportar productos
@@ -166,6 +172,8 @@ batch_jobs:
     validation.label: Validación de archivo
     import.label: Importar productos
     import_associations.label: Importar asociaciones
+  xlsx_product_model_import:
+    validation.label: Validación de archivo
   xlsx_group_export:
     label: Exportar grupos en XLSX
     export.label: Exportar grupos

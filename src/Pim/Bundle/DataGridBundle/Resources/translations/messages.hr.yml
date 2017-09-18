@@ -1,5 +1,4 @@
 "oro_datagrid.no_data_hint %entityHint%": Ne postoji %entityHint%.
-oro_datagrid.not_found_hint: Nisu pronađeni rezultati. Pokušajte promijeniti kriterije pretraživanja.
 oro_datagrid.label_add_filter: Upravljanje filtrima
 oro_datagrid.label_loading_mask: Učitavanje . . .
 oro.grid.mass_action.selected_rows: Odabrani retci

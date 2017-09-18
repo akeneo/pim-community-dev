@@ -71,6 +71,8 @@ batch_jobs:
     validation.label: Bestandsvalidatie
     import.label: Productimport
     import_associations.label: Productassociatie import
+  csv_product_model_import:
+    validation.label: Bestandsvalidatie
   csv_category_import:
     label: Categorie-import in CSV
     validation.label: Bestandsvalidatie
@@ -88,6 +90,8 @@ batch_jobs:
     validation.label: Bestandsvalidatie
     import.label: Associatietype-import
   csv_family_import:
+    validation.label: Bestandsvalidatie
+  csv_family_variant_import:
     validation.label: Bestandsvalidatie
   csv_group_import:
     label: Groep importeren in CSV
@@ -151,6 +155,8 @@ batch_jobs:
   xlsx_family_import:
     label: Familie import in XLSX
     validation.label: Bestandsvalidatie
+  xlsx_family_variant_import:
+    validation.label: Bestandsvalidatie
   xlsx_product_export:
     label: Product export in XLSX
     export.label: Productexport
@@ -159,6 +165,8 @@ batch_jobs:
     validation.label: Bestandsvalidatie
     import.label: Productimport
     import_associations.label: Productassociatie import
+  xlsx_product_model_import:
+    validation.label: Bestandsvalidatie
   xlsx_group_export:
     label: Groep export in XLSX
     export.label: Groepexport

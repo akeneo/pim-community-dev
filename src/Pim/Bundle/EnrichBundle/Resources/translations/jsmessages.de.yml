@@ -139,7 +139,10 @@ pim_enrich:
         save: Speichern
         cancel: Abbrechen
     product:
+      index_title: Produkte
       title: Produkt
+      locale: Gebietsschema
+      category: Kategorie
       btn:
         enabled: Aktiviert
         disabled: Deaktiviert
@@ -170,6 +173,9 @@ pim_enrich:
         updated: Letzte Aktualisierung
         family:
           title: Produktfamilie
+          none: Keine
+        family_variant:
+          title: Variante
           none: Keine
         groups:
           title: Gruppen
@@ -1053,6 +1059,8 @@ batch_jobs:
     label: Produktfamilien-Import aus CSV-Datei
     validation.label: Dateivalidierung
     import.label: Produktfamilien-Import
+  csv_family_variant_import:
+    validation.label: Dateivalidierung
   csv_group_import:
     label: Gruppen-Import aus CSV-Datei
     validation.label: Dateivalidierung
@@ -1116,6 +1124,8 @@ batch_jobs:
     label: Produktfamilien-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import.label: Produktfamilien-Import
+  xlsx_family_variant_import:
+    validation.label: Dateivalidierung
   xlsx_product_export:
     label: Produkt-Export als XLSX-Datei
     export.label: Produkt export

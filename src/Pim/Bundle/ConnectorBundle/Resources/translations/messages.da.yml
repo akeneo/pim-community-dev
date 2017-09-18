@@ -75,6 +75,8 @@ batch_jobs:
     validation.label: Filvalidering
     import.label: Produkt import
     import_associations.label: Association import
+  csv_product_model_import:
+    validation.label: Filvalidering
   csv_category_import:
     label: Kategori eksport fra CSV
     validation.label: Filvalidering
@@ -95,6 +97,8 @@ batch_jobs:
     label: Familie import i CSV
     validation.label: Filvalidering
     import.label: Familie import
+  csv_family_variant_import:
+    validation.label: Filvalidering
   csv_group_import:
     label: Gruppe import fra CSV
     validation.label: Filvalidering
@@ -158,6 +162,8 @@ batch_jobs:
     label: Familie import i XLSX
     validation.label: Filvalidering
     import.label: Familie import
+  xlsx_family_variant_import:
+    validation.label: Filvalidering
   xlsx_product_export:
     label: Produkt eksport til XLSX
     export.label: Produkt eksport
@@ -166,6 +172,8 @@ batch_jobs:
     validation.label: Filvalidering
     import.label: Produkt import
     import_associations.label: Association import
+  xlsx_product_model_import:
+    validation.label: Filvalidering
   xlsx_group_export:
     label: Gruppe eksport til XLSX
     export.label: Gruppe eksport

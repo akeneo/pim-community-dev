@@ -72,6 +72,8 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
     import_associations.label: Liitännäisten tuonti
+  csv_product_model_import:
+    validation.label: Tiedostojen tarkistaminen
   csv_category_import:
     label: Kategorioiden tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -92,6 +94,8 @@ batch_jobs:
     label: Ryhmän tuonti CSV-tiedostona
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmätuonti
+  csv_family_variant_import:
+    validation.label: Tiedostojen tarkistaminen
   csv_group_import:
     label: Ryhmien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -130,6 +134,8 @@ batch_jobs:
     label: Perheiden tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmätuonti
+  xlsx_family_variant_import:
+    validation.label: Tiedostojen tarkistaminen
   xlsx_product_export:
     label: Tuotteiden vienti XLSX-muodossa
     export.label: Tuotteiden vienti
@@ -138,6 +144,8 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
     import_associations.label: Liitännäisten tuonti
+  xlsx_product_model_import:
+    validation.label: Tiedostojen tarkistaminen
   xlsx_group_export:
     label: Ryhmävienti XLSX-muodossa
     export.label: Ryhmän vienti

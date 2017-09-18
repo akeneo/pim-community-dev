@@ -27,11 +27,13 @@ Action performed.: 执行完成。
 Action is not performed.: 执行未完成。
 Please, select item to perform action.: 请选择条目，以进行处理。
 View per page: 查看每页
+Enabled: 已启用
+Disabled: 已禁用
+not_available: 不适用
 "Yes": true
 "No": false
 oro.datagrid.entityHint: 实体
 oro.datagrid.noentities: 没有找到记录
-oro.datagrid.noresults: "未找到任何结果。请试着改变您的搜索条件。"
 oro.datagrid.nocolumns: 没有配置此网格的列
 oro.datagrid.pagination.label: "页"
 oro.datagrid.pagination.totalPages: "{{ totalPages }}"

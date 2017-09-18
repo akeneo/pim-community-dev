@@ -1,5 +1,4 @@
 "oro_datagrid.no_data_hint %entityHint%": Der findes ingen %entityHint%.
-oro_datagrid.not_found_hint: Ingen resultater fundet. Prøv at ændre dine søgekriterier.
 oro_datagrid.label_add_filter: Administrer filtre
 oro_datagrid.label_loading_mask: Indlæser . . .
 oro.grid.mass_action.selected_rows: Markerede rækker

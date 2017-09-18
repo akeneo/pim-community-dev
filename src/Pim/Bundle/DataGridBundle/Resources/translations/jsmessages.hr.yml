@@ -27,11 +27,13 @@ Action performed.: Akcija je izvršena.
 Action is not performed.: Akcija nije izvršena.
 Please, select item to perform action.: Molimo, odaberite stavku za izvođenje akcije.
 View per page: Pregled po stranici
+Enabled: Omogućeno
+Disabled: Onemogućeno
+not_available: N/A
 "Yes": true
 "No": false
 oro.datagrid.entityHint: Entitet
 oro.datagrid.noentities: Nisu pronađeni rezultati
-oro.datagrid.noresults: "Nisu pronađeni rezultati. Pokušajte promijeniti kriterije pretraživanja."
 oro.datagrid.nocolumns: Stupci za prikaz tablice nisu konfigurirani
 oro.datagrid.pagination.label: "Stranica"
 oro.datagrid.pagination.totalPages: "od {{ totalPages }}"

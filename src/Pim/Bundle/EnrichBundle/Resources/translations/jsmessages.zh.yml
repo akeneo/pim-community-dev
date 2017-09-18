@@ -137,7 +137,10 @@ pim_enrich:
         save: 保存
         cancel: 取消
     product:
+      index_title: 商品
       title: 产品
+      locale: 本地化语言
+      category: 分类
       btn:
         enabled: 已启用
         disabled: 已禁用
@@ -167,6 +170,9 @@ pim_enrich:
         updated: 上次更新
         family:
           title: 产品族
+          none: 无
+        family_variant:
+          title: 变量
           none: 无
         groups:
           title: 分组
@@ -903,6 +909,8 @@ batch_jobs:
     import.label: 相关类型导入
   csv_family_import:
     validation.label: 文件验证
+  csv_family_variant_import:
+    validation.label: 文件验证
   csv_group_import:
     label: 从CSV导入分组
     validation.label: 文件验证
@@ -937,6 +945,8 @@ batch_jobs:
     import.label: 属性选项导入
   xlsx_family_import:
     label: 在XLSX导入品类
+    validation.label: 文件验证
+  xlsx_family_variant_import:
     validation.label: 文件验证
   xlsx_product_export:
     label: 产品导出到 XLSX

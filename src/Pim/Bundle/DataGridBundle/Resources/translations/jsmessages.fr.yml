@@ -29,11 +29,11 @@ Please, select item to perform action.: Veuillez sélectionner des éléments af
 View per page: Par page
 Enabled: Activé
 Disabled: Désactivé
+not_available: N/A
 "Yes": true
 "No": false
 oro.datagrid.entityHint: Entité
 oro.datagrid.noentities: Aucun enregistrement trouvé
-oro.datagrid.noresults: "Aucun résultat trouvé. Essayez de modifier vos critères de recherche."
 oro.datagrid.nocolumns: Aucune colonne configurée pour cette grille
 oro.datagrid.pagination.label: "Page"
 oro.datagrid.pagination.totalPages: "de {{ totalPages }}"

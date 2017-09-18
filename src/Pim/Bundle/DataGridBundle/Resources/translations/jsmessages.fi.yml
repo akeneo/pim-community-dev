@@ -27,11 +27,13 @@ Action performed.: Toiminto suoritettu.
 Action is not performed.: Toimintoa ei suoritettu.
 Please, select item to perform action.: Valitse kohde toiminnon suorittamiseen.
 View per page: Sivunäkymä
+Enabled: Käytössä
+Disabled: Poistettu käytöstä
+not_available: Ei mitään
 "Yes": true
 "No": false
 oro.datagrid.entityHint: Entiteetti
 oro.datagrid.noentities: Tuloksia ei löytynyt
-oro.datagrid.noresults: "Tuloksia ei löytynyt. Yritä muuttaa hakuehtoja."
 oro.datagrid.nocolumns: Sarakkeita ei määritetty tähän ruudukkoon
 oro.datagrid.pagination.label: "Sivu"
 oro.datagrid.pagination.totalPages: "koskien {{ totalPages }}"

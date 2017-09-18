@@ -137,7 +137,10 @@ pim_enrich:
         save: Сохранить
         cancel: Отмена
     product:
+      index_title: Продукты
       title: продукт
+      locale: Локаль
+      category: Категория
       btn:
         enabled: Включено
         disabled: Отключено
@@ -167,6 +170,9 @@ pim_enrich:
         updated: Последнее обновление
         family:
           title: Семейство
+          none: Нет
+        family_variant:
+          title: Вариант
           none: Нет
         groups:
           title: Группы
@@ -933,6 +939,8 @@ batch_jobs:
     label: Импорт семейств из CSV
     validation.label: Проверка файла
     import.label: Импорт семейств
+  csv_family_variant_import:
+    validation.label: Проверка файла
   csv_group_import:
     label: Импорт группы из CSV
     validation.label: Проверка файла
@@ -970,6 +978,8 @@ batch_jobs:
     label: Импорт семейств из XLSX
     validation.label: Проверка файла
     import.label: Импорт семейств
+  xlsx_family_variant_import:
+    validation.label: Проверка файла
   xlsx_product_export:
     label: Экспорт продуктов в XLSX
     export.label: Экспорт продуктов
