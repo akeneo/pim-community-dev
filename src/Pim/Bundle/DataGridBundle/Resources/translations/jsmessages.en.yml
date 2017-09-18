@@ -64,7 +64,7 @@ datagrid_view.columns.min_message: You must select at least one datagrid column 
 pim_datagrid:
     column_configurator:
         label:             Columns
-        title:             Column Selection
+        title:             Configure columns
         all_groups:        All groups
         search:            Search
         clear:             Clear
@@ -72,6 +72,8 @@ pim_datagrid:
         apply:             Apply
         cancel:            Cancel
         remove_column:     Remove
+        description:       Select the information you want to display as column
+        attribute_groups:  Attribute groups
     mass_action:
         delete:
             confirm_title:   Delete confirmation

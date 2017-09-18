@@ -102,6 +102,22 @@
     .modal-body {
       padding: 0;
     }
+
+    &.modal--topButton {
+      .modal-body {
+        max-height: 100vh;
+        height: 100vh;
+        padding: 140px 0 @AknFullPagePadding 0;
+      }
+
+      .modal-footer {
+        position: absolute;
+        top: @AknFullPagePadding;
+        padding: 0;
+        right: @AknFullPagePadding;
+        width: auto;
+      }
+    }
   }
 
   &.modal--columns {

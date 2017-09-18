@@ -1,5 +1,13 @@
-<div class="AknColumnConfigurator-column">
-    <div class="AknColumnConfigurator-columnHeader"></div>
+<div class="AknColumnConfigurator-title AknFullPage-title">
+    <%- title %>
+</div>
+<div class="AknColumnConfigurator-subTitle AknFullPage-description">
+    <%- description %>
+</div>
+<div class="AknColumnConfigurator-column AknColumnConfigurator-column--gray">
+    <div class="AknColumnConfigurator-columnHeader">
+        <%- attributeGroupsLabel %>
+    </div>
     <div class="AknColumnConfigurator-listContainer">
         <ul class="AknVerticalList nav-list">
             <li class="AknVerticalList-item AknVerticalList-item--selectable tab active">
@@ -18,7 +26,6 @@
 
 <div class="AknColumnConfigurator-column">
     <div class="AknColumnConfigurator-columnHeader">
-        <i class="AknColumnConfigurator-searchIcon icon-search"></i>
         <input class="AknTextField AknColumnConfigurator-searchInput" type="search" placeholder="<%- _.__('pim_datagrid.column_configurator.search') %>"/>
     </div>
     <div class="AknColumnConfigurator-listContainer">
@@ -29,9 +36,6 @@
                     <i class="icon-th"></i>
                     <%- column.label %>
                 </div>
-                <a href="javascript:void(0);" class="AknIconButton AknIconButton--small AknIconButton--grey action" title="<%- _.__('pim_datagrid.column_configurator.remove_column') %>">
-                    <i class="icon-trash"></i>
-                </a>
             </li>
             <% }); %>
         </ul>

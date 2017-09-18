@@ -11,6 +11,7 @@ define(
         'pim/form',
         'oro/mediator',
         'pim/common/column-list-view',
+        'pim/template/datagrid/action-configure-columns',
         'bootstrap-modal',
         'jquery-ui'
     ],
@@ -26,6 +27,7 @@ define(
         BaseForm,
         mediator,
         ColumnListView,
+        template
     ) {
         var Column = Backbone.Model.extend({
             defaults: {
@@ -49,7 +51,7 @@ define(
 
             locale: null,
 
-            label: _.__('pim_datagrid.column_configurator.label'),
+            label: __('pim_datagrid.column_configurator.label'),
 
             icon: 'th',
 
@@ -57,14 +59,7 @@ define(
 
             target: '.AknGridToolbar .actions-panel',
 
-            template: _.template(
-                '<div class="AknGridToolbar-actionButton">' +
-                    '<a href="javascript:void(0);" class="AknActionButton" title="<%= label %>" id="configure-columns">' +
-                        '<i class="icon-<%= icon %>"></i>' +
-                        '<%= label %>' +
-                    '</a>' +
-                '</div>'
-            ),
+            template: _.template(template),
 
             configuratorTemplate: _.template(
                 '<div id="column-configurator" class="AknColumnConfigurator"></div>'
@@ -89,7 +84,7 @@ define(
                 this.options = options;
 
                 if (_.has(options, 'label')) {
-                    this.label = _.__(options.label);
+                    this.label = __(options.label);
                 }
                 if (_.has(options, 'icon')) {
                     this.icon = options.icon;
@@ -171,17 +166,17 @@ define(
                     var columnListView = new ColumnListView({collection: columnList});
 
                     var modal = new Backbone.BootstrapModal({
-                        className: 'modal modal-large column-configurator-modal',
+                        className: 'modal modal--fullPage modal--topButton column-configurator-modal',
                         modalOptions: {
                             backdrop: 'static',
                             keyboard: false
                         },
                         allowCancel: true,
                         okCloses: false,
-                        cancelText: _.__('pim_datagrid.column_configurator.cancel'),
-                        title: _.__('pim_datagrid.column_configurator.title'),
+                        cancelText: __('pim_datagrid.column_configurator.cancel'),
+                        title: __('pim_datagrid.column_configurator.title'),
                         content: this.configuratorTemplate(),
-                        okText: _.__('pim_datagrid.column_configurator.apply')
+                        okText: __('pim_datagrid.column_configurator.apply')
                     });
 
                     loadingMask.hide();

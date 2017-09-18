@@ -10,8 +10,7 @@
   height: auto !important; // Bootstrap adds an height in JS for nav-list, we have to remove it.
 
   &-item {
-    background: lighten(@AknGrey, 30%);
-    border: 1px solid @AknBorderColor;
+    border-bottom: 1px solid @AknBorderColor;
     height: @itemHeight;
     line-height: 50px;
     margin: 0 0 -1px 0;
@@ -35,7 +34,7 @@
 
     &.active, // This is the bootstrap selector
     &--active {
-      background: white;
+      color: @AknLightPurple;
     }
   }
 
