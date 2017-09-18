@@ -6,13 +6,13 @@ parameters:
     pim_connector.processor.denormalization.product_association.class: Pim\Component\Connector\Processor\Denormalization\ProductAssociationProcessor
     pim_connector.processor.denormalization.job_instance.class:        Pim\Component\Connector\Processor\Denormalization\JobInstanceProcessor
 
-    pim_connector.processor.normalization.class:               Pim\Component\Connector\Processor\Normalization\Processor
-    pim_connector.processor.normalization.product.class:       Pim\Component\Connector\Processor\Normalization\ProductProcessor
+    pim_connector.processor.normalization.class:                  Pim\Component\Connector\Processor\Normalization\Processor
+    pim_connector.processor.normalization.product.class:          Pim\Component\Connector\Processor\Normalization\ProductProcessor
+    pim_connector.processor.normalization.product_model.class:    Pim\Component\Connector\Processor\Normalization\ProductModelProcessor
 
     pim_connector.processor.bulk_media_fetcher.class: Pim\Component\Connector\Processor\BulkMediaFetcher
     pim_connector.processor.attribute_filter.product_model.class: Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductModelAttributeFilter
     pim_connector.processor.attribute_filter.product.class: Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductAttributeFilter
-
 
 services:
     # Dummy processor
@@ -227,6 +227,15 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_connector.processor.bulk_media_fetcher'
             - '@pim_catalog.values_filler.product'
+
+    pim_connector.processor.normalization.product_model:
+        class: '%pim_connector.processor.normalization.product_model.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product_model'
+            - '@pim_catalog.repository.attribute'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_connector.processor.bulk_media_fetcher'
+            - '@pim_catalog.values_filler.entity_with_family_variant'
 
     pim_connector.processor.normalization.family:
         class: '%pim_connector.processor.normalization.class%'
