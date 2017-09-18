@@ -72,7 +72,6 @@ jobs:
             uploadAllowed:     true
             delimiter:         ;
             enclosure:         '"'
-            escape:            '\'
             enabled:            true
             categoriesColumn:   categories
             familyColumn:       family
@@ -102,7 +101,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     xlsx_catalog_modeling_family_variant_import:
         connector: Akeneo XLSX Connector
         alias:     xlsx_family_variant_import
@@ -140,7 +138,6 @@ jobs:
             uploadAllowed: true
             delimiter: ;
             enclosure: '"'
-            escape: '\'
             enabled: true
             categoriesColumn: categories
             familyVariantColumn: family_variant

@@ -145,7 +145,6 @@ jobs:
             withHeader: true
             delimiter: ;
             enclosure: '"'
-            escape: '\'
             enabled: true
             categoriesColumn: categories
             familyVariantColumn: family_variant
@@ -165,7 +164,6 @@ jobs:
             withHeader: true
             delimiter: ;
             enclosure: '"'
-            escape: '\'
             enabled: true
             categoriesColumn: categories
             familyColumn: family
