@@ -74,33 +74,6 @@ class ProductRepository extends EntityRepository implements
 
     /**
      * {@inheritdoc}
-     *
-     * @return QueryBuilder
-     */
-    protected function buildByScope($scope)
-    {
-        $productQb = $this->queryBuilderFactory->create();
-        $qb = $productQb->getQueryBuilder();
-        $this->addJoinToValueTables($qb);
-        $rootAlias = current($qb->getRootAliases());
-        $qb
-            ->andWhere(
-                $qb->expr()->eq($rootAlias.'.enabled', ':enabled')
-            )
-            ->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->eq('Value.scope', ':scope'),
-                    $qb->expr()->isNull('Value.scope')
-                )
-            )
-            ->setParameter('enabled', true)
-            ->setParameter('scope', $scope);
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
      */
     public function getItemsFromIdentifiers(array $identifiers)
     {
@@ -243,36 +216,6 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInVariantGroup($productId, $attributeCode)
-    {
-        $queryBuilder = $this->createQueryBuilder('p')
-            ->select('g.id')
-            ->leftJoin('p.groups', 'g')
-            ->where('p.id = :id')
-            ->setParameters([
-                'id' => $productId,
-            ]);
-
-        $groupIds = $queryBuilder->getQuery()->getScalarResult();
-
-        $groupIds = array_reduce($groupIds, function ($carry, $item) {
-            if (isset($item['id'])) {
-                $carry[] = $item['id'];
-            }
-
-            return $carry;
-        }, []);
-
-        if (0 === count($groupIds)) {
-            return false;
-        }
-
-        return $this->groupRepository->hasAttribute($groupIds, $attributeCode);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
     {
         $queryBuilder = $this->findAllForVariantGroupQB($variantGroup, $criteria);
@@ -298,8 +241,12 @@ class ProductRepository extends EntityRepository implements
     public function getAssociatedProductIds(ProductInterface $product)
     {
         $qb = $this->createQueryBuilder('p')
-            ->select('a.id AS association_id', 't.code AS association_type_code', 'pa.id AS product_id', 'pa.identifier AS product_identifier')
-            ->innerJoin('p.associations', 'a')
+            ->select(
+                'a.id AS association_id',
+                't.code AS association_type_code',
+                'pa.id AS product_id',
+                'pa.identifier AS product_identifier'
+            )->innerJoin('p.associations', 'a')
             ->innerJoin('a.associationType', 't')
             ->innerJoin('a.products', 'pa')
             ->where('p.id = :productId')

@@ -1,27 +1,27 @@
-<div class="tabbable tabs-left">
+<div class="tabbable">
     <div class="sidebar">
-        <ul class="AknVerticalNavtab nav nav-tabs">
-            <li class="AknVerticalNavtab-item AknVerticalNavtab-header header"></li>
-            <% _.each(trees, function (tree) { %>
-                <li class="AknVerticalNavtab-item <% if (tree.code === currentTree.code) { %> AknVerticalNavtab-item--active active<% } %> tree-selector" data-tree="<%- tree.code %>" data-tree-id="<%- tree.id %>">
-                    <span class="AknVerticalNavtab-link">
+        <div class="AknHorizontalNavtab nav nav-tabs">
+            <div class="AknButtonList catalog-switcher">
+                <ul class="AknHorizontalNavtab-list nav nav-tabs" id="trees-list">
+                <% _.each(trees, function (tree) { %>
+                <li class="AknHorizontalNavtab-item tree-selector <% if (tree.code === currentTree.code) { %> active<% } %>" data-tree="<%- tree.code %>" data-tree-id="<%- tree.id %>">
+                    <div class="AknHorizontalNavtab-link" id="tree-link-<%- tree.id %>">
+                        <span class="tree-label label"><%- i18n.getLabel(tree.labels, locale, tree.code) %></span>
                         <div class="AknAcl">
                             <i class="icon-ok <%- tree.associated ? 'green AknAcl-icon--granted' : 'gray' %>"></i>
-                            <%- i18n.getLabel(tree.labels, locale, tree.code) %>
                         </div>
-                    </span>
+                    </div>
                 </li>
-            <% }); %>
-        </ul>
+                <% }) %>
+            </ul>
+            </div>
+        </div>
     </div>
     <div class="AknTabContainer-content tab-content">
         <div class="tab-pane active">
             <div id="trees" data-datalocale="<%- locale %>" data-selected-tree="<%- currentTree.id %>">
                 <% _.each(trees, function (tree) { %>
                     <div class="tree root-unselectable" data-tree-id="<%- tree.id %>">
-                        <header class="AknTabHeader tab-header">
-                            <div class="AknTabHeader-title"><%- tree.label %></div>
-                        </header>
                         <div id="tree-<%- tree.id %>" class="buffer-small-left"></div>
                     </div>
                 <% }); %>

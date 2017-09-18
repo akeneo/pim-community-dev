@@ -19,35 +19,6 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
         layout.init();
 
         /* ============================================================
-         * Oro Dropdown close prevent
-         * ============================================================ */
-        var dropdownToggles = $('.oro-dropdown-toggle');
-        dropdownToggles.click(function () {
-            var $parent = $(this).parent().toggleClass('open');
-            if ($parent.hasClass('open')) {
-                $parent.find('input[type=text]').first().focus().select();
-            }
-        });
-
-        $('html').click(function (e) {
-            var $target = $(e.target);
-            var clickingTarget = null;
-            if ($target.hasClass('dropdown') || $target.hasClass('oro-drop')) {
-                clickingTarget = $target;
-            } else {
-                clickingTarget = $target.closest('.dropdown, .oro-drop');
-            }
-            clickingTarget.addClass('_currently_clicked');
-            $('.open:not(._currently_clicked)').removeClass('open');
-            clickingTarget.removeClass('_currently_clicked');
-        });
-
-        $('#main-menu').mouseover(function () {
-            $('.open').removeClass('open');
-        });
-
-
-        /* ============================================================
          * from height_fix.js
          * ============================================================ */
 

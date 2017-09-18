@@ -25,7 +25,6 @@ Feature: Apply ACL permissions on mass edit actions
     And I press "Change product information" on the "Bulk Actions" dropdown button
     Then I should see the text "Edit common attributes"
     And I should see the text "Add to groups"
-    And I should see the text "Add to a variant group"
     And I should not see "Change family"
     And I should not see "Change status"
 
@@ -37,4 +36,3 @@ Feature: Apply ACL permissions on mass edit actions
     And I should see the text "Edit common attributes"
     And I should see the text "Change family"
     And I should see the text "Add to groups"
-    And I should see the text "Add to a variant group"

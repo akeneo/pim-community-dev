@@ -118,7 +118,6 @@ class BooleanFilterSpec extends ObjectBehavior
                 ],
                 'enabled'              => true,
                 'data_name'            => 'bar',
-                'contextSearch'        => false,
                 'populateDefault'      => true,
                 'type'                 => 'multichoice',
             ]

@@ -61,6 +61,12 @@ extensions:
         config:
             gridName: product-grid
 
+    pim-product-index-category-tree-done:
+        module: pim/grid/category-tree-done
+        parent: pim-product-index
+        targetZone: tree
+        aclResourceId: pim_enrich_product_category_list
+
     pim-product-index-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-product-index
@@ -78,12 +84,12 @@ extensions:
 
     pim-product-index-grid-filters-manage:
         module: oro/datafilter/filters-button
-        parent: pim-product-index
-        targetZone: filters
+        parent: pim-product-index-column-inner
+        targetZone: manage-filters-button
 
     pim-product-index-grid-filters-list:
         module: oro/datafilter/filters-list
-        parent: pim-product-index
+        parent: pim-product-index-column-inner
         targetZone: filters
 
     pim-product-index-mass-actions:

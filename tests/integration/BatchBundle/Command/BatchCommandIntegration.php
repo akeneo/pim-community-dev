@@ -132,7 +132,7 @@ class BatchCommandIntegration extends TestCase
         $this->assertEquals(BatchStatus::COMPLETED, $result['status']);
 
         $output = $this->launchJob(['execution' => $result['id']]);
-        $this->assertContains('Job execution "20" has invalid status: COMPLETED', $output->fetch());
+        $this->assertContains('Job execution "19" has invalid status: COMPLETED', $output->fetch());
     }
 
     public function testLaunchJobExecutionWithConfigOverridden()

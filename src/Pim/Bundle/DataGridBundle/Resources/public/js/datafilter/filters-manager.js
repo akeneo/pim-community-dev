@@ -6,7 +6,10 @@ define(
         'backbone',
         'oro/mediator',
         'oro/multiselect-decorator',
-        'pim/template/datagrid/add-filter-select'
+        'pim/template/datagrid/add-filter-select',
+        'pim/template/datagrid/add-filter-button',
+        'pim/template/datagrid/done-container',
+        'pim/template/datagrid/done-button'
     ],
     function(
         __,
@@ -15,7 +18,10 @@ define(
         Backbone,
         mediator,
         MultiselectDecorator,
-        addFilterSelectTemplate
+        addFilterSelectTemplate,
+        addFilterButtonTemplate,
+        doneContainerTemplate,
+        doneButtonTemplate
     ) {
     /**
      * View that represents all grid filters
@@ -37,13 +43,6 @@ define(
         filters: {},
 
         /**
-         * Container tag name
-         *
-         * @property
-         */
-        tagName: 'div',
-
-        /**
          * Display the 'manage filters' button or not
          *
          * @property
@@ -61,12 +60,10 @@ define(
             return _.result(this.options, 'filtersAsColumn', false);
         },
 
-        /**
-         * Filter list template
-         *
-         * @property
-         */
         addButtonTemplate: _.template(addFilterSelectTemplate),
+        addFilterButtonTemplate: _.template(addFilterButtonTemplate),
+        doneContainerTemplate: _.template(doneContainerTemplate),
+        doneButtonTemplate: _.template(doneButtonTemplate),
 
         /**
          * Filter list input selector
@@ -176,6 +173,13 @@ define(
         _onChangeFilterSelect: function () {
             this.trigger('updateList', this);
             this._processFilterStatus();
+        },
+
+        /**
+         * Closes the panel when the user clicks on Done button
+         */
+        _onClose() {
+            this.selectWidget.multiselect('close');
         },
 
         /**
@@ -326,14 +330,33 @@ define(
                 parameters: {
                     multiple: true,
                     selectedList: 0,
+                    position: {
+                        left: this._getLeftStartPosition()
+                    },
                     classes: 'AknFilterBox-addFilterButton filter-list select-filter-widget',
-                    open: $.proxy(function () {
+                    beforeopen: () => {
+                        this.selectWidget.getWidget().css({ left: this._getLeftStartPosition() });
+                        this._addDoneButton();
+
+                        return true;
+                    },
+                    open: () => {
                         if (this.$el.is(':visible')) {
                             this.selectWidget.onOpenDropdown();
-                            this._setDropdownWidth();
                             this._updateDropdownPosition();
                         }
-                    }, this)
+                    },
+                    beforeclose: () => {
+                        if (this.selectWidget.getWidget().position().left <= this._getLeftStartPosition()) {
+                            return true;
+                        }
+
+                        this.selectWidget.getWidget().css({ left: this._getLeftEndPosition() + 'px' });
+                        this.selectWidget.getWidget().css({ left: this._getLeftStartPosition() + 'px' });
+                        setTimeout(() => this.selectWidget.multiselect('close'), 500);
+
+                        return false;
+                    }
                 }
             });
 
@@ -341,20 +364,26 @@ define(
             this.selectWidget.getWidget().addClass('pimmultiselect');
 
             this.$('.filter-list span:first').replaceWith(
-                '<a id="add-filter-button" href="javascript:void(0);"></a>'
+                this.addFilterButtonTemplate({
+                    label: __('pim_enrich.entity.product.filters')
+                })
             );
+
         },
 
         /**
-         * Set design for select dropdown
-         *
-         * @protected
+         * Adds a done button in the bottom of the multiselect
          */
-        _setDropdownWidth: function () {
-            var widget = this.selectWidget.getWidget();
-            var requiredWidth = this.selectWidget.getMinimumDropdownWidth() + 24;
-            widget.width(requiredWidth).css('min-width', requiredWidth + 'px');
-            widget.find('input[type="search"]').width(requiredWidth - 22);
+        _addDoneButton() {
+            if (!this.selectWidget.getWidget().find('.close').length) {
+                const button = $(this.doneButtonTemplate({
+                    label: __('pim.grid.category_filter.done')
+                }));
+                button.on('click', () => this._onClose());
+                const container = $(this.doneContainerTemplate());
+                container.append(button);
+                this.selectWidget.getWidget().append(container);
+            }
         },
 
         /**
@@ -363,38 +392,45 @@ define(
          * @protected
          */
         _processFilterStatus: function () {
-            var activeFilters = this.$(this.filterSelector).val();
+            const activeFilters = this.$(this.filterSelector).val();
 
             _.each(this.filters, function (filter, name) {
-                if (!filter.enabled && _.indexOf(activeFilters, name) != -1) {
+                if (!filter.enabled && _.indexOf(activeFilters, name) !== -1) {
                     this.enableFilter(filter);
-                } else if (filter.enabled && _.indexOf(activeFilters, name) == -1) {
+                } else if (filter.enabled && _.indexOf(activeFilters, name) === -1) {
                     this.disableFilter(filter);
                 }
             }, this);
-
-            this._updateDropdownPosition();
         },
 
         /**
-         * Set dropdown position according to current element
-         *
-         * @protected
+         * Set dropdown position according to current element. This methods animates the panel to be displayed
+         * like the other columns.
          */
         _updateDropdownPosition: function () {
-            var button = this.$(this.buttonSelector);
-            var buttonPosition = button.offset();
-            var widgetWidth = this.selectWidget.getWidget().outerWidth();
-            var windowWidth = $(window).width();
-            var widgetLeftOffset = buttonPosition.left;
-            if (buttonPosition.left + widgetWidth > windowWidth) {
-                widgetLeftOffset = buttonPosition.left + button.outerWidth() - widgetWidth;
-            }
+            const mainPanelLeft = $('.AknDefault-mainContent').position().left;
 
-            this.selectWidget.getWidget().css({
-                top: buttonPosition.top + button.outerHeight(),
-                left: widgetLeftOffset
-            });
+            this.selectWidget.getWidget().css({ left: this._getLeftStartPosition() + 'px' });
+            this.selectWidget.getWidget().css({ left: this._getLeftEndPosition() + 'px' });
+        },
+
+        /**
+         * Returns the left absolute position for the animation start
+         *
+         * @returns {number}
+         */
+        _getLeftStartPosition() {
+            return $('.AknDefault-mainContent').position().left - 300;
+        },
+
+        /**
+         * Returns the left absolute position for the animation end
+         *
+         * @returns {number}
+         */
+        _getLeftEndPosition() {
+            return $('.AknDefault-mainContent').position().left;
         }
+
     });
 });

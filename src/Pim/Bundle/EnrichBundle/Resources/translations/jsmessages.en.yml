@@ -9,7 +9,6 @@ confirmation:
         product:          Are you sure you want to delete this product?
         channel:          Are you sure you want to delete this channel?
         group:            Are you sure you want to delete this group?
-        variant group:    Are you sure you want to delete this variant group?
         group_type:       Are you sure you want to delete this group type?
         import profile:   Are you sure you want to delete this import profile?
         export profile:   Are you sure you want to delete this export profile?
@@ -52,8 +51,6 @@ flash:
         removed: Channel successfully removed
     group:
         removed: Group successfully removed
-    variant group:
-        removed: Variant group successfully removed
     group_type:
         removed: Group type successfully removed
     import profile:
@@ -81,7 +78,6 @@ error:
         product:          Cannot delete this product
         channel:          Cannot delete this channel
         group:            Cannot delete this group
-        variant group:    Cannot delete this variant group
         group type:       Cannot delete this group type
         import profile:   Cannot delete this import profile
         export profile:   Cannot delete this export profile
@@ -133,6 +129,7 @@ pim:
 
 # Jstree context menu actions
 jstree.create: Create
+jstree.done: Done
 switch_on: "Yes"
 switch_off: "No"
 
@@ -169,6 +166,7 @@ pim_enrich:
             locale: Locale
             category: Category
             create: Create product
+            filters: Filters
             btn:
                 enabled: Enabled
                 disabled: Disabled
@@ -222,11 +220,6 @@ pim_enrich:
                 all_visible: All visible
                 none: None
                 copy: Copy
-            variant_group:
-                updated_by: Updated by variant group
-                switch:
-                    "yes": "Yes"
-                    "no": "No"
             optional_attribute:
                 remove: Remove this attribute
             locale_specific_attribute:
@@ -236,7 +229,7 @@ pim_enrich:
             media:
                 upload: Drag and drop to upload or click here
             create_popin:
-                title: Create a new product
+                title: Create
                 labels:
                     family: Choose a family
                     save: Save
@@ -267,7 +260,7 @@ pim_enrich:
                 save: Save
             title: association type
             create_popin:
-                title: Create a new association type
+                title: Create
             message:
                 created: Association type successfully created
         group_type:
@@ -286,7 +279,7 @@ pim_enrich:
                 save: Save
             title: group type
             create_popin:
-                title: Create a new group type
+                title: Create
             message:
                 created: Group type successfully created
         channel:
@@ -323,35 +316,13 @@ pim_enrich:
             btn:
                 save: Save
             create_popin:
-                title: Create a new family
+                title: Create
             message:
                 created: Family successfully created
         attribute_option:
             code: Code
             label: Label
             actions: Actions
-        variant_group:
-            title: Variant group
-            info:
-                deletion_successful: Variant group successfully deleted.
-                deletion_failed: The variant group could not be deleted.
-                update_successful: Variant group successfully updated.
-                update_failed: The variant group could not be updated.
-                field_not_ready: "The variant group cannot be saved right now. The following fields are not ready: {{ fields }}"
-                already_in_upload: A file is already in upload for this attribute in the locale "{{ locale }}" and scope "{{ scope }}"
-                no_attributes: This variant group has no attributes yet
-            btn:
-                save: Save
-            meta:
-                product_count: Products
-                created: Created
-                created_by: Created by
-                updated: Updated
-                updated_by: Updated by
-            create_popin:
-                title: Create a new variant group
-            message:
-                created: Variant group successfully created
         group:
             title: Group
             info:
@@ -369,7 +340,7 @@ pim_enrich:
                 updated: Updated
                 updated_by: Updated by
             create_popin:
-                title: Create a new group
+                title: Create
             message:
                 created: Group successfully created
         job_instance:
@@ -411,7 +382,7 @@ pim_enrich:
                 update_successful: Attribute group successfully updated
         api_connection:
             create_popin:
-                title: Create a new API connection
+                title: Create
             message:
                 created: API connection successfully created
     confirmation:
@@ -563,22 +534,6 @@ pim_enrich:
             switch:
                 "no": "No"
                 "yes": "Yes"
-        variant_group:
-            axis.help: Axis define the attributes over which the products of the group should vary. Axis are attributes with options, not localizable and not scoped. They cannot be changed after the creation of the variant group
-            tab:
-                properties:
-                    title: Properties
-                    general: General properties
-                    code: Code
-                    type: Type
-                    axis: Axis
-                    label_translations: Label translations
-                history:
-                    title: History
-                products:
-                    title: Products
-                attributes:
-                    title: Attributes
         group:
             tab:
                 properties:
@@ -928,14 +883,11 @@ pim_enrich:
             create_btn: Create import profile
             list:       Select a job
             create_popin:
-                title: Create a new import profile
+                title: Create
             message:
                 created: Import profile successfully created
         import_history:
             title:      Import reports
-        variant_group:
-            title:      Variant group overview
-            create_btn: Create variant group
         group:
             title:      Group overview
             create_btn: Create group
@@ -943,7 +895,7 @@ pim_enrich:
             title:      Export profile overview
             create_btn: Create export profile
             create_popin:
-                title: Create a new export profile
+                title: Create
             message:
                 created: Export profile successfully created
         export_history:
@@ -994,8 +946,8 @@ pim_enrich:
                 select:
                     label: Choose products
                 choose:
-                    label: Choose operation
-                    labelCount: "{1}Select your action for <span class=\"AknFullPage-title--highlight\">the product</span>|] 1, Inf [Select your action for the <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    title: Products bulk actions
+                    label_count: "] 0, Inf [Select your action"
                 configure:
                     label: Configure
                 confirm:
@@ -1007,16 +959,16 @@ pim_enrich:
             operation:
                 change_status:
                     label: Change status
-                    label_count: "{1}Change status of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    label_count: "{1}Change the status of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the status of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The selected products will be enabled or disabled.
                     field: To enable
                 edit_common:
                     label: Edit common attributes
-                    label_count: "{1}Edit common attributes of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit common attributes <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    label_count: "{1}Edit common attributes of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Edit common attributes of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The selected product's attributes will be edited with the following data for the locale {{ locale }} and the channel {{ scope }}, chosen in the products grid.
                 change_family:
                     label: Change family
-                    label_count: "{1}Change family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
+                    label_count: "{1}Change the family of <span class=\"AknFullPage-title--highlight\">1 product</span>|] 1, Inf [Change the family of <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span>"
                     description: The family of the selected products will be changed to the chosen family
                     field: Family
                 add_to_group:
@@ -1024,11 +976,6 @@ pim_enrich:
                     label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to groups|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to groups"
                     description: Select the groups in which to add the selected products
                     field: Groups
-                add_to_variant_group:
-                    label: Add to a variant group
-                    label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span>to a variant group|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to a variant group"
-                    description: Select the variant group in which to add the selected products
-                    field: Group
                 add_to_category:
                     label: Add to categories
                     label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to categories|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to categories"
@@ -1048,8 +995,8 @@ pim_enrich:
                 select:
                     label: Choose families
                 choose:
-                    label: Choose operation
-                    labelCount: "{1}Select your action for <span class=\"AknFullPage-title--highlight\">the family</span>|] 1, Inf [Select your action for the <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} families</span>"
+                    title: Families bulk actions
+                    label_count: "] 0, Inf [Select your action"
                 configure:
                     label: Configure
                 confirm:
@@ -1092,8 +1039,6 @@ page_title:
     pim_enrich_locale_index:               Locales
     pim_enrich_group_index:                Groups
     pim_enrich_group_edit:                 Groups {{ group.label }} | Edit
-    pim_enrich_variant_group_index:        Variant groups
-    pim_enrich_variant_group_edit:         Variant groups {{ group.label }} | Edit
     pim_enrich_associationtype_index:      Association types
     pim_enrich_associationtype_edit:       Association types {{ association type.label }} | Edit
     pim_enrich_grouptype_index:            Group types
@@ -1142,10 +1087,6 @@ batch_jobs:
         quick_export.label: XSLX product grid context quick export
         perform:
             label: XSLX product grid context quick export
-    add_to_variant_group:
-        label: Add to variant group
-        perform:
-            label: Add to variant group
     csv_product_export:
         label: Product export in CSV
         export.label: Product export
@@ -1164,9 +1105,6 @@ batch_jobs:
     csv_group_export:
         label: Group export in CSV
         export.label: Group export
-    csv_variant_group_export:
-        label: Variant group export in CSV
-        export.label: Variant group export
     csv_family_export:
         label: Family export in CSV
         export.label: Family export
@@ -1208,10 +1146,6 @@ batch_jobs:
         label: Group import in CSV
         validation.label: File validation
         import.label: Group import
-    csv_variant_group_import:
-        label: Variant group import in CSV
-        validation.label: File validation
-        import.label: Variant group import
     csv_channel_export:
         label: Channel export in CSV
         export.label: Channel export
@@ -1284,17 +1218,10 @@ batch_jobs:
     xlsx_group_export:
         label: Group export in XLSX
         export.label: Group export
-    xlsx_variant_group_export:
-        label: Variant group export in XLSX
-        export.label: Variant group export
     xlsx_group_import:
         label: Group import in XLSX
         validation.label: File validation
         import.label: Group import
-    xlsx_variant_group_import:
-        label: Variant group import in XLSX
-        validation.label: File validation
-        import.label: Variant Group import
     xlsx_family_export:
         label: Family export in XLSX
         export.label: Family export
@@ -1378,7 +1305,6 @@ pim_menu:
         group_type: Group types
         locale: Locales
         product: Products
-        variant_group: Variant groups
         export_history: Exports history
         export_profile: Export profiles
         import_history: Imports history

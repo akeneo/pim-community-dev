@@ -2,7 +2,6 @@
 
 .AknDefault {
   @mainContentPadding: 40px;
-  @thirdColumnWidth: 300px;
 
   &-page {
     width: 100%;
@@ -58,8 +57,8 @@
   &-thirdColumnContainer {
     width: 0;
     order: -5;
-    margin-left: -@thirdColumnWidth;
-    margin-right: @thirdColumnWidth;
+    margin-left: -@AknThirdColumnWidth;
+    margin-right: @AknThirdColumnWidth;
     transition: margin 0.3s ease-in-out;
 
     &--open {
@@ -69,13 +68,22 @@
   }
 
   &-thirdColumn {
-    width: @thirdColumnWidth;
+    width: @AknThirdColumnWidth;
     position: fixed;
     height: 100vh;
     background: white;
     z-index: 801;
     border-right: 1px solid @AknBorderColor;
     padding: 20px;
+  }
+
+  &-thirdColumnButton {
+    border-top: 1px solid @AknBorderColor;
+    position: absolute;
+    bottom: 100px;
+    width: ~"calc(100% - 40px)";
+    text-align: center;
+    padding: 20px 0;
   }
 }
 

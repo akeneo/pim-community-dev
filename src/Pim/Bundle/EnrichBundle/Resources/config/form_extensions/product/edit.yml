@@ -104,6 +104,12 @@ extensions:
         aclResourceId: pim_pdf_generator_product_download
         position: 50
 
+    pim-product-edit-form-start-copy:
+        module: pim/product-edit-form/start-copy
+        parent: pim-product-edit-form-secondary-actions
+        targetZone: secondary-actions
+        position: 80
+
     pim-product-edit-form-save-buttons:
         module: pim/form/common/save-buttons
         parent: pim-product-edit-form
@@ -242,12 +248,6 @@ extensions:
         module: pim/product-edit-form/attributes/validation
         parent: pim-product-edit-form-attributes
         targetZone: header
-        position: 100
-
-    pim-product-edit-form-variant-group:
-        module: pim/product-edit-form/attributes/variant-group
-        parent: pim-product-edit-form-attributes
-        targetZone: self
         position: 100
 
     pim-product-edit-form-locale-specific:

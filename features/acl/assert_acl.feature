@@ -33,7 +33,6 @@ Feature: Define user rights
       | Create an association type | association types | AssociationType creation |
       | Create a channel           | channels          | channel creation         |
       | Create a group             | product groups    | ProductGroup creation    |
-      | Create a variant group     | variant groups    | VariantGroup creation    |
       | Create a group type        | group types       | GroupType creation       |
       | Create an attribute        | attributes        | Attribute creation       |
 
@@ -53,7 +52,6 @@ Feature: Define user rights
       | Create a channel           | channels          | Create channel          |
       | Create a family            | families          | Create family           |
       | Create a group             | product groups    | Create group            |
-      | Create a variant group     | variant groups    | Create variant group    |
       | Create a group type        | group types       | Create group type       |
       | Create an attribute        | attributes        | Create attribute        |
 
@@ -74,7 +72,6 @@ Feature: Define user rights
       | Remove a category           | "sandals" category                           | Delete |
       | Remove a family             | "boots" family                               | Delete |
       | Remove a group              | "similar_boots" product group                | Delete |
-      | Remove a variant group      | "caterpillar_boots" variant group            | Delete |
       | Remove a group type         | "RELATED" group type                         | Delete |
       | Remove a product            | "boot" product                               | Delete |
       | Remove an attribute         | "color" attribute                            | Delete |

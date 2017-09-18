@@ -3,7 +3,6 @@
 namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Classification\CategoryAwareInterface;
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\Localization\Model\LocalizableInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;

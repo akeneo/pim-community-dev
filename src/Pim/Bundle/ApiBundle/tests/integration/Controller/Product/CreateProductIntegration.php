@@ -120,6 +120,8 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'product_creation_groups');
     }
 
+    /**
+     * TODO PIM-6733: Variant group to be null or to be an alias for parent?
     public function testProductCreationWithVariantGroup()
     {
         $client = $this->createAuthenticatedClient();
@@ -173,6 +175,7 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_creation_variant_group');
     }
+     */
 
     public function testProductCreationWithCategories()
     {
@@ -289,7 +292,7 @@ JSON;
     {
         "identifier": "product_creation_product_values",
         "groups": ["groupA", "groupB"],
-        "variant_group": "variantA",
+        "variant_group": null,
         "family": "familyA",
         "categories": ["master", "categoryA"],
         "values": {
@@ -407,7 +410,7 @@ JSON;
             "a_text": [{
                 "locale": null,
                 "scope": null,
-                "data": "this is a text"
+                "data": "A name"
             }],
             "a_text_area": [{
                 "locale": null,
@@ -473,7 +476,7 @@ JSON;
             'family'        => 'familyA',
             'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => 'variantA',
+            'variant_group' => null,
             'categories'    => ['categoryA', 'master'],
             'enabled'       => true,
             'values'        => [
@@ -816,6 +819,8 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
+    /**
+     * TODO PIM-6733: Variant group to be null or to be an alias for parent?
     public function testResponseWhenAttributeValidationFailed()
     {
         $client = $this->createAuthenticatedClient();
@@ -882,6 +887,7 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
+     */
 
     public function testResponseWhenProductAlreadyExists()
     {

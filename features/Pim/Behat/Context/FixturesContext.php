@@ -210,8 +210,6 @@ class FixturesContext extends PimContext
      */
     protected function validate($object)
     {
-        // TODO: split UniqueVariantAxis + spec
-        // TODO: rework validation constraint to forbid to add products with same options in variant group in same time
         if ($object instanceof ProductInterface) {
             $validator = $this->getContainer()->get('pim_catalog.validator.product');
         } else {

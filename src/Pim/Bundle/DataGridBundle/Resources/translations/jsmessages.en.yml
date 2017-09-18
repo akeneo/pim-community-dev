@@ -48,9 +48,14 @@ oro_datagrid.select.none: "None"
 pim.grid.ajax_choice_filter.label_empty: is empty
 pim.grid.ajax_choice_filter.label_not_empty: is not empty
 pim.grid.choice_filter:
-    label_empty:     is empty
+    label_empty: is empty
     label_not_empty: is not empty
-    label_in_list:   in list
+    label_in_list: in list
+    operator: Operator
+pim.grid.price_filter:
+    label: Currency
+pim.grid.category_filter:
+    done: Done
 
 # Column configuration
 Available Columns:                 Available Columns
@@ -102,7 +107,7 @@ grid.view_selector:
     placeholder: Name of new view
     choose_label: Choose a label for the view
     confirmation:
-        remove: Are you sure you want to delete this datagrid view?
+        remove: Are you sure you want to delete this view?
         delete: Delete confirmation
 
 # View selector flash messages

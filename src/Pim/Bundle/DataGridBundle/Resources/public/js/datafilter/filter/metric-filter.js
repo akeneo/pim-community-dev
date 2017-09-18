@@ -2,11 +2,19 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'oro/datafilter/number-filter',
         'oro/app',
         'pim/template/datagrid/filter/metric-filter'
     ],
-    function ($, _, NumberFilter, app, template) {
+    function (
+        $,
+        _,
+        __,
+        NumberFilter,
+        app,
+        template
+    ) {
         'use strict';
 
         /**
@@ -21,11 +29,28 @@ define(
          * @extends oro.datafilter.NumberFilter
          */
         return NumberFilter.extend({
+            events: {
+                'keyup input': '_onReadCriteriaInputKey',
+                'keydown [type="text"]': '_preventEnterProcessing',
+                'click .filter-update': '_onClickUpdateCriteria',
+                'click .filter-criteria-selector': '_onClickCriteriaSelector',
+                'click .operator .AknDropdown-menuLink': '_onSelectOperator',
+                'click .unit .AknDropdown-menuLink': '_onSelectUnit',
+                'click .disable-filter': '_onClickDisableFilter'
+            },
+            units: [],
+
             /**
              * @inheritDoc
              */
             initialize: function() {
                 NumberFilter.prototype.initialize.apply(this, arguments);
+
+                this.emptyValue = {
+                    unit: _.first(_.keys(this.units)),
+                    type: _.findWhere(this.choices, { label: '=' }).data,
+                    value: ''
+                };
 
                 this.on('disable', this._onDisable, this);
 
@@ -40,12 +65,22 @@ define(
              * @inheritDoc
              */
             _renderCriteria: function (el) {
-                $(el).append(this.popupCriteriaTemplate({
-                    name:    this.name,
-                    choices: this.choices,
-                    units:   this.units
-                }));
-
+                $(el).append(
+                    this.popupCriteriaTemplate({
+                        __: __,
+                        label: this.label,
+                        operatorChoices: this._getOperatorChoices(),
+                        selectedOperator: this._getDisplayValue().type,
+                        emptyChoice: this.emptyChoice,
+                        selectedOperatorLabel: this._getOperatorChoices()[this._getDisplayValue().type],
+                        operatorLabel: __('pim.grid.choice_filter.operator'),
+                        updateLabel: __('Update'),
+                        units: this.units,
+                        unitLabel: __('pim.grid.metric_filter.label'),
+                        selectedUnit: this._getDisplayValue().unit,
+                        value: this._getDisplayValue().value
+                    })
+                );
                 return this;
             },
 
@@ -53,9 +88,9 @@ define(
              * @inheritDoc
              */
             _writeDOMValue: function (value) {
-                this._setInputValue(this.criteriaValueSelectors.value, value.value);
-                this._setInputValue(this.criteriaValueSelectors.type, value.type);
+                NumberFilter.prototype._writeDOMValue.apply(this, arguments);
                 this._setInputValue(this.criteriaValueSelectors.unit, value.unit);
+                this._highlightDropdown(value.unit, '.unit');
 
                 return this;
             },
@@ -64,11 +99,10 @@ define(
              * @inheritDoc
              */
             _readDOMValue: function () {
-                return {
-                    value: this._getInputValue(this.criteriaValueSelectors.value),
-                    type: this._getInputValue(this.criteriaValueSelectors.type),
-                    unit: this._getInputValue(this.criteriaValueSelectors.unit)
-                };
+                let value = NumberFilter.prototype._readDOMValue.apply(this, arguments);
+                value.unit = this._getInputValue(this.criteriaValueSelectors.unit);
+
+                return value;
             },
 
             /**
@@ -82,12 +116,8 @@ define(
                 if (!value.value) {
                     return this.placeholder;
                 } else {
-                    var operator = _.find(this.choices, function(choice) {
-                        return choice.value == value.type;
-                    });
-                    operator = operator ? operator.label : '';
-
-                    return operator + ' "' + value.value + ' ' + _.__(value.unit) + '"';
+                    const option = this._getChoiceOption(value.type);
+                    return option.label + ' ' + value.value + ' ' + value.unit;
                 }
             },
 
@@ -131,26 +161,13 @@ define(
              * @inheritDoc
              */
             _onValueUpdated: function(newValue, oldValue) {
-                var menu = this.$('.choicefilter .dropdown-menu');
-
-                menu.find('li a').each(function() {
-                    var item = $(this),
-                        value = item.data('value');
-
-                    if (item.parent().hasClass('active')) {
-                        if (value == newValue.type || value == newValue.unit) {
-                            item.parent().removeClass('active');
-                        } else {
-                        }
-                    } else if (value == newValue.type || value == newValue.unit) {
-                        item.parent().addClass('active');
-                        item.closest('.btn-group').find('button').html(item.html() + '<span class="caret"></span>');
-                    }
-                });
+                this._highlightDropdown(newValue.unit, '.unit');
                 if (_.contains(['empty', 'not empty'], newValue.type)) {
-                    this.$(this.criteriaValueSelectors.value).hide().siblings('.btn-group:eq(1)').hide();
+                    this.$(this.criteriaValueSelectors.value).hide();
+                    this.$('.AknFilterChoice-unit').hide();
                 } else {
-                    this.$(this.criteriaValueSelectors.value).show().siblings('.btn-group:eq(1)').show();
+                    this.$(this.criteriaValueSelectors.value).show();
+                    this.$('.AknFilterChoice-unit').show();
                 }
 
                 this._triggerUpdate(newValue, oldValue);
@@ -163,7 +180,7 @@ define(
             setValue: function(value) {
                 value = this._formatRawValue(value);
                 if (this._isNewValueUpdated(value)) {
-                    var oldValue = this.value;
+                    const oldValue = this.value;
                     this.value = app.deepClone(value);
                     this._updateDOMValue();
                     this._onValueUpdated(this.value, oldValue);
@@ -177,11 +194,13 @@ define(
              */
             _onClickChoiceValue: function(e) {
                 NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
-                var parentDiv = $(e.currentTarget).closest('.metricfilter');
+                const filterContainer = $(e.currentTarget).closest('.filter-item');
                 if (_.contains(['empty', 'not empty'], $(e.currentTarget).attr('data-value'))) {
-                    parentDiv.find('input[name="value"], .btn-group:eq(1)').hide();
+                    filterContainer.find(this.criteriaValueSelectors.value).hide();
+                    filterContainer.find('.AknFilterChoice-unit').hide();
                 } else {
-                    parentDiv.find('input[name="value"], .btn-group:eq(1)').show();
+                    filterContainer.find(this.criteriaValueSelectors.value).show();
+                    filterContainer.find('.AknFilterChoice-unit').show();
                 }
             },
 
@@ -193,7 +212,20 @@ define(
                 this.trigger('update');
 
                 return this;
-            }
+            },
+
+            /**
+             * Update the unit after clicking in the dropdown
+             *
+             * @param {Event} e
+             */
+            _onSelectUnit: function(e) {
+                const value = $(e.currentTarget).find('.unit_choice').attr('data-value');
+                $(this.criteriaValueSelectors.unit).val(value);
+                this._highlightDropdown(value.unit, '.unit');
+
+                e.preventDefault();
+            },
         });
     }
 );

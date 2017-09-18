@@ -4,17 +4,14 @@ parameters:
     pim_connector.writer.database.product.class:                   Pim\Component\Connector\Writer\Database\ProductWriter
     pim_connector.writer.database.product_model.class:             Pim\Component\Connector\Writer\Database\ProductModelWriter
     pim_connector.writer.database.product_association.class:       Pim\Component\Connector\Writer\Database\ProductAssociationWriter
-    pim_connector.writer.database.variant_group.class:             Pim\Component\Connector\Writer\Database\VariantGroupWriter
     pim_connector.writer.database.attribute_group.class:           Pim\Component\Connector\Writer\Database\AttributeGroupWriter
     pim_connector.writer.file.abstract.class:                      Pim\Component\Connector\Writer\File\AbstractFileWriter
     pim_connector.writer.file.csv.class:                           Pim\Component\Connector\Writer\File\Csv\Writer
     pim_connector.writer.file.csv_product.class:                   Pim\Component\Connector\Writer\File\Csv\ProductWriter
-    pim_connector.writer.file.csv_variant_group.class:             Pim\Component\Connector\Writer\File\Csv\VariantGroupWriter
     pim_connector.writer.file.yaml.class:                          Pim\Component\Connector\Writer\File\Yaml\Writer
     pim_connector.writer.file.media_exporter_path_generator.class: Pim\Component\Connector\Writer\File\MediaExporterPathGenerator
     pim_connector.writer.file.xlsx_product.class:                  Pim\Component\Connector\Writer\File\Xlsx\ProductWriter
     pim_connector.writer.file.xlsx.class:                          Pim\Component\Connector\Writer\File\Xlsx\Writer
-    pim_connector.writer.file.xlsx_variant_group.class:            Pim\Component\Connector\Writer\File\Xlsx\VariantGroupWriter
     pim_connector.writer.file.default.column_sorter.class:         Pim\Component\Connector\Writer\File\DefaultColumnSorter
     pim_connector.writer.file.product.column_sorter.class:         Pim\Component\Connector\Writer\File\ProductColumnSorter
     pim_connector.writer.file.flat_item_buffer_flusher.class:      Pim\Component\Connector\Writer\File\FlatItemBufferFlusher
@@ -104,13 +101,6 @@ services:
         arguments:
             - '@pim_catalog.saver.association_type'
             - '@akeneo_storage_utils.doctrine.object_detacher'
-
-    pim_connector.writer.database.variant_group:
-        class: '%pim_connector.writer.database.variant_group.class%'
-        arguments:
-            - '@pim_catalog.saver.group'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@pim_catalog.applier.product_template'
 
     pim_connector.writer.database.channel:
         class: '%pim_connector.writer.database.class%'
@@ -212,16 +202,6 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.product_localized'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.product_quick_export.flat_item_buffer_flusher'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_connector.writer.file.media_exporter_path_generator'
-            - ['pim_catalog_file', 'pim_catalog_image']
-
-    pim_connector.writer.file.csv_variant_group:
-        class: '%pim_connector.writer.file.csv_variant_group.class%'
-        arguments:
-            - '@pim_connector.array_converter.standard_to_flat.variant_group_localized'
-            - '@pim_connector.factory.flat_item_buffer'
-            - '@pim_connector.writer.file.product.flat_item_buffer_flusher'
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - ['pim_catalog_file', 'pim_catalog_image']
@@ -334,16 +314,6 @@ services:
             - '@pim_connector.array_converter.standard_to_flat.product_localized'
             - '@pim_connector.factory.flat_item_buffer'
             - '@pim_connector.writer.file.product_quick_export.flat_item_buffer_flusher'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_connector.writer.file.media_exporter_path_generator'
-            - ['pim_catalog_file', 'pim_catalog_image']
-
-    pim_connector.writer.file.xlsx_variant_group:
-        class: '%pim_connector.writer.file.xlsx_variant_group.class%'
-        arguments:
-            - '@pim_connector.array_converter.standard_to_flat.variant_group_localized'
-            - '@pim_connector.factory.flat_item_buffer'
-            - '@pim_connector.writer.file.product.flat_item_buffer_flusher'
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - ['pim_catalog_file', 'pim_catalog_image']

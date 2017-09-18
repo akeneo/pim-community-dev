@@ -7,7 +7,8 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
+define(
+    [
         'jquery',
         'underscore',
         'oro/translator',
@@ -17,8 +18,7 @@ define([
         'pim/i18n',
         'pim/router',
         'pim/user-context'
-    ],
-    function (
+    ], function (
         $,
         _,
         __,
@@ -63,11 +63,15 @@ define([
              */
             render() {
                 const currentLocaleCode = UserContext.get('catalogLocale');
+                let currentLocale = _.find(this.locales, { code: currentLocaleCode });
+                if (undefined === currentLocale) {
+                    currentLocale = _.first(this.locales);
+                }
 
                 this.$el.empty().append(this.template({
                     localeLabel: __('pim_enrich.entity.product.locale'),
                     locales: this.locales,
-                    currentLocaleCode,
+                    currentLocale,
                     i18n,
                     getDisplayName: this.getDisplayName
                 }));
@@ -84,12 +88,13 @@ define([
             },
 
             /**
-             * Transforms the locale code
-             * @param  {String} localeCode The original localeCode like fr_FR
-             * @return {String}            The shortened localeCode like fr
+             * Returns the string to display for a locale
+             *
+             * @param  {Object} locale The original locale
+             * @return {String}        The translated locale
              */
-            getDisplayName(localeCode) {
-                return localeCode.split('_')[0];
+            getDisplayName(locale) {
+                return __(locale.language);
             },
 
             /**

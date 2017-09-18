@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Query\Sorter\FieldSorterInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 
 /**
- * InGroup sorter for an Elasticsearch query used for variant-group and group product grid
+ * InGroup sorter for an Elasticsearch query used for group product grid
  *
  * @author    Philippe Mossière <philippe.mossiere@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

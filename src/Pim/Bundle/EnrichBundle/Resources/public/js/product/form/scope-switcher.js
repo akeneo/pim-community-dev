@@ -91,8 +91,7 @@ define(
                         );
 
                         this.delegateEvents();
-                    }.bind(this)
-                );
+                    }.bind(this));
 
                 return this;
             },

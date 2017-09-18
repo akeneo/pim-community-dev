@@ -6,27 +6,20 @@ Feature: Filter products
 
   Background:
     Given the "default" catalog configuration
-    And the following attribute:
-      | code  | label-en_US | type                     | group |
-      | color | Color       | pim_catalog_simpleselect | other |
-    And the following family:
-      | code      | attributes |
-      | furniture | color      |
-      | library   | color      |
-    And the following "color" attribute options: Black and White
-    And the following variant groups:
-      | code | label-en_US | axis  | type    |
-      | MUG  | Mug         | color | VARIANT |
+    And the following group type:
+      | code    | label-en_US |
+      | related | Related     |
     And the following product groups:
-      | code   | label-en_US | type   |
-      | POSTIT | Postit      | X_SELL |
-      | EMPTY  | Empty       | X_SELL |
+      | code   | label-en_US | type    |
+      | POSTIT | Postit      | X_SELL  |
+      | EMPTY  | Empty       | X_SELL  |
+      | MUG    | Mug         | related |
     And the following products:
-      | sku    | family    | color | groups   |
-      | BOOK   | library   |       |          |
-      | MUG-1  | furniture | white | MUG      |
-      | MUG-2  | furniture | black | MUG      |
-      | POSTIT | furniture |       | POSTIT   |
+      | sku    | groups   |
+      | BOOK   |          |
+      | MUG-1  | MUG      |
+      | MUG-2  | MUG      |
+      | POSTIT | POSTIT   |
     And I am logged in as "Mary"
 
   Scenario: Successfully display datagrid with group

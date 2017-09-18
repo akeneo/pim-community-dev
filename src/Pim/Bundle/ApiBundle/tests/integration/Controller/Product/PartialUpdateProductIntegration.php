@@ -27,14 +27,15 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
             'categories' => ['master'],
         ]);
 
-        $this->createProduct('product_variant_group', [
-            'variant_group' => 'variantA',
-            'values'        => [
-                'a_simple_select'                    => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
-                ],
-            ],
-        ]);
+        // TODO PIM-6733: Variant group to be null or to be an alias for parent?
+        // $this->createProduct('product_variant_group', [
+        //     'variant_group' => 'variantA',
+        //     'values'        => [
+        //         'a_simple_select'                    => [
+        //             ['locale' => null, 'scope' => null, 'data' => 'optionB'],
+        //         ],
+        //     ],
+        // ]);
 
         $this->createProduct('product_associations', [
             'associations'  => [
@@ -57,7 +58,7 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
         $this->createProduct('complete', [
             'family'        => 'familyA2',
             'groups'        => ['groupA'],
-            'variant_group' => 'variantA',
+            'variant_group' => null,
             'categories'    => ['master'],
             'values'        => [
                 'a_metric' => [
@@ -573,6 +574,8 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'product_categories');
     }
 
+    /**
+     * TODO PIM-6733: Variant group to be null or to be an alias for parent?
     public function testProductPartialUpdateWithTheVariantGroupUpdated()
     {
         $client = $this->createAuthenticatedClient();
@@ -671,6 +674,7 @@ JSON;
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_variant_group');
     }
+     */
 
     public function testProductPartialUpdateWithTheAssociationsUpdated()
     {
@@ -1028,7 +1032,7 @@ JSON;
     {
         "identifier": "complete",
         "groups": ["groupA", "groupB"],
-        "variant_group": "variantB",
+        "variant_group": null,
         "family": "familyA2",
         "categories": ["master", "categoryA"],
         "values": {
@@ -1109,7 +1113,7 @@ JSON;
             'family'        => 'familyA2',
             'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => 'variantB',
+            'variant_group' => null,
             'categories'    => ['categoryA', 'master'],
             'enabled'       => true,
             'values'        => [
@@ -1125,9 +1129,10 @@ JSON;
                 'a_simple_select'                    => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionA'],
                 ],
-                'a_text'                             => [
-                    ['locale' => null, 'scope'  => null, 'data'   => 'Variant group B'],
-                ],
+                // TODO PIM-6733: This value was at the variant group level before.
+                // 'a_text'                             => [
+                //     ['locale' => null, 'scope'  => null, 'data'   => 'Variant group B'],
+                // ],
                 'a_price'                            => [
                     [
                         'locale' => null,

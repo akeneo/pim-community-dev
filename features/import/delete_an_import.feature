@@ -14,13 +14,13 @@ Feature: Delete import
     Given I delete the "CSV footwear product import" job
     When I confirm the deletion
     Then I should see the flash message "Import profile successfully removed"
-    And the grid should contain 26 elements
+    And the grid should contain 24 elements
     And I should not see import profile "CSV footwear product import"
 
   Scenario: Successfully cancel the deletion of a CSV import job
     Given I delete the "CSV footwear product import" job
     When I cancel the deletion
-    Then the grid should contain 27 elements
+    Then the grid should contain 25 elements
     And I should see import profile "CSV footwear product import"
 
   Scenario: Successfully delete a CSV import job from the job edit page
@@ -28,5 +28,5 @@ Feature: Delete import
     When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should see the flash message "Job instance successfully removed"
-    And the grid should contain 26 elements
+    And the grid should contain 24 elements
     And I should not see import profile "CSV footwear product import"

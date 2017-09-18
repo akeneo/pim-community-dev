@@ -12,5 +12,5 @@ Feature: Delete a group type
     Given I edit the "X_SELL" group type
     When I press the secondary action "Delete"
     And I confirm the deletion
-    Then the grid should contain 1 element
+    Then the grid should contain 0 element
     And I should not see group type "X_SELL"
