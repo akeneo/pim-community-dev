@@ -85,6 +85,22 @@
     text-align: center;
     padding: 20px 0;
   }
+
+  &-bottomPanel {
+    background: white;
+    border-top: 1px solid @AknMediumGrey;
+    bottom: 0;
+    height: 64px;
+    margin-left: -40px;
+    position: fixed;
+    width: ~"calc(100% - 360px)";
+    z-index: 10;
+    transition: bottom 0.3s ease-in;
+
+    &--hidden {
+      bottom: -64px;
+    }
+  }
 }
 
 @-moz-document url-prefix() {
