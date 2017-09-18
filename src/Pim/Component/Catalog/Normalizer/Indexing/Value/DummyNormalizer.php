@@ -4,7 +4,8 @@ namespace Pim\Component\Catalog\Normalizer\Indexing\Value;
 
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
-use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
+use Pim\Component\Catalog\Normalizer\Indexing\ProductModel;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -24,7 +25,8 @@ class DummyNormalizer extends AbstractProductValueNormalizer implements Normaliz
     {
         return $data instanceof ValueInterface && (
                 $format === ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX ||
-                $format === ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
+                $format === ProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX ||
+                $format === ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX
             );
     }
 

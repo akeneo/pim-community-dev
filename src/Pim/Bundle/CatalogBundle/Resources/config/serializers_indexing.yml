@@ -17,6 +17,9 @@ parameters:
     pim_catalog.normalizer.indexing_product.product.media.class: Pim\Component\Catalog\Normalizer\Indexing\Value\MediaNormalizer
     pim_catalog.normalizer.indexing_product.product.boolean.class: Pim\Component\Catalog\Normalizer\Indexing\Value\BooleanNormalizer
 
+    pim_catalog.normalizer.indexing_product_model.product_model.class: Pim\Component\Catalog\Normalizer\Indexing\ProductModel\ProductModelNormalizer
+    pim_catalog.normalizer.indexing_product_model.product_model.properties.class: Pim\Component\Catalog\Normalizer\Indexing\ProductModel\ProductModelPropertiesNormalizer
+
     pim_catalog.normalizer.indexing_product_and_product_model.product.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductNormalizer
     pim_catalog.normalizer.indexing_product_and_product_model.product.properties.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductPropertiesNormalizer
     pim_catalog.normalizer.indexing_product_and_product_model.product_model.class: Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer
@@ -116,6 +119,18 @@ services:
         class: '%pim_catalog.normalizer.indexing_product.product.boolean.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product_model.product_model:
+        class: '%pim_catalog.normalizer.indexing_product_model.product_model.class%'
+        arguments:
+            - '@pim_catalog.normalizer.indexing_product_model.product_model.properties'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.indexing_product_model.product_model.properties:
+        class: '%pim_catalog.normalizer.indexing_product_model.product_model.properties.class%'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 40 }
 
     pim_catalog.normalizer.indexing_product_and_product_model.product_model:
         class: '%pim_catalog.normalizer.indexing_product_and_product_model.product_model.class%'
