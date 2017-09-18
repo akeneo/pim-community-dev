@@ -9,7 +9,6 @@ jobs:
             uploadAllowed: true
             delimiter: ;
             enclosure: '"'
-            escape: '\'
             enabled: true
             categoriesColumn: categories
             familyVariantColumn: familyVariant
@@ -26,7 +25,6 @@ jobs:
             uploadAllowed:      true
             delimiter:          ;
             enclosure:          '"'
-            escape:             '\'
             enabled:            true
             categoriesColumn:   categories
             familyColumn:       family
@@ -44,7 +42,6 @@ jobs:
             uploadAllowed:      true
             delimiter:          ;
             enclosure:          '"'
-            escape:             '\'
             enabled:            true
             categoriesColumn:   categories
             familyColumn:       family
@@ -145,7 +142,6 @@ jobs:
             uploadAllowed:       true
             delimiter:           ;
             enclosure:           '"'
-            escape:              '\'
     csv_category_export:
         connector: Akeneo CSV Connector
         alias:     csv_category_export
@@ -166,7 +162,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     csv_association_type_export:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_export
@@ -187,7 +182,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     csv_group_export:
         connector: Akeneo CSV Connector
         alias:     csv_group_export
@@ -208,7 +202,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     csv_attribute_export:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_export
@@ -229,7 +222,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     csv_option_export:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_export
@@ -264,7 +256,6 @@ jobs:
             uploadAllowed:      true
             delimiter:          ;
             enclosure:          '"'
-            escape:             '\'
             enabled:            true
     update_product_value:
         connector: Akeneo Mass Edit Connector
@@ -365,7 +356,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     csv_asset_category_export:
         connector: Akeneo Product Asset Connector
         alias:     csv_asset_category_export
@@ -386,7 +376,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     csv_asset_export:
         connector: Akeneo Product Asset Connector
         alias:     csv_asset_export
@@ -436,7 +425,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     csv_family_variant_import:
         connector: Akeneo CSV Connector
         alias:     csv_family_variant_import
@@ -447,7 +435,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
     csv_family_export:
         connector: Akeneo CSV Connector
         alias:     csv_family_export
@@ -793,7 +780,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
             filePath:      /tmp/currency.csv
     csv_channel_import:
         connector: Akeneo CSV Connector
@@ -804,7 +790,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
             filePath:      /tmp/channel.csv
     csv_locale_import:
         connector: Akeneo CSV Connector
@@ -815,7 +800,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
             filePath:      /tmp/locale.csv
     csv_group_type_import:
         connector: Akeneo CSV Connector
@@ -826,7 +810,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
             filePath:      /tmp/group_type.csv
     csv_attribute_group_import:
         connector: Akeneo CSV Connector
@@ -837,7 +820,6 @@ jobs:
             uploadAllowed: true
             delimiter:     ;
             enclosure:     '"'
-            escape:        '\'
             filePath:      /tmp/attribute_group.csv
     xlsx_association_type_export:
         connector: Akeneo XLSX Connector

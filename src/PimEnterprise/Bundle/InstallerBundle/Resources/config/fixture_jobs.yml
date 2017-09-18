@@ -28,7 +28,6 @@ jobs:
             uploadAllowed: true
             delimiter: ;
             enclosure: '"'
-            escape: '\'
 
     fixtures_asset_category_access_csv:
         order: 170
