@@ -1,10 +1,6 @@
 @import "../base/variables";
 
 .AknProjectWidget {
-  border: 1px solid @AknBorderColor;
-  padding: 15px;
-  box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-
   &-boxes {
     display: flex;
     justify-content: space-between;
@@ -29,7 +25,7 @@
     color: @AknDarkBlue;
     border: 1px solid @AknBorderColor;
     font-size: @AknDefaultFontSize;
-    padding: 40px 0 30px;
+    padding: 12px 0;
     font-weight: bold;
     position: relative;
 
@@ -89,24 +85,15 @@
 
   &-resume {
     font-size: @AknFontSizeBig;
-    font-weight: bold;
     margin-top: 10px;
-  }
-
-  &-resumeTitle {
-    color: @AknDarkBlue;
-    border-bottom: 1px solid @AknBorderColor;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
   }
 
   &-topBar {
     display: flex;
     justify-content: space-between;
-    border-bottom: 3px solid @AknPurple;
-    margin-bottom: 10px;
+    border-bottom: 1px solid @AknDarkBlue;
+    margin-bottom: 18px;
     align-items: center;
-    padding-bottom: 10px;
   }
 
   &-tool {
@@ -114,25 +101,19 @@
   }
 
   &-mainSelectorCurrent {
-    color: @AknPurple;
-    font-size: @AknFontSizeBig;
+    color: @AknLightPurple;
   }
 
   &-mainSelectorCurrentTitle {
-    color: @AknPurple;
+    color: @AknDarkBlue;
     font-size: @AknFontSizeBig;
-    font-weight: bold;
     text-transform: uppercase;
-
-    &:after {
-      content: ' - ';
-    }
+    margin-right: 5px;
   }
 
   &-secondarySelectorCurrentTitle {
     font-size: @AknDefaultFontSize;
-    font-weight: bold;
-    text-transform: uppercase;
+    color: @AknLightPurple;
   }
 
   &-mainSelectorLine,
@@ -149,7 +130,9 @@
     min-width: 33%;
   }
 
-  &-info {}
+  &-info {
+    font-size: @AknFontSizeBig;
+  }
 
   &-emptyWidget {
     font-size: @AknTitleFontSize;
