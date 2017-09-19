@@ -33,7 +33,7 @@ Feature: Update product history when mass editing products
     And I save the product
     And I am on the products grid
     And I select rows boots, sandals and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press "Bulk actions" on the "Bulk Actions" dropdown button
 
   Scenario: Display history when changing product status
     Given I choose the "Change status" operation

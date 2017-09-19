@@ -94,6 +94,8 @@ extensions:
         module: pim/grid/mass-actions
         parent: pim-product-index
         targetZone: mass-actions
+        config:
+            label: pim_enrich.entity.product.selected
 
     pim-product-index-grid-filters-manage:
         module: oro/datafilter/filters-button

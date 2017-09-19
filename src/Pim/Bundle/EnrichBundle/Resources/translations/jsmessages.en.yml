@@ -122,10 +122,10 @@ pim:
                 csv_grid_context: CSV (Grid context)
                 xlsx_all: Excel (All attributes)
                 xlsx_grid_context: Excel (Grid context)
-            delete: Delete products
-            mass_edit: Change product information
+            delete: Delete
+            mass_edit: Bulk actions
             category_edit: Move products in categories
-            sequential_edit: Edit products sequentially
+            sequential_edit: Sequential edit
 
 # Jstree context menu actions
 jstree.create: Create
@@ -305,6 +305,7 @@ pim_enrich:
                 save: Save
         family:
             title: family
+            selected: selected families
             info:
                 update_successful: Family successfully updated.
                 create_successful: Channel successfully created.

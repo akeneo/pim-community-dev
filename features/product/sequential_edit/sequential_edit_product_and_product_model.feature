@@ -15,6 +15,6 @@ Feature: Edit sequentially some products
     And I filter by "color" with operator "in list" and value "Crimson red"
     And I sort by "ID" value ascending
     And I select rows model-tshirt-divided-crimson-red, running-shoes-xxs-crimson-red
-    When I press "Edit products sequentially" on the "Bulk Actions" dropdown button
+    When I press "Sequential edit" on the "Bulk Actions" dropdown button
     Then I should see the text "Divided crimson red"
     And I should see the text "Save and next"

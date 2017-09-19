@@ -42,7 +42,7 @@ Feature: Validate editing common boolean attributes of multiple products
 
   Scenario: Successfully mass edit a boolean attribute
     Given I select rows boots and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press "Bulk actions" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Available attribute
     And I check the "Available" switch
@@ -52,7 +52,7 @@ Feature: Validate editing common boolean attributes of multiple products
     And attribute Available of "sneakers" should be "true"
     When I am on the products grid
     And I select rows boots, sandals and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press "Bulk actions" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Available attribute
     And I uncheck the "Available" switch

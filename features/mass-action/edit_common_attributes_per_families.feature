@@ -31,7 +31,7 @@ Feature: Edit common attributes of many products at once
   @jira https://akeneo.atlassian.net/browse/PIM-2163
   Scenario: Allow editing only common attributes define from families
     Given I select rows boots and highheels
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press "Bulk actions" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     Then I should see available attributes Name, Manufacturer and Description in group "Product information"
     And I should see available attributes Price and Rating in group "Marketing"
@@ -55,13 +55,13 @@ Feature: Edit common attributes of many products at once
       | product | attribute    | value |
       | boots   | buckle_color | Blue  |
     When I select rows boots and high_heels
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press "Bulk actions" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     Then I should see available attribute Buckle in group "Other"
 
   Scenario: Successfully update many price values at once
     Given I select rows boots and sandals
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press "Bulk actions" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Price attribute
     And I change the "Price" to "100 USD"

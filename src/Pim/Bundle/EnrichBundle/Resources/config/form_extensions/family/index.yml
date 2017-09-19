@@ -1,6 +1,8 @@
 extensions:
     pim-family-index:
         module: pim/form/common/index/index
+        forwarded-events:
+            'grid_load:start': 'grid_load:start'
 
     pim-family-index-grid-title:
         module: pim/common/grid-title
@@ -28,9 +30,16 @@ extensions:
         targetZone: filters
 
     pim-family-index-mass-actions:
-        module: oro/datagrid/actions-panel
+        module: pim/grid/mass-actions
         parent: pim-family-index
-        targetZone: toolbar
+        targetZone: mass-actions
+        config:
+            label: pim_enrich.entity.family.selected
+
+    pim-family-index-actions-panel:
+        module: oro/datagrid/actions-panel
+        parent: pim-family-index-mass-actions
+        targetZone: actions-panel
 
     pim-family-index-pagination:
         module: oro/datagrid/pagination-input

@@ -42,7 +42,7 @@ Feature: Validate editing common select attributes of multiple products
 
   Scenario: Successfully mass edit a multi select attribute
     Given I select rows boots and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press "Bulk actions" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
@@ -54,7 +54,7 @@ Feature: Validate editing common select attributes of multiple products
       | hot   |
     When I am on the products grid
     And I select rows boots, sandals and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press "Bulk actions" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
     And I confirm mass edit
@@ -65,7 +65,7 @@ Feature: Validate editing common select attributes of multiple products
 
   Scenario: Successfully mass edit a simple select attribute
     Given I select rows boots and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press "Bulk actions" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Manufacturer attribute
     And I change the "Manufacturer" to "Converse"
@@ -74,7 +74,7 @@ Feature: Validate editing common select attributes of multiple products
     Then the option "manufacturer" of products boots and sneakers should be "Converse"
     When I am on the products grid
     And I select rows boots, sandals and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press "Bulk actions" on the "Bulk Actions" dropdown button
     And I choose the "Edit common attributes" operation
     And I display the Manufacturer attribute
     And I confirm mass edit

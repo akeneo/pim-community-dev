@@ -20,7 +20,7 @@ Feature: Change family of many products at once
 
   Scenario: Change the family of many products at once
     Given I select rows coffee and hamburger
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press "Bulk actions" on the "Bulk Actions" dropdown button
     And I choose the "Change family" operation
     And I change the Family to "Food"
     And I confirm mass edit
@@ -30,7 +30,7 @@ Feature: Change family of many products at once
 
   Scenario: Remove many products from a product family
     Given I select rows coffee, hamburger and jeans
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press "Bulk actions" on the "Bulk Actions" dropdown button
     And I choose the "Change family" operation
     And I change the Family to "None"
     And I confirm mass edit

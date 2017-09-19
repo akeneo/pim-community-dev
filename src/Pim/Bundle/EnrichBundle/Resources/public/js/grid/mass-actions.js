@@ -33,6 +33,15 @@ define(
             /**
              * {@inheritdoc}
              */
+            initialize: function (meta) {
+                this.config = meta.config;
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             configure() {
                 this.listenTo(this.getRoot(), 'grid_load:start', this.setupCollection.bind(this));
 
@@ -44,7 +53,7 @@ define(
              */
             render() {
                 this.$el.html(this.template({
-                    selectedProductsLabel: __('pim_enrich.entity.product.selected')
+                    selectedProductsLabel: __(this.config.label)
                 }));
 
                 BaseForm.prototype.render.apply(this, arguments);
