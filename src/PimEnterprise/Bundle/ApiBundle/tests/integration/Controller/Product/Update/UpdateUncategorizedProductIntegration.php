@@ -261,18 +261,10 @@ JSON;
     "categories": ["categoryA2"]
 }
 JSON;
-
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $client->request('PATCH', 'api/rest/v1/products/product_without_category', [], [], [], $data);
-        $response = $client->getResponse();
-        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
-    }
-
-    public function testFailedToUpdateUncategorizedProductWithGrantedCategory()
-    {
-        $data = <<<JSON
+        $expectedMessage = <<<JSON
 {
-    "categories": ["categoryA"]
+  "code": 403,
+  "message": "You should at least keep your product in one category on which you have an own permission."
 }
 JSON;
 
@@ -280,6 +272,28 @@ JSON;
         $client->request('PATCH', 'api/rest/v1/products/product_without_category', [], [], [], $data);
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedMessage, $response->getContent());
+    }
+
+    public function testFailedToUpdateUncategorizedProductWithEditGrantedCategory()
+    {
+        $data = <<<JSON
+{
+    "categories": ["categoryA"]
+}
+JSON;
+        $expectedMessage = <<<JSON
+{
+  "code": 403,
+  "message": "You should at least keep your product in one category on which you have an own permission."
+}
+JSON;
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client->request('PATCH', 'api/rest/v1/products/product_without_category', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedMessage, $response->getContent());
     }
     /**
     If the ‘associations’ field in the request body uses a product that cannot be viewed through categories,
