@@ -127,4 +127,20 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     {
         return $this->findBy(['code' => $codes]);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findChildrenProducts(ProductModelInterface $productModel): array
+    {
+        $qb = $this
+            ->_em
+            ->createQueryBuilder()
+            ->select('p')
+            ->from(VariantProduct::class, 'p')
+            ->where('p.parent = :parent')
+            ->setParameter('parent', $productModel);
+
+        return $qb->getQuery()->execute();
+    }
 }

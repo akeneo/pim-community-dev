@@ -24,6 +24,8 @@ parameters:
     pim_enrich.normalizer.category.class:                          Pim\Bundle\EnrichBundle\Normalizer\CategoryNormalizer
     pim_enrich.normalizer.attribute_group.class:                   Pim\Bundle\EnrichBundle\Normalizer\AttributeGroupNormalizer
     pim_enrich.normalizer.structured.attribute_option.class:       Pim\Bundle\EnrichBundle\Normalizer\StructuredAttributeOptionNormalizer
+    pim_enrich.normalizer.entity_with_family_variant.class:        Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer
+    pim_enrich.normalizer.variant_navigation.class:                Pim\Bundle\EnrichBundle\Normalizer\VariantNavigationNormalizer
 
 services:
     pim_enrich.normalizer.attribute_option_value_collection:
@@ -65,6 +67,7 @@ services:
             - '@pim_enrich.normalizer.file'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.values_filler.product'
+            - '@pim_enrich.normalizer.variant_navigation'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -81,6 +84,7 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.values_filler.entity_with_family_variant'
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_enrich.normalizer.variant_navigation'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -164,6 +168,21 @@ services:
             - '@pim_enrich.provider.empty_value.chained'
             - '@pim_enrich.provider.filter.chained'
             - '@pim_catalog.localization.localizer.number'
+
+    pim_enrich.normalizer.entity_with_family_variant:
+        class: '%pim_enrich.normalizer.entity_with_family_variant.class%'
+        arguments:
+            - '@pim_enrich.normalizer.file'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
+            - '@pim_enrich.normalizer.completeness_collection'
+            - '@pim_catalog.completeness.calculator'
+
+    pim_enrich.normalizer.variant_navigation:
+        class: '%pim_enrich.normalizer.variant_navigation.class%'
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_enrich.normalizer.entity_with_family_variant'
 
     pim_enrich.normalizer.attribute.versioned:
         class: '%pim_enrich.normalizer.attribute.versioned.class%'

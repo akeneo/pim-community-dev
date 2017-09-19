@@ -86,6 +86,9 @@ class ProductNormalizer implements NormalizerInterface
     /** @var EntityWithFamilyValuesFillerInterface */
     protected $productValuesFiller;
 
+    /** @var VariantNavigationNormalizer */
+    protected $navigationNormalizer;
+
     /**
      * @param NormalizerInterface                   $productNormalizer
      * @param NormalizerInterface                   $versionNormalizer
@@ -105,6 +108,7 @@ class ProductNormalizer implements NormalizerInterface
      * @param FileNormalizer                        $fileNormalizer
      * @param ProductBuilderInterface               $productBuilder
      * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
+     * @param VariantNavigationNormalizer           $navigationNormalizer
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
@@ -124,7 +128,8 @@ class ProductNormalizer implements NormalizerInterface
         CompletenessCalculatorInterface $completenessCalculator,
         FileNormalizer $fileNormalizer,
         ProductBuilderInterface $productBuilder,
-        EntityWithFamilyValuesFillerInterface $productValuesFiller
+        EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        VariantNavigationNormalizer $navigationNormalizer
     ) {
         $this->productNormalizer                = $productNormalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -143,7 +148,8 @@ class ProductNormalizer implements NormalizerInterface
         $this->completenessCalculator           = $completenessCalculator;
         $this->fileNormalizer                   = $fileNormalizer;
         $this->productBuilder                   = $productBuilder;
-        $this->productValuesFiller = $productValuesFiller;
+        $this->productValuesFiller              = $productValuesFiller;
+        $this->navigationNormalizer = $navigationNormalizer;
     }
 
     /**
@@ -176,6 +182,7 @@ class ProductNormalizer implements NormalizerInterface
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'completenesses'    => $this->getNormalizedCompletenesses($product),
             'image'             => $this->normalizeImage($product->getImage(), $format, $context),
+            'variant_navigation' => $this->navigationNormalizer->normalize($product, $format, $context),
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
         return $normalizedProduct;

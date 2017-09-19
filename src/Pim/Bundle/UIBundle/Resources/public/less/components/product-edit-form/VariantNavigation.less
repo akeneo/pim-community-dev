@@ -1,0 +1,98 @@
+@import '../../base/variables';
+
+.AknVariantNavigation {
+  border: 1px solid @AknBorderColor;
+  border-radius: 3px;
+  height: 34px;
+
+  &-item {
+    display: inline-block;
+    padding: 0 20px;
+    height: 32px;
+    line-height: 32px;
+    position: relative;
+    z-index: 5;
+
+    &:after {
+      content:"";
+      position: absolute;
+      display: block;
+      right:-13px;
+      top:4px;
+      width: 24px;
+      height: 24px;
+      background: #ffffff;
+      transform: rotate(45deg);
+      box-sizing: border-box;
+      border: 1px solid @AknBorderColor;
+      border-width: 1px 1px 0 0;
+      border-radius: 2px;
+    }
+
+    &--highlight {
+      color: @AknLightPurple;
+      background-color: @AknLightGray;
+      z-index: 4;
+
+      &:after {
+        content:"";
+        position: absolute;
+        display: block;
+        right:-13px;
+        top:4px;
+        width: 24px;
+        height: 24px;
+        background: @AknLightGray;
+        transform: rotate(45deg);
+        box-sizing: border-box;
+        border: 1px solid @AknBorderColor;
+        border-width: 1px 1px 0 0;
+        border-radius: 2px;
+      }
+    }
+  }
+
+  &-axisName {
+    text-transform: uppercase;
+  }
+
+  &-axisValue {
+    cursor: pointer;
+  }
+
+  &-listItem {
+  }
+
+  &-listProductModelImage,
+  &-listProductImage {
+    border-radius: 4px;
+    max-width: 25px;
+    max-height: 25px;
+    margin-bottom: -8px;
+  }
+
+  &-listProductModelLabel,
+  &-listProductLabel {
+    margin-left: 5px;
+  }
+
+  &-listProductModelCompleteness,
+  &-listProductCompleteness {
+    border-radius: 50px;
+    float: right;
+    padding: 0 10px;
+    margin-top: 10px;
+    height: 22px;
+    font-size: @AknFontSizeSmall;
+    line-height: 22px;
+    color: #ffffff;
+
+    &--incomplete {
+      background-color: @AknOrange;
+    }
+
+    &--complete {
+      background-color: @AknGreen;
+    }
+  }
+}

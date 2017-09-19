@@ -14,7 +14,6 @@ use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\scalar;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -56,6 +55,9 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var EntityWithFamilyVariantAttributesProvider */
     private $attributesProvider;
 
+    /** @var VariantNavigationNormalizer */
+    private $navigationNormalizer;
+
     /**
      * @param NormalizerInterface                       $normalizer
      * @param NormalizerInterface                       $versionNormalizer
@@ -67,6 +69,7 @@ class ProductModelNormalizer implements NormalizerInterface
      * @param LocaleRepositoryInterface                 $localeRepository
      * @param EntityWithFamilyValuesFillerInterface     $entityValuesFiller
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
+     * @param VariantNavigationNormalizer               $navigationNormalizer
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -78,7 +81,8 @@ class ProductModelNormalizer implements NormalizerInterface
         FormProviderInterface $formProvider,
         LocaleRepositoryInterface $localeRepository,
         EntityWithFamilyValuesFillerInterface $entityValuesFiller,
-        EntityWithFamilyVariantAttributesProvider $attributesProvider
+        EntityWithFamilyVariantAttributesProvider $attributesProvider,
+        VariantNavigationNormalizer $navigationNormalizer
     ) {
         $this->normalizer            = $normalizer;
         $this->versionNormalizer     = $versionNormalizer;
@@ -90,6 +94,7 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->localeRepository      = $localeRepository;
         $this->entityValuesFiller    = $entityValuesFiller;
         $this->attributesProvider    = $attributesProvider;
+        $this->navigationNormalizer  = $navigationNormalizer;
     }
 
     /**
@@ -100,8 +105,6 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->entityValuesFiller->fillMissingValues($productModel);
 
         $normalizedProductModel = $this->normalizer->normalize($productModel, 'standard', $context);
-        // TODO: will be handled by PIM-6741
-        unset($normalizedProductModel['parent']);
 
         $normalizedProductModel['values'] = $this->localizedConverter->convertToLocalizedFormats(
             $normalizedProductModel['values'],
@@ -139,6 +142,7 @@ class ProductModelNormalizer implements NormalizerInterface
                 'attributes_for_this_level' => $levelAttributes,
                 'attributes_axes'           => $axesAttributes,
                 'image'                     => $this->normalizeImage($productModel->getImage(), $format, $context),
+                'variant_navigation'        => $this->navigationNormalizer->normalize($productModel, $format, $context),
             ] + $this->getLabels($productModel);
 
         return $normalizedProductModel;
@@ -170,12 +174,12 @@ class ProductModelNormalizer implements NormalizerInterface
 
     /**
      * @param ValueInterface|null $data
-     * @param string              $format
+     * @param string|null         $format
      * @param array               $context
      *
      * @return array|null
      */
-    private function normalizeImage(?ValueInterface $data, string $format, array $context = []): ?array
+    private function normalizeImage(?ValueInterface $data, ?string $format, array $context = []): ?array
     {
         if (null === $data || null === $data->getData()) {
             return null;

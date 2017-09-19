@@ -1,0 +1,9 @@
+<div class="AknVariantNavigation-listItem">
+    <img class="AknVariantNavigation-listProductImage" src="<%- entity.image %>" alt="">
+    <span class="AknVariantNavigation-listProductLabel">
+        <%- entity.label %>
+    </span>
+    <span class="AknVariantNavigation-listProductCompleteness AknVariantNavigation-listProductCompleteness--<%- (100 == entity.completeness.ratio) ? 'complete' : 'incomplete' %>">
+        <%- entity.completeness.ratio %>%
+    </span>
+</div>
