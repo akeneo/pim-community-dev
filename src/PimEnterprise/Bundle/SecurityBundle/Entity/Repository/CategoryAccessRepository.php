@@ -356,15 +356,48 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
     }
 
     /**
+     * Check if all categories are granted to user
+     *
+     * @param UserInterface $user
+     * @param string        $accessLevel
+     * @param array         $categoryCodes
+     *
+     * @return bool
+     */
+    public function areAllCategoryCodesGranted(UserInterface $user, $accessLevel, array $categoryCodes)
+    {
+        $groupIds = array_map(
+            function (GroupInterface $group) {
+                return $group->getId();
+            },
+            $user->getGroups()->toArray()
+        );
+
+        $qb = $this->_em->createQueryBuilder()
+            ->select('COUNT(DISTINCT c.id)')
+            ->from($this->_entityName, 'ca');
+
+        $qb
+            ->innerJoin('ca.category', 'c', 'c.id')
+            ->where($qb->expr()->in('ca.userGroup', ':groups'))
+            ->setParameter('groups', $groupIds)
+            ->andWhere($qb->expr()->eq('ca.' . $this->getAccessField($accessLevel), true))
+            ->andWhere($qb->expr()->in('c.code', ':codes'))
+            ->setParameter('codes', $categoryCodes);
+
+        $numberOfGranted = $qb->getQuery()->getSingleScalarResult();
+
+        return count($categoryCodes) === (int) $numberOfGranted;
+    }
+
+    /**
      * Check if categories are granted to user
      *
      * @param UserInterface $user
      * @param string        $accessLevel
      * @param array         $categoryIds
      *
-     * @throws \LogicException
-     *
-     * @return true
+     * @return bool
      */
     public function isCategoriesGranted(UserInterface $user, $accessLevel, array $categoryIds)
     {
@@ -375,7 +408,8 @@ class CategoryAccessRepository extends EntityRepository implements IdentifiableO
         $qb->andWhere($qb->expr()->in('ca.userGroup', ':groups'))
             ->setParameter('groups', $user->getGroups()->toArray())
             ->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true))
-            ->andWhere($qb->expr()->in('c.id', $categoryIds))
+            ->andWhere($qb->expr()->in('c.id', ':categoryIds'))
+            ->setParameter('categoryIds', $categoryIds)
             ->innerJoin('ca.category', 'c', 'c.id');
 
         $count = $qb->getQuery()->getSingleScalarResult();
