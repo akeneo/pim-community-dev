@@ -1,11 +1,15 @@
-<div id="attribute-modal-content">
-    <div class="AknButtonList AknButtonList--twoColumns">
-        <% _.each(attributeTypes, function(attributeType){ %>
-            <span class="AknButtonList-item AknButton AknButton--withIcon attribute-choice"
-                data-route="<%- generateRoute('pim_enrich_attribute_create', { attribute_type: attributeType.code }) %>">
-                <i class="AknButton-icon icon-<%- iconsMap[attributeType.code] %>"></i>
-                <%- attributeType.label %>
-            </span>
-        <% }); %>
+<div class="AknFullPage AknFullPage--modal AknFullPage-content--column">
+    <div class="AknFullPage-superTitle"><%= superTitle %></div>
+    <div class="AknFullPage-title"><%= title %></div>
+    <div class="AknFullPage-content">
+      <div class="AknButtonList AknButtonList--twoColumns">
+          <% _.each(attributeTypes, function(attributeType){ %>
+              <span class="AknButtonList-item AknButton AknButton--withIcon attribute-choice"
+                  data-route="<%- generateRoute('pim_enrich_attribute_create', { attribute_type: attributeType.code }) %>">
+                  <i class="AknButton-icon icon-<%- iconsMap[attributeType.code] %>"></i>
+                  <%- attributeType.label %>
+              </span>
+          <% }); %>
+      </div>
     </div>
 </div>

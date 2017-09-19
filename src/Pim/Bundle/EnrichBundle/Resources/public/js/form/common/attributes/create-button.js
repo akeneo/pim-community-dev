@@ -56,6 +56,8 @@ define(
 
                 var modal = null;
                 var modalContent = this.templateModal({
+                    title: 'Select your type',
+                    superTitle: 'Create attribute',
                     attributeTypes: attributeTypes,
                     iconsMap: moduleConfig.attribute_icons,
                     generateRoute: function (route, params) {
@@ -68,12 +70,12 @@ define(
                         modal.open();
                     } else {
                         modal = new Backbone.BootstrapModal({
-                            title: __(this.config.modalTitle),
                             content: modalContent
                         });
 
                         modal.open();
                         modal.$el.find('.modal-footer').remove();
+                        modal.$el.addClass('modal--fullPage modal--columns');
 
                         modal.$el.on('click', '.attribute-choice', function () {
                             modal.close();
