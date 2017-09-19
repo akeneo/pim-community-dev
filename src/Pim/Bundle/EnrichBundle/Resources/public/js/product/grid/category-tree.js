@@ -69,6 +69,10 @@ define(
                     this.valueUpdated(value);
                 });
 
+                this.listenTo(categoryFilter, 'update_label', function (value) {
+                    this.valueUpdated(value);
+                });
+
                 return categoryFilter;
             },
 

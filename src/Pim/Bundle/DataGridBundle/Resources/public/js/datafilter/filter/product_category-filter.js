@@ -40,11 +40,17 @@ define(
 
                 this.value = $.extend(true, {}, this.emptyValue);
 
+                NumberFilter.prototype.initialize.apply(this, arguments);
+
                 if (urlParams && urlParams[gridName + '[_filter][category][value][treeId]']) {
-                    this.value.value.treeId = urlParams[gridName + '[_filter][category][value][treeId]'];
+                    this.value.value.treeId = parseInt(
+                        urlParams[gridName + '[_filter][category][value][treeId]']
+                    );
                 }
                 if (urlParams && urlParams[gridName + '[_filter][category][value][categoryId]']) {
-                    this.value.value.categoryId = urlParams[gridName + '[_filter][category][value][categoryId]'];
+                    this.value.value.categoryId = parseInt(
+                        urlParams[gridName + '[_filter][category][value][categoryId]']
+                    );
                 }
 
                 this.$el.on('tree.updated', _.bind(this._onTreeUpdated, this));
@@ -65,8 +71,6 @@ define(
                 if (undefined !== updateCallback) {
                     updateCallback(this.value);
                 }
-
-                NumberFilter.prototype.initialize.apply(this, arguments);
             },
 
             /**
@@ -122,6 +126,8 @@ define(
                     this._updateState();
                     this._triggerUpdate();
                 }
+
+                this.trigger('update_label', this.value);
             },
 
             /**
