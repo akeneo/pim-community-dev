@@ -60,7 +60,7 @@ extensions:
 
     pim-job-instance-xlsx-product-import-edit-properties-code:
         module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-product-import-edit-global
+        parent: pim-job-instance-xlsx-product-import-edit-properties
         position: 100
         targetZone: properties
         config:
