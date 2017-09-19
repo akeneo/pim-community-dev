@@ -86,6 +86,7 @@ services:
             - '@pim_catalog.values_filler.entity_with_family_variant'
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
             - '@pim_enrich.normalizer.variant_navigation'
+            - '@pim_catalog.doctrine.query.find_variant_product_completeness'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
