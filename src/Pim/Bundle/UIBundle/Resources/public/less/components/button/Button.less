@@ -4,8 +4,7 @@
   @darken: 10%;
   @lighten: 20%;
 
-  // Default button color is light gray
-  background: @AknLightGray;
+  background: white;
   color: @AknDefaultFontColor;
   height: @AknDefaultButtonSize;
   line-height: @AknDefaultButtonSize - 2px;
@@ -14,7 +13,7 @@
   display: inline-block;
   padding: 0 @AknDefaultButtonSize/2;
   border-radius: 100px;
-  border: 1px solid @AknLightGray;
+  border: 1px solid @AknBorderColor;
   cursor: pointer;
   text-align: left;
   white-space: nowrap;
@@ -27,12 +26,12 @@
 
   &:hover,
   &--active {
-    background: darken(@AknLightGray, @darken);
+    background: darken(white, @darken);
     color: darken(@AknDefaultFontColor, @darken);
   }
 
   &-icon {
-    display: none !important; // Used for preemption of .icon class
+    margin: -4px -4px -7px 0;
   }
 
   // Apply color

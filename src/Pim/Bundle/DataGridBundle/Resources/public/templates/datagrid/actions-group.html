@@ -1,8 +1,9 @@
-<div class="AknGridToolbar-actionButton AknDropdown <%- classname %> btn-group">
-    <button class="AknActionButton" title="<%- group.title %>" data-toggle="dropdown">
-        <% if (group.icon) { %><i class="icon-<%- group.icon %>"></i><% } %>
+<div class="AknButtonList-item AknDropdown <%- classname %>">
+    <div class="AknButton AknButton--grey" title="<%- group.title %>" data-toggle="dropdown">
         <%- _.__(group.label) %>
-        <i class="AknActionButton-caret AknCaret"></i>
-    </button>
-    <ul class="AknDropdown-menu"></ul>
+        <img src="bundles/pimui/images/icon-down-white.svg" class="AknButton-icon">
+    </div>
+    <ul class="AknDropdown-menu">
+        <li class="AknDropdown-menuTitle"><%- _.__(group.label) %></li>
+    </ul>
 </div>

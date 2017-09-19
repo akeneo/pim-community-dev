@@ -880,6 +880,7 @@ config:
         # Grid
         pim/grid/locale-switcher:   pimenrich/js/product/grid/locale-switcher
         pim/grid/category-switcher: pimenrich/js/product/grid/category-switcher
+        pim/grid/mass-actions:      pimenrich/js/grid/mass-actions
 
         # Category tree
         pim/grid/category-tree:      pimenrich/js/product/grid/category-tree
@@ -1011,6 +1012,7 @@ config:
         pim/template/attribute-option/show:                  pimenrich/templates/attribute-option/show.html
         pim/template/i18n/flag:                              pimenrich/templates/i18n/flag.html
         pim/template/error/error:                            pimenrich/templates/error/error.html
+        pim/template/grid/mass-actions:                      pimenrich/templates/grid/mass-actions.html
 
         pim/template/mass-edit/form:                           pimenrich/templates/mass-edit/form.html
         pim/template/mass-edit/choose:                         pimenrich/templates/mass-edit/choose.html
@@ -1089,6 +1091,7 @@ config:
         pim/template/grid/view-selector/remove-view: pimenrich/templates/grid/view-selector-remove-view.html
         pim/template/grid/view-selector/current: pimenrich/templates/grid/view-selector-current.html
         pim/template/grid/view-selector: pimenrich/templates/grid/view-selector.html
+
 
         # Job execution
         pim/template/job-execution/summary-table:             pimenrich/templates/job-execution/summary-table.html

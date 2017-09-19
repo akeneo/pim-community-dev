@@ -21,7 +21,7 @@ function(_, Backbone, groupTemplate, BaseForm, mediator) {
         /** @property {Array.<oro.datagrid.ActionLauncher>} */
         launchers: [],
 
-        className: 'AknGridToolbar-left mass-actions-panel',
+        className: 'AknButtonList mass-actions-panel',
 
         /** @property {Function} */
         groupTemplate: _.template(groupTemplate),
@@ -67,12 +67,9 @@ function(_, Backbone, groupTemplate, BaseForm, mediator) {
             });
 
             if (simpleLaunchers.length) {
-                var $container = $('<div class="AknGridToolbar-actionButton"></div>');
-                _.each(simpleLaunchers, function (launcher) {
-                    $container.append(launcher.render().$el);
-                }, this);
-
-                this.$el.append($container);
+                _.each(simpleLaunchers, (launcher) => {
+                    this.$el.append(launcher.render().$el);
+                });
             }
 
             if (groupedLaunchers.length) {
@@ -107,8 +104,8 @@ function(_, Backbone, groupTemplate, BaseForm, mediator) {
             }.bind(this));
 
             _.each(groupedLaunchers, function (groupLaunchers, groupName) {
-                var $dropdown = this.$el.find('.' + this.getGroupClassname(groupName) + ' .AknDropdown-menu');
-                _.each(groupLaunchers, function (launcher) {
+                const $dropdown = this.$el.find('.' + this.getGroupClassname(groupName) + ' .AknDropdown-menu');
+                _.each(groupLaunchers, (launcher) => {
                     $dropdown.append(launcher.renderAsListItem().$el);
                 });
             }.bind(this));

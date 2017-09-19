@@ -6,6 +6,8 @@ extensions:
             template: pim/template/product/index
             templateParams:
                 gridName: product-grid
+        forwarded-events:
+            'grid_load:start': 'grid_load:start'
 
     pim-product-index-grid-title:
         module: pim/common/grid-title
@@ -88,6 +90,11 @@ extensions:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
+    pim-product-index-mass-actions:
+        module: pim/grid/mass-actions
+        parent: pim-product-index
+        targetZone: mass-actions
+
     pim-product-index-grid-filters-manage:
         module: oro/datafilter/filters-button
         parent: pim-product-index-column-inner
@@ -98,10 +105,10 @@ extensions:
         parent: pim-product-index-column-inner
         targetZone: filters
 
-    pim-product-index-mass-actions:
+    pim-product-index-actions-panel:
         module: oro/datagrid/actions-panel
-        parent: pim-product-index
-        targetZone: toolbar
+        parent: pim-product-index-mass-actions
+        targetZone: actions-panel
 
     pim-product-index-pagination:
         module: oro/datagrid/pagination-input

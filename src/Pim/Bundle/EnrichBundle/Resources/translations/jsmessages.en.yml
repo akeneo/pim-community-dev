@@ -167,6 +167,7 @@ pim_enrich:
             category: Category
             create: Create product
             filters: Filters
+            selected: selected products
             btn:
                 enabled: Enabled
                 disabled: Disabled

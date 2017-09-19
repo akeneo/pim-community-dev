@@ -95,7 +95,10 @@
     position: fixed;
     width: ~"calc(100% - 360px)";
     z-index: 10;
-    transition: bottom 0.3s ease-in;
+    transition: bottom 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
 
     &--hidden {
       bottom: -64px;
