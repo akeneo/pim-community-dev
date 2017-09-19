@@ -32,10 +32,7 @@
         <ul id="column-list" class="AknVerticalList connected-sortable">
             <% _.each(_.where(columns, {displayed: false}), function(column) { %>
             <li class="AknVerticalList-item AknVerticalList-item--movable" data-value="<%- column.code %>" data-group="<%- column.group %>">
-                <div>
-                    <i class="icon-th"></i>
-                    <%- column.label %>
-                </div>
+                <div><%- column.label %></div>
             </li>
             <% }); %>
         </ul>
@@ -53,10 +50,7 @@
         <ul id="column-selection" class="AknVerticalList connected-sortable">
             <% _.each(_.sortBy(_.where(columns, {displayed: true}), 'position'), function(column) { %>
             <li class="AknVerticalList-item AknVerticalList-item--movable" data-value="<%- column.code %>" data-group="<%- column.group %>">
-                <div>
-                    <i class="icon-th"></i>
-                    <%- column.label %>
-                </div>
+                <div><%- column.label %></div>
                 <a href="javascript:void(0);" class="AknIconButton AknIconButton--small AknIconButton--grey action" title="<%- _.__('pim_datagrid.column_configurator.remove_column') %>">
                     <% if (column.removable) { %><i class="icon-trash"></i><% } %>
                 </a>
