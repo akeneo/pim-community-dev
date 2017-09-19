@@ -14,7 +14,8 @@ Feature: Define user rights
     And I visit the "Permissions" tab
     When I revoke rights to resources List products and List channels
     And I save the role
-    Then I should be on the "Administrator" role page
+    Then I should not see the text "There are unsaved changes."
+    And I should be on the "Administrator" role page
     And I should not be able to access the products page
     And I should not be able to access the channels page
     But I should be able to access the attributes page
