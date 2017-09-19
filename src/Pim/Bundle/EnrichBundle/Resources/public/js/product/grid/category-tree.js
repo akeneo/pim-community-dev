@@ -65,7 +65,11 @@ define(
                     }
                 );
 
-                this.listenTo(categoryFilter, 'update', function (value) {
+                this.listenTo(categoryFilter, 'update', (value) => {
+                    this.valueUpdated(value);
+                });
+
+                this.listenTo(categoryFilter, 'update_label', (value) => {
                     this.valueUpdated(value);
                 });
 
