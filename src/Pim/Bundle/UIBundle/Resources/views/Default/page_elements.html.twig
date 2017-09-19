@@ -84,11 +84,13 @@
     <header class="AknTitleContainer navigation">
         <div class="AknTitleContainer-imageContainer" data-drop-zone="main-image">{% block image %}{{ image }}{% endblock image %}</div>
         <div class="AknTitleContainer-mainContainer">
-            <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div>
-            <div class="AknTitleContainer-title" data-drop-zone="title">
-                {% block title %}
-                    {{ title }}
-                {% endblock title %}
+            <div>
+                <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div>
+                <div class="AknTitleContainer-title" data-drop-zone="title">
+                    {% block title %}
+                        {{ title }}
+                    {% endblock title %}
+                </div>
             </div>
             <div class="AknTitleContainer-meta" data-drop-zone="title">
                 {% block meta %}

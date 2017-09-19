@@ -2,10 +2,17 @@
     <div class="AknDefault-mainContent">
 
         <header class="AknTitleContainer navigation">
-            <div class="AknTitleContainer-imageContainer" data-drop-zone="main-image"></div>
+            <div class="AknTitleContainer-imageContainer" data-drop-zone="main-image">
+                <img
+                    class="AknTitleContainer-image"
+                    src="{{ app.user.imagePath ? app.user.imagePath | imagine_filter('avatar_med') : asset('bundles/pimui/images/info-user.png') }}"
+                >
+            </div>
             <div class="AknTitleContainer-mainContainer">
-                <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div>
-                <div class="AknTitleContainer-title" data-drop-zone="title">{{ 'pim_dashboard.title'|trans }}</div>
+                <div>
+                    <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div>
+                    <div class="AknTitleContainer-title" data-drop-zone="title">{{ 'pim_dashboard.title'|trans }}</div>
+                </div>
             </div>
             <div class="AknTitleContainer-buttonsContainer">
                 <div class="AknTitleContainer-userMenu user-menu"></div>
