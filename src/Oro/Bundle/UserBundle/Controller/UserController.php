@@ -9,8 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserController extends Controller
@@ -63,20 +61,11 @@ class UserController extends Controller
      * Edit user form
      *
      * @Template
+     * @AclAncestor("pim_user_user_edit")
      */
     public function updateAction($id)
     {
-        $user = $this->get('pim_user.repository.user')->findOneBy(['id' => $id]);
-
-        if ($this->getUser()->getUsername() !== $user->getUsername()) {
-            $authorizationChecker = $this->get('security.authorization_checker');
-
-            if (false === $authorizationChecker->isGranted('EDIT', $user)) {
-                throw new AccessDeniedException();
-            }
-        }
-
-        return $this->update($user);
+        return $this->update($id);
     }
 
     /**
