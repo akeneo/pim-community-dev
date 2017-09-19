@@ -27,11 +27,13 @@ Action performed.: Действие выполнено.
 Action is not performed.: Действие не выполнено.
 Please, select item to perform action.: Пожалуйста, выберите элемент для выполнения действия.
 View per page: Записей на странице
+Enabled: Включено
+Disabled: Отключено
+not_available: Н/Д
 "Yes": true
 "No": false
 oro.datagrid.entityHint: Объект
 oro.datagrid.noentities: Записи не найдены
-oro.datagrid.noresults: "Ничего не найдено. Попробуйте изменить критерии поиска."
 oro.datagrid.nocolumns: Ни один столбец не настроен для этой сетки
 oro.datagrid.pagination.label: "Страница"
 oro.datagrid.pagination.totalPages: "из {{ totalPages }}"

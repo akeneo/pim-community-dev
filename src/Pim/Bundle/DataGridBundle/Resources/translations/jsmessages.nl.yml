@@ -27,11 +27,13 @@ Action performed.: Actie uitgevoerd.
 Action is not performed.: Actie is niet uitgevoerd.
 Please, select item to perform action.: Selecteer item om actie uit te voeren.
 View per page: Bekijk per pagina
+Enabled: Ingeschakeld
+Disabled: Uitgeschakeld
+not_available: Niet beschikbaar
 "Yes": true
 "No": false
 oro.datagrid.entityHint: Entiteit
 oro.datagrid.noentities: Geen records gevonden
-oro.datagrid.noresults: "Er zijn geen resultaten gevonden. Proberen te een andere zoekterm."
 oro.datagrid.nocolumns: Geen kolommen geconfigureerd voor dit raster
 oro.datagrid.pagination.label: "Pagina"
 oro.datagrid.pagination.totalPages: "van {{ totalPages }}"

@@ -237,6 +237,9 @@ pim_enrich:
             message:
                 created: Product successfully created
             completeness: Complete
+            sequential_edit:
+                item_limit: Only first 1000 items shown in this sequential edit ({{ count }} selected)
+                empty: Your selection is empty, please change your search criteria
         product_model:
             info:
                 update_successful: Product model successfully updated.
@@ -1090,6 +1093,9 @@ batch_jobs:
     csv_product_export:
         label: Product export in CSV
         export.label: Product export
+    csv_product_model_export:
+        label: Product model export in CSV
+        export.label: Product export
     csv_category_export:
         label: Category export in CSV
         export.label: Category export
@@ -1208,6 +1214,9 @@ batch_jobs:
     xlsx_product_export:
         label: Product export in XLSX
         export.label: Product export
+    xlsx_product_model_export:
+        label: Product model export in XLSX
+        export.label: Product model export
     xlsx_product_import:
         label: Product import in XLSX
         validation.label: File validation

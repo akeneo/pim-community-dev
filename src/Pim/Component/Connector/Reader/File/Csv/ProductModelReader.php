@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Connector\Reader\File\Csv;
 
 use Akeneo\Component\Batch\Item\FlushableInterface;

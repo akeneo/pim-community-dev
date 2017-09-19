@@ -137,7 +137,10 @@ pim_enrich:
         save: Tallenna
         cancel: Peruuta
     product:
+      index_title: Tuotteet
       title: tuote
+      locale: Lokaatio
+      category: Kategoria
       btn:
         enabled: Käytössä
         disabled: Poistettu käytöstä
@@ -167,6 +170,9 @@ pim_enrich:
         updated: Viimeisin päivitys
         family:
           title: Perhe
+          none: Ei yhtään
+        family_variant:
+          title: Tuotevariaatio
           none: Ei yhtään
         groups:
           title: Ryhmät
@@ -933,6 +939,8 @@ batch_jobs:
     label: Ryhmän tuonti CSV-tiedostona
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmätuonti
+  csv_family_variant_import:
+    validation.label: Tiedostojen tarkistaminen
   csv_group_import:
     label: Ryhmien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -971,6 +979,8 @@ batch_jobs:
     label: Perheiden tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmätuonti
+  xlsx_family_variant_import:
+    validation.label: Tiedostojen tarkistaminen
   xlsx_product_export:
     label: Tuotteiden vienti XLSX-muodossa
     export.label: Tuotteiden vienti

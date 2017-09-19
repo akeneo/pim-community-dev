@@ -34,7 +34,6 @@ jobs:
             uploadAllowed:      true
             delimiter:          ;
             enclosure:          '"'
-            escape:             '\'
             enabled:            true
             categoriesColumn:   categories
             familyColumn:       family
@@ -103,3 +102,13 @@ jobs:
             filePath:     /tmp/products_export_grid_context_%locale%_%scope%_%datetime%.xlsx
             linesPerFile: 10000
             with_media:   true
+    csv_product_model_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_model_export
+        label:     CSV product model export
+        type:      export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath: /tmp/product_models.csv

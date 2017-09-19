@@ -1,6 +1,5 @@
 pim_enrich_product_index:
     path: /
-    defaults: { _controller: pim_enrich.controller.product:indexAction }
 
 pim_enrich_product_edit:
     path: /{id}

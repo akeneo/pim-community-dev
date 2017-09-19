@@ -59,6 +59,7 @@ Let's consider a *bar* product, without any product value, except its identifier
 
 * an identifier
 * a family
+* a parent
 * several groups
 * a variant group
 * several categories
@@ -69,6 +70,7 @@ Its standard format would be the following:
         array:10 [
           "identifier" => "bar"
           "family" => "familyA"
+          "parent" => "parentA"
           "groups" => array:2 [
             0 => "groupA"
             1 => "groupB"
@@ -119,6 +121,7 @@ Its standard format would be the following:
 | ------------- | -------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | identifier    | string         | `"bar"`                                                                   | it's the identifier of the product                                                               |
 | family        | string         | `"familyA"`                                                               | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyInterface*                    |
+| parent        | string         | `"parentA"`                                                               | it represents the *code* of the *Pim\Component\Catalog\Model\ProductModelInterface*              |
 | groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*                     |
 | variant_group | string         | `"variantA"`                                                              | it represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*                     |
 | categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the object *Akeneo\Component\Classification\Model\CategoryInterface* |

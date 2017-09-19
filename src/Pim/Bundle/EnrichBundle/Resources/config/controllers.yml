@@ -7,7 +7,6 @@ parameters:
     pim_enrich.controller.group.class:                        Pim\Bundle\EnrichBundle\Controller\GroupController
     pim_enrich.controller.association_type.class:             Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
     pim_enrich.controller.file.class:                         Pim\Bundle\EnrichBundle\Controller\FileController
-    pim_enrich.controller.sequential_edit.class:              Pim\Bundle\EnrichBundle\Controller\SequentialEditController
     pim_enrich.controller.rest.association_type.class:        Pim\Bundle\EnrichBundle\Controller\Rest\AssociationTypeController
     pim_enrich.controller.rest.attribute.class:               Pim\Bundle\EnrichBundle\Controller\Rest\AttributeController
     pim_enrich.controller.rest.attribute_type.class:          Pim\Bundle\EnrichBundle\Controller\Rest\AttributeTypeController
@@ -31,6 +30,7 @@ parameters:
     pim_enrich.controller.rest.job_instance.class:            Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController
     pim_enrich.controller.rest.job_execution.class:           Pim\Bundle\EnrichBundle\Controller\Rest\JobExecutionController
     pim_enrich.controller.rest.mass_edit.class:               Pim\Bundle\EnrichBundle\Controller\Rest\MassEditController
+    pim_enrich.controller.rest.sequential_edit.class:        Pim\Bundle\EnrichBundle\Controller\Rest\SequentialEditController
     pim_enrich.controller.rest.product_template.class:        Pim\Bundle\EnrichBundle\Controller\Rest\ProductTemplateController
     pim_enrich.controller.job_tracker.class:                  Pim\Bundle\EnrichBundle\Controller\JobTrackerController
     pim_enrich.controller.rest.api_client.class:              Pim\Bundle\EnrichBundle\Controller\Rest\ApiClientController
@@ -82,16 +82,10 @@ services:
     pim_enrich.controller.product:
         class: '%pim_enrich.controller.product.class%'
         arguments:
-            - '@router'
-            - '@security.token_storage'
-            - '@form.factory'
             - '@translator'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.category'
-            - '@pim_user.context.user'
-            - '@oro_security.security_facade'
             - '@pim_catalog.saver.product'
-            - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.values_filler.product'
             - '%pim_catalog.entity.category.class%'
@@ -128,17 +122,6 @@ services:
             - '@pim_enrich.guesser.file_type'
             - '@pim_enrich.provider.default_image'
             - ['catalogStorage']
-
-    pim_enrich.controller.sequential_edit:
-        class: '%pim_enrich.controller.sequential_edit.class%'
-        arguments:
-            - '@router'
-            - '@pim_datagrid.extension.mass_action.dispatcher'
-            - '@pim_enrich.manager.sequential_edit'
-            - '@pim_user.context.user'
-            - '@pim_internal_api_serializer'
-            - '@pim_enrich.saver.sequential_edit'
-            - '@oro_datagrid.mass_action.parameters_parser'
 
     pim_enrich.controller.job_tracker:
         class: '%pim_enrich.controller.job_tracker.class%'
@@ -248,6 +231,13 @@ services:
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@pim_enrich.mass_edit_action.operation_job_launcher'
             - '@pim_enrich.converter.mass_operation'
+
+    pim_enrich.controller.rest.sequential_edit:
+        class: '%pim_enrich.controller.rest.sequential_edit.class%'
+        arguments:
+            - '@oro_datagrid.mass_action.parameters_parser'
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@pim_enrich.query.product_query_sequential_edit_builder_factory'
 
     pim_enrich.controller.rest.product_template:
         class: '%pim_enrich.controller.rest.product_template.class%'

@@ -135,7 +135,10 @@ pim_enrich:
         save: Salvar
         cancel: Cancelar
     product:
+      index_title: Produtos
       title: produto
+      locale: Localidade
+      category: Categoria
       btn:
         enabled: Habilitado
         disabled: Desabilitado
@@ -165,6 +168,9 @@ pim_enrich:
         updated: Última atualização
         family:
           title: Família
+          none: Nenhum
+        family_variant:
+          title: Variante
           none: Nenhum
         groups:
           title: Grupos
@@ -922,6 +928,8 @@ batch_jobs:
     label: Importar família em CSV
     validation.label: Validação de arquivo
     import.label: Importar família
+  csv_family_variant_import:
+    validation.label: Validação de arquivo
   csv_group_import:
     label: Importação de grupo em CSV
     validation.label: Validação de arquivo
@@ -985,6 +993,8 @@ batch_jobs:
     label: Importação de famílias por XLSX
     validation.label: Validação de arquivo
     import.label: Importar família
+  xlsx_family_variant_import:
+    validation.label: Validação de arquivo
   xlsx_product_export:
     label: Exportação de produtos em XLSX
     export.label: Exportação de produto

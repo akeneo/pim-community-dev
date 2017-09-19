@@ -19,12 +19,11 @@ Feature: Edit an import
 
   Scenario: Successfully update import job configuration
     Given I am on the "csv_footwear_product_import" import job edit page
-    Then I should see the File, Allow file upload, Delimiter, Enclosure, Escape, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator, Date format fields
+    Then I should see the File, Allow file upload, Delimiter, Enclosure, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator, Date format fields
     When I fill in the following information:
       | File              | /tmp/file.csv |
       | Delimiter         | \|            |
       | Enclosure         | '             |
-      | Escape            | \\            |
       | Categories column | cat           |
       | Family column     | fam           |
       | Groups column     | grp           |
@@ -42,8 +41,6 @@ Feature: Edit an import
     And the "Delimiter" field should contain "|"
     And I should see the text "Enclosure"
     And the "Enclosure" field should contain "'"
-    And I should see the text "Escape"
-    And the "Escape" field should contain "\\"
     And I should see the text "Real time history"
     And the "Real time history" field should contain ""
     And I should see the text "Enable the product"

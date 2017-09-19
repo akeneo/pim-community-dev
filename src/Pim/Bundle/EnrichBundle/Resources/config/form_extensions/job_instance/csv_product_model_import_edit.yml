@@ -112,17 +112,6 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.enclosure.title
             tooltip: pim_enrich.form.job_instance.tab.properties.enclosure.help
 
-    pim-job-instance-csv-product-model-import-edit-properties-escape:
-        module: pim/job/common/edit/field/text
-        parent: pim-job-instance-csv-product-model-import-edit-properties
-        position: 160
-        targetZone: global-settings
-        config:
-            fieldCode: configuration.escape
-            readOnly: false
-            label: pim_enrich.form.job_instance.tab.properties.escape.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.escape.help
-
     pim-job-instance-csv-product-model-import-edit-properties-decimal-separator:
         module: pim/job/common/edit/field/decimal-separator
         parent: pim-job-instance-csv-product-model-import-edit-properties

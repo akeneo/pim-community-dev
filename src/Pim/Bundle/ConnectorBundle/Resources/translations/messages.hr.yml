@@ -72,6 +72,8 @@ batch_jobs:
     validation.label: Provjera valjanosti datoteke
     import.label: Uvoz proizvoda
     import_associations.label: Uvoz pridruživanja
+  csv_product_model_import:
+    validation.label: Provjera valjanosti datoteke
   csv_category_import:
     label: Uvoz kategorije iz CSV
     validation.label: Provjera valjanosti datoteke
@@ -92,6 +94,8 @@ batch_jobs:
     label: Izvoz porodice u CSV
     validation.label: Provjera valjanosti datoteke
     import.label: Uvoz porodice
+  csv_family_variant_import:
+    validation.label: Provjera valjanosti datoteke
   csv_group_import:
     label: Uvoz grupa iz CSV
     validation.label: Provjera valjanosti datoteke
@@ -155,6 +159,8 @@ batch_jobs:
     label: Uvoz obitelji iz XLSX
     validation.label: Provjera valjanosti datoteke
     import.label: Uvoz porodice
+  xlsx_family_variant_import:
+    validation.label: Provjera valjanosti datoteke
   xlsx_product_export:
     label: Izvoz proizvoda u XLSX
     export.label: Izvoz proizvoda
@@ -163,6 +169,8 @@ batch_jobs:
     validation.label: Provjera valjanosti datoteke
     import.label: Uvoz proizvoda
     import_associations.label: Uvoz pridruživanja
+  xlsx_product_model_import:
+    validation.label: Provjera valjanosti datoteke
   xlsx_group_export:
     label: Izvoz grupe u XLSX
     export.label: Izvoz grupe

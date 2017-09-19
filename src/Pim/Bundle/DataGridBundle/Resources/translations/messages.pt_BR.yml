@@ -1,5 +1,4 @@
 "oro_datagrid.no_data_hint %entityHint%": A %entityHint% não existe.
-oro_datagrid.not_found_hint: Resultados não encontrados. Tente alterar seus critérios de pesquisa.
 oro_datagrid.label_add_filter: Gerenciar filtros
 oro_datagrid.label_loading_mask: Carregando . . .
 oro.grid.mass_action.selected_rows: Linhas selecionadas

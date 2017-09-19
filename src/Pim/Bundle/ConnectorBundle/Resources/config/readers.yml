@@ -3,6 +3,7 @@ parameters:
 
     pim_connector.reader.database.class: Pim\Component\Connector\Reader\Database\Reader
     pim_connector.reader.database.product.class: Pim\Component\Connector\Reader\Database\ProductReader
+    pim_connector.reader.database.product_model.class: Pim\Component\Connector\Reader\Database\ProductModelReader
     pim_connector.reader.database.atribute_option.class: Pim\Component\Connector\Reader\Database\AttributeOptionReader
     pim_connector.reader.database.category.class: Pim\Component\Connector\Reader\Database\CategoryReader
     pim_connector.reader.database.group.class: Pim\Component\Connector\Reader\Database\GroupReader
@@ -69,6 +70,11 @@ services:
         class: '%pim_connector.reader.database.group.class%'
         arguments:
             - '@pim_catalog.repository.group'
+
+    pim_connector.reader.database.product_model:
+        class: '%pim_connector.reader.database.product_model.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
 
     pim_connector.reader.database.channel:
         class: '%pim_connector.reader.database.class%'
