@@ -7,6 +7,10 @@
   width: 100%;
   border-collapse: collapse;
 
+  &-bodyRow {
+    transition: background 0.2s ease-in;
+  }
+
   &-bodyRow + &-bodyRow:not(&-bodyRow--withoutTopBorder) &-bodyCell {
     border-top: 1px solid @AknBorderColor;
   }
@@ -58,7 +62,7 @@
   }
 
   &-bodyRow--selected:hover {
-    background: lighten(@AknBlue, 30%);
+    background: lighten(@AknBlue, 32%);
   }
 
   &-bodyCell {

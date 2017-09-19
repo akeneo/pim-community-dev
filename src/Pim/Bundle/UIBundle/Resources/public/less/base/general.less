@@ -110,6 +110,35 @@ p {
   margin-bottom: 0;
 }
 
+input[type=checkbox] {
+  &:before {
+    content: '';
+    width: @AknCheckboxSize;
+    height: @AknCheckboxSize;
+    display: inline-block;
+    background-color: @AknLightGray;
+    background-position: 0 -@AknCheckboxSize;
+    border: 1px solid @AknBorderColor;
+    border-radius: 3px;
+    cursor: pointer;
+    transition:
+      background-color 0.1s ease-in,
+      background-position 0.2s ease-in;
+  }
+
+  &:checked:before {
+    background-color: @AknBlue;
+    background-image: url("../../images/icon-checkwhite.svg");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: @AknCheckboxSize @AknCheckboxSize;
+  }
+
+  &:focus {
+    outline: none !important;
+  }
+}
+
 // https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#Notes
 button::-moz-focus-inner {
   padding: 0;
