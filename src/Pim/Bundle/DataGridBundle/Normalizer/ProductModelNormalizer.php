@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Pim\Bundle\DataGridBundle\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\ProductModel\Query\FindVariantProductCompletenessInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -27,12 +27,20 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
     /** @var CollectionFilterInterface */
     private $filter;
 
+    /** @var FindVariantProductCompletenessInterface */
+    private $findVariantProductCompletenessQuery;
+
     /**
-     * @param CollectionFilterInterface $filter The collection filter
+     * @param CollectionFilterInterface               $filter
+     * @param FindVariantProductCompletenessInterface $findVariantProductCompletenessQuery
      */
-    public function __construct(CollectionFilterInterface $filter)
+    public function __construct(
+        CollectionFilterInterface $filter,
+        FindVariantProductCompletenessInterface $findVariantProductCompletenessQuery
+    )
     {
         $this->filter = $filter;
+        $this->findVariantProductCompletenessQuery = $findVariantProductCompletenessQuery;
     }
 
     /**
@@ -47,6 +55,9 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $context = array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
         $data = [];
         $locale = current($context['locales']);
+        $channel = current($context['channels']);
+
+        $variantProductCompleteness = ($this->findVariantProductCompletenessQuery)($productModel, $channel, $locale);
 
         $data['identifier'] = $productModel->getCode();
         $data['family'] = $this->getFamilyLabel($productModel, $locale);
@@ -64,6 +75,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $data['document_type'] = IdEncoder::PRODUCT_MODEL_TYPE;
         $data['technical_id'] = $productModel->getId();
         $data['search_id'] = IdEncoder::encode($data['document_type'], $data['technical_id']);
+        $data['complete_variant_group'] = $variantProductCompleteness->ratio($channel, $locale);
 
         return $data;
     }

@@ -10,6 +10,7 @@ use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvide
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\ProductModel\Query\FindVariantProductCompletenessInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
@@ -55,6 +56,9 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var EntityWithFamilyVariantAttributesProvider */
     private $attributesProvider;
 
+    /** @var FindVariantProductCompletenessInterface */
+    private $findVariantProductCompletenessQuery;
+
     /** @var VariantNavigationNormalizer */
     private $navigationNormalizer;
 
@@ -70,6 +74,7 @@ class ProductModelNormalizer implements NormalizerInterface
      * @param EntityWithFamilyValuesFillerInterface     $entityValuesFiller
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      * @param VariantNavigationNormalizer               $navigationNormalizer
+     * @param FindVariantProductCompletenessInterface   $findVariantProductCompletenessQuery
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -82,7 +87,8 @@ class ProductModelNormalizer implements NormalizerInterface
         LocaleRepositoryInterface $localeRepository,
         EntityWithFamilyValuesFillerInterface $entityValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
-        VariantNavigationNormalizer $navigationNormalizer
+        VariantNavigationNormalizer $navigationNormalizer,
+        FindVariantProductCompletenessInterface $findVariantProductCompletenessQuery
     ) {
         $this->normalizer            = $normalizer;
         $this->versionNormalizer     = $versionNormalizer;
@@ -95,6 +101,7 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->entityValuesFiller    = $entityValuesFiller;
         $this->attributesProvider    = $attributesProvider;
         $this->navigationNormalizer  = $navigationNormalizer;
+        $this->findVariantProductCompletenessQuery = $findVariantProductCompletenessQuery;
     }
 
     /**
@@ -132,7 +139,10 @@ class ProductModelNormalizer implements NormalizerInterface
 
         $normalizedFamilyVariant = $this->normalizer->normalize($productModel->getFamilyVariant(), 'standard');
 
+        $variantProductCompletenesses = ($this->findVariantProductCompletenessQuery)($productModel);
+
         $normalizedProductModel['meta'] = [
+                'variant_product_completeness' => $variantProductCompletenesses->normalizedCompletenesses(),
                 'family_variant'            => $normalizedFamilyVariant,
                 'form'                      => $this->formProvider->getForm($productModel),
                 'id'                        => $productModel->getId(),
