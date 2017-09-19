@@ -178,6 +178,36 @@
 - Remove class `Pim\Bundle\VersioningBundle\UpdateGuesser\MongoDBODM\ContainsProductsUpdateGuesser`
 - Remove class `upgrades/UpgradeHelper.php`
 - Remove class `Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\CategoryFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Condition\CriteriaCondition`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\AbstractAttributeFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\AbstractFieldFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\AbstractFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BooleanFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateTimeFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\FamilyFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\GroupsFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\IdentifierFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MediaFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MetricFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\NumberFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\OptionFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\OptionsFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\ProductIdFilter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\CompletenessJoin`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\CompletenessSorter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\EntitySorter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\FamilySorter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\InGroupSorter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\IsAssociatedSorter`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\MetricSorter`
+- Remove class `ReferenceDataBundle\Doctrine\ORM\Filter\ReferenceDataFilter`
+- Remove class `ReferenceDataBundle\Doctrine\ORM\Sorter\ReferenceDataSorter`
 
 - Change the constructor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Doctrine\Common\Persistence\ObjectManager`
 - Change the constructor of `Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher\ObjectDetacher` to replace `Doctrine\Common\Persistence\ManagerRegistry` by `Doctrine\Common\Persistence\ObjectManager`
