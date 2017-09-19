@@ -51,10 +51,10 @@ define(
                         cache: false,
                         processData: false
                     })
-                    .then(function (response) {
+                    .then((response) => {
                         router.redirect(response.redirectUrl);
-                    }.bind(this))
-                    .fail(function () {
+                    })
+                    .fail(() => {
                         messenger.notify('error', __('pim_enrich.form.job_instance.fail.launch'));
                     })
                     .always(router.hideLoadingMask());

@@ -20,6 +20,7 @@ define(
         MediaUrlGenerator
     ) {
         return BaseForm.extend({
+            tagName: 'img',
             className: 'AknTitleContainer-image',
             template: _.template(template),
 
@@ -36,15 +37,11 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.empty();
-
                 if (null === this.getPath()) {
                     return;
                 }
 
-                this.$el.append(this.template({
-                    path: this.getPath()
-                }));
+                this.el.src = this.getPath()
 
                 return BaseForm.prototype.render.apply(this, arguments);
             },

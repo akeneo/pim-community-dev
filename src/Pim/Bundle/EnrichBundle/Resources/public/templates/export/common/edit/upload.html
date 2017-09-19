@@ -1,18 +1,22 @@
-<div class="AknFormContainer AknFormContainer--withPadding AknFormContainer--centered">
+<div class="AknFormContainer AknFormContainer--large AknFormContainer--withPadding AknFormContainer--centered">
     <div class="AknMediaField <%- !file ? 'has-file' : '' %>" >
         <% if (!file) { %>
             <input class="AknMediaField-fileUploaderInput" type="file" name="Drag and drop a file or click here"/>
             <div class="AknMediaField-emptyContainer">
-                <img src="/bundles/pimui/images/upload.png" alt="upload icon" class="AknMediaField-uploadIcon"/>
-                <span><%- _.__('pim_enrich.job.upload')%></span>
+                <span title="upload icon" class="AknMediaField-uploadIcon"/>
+                <span><%- __('pim_enrich.job.upload', {type})%></span>
             </div>
         <% } else { %>
             <div class="AknMediaField-preview preview">
-                <div class="AknMediaField-thumb file"><i class="AknMediaField-icon icon icon-file"></i></div>
+                <div class="AknMediaField-thumb file">
+                    <span title="upload icon" class="AknMediaField-uploadIcon"/>
+                </div>
                 <div class="AknMediaField-info info">
                     <div class="filename" title="<%- file.name %>"><%- file.name %></div>
                     <div class="AknButtonList AknButtonList--centered actions">
-                        <span class="AknButtonList-item AknIconButton AknIconButton--grey clear-field"><i class="icon icon-trash"></i></span>
+                        <span class="AknButtonList-item clear-field">
+                            <span class="AknMediaField-remove"/>
+                        </span>
                     </div>
                 </div>
             </div>
