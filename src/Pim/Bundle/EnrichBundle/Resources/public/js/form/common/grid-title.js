@@ -25,8 +25,8 @@ define(
             initialize(config) {
                 this.config = config.config;
 
-                mediator.once('grid_load:start', this.setupCollection.bind(this));
-                mediator.on('grid_load:complete', this.setupCollection.bind(this));
+                mediator.once('grid_load:start', this.setupCount.bind(this));
+                mediator.on('grid_load:complete', this.setupCount.bind(this));
             },
 
             /**
@@ -45,7 +45,7 @@ define(
              *
              * @param {Object} collection
              */
-            setupCollection(collection) {
+            setupCount(collection) {
                 this.count = collection.state.totalRecords;
 
                 this.render();

@@ -282,7 +282,7 @@ class WebUser extends PimContext
     public function thereShouldBeErrorsInTheTab($expectedErrorsCount, $tabName)
     {
         $this->scrollContainerTo(-1000);
-        
+
         $tab = $this->getCurrentPage()->getTab($tabName);
 
         $this->spin(function () use ($tab, $expectedErrorsCount) {

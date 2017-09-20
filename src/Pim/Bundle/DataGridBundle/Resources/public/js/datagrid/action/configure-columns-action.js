@@ -117,7 +117,7 @@ define(
              * Subscribe to click event
              */
             subscribe: function() {
-                $('#configure-columns').one('click', this.execute.bind(this));
+                $('.configure-columns').one('click', this.execute.bind(this));
             },
 
             /**

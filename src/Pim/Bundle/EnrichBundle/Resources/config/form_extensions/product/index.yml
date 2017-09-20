@@ -7,7 +7,7 @@ extensions:
             templateParams:
                 gridName: product-grid
         forwarded-events:
-            'grid_load:start': 'grid_load:start'
+            grid_load:start: grid_load:start
 
     pim-product-index-grid-title:
         module: pim/common/grid-title

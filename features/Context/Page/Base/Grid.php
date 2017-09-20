@@ -151,7 +151,7 @@ class Grid extends Index
                 'Filters'               => ['css' => '.filter-box, .filter-wrapper'],
                 'Grid toolbar'          => ['css' => '.AknGridToolbar'],
                 'Manage filters'        => ['css' => 'div.filter-list'],
-                'Configure columns'     => ['css' => '#configure-columns'],
+                'Configure columns'     => ['css' => '.configure-columns'],
                 'View selector'         => ['css' => '.grid-view-selector'],
                 'Views list'            => ['css' => '.ui-multiselect-menu.highlight-hover'],
                 'Select2 results'       => ['css' => '#select2-drop .select2-results'],

@@ -51,9 +51,9 @@
             <% _.each(_.sortBy(_.where(columns, {displayed: true}), 'position'), function(column) { %>
             <li class="AknVerticalList-item AknVerticalList-item--movable" data-value="<%- column.code %>" data-group="<%- column.group %>">
                 <div><%- column.label %></div>
-                <a href="javascript:void(0);" class="AknIconButton AknIconButton--small AknIconButton--grey action" title="<%- _.__('pim_datagrid.column_configurator.remove_column') %>">
-                    <% if (column.removable) { %><i class="icon-trash"></i><% } %>
-                </a>
+                <% if (column.removable) { %>
+                <div class="AknVerticalList-delete action" title="<%- _.__('pim_datagrid.column_configurator.remove_column') %>"></div>
+                <% } %>
             </li>
             <% }); %>
             <div class="AknMessageBox AknMessageBox--error AknMessageBox--hide alert alert-error"><%- _.__("datagrid_view.columns.min_message") %></div>

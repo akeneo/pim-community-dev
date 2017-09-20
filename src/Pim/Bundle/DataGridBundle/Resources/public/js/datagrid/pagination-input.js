@@ -80,7 +80,7 @@ define(
             const currentPage = state.firstPage === 0 ? state.currentPage : state.currentPage - 1;
             const pageIds = this.getPages();
 
-            if (this.collection.mode !== "infinite") {
+            if (this.collection.mode !== 'infinite') {
                 let previousId = _.first(pageIds);
                 pageIds.forEach((id) => {
                     if (id - previousId > 1) {
@@ -93,7 +93,7 @@ define(
                     previousId = id;
                     handles.push({
                         label: id + 1,
-                        title: "No. " + (id + 1),
+                        title: 'No. ' + (id + 1),
                         className: currentPage === id ? 'active AknActionButton--highlight' : undefined
                     });
                 });

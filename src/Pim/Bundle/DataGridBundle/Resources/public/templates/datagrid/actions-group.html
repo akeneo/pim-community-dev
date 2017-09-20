@@ -1,9 +1,8 @@
 <div class="AknButtonList-item AknDropdown <%- classname %>">
-    <div class="AknButton AknButton--grey" title="<%- group.title %>" data-toggle="dropdown">
-        <%- _.__(group.label) %>
-        <img src="bundles/pimui/images/icon-down-white.svg" class="AknButton-icon">
+    <div class="AknButton AknButton--dropdown AknButton--grey" title="<%- group.title %>" data-toggle="dropdown">
+        <%- __(group.label) %>
     </div>
     <ul class="AknDropdown-menu">
-        <li class="AknDropdown-menuTitle"><%- _.__(group.label) %></li>
+        <li class="AknDropdown-menuTitle"><%- __(group.label) %></li>
     </ul>
 </div>

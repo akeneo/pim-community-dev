@@ -925,7 +925,7 @@ pim_enrich:
             title:      "] -Inf, 1] {{ count }} group|] 1, Inf [{{ count }} groups"
             create_btn: Create group
         process_tracker:
-            title:      "] -Inf, 1] {{ count }} process tracker|] 1, Inf [{{ count }} process trackers"
+            title:      "] -Inf, 1] {{ count }} operation|] 1, Inf [{{ count }} operations"
         channel:
             title:      "] -Inf, 1] {{ count }} channel|] 1, Inf [{{ count }} channels"
             create_btn: Create channel

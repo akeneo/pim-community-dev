@@ -4,7 +4,7 @@
   @darken: 10%;
   @lighten: 20%;
 
-  background: white;
+  background-color: white;
   color: @AknDefaultFontColor;
   height: @AknDefaultButtonSize;
   line-height: @AknDefaultButtonSize - 2px;
@@ -26,7 +26,7 @@
 
   &:hover,
   &--active {
-    background: darken(white, @darken);
+    background-color: darken(white, @darken);
     color: darken(@AknDefaultFontColor, @darken);
   }
 
@@ -43,13 +43,13 @@
 
   &--apply:hover,
   &--apply&--active {
-    background: darken(@AknGreen, @darken);
+    background-color: darken(@AknGreen, @darken);
     border-color: darken(@AknGreen, @darken);
     color: white;
   }
 
   &--apply&--disabled {
-    background: lighten(@AknGreen, @lighten);
+    background-color: lighten(@AknGreen, @lighten);
     border-color: lighten(@AknGreen, @lighten);
     cursor: not-allowed;
   }
@@ -63,13 +63,13 @@
 
   &--grey:hover,
   &--grey&--active {
-    background: darken(@AknGrey, @darken);
+    background-color: darken(@AknGrey, @darken);
     border-color: darken(@AknGrey, @darken);
     color: white;
   }
 
   &--grey&--disabled {
-    background: lighten(@AknGrey, @lighten);
+    background-color: lighten(@AknGrey, @lighten);
     border-color: lighten(@AknGrey, @lighten);
     cursor: not-allowed;
   }
@@ -104,33 +104,33 @@
 
   &--important:hover,
   &--important&--active {
-    background: darken(@AknRed, @darken);
+    background-color: darken(@AknRed, @darken);
     border-color: darken(@AknRed, @darken);
     color: white;
   }
 
   &--important&--disabled {
-    background: lighten(@AknRed, @lighten);
+    background-color: lighten(@AknRed, @lighten);
     border-color: lighten(@AknRed, @lighten);
     cursor: not-allowed;
   }
 
   // Action color
   &--action {
-    background: @AknBlue;
+    background-color: @AknBlue;
     border-color: @AknBlue;
     color: white;
   }
 
   &--action:hover,
   &--action&--active {
-    background: darken(@AknBlue, @darken);
+    background-color: darken(@AknBlue, @darken);
     border-color: darken(@AknBlue, @darken);
     color: white;
   }
 
   &--action&--disabled {
-    background: lighten(@AknBlue, @lighten);
+    background-color: lighten(@AknBlue, @lighten);
     border-color: lighten(@AknBlue, @lighten);
     cursor: not-allowed;
   }
@@ -197,5 +197,13 @@
     padding-left: 0;
     padding-right: 0;
     text-align: center;
+  }
+
+  &--dropdown {
+    background-image: url("../../../images/icon-down-white.svg");
+    background-repeat: no-repeat;
+    background-position: 92% center;
+    background-size: 20px;
+    padding-right: 34px;
   }
 }

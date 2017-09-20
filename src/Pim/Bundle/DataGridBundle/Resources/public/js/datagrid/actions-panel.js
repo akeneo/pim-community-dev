@@ -1,17 +1,33 @@
 /* global define */
-define(['underscore', 'backbone', 'pim/template/datagrid/actions-group', 'pim/form', 'oro/mediator'],
-function(_, Backbone, groupTemplate, BaseForm, mediator) {
+
+/**
+ * Panel with action buttons
+ *
+ * @export  oro/datagrid/actions-panel
+ * @class   oro.datagrid.ActionsPanel
+ * @extends BaseForm
+ */
+define(
+    [
+        'underscore',
+        'oro/translator',
+        'backbone',
+        'pim/template/datagrid/actions-group',
+        'pim/form',
+        'oro/mediator'
+    ], function(
+        _,
+        __,
+        Backbone,
+        groupTemplate,
+        BaseForm,
+        mediator
+    ) {
     'use strict';
 
-    /**
-     * Panel with action buttons
-     *
-     * @export  oro/datagrid/actions-panel
-     * @class   oro.datagrid.ActionsPanel
-     * @extends BaseForm
-     */
     const ActionsPanel = BaseForm.extend({
         appendToGrid: false,
+
         /** @property {Array} */
         actionsGroups: [],
 
@@ -97,6 +113,7 @@ function(_, Backbone, groupTemplate, BaseForm, mediator) {
             _.each(activeGroups, function (group, name) {
                 this.$el.append(
                     this.groupTemplate({
+                        __,
                         classname: this.getGroupClassname(name),
                         group: group
                     })

@@ -1093,7 +1093,6 @@ config:
         pim/template/grid/view-selector/current: pimenrich/templates/grid/view-selector-current.html
         pim/template/grid/view-selector: pimenrich/templates/grid/view-selector.html
 
-
         # Job execution
         pim/template/job-execution/summary-table:             pimenrich/templates/job-execution/summary-table.html
         pim/template/job-execution/auto-refresh:              pimenrich/templates/job-execution/auto-refresh.html

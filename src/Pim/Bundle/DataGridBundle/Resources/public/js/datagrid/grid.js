@@ -111,7 +111,6 @@ define(
              * @throws {TypeError} If mandatory options are undefined
              */
             initialize: function (options) {
-                console.log(options);
                 options = options || {};
 
                 // Check required options
@@ -318,7 +317,7 @@ define(
                 this.$el.empty();
 
                 this.$el = this.$el.append($(this.template({
-                    hasCheckbox: this.massActionsColumn.attributes.renderable === true
+                    hasCheckbox: this.massActionsColumn.get('renderable') === true
                 })));
 
                 this.renderGrid();

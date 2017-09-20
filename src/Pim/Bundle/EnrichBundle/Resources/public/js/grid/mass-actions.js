@@ -49,7 +49,10 @@ define(
              * {@inheritdoc}
              */
             configure() {
-                this.listenTo(this.getRoot(), 'grid_load:start', this.setupCollection.bind(this));
+                this.listenTo(this.getRoot(), 'grid_load:start', (collection) => {
+                    this.collection = collection;
+                    this.listenTo(this.collection, 'backgrid:selected', this.select.bind(this));
+                });
 
                 BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -66,18 +69,9 @@ define(
                     selectNone: __('oro_datagrid.select.none')
                 }));
 
+                this.updateView();
+
                 BaseForm.prototype.render.apply(this, arguments);
-            },
-
-            /**
-             * Attach the collection to the current extension and add listeners
-             *
-             * @param {Object} collection
-             */
-            setupCollection(collection) {
-                this.collection = collection;
-
-                this.listenTo(this.collection, 'backgrid:selected', this.select.bind(this));
             },
 
             /**

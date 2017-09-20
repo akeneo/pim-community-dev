@@ -23,7 +23,7 @@ function($, _, Backgrid) {
             if (!this.column.get('editable')) {
                 this.$input.attr('disabled', 'disabled');
             }
-            this.updateStyle(this.$el.find('input[type=checkbox]').prop("checked"));
+            this.updateStyle(this.$el.find('input[type=checkbox]').prop('checked'));
 
             return this;
         },
@@ -47,7 +47,7 @@ function($, _, Backgrid) {
             if (!this.$input.is(e.target) && !this.$el.is(e.target) && !this.$el.has(e.target).length){
                 this.enterEditMode(e);
             }
-            this.updateStyle($(e.target).prop("checked"));
+            this.updateStyle($(e.target).prop('checked'));
         },
 
         /**
