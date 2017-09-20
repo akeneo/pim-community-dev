@@ -37,12 +37,22 @@ extensions:
             tabTitle: pim_enrich.form.job_instance.tab.properties.title
             tabCode: pim-job-instance-properties
 
+    pim-job-instance-yml-base-export-edit-global:
+        module: pim/job/common/edit/properties
+        parent: pim-job-instance-yml-base-export-edit-tabs
+        aclResourceId: pim_importexport_export_profile_property_edit
+        targetZone: container
+        position: 120
+        config:
+            tabTitle: pim_enrich.export.product.global_settings.title
+            tabCode: pim-job-instance-global
+
     pim-job-instance-yml-base-export-edit-history:
         module: pim/common/tab/history
         parent: pim-job-instance-yml-base-export-edit-tabs
         targetZone: container
         aclResourceId: pim_importexport_export_profile_history
-        position: 120
+        position: 130
         config:
             class: Akeneo\Component\Batch\Model\JobInstance
             title: pim_enrich.form.job_instance.tab.history.title
@@ -70,9 +80,9 @@ extensions:
 
     pim-job-instance-yml-base-export-edit-properties-file-path:
         module: pim/job/common/edit/field/text
-        parent: pim-job-instance-yml-base-export-edit-properties
+        parent: pim-job-instance-yml-base-export-edit-global
         position: 100
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.filePath
             readOnly: false

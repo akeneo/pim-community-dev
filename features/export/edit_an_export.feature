@@ -20,6 +20,7 @@ Feature: Edit an export
 
   Scenario: Successfully update export job configuration
     Given I am on the "csv_footwear_product_export" export job edit page
+    When I visit the "Global settings" tab
     Then I should see the Delimiter, Enclosure, With header, File path and Decimal separator fields
     And I fill in the following information:
       | Delimiter         | \|            |
@@ -40,7 +41,7 @@ Feature: Edit an export
     Then I press the "Save" button
     Then I should not see the text "There are unsaved changes"
     And I press the "Edit" button
-    When I visit the "General" tab
+    When I visit the "Global settings" tab
     Then I should see the text "File path"
     And the "File path" field should contain "/tmp/file.csv"
     And I should see the text "Delimiter"

@@ -32,17 +32,27 @@ extensions:
         parent: pim-job-instance-xlsx-product-export-edit-tabs
         aclResourceId: pim_importexport_export_profile_property_edit
         targetZone: container
-        position: 100
+        position: 120
         config:
             tabTitle: pim_enrich.form.job_instance.tab.properties.title
             tabCode: pim-job-instance-properties
+
+    pim-job-instance-xlsx-product-export-edit-global:
+        module: pim/job/common/edit/properties
+        parent: pim-job-instance-xlsx-product-export-edit-tabs
+        aclResourceId: pim_importexport_export_profile_property_edit
+        targetZone: container
+        position: 130
+        config:
+            tabTitle: pim_enrich.export.product.global_settings.title
+            tabCode: pim-job-instance-global
 
     pim-job-instance-xlsx-product-export-edit-content:
         module: pim/job/product/edit/content
         parent: pim-job-instance-xlsx-product-export-edit-tabs
         aclResourceId: pim_importexport_export_profile_content_edit
         targetZone: container
-        position: 110
+        position: 140
         config:
             tabTitle: pim_enrich.form.job_instance.tab.content.title
             tabCode: pim-job-instance-content
@@ -52,7 +62,7 @@ extensions:
         parent: pim-job-instance-xlsx-product-export-edit-tabs
         targetZone: container
         aclResourceId: pim_importexport_export_profile_history
-        position: 120
+        position: 150
         config:
             class: Akeneo\Component\Batch\Model\JobInstance
             title: pim_enrich.form.job_instance.tab.history.title
@@ -80,20 +90,20 @@ extensions:
 
     pim-job-instance-xlsx-product-export-edit-properties-file-path:
         module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-product-export-edit-properties
+        parent: pim-job-instance-xlsx-product-export-edit-global
         position: 120
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.filePath
             readOnly: false
             label: pim_enrich.form.job_instance.tab.properties.file_path.title
             tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
 
-    pim-job-instance-csv-product-export-edit-properties-decimal-separator:
+    pim-job-instance-xlsx-product-export-edit-properties-decimal-separator:
         module: pim/job/common/edit/field/decimal-separator
-        parent: pim-job-instance-csv-product-export-edit-properties
+        parent: pim-job-instance-xlsx-product-export-edit-global
         position: 130
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.decimalSeparator
             readOnly: false
@@ -102,9 +112,9 @@ extensions:
 
     pim-job-instance-xlsx-product-export-edit-properties-date-format:
         module: pim/job/product/edit/field/date-format
-        parent: pim-job-instance-xlsx-product-export-edit-properties
+        parent: pim-job-instance-xlsx-product-export-edit-global
         position: 140
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.dateFormat
             readOnly: false
@@ -113,9 +123,9 @@ extensions:
 
     pim-job-instance-xlsx-product-export-edit-properties-lines-per-file:
         module: pim/job/common/edit/field/text
-        parent: pim-job-instance-xlsx-product-export-edit-properties
+        parent: pim-job-instance-xlsx-product-export-edit-global
         position: 150
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.linesPerFile
             readOnly: false
@@ -124,9 +134,9 @@ extensions:
 
     pim-job-instance-xlsx-product-export-edit-properties-with-header:
         module: pim/job/common/edit/field/switch
-        parent: pim-job-instance-xlsx-product-export-edit-properties
+        parent: pim-job-instance-xlsx-product-export-edit-global
         position: 160
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.withHeader
             readOnly: false
@@ -135,9 +145,9 @@ extensions:
 
     pim-job-instance-xlsx-product-export-edit-properties-with-media:
         module: pim/job/common/edit/field/switch
-        parent: pim-job-instance-xlsx-product-export-edit-properties
+        parent: pim-job-instance-xlsx-product-export-edit-global
         position: 170
-        targetZone: global-settings
+        targetZone: properties
         config:
             fieldCode: configuration.with_media
             readOnly: false

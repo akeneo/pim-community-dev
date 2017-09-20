@@ -36,6 +36,7 @@ Feature: Export products with localized dates
     And I launched the completeness calculator
     When I am on the "ecommerce_product_export" export job page
     And I press the "Edit" button
+    And I visit the "Global settings" tab
     Then I should see the text "date format dd/mm/yyyy"
     And I move backward one page
     When I launch the export job

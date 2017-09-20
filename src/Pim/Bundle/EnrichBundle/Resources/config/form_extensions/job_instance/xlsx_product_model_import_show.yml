@@ -30,7 +30,7 @@ extensions:
         position: 40
         config:
             label: pim_enrich.form.job_instance.button.import.launch
-            
+
     pim-job-instance-xlsx-product-model-import-show-file-path:
         module: pim/job/common/file-path
         parent: pim-job-instance-xlsx-product-model-import-show-launch-switcher-item
@@ -70,7 +70,7 @@ extensions:
             identifier:
                 path: code
                 name: code
-                
+
     pim-job-instance-xlsx-product-model-import-show-subsection:
         module: pim/form/common/subsection
         parent: pim-job-instance-xlsx-product-model-import-show
@@ -102,6 +102,7 @@ extensions:
         config:
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_import_profile_edit
+            buttonClass: AknButton AknButton--action
             identifier:
                 path: code
                 name: code

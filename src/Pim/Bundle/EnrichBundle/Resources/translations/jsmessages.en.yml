@@ -615,7 +615,7 @@ pim_enrich:
                 content:
                     title: Content
                 properties:
-                    title: General properties
+                    title: Properties
                     code:
                         title: Code
                     label:

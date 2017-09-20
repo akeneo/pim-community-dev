@@ -19,6 +19,7 @@ Feature: Edit an import
 
   Scenario: Successfully update import job configuration
     Given I am on the "csv_footwear_product_import" import job edit page
+    And I visit the "Global settings" tab
     Then I should see the File, Allow file upload, Delimiter, Enclosure, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator, Date format fields
     When I fill in the following information:
       | File              | /tmp/file.csv |

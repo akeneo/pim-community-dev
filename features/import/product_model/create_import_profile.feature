@@ -17,6 +17,7 @@ Feature: Create product models through CSV import
       | Job   | Product model import in CSV |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
+    And I visit the "Global settings" tab
     And I should see the Family variant fields
 
   Scenario: Peter creates a new XSLX import profile to import products models
@@ -27,4 +28,5 @@ Feature: Create product models through CSV import
       | Job   | Product model import in XSLX |
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
+    And I visit the "Global settings" tab
     And I should see the Family variant fields
