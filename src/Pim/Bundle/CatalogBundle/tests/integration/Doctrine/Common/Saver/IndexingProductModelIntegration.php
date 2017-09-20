@@ -17,6 +17,9 @@ class IndexingProductModelIntegration extends TestCase
     /** @var Client */
     private $esProductAndProductModelClient;
 
+    /** @var Client */
+    private $esProductModelClient;
+
     /**
      * {@inheritdoc}
      */
@@ -25,6 +28,7 @@ class IndexingProductModelIntegration extends TestCase
         parent::setUp();
 
         $this->esProductAndProductModelClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
+        $this->esProductModelClient = $this->get('akeneo_elasticsearch.client.product_model');
     }
 
     public function testIndexingProductModelsOnBulkSave()
@@ -37,17 +41,26 @@ class IndexingProductModelIntegration extends TestCase
         $this->get('pim_catalog.saver.product_model')->saveAll($productModels);
 
         $productModelRepository = $this->get('pim_catalog.repository.product_model');
-        $productModelFooESId = 'product_model_' . $productModelRepository->findOneByIdentifier('foo')->getId();
-        $productModelBarESId = 'product_model_' . $productModelRepository->findOneByIdentifier('bar')->getId();
-        $productModelBazESId = 'product_model_' . $productModelRepository->findOneByIdentifier('baz')->getId();
+        $productModelFooESId = $productModelRepository->findOneByIdentifier('foo')->getId();
+        $productModelBarESId = $productModelRepository->findOneByIdentifier('bar')->getId();
+        $productModelBazESId = $productModelRepository->findOneByIdentifier('baz')->getId();
 
-        $indexedProductModelFoo = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, $productModelFooESId);
+        $indexedProductModelFoo = $this->esProductModelClient->get(self::DOCUMENT_TYPE, $productModelFooESId);
         $this->assertTrue($indexedProductModelFoo['found']);
 
-        $indexedProductModelBar = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, $productModelBarESId);
+        $indexedProductModelBar = $this->esProductModelClient->get(self::DOCUMENT_TYPE, $productModelBarESId);
         $this->assertTrue($indexedProductModelBar['found']);
 
-        $indexedProductModelBaz = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, $productModelBazESId);
+        $indexedProductModelBaz = $this->esProductModelClient->get(self::DOCUMENT_TYPE, $productModelBazESId);
+        $this->assertTrue($indexedProductModelBaz['found']);
+
+        $indexedProductModelFoo = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, 'product_model_' . $productModelFooESId);
+        $this->assertTrue($indexedProductModelFoo['found']);
+
+        $indexedProductModelBar = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, 'product_model_' . $productModelBarESId);
+        $this->assertTrue($indexedProductModelBar['found']);
+
+        $indexedProductModelBaz = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, 'product_model_' . $productModelBazESId);
         $this->assertTrue($indexedProductModelBaz['found']);
     }
 
@@ -56,9 +69,12 @@ class IndexingProductModelIntegration extends TestCase
         $productModel = $this->createProductModel('bat');
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $productBatESId = 'product_model_' . $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('bat')->getId();
+        $productBatESId = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('bat')->getId();
 
-        $indexedProduct = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, $productBatESId);
+        $indexedProductModelFoo = $this->esProductModelClient->get(self::DOCUMENT_TYPE, $productBatESId);
+        $this->assertTrue($indexedProductModelFoo['found']);
+
+        $indexedProduct = $this->esProductAndProductModelClient->get(self::DOCUMENT_TYPE, 'product_model_' . $productBatESId);
         $this->assertTrue($indexedProduct['found']);
     }
 

@@ -99,13 +99,20 @@ abstract class AbstractCursor implements CursorInterface
         }
 
         $hydratedItems = $this->repository->getItemsFromIdentifiers($identifiers);
-
         $orderedItems = [];
-
         foreach ($identifiers as $identifier) {
             foreach ($hydratedItems as $hydratedItem) {
-                // sometimes $identifier is only numerical whereas getIdentifer() returns a string
-                if ((string) $identifier === $hydratedItem->getIdentifier()) {
+                // sometimes $identifier is only numerical whereas getIdentifier() / getCode() returns a string
+                if (
+                    method_exists($hydratedItem, 'getIdentifier')
+                    && (string) $identifier === $hydratedItem->getIdentifier()
+                ) {
+                    $orderedItems[] = $hydratedItem;
+                    break;
+                } elseif (
+                    method_exists($hydratedItem, 'getCode')
+                    && (string) $identifier === $hydratedItem->getCode()
+                ) {
                     $orderedItems[] = $hydratedItem;
                     break;
                 }

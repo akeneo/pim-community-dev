@@ -2,21 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
+namespace Pim\Component\Catalog\Normalizer\Indexing\ProductModel;
 
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Normalize a product model to the "indexing_product_and_product_model" format.
+ * Normalize a product model to the "indexing_product_model" format.
  *
- * @author    Samir Boulil <samir.boulil@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ProductModelNormalizer implements NormalizerInterface
 {
-    public const INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX = 'indexing_product_and_product_model';
+    public const INDEXING_FORMAT_PRODUCT_MODEL_INDEX = 'indexing_product_model';
     private const FIELD_ATTRIBUTES_IN_LEVEL = 'attributes_for_this_level';
     private const FIELD_DOCUMENT_TYPE = 'document_type';
 
@@ -51,6 +52,6 @@ class ProductModelNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductModelInterface && self::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format;
+        return $data instanceof ProductModelInterface && self::INDEXING_FORMAT_PRODUCT_MODEL_INDEX === $format;
     }
 }
