@@ -29,11 +29,6 @@ Feature: Delete many product at once
     And I wait for the "csv_footwear_product_import" job to finish
     And I am on the products grid
 
-  Scenario: Display a message when try to delete none product
-    Given I press the "Delete" button
-    Then I should see the flash message "No product selected"
-    And I should be on the products page
-
   Scenario: Successfully remove many products
     Given I select rows boots_S36, boots_S37 and boots_S38
     And I press the "Delete" button
@@ -54,6 +49,7 @@ Feature: Delete many product at once
 
   Scenario: Successfully mass delete visible products
     Given I sort by "ID" value ascending
+    And I select rows boots_S36
     And I select all visible entities
     Then I press the "Delete" button
     And I should see the text "Are you sure you want to delete selected products?"
@@ -62,7 +58,8 @@ Feature: Delete many product at once
     Then the grid should contain 0 elements
 
   Scenario: Successfully mass delete all products
-    Given I select all entities
+    Given I select rows boots_S36
+    And I select all entities
     Then I press the "Delete" button
     And I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
@@ -78,7 +75,7 @@ Feature: Delete many product at once
     And I reload the page
     And I switch the scope to "Mobile"
     And I filter by "completeness" with operator "equals" and value "yes"
-    And I select all visible entities
+    And I select rows boots_S42
     When I press the "Delete" button
     Then I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal

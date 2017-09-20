@@ -38,12 +38,13 @@ Feature: When I mass edit I should be able to see how many items will be edited
     And I am on the products grid
 
   Scenario: Successfully count the number of mass-edited items when click on all products
-    Given I select all entities
+    Given I select rows shoe_5
+    And I select all entities
     When I press the "Bulk actions" button
     Then I should see the text "Select your action"
 
   Scenario: Successfully count the number of mass-edited items by select them one by one
-    When I select rows boots, shoe_1, shoe_14
+    When I select rows shoe_5
     And I press the "Bulk actions" button
     Then I should see the text "Select your action"
 
@@ -60,6 +61,7 @@ Feature: When I mass edit I should be able to see how many items will be edited
     And I show the filter "description"
     And I switch the scope to "Tablet"
     And I filter by "description" with operator "contains" and value "A beautiful description"
+    And I select rows sneakers
     And I select all entities
     When I press the "Bulk actions" button
     Then I should see the text "Select your action"

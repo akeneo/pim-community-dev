@@ -27,6 +27,7 @@ Feature: Export products according to textarea attribute filter
       | filePath | %tmp%/product_export/product_export.csv |
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I add available attributes Description
     And I add available attributes Description 2
     And I add available attributes Description 3
@@ -37,7 +38,6 @@ Feature: Export products according to textarea attribute filter
     And I filter by "description_3" with operator "Contains" and value "desc"
     And I filter by "description_4" with operator "Does not contain" and value "description"
     Then I filter by "description_5" with operator "Is empty" and value ""
-    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page

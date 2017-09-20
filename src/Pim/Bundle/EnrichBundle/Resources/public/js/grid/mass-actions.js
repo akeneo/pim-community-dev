@@ -26,7 +26,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'AknDefault-bottomPanel AknDefault-bottomPanel--hidden AknMassActions',
+            className: 'AknDefault-bottomPanel AknDefault-bottomPanel--hidden AknMassActions mass-actions',
             collection: null,
             count: 0,
             events: {

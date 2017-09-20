@@ -91,6 +91,7 @@ Feature: Mass Edit Families
       | name | Name        | pim_catalog_text | other |
     And I am logged in as "Julia"
     And I am on the families grid
+    And I select rows [family_1]
     When I select all entities
     And I press the "Bulk actions" button
     And I choose the "Set attributes requirements" operation

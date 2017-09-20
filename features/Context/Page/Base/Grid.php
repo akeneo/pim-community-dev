@@ -819,7 +819,7 @@ class Grid extends Index
 
             $checkbox = $row->find('css', 'input[type="checkbox"]');
 
-            if (null === $checkbox || !$checkbox->isVisible()) {
+            if (null === $checkbox) {
                 return false;
             }
 
@@ -1016,9 +1016,10 @@ class Grid extends Index
      */
     public function selectAll()
     {
-        $selector = $this->getDropdownSelector();
-        $this->spin(function () use ($selector) {
-            $selector->find('css', '.AknSeveralActionsButton-mainAction')->click();
+        $button = $this->find('css', '.AknSelectButton');
+
+        $this->spin(function () use ($button) {
+            $button->click();
             foreach ($this->findAll('css', '.select-row-cell input') as $input) {
                 if (!$input->isChecked()) {
                     return false;
@@ -1053,7 +1054,7 @@ class Grid extends Index
     protected function getDropdownSelector()
     {
         return $this->spin(function () {
-            return $this->getElement('Grid')->find('css', '.AknSeveralActionsButton');
+            return $this->find('css', '.mass-actions .select-dropdown');
         }, 'Grid dropdown row selector not found');
     }
 
@@ -1071,14 +1072,14 @@ class Grid extends Index
                 return false;
             }
 
-            $dropdown = $selector->find('css', 'button.dropdown-toggle');
+            $dropdown = $selector->find('css', '.AknMassActions-dropdown');
             if (null === $dropdown) {
                 return false;
             }
 
             $dropdown->click();
 
-            $listItem = $dropdown->getParent()->find('css', sprintf('li:contains("%s") a', $item));
+            $listItem = $dropdown->getParent()->find('css', sprintf('.AknDropdown-menuLink:contains("%s")', $item));
             if (null === $listItem) {
                 return false;
             }

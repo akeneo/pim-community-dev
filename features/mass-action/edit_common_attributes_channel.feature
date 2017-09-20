@@ -42,6 +42,7 @@ Feature: Edit common attributes of many products at once
     When I show the filter "description"
     And I switch the scope to "Tablet"
     And I filter by "description" with operator "contains" and value "A beautiful description"
+    And I select rows sneakers
     And I select all entities
     And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation

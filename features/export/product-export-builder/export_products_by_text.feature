@@ -25,6 +25,7 @@ Feature: Export products according to text attribute filter
   Scenario: Export products by text values
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I add available attributes Comment
     And I add available attributes Name
     And I add available attributes Title
@@ -36,7 +37,6 @@ Feature: Export products according to text attribute filter
     And I filter by "title" with operator "Does not contain" and value "product"
     And I filter by "title_2" with operator "Starts with" and value "Awesome"
     And I filter by "title_3" with operator "Is empty" and value ""
-    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press "Save"
     And I should not see the text "There are unsaved changes"
     When I am on the "csv_footwear_product_export" export job page

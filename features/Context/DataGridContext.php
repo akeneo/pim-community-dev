@@ -854,10 +854,10 @@ class DataGridContext extends PimContext implements PageObjectAware
 
                 if (null !== $checkbox) {
                     $checkbox->check();
-                }
 
-                if ($checkbox->isChecked()) {
-                    return true;
+                    if ($checkbox->isChecked()) {
+                        return true;
+                    }
                 }
 
                 return false;

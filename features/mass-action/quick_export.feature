@@ -28,6 +28,7 @@ Feature: Quick export many products from datagrid
 
   Scenario: Successfully quick export all products as a CSV file
     Given I am on the products grid
+    And I select rows boots
     When I select all entities
     And I press "CSV (All attributes)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_quick_export" quick export to finish

@@ -70,6 +70,7 @@ function ($, Backbone, Backgrid) {
          */
         onChange: function (e) {
             this.model.trigger("backgrid:selected", this.model, $(e.target).prop("checked"));
+            this.$el.addClass('MESCOUILLES');
         },
 
         /**
