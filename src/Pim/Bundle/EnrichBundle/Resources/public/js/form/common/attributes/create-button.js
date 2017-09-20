@@ -76,13 +76,18 @@ define(
                         modal.open();
                         modal.$el.find('.modal-footer').remove();
                         modal.$el.addClass('modal--fullPage modal--columns');
-
-                        modal.$el.on('click', '.attribute-choice', function () {
-                            modal.close();
-                            modal.$el.remove();
-                            router.redirect($(this).attr('data-route'), {trigger: true});
-                        });
                     }
+
+                    modal.$el.on('click', '.attribute-choice', function () {
+                        modal.close();
+                        modal.$el.remove();
+                        router.redirect($(this).attr('data-route'), {trigger: true});
+                    });
+
+                    modal.$el.on('click', '.AknFullPage-cancel', () => {
+                        modal.close();
+                        modal.$el.remove();
+                    });
                 }.bind(this));
             },
 
