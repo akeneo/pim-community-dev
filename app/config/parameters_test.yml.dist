@@ -9,5 +9,6 @@ parameters:
     secret:                                ThisTokenIsNotSoSecretChangeIt
     installer_data:                        PimEnterpriseInstallerBundle:minimal
     product_index_name:                    akeneo_pim_product
+    product_model_index_name:              akeneo_pim_product_model
     product_and_product_model_index_name:  akeneo_pim_product_and_product_model
     index_hosts:                          'localhost: 9200'
