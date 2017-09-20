@@ -133,6 +133,8 @@ class WebUser extends PimContext
      */
     public function iVisitTheTab($tab)
     {
+        $this->scrollContainerTo(-1000);
+
         return $this->getCurrentPage()->visitTab($tab);
     }
 
@@ -2302,7 +2304,9 @@ class WebUser extends PimContext
      */
     public function scrollContainerTo($y = 400)
     {
-        $this->getSession()->executeScript(sprintf('$(".scrollable-container").scrollTop(%d);', $y));
+        $this->getSession()->executeScript(
+            sprintf('$(".scrollable-container, .AknDefault-mainContent").scrollTop(%d);', $y)
+        );
     }
 
     /**

@@ -33,7 +33,7 @@ Feature: Update product history when mass editing products
     And I save the product
     And I am on the products grid
     And I select rows boots, sandals and sneakers
-    And I press "Bulk actions" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
 
   Scenario: Display history when editing product attributes
     Given I choose the "Edit common attributes" operation

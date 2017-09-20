@@ -17,7 +17,7 @@ Feature: Apply a mass action on all entities
   Scenario: Edit common attributes of all products
     When I am on the products grid
     And I select all entities
-    And I press "Bulk actions" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I move on to the choose step
     And I choose the "Edit common attributes" operation
@@ -43,7 +43,7 @@ Feature: Apply a mass action on all entities
     And I switch the scope to "Mobile"
     And I filter by "completeness" with operator "" and value "yes"
     When I select all entities
-    And I press "Bulk actions" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Change family" operation
     And I change the Family to "Sandals"
     And I confirm mass edit
@@ -76,7 +76,7 @@ Feature: Apply a mass action on all entities
     Given I am on the products grid
     And I select all entities
     And I unselect row mega_boots
-    When I press "Bulk actions" on the "Bulk Actions" dropdown button
+    When I press the "Bulk actions" button
     And I choose the "Change status" operation
     And I move on to the choose step
     And I choose the "Change status" operation

@@ -42,7 +42,7 @@ Feature: Validate editing common image attributes of multiple products
 
   Scenario: Successfully mass edit an image attribute
     Given I select rows boots and sneakers
-    And I press "Bulk actions" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Side view attribute
     And I attach file "SNKRS-1R.png" to "Side view"
@@ -51,7 +51,7 @@ Feature: Validate editing common image attributes of multiple products
     Then the file "side_view" of products boots and sneakers should be "SNKRS-1R.png"
     When I am on the products grid
     And I select rows boots, sandals and sneakers
-    And I press "Bulk actions" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Side view attribute
     And I confirm mass edit
@@ -59,7 +59,7 @@ Feature: Validate editing common image attributes of multiple products
     Then the file "side_view" of products boots, sandals and sneakers should be ""
     When I am on the products grid
     And I select rows boots, sandals and sneakers
-    And I press "Bulk actions" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Side view attribute
     And I attach file "akeneo.txt" to "Side view"

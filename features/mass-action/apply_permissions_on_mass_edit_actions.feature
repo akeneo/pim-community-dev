@@ -22,7 +22,7 @@ Feature: Apply ACL permissions on mass edit actions
     Then I should not see the text "There are unsaved changes."
     When I am on the products grid
     And I select rows kickers and hiking_shoes
-    And I press "Bulk actions" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     Then I should see the text "Edit common attributes"
     And I should see the text "Add to groups"
     And I should not see "Change family"
@@ -31,7 +31,7 @@ Feature: Apply ACL permissions on mass edit actions
   Scenario: View all mass edit operations
     Given I am on the products grid
     When I select rows kickers and hiking_shoes
-    And I press "Bulk actions" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     Then I should see the text "Change status"
     And I should see the text "Edit common attributes"
     And I should see the text "Change family"

@@ -28,7 +28,7 @@ Feature: Display jobs execution in job tracker
       | sandals  | sandals  |
     When I am on the products grid
     Then I select rows Boots, Sandals and Sneakers
-    And I press "Bulk actions" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
     And I change the "Name" to "boots"

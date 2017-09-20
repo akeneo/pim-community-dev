@@ -19,7 +19,7 @@ Feature: Apply a mass action on products and product models
   Scenario: Apply a mass action on products and product models
     Given I am on the products page
     And I select rows tshirt-unique-color and tshirt-kurt-cobain-s
-    And I press "Bulk actions" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Model description attribute
     And I change the "Model description" to "a tee"

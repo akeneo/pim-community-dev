@@ -52,7 +52,7 @@ Feature: Export products with media
       | FLIPFLOP-1B | summer_collection | 50 EUR, 70 USD | 45   | black    | Model 1    | flipflop |
     And I am on the products grid
     And I select rows FLIPFLOP-1R and FLIPFLOP-1C
-    And I press "Bulk actions" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Picture attribute
     And I attach file "akeneo.jpg" to "Picture"
@@ -61,7 +61,7 @@ Feature: Export products with media
     Then the file "picture" of products FLIPFLOP-1R and FLIPFLOP-1C should be "akeneo.jpg"
     And I am on the products grid
     And I select row FLIPFLOP-1C
-    And I press "Bulk actions" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Picture attribute
     And I attach file "" to "Picture"
