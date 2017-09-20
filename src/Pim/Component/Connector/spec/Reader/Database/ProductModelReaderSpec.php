@@ -45,14 +45,8 @@ class ProductModelReaderSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($cursor);
 
-        $productModels = [$productModel1, $productModel2, $productModel3];
-        $productModelsCount = count($productModels);
-        $cursor->valid()->will(
-            function () use (&$productModelsCount) {
-                return $productModelsCount-- > 0;
-            }
-        );
-        $cursor->current()->will(new ReturnPromise($productModels));
+        $cursor->valid()->willReturn(true, true, true, false);
+        $cursor->current()->willReturn($productModel1, $productModel2, $productModel3);
         $cursor->next()->shouldBeCalled();
 
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
