@@ -11,7 +11,7 @@ Feature: Mass delete assets
 
   Scenario: Successfully mass delete many assets
     Given I select rows minivan, machine and bridge
-    When I press "Delete" on the "Bulk Actions" dropdown button
+    When I press the "Delete" button
     Then I should see the text "Are you sure you want to delete selected assets?"
     When I confirm the removal
     Then I should not see assets minivan, machine and bridge
@@ -19,7 +19,7 @@ Feature: Mass delete assets
 
   Scenario: Successfully mass delete one asset
     Given I select rows minivan
-    When I press "Delete" on the "Bulk Actions" dropdown button
+    When I press the "Delete" button
     Then I should see the text "Are you sure you want to delete selected assets?"
     When I confirm the removal
     Then I should not see assets minivan
@@ -28,14 +28,14 @@ Feature: Mass delete assets
   Scenario: Successfully mass delete visible assets
     Given I sort by "code" value ascending
     And I select all visible entities
-    When I press "Delete" on the "Bulk Actions" dropdown button
+    When I press the "Delete" button
     Then I should see the text "Are you sure you want to delete selected assets?"
     When I confirm the removal
     Then the grid should contain 0 elements
 
   Scenario: Successfully mass delete all assets
     Given I select all entities
-    When I press "Delete" on the "Bulk Actions" dropdown button
+    When I press the "Delete" button
     Then I should see the text "Are you sure you want to delete selected assets?"
     When I confirm the removal
     Then the grid should contain 0 elements

@@ -40,7 +40,7 @@ Feature: Publish many products at once
     And I save the product
     And I am on the products grid
     And I select rows unionjack and jackadi
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     When I choose the "Publish" operation
     Then I should see the text "The 2 selected products will be published"
     And I confirm mass edit
@@ -50,7 +50,7 @@ Feature: Publish many products at once
     And I should see product unionjack and jackadi
     And I am on the products grid
     And I select rows unionjack and jackadi
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     When I choose the "Publish" operation
     Then I should see the text "The 2 selected products will be published"
     And I confirm mass edit
@@ -83,7 +83,7 @@ Feature: Publish many products at once
     And I save the product
     And I am on the products grid
     And I select rows unionjack and jackadi
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     When I choose the "Publish" operation
     Then I should see the text "The 2 selected products will be published"
     And I confirm mass edit
@@ -93,7 +93,7 @@ Feature: Publish many products at once
     And I should see product unionjack and jackadi
     And I am on the products grid
     And I select rows unionjack and jackadi
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     When I choose the "Publish" operation
     Then I should see the text "The 2 selected products will be published"
     And I confirm mass edit
@@ -112,7 +112,7 @@ Feature: Publish many products at once
     And I save the product
     And I am on the products grid
     And I select rows unionjack and jackadi
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     When I choose the "Publish" operation
     Then I should see the text "The 2 selected products will be published"
     And I confirm mass edit

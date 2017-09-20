@@ -15,8 +15,8 @@ pimee_catalog_rule:
                     no_yet_calculated: Not yet calculated
             mass_edit_action:
                 impacted_product_count: Calculate the affected products
-                execute: Execute the selected rules
-                delete: Delete the selected rules
+                execute: Execute
+                delete: Delete
     actions:
         type:
             "copy": Then %from_field% is copied into %to_field%

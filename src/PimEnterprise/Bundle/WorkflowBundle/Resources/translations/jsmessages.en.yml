@@ -21,7 +21,8 @@ pimee_workflow:
             modal.title: Leave a comment (optional - 255 characters max.)
 
     proposal:
-        overview: Proposals
+        overview: "] -Inf, 1] {{ count }} proposal|] 1, Inf [{{ count }} proposals"
+        selected: proposals selected
         mass_action_group:
             review:
                 label: Bulk Action

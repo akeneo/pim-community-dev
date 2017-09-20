@@ -85,7 +85,7 @@ Feature: Revert a product to a previous version
     And I wait to be on the "jean" product page
     And I am on the products grid
     Then I select rows jean
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Change family" operation
     And I change the Family to "Jackets"
     And I confirm mass edit

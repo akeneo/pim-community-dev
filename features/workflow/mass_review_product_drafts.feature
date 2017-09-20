@@ -19,7 +19,7 @@ Feature: Approve or refuse several product drafts at once
       | wool-jacket    | ready  | csv_clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}       |
     And I am on the proposals page
     When I select rows Leather jacket and Wool jacket
-    And I press "Approve all selected" on the "Bulk Action" dropdown button
+    And I press the "Approve all selected" button
     And I confirm the action
     And I wait for the "approve_product_draft" job to finish
     And I go on the last executed job resume of "approve_product_draft"
@@ -36,7 +36,7 @@ Feature: Approve or refuse several product drafts at once
       | wool-jacket    | ready  | csv_clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}                   |
     And I am on the proposals page
     When I select rows Leather jacket and Wool jacket
-    And I press "Approve all selected" on the "Bulk Action" dropdown button
+    And I press the "Approve all selected" button
     And I confirm the action
     And I wait for the "approve_product_draft" job to finish
     And I go on the last executed job resume of "approve_product_draft"
@@ -51,7 +51,7 @@ Feature: Approve or refuse several product drafts at once
       | wool-jacket    | ready  | csv_clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}       |
     And I am on the proposals page
     When I select rows Leather jacket and Wool jacket
-    And I press "Reject all selected" on the "Bulk Action" dropdown button
+    And I press the "Reject all selected" button
     And I confirm the action
     And I wait for the "refuse_product_draft" job to finish
     And I go on the last executed job resume of "refuse_product_draft"
@@ -68,7 +68,7 @@ Feature: Approve or refuse several product drafts at once
       | wool-jacket    | ready  | csv_clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}                   |
     And I am on the proposals page
     When I select rows Leather jacket and Wool jacket
-    And I press "Reject all selected" on the "Bulk Action" dropdown button
+    And I press the "Reject all selected" button
     And I confirm the action
     And I wait for the "refuse_product_draft" job to finish
     And I go on the last executed job resume of "refuse_product_draft"
@@ -83,7 +83,7 @@ Feature: Approve or refuse several product drafts at once
       | wool-jacket    | ready  | csv_clothing_product_proposal_import | {"values":{"name":[{"locale":"en_US","scope":null,"data":"Lame wool jacket"}]}, "review_statuses":{"name":[{"locale":"en_US","scope":null,"status":"to_review"}]}}       |
     And I am on the proposals page
     When I select all entities
-    And I press "Approve all selected" on the "Bulk Action" dropdown button
+    And I press the "Approve all selected" button
     And I confirm the action
     Then I should not see "Sorry, page was not loaded correctly"
     And I wait for the "approve_product_draft" job to finish
@@ -102,7 +102,7 @@ Feature: Approve or refuse several product drafts at once
     And I am on the proposals page
     Then I filter by "author" with operator "equals" and value "user_one"
     When I select all entities
-    And I press "Approve all selected" on the "Bulk Action" dropdown button
+    And I press the "Approve all selected" button
     And I confirm the action
     Then I should not see "Sorry, page was not loaded correctly"
     And I wait for the "approve_product_draft" job to finish
@@ -120,7 +120,7 @@ Feature: Approve or refuse several product drafts at once
     And I filter by "createdAt" with operator "between" and value "06/01/2013 and 06/01/2014"
     Then the grid should contain 1 element
     When I select all entities
-    And I press "Approve all selected" on the "Bulk Action" dropdown button
+    And I press the "Approve all selected" button
     And I confirm the action
     Then I should not see "Sorry, page was not loaded correctly"
     And I wait for the "approve_product_draft" job to finish
@@ -137,7 +137,7 @@ Feature: Approve or refuse several product drafts at once
     And I am on the proposals page
     When I select all entities
     When I unselect rows Wool jacket
-    And I press "Approve all selected" on the "Bulk Action" dropdown button
+    And I press the "Approve all selected" button
     And I confirm the action
     Then I should not see "Sorry, page was not loaded correctly"
     And I wait for the "approve_product_draft" job to finish

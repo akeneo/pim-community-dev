@@ -45,7 +45,7 @@ Feature: Display available field options
     And I should not see the text "There are unsaved change"
     And I am on the products grid
     When I select row my-jacket
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Description attribute
     Then the field Description should be disabled
@@ -58,7 +58,7 @@ Feature: Display available field options
     And I should not see the text "There are unsaved change"
     And I am on the products grid
     When I select rows my-jacket
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     Then I should see available attributes Name and Description in group "Product information"
     When I display the Name and Description attributes

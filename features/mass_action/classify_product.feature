@@ -34,7 +34,7 @@ Feature: Classify many products at once for the tree I have access
 
   Scenario: Add several products to categories at once
     Given I select rows rangers and loafer
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Add to categories" operation
     Then I should not see the text "Boots"
     And I should not see the text "Master catalog"
@@ -53,7 +53,7 @@ Feature: Classify many products at once for the tree I have access
 
   Scenario: Move several products to categories at once
     Given I select rows rangers and loafer
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Move between categories" operation
     Then I should not see "Boots"
     And I should not see "Master catalog"
@@ -73,7 +73,7 @@ Feature: Classify many products at once for the tree I have access
 
   Scenario: Failed to move several products to viewable categories
     Given I select rows rangers and loafer
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Move between categories" operation
     Then I should not see "Boots"
     And I should not see "Master catalog"

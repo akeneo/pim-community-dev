@@ -150,7 +150,7 @@ Feature: List all rules
 
   Scenario: Successfully delete a set of rules using bulk action
     When I select rows copy_description and update_tees_collection
-    And I press "Delete the selected rules" on the "Bulk Action" dropdown button
+    And I press the "Delete" button
     Then I should see the text "Delete confirmation"
     And I should see the text "Are you sure you want to delete the selected rules?"
     When I confirm the deletion
@@ -203,7 +203,7 @@ Feature: List all rules
     And I am logged in as "Julia"
     And I am on the rules page
     When I select rows set_name_to_Lorem and copy_en_to_fr
-    And I press "Execute the selected rules" on the "Bulk Action" dropdown button
+    And I press the "Execute" button
     Then I should see the text "Execute confirmation"
     And I should see the text "Are you sure you want to execute the selected rules?"
     When I confirm the execution

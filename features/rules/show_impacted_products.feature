@@ -67,7 +67,7 @@ Feature: Browse products selected in rules datagrid
   Scenario: Successfully display the number of matching products by the rule conditions
     Given I am on the rules page
     When I select rows rule_sku, rule_weight and rule_size
-    And I press "Calculate the affected products" on the "Bulk Action" dropdown button
+    And I press the "Calculate the affected products" button
     Then I should see the text "Calculation confirmation"
     When I confirm the execution
     And I wait for the "rule_impacted_product_count" quick export to finish

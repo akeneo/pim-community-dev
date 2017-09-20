@@ -54,7 +54,7 @@ Feature: Catalog updates - Remove a product used by a project
     And I apply the "Summer collection 2017" project
     Then I should be on the products page
     When I select all entities
-    And I press "Delete" on the "Bulk Actions" dropdown button
+    And I press the "Delete" button
     Then I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
     Then the grid should contain 0 element

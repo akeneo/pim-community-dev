@@ -45,7 +45,7 @@ Feature: Partial review several proposals
       | coat    | Mary   | weather_conditions |        | Hot      | Cold |
       | jacket  | Mary   | weather_conditions |        | Wet      | Dry  |
     When I press the "All" button
-    And I press "Approve all selected" on the "Bulk Action" dropdown button
+    And I press the "Approve all selected" button
     And I press the "Send" button in the popin
     And I wait for the "approve_product_draft" job to finish
     Then I should see the text "approved 2"

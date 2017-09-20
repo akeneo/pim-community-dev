@@ -11,7 +11,7 @@ Feature: Mass edit assets to change their categories
     Given I am logged in as "Pamela"
     And I am on the assets grid
     And I select rows minivan, machine and bridge
-    And I press "Mass edit assets" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Classify assets in categories" operation
     And I press the "Asset main catalog" button
     And I expand the "asset_main_catalog" category
@@ -34,7 +34,7 @@ Feature: Mass edit assets to change their categories
     Given I am logged in as "Pamela"
     And I am on the assets grid
     And I select all entities
-    And I press "Mass edit assets" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Classify assets in categories" operation
     And I press the "Asset main catalog" button
     And I expand the "asset_main_catalog" category
