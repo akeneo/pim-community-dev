@@ -17,6 +17,8 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Pim\Bundle\PdfGeneratorBundle\Builder\PdfBuilderInterface;
 use Pim\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer as PimProductPdfRenderer;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AttributeTypes;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -31,16 +33,24 @@ class ProductPdfRenderer extends PimProductPdfRenderer
     /** @var FilterProductValuesHelper */
     protected $filterHelper;
 
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
+
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
     /**
-     * @param EngineInterface           $templating
-     * @param PdfBuilderInterface       $pdfBuilder
-     * @param FilterProductValuesHelper $filterHelper
-     * @param DataManager               $dataManager
-     * @param CacheManager              $cacheManager
-     * @param FilterManager             $filterManager
-     * @param string                    $template
-     * @param string                    $uploadDirectory
-     * @param string|null               $customFont
+     * @param EngineInterface            $templating
+     * @param PdfBuilderInterface        $pdfBuilder
+     * @param FilterProductValuesHelper  $filterHelper
+     * @param DataManager                $dataManager
+     * @param CacheManager               $cacheManager
+     * @param FilterManager              $filterManager
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param LocaleRepositoryInterface  $localeRepository
+     * @param string                     $template
+     * @param string                     $uploadDirectory
+     * @param null                       $customFont
      */
     public function __construct(
         EngineInterface $templating,
@@ -49,6 +59,8 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         DataManager $dataManager,
         CacheManager $cacheManager,
         FilterManager $filterManager,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository,
         $template,
         $uploadDirectory,
         $customFont = null
@@ -65,14 +77,16 @@ class ProductPdfRenderer extends PimProductPdfRenderer
         );
 
         $this->filterHelper = $filterHelper;
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function getAttributes(ProductInterface $product, $locale)
+    protected function getAttributes(ProductInterface $product, $localeCode)
     {
-        $values = $this->filterHelper->filter($product->getValues()->toArray(), $locale);
+        $values = $this->filterHelper->filter($product->getValues()->toArray(), $localeCode);
         $attributes = [];
 
         foreach ($values as $value) {
@@ -87,39 +101,28 @@ class ProductPdfRenderer extends PimProductPdfRenderer
      *
      * {@inheritdoc}
      */
-    protected function getImagePaths(ProductInterface $product, $locale, $scope)
+    protected function getImagePaths(ProductInterface $product, $localeCode, $scope)
     {
-        $imagePaths = parent::getImagePaths($product, $locale, $scope);
+        $imagePaths = parent::getImagePaths($product, $localeCode, $scope);
 
-        foreach ($this->getAttributes($product, $locale) as $attribute) {
+        $channel = $this->channelRepository->findOneByIdentifier($scope);
+        $locale = $this->localeRepository->findOneByIdentifier($localeCode);
+
+        foreach ($this->getAttributes($product, $localeCode) as $attribute) {
             if (AttributeTypes::ASSETS_COLLECTION === $attribute->getType()) {
-                $assets = $product->getValue($attribute->getCode(), $locale, $scope)->getData();
+                $assetsValue = $product->getValue(
+                    $attribute->getCode(),
+                    $attribute->isLocalizable() ? $localeCode : null,
+                    $attribute->isScopable() ? $scope : null
+                );
 
-                // TODO: To be reworked on master
-                // We could use PimEnterprise\Component\ProductAsset\Model\AssetInterface::getFileForContext but it
-                // implies to inject locale and channel repositories.
-                foreach ($assets as $asset) {
-                    if (!$asset->isLocalizable()) {
-                        $reference = $asset->getReferences()[0];
-                    } else {
-                        foreach ($asset->getReferences() as $assetReference) {
-                            if ($locale === $assetReference->getLocale()->getCode()) {
-                                $reference = $assetReference;
-                                break;
-                            }
-                        }
-                    }
+                if (null !== $assetsValue) {
+                    $assets = $assetsValue->getData();
+                    foreach ($assets as $asset) {
+                        $file = $asset->getFileForContext($channel, $locale);
 
-                    if (null === $reference) {
-                        continue;
-                    }
-
-                    foreach ($reference->getVariations() as $variation) {
-                        if ($scope === $variation->getChannel()->getCode() &&
-                            null !== $variation->getFileInfo() &&
-                            null !== $variation->getFileInfo()->getKey()
-                        ) {
-                            $imagePaths[] = $variation->getFileInfo()->getKey();
+                        if (null !== $file) {
+                            $imagePaths[] = $file->getKey();
                         }
                     }
                 }
