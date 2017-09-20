@@ -44,7 +44,8 @@ Feature: Partial review several proposals
       | coat    | Mary   | name               | en_US  | Caut     | Coat |
       | coat    | Mary   | weather_conditions |        | Hot      | Cold |
       | jacket  | Mary   | weather_conditions |        | Wet      | Dry  |
-    When I press the "All" button
+    When I select row coat
+    And I select all entities
     And I press the "Approve all selected" button
     And I press the "Send" button in the popin
     And I wait for the "approve_product_draft" job to finish

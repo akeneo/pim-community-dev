@@ -88,7 +88,8 @@ Feature: Refuse notifications
   Scenario: A notification is sent when I approve a proposal from mass approval
     Given I am logged in as "Julia"
     And I am on the proposals page
-    And I press the "All" button
+    And I select row tshirt
+    And I select all entities
     And I press the "Reject all selected" button
     And I press the "Send" button in the popin
     When I logout
@@ -105,7 +106,8 @@ Feature: Refuse notifications
   Scenario: A notification is sent when I approve a proposal from mass approval
     Given I am logged in as "Julia"
     And I am on the proposals page
-    And I press the "All" button
+    And I select row tshirt
+    And I select all entities
     And I press the "Reject all selected" button
     And I fill in this comment in the popin: "To be reviewed, this value looks wrong."
     And I press the "Send" button in the popin

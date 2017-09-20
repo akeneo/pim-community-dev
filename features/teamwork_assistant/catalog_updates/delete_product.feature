@@ -53,6 +53,7 @@ Feature: Catalog updates - Remove a product used by a project
     And I open the view selector
     And I apply the "Summer collection 2017" project
     Then I should be on the products page
+    And I select rows tshirt-the-witcher-3
     When I select all entities
     And I press the "Delete" button
     Then I should see the text "Are you sure you want to delete selected products?"

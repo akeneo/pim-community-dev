@@ -24,7 +24,7 @@ Feature: Manage permissions to calculate impacted product by a rule
             locale: en_US
       """
     When I am on the rules page
-    And I press the "Bulk Actions" button
+    And I select row rule_sku
     Then I should see the text "Calculate the affected products"
     When I am on the "Administrator" role page
     And I visit the "Permissions" tab
@@ -33,5 +33,4 @@ Feature: Manage permissions to calculate impacted product by a rule
     And I save the Role
     Then I should not see the text "There are unsaved changes."
     When I am on the rules page
-    And I press the "Bulk Actions" button
     Then I should not see the text "Calculate the affected products"
