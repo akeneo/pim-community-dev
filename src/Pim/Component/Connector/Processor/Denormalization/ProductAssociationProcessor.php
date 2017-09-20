@@ -11,6 +11,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -103,7 +104,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
 
         try {
             $this->updateProduct($product, $item);
-        } catch (PropertyException $exception) {
+        } catch (PropertyException | InvalidArgumentException | AccessDeniedException $exception) {
             $this->detachProduct($product);
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
