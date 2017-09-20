@@ -42,7 +42,7 @@ extensions:
         parent: pim-job-instance-csv-base-export-edit-tabs
         aclResourceId: pim_importexport_export_profile_property_edit
         targetZone: container
-        position: 100
+        position: 120
         config:
             tabTitle: pim_enrich.export.product.global_settings.title
             tabCode: pim-job-instance-global

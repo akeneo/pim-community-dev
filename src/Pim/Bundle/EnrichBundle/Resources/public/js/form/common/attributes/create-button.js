@@ -65,6 +65,8 @@ define(
                     }
                 });
 
+                console.log(moduleConfig.attribute_icons);
+
                 $('#attribute-create-button').on('click', function () {
                     if (modal) {
                         modal.open();

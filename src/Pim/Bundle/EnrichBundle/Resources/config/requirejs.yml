@@ -69,20 +69,20 @@ config:
             url: pim_enrich_job_instance_rest_export_put
         pim/form/common/attributes/create-button:
             attribute_icons:
-                pim_catalog_identifier:          asterisk
-                pim_catalog_text:                font
-                pim_catalog_textarea:            file-text-alt
-                pim_catalog_number:              sort-by-order
-                pim_catalog_price_collection:    money
-                pim_catalog_multiselect:         tags
-                pim_catalog_simpleselect:        tag
+                pim_catalog_identifier:          id
+                pim_catalog_text:                text
+                pim_catalog_textarea:            textarea
+                pim_catalog_number:              number
+                pim_catalog_price_collection:    price
+                pim_catalog_multiselect:         multiselect
+                pim_catalog_simpleselect:        select
                 pim_catalog_file:                file
-                pim_catalog_image:               camera-retro
-                pim_catalog_boolean:             check
-                pim_catalog_date:                calendar
-                pim_catalog_metric:              beaker
-                pim_reference_data_multiselect:  tags
-                pim_reference_data_simpleselect: tag
+                pim_catalog_image:               asset
+                pim_catalog_boolean:             switch
+                pim_catalog_date:                date
+                pim_catalog_metric:              metric
+                pim_reference_data_multiselect:  multiselect
+                pim_reference_data_simpleselect: select
         pim/fetcher-registry:
             fetchers:
                 default: pim/base-fetcher
