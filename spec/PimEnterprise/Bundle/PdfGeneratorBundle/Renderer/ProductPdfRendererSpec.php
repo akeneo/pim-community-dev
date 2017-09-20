@@ -16,10 +16,10 @@ use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class ProductPdfRendererSpec extends ObjectBehavior
@@ -32,7 +32,9 @@ class ProductPdfRendererSpec extends ObjectBehavior
         DataManager $dataManager,
         CacheManager $cacheManager,
         FilterManager $filterManager,
-        FilterProductValuesHelper $filterHelper
+        FilterProductValuesHelper $filterHelper,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository
     ) {
         $uploadDirectory = realpath(__DIR__ . '/../../../../../features/Context/fixtures/');
         $this->beConstructedWith(
@@ -42,6 +44,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
             $dataManager,
             $cacheManager,
             $filterManager,
+            $channelRepository,
+            $localeRepository,
             self::TEMPLATE_NAME,
             $uploadDirectory
         );
@@ -77,7 +81,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Design' => ['color' => $color]],
             'imagePaths'        => [],
             'customFont'        => null,
-            'filter'            => 'thumbnail',
+            'filter'            => 'pdf_thumbnail',
             'renderingDate'     => $renderingDate,
         ])->shouldBeCalled();
 
@@ -99,6 +103,9 @@ class ProductPdfRendererSpec extends ObjectBehavior
         ValueInterface $productValue,
         FileInfoInterface $fileInfo
     ) {
+        $mainImage->isScopable()->willReturn(true);
+        $mainImage->isLocalizable()->willReturn(true);
+
         $filterHelper->filter([$productValue], 'en_US')->willReturn([$productValue]);
         $blender->getValues()->willReturn($blenderValues);
         $blenderValues->toArray()->willReturn([$productValue]);
@@ -119,7 +126,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $productValue->getData()->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn('fookey');
 
-        $cacheManager->isStored('fookey', 'thumbnail')->willReturn(true);
+        $cacheManager->isStored('fookey', 'pdf_thumbnail')->willReturn(true);
 
         $renderingDate = new \DateTime();
 
@@ -130,7 +137,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Media' => ['main_image' => $mainImage]],
             'imagePaths'        => ['fookey'],
             'customFont'        => null,
-            'filter'            => 'thumbnail',
+            'filter'            => 'pdf_thumbnail',
             'renderingDate'     => $renderingDate,
         ])->shouldBeCalled();
 
@@ -147,6 +154,8 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $dataManager,
         $filterManager,
         $cacheManager,
+        $channelRepository,
+        $localeRepository,
         ProductInterface $blender,
         ArrayCollection $blenderValues,
         AttributeGroupInterface $media,
@@ -154,22 +163,16 @@ class ProductPdfRendererSpec extends ObjectBehavior
         ValueInterface $productValue,
         AssetInterface $assetA,
         AssetInterface $assetB,
-        ReferenceInterface $refAEn,
-        ReferenceInterface $refAFr,
-        ReferenceInterface $refB,
-        VariationInterface $variationAFrEcommerce,
-        VariationInterface $variationAFrMobile,
-        VariationInterface $variationBEcommerce,
-        VariationInterface $variationBMobile,
         FileInfoInterface $fileInfoA,
         FileInfoInterface $fileInfoB,
-        LocaleInterface $localeEn,
         LocaleInterface $localeFr,
-        ChannelInterface $channelEcommerce,
         ChannelInterface $channelMobile,
         BinaryInterface $srcFile,
         BinaryInterface $thumbnailFile
     ) {
+        $channelRepository->findOneByIdentifier('mobile')->willReturn($channelMobile);
+        $localeRepository->findOneByIdentifier('fr_FR')->willReturn($localeFr);
+
         $filterHelper->filter([$productValue], 'fr_FR')->willReturn([$productValue]);
         $blender->getValues()->willReturn($blenderValues);
         $blenderValues->toArray()->willReturn([$productValue]);
@@ -180,42 +183,25 @@ class ProductPdfRendererSpec extends ObjectBehavior
         $productValue->getAttribute()->willReturn($assetCollectionAttr);
         $assetCollectionAttr->getCode()->willReturn('front_view');
         $assetCollectionAttr->getType()->willReturn('pim_assets_collection');
+        $assetCollectionAttr->isScopable()->willReturn(true);
+        $assetCollectionAttr->isLocalizable()->willReturn(true);
 
         $assetCollectionAttr->getGroup()->willReturn($media);
         $media->getLabel()->willReturn('Media');
 
         $productValue->getData()->willReturn([$assetA, $assetB]);
-        $assetA->isLocalizable()->willReturn(true);
-        $assetB->isLocalizable()->willReturn(false);
-        $assetA->getReferences()->willReturn([$refAEn, $refAFr]);
-        $assetB->getReferences()->willReturn([$refB]);
-        $refAEn->getLocale()->willReturn($localeEn);
-        $refAFr->getLocale()->willReturn($localeFr);
-
-        $refAFr->getVariations()->willReturn([$variationAFrEcommerce, $variationAFrMobile]);
-        $variationAFrEcommerce->getChannel()->willReturn($channelEcommerce);
-        $variationAFrMobile->getChannel()->willReturn($channelMobile);
-        $variationAFrMobile->getFileInfo()->willReturn($fileInfoA);
-
-        $refB->getVariations()->willReturn([$variationBEcommerce, $variationBMobile]);
-        $variationBEcommerce->getChannel()->willReturn($channelEcommerce);
-        $variationBMobile->getChannel()->willReturn($channelMobile);
-        $variationBMobile->getFileInfo()->willReturn($fileInfoB);
-
-        $localeEn->getCode()->willReturn('en_US');
-        $localeFr->getCode()->willReturn('fr_FR');
-        $channelEcommerce->getCode()->willReturn('ecommerce');
-        $channelMobile->getCode()->willReturn('mobile');
+        $assetA->getFileForContext($channelMobile, $localeFr)->willReturn($fileInfoA);
+        $assetB->getFileForContext($channelMobile, $localeFr)->willReturn($fileInfoB);
 
         $fileInfoA->getKey()->willReturn('fileA');
         $fileInfoB->getKey()->willReturn('fileB');
 
-        $cacheManager->isStored('fileA', 'thumbnail')->willReturn(true);
-        $cacheManager->isStored('fileB', 'thumbnail')->willReturn(false);
+        $cacheManager->isStored('fileA', 'pdf_thumbnail')->willReturn(true);
+        $cacheManager->isStored('fileB', 'pdf_thumbnail')->willReturn(false);
 
-        $dataManager->find('thumbnail', 'fileB')->willReturn($srcFile);
-        $filterManager->applyFilter($srcFile, 'thumbnail')->willReturn($thumbnailFile);
-        $cacheManager->store($thumbnailFile, 'fileB', 'thumbnail')->shouldBeCalled();
+        $dataManager->find('pdf_thumbnail', 'fileB')->willReturn($srcFile);
+        $filterManager->applyFilter($srcFile, 'pdf_thumbnail')->willReturn($thumbnailFile);
+        $cacheManager->store($thumbnailFile, 'fileB', 'pdf_thumbnail')->shouldBeCalled();
 
         $renderingDate = new \DateTime();
 
@@ -226,7 +212,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Media' => ['front_view' => $assetCollectionAttr]],
             'imagePaths'        => ['fileA', 'fileB'],
             'customFont'        => null,
-            'filter'            => 'thumbnail',
+            'filter'            => 'pdf_thumbnail',
             'renderingDate'     => $renderingDate,
         ])->shouldBeCalled();
 
