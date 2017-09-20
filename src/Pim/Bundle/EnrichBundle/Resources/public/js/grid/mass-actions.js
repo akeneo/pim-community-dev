@@ -26,9 +26,15 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'AknDefault-bottomPanel AknDefault-bottomPanel--hidden',
+            className: 'AknDefault-bottomPanel AknDefault-bottomPanel--hidden AknMassActions',
             collection: null,
             count: 0,
+            events: {
+                'click .select-all': 'selectAll',
+                'click .select-none': 'selectNone',
+                'click .select-visible': 'selectVisible',
+                'click .select-button': 'toggleButton'
+            },
 
             /**
              * {@inheritdoc}
@@ -53,7 +59,11 @@ define(
              */
             render() {
                 this.$el.html(this.template({
-                    selectedProductsLabel: __(this.config.label)
+                    selectedProductsLabel: __(this.config.label),
+                    select: __('oro_datagrid.select.select'),
+                    selectAll: __('oro_datagrid.select.all'),
+                    selectVisible: __('oro_datagrid.select.visible'),
+                    selectNone: __('oro_datagrid.select.none')
                 }));
 
                 BaseForm.prototype.render.apply(this, arguments);
@@ -68,8 +78,6 @@ define(
                 this.collection = collection;
 
                 this.listenTo(this.collection, 'backgrid:selected', this.select.bind(this));
-                this.listenTo(this.collection, 'backgrid:selectAll', this.selectAll.bind(this));
-                this.listenTo(this.collection, 'backgrid:selectNone', this.selectNone.bind(this));
             },
 
             /**
@@ -80,9 +88,9 @@ define(
              */
             select(model, checked) {
                 if (checked) {
-                    this.count++;
+                    this.count = Math.min(this.count + 1, this.collection.state.totalRecords);
                 } else {
-                    this.count--;
+                    this.count = Math.max(this.count - 1, 0);
                 }
 
                 this.updateView();
@@ -93,6 +101,17 @@ define(
              */
             selectAll() {
                 this.count = this.collection.state.totalRecords;
+                this.collection.trigger('backgrid:selectAll');
+
+                this.updateView();
+            },
+
+            /**
+             * Updates the count after clicking in "Select all visible" button
+             */
+            selectVisible() {
+                this.count = 0;
+                this.collection.trigger('backgrid:selectAllVisible');
 
                 this.updateView();
             },
@@ -102,8 +121,20 @@ define(
              */
             selectNone() {
                 this.count = 0;
+                this.collection.trigger('backgrid:selectNone');
 
                 this.updateView();
+            },
+
+            /**
+             * Updates the count (select all or select none), regarding the current count.
+             */
+            toggleButton() {
+                if (this.count === this.collection.state.totalRecords) {
+                    this.selectNone();
+                } else {
+                    this.selectAll();
+                }
             },
 
             /**
@@ -112,13 +143,26 @@ define(
              * In this function, we do not use render() method because:
              * - We need to animate this extension (with CSS)
              * - The events of the sub extensions are lost after re-render.
-             *
              */
             updateView() {
                 if (this.count > 0) {
                     this.$el.removeClass('AknDefault-bottomPanel--hidden');
+
+                    if (this.count >= this.collection.state.totalRecords) {
+                        this.$el.find('.AknSelectButton')
+                            .removeClass('AknSelectButton--partial')
+                            .addClass('AknSelectButton--selected');
+                    } else {
+                        this.$el.find('.AknSelectButton')
+                            .removeClass('AknSelectButton--selected')
+                            .addClass('AknSelectButton--partial');
+                    }
                 } else {
                     this.$el.addClass('AknDefault-bottomPanel--hidden');
+
+                    this.$el.find('.AknSelectButton')
+                        .removeClass('AknSelectButton--selected')
+                        .removeClass('AknSelectButton--partial');
                 }
 
                 this.$el.find('.count').text(this.count);

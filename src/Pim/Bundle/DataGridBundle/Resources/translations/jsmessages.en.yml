@@ -45,6 +45,7 @@ oro.datagrid.action.refresh: "Refresh"
 oro_datagrid.select.all: "All"
 oro_datagrid.select.visible: "All visible"
 oro_datagrid.select.none: "None"
+oro_datagrid.select.select: "Select"
 pim.grid.ajax_choice_filter.label_empty: is empty
 pim.grid.ajax_choice_filter.label_not_empty: is not empty
 pim:
