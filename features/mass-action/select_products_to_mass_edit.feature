@@ -38,13 +38,15 @@ Feature: When I mass edit I should be able to see how many items will be edited
     And I am on the products grid
 
   Scenario: Successfully count the number of mass-edited items when click on all products
-    Given I select rows shoe_5
+    Given I sort by "ID" value descending
+    And I select rows boots
     And I select all entities
     When I press the "Bulk actions" button
     Then I should see the text "Select your action"
 
   Scenario: Successfully count the number of mass-edited items by select them one by one
-    When I select rows shoe_5
+    Given I sort by "ID" value descending
+    When I select rows boots
     And I press the "Bulk actions" button
     Then I should see the text "Select your action"
 

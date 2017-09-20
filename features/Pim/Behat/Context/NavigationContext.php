@@ -172,7 +172,7 @@ class NavigationContext extends PimContext implements PageObjectAware
             $result = $expectedUrl === $actualUrl;
             assertTrue($result, sprintf('Expecting to be on the grid %s, not %s', $expectedUrl, $actualUrl));
 
-            return $this->getCurrentPage()->find('css', '.AknGridToolbar-center');
+            return $this->getCurrentPage()->find('css', '.AknGridContainer');
         }, sprintf('You are not on the %s grid', $pageName));
 
         $this->wait();

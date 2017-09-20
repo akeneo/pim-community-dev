@@ -30,13 +30,13 @@ Feature: Delete many product at once
     And I am on the products grid
 
   Scenario: Successfully remove many products
-    Given I select rows boots_S36, boots_S37 and boots_S38
+    Given I select rows boots_S36 and boots_S37
     And I press the "Delete" button
     Then I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
     And I refresh current page
-    Then I should not see products boots_S36, product boots_S37 and boots_S38
-    And the grid should contain 8 elements
+    Then I should not see products boots_S36 and boots_S37
+    And the grid should contain 9 elements
 
   Scenario: Successfully "mass" delete one product
     Given I select row boots_S38

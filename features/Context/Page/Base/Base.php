@@ -140,8 +140,11 @@ class Base extends Page
         $field = $this->findField($locator);
 
         $this->spin(function () use ($field, $on) {
-            $switch = $field->getParent()->find('css', 'label');
             if ($on !== $field->isChecked()) {
+                $switch = $this->getClosest($field, 'switch');
+                if (null === $switch) {
+                    return false;
+                }
                 $switch->click();
             }
 
