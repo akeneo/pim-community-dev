@@ -1843,6 +1843,23 @@ class WebUser extends PimContext
     }
 
     /**
+     * @param string      $code
+     * @param string|null $expectedFamily
+     *
+     * @Then /^the product model "([^"]*)" should have no family$/
+     * @Then /^the family of (?:the )?product model "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theFamilyOfProductModelShouldBe($code, $expectedFamily = '')
+    {
+        $this->spin(function () use ($code, $expectedFamily) {
+            $productModel = $this->getFixturesContext()->getProductModel($code);
+            $actualFamily = $productModel->getFamily() ? $productModel->getFamily()->getCode() : '';
+
+            return $expectedFamily === $actualFamily;
+        }, sprintf('Expecting the family of "%s" to be "%s".', $code, $expectedFamily));
+    }
+
+    /**
      * @param string $sku
      * @param string $categoryCode
      *
@@ -1863,6 +1880,17 @@ class WebUser extends PimContext
                 implode(', ', $categoryCodes)
             )
         );
+    }
+
+    /**
+     * @param string $sku
+     *
+     * @Then /^the product "([^"]*)" should not have any category$/
+     */
+    public function theProductShouldNotHaveAnyCategory($sku)
+    {
+        $product = $this->getFixturesContext()->getProduct($sku);
+        assertEmpty($product->getCategoryCodes());
     }
 
     /**

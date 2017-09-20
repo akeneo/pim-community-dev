@@ -84,7 +84,14 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
             }
         );
 
-        if (empty($attributeFilters) && empty($parentFilter)) {
+        $idFilter = array_filter(
+            $this->getRawFilters(),
+            function ($filter) {
+                return 'id' === $filter['field'];
+            }
+        );
+
+        if (empty($attributeFilters) && empty($parentFilter) && empty($idFilter)) {
             $this->addFilter('parent', Operators::IS_EMPTY, null);
         }
 
