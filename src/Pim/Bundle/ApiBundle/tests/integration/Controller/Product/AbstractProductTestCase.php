@@ -32,6 +32,23 @@ abstract class AbstractProductTestCase extends ApiTestCase
     }
 
     /**
+     * @param string $identifier
+     * @param array  $data
+     *
+     * @return ProductInterface
+     */
+    protected function createVariantProduct($identifier, array $data = [])
+    {
+        $product = $this->get('pim_catalog.builder.variant_product')->createProduct($identifier);
+        $this->get('pim_catalog.updater.product')->update($product, $data);
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+
+        return $product;
+    }
+
+    /**
      * @param Response $response
      * @param string   $expected
      */
