@@ -43,51 +43,7 @@ assetic:
     filters:
         cssrewrite: ~
 
-# Doctrine Cache Configuration
-doctrine_cache:
-    providers:
-        pim_apcu:
-            apcu: ~
-        pim_array:
-            array: ~
-        pim:
-            chain:
-                providers: [doctrine_cache.providers.pim_apcu, doctrine_cache.providers.pim_array]
 
-# Doctrine Configuration
-doctrine:
-    dbal:
-        default_connection:   default
-        connections:
-            default:
-                driver:       "%database_driver%"
-                host:         "%database_host%"
-                port:         "%database_port%"
-                unix_socket:  "%database_unix_socket%"
-                dbname:       "%database_name%"
-                user:         "%database_user%"
-                password:     "%database_password%"
-                charset:      UTF8
-                server_version: 5.7
-                mapping_types:
-                    json: string
-            session:
-                driver:       "%database_driver%"
-                host:         "%database_host%"
-                port:         "%database_port%"
-                unix_socket:  "%database_unix_socket%"
-                dbname:       "%database_name%"
-                user:         "%database_user%"
-                password:     "%database_password%"
-                charset:      UTF8
-        types:
-            datetime: Akeneo\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeType
-            native_json:
-                class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\JsonType
-                commented: true
-    orm:
-        auto_generate_proxy_classes: "%kernel.debug%"
-        auto_mapping: true
 
 # Swiftmailer Configuration
 swiftmailer:
