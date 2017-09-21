@@ -21,7 +21,7 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
 
   Scenario: Successfully display read only attributes
     Given I select rows highheels
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     Then I should see available attributes Name, Manufacturer and Description in group "Product information"
     And I should see available attributes Price and Rating in group "Marketing"

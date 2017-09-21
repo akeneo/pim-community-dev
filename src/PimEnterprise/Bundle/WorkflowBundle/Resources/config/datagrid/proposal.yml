@@ -66,26 +66,19 @@ datagrid:
                     className: AknButton AknButton--important AknButton--small
                 link: refuse_link
         action_configuration: '@pimee_datagrid.datagrid.configuration.proposal.grid_helper->getActionConfigurationClosure'
-        mass_actions_groups:
-            review:
-                label: pimee_workflow.proposal.mass_action_group.review.label
         mass_actions:
             mass_approve:
                 type: mass-approve-proposal
                 handler: mass_approve
                 label: pimee_workflow.product_draft.mass_review_action.approve
                 route: pimee_workflow_product_draft_mass_approve
-                icon: ok
-                launcherOptions:
-                    group: review
+                className: 'AknButton AknButton--apply AknButtonList-item'
             mass_refuse:
                 type: mass-refuse-proposal
                 handler: mass_refuse
                 label: pimee_workflow.product_draft.mass_review_action.refuse
                 route: pimee_workflow_product_draft_mass_refuse
-                icon: remove
-                launcherOptions:
-                    group: review
+                className: 'AknButton AknButton--important AknButtonList-item'
         filters:
             columns:
                 author:

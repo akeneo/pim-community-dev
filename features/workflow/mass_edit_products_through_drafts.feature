@@ -39,7 +39,7 @@ Feature: Mass edit products through product draft
 
   Scenario: Succesfully create simple text attribute product draft of many products
     Given I select rows my-first-jacket and my-second-jacket
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
     And I change the "Name" to "A jacket"

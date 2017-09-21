@@ -25,7 +25,7 @@ Feature: Remove a product
     Given I am logged in as "Julia"
     And I am on the products grid
     And I select row jean
-    And I press "Delete" on the "Bulk Actions" dropdown button
+    And I press the "Delete" button
     And I confirm the removal
     Then I should not see product jean
     Then I should get the following proposals:

@@ -49,7 +49,7 @@ Feature: Publish many products at once
       | my-shoes  | customs    | 50 EUR        | tablet |
     And I am on the products grid
     And I select rows my-jacket and my-shoes
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     When I choose the "Publish" operation
     Then I should see the text "The 2 selected products will be published"
     And I confirm mass edit

@@ -63,7 +63,7 @@ Feature: Execute rules from the user interface
   Scenario: Successfully execute a selection of rules from the user interface
     Given I am on the rules page
     When I select rows rule_sku, rule_weight
-    And I press "Calculate the affected products" on the "Bulk Actions" dropdown button
+    And I press the "Calculate the affected products" button
     Then I should see the text "Calculation confirmation"
     When I confirm the rules calculation
     And I am on the rules page

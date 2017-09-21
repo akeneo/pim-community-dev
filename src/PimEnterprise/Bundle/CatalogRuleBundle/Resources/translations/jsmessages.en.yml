@@ -1,6 +1,7 @@
 pimee_catalog_rule:
-    overview: Rules
+    overview: "] -Inf, 1] {{ count }} rule|] 1, Inf [{{ count }} rules"
     execution_button: Execute rules
+    selected: 'rules selected'
     popin:
         execute_rules:
             confirm_title: Execute confirmation

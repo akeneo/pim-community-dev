@@ -70,9 +70,6 @@ datagrid:
                     data_name: r.impactedSubjectCount
             default:
                 code: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC'
-        mass_actions_groups:
-            bulk_actions:
-                label: pim_datagrid.mass_action_group.bulk_actions.label
         mass_actions:
             impacted_product_count:
                 type: ajax
@@ -80,17 +77,17 @@ datagrid:
                 handler: rule_impacted_product_count
                 label: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.impacted_product_count
                 route: pimee_catalog_rule_rule_mass_impacted_product_count
+                className: 'AknButton AknButton--action AknButtonList-item'
                 messages:
                     confirm_title: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.confirm_title
                     confirm_content: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.confirm_content
                     confirm_ok: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.confirm_ok
-                launcherOptions:
-                    group: bulk_actions
             execute:
                 type: ajax
                 acl_resource: pimee_catalog_rule_rule_execute_permissions
                 label: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.execute
                 handler: mass_execute_rule
+                className: 'AknButton AknButton--action AknButtonList-item'
                 messages:
                     confirm_title: pimee_catalog_rule.datagrid.rule-grid.mass_action.execute.confirm_title
                     confirm_content: pimee_catalog_rule.datagrid.rule-grid.mass_action.execute.confirm_content
@@ -98,14 +95,13 @@ datagrid:
                     success: pimee_catalog_rule.datagrid.rule-grid.mass_action.execute.success
                     error: pimee_catalog_rule.datagrid.rule-grid.mass_action.execute.error
                     empty_selection: pimee_catalog_rule.datagrid.rule-grid.mass_action.execute.empty_selection
-                launcherOptions:
-                    group: bulk_actions
             delete:
                 type: delete
                 entity_name: rule
                 acl_resource: pimee_catalog_rule_rule_delete_permissions
                 handler: mass_delete_rule
                 label: pimee_catalog_rule.datagrid.rule-grid.mass_edit_action.delete
+                className: 'AknButton AknButton--important AknButtonList-item'
                 messages:
                     confirm_title: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.confirm_title
                     confirm_content: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.confirm_content
@@ -113,5 +109,3 @@ datagrid:
                     success: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.success
                     error: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.error
                     empty_selection: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.empty_selection
-                launcherOptions:
-                    group: bulk_actions

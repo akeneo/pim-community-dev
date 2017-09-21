@@ -1,6 +1,13 @@
 extensions:
     pim-proposal-index:
         module: pim/form/common/index/index
+        forwarded-events:
+            grid_load:start: grid_load:start
+
+    pim-proposal-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-proposal-index
+        targetZone: title
         config:
             title: pimee_workflow.proposal.overview
 
@@ -15,9 +22,16 @@ extensions:
         targetZone: filters
 
     pim-proposal-index-mass-actions:
-        module: oro/datagrid/actions-panel
+        module: pim/grid/mass-actions
         parent: pim-proposal-index
-        targetZone: toolbar
+        targetZone: mass-actions
+        config:
+            label: pimee_workflow.proposal.selected
+
+    pim-proposal-index-actions-panel:
+        module: oro/datagrid/actions-panel
+        parent: pim-proposal-index-mass-actions
+        targetZone: actions-panel
 
     pim-proposal-index-pagination:
         module: oro/datagrid/pagination-input

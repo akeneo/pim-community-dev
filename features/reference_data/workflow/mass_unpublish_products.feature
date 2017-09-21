@@ -24,7 +24,7 @@ Feature: Unpublish many products at once
     And I am on the published products grid
     Then the grid should contain 3 elements
     And I select rows red-heels and blue-sneakers
-    And I press the "Change product information" button
+    And I press the "Bulk actions" button
     When I choose the "Unpublish" operation
     Then I should see the text "The 2 selected products will be unpublished"
     When I confirm mass edit
@@ -36,7 +36,7 @@ Feature: Unpublish many products at once
   Scenario: Redirection to unpublished product after mass edit
     When I am on the published products grid
     And I select rows red-heels and blue-sneakers
-    And I press the "Change product information" button
+    And I press the "Bulk actions" button
     When I choose the "Unpublish" operation
     Then I confirm mass edit
     Then I should be redirected on the published products page

@@ -29,7 +29,7 @@ Feature: Publish many products at once
     Given I am logged in as "Julia"
     And I am on the products grid
     When I select rows unionjack, jackadi and teafortwo
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Publish" operation
     And I confirm mass edit
     And I wait for the "publish_product" job to finish
@@ -42,7 +42,7 @@ Feature: Publish many products at once
     And I am logged in as "Mary"
     And I am on the products grid
     And I select rows unionjack, jackadi and teafortwo
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     When I choose the "Publish" operation
     And I confirm mass edit
     And I wait for the "publish_product" job to finish

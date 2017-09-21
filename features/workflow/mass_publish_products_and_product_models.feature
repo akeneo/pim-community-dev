@@ -20,7 +20,7 @@ Feature: Publish many products at once by skipping the product models
   # TODO: PIM-6565 - handle correctly mass publish of product models
   Scenario: Do not publish a product model instead of a product because they have the same ID
     When I select rows tshirt-unique-color
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Publish" operation
     And I confirm mass edit
     And I wait for the "publish_product" job to finish

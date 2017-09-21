@@ -82,7 +82,7 @@ Feature: Ensure that a published product is safe
       | black-jacket | jackets    | jackets |
     And I am on the products grid
     And I select rows my-jacket and black-jacket
-    And I press "Delete" on the "Bulk Actions" dropdown button
+    And I press the "Delete" button
     And I confirm the removal
     And the grid should contain 2 elements
     And I should see products my-jacket and black-jacket
