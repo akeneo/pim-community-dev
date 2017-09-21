@@ -1,8 +1,6 @@
 @import '../base/variables';
 
 .jstree.jstree-default {
-  @checkboxSize: 16px;
-
   padding: 0;
 
   & > ul {
@@ -32,8 +30,8 @@
     }
 
     ins.jstree-checkbox {
-      height: @checkboxSize + 2px;
-      width: @checkboxSize + 2px;
+      height: @AknCheckboxSize + 2px;
+      width: @AknCheckboxSize + 2px;
       background-image: none;
       background: @AknLightGray;
       border: 1px solid @AknBorderColor;
@@ -62,7 +60,7 @@
         background-color: @AknBlue;
         background-image: url("../../images/icon-checkwhite.svg");
         background-position: 0 0;
-        background-size: @checkboxSize @checkboxSize;
+        background-size: @AknCheckboxSize @AknCheckboxSize;
         background-repeat: no-repeat;
         margin-top: 2px;
         margin-bottom: 0;

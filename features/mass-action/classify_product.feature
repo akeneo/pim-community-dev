@@ -16,7 +16,7 @@ Feature: Classify many products at once
 
   Scenario: Add several products to categories at once
     Given I select rows bigfoot and horseshoe
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Add to categories" operation
     And I move on to the choose step
     And I choose the "Add to categories" operation
@@ -33,7 +33,7 @@ Feature: Classify many products at once
 
   Scenario: Move several products to categories at once
     Given I select rows bigfoot and horseshoe
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Move between categories" operation
     And I move on to the choose step
     And I choose the "Move between categories" operation

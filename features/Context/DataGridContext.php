@@ -84,8 +84,6 @@ class DataGridContext extends PimContext implements PageObjectAware
             return;
         }
 
-        $this->theGridToolbarCountShouldBe($count);
-
         $this->spin(function () use ($count) {
             assertEquals(
                 $count,
@@ -97,25 +95,6 @@ class DataGridContext extends PimContext implements PageObjectAware
             'Expecting to see %d row(s) in the datagrid, actually saw %d.',
             $count,
             $this->getDatagrid()->countRows()
-        ));
-    }
-
-    /**
-     * @param int $count
-     *
-     * @throws TimeoutException
-     *
-     * @Then /^the grid toolbar count should be (\d+) elements?$/
-     */
-    public function theGridToolbarCountShouldBe($count)
-    {
-        $count = (int) $count;
-        $this->spin(function () use ($count) {
-            return $this->getDatagrid()->getToolbarCount() === $count;
-        }, sprintf(
-            'Expecting to see %d record(s) in the datagrid toolbar, actually saw %d',
-            $count,
-            $this->getDatagrid()->getToolbarCount()
         ));
     }
 
@@ -875,10 +854,10 @@ class DataGridContext extends PimContext implements PageObjectAware
 
                 if (null !== $checkbox) {
                     $checkbox->check();
-                }
 
-                if ($checkbox->isChecked()) {
-                    return true;
+                    if ($checkbox->isChecked()) {
+                        return true;
+                    }
                 }
 
                 return false;

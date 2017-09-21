@@ -7,6 +7,10 @@
   width: 100%;
   border-collapse: collapse;
 
+  &-bodyRow {
+    transition: background 0.2s ease-in;
+  }
+
   &-bodyRow + &-bodyRow:not(&-bodyRow--withoutTopBorder) &-bodyCell {
     border-top: 1px solid @AknBorderColor;
   }
@@ -41,11 +45,17 @@
     &--checkbox {
       background: white;
       text-align: center;
+      width: 40px;
+      max-width: 40px;
     }
   }
 
   &-headerCell&-headerCell--checkbox {
     border-bottom: none;
+    width: 40px;
+    max-width: 40px;
+    opacity: 0;
+    transform: scale(0);
   }
 
   &-bodyRow:hover,
@@ -58,7 +68,7 @@
   }
 
   &-bodyRow--selected:hover {
-    background: lighten(@AknBlue, 30%);
+    background: lighten(@AknBlue, 32%);
   }
 
   &-bodyCell {
@@ -70,8 +80,13 @@
       cursor: default;
     }
 
-    &--actions {
+    &--actions,
+    &--checkbox {
       opacity: 0;
+      transition: opacity 0.2s ease-in;
+    }
+
+    &--actions {
       width: 1px;
     }
 
@@ -95,7 +110,10 @@
     }
   }
 
-  &-bodyRow:hover &-bodyCell--actions {
+  &-bodyRow:hover &-bodyCell--actions,
+  &-bodyRow:hover &-bodyCell--checkbox,
+  &-bodyRow&-bodyRow--selected &-bodyCell--checkbox,
+  &-bodyRow &-bodyCell--checked {
     opacity: 1;
   }
 

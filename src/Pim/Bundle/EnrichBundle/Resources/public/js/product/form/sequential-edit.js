@@ -52,7 +52,7 @@ define(
 
         return BaseForm.extend({
             id: 'sequentialEdit',
-            className: 'AknSequentialEdit',
+            className: 'AknSequentialEdit AknDefault-bottomPanel',
             template: _.template(template),
             events: {
                 'click .next, .previous': 'followLink'
@@ -90,11 +90,11 @@ define(
             },
             render: function () {
                 if (!this.configured || !this.model.get('objectSet') || 0 === this.model.get('objectSet').length) {
-                    this.$el.addClass('AknSequentialEdit--hidden');
+                    this.$el.addClass('AknDefault-bottomPanel--hidden');
 
                     return this;
                 } else {
-                    this.$el.removeClass('AknSequentialEdit--hidden');
+                    this.$el.removeClass('AknDefault-bottomPanel--hidden');
                 }
 
                 this.addSaveButton();

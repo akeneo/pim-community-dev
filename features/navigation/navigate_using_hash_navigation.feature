@@ -49,7 +49,7 @@ Feature: Navigate the application in hash navigation mode
     And I am logged in as "Julia"
     And I am on the products grid
     When I select rows boots and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
     And I reload the page

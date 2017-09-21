@@ -1,6 +1,11 @@
 extensions:
     pim-association-type-index:
         module: pim/form/common/index/index
+
+    pim-association-type-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-association-type-index
+        targetZone: title
         config:
             title: pim_enrich.index.association_type.title
 

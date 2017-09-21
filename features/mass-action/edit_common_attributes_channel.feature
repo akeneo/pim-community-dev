@@ -42,8 +42,9 @@ Feature: Edit common attributes of many products at once
     When I show the filter "description"
     And I switch the scope to "Tablet"
     And I filter by "description" with operator "contains" and value "A beautiful description"
+    And I select rows sneakers
     And I select all entities
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Weight attribute
     And I change the "Weight" to "600"

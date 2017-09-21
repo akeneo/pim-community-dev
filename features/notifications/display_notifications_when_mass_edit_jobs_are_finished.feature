@@ -14,7 +14,7 @@ Feature: Display notifications for mass edit jobs
     And a disabled "jet-ski" product
     And I am on the products grid
     When I select rows boat and jet-ski
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Change status" operation
     And I enable the products
     And I wait for the "update_product_value" job to finish

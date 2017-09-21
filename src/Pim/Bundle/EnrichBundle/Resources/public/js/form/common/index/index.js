@@ -29,7 +29,11 @@ define(
              * {@inheritdoc}
              */
             initialize: function (config) {
-                this.config = config.config;
+                this.config = config.config || {};
+
+                if (_.has(config, 'forwarded-events')) {
+                    this.forwardMediatorEvents(config['forwarded-events']);
+                }
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },

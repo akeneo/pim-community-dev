@@ -1,6 +1,11 @@
 extensions:
     pim-user-role-index:
         module: pim/form/common/index/index
+
+    pim-user-role-title:
+        module: pim/common/grid-title
+        parent: pim-user-role-index
+        targetZone: title
         config:
             title: pim_enrich.index.user_role.title
 

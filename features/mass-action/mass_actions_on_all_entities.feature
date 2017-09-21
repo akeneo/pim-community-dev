@@ -16,8 +16,9 @@ Feature: Apply a mass action on all entities
 
   Scenario: Edit common attributes of all products
     When I am on the products grid
+    And I select rows super_boots
     And I select all entities
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I move on to the choose step
     And I choose the "Edit common attributes" operation
@@ -42,8 +43,9 @@ Feature: Apply a mass action on all entities
     And I close the category tree
     And I switch the scope to "Mobile"
     And I filter by "completeness" with operator "" and value "yes"
+    And I select rows mega_boots
     When I select all entities
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Change family" operation
     And I change the Family to "Sandals"
     And I confirm mass edit
@@ -61,8 +63,9 @@ Feature: Apply a mass action on all entities
     When I am on the families grid
     And I search "blocks"
     Then the grid should contain 2 elements
+    And I select rows Lego 2 blocks
     And I select all entities
-    And I press the "Change product information" button
+    And I press the "Bulk actions" button
     And I choose the "Set attributes requirements" operation
     And I display the Length attribute
     And I switch the attribute "length" requirement in channel "mobile"
@@ -74,9 +77,10 @@ Feature: Apply a mass action on all entities
   @jira https://akeneo.atlassian.net/browse/PIM-5000
   Scenario: Not applying a mass edit operation on unchecked products after "all" was selected
     Given I am on the products grid
+    And I select rows super_boots
     And I select all entities
     And I unselect row mega_boots
-    When I press "Change product information" on the "Bulk Actions" dropdown button
+    When I press the "Bulk actions" button
     And I choose the "Change status" operation
     And I move on to the choose step
     And I choose the "Change status" operation

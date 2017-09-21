@@ -45,17 +45,20 @@ oro.datagrid.action.refresh: "Refresh"
 oro_datagrid.select.all: "All"
 oro_datagrid.select.visible: "All visible"
 oro_datagrid.select.none: "None"
+oro_datagrid.select.select: "Select"
 pim.grid.ajax_choice_filter.label_empty: is empty
 pim.grid.ajax_choice_filter.label_not_empty: is not empty
-pim.grid.choice_filter:
-    label_empty: is empty
-    label_not_empty: is not empty
-    label_in_list: in list
-    operator: Operator
-pim.grid.price_filter:
-    label: Currency
-pim.grid.category_filter:
-    done: Done
+pim:
+  grid:
+    choice_filter:
+      label_empty: is empty
+      label_not_empty: is not empty
+      label_in_list: in list
+      operator: Operator
+    price_filter:
+      label: Currency
+    category_filter:
+      done: Done
 
 # Column configuration
 Available Columns:                 Available Columns
@@ -64,7 +67,7 @@ datagrid_view.columns.min_message: You must select at least one datagrid column 
 pim_datagrid:
     column_configurator:
         label:             Columns
-        title:             Column Selection
+        title:             Configure columns
         all_groups:        All groups
         search:            Search
         clear:             Clear
@@ -72,6 +75,8 @@ pim_datagrid:
         apply:             Apply
         cancel:            Cancel
         remove_column:     Remove
+        description:       Select the information you want to display as column
+        attribute_groups:  Attribute groups
     mass_action:
         delete:
             confirm_title:   Delete confirmation

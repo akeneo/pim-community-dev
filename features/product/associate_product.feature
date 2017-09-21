@@ -69,8 +69,8 @@ Feature: Associate a product
   Scenario: Sort associated products
     Given I edit the "charcoal-boots" product
     And I visit the "Associations" column tab
-    And I check the row "shoelaces"
     And I check the row "black-boots"
+    And I check the row "shoelaces"
     When I save the product
     Then I should not see the text "There are unsaved changes."
     And the row "shoelaces" should be checked
@@ -105,8 +105,8 @@ Feature: Associate a product
     And I visit the "Display products" target
     And I uncheck the rows "black-boots"
     And I visit the "Upsell" association type
-    And I check the rows "shoelaces"
     And I check the rows "black-boots"
+    And I check the rows "shoelaces"
     And I visit the "Display groups" target
     And I check the rows "caterpillar_boots"
     And I visit the "Cross sell" association type

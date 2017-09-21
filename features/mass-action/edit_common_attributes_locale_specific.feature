@@ -16,7 +16,7 @@ Feature: Edit common attributes of many products at once with locale specific ca
   Scenario: Allow editing only common attributes, including locale specific attribute
     Given I switch the locale to "de_DE"
     And I select row tshirt
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     Then I should see available attributes Kosten, Anzahl auf Lager, Datenblatt, Zollsteuer in group "Intern"
 
@@ -24,6 +24,6 @@ Feature: Edit common attributes of many products at once with locale specific ca
   Scenario: Allow editing only common attributes, excluding locale specific attribute
     Given I switch the locale to "en_US"
     And I select row tshirt
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     Then I should see available attributes Cost, Number in stock, Datasheet in group "Internal"

@@ -23,7 +23,7 @@ Feature: Mass edit common attributes for reference data
 
   Scenario: Successfully update single-valued reference data at once
     Given I select rows heels and platform_shoes
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Heel color attribute
     And I change the "Heel color" to "Light green"
@@ -36,7 +36,7 @@ Feature: Mass edit common attributes for reference data
 
   Scenario: Successfully update multi-valued reference data at once
     Given I select rows heels and platform_shoes
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Sole fabric attribute
     And I change the "Sole fabric" to "Wool, Kevlar, Jute"

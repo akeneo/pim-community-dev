@@ -14,7 +14,8 @@ define(
         'oro/datagrid/action-column',
         'oro/datagrid/select-row-cell',
         'oro/datagrid/select-all-header-cell',
-        'pim/template/common/no-data'
+        'pim/template/common/no-data',
+        'pim/template/common/grid'
     ],
     function (
         $,
@@ -29,7 +30,8 @@ define(
         ActionColumn,
         SelectRowCell,
         SelectAllHeaderCell,
-        noDataTemplate
+        noDataTemplate,
+        template
     ) {
         'use strict';
 
@@ -57,13 +59,7 @@ define(
             className: 'clearfix',
 
             /** @property */
-            template: _.template(
-                '<div class="AknGridContainer grid-container container-fluid">' +
-                    '<table class="AknGrid grid"></table>' +
-                    '<div class="no-data"></div>' +
-                    '<div class="loading-mask"></div>' +
-                '</div>'
-            ),
+            template: _.template(template),
 
             /** @property */
             noDataTemplate: _.template(noDataTemplate),
@@ -73,7 +69,7 @@ define(
                 grid:        '.grid',
                 noDataBlock: '.no-data',
                 loadingMask: '.loading-mask',
-                toolbar:   '[data-drop-zone="toolbar"]'
+                toolbar:     '[data-drop-zone="toolbar"]'
             },
 
             /** @property {oro.datagrid.Header} */
@@ -320,7 +316,9 @@ define(
             render: function () {
                 this.$el.empty();
 
-                this.$el = this.$el.append($(this.template()));
+                this.$el = this.$el.append($(this.template({
+                    hasCheckbox: this.massActionsColumn.get('renderable') === true
+                })));
 
                 this.renderGrid();
                 this.renderNoDataBlock();

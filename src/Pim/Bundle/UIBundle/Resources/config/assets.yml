@@ -37,6 +37,7 @@ css:
         - bundles/pimui/less/components/button/DropdownButton.less
         - bundles/pimui/less/components/button/IconButton.less
         - bundles/pimui/less/components/button/SecondaryActions.less
+        - bundles/pimui/less/components/button/SelectButton.less
         - bundles/pimui/less/components/button/SeveralActionsButton.less
 
         - bundles/pimui/less/components/grid/FilterBox.less
@@ -46,6 +47,7 @@ css:
         - bundles/pimui/less/components/grid/GridsLine.less
         - bundles/pimui/less/components/grid/GridContainer.less
         - bundles/pimui/less/components/grid/GridToolbar.less
+        - bundles/pimui/less/components/grid/MassActions.less
 
         - bundles/pimui/less/components/product-edit-form/AssetCollectionField.less
         - bundles/pimui/less/components/product-edit-form/AttributeActions.less

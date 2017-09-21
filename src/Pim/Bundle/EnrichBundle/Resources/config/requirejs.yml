@@ -806,6 +806,7 @@ config:
         pim/common/add-select/footer:      pimenrich/js/form/common/add-select/footer
         pim/create/properties/general:     pimenrich/js/create/form/properties/general
         pim/common/simple-view:            pimenrich/js/form/common/simple-view
+        pim/common/grid-title:             pimenrich/js/form/common/grid-title
 
         # Root
         pim/form/common/edit-form: pimenrich/js/form/common/edit-form
@@ -879,6 +880,7 @@ config:
         # Grid
         pim/grid/locale-switcher:   pimenrich/js/product/grid/locale-switcher
         pim/grid/category-switcher: pimenrich/js/product/grid/category-switcher
+        pim/grid/mass-actions:      pimenrich/js/grid/mass-actions
 
         # Category tree
         pim/grid/category-tree:      pimenrich/js/product/grid/category-tree
@@ -898,6 +900,7 @@ config:
         pim/template/common/drop-zone:                            pimenrich/templates/common/drop-zone.html
         pim/template/common/form-container:                       pimenrich/templates/common/form-container.html
         pim/template/common/no-data:                              pimenrich/templates/common/no-data.html
+        pim/template/common/grid:                                 pimenrich/templates/common/grid.html
 
         pim/template/form/group-selector:                         pimenrich/templates/form/group-selector.html
         pim/template/form/save:                                   pimenrich/templates/form/save.html
@@ -1010,6 +1013,7 @@ config:
         pim/template/attribute-option/show:                  pimenrich/templates/attribute-option/show.html
         pim/template/i18n/flag:                              pimenrich/templates/i18n/flag.html
         pim/template/error/error:                            pimenrich/templates/error/error.html
+        pim/template/grid/mass-actions:                      pimenrich/templates/grid/mass-actions.html
 
         pim/template/mass-edit/form:                           pimenrich/templates/mass-edit/form.html
         pim/template/mass-edit/choose:                         pimenrich/templates/mass-edit/choose.html

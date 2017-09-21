@@ -133,6 +133,8 @@ class WebUser extends PimContext
      */
     public function iVisitTheTab($tab)
     {
+        $this->scrollContainerTo(-1000);
+
         return $this->getCurrentPage()->visitTab($tab);
     }
 
@@ -246,6 +248,8 @@ class WebUser extends PimContext
      */
     public function iVisitTheGroup($group, $type)
     {
+        $this->scrollContainerTo(-1000);
+
         $this->getCurrentPage()->visitGroup($group, ucfirst($type));
     }
 
@@ -277,6 +281,8 @@ class WebUser extends PimContext
      */
     public function thereShouldBeErrorsInTheTab($expectedErrorsCount, $tabName)
     {
+        $this->scrollContainerTo(-1000);
+
         $tab = $this->getCurrentPage()->getTab($tabName);
 
         $this->spin(function () use ($tab, $expectedErrorsCount) {
@@ -2302,7 +2308,9 @@ class WebUser extends PimContext
      */
     public function scrollContainerTo($y = 400)
     {
-        $this->getSession()->executeScript(sprintf('$(".scrollable-container").scrollTop(%d);', $y));
+        $this->getSession()->executeScript(
+            sprintf('$(".scrollable-container, .AknDefault-mainContent").scrollTop(%d);', $y)
+        );
     }
 
     /**

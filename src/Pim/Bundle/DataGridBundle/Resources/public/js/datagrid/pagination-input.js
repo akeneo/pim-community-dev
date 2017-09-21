@@ -1,55 +1,44 @@
 /* global define */
-define(['jquery', 'oro/mediator', 'underscore', 'oro/datagrid/pagination', 'jquery.numeric'],
-function($, mediator, _, Pagination) {
+
+/**
+ * Datagrid pagination with input field
+ *
+ * @export  oro/datagrid/pagination-input
+ * @class   oro.datagrid.PaginationInput
+ * @extends oro.datagrid.Pagination
+ */
+define(
+    [
+        'jquery',
+        'oro/mediator',
+        'underscore',
+        'oro/datagrid/pagination',
+        'pim/template/datagrid/pagination',
+        'jquery.numeric'
+    ], function(
+        $,
+        mediator,
+        _,
+        Pagination,
+        template
+    ) {
     'use strict';
 
-    /**
-     * Datagrid pagination with input field
-     *
-     * @export  oro/datagrid/pagination-input
-     * @class   oro.datagrid.PaginationInput
-     * @extends oro.datagrid.Pagination
-     */
     const PaginationInput = Pagination.extend({
         collection: {},
-        /** @property */
-        template: _.template(
-            '<label class="AknGridToolbar-label"><%= _.__("oro.datagrid.pagination.label") %>:</label>' +
-            '<div>' +
-                '<% _.each(handles, function (handle) { %>' +
-                    '<% if (handle.type == "input") { %>' +
-                        '<input class="AknActionButton AknActionButton--input AknActionButton--glued <% if (handle.className || disabled) { %><%= handle.className %> <% if (disabled) { %>disabled<% } %><% } %>" type="text" value="<%= state.firstPage == 0 ? state.currentPage + 1 : state.currentPage %>" size="1"/>' +
-                    '<% } else { %>' +
-                        '<a class="AknActionButton AknActionButton--square AknActionButton--glued <% if (handle.className || disabled) { %><%= handle.className %> <% if (disabled) { %>disabled<% } %><% } %>" href="#" <% if (handle.title) {%> title="<%= handle.title %>"<% } %>>' +
-                            '<% if (handle.wrapClass) {%>' +
-                                '<i <% if (handle.wrapClass) { %>class="<%= handle.wrapClass %>"<% } %>>' +
-                                    '<%= handle.label %>' +
-                                '</i>' +
-                            '<% } else { %>' +
-                                '<%= handle.label %>' +
-                            '<% } %>' +
-                        '</a>' +
-                    '<% } %>' +
-                '<% }); %>' +
-            '</div>' +
-            '<label class="AknGridToolbar-label"><%= _.__("oro.datagrid.pagination.totalPages", {totalPages: state.totalPages || 1}) %> | <%= _.__("oro.datagrid.pagination.totalRecords", {totalRecords: state.totalRecords}) %></label>'
-        ),
 
         /** @property */
-        events: {
-            "click a": "onChangePage",
-            "blur input": "onChangePageByInput",
-            "change input": "onChangePageByInput",
-            'keyup input': function(e) {
-                if (e.which == 13) {
-                    // fix for IE 8, bacause change event is not fired when enter is pressed
-                    this.onChangePageByInput(e);
-                }
+        template: _.template(template),
+
+        /** @property */
+        windowSize: 3,
+
+        /** @property */
+        fastForwardHandleConfig: {
+            gap: {
+                label: '...'
             }
         },
-
-        /** @property */
-        windowSize: 0,
 
         /**
          * @inheritDoc
@@ -66,6 +55,11 @@ function($, mediator, _, Pagination) {
             mediator.on('grid_load:complete', this.setupPagination.bind(this));
         },
 
+        /**
+         * Initialize the pagination with the collection
+         *
+         * @param collection
+         */
         setupPagination(collection) {
             this.collection = collection;
             this.renderPagination();
@@ -77,60 +71,86 @@ function($, mediator, _, Pagination) {
         },
 
         /**
-         * Apply change of pagination page input
-         *
-         * @param {Event} e
+         * {@inheritdoc}
          */
-        onChangePageByInput: function(e) {
-            e.preventDefault();
+        makeHandles: function () {
+            let handles = [];
 
-            var pageIndex = parseInt($(e.target).val());
-            var collection = this.collection;
-            var state = collection.state;
+            const state = this.collection.state;
+            const currentPage = state.firstPage === 0 ? state.currentPage : state.currentPage - 1;
+            const pageIds = this.getPages();
 
-            if (_.isNaN(pageIndex)) {
-                $(e.target).val(state.currentPage);
-                return;
+            if (this.collection.mode !== 'infinite') {
+                let previousId = _.first(pageIds);
+                pageIds.forEach((id) => {
+                    if (id - previousId > 1) {
+                        handles.push({
+                            label: this.fastForwardHandleConfig.gap.label,
+                            title: this.fastForwardHandleConfig.gap.label,
+                            className: 'AknActionButton--disabled'
+                        });
+                    }
+                    previousId = id;
+                    handles.push({
+                        label: id + 1,
+                        title: 'No. ' + (id + 1),
+                        className: currentPage === id ? 'active AknActionButton--highlight' : undefined
+                    });
+                });
             }
 
-            pageIndex = state.firstPage == 0 ? pageIndex - 1  : pageIndex;
-            if (pageIndex < state.firstPage) {
-                pageIndex = state.firstPage;
-                $(e.target).val(state.firstPage == 0 ? state.firstPage + 1 : state.firstPage);
-            } else if (state.lastPage <= pageIndex) {
-                pageIndex = state.lastPage;
-                $(e.target).val(state.firstPage == 0 ? state.lastPage + 1 : state.lastPage);
-            }
-
-            if (state.currentPage !== pageIndex) {
-                collection.getPage(pageIndex);
-            }
+            return handles;
         },
 
         /**
-         * Internal method to create a list of page handle objects for the template
-         * to render them.
-         *
-         * @return Array.<Object> an array of page handle objects hashes
+         * Returns the list of pages to display
          */
-        makeHandles: function () {
-            var handles = [];
+        getPages() {
+            const collection = this.collection;
+            const state = collection.state;
 
-            handles.push({
-                type: 'input'
-            });
+            let lastPage = state.lastPage ? state.lastPage : state.firstPage;
+            lastPage = state.firstPage === 0 ? lastPage : lastPage - 1;
+            const currentPage = state.firstPage === 0 ? state.currentPage : state.currentPage - 1;
+            let windowStart = currentPage - (this.windowSize - 1) / 2;
+            windowStart = Math.max(Math.min(windowStart, lastPage - this.windowSize + 1), 0);
+            const windowEnd = Math.min(windowStart + this.windowSize, lastPage);
+            let ids = [];
 
-            return Pagination.prototype.makeHandles.call(this, handles);
+            ids.push(state.firstPage - 1);
+            for (let i = windowStart; i < windowEnd; i++) {
+                ids.push(i);
+            }
+            ids.push(lastPage);
+
+            return _.uniq(ids);
         },
+
+        /**
+         * {@inheritdoc}
+         */
+        onChangePage: function (e) {
+            const label = $(e.target).text();
+
+            if (label === this.fastForwardHandleConfig.gap.label) {
+                return;
+            }
+
+            return Pagination.prototype.onChangePage.apply(this, arguments);
+        },
+
         /**
          * Render pagination view and add validation for input with positive integer value
          */
         renderPagination: function() {
-            Pagination.prototype.renderPagination.apply(this, arguments);
-            this.$('input').numeric({ decimal: false, negative: false });
+            if (this.getPages().length <= 1) {
+                this.$el.empty();
+            } else {
+                Pagination.prototype.renderPagination.apply(this, arguments);
 
-            if (this.options.appendToGrid) {
-                this.gridElement.prepend(this.$el);
+                if (this.options.appendToGrid) {
+                    this.gridElement.prepend(this.$el);
+                }
             }
 
             return this;

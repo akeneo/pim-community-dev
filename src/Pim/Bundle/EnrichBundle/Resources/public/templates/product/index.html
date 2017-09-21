@@ -7,7 +7,7 @@
             <div class="AknTitleContainer-imageContainer" data-drop-zone="main-image"></div>
             <div class="AknTitleContainer-mainContainer">
                 <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div>
-                <div class="AknTitleContainer-title" data-drop-zone="title"><%- __(titleKey) %></div>
+                <div class="AknTitleContainer-title" data-drop-zone="title"></div>
             </div>
             <div class="AknTitleContainer-buttonsContainer">
                 <div class="user-menu" data-drop-zone="user-menu"></div>
@@ -19,12 +19,11 @@
             </div>
         </header>
 
-        <div class="row-fluid" style="display: flex; height: 100%; margin-left: -40px; margin-right: -40px;">
-            <div id="product-grid" style="flex-grow: 1;" data-drop-zone="grid">
-                <div class="AknFilterBox oro-clearfix-width" data-drop-zone="filters"></div>
-                <div class="AknGridToolbar" data-drop-zone="toolbar"></div>
-                <div id="grid-<%- gridName %>" data-type="datagrid"></div>
-            </div>
+        <div id="product-grid" data-drop-zone="grid">
+            <div class="AknFilterBox oro-clearfix-width" data-drop-zone="filters"></div>
+            <div class="AknGridToolbar" data-drop-zone="toolbar"></div>
+            <div id="grid-<%- gridName %>" data-type="datagrid"></div>
         </div>
+        <div data-drop-zone="mass-actions"></div>
     </div>
 </div>

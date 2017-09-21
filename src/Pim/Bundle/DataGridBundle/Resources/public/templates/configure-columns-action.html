@@ -1,5 +1,13 @@
-<div class="AknColumnConfigurator-column">
-    <div class="AknColumnConfigurator-columnHeader"></div>
+<div class="AknColumnConfigurator-title AknFullPage-title">
+    <%- title %>
+</div>
+<div class="AknColumnConfigurator-subTitle AknFullPage-description">
+    <%- description %>
+</div>
+<div class="AknColumnConfigurator-column AknColumnConfigurator-column--gray">
+    <div class="AknColumnConfigurator-columnHeader">
+        <%- attributeGroupsLabel %>
+    </div>
     <div class="AknColumnConfigurator-listContainer">
         <ul class="AknVerticalList nav-list">
             <li class="AknVerticalList-item AknVerticalList-item--selectable tab active">
@@ -18,20 +26,13 @@
 
 <div class="AknColumnConfigurator-column">
     <div class="AknColumnConfigurator-columnHeader">
-        <i class="AknColumnConfigurator-searchIcon icon-search"></i>
         <input class="AknTextField AknColumnConfigurator-searchInput" type="search" placeholder="<%- _.__('pim_datagrid.column_configurator.search') %>"/>
     </div>
     <div class="AknColumnConfigurator-listContainer">
         <ul id="column-list" class="AknVerticalList connected-sortable">
             <% _.each(_.where(columns, {displayed: false}), function(column) { %>
             <li class="AknVerticalList-item AknVerticalList-item--movable" data-value="<%- column.code %>" data-group="<%- column.group %>">
-                <div>
-                    <i class="icon-th"></i>
-                    <%- column.label %>
-                </div>
-                <a href="javascript:void(0);" class="AknIconButton AknIconButton--small AknIconButton--grey action" title="<%- _.__('pim_datagrid.column_configurator.remove_column') %>">
-                    <i class="icon-trash"></i>
-                </a>
+                <div><%- column.label %></div>
             </li>
             <% }); %>
         </ul>
@@ -49,13 +50,10 @@
         <ul id="column-selection" class="AknVerticalList connected-sortable">
             <% _.each(_.sortBy(_.where(columns, {displayed: true}), 'position'), function(column) { %>
             <li class="AknVerticalList-item AknVerticalList-item--movable" data-value="<%- column.code %>" data-group="<%- column.group %>">
-                <div>
-                    <i class="icon-th"></i>
-                    <%- column.label %>
-                </div>
-                <a href="javascript:void(0);" class="AknIconButton AknIconButton--small AknIconButton--grey action" title="<%- _.__('pim_datagrid.column_configurator.remove_column') %>">
-                    <% if (column.removable) { %><i class="icon-trash"></i><% } %>
-                </a>
+                <div><%- column.label %></div>
+                <% if (column.removable) { %>
+                <div class="AknVerticalList-delete action" title="<%- _.__('pim_datagrid.column_configurator.remove_column') %>"></div>
+                <% } %>
             </li>
             <% }); %>
             <div class="AknMessageBox AknMessageBox--error AknMessageBox--hide alert alert-error"><%- _.__("datagrid_view.columns.min_message") %></div>

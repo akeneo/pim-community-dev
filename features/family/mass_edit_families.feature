@@ -10,7 +10,7 @@ Feature: Mass Edit Families
     And I am on the families grid
     # These families don't have attribute Length
     When I select rows Boots, Sneakers and Sandals
-    And I press the "Change product information" button
+    And I press the "Bulk actions" button
     And I choose the "Set attributes requirements" operation
     And I add available attributes Length
     And I switch the attribute "length" requirement in channel "mobile"
@@ -29,7 +29,7 @@ Feature: Mass Edit Families
     And I am on the families grid
     # These families already have attribute Name
     When I select rows Boots, Sneakers and Sandals
-    And I press the "Change product information" button
+    And I press the "Bulk actions" button
     And I choose the "Set attributes requirements" operation
     And I display the Name attribute
     And I switch the attribute "name" requirement in channel "mobile"
@@ -47,7 +47,7 @@ Feature: Mass Edit Families
     And I am logged in as "Julia"
     And I am on the families grid
     When I select rows Boots and Sneakers
-    And I press the "Change product information" button
+    And I press the "Bulk actions" button
     And I click on the cancel button of the mass edit
     Then I should be on the families page
 
@@ -69,7 +69,7 @@ Feature: Mass Edit Families
     And I am logged in as "Julia"
     And I am on the families grid
     And I select rows first, second, third, fourth, fifth, sixth, seventh, eight, ninth, tenth and eleventh
-    And I press the "Change product information" button
+    And I press the "Bulk actions" button
     Then I should see the text "Select your action"
 
   @jira https://akeneo.atlassian.net/browse/PIM-4203
@@ -79,7 +79,7 @@ Feature: Mass Edit Families
     And I am on the families grid
     When I sort by "label" value ascending
     And I select rows Boots, Sneakers and Sandals
-    And I press the "Change product information" button
+    And I press the "Bulk actions" button
     Then I should see the text "Select your action"
 
   @jira https://akeneo.atlassian.net/browse/PIM-6026
@@ -91,8 +91,9 @@ Feature: Mass Edit Families
       | name | Name        | pim_catalog_text | other |
     And I am logged in as "Julia"
     And I am on the families grid
+    And I select rows [family_1]
     When I select all entities
-    And I press the "Change product information" button
+    And I press the "Bulk actions" button
     And I choose the "Set attributes requirements" operation
     And I display the Name attribute
     And I confirm mass edit
@@ -107,7 +108,7 @@ Feature: Mass Edit Families
     And I am logged in as "Julia"
     And I am on the families grid
     When I select rows Boots, Sneakers and Sandals
-    And I press the "Change product information" button
+    And I press the "Bulk actions" button
     And I choose the "Set attributes requirements" operation
     And I add attributes by group "Marketing"
     And I should see attributes "Price, Rate of sale and Rating" in group "Marketing"
@@ -127,7 +128,7 @@ Feature: Mass Edit Families
     And I am logged in as "Julia"
     And I am on the families grid
     When I select rows Boots, Sneakers and Sandals
-    And I press the "Change product information" button
+    And I press the "Bulk actions" button
     And I choose the "Set attributes requirements" operation
     And I display the Name attribute
     And I switch the attribute "name" requirement in channel "mobile"

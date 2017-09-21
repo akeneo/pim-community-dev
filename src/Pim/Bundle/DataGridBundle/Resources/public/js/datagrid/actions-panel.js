@@ -1,17 +1,33 @@
 /* global define */
-define(['underscore', 'backbone', 'pim/template/datagrid/actions-group', 'pim/form', 'oro/mediator'],
-function(_, Backbone, groupTemplate, BaseForm, mediator) {
+
+/**
+ * Panel with action buttons
+ *
+ * @export  oro/datagrid/actions-panel
+ * @class   oro.datagrid.ActionsPanel
+ * @extends BaseForm
+ */
+define(
+    [
+        'underscore',
+        'oro/translator',
+        'backbone',
+        'pim/template/datagrid/actions-group',
+        'pim/form',
+        'oro/mediator'
+    ], function(
+        _,
+        __,
+        Backbone,
+        groupTemplate,
+        BaseForm,
+        mediator
+    ) {
     'use strict';
 
-    /**
-     * Panel with action buttons
-     *
-     * @export  oro/datagrid/actions-panel
-     * @class   oro.datagrid.ActionsPanel
-     * @extends BaseForm
-     */
     const ActionsPanel = BaseForm.extend({
         appendToGrid: false,
+
         /** @property {Array} */
         actionsGroups: [],
 
@@ -21,7 +37,7 @@ function(_, Backbone, groupTemplate, BaseForm, mediator) {
         /** @property {Array.<oro.datagrid.ActionLauncher>} */
         launchers: [],
 
-        className: 'AknGridToolbar-left mass-actions-panel',
+        className: 'AknButtonList mass-actions-panel',
 
         /** @property {Function} */
         groupTemplate: _.template(groupTemplate),
@@ -67,12 +83,9 @@ function(_, Backbone, groupTemplate, BaseForm, mediator) {
             });
 
             if (simpleLaunchers.length) {
-                var $container = $('<div class="AknGridToolbar-actionButton"></div>');
-                _.each(simpleLaunchers, function (launcher) {
-                    $container.append(launcher.render().$el);
-                }, this);
-
-                this.$el.append($container);
+                _.each(simpleLaunchers, (launcher) => {
+                    this.$el.append(launcher.render().$el);
+                });
             }
 
             if (groupedLaunchers.length) {
@@ -100,6 +113,7 @@ function(_, Backbone, groupTemplate, BaseForm, mediator) {
             _.each(activeGroups, function (group, name) {
                 this.$el.append(
                     this.groupTemplate({
+                        __,
                         classname: this.getGroupClassname(name),
                         group: group
                     })
@@ -107,8 +121,8 @@ function(_, Backbone, groupTemplate, BaseForm, mediator) {
             }.bind(this));
 
             _.each(groupedLaunchers, function (groupLaunchers, groupName) {
-                var $dropdown = this.$el.find('.' + this.getGroupClassname(groupName) + ' .AknDropdown-menu');
-                _.each(groupLaunchers, function (launcher) {
+                const $dropdown = this.$el.find('.' + this.getGroupClassname(groupName) + ' .AknDropdown-menu');
+                _.each(groupLaunchers, (launcher) => {
                     $dropdown.append(launcher.renderAsListItem().$el);
                 });
             }.bind(this));

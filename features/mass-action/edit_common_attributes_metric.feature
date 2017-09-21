@@ -30,7 +30,7 @@ Feature: Edit common attributes of many products at once
 
   Scenario: Successfully update many metric values at once
     Given I select rows boots and sandals
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Weight attribute
     And I change the "Weight" to "600"

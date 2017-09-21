@@ -28,8 +28,8 @@ Feature: Use an unique attribute
     And I press the "Save" button in the popin
     And I wait to be on the "a_boot" product page
     And I am on the products grid
-    And I select all entities
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I select rows a_boot
+    And I press the "Bulk actions" button
     When I choose the "Edit common attributes" operation
     Then I should not see available attribute Unique attribute
     And I should see available attribute Name

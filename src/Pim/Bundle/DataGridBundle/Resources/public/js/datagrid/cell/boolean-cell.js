@@ -23,6 +23,8 @@ function($, _, Backgrid) {
             if (!this.column.get('editable')) {
                 this.$input.attr('disabled', 'disabled');
             }
+            this.updateStyle(this.$el.find('input[type=checkbox]').prop('checked'));
+
             return this;
         },
 
@@ -44,6 +46,18 @@ function($, _, Backgrid) {
         onRowClicked: function(row, e) {
             if (!this.$input.is(e.target) && !this.$el.is(e.target) && !this.$el.has(e.target).length){
                 this.enterEditMode(e);
+            }
+            this.updateStyle($(e.target).prop('checked'));
+        },
+
+        /**
+         * Updates the current element to highlight it
+         */
+        updateStyle(checked) {
+            if (checked) {
+                this.$el.addClass('AknGrid-bodyCell--checked');
+            } else {
+                this.$el.removeClass('AknGrid-bodyCell--checked');
             }
         }
     });

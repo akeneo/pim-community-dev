@@ -2,6 +2,12 @@ extensions:
     pim-export-profile-index:
         module: pim/form/common/index/index
         config:
+
+    pim-export-profile-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-export-profile-index
+        targetZone: title
+        config:
             title: pim_enrich.index.export_profiles.title
 
     pim-export-profile-index-breadcrumbs:

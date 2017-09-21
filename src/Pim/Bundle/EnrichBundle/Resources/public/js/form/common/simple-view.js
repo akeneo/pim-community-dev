@@ -32,6 +32,10 @@ define([
         initialize: function (meta) {
             this.config = meta.config;
 
+            if (_.has(meta, 'forwarded-events')) {
+                this.forwardMediatorEvents(meta['forwarded-events']);
+            }
+
             BaseForm.prototype.initialize.apply(this, arguments);
         },
 

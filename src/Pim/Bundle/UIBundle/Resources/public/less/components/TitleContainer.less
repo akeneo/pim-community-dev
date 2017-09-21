@@ -2,12 +2,18 @@
 
 .AknTitleContainer {
   @imageSize: 120px;
+  @padding: 40px;
 
-  margin-bottom: 40px;
+  position: sticky;
+  top: -@padding;
+  margin: -@padding -@padding 0 -@padding;
+  padding: @padding;
+  background: white;
   display: flex;
   flex-wrap: wrap-reverse;
   align-items: stretch;
   min-height: 64px;
+  z-index: 10;
 
   &-imageContainer:not(:empty) {
     width: @imageSize + 2px;
