@@ -49,3 +49,22 @@ pim_catalog:
             - { value: 'MM/dd/yyyy', label: 'mm/dd/yyyy' }
             - { value: 'dd/MM/yyyy', label: 'dd/mm/yyyy' }
             - { value: 'dd.MM.yyyy', label: 'dd.mm.yyyy' }
+
+akeneo_storage_utils:
+    mapping_overrides: ~
+
+akeneo_elasticsearch:
+    hosts: "%index_hosts%"
+    indexes:
+        -
+            service_name: "akeneo_elasticsearch.client.product"
+            index_name: "%product_index_name%"
+            configuration_files: "%elasticsearch_index_configuration_files%"
+        -
+            service_name: "akeneo_elasticsearch.client.product_model"
+            index_name: "%product_model_index_name%"
+            configuration_files: "%elasticsearch_index_configuration_files%"
+        -
+            service_name: "akeneo_elasticsearch.client.product_and_product_model"
+            index_name: "%product_and_product_model_index_name%"
+            configuration_files: "%elasticsearch_index_configuration_files%"
