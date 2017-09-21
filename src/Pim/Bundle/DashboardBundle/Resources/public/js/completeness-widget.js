@@ -4,66 +4,30 @@ define(
         'use strict';
 
         return AbstractWidget.extend({
-            tagName: 'table',
-
             id: 'completeness-widget',
-
-            options: {
-                completeBar: 'AknProgress--apply',
-                inCompleteBar: 'AknProgress--warning',
-                channelsPerRow: 3
-            },
-
             template: _.template(template),
-
-            _afterLoad: function () {
-                AbstractWidget.prototype._afterLoad.apply(this, arguments);
-                this.loadMore();
-            },
-
-            events: {
-                'click .load-more': 'loadMore'
-            },
-
-            loadMore: function (e) {
-                if (undefined !== e) {
-                    e.preventDefault();
-                }
-
-                var $nextChannels = $('.completeness-widget .channels:not(:visible)');
-                if ($nextChannels.length) {
-                    $nextChannels.first().show();
-                }
-
-                if ($nextChannels.length <= 1) {
-                    $('.completeness-widget .load-more').hide();
-                }
-            },
 
             _processResponse: function (data) {
                 var channelArray = [];
-                _.each(data, function (channelResult, channel) {
-                    channelResult.name = channel;
-                    channelResult.locales = channelResult.locales || {};
-                    var divider = channelResult.total * _.keys(channelResult.locales).length;
+                _.each(data, function (channel, channelLabel) {
+                    channel.name = channelLabel;
+                    channel.locales = channel.locales || {};
+                    var divider = channel.total * _.keys(channel.locales).length;
 
-                    channelResult.percentage = divider === 0 ?
+                    channel.percentage = divider === 0 ?
                         0 :
-                        Math.round(channelResult.complete / divider * 100);
+                        Math.round(channel.complete / divider * 100);
 
-                    _.each(channelResult.locales, function (localeResult, locale) {
-                        var divider = channelResult.total;
+                    _.each(channel.locales, function (localeCompleteCount, localeLabel) {
+                        var divider = channel.total;
                         var ratio = divider === 0 ?
                             0 :
-                            Math.round(localeResult / divider * 100);
+                            Math.round(localeCompleteCount / divider * 100);
 
-                        channelResult.locales[locale] = {
-                            complete: localeResult,
-                            ratio: ratio
-                        };
+                        channel.locales[localeLabel] = { ratio: ratio };
                     });
 
-                    channelArray.push(channelResult);
+                    channelArray.push(channel);
                 });
 
                 return channelArray;

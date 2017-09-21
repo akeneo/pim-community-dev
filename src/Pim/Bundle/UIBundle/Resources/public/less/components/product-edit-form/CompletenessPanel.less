@@ -1,29 +1,24 @@
 @import '../../base/variables';
 
 .AknCompletenessPanel {
-  @width: 310px;
-  @margin: 15px;
-
-  display: flex;
-  margin: -@margin;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); // This means: create as many columns as needed with the same width, and width must be 300px minimum.
+  grid-column-gap: 40px;
+  grid-row-gap: 20px;
+  margin-top: 20px;
 
   &-block {
-    width: @width;
     padding: 8px 20px 20px 20px;
     border: 1px solid @AknBorderColor;
   }
 
-  & &-block {
-    margin: @margin;
-  }
-
   &-header {
-    border-bottom: 1px solid @AknLightPurple;
+    border-bottom: 1px solid @AknBorderColor;
     height: @AknBigButtonSize;
     line-height: @AknBigButtonSize;
     display: flex;
-    color: @AknLightPurple;
+    color: @AknDarkBlue;
+    font-size: @AknFontSizeBig;
   }
 
   &-headerLocale {
