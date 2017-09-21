@@ -78,7 +78,7 @@ class FilteredProductAndProductModelReader implements
     /**
      * {@inheritdoc}
      */
-    public function initialize() : void
+    public function initialize(): void
     {
         $channel = $this->getConfiguredChannel();
         if (null !== $channel && $this->generateCompleteness) {
@@ -92,7 +92,7 @@ class FilteredProductAndProductModelReader implements
     /**
      * {@inheritdoc}
      */
-    public function read() : ?ProductInterface
+    public function read(): ?ProductInterface
     {
         $product = null;
         $product = $this->getNextProduct();
