@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\ProductModel\Query\FindVariantProductCompletenessInterface;
-use Pim\Component\Catalog\ProductModel\ReadModel\VariantProductCompleteness;
+use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProduct;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
@@ -75,7 +75,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         ValueInterface $picture,
-        VariantProductCompleteness $variantProductCompleteness
+        CompleteVariantProduct $variantProductCompleteness
     ) {
         $options = [
             'decimal_separator' => ',',
@@ -162,7 +162,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             ->willReturn(['NAVIGATION NORMALIZED']);
 
         $findVariantProductCompleteness->__invoke($productModel)->willReturn($variantProductCompleteness);
-        $variantProductCompleteness->normalizedCompletenesses()->willReturn([
+        $variantProductCompleteness->values()->willReturn([
             'completenesses' => [],
             'total' => 10,
         ]);
@@ -215,7 +215,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         ValueInterface $picture,
-        VariantProductCompleteness $variantProductCompleteness
+        CompleteVariantProduct $variantProductCompleteness
     ) {
         $options = [
             'decimal_separator' => ',',
@@ -290,7 +290,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             ->willReturn(['NAVIGATION NORMALIZED']);
 
         $findVariantProductCompleteness->__invoke($productModel)->willReturn($variantProductCompleteness);
-        $variantProductCompleteness->normalizedCompletenesses()->willReturn([
+        $variantProductCompleteness->values()->willReturn([
             'completenesses' => [],
             'total' => 10,
         ]);

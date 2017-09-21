@@ -75,7 +75,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $data['document_type'] = IdEncoder::PRODUCT_MODEL_TYPE;
         $data['technical_id'] = $productModel->getId();
         $data['search_id'] = IdEncoder::encode($data['document_type'], $data['technical_id']);
-        $data['complete_variant_group'] = $variantProductCompleteness->ratio($channel, $locale);
+        $data['complete_variant_product'] = $variantProductCompleteness->value($channel, $locale);
 
         return $data;
     }

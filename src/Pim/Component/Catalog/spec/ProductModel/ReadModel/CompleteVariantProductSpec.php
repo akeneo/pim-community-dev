@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Component\Catalog\ProductModel\ReadModel;
 
-use Pim\Component\Catalog\ProductModel\ReadModel\VariantProductCompleteness;
+use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProduct;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class VariantProductCompletenessSpec extends ObjectBehavior
+class CompleteVariantProductSpec extends ObjectBehavior
 {
     function let()
     {
@@ -30,12 +30,12 @@ class VariantProductCompletenessSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(VariantProductCompleteness::class);
+        $this->shouldHaveType(CompleteVariantProduct::class);
     }
 
     function it_calculates_completenesses()
     {
-        $this->normalizedCompletenesses()->shouldReturn([
+        $this->values()->shouldReturn([
             'completenesses' => [
                 'ecommerce' => [
                     'en_US' => 1,
@@ -56,11 +56,17 @@ class VariantProductCompletenessSpec extends ObjectBehavior
 
     function it_has_ratio()
     {
-        $this->ratio('mobile', 'fr_FR')->shouldReturn('2/2');
+        $this->value('mobile', 'fr_FR')->shouldReturn([
+            'complete' => 2,
+            'total' => 2
+        ]);
     }
 
     function it_throws_an_exception_if_the_completeness_does_not_exist()
     {
-        $this->shouldThrow(\InvalidArgumentException::class)->during('ratio', ['tablet', 'fr_FR']);
+        $this->value('tablet', 'fr_FR')->shouldReturn([
+            'complete' => 0,
+            'total' => 2
+        ]);
     }
 }

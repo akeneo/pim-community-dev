@@ -68,6 +68,7 @@ config:
         oro/datagrid/image-cell:                pimdatagrid/js/datagrid/cell/image-cell
         oro/datagrid/boolean-label-cell:        pimdatagrid/js/datagrid/cell/boolean-label-cell
         oro/datagrid/credentials-cell:          pimdatagrid/js/datagrid/cell/credentials-cell
+        oro/datagrid/complete-variant-product-cell: pimdatagrid/js/datagrid/cell/complete-variant-product-cell
         oro/datagrid/label-cell:                pimdatagrid/js/datagrid/cell/label-cell
         oro/datagrid/cell-formatter:            pimdatagrid/js/datagrid/formatter/cell-formatter
         oro/datagrid/grid:                      pimdatagrid/js/datagrid/grid
