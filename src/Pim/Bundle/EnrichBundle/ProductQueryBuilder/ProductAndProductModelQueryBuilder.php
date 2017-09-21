@@ -70,12 +70,30 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
      */
     public function execute()
     {
-        $attributeFilters = array_filter(
-            $this->getRawFilters(),
-            function ($filter) {
-                return 'attribute' === $filter['type'];
-            }
-        );
+        if ($this->isSearchGroupedByProductModels()) {
+            $this->addFilter('parent', Operators::IS_EMPTY, null);
+        }
+
+        $attributeFilters = $this->getAttributeFilters();
+        if (!empty($attributeFilters)) {
+            $attributeFilterKeys = array_column($attributeFilters, 'field');
+            $this->addFilter('attributes_for_this_level', Operators::IN_LIST, $attributeFilterKeys);
+        }
+
+        return $this->pqb->execute();
+    }
+
+    /**
+     * If there are no filter on the following fields, the request should not try to group the result by product models.
+     * - field Id or identifier
+     * - on any attributes
+     * - on the parent field
+     *
+     * @return bool
+     */
+    private function isSearchGroupedByProductModels(): bool
+    {
+        $attributeFilters = $this->getAttributeFilters();
 
         $parentFilter = array_filter(
             $this->getRawFilters(),
@@ -91,15 +109,30 @@ class ProductAndProductModelQueryBuilder implements ProductQueryBuilderInterface
             }
         );
 
-        if (empty($attributeFilters) && empty($parentFilter) && empty($idFilter)) {
-            $this->addFilter('parent', Operators::IS_EMPTY, null);
-        }
+        $identifierFilter = array_filter(
+            $this->getRawFilters(),
+            function ($filter) {
+                return 'identifier' === $filter['field'];
+            }
+        );
 
-        if (!empty($attributeFilters)) {
-            $attributeFilterKeys = array_column($attributeFilters, 'field');
-            $this->addFilter('attributes_for_this_level', Operators::IN_LIST, $attributeFilterKeys);
-        }
+        return empty($attributeFilters) && empty($parentFilter) && empty($idFilter) && empty($identifierFilter);
+    }
 
-        return $this->pqb->execute();
+    /**
+     * Returns the filters on the attributes
+     *
+     * @return array
+     */
+    private function getAttributeFilters(): array
+    {
+        $attributeFilters = array_filter(
+            $this->getRawFilters(),
+            function ($filter) {
+                return 'attribute' === $filter['type'];
+            }
+        );
+
+        return $attributeFilters;
     }
 }
