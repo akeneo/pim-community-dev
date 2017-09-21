@@ -3,6 +3,7 @@ imports:
     - { resource: '@PimEnrichBundle/Resources/config/bundles/assetic.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/doctrine.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/escape_wsse_authentication.yml' }
+    - { resource: '@PimEnrichBundle/Resources/config/bundles/fos_auth_server.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/fos_js_routing.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/fos_rest.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/gedmo_doctrine_extensions.yml' }
