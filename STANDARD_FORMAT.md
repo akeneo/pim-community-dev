@@ -833,7 +833,6 @@ Let's consider a *bar* product model, without any product model value. This prod
 * a parent product model
 * several groups
 * several categories
-* several associations related to groups and/or other product models
 
 Its standard format would be the following:
         
@@ -853,29 +852,6 @@ Its standard format would be the following:
           "values" => array:0 []
           "created" => "2016-06-23T11:24:44+02:00"
           "updated" => "2016-06-23T11:24:44+02:00"
-          "associations" => array:3 [
-            "PACK" => array:1 [
-              "groups" => []
-              "product models" => array:2 [
-                0 => "foo"
-                1 => "baz"
-              ]
-            ]
-            "UPSELL" => array:1 [
-              "groups" => array:1 [
-                0 => "groupA"
-              ]
-              "product models" => []
-            ]
-            "X_SELL" => array:2 [
-              "groups" => array:1 [
-                0 => "groupB"
-              ]
-              "product models" => array:1 [
-                0 => "foo"
-              ]
-            ]
-          ]
         ]
 
 | type          | data structure | data example                                                              | notes                                                                                            |
@@ -889,32 +865,6 @@ Its standard format would be the following:
 | values        | array          |                                                                           | see below                                                                                        |
 | created       | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
 | updated  	    | string         | `"2016-06-13T00:00:00+02:00"`                                             | formatted to ISO-8601 (see above)                                                                |
-| associations  | array          | `["X_SELL" => ["groups" => [0 => "groupA"], "product models" => [0 => "foo"]]]` | see below                                                                                        |
-
-
-### Product model associations
-
-The structure of the array is composed as below:
-
-        "associations" => array:3 [
-          "X_SELL" => array:2 [
-            "groups" => array:1 [
-              0 => "groupB"
-            ]
-            "product models" => array:1 [
-              0 => "foo"
-            ]
-          ]
-        ]
-
-"X_SELL" represents the *code* of the *Pim\Component\Catalog\Model\AssociationTypeInterface*.
-
-Each element in the array "groups" represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*
-
-Each element in the array "product models" represents the *identifier* of the *Pim\Component\Catalog\Model\Product modelInterface*
-
-If an association type does not contain neither element in groups, nor element in product models, it will not appear.
-
 
 ### Product model values
 
@@ -925,7 +875,6 @@ Let's now consider a catalog with all attribute types possible and a *foo* produ
 * a family variant
 * several groups
 * several categories
-* several associations related to groups and/or other product models
 
 Its standard format would be the following:
 
@@ -1166,29 +1115,6 @@ Its standard format would be the following:
           ]
           "created" => "2016-06-23T11:24:44+02:00"
           "updated" => "2016-06-23T11:24:44+02:00"
-          "associations" => array:3 [
-            "PACK" => array:1 [
-              "groups" => []
-              "product models" => array:2 [
-                0 => "bar"
-                1 => "baz"
-              ]
-            ]
-            "UPSELL" => array:1 [
-              "groups" => array:1 [
-                0 => "groupA"
-              ]
-              "product models" => []
-            ]
-            "X_SELL" => array:2 [
-              "groups" => array:1 [
-                0 => "groupB"
-              ]
-              "product models" => array:1 [
-                0 => "bar"
-              ]
-            ]
-          ]
         ]
 
 
