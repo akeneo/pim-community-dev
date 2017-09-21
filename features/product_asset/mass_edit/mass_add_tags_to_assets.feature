@@ -19,6 +19,8 @@ Feature: Mass edit assets to add them tags
     And I am logged in as "Pamela"
     And I am on the assets grid
 
+  # To be unskipped in PIM-6815
+  @skip
   Scenario: Massively add existing tags to all assets with a bulk action from the grid
     Given I select all entities
     And I press the "Bulk actions" button
@@ -31,6 +33,8 @@ Feature: Mass edit assets to add them tags
     And asset tags of "asset_two" should be "first_tag, second_tag, third_tag"
     And asset tags of "asset_three" should be "first_tag, second_tag, third_tag"
 
+  # To be unskipped in PIM-6815
+  @skip
   Scenario: Massively add exiting tags to several assets with a bulk action from the grid
     Given I select rows asset_one and asset_two
     And I press the "Bulk actions" button

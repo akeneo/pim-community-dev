@@ -7,6 +7,8 @@ Feature: Mass edit assets to change their categories
   Background:
     Given the "clothing" catalog configuration
 
+  # To be unskipped in PIM-6815
+  @skip
   Scenario: Mass classify several assets with a bulk action from the grid
     Given I am logged in as "Pamela"
     And I am on the assets grid
@@ -30,6 +32,8 @@ Feature: Mass edit assets to change their categories
     And asset category of "machine" should be "print"
     And asset category of "bridge" should be "print"
 
+  # To be unskipped in PIM-6815
+  @skip
   Scenario: Mass classify all assets with a bulk action from the grid
     Given I am logged in as "Pamela"
     And I am on the assets grid
