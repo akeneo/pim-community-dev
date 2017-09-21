@@ -123,7 +123,7 @@ class FilteredProductAndProductModelReader implements
      *
      * @return ChannelInterface|null
      */
-    protected function getConfiguredChannel(): ?ChannelInterface
+    private function getConfiguredChannel(): ?ChannelInterface
     {
         $parameters = $this->stepExecution->getJobParameters();
         if (!isset($parameters->get('filters')['structure']['scope'])) {
@@ -145,7 +145,7 @@ class FilteredProductAndProductModelReader implements
      *
      * @return array
      */
-    protected function getConfiguredFilters(): array
+    private function getConfiguredFilters(): array
     {
         $filters = $this->stepExecution->getJobParameters()->get('filters');
 
@@ -164,7 +164,7 @@ class FilteredProductAndProductModelReader implements
      *
      * @return CursorInterface
      */
-    protected function getProductsCursor(array $filters, ChannelInterface $channel = null): CursorInterface
+    private function getProductsCursor(array $filters, ChannelInterface $channel = null): CursorInterface
     {
         $options = ['filters' => $filters];
 

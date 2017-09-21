@@ -24,8 +24,8 @@ Feature: Apply a mass action on products only (and not product models)
   Scenario: Mass edits common attributes of only products within a selection of products and product models
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Crimson red"
-    Given I select rows tshirt-unique-size-crimson-red, running-shoes-m-crimson-red and model-tshirt-divided-crimson-red
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I select rows tshirt-unique-size-crimson-red, running-shoes-m-crimson-red and model-tshirt-divided-crimson-red
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Composition attribute
     And I change the "Composition" to "My composition"
@@ -43,7 +43,7 @@ Feature: Apply a mass action on products only (and not product models)
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Navy blue"
     And I select rows watch, tshirt-unique-size-navy-blue and model-tshirt-divided-navy-blue
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Change family" operation
     And I change the Family to "Shoes"
     And I confirm mass edit
@@ -63,7 +63,7 @@ Feature: Apply a mass action on products only (and not product models)
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Navy blue"
     And I select rows watch, tshirt-unique-size-navy-blue and model-tshirt-divided-navy-blue
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Change status" operation
     And I disable the products
     And I wait for the "update_product_value" job to finish
@@ -79,7 +79,7 @@ Feature: Apply a mass action on products only (and not product models)
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Navy blue"
     And I select rows watch, tshirt-unique-size-navy-blue and model-tshirt-divided-navy-blue
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Add to groups" operation
     And I check "Related"
     When I confirm mass edit
@@ -95,7 +95,7 @@ Feature: Apply a mass action on products only (and not product models)
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Navy blue"
     And I select rows watch, tshirt-unique-size-navy-blue and model-tshirt-divided-navy-blue
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Add to categories" operation
     And I move on to the choose step
     And I choose the "Add to categories" operation
@@ -119,7 +119,7 @@ Feature: Apply a mass action on products only (and not product models)
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Navy blue"
     And I select rows watch, tshirt-unique-size-navy-blue and model-tshirt-divided-navy-blue
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Move between categories" operation
     And I move on to the choose step
     And I choose the "Move between categories" operation
@@ -143,7 +143,7 @@ Feature: Apply a mass action on products only (and not product models)
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Navy blue"
     And I select rows watch, tshirt-unique-size-navy-blue and model-tshirt-divided-navy-blue
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Remove from categories" operation
     And I move on to the choose step
     And I choose the "Remove from categories" operation
