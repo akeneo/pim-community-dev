@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\Integration\JobLauncher;
 use Akeneo\TestEnterprise\Integration\TestCase;
 use Doctrine\DBAL\Connection;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
@@ -19,6 +20,19 @@ use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;
 
 class TeamworkAssistantTestCase extends TestCase
 {
+    /** @var JobLauncher */
+    private $jobLauncher;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->jobLauncher = new JobLauncher(static::$kernel);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -87,6 +101,8 @@ class TeamworkAssistantTestCase extends TestCase
         $numberOfExecutedJob = $this->findJobExecutionCount();
 
         $this->get('pimee_teamwork_assistant.launcher.job.project_calculation')->launch($project);
+
+        $this->jobLauncher->launchConsumerOnce();
 
         $this->isCompleteJobExecution($numberOfExecutedJob);
     }
