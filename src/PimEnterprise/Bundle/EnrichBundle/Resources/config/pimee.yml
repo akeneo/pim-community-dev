@@ -23,3 +23,9 @@ doctrine_migrations:
 
 pim_enrich:
     max_products_category_removal: '%max_products_category_removal%'
+
+akeneo_storage_utils:
+    mapping_overrides:
+        -
+            original: Pim\Bundle\UserBundle\Entity\User
+            override: PimEnterprise\Bundle\UserBundle\Entity\User
