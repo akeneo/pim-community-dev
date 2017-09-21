@@ -782,7 +782,7 @@ Its standard format would be the following:
 
 ### Variant product
 
-A product is considered as variant if it has a *parent* as product model. Therefore, the family variant becomes available in the standard format.
+A product is considered as variant if it has a product model as *parent*. Therefore, the family variant becomes available in the standard format.
 
 Let's consider a *baz* product, without any product value, except an identifier *sku*. This product also contains:
 
