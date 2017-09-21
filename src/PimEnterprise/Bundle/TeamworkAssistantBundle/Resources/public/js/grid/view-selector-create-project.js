@@ -68,6 +68,7 @@ define(
                 });
 
                 modal.open();
+                modal.$el.addClass('modal--fullPage');
 
                 var modalBody = modal.$('.modal-body');
                 modalBody.css('min-height', 150);
