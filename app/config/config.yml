@@ -43,52 +43,6 @@ assetic:
     filters:
         cssrewrite: ~
 
-# Doctrine Cache Configuration
-doctrine_cache:
-    providers:
-        pim_apcu:
-            apcu: ~
-        pim_array:
-            array: ~
-        pim:
-            chain:
-                providers: [doctrine_cache.providers.pim_apcu, doctrine_cache.providers.pim_array]
-
-# Doctrine Configuration
-doctrine:
-    dbal:
-        default_connection:   default
-        connections:
-            default:
-                driver:       "%database_driver%"
-                host:         "%database_host%"
-                port:         "%database_port%"
-                unix_socket:  "%database_unix_socket%"
-                dbname:       "%database_name%"
-                user:         "%database_user%"
-                password:     "%database_password%"
-                charset:      UTF8
-                server_version: 5.7
-                mapping_types:
-                    json: string
-            session:
-                driver:       "%database_driver%"
-                host:         "%database_host%"
-                port:         "%database_port%"
-                unix_socket:  "%database_unix_socket%"
-                dbname:       "%database_name%"
-                user:         "%database_user%"
-                password:     "%database_password%"
-                charset:      UTF8
-        types:
-            datetime: Akeneo\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\UTCDateTimeType
-            native_json:
-                class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\DBAL\Types\JsonType
-                commented: true
-    orm:
-        auto_generate_proxy_classes: "%kernel.debug%"
-        auto_mapping: true
-
 # Swiftmailer Configuration
 swiftmailer:
     transport:                "%mailer_transport%"
@@ -99,16 +53,6 @@ swiftmailer:
     password:                 "%mailer_password%"
     spool:                    { type: memory }
 
-# FOSOAuthServer Configuration
-fos_oauth_server:
-    db_driver:                orm
-    client_class:             Pim\Bundle\ApiBundle\Entity\Client
-    access_token_class:       Pim\Bundle\ApiBundle\Entity\AccessToken
-    refresh_token_class:      Pim\Bundle\ApiBundle\Entity\RefreshToken
-    auth_code_class:          Pim\Bundle\ApiBundle\Entity\AuthCode
-    service:
-        user_provider:        pim_user.provider.user
-
 pim_reference_data:
     fabrics:
         class: Acme\Bundle\AppBundle\Entity\Fabric
@@ -116,22 +60,3 @@ pim_reference_data:
     color:
         class: Acme\Bundle\AppBundle\Entity\Color
         type: simple
-
-akeneo_storage_utils:
-    mapping_overrides: ~
-
-akeneo_elasticsearch:
-    hosts: "%index_hosts%"
-    indexes:
-        -
-            service_name: "akeneo_elasticsearch.client.product"
-            index_name: "%product_index_name%"
-            configuration_files: "%elasticsearch_index_configuration_files%"
-        -
-            service_name: "akeneo_elasticsearch.client.product_model"
-            index_name: "%product_model_index_name%"
-            configuration_files: "%elasticsearch_index_configuration_files%"
-        -
-            service_name: "akeneo_elasticsearch.client.product_and_product_model"
-            index_name: "%product_and_product_model_index_name%"
-            configuration_files: "%elasticsearch_index_configuration_files%"
