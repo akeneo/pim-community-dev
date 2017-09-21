@@ -34,7 +34,7 @@ class SuccessListVariantProductIntegration extends AbstractProductTestCase
 
         // apollon_blue_m, categorized in 1 tree (master)
         $this->createVariantProduct('apollon_blue_m', [
-            'categories' => ['master_accessories'],
+            'categories' => ['categoryA'],
             'parent' => 'amor',
             'values' => [
                 'color' => [
@@ -49,7 +49,7 @@ class SuccessListVariantProductIntegration extends AbstractProductTestCase
 
         // apollon_blue_l, categorized in 1 tree (master)
         $this->createVariantProduct('apollon_blue_l', [
-            'categories' => ['master_men_blazers_deals', 'master_accessories_hats'],
+            'categories' => ['categoryB', 'categoryC'],
             'parent' => 'amor',
             'values' => [
                 'size' => [
@@ -62,9 +62,9 @@ class SuccessListVariantProductIntegration extends AbstractProductTestCase
             ],
         ]);
 
-        // apollon_blue_m & apollon_blue_l, categorized in 2 trees (master and master_women_blouses_deals)
+        // apollon_blue_m & apollon_blue_l, categorized in 2 trees (master and categoryA1)
         $this->createVariantProduct('apollon_blue_xl', [
-            'categories' => ['suppliers', 'master_women_blouses_deals'],
+            'categories' => ['categoryA2', 'categoryA1'],
             'parent' => 'amor',
             'values' => [
                 'size' => [
@@ -78,8 +78,17 @@ class SuccessListVariantProductIntegration extends AbstractProductTestCase
         ]);
 
         $this->createVariantProduct('apollon_blue_xxl', [
-            'categories' => ['master_women_blouses_deals'],
+            'categories' => ['categoryA1'],
             'parent' => 'amor',
+            'values' => [
+                'size' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'xxl',
+                    ],
+                ],
+            ],
         ]);
 
         $this->createVariantProduct('apollon_blue_xs', [
@@ -241,7 +250,7 @@ JSON;
                     "self" : {"href" : "http://localhost/api/rest/v1/products/apollon_blue_s"}
                 },
                 "identifier"    : "apollon_blue_s",
-                "family"        : "clothing",
+                "family"        : "familyA",
                 "parent"        : "amor",
                 "groups"        : [],
                 "variant_group" : null,
@@ -257,11 +266,11 @@ JSON;
                     "self" : {"href" : "http://localhost/api/rest/v1/products/apollon_blue_m"}
                 },
                 "identifier"    : "apollon_blue_m",
-                "family"        : "clothing",
+                "family"        : "familyA",
                 "parent"        : "amor",
                 "groups"        : [],
                 "variant_group" : null,
-                "categories"    : ["master_accessories"],
+                "categories"    : ["categoryA"],
                 "enabled"       : true,
                 "values": {
                     "color": [{
@@ -279,11 +288,11 @@ JSON;
                     "self" : {"href" : "http://localhost/api/rest/v1/products/apollon_blue_l"}
                 },
                 "identifier"    : "apollon_blue_l",
-                "family"        : "clothing",
+                "family"        : "familyA",
                 "parent"        : "amor",
                 "groups"        : [],
                 "variant_group" : null,
-                "categories"    : ["master_accessories_hats", "master_men_blazers_deals"],
+                "categories"    : ["categoryB", "categoryC"],
                 "enabled"       : true,
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -295,11 +304,11 @@ JSON;
                     "self" : {"href" : "http://localhost/api/rest/v1/products/apollon_blue_xl"}
                 },
                 "identifier"    : "apollon_blue_xl",
-                "family"        : "clothing",
+                "family"        : "familyA",
                 "parent"        : "amor",
                 "groups"        : [],
                 "variant_group" : null,
-                "categories"    : ["master_women_blouses_deals", "suppliers"],
+                "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -311,11 +320,11 @@ JSON;
                     "self" : {"href" : "http://localhost/api/rest/v1/products/apollon_blue_xxl"}
                 },
                 "identifier"    : "apollon_blue_xxl",
-                "family"        : "clothing",
+                "family"        : "familyA",
                 "parent"        : "amor",
                 "groups"        : [],
                 "variant_group" : null,
-                "categories"    : ["master_women_blouses_deals"],
+                "categories"    : ["categoryA1"],
                 "enabled"       : true,
                 "values"        : {},
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -327,7 +336,7 @@ JSON;
                     "self" : {"href" : "http://localhost/api/rest/v1/products/apollon_blue_xs"}
                 },
                 "identifier"    : "apollon_blue_xs",
-                "family"        : "clothing",
+                "family"        : "familyA",
                 "parent"        : "amor",
                 "groups"        : [],
                 "variant_group" : null,
@@ -350,15 +359,15 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?scope=ecommerce&locales=fr_FR&attributes=size,erp_name,supplier&pagination_type=page');
+        $client->request('GET', 'api/rest/v1/products?scope=ecommerce&locales=en_US&attributes=size,a_text_area,a_number_integer&pagination_type=page');
         $expected = <<<JSON
 {
   "_links": {
     "self": {
-      "href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=ecommerce&locales=fr_FR&attributes=size%2Cerp_name%2Csupplier"
+      "href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=ecommerce&locales=en_US&attributes=size%2Ca_text_area%2Ca_number_integer"
     },
     "first": {
-      "href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=ecommerce&locales=fr_FR&attributes=size%2Cerp_name%2Csupplier"
+      "href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=ecommerce&locales=en_US&attributes=size%2Ca_text_area%2Ca_number_integer"
     }
   },
   "current_page": 1,
@@ -371,7 +380,7 @@ JSON;
           }
         },
         "identifier": "apollon_blue_s",
-        "family": "clothing",
+        "family": "familyA",
         "parent": "amor",
         "groups": [
           
@@ -389,13 +398,20 @@ JSON;
               "data": "s"
             }
           ],
-          "supplier": [
-            {
-              "locale": null,
-              "scope": null,
-              "data": "zaro"
-            }
-          ]
+        "a_text_area": [
+        {
+          "locale": null,
+          "scope": null,
+          "data": "a super text area"
+        }
+        ],
+        "a_number_integer": [
+        {
+          "locale": null,
+          "scope": null,
+          "data": 12
+        }
+        ]
         },
         "created": "2017-09-20T17:46:20+02:00",
         "updated": "2017-09-20T17:46:20+02:00",
@@ -410,24 +426,31 @@ JSON;
           }
         },
         "identifier": "apollon_blue_m",
-        "family": "clothing",
+        "family": "familyA",
         "parent": "amor",
         "groups": [
           
         ],
         "variant_group": null,
         "categories": [
-          "master_accessories"
+          "categoryA"
         ],
         "enabled": true,
         "values": {
-          "supplier": [
-            {
-              "locale": null,
-              "scope": null,
-              "data": "zaro"
-            }
-          ]
+        "a_text_area": [
+        {
+          "locale": null,
+          "scope": null,
+          "data": "a super text area"
+        }
+        ],
+        "a_number_integer": [
+        {
+          "locale": null,
+          "scope": null,
+          "data": 12
+        }
+        ]
         },
         "created": "2017-09-20T17:46:21+02:00",
         "updated": "2017-09-20T17:46:21+02:00",
@@ -442,15 +465,15 @@ JSON;
           }
         },
         "identifier": "apollon_blue_l",
-        "family": "clothing",
+        "family": "familyA",
         "parent": "amor",
         "groups": [
           
         ],
         "variant_group": null,
         "categories": [
-          "master_accessories_hats",
-          "master_men_blazers_deals"
+          "categoryB",
+          "categoryC"
         ],
         "enabled": true,
         "values": {
@@ -461,13 +484,20 @@ JSON;
               "data": "l"
             }
           ],
-          "supplier": [
-            {
-              "locale": null,
-              "scope": null,
-              "data": "zaro"
-            }
-          ]
+        "a_text_area": [
+        {
+          "locale": null,
+          "scope": null,
+          "data": "a super text area"
+        }
+        ],
+        "a_number_integer": [
+        {
+          "locale": null,
+          "scope": null,
+          "data": 12
+        }
+        ]
         },
         "created": "2017-09-20T17:46:21+02:00",
         "updated": "2017-09-20T17:46:21+02:00",
@@ -482,15 +512,15 @@ JSON;
           }
         },
         "identifier": "apollon_blue_xl",
-        "family": "clothing",
+        "family": "familyA",
         "parent": "amor",
         "groups": [
           
         ],
         "variant_group": null,
         "categories": [
-          "master_women_blouses_deals",
-          "suppliers"
+          "categoryA1",
+          "categoryA2"
         ],
         "enabled": true,
         "values": {
@@ -501,13 +531,20 @@ JSON;
               "data": "xl"
             }
           ],
-          "supplier": [
-            {
-              "locale": null,
-              "scope": null,
-              "data": "zaro"
-            }
-          ]
+        "a_text_area": [
+        {
+          "locale": null,
+          "scope": null,
+          "data": "a super text area"
+        }
+        ],
+        "a_number_integer": [
+        {
+          "locale": null,
+          "scope": null,
+          "data": 12
+        }
+        ]
         },
         "created": "2017-09-20T17:46:21+02:00",
         "updated": "2017-09-20T17:46:21+02:00",
@@ -522,24 +559,38 @@ JSON;
           }
         },
         "identifier": "apollon_blue_xxl",
-        "family": "clothing",
+        "family": "familyA",
         "parent": "amor",
         "groups": [
           
         ],
         "variant_group": null,
         "categories": [
-          "master_women_blouses_deals"
+          "categoryA1"
         ],
         "enabled": true,
         "values": {
-          "supplier": [
+          "size": [
             {
               "locale": null,
               "scope": null,
-              "data": "zaro"
+              "data": "xxl"
             }
-          ]
+          ],
+        "a_text_area": [
+        {
+          "locale": null,
+          "scope": null,
+          "data": "a super text area"
+        }
+        ],
+        "a_number_integer": [
+        {
+          "locale": null,
+          "scope": null,
+          "data": 12
+        }
+        ]
         },
         "created": "2017-09-20T17:46:21+02:00",
         "updated": "2017-09-20T17:46:21+02:00",
@@ -586,15 +637,15 @@ JSON;
           }
         },
         "identifier": "apollon_blue_l",
-        "family": "clothing",
+        "family": "familyA",
         "parent": "amor",
         "groups": [
           
         ],
         "variant_group": null,
         "categories": [
-          "master_accessories_hats",
-          "master_men_blazers_deals"
+          "categoryB",
+          "categoryC"
         ],
         "enabled": true,
         "values": {
@@ -619,15 +670,15 @@ JSON;
           }
         },
         "identifier": "apollon_blue_xl",
-        "family": "clothing",
+        "family": "familyA",
         "parent": "amor",
         "groups": [
           
         ],
         "variant_group": null,
         "categories": [
-          "master_women_blouses_deals",
-          "suppliers"
+          "categoryA1",
+          "categoryA2"
         ],
         "enabled": true,
         "values": {
@@ -697,7 +748,7 @@ JSON;
                     "self" : {"href" : "http://localhost/api/rest/v1/products/apollon_blue_s"}
                 },
                 "identifier"    : "apollon_blue_s",
-                "family"        : "clothing",
+                "family"        : "familyA",
                 "parent"        : "amor",
                 "groups"        : [],
                 "variant_group" : null,
@@ -711,61 +762,31 @@ JSON;
                     "data": "s"
                   }
                 ],
-                "name": [
-                  {
-                    "locale": "en_US",
-                    "scope": null,
-                    "data": "Heritage jacket navy"
-                  }
+                "a_price": [
+                {
+                  "locale": null,
+                  "scope": null,
+                  "data": [
+                    {
+                      "amount": "50.00",
+                      "currency": "EUR"
+                    }
+                  ]
+                }
                 ],
-                "price": [
-                  {
-                    "locale": null,
-                    "scope": null,
-                    "data": [
-                      {
-                        "amount": "999.00",
-                        "currency": "EUR"
-                      }
-                    ]
-                  }
+                "a_text_area": [
+                {
+                  "locale": null,
+                  "scope": null,
+                  "data": "a super text area"
+                }
                 ],
-                "erp_name": [
-                  {
-                    "locale": "en_US",
-                    "scope": null,
-                    "data": "Amor"
-                  }
-                ],
-                "supplier": [
-                  {
-                    "locale": null,
-                    "scope": null,
-                    "data": "zaro"
-                  }
-                ],
-                "collection": [
-                  {
-                    "locale": null,
-                    "scope": null,
-                    "data": [
-                      "summer_2016"
-                    ]
-                  }
-                ],
-                "description": [
-                  {
-                    "locale": "en_US",
-                    "scope": "ecommerce",
-                    "data": "Heritage jacket navy blue tweed suit with single breasted 2 button. 53% wool, 22% polyester, 18% acrylic, 5% nylon, 1% cotton, 1% viscose. Dry Cleaning uniquement.Le mannequin measuring 1m85 and wears UK size 40, size 50 FR"
-                  }
-                ],
-                "wash_temperature": [
-                  {
-                    "locale": null,
-                    "scope": null,
-                    "data": "800"
-                  }
+                "a_number_integer": [
+                {
+                  "locale": null,
+                  "scope": null,
+                  "data": 12
+                }
                 ]
                 },
                 "created"       : "2017-01-23T11:44:25+01:00",
@@ -784,7 +805,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $search = '{"categories":[{"operator":"IN", "value":["master_accessories"]}], "color":[{"operator":"IN","value":["black"]}]}';
+        $search = '{"categories":[{"operator":"IN", "value":["categoryA"]}], "color":[{"operator":"IN","value":["black"]}]}';
         $client->request('GET', 'api/rest/v1/products?pagination_type=page&search=' . $search);
         $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
@@ -807,7 +828,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $search = '{"completeness":[{"operator":"GREATER THAN ON ALL LOCALES","value":50,"locales":["fr_FR"],"scope":"ecommerce"}],"categories":[{"operator":"IN", "value":["master_accessories"]}], "size":[{"operator":"IN","value":["xl"]}]}';
+        $search = '{"completeness":[{"operator":"GREATER THAN ON ALL LOCALES","value":50,"locales":["en_US"],"scope":"ecommerce"}],"categories":[{"operator":"IN", "value":["categoryA"]}], "size":[{"operator":"IN","value":["xl"]}]}';
         $client->request('GET', 'api/rest/v1/products?search=' . $search);
         $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
@@ -941,7 +962,7 @@ JSON;
         }
     },
   "identifier": "apollon_blue_s",
-  "family": "clothing",
+  "family": "familyA",
   "parent": "amor",
   "groups": [],
   "variant_group": null,
@@ -957,63 +978,33 @@ JSON;
         "data": "s"
       }
     ],
-    "name": [
-      {
-        "locale": "en_US",
-        "scope": null,
-        "data": "Heritage jacket navy"
-      }
+    "a_price": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": [
+        {
+          "amount": "50.00",
+          "currency": "EUR"
+        }
+      ]
+    }
     ],
-    "price": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": [
-          {
-            "amount": "999.00",
-            "currency": "EUR"
-          }
-        ]
-      }
+    "a_text_area": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": "a super text area"
+    }
     ],
-    "erp_name": [
-      {
-        "locale": "en_US",
-        "scope": null,
-        "data": "Amor"
-      }
-    ],
-    "supplier": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": "zaro"
-      }
-    ],
-    "collection": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": [
-          "summer_2016"
-        ]
-      }
-    ],
-    "description": [
-      {
-        "locale": "en_US",
-        "scope": "ecommerce",
-        "data": "Heritage jacket navy blue tweed suit with single breasted 2 button. 53% wool, 22% polyester, 18% acrylic, 5% nylon, 1% cotton, 1% viscose. Dry Cleaning uniquement.Le mannequin measuring 1m85 and wears UK size 40, size 50 FR"
-      }
-    ],
-    "wash_temperature": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": "800"
-      }
+    "a_number_integer": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": 12
+    }
     ]
-  },
+    },
   "created": "2017-09-20T15:37:40+02:00",
   "updated": "2017-09-20T15:37:40+02:00",
   "associations": {}
@@ -1028,12 +1019,12 @@ JSON;
         }
     },
   "identifier": "apollon_blue_m",
-  "family": "clothing",
+  "family": "familyA",
   "parent": "amor",
   "groups": [],
   "variant_group": null,
   "categories": [
-    "master_accessories"
+    "categoryA"
   ],
   "enabled": true,
   "values": {
@@ -1044,63 +1035,33 @@ JSON;
         "data": "blue"
       }
     ],
-    "name": [
-      {
-        "locale": "en_US",
-        "scope": null,
-        "data": "Heritage jacket navy"
-      }
+    "a_price": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": [
+        {
+          "amount": "50.00",
+          "currency": "EUR"
+        }
+      ]
+    }
     ],
-    "price": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": [
-          {
-            "amount": "999.00",
-            "currency": "EUR"
-          }
-        ]
-      }
+    "a_text_area": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": "a super text area"
+    }
     ],
-    "erp_name": [
-      {
-        "locale": "en_US",
-        "scope": null,
-        "data": "Amor"
-      }
-    ],
-    "supplier": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": "zaro"
-      }
-    ],
-    "collection": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": [
-          "summer_2016"
-        ]
-      }
-    ],
-    "description": [
-      {
-        "locale": "en_US",
-        "scope": "ecommerce",
-        "data": "Heritage jacket navy blue tweed suit with single breasted 2 button. 53% wool, 22% polyester, 18% acrylic, 5% nylon, 1% cotton, 1% viscose. Dry Cleaning uniquement.Le mannequin measuring 1m85 and wears UK size 40, size 50 FR"
-      }
-    ],
-    "wash_temperature": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": "800"
-      }
+    "a_number_integer": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": 12
+    }
     ]
-  },
+    },
   "created": "2017-09-20T15:37:40+02:00",
   "updated": "2017-09-20T15:37:40+02:00",
   "associations": {}
@@ -1115,13 +1076,13 @@ JSON;
         }
     },
   "identifier": "apollon_blue_l",
-  "family": "clothing",
+  "family": "familyA",
   "parent": "amor",
   "groups": [],
   "variant_group": null,
   "categories": [
-    "master_accessories_hats",
-    "master_men_blazers_deals"
+    "categoryB",
+    "categoryC"
   ],
   "enabled": true,
   "values": {
@@ -1132,63 +1093,33 @@ JSON;
         "data": "l"
       }
     ],
-    "name": [
-      {
-        "locale": "en_US",
-        "scope": null,
-        "data": "Heritage jacket navy"
-      }
+    "a_price": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": [
+        {
+          "amount": "50.00",
+          "currency": "EUR"
+        }
+      ]
+    }
     ],
-    "price": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": [
-          {
-            "amount": "999.00",
-            "currency": "EUR"
-          }
-        ]
-      }
+    "a_text_area": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": "a super text area"
+    }
     ],
-    "erp_name": [
-      {
-        "locale": "en_US",
-        "scope": null,
-        "data": "Amor"
-      }
-    ],
-    "supplier": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": "zaro"
-      }
-    ],
-    "collection": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": [
-          "summer_2016"
-        ]
-      }
-    ],
-    "description": [
-      {
-        "locale": "en_US",
-        "scope": "ecommerce",
-        "data": "Heritage jacket navy blue tweed suit with single breasted 2 button. 53% wool, 22% polyester, 18% acrylic, 5% nylon, 1% cotton, 1% viscose. Dry Cleaning uniquement.Le mannequin measuring 1m85 and wears UK size 40, size 50 FR"
-      }
-    ],
-    "wash_temperature": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": "800"
-      }
+    "a_number_integer": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": 12
+    }
     ]
-  },
+    },
   "created": "2017-09-20T15:37:40+02:00",
   "updated": "2017-09-20T15:37:40+02:00",
   "associations": {}
@@ -1203,15 +1134,15 @@ JSON;
         }
     },
   "identifier": "apollon_blue_xl",
-  "family": "clothing",
+  "family": "familyA",
   "parent": "amor",
   "groups": [
     
   ],
   "variant_group": null,
   "categories": [
-    "master_women_blouses_deals",
-    "suppliers"
+    "categoryA1",
+    "categoryA2"
   ],
   "enabled": true,
   "values": {
@@ -1222,63 +1153,33 @@ JSON;
         "data": "xl"
       }
     ],
-    "name": [
-      {
-        "locale": "en_US",
-        "scope": null,
-        "data": "Heritage jacket navy"
-      }
+    "a_price": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": [
+        {
+          "amount": "50.00",
+          "currency": "EUR"
+        }
+      ]
+    }
     ],
-    "price": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": [
-          {
-            "amount": "999.00",
-            "currency": "EUR"
-          }
-        ]
-      }
+    "a_text_area": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": "a super text area"
+    }
     ],
-    "erp_name": [
-      {
-        "locale": "en_US",
-        "scope": null,
-        "data": "Amor"
-      }
-    ],
-    "supplier": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": "zaro"
-      }
-    ],
-    "collection": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": [
-          "summer_2016"
-        ]
-      }
-    ],
-    "description": [
-      {
-        "locale": "en_US",
-        "scope": "ecommerce",
-        "data": "Heritage jacket navy blue tweed suit with single breasted 2 button. 53% wool, 22% polyester, 18% acrylic, 5% nylon, 1% cotton, 1% viscose. Dry Cleaning uniquement.Le mannequin measuring 1m85 and wears UK size 40, size 50 FR"
-      }
-    ],
-    "wash_temperature": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": "800"
-      }
+    "a_number_integer": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": 12
+    }
     ]
-  },
+    },
   "created": "2017-09-20T15:37:40+02:00",
   "updated": "2017-09-20T15:37:40+02:00",
   "associations": {
@@ -1295,74 +1196,51 @@ JSON;
        }
    },
   "identifier": "apollon_blue_xxl",
-  "family": "clothing",
+  "family": "familyA",
   "parent": "amor",
   "groups": [
     
   ],
   "variant_group": null,
   "categories": [
-    "master_women_blouses_deals"
+    "categoryA1"
   ],
   "enabled": true,
   "values": {
-    "name": [
-      {
-        "locale": "en_US",
-        "scope": null,
-        "data": "Heritage jacket navy"
-      }
-    ],
-    "price": [
+    "size": [
       {
         "locale": null,
         "scope": null,
-        "data": [
-          {
-            "amount": "999.00",
-            "currency": "EUR"
-          }
-        ]
+        "data": "xxl"
       }
     ],
-    "erp_name": [
-      {
-        "locale": "en_US",
-        "scope": null,
-        "data": "Amor"
-      }
+    "a_price": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": [
+        {
+          "amount": "50.00",
+          "currency": "EUR"
+        }
+      ]
+    }
     ],
-    "supplier": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": "zaro"
-      }
+    "a_text_area": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": "a super text area"
+    }
     ],
-    "collection": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": [
-          "summer_2016"
-        ]
-      }
-    ],
-    "description": [
-      {
-        "locale": "en_US",
-        "scope": "ecommerce",
-        "data": "Heritage jacket navy blue tweed suit with single breasted 2 button. 53% wool, 22% polyester, 18% acrylic, 5% nylon, 1% cotton, 1% viscose. Dry Cleaning uniquement.Le mannequin measuring 1m85 and wears UK size 40, size 50 FR"
-      }
-    ],
-    "wash_temperature": [
-      {
-        "locale": null,
-        "scope": null,
-        "data": "800"
-      }
+    "a_number_integer": [
+    {
+      "locale": null,
+      "scope": null,
+      "data": 12
+    }
     ]
-  },
+    },
   "created": "2017-09-20T15:37:40+02:00",
   "updated": "2017-09-20T15:37:40+02:00",
   "associations": {
@@ -1379,7 +1257,7 @@ JSON;
         }
     },
     "identifier": "apollon_blue_xs",
-      "family": "clothing",
+      "family": "familyA",
       "parent": "amor",
       "groups": [
         
@@ -1397,63 +1275,33 @@ JSON;
             "data": "xs"
           }
         ],
-        "name": [
-          {
-            "locale": "en_US",
-            "scope": null,
-            "data": "Heritage jacket navy"
-          }
+        "a_price": [
+        {
+          "locale": null,
+          "scope": null,
+          "data": [
+            {
+              "amount": "50.00",
+              "currency": "EUR"
+            }
+          ]
+        }
         ],
-        "price": [
-          {
-            "locale": null,
-            "scope": null,
-            "data": [
-              {
-                "amount": "999.00",
-                "currency": "EUR"
-              }
-            ]
-          }
+        "a_text_area": [
+        {
+          "locale": null,
+          "scope": null,
+          "data": "a super text area"
+        }
         ],
-        "erp_name": [
-          {
-            "locale": "en_US",
-            "scope": null,
-            "data": "Amor"
-          }
-        ],
-        "supplier": [
-          {
-            "locale": null,
-            "scope": null,
-            "data": "zaro"
-          }
-        ],
-        "collection": [
-          {
-            "locale": null,
-            "scope": null,
-            "data": [
-              "summer_2016"
-            ]
-          }
-        ],
-        "description": [
-          {
-            "locale": "en_US",
-            "scope": "ecommerce",
-            "data": "Heritage jacket navy blue tweed suit with single breasted 2 button. 53% wool, 22% polyester, 18% acrylic, 5% nylon, 1% cotton, 1% viscose. Dry Cleaning uniquement.Le mannequin measuring 1m85 and wears UK size 40, size 50 FR"
-          }
-        ],
-        "wash_temperature": [
-          {
-            "locale": null,
-            "scope": null,
-            "data": "800"
-          }
+        "a_number_integer": [
+        {
+          "locale": null,
+          "scope": null,
+          "data": 12
+        }
         ]
-      },
+        },
       "created": "2017-09-20T15:37:40+02:00",
       "updated": "2017-09-20T15:37:40+02:00",
       "associations": {
@@ -1466,10 +1314,10 @@ JSON;
     }
 
     /**
-     * {@inheritdoc}
+     * @return Configuration
      */
-    protected function getConfiguration(): Configuration
+    protected function getConfiguration()
     {
-        return new Configuration([Configuration::getFunctionalCatalogPath('catalog_modeling')]);
+        return new Configuration([Configuration::getTechnicalCatalogPath()]);
     }
 }

@@ -3,3 +3,22 @@ optionA;a_multi_select;10;Option A
 optionB;a_multi_select;20;Option B
 optionA;a_simple_select;10;Option A
 optionB;a_simple_select;20;Option B
+orange;color;1;Orange
+green;color;1;Green
+white;color;1;White
+blue;color;1;Blue
+red;color;1;Red
+pink;color;1;Pink
+yellow;color;1;Yellow
+brown;color;1;Brown
+black;color;1;Black
+grey;color;1;Grey
+l;size;1;L
+xxl;size;1;XXL
+xs;size;1;XS
+m;size;1;M
+xl;size;1;XL
+s;size;1;S
+xxs;size;1;XXS
+xxxl;size;1;XXXL
+u;size;1;U
