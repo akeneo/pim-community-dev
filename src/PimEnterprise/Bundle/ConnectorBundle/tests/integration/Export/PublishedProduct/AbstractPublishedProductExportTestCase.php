@@ -1,14 +1,16 @@
 <?php
 
-namespace PimEnterprise\Bundle\ConnectorBundle\tests\integration\Export\Product;
+namespace PimEnterprise\Bundle\ConnectorBundle\tests\integration\Export\PublishedProduct;
 
+use Akeneo\Component\Batch\Job\BatchStatus;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\JobLauncher;
 use Akeneo\TestEnterprise\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 
-abstract class AbstractProductExportTestCase extends TestCase
+class AbstractPublishedProductExportTestCase extends TestCase
 {
     /** @var JobLauncher */
     protected $jobLauncher;
@@ -20,9 +22,11 @@ abstract class AbstractProductExportTestCase extends TestCase
     {
         parent::setUp();
 
-        $this->jobLauncher = new JobLauncher(static::$kernel);
+        $this->jobLauncher       = new JobLauncher(static::$kernel);
+        $publishedProductManager = $this->get('pimee_workflow.manager.published_product');
 
-        $product = $this->createProduct('product_viewable_by_everybody_1', [
+        $productsToPublish = [];
+        $productsToPublish[] = $this->createProduct('product_viewable_by_everybody_1', [
             'categories' => ['categoryA2'],
             'values'     => [
                 'a_localized_and_scopable_text_area' => [
@@ -42,26 +46,25 @@ abstract class AbstractProductExportTestCase extends TestCase
             ]
         ]);
 
-        $this->createProductDraft('mary', $product, [
-            'values'     => [
-                'a_number_float' => [['data' => '20.09', 'locale' => null, 'scope' => null]],
-            ]
-        ]);
-
-        $this->createProduct('product_viewable_by_everybody_2', [
+        $productsToPublish[] = $this->createProduct('product_viewable_by_everybody_2', [
             'categories' => ['categoryA2', 'categoryB']
         ]);
 
-        $this->createProduct('product_not_viewable_by_redactor', [
+        $productsToPublish[] = $this->createProduct('product_not_viewable_by_redactor', [
             'categories' => ['categoryB']
         ]);
 
-        $this->createProduct('product_without_category', [
+        $productsToPublish[] = $this->createProduct('product_without_category', [
             'associations' => [
                 'X_SELL' => ['products' => ['product_viewable_by_everybody_2', 'product_not_viewable_by_redactor']]
             ]
         ]);
 
+        foreach ($productsToPublish as $product) {
+            $publishedProductManager->publish($product, ['flush' => true]);
+        }
+
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
         $this->get('doctrine')->getManager()->clear();
     }
 
@@ -95,25 +98,5 @@ abstract class AbstractProductExportTestCase extends TestCase
         $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
 
         return $product;
-    }
-
-    /**
-     * @param string           $userName
-     * @param ProductInterface $product
-     * @param array            $changes
-     *
-     * @return ProductDraftInterface
-     */
-    protected function createProductDraft(
-        string $userName,
-        ProductInterface $product,
-        array $changes
-    ) : ProductDraftInterface {
-        $this->get('pim_catalog.updater.product')->update($product, $changes);
-
-        $productDraft = $this->get('pimee_workflow.builder.draft')->build($product, $userName);
-        $this->get('pimee_workflow.saver.product_draft')->save($productDraft);
-
-        return $productDraft;
     }
 }

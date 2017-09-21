@@ -12,3 +12,8 @@ services:
         class: '%pimee_catalog.security.filter.not_granted_associated_product.class%'
         arguments:
             - '@pim_catalog.repository.product'
+
+    pimee_catalog.security.filter.not_granted_associated_published_product:
+        class: '%pimee_catalog.security.filter.not_granted_associated_product.class%'
+        arguments:
+            - '@pimee_workflow.repository.published_product'
