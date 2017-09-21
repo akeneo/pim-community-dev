@@ -3,10 +3,8 @@
 ## Bug Fixes
 
 - PIM-6804: Fix the positioning (z-index) of the datafilter widgets
-
-## Bug Fixes
-
 - PIM-6491: Fix file extension validation on import job upload
+- PIM-6798: Fix the simple-select and multi-select copiers
 
 # 1.7.8 (2017-08-22)
 

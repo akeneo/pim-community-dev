@@ -33,7 +33,7 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     protected $resolver;
 
     /**
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface  $productBuilder
+     * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
      */
     public function __construct(
