@@ -6,7 +6,7 @@ namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
-class FindVariantProductCompletenessIntegration extends TestCase
+class FindCompleteVariantProductIntegration extends TestCase
 {
     /**
      * Test that the flat variant product completenesses for a SUB product model are good.
@@ -35,7 +35,21 @@ class FindVariantProductCompletenessIntegration extends TestCase
                 ],
             ],
             'total' => 2
-        ], $result->normalizedCompletenesses());
+        ], $result->values());
+    }
+
+    /**
+     *
+     */
+    public function testProductModelWithoutChild()
+    {
+        $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('minerva');
+        $result = ($this->get('pim_catalog.doctrine.query.find_variant_product_completeness'))($productModel);
+
+        $this->assertEquals([
+            'completenesses' => [],
+            'total' => 0
+        ], $result->values());
     }
 
     /**
@@ -65,7 +79,7 @@ class FindVariantProductCompletenessIntegration extends TestCase
                 ],
             ],
             'total' => 6
-        ], $result->normalizedCompletenesses());
+        ], $result->values());
     }
 
     /**
@@ -80,7 +94,10 @@ class FindVariantProductCompletenessIntegration extends TestCase
             'en_US'
         );
 
-        $this->assertEquals('2/2', $result->ratio('ecommerce', 'en_US'));
+        $this->assertEquals([
+            'complete' => 2,
+            'total' => 2
+        ], $result->value('ecommerce', 'en_US'));
     }
 
     /**

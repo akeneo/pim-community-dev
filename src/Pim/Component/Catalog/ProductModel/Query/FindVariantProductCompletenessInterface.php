@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\ProductModel\Query;
 
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\ProductModel\ReadModel\VariantProductCompleteness;
+use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProduct;
 
 /**
  * Query data regarding the variant product completenesses to build the ratio on the PMEF.
@@ -18,7 +18,7 @@ interface FindVariantProductCompletenessInterface
     /**
      * @param ProductModelInterface $productModel
      *
-     * @return VariantProductCompleteness
+     * @return CompleteVariantProduct
      */
-    public function __invoke(ProductModelInterface $productModel): VariantProductCompleteness;
+    public function __invoke(ProductModelInterface $productModel): CompleteVariantProduct;
 }

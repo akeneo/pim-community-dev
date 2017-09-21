@@ -10,7 +10,7 @@ namespace Pim\Component\Catalog\ProductModel\ReadModel;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantProductCompleteness
+class CompleteVariantProduct
 {
     /** @var array */
     private $completenesses;
@@ -28,7 +28,7 @@ class VariantProductCompleteness
      *
      * @return array
      */
-    public function normalizedCompletenesses(): array
+    public function values(): array
     {
         $completenesses = [];
         $completenesses['completenesses'] =  $this->parsedFlatCompletenesses();
@@ -43,19 +43,23 @@ class VariantProductCompleteness
      * @param string $channel
      * @param string $locale
      *
-     * @return mixed
+     * @return array
      */
-    public function ratio(string $channel, string $locale): string
+    public function value(string $channel, string $locale): array
     {
         $completenesses =  $this->parsedFlatCompletenesses();
 
         if (!isset($completenesses[$channel][$locale])) {
-            throw new \InvalidArgumentException(
-                sprintf('There is no completeness for the channel %s and the locale %s', $channel, $locale)
-            );
+            return [
+                'complete' => 0,
+                'total' => $this->numberOfProduct()
+            ];
         }
 
-        return sprintf('%d/%d', $completenesses[$channel][$locale], $this->numberOfProduct());
+        return [
+            'complete' => $completenesses[$channel][$locale],
+            'total' => $this->numberOfProduct()
+        ];
     }
 
     /**

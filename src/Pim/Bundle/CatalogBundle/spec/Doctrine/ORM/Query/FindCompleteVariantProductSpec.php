@@ -3,13 +3,13 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FindVariantProductCompleteness;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\FindCompleteVariantProduct;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductModel;
 use Pim\Component\Catalog\ProductModel\Query\FindVariantProductCompletenessInterface;
 use Prophecy\Argument;
 
-class FindVariantProductCompletenessSpec extends ObjectBehavior
+class FindCompleteVariantProductSpec extends ObjectBehavior
 {
     function let(EntityManagerInterface $entityManager)
     {
@@ -18,7 +18,7 @@ class FindVariantProductCompletenessSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(FindVariantProductCompleteness::class);
+        $this->shouldHaveType(FindCompleteVariantProduct::class);
     }
 
     function it_is_a_query()

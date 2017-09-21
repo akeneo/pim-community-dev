@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\ProductModel\Query\FindVariantProductCompletenessInterface;
-use Pim\Component\Catalog\ProductModel\ReadModel\VariantProductCompleteness;
+use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProduct;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -64,7 +64,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce,
         ValueInterface $image,
-        VariantProductCompleteness $completeness
+        CompleteVariantProduct $completeness
     ) {
         $context = [
             'filter_types' => ['pim.transform.product_value.structured'],
@@ -73,7 +73,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ];
 
         $findVariantProductCompletenessQuery->__invoke($productModel, 'ecommerce', 'en_US')->willReturn($completeness);
-        $completeness->ratio('ecommerce', 'en_US')->willReturn('3/12');
+        $completeness->value('ecommerce', 'en_US')->willReturn('3/12');
 
         $productModel->getId()->willReturn(78);
         $filter->filterCollection($values, 'pim.transform.product_value.structured', $context)
@@ -164,7 +164,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce,
         ValueInterface $image,
-        VariantProductCompleteness $completeness
+        CompleteVariantProduct $completeness
     ) {
         $context = [
             'filter_types' => ['pim.transform.product_value.structured'],
@@ -173,7 +173,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ];
 
         $findVariantProductCompletenessQuery->__invoke($productModel, 'ecommerce', 'en_US')->willReturn($completeness);
-        $completeness->ratio('ecommerce', 'en_US')->willReturn('3/12');
+        $completeness->value('ecommerce', 'en_US')->willReturn('3/12');
 
         $filter->filterCollection($values, 'pim.transform.product_value.structured', $context)
             ->willReturn($values);

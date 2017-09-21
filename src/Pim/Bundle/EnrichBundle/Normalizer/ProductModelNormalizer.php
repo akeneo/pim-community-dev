@@ -142,7 +142,7 @@ class ProductModelNormalizer implements NormalizerInterface
         $variantProductCompletenesses = ($this->findVariantProductCompletenessQuery)($productModel);
 
         $normalizedProductModel['meta'] = [
-                'variant_product_completeness' => $variantProductCompletenesses->normalizedCompletenesses(),
+                'variant_product_completenesses' => $variantProductCompletenesses->values(),
                 'family_variant'            => $normalizedFamilyVariant,
                 'form'                      => $this->formProvider->getForm($productModel),
                 'id'                        => $productModel->getId(),
