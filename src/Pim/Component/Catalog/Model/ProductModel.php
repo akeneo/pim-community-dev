@@ -236,7 +236,9 @@ class ProductModel implements ProductModelInterface
      */
     public function getCategories(): Collection
     {
-        return $this->categories;
+        $categories = new ArrayCollection($this->categories->toArray());
+
+        return $this->getAllCategories($this, $categories);
     }
 
     /**
@@ -254,7 +256,7 @@ class ProductModel implements ProductModelInterface
      */
     public function addCategory(CategoryInterface $category): ProductModelInterface
     {
-        if (!$this->categories->contains($category)) {
+        if (!$this->categories->contains($category) && !$this->hasAncestryCategory($category)) {
             $this->categories->add($category);
         }
 
@@ -557,10 +559,59 @@ class ProductModel implements ProductModelInterface
     }
 
     /**
+     * @param EntityWithFamilyVariantInterface $entity
+     * @param Collection                       $categoryCollection
+     *
+     * @return Collection
+     */
+    private function getAllCategories(
+        EntityWithFamilyVariantInterface $entity,
+        Collection $categoryCollection
+    ) {
+        $parent = $entity->getParent();
+
+        if (null === $parent) {
+            return $categoryCollection;
+        }
+
+        foreach ($parent->getCategories() as $category) {
+            if (!$categoryCollection->contains($category)) {
+                $categoryCollection->add($category);
+            }
+        }
+
+        return $this->getAllCategories($parent, $categoryCollection);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getFamily(): ?FamilyInterface
     {
         return null !== $this->getFamilyVariant() ? $this->getFamilyVariant()->getFamily() : null;
+    }
+
+    /**
+     * Does the ancestry of the entity already has the $category?
+     *
+     * @param CategoryInterface $category
+     *
+     * @return bool
+     */
+    private function hasAncestryCategory(CategoryInterface $category): bool
+    {
+        $parent = $this->getParent();
+        if (null === $parent) {
+            return false;
+        }
+
+        // no need recursion here as getCategories already look in the whole ancestry
+        foreach ($parent->getCategories() as $ancestryCategory) {
+            if ($ancestryCategory->getCode() === $category->getCode()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
