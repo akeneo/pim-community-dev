@@ -5,7 +5,7 @@
             <div class="AknTitleContainer-imageContainer" data-drop-zone="main-image">
                 <img
                     class="AknTitleContainer-image"
-                    src="{{ app.user.imagePath ? app.user.imagePath | imagine_filter('avatar_med') : asset('bundles/pimui/images/info-user.png') }}"
+                    src="{{ app.user.imagePath ? app.user.imagePath | imagine_filter('thumbnail_small') : asset('bundles/pimui/images/info-user.png') }}"
                 >
             </div>
             <div class="AknTitleContainer-mainContainer">
