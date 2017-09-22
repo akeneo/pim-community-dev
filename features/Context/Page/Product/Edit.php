@@ -150,7 +150,7 @@ class Edit extends ProductEditForm
      */
     public function getHistoryRows()
     {
-        return $this->findAll('css', '.product-version');
+        return $this->findAll('css', '.entity-version');
     }
 
     /**

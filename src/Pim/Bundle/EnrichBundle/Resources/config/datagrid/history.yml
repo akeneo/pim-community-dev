@@ -12,7 +12,7 @@ datagrid:
             version:
                 label: Version
                 type: field
-                frontend_type: integer
+                frontend_type: expand
             author:
                 label: Author
                 type: field
@@ -21,18 +21,11 @@ datagrid:
                 label: Logged at
                 type: product_value_datetime
                 frontend_type: datetime
-            old:
-                label: Old values
-                type: twig
-                template: PimVersioningBundle:Datagrid:Property/old.html.twig
-                frontend_type: html
+            changes:
+                label: Changes
+                frontend_type: history-diff
                 data_name: changeset
-            new:
-                label: New values
-                type: twig
-                template: PimVersioningBundle:Datagrid:Property/new.html.twig
-                frontend_type: html
-                data_name: changeset
+                renderable: false
         sorters:
             columns:
                 version:

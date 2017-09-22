@@ -452,7 +452,7 @@ class Form extends Base
     public function getHistoryRows()
     {
         return $this->spin(function () {
-            return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
+            return $this->getElement('Updates grid')->findAll('css', 'tbody tr.entity-version');
         }, 'Cannot find the history rows.');
     }
 

@@ -229,7 +229,7 @@ class WebUser extends PimContext
     public function iShouldSeeVersionsInTheHistory($expectedCount)
     {
         $this->spin(function () use ($expectedCount) {
-            $actualVersions = $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.product-version');
+            $actualVersions = $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.entity-version');
 
             return ((int) $expectedCount) === count($actualVersions);
         }, sprintf(
