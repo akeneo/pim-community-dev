@@ -89,13 +89,12 @@ class GridCapableDecorator extends ElementDecorator
         }, sprintf('Create view button not found (%s).', $selector));
 
         $this->spin(function () use ($button) {
+            if (null !== $this->find('css', '.modal-body')) {
+                return true;
+            }
             $button->click();
-            $modalHeader = $this->find(
-                'css',
-                '.modal-header:contains("Choose a label for the view")'
-            );
 
-            return null !== $modalHeader;
+            return false;
         }, 'Impossible to open the create view popin');
     }
 

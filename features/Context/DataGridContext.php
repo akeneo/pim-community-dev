@@ -1092,7 +1092,7 @@ class DataGridContext extends PimContext implements PageObjectAware
 
         return [
             new Step\Then('I fill in the following information in the popin:', $table),
-            new Step\Then('I press the "OK" button')
+            new Step\Then('I press the "Save" button')
         ];
     }
 

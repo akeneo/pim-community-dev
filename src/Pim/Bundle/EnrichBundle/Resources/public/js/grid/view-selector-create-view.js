@@ -86,7 +86,7 @@ define(
                 modal.open();
                 modal.$el.addClass('modal--fullPage');
 
-                let $submitButton = modal.$el.find('.ok').addClass('AknButton--disabled');
+                const $submitButton = modal.$el.find('.ok').addClass('AknButton--disabled');
 
                 modal.on('ok', this.saveView.bind(this, modal));
                 modal.on('cancel', function () {
