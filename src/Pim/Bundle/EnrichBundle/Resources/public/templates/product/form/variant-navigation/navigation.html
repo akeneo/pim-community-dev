@@ -1,35 +1,27 @@
-<span class="AknVariantNavigation-item <% if (0 == currentLevel) { %>AknVariantNavigation-item--highlight<% } %>">
-    <span class="AknVariantNavigation-axisName AknVariantNavigation-axisValue" data-action="navigateToRoot">
-        <%- commonLabel %>
-    </span>
-</span>
+<div class="AknVariantNavigation">
+    <% for (let level in navigation) { %>
 
-<span class="AknVariantNavigation-item <% if (1 == currentLevel) { %>AknVariantNavigation-item--highlight<% } %>">
-    <span class="AknVariantNavigation-axisName">
-        <%- navigation.level_one.axes[currentLocale] %><% if (navigation.level_one.selected) { %>:<% } %>
+    <span class="AknVariantNavigation-item <% if (navigation[level].selected && navigation[level].selected.id === entity.meta.id) { %>AknVariantNavigation-item--highlight<% } %>">
+        <% if (level > 0) { %>
+            <span class="AknVariantNavigation-axisName <%- navigation[level].selected ? 'AknVariantNavigation-axisName--selected' : '' %>">
+                <%- navigation[level].axes[currentLocale] %>
+            </span>
+
+            <% if (navigation[level].selected) { %>
+                <span class="AknVariantNavigation-axisValue" data-action="navigateToLevel" data-level="<%- level %>">
+                    <%- navigation[level].selected.axes_values_labels[currentLocale] %>
+                </span>
+            <% } %>
+
+            <% if (navigation[level - 1].selected) { %>
+                <input type="hidden" class="variant-navigation select-field" value="0" />
+            <% } %>
+        <% } else { %>
+            <span class="AknVariantNavigation-axisName AknVariantNavigation-axisValue" data-action="navigateToLevel" data-level="<%- level %>">
+                <%- commonLabel %>
+            </span>
+        <% } %>
     </span>
 
-    <% if (navigation.level_one.selected) { %>
-    <span class="AknVariantNavigation-axisValue" data-action="navigateToModel">
-        <%- navigation.level_one.selected.axes_values_labels[currentLocale] %>
-    </span>
     <% } %>
-
-    <input type="hidden" class="variant-navigation select-level-one select-field" value="0"/>
-</span>
-
-<% if (2 == nbOfLevels) { %>
-<span class="AknVariantNavigation-item <% if (2 == currentLevel) { %>AknVariantNavigation-item--highlight<% } %>">
-    <span class="AknVariantNavigation-axisName">
-        <%- navigation.level_two.axes[currentLocale] %><% if (navigation.level_two.selected) { %>:<% } %>
-    </span>
-
-    <% if (navigation.level_two.selected) { %>
-    <span class="AknVariantNavigation-axisValue">
-        <%- navigation.level_two.selected.axes_values_labels[currentLocale] %>
-    </span>
-    <% } %>
-
-    <input type="hidden" class="variant-navigation select-level-two select-field" value="0"/>
-</span>
-<% } %>
+</div>

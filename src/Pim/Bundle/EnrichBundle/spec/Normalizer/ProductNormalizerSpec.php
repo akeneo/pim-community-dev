@@ -201,7 +201,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                         'filePath'         => '/p/i/m/4/all.png',
                         'originalFileName' => 'all.png',
                     ],
-                    'variant_navigation' => null,
+                    'variant_navigation' => [],
                     'label'             => [
                         'en_US' => 'A nice Mug!',
                         'fr_FR' => 'Un très beau Mug !'

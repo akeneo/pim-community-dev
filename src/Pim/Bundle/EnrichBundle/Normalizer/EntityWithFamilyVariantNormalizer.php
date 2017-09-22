@@ -153,7 +153,8 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
                 if (AttributeTypes::OPTION_SIMPLE_SELECT === $axisAttribute->getType()) {
                     $option = $value->getData();
                     $option->setLocale($localeCode);
-                    $valuesForLocale[] = $option->getTranslation()->getLabel();
+                    $label = $option->getTranslation()->getLabel();
+                    $valuesForLocale[] = empty($label) ? '[' . $option->getCode() . ']' : $label;
                 } else {
                     $valuesForLocale[] = (string) $value;
                 }

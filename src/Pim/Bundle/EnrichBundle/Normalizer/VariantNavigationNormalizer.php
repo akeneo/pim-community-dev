@@ -52,53 +52,33 @@ class VariantNavigationNormalizer implements NormalizerInterface
             ));
         }
 
-        $navigationData = [
-            'root'      => null,
-            'level_one' => [
-                'axes'     => [],
-                'selected' => null,
-            ],
-            'level_two' => [
-                'axes'     => [],
-                'selected' => null,
-            ],
-        ];
+        $navigationData = [];
 
         $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
         foreach ($entity->getFamilyVariant()->getVariantAttributeSets() as $attributeSet) {
-            $level = (1 === $attributeSet->getLevel()) ? 'level_one' : 'level_two';
             foreach ($attributeSet->getAxes() as $axis) {
                 foreach ($localeCodes as $localeCode) {
                     $axis->setLocale($localeCode);
-                    $navigationData[$level]['axes'][$localeCode] = $axis->getLabel();
+                    $navigationData[$attributeSet->getLevel()]['axes'][$localeCode] = $axis->getLabel();
                 }
             }
         }
 
-        $parent = $entity->getParent();
-        if (null === $parent) {
-            $navigationData['root'] = $this->entityWithFamilyVariantNormalizer
-                ->normalize($entity, $format, $context);
+        $currentEntity = $entity;
+        $reversedTree = [];
+        $level = 0;
 
-            return $navigationData;
-        }
+        do {
+            $reversedTree[$level]['selected'] = $this->entityWithFamilyVariantNormalizer
+                ->normalize($currentEntity, $format, $context);
 
-        $grandParent = $parent->getParent();
-        if (null === $grandParent) {
-            $navigationData['root'] = $this->entityWithFamilyVariantNormalizer
-                ->normalize($parent, $format, $context);
-            $navigationData['level_one']['selected'] = $this->entityWithFamilyVariantNormalizer
-                ->normalize($entity, $format, $context);
+            $currentEntity = $currentEntity->getParent();
+            $level++;
+        } while (null !== $currentEntity);
 
-            return $navigationData;
-        }
-
-        $navigationData['root'] = $this->entityWithFamilyVariantNormalizer
-            ->normalize($grandParent, $format, $context);
-        $navigationData['level_one']['selected'] = $this->entityWithFamilyVariantNormalizer
-            ->normalize($parent, $format, $context);
-        $navigationData['level_two']['selected'] = $this->entityWithFamilyVariantNormalizer
-            ->normalize($entity, $format, $context);
+        $tree = array_reverse($reversedTree);
+        $navigationData = array_replace_recursive($navigationData, $tree);
+        ksort($navigationData);
 
         return $navigationData;
     }

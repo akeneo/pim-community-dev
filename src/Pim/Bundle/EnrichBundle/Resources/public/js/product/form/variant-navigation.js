@@ -38,23 +38,19 @@ define([
         templateProductModel
     ) {
         return BaseForm.extend({
-            className: 'AknVariantNavigation',
             template: _.template(template),
             templateProduct: _.template(templateProduct),
             templateProductModel: _.template(templateProductModel),
-            levelOneDropdown: null,
-            levelTwoDropdown: null,
+            dropdowns: {},
             queryTimer: null,
             events: {
-                'click [data-action="navigateToRoot"]': 'redirectToRoot',
-                'click [data-action="navigateToModel"]': 'redirectToModel'
+                'click [data-action="navigateToLevel"]': 'navigateToLevel'
             },
 
             /**
              * {@inheritdoc}
              */
             configure: function () {
-                UserContext.off('change:catalogLocale change:catalogScope', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -66,20 +62,19 @@ define([
             render: function () {
                 const entity = this.getFormData();
                 const catalogLocale = UserContext.get('catalogLocale');
-                const nbOfLevels = _.isEmpty(entity.meta.variant_navigation.level_two.axes) ? 1 : 2;
-                let currentLevel = 0;
 
-                if (null !== entity.parent) {
-                    currentLevel = (entity.parent === entity.meta.variant_navigation.root.identifier) ? 1 : 2;
+                if ('product' === entity.meta.model_type && null === entity.parent) {
+                    this.$el.html('');
+
+                    return;
                 }
 
                 this.$el.html(
                     this.template({
-                        commonLabel: __('pim_enrich.entity.product.common').toUpperCase(),
+                        commonLabel: __('pim_enrich.entity.product.common'),
                         currentLocale: catalogLocale,
-                        navigation: entity.meta.variant_navigation,
-                        currentLevel: currentLevel,
-                        nbOfLevels: nbOfLevels
+                        entity: entity,
+                        navigation: entity.meta.variant_navigation
                     })
                 );
 
@@ -91,82 +86,49 @@ define([
              */
             initializeSelectWidgets: function () {
                 const entity = this.getFormData();
+                const $selects = this.$('.select-field');
 
-                const $levelOneSelect = this.$('.select-level-one');
-                const $levelTwoSelect = this.$('.select-level-two');
+                _.each($selects, (select, index) => {
+                    const $select = $(select);
+                    const options = {
+                        dropdownCssClass: 'variant-navigation',
+                        closeOnSelect: false,
 
-                const commonOptions = {
-                    dropdownCssClass: 'variant-navigation',
-                    closeOnSelect: false,
+                        /**
+                         * Format result (product or product model variations) method of select2.
+                         * This way we can display entities and their info beside them (completeness, image..).
+                         */
+                        formatResult: (item, $container) => {
+                            const catalogLocale = UserContext.get('catalogLocale');
+                            const filePath = (null !== item.image) ? item.image.filePath : null;
+                            const entity = {
+                                label: item.axes_values_labels[catalogLocale],
+                                image: MediaUrlGenerator.getMediaShowUrl(filePath, 'thumbnail_small'),
+                                completeness: this.parseCompleteness(item)
+                            };
 
-                    /**
-                     * Format result (product or product model variations) method of select2.
-                     * This way we can display entities and their info beside them (completeness, image..).
-                     */
-                    formatResult: (item, $container) => {
-                        const catalogLocale = UserContext.get('catalogLocale');
-                        const filePath = (null !== item.image) ? item.image.filePath : null;
-                        const entity = {
-                            label: item.axes_values_labels[catalogLocale],
-                            image: MediaUrlGenerator.getMediaShowUrl(filePath, 'thumbnail_small'),
-                            completeness: this.parseCompleteness(item)
-                        };
+                            const html = ('product' === item.model_type)
+                                ? this.templateProduct({ entity: entity })
+                                : this.templateProductModel({ entity: entity })
+                            ;
 
-                        const html = ('product' === item.model_type)
-                            ? this.templateProduct({ entity: entity })
-                            : this.templateProductModel({ entity: entity })
-                        ;
+                            $container.append(html);
+                        },
 
-                        $container.append(html);
-                    },
-                };
-
-                const optionsLevelOne = $.extend(true, {
-                    query: (options) => {
-                        this.queryChildrenEntities(
-                            options,
-                            entity.meta.variant_navigation.root.id
-                        );
-                    }
-                }, commonOptions);
-
-                this.levelOneDropdown = initSelect2.init($levelOneSelect, optionsLevelOne);
-                this.levelOneDropdown.on('select2-selecting', function (event) {
-                    this.redirectToEntity(event.object)
-                }.bind(this));
-
-                if (null !== entity.meta.variant_navigation.level_one.selected) {
-                    const optionsLevelTwo = $.extend(true, {
                         query: (options) => {
                             this.queryChildrenEntities(
                                 options,
-                                entity.meta.variant_navigation.level_one.selected.id
+                                entity.meta.variant_navigation[index].selected.id
                             )
                         }
-                    }, commonOptions);
+                    };
 
-                    this.levelTwoDropdown = initSelect2.init($levelTwoSelect, optionsLevelTwo);
-                    this.levelTwoDropdown.on('select2-selecting', function (event) {
+                    const dropdown = initSelect2.init($select, options);
+                    dropdown.on('select2-selecting', (event) => {
                         this.redirectToEntity(event.object)
-                    }.bind(this));
-                }
-            },
+                    });
 
-            /**
-             * Take incoming data and format them to have all required parameters
-             * to be used by the select2 module.
-             *
-             * @param {array} data
-             *
-             * @return {array}
-             */
-            toSelect2Format: function (data) {
-                const catalogLocale = UserContext.get('catalogLocale');
-
-                return _.map(data, function (entity) {
-                    entity.text = entity.axes_values_labels[catalogLocale];
-
-                    return entity;
+                    this.dropdowns[index] = dropdown;
                 });
             },
 
@@ -209,7 +171,7 @@ define([
                 const catalogLocale = UserContext.get('catalogLocale');
                 term = term.toLowerCase();
 
-                return _.filter(entities, (entity) => {
+                return entities.filter((entity) => {
                     const label = entity.axes_values_labels[catalogLocale].toLowerCase();
 
                     return -1 !== label.search(term);
@@ -240,19 +202,13 @@ define([
             },
 
             /**
-             * Redirect to the root product model
+             * Redirect to the entity of the given level
              */
-            redirectToRoot: function () {
+            navigateToLevel: function (event) {
                 const entity = this.getFormData();
-                this.redirectToEntity(entity.meta.variant_navigation.root)
-            },
+                const level = $(event.target).data('level');
 
-            /**
-             * Redirect to the sub product model
-             */
-            redirectToModel: function () {
-                const entity = this.getFormData();
-                this.redirectToEntity(entity.meta.variant_navigation.level_one.selected)
+                this.redirectToEntity(entity.meta.variant_navigation[level].selected);
             },
 
             /**
@@ -271,7 +227,7 @@ define([
                 ;
 
                 router.redirectToRoute(route, params);
-            },
+            }
         });
     }
 );

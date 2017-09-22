@@ -23,13 +23,10 @@ define(
         Routing
     ) {
         return ProductFetcher.extend({
-            childrenListPromises: {},
-
             /**
              * @param {Object} options
              */
             initialize: function (options) {
-                this.childrenListPromises = {};
                 this.options = options || {};
 
                 ProductFetcher.prototype.initialize.apply(this, [options]);
@@ -41,24 +38,13 @@ define(
              * @return {Promise}
              */
             fetchChildren: function (parentId) {
-                if (!(parentId in this.childrenListPromises)) {
-                    if (!_.has(this.options.urls, 'children')) {
-                        return $.Deferred().reject().promise();
-                    }
-
-                    this.childrenListPromises[parentId] = $.getJSON(
-                        Routing.generate(this.options.urls.children), {id: parentId}
-                    ).then(_.identity).promise();
+                if (!_.has(this.options.urls, 'children')) {
+                    return $.Deferred().reject().promise();
                 }
 
-                return this.childrenListPromises[parentId];
-            },
-
-            /**
-             * Clear promises.
-             */
-            clear: function () {
-                this.childrenListPromises = {};
+                return $.getJSON(
+                    Routing.generate(this.options.urls.children), {id: parentId}
+                ).then(_.identity).promise();
             }
         });
     }

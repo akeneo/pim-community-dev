@@ -14,6 +14,7 @@ use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -173,6 +174,11 @@ class ProductNormalizer implements NormalizerInterface
         $created = null !== $oldestLog ? $this->versionNormalizer->normalize($oldestLog, 'internal_api') : null;
         $updated = null !== $newestLog ? $this->versionNormalizer->normalize($newestLog, 'internal_api') : null;
 
+        $variantNavigation = [];
+        if ($product instanceof VariantProductInterface) {
+            $variantNavigation = $this->navigationNormalizer->normalize($product, $format, $context);
+        }
+
         $normalizedProduct['meta'] = [
             'form'              => $this->formProvider->getForm($product),
             'id'                => $product->getId(),
@@ -182,7 +188,7 @@ class ProductNormalizer implements NormalizerInterface
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'completenesses'    => $this->getNormalizedCompletenesses($product),
             'image'             => $this->normalizeImage($product->getImage(), $format, $context),
-            'variant_navigation' => $this->navigationNormalizer->normalize($product, $format, $context),
+            'variant_navigation' => $variantNavigation,
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
         return $normalizedProduct;

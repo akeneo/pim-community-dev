@@ -83,21 +83,21 @@ class VariantNavigationNormalizerSpec extends ObjectBehavior
             ->willReturn(['ROOT PRODUCT MODEL NORMALIZED']);
 
         $this->normalize($rootProductModel, 'internal_api')->shouldReturn([
-            'root'      => ['ROOT PRODUCT MODEL NORMALIZED'],
-            'level_one' => [
+            0 => [
+                'selected' => ['ROOT PRODUCT MODEL NORMALIZED']
+            ],
+            1 => [
                 'axes'     => [
                     'en_US' => 'Metric',
                     'fr_FR' => 'Metrique',
-                ],
-                'selected' => null,
+                ]
             ],
-            'level_two' => [
+            2 => [
                 'axes'     => [
                     'en_US' => 'Size',
                     'fr_FR' => 'Taille',
-                ],
-                'selected' => null,
-            ],
+                ]
+            ]
         ]);
     }
 
@@ -165,21 +165,22 @@ class VariantNavigationNormalizerSpec extends ObjectBehavior
             ->willReturn(['PRODUCT MODEL NORMALIZED']);
 
         $this->normalize($productModel, 'internal_api')->shouldReturn([
-            'root'      => ['ROOT PRODUCT MODEL NORMALIZED'],
-            'level_one' => [
+            0 => [
+                'selected' => ['ROOT PRODUCT MODEL NORMALIZED']
+            ],
+            1 => [
                 'axes'     => [
                     'en_US' => 'Metric',
                     'fr_FR' => 'Metrique',
                 ],
                 'selected' => ['PRODUCT MODEL NORMALIZED'],
             ],
-            'level_two' => [
+            2 => [
                 'axes'     => [
                     'en_US' => 'Size',
                     'fr_FR' => 'Taille',
                 ],
-                'selected' => null,
-            ],
+            ]
         ]);
     }
 
@@ -252,21 +253,23 @@ class VariantNavigationNormalizerSpec extends ObjectBehavior
             ->willReturn(['VARIANT PRODUCT NORMALIZED']);
 
         $this->normalize($variantProduct, 'internal_api')->shouldReturn([
-            'root'      => ['ROOT PRODUCT MODEL NORMALIZED'],
-            'level_one' => [
+            0 => [
+                'selected' => ['ROOT PRODUCT MODEL NORMALIZED']
+            ],
+            1 => [
                 'axes'     => [
                     'en_US' => 'Metric',
                     'fr_FR' => 'Metrique',
                 ],
                 'selected' => ['PRODUCT MODEL NORMALIZED'],
             ],
-            'level_two' => [
+            2 => [
                 'axes'     => [
                     'en_US' => 'Size',
                     'fr_FR' => 'Taille',
                 ],
                 'selected' => ['VARIANT PRODUCT NORMALIZED'],
-            ],
+            ]
         ]);
     }
 
