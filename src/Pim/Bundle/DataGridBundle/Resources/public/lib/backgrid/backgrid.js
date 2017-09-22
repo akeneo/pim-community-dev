@@ -2234,7 +2234,14 @@ var Body = Backgrid.Body = Backbone.View.extend({
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < this.rows.length; i++) {
       var row = this.rows[i];
-      fragment.appendChild(row.render().el);
+      row.render();
+      if ('TR' === row.el.tagName) {
+        fragment.appendChild(row.render().el);
+      } else {
+        _.each(row.$el.children(), (child) => {
+            fragment.appendChild(child);
+        });
+      }
     }
 
     this.el.appendChild(fragment);

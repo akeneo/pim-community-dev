@@ -97,7 +97,6 @@ define([
 
                 //TODO Manage columns for product form (when refactoring product form index)
                 //TODO Manage category filter (when refactoring category index)
-
                 $.get(Routing.generate('pim_datagrid_load', this.urlParams)).then(function (response) {
 
                     this.$el.find('.grid-drop').data({
