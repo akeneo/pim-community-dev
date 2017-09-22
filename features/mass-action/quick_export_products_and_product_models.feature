@@ -12,7 +12,7 @@ Feature: Export products and product models
     And I filter by "color" with operator "in list" and value "Crimson red"
 
   Scenario: Successfully export only products to multiple channels
-    Given I select rows tshirt-unique-size-crimson-red, running-shoes-m-crimson-red and model-tshirt-divided-crimson-red
+    And I select rows model-tshirt-divided-crimson-red, running-shoes-m-crimson-red and tshirt-unique-size-crimson-red
     And I press "CSV (Grid context)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish
     And I am on the dashboard page

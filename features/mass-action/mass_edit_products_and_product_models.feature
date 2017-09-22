@@ -13,7 +13,7 @@ Feature: Apply a mass action on products only (and not product models)
   Scenario: Apply a mass action on products and product models
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Crimson red"
-    And I select rows tshirt-unique-size-crimson-red, running-shoes-m-crimson-red and model-tshirt-divided-crimson-red
+    And I select rows model-tshirt-divided-crimson-red, running-shoes-m-crimson-red and tshirt-unique-size-crimson-red
     And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Composition attribute
@@ -24,7 +24,7 @@ Feature: Apply a mass action on products only (and not product models)
   Scenario: Mass edits common attributes of only products within a selection of products and product models
     Given I show the filter "color"
     And I filter by "color" with operator "in list" and value "Crimson red"
-    And I select rows tshirt-unique-size-crimson-red, running-shoes-m-crimson-red and model-tshirt-divided-crimson-red
+    And I select rows model-tshirt-divided-crimson-red, running-shoes-m-crimson-red and tshirt-unique-size-crimson-red
     And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Composition attribute
