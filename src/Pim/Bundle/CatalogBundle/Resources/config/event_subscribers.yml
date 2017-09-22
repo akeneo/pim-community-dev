@@ -90,5 +90,6 @@ services:
         class: '%pim_catalog.event_subscriber.reset_unique_validation.class%'
         arguments:
             - '@pim_catalog.validator.unique_value_set'
+            - '@pim_catalog.validator.unique_axes_combination_set'
         tags:
            - { name: kernel.event_listener, event: akeneo.storage.post_save_all }

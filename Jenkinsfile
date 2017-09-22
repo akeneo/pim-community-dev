@@ -173,6 +173,9 @@ def runPhpUnitTest() {
 def runIntegrationTest(storage, testSuiteName) {
     node('docker') {
         deleteDir()
+        sh "docker stop \$(docker ps -a -q) || true"
+        sh "docker rm \$(docker ps -a -q) || true"
+
         try {
             docker.image("mongo:2.4").withRun("--name mongodb", "--smallfiles") {
                 docker.image("mysql:5.5").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim", "--sql_mode=ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION") {
