@@ -68,6 +68,9 @@
     justify-content: flex-end;
     flex-grow: 1;
     align-items: flex-start;
+    flex-wrap: wrap;
+    align-content: baseline;
+    min-width: 350px;
   }
 
   &-rightButtons {
@@ -77,9 +80,12 @@
   }
 
   &-state {
-    order: -1;
+    order: 50;
     align-self: center;
-    margin-right: @AknDefaultButtonSize / 2;
+    margin-right: 0;
+    flex-basis: 100%;
+    margin-top: 10px;
+    text-align: right;
   }
 
   &-userMenu:not(:empty) {
