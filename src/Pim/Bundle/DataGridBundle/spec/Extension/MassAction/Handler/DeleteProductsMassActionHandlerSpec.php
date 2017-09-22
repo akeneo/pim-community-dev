@@ -11,6 +11,8 @@ use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\DeleteProductsMassActionHandler;
+use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
 use Pim\Component\Catalog\ProductEvents;
 use Pim\Component\Catalog\Repository\ProductMassActionRepositoryInterface;
 use Prophecy\Argument;
@@ -49,18 +51,44 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
         $options->offsetGetByPath(Argument::cetera())->willReturn('qux');
     }
 
-    function it_dispatches_events(
+    function it_dispatches_events_to_remove_products_only(
         $eventDispatcher,
         $datasource,
         $massActionRepo,
         $datagrid,
         $massAction,
         $indexRemover,
-        ResultRecord $resultRecord
+        ResultRecord $resultRecord1,
+        ResultRecord $resultRecord2,
+        ResultRecord $resultRecord3,
+        ResultRecord $resultRecord4,
+        ResultRecord $resultRecord5
     ) {
-        $resultRecord->getValue('id')->willReturn('foo');
-        $objectIds = ['foo'];
-        $datasource->getResults()->willReturn(['data' => [$resultRecord]]);
+        $resultRecord1->getValue('id')->willReturn('product_model_1');
+        $resultRecord1->getValue('document_type')->willReturn(IdEncoder::PRODUCT_MODEL_TYPE);
+
+        $resultRecord2->getValue('id')->willReturn('product_1');
+        $resultRecord2->getValue('document_type')->willReturn(IdEncoder::PRODUCT_TYPE);
+
+        $resultRecord3->getValue('id')->willReturn('product_model_2');
+        $resultRecord3->getValue('document_type')->willReturn(IdEncoder::PRODUCT_MODEL_TYPE);
+
+        $resultRecord4->getValue('id')->willReturn('product_2');
+        $resultRecord4->getValue('document_type')->willReturn(IdEncoder::PRODUCT_TYPE);
+
+        $resultRecord5->getValue('id')->willReturn('product_model_3');
+        $resultRecord5->getValue('document_type')->willReturn(IdEncoder::PRODUCT_MODEL_TYPE);
+
+        $objectIds = ['product_1', 'product_2'];
+        $datasource->getResults()->willReturn([
+            'data' => [
+                $resultRecord1,
+                $resultRecord2,
+                $resultRecord3,
+                $resultRecord4,
+                $resultRecord5,
+            ],
+        ]);
         $massActionRepo->deleteFromIds($objectIds)->willReturn(1);
 
         $eventDispatcher->dispatch(
@@ -80,7 +108,7 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
             new GenericEvent($objectIds)
         )->shouldBeCalled();
 
-        $indexRemover->removeAll(['foo'])->shouldBeCalled();
+        $indexRemover->removeAll(['product_1', 'product_2'])->shouldBeCalled();
 
         $this->handle($datagrid, $massAction);
     }
