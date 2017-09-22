@@ -1,10 +1,8 @@
 {% block content %}
-    <div class="mass-upload-wrapper"></div>
-
     <script>
         require(['pimee/productasset/mass-upload'], function (massUpload) {
             var myDropzone = new massUpload();
-            myDropzone.setElement('.mass-upload-wrapper');
+            myDropzone.setElement('.view');
             myDropzone.render();
         });
     </script>

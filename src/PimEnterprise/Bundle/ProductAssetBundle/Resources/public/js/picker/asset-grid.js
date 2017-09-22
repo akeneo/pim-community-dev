@@ -4,6 +4,7 @@ define(
     [
         'jquery',
         'underscore',
+        'oro/translator',
         'backbone',
         'routing',
         'pim/form',
@@ -19,6 +20,7 @@ define(
     function (
         $,
         _,
+        __,
         Backbone,
         Routing,
         BaseForm,
@@ -82,6 +84,8 @@ define(
                 }
 
                 this.$el.html(this.template({
+                    title: __('pimee_product_asset.form.product.asset.title'),
+                    description: __('pimee_product_asset.form.product.asset.description'),
                     locale: this.getLocale()
                 }));
                 this.renderGrid(this.datagrid);
