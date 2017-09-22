@@ -44,6 +44,8 @@ class ProductModelCsvExport implements DefaultValuesProviderInterface
     public function getDefaultValues()
     {
         $parameters = $this->simpleProvider->getDefaultValues();
+        $parameters['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+        $parameters['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
         $parameters['with_media'] = true;
 
         return $parameters;

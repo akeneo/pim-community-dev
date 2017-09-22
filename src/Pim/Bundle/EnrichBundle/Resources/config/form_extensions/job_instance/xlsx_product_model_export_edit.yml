@@ -111,6 +111,17 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.date_format.title
             tooltip: pim_enrich.form.job_instance.tab.properties.date_format.help
 
+    pim-job-instance-xlsx-product-model-export-edit-properties-lines-per-file:
+        module: pim/job/common/edit/field/text
+        parent: pim-job-instance-xlsx-product-model-export-edit-global
+        position: 150
+        targetZone: properties
+        config:
+            fieldCode: configuration.linesPerFile
+            readOnly: false
+            label: pim_enrich.form.job_instance.tab.properties.lines_per_file.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.lines_per_file.help
+
     pim-job-instance-xlsx-product-model-export-edit-properties-with-header:
         module: pim/job/common/edit/field/switch
         parent: pim-job-instance-xlsx-product-model-export-edit-global

@@ -46,6 +46,8 @@ class ProductModelCsvExport implements ConstraintCollectionProviderInterface
     {
         $baseConstraint = $this->simpleProvider->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
+        $constraintFields['decimalSeparator'] = new NotBlank(['groups' => ['Default', 'FileConfiguration']]);
+        $constraintFields['dateFormat'] = new NotBlank(['groups' => ['Default', 'FileConfiguration']]);
         $constraintFields['with_media'] = new Type(
             [
                 'type'   => 'bool',

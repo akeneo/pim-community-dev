@@ -40,7 +40,6 @@ class ProductModelSpec extends ObjectBehavior
 
         $expected = [
             'code'                    => 'apollon',
-            'categories'              => 'audio_video_sales,loudspeakers,sony',
             'family_variant'          => 'soundspeaker_color',
             'parent'                  => 'parent_model_code',
             'weight-de_DE-print'      => '100',
@@ -49,7 +48,6 @@ class ProductModelSpec extends ObjectBehavior
 
         $item = [
             'code'              => 'apollon',
-            'categories'        => ['audio_video_sales', 'loudspeakers', 'sony'],
             'family_variant'    => 'soundspeaker_color',
             'parent'            => 'parent_model_code',
             'values'            => [
