@@ -4,7 +4,7 @@ function(__, Backgrid, template) {
     'use strict';
 
     /**
-     * String column cell. Added missing behaviour.
+     * History diff column cell.
      *
      * @export  oro/datagrid/history-diff-cell
      * @class   oro.datagrid.HistoryDiffCell

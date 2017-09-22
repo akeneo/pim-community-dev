@@ -1,12 +1,12 @@
 /* global define */
-define(['underscore', 'backgrid', 'pim/template/datagrid/cell/history-diff-cell'],
+define(['underscore', 'backgrid', 'pim/template/datagrid/cell/expand-history-cell'],
     function(_, Backgrid, template) {
         'use strict';
 
         /**
-         * Number column cell.
+         * Expand history cell.
          *
-         * @export  oro/datagrid/expand-cell
+         * @export  oro/datagrid/expand-history-cell
          * @class   oro.datagrid.ExpandCell
          * @extends Backgrid.StringCell
          */
