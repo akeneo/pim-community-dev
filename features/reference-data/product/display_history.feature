@@ -29,7 +29,7 @@ Feature: Display the product history
     And I change the "Heel color" to "Green"
     And I save the product
     And I visit the "History" column tab
-    Then I should see history in panel:
+    Then I should see history:
       | version | property   | value |
       | 3       | Heel color | Green |
 
@@ -38,6 +38,6 @@ Feature: Display the product history
     And I change the "Sole fabric" to "Nylon,PVC"
     And I save the product
     When I visit the "History" column tab
-    Then I should see history in panel:
+    Then I should see history:
       | version | property    | value     |
       | 2       | Sole fabric | Nylon,PVC |
