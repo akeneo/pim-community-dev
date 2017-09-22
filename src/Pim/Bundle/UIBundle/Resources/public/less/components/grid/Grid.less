@@ -15,7 +15,7 @@
     border-top: 1px solid @AknBorderColor;
   }
 
-  &-bodyRow + &-bodyRow &-bodyCell&-bodyCell--checkbox {
+  &-bodyRow + &-bodyRow &-bodyCell:first-child&-bodyCell--checkbox {
     border-top: none;
   }
 
@@ -42,7 +42,7 @@
       width: 1px;
     }
 
-    &--checkbox {
+    &:first-child&--checkbox {
       background: white;
       text-align: center;
       width: 40px;
@@ -81,7 +81,7 @@
     }
 
     &--actions,
-    &--checkbox {
+    &:first-child&--checkbox {
       opacity: 0;
       transition: opacity 0.2s ease-in;
     }
