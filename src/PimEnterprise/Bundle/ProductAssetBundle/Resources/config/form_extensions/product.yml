@@ -9,3 +9,8 @@ extensions:
         module: oro/datafilter/filters-list
         parent: pimee-product-asset-picker-form
         targetZone: filters
+
+    pimee-product-asset-picker-form-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pimee-product-asset-picker-form
+        targetZone: filters

@@ -1,6 +1,7 @@
 datagrid:
     asset-picker-grid:
         options:
+            manageFilters: false
             entityHint: asset
             requireJSModules:
                 - pim/datagrid/column-form-listener
