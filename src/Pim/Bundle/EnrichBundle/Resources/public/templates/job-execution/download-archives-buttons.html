@@ -1,19 +1,25 @@
 <% _.each(archives, function (archive, archiver) { %>
     <% if (_.size(archive.files) === 1) { %>
         <% _.each(archive.files, function (file, key) { %>
-        <a class="AknDropdown-menuLink" title="<%- __(archive.label) %>"
+        <a class="AknButton" title="<%- __(archive.label) %>"
            href="<%- generateRoute({id: executionId, archiver: archiver, key: key }) %>">
             <%- __(archive.label) %>
         </a>
         <% }); %>
     <% } else { %>
-        <% _.each(archive.files, function (file, key) { %>
-            <li>
-                <a class="AknDropdown-menuLink"
-                   href="<%- generateRoute({id: executionId, archiver: archiver, key: key }) %>">
-                    <%- key %>
-                </a>
-            </li>
-        <% }); %>
+        <div class="AknDropdown">
+            <div class="AknButton" data-toggle="dropdown"><%- __(archive.label) %></div>
+            <div class="AknDropdown-menu">
+                <div class="AknDropdown-menuTitle"><%- __(archive.label) %></div>
+                <% _.each(archive.files, function (file, key) { %>
+                    <div>
+                        <a class="AknDropdown-menuLink"
+                           href="<%- generateRoute({id: executionId, archiver: archiver, key: key }) %>">
+                            <%- key %>
+                        </a>
+                    </div>
+                <% }); %>
+            </div>
+        </div>
     <% } %>
 <% }); %>
