@@ -115,8 +115,8 @@ class FixturesContext extends BaseFixturesContext
         $this->getProductSaver()->save($product);
 
         // reset the unique value set to allow to update product values
-        $uniqueValueSet = $this->getContainer()->get('pim_catalog.validator.unique_value_set');
-        $uniqueValueSet->reset();
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->getContainer()->get('pim_catalog.validator.unique_axes_combination_set')->reset();
 
         $this->refresh($product);
         $this->buildProductHistory($product);

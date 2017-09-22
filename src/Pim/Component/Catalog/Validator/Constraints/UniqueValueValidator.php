@@ -111,7 +111,7 @@ class UniqueValueValidator extends ConstraintValidator
     }
 
     /**
-     * @param $mixed $data
+     * @param mixed $data
      *
      * @return string
      */
@@ -129,7 +129,7 @@ class UniqueValueValidator extends ConstraintValidator
     {
         $root = $this->context->getRoot();
         if (!$root instanceof Form) {
-            return;
+            return null;
         }
 
         preg_match(
@@ -138,18 +138,18 @@ class UniqueValueValidator extends ConstraintValidator
             $matches
         );
         if (!isset($matches[1])) {
-            return;
+            return null;
         }
 
         $product = $this->context->getRoot()->getData();
         if (!$product instanceof ProductInterface) {
-            return;
+            return null;
         }
 
         $value = $product->getValue($matches[1]);
 
         if (false === $value) {
-            return;
+            return null;
         }
 
         return $value;
