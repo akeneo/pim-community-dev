@@ -15,8 +15,8 @@ pimee_catalog_rule:
           no_yet_calculated: No s'ha calculat encara
       mass_edit_action:
         impacted_product_count: Calcula els productes afectats
-        execute: Executar les regles seleccionades
-        delete: Suprimir les regles seleccionades
+        execute: Executar
+        delete: Suprimir
   actions:
     type:
       "copy": Llavors %from_field% es copia en %to_field%
@@ -66,7 +66,6 @@ pimee_catalog_rule:
   product:
     tooltip:
       product_attribute_affected_by_a_rule.content: El valor d'aquest atribut pot venir de les regles <strong>%rule%</strong>. Això significa que si les condicions de la regla són vàlides, la seva modificació serà anul·lada.
-      variant_attribute_affected_by_a_rule.content: Els atributs de la variant grups tenen prioritat sobre els atributs de productes. Això significa que cada atribut d'aquesta variant grups invalidarà el valor corresponent en els productes continguts. No s'aplicaran les regles <strong>%rule%</strong> sobre els productes.
       loading.title: Carregant...
     history: Regla "%rule%" aplicada
   product_value:

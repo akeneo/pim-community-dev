@@ -15,8 +15,8 @@ pimee_catalog_rule:
           no_yet_calculated: Endnu ikke beregnet
       mass_edit_action:
         impacted_product_count: Beregn de berørte produkter
-        execute: Kør de valgte regler
-        delete: Slet de valgte regler
+        execute: Udfør
+        delete: Slet
   actions:
     type:
       "copy": Så %from_field% er kopieret ind i %to_field%
@@ -66,7 +66,6 @@ pimee_catalog_rule:
   product:
     tooltip:
       product_attribute_affected_by_a_rule.content: Værdi af denne attribut kan komme fra regler <strong>%rule%</strong>. Det betyder, at hvis betingelserne for reglen er gyldigt, bliver din ændring overskrevet.
-      variant_attribute_affected_by_a_rule.content: Variant gruppe attributter har prioritet på attributterne produkter. Det betyder, at hver attribut for denne variant gruppe vil overskrive den tilsvarende værdi i de indeholdte produkter. Regler <strong>%rule%</strong>, vil ikke blive anvendt på produkterne.
       loading.title: Indlæser...
     history: Anvendt regel "%rule%"
   product_value:

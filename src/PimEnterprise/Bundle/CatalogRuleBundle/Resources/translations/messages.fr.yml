@@ -15,8 +15,8 @@ pimee_catalog_rule:
           no_yet_calculated: Pas encore calculé
       mass_edit_action:
         impacted_product_count: Calculer les produits affectés
-        execute: Exécuter les règles sélectionnées
-        delete: Supprimer les règles sélectionnées
+        execute: Exécuter
+        delete: Supprimer
   actions:
     type:
       "copy": Alors %from_field% est copié dans %to_field%
@@ -66,7 +66,6 @@ pimee_catalog_rule:
   product:
     tooltip:
       product_attribute_affected_by_a_rule.content: La valeur de cet attribut peut provenir d'une ou plusieurs règles <strong>%rule%</strong>. Cela signifie que - dans le cas ou une règle peut s'appliquer -  vos modifications seront écrasées.
-      variant_attribute_affected_by_a_rule.content: Les valeurs d'attributs liées à un groupe de variantes sont prioritaires sur les valeurs d'attributs du produit. Cela signifie que chaque valeur d'attribut du groupe de variante remplacera systématiquement la valeur d'attribut du produit. La/les règle(s) <strong>%rule%</strong> ne seront pas appliquées au produit.
       loading.title: Chargement en cours...
     history: Application de la règle "%rule%"
   product_value:

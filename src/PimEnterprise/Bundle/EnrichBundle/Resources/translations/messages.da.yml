@@ -157,10 +157,6 @@ batch_jobs:
     perform.label: Rediger fælles attributter
     execute_rules.label: Regler udførelse
     cleaner.label: Ryd midlertidige filer
-  add_to_variant_group_with_rules:
-    label: Føj produkter til variant gruppe med regler anvendelse
-    perform.label: Føj produktet til en variant gruppe
-    execute_rules.label: Regler udførelse
   csv_published_product_quick_export:
     export.label: CSV offentliggjort produkter hurtig eksport
     perform:
@@ -177,10 +173,6 @@ batch_jobs:
     export.label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
     perform:
       label: CSV offentliggjort produkter gitter sammenhæng hurtig eksport
-add_to_variant_group_with_rules:
-  steps.perform: Føj produktet til en variant gruppe
-  steps.excluded.title: Udelukkede produkt
-  steps.duplicated.title: Duplikeret akse
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Rediger fælles attributter
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Tilføj produktværdi med tilladelse
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Opdatere produktets værdi med tilladelse

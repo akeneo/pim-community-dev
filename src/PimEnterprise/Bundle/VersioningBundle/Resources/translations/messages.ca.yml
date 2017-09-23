@@ -1,4 +1,3 @@
 flash.version.revert.product: Restaurar amb èxit el producte a la versió anterior
 flash.error.revert.product: Aquesta versió no es pot recuperar. S'han produït errors durant la validació.
-flash.error.revert.product_has_variant: El producte no es pot recuperar perquè pertany a un grup de variants
 pimee_versioning.acl.product_version.revert: Recuperar un producte

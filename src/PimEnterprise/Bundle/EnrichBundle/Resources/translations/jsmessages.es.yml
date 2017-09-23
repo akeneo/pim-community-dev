@@ -48,6 +48,8 @@ pimee_enrich:
           edit.label: Autorizado a editar los atributos
   entity:
     product:
+      index_title: Productos publicados
+      navigation: Productos publicados
       history:
         published: Publicado
         revert: Restaurar

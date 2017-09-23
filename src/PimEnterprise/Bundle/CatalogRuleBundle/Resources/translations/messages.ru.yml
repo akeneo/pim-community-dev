@@ -15,8 +15,8 @@ pimee_catalog_rule:
           no_yet_calculated: не подсчитана
       mass_edit_action:
         impacted_product_count: Вычислить количество затрагиваемых продуктов
-        execute: Выполнить выбранные правила
-        delete: Удалить выбранные правила
+        execute: Выполнить
+        delete: Удалить
   actions:
     type:
       "copy": Тогда %from_field% копируется в %to_field%
@@ -66,7 +66,6 @@ pimee_catalog_rule:
   product:
     tooltip:
       product_attribute_affected_by_a_rule.content: Значение этого атрибута может быть получено из правил(а) <strong>%rule%</strong>. Это значит, что если условия верны, то ваши настройки будут перезаписаны.
-      variant_attribute_affected_by_a_rule.content: Атрибуты групп вариантов имеют приоритет над атрибутами продуктов. Это значит, что каждый атрибут группы вариантов будет перезаписывать соответствующее значение продукта. Правила <strong>%rule%</strong> не будут применяться к продуктам.
       loading.title: Загрузка...
     history: Применено правило "%rule%"
   product_value:

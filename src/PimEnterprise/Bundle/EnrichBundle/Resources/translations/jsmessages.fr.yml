@@ -54,6 +54,8 @@ pimee_enrich:
           added: Le groupe {{ group }} sera autorisé à {{ permission }} le groupe d'attributs
   entity:
     product:
+      index_title: Produits publiés
+      navigation: Produits publiés
       history:
         published: Publié
         revert: Restaurer
@@ -170,10 +172,12 @@ pimee_enrich:
       operation:
         publish:
           label: Publier
+          label_count: "{1}Publier <span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Publier <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
           description: Les produits seront publiés
           warning: Les {{ itemsCount }} produits sélectionnés vont être publiés.
         unpublish:
           label: Dépublier
+          label_count: "{1}Dépublier <span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Dépublier <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
           description: Les produits seront non publiés
           warning: Les {{ itemsCount }} produits sélectionnés vont être non publiés.
     asset:

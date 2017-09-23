@@ -1,4 +1,3 @@
 flash.version.revert.product: Successrig genoprettelse af produktet til en tidligere version
 flash.error.revert.product: Denne version kan ikke genoprettes. Der opstod fejl i forbindelse med valideringen.
-flash.error.revert.product_has_variant: Produktet kan ikke blive genoprettet pga. at produktet tilhører en variant gruppe
 pimee_versioning.acl.product_version.revert: Genoprette et produkt

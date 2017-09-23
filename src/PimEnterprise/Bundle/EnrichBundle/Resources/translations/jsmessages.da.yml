@@ -54,6 +54,8 @@ pimee_enrich:
           added: Gruppe {{ group }} vil være tilladt at {{ permission }} attributgruppe
   entity:
     product:
+      index_title: Offentliggjorte produkter
+      navigation: Offentliggjorte produkter
       history:
         published: Publiceret
         revert: Gendan

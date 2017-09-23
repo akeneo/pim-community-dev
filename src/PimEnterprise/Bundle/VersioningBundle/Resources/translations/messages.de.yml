@@ -1,4 +1,3 @@
 flash.version.revert.product: Das Produkt wurde erfolgreich auf die vorherige Version wiederhergestellt
 flash.error.revert.product: Diese Version kann nicht wiederhergestellt werden. Während der Validierung traten einige Fehler auf.
-flash.error.revert.product_has_variant: Das Produkt kann nicht wiederhergestellt werden, da es zu einer Variantengruppe gehört
 pimee_versioning.acl.product_version.revert: Ein Produkt wiederherstellen

@@ -48,6 +48,8 @@ pimee_enrich:
           edit.label: Berechtigt Attribute zu bearbeiten
   entity:
     product:
+      index_title: Veröffentlichte Produkte
+      navigation: Veröffentlichte Produkte
       history:
         published: Veröffentlicht
         revert: Wiederherstellen

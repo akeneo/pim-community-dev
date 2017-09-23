@@ -1,4 +1,3 @@
 flash.version.revert.product: Uspješno vrati proizvod na prethodnu verziju
 flash.error.revert.product: Ova verzija ne može vratiti. Pojavile su se neke pogreške tijekom provjere valjanosti.
-flash.error.revert.product_has_variant: Proizvod se ne može vratiti jer spada u varijantu grupe
 pimee_versioning.acl.product_version.revert: Vraćanje proizvoda

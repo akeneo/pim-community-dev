@@ -154,10 +154,6 @@ batch_jobs:
     perform.label: Изменить общие атрибуты
     execute_rules.label: Выполнение правил
     cleaner.label: Очистить временные файлы
-  add_to_variant_group_with_rules:
-    label: Добавить продукты в группу вариантов с применением правил
-    perform.label: Добавить продукты в группу вариантов
-    execute_rules.label: Выполнение правил
   csv_published_product_quick_export:
     export.label: Быстрый экспорт опубликованных товаров в CSV
     perform:
@@ -174,10 +170,6 @@ batch_jobs:
     export.label: Быстрый экспорт контекста сетки опубликованных товаров в XLSX
     perform:
       label: Быстрый экспорт контекста сетки опубликованных товаров в XLSX
-add_to_variant_group_with_rules:
-  steps.perform: Добавить продукты в группу вариантов
-  steps.excluded.title: Исключенные продукты
-  steps.duplicated.title: Продублированные оси
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Изменить общие атрибуты
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Добавить значение продукта с правами доступа
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Обновить значение продукта с правами доступа

@@ -1,4 +1,3 @@
 flash.version.revert.product: Palauta tuote edelliseen versioon
 flash.error.revert.product: Tätä versiota ei voi palauttaa. Joitain virheitä vahvistuksen aikana.
-flash.error.revert.product_has_variant: Tuotetta ei voi palauttaa, koska se kuuluu variant-ryhmään
 pimee_versioning.acl.product_version.revert: Palauta tuote

@@ -18,7 +18,6 @@ pimee_workflow:
     proposal:
       modal.title: Efterlad en kommentar (valgfri - max. 255 tegn)
   proposal:
-    overview: Forslag
     mass_action_group:
       review:
         label: Massehandling

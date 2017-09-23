@@ -10,6 +10,8 @@ pimee_catalog_rule:
         actions: Toimi
         impacted_product_count:
           no_yet_calculated: Ei vielä laskettu
+      mass_edit_action:
+        delete: Poista
   condition:
     operators:
       "STARTS WITH": alkaa
@@ -35,7 +37,6 @@ pimee_catalog_rule:
   product:
     tooltip:
       product_attribute_affected_by_a_rule.content: Tämän attribuutin arvo voi tulla säännöistä <strong>%rule%</strong>. Tämä tarkoittaa, että mikäli säännön ehdot ovat päteviä, muutoksesi ohitetaan.
-      variant_attribute_affected_by_a_rule.content: Varianttiryhmän attribuuteilla on prioriteetti tuotteen attribuuteissa. Tämä tarkoittaa, että jokainen attributti tässä varianttiryhmässä tulee ohittamaan vastaavan arvon sen sisältämissä tuotteissa. Sääntöjä <strong>%rule%</strong> ei käytetä tuotteissa.
       loading.title: Ladataan...
     history: Otettu käyttöön sääntö "%rule%"
   product_value:
