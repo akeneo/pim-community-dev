@@ -49,20 +49,6 @@ pim_enrich:
       product.title: Tuotteet
       property.title: Ominaisuudet
       history.title: Historia
-  variant_group:
-    type:
-      VARIANT: Tuotevariaatio
-      X_SELL: X-Sell
-      ADDITIONAL: Lisää
-      RELATED: Liittyvät
-    tab:
-      product.title: Tuotteet
-      property.title: Ominaisuudet
-      history.title: Historia
-      attribute.title: Attribuutit
-    info:
-      no_attributes: Tällä tuotevariaatioryhmällä ei ole attribuutteja vielä
-      no_attributes_in_selected_locale: Tällä tuotevariaatioryhmällä ei ole attribuutteja vielä tässä lokaatiossa
   completeness:
     progress_bar.title: '%ratio% täydellinen (1 vaadittu arvo) |%ratio% % täydellinen (%count% vaaditut arvot)'
     subtitle: '{0} Complete|{1} 1 puuttuu value|] 1, Inf] %count% puuttuvat arvot'
@@ -130,14 +116,6 @@ pim_enrich:
       success_flash: Tuotteet lisättiin onnistuneesti valittuihin ryhmiin
       launched_flash: Massatoiminto "Lisää ryhmiin" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
       no_group: Ei ryhmää toistaiseksi, aloita luomalla ryhmä.
-    add-to-variant-group:
-      label: Lisää tuotevariaatioryhmään
-      description: Valitse tuotevariaatioyhmä johon lisätä valitut tuotteet
-      success_flash: Tuotteet lisättiin onnistuneesti valittuun tuotevariaatioryhmään
-      already_in_variant_group_or_not_valid: Et voi ryhmitellä tuotetta koska se on jo jossain tuotevariaatioryhmässä tai sillä ei ole ryhmäakselia
-      no_variant_group: Ei tuotevariaatioryhmää toistaiseksi, aloita luomalla varianttiryhmä.
-      no_valid_variant_group: Mikään tuotevariaatioryhmä ei jaa attribuutteja valittujen tuotteiden kanssa.
-      launched_flash: Massatoiminto "Lisää tuotevariaatioryhmään" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     set-attribute-requirements:
       description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
       success_flash: Määritteen vaatimuksia sovellettiin valittuihin ryhmiin
@@ -167,7 +145,6 @@ pim_enrich:
       change_family: Vaihda tuoteryhmää
       change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin
-      add_to_variant_group: Lisää tuote tuotevariaatioryhmään
       mass_edit: Tuotteen massaedit-toiminnot
       comment: Kommentoi tuotteita
       download: 'Lataa tuote PDF:nä'
@@ -216,15 +193,6 @@ pim_enrich:
       edit: Muokkaa ryhmää
       remove: Poista ryhmä
       history: Näytä ryhmän historia
-    variant_group:
-      index: Listaa tuotevariaatioryhmät
-      create: Luo tuotevariaatioryhmä
-      edit: Muokkaa tuotevariaatioryhmää
-      remove: Poista tuotevariaatioryhmä
-      history: Poista tuotevariaatioryhmän historia
-      edit_attributes: Muokkaa tuotevariaatioryhmien määritteitä
-      add_attributes: Lisää määritteitä tuotevariaatioryhmiin
-      remove_attribute: Poista määritteitä tuotevariaatioryhmistä
     group_type:
       index: Listaa ryhmätyypit
       create: Luo ryhmätyyppi
@@ -247,15 +215,9 @@ pim_enrich:
     currency: Valuutat
     family: Perheet
     group: Ryhmät
-    variant_group: Tuotevariaatioryhmät
     group_type: Ryhmätyypit
     locale: Alueet
     product: Tuotteet
-  product_value:
-    tooltip:
-      from_variant:
-        title: Päivitetty tuotevariaatioryhmittäin
-        content: Tätä kenttää päivittää seuraava tuotevariaatioryhmä
   reference_data:
     empty_value:
       reference_data_type:
@@ -274,7 +236,7 @@ attribute group:
   create new: Luo uusi attribuuttiryhmä
 category:
   title: kategoria
-  overview: kategorioiden tarkastelu
+  overview: Kategoriat
   create: luo kategoria
   edit: muokkaa kategoriaa
   suggest selection: Valitse kategoria vasemmalta
@@ -311,9 +273,6 @@ group:
 group type:
   title: ryhmän tyyppi
   edit: muokkaa ryhmätyyppiä
-variant group:
-  title: tuotevariaatioryhmä
-  edit: muokkaa tuotevariaatioryhmää
 association type:
   title: sidoksen tyyppi
   create: luo sidostyyppi
@@ -331,7 +290,6 @@ btn:
     locale: luo lokaatio
     product: luo tuote
     group: luo ryhmä
-    variant group: luo tuotevariaatioryhmä
     association type: luo sidostyyppi
     group type: luo ryhmätyyppi
     drag_or_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
@@ -363,7 +321,6 @@ confirmation:
     family: Oletko varma, että haluat poistaa tuoteryhmän %name%?
     product: Oletko varma, että haluat poistaa tuotteen %name%?
     group: Oletko varma, että haluat poistaa ryhmän %name%?
-    variant group: Oletko varma, että haluat poistaa tuotevariaatioryhmän %name%?
     group type: Oletko varma, että haluat poistaa ryhmätyypin %name%?
     user: Oletko varma, että haluat poistaa käyttäjän %name%?
   attribute group:
@@ -372,8 +329,6 @@ confirmation:
     remove attribute: Oletko varma, että haluat poistaa attribuutin %name% tästä tuoteperheestä?
   product:
     remove attribute: Oletko varma, että haluat poistaa attribuutin %name% tästä tuotteesta?
-  variant_group:
-    remove_attribute: Oletko varma, että haluat poistaa attribuutin %name% tästä tuotevariaatioryhmästä?
 flash:
   entity:
     removed: Kohde poistettiin
@@ -382,7 +337,6 @@ flash:
     updated: Attribuutin päivittäminen onnistui
     removed: Attribuutin poistaminen onnistui
     identifier not removable: Attribuutin identifioijaa ei voi poistaa
-    used by groups: Attribuuttia ei voi poistaa, koska sitä käytetään %count% tuotevariaatioryhmissä
   attribute group:
     created: Attribuuttiryhmän luominen onnistui
     updated: Attribuuttiryhmän päivittäminen onnistui
@@ -425,17 +379,10 @@ flash:
   group:
     updated: Ryhmä päivitetty onnistuneesti
     removed: Ryhmän poistaminen onnistui
-  variant group:
-    created: Tuotevariaatioryhmä poistettu onnistuneesti
-    updated: Tuotevariaatioryhmä poistettu onnistuneesti
-    removed: Tuotevariaatioryhmä poistettiin onnistuneesti
-    attributes_added: Attribuuttien lisääminen onnistui tuotevariaatioryhmään
-    attribute_removed: Attribuutti poistettiin onnistuneesti tuotevariaatioryhmästä
   group type:
     created: Ryhmätyyppi lisätty onnistuneesti
     updated: Ryhmätyyppi päivitetty onnistuneesti
     removed: Ryhmätyyppi poistettu onnistuneesti
-    cant remove variant: Tuotevariaatioryhmää ei voida poistaa
     cant remove used: Ryhmätyyppi on käytössä ja sitä ei voida poistaa
   association type:
     created: Sidostyyppi luotu onnistuneesti
@@ -491,7 +438,7 @@ Manage groups: Ryhmien hallinta
 Code: Koodi
 Name: Nimi
 Type: Tyyppi
-Scope: Soveltamisala
+Scope: Kanava
 Required: Vaadittu
 Unique: Ainutlaatuinen
 Not required: Ei vaadittu
@@ -611,9 +558,6 @@ pim_title.locale:
 pim_title.group:
   index: "Ryhmät"
   edit: "Ryhmien %group.label% | Muokkaa"
-pim_title.variant_group:
-  index: "Tuotevariaatioryhmät"
-  edit: "Tuotevariaatioryhmät %group.label% | Muokkaa"
 pim_title.association_type:
   index: "Määritetyypit"
   edit: "Määritetyypit %association type.label% | Muokkaa"
@@ -685,7 +629,6 @@ pim_enrich.mass_edit_action:
     success_flash: Tuotteen attribuutit on päivitetty
     message.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
     no_attribute.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
-    truncated_by_variant_attribute.warning: 'Jotkin yleiset attribuutit valituista tuotteista tulevat tuotevariaatioryhmistä. Ne eivät ole käytettävissä massamuokkaukseen: %attributes%.'
   classify:
     description: Tuotteet asetetaan seuraaviin kategorioihin, olemassaolevat asetukset pyyvät.
     success_flash: Tuote / tuotteet ovat luokiteltu valittuihin kategorioihin
@@ -725,7 +668,6 @@ popin.create:
   association_type.title: Luo uusi määritetyyppi
   group.title: Luo uusi ryhmä
   product.title: Luo uusi tuote
-  variant_group.title: Luo uusi tuotevariaatioryhmä
   option.title: Luo uusi vaihtoehto
 In group: Ryhmässä
 Attribute as label: Attribuutti otsikkona
@@ -800,11 +742,6 @@ pim_mass_edit_execution_show: Massamuokkaa suoritteita | Tiedot
 edit_common_attributes.steps.edit_common_attributes_processor.title: Muokkaa yleisiä attribuutteja
 update_product_value.steps.update_product_value_processor.title: Päivitä tuotteen arvo
 remove_product_value.steps.update_product_value_processor.title: Poista tuotteen arvo
-add_to_variant_group_clean.steps.excluded.title: Poissuljetut tuotteet
-add_to_variant_group_clean.steps.duplicated.title: Päällekkäät akselit
-add_to_variant_group.steps.excluded.title: Poissuljetut tuotteet
-add_to_variant_group.steps.duplicated.title: Päällekkäät akselit
-add_to_variant_group.steps.cleaner.warning.description: 'Tuotetta ei voi asettaa valittuun tuotevariaatioryhmään: päällekkäiset akseliarvot toisen tuotteen kanssa'
 edit_common_attributes: Muokkaa yleisiä attribuutteja
 edit_common_attributes_clean: Puhdista tiedostot yleisille attribuuteille
 perform.steps.duplicated.title: Päällekkäät akselit
@@ -836,10 +773,6 @@ batch_jobs:
     quick_export.label: 'Tuoteruudukon kontekstin nopea vienti XLSX:nä'
     perform:
       label: 'Tuoteruudukon kontekstin nopea vienti XLSX:nä'
-  add_to_variant_group:
-    label: Lisää tuotevariaatioryhmään
-    perform:
-      label: Lisää tuotevariaatioryhmään
 mass_edit report:
   overview: Massamuokkaa vientejä
 job_tracker:

@@ -34,6 +34,8 @@ not_available: Ikke tilgængelig
 "No": false
 oro.datagrid.entityHint: Enhed
 oro.datagrid.noentities: Ingen poster fundet
+oro.datagrid.noresults: "Desværre, er der ingen resultater for din søgning."
+oro.datagrid.noresults_subTitle: "Prøv igen med nye søgekriterier."
 oro.datagrid.nocolumns: Ingen kolonner er konfigureret for dette gitter
 oro.datagrid.pagination.label: "Side"
 oro.datagrid.pagination.totalPages: "af {{ totalPages }}"
@@ -43,19 +45,25 @@ oro.datagrid.action.refresh: "Opdatér"
 oro_datagrid.select.all: "Alle"
 oro_datagrid.select.visible: "Alle synlige"
 oro_datagrid.select.none: "Ingen"
+oro_datagrid.select.select: "Vælg"
 pim.grid.ajax_choice_filter.label_empty: er tom
 pim.grid.ajax_choice_filter.label_not_empty: er ikke tom
-pim.grid.choice_filter:
-  label_empty: er tom
-  label_not_empty: er ikke tom
-  label_in_list: i listen
+pim:
+  grid:
+    choice_filter:
+      label_empty: er tom
+      label_not_empty: ikke er tom
+      label_in_list: i listen
+    price_filter:
+      label: Valuta
+    category_filter:
+      done: Gjort
 Available Columns: Tilgængelige kolonner
 Displayed Columns: Valgte kolonner
 datagrid_view.columns.min_message: Du skal vælge mindst én datagrid kolonne der skal vises
 pim_datagrid:
   column_configurator:
     label: Kolonner
-    title: Kolonnevalg
     all_groups: Alle grupper
     search: Søg
     clear: Nustil
@@ -63,6 +71,7 @@ pim_datagrid:
     apply: Anvend
     cancel: Annuller
     remove_column: Fjern
+    attribute_groups: Attributgrupper
   mass_action:
     delete:
       confirm_title: Bekræft sletning
@@ -88,7 +97,6 @@ grid.view_selector:
   placeholder: Navn på ny visning
   choose_label: Vælge en etiket til visningen
   confirmation:
-    remove: Er du sikker på du vil slette denne datagrid visning?
     delete: Bekræft sletning
 grid.view_selector.flash.updated: DataGrid visningen er opdateret
 Client ID: Klient ID

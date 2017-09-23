@@ -27,3 +27,18 @@ file.extensions.message: 'L''extension du fichier n''est pas autorisée (les ext
 "The attribute \"%attributeCode%\" is not a metric attribute.": L’attribut %attributeCode% n’est pas un attribut métrique.
 "The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": L’unité %unitCode% n’existe pas ou n’appartient pas à la famille de métriques par défaut de l’attribut %attributeCode%.
 "The currency \"%currency%\" has to be activated.": La devise %currency% doit être activée.
+product_model.code.not_blank.message: Le code du modèle de produit ne doit pas être vide.
+product_model.code.unique.message: Le même code est déjà défini sur un autre modèle de produit.
+product_model.family_variant.not_blank.message: La variante de famille du modèle de produit ne doit pas être vide.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'L''attribut "%attribute%" ne peut pas être vide, car il a été défini comme axe pour cette entité'
+    can_have_family_variant_duplicate_axis_value: 'La valeur "%values%" ne peut être mise sur l''axe "%attributes%", car une autre entité enfant a déjà cette valeur'
+    can_have_family_variant_unexpected_attribute: 'Impossible de modifier la propriété "%attribute%" de cette entité car elle n''est pas dans la liste des attributs'
+    cannot_have_product_model_as_parent: 'Le modèle de produit "%product_model%" ne peut pas avoir le modèle de produit "%parent_product_model%" comme parent'
+    cannot_have_parent: 'Le modèle de produit "%product_model%" ne peut pas avoir de parent'
+    attribute_does_not_belong_to_family: 'L''attribut "%attribute%" n''appartient pas à la famille "%family%"'
+    variant_product_invalid_family: 'La famille du produit variant doit être la même que son parent'
+    variant_product_has_parent: 'Le produit variant "%variant_product%" doit avoir un parent'
+    invalid_variant_product_parent: 'Le produit variant "%variant_product%" ne peut pas avoir le modèle de produit "%product_model%" comme parent, (ce modèle de produit ne peut avoir que d''autres modèles de produit comme enfants)'
+    modified_variant_axis_value: 'L''axe de variante "%variant_axis%" ne peut pas être modifié, "%provided_value%" donné'

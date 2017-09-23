@@ -49,20 +49,6 @@ pim_enrich:
       product.title: Productos
       property.title: Propiedades
       history.title: Histórico
-  variant_group:
-    type:
-      VARIANT: Variante
-      X_SELL: Venta cruzada
-      ADDITIONAL: Adicional
-      RELATED: Relacionado
-    tab:
-      product.title: Productos
-      property.title: Propiedades
-      history.title: Histórico
-      attribute.title: Atributos
-    info:
-      no_attributes: Este grupo de variantes no tiene aun atributos
-      no_attributes_in_selected_locale: Este grupo de variantes no tiene atributos en este local
   completeness:
     progress_bar.title: '%ratio% completo (1 valor requerido) |%ratio%% completo (%count% de valores requerido)'
     subtitle: '{0} Completo|{1}  falta 1 value|]1, Inf] %count% de valores faltantes'
@@ -130,14 +116,6 @@ pim_enrich:
       success_flash: Los productos se han agregado correctamente a los grupos seleccionados
       launched_flash: La acción en masa "agregar a grupos" ha sido lanzada. Será notificado una vez finalizada.
       no_group: Ningún grupo por el instante. Por favor comience creando un grupo.
-    add-to-variant-group:
-      label: Agregar a un grupo de variantes
-      description: Seleccione el grupo de variantes al cual agregar los productos seleccionados
-      success_flash: Los productos fueron agregados exitosamente al grupo de variantes seleccionado
-      already_in_variant_group_or_not_valid: No puede agrupar el siguiente producto debido a que ya forma parte de un grupo de variantes o no posee el axis de grupo.
-      no_variant_group: Ningún grupo de variantes por ahora. Por favor comience por crear un grupo de variantes.
-      no_valid_variant_group: Ningún grupo de variantes comparte atributos con los productos seleccionados.
-      launched_flash: La acción en masa "agregar a grupo de variantes" ha sido lanzada. Será notificado una vez finalizada.
     set-attribute-requirements:
       description: Se aplicarán los siguientes requisitos de atributo a las familias seleccionadas
       success_flash: Requisitos de atributo se aplicaron a las familias seleccionadas
@@ -167,7 +145,6 @@ pim_enrich:
       change_family: Cambiar Familia de productos
       change_state: Cambiar estado de producto
       add_to_groups: Agregar productos a grupos
-      add_to_variant_group: Agregar producto a un grupo de variantes
       mass_edit: Acciones de edición masiva de producto
       comment: Comentario de Productos
       download: Descargar el producto en formato PDF
@@ -216,15 +193,6 @@ pim_enrich:
       edit: Editar un grupo
       remove: Eliminar un grupo
       history: Ver historial del grupo
-    variant_group:
-      index: Listar grupos de variantes
-      create: Crear un grupo de variantes
-      edit: Editar un grupo de variantes
-      remove: Suprimir un grupo de variantes
-      history: Ver el historial de grupo de variantes
-      edit_attributes: Editar atributos de grupos de variantes
-      add_attributes: Agregar atributos a grupos de variantes
-      remove_attribute: Quitar atributos de grupo de variantes
     group_type:
       index: Lista tipos Grupos
       create: Crear un tipo de grupo
@@ -247,15 +215,9 @@ pim_enrich:
     currency: Monedas
     family: Familias
     group: Grupos
-    variant_group: Grupos de variantes
     group_type: Tipos de grupo
     locale: Locales
     product: Productos
-  product_value:
-    tooltip:
-      from_variant:
-        title: Actualizado por un grupo de variantes
-        content: Este campo es actualizado por el siguiente grupo de variantes
   reference_data:
     empty_value:
       reference_data_type:
@@ -274,7 +236,7 @@ attribute group:
   create new: Crear un nuevo grupo de atributo
 category:
   title: categoría
-  overview: resumen de categoría
+  overview: Categorías
   create: crear categoría
   edit: editar categoría
   suggest selection: Por favor, seleccione una categoría de la izquierda
@@ -311,9 +273,6 @@ group:
 group type:
   title: tipo de grupo
   edit: editar tipo de grupo
-variant group:
-  title: grupo de variantes
-  edit: Editar un grupo de variante
 association type:
   title: tipo de asociación
   create: crear Asociación de tipo
@@ -331,7 +290,6 @@ btn:
     locale: crear local
     product: crear producto
     group: crear grupo
-    variant group: crear un grupo de variante
     association type: crear Asociación de tipo
     group type: crear tipo de grupo
     drag_or_upload: Arrastrar y soltar para cargar o haga clic aquí
@@ -363,7 +321,6 @@ confirmation:
     family: '¿Está seguro que desea eliminar la  familia %name%?'
     product: '¿Está seguro que desea eliminar el producto %name%?'
     group: '¿Está seguro que desea eliminar el grupo %name%?'
-    variant group: '¿Está seguro que desea eliminar el grupo de variantes %name%?'
     group type: '¿Está seguro que desea eliminar el tipo de grupo %name%?'
     user: '¿Está seguro que desea eliminar usuario(a) %name%?'
   attribute group:
@@ -372,8 +329,6 @@ confirmation:
     remove attribute: '¿Está seguro que desea quitar el atributo %name% de esta familia?'
   product:
     remove attribute: '¿Está seguro que desea quitar el atributo %name% de este producto?'
-  variant_group:
-    remove_attribute: Está seguro que desea quitar el atributo %name% de este grupo de variantes?
 flash:
   entity:
     removed: Artículo eliminado
@@ -382,7 +337,6 @@ flash:
     updated: Atributo actualizado correctamente
     removed: Atributo eliminado correctamente
     identifier not removable: El identificador de atributo no puede ser eliminado
-    used by groups: Este atributo no se puede quitar porque es utilizado por %count% de grupos de variantes
   attribute group:
     created: Grupo de atributos creado correctamente
     updated: Grupo de atributos actualizado correctamente
@@ -425,17 +379,10 @@ flash:
   group:
     updated: Grupo actualizado correctamente
     removed: Grupo eliminado correctamente
-  variant group:
-    created: Grupo variante creado correctamente
-    updated: Grupo Variante actualizado correctamente
-    removed: Grupo Variante eliminado correctamente
-    attributes_added: Atributos agregados con éxito al grupo de variantes
-    attribute_removed: Atributo quitado con éxito del grupo de variantes
   group type:
     created: Tipo de grupo creado correctamente
     updated: Tipo de grupo actualizado correctamente
     removed: Tipo de Grupo eliminado correctamente
-    cant remove variant: El tipo grupo variante no se puede elimiar
     cant remove used: El tipo de grupo es utilizado por otros grupos, no se puede eliminar
   association type:
     created: Tipo de asociación se creó correctamente
@@ -491,7 +438,7 @@ Manage groups: Gestionar Grupos
 Code: Código
 Name: Nombre
 Type: Tipo
-Scope: Ámbito
+Scope: Canal
 Required: Requerido
 Unique: Único
 Not required: No requerido
@@ -611,9 +558,6 @@ pim_title.locale:
 pim_title.group:
   index: "Grupos"
   edit: "Grupos %group.label% | Editar"
-pim_title.variant_group:
-  index: "Grupos de variantes"
-  edit: "Grupos Variante %group.label% | Editar"
 pim_title.association_type:
   index: "Tipos de asociaciones"
   edit: "Tipos de asociación %association type.label% | Editar"
@@ -685,7 +629,6 @@ pim_enrich.mass_edit_action:
     success_flash: Atributo(s) del producto(s) han sido actualizados
     message.warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
     no_attribute.warning: No hay ningún atributo en común para los productos seleccionados. Por favor cambie su selección.
-    truncated_by_variant_attribute.warning: 'Algunos atributos comunes de los productos seleccionados provienen de un grupo de variantes. Los mismos no están disponibles para edición en masa: %attributes%.'
   classify:
     description: Los productos se colocará en las siguientes categorías, la posición actual se mantendrá.
     success_flash: Los producto(s) han sido clasificados en las categorías seleccionadas
@@ -725,7 +668,6 @@ popin.create:
   association_type.title: Crear un nuevo tipo de asociación
   group.title: Crea un nuevo grupo
   product.title: Crear un nuevo producto
-  variant_group.title: Crear un nuevo grupo de variantes
   option.title: Crear una nueva opción
 In group: En grupo
 Attribute as label: Atributo como etiqueta
@@ -801,11 +743,6 @@ pim_mass_edit_execution_show: Exclusiones de edición en masa | Detalles
 edit_common_attributes.steps.edit_common_attributes_processor.title: Editar atributos comunes
 update_product_value.steps.update_product_value_processor.title: Actualizar el valor del producto
 remove_product_value.steps.update_product_value_processor.title: Quitar el valor del producto
-add_to_variant_group_clean.steps.excluded.title: Producto excluido
-add_to_variant_group_clean.steps.duplicated.title: Eje duplicado
-add_to_variant_group.steps.excluded.title: Producto excluido
-add_to_variant_group.steps.duplicated.title: Eje duplicado
-add_to_variant_group.steps.cleaner.warning.description: 'El producto no puede ser afectado al grupo de variantes seleccionado: duplicación de valores del eje de variación con otro producto en la selección'
 edit_common_attributes: Editar atributos comunes
 edit_common_attributes_clean: Limpiar archivos para los atributos comunes
 perform.steps.duplicated.title: Eje duplicado
@@ -841,10 +778,6 @@ batch_jobs:
     quick_export.label: Exportación rápida de la grilla de productos en XLSX
     perform:
       label: Exportación rápida de la grilla de productos en XLSX
-  add_to_variant_group:
-    label: Agregar a un grupo de variantes
-    perform:
-      label: Agregar a un grupo de variantes
 mass_edit report:
   overview: Reportes de edición en masa
 job_tracker:

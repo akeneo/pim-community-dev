@@ -3,6 +3,15 @@ No products to remove: Ingen produkter at fjerne
 "comma (,)": komma (,)
 pim_catalog:
   constraint:
+    family_variant_attributes_unique: Attributter skal være entydige, "%attributes%" der bruges flere gange i variant attributter sæt
+    family_variant_axes_unique: Variant akser skal være entydige, "%attributes%" der bruges flere gange i variant attributter sæt
+    family_variant_axes_attribute_type: Variant akser "%axis%" skal være en boolesk værdi, en simpel select, en simpel referencedata eller en metrisk
+    family_variant_axes_wrong_type: Variant akser "%axis%" kan ikke være oversættelige, ikke scopable og ikke landestandard specifikke
+    family_variant_axes_number_of_axes: En variant attributtet kan ikke have mere end 5 attributter
+    family_variant_axis_level: Attributten "%axis%" skal være angivet som attribut i den samme variant attribut placere det var sat som akse
+    family_variant_has_family_attribute: '"%attribute%" attribut kan ikke føjes til "%family_variant%" familie variant, som det ikke er en attribut af familien "%family%"'
+    family_variant_level_do_not_exist: Der er ingen variant attribut angivet til niveau "%level%"
+    family_variant_unique_attributes_in_last_level: Unikke attributten "%attribute%" skal angives på niveauet product
     product_identifier: Disse identifikatorer "%s" findes ikke.
     0: Der opstod en uventet fejl!
     100: Ikke-forventet værdi

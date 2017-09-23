@@ -7,7 +7,6 @@ confirmation:
     product: Jeste li sigurni da želite izbrisati ovaj proizvod?
     channel: Jeste li sigurni da želite izbrisati ovaj kanal?
     group: Jeste li sigurni da želite izbrisati ovu grupu?
-    variant group: Jeste li sigurni da želite izbrisati ovu varijantu grupe?
     group_type: Jeste li sigurni da želite izbrisati ovaj tip grupe?
     import profile: Jeste li sigurni da želite izbrisati ovaj profil uvoza?
     export profile: Jeste li sigurni da želite izbrisati ovaj profil izvoza?
@@ -46,8 +45,6 @@ flash:
     removed: Kanal je uspješno uklonjen
   group:
     removed: Grupa je uspješno uklonjena
-  variant group:
-    removed: Varijanta grupe je uspješno uklonjena
   group_type:
     removed: Tip grupe je uspješno uklonjen
   import profile:
@@ -67,7 +64,6 @@ error:
     product: Ne možete izbrisati ovaj proizvod
     channel: Ne možete izbrisati ovaj kanal
     group: Ne možete izbrisati ovu grupu
-    variant group: Ne možete izbrisati ovu varijantu grupe
     group type: Ne možete izbrisati ovaj tip grupe
     import profile: Ne možete izbrisati ovaj profil uvoza
     export profile: Ne možete izbrisati ovaj profil izvoza
@@ -106,11 +102,10 @@ pim:
         csv_grid_context: CSV (Grid kontekst)
         xlsx_all: Excel (Svi atributi)
         xlsx_grid_context: Excel (Grid kontekst)
-      delete: Brisanje proizvoda
-      mass_edit: Promijeni informacije o proizvodu
+      delete: Obriši
       category_edit: Premjesti proizvode u kategorije
-      sequential_edit: Sekvencijalno uređivanje proizvoda
 jstree.create: Kreiraj
+jstree.done: Gotovo
 switch_on: "Da"
 switch_off: "Ne"
 pim_enrich:
@@ -137,10 +132,10 @@ pim_enrich:
         save: Spremi
         cancel: Poništi
     product:
-      index_title: Proizvodi
       title: proizvod
       locale: Postavke jezika i regije
       category: Kategorija
+      filters: Filteri
       btn:
         enabled: Omogućeno
         disabled: Onemogućeno
@@ -191,11 +186,6 @@ pim_enrich:
         all_visible: Sve vidljive
         none: Niti jedan
         copy: Kopiraj
-      variant_group:
-        updated_by: Ažurirano sa varijantom grupe
-        switch:
-          "yes": "Da"
-          "no": "Ne"
       optional_attribute:
         remove: Ukloni ovaj atribut
       locale_specific_attribute:
@@ -205,7 +195,7 @@ pim_enrich:
       media:
         upload: Povucite i ispustite za upload ili kliknite ovdje
       create_popin:
-        title: Kreiraj novi proizvod
+        title: Kreiraj
         labels:
           family: Odaberi obitelj
           save: Spremi
@@ -223,7 +213,7 @@ pim_enrich:
         save: Spremi
       title: tip pridruživanja
       create_popin:
-        title: Kreiraj novi tip pridruživanja
+        title: Kreiraj
       message:
         created: Tip pridruživanja je uspješno kreiran
     group_type:
@@ -236,7 +226,7 @@ pim_enrich:
         save: Spremi
       title: tip grupe
       create_popin:
-        title: Kreiraj novi tip grupe
+        title: Kreiraj
       message:
         created: Tip grupe je uspješno kreiran
     channel:
@@ -258,34 +248,13 @@ pim_enrich:
       btn:
         save: Spremi
       create_popin:
-        title: Kreiraj novu obitelj
+        title: Kreiraj
       message:
         created: Obitelj je uspješno kreirana
     attribute_option:
       code: Kod
       label: Oznaka
       actions: Akcije
-    variant_group:
-      title: Varijanta grupa
-      info:
-        deletion_successful: Varijanta grupe je uspješno obrisana.
-        deletion_failed: Varijantu grupe nije moguće izbrisati.
-        update_successful: Varijanta grupe je uspješno ažurirana.
-        update_failed: Varijantu grupe nije moguće ažurirati.
-        already_in_upload: Datoteka je već procesu prijenosa za ovaj atribut u lokalizaciji "{{ locale }}" i opsegu "{{ scope }}"
-        no_attributes: Ova varijanta grupe još nema atribute
-      btn:
-        save: Spremi
-      meta:
-        product_count: Proizvodi
-        created: Kreirano
-        created_by: Kreirao korisnik
-        updated: Ažurirano
-        updated_by: Ažurirao korisnik
-      create_popin:
-        title: Kreiraj novu varijantu grupe
-      message:
-        created: Varijanta grupe je uspješno kreirana
     group:
       title: Grupa
       info:
@@ -302,7 +271,7 @@ pim_enrich:
         updated: Ažurirano
         updated_by: Ažurirao korisnik
       create_popin:
-        title: Kreiraj novu grupu
+        title: Kreiraj
       message:
         created: Grupa je uspješno kreirana
     attribute:
@@ -329,6 +298,9 @@ pim_enrich:
     attribute_group:
       info:
         update_successful: Atribut grupe je uspješno ažuriran
+    api_connection:
+      create_popin:
+        title: Kreiraj
   confirmation:
     leave: Jeste li sigurni da želite napustiti ovu stranicu?
     discard_changes: Promjene u {{ entity }} će se izgubiti ako napustite ovu stranicu.
@@ -460,21 +432,6 @@ pim_enrich:
       switch:
         "no": "Ne"
         "yes": "Da"
-    variant_group:
-      tab:
-        properties:
-          title: Svojstva
-          general: Opća svojstva
-          code: Kod
-          type: Tip
-          axis: Osi
-          label_translations: Prijevodi oznaka
-        history:
-          title: Povijest
-        products:
-          title: Proizvodi
-        attributes:
-          title: Atributi
     group:
       tab:
         properties:
@@ -540,7 +497,7 @@ pim_enrich:
         content:
           title: Sadržaj
         properties:
-          title: Opća svojstva
+          title: Svojstva
           code:
             title: Kod
           label:
@@ -785,26 +742,22 @@ pim_enrich:
     import_profiles:
       list: Odaberite posao
       create_popin:
-        title: Kreiraj novi profil uvoza
+        title: Kreiraj
     group:
       create_btn: Kreiraj grupu
     export_profiles:
       create_popin:
-        title: Kreiraj novi profil izvoza
+        title: Kreiraj
     user:
-      title: Korisnik
       create_btn: Kreiraj korisnika
     user_role:
-      title: Rola
       create_btn: Kreiraj rolu
     user_group:
-      title: Grupe
       create_btn: Kreiraj grupu
-    process_tracker:
-      title: Proces praćenja
     attribute:
       modal_title: Odaberi tip atributa
     attribute_group:
+      title: Grupe atributa
       create_btn: Kreiraj
     api_connection:
       create_btn: Kreiraj
@@ -816,8 +769,6 @@ pim_enrich:
       step:
         select:
           label: Odaberi proizvode
-        choose:
-          label: Odabiri operaciju
         configure:
           label: Konfiguriraj
         confirm:
@@ -836,10 +787,6 @@ pim_enrich:
           label: Dodaj u grupe
           description: Odaberi grupe u koju se dodaju odabrani proizvodi
           field: Grupe
-        add_to_variant_group:
-          label: Dodaj u varijantu grupe
-          description: Odaberi varijantu grupe u koju će se dodati odabrani proizvodi
-          field: Grupa
         add_to_category:
           description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
         move_to_category:
@@ -850,8 +797,6 @@ pim_enrich:
       step:
         select:
           label: Odaberi obitelji
-        choose:
-          label: Odabiri operaciju
         configure:
           label: Konfiguriraj
         confirm:
@@ -874,7 +819,6 @@ page_title:
   pim_enrich_currency_index: Valute
   pim_enrich_locale_index: Lokalizacija
   pim_enrich_group_index: Grupe
-  pim_enrich_variant_group_index: Varijante grupa
   pim_enrich_associationtype_index: Tipovi pridruživanja
   pim_enrich_grouptype_index: Tipovi grupa
   pim_enrich_mass_edit_action_choose: Masovno uredi | Odaberi
@@ -896,12 +840,10 @@ batch_jobs:
       label: Uredi uobičajene atribute
     cleaner:
       label: Obriši datoteke za uobičajene atribute
-  add_to_variant_group:
-    label: Dodaj u varijantu grupe
-    perform:
-      label: Dodaj u varijantu grupe
   csv_product_export:
     label: Izvoz proizvoda u CSV
+    export.label: Izvoz proizvoda
+  csv_product_model_export:
     export.label: Izvoz proizvoda
   csv_category_export:
     label: Izvoz kategorije u CSV
@@ -918,9 +860,6 @@ batch_jobs:
   csv_group_export:
     label: Izvoz grupe u CSV
     export.label: Izvoz grupe
-  csv_variant_group_export:
-    label: Izvoz grupne varijante u CSV
-    export.label: Izvoz grupne varijante
   csv_family_export:
     label: Izvoz porodice u CSV
     export.label: Izvoz porodice
@@ -955,10 +894,6 @@ batch_jobs:
     label: Uvoz grupa iz CSV
     validation.label: Provjera valjanosti datoteke
     import.label: Uvoz grupa
-  csv_variant_group_import:
-    label: Uvoz varijante grupa iz CSV
-    validation.label: Provjera valjanosti datoteke
-    import.label: Uvoz varijante grupa
   csv_channel_export:
     label: Izvoz kanala u CSV
     export.label: Izvoz kanala
@@ -1027,17 +962,10 @@ batch_jobs:
   xlsx_group_export:
     label: Izvoz grupe u XLSX
     export.label: Izvoz grupe
-  xlsx_variant_group_export:
-    label: Izvoz varijante grupe u XLSX
-    export.label: Izvoz grupne varijante
   xlsx_group_import:
     label: Uvoz grupe iz XLSX
     validation.label: Provjera valjanosti datoteke
     import.label: Uvoz grupa
-  xlsx_variant_group_import:
-    label: Uvoz varijante grupe iz XLSX
-    validation.label: Provjera valjanosti datoteke
-    import.label: Uvoz varijante grupe
   xlsx_family_export:
     label: Izvoz obitelji u XLSX
     export.label: Izvoz porodice
@@ -1106,7 +1034,6 @@ pim_menu:
     group_type: Tipovi grupa
     locale: Lokalizacija
     product: Proizvodi
-    variant_group: Varijante grupa
     export_history: Povijest izvoza
     export_profile: Izvoz profila
     import_history: Povijest izvoza

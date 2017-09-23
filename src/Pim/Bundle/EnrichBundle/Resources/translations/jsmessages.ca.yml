@@ -7,7 +7,6 @@ confirmation:
     product: Esteu segur que voleu suprimir aquest producte?
     channel: Esteu segur que voleu suprimir aquest canal?
     group: Esteu segur que voleu suprimir aquest grup?
-    variant group: Esteu segur que voleu suprimir aquesta variant de grups?
     group_type: Esteu segur que voleu suprimir aquest tipus de grup?
     import profile: Esteu segur que voleu suprimir aquest perfil d'importació?
     export profile: Esteu segur que voleu eliminar aquest perfil d'exportació?
@@ -46,8 +45,6 @@ flash:
     removed: Canal suprimit correctament
   group:
     removed: Grup suprimit correctament
-  variant group:
-    removed: Grup de variants suprimit correctament
   group_type:
     removed: Tipus de grup suprimit correctament
   import profile:
@@ -67,7 +64,6 @@ error:
     product: No podeu eliminar aquest producte
     channel: No podeu eliminar aquest canal
     group: No podeu eliminar aquest grup
-    variant group: No podeu eliminar aquesta variant de grups
     group type: No podeu eliminar aquest tipus de grup
     import profile: No podeu eliminar aquest perfil d'importació
     export profile: No podeu eliminar aquest perfil d'exportació
@@ -106,11 +102,10 @@ pim:
         csv_grid_context: CSV (marc de quadrícula)
         xlsx_all: Excel (tots els atributs)
         xlsx_grid_context: Excel (marc de quadrícula)
-      delete: Eliminar productes
-      mass_edit: Canviar la informació del producte
+      delete: Suprimir
       category_edit: Moure els productes a les categories
-      sequential_edit: Editar els productes seqüencialment
 jstree.create: Crear
+jstree.done: Fet
 switch_on: "Sí"
 switch_off: "No"
 pim_enrich:
@@ -137,10 +132,10 @@ pim_enrich:
         save: Desar
         cancel: Cancelar
     product:
-      index_title: Productes
       title: producte
       locale: Configuració Regional
       category: Categoria
+      filters: Filtres
       btn:
         enabled: Habilitat
         disabled: Deshabilitat
@@ -191,11 +186,6 @@ pim_enrich:
         all_visible: Tot visible
         none: Cap
         copy: Copiar
-      variant_group:
-        updated_by: Actualitzat per un grup de variants
-        switch:
-          "yes": "Sí"
-          "no": "No"
       optional_attribute:
         remove: Eliminar aquest atribut
       locale_specific_attribute:
@@ -205,7 +195,7 @@ pim_enrich:
       media:
         upload: Arrossegueu-lo aquí per carregar o feu-hi clic
       create_popin:
-        title: Crear un nou producte
+        title: Crear
         labels:
           family: Trieu una família
           save: Desar
@@ -223,7 +213,7 @@ pim_enrich:
         save: Desar
       title: tipus d'associació
       create_popin:
-        title: Crear un nou tipus d'associació
+        title: Crear
       message:
         created: Tipus d'associació creat correctament
     group_type:
@@ -236,7 +226,7 @@ pim_enrich:
         save: Desar
       title: tipus de grup
       create_popin:
-        title: Crear un nou tipus de grup
+        title: Crear
       message:
         created: Tipus de grup creat correctament
     channel:
@@ -258,34 +248,13 @@ pim_enrich:
       btn:
         save: Desar
       create_popin:
-        title: Crear una nova família
+        title: Crear
       message:
         created: Família creada correctament
     attribute_option:
       code: Codi
       label: Etiqueta
       actions: Accions
-    variant_group:
-      title: Grups de variants
-      info:
-        deletion_successful: El grup variants s'ha suprimit correctament.
-        deletion_failed: El grup variants no s'ha pogut suprimir.
-        update_successful: El grup de variants s'ha actualitzat correctament.
-        update_failed: El grup variants no s'ha pogut actualitzar.
-        already_in_upload: Ja s'ha carregat un arxiu per a aquest atribut en la configuració regional "{{ locale }}" i l'àmbit "{{ scope }}"
-        no_attributes: Aquest grup de variants encara no té cap atribut
-      btn:
-        save: Desar
-      meta:
-        product_count: Productes
-        created: Creat
-        created_by: Creat per
-        updated: Actualitzat
-        updated_by: Actualitzat per
-      create_popin:
-        title: Crear un nou grup de variants
-      message:
-        created: Grup de variants creat correctament
     group:
       title: Grup
       info:
@@ -302,7 +271,7 @@ pim_enrich:
         updated: Actualitzat
         updated_by: Actualitzat per
       create_popin:
-        title: Crea un grup nou
+        title: Crear
       message:
         created: Grup creat correctament
     attribute:
@@ -329,6 +298,9 @@ pim_enrich:
     attribute_group:
       info:
         update_successful: Grup d'atributs actualitzat correctament
+    api_connection:
+      create_popin:
+        title: Crear
   confirmation:
     leave: Esteu segur que voleu sortir d'aquesta pàgina?
     discard_changes: Perdreu els canvis a la {{ entity }} si sortiu de la pàgina.
@@ -460,21 +432,6 @@ pim_enrich:
       switch:
         "no": "No"
         "yes": "Sí"
-    variant_group:
-      tab:
-        properties:
-          title: Propietats
-          general: Propietats generals
-          code: Codi
-          type: Tipus
-          axis: Eix
-          label_translations: Traduccions d'etiquetes
-        history:
-          title: Històric
-        products:
-          title: Productes
-        attributes:
-          title: Atributs
     group:
       tab:
         properties:
@@ -540,7 +497,7 @@ pim_enrich:
         content:
           title: Contingut
         properties:
-          title: Propietats generals
+          title: Propietats
           code:
             title: Codi
           label:
@@ -785,26 +742,22 @@ pim_enrich:
     import_profiles:
       list: Seleccioneu un job
       create_popin:
-        title: Crear un nou perfil d'importació
+        title: Crear
     group:
       create_btn: Crear grup
     export_profiles:
       create_popin:
-        title: Crear un nou perfil d'exportació
+        title: Crear
     user:
-      title: Usuari
       create_btn: Crear usuari
     user_role:
-      title: Rol
       create_btn: Crear rol
     user_group:
-      title: Grups
       create_btn: Crear grup
-    process_tracker:
-      title: Seguiment del procés
     attribute:
       modal_title: Trieu el tipus d'atribut
     attribute_group:
+      title: Grups d'atribut
       create_btn: Crear
     api_connection:
       create_btn: Crear
@@ -816,8 +769,6 @@ pim_enrich:
       step:
         select:
           label: Triar productes
-        choose:
-          label: Trieu l'operació
         configure:
           label: Configurar
         confirm:
@@ -836,10 +787,6 @@ pim_enrich:
           label: Afegir a grups
           description: Seleccioneu els grups on volgueu afegir els productes seleccionats
           field: Grups
-        add_to_variant_group:
-          label: Afegir a un grup de variants
-          description: Seleccioneu el grup de variants on afegir els productes seleccionats
-          field: Grup
         add_to_category:
           description: Els productes es posicionaran a les següents categories, tot mantenint l'emplaçament actual.
         move_to_category:
@@ -850,8 +797,6 @@ pim_enrich:
       step:
         select:
           label: Triar famílies
-        choose:
-          label: Trieu l'operació
         configure:
           label: Configurar
         confirm:
@@ -874,7 +819,6 @@ page_title:
   pim_enrich_currency_index: Monedes
   pim_enrich_locale_index: Configuracions regionals
   pim_enrich_group_index: Grups
-  pim_enrich_variant_group_index: Grups de variants
   pim_enrich_associationtype_index: Tipus d'associació
   pim_enrich_grouptype_index: Tipus de grup
   pim_enrich_mass_edit_action_choose: Editar en massa | Triar
@@ -896,12 +840,10 @@ batch_jobs:
       label: Editar atributs comuns
     cleaner:
       label: Netejar arxius per atributs comuns
-  add_to_variant_group:
-    label: Afegir a un grup de variants
-    perform:
-      label: Afegir a un grup de variants
   csv_product_export:
     label: Exportar productes a CSV
+    export.label: Exportar productes
+  csv_product_model_export:
     export.label: Exportar productes
   csv_category_export:
     label: Exportar categories en CSV
@@ -918,9 +860,6 @@ batch_jobs:
   csv_group_export:
     label: Exportar grups en CSV
     export.label: Exportar grups
-  csv_variant_group_export:
-    label: Exportar grup de variants a CSV
-    export.label: Exportar grup de variants
   csv_family_export:
     label: Exportar famílies en CSV
     export.label: Exportar família
@@ -955,10 +894,6 @@ batch_jobs:
     label: Importar grups en CSV
     validation.label: Validar arxius
     import.label: Importar grups
-  csv_variant_group_import:
-    label: Importar Grup de variants des d'un CSV
-    validation.label: Validar arxius
-    import.label: Importació de grupo de variants
   csv_channel_export:
     label: Canal d'exportació en CSV
     export.label: Canal d'exportació
@@ -1027,17 +962,10 @@ batch_jobs:
   xlsx_group_export:
     label: Exportació de grup en XLSX
     export.label: Exportar grups
-  xlsx_variant_group_export:
-    label: Exportació de variant de grup en XLSX
-    export.label: Exportar grup de variants
   xlsx_group_import:
     label: Importació de grup en XLSX
     validation.label: Validar arxius
     import.label: Importar grups
-  xlsx_variant_group_import:
-    label: Importacin de variant de grup en XLSX
-    validation.label: Validar arxius
-    import.label: Importació de variant grup
   xlsx_family_export:
     label: Exportació de família en XLSX
     export.label: Exportar família
@@ -1106,7 +1034,6 @@ pim_menu:
     group_type: Tipus de grup
     locale: Configuracions regionals
     product: Productes
-    variant_group: Grups de variants
     export_history: Històric d'exportacions
     export_profile: Perfils d'exportació
     import_history: Històric d'importacions

@@ -49,20 +49,6 @@ pim_enrich:
       product.title: Продукты
       property.title: Свойства
       history.title: Журнал
-  variant_group:
-    type:
-      VARIANT: Вариант
-      X_SELL: Перекрестные продажи
-      ADDITIONAL: Дополнительно
-      RELATED: Связанные
-    tab:
-      product.title: Продукты
-      property.title: Свойства
-      history.title: Журнал
-      attribute.title: Атрибуты
-    info:
-      no_attributes: Это группа вариантов пока не имеет атрибутов
-      no_attributes_in_selected_locale: Эта группа вариантов не имеет атрибутов в этой локали
   completeness:
     progress_bar.title: '%ratio%% выполнено (1 требуемое значение)|%ratio%% выполнено (требуется %count% значений)'
     subtitle: '{0} Готово|{1} 1 отсутствующее значение|]1, Inf] %count% отсутствующих значений'
@@ -130,14 +116,6 @@ pim_enrich:
       success_flash: Продукты были успешно добавлены в выбранные группы
       launched_flash: Было начато массовое действие «добавить в группы». Вы будете уведомлены, когда оно будет завершено.
       no_group: Сейчас нет групп. Начните с создания группы.
-    add-to-variant-group:
-      label: Добавить в группу вариантов
-      description: Выберите группу вариантов для добавления выбранных продуктов
-      success_flash: Продукты были успешно добавлены в выбранную группу вариантов
-      already_in_variant_group_or_not_valid: Продукт нельзя добавить в группу, так как он уже относится к группе вариантов или не имеет оси группы.
-      no_variant_group: Сейчас нет групп вариантов. Начните с создания группы вариантов.
-      no_valid_variant_group: Ни одна группа вариантов не имеет общих атрибутов с выбранными продуктами.
-      launched_flash: Было начато массовое действие «добавить в группы вариантов». Вы будете уведомлены, когда оно будет завершено.
     set-attribute-requirements:
       description: Следующие требования к атрибутам будут применены к выбранным семействам
       success_flash: Требования к атрибутам были применены к выбранным семействам
@@ -167,7 +145,6 @@ pim_enrich:
       change_family: Изменить семейство продуктов
       change_state: Изменить статус продукта
       add_to_groups: Добавление продукта в группы
-      add_to_variant_group: Добавить продукт в группу вариантов
       mass_edit: Операции массового редактирования продуктов 
       comment: Комментировать продукты
       download: Скачать продукт в PDF
@@ -216,15 +193,6 @@ pim_enrich:
       edit: Редактировать группу
       remove: Удалить группу
       history: Просмотреть журнал группы
-    variant_group:
-      index: Перечислить группы вариантов
-      create: Создать группу вариантов
-      edit: Изменить группу вариантов
-      remove: Удалить группу вариантов
-      history: Просмотреть журнал группы вариантов
-      edit_attributes: Изменить атрибуты групп вариантов
-      add_attributes: Добавить атрибуты в группы вариантов
-      remove_attribute: Удалить атрибуты из группы вариантов
     group_type:
       index: Список типов группы
       create: Создать тип группы
@@ -247,15 +215,9 @@ pim_enrich:
     currency: Валюты
     family: Семейства
     group: Группы
-    variant_group: Вариативные группы
     group_type: Типы групп
     locale: Локали
     product: Продукты
-  product_value:
-    tooltip:
-      from_variant:
-        title: Обновлено группой вариантов
-        content: Это поле обновляется следующей группой вариантов
   reference_data:
     empty_value:
       reference_data_type:
@@ -274,7 +236,7 @@ attribute group:
   create new: Создайте новую группу атрибутов
 category:
   title: категория
-  overview: обзор категории
+  overview: Категории
   create: создать категорию
   edit: изменить категорию
   suggest selection: Пожалуйста, выберите категорию слева
@@ -311,9 +273,6 @@ group:
 group type:
   title: тип группы
   edit: редактировать тип группы
-variant group:
-  title: группа вариантов
-  edit: редактировать вариативную группу
 association type:
   title: тип ассоциации
   create: создать тип ассоциации
@@ -331,7 +290,6 @@ btn:
     locale: создать локаль
     product: создать продукт
     group: создать группу
-    variant group: создать вариатвную группу
     association type: создать тип ассоциации
     group type: создать тип группы
     drag_or_upload: Перетащите чтобы загрузить, или нажмите здесь
@@ -363,7 +321,6 @@ confirmation:
     family: Вы уверены, что хотите удалить семейство %name%?
     product: Вы уверены, что хотите удалить продукт %name%?
     group: Вы уверены, что хотите удалить группу %name%?
-    variant group: Вы уверены, что хотите удалить вариативную группу %name%?
     group type: Вы уверены, что хотите удалить тип группы %name%?
     user: Вы уверены, что хотите удалить пользователя %name%?
   attribute group:
@@ -372,8 +329,6 @@ confirmation:
     remove attribute: Вы уверены, что хотите удалить  из этого семейства атрибут %name%?
   product:
     remove attribute: Вы уверены, что хотите удалить из этого продукта атрибут %name%?
-  variant_group:
-    remove_attribute: Вы действительно хотите удалить атрибут %name% из этой группы вариантов?
 flash:
   entity:
     removed: Элемент был удален
@@ -382,7 +337,6 @@ flash:
     updated: Атрибут успешно обновлен
     removed: Атрибут успешно удален
     identifier not removable: Идентификатор атрибута не может быть удален
-    used by groups: Этот атрибут не может быть удален, поскольку он используется %count% группами вариантов
   attribute group:
     created: Группа атрибутов успешно создана
     updated: Группа атрибутов успешно обновлена
@@ -425,17 +379,10 @@ flash:
   group:
     updated: Группа успешно обновлена
     removed: Группа успешно удалена
-  variant group:
-    created: Вариативная группа успешно создана
-    updated: Вариативная группа успешно обновлена
-    removed: Вариативная группа успешно удалена
-    attributes_added: Атрибуты успешно добавлены в группу вариантов
-    attribute_removed: Атрибуты успешно удалены из группы вариантов
   group type:
     created: Тип группы успешно создан
     updated: Тип группы успешно обновлен
     removed: Тип группы успешно удален
-    cant remove variant: Вариативная группа не может быть удалена
     cant remove used: Тип группы используется некоторыми группами и не может быть удален
   association type:
     created: Тип ассоциации успешно создан
@@ -491,7 +438,7 @@ Manage groups: Управление группами
 Code: Код
 Name: Имя
 Type: Тип
-Scope: Область
+Scope: Канал
 Required: Обязательно
 Unique: Уникальный
 Not required: Не обязательно
@@ -611,9 +558,6 @@ pim_title.locale:
 pim_title.group:
   index: "Группы"
   edit: "Группа %group.label% | Редактировать"
-pim_title.variant_group:
-  index: "Вариативные группы"
-  edit: "Группы вариантов %group.label% | Редактировать"
 pim_title.association_type:
   index: "Типы ассоциаций"
   edit: "Типы ассоциаций %association type.label% | Редактировать"
@@ -685,7 +629,6 @@ pim_enrich.mass_edit_action:
     success_flash: Атрибуты товаров были обновлены
     message.warning: Для выбранных продуктов нет общих атрибутов. Пожалуйста измените свой выбор.
     no_attribute.warning: Для выбранных продуктов нет общих атрибутов. Пожалуйста измените свой выбор.
-    truncated_by_variant_attribute.warning: 'Некоторые общие атрибуты для выбранных продуктов получены из групп вариантов. Они не доступны для массового изменения: %attributes%.'
   classify:
     description: Продукты будут добавлены в следующие категории, исходное расположение сохраниться.
     success_flash: В выбранных категориях товары были классифицированы 
@@ -725,7 +668,6 @@ popin.create:
   association_type.title: Создать новый тип ассоциации
   group.title: Создать новую группу
   product.title: Создать новый продукт
-  variant_group.title: Создать новую вариативную группу
   option.title: Создать новое свойство
 In group: В группе
 Attribute as label: Атрибут как метка
@@ -800,11 +742,6 @@ pim_mass_edit_execution_show: Задачи массового редактиро
 edit_common_attributes.steps.edit_common_attributes_processor.title: Изменить общие атрибуты
 update_product_value.steps.update_product_value_processor.title: Обновить значение продукта
 remove_product_value.steps.update_product_value_processor.title: Удалить значение продукта
-add_to_variant_group_clean.steps.excluded.title: Исключенные продукты
-add_to_variant_group_clean.steps.duplicated.title: Продублированные оси
-add_to_variant_group.steps.excluded.title: Исключенные продукты
-add_to_variant_group.steps.duplicated.title: Продублированные оси
-add_to_variant_group.steps.cleaner.warning.description: 'Продукт не может принадлежать к выбранной группе вариантов: продублируйте значения вариативной оси с другим выбранным продуктом'
 edit_common_attributes: Изменить общие атрибуты
 edit_common_attributes_clean: Редактировать файлы общих атрибутов
 perform.steps.duplicated.title: Продублированные оси
@@ -840,10 +777,6 @@ batch_jobs:
     quick_export.label: Быстрый экспорт контекста сетки в XLSX
     perform:
       label: Быстрый экспорт контекста сетки в XLSX
-  add_to_variant_group:
-    label: Добавить в группу вариантов
-    perform:
-      label: Добавить в группу вариантов
 mass_edit report:
   overview: Отчеты массового редактирования
 job_tracker:

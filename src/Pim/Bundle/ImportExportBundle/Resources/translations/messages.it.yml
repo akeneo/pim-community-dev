@@ -15,7 +15,7 @@ pim_import_export:
     7: Abbandonato
     8: Sconosciuto
   download_archive:
-    archive: scaricar l'arhivio generato |scarica gli archivi generati
+    archive: scarica l'archivio generato |scarica gli archivi generati
     output: scarica il file generato |scarica i files generati
     input: scarica il file letto |scarica i files letti
     invalid_xlsx: Scarica dati non validi
@@ -29,7 +29,7 @@ pim_import_export:
       error: Importazione <strong>%label%</strong> non riuscita
       warning: Importazione <strong>%label%</strong> completata con alcuni avvisi
       success: Importazione <strong>%label%</strong> completata
-  list: Seleziona un lavoro
+  list: Seleziona un job
   job_profile:
     tab:
       property.title: Proprietà generali
@@ -47,18 +47,10 @@ pim_title.import_execution.index: Importare la cronologia delle esecuzioni
 pim_title.import_execution.show: Importare le esecuzioni | Dettagli
 export profile:
   title: Profilo di esportazione
-  overview: Anteprima del profilo di esportazione
-  create: crea il profilo di esportazione
   edit: modificare il profilo di esportazione
-export report:
-  overview: esportazione report
 import profile:
   title: Profilo di importazione
-  overview: Anteprima del profilo di importazione
-  create: crea un profilo di importazione
   edit: modificare il profilo di importazione
-import report:
-  overview: rapporti di importazione
 pim_importexport:
   acl:
     export_profile:
@@ -116,12 +108,6 @@ flash:
     removed: L'importazione è stata rimossa
     updated: L'importazione è stato caricata con successo
     running: L'importazione è in esecuzione
-pim_menu:
-  item:
-    export_history: Cronologia esportazioni
-    export_profile: Profili di esportazione
-    import_history: Cronologia importazioni
-    import_profile: Profili di importazione
 General properties: Proprietà generali
 History: Cronologia
 pane.accordion:
@@ -156,7 +142,6 @@ Warnings: Avvisi
 Summary: Riepilogo
 Start: Inizio
 End: Fine
-set_attribute_requirements: Impostare gli attributi richiesti
 COMPLETED: Completato
 STARTING: In avvio
 STARTED: Avviato

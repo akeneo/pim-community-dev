@@ -43,19 +43,25 @@ oro.datagrid.action.refresh: "Aggiorna"
 oro_datagrid.select.all: "Tutti"
 oro_datagrid.select.visible: "Tutti visibili"
 oro_datagrid.select.none: "Nessun"
+oro_datagrid.select.select: "Selezionare"
 pim.grid.ajax_choice_filter.label_empty: è vuoto
 pim.grid.ajax_choice_filter.label_not_empty: non è vuoto
-pim.grid.choice_filter:
-  label_empty: è vuoto
-  label_not_empty: non è vuoto
-  label_in_list: nell'elenco
+pim:
+  grid:
+    choice_filter:
+      label_empty: è vuoto
+      label_not_empty: non è vuoto
+      label_in_list: nell'elenco
+    price_filter:
+      label: Valuta
+    category_filter:
+      done: Completato
 Available Columns: Colonne disponibili
 Displayed Columns: Colonne Selezionate
 datagrid_view.columns.min_message: È necessario selezionare almeno una colonna della griglia di dati da visualizzare
 pim_datagrid:
   column_configurator:
     label: Colonne
-    title: Selezione Colonna
     all_groups: Tutti i gruppi
     search: Ricerca
     clear: Ripulisci
@@ -63,6 +69,7 @@ pim_datagrid:
     apply: Applica
     cancel: Annulla
     remove_column: Rimuovere
+    attribute_groups: Gruppi di attributi
   mass_action:
     delete:
       confirm_title: Conferma cancellazione
@@ -88,6 +95,5 @@ grid.view_selector:
   placeholder: Nome della nuova visualizzazione
   choose_label: Scegliere un'etichetta per la visualizzazione
   confirmation:
-    remove: Sei sicuro di voler eliminare questa visualizzazione della griglia di dati?
     delete: Conferma cancellazione
 grid.view_selector.flash.updated: La griglia di dati è stata aggiornata con successo
