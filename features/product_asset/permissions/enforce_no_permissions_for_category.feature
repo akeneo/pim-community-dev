@@ -38,6 +38,7 @@ Feature: Enforce no permissions for an asset category
       | inProtectedNode | images     |
     And I am logged in as "Pamela"
     And I am on the assets grid
+    And I open the category tree
     When I filter by "asset category" with value "unclassified"
     Then the grid should contain 5 elements
     And I should see assets unclassifiedOne and unclassifiedTwo

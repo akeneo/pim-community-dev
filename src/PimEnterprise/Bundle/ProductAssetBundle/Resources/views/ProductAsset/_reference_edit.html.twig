@@ -10,6 +10,11 @@
             } only %}
         </div>
     </div>
+    <script>
+        require(['pim/user-context'], function(UserContext) {
+            UserContext.set('catalogLocale', "{{currentLocale.code}}")
+        });
+    </script>
 {% endif %}
 
 <div class="tabsection-content row-fluid variations">

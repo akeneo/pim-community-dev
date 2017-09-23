@@ -72,10 +72,17 @@ config:
                         gridExtension: pimee-published-product-index
                         gridName: published-product-grid
                         title: Published products
+                pimee_product_asset_index:
+                    module: pimee/controller/asset/index
+                    aclResourceId: pimee_product_asset_index
+                    config:
+                        gridExtension: pimee-asset-index
+                        gridName: asset-grid
+                        title: asset_grid.label
 
         pim/form/common/attributes/create-button:
             attribute_icons:
-                pim_assets_collection: paper-clip
+                pim_assets_collection: assetCollection
 
     map:
         '*':
@@ -83,10 +90,11 @@ config:
 
     paths:
         pimee/controller/published-product/index: pimenterpriseenrich/js/controller/published-product/index
-        pimee/product-view-form:            pimenterpriseenrich/js/product/view-form
+        pimee/controller/asset/index:             pimenterpriseenrich/js/controller/asset/index
+        pimee/product-view-form:                  pimenterpriseenrich/js/product/view-form
 
-        pimee/manage-permissions:        pimenterpriseenrich/js/manage-permissions
-        pimee/rule-manager:              pimenterpriseenrich/js/product/rule-manager
+        pimee/manage-permissions:                 pimenterpriseenrich/js/manage-permissions
+        pimee/rule-manager:                       pimenterpriseenrich/js/product/rule-manager
 
         # Controllers
         pimee/controller/attribute/create: pimenterpriseenrich/js/controller/attribute/create

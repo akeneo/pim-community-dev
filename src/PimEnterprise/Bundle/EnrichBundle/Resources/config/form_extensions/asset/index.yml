@@ -1,0 +1,119 @@
+extensions:
+    pimee-asset-index:
+        module: pim/common/simple-view
+        config:
+            template: pim/template/product/index
+            templateParams:
+                gridName: asset-grid
+        forwarded-events:
+             grid_load:start: grid_load:start
+
+    pimee-asset-index-grid-title:
+        module: pim/common/grid-title
+        parent: pimee-asset-index
+        targetZone: title
+        config:
+          title: asset_grid.title
+
+    pimee-asset-index-left-column:
+        module: pim/form/common/column
+        parent: pimee-asset-index
+        targetZone: column
+        config:
+          stateCode: asset_index
+          navigationTitle: pim_enrich.entity.asset.navigation
+
+    pimee-asset-index-column-inner:
+        module: pim/common/simple-view
+        parent: pimee-asset-index-left-column
+        targetZone: navigation
+        config:
+          template: pim/template/product/grid/column-inner
+
+    pimee-asset-index-category-switcher:
+        module: pim/grid/category-switcher
+        parent: pimee-asset-index-column-inner
+        targetZone: column-context-switcher
+
+    pimee-asset-index-create-button:
+        module: pim/form/common/index/create-button
+        parent: pimee-asset-index
+        targetZone: buttons
+        aclResourceId: pimee_product_asset_create
+        config:
+           title: create_asset.title
+           url: pimee_product_asset_create
+
+    pimee-asset-index-locale-switcher:
+        module: pim/grid/locale-switcher
+        parent: pimee-asset-index-column-inner
+        targetZone: column-context-switcher
+        position: 10
+        config:
+            routeName: pimee_product_asset_index
+            localeParamName: dataLocale
+
+    pimee-asset-index-category-tree:
+        module: pim/grid/category-tree
+        parent: pimee-asset-index
+        targetZone: tree
+        aclResourceId: pimee_product_asset_category_list
+        config:
+            gridName: asset-grid
+            categoryTreeName: pimee_asset_categorytree
+
+    pimee-asset-index-category-tree-done:
+        module: pim/grid/category-tree-done
+        parent: pimee-asset-index
+        targetZone: tree
+        aclResourceId: pimee_product_asset_category_list
+
+    pimee-asset-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pimee-asset-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-asset
+
+    pimee-asset-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pimee-asset-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pimee-asset-index-mass-actions:
+        module: pim/grid/mass-actions
+        parent: pimee-asset-index
+        targetZone: mass-actions
+        config:
+            label: asset_grid.selected
+
+    pimee-asset-index-grid-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pimee-asset-index-column-inner
+        targetZone: manage-filters-button
+
+    pimee-asset-index-grid-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pimee-asset-index-column-inner
+        targetZone: filters
+
+    pimee-asset-index-actions-panel:
+        module: oro/datagrid/actions-panel
+        parent: pimee-asset-index-mass-actions
+        targetZone: actions-panel
+
+    pimee-asset-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pimee-asset-index
+        targetZone: toolbar
+
+    pimee-asset-index-grid:
+        module: pim/grid/table
+        parent: pimee-asset-index
+        targetZone: grid
+        config:
+            gridName: asset-grid
+            datagridLoadUrl: pim_datagrid_load

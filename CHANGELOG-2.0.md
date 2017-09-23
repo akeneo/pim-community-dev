@@ -78,7 +78,9 @@
 - Change the constructor `PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver\DelegatingProductSaver` to add `Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer`.
 - Change the constructor `PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController` to add `Pim\Component\Catalog\Builder\ProductBuilderInterface`.
 - Remove class `Pim\Bundle\InstallerBundle\Persister\YamlPersister`
-- Remove service `pim_installer.yaml_persister` 
+- Remove service `pim_installer.yaml_persister`
 - Change the constructor of `PimEnterprise\Bundle\EnrichBundle\Controller\ProductController` to add `Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface`
 - PIM-6228: remove escape parameter from csv imports.
 - Change the constructor of `PimEnterprise\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer` to add `Pim\Component\Catalog\Repository\ChannelRepositoryInterface` and `Pim\Component\Catalog\Repository\LocaleRepositoryInterface`.
+- PIM-6815: Remove `indexAction` from `PimEnterprise\Bundle\ProductAssetBundle\Controller\ProductAssetController`
+- PIM-6815: Remove `src/PimEnterprise/Bundle/ProductAssetBundle/Resources/views/ProductAsset/index.html.twig`

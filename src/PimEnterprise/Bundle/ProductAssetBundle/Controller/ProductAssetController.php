@@ -30,6 +30,7 @@ use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AssetType;
+use PimEnterprise\Bundle\ProductAssetBundle\Form\Type\CreateAssetType;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Component\ProductAsset\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\FileStorage;
@@ -191,30 +192,6 @@ class ProductAssetController extends Controller
     }
 
     /**
-     * List of assets
-     *
-     * @Template
-     * @AclAncestor("pimee_product_asset_index")
-     *
-     * @return array|RedirectResponse
-     */
-    public function indexAction()
-    {
-        try {
-            $this->userContext->getAccessibleUserTree();
-        } catch (\LogicException $e) {
-            $this->addFlashMessage('error', 'pimee_product_asset.category.permissions.no_access_to_products');
-
-            return $this->redirectToRoute('oro_default');
-        }
-
-        return [
-            'locales'    => $this->getUserLocales(),
-            'dataLocale' => $this->getDataLocale(),
-        ];
-    }
-
-    /**
      * Create an asset
      *
      * @Template
@@ -230,7 +207,7 @@ class ProductAssetController extends Controller
             return $this->redirect($this->generateUrl('pimee_product_asset_index'));
         }
 
-        $form = $this->createForm('pimee_product_asset_create');
+        $form = $this->createForm(CreateAssetType::class);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

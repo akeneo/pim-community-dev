@@ -31,6 +31,7 @@ Feature: Filter product assets
   Scenario: Successfully filter product assets by category
     When I select the "Asset main catalog" tree
     Then the grid should contain 15 elements
+    When I open the category tree
     When I uncheck the "Include sub-categories" switch
     And I expand the "images" category
     Then I should be able to use the following filters:

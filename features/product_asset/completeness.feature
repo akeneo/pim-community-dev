@@ -35,6 +35,7 @@ Feature: Display the completeness of a product with assets
 
   Scenario: Successfully update the completeness for a product with non localized asset
     Given I am on the "jacket-white" product page
+    And I switch the locale to "en_US"
     And I visit the "Media" group
     And I attach file "akeneo.jpg" to "Side view"
     And I save the product
@@ -77,6 +78,7 @@ Feature: Display the completeness of a product with assets
 
   Scenario: Successfully update the completeness for a product with localized asset
     Given I am on the "jacket-white" product page
+    And I switch the locale to "en_US"
     And I visit the "Media" group
     And I attach file "akeneo.jpg" to "Side view"
     And I save the product

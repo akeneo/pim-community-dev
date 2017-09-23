@@ -111,9 +111,6 @@ datagrid:
                 params:
                     - id
                     - dataLocale
-        mass_actions_groups:
-            bulk_actions:
-                label: pim_datagrid.mass_action_group.bulk_actions.label
         mass_actions:
             asset_edit:
                 type: edit
@@ -122,10 +119,10 @@ datagrid:
                 route: pim_enrich_mass_edit_action
                 route_parameters:
                     actionName: asset-edit
-                launcherOptions:
-                    group: bulk_actions
+                className: 'AknButton AknButton--action AknButtonList-item'
             delete:
                 type: delete
+                className: 'AknButton AknButton--important AknButtonList-item'
                 label: pim.grid.mass_action.delete_assets
                 entity_name: asset
                 acl_resource: pimee_product_asset_remove
@@ -137,5 +134,3 @@ datagrid:
                     success: pimee_product_asset.datagrid.mass_action.delete.success
                     error: pimee_product_asset.datagrid.mass_action.delete.error
                     empty_selection: pimee_product_asset.datagrid.mass_action.delete.empty_selection
-                launcherOptions:
-                    group: bulk_actions
