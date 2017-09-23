@@ -3,7 +3,7 @@ Akeneo PIM Application
 Welcome to Akeneo PIM Product.
 
 This repository is used to develop the Akeneo PIM product.
-Practically, it means the Akeneo PIM bundles are present in the src/ directory.
+Practically, it means the Akeneo PIM core source code is present in the src/ directory.
 
 **If you want to create a new PIM project based on Akeneo PIM, please use http://www.github.com/akeneo/pim-community-standard**
 
