@@ -24,7 +24,8 @@ define(
         'pim/fetcher-registry',
         'pim/i18n',
         'teamwork-assistant/templates/grid/create-project-modal-content',
-        'teamwork-assistant/templates/field-error'
+        'teamwork-assistant/templates/field-error',
+        'pim/template/form/creation/modal'
     ],
     function (
         $,
@@ -44,11 +45,13 @@ define(
         FetcherRegistry,
         i18n,
         template,
-        errorTemplate
+        errorTemplate,
+        templateModal
     ) {
         return BaseForm.extend({
             template: _.template(template),
             errorTemplate: _.template(errorTemplate),
+            templateModal: _.template(templateModal),
             events: {
                 'input .project-field': 'onInputField'
             },
@@ -254,24 +257,28 @@ define(
                         channelValue = i18n.getLabel(channel.labels, UserContext.get('catalogLocale'), channel.code);
                     }
 
-                    this.$el.html(this.template({
-                        channelLabel: __('teamwork_assistant.project.channel'),
-                        channelValue: channelValue,
-                        localeLabel: __('teamwork_assistant.project.locale'),
-                        localeValue: localeValue,
-                        labelValue: model.get('label'),
-                        labelLabel: __('teamwork_assistant.project.label'),
-                        descriptionValue: model.get('description'),
-                        descriptionLabel: __('teamwork_assistant.project.description'),
-                        dueDateValue: DateFormatter.format(
-                            model.get('due_date'),
-                            'yyyy-MM-dd',
-                            DateContext.get('date').format
-                        ),
-                        dueDateLabel: __('teamwork_assistant.project.due_date'),
-                        errors: this.validationErrors,
-                        requiredLabel: __('teamwork_assistant.common.required'),
-                        warning: __('teamwork_assistant.common.warning')
+                    this.$el.html(this.templateModal({
+                        subTitleLabel: __('teamwork_assistant.grid.view_selector.projects'),
+                        titleLabel: __('teamwork_assistant.grid.view_selector.popin_title'),
+                        fields: this.template({
+                            channelLabel: __('teamwork_assistant.project.channel'),
+                            channelValue: channelValue,
+                            localeLabel: __('teamwork_assistant.project.locale'),
+                            localeValue: localeValue,
+                            labelValue: model.get('label'),
+                            labelLabel: __('teamwork_assistant.project.label'),
+                            descriptionValue: model.get('description'),
+                            descriptionLabel: __('teamwork_assistant.project.description'),
+                            dueDateValue: DateFormatter.format(
+                                model.get('due_date'),
+                                'yyyy-MM-dd',
+                                DateContext.get('date').format
+                            ),
+                            dueDateLabel: __('teamwork_assistant.project.due_date'),
+                            errors: this.validationErrors,
+                            requiredLabel: __('teamwork_assistant.common.required'),
+                            warning: __('teamwork_assistant.common.warning')
+                        })
                     }));
 
                     this.initializeDatepicker();

@@ -150,7 +150,7 @@ class EnterpriseAssertionContext extends BaseAssertionContext
     public function iShouldSeeAProjectValidationError($expectedErrorMessage)
     {
         $projectModal = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.modal-project-form');
+            return $this->getCurrentPage()->find('css', '.control-group');
         }, 'Impossible to find the modal project form');
 
         $errors = $this->spin(function () use ($projectModal) {

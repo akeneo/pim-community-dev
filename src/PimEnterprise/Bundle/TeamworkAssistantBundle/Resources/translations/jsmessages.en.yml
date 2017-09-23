@@ -13,6 +13,8 @@ teamwork_assistant:
             confirmation:
                 remove: Are you sure you want to delete this project?
                 delete: Delete confirmation
+            popin_title: Create
+            projects: Projects
     project:
         label: Name
         locale: Locale
