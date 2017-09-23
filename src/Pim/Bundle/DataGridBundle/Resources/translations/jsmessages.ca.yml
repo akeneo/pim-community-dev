@@ -43,19 +43,25 @@ oro.datagrid.action.refresh: "Actualitza"
 oro_datagrid.select.all: "Tots"
 oro_datagrid.select.visible: "Tot visible"
 oro_datagrid.select.none: "Cap"
+oro_datagrid.select.select: "Seleccionar"
 pim.grid.ajax_choice_filter.label_empty: està buit
 pim.grid.ajax_choice_filter.label_not_empty: no és buit
-pim.grid.choice_filter:
-  label_empty: està buit
-  label_not_empty: no és buit
-  label_in_list: a la llista
+pim:
+  grid:
+    choice_filter:
+      label_empty: està buit
+      label_not_empty: no és buit
+      label_in_list: a la llista
+    price_filter:
+      label: Moneda
+    category_filter:
+      done: Fet
 Available Columns: Columnes disponibles
 Displayed Columns: Columnes seleccionades
 datagrid_view.columns.min_message: Heu de seleccionar almenys una columna de la graella de dades per mostrar
 pim_datagrid:
   column_configurator:
     label: Columnes
-    title: Selecció de columna
     all_groups: Tots els grups
     search: Cercar
     clear: Restablir
@@ -63,6 +69,7 @@ pim_datagrid:
     apply: Aplicar
     cancel: Cancelar
     remove_column: Eliminar
+    attribute_groups: Grups d'atribut
   mass_action:
     delete:
       confirm_title: Confirmació de l'eliminació
@@ -88,6 +95,5 @@ grid.view_selector:
   placeholder: Nom de la nova vista
   choose_label: Trieu una etiqueta per a la vista
   confirmation:
-    remove: Esteu segur que voleu suprimir aquesta vista de la graella de dades?
     delete: Confirmació de l'eliminació
 grid.view_selector.flash.updated: Vista de Graella de dades actualitzada correctament

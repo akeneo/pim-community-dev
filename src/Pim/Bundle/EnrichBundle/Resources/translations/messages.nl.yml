@@ -48,20 +48,6 @@ pim_enrich:
       product.title: Producten
       property.title: Eigenschappen
       history.title: Geschiedenis
-  variant_group:
-    type:
-      VARIANT: Variant
-      X_SELL: Cross-Sell
-      ADDITIONAL: Extra
-      RELATED: Gerelateerde
-    tab:
-      product.title: Producten
-      property.title: Eigenschappen
-      history.title: Geschiedenis
-      attribute.title: Attributen
-    info:
-      no_attributes: Deze variant groep heeft nog geen kenmerken
-      no_attributes_in_selected_locale: Deze variant groep heeft geen kenmerken in deze locale
   completeness:
     progress_bar.title: '%ratio%% voltooid (1 vereiste waarde) | %ratio%% voltooid (%count% vereiste waarden)'
     subtitle: '{0} Voltooid|{1} 1 ontbrekende waarde|]1, Inf] %count% ontbrekende waarden'
@@ -118,12 +104,6 @@ pim_enrich:
       success_flash: Producten werden met succes toegevoegd aan de geselecteerde groepen
       launched_flash: De massa actie "voeg toe aan groepen" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
       no_group: Geen groep beschikbaar. Gelieve eerst een groep aan te maken.
-    add-to-variant-group:
-      label: Voeg toe aan een variant groep
-      description: Selecteer de variant groep waarin u de geselecteerde producten wilt toevoegen
-      success_flash: Producten werden met succes toegevoegd aan de geselecteerde variant groepen
-      no_variant_group: Geen variant groep beschikbaar. Gelieve eerst een variant groep aan te maken.
-      launched_flash: De massa actie "voeg toe aan variant groep" is gestart. U wordt op de hoogte gebracht wanneer dit is voltooid.
     set-attribute-requirements:
       description: De volgende attribuutvereisten zullen worden toegepast op de geselecteerde families
       success_flash: De attribuutvereisten zijn toegepast op de geselecteerde families
@@ -153,7 +133,6 @@ pim_enrich:
       change_family: Productfamilie wijzigen
       change_state: Status van product wijzigen
       add_to_groups: Product toevoegen aan groepen
-      add_to_variant_group: Voeg product toe aan een variant groep
       mass_edit: Product massabewerken acties
       comment: Geef commentaar op producten
       download: Download het product als PDF
@@ -221,7 +200,6 @@ pim_enrich:
     currency: Valuta
     family: Families
     group: Groepen
-    variant_group: Variantgroepen
     group_type: Groepstypen
     locale: Lokalisaties
     product: Producten
@@ -239,7 +217,7 @@ attribute group:
   create new: Maak een nieuwe attribuutgroep
 category:
   title: categorie
-  overview: categorie overzicht
+  overview: Categorieën
   create: categorie aanmaken
   edit: categorie bewerken
   suggest selection: Select een categorie aan de linkerkant
@@ -276,9 +254,6 @@ group:
 group type:
   title: groepstype
   edit: groepstype bewerken
-variant group:
-  title: variantgroep
-  edit: variantgroep bewerken
 association type:
   title: koppelingstype
   create: associatietype aanmaken
@@ -296,7 +271,6 @@ btn:
     locale: lokalisatie aanmaken
     product: product aanmaken
     group: groep aanmaken
-    variant group: variantgroep aanmaken
     association type: associatietype aanmaken
     group type: groepstype aanmaken
   edit: bewerken
@@ -326,7 +300,6 @@ confirmation:
     family: Weet u zeker dat u de familie %name% wilt verwijderen?
     product: Weet u zeker dat u het product %name% wilt verwijderen?
     group: Weet u zeker dat u de groep %name% wilt verwijderen?
-    variant group: Weet u zeker dat u de variantgroep %name% wilt verwijderen?
     group type: Weet u zeker dat u het groepstype %name% wilt verwijderen?
     user: Weet u zeker dat u de gebruiker %name% wilt verwijderen?
   attribute group:
@@ -343,7 +316,6 @@ flash:
     updated: Attribuut succesvol bijgewerkt
     removed: Attribuut succesvol verwijderd
     identifier not removable: Id-attribuut kan niet worden verwijderd
-    used by groups: Dit attribuut kan niet worden verwijderd omdat het wordt gebruik door %count% variantengroepen
   attribute group:
     created: Attribuutgroep succesvol aangemaakt
     updated: Attribuutgroep succesvol bijgewerkt
@@ -385,15 +357,10 @@ flash:
   group:
     updated: Groep succesvol bijgewerkt
     removed: Groep succesvol verwijderd
-  variant group:
-    created: Variantgroep succesvol aangemaakt
-    updated: Variantgroep succesvol bijgewerkt
-    removed: Variantgroep succesvol verwijderd
   group type:
     created: Groepstype succesvol aangemaakt
     updated: Groepstype succesvol bijgewerkt
     removed: Groepstype succesvol verwijderd
-    cant remove variant: Groepstype variant kan niet worden verwijderd
     cant remove used: Groepstype wordt gebruikt door sommige groepen en kan niet worden verwijderd
   association type:
     created: Associatietype met succes aangemaakt
@@ -448,7 +415,7 @@ Manage groups: Groepen beheren
 Code: Code
 Name: Naam
 Type: Type
-Scope: Bereik
+Scope: Kanaal
 Required: Verplicht
 Unique: Uniek
 Not required: Niet verplicht
@@ -562,9 +529,6 @@ pim_title.locale:
 pim_title.group:
   index: "Groepen"
   edit: "Groepen %group.label% | Bewerken"
-pim_title.variant_group:
-  index: "Variantgroepen"
-  edit: "Variantgroepen %group.label%|Bewerken"
 pim_title.association_type:
   index: "Associatietypes"
   edit: "Associatietypes %association type.label% | Bewerken"
@@ -658,7 +622,6 @@ popin.create:
   association_type.title: Een nieuw associatietype aanmaken
   group.title: Nieuwe groep aanmaken
   product.title: Een nieuw product aanmaken
-  variant_group.title: Nieuwe variant groep toevoegen
   option.title: Nieuwe optie aanmaken
 In group: In groep
 Attribute as label: Attribuut als label

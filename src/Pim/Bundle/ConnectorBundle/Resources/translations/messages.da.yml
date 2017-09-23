@@ -44,7 +44,10 @@ job_execution.summary:
     skipped: ignoreret, udvidelse i hvidlisten
   product_skipped_no_diff: produkter sprunget over (ingen forskel)
   product_skipped_no_associations: produkter sprunget over (ingen sammekædning)
+  product_model_skipped_no_diff: produkter sprunget over (ingen forskel)
   item_position: læs linjer
+  skipped_in_root_product_model: produkter sprunget over med forældre
+  skipped_in_sub_product_model: Produkter sprunget over uden forældre
 batch_jobs:
   csv_product_export:
     label: Produkt eksport til CSV
@@ -70,13 +73,19 @@ batch_jobs:
   csv_family_export:
     label: Familie eksport i CSV
     export.label: Familie eksport
+  csv_family_variant_export:
+    label: Familie eksport i CSV
+    export.label: Familie variant eksport
   csv_product_import:
     label: Produkt eksport fra CSV-fil
     validation.label: Filvalidering
     import.label: Produkt import
     import_associations.label: Association import
   csv_product_model_import:
+    label: Produkt model import i CSV-
     validation.label: Filvalidering
+    import_root_product_model.label: Rodprodukt import
+    import_sub_product_model.label: Under produkt import
   csv_category_import:
     label: Kategori eksport fra CSV
     validation.label: Filvalidering
@@ -98,7 +107,9 @@ batch_jobs:
     validation.label: Filvalidering
     import.label: Familie import
   csv_family_variant_import:
+    label: Familie import i CSV
     validation.label: Filvalidering
+    import.label: Familie variant import
   csv_group_import:
     label: Gruppe import fra CSV
     validation.label: Filvalidering
@@ -163,7 +174,9 @@ batch_jobs:
     validation.label: Filvalidering
     import.label: Familie import
   xlsx_family_variant_import:
+    label: Familie variant import i XLSX
     validation.label: Filvalidering
+    import.label: Familie variant import
   xlsx_product_export:
     label: Produkt eksport til XLSX
     export.label: Produkt eksport
@@ -173,7 +186,10 @@ batch_jobs:
     import.label: Produkt import
     import_associations.label: Association import
   xlsx_product_model_import:
+    label: Produkt model import i XSLX
     validation.label: Filvalidering
+    import_root_product_model.label: Rodprodukt import
+    import_sub_product_model.label: Under produkt import
   xlsx_group_export:
     label: Gruppe eksport til XLSX
     export.label: Gruppe eksport
@@ -191,6 +207,9 @@ batch_jobs:
   xlsx_family_export:
     label: Familie eksport til XLSX
     export.label: Familie eksport
+  xlsx_family_variant_export:
+    label: Familie eksport til XLSX
+    export.label: Familie variant eksport
   xlsx_category_export:
     label: Kategori eksport til XLSX
     export.label: Kategori eksport

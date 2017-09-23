@@ -49,20 +49,6 @@ pim_enrich:
       product.title: Proizvodi
       property.title: Svojstva
       history.title: Povijest
-  variant_group:
-    type:
-      VARIANT: Varijanta
-      X_SELL: X-prodaja
-      ADDITIONAL: Dodatno
-      RELATED: Povezano
-    tab:
-      product.title: Proizvodi
-      property.title: Svojstva
-      history.title: Povijest
-      attribute.title: Atributi
-    info:
-      no_attributes: Ova varijanta grupe još nema atribute
-      no_attributes_in_selected_locale: Ova varijanta grupe nema atribute u ovoj lokalizaciji
   completeness:
     progress_bar.title: '%ratio%% kompletno (potrebna 1 vrijednosti)|%ratio% kompletno (%count% potrebne vrijednosti)'
     subtitle: '{0} Dovršeno|{1} 1 vrijednost nedostaje|] 1, Inf] %count% vrijednosti koje nedostaju'
@@ -130,14 +116,6 @@ pim_enrich:
       success_flash: Proizvodi su uspješno dodani u odabrane grupe
       launched_flash: Pokrenuta je masovna radnja "dodati u grupe". Biti ćete obaviješteni kad bude gotovo.
       no_group: Nema grupa za sada. Molimo da najprije kreirate grupu.
-    add-to-variant-group:
-      label: Dodaj u varijantu grupe
-      description: Odaberi varijantu grupe u koju će se dodati odabrani proizvodi
-      success_flash: Proizvodi su uspješno dodani u odabranu varijantu grupe
-      already_in_variant_group_or_not_valid: Nije moguće grupirati sljedeće proizvode jer su već u varijanti grupe ili nemaju osi grupe.
-      no_variant_group: Nema varijante grupe za sada. Molimo da najprije kreirate varijantu grupe.
-      no_valid_variant_group: Niti jedna varijanta grupe ne dijeli atribute s odabranim proizvodima.
-      launched_flash: Pokrenuta je masovna radnja "dodati u varijantu grupe". Biti ćete obaviješteni kad bude gotovo.
     set-attribute-requirements:
       description: Sljedeći zahtjevi atributa će se primijeniti na odabrane obitelji
       success_flash: Zahtjevi atributa su primjenjeni na odabrane obitelji
@@ -167,7 +145,6 @@ pim_enrich:
       change_family: Promjena obitelji proizvoda
       change_state: Promjena stanja proizvoda
       add_to_groups: Dodaj proizvod u grupe
-      add_to_variant_group: Dodaj proizvod u varijantu grupe
       mass_edit: Akcije masovnog uređivanja proizvoda
       comment: Komentar proizvoda
       download: Preuzimanje proizvoda kao PDF dokument
@@ -216,15 +193,6 @@ pim_enrich:
       edit: Uredi grupu
       remove: Uklanjanje grupe
       history: Prikaz povijesti grupe
-    variant_group:
-      index: Popis varijanti grupa
-      create: Kreiranje varijante grupe
-      edit: Uređivanje varijante grupe
-      remove: Uklanjanje varijante grupe
-      history: Prikaz povijesti varijante grupe
-      edit_attributes: Uredi atribute varijante grupa
-      add_attributes: Dodaj atribute varijante grupa
-      remove_attribute: Ukloni atribute varijante grupa
     group_type:
       index: Prikaži tipove grupe
       create: Kreiraj tip grupe
@@ -247,15 +215,9 @@ pim_enrich:
     currency: Valute
     family: Obitelji
     group: Grupe
-    variant_group: Varijante grupa
     group_type: Tipovi grupa
     locale: Lokalizacija
     product: Proizvodi
-  product_value:
-    tooltip:
-      from_variant:
-        title: Ažurirano sa varijantom grupe
-        content: Ovo polje se ažurira sa sljedećom varijantom grupe
   reference_data:
     empty_value:
       reference_data_type:
@@ -274,7 +236,7 @@ attribute group:
   create new: Kreiraj novu grupu atributa
 category:
   title: kategorija
-  overview: pregled kategorije
+  overview: Kategorije
   create: kreiraj kategoriju
   edit: uredi kategoriju
   suggest selection: Molimo odaberi kategoriju na lijevoj strani
@@ -311,9 +273,6 @@ group:
 group type:
   title: tip grupe
   edit: uredi tip grupe
-variant group:
-  title: varijanta grupe
-  edit: uredi varijantu grupe
 association type:
   title: tip pridruživanja
   create: kreiraj tip pridruživanja
@@ -331,7 +290,6 @@ btn:
     locale: kreiraj lokalizaciju
     product: kreiraj proizvod
     group: kreiraj grupu
-    variant group: kreiraj varijantu grupe
     association type: kreiraj tip pridruživanja
     group type: kreiraj tip grupe
     drag_or_upload: Povucite i ispustite za upload ili kliknite ovdje
@@ -363,7 +321,6 @@ confirmation:
     family: Jeste li sigurni da želite izbrisati obitelji %name%?
     product: Jeste li sigurni da želite izbrisati proizvod %name%?
     group: Jeste li sigurni da želite izbrisati grupu %name%?
-    variant group: Jeste li sigurni da želite izbrisati varijantu grupe %name%?
     group type: Jeste li sigurni da želite izbrisati tip grupe %name%?
     user: Jeste li sigurni da želite izbrisati korisnika %name%?
   attribute group:
@@ -372,8 +329,6 @@ confirmation:
     remove attribute: Jeste li sigurni da želite ukloniti atribut %name% iz ove obitelji?
   product:
     remove attribute: Jeste li sigurni da želite ukloniti atribut %name% od ovog proizvoda?
-  variant_group:
-    remove_attribute: Jeste li sigurni da želite ukloniti atribut %name% iz ove varijante grupe?
 flash:
   entity:
     removed: Stavka je izbrisana
@@ -382,7 +337,6 @@ flash:
     updated: Atribut je uspješno ažuriran
     removed: Atribut je uspješno uklonjen
     identifier not removable: Identifikator atributa ne može biti uklonjen
-    used by groups: Ovaj atribut se ne može ukloniti jer se koristi u %count% varijanti grupa
   attribute group:
     created: Atribut grupe je uspješno kreiran
     updated: Atribut grupe je uspješno ažuriran
@@ -425,17 +379,10 @@ flash:
   group:
     updated: Grupa je uspješno ažurirana
     removed: Grupa je uspješno uklonjena
-  variant group:
-    created: Varijanta grupe je uspješno kreirana
-    updated: Varijanta grupe je uspješno ažurirana
-    removed: Varijanta grupe je uspješno uklonjena
-    attributes_added: Atributi su uspješno dodani u varijantu grupe
-    attribute_removed: Atributi su uspješno uklonjeni iz varijante grupe
   group type:
     created: Tip grupe je uspješno kreiran
     updated: Tip grupe je uspješno ažuriran
     removed: Tip grupe je uspješno uklonjen
-    cant remove variant: Varijanta tipa grupe ne može biti uklonjena
     cant remove used: Tip grupe koristi neka grupa i ne može se ukloniti
   association type:
     created: Tip pridruživanja je uspješno kreiran
@@ -491,7 +438,7 @@ Manage groups: Upravljanje grupama
 Code: Kod
 Name: Ime
 Type: Tip
-Scope: Djelokrug
+Scope: Kanal
 Required: Obavezno
 Unique: Jedinstveno
 Not required: Nije obavezno
@@ -610,9 +557,6 @@ pim_title.locale:
 pim_title.group:
   index: "Grupe"
   edit: "Grupe %group.label% | Uredi"
-pim_title.variant_group:
-  index: "Varijante grupa"
-  edit: "Varijante grupe %group.label% | Uredi"
 pim_title.association_type:
   index: "Tipovi pridruživanja"
   edit: "Tipovi pridruživanja %association type.label% | Uredi"
@@ -684,7 +628,6 @@ pim_enrich.mass_edit_action:
     success_flash: Atribut(i) proizvoda su ažurirani
     message.warning: Ne postoji zajednički atribut za odabrane proizvode. Promijenite odabir.
     no_attribute.warning: Ne postoji zajednički atribut za odabrane proizvode. Promijenite odabir.
-    truncated_by_variant_attribute.warning: 'Neki uobičajene atributi iz odabranih proizvode dolaze iz varijante grupe. Oni nisu dostupni za masovno uređivanje: %attributes%.'
   classify:
     description: Proizvodi će biti postavljeni u sljedeće kategorije, postojeći položaj je zadržan.
     success_flash: Proizvodi su klasificirani u odabrane kategorije
@@ -724,7 +667,6 @@ popin.create:
   association_type.title: Kreiraj novi tip pridruživanja
   group.title: Kreiraj novu grupu
   product.title: Kreiraj novi proizvod
-  variant_group.title: Kreiraj novu varijantu grupe
   option.title: Kreiraj novu opciju
 In group: U grupi
 Attribute as label: Atribut kao oznaka
@@ -799,11 +741,6 @@ pim_mass_edit_execution_show: Izvođenje masovnog uređivanja | Detalji
 edit_common_attributes.steps.edit_common_attributes_processor.title: Uredi uobičajene atribute
 update_product_value.steps.update_product_value_processor.title: Ažuriraj vrijednosti proizvoda
 remove_product_value.steps.update_product_value_processor.title: Uklanjanje vrijednosti proizvoda
-add_to_variant_group_clean.steps.excluded.title: Isključeni proizvod
-add_to_variant_group_clean.steps.duplicated.title: Dvostruke osi
-add_to_variant_group.steps.excluded.title: Isključeni proizvod
-add_to_variant_group.steps.duplicated.title: Dvostruke osi
-add_to_variant_group.steps.cleaner.warning.description: 'Proizvod se ne može postaviti u odabranu varijantu grupe: dvostruke vrijednosti osi varijacije s drugim proizvodom u odabiru'
 edit_common_attributes: Uredi uobičajene atribute
 edit_common_attributes_clean: Obriši datoteke za uobičajene atribute
 perform.steps.duplicated.title: Dvostruke osi
@@ -839,10 +776,6 @@ batch_jobs:
     quick_export.label: Brzi izvoz pregleda proizvoda u Xlsx
     perform:
       label: Brzi izvoz pregleda proizvoda u Xlsx
-  add_to_variant_group:
-    label: Dodaj u varijantu grupe
-    perform:
-      label: Dodaj u varijantu grupe
 mass_edit report:
   overview: Izvješća masovnog uređivanja
 job_tracker:

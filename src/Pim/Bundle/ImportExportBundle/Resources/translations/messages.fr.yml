@@ -142,6 +142,7 @@ Warnings: Avertissements
 Summary: Résumé
 Start: Début
 End: Fin
+set_attribute_requirements: Configurer les exigences d'attributs
 COMPLETED: Terminé
 STARTING: Démarrage
 STARTED: Démarré

@@ -7,7 +7,6 @@ confirmation:
     product: Вы действительно хотите удалить этот продукт?
     channel: Вы действительно хотите удалить этот канал?
     group: Вы действительно хотите удалить эту группу?
-    variant group: Вы действительно хотите удалить эту группу вариантов?
     group_type: Вы действительно хотите удалить эту группу типов?
     import profile: Вы действительно хотите удалить этот профиль импорта?
     export profile: Вы действительно хотите удалить этот профиль экспорта?
@@ -46,8 +45,6 @@ flash:
     removed: Канал успешно удален
   group:
     removed: Группа успешно удалена
-  variant group:
-    removed: Вариативная группа успешно удалена
   group_type:
     removed: Тип группы успешно удален
   import profile:
@@ -67,7 +64,6 @@ error:
     product: Не удается удалить этот продукт
     channel: Не удается удалить этот канал
     group: Не удается удалить эту группу
-    variant group: Не удается удалить эту группу вариантов
     group type: Не удается удалить эту группу типов
     import profile: Не удается удалить этот профиль импорта
     export profile: Не удается удалить этот профиль экспорта
@@ -106,11 +102,10 @@ pim:
         csv_grid_context: CSV (видимые столбцы)
         xlsx_all: Excel (все атрибуты)
         xlsx_grid_context: Excel (видимые столбцы)
-      delete: Удалить продукты
-      mass_edit: Изменить информации о продукте
+      delete: Удалить
       category_edit: Перемещение товаров в категориях
-      sequential_edit: Редактировать продукты последовательно
 jstree.create: Создать
+jstree.done: Готово
 switch_on: "Да"
 switch_off: "Нет"
 pim_enrich:
@@ -137,10 +132,10 @@ pim_enrich:
         save: Сохранить
         cancel: Отмена
     product:
-      index_title: Продукты
       title: продукт
       locale: Локаль
       category: Категория
+      filters: Фильтры
       btn:
         enabled: Включено
         disabled: Отключено
@@ -191,11 +186,6 @@ pim_enrich:
         all_visible: Все видимые
         none: Нет
         copy: Копия
-      variant_group:
-        updated_by: Обновлено группой вариантов
-        switch:
-          "yes": "Да"
-          "no": "Нет"
       optional_attribute:
         remove: Удалить этот атрибут
       locale_specific_attribute:
@@ -205,7 +195,7 @@ pim_enrich:
       media:
         upload: Перетащите чтобы загрузить, или нажмите здесь
       create_popin:
-        title: Создать новый продукт
+        title: Создать
         labels:
           family: Выберите семейство
           save: Сохранить
@@ -223,7 +213,7 @@ pim_enrich:
         save: Сохранить
       title: тип ассоциации
       create_popin:
-        title: Создать новый тип ассоциации
+        title: Создать
       message:
         created: Тип ассоциации успешно создан
     group_type:
@@ -236,7 +226,7 @@ pim_enrich:
         save: Сохранить
       title: тип группы
       create_popin:
-        title: Создать новый тип группы
+        title: Создать
       message:
         created: Тип группы успешно создан
     channel:
@@ -258,34 +248,13 @@ pim_enrich:
       btn:
         save: Сохранить
       create_popin:
-        title: Создать новое семейство
+        title: Создать
       message:
         created: Семейство успешно создано
     attribute_option:
       code: Код
       label: Метка
       actions: Действия
-    variant_group:
-      title: Группа вариантов
-      info:
-        deletion_successful: Группа вариантов успешно удалена.
-        deletion_failed: Не удалось удалить группу вариантов.
-        update_successful: Группа вариантов успешно обновлена.
-        update_failed: Не удалось обновить группу вариантов.
-        already_in_upload: Файл уже находится в загрузке для этого атрибута на «{{ locale }}» языке и в канале «{{ scope }}»
-        no_attributes: Это группа вариантов пока не имеет атрибутов
-      btn:
-        save: Сохранить
-      meta:
-        product_count: Продукты
-        created: Создано
-        created_by: Создана
-        updated: Обновлено
-        updated_by: Обновлена
-      create_popin:
-        title: Создать новую вариативную группу
-      message:
-        created: Вариативная группа успешно создана
     group:
       title: Группа
       btn:
@@ -297,7 +266,7 @@ pim_enrich:
         updated: Обновлено
         updated_by: Обновлена
       create_popin:
-        title: Создать новую группу
+        title: Создать
       message:
         created: Группа успешно создана
     attribute:
@@ -324,6 +293,9 @@ pim_enrich:
     attribute_group:
       info:
         update_successful: Группа атрибутов успешно обновлена
+    api_connection:
+      create_popin:
+        title: Создать
   confirmation:
     leave: Вы уверены, что хотите покинуть эту страницу?
     discard_changes: Если вы покините страницу изменения будут потеряны для {{ entity }}.
@@ -455,21 +427,6 @@ pim_enrich:
       switch:
         "no": "Нет"
         "yes": "Да"
-    variant_group:
-      tab:
-        properties:
-          title: Свойства
-          general: Общие свойства
-          code: Код
-          type: Тип
-          axis: Ось
-          label_translations: Переводы меток
-        history:
-          title: Журнал
-        products:
-          title: Продукты
-        attributes:
-          title: Атрибуты
     group:
       tab:
         properties:
@@ -535,7 +492,7 @@ pim_enrich:
         content:
           title: Содержание
         properties:
-          title: Общие свойства
+          title: Свойства
           code:
             title: Код
           label:
@@ -779,26 +736,22 @@ pim_enrich:
     import_profiles:
       list: Выберите задание
       create_popin:
-        title: Создать новый профиль импорта
+        title: Создать
     group:
       create_btn: Создать группу
     export_profiles:
       create_popin:
-        title: Создать новый профиль экспорта
+        title: Создать
     user:
-      title: Пользователь
       create_btn: Создать пользователя
     user_role:
-      title: Роль
       create_btn: Создать роль
     user_group:
-      title: Группы
       create_btn: Создать группу
-    process_tracker:
-      title: Трекер процессов
     attribute:
       modal_title: Выберите тип атрибута
     attribute_group:
+      title: Группы атрибутов
       create_btn: Создать
     api_connection:
       create_btn: Создать
@@ -810,8 +763,6 @@ pim_enrich:
       step:
         select:
           label: Выберите продукты
-        choose:
-          label: Выберите операцию
         configure:
           label: Настройка
         confirm:
@@ -830,10 +781,6 @@ pim_enrich:
           label: Добавить в группы
           description: Выберите группы, в которые нужно добавить выбранные продукты
           field: Группы
-        add_to_variant_group:
-          label: Добавить в группу вариантов
-          description: Выберите группу вариантов для добавления выбранных продуктов
-          field: Группа
         add_to_category:
           description: Продукты будут добавлены в следующие категории, исходное расположение сохраниться.
         move_to_category:
@@ -844,8 +791,6 @@ pim_enrich:
       step:
         select:
           label: Выберите семейства
-        choose:
-          label: Выберите операцию
         configure:
           label: Настройка
         confirm:
@@ -868,7 +813,6 @@ page_title:
   pim_enrich_currency_index: Валюты
   pim_enrich_locale_index: Локали
   pim_enrich_group_index: Группы
-  pim_enrich_variant_group_index: Вариативные группы
   pim_enrich_associationtype_index: Типы ассоциаций
   pim_enrich_grouptype_index: Типы групп
   pim_enrich_mass_edit_action_choose: Массовое редактирование | Выбрать
@@ -890,12 +834,10 @@ batch_jobs:
       label: Изменить общие атрибуты
     cleaner:
       label: Редактировать файлы общих атрибутов
-  add_to_variant_group:
-    label: Добавить в группу вариантов
-    perform:
-      label: Добавить в группу вариантов
   csv_product_export:
     label: Экспорт продуктов в CSV
+    export.label: Экспорт продуктов
+  csv_product_model_export:
     export.label: Экспорт продуктов
   csv_category_export:
     label: Экспорт категорий в CSV
@@ -909,9 +851,6 @@ batch_jobs:
   csv_group_export:
     label: Экспорт групп в CSV
     export.label: Экспорт групп
-  csv_variant_group_export:
-    label: Экспорт групп вариантов в CSV
-    export.label: Экспорт групп вариантов
   csv_family_export:
     label: Экспорт семейств в CSV
     export.label: Экспорт семейств
@@ -945,10 +884,6 @@ batch_jobs:
     label: Импорт группы из CSV
     validation.label: Проверка файла
     import.label: Импорт группы
-  csv_variant_group_import:
-    label: Импорт группы вариантов в CSV
-    validation.label: Проверка файла
-    import.label: Импорт групп вариантов
   csv_channel_import:
     validation.label: Проверка файла
   csv_locale_import:
@@ -991,17 +926,10 @@ batch_jobs:
   xlsx_group_export:
     label: Экспорт групп в XLSX
     export.label: Экспорт групп
-  xlsx_variant_group_export:
-    label: Экспорт групп вариантов в XLSX
-    export.label: Экспорт групп вариантов
   xlsx_group_import:
     label: Импорт групп из XLSX
     validation.label: Проверка файла
     import.label: Импорт группы
-  xlsx_variant_group_import:
-    label: Импорт групп вариантов из XLSX
-    validation.label: Проверка файла
-    import.label: Импорт групп вариантов
   xlsx_family_export:
     label: Экспорт семейств в XLSX
     export.label: Экспорт семейств
@@ -1045,7 +973,6 @@ pim_menu:
     group_type: Типы групп
     locale: Локали
     product: Продукты
-    variant_group: Вариативные группы
     export_history: История экспорта
     export_profile: Профили экспорта
     import_history: История импорта

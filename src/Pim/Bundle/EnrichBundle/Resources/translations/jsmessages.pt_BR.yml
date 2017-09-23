@@ -7,7 +7,6 @@ confirmation:
     product: Tem certeza de que deseja excluir este produto?
     channel: Tem certeza de que deseja excluir este canal?
     group: Tem certeza de que deseja excluir este produto?
-    variant group: Tem certeza de que deseja excluir este grupo variante?
     group_type: Tem certeza de que deseja excluir este tipo de grupo?
     import profile: Tem certeza de que deseja excluir este perfil de importação?
     export profile: Tem certeza de que deseja excluir este perfil de exportação?
@@ -46,8 +45,6 @@ flash:
     removed: Canal removido com sucesso
   group:
     removed: Grupo removido com sucesso
-  variant group:
-    removed: Grupo variante removido com sucesso
   group_type:
     removed: Tipo de grupo removido com sucesso
   import profile:
@@ -69,7 +66,6 @@ error:
     product: Não é possível eliminar este produto
     channel: Não é possível excluir este canal
     group: Não é possível excluir esse grupo
-    variant group: Não é possível excluir esse grupo variante
     group type: Não é possível excluir este tipo de grupo
     import profile: Não é possível excluir esse perfil de importação
     export profile: Não é possível excluir esse perfil de exportação
@@ -106,9 +102,9 @@ pim:
         csv_all: CSV (Todos atributos)
         csv_grid_context: CSV (Contexto de grelha)
         xlsx_all: Excel (todos os atributos)
-      delete: Eliminar produtos
-      mass_edit: Alterar as informações de produto
+      delete: Excluir
 jstree.create: Criar
+jstree.done: Cocluído
 switch_on: "Sim"
 switch_off: "Não"
 pim_enrich:
@@ -135,10 +131,10 @@ pim_enrich:
         save: Salvar
         cancel: Cancelar
     product:
-      index_title: Produtos
       title: produto
       locale: Localidade
       category: Categoria
+      filters: Filtros
       btn:
         enabled: Habilitado
         disabled: Desabilitado
@@ -189,11 +185,6 @@ pim_enrich:
         all_visible: Todos Visiveis
         none: Nenhum
         copy: Cópia
-      variant_group:
-        updated_by: Atualizado por grupo variante
-        switch:
-          "yes": "Sim"
-          "no": "Não"
       optional_attribute:
         remove: Remover esse atributo
       locale_specific_attribute:
@@ -203,7 +194,7 @@ pim_enrich:
       media:
         upload: Arraste e solte para fazer o envio ou clique aqui
       create_popin:
-        title: Criar um novo produto
+        title: Criar
         labels:
           family: Escolha uma família
           save: Salvar
@@ -224,7 +215,7 @@ pim_enrich:
         save: Salvar
       title: tipo de associação
       create_popin:
-        title: Criar um novo tipo de associação
+        title: Criar
       message:
         created: Tipo de associação criado com sucesso
     group_type:
@@ -235,7 +226,7 @@ pim_enrich:
         save: Salvar
       title: tipo de grupo
       create_popin:
-        title: Criar um novo tipo de grupo
+        title: Criar
       message:
         created: Tipo de grupo criado com sucesso
     channel:
@@ -263,28 +254,13 @@ pim_enrich:
       btn:
         save: Salvar
       create_popin:
-        title: Criar uma nova família
+        title: Criar
       message:
         created: Família criada com sucesso
     attribute_option:
       code: Código
       label: Rótulo
       actions: Ações
-    variant_group:
-      title: Grupo de variantes
-      info:
-        already_in_upload: Um arquivo ja está sendo enviado para esse atributo no local "{{ locale }}" e no escopo "{{ scope }}"
-        no_attributes: Este grupo variante ainda não tem atributos
-      btn:
-        save: Salvar
-      meta:
-        product_count: Produtos
-        created: Criado
-        updated: Atualizado
-      create_popin:
-        title: Criar um novo grupo de variante
-      message:
-        created: Grupo variante criado com sucesso
     group:
       title: Grupo
       info:
@@ -299,7 +275,7 @@ pim_enrich:
         created: Criado
         updated: Atualizado
       create_popin:
-        title: Criar um novo grupo
+        title: Criar
       message:
         created: Grupo criado com sucesso
     job_instance:
@@ -331,6 +307,9 @@ pim_enrich:
     attribute_group:
       info:
         update_successful: Grupo de atributos atualizado com sucesso
+    api_connection:
+      create_popin:
+        title: Criar
   confirmation:
     leave: Tem certeza de que deseja sair desta página?
     discard_changes: Você perderá as alterações feitas em %entity% se sair dessa página.
@@ -462,21 +441,6 @@ pim_enrich:
       switch:
         "no": "Não"
         "yes": "Sim"
-    variant_group:
-      tab:
-        properties:
-          title: Propriedades
-          general: Propriedades gerais
-          code: Código
-          type: Tipo
-          axis: Eixo
-          label_translations: Traduções do rótulo
-        history:
-          title: Histórico
-        products:
-          title: Produtos
-        attributes:
-          title: Atributos
     group:
       tab:
         properties:
@@ -549,7 +513,7 @@ pim_enrich:
         content:
           title: Conteúdo
         properties:
-          title: Propriedades gerais
+          title: Propriedades
           code:
             title: Código
           label:
@@ -649,8 +613,6 @@ pim_enrich:
           toolbox:
             select_attributes: Adicionar atributos
             add: Adicionar
-  job:
-    upload: Arrastar e soltar o arquivo ou clique aqui
   export:
     product:
       structure:
@@ -768,26 +730,22 @@ pim_enrich:
     import_profiles:
       list: Selecione uma tarefa
       create_popin:
-        title: Criar um novo perfil de exportação
+        title: Criar
     group:
       create_btn: Criar grupo
     export_profiles:
       create_popin:
-        title: Criar um novo perfil de exportação
+        title: Criar
     user:
-      title: Usuário
       create_btn: Criar usuário
     user_role:
-      title: Função
       create_btn: Criar papel
     user_group:
-      title: Grupos
       create_btn: Criar grupo
-    process_tracker:
-      title: Visualizador de processos
     attribute:
       modal_title: Escolher tipo de atributo
     attribute_group:
+      title: Grupo de atributos
       create_btn: Criar
     api_connection:
       create_btn: Criar
@@ -799,8 +757,6 @@ pim_enrich:
       step:
         select:
           label: Escolher produtos
-        choose:
-          label: Escolher operação
         configure:
           label: Configurar
         confirm:
@@ -819,10 +775,6 @@ pim_enrich:
           label: Adicionar aos grupos
           description: Selecione os grupos nos quais os produtos selecionados devem ser adicionados
           field: Grupos
-        add_to_variant_group:
-          label: Adicionar a um grupo variante
-          description: Selecione o grupo variante em qual quer adicionar os produtos selecionados
-          field: Grupo
         add_to_category:
           description: Os produtos serão posicionados nas categorias, o posicionamento existente será mantido.
         move_to_category:
@@ -833,8 +785,6 @@ pim_enrich:
       step:
         select:
           label: Escolher famílias
-        choose:
-          label: Escolher operação
         configure:
           label: Configurar
         confirm:
@@ -857,7 +807,6 @@ page_title:
   pim_enrich_currency_index: Moedas
   pim_enrich_locale_index: Localidades
   pim_enrich_group_index: Grupos
-  pim_enrich_variant_group_index: Grupos de variantes
   pim_enrich_associationtype_index: Tipos de associação
   pim_enrich_grouptype_index: Tipos de grupos
   pim_enrich_mass_edit_action_choose: Edição em massa | Escolher
@@ -875,12 +824,10 @@ batch_jobs:
       label: Editar atributos comuns
     cleaner:
       label: Limpar ficheiros de atributos comuns
-  add_to_variant_group:
-    label: Adicionar a grupo variante
-    perform:
-      label: Adicionar a grupo variante
   csv_product_export:
     label: Exportação de produto em CSV
+    export.label: Exportação de produto
+  csv_product_model_export:
     export.label: Exportação de produto
   csv_category_export:
     label: Exportação de categoria em CSV
@@ -897,9 +844,6 @@ batch_jobs:
   csv_group_export:
     label: Exportação de grupo em CSV
     export.label: Exportação de grupo
-  csv_variant_group_export:
-    label: Exportar Grupo Variante em CSV
-    export.label: Exportar Grupo Variante
   csv_family_export:
     label: Exportação de família em CSV
     export.label: Exportação de família
@@ -934,10 +878,6 @@ batch_jobs:
     label: Importação de grupo em CSV
     validation.label: Validação de arquivo
     import.label: Importação de grupo
-  csv_variant_group_import:
-    label: Importar grupo variante em CSV
-    validation.label: Validação de arquivo
-    import.label: Importação de Grupo Variante
   csv_channel_export:
     label: Exportação de canal em CSV
     export.label: Exportação de canal
@@ -1006,17 +946,10 @@ batch_jobs:
   xlsx_group_export:
     label: Exportação de grupos em XLSX
     export.label: Exportação de grupo
-  xlsx_variant_group_export:
-    label: Exportação de grupos variantes em XLSX
-    export.label: Exportar Grupo Variante
   xlsx_group_import:
     label: Importação de grupos por XLSX
     validation.label: Validação de arquivo
     import.label: Importação de grupo
-  xlsx_variant_group_import:
-    label: Importação de grupos variantes por XLSX
-    validation.label: Validação de arquivo
-    import.label: Importação de grupos variantes
   xlsx_family_export:
     label: Exportação de famílias em XLSX
     export.label: Exportação de família
@@ -1083,7 +1016,6 @@ pim_menu:
     group_type: Tipos de grupos
     locale: Localidades
     product: Produtos
-    variant_group: Grupos de variantes
     export_history: Histórico de exportações
     export_profile: Perfis de exportação
     import_history: Histórico de importações

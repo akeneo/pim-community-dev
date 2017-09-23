@@ -7,7 +7,6 @@ confirmation:
     product: Möchten Sie dieses Produkt wirklich löschen?
     channel: Möchten Sie diesen Ausgabekanal wirklich löschen?
     group: Möchten Sie diese Gruppe wirklich löschen?
-    variant group: Möchten Sie diese Variantengruppe wirklich löschen?
     group_type: Möchten Sie diesen Gruppentyp wirklich löschen?
     import profile: Möchten Sie dieses Importprofil wirklich löschen?
     export profile: Möchten Sie dieses Exportprofil wirklich löschen?
@@ -46,8 +45,6 @@ flash:
     removed: Ausgabekanal erfolgreich entfernt
   group:
     removed: Gruppe erfolgreich entfernt
-  variant group:
-    removed: Variantengruppe erfolgreich entfernt
   group_type:
     removed: Gruppentyp erfolgreich gelöscht
   import profile:
@@ -69,7 +66,6 @@ error:
     product: Dieses Produkt kann nicht gelöscht werden
     channel: Dieser Ausgabekanal kann nicht gelöscht werden
     group: Diese Gruppe kann nicht gelöscht werden
-    variant group: Diese Variantengruppe kann nicht gelöscht werden
     group type: Dieser Gruppentyp kann nicht gelöscht werden
     import profile: Dieses Importprofil kann nicht gelöscht werden
     export profile: Dieses Exportprofil kann nicht gelöscht werden
@@ -108,11 +104,10 @@ pim:
         csv_grid_context: CSV (Kontextabhängig)
         xlsx_all: Excel (alle Attribute)
         xlsx_grid_context: Excel (Kontextabhängig)
-      delete: Produkte löschen
-      mass_edit: Produktinformationen ändern
+      delete: Löschen
       category_edit: Produkte in Kategorien verschieben
-      sequential_edit: Produkte se­quen­zi­ell bearbeiten
 jstree.create: Anlegen
+jstree.done: Fertig
 switch_on: "Ja"
 switch_off: "Nein"
 pim_enrich:
@@ -139,10 +134,10 @@ pim_enrich:
         save: Speichern
         cancel: Abbrechen
     product:
-      index_title: Produkte
       title: Produkt
       locale: Gebietsschema
       category: Kategorie
+      filters: Filter
       btn:
         enabled: Aktiviert
         disabled: Deaktiviert
@@ -194,11 +189,6 @@ pim_enrich:
         all_visible: Alle sichtbaren
         none: Keine
         copy: Kopieren
-      variant_group:
-        updated_by: Aktualisiert durch eine Variantengruppe
-        switch:
-          "yes": "Ja"
-          "no": "Nein"
       optional_attribute:
         remove: Dieses Attribut löschen
       locale_specific_attribute:
@@ -208,7 +198,7 @@ pim_enrich:
       media:
         upload: Upload per Drag & Drop oder hier klicken
       create_popin:
-        title: Neues Produkt anlegen
+        title: Anlegen
         labels:
           family: Wählen Sie eine Produktfamilie
           save: Speichern
@@ -231,7 +221,7 @@ pim_enrich:
         save: Speichern
       title: Verbindungstyp
       create_popin:
-        title: Einen neuen Verbindungstyp anlegen
+        title: Anlegen
       message:
         created: Verbindungstyp erfolgreich erstellt
     group_type:
@@ -249,7 +239,7 @@ pim_enrich:
         save: Speichern
       title: Gruppentyp
       create_popin:
-        title: Neuen Gruppentypen anlegen
+        title: Anlegen
       message:
         created: Gruppentyp erfolgreich erstellt
     channel:
@@ -283,34 +273,13 @@ pim_enrich:
       btn:
         save: Speichern
       create_popin:
-        title: Neue Produktfamilie anlegen
+        title: Anlegen
       message:
         created: Produktfamilie erfolgreich angelegt
     attribute_option:
       code: Code
       label: Bezeichnung
       actions: Aktionen
-    variant_group:
-      title: Variantengruppe
-      info:
-        deletion_successful: Variantengruppe erfolgreich gelöscht.
-        deletion_failed: Die Variantengruppe konnte nicht gelöscht werden.
-        update_successful: Variantengruppe erfolgreich aktualisiert.
-        update_failed: Die Variantengruppe konnte nicht aktualisiert werden.
-        already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
-        no_attributes: Diese Variantengruppe hat noch keine Attribute
-      btn:
-        save: Speichern
-      meta:
-        product_count: Produkte
-        created: Erstellt
-        created_by: Erstellt von
-        updated: Aktualisiert
-        updated_by: Aktualisiert von
-      create_popin:
-        title: Neue Variantengruppe anlegen
-      message:
-        created: Variantengruppe erfolgreich erstellt
     group:
       title: Gruppe
       info:
@@ -327,7 +296,7 @@ pim_enrich:
         updated: Aktualisiert
         updated_by: Aktualisiert von
       create_popin:
-        title: Neue Gruppe anlegen
+        title: Anlegen
       message:
         created: Gruppe erfolgreich erstellt
     job_instance:
@@ -359,6 +328,9 @@ pim_enrich:
     attribute_group:
       info:
         update_successful: Attributgruppe erfolgreich aktualisiert
+    api_connection:
+      create_popin:
+        title: Anlegen
   confirmation:
     leave: Möchten Sie diese Seite wirklich verlassen?
     discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
@@ -495,21 +467,6 @@ pim_enrich:
       switch:
         "no": "Nein"
         "yes": "Ja"
-    variant_group:
-      tab:
-        properties:
-          title: Eigenschaften
-          general: Allgemeine Eigenschaften
-          code: Code
-          type: Typ
-          axis: Achse
-          label_translations: Feldbezeichner-Übersetzungen
-        history:
-          title: Historie
-        products:
-          title: Produkte
-        attributes:
-          title: Attribute
     group:
       tab:
         properties:
@@ -585,7 +542,7 @@ pim_enrich:
         content:
           title: Inhalt
         properties:
-          title: Allgemeine Eigenschaften
+          title: Eigenschaften
           code:
             title: Code
           label:
@@ -692,8 +649,6 @@ pim_enrich:
             select_attributes: Attribute hinzufügen
             add: Hinzufügen
             attributes_groups_selected: '{{ itemsCount }} Gruppe(n) ausgewählt'
-  job:
-    upload: Drag & Drop einer Datei oder hier klicken
   export:
     product:
       data:
@@ -835,58 +790,39 @@ pim_enrich:
       description: Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.
   index:
     association_type:
-      title: Verbindungstypen-Übersicht
       create_btn: Verbindungstyp anlegen
     import_profiles:
-      title: Übersicht Importprofil
       create_btn: Importprofil anlegen
       list: Wählen Sie einen Auftrag
       create_popin:
-        title: Ein neues Importprofil anlegen
+        title: Anlegen
     import_history:
       title: Importberichte
-    variant_group:
-      title: Übersicht Variantengruppe
-      create_btn: Variantengruppe anlegen
     group:
-      title: Übersicht Gruppe
       create_btn: Gruppe anlegen
     export_profiles:
-      title: Übersicht Exportprofil
       create_btn: Exportprofil anlegen
       create_popin:
-        title: Ein neues Exportprofil anlegen
+        title: Anlegen
     export_history:
       title: Exportberichte
     family:
-      title: Übersicht Produktfamilie
       create_btn: Produktfamilie anlegen
     grouptype:
-      title: Übersicht Gruppentyp
       create_btn: Gruppentyp anlegen
-    currency:
-      title: Übersicht Währung
-    locale:
-      title: Übersicht Gebietsschema
     user:
-      title: Benutzer
       create_btn: Benutzer anlegen
     user_role:
-      title: Rolle
       create_btn: Rolle anlegen
     user_group:
-      title: Gruppen
       create_btn: Gruppe anlegen
-    process_tracker:
-      title: Prozess-Tracker
     channel:
-      title: Übersicht Ausgabekanäle
       create_btn: Ausgabekanal anlegen
     attribute:
-      title: Attribute Übersicht
       create_btn: Attribut anlegen
       modal_title: Wählen Sie den Attributtyp aus
     attribute_group:
+      title: Attributgruppen
       create_btn: Anlegen
     api_connection:
       create_btn: Anlegen
@@ -898,8 +834,6 @@ pim_enrich:
       step:
         select:
           label: Produkte auswählen
-        choose:
-          label: Aktion auswählen
         configure:
           label: Konfigurieren
         confirm:
@@ -918,10 +852,6 @@ pim_enrich:
           label: Zu Gruppen hinzufügen
           description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
           field: Gruppen
-        add_to_variant_group:
-          label: Zu einer Variantengruppe hinzufügen
-          description: Bitte wählen Sie die Variantengruppe aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
-          field: Gruppe
         add_to_category:
           description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
         move_to_category:
@@ -932,8 +862,6 @@ pim_enrich:
       step:
         select:
           label: Produktfamilien auswählen
-        choose:
-          label: Aktion auswählen
         configure:
           label: Konfigurieren
         confirm:
@@ -964,8 +892,6 @@ page_title:
   pim_enrich_locale_index: Gebietsschemata
   pim_enrich_group_index: Gruppen
   pim_enrich_group_edit: Gruppen {{ group.label }} | Bearbeiten
-  pim_enrich_variant_group_index: Variantengruppen
-  pim_enrich_variant_group_edit: Variantengruppen {{ group.label }} | Bearbeiten
   pim_enrich_associationtype_index: Verbindungstypen
   pim_enrich_associationtype_edit: Verbindungstypen {{ association type.label }} | Bearbeiten
   pim_enrich_grouptype_index: Gruppentypen
@@ -1006,12 +932,10 @@ batch_jobs:
     quick_export.label: XLSX Produkt-Schnellexport kontextabhängig
     perform:
       label: XLSX Produkt-Schnellexport kontextabhängig
-  add_to_variant_group:
-    label: Zu einer Variantengruppe hinzufügen
-    perform:
-      label: Zu einer Variantengruppe hinzufügen
   csv_product_export:
     label: Produkt-Export als CSV-Datei
+    export.label: Produkt export
+  csv_product_model_export:
     export.label: Produkt export
   csv_category_export:
     label: Kategorie-Export als CSV-Datei
@@ -1028,9 +952,6 @@ batch_jobs:
   csv_group_export:
     label: Gruppen-Export in CSV-Datei
     export.label: Gruppen-Export
-  csv_variant_group_export:
-    label: Variantengruppen-Export als CSV
-    export.label: Variantengruppen-Export
   csv_family_export:
     label: Exportiere Produktfamilie in CSV-Datei
     export.label: Exportiere Produktfamilie
@@ -1065,10 +986,6 @@ batch_jobs:
     label: Gruppen-Import aus CSV-Datei
     validation.label: Dateivalidierung
     import.label: Gruppen-Import
-  csv_variant_group_import:
-    label: Variantengruppen-Import als CSV
-    validation.label: Dateivalidierung
-    import.label: Variantengruppen-Import
   csv_channel_export:
     label: Ausgabekanal-Export als CSV-Datei
     export.label: Ausgabekanal-Export
@@ -1137,17 +1054,10 @@ batch_jobs:
   xlsx_group_export:
     label: Gruppen-Export als XSLX-Datei
     export.label: Gruppen-Export
-  xlsx_variant_group_export:
-    label: Variantengruppen-Export als XLSX-Datei
-    export.label: Variantengruppen-Export
   xlsx_group_import:
     label: Gruppen-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import.label: Gruppen-Import
-  xlsx_variant_group_import:
-    label: Variantengruppen-Import aus XLSX-Datei
-    validation.label: Dateivalidierung
-    import.label: Variantengruppen-Import
   xlsx_family_export:
     label: Produktfamilien-Eport als XLSX-Datei
     export.label: Exportiere Produktfamilie
@@ -1223,7 +1133,6 @@ pim_menu:
     group_type: Gruppentypen
     locale: Gebietsschemata
     product: Produkte
-    variant_group: Variantengruppen
     export_history: Export-Historie
     export_profile: Export-Profile
     import_history: Import-Historie

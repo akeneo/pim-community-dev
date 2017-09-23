@@ -43,19 +43,25 @@ oro.datagrid.action.refresh: "Aktualisieren"
 oro_datagrid.select.all: "Alle"
 oro_datagrid.select.visible: "Alle sichtbaren"
 oro_datagrid.select.none: "Keine"
+oro_datagrid.select.select: "Auswählen"
 pim.grid.ajax_choice_filter.label_empty: ist leer
 pim.grid.ajax_choice_filter.label_not_empty: ist nicht leer
-pim.grid.choice_filter:
-  label_empty: ist leer
-  label_not_empty: ist nicht leer
-  label_in_list: in Liste
+pim:
+  grid:
+    choice_filter:
+      label_empty: ist leer
+      label_not_empty: ist nicht leer
+      label_in_list: in Liste
+    price_filter:
+      label: Währung
+    category_filter:
+      done: Fertig
 Available Columns: Verfügbare Spalten
 Displayed Columns: Ausgewählte Spalten
 datagrid_view.columns.min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
 pim_datagrid:
   column_configurator:
     label: Spalten
-    title: Spaltenauswahl
     all_groups: Alle Gruppen
     search: Suche
     clear: Zurücksetzen
@@ -63,6 +69,7 @@ pim_datagrid:
     apply: Anwenden
     cancel: Abbrechen
     remove_column: Entfernen
+    attribute_groups: Attributgruppen
   mass_action:
     delete:
       confirm_title: Löschbestätigung
@@ -88,6 +95,5 @@ grid.view_selector:
   placeholder: Name der neuen Ansicht
   choose_label: Wählen Sie eine Bezeichnung für die Ansicht
   confirmation:
-    remove: Sind Sie sicher, dass Sie diese Tabellen-Ansicht löschen möchten?
     delete: Löschbestätigung
 grid.view_selector.flash.updated: Tabellen-Ansicht erfolgreich aktualisiert

@@ -43,19 +43,25 @@ oro.datagrid.action.refresh: "Обновить"
 oro_datagrid.select.all: "Все"
 oro_datagrid.select.visible: "Все видимые"
 oro_datagrid.select.none: "Нет"
+oro_datagrid.select.select: "Выбрать"
 pim.grid.ajax_choice_filter.label_empty: пусто
 pim.grid.ajax_choice_filter.label_not_empty: не является пустым
-pim.grid.choice_filter:
-  label_empty: пусто
-  label_not_empty: не является пустым
-  label_in_list: в списке
+pim:
+  grid:
+    choice_filter:
+      label_empty: пусто
+      label_not_empty: не является пустым
+      label_in_list: в списке
+    price_filter:
+      label: Валюта
+    category_filter:
+      done: Готово
 Available Columns: Доступные столбцы
 Displayed Columns: Выбранные столбцы
 datagrid_view.columns.min_message: Вы должны выбрать по крайней мере один столбец для отображения
 pim_datagrid:
   column_configurator:
     label: Столбцы
-    title: Выбор столбцов
     all_groups: Все группы
     search: Поиск
     clear: Очистить
@@ -63,6 +69,7 @@ pim_datagrid:
     apply: Применить
     cancel: Отмена
     remove_column: Удалить
+    attribute_groups: Группы атрибутов
   mass_action:
     delete:
       confirm_title: Подтверждение удаления
@@ -88,6 +95,5 @@ grid.view_selector:
   placeholder: Название нового представления
   choose_label: Выберите ярлык для представления
   confirmation:
-    remove: Вы действительно хотите удалить это представление табличных данных?
     delete: Подтверждение удаления
 grid.view_selector.flash.updated: Представление табличных данных успешно обновлено

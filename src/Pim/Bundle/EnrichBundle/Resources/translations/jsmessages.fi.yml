@@ -7,7 +7,6 @@ confirmation:
     product: Oletko varma, että haluat poistaa tämän tuotteen?
     channel: Oletko varma, että haluat poistaa tämän kanavan?
     group: Oletko varma että haluat poistaa tämän ryhmän?
-    variant group: Oletko varma, että haluat poistaa tämän muuttujaryhmän?
     group_type: Oletko varma, että haluat poistaa tämän ryhmätyypin?
     import profile: Oletko varma, että haluat poistaa tämän tuontiprofiilin?
     export profile: Oletko varma, että haluat poistaa tämän vientiprofiilin?
@@ -46,8 +45,6 @@ flash:
     removed: Kanavan poistaminen onnistui
   group:
     removed: Ryhmän poistaminen onnistui
-  variant group:
-    removed: Tuotevariaatioryhmä poistettiin onnistuneesti
   group_type:
     removed: Ryhmätyyppi poistettu onnistuneesti
   import profile:
@@ -67,7 +64,6 @@ error:
     product: Tuotetta ei voi poistaa
     channel: Kanavaa ei voi poistaa
     group: Ryhmää ei voi poistaa
-    variant group: Variant ryhmää ei voi poistaa
     group type: Ryhmätyyppiä ei voi poistaa
     import profile: Tuontiprofiilia ei voi poistaa
     export profile: Vientiprofiilia ei voi poistaa
@@ -106,11 +102,10 @@ pim:
         csv_grid_context: CSV (Ruudukon konteksti)
         xlsx_all: Excel (Kaikki attribuutit)
         xlsx_grid_context: Excel (Ruudukon konteksti)
-      delete: Poista tuotteet
-      mass_edit: Muuta tuotteiden tietoja
+      delete: Poista
       category_edit: Siirrä tuotteita kategorioihin
-      sequential_edit: Muokkaa tuotteita peräkkäin
 jstree.create: Luo
+jstree.done: Valmis
 switch_on: "Kyllä"
 switch_off: "Ei"
 pim_enrich:
@@ -137,10 +132,10 @@ pim_enrich:
         save: Tallenna
         cancel: Peruuta
     product:
-      index_title: Tuotteet
       title: tuote
       locale: Lokaatio
       category: Kategoria
+      filters: Suodattimet
       btn:
         enabled: Käytössä
         disabled: Poistettu käytöstä
@@ -191,11 +186,6 @@ pim_enrich:
         all_visible: Kaikki näkyvillä olevat
         none: Ei yhtään
         copy: Kopioi
-      variant_group:
-        updated_by: Päivitetty variant-ryhmittäin
-        switch:
-          "yes": "Kyllä"
-          "no": "Ei"
       optional_attribute:
         remove: Poista tämä attribuutti
       locale_specific_attribute:
@@ -205,7 +195,7 @@ pim_enrich:
       media:
         upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
       create_popin:
-        title: Luo uusi tuote
+        title: Luo
         labels:
           family: Valitse perhe
           save: Tallenna
@@ -223,7 +213,7 @@ pim_enrich:
         save: Tallenna
       title: sidoksen tyyppi
       create_popin:
-        title: Luo uusi määritetyyppi
+        title: Luo
       message:
         created: Sidostyyppi luotu onnistuneesti
     group_type:
@@ -236,7 +226,7 @@ pim_enrich:
         save: Tallenna
       title: ryhmän tyyppi
       create_popin:
-        title: Luo uusi ryhmätyyppi
+        title: Luo
       message:
         created: Ryhmätyyppi lisätty onnistuneesti
     channel:
@@ -258,34 +248,13 @@ pim_enrich:
       btn:
         save: Tallenna
       create_popin:
-        title: Luo uusi tuoteperhe
+        title: Luo
       message:
         created: Tuoteperhe luotu
     attribute_option:
       code: Koodi
       label: Nimike
       actions: Toiminnot
-    variant_group:
-      title: Tuotevariaatioryhmä
-      info:
-        deletion_successful: Tuotevariaatioryhmä poistettiin onnistuneesti.
-        deletion_failed: Tuotevariaatioryhmää ei voitu poistaa.
-        update_successful: Tuotevariaatioryhmä päivitetty onnistuneesti.
-        update_failed: Tuotevariaatioryhmää ei voitu päivittää.
-        already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
-        no_attributes: Tällä tuotevariaatioryhmällä ei ole attribuutteja vielä
-      btn:
-        save: Tallenna
-      meta:
-        product_count: Tuotteet
-        created: Luotu
-        created_by: Luoja
-        updated: Päivitetty
-        updated_by: Päivittäjä
-      create_popin:
-        title: Luo uusi tuotevariaatioryhmä
-      message:
-        created: Tuotevariaatioryhmä poistettu onnistuneesti
     group:
       title: Ryhmä
       btn:
@@ -297,7 +266,7 @@ pim_enrich:
         updated: Päivitetty
         updated_by: Päivittäjä
       create_popin:
-        title: Luo uusi ryhmä
+        title: Luo
       message:
         created: Ryhmä luotu onnistuneesti
     attribute:
@@ -324,6 +293,9 @@ pim_enrich:
     attribute_group:
       info:
         update_successful: Attribuuttiryhmän päivittäminen onnistui
+    api_connection:
+      create_popin:
+        title: Luo
   confirmation:
     leave: Oletko varma että haluat poistua sivulta?
     discard_changes: Menetät muutokset tähän {{ entity }}, jos poistut sivulta.
@@ -455,21 +427,6 @@ pim_enrich:
       switch:
         "no": "Ei"
         "yes": "Kyllä"
-    variant_group:
-      tab:
-        properties:
-          title: Ominaisuudet
-          general: Yleiset ominaisuudet
-          code: Koodi
-          type: Tyyppi
-          axis: Akseli
-          label_translations: Nimikkeiden käännökset
-        history:
-          title: Historia
-        products:
-          title: Tuotteet
-        attributes:
-          title: Attribuutit
     group:
       tab:
         properties:
@@ -535,7 +492,7 @@ pim_enrich:
         content:
           title: Sisältö
         properties:
-          title: Yleiset ominaisuudet
+          title: Ominaisuudet
           code:
             title: Koodi
           label:
@@ -779,26 +736,22 @@ pim_enrich:
     import_profiles:
       list: Valitse työ
       create_popin:
-        title: Luo uusi tuontiprofiili
+        title: Luo
     group:
       create_btn: Luo ryhmä
     export_profiles:
       create_popin:
-        title: Luo uusi vientiprofiili
+        title: Luo
     user:
-      title: Käyttäjä
       create_btn: Luo käyttäjä
     user_role:
-      title: Rooli
       create_btn: Luo rooli
     user_group:
-      title: Ryhmät
       create_btn: Luo ryhmä
-    process_tracker:
-      title: Prosessiseurain
     attribute:
       modal_title: Valitse attribuutin tyyppi
     attribute_group:
+      title: Attribuuttiryhmät
       create_btn: Luo
     api_connection:
       create_btn: Luo
@@ -810,8 +763,6 @@ pim_enrich:
       step:
         select:
           label: Valitse tuotteet
-        choose:
-          label: Valitse toiminto
         configure:
           label: Konfiguroi
         confirm:
@@ -830,10 +781,6 @@ pim_enrich:
           label: Lisää ryhmiin
           description: Valitse ryhmät joihin valitut tuotteet lisätään
           field: Ryhmät
-        add_to_variant_group:
-          label: Lisää tuotevariaatioryhmään
-          description: Valitse tuotevariaatioyhmä johon lisätä valitut tuotteet
-          field: Ryhmä
         add_to_category:
           description: Tuotteet asetetaan seuraaviin kategorioihin, olemassaolevat asetukset pyyvät.
         move_to_category:
@@ -844,8 +791,6 @@ pim_enrich:
       step:
         select:
           label: Valitse tuoteperheet
-        choose:
-          label: Valitse toiminto
         configure:
           label: Konfiguroi
         confirm:
@@ -868,7 +813,6 @@ page_title:
   pim_enrich_currency_index: Valuutat
   pim_enrich_locale_index: Alueet
   pim_enrich_group_index: Ryhmät
-  pim_enrich_variant_group_index: Tuotevariaatioryhmät
   pim_enrich_associationtype_index: Määritetyypit
   pim_enrich_grouptype_index: Ryhmätyypit
   pim_enrich_mass_edit_action_choose: Massaedit | Valitse
@@ -886,12 +830,10 @@ batch_jobs:
       label: Muokkaa yleisiä attribuutteja
     cleaner:
       label: Puhdista tiedostot yleisille attribuuteille
-  add_to_variant_group:
-    label: Lisää tuotevariaatioryhmään
-    perform:
-      label: Lisää tuotevariaatioryhmään
   csv_product_export:
     label: Tuotteiden vienti CSV-muodossa
+    export.label: Tuotteiden vienti
+  csv_product_model_export:
     export.label: Tuotteiden vienti
   csv_category_export:
     label: Kategorian vienti CSV-muodossa
@@ -908,9 +850,6 @@ batch_jobs:
   csv_group_export:
     label: Ryhmän vienti CSV-muodossa
     export.label: Ryhmän vienti
-  csv_variant_group_export:
-    label: Muuttujaryhmien vienti CSV-muodossa
-    export.label: Muutujaryhmien vienti
   csv_family_export:
     label: Ryhmän tuonti CSV-tiedostona
     export.label: Ryhmän vienti
@@ -945,10 +884,6 @@ batch_jobs:
     label: Ryhmien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmien tuonti
-  csv_variant_group_import:
-    label: Muuttujaryhmien tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Muutujaryhmien tuonti
   csv_channel_import:
     validation.label: Tiedostojen tarkistaminen
   csv_locale_import:
@@ -992,17 +927,10 @@ batch_jobs:
   xlsx_group_export:
     label: Ryhmävienti XLSX-muodossa
     export.label: Ryhmän vienti
-  xlsx_variant_group_export:
-    label: Muuttujaryhmien vienti XLSX-muodossa
-    export.label: Muutujaryhmien vienti
   xlsx_group_import:
     label: Ryhmätuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmien tuonti
-  xlsx_variant_group_import:
-    label: Muuttujaryhmien tuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Muuttujaryhmien tuonti
   xlsx_family_export:
     label: Perhevienti XLSX-muodossa
     export.label: Ryhmän vienti
@@ -1046,7 +974,6 @@ pim_menu:
     group_type: Ryhmätyypit
     locale: Alueet
     product: Tuotteet
-    variant_group: Tuotevariaatioryhmät
     export_history: Vientihistoria
     export_profile: Vientiprofiili
     import_history: Tuontihistoria

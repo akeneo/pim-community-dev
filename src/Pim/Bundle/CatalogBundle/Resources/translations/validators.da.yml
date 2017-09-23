@@ -27,3 +27,18 @@ file.extensions.message: 'Filtypen er ikke tilladt (tilladte filtyper: %extensio
 "The attribute \"%attributeCode%\" is not a metric attribute.": Attributten "%attributeCode%" er ikke en metrisk attribut.
 "The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Enhed "%unitCode%" findes ikke eller hører ikke til den standard metriske familie af den givne attribut "%attributeCode%".
 "The currency \"%currency%\" has to be activated.": Valuta "%currency%" skal være aktiveret.
+product_model.code.not_blank.message: Model produktkode må ikke være tom.
+product_model.code.unique.message: Den samme id er allerede benyttet på et andet produkt
+product_model.family_variant.not_blank.message: Model produktkode må ikke være tom.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'Attributten "%attribute%" må ikke være tom, da den er defineret som en akse for denne enhed'
+    can_have_family_variant_duplicate_axis_value: 'Kan ikke angive værdien "%values%" for den attribut akse "%attributes%", som en anden søskende enhed allerede har denne værdi'
+    can_have_family_variant_unexpected_attribute: 'Kan ikke angive egenskaben "%attribute%" til denne enhed, da der ikke er angivet nogen  attributt'
+    cannot_have_product_model_as_parent: 'Produkt model "%product_model%" kan ikke have produkt model "%parent_product_model%" som forælder'
+    cannot_have_parent: 'Produkt model "%product_model%" kan ikke have et overordnet produkt'
+    attribute_does_not_belong_to_family: 'Attributten "%attribute%" tilhører ikke familien "%family%"'
+    variant_product_invalid_family: 'Produktfamilien variant skal være den samme end dens overordnede'
+    variant_product_has_parent: 'Produkt varianten "%variant_product%" skal have en forælder'
+    invalid_variant_product_parent: 'Produkt varianten "%variant_product%" kan ikke have produkt model "%product_model%" som forælder, (denne produktmodel kan kun have andre produktmodeller som børn)'
+    modified_variant_axis_value: 'Variant akse "%variant_axis%" kan ikke ændres, "%provided_value%" givet'

@@ -34,6 +34,8 @@ not_available: N/A
 "No": false
 oro.datagrid.entityHint: Entité
 oro.datagrid.noentities: Aucun enregistrement trouvé
+oro.datagrid.noresults: "Désolé, il n’y a aucun résultat pour votre recherche."
+oro.datagrid.noresults_subTitle: "Essayez à nouveau avec d'autres critères de recherche."
 oro.datagrid.nocolumns: Aucune colonne configurée pour cette grille
 oro.datagrid.pagination.label: "Page"
 oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
@@ -43,19 +45,27 @@ oro.datagrid.action.refresh: "Mettre à jour"
 oro_datagrid.select.all: "Tous"
 oro_datagrid.select.visible: "Tous les éléments visibles"
 oro_datagrid.select.none: "Aucun"
+oro_datagrid.select.select: "Sélectionner"
 pim.grid.ajax_choice_filter.label_empty: est vide
 pim.grid.ajax_choice_filter.label_not_empty: n'est pas vide
-pim.grid.choice_filter:
-  label_empty: est vide
-  label_not_empty: n'est pas vide
-  label_in_list: dans la liste
+pim:
+  grid:
+    choice_filter:
+      label_empty: est vide
+      label_not_empty: n'est pas vide
+      label_in_list: dans la liste
+      operator: Opérateur
+    price_filter:
+      label: Devise
+    category_filter:
+      done: Fait
 Available Columns: Colonnes disponibles
 Displayed Columns: Colonnes sélectionnées
 datagrid_view.columns.min_message: Vous devez sélectionner au moins une colonne à afficher
 pim_datagrid:
   column_configurator:
     label: Colonnes
-    title: Sélection de colonnes
+    title: Configurer les colonnes
     all_groups: Tous les groupes
     search: Recherche
     clear: Réinitialiser
@@ -63,6 +73,8 @@ pim_datagrid:
     apply: Appliquer
     cancel: Annuler
     remove_column: Supprimer
+    description: Sélectionnez les informations que vous souhaitez afficher dans vos colonnes
+    attribute_groups: Groupes d'attributs
   mass_action:
     delete:
       confirm_title: Confirmation de la suppression
@@ -88,7 +100,7 @@ grid.view_selector:
   placeholder: Nom de la nouvelle vue
   choose_label: Choisissez un titre pour la vue
   confirmation:
-    remove: Êtes-vous sûr(e) de que vouloir supprimer cette vue ?
+    remove: Êtes-vous sûr(e) de vouloir supprimer cette vue ?
     delete: Confirmation de la suppression
 grid.view_selector.flash.updated: Vue de grille mise à jour avec succès
 Client ID: ID du client
