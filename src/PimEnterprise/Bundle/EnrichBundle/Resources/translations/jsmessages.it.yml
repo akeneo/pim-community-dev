@@ -54,6 +54,8 @@ pimee_enrich:
           added: Al gruppo {{ group }} sarà concesso il permesso {{ permission }} sul gruppo attributi
   entity:
     product:
+      index_title: Prodotti pubblicati
+      navigation: Prodotti pubblicati
       history:
         published: Pubblicato
         revert: Ripristina

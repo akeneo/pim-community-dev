@@ -1,5 +1,4 @@
 pimee_catalog_rule:
-  overview: 规则
   execution_button: 执行规则
   popin:
     execute_rules:

@@ -40,6 +40,8 @@ pimee_enrich:
           edit.label: Attribuuttien muokkaaminen sallittu
   entity:
     product:
+      index_title: Julkaistut tuotteet
+      navigation: Julkaistut tuotteet
       history:
         published: Julkaistu
         revert: Palauta

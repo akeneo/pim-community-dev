@@ -1,4 +1,3 @@
 flash.version.revert.product: Ripristina correttamente il prodotto alla versione precedente
 flash.error.revert.product: Questa versione non può essere ripristinata. Si sono verificati alcuni errori durante la convalida.
-flash.error.revert.product_has_variant: Il prodotto non può essere ripristinato perché appartiene a un gruppo di varianti
 pimee_versioning.acl.product_version.revert: Ripristina un prodotto

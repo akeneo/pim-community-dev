@@ -157,10 +157,6 @@ batch_jobs:
     perform.label: Modifier les attributs communs
     execute_rules.label: Exécution des règles
     cleaner.label: Nettoyage des fichiers temporaires
-  add_to_variant_group_with_rules:
-    label: Ajouter des produits au groupe de variantes avec application de règles
-    perform.label: Ajouter des produits à un groupe de variantes
-    execute_rules.label: Exécution des règles
   csv_published_product_quick_export:
     export.label: Export rapide CSV des produits publiés
     perform:
@@ -177,10 +173,6 @@ batch_jobs:
     export.label: Export rapide XLSX des produits publiés dans le contexte de grille
     perform:
       label: Export rapide XLSX des produits publiés dans le contexte de grille
-add_to_variant_group_with_rules:
-  steps.perform: Ajouter des produits à un groupe de variantes
-  steps.excluded.title: Produit exclu
-  steps.duplicated.title: Axe dupliqué
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Modifier les attributs communs
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Ajouter la valeur du produit avec permission
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Mettre à jour la valeur du produit avec la permission

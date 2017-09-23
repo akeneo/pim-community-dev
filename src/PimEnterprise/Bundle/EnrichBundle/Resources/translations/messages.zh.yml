@@ -154,10 +154,6 @@ batch_jobs:
     perform.label: 编辑共同属性
     execute_rules.label: 执行规则
     cleaner.label: 清理临时文件
-  add_to_variant_group_with_rules:
-    label: 应用规则将产品添加到款式组
-    perform.label: 将产品添加到款式组
-    execute_rules.label: 执行规则
   csv_published_product_quick_export:
     export.label: 快速导出已发布的产品至Csv文件
     perform:
@@ -174,10 +170,6 @@ batch_jobs:
     export.label: 已发布的产品内容（网页界面）快速导出至XLSX
     perform:
       label: 已发布的产品内容（网页界面）快速导出至XLSX
-add_to_variant_group_with_rules:
-  steps.perform: 将产品添加到款式组
-  steps.excluded.title: 被排除在外的产品
-  steps.duplicated.title: 重复的轴
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: 编辑共同属性
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: 为产品添加权限
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: 为产品更新权限

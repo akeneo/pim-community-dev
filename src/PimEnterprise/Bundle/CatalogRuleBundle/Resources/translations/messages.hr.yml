@@ -15,8 +15,8 @@ pimee_catalog_rule:
           no_yet_calculated: Nije još izračunato
       mass_edit_action:
         impacted_product_count: Izračunaj zahvaćene proizvode
-        execute: Izvrši odabrana pravila
-        delete: Obriši odabrana pravila
+        execute: Izvrši
+        delete: Obriši
   actions:
     type:
       "copy": Tada se %from_field% kopira u %to_field%
@@ -66,7 +66,6 @@ pimee_catalog_rule:
   product:
     tooltip:
       product_attribute_affected_by_a_rule.content: Vrijednost ovog atributa može doći iz pravila <strong>%rule%</strong>. To znači ako uvjeti pravila vrijede, vaša modifikacija će se poništiti.
-      variant_attribute_affected_by_a_rule.content: Atributi varijante grupa imaju prioritet nad atributima proizvoda. To znači da će svaki atribut ove varijante grupe nadjačati odgovarajuću vrijednost u sadržanim proizvodima. Pravila <strong>%rule%</strong>, se neće primijeniti na proizvode.
       loading.title: Učitavanje...
     history: Primjenjeno pravilo "%rule%"
   product_value:

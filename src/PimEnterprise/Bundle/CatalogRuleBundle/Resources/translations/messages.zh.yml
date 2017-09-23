@@ -15,8 +15,8 @@ pimee_catalog_rule:
           no_yet_calculated: 尚未计算
       mass_edit_action:
         impacted_product_count: 计算受影响的产品
-        execute: 执行选定的规则
-        delete: 删除选定的规则
+        execute: 执行
+        delete: 删除
   actions:
     type:
       "copy": 然后将 %from_field% 复制到 %to_field%
@@ -66,7 +66,6 @@ pimee_catalog_rule:
   product:
     tooltip:
       product_attribute_affected_by_a_rule.content: 此属性的值可以来自规则 <strong>%rule%</strong>。这意味着如果规则的条件是有效的，您的修改将被覆盖。
-      variant_attribute_affected_by_a_rule.content: 款式组属性优先于产品属性。这意味着款式组的每个属性将重写包含产品中相应的值。规则 <strong>%rule%</strong>，将不会应用在产品上。
       loading.title: 正在加载...
     history: 应用规则"%rule%"
   product_value:

@@ -46,6 +46,8 @@ pimee_enrich:
           edit.label: Разрешено изменение атрибутов
   entity:
     product:
+      index_title: Опубликованные продукты
+      navigation: Опубликованные продукты
       history:
         published: Опубликован
         revert: Восстановить

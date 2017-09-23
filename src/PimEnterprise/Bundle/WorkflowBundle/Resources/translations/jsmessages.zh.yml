@@ -18,7 +18,6 @@ pimee_workflow:
     proposal:
       modal.title: 留下你的评论 (可选-255 字符最大)
   proposal:
-    overview: 提案
     mass_action_group:
       review:
         label: 批量操作

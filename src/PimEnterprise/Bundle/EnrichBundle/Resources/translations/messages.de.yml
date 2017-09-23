@@ -157,10 +157,6 @@ batch_jobs:
     perform.label: Gemeinsame Attribute bearbeiten
     execute_rules.label: Regel-Ausführung
     cleaner.label: Lösche temporäre Dateien
-  add_to_variant_group_with_rules:
-    label: Hinzufügen von Produkten zu Variantengruppe mit Regeln
-    perform.label: Produkte zu Variantengruppe hinzufügen
-    execute_rules.label: Regel-Ausführung
   csv_published_product_quick_export:
     export.label: Schnellexport veröffentlichter Produkte als CSV
     perform:
@@ -177,10 +173,6 @@ batch_jobs:
     export.label: Kontextbezogener Schnellexport veröffentlichter Produkte als XLSX
     perform:
       label: Kontextbezogener Schnellexport veröffentlichter Produkte als XLSX
-add_to_variant_group_with_rules:
-  steps.perform: Produkte zu Variantengruppe hinzufügen
-  steps.excluded.title: Ausgeschlossene Produkte
-  steps.duplicated.title: Doppelte Achse
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Gemeinsame Attribute bearbeiten
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Produktwert mit Berechtigung hinzufügen
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Produktwert mit Berechtigung aktualisieren

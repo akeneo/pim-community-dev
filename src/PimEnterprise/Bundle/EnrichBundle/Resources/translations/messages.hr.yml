@@ -149,10 +149,6 @@ batch_jobs:
     perform.label: Uredi uobičajene atribute
     execute_rules.label: Izvođenje pravila
     cleaner.label: Očisti privremene datoteke
-  add_to_variant_group_with_rules:
-    label: Dodaj proizvode u varijantu grupe sa pravilima aplikacije
-    perform.label: Dodaj proizvod u varijantu grupe
-    execute_rules.label: Izvođenje pravila
   csv_published_product_quick_export:
     export.label: Brzi izvoz objavljenih proizvoda u Csv
     perform:
@@ -169,10 +165,6 @@ batch_jobs:
     export.label: Brzi izvoz prikaza tablice objavljenih proizvoda u Xlsx
     perform:
       label: Brzi izvoz prikaza tablice objavljenih proizvoda u Xlsx
-add_to_variant_group_with_rules:
-  steps.perform: Dodaj proizvod u varijantu grupe
-  steps.excluded.title: Isključeni proizvod
-  steps.duplicated.title: Dvostruke osi
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Uredi uobičajene atribute
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Dodaj vrijednost proizvoda sa dozvolom
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Ažuriraj vrijednost proizvoda sa dozvolom

@@ -141,9 +141,6 @@ batch_jobs:
     perform.label: Poista tuotteen arvo
   edit_common_attributes_with_permission_and_rules:
     perform.label: Muokkaa yleisiä attribuutteja
-add_to_variant_group_with_rules:
-  steps.excluded.title: Poissuljetut tuotteet
-  steps.duplicated.title: Päällekkäät akselit
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Muokkaa yleisiä attribuutteja
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Lisää käyttöoikeudellinen tuotearvo
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Päivitä käyttöoikeudellinen tuotearvo

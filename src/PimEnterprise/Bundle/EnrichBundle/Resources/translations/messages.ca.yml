@@ -154,10 +154,6 @@ batch_jobs:
     perform.label: Editar atributs comuns
     execute_rules.label: Execució de les regles
     cleaner.label: Netejar arxius temporals
-  add_to_variant_group_with_rules:
-    label: Afegir productes a la variant de grup amb aplicació de regles
-    perform.label: Afegir productes a la variant de grups
-    execute_rules.label: Execució de les regles
   csv_published_product_quick_export:
     export.label: Exportació ràpida dels productes publicats en Csv
     perform:
@@ -174,10 +170,6 @@ batch_jobs:
     export.label: Exportació ràpida de la quadrícula de context de productes publicats en Xlsx
     perform:
       label: Exportació ràpida de la quadrícula de context de productes publicats en Xlsx
-add_to_variant_group_with_rules:
-  steps.perform: Afegir productes a la variant de grups
-  steps.excluded.title: Producte exclòs
-  steps.duplicated.title: Eix duplicat
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Editar atributs comuns
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Afegir valor producte amb permisos
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Actualitzar el valor de producte amb permissos

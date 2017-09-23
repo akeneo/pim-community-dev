@@ -1,5 +1,4 @@
 pimee_catalog_rule:
-  overview: Reglas
   execution_button: Ejecutar reglas
   popin:
     execute_rules:
