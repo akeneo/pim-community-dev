@@ -35,8 +35,8 @@ Feature: Export families in XLSX
     When I am on the "xlsx_footwear_family_export" export job page
     And I launch the export job
     And I wait for the "xlsx_footwear_family_export" job to finish
-    Then I should see the secondary action "xlsx_footwear_family_export_1.xlsx"
-    And I should see the secondary action "xlsx_footwear_family_export_2.xlsx"
+    Then I press "xlsx_footwear_family_export_1.xlsx" on the "Download generated files" dropdown button
+    And I press "xlsx_footwear_family_export_2.xlsx" on the "Download generated files" dropdown button
     And exported xlsx file 1 of "xlsx_footwear_family_export" should contain:
       | code  | attribute_as_label | attributes                                                                                                 | label-en_US | requirements-mobile                             | requirements-tablet                                                       | attribute_as_image |
       | boots | name               | color,description,lace_color,manufacturer,name,price,rating,side_view,size,sku,top_view,weather_conditions | Boots       | color,name,price,size,sku                       | color,description,name,price,rating,side_view,size,sku,weather_conditions |                    |

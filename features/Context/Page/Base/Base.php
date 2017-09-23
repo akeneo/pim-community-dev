@@ -411,7 +411,7 @@ class Base extends Page
         $dropdownMenu = $dropdownToggle->getParent()->find('css', '.dropdown-menu, .AknDropdown-menu');
 
         return $this->spin(function () use ($dropdownMenu, $item) {
-            return $dropdownMenu->find('css', sprintf('li:contains("%s") a', $item));
+            return $dropdownMenu->find('css', sprintf('*:contains("%s")', $item));
         }, sprintf('Item "%s" of dropdown button "%s" not found', $item, $button));
     }
 

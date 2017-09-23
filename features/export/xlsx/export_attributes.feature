@@ -99,9 +99,9 @@ Feature: Export attributes in XLSX
     When I am on the "xlsx_footwear_attribute_export" export job page
     And I launch the export job
     And I wait for the "xlsx_footwear_attribute_export" job to finish
-    Then I should see the secondary action "xlsx_footwear_attribute_export_1.xlsx"
-    And I should see the secondary action "xlsx_footwear_attribute_export_2.xlsx"
-    And I should see the secondary action "xlsx_footwear_attribute_export_3.xlsx"
+    Then I press "xlsx_footwear_attribute_export_1.xlsx" on the "Download generated files" dropdown button
+    And I press "xlsx_footwear_attribute_export_2.xlsx" on the "Download generated files" dropdown button
+    And I press "xlsx_footwear_attribute_export_3.xlsx" on the "Download generated files" dropdown button
     And exported xlsx file 1 of "xlsx_footwear_attribute_export" should contain:
       | code | label-fr_FR | label-en_US | allowed_extensions | auto_option_sorting | available_locales | date_max | date_min | decimals_allowed | default_metric_unit | group | localizable | max_characters | max_file_size | metric_family | minimum_input_length | negative_allowed | number_max | number_min | reference_data_name | scopable | sort_order | type                   | unique | useable_as_grid_filter | validation_regexp | validation_rule | wysiwyg_enabled |
       | sku  |             | SKU         |                    |                     |                   |          |          |                  |                     | info  | 0           |                |               |               | 0                    |                  |            |            |                     | 0        | 1          | pim_catalog_identifier | 1      | 1                      |                   |                 |                 |

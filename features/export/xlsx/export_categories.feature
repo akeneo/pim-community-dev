@@ -144,9 +144,9 @@ Feature: Export categories in XLSX
     When I am on the "xlsx_footwear_category_export" export job page
     And I launch the export job
     And I wait for the "xlsx_footwear_category_export" job to finish
-    Then I should see the secondary action "xlsx_footwear_category_export_1.xlsx"
-    And I should see the secondary action "xlsx_footwear_category_export_2.xlsx"
-    And I should see the secondary action "xlsx_footwear_category_export_3.xlsx"
+    Then I press "xlsx_footwear_category_export_1.xlsx" on the "Download generated files" dropdown button
+    And I press "xlsx_footwear_category_export_2.xlsx" on the "Download generated files" dropdown button
+    And I press "xlsx_footwear_category_export_3.xlsx" on the "Download generated files" dropdown button
     And exported xlsx file 1 of "xlsx_footwear_category_export" should contain:
       | code              | label-en_US       | parent            |
       | 2014_collection   | 2014 collection   |                   |
