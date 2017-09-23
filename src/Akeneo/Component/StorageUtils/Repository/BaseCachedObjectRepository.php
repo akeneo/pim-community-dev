@@ -31,7 +31,7 @@ class BaseCachedObjectRepository implements CachedObjectRepositoryInterface
      */
     public function findOneByIdentifier($identifier)
     {
-        if (!isset($this->objectsCache[$identifier])) {
+        if (!array_key_exists($identifier, $this->objectsCache)) {
             $this->objectsCache[$identifier] = $this->repository->findOneByIdentifier($identifier);
         }
 
