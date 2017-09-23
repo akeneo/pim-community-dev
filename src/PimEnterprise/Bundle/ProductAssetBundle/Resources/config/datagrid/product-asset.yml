@@ -1,6 +1,7 @@
 datagrid:
     asset-picker-grid:
         options:
+            manageFilters: false
             entityHint: asset
             requireJSModules:
                 - pim/datagrid/column-form-listener
@@ -61,13 +62,9 @@ datagrid:
         filters:
             columns:
                 code:
-                    type:      string
+                    type:      search
                     label:     pimee_product_asset.code.label
                     data_name: asset.code
-                description:
-                    type:      string
-                    label:     pimee_product_asset.description.label
-                    data_name: asset.description
                 tags:
                     type:      product_asset_tag
                     data_name: tags.id

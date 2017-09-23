@@ -91,8 +91,8 @@ define(
                 var deferred = $.Deferred();
 
                 FormBuilder.build('pimee-product-asset-picker-form').then(function (form) {
-                    var modal = new Backbone.BootstrapModal({
-                        className: 'modal modal-large',
+                    let modal = new Backbone.BootstrapModal({
+                        className: 'modal modal-asset modal--fullPage modal--topButton',
                         modalOptions: {
                             backdrop: 'static',
                             keyboard: false
@@ -104,9 +104,8 @@ define(
                         cancelText: _.__('pimee_product_asset.form.product.asset.manage_asset.cancel'),
                         okText: _.__('pimee_product_asset.form.product.asset.manage_asset.confirm')
                     });
-
                     modal.open();
-                    modal.$el.addClass('modal-asset');
+
                     form.setElement(modal.$('.modal-body'))
                         .render()
                         .setAssets(this.data);

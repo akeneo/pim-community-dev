@@ -11,6 +11,8 @@ pimee_product_asset:
                     title: Manage assets
                     cancel: Cancel
                     confirm: Confirm
+                title: Manage assets
+                description: Choose the assets you want to attach to your product
     enrich_asset:
         grid:
             edit: Edit properties of the asset

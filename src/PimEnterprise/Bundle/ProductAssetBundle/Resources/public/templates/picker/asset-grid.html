@@ -1,4 +1,10 @@
 <div class="AknColumnConfigurator">
+    <div class="AknColumnConfigurator-title AknFullPage-title">
+        <%- title %>
+    </div>
+    <div class="AknColumnConfigurator-subTitle AknFullPage-description">
+        <%- description %>
+    </div>
     <div class="AknColumnConfigurator-column">
         <div class="AknColumnConfigurator-listContainer">
             <div class="AknColumnConfigurator-relativeContent categories-container">
@@ -9,7 +15,9 @@
     <div class="AknColumnConfigurator-column AknColumnConfigurator-column--large">
         <div class="AknColumnConfigurator-listContainer">
             <div id="asset-picker-grid" class="asset-grid">
-                <div id="grid-asset-picker-grid" data-type="datagrid"></div>
+                <div id="grid-asset-picker-grid" data-type="datagrid">
+                    <div class="AknFilterBox AknFilterBox--search AknFilterBox--sticky filter-box" data-drop-zone="filters"></div>
+                </div>
             </div>
         </div>
     </div>

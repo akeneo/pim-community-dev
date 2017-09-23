@@ -4,3 +4,13 @@ attribute_fields:
 extensions:
     pimee-product-asset-picker-form:
         module: pimee/picker/asset-grid
+
+    pimee-product-asset-picker-form-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pimee-product-asset-picker-form
+        targetZone: filters
+
+    pimee-product-asset-picker-form-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pimee-product-asset-picker-form
+        targetZone: filters
