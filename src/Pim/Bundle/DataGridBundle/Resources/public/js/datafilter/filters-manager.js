@@ -347,7 +347,8 @@ define(
                         }
                     },
                     beforeclose: () => {
-                        if (this.selectWidget.getWidget().position().left <= this._getLeftStartPosition()) {
+                        if (null === this.selectWidget.getWidget() ||
+                            this.selectWidget.getWidget().position().left <= this._getLeftStartPosition()) {
                             return true;
                         }
 
