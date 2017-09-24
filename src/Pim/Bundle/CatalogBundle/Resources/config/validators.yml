@@ -12,7 +12,6 @@ parameters:
     pim_catalog.validator.constraint.immutable.class:                      Pim\Component\Catalog\Validator\Constraints\ImmutableValidator
     pim_catalog.validator.constraint.variant_group_values.class:           Pim\Component\Catalog\Validator\Constraints\VariantGroupValuesValidator
     pim_catalog.validator.constraint.variant_group_axis.class:             Pim\Component\Catalog\Validator\Constraints\VariantGroupAxisValidator
-    pim_catalog.validator.constraint.has_variant_axes.class:               Pim\Component\Catalog\Validator\Constraints\HasVariantAxesValidator
     pim_catalog.validator.constraint.family_requirements.class:            Pim\Component\Catalog\Validator\Constraints\FamilyRequirementsValidator
     pim_catalog.validator.constraint.family_attribute_as_label.class:      Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsLabelValidator
     pim_catalog.validator.constraint.family_attribute_as_image.class:      Pim\Component\Catalog\Validator\Constraints\FamilyAttributeAsImageValidator
@@ -203,11 +202,6 @@ services:
         class: '%pim_catalog.validator.constraint.variant_group_axis.class%'
         tags:
             - { name: validator.constraint_validator, alias: pim_variant_group_axis_validator }
-
-    pim_catalog.validator.constraint.has_variant_axes:
-        class: '%pim_catalog.validator.constraint.has_variant_axes.class%'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_has_variant_axes_validator }
 
     pim_catalog.validator.constraint.family_requirements:
         class: '%pim_catalog.validator.constraint.family_requirements.class%'
