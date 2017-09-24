@@ -23,17 +23,6 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                     nullable: false
             orphanRemoval: false
     manyToMany:
-        axisAttributes:
-            targetEntity: Pim\Component\Catalog\Model\AttributeInterface
-            joinTable:
-                name: pim_catalog_group_attribute
-                schema: null
-                joinColumns:
-                    group_id:
-                        referencedColumnName: id
-                inverseJoinColumns:
-                    attribute_id:
-                        referencedColumnName: id
         products:
             targetEntity: Pim\Component\Catalog\Model\ProductInterface
             mappedBy: groups
@@ -45,14 +34,3 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                 - persist
                 - detach
                 - refresh
-    oneToOne:
-        productTemplate:
-            targetEntity: Pim\Component\Catalog\Model\ProductTemplateInterface
-            cascade:
-                - persist
-                - remove
-                - detach
-            joinColumns:
-                product_template_id:
-                    referencedColumnName: id
-                    onDelete: 'SET NULL'
