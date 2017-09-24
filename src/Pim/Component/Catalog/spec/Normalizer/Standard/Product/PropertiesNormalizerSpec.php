@@ -54,7 +54,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $family->getCode()->willReturn('my_family');
         $product->getFamily()->willReturn($family);
         $product->getGroupCodes()->willReturn([]);
-        $product->getVariantGroup()->willReturn(null);
         $product->getCategoryCodes()->willReturn([]);
         $product->isEnabled()->willReturn(true);
         $product->getIdentifier()->willReturn('my_code');
@@ -83,7 +82,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             'family'        => 'my_family',
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -114,7 +112,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $family->getCode()->willReturn('my_family');
         $product->getFamily()->willReturn($family);
         $product->getGroupCodes()->willReturn([]);
-        $product->getVariantGroup()->willReturn(null);
         $product->getCategoryCodes()->willReturn([]);
         $product->isEnabled()->willReturn(true);
         $product->getIdentifier()->willReturn('my_code');
@@ -145,7 +142,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             'family'        => 'my_family',
             'parent'        => 'parent_code',
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [

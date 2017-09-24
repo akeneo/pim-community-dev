@@ -54,8 +54,6 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $product->getCategoryCodes();
 
         $data[StandardPropertiesNormalizer::FIELD_GROUPS] = $product->getGroupCodes();
-        $data[StandardPropertiesNormalizer::FIELD_VARIANT_GROUP] = null !== $product->getVariantGroup()
-            ? $product->getVariantGroup()->getCode() : null;
 
         foreach ($product->getGroupCodes() as $groupCode) {
             $data[self::FIELD_IN_GROUP][$groupCode] = true;
