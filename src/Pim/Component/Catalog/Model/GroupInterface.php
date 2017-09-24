@@ -112,6 +112,8 @@ interface GroupInterface extends
     /**
      * Add axis attribute
      *
+     * @deprecated will be remove with 2.0
+     *
      * @param AttributeInterface $axisAttribute
      *
      * @return GroupInterface
@@ -120,6 +122,8 @@ interface GroupInterface extends
 
     /**
      * Remove axis attribute
+     *
+     * @deprecated will be remove with 2.0
      *
      * @param AttributeInterface $axisAttribute
      *
@@ -132,12 +136,16 @@ interface GroupInterface extends
     /**
      * Get axis attributes
      *
+     * @deprecated will be remove with 2.0
+     *
      * @return ArrayCollection
      */
     public function getAxisAttributes();
 
     /**
      * Setter for axis attributes property
+     *
+     * @deprecated will be remove with 2.0
      *
      * @param AttributeInterface[] $axisAttributes
      *
@@ -146,11 +154,15 @@ interface GroupInterface extends
     public function setAxisAttributes(array $axisAttributes = []);
 
     /**
+     * @deprecated will be remove with 2.0
+     *
      * @return ProductTemplateInterface
      */
     public function getProductTemplate();
 
     /**
+     * @deprecated will be remove with 2.0
+     *
      * @param ProductTemplateInterface $productTemplate
      *
      * @return GroupInterface

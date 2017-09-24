@@ -40,12 +40,16 @@ interface GroupTypeInterface extends TranslatableInterface, ReferableInterface
     /**
      * Is variant
      *
+     * @deprecated will be remove with 2.0
+     *
      * @return bool
      */
     public function isVariant();
 
     /**
      * Set variant
+     *
+     * @deprecated will be remove with 2.0
      *
      * @param bool $variant
      *
