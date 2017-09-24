@@ -2,10 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB;
 
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\TestCase;
-use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\Sorter\Directions;
 
@@ -53,6 +50,71 @@ class ProductAndProductModelQueryBuilderIntegration extends AbstractProductAndPr
                 'model-braided-hat',
                 'model-biker-jacket',
                 'moccasin',
+            ]
+        );
+    }
+
+    public function testIdentifierFilter()
+    {
+        $pqb = $this->get('pim_enrich.query.product_and_product_model_query_builder_from_size_factory')->create(
+            [
+                'limit' => 19,
+            ]
+        );
+
+        $pqb->addFilter(
+            'identifier',
+            Operators::IN_LIST,
+            ['watch', 'model-tshirt-unique-size', 'tshirt-unique-size-crimson-red']
+        );
+
+        $result = $pqb->execute();
+
+        $this->assert(
+            $result,
+            [
+                'watch',
+                'model-tshirt-unique-size',
+                'tshirt-unique-size-crimson-red',
+            ]
+        );
+    }
+
+    public function testIdFilter()
+    {
+        $productId = IdEncoder::encode(
+            IdEncoder::PRODUCT_TYPE,
+            $this->get('pim_catalog.repository.product')->findOneByIdentifier('watch')->getId()
+        );
+        $variantProductId = IdEncoder::encode(
+            IdEncoder::PRODUCT_TYPE,
+            $this->get('pim_catalog.repository.product')->findOneByIdentifier('tshirt-unique-size-crimson-red')->getId()
+        );
+        $productModelId = IdEncoder::encode(
+            IdEncoder::PRODUCT_MODEL_TYPE,
+            $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('model-tshirt-unique-size')->getId()
+        );
+
+        $pqb = $this->get('pim_enrich.query.product_and_product_model_query_builder_from_size_factory')->create(
+            [
+                'limit' => 19,
+            ]
+        );
+
+        $pqb->addFilter(
+            'id',
+            Operators::IN_LIST,
+            [$productId, $variantProductId, $productModelId]
+        );
+
+        $result = $pqb->execute();
+
+        $this->assert(
+            $result,
+            [
+                'watch',
+                'model-tshirt-unique-size',
+                'tshirt-unique-size-crimson-red',
             ]
         );
     }

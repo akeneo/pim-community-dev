@@ -34,6 +34,7 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
@@ -1502,6 +1503,24 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @param string $code
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return ProductModelInterface
+     */
+    public function getProductModel($code)
+    {
+        $productModel = $this->spin(function () use ($code) {
+            return $this->getProductModelRepository()->findOneByIdentifier($code);
+        }, sprintf('Could not find a product model with code "%s"', $code));
+
+        $this->refresh($productModel);
+
+        return $productModel;
+    }
+
+    /**
      * @param string $username
      *
      * @return User
@@ -2138,6 +2157,14 @@ class FixturesContext extends BaseFixturesContext
     protected function getProductRepository()
     {
         return $this->getContainer()->get('pim_catalog.repository.product');
+    }
+
+    /**
+     * @return \Pim\Component\Catalog\Repository\ProductModelRepositoryInterface
+     */
+    protected function getProductModelRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.product_model');
     }
 
     /**

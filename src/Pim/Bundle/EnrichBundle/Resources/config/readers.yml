@@ -1,6 +1,9 @@
+parameters:
+    pim_enrich.reader.database.filtered_product_and_product_model_reader.class: Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductAndProductModelReader
+
 services:
     pim_enrich.reader.database.product_and_product_model:
-        class: '%pim_connector.reader.database.product.class%'
+        class: '%pim_enrich.reader.database.filtered_product_and_product_model_reader.class%'
         arguments:
             - '@pim_enrich.query.product_and_product_model_query_builder_factory'
             - '@pim_catalog.repository.channel'
