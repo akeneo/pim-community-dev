@@ -49,7 +49,7 @@ services:
             - '@pim_api.pagination.offset_hal_paginator'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
-            - '@pim_api.repository.product'
+            - '@pimee_workflow.repository.delegating_product'
             - '@pim_catalog.updater.product'
             - '@pimee_workflow.saver.product_delegating'
             - '@pim_catalog.validator.product'
