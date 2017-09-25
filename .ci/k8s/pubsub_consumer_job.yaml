@@ -1,0 +1,110 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: JOB_NAME
+spec:
+  parallelism: 0
+  template:
+    spec:
+      initContainers:
+        - name: sysctl
+          image: "busybox"
+          command: ["sysctl", "-w", "vm.max_map_count=262144"]
+          securityContext: { privileged: true }
+        - name: pim
+          image: PIM_IMAGE
+          command: ['sh', '-c', 'cp -Rp /pim /home/jenkins']
+          volumeMounts:
+            - { mountPath: /home/jenkins, name: pim }
+      containers:
+        - name: mysql
+          image: mysql:5.7
+          env:
+            - { name: MYSQL_ROOT_PASSWORD, value: root }
+            - { name: MYSQL_USER, value: akeneo_pim }
+            - { name: MYSQL_PASSWORD, value: akeneo_pim }
+            - { name: MYSQL_DATABASE, value: akeneo_pim }
+          resources:
+            requests: {cpu: "200m", memory: "400Mi"}
+            limits: {cpu: "200m", memory: "400Mi"}
+          readinessProbe:
+            timeoutSeconds: 1
+            initialDelaySeconds: 5
+            failureThreshold: 30
+            exec:
+              command: [ "/bin/sh", "-i", "-c", "MYSQL_PWD=\"$MYSQL_PASSWORD\" mysql -h 127.0.0.1 -u $MYSQL_USER -D $MYSQL_DATABASE -e 'SELECT 1'"]
+          livenessProbe:
+            timeoutSeconds: 1
+            initialDelaySeconds: 30
+            tcpSocket:
+              port: 3306
+        - name: elasticsearch
+          image: eu.gcr.io/akeneo-ci/elasticsearch:5.5
+          imagePullPolicy: Always
+          env:
+            - { name: ES_JAVA_OPTS, value: "-Xms512m -Xmx512m" }
+          resources:
+            requests: {cpu: "100m", memory: "1000Mi"}
+            limits: {cpu: "100m", memory: "1000Mi"}
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9200
+              httpHeaders:
+                - name: Authorization
+                  value: Basic ZWxhc3RpYzpjaGFuZ2VtZQ==
+            timeoutSeconds: 1
+            successThreshold: 2
+            initialDelaySeconds: 5
+            failureThreshold: 30
+        - name: php
+          image: akeneo/fpm:php-7.1
+          workingDir: /home/jenkins/pim
+          imagePullPolicy: Always
+          volumeMounts:
+            - { name: pim, mountPath: /home/jenkins }
+          resources:
+            requests: {cpu: "200m", memory: "1000Mi"}
+            limits: {cpu: "200m", memory: "1000Mi"}
+        - name: httpd
+          image: eu.gcr.io/akeneo-ci/httpd:2.4
+          imagePullPolicy: Always
+          volumeMounts:
+            - { name: pim, mountPath: /home/jenkins }
+            - { name: artifacts, mountPath: /tmp/behat/screenshots }
+          resources:
+            requests: {cpu: "100m", memory: "100Mi"}
+            limits: {cpu: "100m", memory: "100Mi"}
+        - name: selenium
+          image: selenium/standalone-firefox:2.53.1-beryllium
+          imagePullPolicy: Always
+          volumeMounts:
+            - { name: pim, mountPath: /home/jenkins }
+          resources:
+            requests: {cpu: "300m", memory: "1000Mi"}
+            limits: {cpu: "300m", memory: "1000Mi"}
+          lifecycle:
+            preStop:
+              httpGet:
+                path: "/selenium-server/driver/?cmd=shutDownSeleniumServer"
+                port: 4444
+        - name: pubsub
+          image: eu.gcr.io/akeneo-ci/gcloud:latest
+          imagePullPolicy: Always
+          command: ["gcloud.phar"]
+          args: ["pubsub:message:consume", "SUBSCRIPTION_NAME", "RESULT_TOPIC"]
+          env:
+            - { name: DOCKER_API_VERSION, value: "1.23" }
+            - { name: POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
+          volumeMounts:
+            - { name: docker, mountPath: /var/run/docker.sock }
+            - { name: pim, mountPath: /home/jenkins }
+            - { name: artifacts, mountPath: /tmp/behat/screenshots }
+          resources:
+            requests: {cpu: "100m", memory: "100Mi"}
+            limits: {cpu: "100m", memory: "100Mi"}
+      volumes:
+        - { name: pim, emptyDir: {}}
+        - { name: docker, hostPath: {path: /var/run/docker.sock}}
+        - { name: artifacts, emptyDir: {medium: Memory}}
+      restartPolicy: OnFailure
