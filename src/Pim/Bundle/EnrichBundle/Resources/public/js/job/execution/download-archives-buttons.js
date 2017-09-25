@@ -52,15 +52,58 @@ define(
                 if (!this.isVisible()) {
                     return this;
                 }
-                var formData = this.getFormData();
                 this.$el.html(this.template({
-                    __: __,
-                    archives: propertyAccessor.accessProperty(this.getFormData(), this.config.filesPath),
-                    executionId: formData.meta.id,
-                    generateRoute: this.getUrl.bind(this)
+                    label: this.getLabel(),
+                    files: this.getFiles()
                 }));
 
                 return this;
+            },
+
+            /**
+             * Get the main button label. If there is only one file to download, it takes the name of the file.
+             *
+             * @returns {string}
+             */
+            getLabel() {
+                const formData = this.getFormData();
+                const archives = propertyAccessor.accessProperty(formData, this.config.filesPath);
+
+                let files = [];
+                Object.values(archives).forEach((archive) => {
+                    files = Object.assign({}, files, archive.files);
+                });
+
+                if (Object.keys(files).length === 1) {
+                    return Object.values(archives)[0].label;
+                } else {
+                    return __('job_tracker.download_archive.output');
+                }
+            },
+
+            /**
+             * Get the list of files to download, under the form label => url.
+             *
+             * @returns {Object}
+             */
+            getFiles() {
+                const formData = this.getFormData();
+                const archives = propertyAccessor.accessProperty(formData, this.config.filesPath);
+
+                let files = {};
+                Object.keys(archives).forEach((archiver) => {
+                    const archive = archives[archiver];
+                    let label = null;
+                    if (Object.keys(archive.files).length === 1) {
+                        label = __(archive.label);
+                    }
+                    Object.keys(archive.files).forEach((key) => {
+                        const archiveLabel = null === label ? key : label;
+                        files[archiveLabel] = this.getUrl({id: formData.meta.id, archiver: archiver, key: key });
+                    });
+                });
+
+                return files;
             },
 
             /**

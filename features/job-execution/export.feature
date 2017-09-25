@@ -17,13 +17,13 @@ Feature: Export profiles
     And I wait for the "xlsx_footwear_association_type_export" job to finish
     Then I should see the text "COMPLETED"
     And I should see the text "Execution details - XLSX footwear association type export [xlsx_footwear_association_type_export]"
-    And I should see the secondary action "Download invalid data"
+    And I should see the secondary action "Download log"
     And I should not see the secondary action "Download read files"
     And I press "xlsx_footwear_association_type_export_1.xlsx" on the "Download generated files" dropdown button
     And I press "xlsx_footwear_association_type_export_2.xlsx" on the "Download generated files" dropdown button
     And I should see the text "Download generated archive"
     And I should see the text "Show profile"
-    When I press the "Show profile" button
+    When I press the secondary action "Show profile"
     Then I should be redirected on the export page of "xlsx_footwear_association_type_export"
 
   Scenario: Go to the job execution page for an "export" without rights to download logs

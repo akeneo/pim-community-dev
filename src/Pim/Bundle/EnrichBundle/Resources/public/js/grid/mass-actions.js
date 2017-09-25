@@ -50,11 +50,13 @@ define(
              */
             configure() {
                 const setCollection = (collection) => {
+                    if (null === this.collection) {
+                        this.listenTo(collection, 'backgrid:selected', this.select.bind(this));
+                    }
+
                     this.collection = collection;
                     this.count = 0;
                     this.updateView();
-
-                    this.listenTo(this.collection, 'backgrid:selected', this.select.bind(this));
                 };
                 this.listenTo(this.getRoot(), 'grid_load:start', setCollection);
                 this.listenTo(this.getRoot(), 'grid_load:complete', setCollection);
