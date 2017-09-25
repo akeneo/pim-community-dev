@@ -16,6 +16,7 @@ stage("Build") {
         "pim-ce": {withBuildNode({
             checkout scm
             container("php") {
+                sh "ls"
                 sh "composer help"
                 sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --ignore-platform-reqs --no-suggest -v"
                 sh "bin/console --ansi assets:install"
@@ -45,6 +46,8 @@ stage("Build") {
             sh "mkdir -m 777 vendor"
 
             container("php") {
+                sh "ls /usr/local/bin/"
+                sh "ls /shared/.composer"
                 sh "composer help -v"
                 sh "composer require --dev --no-update liuggio/fastest:~1.4 -v"
                 sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-scripts --ignore-platform-reqs --no-suggest"
