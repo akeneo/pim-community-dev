@@ -348,6 +348,7 @@ define(
                     },
                     beforeclose: () => {
                         if (null === this.selectWidget.getWidget() ||
+                            0 === this.selectWidget.getWidget().length ||
                             this.selectWidget.getWidget().position().left <= this._getLeftStartPosition()) {
                             return true;
                         }
