@@ -18,6 +18,12 @@ spec:
           volumeMounts:
             - mountPath: /home/jenkins
               name: pim
+      hostAliases:
+      - ip: "127.0.0.1"
+        hostnames:
+        - "selenium"
+        - "akeneo"
+        - "akeneo-behat.dev"
       containers:
         - name: mongodb
           image: mongo:2.4
