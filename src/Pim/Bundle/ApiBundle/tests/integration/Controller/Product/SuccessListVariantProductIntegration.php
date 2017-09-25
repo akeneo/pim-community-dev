@@ -17,6 +17,20 @@ class SuccessListVariantProductIntegration extends AbstractProductTestCase
     {
         parent::setUp();
 
+        $this->createProductModel(
+            [
+                'code' => 'amor',
+                'family_variant' => 'familyVariantA1',
+                'values'  => [
+                    'a_price'  => [
+                        'data' => ['data' => [['amount' => '50', 'currency' => 'EUR']], 'locale' => null, 'scope' => null],
+                    ],
+                    'a_number_float'  => [['data' => '12.5', 'locale' => null, 'scope' => null]],
+                    'a_localized_and_scopable_text_area'  => [['data' => 'my pink tshirt', 'locale' => 'en_US', 'scope' => 'ecommerce']],
+                ]
+            ]
+        );
+
         // no locale, no scope, 1 category
         $this->createVariantProduct('apollon_blue_s', [
             'categories' => ['master'],
@@ -397,24 +411,10 @@ JSON;
               "scope": null,
               "data": "s"
             }
-          ],
-        "a_text_area": [
-        {
-          "locale": null,
-          "scope": null,
-          "data": "a super text area"
-        }
-        ],
-        "a_number_integer": [
-        {
-          "locale": null,
-          "scope": null,
-          "data": 12
-        }
-        ]
+          ]
         },
-        "created": "2017-09-20T17:46:20+02:00",
-        "updated": "2017-09-20T17:46:20+02:00",
+        "created": "2017-09-25T14:02:10+02:00",
+        "updated": "2017-09-25T14:02:11+02:00",
         "associations": {
           
         }
@@ -437,23 +437,10 @@ JSON;
         ],
         "enabled": true,
         "values": {
-        "a_text_area": [
-        {
-          "locale": null,
-          "scope": null,
-          "data": "a super text area"
-        }
-        ],
-        "a_number_integer": [
-        {
-          "locale": null,
-          "scope": null,
-          "data": 12
-        }
-        ]
+          
         },
-        "created": "2017-09-20T17:46:21+02:00",
-        "updated": "2017-09-20T17:46:21+02:00",
+        "created": "2017-09-25T14:02:11+02:00",
+        "updated": "2017-09-25T14:02:11+02:00",
         "associations": {
           
         }
@@ -483,24 +470,10 @@ JSON;
               "scope": null,
               "data": "l"
             }
-          ],
-        "a_text_area": [
-        {
-          "locale": null,
-          "scope": null,
-          "data": "a super text area"
-        }
-        ],
-        "a_number_integer": [
-        {
-          "locale": null,
-          "scope": null,
-          "data": 12
-        }
-        ]
+          ]
         },
-        "created": "2017-09-20T17:46:21+02:00",
-        "updated": "2017-09-20T17:46:21+02:00",
+        "created": "2017-09-25T14:02:11+02:00",
+        "updated": "2017-09-25T14:02:11+02:00",
         "associations": {
           
         }
@@ -530,24 +503,10 @@ JSON;
               "scope": null,
               "data": "xl"
             }
-          ],
-        "a_text_area": [
-        {
-          "locale": null,
-          "scope": null,
-          "data": "a super text area"
-        }
-        ],
-        "a_number_integer": [
-        {
-          "locale": null,
-          "scope": null,
-          "data": 12
-        }
-        ]
+          ]
         },
-        "created": "2017-09-20T17:46:21+02:00",
-        "updated": "2017-09-20T17:46:21+02:00",
+        "created": "2017-09-25T14:02:11+02:00",
+        "updated": "2017-09-25T14:02:11+02:00",
         "associations": {
           
         }
@@ -576,24 +535,10 @@ JSON;
               "scope": null,
               "data": "xxl"
             }
-          ],
-        "a_text_area": [
-        {
-          "locale": null,
-          "scope": null,
-          "data": "a super text area"
-        }
-        ],
-        "a_number_integer": [
-        {
-          "locale": null,
-          "scope": null,
-          "data": 12
-        }
-        ]
+          ]
         },
-        "created": "2017-09-20T17:46:21+02:00",
-        "updated": "2017-09-20T17:46:21+02:00",
+        "created": "2017-09-25T14:02:11+02:00",
+        "updated": "2017-09-25T14:02:11+02:00",
         "associations": {
           
         }
@@ -774,18 +719,18 @@ JSON;
                   ]
                 }
                 ],
-                "a_text_area": [
+                "a_number_float": [
                 {
                   "locale": null,
                   "scope": null,
-                  "data": "a super text area"
+                  "data": "12.5000"
                 }
                 ],
-                "a_number_integer": [
+                "a_localized_and_scopable_text_area": [
                 {
-                  "locale": null,
-                  "scope": null,
-                  "data": 12
+                  "locale": "en_US",
+                  "scope": "ecommerce",
+                  "data": "my pink tshirt"
                 }
                 ]
                 },
@@ -990,21 +935,21 @@ JSON;
       ]
     }
     ],
-    "a_text_area": [
-    {
-      "locale": null,
-      "scope": null,
-      "data": "a super text area"
-    }
-    ],
-    "a_number_integer": [
-    {
-      "locale": null,
-      "scope": null,
-      "data": 12
-    }
-    ]
-    },
+          "a_number_float": [
+            {
+              "locale": null,
+              "scope": null,
+              "data": "12.5000"
+            }
+          ],
+          "a_localized_and_scopable_text_area": [
+            {
+              "locale": "en_US",
+              "scope": "ecommerce",
+              "data": "my pink tshirt"
+            }
+          ]
+        },
   "created": "2017-09-20T15:37:40+02:00",
   "updated": "2017-09-20T15:37:40+02:00",
   "associations": {}
@@ -1047,21 +992,21 @@ JSON;
       ]
     }
     ],
-    "a_text_area": [
-    {
-      "locale": null,
-      "scope": null,
-      "data": "a super text area"
-    }
-    ],
-    "a_number_integer": [
-    {
-      "locale": null,
-      "scope": null,
-      "data": 12
-    }
-    ]
-    },
+          "a_number_float": [
+            {
+              "locale": null,
+              "scope": null,
+              "data": "12.5000"
+            }
+          ],
+          "a_localized_and_scopable_text_area": [
+            {
+              "locale": "en_US",
+              "scope": "ecommerce",
+              "data": "my pink tshirt"
+            }
+          ]
+        },
   "created": "2017-09-20T15:37:40+02:00",
   "updated": "2017-09-20T15:37:40+02:00",
   "associations": {}
@@ -1105,21 +1050,21 @@ JSON;
       ]
     }
     ],
-    "a_text_area": [
-    {
-      "locale": null,
-      "scope": null,
-      "data": "a super text area"
-    }
-    ],
-    "a_number_integer": [
-    {
-      "locale": null,
-      "scope": null,
-      "data": 12
-    }
-    ]
-    },
+          "a_number_float": [
+            {
+              "locale": null,
+              "scope": null,
+              "data": "12.5000"
+            }
+          ],
+          "a_localized_and_scopable_text_area": [
+            {
+              "locale": "en_US",
+              "scope": "ecommerce",
+              "data": "my pink tshirt"
+            }
+          ]
+        },
   "created": "2017-09-20T15:37:40+02:00",
   "updated": "2017-09-20T15:37:40+02:00",
   "associations": {}
@@ -1165,21 +1110,21 @@ JSON;
       ]
     }
     ],
-    "a_text_area": [
-    {
-      "locale": null,
-      "scope": null,
-      "data": "a super text area"
-    }
-    ],
-    "a_number_integer": [
-    {
-      "locale": null,
-      "scope": null,
-      "data": 12
-    }
-    ]
-    },
+          "a_number_float": [
+            {
+              "locale": null,
+              "scope": null,
+              "data": "12.5000"
+            }
+          ],
+          "a_localized_and_scopable_text_area": [
+            {
+              "locale": "en_US",
+              "scope": "ecommerce",
+              "data": "my pink tshirt"
+            }
+          ]
+        },
   "created": "2017-09-20T15:37:40+02:00",
   "updated": "2017-09-20T15:37:40+02:00",
   "associations": {
@@ -1226,21 +1171,21 @@ JSON;
       ]
     }
     ],
-    "a_text_area": [
-    {
-      "locale": null,
-      "scope": null,
-      "data": "a super text area"
-    }
-    ],
-    "a_number_integer": [
-    {
-      "locale": null,
-      "scope": null,
-      "data": 12
-    }
-    ]
-    },
+          "a_number_float": [
+            {
+              "locale": null,
+              "scope": null,
+              "data": "12.5000"
+            }
+          ],
+          "a_localized_and_scopable_text_area": [
+            {
+              "locale": "en_US",
+              "scope": "ecommerce",
+              "data": "my pink tshirt"
+            }
+          ]
+        },
   "created": "2017-09-20T15:37:40+02:00",
   "updated": "2017-09-20T15:37:40+02:00",
   "associations": {
@@ -1287,21 +1232,21 @@ JSON;
           ]
         }
         ],
-        "a_text_area": [
+        "a_number_float": [
         {
           "locale": null,
           "scope": null,
-          "data": "a super text area"
+          "data": "12.5000"
         }
         ],
-        "a_number_integer": [
+        "a_localized_and_scopable_text_area": [
         {
-          "locale": null,
-          "scope": null,
-          "data": 12
+          "locale": "en_US",
+          "scope": "ecommerce",
+          "data": "my pink tshirt"
         }
         ]
-        },
+      },
       "created": "2017-09-20T15:37:40+02:00",
       "updated": "2017-09-20T15:37:40+02:00",
       "associations": {
