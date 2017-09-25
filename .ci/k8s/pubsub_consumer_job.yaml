@@ -25,8 +25,8 @@ spec:
             - { name: MYSQL_PASSWORD, value: akeneo_pim }
             - { name: MYSQL_DATABASE, value: akeneo_pim }
           resources:
-            requests: {cpu: "200m", memory: "500Mi"}
-            limits: {cpu: "200m", memory: "500Mi"}
+            requests: {cpu: "200m", memory: "400Mi"}
+            limits: {cpu: "200m", memory: "400Mi"}
           readinessProbe:
             timeoutSeconds: 1
             initialDelaySeconds: 5
@@ -44,8 +44,8 @@ spec:
           env:
             - { name: ES_JAVA_OPTS, value: "-Xms512m -Xmx512m" }
           resources:
-            requests: {cpu: "200m", memory: "1000Mi"}
-            limits: {cpu: "200m", memory: "1000Mi"}
+            requests: {cpu: "100m", memory: "1000Mi"}
+            limits: {cpu: "100m", memory: "1000Mi"}
           readinessProbe:
             httpGet:
               path: /
@@ -73,16 +73,16 @@ spec:
             - { name: pim, mountPath: /home/jenkins }
             - { name: artifacts, mountPath: /tmp/behat/screenshots }
           resources:
-            requests: {cpu: "100m", memory: "200Mi"}
-            limits: {cpu: "100m", memory: "200Mi"}
+            requests: {cpu: "100m", memory: "100Mi"}
+            limits: {cpu: "100m", memory: "100Mi"}
         - name: selenium
           image: selenium/standalone-firefox:2.53.1-beryllium
           imagePullPolicy: Always
           volumeMounts:
             - { name: pim, mountPath: /home/jenkins }
           resources:
-            requests: {cpu: "200m", memory: "500Mi"}
-            limits: {cpu: "200m", memory: "500Mi"}
+            requests: {cpu: "300m", memory: "1000Mi"}
+            limits: {cpu: "300m", memory: "1000Mi"}
           lifecycle:
             preStop:
               httpGet:
@@ -101,8 +101,8 @@ spec:
             - { name: pim, mountPath: /home/jenkins }
             - { name: artifacts, mountPath: /tmp/behat/screenshots }
           resources:
-            requests: {cpu: "100m", memory: "200Mi"}
-            limits: {cpu: "100m", memory: "200Mi"}
+            requests: {cpu: "100m", memory: "100Mi"}
+            limits: {cpu: "100m", memory: "100Mi"}
       volumes:
         - { name: pim, emptyDir: {}}
         - { name: docker, hostPath: {path: /var/run/docker.sock}}
