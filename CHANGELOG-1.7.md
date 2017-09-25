@@ -5,6 +5,7 @@
 - PIM-6804: Fix the positioning (z-index) of the datafilter widgets
 - PIM-6491: Fix file extension validation on import job upload
 - PIM-6798: Fix the simple-select and multi-select copiers
+- PIM-6820: During an import, prevent to add in a variant group two products with same variant axes
 
 # 1.7.8 (2017-08-22)
 
