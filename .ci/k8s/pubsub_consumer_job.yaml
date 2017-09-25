@@ -1,0 +1,93 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: JOB_NAME
+spec:
+  parallelism: 0
+  template:
+    spec:
+      initContainers:
+        - name: sysctl
+          image: "busybox"
+          command: ["sysctl", "-w", "vm.max_map_count=262144"]
+          securityContext:
+            "privileged": true
+        - name: pim
+          image: PIM_IMAGE
+          command: ['sh', '-c', 'cp -Rp /pim /home/jenkins']
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: pim
+      containers:
+        - name: mongodb
+          image: mongo:2.4
+          readinessProbe:
+            timeoutSeconds: 1
+            initialDelaySeconds: 5
+            failureThreshold: 30
+            tcpSocket:
+              port: 27017
+        - name: mysql
+          image: mysql:5.6
+          env:
+            - { name: MYSQL_ROOT_PASSWORD, value: root }
+            - { name: MYSQL_USER, value: akeneo_pim }
+            - { name: MYSQL_PASSWORD, value: akeneo_pim }
+            - { name: MYSQL_DATABASE, value: akeneo_pim }
+          readinessProbe:
+            timeoutSeconds: 1
+            initialDelaySeconds: 5
+            failureThreshold: 30
+            exec:
+              command: [ "/bin/sh", "-i", "-c", "MYSQL_PWD=\"$MYSQL_PASSWORD\" mysql -h 127.0.0.1 -u $MYSQL_USER -D $MYSQL_DATABASE -e 'SELECT 1'"]
+          livenessProbe:
+            timeoutSeconds: 1
+            initialDelaySeconds: 30
+            tcpSocket:
+              port: 3306
+        - name: elasticsearch
+          image: eu.gcr.io/akeneo-ci/elasticsearch:5.5
+          imagePullPolicy: Always
+          env:
+            - { name: ES_JAVA_OPTS, value: "-Xms512m -Xmx512m" }
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9200
+              httpHeaders:
+                - name: Authorization
+                  value: Basic ZWxhc3RpYzpjaGFuZ2VtZQ==
+            timeoutSeconds: 1
+            successThreshold: 2
+            initialDelaySeconds: 5
+            failureThreshold: 30
+        - name: php
+          image: eu.gcr.io/akeneo-ci/httpd-php:5.6
+          workingDir: /home/jenkins/pim
+          imagePullPolicy: Always
+          volumeMounts:
+            - { name: pim, mountPath: /home/jenkins }
+            - { name: artifacts, mountPath: /tmp/behat/screenshots }
+        - name: selenium
+          image: eu.gcr.io/akeneo-ci/selenium:standalone-firefox-2.53.1-beryllium
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /home/jenkins
+              name: pim
+        - name: pubsub
+          image: eu.gcr.io/akeneo-ci/gcloud:0.2
+          imagePullPolicy: Always
+          command: ["gcloud.phar"]
+          args: ["pubsub:message:consume", "SUBSCRIPTION_NAME", "RESULT_TOPIC","-vvvv"]
+          env:
+            - { name: DOCKER_API_VERSION, value: "1.23" }
+            - { name: POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
+          volumeMounts:
+            - { name: docker, mountPath: /var/run/docker.sock }
+            - { name: pim, mountPath: /home/jenkins }
+            - { name: artifacts, mountPath: /tmp/behat/screenshots }
+      volumes:
+        - { name: pim, emptyDir: {}}
+        - { name: docker, hostPath: {path: /var/run/docker.sock}}
+        - { name: artifacts, emptyDir: {medium: Memory}}
+      restartPolicy: OnFailure
