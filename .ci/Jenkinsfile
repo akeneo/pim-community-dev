@@ -227,7 +227,7 @@ stage("Test") {
                             [container: "php", script: "./app/console --env=behat --quiet pim:install --force"],
                             [container: "php", script: "./app/console --env=behat oro:translation:dump en_US"],
                             [container: "php", script: "touch app/logs/behat.log"],
-                            [container: "php", script: "chmod 777 -R app/cache app/logs/"],
+                            [container: "php", script: "chmod 777 -R app/cache app/logs/ app/archive app/file_storage "],
                             [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer"],
                             [
                                 container: "php",
@@ -238,7 +238,7 @@ stage("Test") {
                         ])
                     }
                     return messagesCE
-                }, 50, "ce")
+                }, 60, "ce")
             }
     // builders["behat-ee"] = {
     //             queue({
@@ -287,7 +287,7 @@ stage("Test") {
                         ])
                     }
                     return messagesCE
-                }, 50, "ceodm")
+                }, 60, "ceodm")
             }
     // builders["behat-ee-odm"] = {
     //             queue({
