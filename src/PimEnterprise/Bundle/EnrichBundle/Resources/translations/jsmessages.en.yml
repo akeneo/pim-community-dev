@@ -191,8 +191,8 @@ pimee_enrich:
                 select:
                     label: Choose assets
                 choose:
-                    label: Select your action
-                    title: Assets bulk action | {{ itemsCount }} assets
+                    title: Assets bulk actions
+                    label_count: "] 0, Inf [Select your action"
                 configure:
                     label: Configure
                 confirm:

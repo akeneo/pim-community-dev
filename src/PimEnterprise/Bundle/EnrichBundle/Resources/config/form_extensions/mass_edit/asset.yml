@@ -14,6 +14,7 @@ extensions:
         targetZone: choose
         config:
             title: pimee_enrich.mass_edit.asset.step.choose.title
+            labelCount: pimee_enrich.mass_edit.asset.step.choose.label_count
 
     pim-mass-asset-edit-configure-add-tag:
         module: pimee/mass-edit-form/asset/add-tag
