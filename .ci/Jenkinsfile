@@ -44,6 +44,8 @@ stage("Build") {
             sh "mkdir -m 777 vendor"
 
             container("php") {
+                sh "cat /shared/.composer/auth.json"
+                sh "rm /shared/.composer/auth.json"
                 withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
                     sh "composer config -g github-oauth.github.com $token"
                 }
