@@ -411,6 +411,9 @@ pim_enrich:
         error_occured: An error occured during the loading of the page
     form:
         required: (required)
+        product_model:
+            complete_variant_product: variant product
+            complete_variant_products: variant products
         product:
             tab:
                 associations:

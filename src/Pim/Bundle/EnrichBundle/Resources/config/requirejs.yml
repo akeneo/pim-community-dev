@@ -680,6 +680,7 @@ config:
         # Product model
         pim/product-model-edit-form/product-model-label: pimenrich/js/product-model/form/product-model-label
         pim/product-model-edit-form/save: pimenrich/js/product-model/form/save
+        pim/product-model-edit-form/complete-variant-product: pimenrich/js/product-model/form/complete-variant-product
 
         # Attribute group
         pim/attribute-group-form/tab/attribute: pimenrich/js/attribute-group/form/tab/attribute
@@ -1115,6 +1116,9 @@ config:
         pim/template/attribute/tab/properties/text:         pimenrich/templates/attribute/tab/properties/text.html
         pim/template/attribute/tab/properties/select:       pimenrich/templates/attribute/tab/properties/select.html
         pim/template/attribute/tab/choices/options-grid:    pimenrich/templates/attribute/tab/choices/options-grid.html
+
+        # Product model
+        pim/template/product-model/complete-variant-product: pimenrich/templates/product_model/complete-variant-product.html
 
         # Order last
         pim/form: pimenrich/js/product/form
