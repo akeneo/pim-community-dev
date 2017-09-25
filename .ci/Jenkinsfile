@@ -221,6 +221,8 @@ stage("Test") {
                     for (scenarioCE in scenariosCE) {
                         def lineCE = scenarioCE.trim().substring(0, scenarioCE.indexOf(":", scenarioCE.indexOf(":") + 1))
                         messagesCE.add([
+                            [container: "php", script: "cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
+                            [container: "php", script: "/usr/sbin/apache2ctl graceful"],
                             [container: "php", script: "./app/console -e=behat ca:c"],
                             [container: "php", script: "./app/console --env=behat --quiet pim:install --force"],
                             [container: "php", script: "./app/console --env=behat oro:translation:dump en_US"],
