@@ -26,5 +26,5 @@ a_scopable_image;;;;;;;;attributeGroupB;0;;;;;;;;;1;0;pim_catalog_image;0;0;;;
 a_localizable_scopable_image;;;;;;;;attributeGroupB;1;;;;;;;;;1;0;pim_catalog_image;0;0;;;
 a_scopable_price;;;;;;1;;attributeGroupA;0;;;;;;;;;1;9;pim_catalog_price_collection;0;0;;;
 a_localized_and_scopable_text_area;;;;;;;;attributeGroupA;1;;;;;;;;;1;10;pim_catalog_textarea;0;0;;;0
-color;;1;;;;;;attributeGroupB;0;;;;;;;;;0;0;pim_catalog_simpleselect;0;0;;;
-size;;1;;;;;;attributeGroupB;0;;;;;;;;;0;0;pim_catalog_simpleselect;0;0;;;
+a_simple_select_color;;1;;;;;;attributeGroupB;0;;;;;;;;;0;0;pim_catalog_simpleselect;0;0;;;
+a_simple_select_size;;1;;;;;;attributeGroupB;0;;;;;;;;;0;0;pim_catalog_simpleselect;0;0;;;

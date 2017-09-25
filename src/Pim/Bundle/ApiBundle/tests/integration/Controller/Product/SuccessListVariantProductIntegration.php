@@ -36,7 +36,7 @@ class SuccessListVariantProductIntegration extends AbstractProductTestCase
             'categories' => ['master'],
             'parent' => 'amor',
             'values' => [
-                'size' => [
+                'a_simple_select_size' => [
                     [
                         'locale' => null,
                         'scope' => null,
@@ -51,7 +51,7 @@ class SuccessListVariantProductIntegration extends AbstractProductTestCase
             'categories' => ['categoryA'],
             'parent' => 'amor',
             'values' => [
-                'color' => [
+                'a_simple_select_color' => [
                     [
                         'locale' => null,
                         'scope' => null,
@@ -66,7 +66,7 @@ class SuccessListVariantProductIntegration extends AbstractProductTestCase
             'categories' => ['categoryB', 'categoryC'],
             'parent' => 'amor',
             'values' => [
-                'size' => [
+                'a_simple_select_size' => [
                     [
                         'locale' => null,
                         'scope' => null,
@@ -81,7 +81,7 @@ class SuccessListVariantProductIntegration extends AbstractProductTestCase
             'categories' => ['categoryA2', 'categoryA1'],
             'parent' => 'amor',
             'values' => [
-                'size' => [
+                'a_simple_select_size' => [
                     [
                         'locale' => null,
                         'scope' => null,
@@ -95,7 +95,7 @@ class SuccessListVariantProductIntegration extends AbstractProductTestCase
             'categories' => ['categoryA1'],
             'parent' => 'amor',
             'values' => [
-                'size' => [
+                'a_simple_select_size' => [
                     [
                         'locale' => null,
                         'scope' => null,
@@ -108,7 +108,7 @@ class SuccessListVariantProductIntegration extends AbstractProductTestCase
         $this->createVariantProduct('apollon_blue_xs', [
             'parent' => 'amor',
             'values' => [
-                'size' => [
+                'a_simple_select_size' => [
                     [
                         'locale' => null,
                         'scope' => null,
@@ -249,12 +249,12 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?attributes=color&pagination_type=page');
+        $client->request('GET', 'api/rest/v1/products?attributes=a_simple_select_color&pagination_type=page');
         $expected = <<<JSON
 {
     "_links": {
-        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&attributes=color"},
-        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&attributes=color"}
+        "self"  : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&attributes=a_simple_select_color"},
+        "first" : {"href" : "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&attributes=a_simple_select_color"}
     },
     "current_page" : 1,
     "_embedded"    : {
@@ -287,7 +287,7 @@ JSON;
                 "categories"    : ["categoryA"],
                 "enabled"       : true,
                 "values": {
-                    "color": [{
+                    "a_simple_select_color": [{
                         "locale": null,
                         "scope": null,
                         "data": "blue"
@@ -373,15 +373,15 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?scope=ecommerce&locales=en_US&attributes=size,a_text_area,a_number_integer&pagination_type=page');
+        $client->request('GET', 'api/rest/v1/products?scope=ecommerce&locales=en_US&attributes=a_simple_select_size,a_text_area,a_number_integer&pagination_type=page');
         $expected = <<<JSON
 {
   "_links": {
     "self": {
-      "href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=ecommerce&locales=en_US&attributes=size%2Ca_text_area%2Ca_number_integer"
+      "href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=ecommerce&locales=en_US&attributes=a_simple_select_size%2Ca_text_area%2Ca_number_integer"
     },
     "first": {
-      "href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=ecommerce&locales=en_US&attributes=size%2Ca_text_area%2Ca_number_integer"
+      "href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=10&scope=ecommerce&locales=en_US&attributes=a_simple_select_size%2Ca_text_area%2Ca_number_integer"
     }
   },
   "current_page": 1,
@@ -405,7 +405,7 @@ JSON;
         ],
         "enabled": true,
         "values": {
-          "size": [
+          "a_simple_select_size": [
             {
               "locale": null,
               "scope": null,
@@ -464,7 +464,7 @@ JSON;
         ],
         "enabled": true,
         "values": {
-          "size": [
+          "a_simple_select_size": [
             {
               "locale": null,
               "scope": null,
@@ -497,7 +497,7 @@ JSON;
         ],
         "enabled": true,
         "values": {
-          "size": [
+          "a_simple_select_size": [
             {
               "locale": null,
               "scope": null,
@@ -529,7 +529,7 @@ JSON;
         ],
         "enabled": true,
         "values": {
-          "size": [
+          "a_simple_select_size": [
             {
               "locale": null,
               "scope": null,
@@ -555,21 +555,21 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products?attributes=size&page=2&limit=2&pagination_type=page&with_count=false');
+        $client->request('GET', 'api/rest/v1/products?attributes=a_simple_select_size&page=2&limit=2&pagination_type=page&with_count=false');
         $expected = <<<JSON
 {
   "_links": {
     "self": {
-      "href": "http://localhost/api/rest/v1/products?page=2&with_count=false&pagination_type=page&limit=2&attributes=size"
+      "href": "http://localhost/api/rest/v1/products?page=2&with_count=false&pagination_type=page&limit=2&attributes=a_simple_select_size"
     },
     "first": {
-      "href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=2&attributes=size"
+      "href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=2&attributes=a_simple_select_size"
     },
     "previous": {
-      "href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=2&attributes=size"
+      "href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=2&attributes=a_simple_select_size"
     },
     "next": {
-      "href": "http://localhost/api/rest/v1/products?page=3&with_count=false&pagination_type=page&limit=2&attributes=size"
+      "href": "http://localhost/api/rest/v1/products?page=3&with_count=false&pagination_type=page&limit=2&attributes=a_simple_select_size"
     }
   },
   "current_page": 2,
@@ -594,7 +594,7 @@ JSON;
         ],
         "enabled": true,
         "values": {
-          "size": [
+          "a_simple_select_size": [
             {
               "locale": null,
               "scope": null,
@@ -627,7 +627,7 @@ JSON;
         ],
         "enabled": true,
         "values": {
-          "size": [
+          "a_simple_select_size": [
             {
               "locale": null,
               "scope": null,
@@ -676,7 +676,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $search = '{"size":[{"operator":"IN","value":["s"]}]}';
+        $search = '{"a_simple_select_size":[{"operator":"IN","value":["s"]}]}';
         $client->request('GET', 'api/rest/v1/products?pagination_type=page&search=' . $search);
         $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
@@ -700,7 +700,7 @@ JSON;
                 "categories"    : ["master"],
                 "enabled"       : true,
                 "values": {
-                "size": [
+                "a_simple_select_size": [
                   {
                     "locale": null,
                     "scope": null,
@@ -750,7 +750,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $search = '{"categories":[{"operator":"IN", "value":["categoryA"]}], "color":[{"operator":"IN","value":["black"]}]}';
+        $search = '{"categories":[{"operator":"IN", "value":["categoryA"]}], "a_simple_select_color":[{"operator":"IN","value":["black"]}]}';
         $client->request('GET', 'api/rest/v1/products?pagination_type=page&search=' . $search);
         $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
@@ -773,7 +773,7 @@ JSON;
     {
         $client = $this->createAuthenticatedClient();
 
-        $search = '{"completeness":[{"operator":"GREATER THAN ON ALL LOCALES","value":50,"locales":["en_US"],"scope":"ecommerce"}],"categories":[{"operator":"IN", "value":["categoryA"]}], "size":[{"operator":"IN","value":["xl"]}]}';
+        $search = '{"completeness":[{"operator":"GREATER THAN ON ALL LOCALES","value":50,"locales":["en_US"],"scope":"ecommerce"}],"categories":[{"operator":"IN", "value":["categoryA"]}], "a_simple_select_size":[{"operator":"IN","value":["xl"]}]}';
         $client->request('GET', 'api/rest/v1/products?search=' . $search);
         $searchEncoded = rawurlencode($search);
         $expected = <<<JSON
@@ -916,7 +916,7 @@ JSON;
   ],
   "enabled": true,
   "values": {
-    "size": [
+    "a_simple_select_size": [
       {
         "locale": null,
         "scope": null,
@@ -973,7 +973,7 @@ JSON;
   ],
   "enabled": true,
   "values": {
-    "color": [
+    "a_simple_select_color": [
       {
         "locale": null,
         "scope": null,
@@ -1031,7 +1031,7 @@ JSON;
   ],
   "enabled": true,
   "values": {
-    "size": [
+    "a_simple_select_size": [
       {
         "locale": null,
         "scope": null,
@@ -1091,7 +1091,7 @@ JSON;
   ],
   "enabled": true,
   "values": {
-    "size": [
+    "a_simple_select_size": [
       {
         "locale": null,
         "scope": null,
@@ -1152,7 +1152,7 @@ JSON;
   ],
   "enabled": true,
   "values": {
-    "size": [
+    "a_simple_select_size": [
       {
         "locale": null,
         "scope": null,
@@ -1213,7 +1213,7 @@ JSON;
       ],
       "enabled": true,
       "values": {
-        "size": [
+        "a_simple_select_size": [
           {
             "locale": null,
             "scope": null,

@@ -12,43 +12,57 @@ class GetVariantProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $client->request('GET', 'api/rest/v1/products/apollon_blue_xl');
+        $client->request('GET', 'api/rest/v1/products/biker-jacket-leather-xxs');
 
         $standardVariantProduct = [
-            "identifier"    => "apollon_blue_xl",
+            "identifier"    => "biker-jacket-leather-xxs",
             "family"        => "clothing",
-            "parent"        => "apollon_blue",
+            "parent"        => "model-biker-jacket-leather",
             "groups"        => [],
             "variant_group" => null,
-            "categories"    => [],
+            "categories"    => ["master_men_blazers"],
             "enabled"       => true,
             "values"        => [
-                "size"             => [
+                "ean"             => [
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "xl",
+                        "data"   => "1234567890362",
+                    ],
+                ],
+                "size" => [
+                    [
+                        "locale" => null,
+                        "scope"  => null,
+                        "data"   => "xxs",
                     ],
                 ],
                 "color"            => [
                     [
                         "locale" => null,
                         "scope"  => null,
-                        "data"   => "blue",
+                        "data"   => "antique_white",
+                    ],
+                ],
+                "material"   => [
+                    [
+                        "locale" => null,
+                        "scope"  => null,
+                        "data"   => "leather",
                     ],
                 ],
                 "variation_name"   => [
                     [
                         "locale" => "en_US",
                         "scope"  => null,
-                        "data"   => "Apollon blue",
+                        "data"   => "Biker jacket leather",
                     ],
                 ],
                 "name"             => [
                     [
                         "locale" => "en_US",
                         "scope"  => null,
-                        "data"   => "Long gray suit jacket and matching pants unstructured",
+                        "data"   => "Biker jacket",
                     ],
                 ],
                 "price"            => [
@@ -57,24 +71,10 @@ class GetVariantProductIntegration extends AbstractProductTestCase
                         "scope"  => null,
                         "data"   => [
                             [
-                                "amount"   => "899.00",
+                                "amount"   => null,
                                 "currency" => "EUR",
                             ],
                         ],
-                    ],
-                ],
-                "erp_name"         => [
-                    [
-                        "locale" => "en_US",
-                        "scope"  => null,
-                        "data"   => "Apollon",
-                    ],
-                ],
-                "supplier"         => [
-                    [
-                        "locale" => null,
-                        "scope"  => null,
-                        "data"   => "zaro",
                     ],
                 ],
                 "collection"       => [
@@ -82,7 +82,7 @@ class GetVariantProductIntegration extends AbstractProductTestCase
                         "locale" => null,
                         "scope"  => null,
                         "data"   => [
-                            "winter_2016",
+                            "summer_2017",
                         ],
                     ],
                 ],
@@ -90,14 +90,7 @@ class GetVariantProductIntegration extends AbstractProductTestCase
                     [
                         "locale" => "en_US",
                         "scope"  => "ecommerce",
-                        "data"   => "Long gray suit jacket and matching pants unstructured. 61% wool, 30% polyester, 9% ramie. Dry clean only.",
-                    ],
-                ],
-                "wash_temperature" => [
-                    [
-                        "locale" => null,
-                        "scope"  => null,
-                        "data"   => "600",
+                        "data"   => "Biker jacket",
                     ],
                 ],
             ],
@@ -118,40 +111,6 @@ class GetVariantProductIntegration extends AbstractProductTestCase
     protected function getConfiguration(): Configuration
     {
         return new Configuration([Configuration::getFunctionalCatalogPath('catalog_modeling')]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $product = $this->get('pim_catalog.builder.variant_product')->createProduct('apollon_blue_xl', 'clothing');
-        $this->get('pim_catalog.updater.product')->update($product, [
-            'parent' => 'apollon_blue',
-            'values' => [
-                'size' => [
-                    [
-                        'locale' => null,
-                        'scope' => null,
-                        'data' => 'xl',
-                    ],
-                ],
-            ],
-        ]);
-
-        $errors = $this->get('pim_catalog.validator.product')->validate($product);
-        if (0 !== $errors->count()) {
-            throw new \Exception(sprintf(
-                                     'Impossible to setup test in %s: %s',
-                                     static::class,
-                                     $errors->get(0)->getMessage()
-                                 ));
-        }
-
-        $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('pim_catalog.validator.unique_value_set')->reset();
     }
 
     /**
