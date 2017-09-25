@@ -1,6 +1,8 @@
 default:
     suites:
-        TEST-pim:
+        all:
+            filters:
+                tags: "~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app"
             contexts:
                 - Behat\MinkExtension\Context\MinkContext
                 - Context\FeatureContext:

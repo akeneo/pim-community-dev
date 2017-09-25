@@ -3,6 +3,7 @@ kind: Job
 metadata:
   name: JOB_NAME
 spec:
+  completions: JOB_COMPLETIONS
   parallelism: 0
   template:
     spec:
@@ -25,27 +26,20 @@ spec:
             - { name: MYSQL_PASSWORD, value: akeneo_pim }
             - { name: MYSQL_DATABASE, value: akeneo_pim }
           resources:
-            requests: {cpu: "200m", memory: "400Mi"}
-            limits: {cpu: "200m", memory: "400Mi"}
+            requests: {cpu: "170m", memory: "350Mi"}
+            limits: {memory: "350Mi"}
           readinessProbe:
             timeoutSeconds: 1
             initialDelaySeconds: 5
-            failureThreshold: 30
             exec:
-              command: [ "/bin/sh", "-i", "-c", "MYSQL_PWD=\"$MYSQL_PASSWORD\" mysql -h 127.0.0.1 -u $MYSQL_USER -D $MYSQL_DATABASE -e 'SELECT 1'"]
-          livenessProbe:
-            timeoutSeconds: 1
-            initialDelaySeconds: 30
-            tcpSocket:
-              port: 3306
+              command: ["mysql", "-proot", "-h", "127.0.0.1", "-e", "SELECT 1"]
         - name: elasticsearch
           image: eu.gcr.io/akeneo-ci/elasticsearch:5.5
-          imagePullPolicy: Always
           env:
             - { name: ES_JAVA_OPTS, value: "-Xms512m -Xmx512m" }
           resources:
-            requests: {cpu: "100m", memory: "1000Mi"}
-            limits: {cpu: "100m", memory: "1000Mi"}
+            requests: {cpu: "150m", memory: "1500Mi"}
+            limits: {memory: "1500Mi"}
           readinessProbe:
             httpGet:
               path: /
@@ -54,43 +48,32 @@ spec:
                 - name: Authorization
                   value: Basic ZWxhc3RpYzpjaGFuZ2VtZQ==
             timeoutSeconds: 1
-            successThreshold: 2
             initialDelaySeconds: 5
-            failureThreshold: 30
         - name: php
-          image: akeneo/fpm:php-7.1
+          image: eu.gcr.io/akeneo-ci/php:7.1-fpm
           workingDir: /home/jenkins/pim
-          imagePullPolicy: Always
           volumeMounts:
             - { name: pim, mountPath: /home/jenkins }
           resources:
-            requests: {cpu: "200m", memory: "1000Mi"}
-            limits: {cpu: "200m", memory: "1000Mi"}
+            requests: {cpu: "400m", memory: "1000Mi"}
+            limits: {memory: "1000Mi"}
         - name: httpd
           image: eu.gcr.io/akeneo-ci/httpd:2.4
-          imagePullPolicy: Always
           volumeMounts:
             - { name: pim, mountPath: /home/jenkins }
             - { name: artifacts, mountPath: /tmp/behat/screenshots }
           resources:
             requests: {cpu: "100m", memory: "100Mi"}
-            limits: {cpu: "100m", memory: "100Mi"}
+            limits: {memory: "100Mi"}
         - name: selenium
-          image: selenium/standalone-firefox:2.53.1-beryllium
-          imagePullPolicy: Always
+          image: eu.gcr.io/akeneo-ci/selenium:standalone-firefox-2.53.1-beryllium
           volumeMounts:
             - { name: pim, mountPath: /home/jenkins }
           resources:
-            requests: {cpu: "300m", memory: "1000Mi"}
-            limits: {cpu: "300m", memory: "1000Mi"}
-          lifecycle:
-            preStop:
-              httpGet:
-                path: "/selenium-server/driver/?cmd=shutDownSeleniumServer"
-                port: 4444
+            requests: {cpu: "400m", memory: "1300Mi"}
+            limits: {memory: "1300Mi"}
         - name: pubsub
-          image: eu.gcr.io/akeneo-ci/gcloud:latest
-          imagePullPolicy: Always
+          image: eu.gcr.io/akeneo-ci/gcloud:1.0.1
           command: ["gcloud.phar"]
           args: ["pubsub:message:consume", "SUBSCRIPTION_NAME", "RESULT_TOPIC"]
           env:
@@ -102,7 +85,7 @@ spec:
             - { name: artifacts, mountPath: /tmp/behat/screenshots }
           resources:
             requests: {cpu: "100m", memory: "100Mi"}
-            limits: {cpu: "100m", memory: "100Mi"}
+            limits: {memory: "100Mi"}
       volumes:
         - { name: pim, emptyDir: {}}
         - { name: docker, hostPath: {path: /var/run/docker.sock}}
