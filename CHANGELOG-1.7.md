@@ -1,5 +1,9 @@
 # 1.7.x
+
+## Bug fixes
+
 - PIM-6780: Fix locale permissions on minimal catalog
+- PIM-6798: Fix the simple-select and multi-select copiers
 
 # 1.7.8 (2017-08-22)
 

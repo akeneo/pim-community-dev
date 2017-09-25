@@ -3,11 +3,6 @@ version: '2'
 services:
   fpm:
     image: akeneo/fpm:php-7.1
-    depends_on:
-      - mysql
-      - mysql-behat
-      - elasticsearch
-      - selenium
     environment:
       BEHAT_TMPDIR: /srv/pim/var/cache/tmp
       COMPOSER_HOME: /home/docker/.composer
