@@ -95,6 +95,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
             'identifier'         => $identifier,
             'axes_values_labels' => $this->getAxesValuesLabelsForLocales($entity, $localeCodes),
             'labels'             => $labels,
+            'order_string'       => $this->getOrderString($entity),
             'image'              => $this->normalizeImage($entity->getImage(), $format, $context),
             'model_type'         => $entity instanceof ProductModelInterface ? 'product_model' : 'product',
             'completeness'       => $this->getCompletenessDependingOnEntity($entity)
@@ -150,13 +151,26 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
             foreach ($this->attributesProvider->getAxes($entity) as $axisAttribute) {
                 $value = $entity->getValue($axisAttribute->getCode());
 
-                if (AttributeTypes::OPTION_SIMPLE_SELECT === $axisAttribute->getType()) {
-                    $option = $value->getData();
-                    $option->setLocale($localeCode);
-                    $label = $option->getTranslation()->getLabel();
-                    $valuesForLocale[] = empty($label) ? '[' . $option->getCode() . ']' : $label;
-                } else {
-                    $valuesForLocale[] = (string) $value;
+                switch ($axisAttribute->getType()) {
+                    case AttributeTypes::OPTION_SIMPLE_SELECT:
+                        $option = $value->getData();
+                        $option->setLocale($localeCode);
+                        $label = $option->getTranslation()->getLabel();
+                        $valuesForLocale[] = empty($label) ? '[' . $option->getCode() . ']' : $label;
+
+                        break;
+                    case AttributeTypes::METRIC:
+                        $valuesForLocale[] = sprintf(
+                            '%s %s',
+                            $value->getData()->getAmount(),
+                            $value->getData()->getUnit()
+                        );
+
+                        break;
+                    default:
+                        $valuesForLocale[] = (string) $value;
+
+                        break;
                 }
             }
 
@@ -191,5 +205,35 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
 
             return $this->completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api');
         }
+    }
+
+    /**
+     * Generate a string for the given $entity to represent its order among all its axes values.
+     *
+     * For example, if its axes values are "Blue, 10 CENTIMETER" and Blue is an option with a sort order equals to 4,
+     * it will return "4, 10 CENTIMETER".
+     *
+     * It allows to sort on this string to respect sort orders of attribute options.
+     *
+     * @param EntityWithFamilyVariantInterface $entity
+     *
+     * @return string
+     */
+    private function getOrderString(EntityWithFamilyVariantInterface $entity): string
+    {
+        $orderStringArray = [];
+
+        foreach ($this->attributesProvider->getAxes($entity) as $axisAttribute) {
+            $value = $entity->getValue($axisAttribute->getCode());
+
+            if (AttributeTypes::OPTION_SIMPLE_SELECT === $axisAttribute->getType()) {
+                $option = $value->getData();
+                $orderStringArray[] = $option->getSortOrder();
+            } else {
+                $orderStringArray[] = (string) $value;
+            }
+        }
+
+        return implode(', ', $orderStringArray);
     }
 }

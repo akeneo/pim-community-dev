@@ -193,9 +193,10 @@ define([
                         .fetchChildren(parentId)
                         .then((children) => {
                             const childrenResults = this.searchOnResults(options.term, children);
+                            const sortedChildrenResults = _.sortBy(childrenResults, 'order_string');
 
                             options.callback({
-                                results: childrenResults
+                                results: sortedChildrenResults
                             });
                         });
                 }, 400);
