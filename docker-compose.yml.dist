@@ -3,9 +3,6 @@ version: '2'
 services:
   akeneo:
     image: akeneo/apache-php:php-5.6
-    depends_on:
-      - mysql
-      - mongodb
     environment:
       COMPOSER_HOME: '/home/docker/.composer'
       PHP_IDE_CONFIG: 'serverName=pim-ce'
@@ -62,10 +59,10 @@ services:
   mysql:
     image: mysql:5.5
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=akeneo_pim
-      - MYSQL_PASSWORD=akeneo_pim
-      - MYSQL_DATABASE=akeneo_pim
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: akeneo_pim
+      MYSQL_PASSWORD: akeneo_pim
+      MYSQL_DATABASE: akeneo_pim
     ports:
       - '3306:3306'
     networks:
@@ -74,10 +71,10 @@ services:
   mysql-behat:
     image: mysql:5.5
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=akeneo_pim
-      - MYSQL_PASSWORD=akeneo_pim
-      - MYSQL_DATABASE=akeneo_pim
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: akeneo_pim
+      MYSQL_PASSWORD: akeneo_pim
+      MYSQL_DATABASE: akeneo_pim
     ports:
       - '3307:3306'
     networks:
