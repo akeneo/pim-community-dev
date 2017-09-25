@@ -68,6 +68,10 @@ spec:
           volumeMounts:
             - { name: pim, mountPath: /home/jenkins }
             - { name: artifacts, mountPath: /tmp/behat/screenshots }
+          lifecycle:
+            preStop:
+              exec:
+                command: ["/usr/sbin/apache2ctl", "stop"]
         - name: selenium
           image: eu.gcr.io/akeneo-ci/selenium:standalone-firefox-2.53.1-beryllium
           imagePullPolicy: Always
