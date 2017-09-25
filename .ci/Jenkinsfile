@@ -16,8 +16,7 @@ stage("Build") {
         "pim-ce": {withBuildNode({
             checkout scm
             container("php") {
-                sh "composer help"
-                sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --ignore-platform-reqs --no-suggest -v"
+                sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --ignore-platform-reqs --no-suggest"
                 sh "bin/console --ansi assets:install"
                 sh "bin/console --ansi pim:installer:dump-require-paths"
             }
@@ -45,7 +44,11 @@ stage("Build") {
             sh "mkdir -m 777 vendor"
 
             container("php") {
-                sh "composer require --dev --no-update liuggio/fastest:~1.4 -v"
+                withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'githubUsername', usernameVariable: 'githubToken')]) {
+                    sh "composer config -g github-oauth.github.com $githubToken"
+                }
+
+                sh "composer require --dev --no-update liuggio/fastest:~1.4"
                 sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-scripts --ignore-platform-reqs --no-suggest"
 
                 // Required to avoid permission error when "deleteDir()"
