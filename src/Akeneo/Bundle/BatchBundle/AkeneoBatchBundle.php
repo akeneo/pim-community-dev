@@ -28,7 +28,6 @@ class AkeneoBatchBundle extends Bundle
             ->addCompilerPass(new Compiler\RegisterNotifiersPass())
             ->addCompilerPass(new Compiler\PushBatchLogHandlerPass())
             ->addCompilerPass(new Compiler\RegisterJobsPass())
-            ->addCompilerPass(new Compiler\RegisterLockPass())
             ->addCompilerPass(new Compiler\RegisterJobParametersPass('default_values_provider'))
             ->addCompilerPass(new Compiler\RegisterJobParametersPass('constraint_collection_provider'))
             ->addCompilerPass(

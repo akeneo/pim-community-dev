@@ -11,10 +11,6 @@ namespace Akeneo\Component\Batch\Event;
  */
 interface EventInterface
 {
-    /** BatchCommand execution events */
-    const BATCH_COMMAND_START = 'akeneo.batch.command_start';
-    const BATCH_COMMAND_TERMINATE = 'akeneo.batch.command_terminate';
-
     /** Job execution events */
     const BEFORE_JOB_EXECUTION = 'akeneo_batch.before_job_execution';
     const JOB_EXECUTION_STOPPED = 'akeneo_batch.job_execution_stopped';

@@ -28,11 +28,6 @@ services:
             - { name: kernel.event_subscriber }
             - { name: monolog.logger, channel: batch }
 
-    akeneo_batch.lock_subscriber:
-        class: '%akeneo_batch.lock_subscriber.class%'
-        tags:
-            - { name: kernel.event_subscriber }
-
     akeneo_batch.notification_subscriber:
         class: '%akeneo_batch.notification_subscriber.class%'
         tags:
