@@ -44,6 +44,7 @@ parameters:
     pim_catalog.validator.mapping.delegating_class_metadata_factory.class: Pim\Component\Catalog\Validator\Mapping\DelegatingClassMetadataFactory
     pim_catalog.validator.mapping.product_value_metadata_factory.class:    Pim\Component\Catalog\Validator\Mapping\ProductValueMetadataFactory
     pim_catalog.validator.unique_value_set.class:                          Pim\Component\Catalog\Validator\UniqueValuesSet
+    pim_catalog.validator.unique_axes_combination_set.class:               Pim\Component\Catalog\Validator\UniqueAxesCombinationSet
 
 services:
     # Helpers
@@ -56,6 +57,10 @@ services:
 
     pim_catalog.validator.unique_value_set:
         class: '%pim_catalog.validator.unique_value_set.class%'
+        public: true
+
+    pim_catalog.validator.unique_axes_combination_set:
+        class: '%pim_catalog.validator.unique_axes_combination_set.class%'
         public: true
 
     # Validators
@@ -85,6 +90,7 @@ services:
         class: '%pim_catalog.validator.constraint.unique_variant_axis.class%'
         arguments:
             - '@pim_catalog.repository.product'
+            - '@pim_catalog.validator.unique_axes_combination_set'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_variant_axis_validator }
 
