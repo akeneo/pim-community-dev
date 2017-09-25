@@ -132,7 +132,7 @@ services:
             - '@pim_enrich.repository.job_execution'
             - '@pim_connector.event_listener.archivist'
             - '@pim_serializer'
-            - '@akeneo_batch.manager.job_execution'
+            - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@oro_security.security_facade'
             - {'import': 'pim_importexport_import_profile_show', 'export': 'pim_importexport_export_profile_show'}
 
@@ -384,7 +384,7 @@ services:
             - '@validator'
             - '@akeneo_batch.job.job_parameters_validator'
             - '@akeneo_batch.job_parameters_factory'
-            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@security.token_storage'
             - '@router'
             - '@pim_enrich.provider.form.chained'
@@ -399,7 +399,7 @@ services:
             - '@translator'
             - '@pim_connector.event_listener.archivist'
             - '@pim_serializer'
-            - '@akeneo_batch.manager.job_execution'
+            - '@akeneo_batch_queue.manager.job_execution_manager'
             - '@pim_enrich.repository.job_execution'
 
     pim_enrich.controller.rest.api_client:
