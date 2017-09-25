@@ -18,35 +18,32 @@
 {% endif %}
 
 <div class="tabsection-content row-fluid variations">
-    <ul>
-        <li>
-            <div class="AknWidget row-fluid reference">
-                <div class="AknWidget-header">{{ 'pimee_product_asset.enrich_asset.view.reference'|trans }}</div>
+    <div>
+        <div class="AknWidget row-fluid reference">
+            <div class="AknWidget-header">{{ 'pimee_product_asset.enrich_asset.view.reference'|trans }}</div>
 
-                <div class="AknWidget-content row-fluid">
-                    {% if referenceModel.fileInfo %}
-                        {% embed 'PimEnterpriseProductAssetBundle:ProductAsset:_reference_core.html.twig' %}
-                            {% block reference_buttons %}
-                                <button class="AknButtonList-item AknButton AknButton--important AknButton--small delete"
-                                        data-href="{{ path('pimee_product_asset_reference_delete', {'id': referenceModel.id}) }}" >
-                                    {{ 'btn.delete'|trans|capitalize }}
-                                </button>
-                                <button class="AknButtonList-item AknButton AknButton--action AknButton--small reset-variations"
-                                        data-href="{{ path('pimee_product_asset_variations_reset', {'id': referenceModel.id}) }}" >
-                                    {{ 'pimee_product_asset.enrich_asset.button.reset_variations'|trans }}
-                                </button>
-                            {% endblock %}
-                        {% endembed %}
-                    {% else %}
-                        {{ pamMacros.renderUploadZone(reference.fileInfo, 'span12') }}
-                    {% endif %}
-                </div>
+            <div class="AknWidget-content row-fluid">
+                {% if referenceModel.fileInfo %}
+                    {% embed 'PimEnterpriseProductAssetBundle:ProductAsset:_reference_core.html.twig' %}
+                        {% block reference_buttons %}
+                            <button class="AknButtonList-item AknButton AknButton--important AknButton--small delete"
+                                    data-href="{{ path('pimee_product_asset_reference_delete', {'id': referenceModel.id}) }}" >
+                                {{ 'btn.delete'|trans|capitalize }}
+                            </button>
+                            <button class="AknButtonList-item AknButton AknButton--action AknButton--small reset-variations"
+                                    data-href="{{ path('pimee_product_asset_variations_reset', {'id': referenceModel.id}) }}" >
+                                {{ 'pimee_product_asset.enrich_asset.button.reset_variations'|trans }}
+                            </button>
+                        {% endblock %}
+                    {% endembed %}
+                {% else %}
+                    {{ pamMacros.renderUploadZone(reference.fileInfo, 'span12') }}
+                {% endif %}
             </div>
-        </li>
+        </div>
+    </div>
 
-        {% for variation in reference.variations %}
-            {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_variation_edit.html.twig' with {'variationModel': variation.vars.data} %}
-        {% endfor %}
-
-    </ul>
+    {% for variation in reference.variations %}
+        {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_variation_edit.html.twig' with {'variationModel': variation.vars.data} %}
+    {% endfor %}
 </div>

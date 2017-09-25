@@ -4,7 +4,7 @@
         <!-- This next line has to be changed with a single input with this class -->
         {{ form_widget(fileElement, {'attr': {'class': 'AknMediaField-fileUploaderInput'}}) }}
         <div class="AknMediaField-emptyContainer">
-            <img src="/bundles/pimui/images/upload.png" alt="upload icon" class="AknMediaField-uploadIcon">
+            <span class="AknMediaField-uploadIcon"></span>
             <span>{{ 'btn.drag_or_upload'|trans }}</span>
         </div>
         {% if not isValid %}
