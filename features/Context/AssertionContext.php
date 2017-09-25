@@ -356,7 +356,7 @@ class AssertionContext extends PimContext
 
             if (array_key_exists('author', $data)) {
                 $expectedAuthor = $data['author'];
-                $author = $row->find('css', 'td[data-column="author"]')->getText();
+                $author = $row->find('css', '[data-column="author"]')->getText();
                 assertEquals(
                     $expectedAuthor,
                     $author,
