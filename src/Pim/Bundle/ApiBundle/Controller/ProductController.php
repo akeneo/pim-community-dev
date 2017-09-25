@@ -228,12 +228,15 @@ class ProductController
      */
     public function getAction($code): JsonResponse
     {
-        $product = $this->productRepository->findOneByIdentifier($code);
-        if (null === $product) {
+        $pqb = $this->fromSizePqbFactory->create(['limit' => 1, 'from' => 0]);
+        $pqb->addFilter('identifier', Operators::EQUALS, $code);
+        $products = $pqb->execute();
+
+        if (0 === $products->count()) {
             throw new NotFoundHttpException(sprintf('Product "%s" does not exist.', $code));
         }
 
-        $productApi = $this->normalizer->normalize($product, 'external_api');
+        $productApi = $this->normalizer->normalize($products->current(), 'external_api');
 
         return new JsonResponse($productApi);
     }
