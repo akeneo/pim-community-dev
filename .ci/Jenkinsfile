@@ -250,8 +250,8 @@ def withBuildNode(body) {
 
     withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
         podTemplate(label: "build-" + uuid, containers: [
-            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '50m', resourceLimitCpu: '100m', resourceRequestMemory: '100Mi', resourceLimitMemory: '200Mi'),
-            containerTemplate(name: "php", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", envVars: [envVar(key: "COMPOSER_HOME", value: "/shared/.composer"), envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi'),
+            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceLimitCpu: '100m', resourceRequestMemory: '100Mi', resourceLimitMemory: '200Mi'),
+            containerTemplate(name: "php", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "akeneo/fpm:php-7.1", envVars: [envVar(key: "COMPOSER_HOME", value: "/shared/.composer"), envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi'),
             containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi')
         ], volumes: [
             nfsVolume(mountPath: '/shared', serverAddress: "${env.NFS_IP}", serverPath: '/exports', readOnly: false),
@@ -270,7 +270,7 @@ def withPhp(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "php-" + uuid, containers: [
-        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", resourceRequestCpu: '50m', resourceLimitCpu: '100m', resourceRequestMemory: '100Mi', resourceLimitMemory: '200Mi')
+        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "akeneo/fpm:php-7.1", resourceRequestCpu: '100m', resourceLimitCpu: '100m', resourceRequestMemory: '100Mi', resourceLimitMemory: '200Mi')
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ]) {
@@ -286,7 +286,7 @@ def withNode(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "node-" + uuid, containers: [
-        containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '50m', resourceLimitCpu: '100m', resourceRequestMemory: '100Mi', resourceLimitMemory: '200Mi')
+        containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '100m', resourceLimitCpu: '100m', resourceRequestMemory: '100Mi', resourceLimitMemory: '200Mi')
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ]) {
@@ -302,7 +302,7 @@ def withDockerScm(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "dockerscm-" + uuid, containers: [
-        containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', resourceRequestCpu: '50m', resourceLimitCpu: '100m', resourceRequestMemory: '100Mi', resourceLimitMemory: '200Mi', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")])
+        containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceLimitCpu: '100m', resourceRequestMemory: '100Mi', resourceLimitMemory: '200Mi', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")])
     ], volumes: [
         hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
     ]) {
@@ -320,8 +320,8 @@ def queue(body, scale, edition) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "pubsub-" + uuid, containers: [
-        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", resourceRequestCpu: '50m', resourceLimitCpu: '100m', resourceRequestMemory: '100Mi', resourceLimitMemory: '200Mi'),
-        containerTemplate(name: "gcloud", alwaysPullImage: true, ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud", resourceRequestCpu: '50m', resourceLimitCpu: '100m', resourceRequestMemory: '100Mi', resourceLimitMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
+        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "akeneo/fpm:php-7.1", resourceRequestCpu: '100m', resourceLimitCpu: '100m', resourceRequestMemory: '100Mi', resourceLimitMemory: '200Mi'),
+        containerTemplate(name: "gcloud", alwaysPullImage: true, ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud", resourceRequestCpu: '100m', resourceLimitCpu: '100m', resourceRequestMemory: '100Mi', resourceLimitMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ], volumes: [
