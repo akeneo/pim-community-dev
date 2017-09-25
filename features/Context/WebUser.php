@@ -1935,19 +1935,20 @@ class WebUser extends PimContext
      */
     public function iWaitForTheJobToFinish($code)
     {
-        $jobExecution = $this->spin(function () use ($code) {
+        $this->wait();
+
+        $this->spin(function () use ($code) {
             $jobInstance = $this->getFixturesContext()->getJobInstance($code);
             // Force to retrieve its job executions
             $jobInstance->getJobExecutions()->setInitialized(false);
 
             $this->getFixturesContext()->refresh($jobInstance);
+
             $jobExecution = $jobInstance->getJobExecutions()->last();
             $this->getFixturesContext()->refresh($jobExecution);
 
             return $jobExecution && !$jobExecution->isRunning();
         }, sprintf('The job execution of "%s" was too long', $code));
-
-        $this->wait();
 
         $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
 
