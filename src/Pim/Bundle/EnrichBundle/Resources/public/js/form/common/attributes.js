@@ -360,6 +360,7 @@ define(
              */
             setScope: function (scope, options) {
                 UserContext.set('catalogScope', scope, options);
+                this.getRoot().trigger('pim_enrich:form:scope_switcher:render');
             },
 
             /**
@@ -394,6 +395,7 @@ define(
              */
             setLocale: function (locale, options) {
                 UserContext.set('catalogLocale', locale, options);
+                this.getRoot().trigger('pim_enrich:form:locale_switcher:render');
             },
 
             /**
@@ -419,22 +421,23 @@ define(
             showAttribute: function (event) {
                 this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.code);
 
-                var needRendering = false;
+                var attributeGroupSelector = this.getExtension('attribute-group-selector');
+                if (attributeGroupSelector.all.code !== attributeGroupSelector.getCurrent()) {
+                    attributeGroupSelector.setCurrent(attributeGroupSelector.all.code);
+                }
+
                 if (event.scope) {
                     this.setScope(event.scope, {silent: true});
-                    needRendering = true;
+                    this.getRoot().trigger('pim_enrich:form:scope_switcher:render');
                 }
                 if (event.locale) {
                     this.setLocale(event.locale, {silent: true});
-                    needRendering = true;
+                    this.getRoot().trigger('pim_enrich:form:locale_switcher:render');
                 }
 
-                if (needRendering) {
-                    this.render();
-                }
+                this.render();
 
                 var displayedAttributes = FieldManager.getFields();
-
                 if (_.has(displayedAttributes, event.attribute)) {
                     const field = displayedAttributes[event.attribute];
                     // TODO: the manager shouldn't be stateful, access the field by another way
