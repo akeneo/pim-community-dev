@@ -39,7 +39,7 @@ define(
             template: _.template(template),
             className: 'panel-pane history-panel',
             loading: false,
-            versions: [],
+            expandedVersions: [],
             actions: {},
             events: {
                 'click .expanded .AknGrid-bodyCell': 'toggleVersion'
@@ -74,6 +74,7 @@ define(
                             this.$el.html(
                                 this.template({
                                     versions: versions,
+                                    expandedVersions: this.expandedVersions,
                                     expanded: true,
                                     hasAction: this.actions
                                 })
@@ -206,18 +207,15 @@ define(
              * @param {Event} event
              */
             toggleVersion: function (event) {
-                var $row = $(event.currentTarget).closest('.AknGrid-bodyRow');
-                var $body = $row.closest('.AknGrid');
+                const versionToToggle = event.currentTarget.parentNode.dataset.version;
 
-                $body.find('tr.changeset').addClass('hide');
-                $body.find('.AknGrid-expand').removeClass('AknGrid-expand--expanded');
-
-                if (!$row.hasClass('expanded')) {
-                    $row.next('tr.changeset').removeClass('hide');
-                    $row.find('.AknGrid-expand').addClass('AknGrid-expand--expanded');
+                if (this.expandedVersions.find(version => version === versionToToggle)) {
+                    this.expandedVersions = this.expandedVersions.filter(version => version !== versionToToggle);
+                } else {
+                    this.expandedVersions.push(versionToToggle);
                 }
-                $row.siblings().removeClass('expanded');
-                $row.toggleClass('expanded');
+
+                this.render();
             }
         });
     }

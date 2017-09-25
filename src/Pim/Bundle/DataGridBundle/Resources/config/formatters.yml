@@ -6,6 +6,7 @@ parameters:
     pim_datagrid.extension.formatter.property.job.name_property.class:                        Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Job\NameProperty
     pim_datagrid.extension.formatter.property.job.type_property.class:                        Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Job\TypeProperty
     pim_datagrid.extension.formatter.property.datetime_property.class:                        Pim\Bundle\DataGridBundle\Extension\Formatter\Property\DateTimeProperty
+    pim_datagrid.extension.formatter.property.changeset.class:                                Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ChangesetProperty
 
 services:
     pim_datagrid.extension.formatter.property.product_value.field_property:
@@ -37,6 +38,14 @@ services:
             - '@pim_catalog.localization.presenter.datetime'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_datetime }
+
+    pim_datagrid.extension.formatter.property.changeset:
+        class: '%pim_datagrid.extension.formatter.property.changeset.class%'
+        arguments:
+            - '@translator'
+            - '@pim_catalog.localization.presenter.number'
+        tags:
+            - { name: oro_datagrid.extension.formatter.property, type: changeset }
 
     pim_datagrid.extension.formatter.property.datetime_property:
         class: '%pim_datagrid.extension.formatter.property.datetime_property.class%'

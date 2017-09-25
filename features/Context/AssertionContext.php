@@ -328,86 +328,8 @@ class AssertionContext extends PimContext
      */
     public function iShouldSeeHistory(TableNode $table)
     {
-        if ($this->getCurrentPage()->find('css', '.history-panel')) {
-            $this->iShouldSeeHistoryInPanel($table);
-
-            return;
-        }
-
-        $updates = [];
-        $rows    = $this->getCurrentPage()->getHistoryRows();
-        foreach ($rows as $row) {
-            $version = (int) $row->find('css', 'td.number-cell')->getHtml();
-            $author  = $row->findAll('css', 'td.string-cell');
-            if (count($author) > 4) {
-                $author = $row->findAll('css', 'td.string-cell')[1]->getHtml();
-            } else {
-                $author = $row->findAll('css', 'td.string-cell')[0]->getHtml();
-            }
-            $data = $row->findAll('css', 'td>ul');
-            $data = end($data);
-            $data = preg_replace('/\s+|\n+|\r+/m', ' ', $data->getHtml());
-
-            $updates[] = [
-                'version' => $version,
-                'data'    => $data,
-                'author'  => $author,
-            ];
-        }
-
-        $valuePattern = '/(.)*<strong>%s:<\/strong>\s*%s\s*(.)*/';
-
-        $expectedUpdates = $table->getHash();
-        foreach ($expectedUpdates as $data) {
-            if (!array_key_exists('author', $data)) {
-                $data['author'] = '';
-            }
-            $expectedPattern = sprintf(
-                $valuePattern,
-                $data['property'],
-                $data['value'],
-                $data['author']
-            );
-
-            $found = false;
-            foreach ($updates as $update) {
-                if ('' === $data['author']) {
-                    $update['author'] = '';
-                }
-                if ((int) $data['version'] === $update['version']) {
-                    if (preg_match($expectedPattern, $update['data'])
-                        && $data['author'] === $update['author']) {
-                        $found = true;
-                        break;
-                    }
-                }
-            }
-
-            if (!$found) {
-                throw $this->createExpectationException(
-                    sprintf(
-                        'Expecting to see history update %d - %s - %s - %s, not found',
-                        $data['version'],
-                        $data['author'],
-                        $data['property'],
-                        $data['value']
-                    )
-                );
-            }
-        }
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @Then /^I should see history in panel:$/
-     *
-     * @throws ExpectationException
-     */
-    public function iShouldSeeHistoryInPanel(TableNode $table)
-    {
         $block = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.history-block');
+            return $this->getCurrentPage()->find('css', '.history-block, .grid');
         }, 'Could not find the history block');
 
         foreach ($table->getHash() as $data) {
@@ -423,12 +345,18 @@ class AssertionContext extends PimContext
             $expectedProperty = $data['property'];
 
             $row = $this->spin(function () use ($block, $expectedVersion) {
-                return $block->find('css', sprintf('.product-version[data-version="%d"]', $expectedVersion));
+                return $block->find('css', sprintf('.entity-version[data-version="%d"]', $expectedVersion));
             }, sprintf('Cannot find the version "%s"', $expectedVersion));
+
+            if (!$row->hasClass('AknGrid-bodyRow--expanded')) {
+                $this->spin(function () use ($row) {
+                    return $row->find('css', '.version-expander');
+                }, sprintf('Can not find the expand button of version "%s"', json_encode($data)))->click();
+            }
 
             if (array_key_exists('author', $data)) {
                 $expectedAuthor = $data['author'];
-                $author = $row->find('css', '.author')->getText();
+                $author = $row->find('css', '[data-column="author"]')->getText();
                 assertEquals(
                     $expectedAuthor,
                     $author,
@@ -441,18 +369,11 @@ class AssertionContext extends PimContext
                 );
             }
 
-            if (!$row->hasClass('expanded')) {
-                $this->spin(function () use ($row) {
-                    return $row->find('css', '.version-expander');
-                }, sprintf('Can not find the expand button of version "%s"', json_encode($data)))->click();
-            }
-
             $changesetRow = $this->spin(function () use ($block, $expectedVersion) {
                 return $block->find('css', sprintf('.changeset:not(.hide)[data-version="%d"]', $expectedVersion));
             }, sprintf('No changeset found for version %s', $data['version']));
-
             // Each change contains 3 cells: property, before and after cells.
-            $changes = array_chunk($changesetRow->findAll('css', '.AknGrid-bodyCell'), 3);
+            $changes = array_chunk($changesetRow->findAll('css', 'tbody .AknGrid-bodyCell'), 3);
 
             $matchingChange = $this->spin(function () use ($changes, $expectedProperty) {
                 foreach ($changes as $change) {

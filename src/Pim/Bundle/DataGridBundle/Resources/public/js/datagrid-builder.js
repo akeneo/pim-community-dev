@@ -7,9 +7,10 @@ define([
         'oro/mediator',
         'oro/pageable-collection',
         'oro/datagrid/grid',
-        'oro/datagrid/grid-views/view'
+        'oro/datagrid/grid-views/view',
+        'require-context'
     ],
-    function ($, _, tools, mediator, PageableCollection, Grid, GridViewsView) {
+    function ($, _, tools, mediator, PageableCollection, Grid, GridViewsView, requireContext) {
 
     var gridSelector = '[data-type="datagrid"]:not([data-rendered])',
         gridGridViewsSelector = '.page-title > .AknTitleContainer .span10:last',
@@ -176,6 +177,7 @@ define([
                     massActions[action] = modules[helpers.actionType(optionType)].extend(options);
                 });
 
+
                 return {
                     name: metadata.options.gridName,
                     columns: columns,
@@ -184,7 +186,8 @@ define([
                     massActions: massActions,
                     toolbarOptions: metadata.options.toolbarOptions || {},
                     multipleSorting: metadata.options.multipleSorting || false,
-                    entityHint: metadata.options.entityHint
+                    entityHint: metadata.options.entityHint,
+                    row: metadata.options.rowView ? requireContext(metadata.options.rowView) : null
                 };
             },
 
