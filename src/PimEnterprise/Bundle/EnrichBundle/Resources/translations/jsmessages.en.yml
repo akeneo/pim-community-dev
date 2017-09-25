@@ -191,8 +191,8 @@ pimee_enrich:
                 select:
                     label: Choose assets
                 choose:
-                    label: Choose operation
-                    title: Mass edit ({{ itemsCount }} assets)
+                    label: Select your action
+                    title: Assets bulk action | {{ itemsCount }} assets
                 configure:
                     label: Configure
                 confirm:

@@ -25,6 +25,7 @@ extensions:
             code: add_tag
             jobInstanceCode: add_tags_to_assets
             field: pimee_enrich.mass_edit.asset.operation.add_tag.field
+            icon: icon-card
 
     pim-mass-asset-edit-configure-add-to-category:
         module: pim/mass-edit-form/product/category
@@ -38,3 +39,4 @@ extensions:
             listRoute: pimee_product_asset_listcategories
             childrenRoute: pimee_asset_categorytree_children
             field: pimee_enrich.mass_edit.asset.operation.add_to_category.field
+            icon: icon-folders
