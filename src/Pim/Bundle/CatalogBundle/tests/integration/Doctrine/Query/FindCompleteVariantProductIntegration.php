@@ -21,17 +21,17 @@ class FindCompleteVariantProductIntegration extends TestCase
                 'ecommerce' => [
                     'de_DE' => 0,
                     'en_US' => 2,
-                    'fr_FR' => 0,
+                    'fr_FR' => 1,
                 ],
                 'mobile' => [
                     'de_DE' => 0,
                     'en_US' => 2,
-                    'fr_FR' => 0,
+                    'fr_FR' => 1,
                 ],
                 'print' => [
                     'de_DE' => 0,
                     'en_US' => 2,
-                    'fr_FR' => 0,
+                    'fr_FR' => 1,
                 ],
             ],
             'total' => 2
@@ -39,7 +39,7 @@ class FindCompleteVariantProductIntegration extends TestCase
     }
 
     /**
-     *
+     * Test that the query does not fail if the product model does not have any child
      */
     public function testProductModelWithoutChild()
     {
