@@ -2,6 +2,14 @@ extensions:
     pim-job-execution-form:
         module: pim/form/common/edit-form
 
+    pim-job-execution-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-job-execution-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-job-execution-form-secondary-actions:
         module: pim/form/common/secondary-actions
         parent: pim-job-execution-form

@@ -1,58 +1,46 @@
 @import '../base/variables';
 
 .AknLogin {
-  color: @AknGrey;
-  background: linear-gradient(to bottom, #112539 0,#76324d 86%,#d1706a 100%);
-  background-image: url("/bundles/pimui/images/background_login.png");
-  background-position: bottom center;
-  background-size: cover;
+  color: @AknSlateGrey;
+  background: white;
+  background-image: url("/bundles/pimui/images/illustration-login.svg");
+  background-position: center bottom;
+  background-size: 100%;
   height: 100%;
   min-height: 280px;
+  background-repeat: no-repeat;
 
   &-link {
-    color: @AknGrey;
+    color: @AknLightPurple;
+    margin-right: 10px;
   }
 
   &-mainContainer {
     padding-top: 100px;
-    width: 520px;
+    width: 620px;
     margin: auto;
   }
 
   &-title {
     text-align: center;
+    max-width: 260px;
+    margin: 0 auto 30px auto
   }
 
   &-form {
-    font-size: @AknFontSizeBig;
     margin-top: 10px;
     display: flex;
     justify-content: space-between;
-    text-shadow: 1px 1px 2px black;
   }
 
-  &-formInput {
-    color: @AknDarkBlue;
-    border: 1px solid @AknGrey;
-    background-color: @AknGrey;
-    -webkit-box-shadow: 0 0 0 1000px @AknGrey inset;
-    -webkit-text-fill-color: @AknDarkBlue;
-    font-size: @AknFontSizeBig;
-    height: @AknBigButtonSize;
-    line-height: @AknBigButtonSize;
+  &-formCell {
     flex-grow: 1;
-    margin-right: 10px;
-    border-radius: 2px;
-    padding: 0 10px;
+    margin: 5px;
+    display: flex;
+    align-items: center;
 
-    &::-webkit-input-placeholder {
-      color: @AknDefaultFontColor;
-      -webkit-text-fill-color: @AknDefaultFontColor;
-    }
-
-    &:-webkit-autofill {
-      background-color: @AknGrey;
-      -webkit-box-shadow: 0 0 0 1000px @AknGrey inset;
+    &--small {
+      flex-grow: 0;
     }
   }
 
