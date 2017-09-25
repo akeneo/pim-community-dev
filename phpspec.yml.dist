@@ -14,6 +14,11 @@ suites:
         psr4_prefix: Akeneo\Component\Batch
         spec_path: src/Akeneo/Component/Batch
         src_path: src/Akeneo/Component/Batch
+    BatchQueue:
+        namespace: Akeneo\Component\BatchQueue
+        psr4_prefix: Akeneo\Component\BatchQueue
+        spec_path: src/Akeneo/Component/BatchQueue
+        src_path: src/Akeneo/Component/BatchQueue
     Buffer:
         namespace: Akeneo\Component\Buffer
         psr4_prefix: Akeneo\Component\Buffer
@@ -56,6 +61,11 @@ suites:
         psr4_prefix: Akeneo\Bundle\BatchBundle
         spec_path: src/Akeneo/Bundle/BatchBundle
         src_path: src/Akeneo/Bundle/BatchBundle
+    BatchQueueBundle:
+        namespace: Akeneo\Bundle\BatchQueueBundle
+        psr4_prefix: Akeneo\Bundle\BatchQueueBundle
+        spec_path: src/Akeneo/Bundle/BatchQueueBundle
+        src_path: src/Akeneo/Bundle/BatchQueueBundle
     ClassificationBundle:
         namespace: Akeneo\Bundle\ClassificationBundle
         psr4_prefix: Akeneo\Bundle\ClassificationBundle
