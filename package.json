@@ -33,7 +33,6 @@
     "babel-preset-env": "1.6.0",
     "backbone": "0.9.10",
     "bundle-loader": "0.5.5",
-    "codemirror": "5.25.2",
     "deepmerge": "1.5.1",
     "eslint": "4.5.0",
     "exports-loader": "0.6.4",
