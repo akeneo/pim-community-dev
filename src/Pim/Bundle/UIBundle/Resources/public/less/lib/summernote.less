@@ -23,6 +23,10 @@
         list-style-type: disc;
       }
     }
+
+    &[contenteditable="false"] {
+      background: @AknDisabledInputColor;
+    }
   }
 }
 
@@ -65,3 +69,5 @@
 .note-popover .popover .popover-content, .note-toolbar {
   padding: 0;
 }
+
+.note-editor .note-editable
