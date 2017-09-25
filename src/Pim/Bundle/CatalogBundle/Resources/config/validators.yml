@@ -151,13 +151,6 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_single_identifier_attribute_validator }
 
-    pim_catalog.validator.constraint.unique_variant_axis:
-        class: '%pim_catalog.validator.constraint.unique_variant_axis.class%'
-        arguments:
-            - '@pim_catalog.repository.product'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_unique_variant_axis_validator }
-
     pim_catalog.validator.constraint.unique_variant_group:
         class: '%pim_catalog.validator.constraint.unique_variant_group.class%'
         tags:
