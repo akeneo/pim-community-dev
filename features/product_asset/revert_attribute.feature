@@ -29,6 +29,7 @@ Feature: Revert an assets collection in a product
       | 2       | gallery  | machine,minivan |
     And I visit the "Attributes" column tab
     And I start to manage assets for "gallery"
+    And I search "machine"
     And I uncheck the row "machine"
     Then the asset basket should contain minivan
     And I confirm the asset modification
