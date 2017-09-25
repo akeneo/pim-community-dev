@@ -2,4 +2,4 @@ services:
     pim_installer.directories_registry:
         class: '%pim_installer.directories_registry.class%'
         arguments:
-            - [%catalog_storage_dir%, %tmp_storage_dir%, %archive_dir%, %asset_storage_dir%]
+            - ['%catalog_storage_dir%', '%tmp_storage_dir%', '%archive_dir%', '%upload_dir%', '%asset_storage_dir%']

@@ -353,7 +353,7 @@ Feature: Read a single product by applying rules
     And the following products:
       | sku       | family  | weather_conditions |
       | my-jacket | jackets | dry                |
-    And the following "climate" attribute options: Hot and Cold
+    And the following "climate" attribute options: hot and cold
     And the following product values:
       | product   | attribute          | value                  | locale | scope  |
       | my-jacket | handmade           | 1                      |        |        |
@@ -439,7 +439,7 @@ Feature: Read a single product by applying rules
       | length                   | 55.0000 CENTIMETER     |
       | width                    | 55.0000 CENTIMETER     |
       | weather_conditions       | Hot, Cold              |
-      | climate                  | Hot, Cold              |
+      | climate                  | [hot], [cold]          |
       | number_in_stock-mobile   | 800.00                 |
       | number_in_stock-tablet   | 800.00                 |
       | main_color               | White                  |
@@ -459,7 +459,7 @@ Feature: Read a single product by applying rules
     And the following products:
       | sku       | family  | weather_conditions |
       | my-jacket | jackets | dry                |
-    And the following "climate" attribute options: Hot and Cold
+    And the following "climate" attribute options: hot and cold
     And the following product values:
       | product   | attribute          | value                  | locale | scope  |
       | my-jacket | handmade           |                        |        |        |
@@ -471,7 +471,7 @@ Feature: Read a single product by applying rules
       | my-jacket | side_view          |                        |        |        |
       | my-jacket | top_view           | %fixtures%/akeneo2.jpg |        |        |
       | my-jacket | weather_conditions |                        |        |        |
-      | my-jacket | climate            | Hot,Cold               |        |        |
+      | my-jacket | climate            | hot,cold               |        |        |
       | my-jacket | number_in_stock    |                        |        | mobile |
       | my-jacket | number_in_stock    | 800                    |        | tablet |
       | my-jacket | main_color         |                        |        |        |

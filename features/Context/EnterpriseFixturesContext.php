@@ -909,22 +909,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @param TableNode $table
-     *
-     * @Given /^the following product rules:$/
-     */
-    public function theFollowingProductRules(TableNode $table)
-    {
-        foreach ($table->getHash() as $data) {
-            $rule = new RuleDefinition();
-            $rule->setCode($data['code']);
-            $rule->setPriority((int) $data['priority']);
-            $rule->setType('product');
-            $this->getContainer()->get('akeneo_rule_engine.saver.rule_definition')->save($rule);
-        }
-    }
-
-    /**
      * @param PyStringNode $string
      *
      * @Given /^the following product rule definitions:$/
