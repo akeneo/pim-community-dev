@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Integration;
 
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
+use Akeneo\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -218,8 +219,7 @@ class JobLauncher
         $timeout = 0;
         $isCompleted = false;
 
-        $em = $this->kernel->getContainer()->get('doctrine.orm.default_entity_manager');
-        $connection = $em->getConnection();
+        $connection = $this->kernel->getContainer()->get('doctrine.orm.default_entity_manager')->getConnection();
         $stmt = $connection->prepare('SELECT status from akeneo_batch_job_execution where id = :id');
 
         while (!$isCompleted) {
@@ -235,6 +235,51 @@ class JobLauncher
             $timeout++;
 
             sleep(1);
-       }
+        }
+    }
+
+    /**
+     * Launch the daemon command to consume and launch one job execution.
+     *
+     * @return BufferedOutput
+     */
+    public function launchConsumerOnce(): BufferedOutput
+    {
+        $application = new Application($this->kernel);
+        $application->setAutoExit(false);
+
+        $arrayInput = [
+            'command'  => JobQueueConsumerCommand::COMMAND_NAME,
+            '--run-once' => true,
+        ];
+
+        $input = new ArrayInput($arrayInput);
+        $output = new BufferedOutput();
+        $application->run($input, $output);
+
+        return $output;
+    }
+
+    /**
+     * Launch the daemon command to consume and launch one job execution, in a detached process in background.
+     * It uses exec to not wrap the process in a subshell, in order to get the correct pid.
+     *
+     * @see https://github.com/symfony/symfony/issues/5759
+     *
+     * @return Process
+     */
+    public function launchConsumerOnceInBackground(): Process
+    {
+        $command = sprintf(
+            'exec %s/console %s --env=%s --run-once',
+            sprintf('%s/../bin', $this->kernel->getRootDir()),
+            JobQueueConsumerCommand::COMMAND_NAME,
+            $this->kernel->getEnvironment()
+        );
+
+        $process = new Process($command);
+        $process->start();
+
+        return $process;
     }
 }
