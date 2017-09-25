@@ -9,6 +9,7 @@ parameters:
     akeneo_batch.set_job_execution_log_file_subscriber.class: Akeneo\Bundle\BatchBundle\EventListener\SetJobExecutionLogFileSubscriber
     akeneo_batch.manager.job_execution.class:                 Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager
     akeneo_batch.launcher.simple_job_launcher.class:          Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher
+    akeneo_batch.entity_manager.persisted_connection_entity_manager.class: Akeneo\Bundle\BatchBundle\EntityManager\PersistedConnectionEntityManager
     akeneo_batch.connectors_config:                           ~
     akeneo_batch.jobs_config:                                 ~
 
@@ -84,3 +85,8 @@ services:
             - '%kernel.root_dir%'
             - '%kernel.environment%'
             - '%logs_dir%'
+
+    akeneo_batch.entity_manager.persisted_connection_entity_manager:
+        class: '%akeneo_batch.entity_manager.persisted_connection_entity_manager.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'

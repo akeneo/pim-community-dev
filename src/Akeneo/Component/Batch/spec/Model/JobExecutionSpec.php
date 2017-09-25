@@ -25,6 +25,7 @@ class JobExecutionSpec extends ObjectBehavior
         $this->getFailureExceptions()->shouldHaveCount(0);
         $this->getRawParameters()->shouldHaveCount(0);
         $this->getJobParameters()->shouldBeNull();
+        $this->getHealthCheckTime()->shouldBeNull();
     }
 
     function it_is_cloneable(
@@ -127,6 +128,13 @@ class JobExecutionSpec extends ObjectBehavior
         $this->setJobParameters($jobParameters);
         $this->getJobParameters()->shouldReturn($jobParameters);
         $this->getRawParameters()->shouldReturn(['foo' => 'baz']);
+    }
+
+    function it_sets_health_check_time()
+    {
+        $datetime = new \DateTime();
+        $this->setHealthCheckTime($datetime);
+        $this->getHealthCheckTime()->shouldReturn($datetime);
     }
 
     function it_is_displayable()

@@ -5,4 +5,4 @@ services:
     pim_connector.launcher.authenticated_job_launcher:
         class: '%pim_connector.launcher.authenticated_job_launcher.class%'
         arguments:
-            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'

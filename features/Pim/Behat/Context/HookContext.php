@@ -2,6 +2,7 @@
 
 namespace Pim\Behat\Context;
 
+use Akeneo\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\AfterStepScope;
 use Behat\Behat\Tester\Result\StepResult;
@@ -12,6 +13,7 @@ use Context\FeatureContext;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Process\Process;
 use WebDriver\Exception\UnexpectedAlertOpen;
 
 /**
@@ -27,6 +29,9 @@ class HookContext extends PimContext
 
     /** @var int */
     protected $windowHeight;
+
+    /** @var Process */
+    protected $jobConsumerProcess;
 
     /**
      * @param string $mainContextClass
@@ -73,6 +78,26 @@ class HookContext extends PimContext
     {
         $aclManager = $this->getService('oro_security.acl.manager');
         $aclManager->clearCache();
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function launchJobConsumer()
+    {
+        $process = new Process(sprintf('exec bin/console %s --env=behat', JobQueueConsumerCommand::COMMAND_NAME));
+        $process->setTimeout(null);
+        $process->start();
+
+        $this->jobConsumerProcess = $process;
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function stopJobConsumer()
+    {
+        $this->jobConsumerProcess->stop();
     }
 
     /**
