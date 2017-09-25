@@ -1,39 +1,28 @@
 <div class="AknFullPage AknFullPage--modal">
-  <div class="AknTitleContainer-buttonsContainer">
-    <div class="AknTitleContainer-userMenu user-menu"></div>
-    <div class="AknTitleContainer-rightButtons" data-drop-zone="buttons">
-      <button class="AknButtonList-item AknButton AknButton--action start AknButton--disabled" type="submit">
-          <%- __('pimee_product_asset.mass_upload.btn.upload') %>
-      </button>
-      <button class="AknButtonList-item AknButton AknButton--apply import AknButton--disabled">
-          <%- __('pimee_product_asset.mass_upload.btn.import') %>
-      </button>
-    </div>
-    <div class="AknTitleContainer-titleButtons AknButtonList" data-drop-zone="title-buttons"></div>
-    <div class="AknTitleContainer-state" data-drop-zone="state"></div>
+  <div class="AknFullPage-buttons">
+      <div class="AknButtonList">
+          <span class="AknButtonList-item AknFullPage-cancel"></span>
+      </div>
+      <div class="AknTitleContainer-rightButtons" data-drop-zone="buttons">
+        <button class="AknButtonList-item AknButton AknButton--action start AknButton--disabled" type="submit">
+            <%- __('pimee_product_asset.mass_upload.btn.upload') %>
+        </button>
+        <button class="AknButtonList-item AknButton AknButton--apply import AknButton--disabled">
+            <%- __('pimee_product_asset.mass_upload.btn.import') %>
+        </button>
+      </div>
   </div>
 
   <div class="AknFullPage-content AknFullPage-content--column">
 
     <div>
-        <div class="AknFullPage-subTitle">Assets</div>
-        <div class="AknFullPage-title">Upload assets</div>
+      <div class="AknFullPage-subTitle">Assets</div>
+      <div class="AknFullPage-title">
+        <%- __('pimee_product_asset.mass_upload.menu') %>
+      </div>
     </div>
 
-
     <div class="AknDefault-mainContent">
-      <header class="AknTitleContainer navigation">
-        <div class="AknTitleContainer-imageContainer"></div>
-        <div class="AknTitleContainer-mainContainer">
-          <!-- <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div> -->
-          <div class="AknTitleContainer-title" data-drop-zone="title">
-            <%- __('pimee_product_asset.mass_upload.menu') %>
-          </div>
-          <div data-drop-zone="meta"></div>
-        </div>
-
-      </header>
-
       <div class="row-fluid buffer-top">
         <div class="AknFormContainer AknFormContainer--withPadding AknFormContainer--centered control-group upload-zone-container">
           <div class="AknMediaField controls">
@@ -79,6 +68,5 @@
         </table>
       </div>
     </div>
-
   </div>
 </div>

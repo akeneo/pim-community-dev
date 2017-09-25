@@ -64,12 +64,7 @@ define(
             render: function () {
 
               const modal = new Backbone.BootstrapModal({
-                  allowCancel: true,
-                  // okText: __('pim_enrich.entity.product.meta.groups.modal.view_group'),
-                  // title: __(
-                  //     'pim_enrich.entity.product.meta.groups.modal.title',
-                  //     { group: i18n.getLabel(group.labels, UserContext.get('catalogLocale'), group.code) }
-                  // ),
+                  allowCancel: false,
                   content: this.pageTemplate({
                     __,
                     subTitleLabel: 'Assets',
@@ -78,7 +73,7 @@ define(
               });
 
                 modal.open();
-                modal.$el.addClass('modal--fullPage');
+                modal.$el.addClass('modal--fullPage modal--topButton');
 
                 modal.on('cancel', () => {
                     deferred.reject();
