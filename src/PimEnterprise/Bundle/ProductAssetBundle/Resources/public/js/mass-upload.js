@@ -11,7 +11,8 @@ define(
         'pimee/template/asset/mass-upload',
         'pimee/template/asset/mass-upload-row',
         'pim/form-builder',
-        'pim/common/breadcrumbs'
+        'pim/common/breadcrumbs',
+        'pim/form'
     ],
     function (
         $,
@@ -24,7 +25,8 @@ define(
         pageTemplate,
         rowTemplate,
         formBuilder,
-        Breadcrumbs
+        Breadcrumbs,
+        BaseForm
     ) {
         /**
          * Override to be able to use template root different other than 'div'
@@ -45,7 +47,7 @@ define(
         var $startButton;
         var $cancelButton;
 
-        return Backbone.View.extend({
+        return BaseForm.extend({
             myDropzone: null,
             pageTemplate: _.template(pageTemplate),
             rowTemplate: _.template(rowTemplate),
@@ -60,22 +62,28 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.html(this.pageTemplate({__: __}));
 
-                var breadcrumbs = new Breadcrumbs({
-                    config: {
-                        tab: 'pim-menu-settings',
-                        item: 'pim-menu-collect-upload-asset'
-                    }
-                });
-                breadcrumbs.configure().then(function () {
-                    breadcrumbs.render();
-                    $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
-                });
+              const modal = new Backbone.BootstrapModal({
+                  allowCancel: true,
+                  // okText: __('pim_enrich.entity.product.meta.groups.modal.view_group'),
+                  // title: __(
+                  //     'pim_enrich.entity.product.meta.groups.modal.title',
+                  //     { group: i18n.getLabel(group.labels, UserContext.get('catalogLocale'), group.code) }
+                  // ),
+                  content: this.pageTemplate({
+                    __,
+                    subTitleLabel: 'Assets',
+                    titleLabel: 'Upload assets'
+                  })
+              });
 
-                formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
-                    form.setElement('.user-menu').render();
-                }.bind(this));
+                modal.open();
+                modal.$el.addClass('modal--fullPage');
+
+                modal.on('cancel', () => {
+                    deferred.reject();
+                    modal.remove();
+                });
 
                 $navbarButtons = $('.AknTitleContainer-rightButtons');
                 $importButton = $navbarButtons.find('.import');
