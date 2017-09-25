@@ -11,11 +11,18 @@ class UpdateProductDraftIntegration extends AbstractProductTestCase
     {
         parent::setUp();
 
-        $this->createProduct('product_draft_for_redactor', [
+        $product = $this->createProduct('product_draft_for_redactor', [
             'categories' => ['categoryA'],
             'values'     => [
                 'a_text' => [
                     ['data' => 'a text', 'locale' => null, 'scope' => null]
+                ]
+            ]
+        ]);
+        $this->createProductDraft('mary', $product, [
+            'values' => [
+                'a_simple_select' => [
+                    ['data' => 'optionA', 'locale' => null, 'scope' => null]
                 ]
             ]
         ]);
@@ -72,10 +79,16 @@ JSON;
     "values":{
         "a_text":[
             {"locale":null,"scope":null,"data":"the text"}
+        ],
+        "a_simple_select": [
+            {"data":"optionA", "locale":null, "scope":null}
         ]
     },
     "review_statuses":{
         "a_text":[
+            {"locale":null,"scope":null,"status":"draft"}
+        ],
+        "a_simple_select":[
             {"locale":null,"scope":null,"status":"draft"}
         ]
     }

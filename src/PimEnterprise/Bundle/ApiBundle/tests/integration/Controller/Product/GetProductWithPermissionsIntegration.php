@@ -93,7 +93,7 @@ JSON;
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
         $client->request('GET', 'api/rest/v1/products/product_not_viewable_by_redactor');
-        $this->assertSame(403, $client->getResponse()->getStatusCode());
+        $this->assertSame(404, $client->getResponse()->getStatusCode());
     }
 
     /**
