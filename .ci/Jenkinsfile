@@ -44,7 +44,7 @@ stage("Build") {
             sh "mkdir -m 777 vendor"
 
             container("php") {
-                withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'githubUsername', usernameVariable: 'githubToken')]) {
+                withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'githubToken', usernameVariable: 'githubUsername')]) {
                     sh "composer config -g github-oauth.github.com $githubToken"
                 }
 
