@@ -41,7 +41,6 @@ define([
             template: _.template(template),
             templateProduct: _.template(templateProduct),
             templateProductModel: _.template(templateProductModel),
-            className: 'AknVariantNavigationBar',
             dropdowns: {},
             queryTimer: null,
             events: {

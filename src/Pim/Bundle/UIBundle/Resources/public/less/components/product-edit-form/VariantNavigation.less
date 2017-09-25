@@ -1,26 +1,15 @@
 @import '../../base/variables';
 
-.AknVariantNavigationContainer {
-  top: 122px;
-  position: sticky;
-  z-index: 5;
-}
-
-.AknVariantNavigationBar {
-  background-color: #ffffff;
-  margin-top: -40px;
-  padding-top: 40px;
-  padding-bottom: 10px;
+.AknVariantNavigationContainer:not(:empty) {
+  order: -10;
+  width: 100%;
 }
 
 .AknVariantNavigation {
   border: 1px solid @AknBorderColor;
   border-radius: 3px;
   height: 34px;
-  background-color: #ffffff;
-  margin-top: -40px;
-  padding-top: 40px;
-  padding-bottom: 10px;
+  margin-top: 20px;
 
   &-item {
     display: inline-block;
