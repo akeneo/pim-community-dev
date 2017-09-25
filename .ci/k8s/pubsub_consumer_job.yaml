@@ -33,6 +33,10 @@ spec:
             failureThreshold: 30
             tcpSocket:
               port: 27017
+          resources:
+            limit:
+              cpu: "100m"
+              memory: "300Mi"
         - name: mysql
           image: mysql:5.6
           env:
@@ -51,6 +55,10 @@ spec:
             initialDelaySeconds: 30
             tcpSocket:
               port: 3306
+          resources:
+            limit:
+              cpu: "200m"
+              memory: "400Mi"
         - name: elasticsearch
           image: eu.gcr.io/akeneo-ci/elasticsearch:5.5
           imagePullPolicy: Always
@@ -67,6 +75,10 @@ spec:
             successThreshold: 2
             initialDelaySeconds: 5
             failureThreshold: 30
+          resources:
+            limit:
+              cpu: "100m"
+              memory: "1000Mi"
         - name: php
           image: eu.gcr.io/akeneo-ci/httpd-php:5.6
           workingDir: /home/jenkins/pim
@@ -78,12 +90,20 @@ spec:
             preStop:
               exec:
                 command: ["/usr/sbin/apache2ctl", "stop"]
+          resources:
+            limit:
+              cpu: "200m"
+              memory: "700Mi"
         - name: selenium
           image: eu.gcr.io/akeneo-ci/selenium:standalone-firefox-2.53.1-beryllium
           imagePullPolicy: Always
           volumeMounts:
             - mountPath: /home/jenkins
               name: pim
+          resources:
+            limit:
+              cpu: "300m"
+              memory: "1000Mi"
         - name: pubsub
           image: eu.gcr.io/akeneo-ci/gcloud:0.2
           imagePullPolicy: Always
@@ -96,6 +116,10 @@ spec:
             - { name: docker, mountPath: /var/run/docker.sock }
             - { name: pim, mountPath: /home/jenkins }
             - { name: artifacts, mountPath: /tmp/behat/screenshots }
+          resources:
+            limit:
+              cpu: "100m"
+              memory: "100Mi"
       volumes:
         - { name: pim, emptyDir: {}}
         - { name: docker, hostPath: {path: /var/run/docker.sock}}
