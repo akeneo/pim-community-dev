@@ -6,14 +6,32 @@ use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * +----------+-------------------------------+-----------------------------------+-----------------------------------------------------+
- * |          |          Categories           |             Locales               |                  Attribute groups                   |
- * +  Roles   +-------------------------------+-----------------------------------+-----------------------------------+-----------------+
- * |          |   categoryA2  |   categoryB   |   en_US   |   fr_FR   |   de_DE   | attributeGroupA | attributeGroupB | attributeGroupC |
- * +----------+-------------------------------+-----------------------------------+-----------------------------------------------------+
- * | Redactor |      View     |     -         | View,Edit |    View   |     -     |    View,Edit    |      View       |        -        |
- * | Manager  | View,Edit,Own | View,Edit,Own | View,Edit | View,Edit | View,Edit |    View,Edit    |    View,Edit    |    View,Edit    |
- * +----------+-------------------------------+-----------------------------------+-----------------------------------------------------+
+ * +----------+-----------------------------------------------+
+ * |          |                  Categories                   |
+ * +  Roles   +-----------------------------------------------+
+ * |          |   categoryA2  |   categoryA   |   categoryB   |
+ * +----------+-----------------------------------------------+
+ * | Redactor |      View     |   View,Edit   |       -       |
+ * | Manager  | View,Edit,Own | View,Edit,Own | View,Edit,Own |
+ * +----------+-----------------------------------------------+
+ *
+ * +----------+-----------------------------------+
+ * |          |             Locales               |
+ * +  Roles   +-----------------------------------+
+ * |          |   en_US   |   fr_FR   |   de_DE   |
+ * +----------+-----------------------------------+
+ * | Redactor | View,Edit |    View   |     -     |
+ * | Manager  | View,Edit | View,Edit | View,Edit |
+ * +----------+-----------------------------------+
+ *
+ * +----------+-----------------------------------------------------+
+ * |          |                  Attribute groups                   |
+ * +  Roles   +-----------------------------------+-----------------+
+ * |          | attributeGroupA | attributeGroupB | attributeGroupC |
+ * +----------+-----------------------------------------------------+
+ * | Redactor |    View,Edit    |      View       |        -        |
+ * | Manager  |    View,Edit    |    View,Edit    |    View,Edit    |
+ * +----------+-----------------------------------------------------+
  */
 class GetProductWithPermissionsIntegration extends AbstractProductTestCase
 {
@@ -94,6 +112,51 @@ JSON;
 
         $client->request('GET', 'api/rest/v1/products/product_not_viewable_by_redactor');
         $this->assertSame(404, $client->getResponse()->getStatusCode());
+    }
+
+    public function testToReturnProductEvenIfADraftExists()
+    {
+        $product = $this->createProduct('product_draft_for_redactor', [
+            'categories' => ['categoryA'],
+            'values' => [
+                'a_yes_no' => [['data' => false, 'locale' => null, 'scope' => null]]
+            ]
+        ]);
+        $this->createProductDraft('mary', $product, [
+            'values' => [
+                'a_text_area' => [['data' => 'a text area', 'locale' => null, 'scope' => null]],
+                'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]]
+            ]
+        ]);
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+
+        $client->request('GET', 'api/rest/v1/products/product_draft_for_redactor');
+
+        $expected = <<<JSON
+{
+    "identifier":"product_draft_for_redactor",
+    "family":null,
+    "parent":null,
+    "groups":[],
+    "variant_group":null,
+    "categories":["categoryA"],
+    "enabled":true,
+    "values":{
+        "a_yes_no":[
+            {"locale":null,"scope":null,"data":false}
+        ]
+    },
+    "created":"2017-09-25T20:20:20+02:00",
+    "updated":"2017-09-25T20:20:20+02:00",
+    "associations":{},
+    "metadata":{
+        "workflow_status":"draft_in_progress"
+    }
+}
+JSON;
+
+        $this->assertResponse($client->getResponse(), $expected);
     }
 
     /**
