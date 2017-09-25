@@ -15,12 +15,12 @@ datagrid:
             image:
                 label:         Image
                 data_name:     image
-                frontend_type: image
+                frontend_type: product-and-product-model-image
             label:
                 label:         Label
                 data_name:     label
                 type:          field
-                frontend_type: label
+                frontend_type: product-and-product-model-label
             family:
                 label:         Family
                 data_name:     family
