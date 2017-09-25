@@ -75,7 +75,7 @@ CSV;
         $this->assertSame($expectedCsv, $csv);
     }
 
-    public function testProductViewableByRedactorWithSimpleJobLauncher()
+    public function testProductViewableByRedactorWithQueueJobLauncher()
     {
         $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR. JobLauncher::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'export.csv';
         if (file_exists($filePath)) {
@@ -109,7 +109,8 @@ CSV;
             'filePath' => $filePath,
         ];
 
-        $jobExecution = $this->get('akeneo_batch.launcher.simple_job_launcher')->launch($jobInstance, $user, $config);
+        $jobExecution = $this->get('akeneo_batch_queue.launcher.queue_job_launcher')->launch($jobInstance, $user, $config);
+        $this->jobLauncher->launchConsumerOnce();
         $this->jobLauncher->waitCompleteJobExecution($jobExecution);
 
         $csv = file_get_contents($filePath);

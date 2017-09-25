@@ -157,6 +157,7 @@ CSV;
         ];
 
         $jobExecution = $this->get('pim_connector.launcher.authenticated_job_launcher')->launch($jobInstance, $user, $config);
+        $this->jobLauncher->launchConsumerOnce();
         $this->jobLauncher->waitCompleteJobExecution($jobExecution);
 
         $csv = file_get_contents($filePath);

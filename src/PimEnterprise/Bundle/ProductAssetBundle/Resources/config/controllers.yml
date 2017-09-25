@@ -43,7 +43,7 @@ services:
             - '@pimee_product_asset.upload_checker'
             - '@pimee_product_asset.upload_importer'
             - '@security.token_storage'
-            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
             - '%tmp_storage_dir%'
 
