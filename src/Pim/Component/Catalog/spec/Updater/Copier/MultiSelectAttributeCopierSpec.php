@@ -8,18 +8,23 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValue;
+use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class MultiSelectAttributeCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilderInterface $builder, AttributeValidatorHelper $attrValidatorHelper)
-    {
+    function let(
+        ProductBuilderInterface $builder,
+        AttributeValidatorHelper $attrValidatorHelper,
+        AttributeOptionRepositoryInterface $attributeOptionRepository
+    ) {
         $this->beConstructedWith(
             $builder,
             $attrValidatorHelper,
             ['pim_catalog_multiselect'],
-            ['pim_catalog_multiselect']
+            ['pim_catalog_multiselect'],
+            $attributeOptionRepository
         );
     }
 
@@ -59,6 +64,7 @@ class MultiSelectAttributeCopierSpec extends ObjectBehavior
     function it_copies_multi_select_value_to_a_product_value(
         $builder,
         $attrValidatorHelper,
+        $attributeOptionRepository,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
@@ -67,7 +73,8 @@ class MultiSelectAttributeCopierSpec extends ObjectBehavior
         ProductInterface $product4,
         ProductValue $fromProductValue,
         ProductValue $toProductValue,
-        AttributeOptionInterface $attributeOption
+        AttributeOptionInterface $fromAttributeOption,
+        AttributeOptionInterface $toAttributeOption
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -81,11 +88,16 @@ class MultiSelectAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromProductValue->getOptions()->willReturn([$attributeOption])->shouldBeCalled(3);
+        $fromProductValue->getOptions()->willReturn([$fromAttributeOption])->shouldBeCalled(3);
 
-        $toProductValue->getOptions()->willReturn([$attributeOption]);
-        $toProductValue->removeOption($attributeOption)->shouldBeCalled();
-        $toProductValue->addOption($attributeOption)->shouldBeCalled();
+        $toProductValue->getOptions()->willReturn([$toAttributeOption]);
+        $toProductValue->removeOption($toAttributeOption)->shouldBeCalled();
+
+        $fromAttributeOption->getCode()->willReturn('attributeOption');
+        $attributeOptionRepository
+            ->findOneByIdentifier('toAttributeCode.attributeOption')
+            ->willReturn($toAttributeOption);
+        $toProductValue->addOption($toAttributeOption)->shouldBeCalledTimes(3);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product1->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
@@ -99,7 +111,10 @@ class MultiSelectAttributeCopierSpec extends ObjectBehavior
         $product4->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product4->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
 
-        $builder->addOrReplaceProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
+        $builder
+            ->addOrReplaceProductValue($product3, $toAttribute, $toLocale, $toScope)
+            ->shouldBeCalledTimes(1)
+            ->willReturn($toProductValue);
 
         $products = [$product1, $product2, $product3, $product4];
         foreach ($products as $product) {
