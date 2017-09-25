@@ -248,19 +248,17 @@ def withBuildNode(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
 
-    withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
-        podTemplate(label: "build-" + uuid, containers: [
-            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceLimitCpu: '100m', resourceRequestMemory: '100Mi', resourceLimitMemory: '200Mi'),
-            containerTemplate(name: "php", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "akeneo/fpm:php-7.1", envVars: [envVar(key: "COMPOSER_HOME", value: "/shared/.composer"), envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi'),
-            containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi')
-        ], volumes: [
-            nfsVolume(mountPath: '/shared', serverAddress: "${env.NFS_IP}", serverPath: '/exports', readOnly: false),
-            hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
-        ]) {
-            node("build-" + uuid) {
-                dir('/home/jenkins/pim') {
-                    body()
-                }
+    podTemplate(label: "build-" + uuid, containers: [
+        containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceLimitCpu: '100m', resourceRequestMemory: '100Mi', resourceLimitMemory: '200Mi'),
+        containerTemplate(name: "php", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "akeneo/fpm:php-7.1", envVars: [envVar(key: "COMPOSER_HOME", value: "/shared/.composer")], resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi'),
+        containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi')
+    ], volumes: [
+        nfsVolume(mountPath: '/shared', serverAddress: "${env.NFS_IP}", serverPath: '/exports', readOnly: false),
+        hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
+    ]) {
+        node("build-" + uuid) {
+            dir('/home/jenkins/pim') {
+                body()
             }
         }
     }
