@@ -90,7 +90,7 @@ jobs:
             filePath: families.csv
 
     fixtures_family_variant_csv:
-        order: 61
+        order: 60
         connector: Data fixtures
         alias:     fixtures_family_variant_csv
         label:     Family variants data fixtures
@@ -135,7 +135,7 @@ jobs:
             filePath: users.csv
 
     fixtures_product_model_csv:
-        order: 81
+        order: 80
         connector: Data fixtures
         alias:     fixtures_product_model_csv
         label:     Product model data fixtures
@@ -174,7 +174,7 @@ jobs:
             dateFormat: yyyy-MM-dd
 
     fixtures_job_yml:
-        order: 80
+        order: 100
         connector: Data fixtures
         alias:     fixtures_job_yml
         label:     Jobs data fixtures
