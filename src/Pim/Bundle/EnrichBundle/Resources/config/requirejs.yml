@@ -436,6 +436,8 @@ config:
                     aclResourceId: pim_enrich_api_connection_manage
                     config:
                         entity: api-connection
+                oro_user_security_logout:
+                    module: pim/controller/logout
         pim/attribute-edit-form/type-specific-form-registry:
             formNames:
                 pim_catalog_date:
@@ -513,6 +515,7 @@ config:
         pim/controller/attribute/edit:         pimenrich/js/controller/attribute/edit
         pim/controller/attribute/create:       pimenrich/js/controller/attribute/create
         pim/controller/mass-edit:              pimenrich/js/controller/mass-edit
+        pim/controller/logout:                 pimenrich/js/controller/logout
 
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
