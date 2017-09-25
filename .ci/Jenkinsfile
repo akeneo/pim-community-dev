@@ -16,7 +16,8 @@ stage("Build") {
         "pim-ce": {withBuildNode({
             checkout scm
             container("php") {
-                sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --ignore-platform-reqs --no-suggest"
+                sh "composer help"
+                sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --ignore-platform-reqs --no-suggest -v"
                 sh "bin/console --ansi assets:install"
                 sh "bin/console --ansi pim:installer:dump-require-paths"
             }
@@ -44,7 +45,8 @@ stage("Build") {
             sh "mkdir -m 777 vendor"
 
             container("php") {
-                sh "composer require --dev --no-update liuggio/fastest:~1.4"
+                sh "composer help -v"
+                sh "composer require --dev --no-update liuggio/fastest:~1.4 -v"
                 sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-scripts --ignore-platform-reqs --no-suggest"
 
                 // Required to avoid permission error when "deleteDir()"
@@ -248,17 +250,19 @@ def withBuildNode(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
 
-    podTemplate(label: "build-" + uuid, containers: [
-        containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceLimitCpu: '100m', resourceRequestMemory: '100Mi', resourceLimitMemory: '200Mi'),
-        containerTemplate(name: "php", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "akeneo/fpm:php-7.1", envVars: [envVar(key: "COMPOSER_HOME", value: "/shared/.composer")], resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi'),
-        containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi')
-    ], volumes: [
-        nfsVolume(mountPath: '/shared', serverAddress: "${env.NFS_IP}", serverPath: '/exports', readOnly: false),
-        hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
-    ]) {
-        node("build-" + uuid) {
-            dir('/home/jenkins/pim') {
-                body()
+    withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
+        podTemplate(label: "build-" + uuid, containers: [
+            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceLimitCpu: '100m', resourceRequestMemory: '100Mi', resourceLimitMemory: '200Mi'),
+            containerTemplate(name: "php", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "akeneo/fpm:php-7.1", envVars: [envVar(key: "COMPOSER_HOME", value: "/shared/.composer"), envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi'),
+            containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi')
+        ], volumes: [
+            nfsVolume(mountPath: '/shared', serverAddress: "${env.NFS_IP}", serverPath: '/exports', readOnly: false),
+            hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
+        ]) {
+            node("build-" + uuid) {
+                dir('/home/jenkins/pim') {
+                    body()
+                }
             }
         }
     }
