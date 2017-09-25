@@ -6,7 +6,6 @@ parameters:
     pim_catalog.validator.constraint.valid_metric.class:                   Pim\Component\Catalog\Validator\Constraints\ValidMetricValidator
     pim_catalog.validator.constraint.currency.class:                       Pim\Component\Catalog\Validator\Constraints\CurrencyValidator
     pim_catalog.validator.constraint.single_identifier.class:              Pim\Component\Catalog\Validator\Constraints\SingleIdentifierAttributeValidator
-    pim_catalog.validator.constraint.unique_variant_axis.class:            Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxisValidator
     pim_catalog.validator.constraint.unique_variant_group.class:           Pim\Component\Catalog\Validator\Constraints\UniqueVariantGroupValidator
     pim_catalog.validator.constraint.unique_value.class:                   Pim\Component\Catalog\Validator\Constraints\UniqueValueValidator
     pim_catalog.validator.constraint.immutable.class:                      Pim\Component\Catalog\Validator\Constraints\ImmutableValidator
