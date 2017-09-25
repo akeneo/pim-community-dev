@@ -31,4 +31,5 @@ Feature: Execute a job
     When I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    Then I should see the text "Download read files"
+    Then I should see the text ""
+    Then I press "Download read files" on the "Download generated files" dropdown button

@@ -26,8 +26,6 @@ Feature: Mass edit jobs
     When I go on the last executed job resume of "update_product_value"
     Then I should see the text "COMPLETED"
     And I should see the text "Execution details - Mass update products [update_product_value]"
+    And I should not see the text "Download generated files"
     And I should see the secondary action "Download log"
-    And I should not see the text "Download read files"
-    And I should not see the text "Download generated file"
-    And I should not see the text "Download generated archive"
-    And I should not see the text "Show profile"
+

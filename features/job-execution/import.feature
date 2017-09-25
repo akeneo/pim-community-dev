@@ -23,7 +23,7 @@ Feature: Import profiles
     And I should see the text "Execution details - CSV footwear product import [csv_footwear_product_import]"
     And I should see the secondary action "Download invalid data"
     And I should see the text "Download read files"
-    And I should see the text "Download invalid data"
+    And I press "Download invalid data" on the "Download generated files" dropdown button
     And I should not see the secondary action "xlsx_footwear_association_type_export_1.xlsx"
     And I should not see the secondary action "xlsx_footwear_association_type_export_2.xlsx"
     And I should not see the secondary action "Download generated archive"
@@ -44,7 +44,7 @@ Feature: Import profiles
     And I should see the text "Execution details - CSV footwear product import [csv_footwear_product_import]"
     And I should not see the secondary action "Download log"
     And I should see the text "Download read files"
-    And I should see the text "Download invalid data"
+    And I press "Download invalid data" on the "Download generated files" dropdown button
     And I should not see the secondary action "xlsx_footwear_association_type_export_1.xlsx"
     And I should not see the secondary action "xlsx_footwear_association_type_export_2.xlsx"
     And I should not see the secondary action "Download generated archive"
