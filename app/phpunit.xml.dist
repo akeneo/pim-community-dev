@@ -61,6 +61,7 @@
         <testsuite name="PIM_Catalog_Integration_Test">
             <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/Validation</directory>
             <directory suffix="Integration.php">../src/Pim/Component/Catalog/tests/integration</directory>
+            <directory suffix="Integration.php">../src/Pim/Bundle/VersioningBundle/tests/integration</directory>
         </testsuite>
 
         <testsuite name="PIM_Catalog_Completeness_Integration_Test">
