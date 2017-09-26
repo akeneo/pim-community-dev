@@ -26,7 +26,7 @@ if ($env == null) {
 
 require_once __DIR__.'/../app/AppKernel.php';
 
-$kernel = new AppKernel($env, false);
+$kernel = new AppKernel($env, true);
 $kernel->loadClassCache();
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
