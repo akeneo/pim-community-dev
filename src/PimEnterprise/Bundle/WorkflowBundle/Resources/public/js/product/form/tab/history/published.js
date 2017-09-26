@@ -16,7 +16,7 @@ define(
                         var version = _.findWhere(versions, {published: true});
                         if (version) {
                             var $version = this.getParent().$el.find(
-                                '.product-version[data-version-id="' + version.id + '"] .actions'
+                                '.entity-version[data-version-id="' + version.id + '"] .actions'
                             );
 
                             if ($version.children('.label-published').length === 0) {
