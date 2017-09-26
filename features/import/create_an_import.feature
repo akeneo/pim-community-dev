@@ -22,10 +22,9 @@ Feature: Create an import
     And the grid should contain 2 element
     And I should see import profile Products import
 
-  @skip
   Scenario: Fail to create a job import
     Given I create a new import
-    When I fill in the following information in the popin:
+    When I fill in the following information:
       | Code  | PRODUCT_IMPORT  |
       | Label | Products import |
     And I press the "Save" button

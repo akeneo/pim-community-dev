@@ -51,11 +51,13 @@ class WebUser extends PimContext
     {
         $entity = implode('', array_map('ucfirst', explode(' ', $entity)));
         $this->spin(function () use ($entity) {
+            if (null !== $this->getCurrentPage()->find('css', '.modal, .ui-dialog')) {
+                return true;
+            }
+
             $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
 
-            sleep(1);
-
-            return null !== $this->getCurrentPage()->find('css', '.modal, .ui-dialog');
+            return false;
         }, sprintf('Cannot create a new %s: cannot click on the creation link', $entity));
 
         $this->getNavigationContext()->currentPage = sprintf('%s creation', $entity);
