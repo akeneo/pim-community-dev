@@ -8,7 +8,8 @@
     "webpack-dev": "webpack --config webpack.config.js",
     "webpack-watch": "webpack --progress --config webpack.config.js --watch",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
-    "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix"
+    "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix",
+    "styles": "node ./node_modules/.bin/lessc src/Pim/Bundle/UIBundle/Resources/public/less/main.less web/css/pim.css --include-path=. --source-map=web/css/pim.map --relative-urls"
   },
   "repository": {
     "type": "git",
@@ -41,6 +42,8 @@
     "html-loader": "0.5.1",
     "imports-loader": "0.7.1",
     "jquery": "1.11.0",
+    "less": "^2.7.2",
+    "less-watch-compiler": "^1.8.0",
     "loader-utils": "1.1.0",
     "lodash": "4.17.4",
     "merge-objects": "1.0.5",
