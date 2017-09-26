@@ -160,7 +160,6 @@ define(
                     if ('base_product' === localeEvent.context) {
                         this.setLocale(localeEvent.localeCode, {silent: true});
                         this.clearFillFieldProvider();
-                        this.setLocale(localeEvent.localeCode);
                     }
                 });
 
