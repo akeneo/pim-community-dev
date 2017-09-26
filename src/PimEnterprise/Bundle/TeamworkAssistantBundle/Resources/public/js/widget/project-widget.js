@@ -16,7 +16,7 @@ define(
         'pim/user-context',
         'pim/fetcher-registry',
         'oro/loading-mask',
-        'routing'
+        'pim/router'
     ],
     function (
         $,
@@ -28,11 +28,17 @@ define(
         UserContext,
         FetcherRegistry,
         LoadingMask,
-        Routing
+        Router
     ) {
         return BaseForm.extend({
             template: _.template(template),
             templateEmpty: _.template(templateEmpty),
+
+            events: {
+                'click .create-link': function () {
+                    Router.redirectToRoute('pim_enrich_product_index');
+                }
+            },
 
             /**
              * {@inheritDoc}
@@ -77,8 +83,7 @@ define(
                         } else {
                             this.$el.html(this.templateEmpty({
                                 message: __('teamwork_assistant.widget.no_project'),
-                                messageCreate: __('teamwork_assistant.widget.no_project_create'),
-                                url: Routing.generate('pim_enrich_product_index')
+                                messageCreate: __('teamwork_assistant.widget.no_project_create')
                             }));
                         }
 

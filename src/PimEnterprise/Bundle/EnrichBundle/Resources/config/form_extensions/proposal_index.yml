@@ -52,5 +52,5 @@ extensions:
         parent: pim-proposal-index
         targetZone: breadcrumbs
         config:
-            tab: pim-menu-settings
-            item: pim-menu-settings-proposal
+            tab: pim-menu-activity
+            item: pim-menu-activity-proposal

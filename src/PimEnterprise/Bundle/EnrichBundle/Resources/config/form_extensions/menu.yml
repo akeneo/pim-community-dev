@@ -27,10 +27,10 @@ extensions:
             title: pim_menu.item.rule
             to: pimee_catalog_rule_rule_index
 
-    pim-menu-settings-proposal:
+    pim-menu-activity-proposal:
         module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        position: 140
+        parent: pim-menu-activity-navigation-block
+        position: 105
         config:
             title: pim_menu.item.proposal
             to: pimee_workflow_proposal_index
