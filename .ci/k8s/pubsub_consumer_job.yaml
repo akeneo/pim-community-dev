@@ -55,10 +55,6 @@ spec:
             initialDelaySeconds: 30
             tcpSocket:
               port: 3306
-          resources:
-            limits:
-              cpu: "200m"
-              memory: "400Mi"
         - name: elasticsearch
           image: eu.gcr.io/akeneo-ci/elasticsearch:5.5
           imagePullPolicy: Always
