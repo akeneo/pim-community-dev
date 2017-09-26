@@ -48,6 +48,7 @@ npm-debug.log
 !/docker/akeneo-behat.conf
 !/docker/httpd.conf
 docker-compose.yml
+.web-server-pid
 
 yarn.lock
 package-lock.json
