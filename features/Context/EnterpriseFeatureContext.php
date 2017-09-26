@@ -241,13 +241,13 @@ class EnterpriseFeatureContext extends FeatureContext
 
         $this->spin(function () use ($version) {
             return $this->getSession()->getPage()
-                ->find('css', sprintf('.product-version[data-version="%s"] .restore', $version));
+                ->find('css', sprintf('.entity-version[data-version="%s"] .restore', $version));
         }, sprintf('Cannot find product version "%s"', $version))->click();
 
         $this->getSubcontext('navigation')->getCurrentPage()->confirmDialog();
 
         $this->spin(function () use ($total) {
-            return $total === count($this->getSession()->getPage()->findAll('css', '.product-version[data-version]'));
+            return $total === count($this->getSession()->getPage()->findAll('css', '.entity-version[data-version]'));
         }, 'Revert failed');
     }
 

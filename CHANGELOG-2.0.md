@@ -1,4 +1,4 @@
-# 2.0
+# 2.0.0-ALPHA1 (2017-09-25)
 
 ## Remove MongoDB product storage
 
