@@ -89,7 +89,7 @@ spec:
           resources:
             limits:
               cpu: "200m"
-              memory: "700Mi"
+              memory: "800Mi"
         - name: selenium
           image: eu.gcr.io/akeneo-ci/selenium:standalone-firefox-2.53.1-beryllium
           imagePullPolicy: Always
@@ -98,7 +98,6 @@ spec:
               name: pim
           resources:
             limits:
-              cpu: "300m"
               memory: "1000Mi"
         - name: pubsub
           image: eu.gcr.io/akeneo-ci/gcloud:0.2
