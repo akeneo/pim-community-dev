@@ -1,7 +1,7 @@
 /**
- * Complete variant product cell
+ * Displays the number of complete variant product model for a product model, eg: 2 / 10.
  *
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(['oro/datagrid/string-cell', 'oro/translator'],
@@ -18,27 +18,27 @@ define(['oro/datagrid/string-cell', 'oro/translator'],
              * Render the completeness.
              */
             render: function () {
-                if ('product' === this.model.get('document_type')) {
+                if ('product_model' !== this.model.get('document_type')) {
                     this.$el.empty().html(__('not_available'));
 
                     return this;
                 }
 
-                var data = this.formatter.fromRaw(this.model.get(this.column.get('name')));
-                var completeness = '-';
+                const data = this.formatter.fromRaw(this.model.get(this.column.get('name')));
+                let completeness = '-';
 
                 if (null !== data && '' !== data) {
-                    var ratio = data.complete / data.total;
-                    var cssClass = '';
+                    let ratio = data.complete / data.total;
+                    let cssClass = '';
                     if (1 === ratio) {
-                        cssClass+= 'success';
+                        cssClass += 'success';
                     } else if (0 === ratio || 0 === data.total) {
-                        cssClass+= 'important';
+                        cssClass += 'important';
                     } else {
-                        cssClass+= 'warning';
+                        cssClass += 'warning';
                     }
 
-                    completeness = '<span class="AknBadge AknBadge--'+ cssClass +'">'+ data.complete+' / '+data.total +'</span>';
+                    completeness = '<span class="AknBadge AknBadge--'+cssClass+'">'+data.complete+' / '+data.total +'</span>';
                 }
 
                 this.$el.empty().html(completeness);

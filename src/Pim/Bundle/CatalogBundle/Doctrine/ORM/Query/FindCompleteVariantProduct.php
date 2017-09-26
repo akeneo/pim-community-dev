@@ -49,7 +49,7 @@ class FindCompleteVariantProduct implements FindVariantProductCompletenessInterf
     ): CompleteVariantProduct {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select(
-            'channel.code as ch, locale.code as lo, variant_product.identifier as pr, CASE WHEN (completeness.ratio = 100) THEN 1 ELSE 0 END as co'
+            'channel.code as channel_code, locale.code as locale_code, variant_product.identifier as product_identifier, CASE WHEN (completeness.ratio = 100) THEN 1 ELSE 0 END as complete'
         );
 
         if (2 === $productModel->getFamilyVariant()->getNumberOfLevel() && $productModel->isRootProductModel()){

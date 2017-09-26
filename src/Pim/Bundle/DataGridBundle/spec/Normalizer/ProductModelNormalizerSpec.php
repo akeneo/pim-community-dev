@@ -73,7 +73,10 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ];
 
         $findVariantProductCompletenessQuery->__invoke($productModel, 'ecommerce', 'en_US')->willReturn($completeness);
-        $completeness->value('ecommerce', 'en_US')->willReturn('3/12');
+        $completeness->value('ecommerce', 'en_US')->willReturn([
+            'complete' => 3,
+            'total' => 12
+        ]);
 
         $productModel->getId()->willReturn(78);
         $filter->filterCollection($values, 'pim.transform.product_value.structured', $context)
@@ -145,7 +148,10 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'document_type' => 'product_model',
             'technical_id' => 78,
             'search_id' => 'product_model_78',
-            'complete_variant_group' => '3/12',
+            'complete_variant_product' => [
+                'complete' => 3,
+                'total' => 12
+            ],
         ];
 
         $this->normalize($productModel, 'datagrid',
@@ -173,7 +179,10 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ];
 
         $findVariantProductCompletenessQuery->__invoke($productModel, 'ecommerce', 'en_US')->willReturn($completeness);
-        $completeness->value('ecommerce', 'en_US')->willReturn('3/12');
+        $completeness->value('ecommerce', 'en_US')->willReturn([
+            'complete' => 3,
+            'total' => 12
+        ]);
 
         $filter->filterCollection($values, 'pim.transform.product_value.structured', $context)
             ->willReturn($values);
@@ -245,7 +254,10 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'document_type' => 'product_model',
             'technical_id' => 78,
             'search_id' => 'product_model_78',
-            'complete_variant_group' => '3/12',
+            'complete_variant_product' => [
+                'complete' => 3,
+                'total' => 12
+            ],
         ];
 
         $this->normalize($productModel, 'datagrid', ['locales' => ['en_US'], 'channels' => ['ecommerce']])

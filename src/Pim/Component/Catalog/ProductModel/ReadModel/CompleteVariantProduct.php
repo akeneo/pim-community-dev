@@ -24,7 +24,7 @@ class CompleteVariantProduct
     }
 
     /**
-     * Return the number of variant product
+     * Count the number of complete variant product and the total number of variant product for all channels and locales
      *
      * @return array
      */
@@ -32,13 +32,13 @@ class CompleteVariantProduct
     {
         $completenesses = [];
         $completenesses['completenesses'] =  $this->parsedFlatCompletenesses();
-        $completenesses['total'] = $this->numberOfProduct();
+        $completenesses['total'] = $this->numberOfProducts();
 
         return $completenesses;
     }
 
     /**
-     * Return the number of variant product depending on the channel and the locale
+     * Count the number of complete variant product and the total number of variant product depending on a channel and a locale
      *
      * @param string $channel
      * @param string $locale
@@ -52,13 +52,13 @@ class CompleteVariantProduct
         if (!isset($completenesses[$channel][$locale])) {
             return [
                 'complete' => 0,
-                'total' => $this->numberOfProduct()
+                'total' => $this->numberOfProducts()
             ];
         }
 
         return [
             'complete' => $completenesses[$channel][$locale],
-            'total' => $this->numberOfProduct()
+            'total' => $this->numberOfProducts()
         ];
     }
 
@@ -67,11 +67,11 @@ class CompleteVariantProduct
      *
      * @return int
      */
-    private function numberOfProduct(): int
+    private function numberOfProducts(): int
     {
         return count(
             array_unique(
-                array_column($this->completenesses, 'pr')
+                array_column($this->completenesses, 'product_identifier')
             )
         );
     }
@@ -79,9 +79,12 @@ class CompleteVariantProduct
     /**
      * Return the structured variant product completenesses
      *
-     * channel
-     *      locale: number of product
-     *      locale: number of product
+     * [
+     *      ecommerce => [
+     *          en_US => 1
+     *          fr_FR => 2
+     *      ]
+     * ]
      *
      * @return array
      */
@@ -89,13 +92,13 @@ class CompleteVariantProduct
     {
         $completenesses = [];
         foreach ($this->completenesses as $completeness) {
-            $locale = $completeness['lo'];
-            $channel = $completeness['ch'];
+            $locale = $completeness['locale_code'];
+            $channel = $completeness['channel_code'];
             if (!isset($completenesses[$channel][$locale])) {
                 $completenesses[$channel][$locale] = 0;
             }
 
-            $completenesses[$channel][$locale] = $completenesses[$channel][$locale] + $completeness['co'];
+            $completenesses[$channel][$locale] = $completenesses[$channel][$locale] + $completeness['complete'];
         }
 
         return $completenesses;

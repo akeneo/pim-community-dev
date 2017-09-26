@@ -1,7 +1,7 @@
 /**
- * Complete variant product extension
+ * On a Product Model Edit Form, this module displays number of product variant in the subtree of this Product Model, eg: 2 / 10.
  *
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
@@ -47,7 +47,7 @@ define(
                     this.template({
                         complete: completeProducts,
                         total: totalProducts,
-                        color: this.badgeColor(completeProducts, totalProducts),
+                        color: this.badgeCssClass(completeProducts, totalProducts),
                         label: this.badgeLabel(completeProducts)
                     })
                 );
@@ -61,7 +61,7 @@ define(
              *
              * @returns {string}
              */
-            badgeColor: function (completeProducts, totalProducts) {
+            badgeCssClass: function (completeProducts, totalProducts) {
                 const ratio = completeProducts / totalProducts;
                 let color = 'warning';
 
