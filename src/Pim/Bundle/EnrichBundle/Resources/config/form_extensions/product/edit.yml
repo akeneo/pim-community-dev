@@ -141,6 +141,12 @@ extensions:
         targetZone: meta
         position: 70
 
+    pim-product-edit-form-family-variant:
+        module: pim/product-edit-form/meta/family-variant
+        parent: pim-product-edit-form-meta
+        targetZone: meta
+        position: 75
+
     pim-product-edit-form-status-switcher:
         module: pim/product-edit-form/meta/status-switcher
         parent: pim-product-edit-form-meta
@@ -254,6 +260,18 @@ extensions:
         parent: pim-product-edit-form-attributes
         targetZone: header
         position: 100
+
+    pim-product-edit-form-read-only-parent-attributes:
+        module: pim/product-edit-form/attributes/read-only-parent-attributes
+        parent: pim-product-edit-form-attributes
+        targetZone: self
+        position: 100
+
+    pim-product-edit-form-read-only-variant-axes:
+        module: pim/product-edit-form/attributes/variant-axes
+        parent: pim-product-edit-form-attributes
+        targetZone: self
+        position: 110
 
     pim-product-edit-form-locale-specific:
         module: pim/product-edit-form/attributes/locale-specific
