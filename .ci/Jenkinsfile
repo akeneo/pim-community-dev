@@ -228,11 +228,10 @@ stage("Test") {
                         messagesCE.add([
                             [container: "php", script: "cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                             [container: "php", script: "/usr/sbin/apache2ctl graceful"],
-                            [container: "php", script: "./app/console -e=behat ca:c"],
-                            [container: "php", script: "./app/console --env=behat --quiet pim:install --force"],
+                            [container: "php", script: "./app/console --env=behat ca:c"],
+                            [container: "php", script: "./app/console --env=behat pim:install --force --clean"],
                             [container: "php", script: "./app/console --env=behat oro:translation:dump en_US"],
                             [container: "php", script: "./app/console --env=behat oro:translation:dump fr_FR"],
-                            [container: "php", script: "./app/console --env=behat oro:translation:dump de_DE"],
 
                             [container: "php", script: "touch app/logs/behat.log"],
                             [container: "php", script: "chmod 777 -R app/cache app/logs/ app/archive app/file_storage"],
@@ -386,7 +385,7 @@ def withPhp(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "php-" + uuid, containers: [
-        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/httpd-php:5.6")
+        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/httpd-php:5.6",resourceRequestCpu: '1000m',resourceLimitCpu: '1000m', resourceRequestMemory: '1000Mi', resourceLimitMemory: '1000Mi')
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ]) {
@@ -402,7 +401,7 @@ def withNode(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "node-" + uuid, containers: [
-        containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8")
+        containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8",resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi')
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ]) {
@@ -418,7 +417,7 @@ def withGrunt(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "grunt-" + uuid, containers: [
-        containerTemplate(name: "grunt", ttyEnabled: true, command: 'cat', image: "digitallyseamless/nodejs-bower-grunt")
+        containerTemplate(name: "grunt", ttyEnabled: true, command: 'cat', image: "digitallyseamless/nodejs-bower-grunt",resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi')
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ]) {
