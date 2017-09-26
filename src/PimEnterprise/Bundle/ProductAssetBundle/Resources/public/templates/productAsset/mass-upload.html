@@ -1,9 +1,12 @@
 <div class="AknFullPage AknFullPage--modal">
   <div class="AknFullPage-buttons">
       <div class="AknButtonList">
-          <span class="AknButtonList-item AknFullPage-cancel"></span>
+          <span class="AknButtonList-item AknFullPage-cancel cancel"></span>
       </div>
       <div class="AknTitleContainer-rightButtons" data-drop-zone="buttons">
+        <button class="AknButtonList-item AknButton AknButton--grey remove AknButton--hidden">
+            <%- __('pimee_product_asset.mass_upload.btn.remove_all_files') %>
+        </button>
         <button class="AknButtonList-item AknButton AknButton--action start AknButton--disabled" type="submit">
             <%- __('pimee_product_asset.mass_upload.btn.upload') %>
         </button>

@@ -52,17 +52,10 @@ define(
             pageTemplate: _.template(pageTemplate),
             rowTemplate: _.template(rowTemplate),
 
-            events: {
-                'click .AknTitleContainer .start:not(.AknButton--disabled)': 'startAll',
-                'click .AknTitleContainer .cancel:not(.AknButton--disabled)': 'cancelAll',
-                'click .AknTitleContainer .import:not(.AknButton--disabled)': 'importAll'
-            },
-
             /**
              * {@inheritdoc}
              */
             render: function () {
-
               const modal = new Backbone.BootstrapModal({
                   allowCancel: false,
                   content: this.pageTemplate({
@@ -73,17 +66,23 @@ define(
               });
 
                 modal.open();
-                modal.$el.addClass('modal--fullPage modal--topButton');
 
-                modal.on('cancel', () => {
-                    deferred.reject();
-                    modal.remove();
+                modal.$el.addClass('modal--fullPage modal--topButton');
+                modal.$el.find('.modal-body').addClass('modal-body-full');
+
+                modal.$el.on('click', '.start:not(.AknButton--disabled)', this.startAll.bind(this));
+                modal.$el.on('click', '.remove:not(.AknButton--disabled)', this.cancelAll.bind(this));
+                modal.$el.on('click', '.import:not(.AknButton--disabled)', this.startAll.bind(this));
+
+                modal.$el.on('click', '.cancel:not(.AknButton--disabled)', () => {
+                  modal.remove();
+                  router.redirectToRoute('pimee_product_asset_index')
                 });
 
                 $navbarButtons = $('.AknTitleContainer-rightButtons');
                 $importButton = $navbarButtons.find('.import');
                 $startButton = $navbarButtons.find('.start');
-                $cancelButton = $navbarButtons.find('.cancel');
+                $cancelButton = $navbarButtons.find('.remove');
 
                 this.initializeDropzone();
 
@@ -241,7 +240,7 @@ define(
             /**
              * Starts uploads
              */
-            startAll: function () {
+            startAll: function (e) {
                 this.myDropzone.enqueueFiles(this.myDropzone.getFilesWithStatus(Dropzone.ADDED));
             },
 
