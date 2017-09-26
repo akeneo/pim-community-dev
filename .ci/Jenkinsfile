@@ -469,6 +469,7 @@ def queue(body, scale, edition) {
                 sh "sed -i 's#PIM_IMAGE#eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
 
                 try {
+                    sh "sed -i 's#JOB_COMPLETIONS#${size}#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
                     sh "kubectl apply -f /home/jenkins/pim/.ci/k8s/"
                     sh "kubectl scale --replicas=${scale} jobs/${NODE_NAME}"
                     sh "gcloud.phar job:wait ${NODE_NAME}-results-subscription ${size} ${env.WORKSPACE} --ansi"
