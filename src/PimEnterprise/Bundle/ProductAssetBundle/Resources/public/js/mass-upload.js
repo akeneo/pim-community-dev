@@ -54,19 +54,25 @@ define(
             pageTemplate: _.template(pageTemplate),
             rowTemplate: _.template(rowTemplate),
 
+            /**
+             * {@inheritdoc}
+             */
             initialize: function() {
-              mediator.once('route_start', this.clearModal.bind(this));
+                mediator.once('route_start', this.clearModal.bind(this));
 
-              return BaseForm.prototype.initialize.apply(this, arguments);
+                return BaseForm.prototype.initialize.apply(this, arguments);
             },
 
+            /**
+             * Destroys previous modal
+             */
             clearModal: function() {
-              if (this.modal) {
-                  this.modal.close();
-                  this.modal.remove();
-              }
+                if (this.modal) {
+                    this.modal.close();
+                    this.modal.remove();
+                }
 
-              $('.mass-upload-modal').remove();
+                $('.mass-upload-modal').remove();
                 this.$el.empty();
             },
 
@@ -74,17 +80,17 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-              this.clearModal();
+                this.clearModal();
 
-              const modal = new Backbone.BootstrapModal({
-                  className: 'modal modal--fullPage modal--topButton mass-upload-modal',
-                  allowCancel: false,
-                  content: this.pageTemplate({
-                    __,
-                    subTitleLabel: 'Assets',
-                    titleLabel: 'Upload assets'
-                  })
-              });
+                const modal = new Backbone.BootstrapModal({
+                    className: 'modal modal--fullPage modal--topButton mass-upload-modal',
+                    allowCancel: false,
+                    content: this.pageTemplate({
+                      __,
+                      subTitleLabel: 'Assets',
+                      titleLabel: 'Upload assets'
+                    })
+                });
 
                 modal.open();
                 modal.$el.find('.modal-body').addClass('modal-body-full');
@@ -111,7 +117,11 @@ define(
                 return this;
             },
 
-            setStatus: function(file, status) {
+            /**
+             * Set the status as a data attribute for each asset
+             * @param {Object} file File object for an asset
+             */
+            setStatus: function(file) {
                 const progressBar = $(file.previewElement).find('.AknProgress')
                 progressBar.attr('data-status', file.status);
             },
@@ -168,7 +178,7 @@ define(
                             .textContent = __(message);
                     }).complete(function () {
                         file.previewElement.querySelector('.dz-type').textContent = file.type;
-                        this.setStatus(file, 'Added');
+                        this.setStatus(file);
                     }.bind(this));
 
                     if ((0 !== file.type.indexOf('image')) || (file.size > myDropzone.options.maxThumbnailFilesize)) {
@@ -184,7 +194,7 @@ define(
                 myDropzone.on('success', function (file) {
                     const progressBar = file.previewElement.querySelector('.AknProgress')
                     progressBar.className = 'AknProgress AknProgress--apply';
-                    this.setStatus(file, 'Success');
+                    this.setStatus(file);
                     file.previewElement.querySelector('.AknProgress .AknProgress-bar').style.width = '100%';
                     $(file.previewElement.querySelector('.AknButton.cancel')).addClass('AknButton--hidden');
                     $(file.previewElement.querySelector('.AknButton.delete')).removeClass('AknButton--hidden');
@@ -193,7 +203,7 @@ define(
                 myDropzone.on('error', function (file, error) {
                     file.previewElement.querySelector('.filename .error.text-danger')
                         .textContent = __(error.error);
-                    this.setStatus(file, 'Error');
+                    this.setStatus(file);
                 }.bind(this));
 
                 myDropzone.on('queuecomplete', function () {
