@@ -5,7 +5,7 @@ namespace Pim\Upgrade\Schema;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
-class Version_1_8_20170821122627_add_client_in_access_token_table extends AbstractMigration
+class Version_2_0_20170821122627_add_client_in_access_token_table extends AbstractMigration
 {
     /**
      * @param Schema $schema
