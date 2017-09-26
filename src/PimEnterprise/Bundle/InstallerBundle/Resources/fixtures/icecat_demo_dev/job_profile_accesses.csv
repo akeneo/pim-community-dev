@@ -98,3 +98,4 @@ xlsx_group_type_export;All;IT support,Manager
 xlsx_attribute_group_export;All;IT support,Manager
 project_calculation;All;IT support,Manager
 refresh_project_completeness_calculation;All;IT support,Manager
+compute_product_models_descendants;All;IT support,Manager

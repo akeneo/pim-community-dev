@@ -23,3 +23,4 @@ add_tags_to_assets;All;
 csv_default_product_import;All;
 project_calculation;All;
 refresh_project_completeness_calculation;All;
+compute_product_models_descendants;All;

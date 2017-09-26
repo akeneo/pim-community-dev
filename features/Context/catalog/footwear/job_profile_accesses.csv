@@ -66,3 +66,4 @@ xlsx_footwear_group_type_export;All;All
 xlsx_footwear_attribute_group_export;All;All
 project_calculation;All;All
 refresh_project_completeness_calculation;All;
+compute_product_models_descendants;All;

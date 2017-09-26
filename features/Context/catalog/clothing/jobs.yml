@@ -473,3 +473,8 @@ jobs:
         alias:     refresh_project_completeness_calculation
         label:     Refresh project completeness
         type:      refresh_project_completeness_calculation
+    compute_product_models_descendants:
+        connector: internal
+        alias:     compute_product_models_descendants
+        label:     Compute product models descendants
+        type:      compute_product_models_descendants
