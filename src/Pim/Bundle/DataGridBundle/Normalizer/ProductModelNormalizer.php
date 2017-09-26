@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\ProductModel\Query\FindVariantProductCompletenessInterface;
+use Pim\Component\Catalog\ProductModel\Query\FindCompleteVariantProductsInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -27,16 +27,16 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
     /** @var CollectionFilterInterface */
     private $filter;
 
-    /** @var FindVariantProductCompletenessInterface */
+    /** @var FindCompleteVariantProductsInterface */
     private $findVariantProductCompletenessQuery;
 
     /**
-     * @param CollectionFilterInterface               $filter
-     * @param FindVariantProductCompletenessInterface $findVariantProductCompletenessQuery
+     * @param CollectionFilterInterface            $filter
+     * @param FindCompleteVariantProductsInterface $findVariantProductCompletenessQuery
      */
     public function __construct(
         CollectionFilterInterface $filter,
-        FindVariantProductCompletenessInterface $findVariantProductCompletenessQuery
+        FindCompleteVariantProductsInterface $findVariantProductCompletenessQuery
     )
     {
         $this->filter = $filter;

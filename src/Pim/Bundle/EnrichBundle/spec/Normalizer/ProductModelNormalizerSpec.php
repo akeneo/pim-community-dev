@@ -13,8 +13,8 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\ProductModel\Query\FindVariantProductCompletenessInterface;
-use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProduct;
+use Pim\Component\Catalog\ProductModel\Query\FindCompleteVariantProductsInterface;
+use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProducts;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
@@ -35,7 +35,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         EntityWithFamilyValuesFillerInterface $entityValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
-        FindVariantProductCompletenessInterface $findVariantProductCompleteness
+        FindCompleteVariantProductsInterface $findVariantProductCompleteness
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -75,7 +75,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         ValueInterface $picture,
-        CompleteVariantProduct $variantProductCompleteness
+        CompleteVariantProducts $variantProductCompleteness
     ) {
         $options = [
             'decimal_separator' => ',',
@@ -215,7 +215,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         ValueInterface $picture,
-        CompleteVariantProduct $variantProductCompleteness
+        CompleteVariantProducts $variantProductCompleteness
     ) {
         $options = [
             'decimal_separator' => ',',

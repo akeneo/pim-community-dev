@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Component\Catalog\ProductModel\ReadModel;
 
-use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProduct;
+use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProducts;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class CompleteVariantProductSpec extends ObjectBehavior
+class CompleteVariantProductsSpec extends ObjectBehavior
 {
     function let()
     {
@@ -30,7 +30,7 @@ class CompleteVariantProductSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(CompleteVariantProduct::class);
+        $this->shouldHaveType(CompleteVariantProducts::class);
     }
 
     function it_calculates_completenesses()

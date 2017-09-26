@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\ProductModel\Query\FindVariantProductCompletenessInterface;
-use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProduct;
+use Pim\Component\Catalog\ProductModel\Query\FindCompleteVariantProductsInterface;
+use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProducts;
 
 /**
  * Query variant product completenesses to build the complete variant product ratio on the PMEF
@@ -15,7 +15,7 @@ use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProduct;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FindCompleteVariantProduct implements FindVariantProductCompletenessInterface
+class FindCompleteVariantProducts implements FindCompleteVariantProductsInterface
 {
     /** @var EntityManagerInterface */
     private $entityManager;
@@ -24,7 +24,7 @@ class FindCompleteVariantProduct implements FindVariantProductCompletenessInterf
     private $fromClassname;
 
     /**
-     * FindCompleteVariantProduct constructor.
+     * FindCompleteVariantProducts constructor.
      *
      * @param EntityManagerInterface $entityManager
      * @param string                 $fromClassname
@@ -40,13 +40,13 @@ class FindCompleteVariantProduct implements FindVariantProductCompletenessInterf
      * @param string                $channel
      * @param string                $locale
      *
-     * @return CompleteVariantProduct
+     * @return CompleteVariantProducts
      */
     public function __invoke(
         ProductModelInterface $productModel,
         string $channel = '',
         string $locale = ''
-    ): CompleteVariantProduct {
+    ): CompleteVariantProducts {
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder->select(
             'channel.code as channel_code, locale.code as locale_code, variant_product.identifier as product_identifier, CASE WHEN (completeness.ratio = 100) THEN 1 ELSE 0 END as complete'
@@ -85,6 +85,6 @@ class FindCompleteVariantProduct implements FindVariantProductCompletenessInterf
 
         $result = $queryBuilder->getQuery()->getArrayResult();
 
-        return new CompleteVariantProduct($result);
+        return new CompleteVariantProducts($result);
     }
 }
