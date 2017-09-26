@@ -165,11 +165,12 @@ config:
                     options:
                         urls:
                             get: pim_enrich_product_rest_get
-                product_model:
-                    module: pim/product-fetcher
+                product-model:
+                    module: pim/product-model-fetcher
                     options:
                         urls:
                             get: pim_enrich_product_model_rest_get
+                            children: pim_enrich_product_model_rest_children_list
                 category:
                     module: pim/base-fetcher
                     options:
@@ -261,7 +262,7 @@ config:
                 pim_enrich_product_model_edit:
                     module: pim/controller/entity-with-family-variant
                     config:
-                        entity: product_model
+                        entity: product-model
                 pim_enrich_group_edit:
                     module: pim/controller/group
                     aclResourceId: pim_enrich_group_edit
@@ -557,6 +558,7 @@ config:
         pim/attribute-group-fetcher: pimenrich/js/fetcher/attribute-group-fetcher
         pim/locale-fetcher:          pimenrich/js/fetcher/locale-fetcher
         pim/product-fetcher:         pimenrich/js/fetcher/product-fetcher
+        pim/product-model-fetcher:   pimenrich/js/fetcher/product-model-fetcher
 
         # Remover
         pim/remover/base:                pimenrich/js/remover/base-remover
@@ -670,6 +672,7 @@ config:
         pim/product-edit-form/attributes:                        pimenrich/js/product/form/attributes
         pim/product-edit-form/creation/identifier:               pimenrich/js/product/form/creation/identifier
         pim/product-edit-form/start-copy:                        pimenrich/js/product/form/start-copy
+        pim/product-edit-form/variant-navigation:                pimenrich/js/product/form/variant-navigation
 
         # Product model
         pim/product-model-edit-form/meta/family-variant: pimenrich/js/product-model/form/meta/family-variant
@@ -1009,6 +1012,9 @@ config:
         pim/template/product-create-error:                   pimenrich/templates/product/create-error.html
         pim/template/product/add-select/attribute/line:      pimenrich/templates/product/form/add-select/attribute/line.html
         pim/template/product/form/product-completeness:      pimenrich/templates/product/form/product-completeness.html
+        pim/template/product/form/variant-navigation/navigation: pimenrich/templates/product/form/variant-navigation/navigation.html
+        pim/template/product/form/variant-navigation/product-item: pimenrich/templates/product/form/variant-navigation/product-item.html
+        pim/template/product/form/variant-navigation/product-model-item: pimenrich/templates/product/form/variant-navigation/product-model-item.html
         pim/template/attribute-option/form:                  pimenrich/templates/attribute-option/form.html
         pim/template/attribute-option/validation-error:      pimenrich/templates/attribute-option/validation-error.html
         pim/template/attribute-option/index:                 pimenrich/templates/attribute-option/index.html

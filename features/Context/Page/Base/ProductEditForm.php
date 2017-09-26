@@ -6,6 +6,7 @@ use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
+use Pim\Behat\Decorator\VariantNavigationDecorator;
 
 /**
  * Product Edit Form
@@ -34,6 +35,12 @@ class ProductEditForm extends Form
                 'Available attributes list'       => ['css' => '.add-attribute .select2-results'],
                 'Available attributes search'     => ['css' => '.add-attribute .select2-search input[type="text"]'],
                 'Select2 dropmask'                => ['css' => '.select2-drop-mask'],
+                'Variant navigation' => [
+                    'css'        => '.AknVariantNavigation',
+                    'decorators' => [
+                        VariantNavigationDecorator::class
+                    ]
+                ]
             ]
         );
     }
@@ -675,5 +682,14 @@ class ProductEditForm extends Form
                 $field
             ));
         }, sprintf('Spinning to get remove link on product edit form for field "%s"', $field));
+    }
+
+
+    /**
+     * @return NodeElement
+     */
+    public function getVariantNavigation()
+    {
+        return $this->getElement('Variant navigation');
     }
 }

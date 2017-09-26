@@ -16,6 +16,11 @@ pim_enrich_product_model_rest_post:
         id: '[0-9a-f]+'
     methods: [POST]
 
+pim_enrich_product_model_rest_children_list:
+    path: /rest/children
+    defaults: { _controller: pim_enrich.controller.rest.product_model:childrenAction }
+    methods: [GET]
+
 pim_enrich_product_model_category_rest_list:
     path: /rest/{id}/categories
     defaults: { _controller: pim_enrich.controller.rest.product_category:listAction }

@@ -64,6 +64,7 @@ css:
         - bundles/pimui/less/components/product-edit-form/TabHeader.less
         - bundles/pimui/less/components/product-edit-form/TextareaField.less
         - bundles/pimui/less/components/product-edit-form/TextField.less
+        - bundles/pimui/less/components/product-edit-form/VariantNavigation.less
         - bundles/pimui/less/components/product-edit-form/VerticalNavtab.less
 
         - bundles/pimui/less/components/Acl.less
