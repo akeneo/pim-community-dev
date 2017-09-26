@@ -208,7 +208,9 @@ JSON;
        "a_simple_select",
        "a_localizable_image",
        "a_scopable_image",
-       "a_localizable_scopable_image"
+       "a_localizable_scopable_image",
+       "a_simple_select_color",
+       "a_simple_select_size"
     ],
     "labels":{
        "en_US":"Attribute group B",
