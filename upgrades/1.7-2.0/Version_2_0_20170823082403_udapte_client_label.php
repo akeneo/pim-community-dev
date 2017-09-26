@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 /**
  * Put id in null label for `pim_api_client` table
  */
-class Version_1_8_20170823082403_udapte_client_label extends AbstractMigration implements ContainerAwareInterface
+class Version_2_0_20170823082403_udapte_client_label extends AbstractMigration implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
     /**

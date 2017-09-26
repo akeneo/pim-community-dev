@@ -7,6 +7,6 @@ services:
     pim_enrich.mass_edit_action.operation_job_launcher:
         class: '%pim_enrich.mass_edit_action.operation_job_launcher.class%'
         arguments:
-            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
             - '@security.token_storage'

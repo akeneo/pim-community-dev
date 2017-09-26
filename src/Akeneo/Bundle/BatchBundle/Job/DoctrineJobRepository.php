@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\BatchBundle\Job;
 
+use Akeneo\Bundle\BatchBundle\EntityManager\PersistedConnectionEntityManager;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Job\JobRepositoryInterface;
@@ -9,7 +10,6 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\PersistentCollection;
 
@@ -69,7 +69,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
             $entityManager->getConfiguration()
         );
 
-        $this->jobManager = $jobManager;
+        $this->jobManager = new PersistedConnectionEntityManager($jobManager);
         $this->jobExecutionClass = $jobExecutionClass;
 
         // ... there is an ugly fix related to PIM-5589...
@@ -125,7 +125,6 @@ class DoctrineJobRepository implements JobRepositoryInterface
      */
     public function updateJobExecution(JobExecution $jobExecution)
     {
-        $this->checkConnection();
         $this->jobManager->persist($jobExecution);
         $this->jobManager->flush($jobExecution);
     }
@@ -135,7 +134,6 @@ class DoctrineJobRepository implements JobRepositoryInterface
      */
     public function updateStepExecution(StepExecution $stepExecution)
     {
-        $this->checkConnection();
         $this->jobManager->persist($stepExecution);
         $this->jobManager->flush($stepExecution);
     }
@@ -196,19 +194,6 @@ class DoctrineJobRepository implements JobRepositoryInterface
             $this->jobManager->remove($jobsExecution);
         }
         $this->jobManager->flush();
-    }
-
-    /**
-     * Ping the Server, if not available then reset the connection.
-     * @author Cristian Quiroz <cq@amp.co>
-     */
-    protected function checkConnection(): void
-    {
-        $connection = $this->jobManager->getConnection();
-        if (false === $connection->ping()) {
-            $connection->close();
-            $connection->connect();
-        }
     }
 
     /**

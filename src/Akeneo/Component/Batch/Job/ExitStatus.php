@@ -196,11 +196,11 @@ class ExitStatus
     /**
      * Check if this status represents a running process.
      *
-     * @return boolean true if the exit code is "RUNNING" or "UNKNOWN"
+     * @return boolean true if the exit code is "EXECUTING" or "UNKNOWN"
      */
     public function isRunning()
     {
-        return (("RUNNING" ==  $this->exitCode) || ("UNKNOWN" == $this->exitCode));
+        return ((self::EXECUTING ===  $this->exitCode) || (self::UNKNOWN === $this->exitCode));
     }
 
     /**

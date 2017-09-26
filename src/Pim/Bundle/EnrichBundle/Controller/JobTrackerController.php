@@ -2,18 +2,16 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
+use Akeneo\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\FileStorage\StreamedFileResponse;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
 use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -55,7 +53,7 @@ class JobTrackerController extends Controller
     /** @var SerializerInterface */
     protected $serializer;
 
-    /** @var EventSubscriberInterface */
+    /** @var JobExecutionManager */
     protected $jobExecutionManager;
 
     /** @var SecurityFacade */
@@ -132,9 +130,7 @@ class JobTrackerController extends Controller
                 ];
             }
 
-            if (!$this->jobExecutionManager->checkRunningStatus($jobExecution)) {
-                $this->jobExecutionManager->markAsFailed($jobExecution);
-            }
+            $jobExecution = $this->jobExecutionManager->resolveJobExecutionStatus($jobExecution);
 
             // limit the number of step execution returned to avoid memory overflow
             $context = [

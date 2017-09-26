@@ -58,6 +58,7 @@
         "monolog/monolog": "1.23.0",
         "ocramius/proxy-manager": "2.1.1",
         "oneup/flysystem-bundle": "1.14.0",
+        "ramsey/uuid": "3.7.0",
         "sensio/distribution-bundle": "5.0.20",
         "sensio/framework-extra-bundle": "3.0.26",
         "sensio/generator-bundle": "3.1.6",

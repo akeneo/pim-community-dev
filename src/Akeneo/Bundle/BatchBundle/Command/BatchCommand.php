@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Akeneo\Bundle\BatchBundle\Command;
 
 use Akeneo\Bundle\BatchBundle\Notification\MailNotifier;
-use Akeneo\Component\Batch\Event\BatchCommandEvent;
-use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Item\ExecutionContext;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\Batch\Job\JobParameters;
@@ -74,12 +72,6 @@ class BatchCommand extends ContainerAwareCommand
                 null,
                 InputOption::VALUE_NONE,
                 'Don\'t display logs'
-            )
-            ->addOption(
-                'no-lock',
-                null,
-                InputOption::VALUE_NONE,
-                'Don\'t lock command (if command is lockable)'
             );
     }
 
@@ -101,12 +93,6 @@ class BatchCommand extends ContainerAwareCommand
 
         if (null === $jobInstance) {
             throw new \InvalidArgumentException(sprintf('Could not find job instance "%s".', $code));
-        }
-
-        $event = new BatchCommandEvent($this, $input, $output, $jobInstance);
-        $this->getContainer()->get('event_dispatcher')->dispatch(EventInterface::BATCH_COMMAND_START, $event);
-        if (false === $event->commandShouldRun()) {
-            return self::EXIT_ERROR_CODE;
         }
 
         $validator = $this->getValidator();
@@ -220,8 +206,6 @@ class BatchCommand extends ContainerAwareCommand
 
             $exitCode = self::EXIT_ERROR_CODE;
         }
-
-        $this->getContainer()->get('event_dispatcher')->dispatch(EventInterface::BATCH_COMMAND_TERMINATE, $event);
 
         return $exitCode;
     }

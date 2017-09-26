@@ -1,0 +1,54 @@
+parameters:
+    ramsey.uuid.provider.node.system_node_provider.class: Ramsey\Uuid\Provider\Node\SystemNodeProvider
+    akeneo_batch_queue.hydrator_job_execution_message_hydrator.class: Akeneo\Bundle\BatchQueueBundle\Hydrator\JobExecutionMessageHydrator
+    akeneo_batch_queue.queue.database_job_execution_queue.class: Akeneo\Bundle\BatchQueueBundle\Queue\DatabaseJobExecutionQueue
+    akeneo_batch_queue.queue.job_execution_message.class: Akeneo\Component\BatchQueue\Queue\JobExecutionMessage
+    akeneo_batch_queue.queue.job_execution_message_repository.class: Akeneo\Bundle\BatchQueueBundle\Queue\JobExecutionMessageRepository
+    akeneo_batch_queue.manager.job_execution_manager.class: Akeneo\Bundle\BatchQueueBundle\Manager\JobExecutionManager
+    akeneo_batch_queue.launcher.queue_job_launcher.class: Akeneo\Bundle\BatchQueueBundle\Launcher\QueueJobLauncher
+
+services:
+    ramsey.uuid.provider.node.system_node_provider:
+        class: '%ramsey.uuid.provider.node.system_node_provider.class%'
+
+    akeneo_batch_queue.hydrator_job_execution_message_hydrator:
+        class: '%akeneo_batch_queue.hydrator_job_execution_message_hydrator.class%'
+        arguments:
+            - '@akeneo_batch.entity_manager.persisted_connection_entity_manager'
+
+    akeneo_batch_queue.queue.job_execution_message_repository:
+        class: '%akeneo_batch_queue.queue.job_execution_message_repository.class%'
+        arguments:
+            - '@akeneo_batch.entity_manager.persisted_connection_entity_manager'
+            - '@akeneo_batch_queue.hydrator_job_execution_message_hydrator'
+
+    akeneo_batch_queue.queue.database_job_execution_queue:
+        class: '%akeneo_batch_queue.queue.database_job_execution_queue.class%'
+        arguments:
+            - '@akeneo_batch.entity_manager.persisted_connection_entity_manager'
+            - '@akeneo_batch_queue.queue.job_execution_message_repository'
+
+    akeneo_batch_queue.manager.job_execution_manager:
+        class: '%akeneo_batch_queue.manager.job_execution_manager.class%'
+        arguments:
+            - '@akeneo_batch.entity_manager.persisted_connection_entity_manager'
+
+    akeneo_batch_queue.launcher.queue_job_launcher:
+        class: '%akeneo_batch_queue.launcher.queue_job_launcher.class%'
+        arguments:
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.job.job_registry'
+            - '@akeneo_batch.job.job_parameters_validator'
+            - '@akeneo_batch_queue.queue.database_job_execution_queue'
+            - '%kernel.environment%'
+
+    akeneo_batch_queue.launcher.simple_job_launcher:
+        class: '%akeneo_batch_queue.launcher.queue_job_launcher.class%'
+        arguments:
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.job_parameters_factory'
+            - '@akeneo_batch.job.job_registry'
+            - '@akeneo_batch.job.job_parameters_validator'
+            - '@akeneo_batch_queue.queue.database_job_execution_queue'
+            - '%kernel.environment%'
