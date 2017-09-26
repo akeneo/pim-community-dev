@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProduct;
 
 /**
- * Query data regarding the variant product completenesses to build the ratio on the PMEF.
+ * Query data regarding the variant product completenesses to build the completeness variant product ratio
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)

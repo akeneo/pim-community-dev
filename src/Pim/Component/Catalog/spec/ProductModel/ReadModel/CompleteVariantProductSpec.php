@@ -12,18 +12,18 @@ class CompleteVariantProductSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             [
-                ['ch' => 'ecommerce', 'lo' => 'en_US',  'co' => 0, 'pr' => 'biker-jacket-polyester-xxs'],
-                ['ch' => 'ecommerce', 'lo' => 'fr_FR', 'co' => 1, 'pr' => 'biker-jacket-polyester-xxs'],
-                ['ch' => 'print', 'lo' => 'en_US', 'co' => 1, 'pr' => 'biker-jacket-polyester-xxs'],
-                ['ch' => 'print', 'lo' => 'fr_FR', 'co' => 1, 'pr' => 'biker-jacket-polyester-xxs'],
-                ['ch' => 'mobile', 'lo' => 'en_US', 'co' => 0, 'pr' => 'biker-jacket-polyester-xxs'],
-                ['ch' => 'mobile', 'lo' => 'fr_FR', 'co' => 1, 'pr' => 'biker-jacket-polyester-xxs'],
-                ['ch' => 'ecommerce', 'lo' => 'en_US', 'co' => 1, 'pr' => 'biker-jacket-polyester-m'],
-                ['ch' => 'ecommerce', 'lo' => 'fr_FR', 'co' => 1, 'pr' => 'biker-jacket-polyester-m'],
-                ['ch' => 'print', 'lo' => 'en_US', 'co' => 0, 'pr' => 'biker-jacket-polyester-m'],
-                ['ch' => 'print', 'lo' => 'fr_FR', 'co' => 0, 'pr' => 'biker-jacket-polyester-m'],
-                ['ch' => 'mobile', 'lo' => 'en_US', 'co' => 1, 'pr' => 'biker-jacket-polyester-m'],
-                ['ch' => 'mobile', 'lo' => 'fr_FR', 'co' => 1, 'biker-jacket-polyester-m'],
+                ['channel_code' => 'ecommerce', 'locale_code' => 'en_US',  'complete' => 0, 'product_identifier' => 'biker-jacket-polyester-xxs'],
+                ['channel_code' => 'ecommerce', 'locale_code' => 'fr_FR', 'complete' => 1, 'product_identifier' => 'biker-jacket-polyester-xxs'],
+                ['channel_code' => 'print', 'locale_code' => 'en_US', 'complete' => 1, 'product_identifier' => 'biker-jacket-polyester-xxs'],
+                ['channel_code' => 'print', 'locale_code' => 'fr_FR', 'complete' => 1, 'product_identifier' => 'biker-jacket-polyester-xxs'],
+                ['channel_code' => 'mobile', 'locale_code' => 'en_US', 'complete' => 0, 'product_identifier' => 'biker-jacket-polyester-xxs'],
+                ['channel_code' => 'mobile', 'locale_code' => 'fr_FR', 'complete' => 1, 'product_identifier' => 'biker-jacket-polyester-xxs'],
+                ['channel_code' => 'ecommerce', 'locale_code' => 'en_US', 'complete' => 1, 'product_identifier' => 'biker-jacket-polyester-m'],
+                ['channel_code' => 'ecommerce', 'locale_code' => 'fr_FR', 'complete' => 1, 'product_identifier' => 'biker-jacket-polyester-m'],
+                ['channel_code' => 'print', 'locale_code' => 'en_US', 'complete' => 0, 'product_identifier' => 'biker-jacket-polyester-m'],
+                ['channel_code' => 'print', 'locale_code' => 'fr_FR', 'complete' => 0, 'product_identifier' => 'biker-jacket-polyester-m'],
+                ['channel_code' => 'mobile', 'locale_code' => 'en_US', 'complete' => 1, 'product_identifier' => 'biker-jacket-polyester-m'],
+                ['channel_code' => 'mobile', 'locale_code' => 'fr_FR', 'complete' => 1, 'biker-jacket-polyester-m'],
             ]
         );
     }

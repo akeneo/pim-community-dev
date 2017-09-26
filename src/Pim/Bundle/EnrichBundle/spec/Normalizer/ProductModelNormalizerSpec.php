@@ -175,7 +175,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                 'categories'     => ['summer'],
                 'values'         => $valuesConverted,
                 'meta'           => [
-                    'variant_product_completeness' => [
+                    'variant_product_completenesses' => [
                         'completenesses' => [],
                         'total' => 10,
                     ],
@@ -303,7 +303,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                 'categories'     => ['summer'],
                 'values'         => $valuesConverted,
                 'meta'           => [
-                    'variant_product_completeness' => [
+                    'variant_product_completenesses' => [
                         'completenesses' => [],
                         'total' => 10,
                     ],
