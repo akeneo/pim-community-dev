@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\ProductModel\Query\FindCompleteVariantProductsInterface;
+use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -27,20 +27,20 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
     /** @var CollectionFilterInterface */
     private $filter;
 
-    /** @var FindCompleteVariantProductsInterface */
-    private $findVariantProductCompletenessQuery;
+    /** @var VariantProductRatioInterface */
+    private $variantProductRatioQuery;
 
     /**
-     * @param CollectionFilterInterface            $filter
-     * @param FindCompleteVariantProductsInterface $findVariantProductCompletenessQuery
+     * @param CollectionFilterInterface    $filter
+     * @param VariantProductRatioInterface $variantProductRatioQuery
      */
     public function __construct(
         CollectionFilterInterface $filter,
-        FindCompleteVariantProductsInterface $findVariantProductCompletenessQuery
+        VariantProductRatioInterface $variantProductRatioQuery
     )
     {
         $this->filter = $filter;
-        $this->findVariantProductCompletenessQuery = $findVariantProductCompletenessQuery;
+        $this->variantProductRatioQuery = $variantProductRatioQuery;
     }
 
     /**
@@ -57,7 +57,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $locale = current($context['locales']);
         $channel = current($context['channels']);
 
-        $variantProductCompleteness = ($this->findVariantProductCompletenessQuery)($productModel, $channel, $locale);
+        $variantProductCompleteness = $this->variantProductRatioQuery->findComplete($productModel);
 
         $data['identifier'] = $productModel->getCode();
         $data['family'] = $this->getFamilyLabel($productModel, $locale);

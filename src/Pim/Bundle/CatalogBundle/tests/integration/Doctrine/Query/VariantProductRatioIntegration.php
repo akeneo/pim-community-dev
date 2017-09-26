@@ -6,7 +6,7 @@ namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
-class FindCompleteVariantProductIntegration extends TestCase
+class VariantProductRatioIntegration extends TestCase
 {
     /**
      * Test that the flat variant product completenesses for a SUB product model are good.
@@ -14,7 +14,7 @@ class FindCompleteVariantProductIntegration extends TestCase
     public function testCompletenessesForASubProductModel()
     {
         $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('model-braided-hat');
-        $result = ($this->get('pim_catalog.doctrine.query.find_variant_product_completeness'))($productModel);
+        $result = $this->get('pim_catalog.doctrine.query.find_variant_product_completeness')->findComplete($productModel);
 
         $this->assertEquals([
             'completenesses' => [
@@ -44,7 +44,7 @@ class FindCompleteVariantProductIntegration extends TestCase
     public function testProductModelWithoutChild()
     {
         $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('minerva');
-        $result = ($this->get('pim_catalog.doctrine.query.find_variant_product_completeness'))($productModel);
+        $result = $this->get('pim_catalog.doctrine.query.find_variant_product_completeness')->findComplete($productModel);
 
         $this->assertEquals([
             'completenesses' => [],
@@ -58,7 +58,7 @@ class FindCompleteVariantProductIntegration extends TestCase
     public function testCompletenessesForARootProductModel()
     {
         $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('model-biker-jacket');
-        $result = ($this->get('pim_catalog.doctrine.query.find_variant_product_completeness'))($productModel);
+        $result = $this->get('pim_catalog.doctrine.query.find_variant_product_completeness')->findComplete($productModel);
 
         $this->assertEquals([
             'completenesses' => [
@@ -88,7 +88,7 @@ class FindCompleteVariantProductIntegration extends TestCase
     public function testCompletenesseDependingOnLocaleAndChannel()
     {
         $productModel = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('model-braided-hat');
-        $result = ($this->get('pim_catalog.doctrine.query.find_variant_product_completeness'))(
+        $result = $this->get('pim_catalog.doctrine.query.find_variant_product_completeness')->findComplete(
             $productModel,
             'ecommerce',
             'en_US'

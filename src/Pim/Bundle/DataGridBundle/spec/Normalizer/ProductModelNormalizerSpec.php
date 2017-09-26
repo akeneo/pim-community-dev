@@ -13,8 +13,8 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\ProductModel\Query\FindCompleteVariantProductsInterface;
-use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProducts;
+use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
+use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -24,7 +24,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     function let(
         NormalizerInterface $normalizer,
         CollectionFilterInterface $filter,
-        FindCompleteVariantProductsInterface $findVariantProductCompletenessQuery
+        VariantProductRatioInterface $findVariantProductCompletenessQuery
     ) {
         $this->beConstructedWith($filter, $findVariantProductCompletenessQuery);
 
@@ -71,7 +71,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'channels'     => ['ecommerce'],
         ];
 
-        $findVariantProductCompletenessQuery->__invoke($productModel, 'ecommerce', 'en_US')->willReturn($completeness);
+        $findVariantProductCompletenessQuery->findComplete($productModel)->willReturn($completeness);
         $completeness->value('ecommerce', 'en_US')->willReturn([
             'complete' => 3,
             'total' => 12
@@ -177,7 +177,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'channels'     => ['ecommerce'],
         ];
 
-        $findVariantProductCompletenessQuery->__invoke($productModel, 'ecommerce', 'en_US')->willReturn($completeness);
+        $findVariantProductCompletenessQuery->findComplete($productModel)->willReturn($completeness);
         $completeness->value('ecommerce', 'en_US')->willReturn([
             'complete' => 3,
             'total' => 12

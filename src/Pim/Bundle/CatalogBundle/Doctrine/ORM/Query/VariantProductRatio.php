@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\ProductModel\Query\FindCompleteVariantProductsInterface;
-use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProducts;
+use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
+use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
 
 /**
  * Query variant product completenesses to build the complete variant product ratio on the PMEF
@@ -15,24 +15,19 @@ use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProducts;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FindCompleteVariantProducts implements FindCompleteVariantProductsInterface
+class VariantProductRatio implements VariantProductRatioInterface
 {
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    /** @var string */
-    private $fromClassname;
-
     /**
-     * FindCompleteVariantProducts constructor.
+     * VariantProductRatio constructor.
      *
      * @param EntityManagerInterface $entityManager
-     * @param string                 $fromClassname
      */
-    public function __construct(EntityManagerInterface $entityManager, string $fromClassname)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->fromClassname = $fromClassname;
     }
 
     /**
@@ -42,7 +37,7 @@ class FindCompleteVariantProducts implements FindCompleteVariantProductsInterfac
      *
      * @return CompleteVariantProducts
      */
-    public function __invoke(
+    public function findComplete(
         ProductModelInterface $productModel,
         string $channel = '',
         string $locale = ''
@@ -54,14 +49,14 @@ class FindCompleteVariantProducts implements FindCompleteVariantProductsInterfac
 
         if (2 === $productModel->getFamilyVariant()->getNumberOfLevel() && $productModel->isRootProductModel()){
             $queryBuilder
-                ->from($this->fromClassname, 'root_product_model')
+                ->from(ProductModelInterface::class, 'root_product_model')
                 ->innerJoin('root_product_model.productModels', 'sub_product_model')
                 ->innerJoin('sub_product_model.products', 'variant_product')
                 ->where('root_product_model.id = :product_model')
             ;
         } else {
             $queryBuilder
-                ->from($this->fromClassname, 'sub_product_model')
+                ->from(ProductModelInterface::class, 'sub_product_model')
                 ->innerJoin('sub_product_model.products', 'variant_product')
                 ->where('sub_product_model.id = :product_model')
             ;
