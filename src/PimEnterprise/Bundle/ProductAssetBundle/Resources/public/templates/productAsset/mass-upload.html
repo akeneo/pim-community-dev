@@ -27,7 +27,7 @@
 
     <div class="AknDefault-mainContent">
       <div class="row-fluid buffer-top">
-        <div class="AknFormContainer AknFormContainer--withPadding AknFormContainer--centered control-group upload-zone-container">
+        <div class="AknFormContainer AknFormContainer--withPadding AknFormContainer--centered AknFormContainer--expanded control-group upload-zone-container">
           <div class="AknMediaField controls">
             <label class="upload-zone file empty">
                     <div class="upload-info">
@@ -42,34 +42,14 @@
         </div>
       </div>
 
-      <div class="AknGridContainer grid-container">
+      <div class="AknGridContainer AknGridContainer--expanded grid-container">
+        <div class="tabsection-title">Assets uploaded</div>
         <table class="AknGrid AknGrid--unclickable grid files">
-          <thead>
-            <tr>
-              <th class="AknGrid-headerCell preview">
-                <%- __('pimee_product_asset.mass_upload.grid.medias') %>
-              </th>
-              <th class="AknGrid-headerCell filename">
-                <%- __('pimee_product_asset.mass_upload.grid.filename') %>
-              </th>
-              <th class="AknGrid-headerCell filetype">
-                <%- __('pimee_product_asset.mass_upload.grid.filetype') %>
-              </th>
-              <th class="AknGrid-headerCell status">
-                <%- __('pimee_product_asset.mass_upload.grid.status') %>
-              </th>
-              <th class="AknGrid-headerCell dz-progress-wrapper">
-                <%- __('pimee_product_asset.mass_upload.grid.progress') %>
-              </th>
-              <th class="AknGrid-headerCell AknGrid-headerCell--right action-cell">
-                <%- __('pimee_product_asset.mass_upload.grid.actions') %>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-          </tbody>
+          <tbody class="mass-upload-container"></tbody>
         </table>
       </div>
     </div>
   </div>
 </div>
+
+<div class="mass-upload-dropzone"></div>

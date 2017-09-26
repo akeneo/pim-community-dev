@@ -72,11 +72,12 @@ define(
 
                 modal.$el.on('click', '.start:not(.AknButton--disabled)', this.startAll.bind(this));
                 modal.$el.on('click', '.remove:not(.AknButton--disabled)', this.cancelAll.bind(this));
-                modal.$el.on('click', '.import:not(.AknButton--disabled)', this.startAll.bind(this));
-
+                modal.$el.on('click', '.import:not(.AknButton--disabled)', this.importAll.bind(this));
                 modal.$el.on('click', '.cancel:not(.AknButton--disabled)', () => {
-                  modal.remove();
-                  router.redirectToRoute('pimee_product_asset_index')
+                    this.myDropzone.destroy();
+                    modal.close();
+                    modal.remove();
+                    router.redirectToRoute('pimee_product_asset_index')
                 });
 
                 $navbarButtons = $('.AknTitleContainer-rightButtons');
@@ -93,17 +94,19 @@ define(
              * Initialize the dropzone element
              */
             initializeDropzone: function () {
-                var myDropzone = new Dropzone('body', {
+                var myDropzone = new Dropzone('.mass-upload-dropzone', {
                     url: router.generate('pimee_product_asset_rest_upload'),
                     thumbnailWidth: 70,
                     thumbnailHeight: 70,
                     parallelUploads: 4,
                     previewTemplate: this.rowTemplate(),
                     autoQueue: false,
-                    previewsContainer: 'tbody',
+                    previewsContainer: '.mass-upload-container',
                     clickable: '.upload-zone-container',
                     maxFilesize: 1000
                 });
+
+                myDropzone.removeAllFiles(true);
 
                 myDropzone.on('removedfile', function () {
                     if (0 === myDropzone.getFilesWithStatus(Dropzone.SUCCESS).length) {
@@ -119,7 +122,6 @@ define(
 
                 myDropzone.on('addedfile', function (file) {
                     if (Dropzone.SUCCESS === file.status) {
-                        this.setStatus(file);
                         file.previewElement.querySelector('.dz-type').textContent = file.type;
 
                         return;
@@ -141,7 +143,6 @@ define(
                         file.previewElement.querySelector('.AknFieldContainer-validationError')
                             .textContent = __(message);
                     }).complete(function () {
-                        this.setStatus(file);
                         file.previewElement.querySelector('.dz-type').textContent = file.type;
                     }.bind(this));
 
@@ -156,7 +157,6 @@ define(
                 }.bind(this));
 
                 myDropzone.on('success', function (file) {
-                    this.setStatus(file);
                     file.previewElement.querySelector('.AknProgress').className = 'AknProgress AknProgress--apply';
                     file.previewElement.querySelector('.AknProgress .AknProgress-bar').style.width = '100%';
                     $(file.previewElement.querySelector('.AknButton.cancel')).addClass('AknButton--hidden');
@@ -164,13 +164,9 @@ define(
                 }.bind(this));
 
                 myDropzone.on('error', function (file, error) {
+                    console.log('myDropzone error', file, error);
                     file.previewElement.querySelector('.filename .error.text-danger')
                         .textContent = __(error.error);
-                    this.setStatus(file);
-                }.bind(this));
-
-                myDropzone.on('sending', function (file) {
-                    this.setStatus(file);
                 }.bind(this));
 
                 myDropzone.on('queuecomplete', function () {
@@ -247,7 +243,7 @@ define(
             /**
              * Cancel all uploads and delete already uploaded files
              */
-            cancelAll: function () {
+            cancelAll: function (notify) {
                 $importButton.addClass('AknButton--disabled');
                 this.myDropzone.removeAllFiles(true);
                 messenger.notify(
@@ -277,23 +273,6 @@ define(
                         );
                     })
                 ;
-            },
-
-            /**
-             * Change asset status in the grid
-             *
-             * @param {Object} file
-             */
-            setStatus: function (file) {
-                var statusElement = file.previewElement.querySelector('.dz-status');
-                var statusClasses = {
-                    'error': 'AknBadge--invalid',
-                    'added': 'AknBadge--success',
-                    'success': 'AknBadge--success'
-                };
-                statusElement.classList.add(statusClasses[file.status]);
-                var statusKey = 'pimee_product_asset.mass_upload.status.' + file.status;
-                statusElement.textContent = __(statusKey);
             },
 
             /**

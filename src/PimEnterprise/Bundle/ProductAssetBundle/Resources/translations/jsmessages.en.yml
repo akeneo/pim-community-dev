@@ -30,7 +30,7 @@ pimee_product_asset:
             remove_all_files: Remove all files
             delete: Delete
             import: Import
-            upload: Upload
+            upload: Upload assets
         success:
             new: A new asset will be created
             imported: Files imported for asset processing
