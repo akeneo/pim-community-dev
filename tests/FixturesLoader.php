@@ -74,6 +74,8 @@ class FixturesLoader
     public function load()
     {
         $this->container->get('akeneo_elasticsearch.client.product')->resetIndex();
+        $this->container->get('akeneo_elasticsearch.client.product_model')->resetIndex();
+        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
 
         $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
@@ -87,8 +89,6 @@ class FixturesLoader
             $this->clearAclCache();
             $this->createUserSystem();
 
-            $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
-
             $this->indexProductModels();
             $this->indexProducts();
 
@@ -96,7 +96,6 @@ class FixturesLoader
         }
 
         $this->databaseSchemaHandler->reset();
-        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
 
         $this->loadData();
         $this->dumpDatabase($dumpFile);
