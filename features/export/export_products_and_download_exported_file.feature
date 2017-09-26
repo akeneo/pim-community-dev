@@ -46,4 +46,4 @@ Feature: Export and download exported products file
     tshirt-black;;men_2013,men_2014,men_2015;black;;;;usa;;;;;;"Ein elegantes schwarzes T-Shirt";"An elegant black t-shirt";"A stylish black t-shirt";"Un T-shirt noir élégant";1;tshirts;;0;;;;;;american_apparel;cotton;"Schwarzes T-Shirt";"Black t-shirt";"Black t-shirt";"T-shirt noir";;10.00;9.00;15.00;;size_L;files/tshirt-black/thumbnail/SNKRS-1C-t.png;;;;
     """
     Then I should see the text "Download generated files"
-    Then I press "Download generated archive" on the "Download generated files" dropdown button
+    Then I should see "Download generated archive" on the "Download generated files" dropdown button

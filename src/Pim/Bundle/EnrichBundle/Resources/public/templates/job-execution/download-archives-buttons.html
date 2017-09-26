@@ -9,11 +9,9 @@
         <div class="AknDropdown-menu">
             <div class="AknDropdown-menuTitle"><%- label %></div>
             <% Object.keys(files).forEach((key) => { %>
-            <div>
-                <a class="AknDropdown-menuLink" href="<%- files[key] %>">
-                    <%- key %>
-                </a>
-            </div>
+            <a class="AknDropdown-menuLink" href="<%- files[key] %>">
+                <%- key %>
+            </a>
             <% }); %>
         </div>
     </div>

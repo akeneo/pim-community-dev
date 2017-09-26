@@ -75,7 +75,7 @@ define(
                 });
 
                 if (Object.keys(files).length === 1) {
-                    return Object.values(archives)[0].label;
+                    return __(Object.values(archives)[0].label);
                 } else {
                     return __('job_tracker.download_archive.output');
                 }

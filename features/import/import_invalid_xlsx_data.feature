@@ -22,7 +22,7 @@ Feature: Handle import of invalid XLSX data
     And I am on the "xlsx_footwear_association_type_import" import job page
     And I launch the "xlsx_footwear_association_type_import" import job
     And I wait for the "xlsx_footwear_association_type_import" job to finish
-    Then I press "Download invalid data" on the "Download generated files" dropdown button
+    Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_footwear_association_type_import" should contain:
       """
       code;label-en_US
@@ -47,7 +47,7 @@ Feature: Handle import of invalid XLSX data
     And I am on the "xlsx_footwear_attribute_import" export job page
     And I launch the "xlsx_footwear_attribute_import" import job
     And I wait for the "xlsx_footwear_attribute_import" job to finish
-    Then I press "Download invalid data" on the "Download generated files" dropdown button
+    Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_footwear_attribute_import" should contain:
       """
       type;code;label-en_US;group;unique;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;reference_data_name;localizable;scopable;sort_order;label-fr_FR;max_characters;number_min;number_max;decimals_allowed;negative_allowed;max_file_size
@@ -71,7 +71,7 @@ Feature: Handle import of invalid XLSX data
     And I am on the "xlsx_footwear_option_import" export job page
     And I launch the "xlsx_footwear_option_import" import job
     And I wait for the "xlsx_footwear_option_import" job to finish
-    Then I press "Download invalid data" on the "Download generated files" dropdown button
+    Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_footwear_option_import" should contain:
       """
       attribute;code;label-en_US;sort_order
@@ -94,7 +94,7 @@ Feature: Handle import of invalid XLSX data
     And I am on the "xlsx_footwear_category_import" export job page
     And I launch the "xlsx_footwear_category_import" import job
     And I wait for the "xlsx_footwear_category_import" job to finish
-    Then I press "Download invalid data" on the "Download generated files" dropdown button
+    Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_footwear_category_import" should contain:
       """
       code;label-en_US;parent
@@ -122,7 +122,7 @@ Feature: Handle import of invalid XLSX data
     And I am on the "xlsx_footwear_family_import" export job page
     And I launch the "xlsx_footwear_family_import" import job
     And I wait for the "xlsx_footwear_family_import" job to finish
-    Then I press "Download invalid data" on the "Download generated files" dropdown button
+    Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_footwear_family_import" should contain:
       """
       code;attributes
@@ -143,7 +143,7 @@ Feature: Handle import of invalid XLSX data
     And I am on the "xlsx_footwear_group_import" export job page
     And I launch the "xlsx_footwear_group_import" import job
     And I wait for the "xlsx_footwear_group_import" job to finish
-    Then I press "Download invalid data" on the "Download generated files" dropdown button
+    Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_footwear_group_import" should contain:
       """
       code;type;label-en_US
@@ -171,7 +171,7 @@ Feature: Handle import of invalid XLSX data
     And I am on the "xlsx_footwear_product_import" export job page
     And I launch the "xlsx_footwear_product_import" import job
     And I wait for the "xlsx_footwear_product_import" job to finish
-    Then I press "Download invalid data" on the "Download generated files" dropdown button
+    Then I should see "Download invalid data" on the "Download generated files" dropdown button
     And the invalid data file of "xlsx_footwear_product_import" should contain:
       """
       sku;family

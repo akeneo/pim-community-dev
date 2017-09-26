@@ -62,8 +62,8 @@ Feature: Export options in XSLX
     When I am on the "xlsx_footwear_option_export" export job page
     And I launch the export job
     And I wait for the "xlsx_footwear_option_export" job to finish
-    Then I press "xlsx_footwear_option_export_1.xlsx" on the "Download generated files" dropdown button
-    And I press "xlsx_footwear_option_export_2.xlsx" on the "Download generated files" dropdown button
+    Then I should see "xlsx_footwear_option_export_1.xlsx" on the "Download generated files" dropdown button
+    And I should see "xlsx_footwear_option_export_2.xlsx" on the "Download generated files" dropdown button
     And exported xlsx file 1 of "xlsx_footwear_option_export" should contain:
       | attribute          | code        | sort_order | label-en_US |
       | manufacturer       | Converse    | 1          | Converse    |

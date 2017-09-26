@@ -402,7 +402,9 @@ class Base extends Page
         $dropdownToggle = $this->spin(function () use ($button) {
             $toggle = $this->find('css', sprintf('*[data-toggle="dropdown"]:contains("%s")', $button));
             if (null !== $toggle) {
-                $toggle->click();
+                if (!$toggle->getParent()->hasClass('open')) {
+                    $toggle->click();
+                };
 
                 return $toggle;
             }
@@ -411,7 +413,7 @@ class Base extends Page
         $dropdownMenu = $dropdownToggle->getParent()->find('css', '.dropdown-menu, .AknDropdown-menu');
 
         return $this->spin(function () use ($dropdownMenu, $item) {
-            return $dropdownMenu->find('css', sprintf('*:contains("%s")', $item));
+            return $dropdownMenu->find('css', sprintf('.AknDropdown-menuLink:contains("%s")', $item));
         }, sprintf('Item "%s" of dropdown button "%s" not found', $item, $button));
     }
 
