@@ -13,19 +13,18 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\ProductModel\Query\FindVariantProductCompletenessInterface;
-use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProduct;
+use Pim\Component\Catalog\ProductModel\Query\FindCompleteVariantProductsInterface;
+use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProducts;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 class ProductModelNormalizerSpec extends ObjectBehavior
 {
     function let(
         NormalizerInterface $normalizer,
         CollectionFilterInterface $filter,
-        FindVariantProductCompletenessInterface $findVariantProductCompletenessQuery
+        FindCompleteVariantProductsInterface $findVariantProductCompletenessQuery
     ) {
         $this->beConstructedWith($filter, $findVariantProductCompletenessQuery);
 
@@ -64,7 +63,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce,
         ValueInterface $image,
-        CompleteVariantProduct $completeness
+        CompleteVariantProducts $completeness
     ) {
         $context = [
             'filter_types' => ['pim.transform.product_value.structured'],
@@ -170,7 +169,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce,
         ValueInterface $image,
-        CompleteVariantProduct $completeness
+        CompleteVariantProducts $completeness
     ) {
         $context = [
             'filter_types' => ['pim.transform.product_value.structured'],

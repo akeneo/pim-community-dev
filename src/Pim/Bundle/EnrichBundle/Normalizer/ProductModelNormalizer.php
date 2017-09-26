@@ -10,7 +10,7 @@ use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvide
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\ProductModel\Query\FindVariantProductCompletenessInterface;
+use Pim\Component\Catalog\ProductModel\Query\FindCompleteVariantProductsInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
@@ -56,7 +56,7 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var EntityWithFamilyVariantAttributesProvider */
     private $attributesProvider;
 
-    /** @var FindVariantProductCompletenessInterface */
+    /** @var FindCompleteVariantProductsInterface */
     private $findVariantProductCompletenessQuery;
 
     /** @var VariantNavigationNormalizer */
@@ -74,7 +74,7 @@ class ProductModelNormalizer implements NormalizerInterface
      * @param EntityWithFamilyValuesFillerInterface     $entityValuesFiller
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      * @param VariantNavigationNormalizer               $navigationNormalizer
-     * @param FindVariantProductCompletenessInterface   $findVariantProductCompletenessQuery
+     * @param FindCompleteVariantProductsInterface      $findVariantProductCompletenessQuery
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -88,7 +88,7 @@ class ProductModelNormalizer implements NormalizerInterface
         EntityWithFamilyValuesFillerInterface $entityValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
-        FindVariantProductCompletenessInterface $findVariantProductCompletenessQuery
+        FindCompleteVariantProductsInterface $findVariantProductCompletenessQuery
     ) {
         $this->normalizer            = $normalizer;
         $this->versionNormalizer     = $versionNormalizer;
