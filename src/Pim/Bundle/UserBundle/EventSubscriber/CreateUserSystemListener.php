@@ -5,6 +5,7 @@ namespace Pim\Bundle\UserBundle\EventSubscriber;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\DBAL\DBALException;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -60,7 +61,7 @@ class CreateUserSystemListener
 
         try {
             $user = $this->userFactory->create();
-            $user->setUsername('system');
+            $user->setUsername(UserInterface::SYSTEM_USER_NAME);
             $groups = $this->groupRepository->findAll();
 
             foreach ($groups as $group) {
