@@ -1,7 +1,6 @@
 Pim\Bundle\CatalogBundle\Entity\Group:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
-        - Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis: ~
         - Pim\Component\Catalog\Validator\Constraints\Immutable:
             properties:
                 - code

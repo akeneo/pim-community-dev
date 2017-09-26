@@ -3,14 +3,6 @@ Pim\Component\Catalog\Model\Product:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: [identifier]
             message: The same identifier is already set on another product
-        - Pim\Component\Catalog\Validator\Constraints\HasVariantAxes:
-            groups:
-                - Default
-                - pim_catalog_variant_group
-        - Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis:
-            groups:
-                - Default
-                - pim_catalog_variant_group
         - Pim\Component\Catalog\Validator\Constraints\UniqueVariantGroup:
             groups:
                 - Default

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
+use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -1544,6 +1545,16 @@ JSON;
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
         $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
+
+        // TODO: for now, the web api format remains the same, cf API-385
+        $productStandardWithDeprecatedVariantGroup = [];
+        foreach ($standardizedProduct as $field => $data) {
+            $productStandardWithDeprecatedVariantGroup[$field] = $data;
+            if ($field === PropertiesNormalizer::FIELD_GROUPS) {
+                $productStandardWithDeprecatedVariantGroup['variant_group'] = null;
+            }
+        }
+        $standardizedProduct = $productStandardWithDeprecatedVariantGroup;
 
         NormalizedProductCleaner::clean($expectedProduct);
         NormalizedProductCleaner::clean($standardizedProduct);

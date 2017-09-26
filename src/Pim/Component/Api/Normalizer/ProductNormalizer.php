@@ -4,8 +4,8 @@ namespace Pim\Component\Api\Normalizer;
 
 use Pim\Component\Api\Hal\Link;
 use Pim\Component\Api\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -47,6 +47,17 @@ class ProductNormalizer implements NormalizerInterface
     public function normalize($product, $format = null, array $context = [])
     {
         $productStandard = $this->productNormalizer->normalize($product, 'standard', $context);
+
+        // TODO: for now, the web api format remains the same, cf API-385
+        $productStandardWithDeprecatedVariantGroup = [];
+        foreach ($productStandard as $field => $data) {
+            $productStandardWithDeprecatedVariantGroup[$field] = $data;
+            if ($field === PropertiesNormalizer::FIELD_GROUPS) {
+                $productStandardWithDeprecatedVariantGroup['variant_group'] = null;
+            }
+        }
+        $productStandard = $productStandardWithDeprecatedVariantGroup;
+
         $identifier = $this->attributeRepository->getIdentifierCode();
 
         if (isset($productStandard['values'][$identifier])) {

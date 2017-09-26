@@ -92,6 +92,8 @@ interface ProductInterface extends
     /**
      * Get the variant group of the product
      *
+     * @deprecated will be remove with 2.0
+     *
      * @return GroupInterface|null
      */
     public function getVariantGroup();
