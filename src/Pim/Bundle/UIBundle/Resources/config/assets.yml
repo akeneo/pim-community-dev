@@ -44,7 +44,6 @@ css:
         - bundles/pimui/less/components/grid/FilterChoice.less
         - bundles/pimui/less/components/grid/FilterDate.less
         - bundles/pimui/less/components/grid/Grid.less
-        - bundles/pimui/less/components/grid/GridsLine.less
         - bundles/pimui/less/components/grid/GridContainer.less
         - bundles/pimui/less/components/grid/GridToolbar.less
         - bundles/pimui/less/components/grid/MassActions.less
@@ -74,7 +73,6 @@ css:
         - bundles/pimui/less/components/CenteredBox.less
         - bundles/pimui/less/components/Column.less
         - bundles/pimui/less/components/ColumnConfigurator.less
-        - bundles/pimui/less/components/DashboardButtons.less
         - bundles/pimui/less/components/Diff.less
         - bundles/pimui/less/components/Dropdown.less
         - bundles/pimui/less/components/Flash.less

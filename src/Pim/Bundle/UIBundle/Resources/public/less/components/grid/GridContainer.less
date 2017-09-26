@@ -12,7 +12,7 @@
     justify-content: center;
     align-items: center;
     line-height: 32px;
-    overfow: hidden;
+    overflow: hidden;
   }
 
   &-noDataImage {
@@ -39,6 +39,19 @@
 
   &--withoutNoDataPanel &-noData {
     display: none;
+  }
+
+  &-noData--small {
+    min-height: auto;
+  }
+
+  &-noData--small &-noDataImage {
+    height: 115px;
+    background-size: 150px 150px;
+  }
+
+  &-noData--small &-noDataTitle {
+    font-size: @AknTitleFontSize;
   }
 
   &--expanded {

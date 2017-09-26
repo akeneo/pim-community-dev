@@ -11,6 +11,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 /**
  * Completeness Widget element
  *
+ * TODO: Drop this and use the same decorator as the PEF
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -33,7 +35,7 @@ class CompletenessWidget extends Element
      */
     public function getChannelCompleteness($channel)
     {
-        return $this->getChannelNode($channel)->find('css', '.AknGrid-headerCell--right')->getText();
+        return $this->getChannelNode($channel)->find('css', '.stats')->getText();
     }
 
     /**
@@ -46,13 +48,12 @@ class CompletenessWidget extends Element
      */
     public function getLocalizedChannelCompleteness($channel, $locale)
     {
-        $localeLines = $this->getChannelNode($channel)->findAll('css', sprintf('tr', $channel));
+        $localeLines = $this->getChannelNode($channel)->findAll('css', '.content > *');
         foreach ($localeLines as $localeLine) {
             $localeCell = $localeLine->find('css', '.locale');
-            if (null !== $localeCell) {
-                if ($localeCell->getText() === $locale) {
-                    return $localeLine->find('css', '.total')->getText();
-                }
+
+            if (null !== $localeCell && $localeCell->getText() === $locale) {
+                return $localeLine->find('css', '.literal-progress')->getText();
             }
         }
 
@@ -64,19 +65,17 @@ class CompletenessWidget extends Element
     /**
      * @param $channel
      *
-     * @throws TimeoutException
-     *
      * @return NodeElement
      */
     protected function getChannelNode($channel)
     {
         return $this->spin(function () use ($channel) {
-            $headerCell = $this->find('css', sprintf('.AknGrid-headerCell:contains("%s")', $channel));
-            if (null !== $headerCell) {
-                return $this->getClosest($headerCell, 'AknGrid');
+            $cell = $this->find('css', sprintf('.channel:contains("%s")', $channel));
+            if (null !== $cell) {
+                return $this->getClosest($cell, 'completeness-block');
             }
 
             return null;
-        }, sprintf('Could not find completeness widget for channel %s', $channel));
+        }, sprintf('Could not find completeness widget for channel "%s"', $channel));
     }
 }

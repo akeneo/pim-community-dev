@@ -116,8 +116,8 @@ class NavigationContext extends PimContext implements PageObjectAware
         $this->getSession()->getPage()->find('css', '.form-signin button')->press();
 
         $this->spin(function () {
-            return $this->getSession()->getPage()->find('css', '.AknDashboardButtons');
-        }, sprintf('Can not reach Dashboard after login with %s', $username));
+            return $this->getSession()->getPage()->find('css', '.AknWidget');
+        }, sprintf('Cannot reach Dashboard after login with %s', $username));
     }
 
     /**
