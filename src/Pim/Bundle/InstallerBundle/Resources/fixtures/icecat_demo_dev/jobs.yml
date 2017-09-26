@@ -628,3 +628,8 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
+    compute_product_models_descendants:
+        connector: internal
+        alias:     compute_product_models_descendants
+        label:     Compute product models descendants
+        type:      compute_product_models_descendants

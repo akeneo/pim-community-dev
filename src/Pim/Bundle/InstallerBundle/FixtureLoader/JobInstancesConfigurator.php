@@ -41,8 +41,11 @@ class JobInstancesConfigurator
         if (!is_dir($installerDataPath)) {
             throw new \Exception(sprintf('Path "%s" not found', $installerDataPath));
         }
+
+        $configuredJobInstances = [];
         foreach ($jobInstances as $jobInstance) {
             $configuration = $jobInstance->getRawParameters();
+
             $configuration['filePath'] = sprintf('%s%s', $installerDataPath, $configuration['filePath']);
             if (!is_readable($configuration['filePath'])) {
                 throw new \Exception(
@@ -73,8 +76,11 @@ class JobInstancesConfigurator
     public function configureJobInstancesWithReplacementPaths(array $jobInstances, array $replacePaths)
     {
         $counter = 0;
+
+        $configuredJobInstances = [];
         foreach ($jobInstances as $jobInstance) {
             $configuration = $jobInstance->getRawParameters();
+
             if (!isset($replacePaths[$configuration['filePath']])) {
                 throw new \Exception(sprintf('No replacement path for "%s"', $configuration['filePath']));
             }
