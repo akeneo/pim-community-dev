@@ -23,7 +23,7 @@ Feature: Handle import of invalid XLSX data
     And I am on the "xlsx_clothing_asset_category_import" import job page
     And I launch the "xlsx_clothing_asset_category_import" import job
     And I wait for the "xlsx_clothing_asset_category_import" job to finish
-    Then I should see the secondary action "Download invalid data"
+    Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_clothing_asset_category_import" should contain:
       """
       code;parent;label-en_US
@@ -48,7 +48,7 @@ Feature: Handle import of invalid XLSX data
     And I am on the "xlsx_clothing_asset_import" import job page
     And I launch the "xlsx_clothing_asset_import" import job
     And I wait for the "xlsx_clothing_asset_import" job to finish
-    Then I should see the secondary action "Download invalid data"
+    Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_clothing_asset_import" should contain:
       """
       code;description;localized;enabled;end_of_use;tags;categories
@@ -72,7 +72,7 @@ Feature: Handle import of invalid XLSX data
     And I am on the "xlsx_clothing_product_proposal_import" import job page
     And I launch the "xlsx_clothing_product_proposal_import" import job
     And I wait for the "xlsx_clothing_product_proposal_import" job to finish
-    Then I should see the secondary action "Download invalid data"
+    Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_clothing_product_proposal_import" should contain:
       """
       sku;enabled;description-en_US-mobile
