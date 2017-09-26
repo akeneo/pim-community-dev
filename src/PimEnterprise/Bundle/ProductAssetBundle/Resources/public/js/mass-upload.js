@@ -164,7 +164,6 @@ define(
                 }.bind(this));
 
                 myDropzone.on('error', function (file, error) {
-                    console.log('myDropzone error', file, error);
                     file.previewElement.querySelector('.filename .error.text-danger')
                         .textContent = __(error.error);
                 }.bind(this));
@@ -236,14 +235,14 @@ define(
             /**
              * Starts uploads
              */
-            startAll: function (e) {
+            startAll: function () {
                 this.myDropzone.enqueueFiles(this.myDropzone.getFilesWithStatus(Dropzone.ADDED));
             },
 
             /**
              * Cancel all uploads and delete already uploaded files
              */
-            cancelAll: function (notify) {
+            cancelAll: function () {
                 $importButton.addClass('AknButton--disabled');
                 this.myDropzone.removeAllFiles(true);
                 messenger.notify(
