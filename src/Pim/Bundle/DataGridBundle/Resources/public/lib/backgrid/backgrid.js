@@ -752,6 +752,7 @@ var Cell = Backgrid.Cell = Backbone.View.extend({
   render: function () {
     this.$el.empty();
     this.$el.text(this.formatter.fromRaw(this.model.get(this.column.get("name"))));
+    this.el.dataset.column = this.column.get("name");
     this.delegateEvents();
     return this;
   },
@@ -2234,7 +2235,14 @@ var Body = Backgrid.Body = Backbone.View.extend({
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < this.rows.length; i++) {
       var row = this.rows[i];
-      fragment.appendChild(row.render().el);
+      row.render();
+      if ('TR' === row.el.tagName) {
+        fragment.appendChild(row.el);
+      } else {
+        _.each(row.$el.children(), (child) => {
+            fragment.appendChild(child);
+        });
+      }
     }
 
     this.el.appendChild(fragment);

@@ -7,7 +7,7 @@ use Pim\Component\Catalog\Validator\UniqueValuesSet;
 
 /**
  * The UniqueValueSet class is stateful, and used when you import several product, to check if in the product batch
- * there is no unique identifier issues.
+ * there is no unique identifier issues or unique axis combination issues.
  * This listener listen the StorageEvents::POST_SAVE_ALL to reset the UniqueValueSet information, to be able to
  * work in another product batch without uniqueness issues.
  *

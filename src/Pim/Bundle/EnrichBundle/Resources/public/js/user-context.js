@@ -30,11 +30,15 @@ define(
              *
              * @param {String} key
              * @param {String} value
+             * @param {Object} options
              */
-            set: function (key, value) {
+            set: function (key, value, options) {
+                options = options || {};
                 contextData[key] = value;
 
-                this.trigger('change:' + key);
+                if (!options.silent) {
+                    this.trigger('change:' + key);
+                }
             }
         }, Backbone.Events);
     }

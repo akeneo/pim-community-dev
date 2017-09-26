@@ -169,6 +169,7 @@ pim_enrich:
             create: Create product
             filters: Filters
             selected: selected products
+            common: Common
             btn:
                 enabled: Enabled
                 disabled: Disabled

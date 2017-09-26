@@ -42,6 +42,9 @@ class PimCatalogExtension extends Extension
         $loader->load('factories.yml');
         $loader->load('family_variant.yml');
         $loader->load('filters.yml');
+        $loader->load('job_constraints.yml');
+        $loader->load('job_defaults.yml');
+        $loader->load('jobs.yml');
         $loader->load('localization/factories.yml');
         $loader->load('localization/localizers.yml');
         $loader->load('localization/presenters.yml');

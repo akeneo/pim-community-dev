@@ -13,6 +13,7 @@ define(
         'oro/translator',
         'pim/form',
         'pim/router',
+        'routing',
         'pim/template/menu/item',
         'oro/mediator'
     ],
@@ -21,6 +22,7 @@ define(
         __,
         BaseForm,
         router,
+        Routing,
         template,
         mediator
     ) {
@@ -64,6 +66,7 @@ define(
             render: function () {
                 this.$el.empty().append(this.template({
                     title: this.getLabel(),
+                    url: Routing.generateHash(this.getRoute()),
                     active: this.active
                 }));
 
@@ -78,7 +81,11 @@ define(
              * @param {Event} event
              */
             redirect: function (event) {
-                if (!_.has(event, 'extension') || event.extension === this.code) {
+                event.stopPropagation();
+
+                if (!(event.metaKey || event.ctrlKey) &&
+                    (!_.has(event, 'extension') || event.extension === this.code)
+                ) {
                     router.redirectToRoute(this.getRoute());
                 }
             },

@@ -181,7 +181,7 @@
       firstPage: 1,
       lastPage: null,
       currentPage: null,
-      pageSize: 100,
+      pageSize: 25,
       totalPages: null,
       totalRecords: null,
       sortKey: null,

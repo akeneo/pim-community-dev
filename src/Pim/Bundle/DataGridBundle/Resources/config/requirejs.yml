@@ -55,6 +55,7 @@ config:
         oro/datagrid/boolean-cell:              pimdatagrid/js/datagrid/cell/boolean-cell
         oro/datagrid/html-cell:                 pimdatagrid/js/datagrid/cell/html-cell
         oro/datagrid/date-cell:                 pimdatagrid/js/datagrid/cell/date-cell
+        oro/datagrid/history-diff-cell:         pimdatagrid/js/datagrid/cell/history-diff-cell
         oro/datagrid/datetime-cell:             pimdatagrid/js/datagrid/cell/datetime-cell
         oro/datagrid/number-cell:               pimdatagrid/js/datagrid/cell/number-cell
         oro/datagrid/integer-cell:              pimdatagrid/js/datagrid/cell/integer-cell
@@ -62,6 +63,7 @@ config:
         oro/datagrid/select-row-cell:           pimdatagrid/js/datagrid/cell/select-row-cell
         oro/datagrid/string-cell:               pimdatagrid/js/datagrid/cell/string-cell
         oro/datagrid/completeness-cell:         pimdatagrid/js/datagrid/cell/completeness-cell
+        oro/datagrid/expand-history-cell:       pimdatagrid/js/datagrid/cell/expand-history-cell
         oro/datagrid/enabled-cell:              pimdatagrid/js/datagrid/cell/enabled-cell
         oro/datagrid/image-cell:                pimdatagrid/js/datagrid/cell/image-cell
         oro/datagrid/boolean-label-cell:        pimdatagrid/js/datagrid/cell/boolean-label-cell
@@ -81,9 +83,13 @@ config:
         oro/datagrid/pagination-input:          pimdatagrid/js/datagrid/pagination-input
         oro/datagrid/pagination:                pimdatagrid/js/datagrid/pagination
         oro/datagrid/row:                       pimdatagrid/js/datagrid/row
+        oro/datagrid/history-row:               pimdatagrid/js/datagrid/history-row
         oro/datagrid-builder:                   pimdatagrid/js/datagrid-builder
         oro/loading-mask:                       pimdatagrid/js/loading-mask
         oro/pageable-collection:                pimdatagrid/js/pageable-collection
+
+        oro/datagrid/product-and-product-model-image-cell: pimdatagrid/js/datagrid/cell/product-and-product-model-image-cell
+        oro/datagrid/product-and-product-model-label-cell: pimdatagrid/js/datagrid/cell/product-and-product-model-label-cell
 
         backbone/pageable-collection:           pimdatagrid/lib/backbone-pageable
         backgrid:                               pimdatagrid/lib/backgrid/backgrid
@@ -145,4 +151,11 @@ config:
         pim/template/datagrid/filter/metric-filter:      pimdatagrid/templates/filter/metric-filter.html
         pim/template/datagrid/filter/search-filter:      pimdatagrid/templates/filter/search-filter.html
         pim/template/datagrid/cell/credentials-cell:     pimdatagrid/templates/datagrid/cell/credentials-cell.html
+        pim/template/datagrid/cell/history-diff-cell:    pimdatagrid/templates/datagrid/cell/history-diff-cell.html
+        pim/template/datagrid/cell/expand-history-cell:  pimdatagrid/templates/datagrid/cell/expand-history-cell.html
         pim/template/datagrid/filter/scope-filter:       pimdatagrid/templates/filter/scope-filter.html
+        pim/template/datagrid/row/version:               pimdatagrid/templates/datagrid/row/version.html
+        pim/template/datagrid/row/changes:               pimdatagrid/templates/datagrid/row/changes.html
+        pim/template/datagrid/cell/image-cell:           pimdatagrid/templates/datagrid/cell/image-cell.html
+
+        pim/template/datagrid/cell/product-and-product-model-image-cell: pimdatagrid/templates/datagrid/cell/product-and-product-model-image-cell.html

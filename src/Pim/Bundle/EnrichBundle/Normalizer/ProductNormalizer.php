@@ -14,6 +14,7 @@ use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -86,6 +87,9 @@ class ProductNormalizer implements NormalizerInterface
     /** @var EntityWithFamilyValuesFillerInterface */
     protected $productValuesFiller;
 
+    /** @var VariantNavigationNormalizer */
+    protected $navigationNormalizer;
+
     /**
      * @param NormalizerInterface                   $productNormalizer
      * @param NormalizerInterface                   $versionNormalizer
@@ -105,6 +109,7 @@ class ProductNormalizer implements NormalizerInterface
      * @param FileNormalizer                        $fileNormalizer
      * @param ProductBuilderInterface               $productBuilder
      * @param EntityWithFamilyValuesFillerInterface $productValuesFiller
+     * @param VariantNavigationNormalizer           $navigationNormalizer
      */
     public function __construct(
         NormalizerInterface $productNormalizer,
@@ -124,7 +129,8 @@ class ProductNormalizer implements NormalizerInterface
         CompletenessCalculatorInterface $completenessCalculator,
         FileNormalizer $fileNormalizer,
         ProductBuilderInterface $productBuilder,
-        EntityWithFamilyValuesFillerInterface $productValuesFiller
+        EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        VariantNavigationNormalizer $navigationNormalizer
     ) {
         $this->productNormalizer                = $productNormalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -143,7 +149,8 @@ class ProductNormalizer implements NormalizerInterface
         $this->completenessCalculator           = $completenessCalculator;
         $this->fileNormalizer                   = $fileNormalizer;
         $this->productBuilder                   = $productBuilder;
-        $this->productValuesFiller = $productValuesFiller;
+        $this->productValuesFiller              = $productValuesFiller;
+        $this->navigationNormalizer = $navigationNormalizer;
     }
 
     /**
@@ -167,6 +174,11 @@ class ProductNormalizer implements NormalizerInterface
         $created = null !== $oldestLog ? $this->versionNormalizer->normalize($oldestLog, 'internal_api') : null;
         $updated = null !== $newestLog ? $this->versionNormalizer->normalize($newestLog, 'internal_api') : null;
 
+        $variantNavigation = [];
+        if ($product instanceof VariantProductInterface) {
+            $variantNavigation = $this->navigationNormalizer->normalize($product, $format, $context);
+        }
+
         $normalizedProduct['meta'] = [
             'form'              => $this->formProvider->getForm($product),
             'id'                => $product->getId(),
@@ -176,6 +188,7 @@ class ProductNormalizer implements NormalizerInterface
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'completenesses'    => $this->getNormalizedCompletenesses($product),
             'image'             => $this->normalizeImage($product->getImage(), $format, $context),
+            'variant_navigation' => $variantNavigation,
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
         return $normalizedProduct;

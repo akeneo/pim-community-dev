@@ -189,6 +189,10 @@
     overflow: hidden;
   }
 
+  &-expandable {
+    width: 100px;
+  }
+
   &-expand {
     width: 32px;
     height: 32px;
@@ -198,5 +202,40 @@
     &--expanded {
       transform: rotate(90deg);
     }
+  }
+
+  &-imageLayer {
+    position: absolute;
+    border: 1px solid @AknBorderColor;
+    background: white;
+    height: 44px;
+    width: 44px;
+    transform: translate(4px, -4px);
+    transition: border-color 0.2s ease-in;
+
+    &:after {
+      content: '';
+      position: absolute;
+      border: 1px solid @AknBorderColor;
+      background: white;
+      height: 42px;
+      width: 42px;
+      transform: translate(-3px, 1px);
+      transition: border-color 0.2s ease-in;
+    }
+  }
+
+  &-bodyRow:hover &-imageLayer,
+  &-bodyRow:hover &-image,
+  &-bodyRow:hover &-imageLayer:after {
+    border-color: darken(@AknBorderColor, 20%);
+  }
+
+  &-image {
+    position: relative;
+    height: 44px;
+    width: 44px;
+    border: 1px solid @AknBorderColor;
+    transition: border-color 0.2s ease-in;
   }
 }

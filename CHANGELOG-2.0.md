@@ -1,6 +1,168 @@
-# 2.0
+# 2.0.0-ALPHA1 (2017-09-25)
 
-## Functional improvements
+## Better manage products with variants!
+
+- PIM-6330: Family variant - As Julia I would like to import a new variant of a family
+- PIM-6331: Family variant - As Julia, I would like to export a family variant
+- PIM-6333: Import - As Julia, I would like to import products models from my ERP
+- PIM-6335: Import - As Julia, I would like to import variant products from my ERP
+- PIM-6336: Export - As Julia, I would like to export variant products
+- PIM-6338: Product model - As Julia I would like to enrich a product model
+- PIM-6352: Grid - As Julia, I would like to display the products models in the grid
+- PIM-6353: Grid - As Julia, I would like to search products with variants on custom attributes
+- PIM-6360: Bulk actions - As Julia, I would like to edit some products models sequentially
+- PIM-6410: POC Products models
+- PIM-6411: POC Family variant
+- PIM-6441: Fixtures catalog
+- PIM-6442: TECH - Extract values behavior from product
+- PIM-6444: No variant group - Remove the entry menu + the screens
+- PIM-6445: TECH - Family variant design
+- PIM-6446: TECH - Family variant CRUD API
+- PIM-6447: TECH - Product model design
+- PIM-6448: TECH - Product model CRUD API
+- PIM-6454: POC Search products and products models
+- PIM-6455: Family variant - As Julia, I would like to update a family variant by import
+- PIM-6479: TECH - Rename ProductValue in Value
+- PIM-6669: Product model - As Julia I would like to enrich a sub product model
+- PIM-6674: No bulk actions managed with products models
+- PIM-6732: No variant group - Remove the bulk operation "Add to a variant group"
+- PIM-6734: No variant group - Remove the CE permissions for variant groups
+- PIM-6735: No variant group - Remove the variant groups exports and imports
+- PIM-6737: Export - As Julia, I would like to export products models
+- PIM-6742: Import - As Julia, I would like to update products models by import from my ERP
+- PIM-6743: Import - As Julia I would like to update variant products from my ERP
+- PIM-6768: Grid - ID column with "product model code" or "product identifier"
+- PIM-6801: Settings - As Julia I would like to create an attribute
+
+## Better UI\UX!
+
+- PIM-6288: Update flash messages design
+- PIM-6289: Update JSTree design
+- PIM-6294: Update switch design
+- PIM-6374: Add columns for product navigation
+- PIM-6391: Update comments design
+- PIM-6403: Update panels design to use dropdown selectors
+- PIM-6404: Update buttons design
+- PIM-6409: Update all the title containers design
+- PIM-6290: Update the main navigation design
+- PIM-6397: Enable Search filter on all grids
+- PIM-6406: Update job profile show page to include last executions
+- TIP-764: Mass edit has been redone
+- PIM-6412: GRID Change product information -  As Julia, I would like to use the mass edit with a new UI
+- PIM-6474: [IMP] Main menu does not display the "highlighted" elements
+- PIM-6486: [IMP] There are remaining borders in some tabs
+- PIM-6495: PEF HEADER- As Julia, I would like to enrich product in a brand new UI
+- PIM-6505: GRID - As Julia I would like to switch to another working context
+- PIM-6506: PEF ATTRIBUTE- As Julia, I would like to enrich product in a brand new UI
+- PIM-6507: PEF COMPLETENESS - As Julia, I would like to display product completeness in a brand new UI
+- PIM-6508: PEF CATEGORY - As Julia, I would like to enrich product in a brand new UI
+- PIM-6513: [IMP] Display no result screen with the grid header
+- PIM-6517: GRID FILTERS - As Julia, I would like to Manage filters on the product grid
+- PIM-6521: GRID EXPORT - As Julia, I would like to quick export products from the grid
+- PIM-6524: GRID VIEW - As Julia, I would like to create a view
+- PIM-6533: [IMP] Export and Import icons are mixed in the menu
+- PIM-6535: [IMP] Import / Export: display the Profile's name in purple
+- PIM-6545: ASSET GRID- As Julia, I would like to display the assets in a brand new grid
+- PIM-6551: PEF ASSOCIATION - As Julia, I would like to view Association in a new UI
+- PIM-6552: PEF ASSOCIATION  - As Julia, I would like to add/remove an association
+- PIM-6553: GRID VIEW - As Julia I would like to update a view
+- PIM-6554: PUBLISHED Products GRID - As Julia, I would like to check the published products
+- PIM-6555: GRID VIEW - As Julia, I would like to display a view list
+- PIM-6556: PEF COMPARE - As Julia, I would like to copy product information from a locale/ or a channel
+- PIM-6570: [IMP] PEF - Completeness is not updated after a single Save
+- PIM-6574: GRID CATEGORY - As Julia, I would like to display the Category panel in the product grid
+- PIM-6575: GRID VIEW - As Julia, I would like to delete a view
+- PIM-6576: GRID PRODUCT - As Julia, I would like to create a product in a brand new UI
+- PIM-6577: PEF - As Julia I would like to add an option to a simple or multiselect attribute with a new design
+- PIM-6578: PEF - As Julia I would like to view the product's version content in a new UI
+- PIM-6579: *** PEF HIGHLIGHT - As Julia, I would like to see at a glance empty required attributes
+- PIM-6580: PEF COMMENT - As Julia, I would like to add a comment on a product
+- PIM-6581: PEF COMMENT - As Julia, I would like to reply to a comment
+- PIM-6582: PEF Restore - As Julia, I would like to restore a product version in a new UI
+- PIM-6587: GRID - As Julia, I would like to switch from View to Project
+- PIM-6606: IMPORT EXPORT - As Julia, I would like to search for a profile in a new designed drop-down
+- PIM-6607: IMPORT - As Julia I would like to upload a file
+- PIM-6608: IMPORT EXPORT - As Julia I would like to edit an import or export profile properties & settings in a new UI	
+- PIM-6613: [IMP] Settings Attributes - Attribute's name isn't display in purple
+- PIM-6614: [IMP] Settings Attributes - type and group dropdowns don't have the right design
+- PIM-6619: ATTRIBUTE CREATION - As Julia, I would like to create an attribute
+- PIM-6631: GROUP TYPE CREATION - As Julia, I would like to create a group type
+- PIM-6640: CHANNEL SEARCH - As Julia, I would like to look for a channel using its label
+- PIM-6643: [IMP] wrong design when you log out
+- PIM-6645: PEF SEQ EDIT- As Julia, I would like to edit sequentially products
+- PIM-6653: FAMILY EDIT - As Julia, I would like to mass edit families
+- PIM-6658: PEF COMPLETENESS & FILTER
+- PIM-6694: Add UX Design
+- PIM-6746: PEF/ Grid - As Julia, I would like to keep the working context in the header
+- PIM-6749: PEF - As Mary, I would like to send a comment with my proposal in a new UI
+- PIM-6751: PEF - As Mary, I would like to click on a new designed button to send my proposal
+- PIM-6753: COMMON - As Julia I would like "empty" screen to be displayed in a new UI
+- PIM-6755: COMMON - As Julia I would like "no result" screen to be displayed in a new UI
+- PIM-6758: PEF - As Julia, I would like to see the missing required attributes in the PEF header
+- PIM-6778: PEF HEADER - As Julia, I would like to view the identifier in the PEF header
+
+## New API End Points 
+
+- API-362: Push job executions into a queue that will be consumed by a daemon
+- API-349: Apply permissions on published products export
+- API-298: Update partially a list of products with EE permissions	
+- API-358: As Philips, I want to know how to use the new draft/proposal endpoints
+- API-354: As Philip, I want to find the documentation of the published product endpoints
+- API-299: I want to be able to get a product and post/patch it back again
+- API-304: Update partially a product that is not classified at all
+- API-363: Add a parameter "is_user_authenticated" in the job parameters to apply user permissions in a batch
+- API-348: As Philip, I want to be able to get pages of published products/products
+- API-225: Update partially a product whose code does not exist
+- API-223: Try to update partially a product that can only be viewed through categories
+- API-359: Configure notification user of a job in the raw_parameters instead of user column
+- API-91: Update partially a product that can only be edited through categories
+- API-70: Create a product with EE permissions
+- API-297: Post a media with EE permissions
+- API-347: [Migration script] Label is now mandatory when generating clientId via cmd line
+- API-334: Execution jobs should have all the information to be launched in background
+- API-351: As Peter/Philip, I want that API connection revocation takes effect instantly
+- API-350: API connection Style
+- API-324: Label is now mandatory when generating client Id via command line
+- API-72: Update partially a product that is owned through categories
+- API-340: In products/published products, use of an attribute which is not viewable
+- API-260: Get a filtered list of published products
+- API-335: Refactor the ProductController in ApiBundle
+- API-259: Get a list of published products
+- API-314: As Peter, I want to revoke one given API connection
+- API-311: As Peter, I want to create an API connection
+- API-320: As Peter, I want to restrict who can view/create/revoke API connections
+- API-312: As Peter, I want to list all my API connections
+- API-303: Apply permissions on mass product deletion
+- API-296: Transform behat tests on product query builder into integration tests
+- API-247: Apply permissions on products export
+- API-331: As a devops, I should be able to configure where files generated by jobs are archived
+- API-224: Try to update partially a product that cannot be viewed through categories
+- API-228: Submit a draft for approval
+- API-74: Delete a product with EE permissions
+- API-213: Filter product and product values with EE permissions
+- API-71: Get a single product with EE permissions
+- API-69: Get a list of products with EE permissions
+- API-240: Know the status of a working copy
+- API-229: Get a draft
+- API-218: Get the list of measure families with their respecting units
+- API-252: Get a single measure family
+- API-161: Update partially a list of channels
+- API-205: Update partially a single channel
+- API-159: Update partially a list of association types
+- API-184: Get a single association type
+- API-160: Get a list of association types
+- API-207: Update partially a single association type
+- API-206: Create a new association type
+- API-204: Create a new channel
+- API-202: Create a new attribute group
+- API-182: Get a single currency
+- API-165: Get a list of currencies
+- API-163: Update partially a list of attribute groups
+- API-203: Update partially a single attribute group
+- API-183: Get a single attribute group
+- API-166: Get a list of attribute groups
+
+## Other Functional Improvements
 
 - API-324: Convert label option to mandatory argument in command `pim:oauth-server:create-client`
 - API-312: Add UI to manage (create/revoke) API connections
@@ -28,21 +190,6 @@
 - API-359: Move notified user of a job into the configuration parameters of the job
 - TIP-733: Replace `oro/datafilter-builder` with `filters-list` and `filters-button`
 - PIM-6645: removed all backend related sequential edit classes. It's now managed in the frontend.
-
-## UI\UX Refactoring
-
-- PIM-6288: Update flash messages design
-- PIM-6289: Update JSTree design
-- PIM-6294: Update switch design
-- PIM-6374: Add columns for product navigation
-- PIM-6391: Update comments design
-- PIM-6403: Update panels design to use dropdown selectors
-- PIM-6404: Update buttons design
-- PIM-6409: Update all the title containers design
-- PIM-6290: Update the main navigation design
-- PIM-6397: Enable Search filter on all grids
-- PIM-6406: Update job profile show page to include last executions
-- TIP-764: Mass edit has been redone
 
 ## Remove MongoDB product storage
 
