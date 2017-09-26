@@ -30,6 +30,7 @@ Feature: Edit an import
       | Groups column     | grp           |
       | Decimal separator | .             |
       | Date format       | yyyy-mm-dd    |
+    And I visit the "Global settings" tab
     And I uncheck the "Allow file upload" switch
     And I uncheck the "Enable the product" switch
     And I uncheck the "Real time history update" switch

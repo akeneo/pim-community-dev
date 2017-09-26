@@ -307,6 +307,12 @@ class Base extends Page
      */
     public function confirmDialog()
     {
+        $this->spin(function () {
+            $loading = $this->find('css', '.loading-wrapper');
+
+            return null === $loading || !$loading->isVisible();
+        }, 'Loading wrapper is still visible');
+
         $button = $this->spin(function () {
             return $this->getConfirmDialog()->find('css', '.ok');
         }, 'Could not find the confirmation button');

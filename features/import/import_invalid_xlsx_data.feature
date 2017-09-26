@@ -171,7 +171,7 @@ Feature: Handle import of invalid XLSX data
     And I am on the "xlsx_footwear_product_import" export job page
     And I launch the "xlsx_footwear_product_import" import job
     And I wait for the "xlsx_footwear_product_import" job to finish
-    Then I should see "Download invalid data" on the "Download generated files" dropdown button
+    Then I should see the text "Download invalid data"
     And the invalid data file of "xlsx_footwear_product_import" should contain:
       """
       sku;family

@@ -1741,6 +1741,8 @@ class WebUser extends PimContext
         $this->spin(function () use ($item, $button) {
             return null !== $this->getCurrentPage()->getDropdownButtonItem($item, $button);
         }, sprintf('Cannot find item "%s" on the dropdown "%s"', $item, $button));
+
+        $this->getCurrentPage()->find('css', 'body')->click();
     }
 
     /**

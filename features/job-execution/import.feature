@@ -21,14 +21,10 @@ Feature: Import profiles
     And I wait for the "csv_footwear_product_import" job to finish
     Then I should see the text "COMPLETED"
     And I should see the text "Execution details - CSV footwear product import [csv_footwear_product_import]"
-    And I should see the secondary action "Download invalid data"
-    And I should see the text "Download read files"
     And I should see "Download invalid data" on the "Download generated files" dropdown button
-    And I should not see the secondary action "xlsx_footwear_association_type_export_1.xlsx"
-    And I should not see the secondary action "xlsx_footwear_association_type_export_2.xlsx"
-    And I should not see the secondary action "Download generated archive"
-    And I should see the text "Show profile"
-    When I press the "Show profile" button
+    And I should see "Download read files" on the "Download generated files" dropdown button
+    And I should see the secondary action "Show profile"
+    When I press the secondary action "Show profile"
     Then I should be redirected on the import page of "csv_footwear_product_import"
 
   Scenario: Go to the job execution page for an "import" without rights to download logs
@@ -42,14 +38,10 @@ Feature: Import profiles
     And I wait for the "csv_footwear_product_import" job to finish
     Then I should see the text "COMPLETED"
     And I should see the text "Execution details - CSV footwear product import [csv_footwear_product_import]"
-    And I should not see the secondary action "Download log"
-    And I should see the text "Download read files"
+    And I should see "Download read files" on the "Download generated files" dropdown button
     And I should see "Download invalid data" on the "Download generated files" dropdown button
-    And I should not see the secondary action "xlsx_footwear_association_type_export_1.xlsx"
-    And I should not see the secondary action "xlsx_footwear_association_type_export_2.xlsx"
-    And I should not see the secondary action "Download generated archive"
-    And I should see the text "Show profile"
-    When I press the "Show profile" button
+    And I should see the secondary action "Show profile"
+    When I press the secondary action "Show profile"
     Then I should be redirected on the import page of "csv_footwear_product_import"
 
   Scenario: Go to the job execution page without for an "import" without rights to download generated files
@@ -63,12 +55,7 @@ Feature: Import profiles
     And I wait for the "csv_footwear_product_import" job to finish
     Then I should see the text "COMPLETED"
     And I should see the text "Execution details - CSV footwear product import [csv_footwear_product_import]"
-    And I should see the secondary action "Download invalid data"
-    And I should not see the secondary action "Download read files"
-    And I should not see the secondary action "Download invalid data"
-    And I should not see the secondary action "xlsx_footwear_association_type_export_1.xlsx"
-    And I should not see the secondary action "xlsx_footwear_association_type_export_2.xlsx"
-    And I should not see the secondary action "Download generated archive"
-    And I should see the text "Show profile"
+    And I should see the secondary action "Download log"
+    And I should see the secondary action "Show profile"
     When I press the secondary action "Show profile"
     Then I should be redirected on the import page of "csv_footwear_product_import"
