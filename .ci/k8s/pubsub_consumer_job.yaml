@@ -34,7 +34,7 @@ spec:
             tcpSocket:
               port: 27017
           resources:
-            limit:
+            limits:
               cpu: "100m"
               memory: "300Mi"
         - name: mysql
@@ -56,7 +56,7 @@ spec:
             tcpSocket:
               port: 3306
           resources:
-            limit:
+            limits:
               cpu: "200m"
               memory: "400Mi"
         - name: elasticsearch
@@ -76,7 +76,7 @@ spec:
             initialDelaySeconds: 5
             failureThreshold: 30
           resources:
-            limit:
+            limits:
               cpu: "100m"
               memory: "1000Mi"
         - name: php
@@ -91,7 +91,7 @@ spec:
               exec:
                 command: ["/usr/sbin/apache2ctl", "stop"]
           resources:
-            limit:
+            limits:
               cpu: "200m"
               memory: "700Mi"
         - name: selenium
@@ -101,7 +101,7 @@ spec:
             - mountPath: /home/jenkins
               name: pim
           resources:
-            limit:
+            limits:
               cpu: "300m"
               memory: "1000Mi"
         - name: pubsub
@@ -117,7 +117,7 @@ spec:
             - { name: pim, mountPath: /home/jenkins }
             - { name: artifacts, mountPath: /tmp/behat/screenshots }
           resources:
-            limit:
+            limits:
               cpu: "100m"
               memory: "100Mi"
       volumes:
