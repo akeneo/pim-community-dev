@@ -20,6 +20,18 @@
 
   .select2-choice {
     color: @AknDefaultFontColor;
+
+    .select2-arrow {
+      width: 25px;
+      background: url("../../images/icon-down.svg") no-repeat 4px 16px;
+      background-color: inherit;
+      background-size: 12px;
+      border-left: none;
+
+      b {
+        display: none;
+      }
+    }
   }
 
   &.select2-container-disabled .select2-choice {
@@ -107,13 +119,12 @@
   border: 1px solid @AknBorderColor;
   color: @AknDarkFontColor;
   border-radius: 2px;
-  background: white;
+  background-color: white;
 
   .select2-arrow {
     width: @AknFormHeight;
     border-left-color: @AknBorderColor;
     border-radius: 0 2px 2px 0;
-    background: white;
 
     b {
       background-size: 96px 48px;
@@ -453,12 +464,14 @@
 
   .select2-choice {
     border: none;
+    padding: 0;
 
     & > .select2-chosen {
-      margin-right: 34px;
+      margin-right: 28px;
     }
 
     .select2-arrow {
+      width: 25px;
       border-left: none;
     }
   }
