@@ -73,12 +73,17 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
      */
     protected function convertGroups($data, array $convertedItem)
     {
-        $groups = is_array($data) ? implode(',', $data) : (string) $data;
+        if (!array_key_exists('groups', $convertedItem)) {
+            $convertedItem['groups'] = '';
+        }
 
-        if (isset($convertedItem['groups']) && '' !== $convertedItem['groups']) {
-            $convertedItem['groups'] .= sprintf(',%s', $groups);
-        } else {
-            $convertedItem['groups'] = $groups;
+        $groups = is_array($data) ? implode(',', $data) : (string) $data;
+        if ('' !== $groups) {
+            if ('' !== $convertedItem['groups']) {
+                $convertedItem['groups'] .= sprintf(',%s', $groups);
+            } else {
+                $convertedItem['groups'] = $groups;
+            }
         }
 
         return $convertedItem;
