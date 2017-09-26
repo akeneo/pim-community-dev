@@ -210,7 +210,7 @@
     background: white;
     height: 44px;
     width: 44px;
-    transform: translate(4px, -4px);
+    transform: translate(4px, 0);
     transition: border-color 0.2s ease-in;
 
     &:after {
@@ -237,5 +237,13 @@
     width: 44px;
     border: 1px solid @AknBorderColor;
     transition: border-color 0.2s ease-in;
+    margin-top: 3px;
+    margin-bottom: -3px;
+
+    &--withLayer {
+      margin-top: 4px;
+      margin-bottom: -4px;
+      margin-right: 4px;
+    }
   }
 }
