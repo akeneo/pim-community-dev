@@ -8,6 +8,7 @@ extensions:
         targetZone: breadcrumbs
         config:
             tab: pim-menu-products
+            itemPath: code
 
     pim-product-model-edit-form-main-image:
         module: pim/form/common/main-image
