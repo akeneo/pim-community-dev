@@ -20,6 +20,8 @@ stage("Build") {
                 sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
                 sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
                 sh "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"
+                sh "sed -i \"s#http://akeneo#http://127.0.0.1#g\" behat.ci.yml"
+                sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.ci.yml"
                 sh "sed \"\$a    installer_data: 'PimInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
                 sh "cp behat.ci.yml behat.yml"
 
@@ -237,7 +239,7 @@ stage("Test") {
                                 container: "php",
                                 junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                                 artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                                script: "php ./bin/behat --strict -c behat.ci.yml --tags=\"~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app\" --strict -vv " + lineCE
+                                script: "php ./bin/behat --strict --tags=\"~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app\" --strict -vv " + lineCE
                             ]
                         ])
                     }
@@ -430,7 +432,7 @@ def queue(body, scale, edition) {
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "pubsub-" + uuid, containers: [
         containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:5.6"),
-        containerTemplate(name: "gcloud", alwaysPullImage: true, ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:0.2", envVars: [containerEnvVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
+        containerTemplate(name: "gcloud", alwaysPullImage: true, ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud", envVars: [containerEnvVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ], volumes: [
