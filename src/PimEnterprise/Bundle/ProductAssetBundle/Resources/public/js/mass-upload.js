@@ -12,7 +12,8 @@ define(
         'pimee/template/asset/mass-upload-row',
         'pim/form-builder',
         'pim/common/breadcrumbs',
-        'pim/form'
+        'pim/form',
+        'oro/mediator'
     ],
     function (
         $,
@@ -26,7 +27,8 @@ define(
         rowTemplate,
         formBuilder,
         Breadcrumbs,
-        BaseForm
+        BaseForm,
+        mediator
     ) {
         /**
          * Override to be able to use template root different other than 'div'
@@ -52,11 +54,30 @@ define(
             pageTemplate: _.template(pageTemplate),
             rowTemplate: _.template(rowTemplate),
 
+            initialize: function() {
+              mediator.once('route_start', this.clearModal.bind(this));
+
+              return BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            clearModal: function() {
+              if (this.modal) {
+                  this.modal.close();
+                  this.modal.remove();
+              }
+
+              $('.mass-upload-modal').remove();
+                this.$el.empty();
+            },
+
             /**
              * {@inheritdoc}
              */
             render: function () {
+              this.clearModal();
+
               const modal = new Backbone.BootstrapModal({
+                  className: 'modal modal--fullPage modal--topButton mass-upload-modal',
                   allowCancel: false,
                   content: this.pageTemplate({
                     __,
@@ -66,8 +87,6 @@ define(
               });
 
                 modal.open();
-
-                modal.$el.addClass('modal--fullPage modal--topButton');
                 modal.$el.find('.modal-body').addClass('modal-body-full');
 
                 modal.$el.on('click', '.start:not(.AknButton--disabled)', this.startAll.bind(this));
@@ -80,6 +99,8 @@ define(
                     router.redirectToRoute('pimee_product_asset_index')
                 });
 
+                this.modal = modal;
+
                 $navbarButtons = $('.AknTitleContainer-rightButtons');
                 $importButton = $navbarButtons.find('.import');
                 $startButton = $navbarButtons.find('.start');
@@ -88,6 +109,11 @@ define(
                 this.initializeDropzone();
 
                 return this;
+            },
+
+            setStatus: function(file, status) {
+                const progressBar = $(file.previewElement).find('.AknProgress')
+                progressBar.attr('data-status', file.status);
             },
 
             /**
@@ -105,8 +131,6 @@ define(
                     clickable: '.upload-zone-container',
                     maxFilesize: 1000
                 });
-
-                myDropzone.removeAllFiles(true);
 
                 myDropzone.on('removedfile', function () {
                     if (0 === myDropzone.getFilesWithStatus(Dropzone.SUCCESS).length) {
@@ -144,6 +168,7 @@ define(
                             .textContent = __(message);
                     }).complete(function () {
                         file.previewElement.querySelector('.dz-type').textContent = file.type;
+                        this.setStatus(file, 'Added');
                     }.bind(this));
 
                     if ((0 !== file.type.indexOf('image')) || (file.size > myDropzone.options.maxThumbnailFilesize)) {
@@ -157,7 +182,9 @@ define(
                 }.bind(this));
 
                 myDropzone.on('success', function (file) {
-                    file.previewElement.querySelector('.AknProgress').className = 'AknProgress AknProgress--apply';
+                    const progressBar = file.previewElement.querySelector('.AknProgress')
+                    progressBar.className = 'AknProgress AknProgress--apply';
+                    this.setStatus(file, 'Success');
                     file.previewElement.querySelector('.AknProgress .AknProgress-bar').style.width = '100%';
                     $(file.previewElement.querySelector('.AknButton.cancel')).addClass('AknButton--hidden');
                     $(file.previewElement.querySelector('.AknButton.delete')).removeClass('AknButton--hidden');
@@ -166,6 +193,7 @@ define(
                 myDropzone.on('error', function (file, error) {
                     file.previewElement.querySelector('.filename .error.text-danger')
                         .textContent = __(error.error);
+                    this.setStatus(file, 'Error');
                 }.bind(this));
 
                 myDropzone.on('queuecomplete', function () {

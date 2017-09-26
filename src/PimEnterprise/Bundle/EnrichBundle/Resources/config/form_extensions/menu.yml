@@ -27,16 +27,6 @@ extensions:
             title: pim_menu.item.rule
             to: pimee_catalog_rule_rule_index
 
-    # TODO Move these extension (Temporary position)
-    pim-menu-collect-upload-asset:
-        module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        position: 105
-        aclResourceId: pimee_product_asset_mass_upload
-        config:
-            title: pim_menu.item.upload_asset
-            to: pimee_product_asset_mass_upload
-
     pim-menu-settings-proposal:
         module: pim/menu/item
         parent: pim-menu-settings-navigation-block
