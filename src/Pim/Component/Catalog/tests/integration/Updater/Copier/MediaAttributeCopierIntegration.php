@@ -1,10 +1,8 @@
 <?php
 
-namespace tests\integration\Pim\Component\Catalog\Updater\Copier;
+namespace Pim\Component\Catalog\tests\integration\Updater\Copier;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\MediaSanitizer;
-use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
@@ -12,16 +10,8 @@ use Pim\Component\Catalog\Model\ProductInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MediaAttributeCopierIntegration extends TestCase
+class MediaAttributeCopierIntegration extends AbstractCopierTestCase
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
-    }
-
     public function testCopyToMediaWithLocale()
     {
         $sku = 'test_localizable_media';
@@ -180,25 +170,6 @@ class MediaAttributeCopierIntegration extends TestCase
         $standardValues = $this->sanitizeMediaAttributeData($standardProduct['values'][$fields['to']]);
 
         $this->assertEquals($result, $standardValues);
-    }
-
-    /**
-     * Create a product.
-     *
-     * @param $sku
-     * @param $parameters
-     * @return ProductInterface
-     */
-    protected function createProduct($sku, $parameters)
-    {
-        $productUpdater = $this->get('pim_catalog.updater.product');
-
-        $product = $this->get('pim_catalog.builder.product')->createProduct($sku);
-        $productUpdater->update($product, $parameters);
-
-        $this->get('pim_catalog.saver.product')->save($product);
-
-        return $product;
     }
 
     /**
