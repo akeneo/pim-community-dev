@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -33,5 +35,5 @@ interface RunnerInterface
      *
      * @return bool
      */
-    public function supports(RuleDefinitionInterface $definition);
+    public function supports(RuleDefinitionInterface $definition): bool;
 }

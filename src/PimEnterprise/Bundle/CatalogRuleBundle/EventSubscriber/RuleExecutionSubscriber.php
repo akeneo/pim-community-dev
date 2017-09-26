@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -16,7 +18,8 @@ use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\User\ChainUserProvider;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -24,8 +27,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class RuleExecutionSubscriber implements EventSubscriberInterface
 {
-    /** @var TokenStorageInterface */
-    protected $tokenStorage;
+    /** @var ChainUserProvider */
+    protected $chainUserProvider;
 
     /** @var NotifierInterface */
     protected $notifier;
@@ -34,13 +37,16 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
     protected $notificationClass;
 
     /**
-     * @param TokenStorageInterface $tokenStorage
+     * @param ChainUserProvider     $chainUserProvider
      * @param NotifierInterface     $notifier
      * @param string                $notificationClass
      */
-    public function __construct(TokenStorageInterface $tokenStorage, NotifierInterface $notifier, $notificationClass)
-    {
-        $this->tokenStorage = $tokenStorage;
+    public function __construct(
+        ChainUserProvider $chainUserProvider,
+        NotifierInterface $notifier,
+        $notificationClass
+    ) {
+        $this->chainUserProvider = $chainUserProvider;
         $this->notifier = $notifier;
         $this->notificationClass = $notificationClass;
     }
@@ -48,7 +54,7 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             RuleEvents::POST_EXECUTE_ALL => 'afterJobExecution',
@@ -60,10 +66,10 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
      *
      * @param GenericEvent $event
      */
-    public function afterJobExecution(GenericEvent $event)
+    public function afterJobExecution(GenericEvent $event): void
     {
         $rules = $event->getSubject();
-        $user = $this->getUser();
+        $user = $this->getUserFromEvent($event);
 
         if (null === $user || 0 === count($rules)) {
             return;
@@ -76,7 +82,7 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
     /**
      * @return NotificationInterface
      */
-    protected function createNotification()
+    protected function createNotification(): NotificationInterface
     {
         $notification = new $this->notificationClass();
         $notification
@@ -92,16 +98,22 @@ class RuleExecutionSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @return UserInterface|null
+     * @param GenericEvent $event
+     *
+     * @return null|UserInterface
      */
-    protected function getUser()
+    protected function getUserFromEvent(GenericEvent $event): ?UserInterface
     {
-        $user = null;
+        try {
+            $userToNotify = $event->getArgument('username');
+        } catch (\InvalidArgumentException $e) {
+            return null;
+        }
 
-        if (null !== $token = $this->tokenStorage->getToken()) {
-            $user = $token->getUser();
-        };
-
-        return $user;
+        try {
+            return $this->chainUserProvider->loadUserByUsername($userToNotify);
+        } catch (UsernameNotFoundException $e) {
+            return null;
+        }
     }
 }

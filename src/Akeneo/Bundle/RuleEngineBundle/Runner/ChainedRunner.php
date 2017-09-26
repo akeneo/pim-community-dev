@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -13,6 +15,7 @@ namespace Akeneo\Bundle\RuleEngineBundle\Runner;
 
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -56,7 +59,7 @@ class ChainedRunner implements DryRunnerInterface, BulkDryRunnerInterface
      *
      * @return ChainedRunner
      */
-    public function addRunner(RunnerInterface $runner)
+    public function addRunner(RunnerInterface $runner): ChainedRunner
     {
         $this->runners[] = $runner;
 
@@ -66,7 +69,7 @@ class ChainedRunner implements DryRunnerInterface, BulkDryRunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleDefinitionInterface $definition)
+    public function supports(RuleDefinitionInterface $definition): bool
     {
         return true;
     }
@@ -99,7 +102,7 @@ class ChainedRunner implements DryRunnerInterface, BulkDryRunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function runAll(array $definitions, array $options = [])
+    public function runAll(array $definitions, array $options = []): array
     {
         $results = [];
 
@@ -109,7 +112,10 @@ class ChainedRunner implements DryRunnerInterface, BulkDryRunnerInterface
             $results[$definition->getCode()] = $this->run($definition, $options);
         }
 
-        $this->eventDispatcher->dispatch(RuleEvents::POST_EXECUTE_ALL, new GenericEvent($definitions));
+        $this->eventDispatcher->dispatch(
+            RuleEvents::POST_EXECUTE_ALL,
+            new GenericEvent($definitions, $options)
+        );
 
         return $results;
     }
@@ -119,7 +125,7 @@ class ChainedRunner implements DryRunnerInterface, BulkDryRunnerInterface
      *
      * @throws \LogicException
      */
-    public function dryRun(RuleDefinitionInterface $definition, array $options = [])
+    public function dryRun(RuleDefinitionInterface $definition, array $options = []): ?RuleSubjectSetInterface
     {
         $result = null;
 
@@ -138,7 +144,7 @@ class ChainedRunner implements DryRunnerInterface, BulkDryRunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function dryRunAll(array $definitions, array $options = [])
+    public function dryRunAll(array $definitions, array $options = []): array
     {
         $results = [];
 
@@ -158,7 +164,7 @@ class ChainedRunner implements DryRunnerInterface, BulkDryRunnerInterface
      *
      * @return RunnerInterface
      */
-    protected function getRunner(RuleDefinitionInterface $definition)
+    protected function getRunner(RuleDefinitionInterface $definition): RunnerInterface
     {
         foreach ($this->runners as $runner) {
             if ($runner->supports($definition)) {
@@ -178,7 +184,7 @@ class ChainedRunner implements DryRunnerInterface, BulkDryRunnerInterface
      *
      * @return DryRunnerInterface
      */
-    protected function getDryRunner(RuleDefinitionInterface $definition)
+    protected function getDryRunner(RuleDefinitionInterface $definition): DryRunnerInterface
     {
         foreach ($this->runners as $runner) {
             if ($runner instanceof DryRunnerInterface && $runner->supports($definition)) {
@@ -194,7 +200,7 @@ class ChainedRunner implements DryRunnerInterface, BulkDryRunnerInterface
      *
      * @throws \Exception
      */
-    protected function handleException(\Exception $e)
+    protected function handleException(\Exception $e): void
     {
         if (true === $this->stopOnError) {
             throw $e;
