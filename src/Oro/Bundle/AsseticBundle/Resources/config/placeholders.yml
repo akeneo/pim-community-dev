@@ -1,9 +1,0 @@
-placeholders:
-    head_style:
-        items:
-            assets_css:
-                order: 100
-
-items:
-    assets_css:
-        template: OroAsseticBundle:Assets:oro_css.html.twig

@@ -23,22 +23,16 @@ class TranslationsExtension extends \Twig_Extension
     /** @var RequestStack */
     protected $requestStack;
 
-    /** @var string */
-    protected $asseticRoot;
-
     /**
      * @param CommandLauncher $commandLauncher
      * @param RequestStack    $requestStack
-     * @param string          $asseticRoot
      */
     public function __construct(
         CommandLauncher $commandLauncher,
-        RequestStack $requestStack,
-        $asseticRoot
+        RequestStack $requestStack
     ) {
         $this->commandLauncher = $commandLauncher;
         $this->requestStack = $requestStack;
-        $this->asseticRoot = $asseticRoot;
     }
 
     /**
@@ -60,7 +54,7 @@ class TranslationsExtension extends \Twig_Extension
     public function getTranslationsFile()
     {
         $localeCode = $this->getLocale();
-        $relativeFilePath = sprintf('%s/js/translation/%s.js', $this->asseticRoot, $localeCode);
+        $relativeFilePath = sprintf('web/js/translation/%s.js', $localeCode);
         $absoluteFilePath = realpath($relativeFilePath);
 
         if (!file_exists($absoluteFilePath)) {

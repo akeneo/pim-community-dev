@@ -1,6 +1,5 @@
 imports:
     - { resource: '@PimEnrichBundle/Resources/config/bundles/akeneo_batch.yml' }
-    - { resource: '@PimEnrichBundle/Resources/config/bundles/assetic.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/doctrine.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/escape_wsse_authentication.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/fos_auth_server.yml' }
