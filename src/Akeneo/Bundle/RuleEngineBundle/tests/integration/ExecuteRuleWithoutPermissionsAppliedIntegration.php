@@ -13,6 +13,55 @@ use Symfony\Component\Console\Output\BufferedOutput;
 
 class ExecuteRuleWithoutPermissionsAppliedIntegration extends TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->createProduct(
+            'product_not_editable_by_redactor_1',
+            [
+                'categories' => ['categoryA2'],
+                'family'     => 'familyA',
+                'values'     => [
+                    'a_text' => [
+                        ['data' => 'a text for category A2', 'locale' => null, 'scope' => null],
+                    ]
+                ],
+            ]
+        );
+
+        $this->createProduct(
+            'product_not_editable_by_redactor_2',
+            [
+                'categories' => ['categoryB'],
+                'family'     => 'familyA',
+                'values'     => [
+                    'a_text' => [
+                        ['data' => 'a text for category B', 'locale' => null, 'scope' => null],
+                    ]
+                ],
+            ]
+        );
+
+        $this->createProduct(
+            'product_editable_by_redactor',
+            [
+                'categories' => ['master'],
+                'family'     => 'familyA',
+                'values'     => [
+                    'a_text' => [
+                        ['data' => 'a text for category Master', 'locale' => null, 'scope' => null],
+                    ]
+                ],
+            ]
+        );
+
+        $this->get('doctrine')->getManager()->clear();
+    }
+
     public function testRuleExecutionOnAllProducts(): void
     {
         $this->launchRulesExecution('akeneo:rule:run', 'mary', 'clear_a_text');
@@ -85,55 +134,6 @@ class ExecuteRuleWithoutPermissionsAppliedIntegration extends TestCase
     protected function getProduct(string $identifier): ProductInterface
     {
         return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->createProduct(
-            'product_not_editable_by_redactor_1',
-            [
-                'categories' => ['categoryA2'],
-                'family'     => 'familyA',
-                'values'     => [
-                    'a_text' => [
-                        ['data' => 'a text for category A2', 'locale' => null, 'scope' => null],
-                    ]
-                ],
-            ]
-        );
-
-        $this->createProduct(
-            'product_not_editable_by_redactor_2',
-            [
-                'categories' => ['categoryB'],
-                'family'     => 'familyA',
-                'values'     => [
-                    'a_text' => [
-                        ['data' => 'a text for category B', 'locale' => null, 'scope' => null],
-                    ]
-                ],
-            ]
-        );
-
-        $this->createProduct(
-            'product_editable_by_redactor',
-            [
-                'categories' => ['master'],
-                'family'     => 'familyA',
-                'values'     => [
-                    'a_text' => [
-                        ['data' => 'a text for category Master', 'locale' => null, 'scope' => null],
-                    ]
-                ],
-            ]
-        );
-
-        $this->get('doctrine')->getManager()->clear();
     }
 
     /**

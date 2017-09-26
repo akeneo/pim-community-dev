@@ -35,7 +35,7 @@ class RuleExecutionSubscriberSpec extends ObjectBehavior
         );
     }
 
-    function it_notify_a_user_if_the_rules_are_executed_with_its_user_name(
+    function it_notifies_a_user_if_the_rules_are_executed_with_its_user_name(
         $chainUserProvider,
         $notifier,
         GenericEvent $event,
