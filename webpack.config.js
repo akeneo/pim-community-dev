@@ -112,6 +112,10 @@ module.exports = {
                     {
                         loader: 'imports-loader',
                         options: 'require=>function(){}'
+                    },
+                    {
+                        loader: 'imports-loader',
+                        options: 'require.specified=>function(){}'
                     }
                 ]
             },
