@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\ProductModel\Query;
 
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProducts;
+use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
 
 /**
  * Query data regarding the variant product completenesses to build the completeness variant product ratio
@@ -13,12 +13,12 @@ use Pim\Component\Catalog\ProductModel\ReadModel\CompleteVariantProducts;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface FindCompleteVariantProductsInterface
+interface VariantProductRatioInterface
 {
     /**
      * @param ProductModelInterface $productModel
      *
      * @return CompleteVariantProducts
      */
-    public function __invoke(ProductModelInterface $productModel): CompleteVariantProducts;
+    public function findComplete(ProductModelInterface $productModel): CompleteVariantProducts;
 }

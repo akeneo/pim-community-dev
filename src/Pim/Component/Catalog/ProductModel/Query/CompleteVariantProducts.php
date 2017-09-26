@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\ProductModel\ReadModel;
+namespace Pim\Component\Catalog\ProductModel\Query;
 
 /**
  * Represent data regarding the variant product completenesses to build the ratio on the PMEF.
