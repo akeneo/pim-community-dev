@@ -15,7 +15,10 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
+use Pim\Bundle\EnrichBundle\Event\JobInstanceEvents;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -84,6 +87,9 @@ class JobInstanceController
     /** @var JobInstanceFactory */
     protected $jobInstanceFactory;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /** @var string */
     protected $uploadTmpDir;
 
@@ -104,6 +110,7 @@ class JobInstanceController
      * @param ObjectFilterInterface                 $objectFilter
      * @param NormalizerInterface                   $constraintViolationNormalizer
      * @param JobInstanceFactory                    $jobInstanceFactory
+     * @param EventDispatcherInterface              $eventDispatcher
      * @param string                                $uploadTmpDir
      */
     public function __construct(
@@ -123,6 +130,7 @@ class JobInstanceController
         ObjectFilterInterface $objectFilter,
         NormalizerInterface $constraintViolationNormalizer,
         JobInstanceFactory $jobInstanceFactory,
+        EventDispatcherInterface $eventDispatcher,
         string $uploadTmpDir
     ) {
         $this->repository            = $repository;
@@ -141,6 +149,7 @@ class JobInstanceController
         $this->objectFilter          = $objectFilter;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->jobInstanceFactory    = $jobInstanceFactory;
+        $this->eventDispatcher       = $eventDispatcher;
         $this->uploadTmpDir          = $uploadTmpDir;
     }
 
@@ -302,6 +311,11 @@ class JobInstanceController
 
         $this->saver->save($jobInstance);
 
+        $this->eventDispatcher->dispatch(
+            JobInstanceEvents::POST_SAVE,
+            new GenericEvent($jobInstance, ['data' => $data])
+        );
+
         return new JsonResponse($this->normalizeJobInstance($jobInstance));
     }
 
@@ -383,13 +397,12 @@ class JobInstanceController
      * Get a job instance
      *
      * @param string $code
-     * @param bool   $checkStatus
      *
      * @throws NotFoundHttpException
      *
      * @return JobInstance
      */
-    protected function getJobInstance($code, $checkStatus = true)
+    protected function getJobInstance($code)
     {
         $jobInstance = $this->repository->findOneByIdentifier($code);
         if (null === $jobInstance) {
@@ -563,6 +576,11 @@ class JobInstanceController
         $jobParameters = $this->jobParamsFactory->create($job);
         $jobInstance->setRawParameters($jobParameters->all());
         $this->saver->save($jobInstance);
+
+        $this->eventDispatcher->dispatch(
+            JobInstanceEvents::POST_SAVE,
+            new GenericEvent($jobInstance, ['data' => $data])
+        );
 
         return new JsonResponse($this->normalizeJobInstance($jobInstance));
     }

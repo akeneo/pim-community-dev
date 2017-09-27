@@ -415,6 +415,7 @@ services:
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.normalizer.violation'
             - '@akeneo_batch.job_instance_factory'
+            - '@event_dispatcher'
             - '%upload_tmp_dir%'
 
     pim_enrich.controller.rest.job_execution:

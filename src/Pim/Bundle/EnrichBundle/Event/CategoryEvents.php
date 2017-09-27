@@ -17,7 +17,7 @@ final class CategoryEvents
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
-     * @staticvar string
+     * @deprecated
      */
     const PRE_EDIT = 'pim_enrich.category.pre_edit';
 
@@ -27,7 +27,7 @@ final class CategoryEvents
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
-     * @staticvar string
+     * @deprecated
      */
     const POST_EDIT = 'pim_enrich.category.post_edit';
 
@@ -37,7 +37,7 @@ final class CategoryEvents
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
-     * @staticvar string
+     * @deprecated
      */
     const PRE_CREATE = 'pim_enrich.category.pre_create';
 
@@ -47,7 +47,7 @@ final class CategoryEvents
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
-     * @staticvar string
+     * @deprecated
      */
     const POST_CREATE = 'pim_enrich.category.post_create';
 }
