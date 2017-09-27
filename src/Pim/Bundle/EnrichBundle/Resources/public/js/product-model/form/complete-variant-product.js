@@ -1,5 +1,6 @@
 /**
- * On a Product Model Edit Form, this module displays number of product variant in the subtree of this Product Model, eg: 2 / 10.
+ * On a Product Model Edit Form, this module displays number of product variant in the subtree of this Product Model,
+ * eg: 2 / 10.
  *
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -25,7 +26,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function (config) {
+            initialize: function () {
                 UserContext.off('change:catalogLocale change:catalogScope', this.render);
 
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
