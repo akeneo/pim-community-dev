@@ -116,6 +116,8 @@ extensions:
         parent: pimee-published-product-view-column-tabs
         targetZone: container
         position: 90
+        config:
+            tabTitle: pim_enrich.form.product.tab.attributes.title
 
     pimee-published-product-view-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector

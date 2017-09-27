@@ -3,6 +3,7 @@
 namespace spec\Akeneo\Bundle\RuleEngineBundle\Runner;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use PhpSpec\ObjectBehavior;
@@ -80,7 +81,7 @@ class ChainedRunnerSpec extends ObjectBehavior
         $eventDispatcher->dispatch('pim_rule_engine.rule.pre_execute_all', Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch('pim_rule_engine.rule.post_execute_all', Argument::cetera())->shouldBeCalled();
 
-        $this->runAll([$rule1, $rule2])->shouldReturn([
+        $this->runAll([$rule1, $rule2], ['username' => Argument::cetera()])->shouldReturn([
             'rule1' => 'Runner 1 launched',
             'rule2' => 'Runner 2 launched'
         ]);
@@ -128,30 +129,35 @@ class ChainedRunnerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(Argument::any())->shouldNotBeCalled();
     }
 
-    function it__dry_runs_a_rule(
+    function it_dry_runs_a_rule(
         RuleDefinitionInterface $rule,
         DryRunnerInterface $runner1,
         RunnerInterface $runner2,
-        DryRunnerInterface $runner3
+        DryRunnerInterface $runner3,
+        RuleSubjectSetInterface $subject1,
+        RuleSubjectSetInterface $subject2,
+        RuleSubjectSetInterface $subject3
     ) {
         $runner1->supports($rule)->willReturn(false);
         $runner2->supports($rule)->willReturn(true);
         $runner3->supports($rule)->willReturn(true);
-        $runner1->dryRun(Argument::cetera())->willReturn('Runner1 launched');
-        $runner2->run(Argument::cetera())->willReturn('Runner2 launched');
-        $runner3->dryRun(Argument::cetera())->willReturn('Runner3 launched');
+        $runner1->dryRun(Argument::cetera())->willReturn($subject1);
+        $runner2->run(Argument::cetera())->willReturn($subject2);
+        $runner3->dryRun(Argument::cetera())->willReturn($subject3);
 
         $this->addRunner($runner1);
         $this->addRunner($runner2);
         $this->addRunner($runner3);
-        $this->dryRun($rule)->shouldReturn('Runner3 launched');
+        $this->dryRun($rule)->shouldReturn($subject3);
     }
 
     function it_dry_runs_several_rules(
         RuleDefinitionInterface $rule1,
         RuleDefinitionInterface $rule2,
         DryRunnerInterface $runner1,
-        DryRunnerInterface $runner2
+        DryRunnerInterface $runner2,
+        RuleSubjectSetInterface $subject1,
+        RuleSubjectSetInterface $subject2
     ) {
         $rule1->getCode()->willReturn('rule1');
         $rule2->getCode()->willReturn('rule2');
@@ -160,15 +166,15 @@ class ChainedRunnerSpec extends ObjectBehavior
         $runner1->supports($rule2)->willReturn(false);
         $runner2->supports($rule1)->willReturn(false);
         $runner2->supports($rule2)->willReturn(true);
-        $runner1->dryRun(Argument::cetera())->willReturn('Dry runner 1 launched');
-        $runner2->dryRun(Argument::cetera())->willReturn('Dry runner 2 launched');
+        $runner1->dryRun(Argument::cetera())->willReturn($subject1);
+        $runner2->dryRun(Argument::cetera())->willReturn($subject2);
 
         $this->addRunner($runner1);
         $this->addRunner($runner2);
 
         $this->dryRunAll([$rule1, $rule2])->shouldReturn([
-            'rule1' => 'Dry runner 1 launched',
-            'rule2' => 'Dry runner 2 launched'
+            'rule1' => $subject1,
+            'rule2' => $subject2
         ]);
     }
 

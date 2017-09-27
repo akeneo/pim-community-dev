@@ -8,14 +8,14 @@ use Pim\Bundle\NotificationBundle\NotifierInterface;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\User\ChainUserProvider;
 
 class RuleExecutionSubscriberSpec extends ObjectBehavior
 {
-    function let(TokenStorageInterface $tokenStorage, NotifierInterface $notifier)
+    function let(ChainUserProvider $chainUserProvider, NotifierInterface $notifier)
     {
-        $this->beConstructedWith($tokenStorage, $notifier, 'Pim\Bundle\NotificationBundle\Entity\Notification');
+        $this->beConstructedWith($chainUserProvider, $notifier, 'Pim\Bundle\NotificationBundle\Entity\Notification');
     }
 
     function it_is_initializable()
@@ -35,18 +35,17 @@ class RuleExecutionSubscriberSpec extends ObjectBehavior
         );
     }
 
-    function it_notify_a_user_if_the_rules_are_executed_with_its_user_name(
-        $tokenStorage,
+    function it_notifies_a_user_if_the_rules_are_executed_with_its_user_name(
+        $chainUserProvider,
         $notifier,
         GenericEvent $event,
         Rule $rule1,
         Rule $rule2,
-        TokenInterface $token,
         UserInterface $user
     ) {
         $event->getSubject()->willReturn([$rule1, $rule2]);
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->shouldBeCalled()->willReturn($user);
+        $event->getArgument('username')->willReturn(Argument::cetera());
+        $chainUserProvider->loadUserByUsername(Argument::cetera())->willReturn($user);
 
         $notifier->notify(Argument::cetera(), [$user])->shouldBeCalled();
 
@@ -54,33 +53,42 @@ class RuleExecutionSubscriberSpec extends ObjectBehavior
     }
 
     function it_does_not_notify_a_user_if_the_rules_are_executed_anonimously(
-        $tokenStorage,
         $notifier,
         GenericEvent $event,
         Rule $rule1,
-        Rule $rule2,
-        TokenInterface $token
+        Rule $rule2
     ) {
         $event->getSubject()->willReturn([$rule1, $rule2]);
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->shouldBeCalled()->willReturn(null);
+        $event->getArgument('username')->willThrow(\InvalidArgumentException::class);
 
-        $event->getArgument()->shouldNotBeCalled();
+        $notifier->notify()->shouldNotBeCalled();
+
+        $this->afterJobExecution($event);
+    }
+
+    function it_does_not_notify_a_user_if_the_user_does_not_exist(
+        $notifier,
+        $chainUserProvider,
+        GenericEvent $event,
+        Rule $rule1,
+        Rule $rule2
+    ) {
+        $event->getSubject()->willReturn([$rule1, $rule2]);
+        $event->getArgument('username')->willReturn(Argument::any());
+
+        $chainUserProvider->loadUserByUsername(Argument::any())->willThrow(UsernameNotFoundException::class);
+
         $notifier->notify()->shouldNotBeCalled();
 
         $this->afterJobExecution($event);
     }
 
     function it_does_not_notify_a_user_if_there_is_no_rules_to_execute(
-        $tokenStorage,
         $notifier,
-        GenericEvent $event,
-        UserInterface $user,
-        TokenInterface $token
+        GenericEvent $event
     ) {
         $event->getSubject()->willReturn([]);
-        $tokenStorage->getToken()->willReturn($token);
-        $token->getUser()->shouldBeCalled()->willReturn($user);
+        $event->getArgument('username')->willReturn(Argument::any());
 
         $notifier->notify()->shouldNotBeCalled();
 

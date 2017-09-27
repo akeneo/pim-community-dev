@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -58,14 +60,12 @@ class RunCommand extends ContainerAwareCommand
      *
      * @throws \InvalidArgumentException
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $code = $input->hasArgument('code') ? $input->getArgument('code') : null;
         $username = $input->getOption('username') ?: null;
         $stopOnError = $input->getOption('stop-on-error') ?: false;
         $dryRun = $input->getOption('dry-run') ?: false;
-
-        $this->setUserInToken($username);
 
         $message = $dryRun ? 'Dry running rules...' : 'Running rules...';
         $output->writeln($message);
@@ -83,7 +83,7 @@ class RunCommand extends ContainerAwareCommand
                 }
             );
 
-        $this->runRules($rules, $dryRun, $stopOnError);
+        $this->runRules($rules, $dryRun, $stopOnError, $username);
 
         $progressBar->finish();
     }
@@ -92,14 +92,22 @@ class RunCommand extends ContainerAwareCommand
      * @param RuleDefinitionInterface[] $rules
      * @param bool                      $dryRun
      * @param bool                      $stopOnError
+     * @param string|null               $username
+     *
+     * @return array
      *
      * @throws \Exception
      */
-    protected function runRules(array $rules, $dryRun, $stopOnError)
+    protected function runRules(array $rules, $dryRun, $stopOnError, $username = null): array
     {
         $chainedRunner = $this->getRuleRunner($stopOnError);
 
-        $dryRun ? $chainedRunner->dryRunAll($rules) : $chainedRunner->runAll($rules);
+        $options = [];
+        if (null !== $username) {
+            $options['username'] = $username;
+        }
+
+        $dryRun ? $chainedRunner->dryRunAll($rules) : $chainedRunner->runAll($rules, $options);
     }
 
     /**
@@ -107,7 +115,7 @@ class RunCommand extends ContainerAwareCommand
      *
      * @return RuleDefinitionInterface[]
      */
-    protected function getRulesToRun($ruleCode)
+    protected function getRulesToRun($ruleCode): array
     {
         $repository = $this->getRuleDefinitionRepository();
 
@@ -128,39 +136,9 @@ class RunCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param string $username
-     */
-    protected function setUserInToken($username)
-    {
-        if (empty($username)) {
-            return;
-        }
-
-        $user = $this->getUserProvider()->loadUserByUsername($username);
-        $token = new UsernamePasswordToken($user, null, 'main');
-        $this->getTokenStorage()->setToken($token);
-    }
-
-    /**
-     * @return ChainUserProvider
-     */
-    protected function getUserProvider()
-    {
-        return $this->getContainer()->get('security.user.provider.concrete.chain_provider');
-    }
-
-    /**
-     * @return TokenStorageInterface
-     */
-    protected function getTokenStorage()
-    {
-        return $this->getContainer()->get('security.token_storage');
-    }
-
-    /**
      * @return RuleDefinitionRepositoryInterface
      */
-    protected function getRuleDefinitionRepository()
+    protected function getRuleDefinitionRepository(): RuleDefinitionRepositoryInterface
     {
         return $this->getContainer()->get('akeneo_rule_engine.repository.rule_definition');
     }
@@ -170,7 +148,7 @@ class RunCommand extends ContainerAwareCommand
      *
      * @return BulkDryRunnerInterface
      */
-    protected function getRuleRunner($stopOnError)
+    protected function getRuleRunner($stopOnError): BulkDryRunnerInterface
     {
         if ($stopOnError) {
             return $this->getContainer()->get('akeneo_rule_engine.runner.strict_chained');
@@ -182,7 +160,7 @@ class RunCommand extends ContainerAwareCommand
     /**
      * @return EventDispatcherInterface
      */
-    protected function getEventDispatcher()
+    protected function getEventDispatcher(): EventDispatcherInterface
     {
         return $this->getContainer()->get('event_dispatcher');
     }
