@@ -17,28 +17,28 @@ Feature: Revert an assets collection in a product
     And I wait to be on the "jeans" product page
     And I visit the "Media" group
     And I start to manage assets for "gallery"
-    And I check the row "machine"
-    And I check the row "minivan"
-    Then the asset basket should contain minivan, machine
+    And I check the row "paint"
+    And I check the row "chicagoskyline"
+    Then the asset basket should contain chicagoskyline, paint
     And I confirm the asset modification
-    Then the "gallery" asset gallery should contain machine, minivan
+    Then the "gallery" asset gallery should contain paint, chicagoskyline
     When I save the product
     And I visit the "History" column tab
     Then I should see history:
-      | version | property | value           |
-      | 2       | gallery  | machine,minivan |
+      | version | property | value                |
+      | 2       | gallery  | chicagoskyline,paint |
     And I visit the "Attributes" column tab
     And I start to manage assets for "gallery"
-    And I search "machine"
-    And I uncheck the row "machine"
-    Then the asset basket should contain minivan
+    And I search "paint"
+    And I uncheck the row "paint"
+    Then the asset basket should contain chicagoskyline
     And I confirm the asset modification
-    Then the "gallery" asset gallery should contain minivan
+    Then the "gallery" asset gallery should contain chicagoskyline
     When I save the product
     And I visit the "History" column tab
     Then I should see history:
       | version | property | value   |
-      | 3       | gallery  | minivan |
+      | 3       | gallery  | chicagoskyline |
     When I revert the product version number 2
     Then the product "jeans" should have the following values:
-      | gallery | machine, minivan |
+      | gallery | chicagoskyline, paint |
