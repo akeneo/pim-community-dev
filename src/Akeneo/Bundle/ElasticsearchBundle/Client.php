@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\ElasticsearchBundle;
 
+use Akeneo\Bundle\ElasticsearchBundle\Exception\IndexationException;
 use Akeneo\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
 use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Elasticsearch\Client as NativeClient;
@@ -58,6 +59,8 @@ class Client
      * @param array        $body
      * @param Refresh|null $refresh
      *
+     * @throws IndexationException
+     *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}
      */
     public function index($indexType, $id, array $body, Refresh $refresh = null)
@@ -73,7 +76,17 @@ class Client
             $params['refresh'] = $refresh->getType();
         }
 
-        return $this->client->index($params);
+        try {
+            $response = $this->client->index($params);
+        } catch (\Exception $e) {
+            throw new IndexationException($e->getMessage(), $e->getCode(), $e);
+        }
+
+        if (isset($response['errors']) && true === $response['errors']) {
+            $this->throwIndexationExceptionFromReponse($response);
+        }
+
+        return $response;
     }
 
     /**
@@ -83,6 +96,7 @@ class Client
      * @param Refresh|null $refresh
      *
      * @throws MissingIdentifierException
+     * @throws IndexationException
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_indexing_documents.html#_bulk_indexing}
      */
@@ -110,7 +124,17 @@ class Client
             }
         }
 
-        return $this->client->bulk($params);
+        try {
+            $response = $this->client->bulk($params);
+        } catch (\Exception $e) {
+            throw new IndexationException($e->getMessage(), $e->getCode(), $e);
+        }
+
+        if (isset($response['errors']) && true === $response['errors']) {
+            $this->throwIndexationExceptionFromReponse($response);
+        }
+
+        return $response;
     }
 
     /**
@@ -239,5 +263,19 @@ class Client
         }
 
         $this->createIndex();
+    }
+
+    /**
+     * @param array $response
+     *
+     * @throws IndexationException
+     */
+    private function throwIndexationExceptionFromReponse(array $response)
+    {
+        foreach ($response['items'] as $item) {
+            if (isset($item['index']['error'])) {
+                throw new IndexationException(json_encode($item['index']['error']));
+            }
+        }
     }
 }
