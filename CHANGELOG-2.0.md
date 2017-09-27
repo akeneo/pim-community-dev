@@ -8,31 +8,28 @@
 - PIM-6335: Import - As Julia, I would like to import variant products from my ERP
 - PIM-6336: Export - As Julia, I would like to export variant products
 - PIM-6338: Product model - As Julia I would like to enrich a product model
+- PIM-6347: Variant product - As Julia, I would like to have a global completeness on a variant product
+- PIM-6348: Variant product - As Julia, I would like to navigate to my product model and variant products
 - PIM-6352: Grid - As Julia, I would like to display the products models in the grid
 - PIM-6353: Grid - As Julia, I would like to search products with variants on custom attributes
 - PIM-6360: Bulk actions - As Julia, I would like to edit some products models sequentially
-- PIM-6410: POC Products models
-- PIM-6411: POC Family variant
 - PIM-6441: Fixtures catalog
-- PIM-6442: TECH - Extract values behavior from product
+- PIM-6442: Extract values behavior from product
 - PIM-6444: No variant group - Remove the entry menu + the screens
-- PIM-6445: TECH - Family variant design
-- PIM-6446: TECH - Family variant CRUD API
-- PIM-6447: TECH - Product model design
-- PIM-6448: TECH - Product model CRUD API
-- PIM-6454: POC Search products and products models
 - PIM-6455: Family variant - As Julia, I would like to update a family variant by import
-- PIM-6479: TECH - Rename ProductValue in Value
 - PIM-6669: Product model - As Julia I would like to enrich a sub product model
 - PIM-6674: No bulk actions managed with products models
 - PIM-6732: No variant group - Remove the bulk operation "Add to a variant group"
 - PIM-6734: No variant group - Remove the CE permissions for variant groups
 - PIM-6735: No variant group - Remove the variant groups exports and imports
 - PIM-6737: Export - As Julia, I would like to export products models
+- PIM-6741: Product model - Add product model code in the PEF header
 - PIM-6742: Import - As Julia, I would like to update products models by import from my ERP
 - PIM-6743: Import - As Julia I would like to update variant products from my ERP
 - PIM-6768: Grid - ID column with "product model code" or "product identifier"
-- PIM-6801: Settings - As Julia I would like to create an attribute
+- PIM-6793: Grid - Different display for products models
+- PIM-6801: Settings - As Julia I would like to create an attribute with the code "parent"
+- PIM-6818: No mass delete with product models
 
 ## Better UI\UX!
 
@@ -175,8 +172,6 @@
 
 ## Technical improvements
 
-- PIM-6445: Family variant design
-- PIM-6446: Family variant CRUD API
 - TIP-711: Rework job execution reporting page with the new PEF architecture
 - TIP-724: Refactoring of the 'Settings\Association types' index screen using 'pim\common\grid'
 - TIP-725: Generalization of the refactoring made in the TIP-724 for all screen containing a simple grid

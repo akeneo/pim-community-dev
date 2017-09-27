@@ -9,6 +9,7 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'oro/translator',
         'pim/form',
@@ -16,6 +17,7 @@ define(
         'pim/form-builder'
     ],
     function (
+        $,
         _,
         __,
         BaseForm,
@@ -49,7 +51,8 @@ define(
                 this.renderExtensions();
 
                 formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
-                    form.setElement('.user-menu').render();
+                    $('.user-menu').append(form.el);
+                    form.render();
                 }.bind(this));
 
                 return this;

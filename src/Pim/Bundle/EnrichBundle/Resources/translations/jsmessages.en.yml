@@ -772,6 +772,8 @@ pim_enrich:
                     clear: Clear
                     all_group: All groups
                     empty_selection: All attributes will be exported
+                    title: Attributes
+                    description: Select the product information to export
                 family:
                     title: Family
                     help: "Select the products to export by their family. Ex: Export only the shoes and dresses."

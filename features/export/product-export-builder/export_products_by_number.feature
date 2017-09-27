@@ -25,13 +25,14 @@ Feature: Export product by attribute number
     And I am logged in as "Julia"
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
+    And I visit the "Content" tab
     And I add available attributes Number in stock
     And I add available attributes Order number
     And I add available attributes Track number
     And I filter by "number_in_stock" with operator "Is empty" and value ""
     And I filter by "order_number" with operator "Greater than" and value "1000"
     And I filter by "track_number" with operator "Is not empty" and value ""
-    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
     And I press the "Edit" button

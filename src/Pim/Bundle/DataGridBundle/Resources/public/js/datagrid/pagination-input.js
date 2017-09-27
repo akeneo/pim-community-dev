@@ -87,7 +87,7 @@ define(
                         handles.push({
                             label: this.fastForwardHandleConfig.gap.label,
                             title: this.fastForwardHandleConfig.gap.label,
-                            className: 'AknActionButton--disabled'
+                            className: 'AknActionButton--unclickable'
                         });
                     }
                     previousId = id;
@@ -130,10 +130,10 @@ define(
          * {@inheritdoc}
          */
         onChangePage: function (e) {
-            const label = $(e.target).text();
+            const label = $(e.target).text().trim();
 
             if (label === this.fastForwardHandleConfig.gap.label) {
-                return;
+                return false;
             }
 
             return Pagination.prototype.onChangePage.apply(this, arguments);

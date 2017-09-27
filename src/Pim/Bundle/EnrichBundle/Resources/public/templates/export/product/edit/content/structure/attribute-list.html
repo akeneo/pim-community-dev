@@ -1,7 +1,6 @@
 <% _.each(attributes, function (attribute) { %>
 <li class="AknVerticalList-item AknVerticalList-item--movable" data-attribute-code="<%- attribute.code %>">
     <div>
-        <i class="icon-reorder"></i>
         <span class="attribute-label"><%- i18n.getLabel(attribute.labels, userContext.get('uiLocale'), attribute.code) %></span>
     </div>
     <span class="AknIconButton AknIconButton--grey AknIconButton--small remove"><i class="icon-trash"></i></span>

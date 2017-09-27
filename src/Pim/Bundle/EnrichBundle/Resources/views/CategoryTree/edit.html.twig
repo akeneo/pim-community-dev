@@ -12,8 +12,16 @@
 
 <script>
     require(
-        ['pim/common/breadcrumbs'],
-        function(Breadcrumbs) {
+        [
+            'pim/common/breadcrumbs',
+            'pim/fetcher-registry',
+            'pim/form-builder'
+        ],
+        function(
+            Breadcrumbs,
+            FetcherRegistry,
+            FormBuilder
+        ) {
             $(function() {
                 var breadcrumbs = new Breadcrumbs({
                     config: {
@@ -25,7 +33,15 @@
                     breadcrumbs.render();
                     $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
                 });
+
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+                        form.setElement('.user-menu').render();
+                    }.bind(this));
+                });
             });
         }
     );
 </script>
+
+

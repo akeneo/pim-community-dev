@@ -2,6 +2,22 @@ extensions:
     oro-system-config-form:
         module: oro/form/system/config
 
+    oro-system-config-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: oro-system-config-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-system
+            item: pim-menu-system-configuration
+
+    oro-system-config-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: oro-system-config-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     oro-system-config-tabs:
         module: pim/form/common/form-tabs
         parent: oro-system-config-form

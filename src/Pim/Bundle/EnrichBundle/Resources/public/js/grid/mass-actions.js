@@ -49,10 +49,17 @@ define(
              * {@inheritdoc}
              */
             configure() {
-                this.listenTo(this.getRoot(), 'grid_load:start', (collection) => {
+                const setCollection = (collection) => {
+                    if (null === this.collection) {
+                        this.listenTo(collection, 'backgrid:selected', this.select.bind(this));
+                    }
+
                     this.collection = collection;
-                    this.listenTo(this.collection, 'backgrid:selected', this.select.bind(this));
-                });
+                    this.count = 0;
+                    this.updateView();
+                };
+                this.listenTo(this.getRoot(), 'grid_load:start', setCollection);
+                this.listenTo(this.getRoot(), 'grid_load:complete', setCollection);
 
                 BaseForm.prototype.configure.apply(this, arguments);
             },
