@@ -245,7 +245,7 @@ pim_enrich:
                 empty: Your selection is empty, please change your search criteria
         product_model:
             info:
-                update_successful: Product model successfully updated.
+                update_successful: Product model successfully updated. The completeness of its variant products will be recalculated.
                 update_failed: The product model could not be updated.
                 field_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
             read_only_parent_attribute_from_common: This attribute can be updated on the common attributes.
