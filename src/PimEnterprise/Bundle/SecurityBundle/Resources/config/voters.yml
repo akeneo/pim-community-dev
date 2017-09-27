@@ -8,6 +8,7 @@ parameters:
     pimee_security.voter.locale.class: PimEnterprise\Bundle\SecurityBundle\Voter\LocaleVoter
     pimee_security.voter.datagrid_view.class: PimEnterprise\Bundle\SecurityBundle\Voter\DatagridViewVoter
     pimee_security.voter.category_owner.class: PimEnterprise\Bundle\SecurityBundle\Voter\CategoryOwnerVoter
+    pimee_security.cached_authorization_checker.class: PimEnterprise\Component\Security\Authorization\CachedAuthorizationChecker
 
 services:
     pimee_security.voter.attribute:
@@ -71,3 +72,11 @@ services:
             - '@pimee_security.repository.category_access'
         tags:
             - { name: security.voter }
+
+    pimee_security.cached_authorization_checker:
+        class: '%pimee_security.cached_authorization_checker.class%'
+        decorates: security.authorization_checker
+        decoration_inner_name: security.base_authorization_checker
+        arguments:
+            - '@security.base_authorization_checker'
+            - '@security.token_storage'

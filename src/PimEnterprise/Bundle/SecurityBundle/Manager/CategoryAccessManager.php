@@ -121,12 +121,22 @@ class CategoryAccessManager
      */
     public function isUserGranted(UserInterface $user, CategoryInterface $category, $attribute)
     {
-        if (Attributes::EDIT_ITEMS === $attribute) {
-            $grantedUserGroups = $this->getEditUserGroups($category);
-        } elseif (Attributes::VIEW_ITEMS === $attribute) {
-            $grantedUserGroups = $this->getViewUserGroups($category);
-        } else {
-            throw new \LogicException(sprintf('Attribute "%" is not supported.', $attribute));
+        switch (true) {
+            case Attributes::VIEW_ITEMS === $attribute:
+                $grantedUserGroups = $this->getViewUserGroups($category);
+                break;
+
+            case Attributes::EDIT_ITEMS === $attribute:
+                $grantedUserGroups = $this->getEditUserGroups($category);
+                break;
+
+            case Attributes::OWN_PRODUCTS === $attribute:
+                $grantedUserGroups = $this->getOwnUserGroups($category);
+                break;
+
+            default:
+                throw new \LogicException(sprintf('Attribute "%" is not supported.', $attribute));
+                break;
         }
 
         foreach ($grantedUserGroups as $userGroup) {

@@ -12,6 +12,8 @@ services:
         arguments:
             - '@pim_catalog.updater.category_field_without_permission'
             - '@security.authorization_checker'
+            - '@pimee_security.repository.category_access'
+            - '@security.token_storage'
             - ['categories']
         tags:
             - { name: 'pim_catalog.updater.setter' }

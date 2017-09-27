@@ -51,7 +51,11 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
         $this->assertSame($product->getCategoryCodes(), ['categoryA1', 'categoryA2', 'categoryB', 'master']);
     }
 
-    public function testDeleteAllCategoryOnProduct()
+    /**
+     * @expectedException \Symfony\Component\Security\Core\Exception\InvalidArgumentException
+     * @expectedExceptionMessage You should at least keep your product in one category on which you have an own permission.
+     */
+    public function testFailToRemoveOwnPermissionOnProduct()
     {
         $this->generateToken('mary');
         $product = $this->getProduct('product_a');
@@ -60,8 +64,19 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
             'categories' => []
         ]);
         $this->get('pim_catalog.saver.product')->save($product);
+    }
 
-        $this->assertSame($product->getCategoryCodes(), ['categoryB']);
+    public function testDeleteAllCategoriesOnProduct()
+    {
+        $this->generateToken('julia');
+        $product = $this->getProduct('product_a');
+
+        $this->updateProduct($product, [
+            'categories' => []
+        ]);
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        $this->assertSame($product->getCategoryCodes(), []);
     }
 
     /**

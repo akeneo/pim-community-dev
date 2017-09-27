@@ -70,7 +70,7 @@ class CategoryVoter extends Voter implements VoterInterface
      */
     protected function supports($attribute, $subject)
     {
-        return in_array($attribute, [Attributes::VIEW_ITEMS, Attributes::EDIT_ITEMS]) &&
+        return in_array($attribute, [Attributes::VIEW_ITEMS, Attributes::EDIT_ITEMS, Attributes::OWN_PRODUCTS]) &&
             $subject instanceof $this->className;
     }
 
