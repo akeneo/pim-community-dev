@@ -81,7 +81,9 @@ define(
              * @param {Event} event
              */
             redirect: function (event) {
-                event.stopPropagation();
+                if (!_.has(event, 'extension')) {
+                    event.stopPropagation();
+                }
 
                 if (!(event.metaKey || event.ctrlKey) &&
                     (!_.has(event, 'extension') || event.extension === this.code)

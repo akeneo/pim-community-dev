@@ -15,7 +15,7 @@
 
   &-center {
     order: 5;
-    flex-grow: 10;
+    flex-grow: 1;
     justify-content: center;
     display: flex;
     align-items: center;
@@ -23,10 +23,8 @@
 
   &-right {
     order: 10;
-    display: flex;
     justify-content: flex-end;
     align-items: center;
-    flex-grow: 1;
   }
 
   &-pageSize {
@@ -51,14 +49,5 @@
 
   &-left &-actionButton:first-child {
     margin-left: 0;
-  }
-}
-
-@media screen and (max-width: 1360px) {
-  .AknGridToolbar {
-    &-center {
-      order: 15;
-      flex-basis: 100%;
-    }
   }
 }

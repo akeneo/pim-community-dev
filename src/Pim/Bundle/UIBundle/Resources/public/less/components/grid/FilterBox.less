@@ -14,6 +14,8 @@
     font-size: @AknFontSizeBig;
     color: @AknDarkBlue;
     transition: color 0.1s ease-in;
+    margin-top: 15px;
+    margin-bottom: -15px;
   }
 
   &--search:not(:empty) {
@@ -26,6 +28,8 @@
     background: none;
     margin: 0 0 10px 0;
     flex-wrap: wrap;
+    margin-top: -@AknPaddingLeftColumn;
+    backgroud: white;
   }
 
   &--sticky {
@@ -45,6 +49,7 @@
     background: url("../../../images/icon-search.svg") no-repeat 0 center;
     padding-left: 30px;
     flex-grow: 1;
+    margin-top: @AknPaddingLeftColumn;
 
     &:focus {
       outline: none;
@@ -61,10 +66,11 @@
     margin-right: 30px;
     cursor: pointer;
     position: relative;
+    margin-top: @AknPaddingLeftColumn;
   }
 
   &-filter {
-    margin: (@AknPaddingBetweenBlocksLeftColumn - @AknPaddingLeftColumn) 0 @AknPaddingLeftColumn 0;
+    margin: 0 0 @AknPaddingLeftColumn 0;
   }
 
   &-disableFilter {
@@ -109,7 +115,7 @@
     cursor: pointer;
     background: none;
     border: none;
-    margin: 0 10px;
+    margin: 0 0 0 20px;
   }
 
   &--search &-filterCriteria {
