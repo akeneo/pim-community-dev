@@ -112,6 +112,7 @@ class NotEmptyVariantAxesValidatorSpec extends ObjectBehavior
                 ]
             )
             ->willReturn($violation);
+        $violation->atPath('attribute')->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $this->validate($entity, $constraint);

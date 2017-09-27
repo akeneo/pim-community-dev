@@ -48,10 +48,10 @@ class NotEmptyVariantAxesValidator extends ConstraintValidator
         foreach ($axes as $axis) {
             $value = $entity->getValue($axis->getCode());
 
-            if (null === $value || empty($value->getData())) {
+            if (null === $value || empty($value->getData()) && !is_bool($value->getData())) {
                 $this->context->buildViolation(NotEmptyVariantAxes::EMPTY_AXIS_VALUE, [
                     '%attribute%' => $axis->getCode()
-                ])->addViolation();
+                ])->atPath($constraint->propertyPath)->addViolation();
             }
         }
     }
