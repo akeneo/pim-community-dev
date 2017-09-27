@@ -98,6 +98,9 @@ class DatabaseCommand extends ContainerAwareCommand
 
         $this->resetElasticsearchIndex($output);
 
+        $entityManager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
+        $entityManager->clear();
+
         $this->getEventDispatcher()->dispatch(InstallerEvents::POST_DB_CREATE);
 
         // TODO: Should be in an event subscriber
