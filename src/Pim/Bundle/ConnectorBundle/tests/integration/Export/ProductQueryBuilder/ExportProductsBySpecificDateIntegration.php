@@ -22,9 +22,9 @@ class ExportProductsBySpecificDateIntegration extends AbstractExportTestCase
     {
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;a_metric;a_metric-unit;a_number_float
-product_1;;1;familyA2;;;KILOWATT;
-product_2;;1;familyA2;;;KILOWATT;
-product_3;;1;familyA2;;;KILOWATT;
+product_1;;1;familyA2;;;;
+product_2;;1;familyA2;;;;
+product_3;;1;familyA2;;;;
 
 CSV;
 
@@ -66,9 +66,9 @@ CSV;
     {
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;a_metric;a_metric-unit;a_number_float
-product_1;;1;familyA2;;;KILOWATT;
-product_2;;1;familyA2;;;KILOWATT;
-product_3;;1;familyA2;;;KILOWATT;
+product_1;;1;familyA2;;;;
+product_2;;1;familyA2;;;;
+product_3;;1;familyA2;;;;
 
 CSV;
 
