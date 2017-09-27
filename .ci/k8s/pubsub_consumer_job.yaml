@@ -88,7 +88,7 @@ spec:
             preStop:
               exec:
                 command: ["/usr/sbin/apache2ctl", "stop"]
-           resources:
+          resources:
             requests:
               memory: "700Mi"
         - name: selenium
