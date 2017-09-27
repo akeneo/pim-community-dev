@@ -169,6 +169,7 @@ pim_enrich:
             create: Create product
             filters: Filters
             selected: selected products
+            common: Common
             btn:
                 enabled: Enabled
                 disabled: Disabled
@@ -771,6 +772,8 @@ pim_enrich:
                     clear: Clear
                     all_group: All groups
                     empty_selection: All attributes will be exported
+                    title: Attributes
+                    description: Select the product information to export
                 family:
                     title: Family
                     help: "Select the products to export by their family. Ex: Export only the shoes and dresses."
@@ -1298,7 +1301,7 @@ job_tracker:
 
 pim_menu:
     tab:
-        dashboard: Dashboard
+        activity: Activity
         imports: Imports
         products: Products
         exports: Exports
@@ -1312,6 +1315,7 @@ pim_menu:
         category: Categories
         channel: Channels
         currency: Currencies
+        dashboard: Dashboard
         family: Families
         group: Groups
         group_type: Group types
@@ -1331,6 +1335,7 @@ pim_menu:
         api_connection: API connections
 
     navigation:
+        activity: Activity navigation
         system: System navigation
         user: Users management navigation
         settings: Settings navigation

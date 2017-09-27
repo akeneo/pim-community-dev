@@ -9,6 +9,14 @@ extensions:
         config:
             path: bundles/pimui/images/illustration-import-xlsx.svg
 
+    pim-job-instance-xlsx-base-import-show-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-job-instance-xlsx-base-import-show
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-job-instance-xlsx-base-import-show-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-job-instance-xlsx-base-import-show

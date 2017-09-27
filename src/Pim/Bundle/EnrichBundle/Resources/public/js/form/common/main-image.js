@@ -36,12 +36,19 @@ define(
             /**
              * {@inheritdoc}
              */
+            configure() {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render.bind(this));
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 if (null === this.getPath()) {
                     return;
                 }
 
-                this.el.src = this.getPath()
+                this.el.src = this.getPath();
 
                 return BaseForm.prototype.render.apply(this, arguments);
             },

@@ -21,7 +21,6 @@ use Pim\Component\Api\Pagination\PaginationTypes;
 use Pim\Component\Api\Pagination\PaginatorInterface;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\AttributeRepositoryInterface;
-use Pim\Component\Api\Repository\ProductRepositoryInterface;
 use Pim\Component\Api\Security\PrimaryKeyEncrypter;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
@@ -66,7 +65,7 @@ class ProductController
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ProductRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $productRepository;
 
     /** @var PaginatorInterface */
@@ -120,7 +119,7 @@ class ProductController
      * @param IdentifiableObjectRepositoryInterface $channelRepository
      * @param QueryParametersCheckerInterface       $queryParametersChecker
      * @param AttributeRepositoryInterface          $attributeRepository
-     * @param ProductRepositoryInterface            $productRepository
+     * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param PaginatorInterface                    $offsetPaginator
      * @param PaginatorInterface                    $searchAfterPaginator
      * @param ParameterValidatorInterface           $parameterValidator
@@ -142,7 +141,7 @@ class ProductController
         IdentifiableObjectRepositoryInterface $channelRepository,
         QueryParametersCheckerInterface $queryParametersChecker,
         AttributeRepositoryInterface $attributeRepository,
-        ProductRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $productRepository,
         PaginatorInterface $offsetPaginator,
         PaginatorInterface $searchAfterPaginator,
         ParameterValidatorInterface $parameterValidator,
@@ -229,12 +228,15 @@ class ProductController
      */
     public function getAction($code): JsonResponse
     {
-        $product = $this->productRepository->findOneByIdentifier($code);
-        if (null === $product) {
+        $pqb = $this->fromSizePqbFactory->create(['limit' => 1, 'from' => 0]);
+        $pqb->addFilter('identifier', Operators::EQUALS, $code);
+        $products = $pqb->execute();
+
+        if (0 === $products->count()) {
             throw new NotFoundHttpException(sprintf('Product "%s" does not exist.', $code));
         }
 
-        $productApi = $this->normalizer->normalize($product, 'external_api');
+        $productApi = $this->normalizer->normalize($products->current(), 'external_api');
 
         return new JsonResponse($productApi);
     }

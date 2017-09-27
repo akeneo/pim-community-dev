@@ -49,7 +49,7 @@ Feature: Associate a product
     And I visit the "Substitution" association type
     And I check the row "charcoal-boots"
     And I visit the "Upsell" association type
-    And I check the row "glossy-boots"
+    And I check the row "charcoal-boots"
     And I visit the "Display groups" target
     And I check the row "caterpillar_boots"
     And I visit the "Cross sell" association type
@@ -85,7 +85,7 @@ Feature: Associate a product
     And I check the row "gray-boots"
     And I check the row "black-boots"
     And I visit the "Pack" association type
-    And I check the row "glossy-boots"
+    And I check the row "brown-boots"
     And I visit the "Substitution" association type
     And I visit the "Display groups" target
     And I check the row "similar_boots"
@@ -96,7 +96,7 @@ Feature: Associate a product
     Then the row "gray-boots" should be checked
     And the row "black-boots" should be checked
     When I visit the "Pack" association type
-    Then the row "glossy-boots" should be checked
+    Then the row "brown-boots" should be checked
     When I visit the "Substitution" association type
     And I visit the "Display groups" target
     Then the row "similar_boots" should be checked

@@ -1,21 +1,24 @@
-<div class="AknDefault-mainContent entity-edit-form edit-form">
-    <header class="AknTitleContainer navigation">
-        <div class="AknTitleContainer-imageContainer" data-drop-zone="main-image"></div>
-        <div class="AknTitleContainer-mainContainer">
-            <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div>
-            <div class="AknTitleContainer-title" data-drop-zone="title"><%- title %></div>
-        </div>
-        <div class="AknTitleContainer-buttonsContainer">
-            <div class="AknTitleContainer-userMenu user-menu"></div>
-            <div class="AknTitleContainer-rightButtons" data-drop-zone="buttons"></div>
-            <div class="AknTitleContainer-titleButtons AknButtonList" data-drop-zone="title-buttons"></div>
-            <div class="AknTitleContainer-state state" data-drop-zone="state"></div>
-        </div>
-    </header>
+<div class="AknDefault-contentWithBottom" data-drop-zone="mass-actions">
+    <div class="AknDefault-mainContent entity-edit-form edit-form">
+        <header class="AknTitleContainer navigation">
+            <div class="AknTitleContainer-imageContainer" data-drop-zone="main-image"></div>
+            <div class="AknTitleContainer-mainContainer">
+                <div>
+                    <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div>
+                    <div class="AknTitleContainer-title" data-drop-zone="title"><%- title %></div>
+                </div>
+            </div>
+            <div class="AknTitleContainer-buttonsContainer">
+                <div class="user-menu" data-drop-zone="user-menu"></div>
+                <div class="AknTitleContainer-rightButtons" data-drop-zone="buttons"></div>
+                <div class="AknTitleContainer-titleButtons AknButtonList" data-drop-zone="title-buttons"></div>
+                <div class="AknTitleContainer-state state" data-drop-zone="state"></div>
+            </div>
+        </header>
 
-    <div data-drop-zone="content">
-        <div class="AknFilterBox AknFilterBox--search filter-box oro-clearfix-width" data-drop-zone="filters"></div>
-        <div class="AknGridToolbar" data-drop-zone="toolbar"></div>
+        <div data-drop-zone="content">
+            <div class="AknFilterBox AknFilterBox--search filter-box oro-clearfix-width" data-drop-zone="filters"></div>
+            <div class="AknGridToolbar" data-drop-zone="toolbar"></div>
+        </div>
     </div>
-    <div data-drop-zone="mass-actions"></div>
 </div>

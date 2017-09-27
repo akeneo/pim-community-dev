@@ -2,6 +2,7 @@
 
 .AknFilterBox {
   @searchHeight: 44px;
+  background-color: white;
 
   &-addFilterButton {
     background: url("../../../images/icon-plus.svg") no-repeat right center;
@@ -15,7 +16,7 @@
     transition: color 0.1s ease-in;
   }
 
-  &--search {
+  &--search:not(:empty) {
     min-height: @searchHeight;
     display: flex;
     width: 100%;

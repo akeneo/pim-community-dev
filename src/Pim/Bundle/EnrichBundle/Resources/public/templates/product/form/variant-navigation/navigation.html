@@ -1,0 +1,27 @@
+<div class="AknVariantNavigation">
+    <% for (let level in navigation) { %>
+
+    <span class="AknVariantNavigation-item <% if (navigation[level].selected && navigation[level].selected.id === entity.meta.id) { %>AknVariantNavigation-item--highlight<% } %>">
+        <% if (level > 0) { %>
+            <span class="AknVariantNavigation-axisName <%- navigation[level].selected ? 'AknVariantNavigation-axisName--selected' : '' %>">
+                <%- navigation[level].axes[currentLocale] %>
+            </span>
+
+            <% if (navigation[level].selected) { %>
+                <span class="AknVariantNavigation-axisValue" data-action="navigateToLevel" data-level="<%- level %>">
+                    <%- navigation[level].selected.axes_values_labels[currentLocale] %>
+                </span>
+            <% } %>
+
+            <% if (navigation[level - 1].selected) { %>
+                <input type="hidden" class="variant-navigation select-field" value="0" />
+            <% } %>
+        <% } else { %>
+            <span class="AknVariantNavigation-axisName AknVariantNavigation-axisValue" data-action="navigateToLevel" data-level="<%- level %>">
+                <%- commonLabel %>
+            </span>
+        <% } %>
+    </span>
+
+    <% } %>
+</div>

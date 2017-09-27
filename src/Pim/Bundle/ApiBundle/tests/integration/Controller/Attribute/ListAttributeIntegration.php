@@ -121,7 +121,7 @@ JSON;
 		}
 	},
 	"current_page": 2,
-	"items_count": 27,
+	"items_count": 29,
     "_embedded" : {
         "items" : [
             {$standardizedAttributes['a_metric']},

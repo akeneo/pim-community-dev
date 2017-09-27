@@ -3,8 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Doctrine\ORM\Query\AST\Join;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProduct;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 
 /**
@@ -86,5 +87,60 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
             ->setMaxResults($size);
 
         return $queryBuilder->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findChildrenProductModels(ProductModelInterface $productModel): array
+    {
+        $qb = $this
+            ->createQueryBuilder('pm')
+            ->where('pm.parent = :parent')
+            ->setParameter('parent', $productModel);
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findDescendantProductIdentifiers(ProductModelInterface $productModel): array
+    {
+        $qb = $this
+            ->_em
+            ->createQueryBuilder()
+            ->select('p.identifier')
+            ->from(VariantProduct::class, 'p')
+            ->innerJoin('p.parent', 'pm', 'WITH', 'p.parent = pm.id')
+            ->where('p.parent = :parent')
+            ->orWhere('pm.parent = :parent')
+            ->setParameter('parent', $productModel);
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByIdentifiers(array $codes): array
+    {
+        return $this->findBy(['code' => $codes]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findChildrenProducts(ProductModelInterface $productModel): array
+    {
+        $qb = $this
+            ->_em
+            ->createQueryBuilder()
+            ->select('p')
+            ->from(VariantProduct::class, 'p')
+            ->where('p.parent = :parent')
+            ->setParameter('parent', $productModel);
+
+        return $qb->getQuery()->execute();
     }
 }

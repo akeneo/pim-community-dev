@@ -33,9 +33,9 @@ Feature: Create an attribute
   Scenario: Fail to create a text attribute with an invalid validation regex
     Given I fill in the following information:
      | Code               | short_description  |
+     | Attribute group    | Other              |
      | Validation rule    | Regular expression |
      | Regular expression | this is not valid  |
-     | Attribute group    | Other              |
     And I save the attribute
     Then I should see validation error "This regular expression is not valid."
 

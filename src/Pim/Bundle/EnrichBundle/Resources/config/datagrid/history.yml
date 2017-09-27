@@ -7,11 +7,12 @@ datagrid:
         options:
             requireJSModules:
                 - oro/datagrid/pagination-input
+            rowView: oro/datagrid/history-row
         columns:
             version:
                 label: Version
                 type: field
-                frontend_type: integer
+                frontend_type: expand-history
             author:
                 label: Author
                 type: field
@@ -20,18 +21,12 @@ datagrid:
                 label: Logged at
                 type: product_value_datetime
                 frontend_type: datetime
-            old:
-                label: Old values
-                type: twig
-                template: PimVersioningBundle:Datagrid:Property/old.html.twig
-                frontend_type: html
+            changes:
+                label: Changes
+                type: changeset
+                frontend_type: history-diff
                 data_name: changeset
-            new:
-                label: New values
-                type: twig
-                template: PimVersioningBundle:Datagrid:Property/new.html.twig
-                frontend_type: html
-                data_name: changeset
+                renderable: false
         sorters:
             columns:
                 version:

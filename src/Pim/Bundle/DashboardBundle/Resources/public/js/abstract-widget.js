@@ -25,17 +25,9 @@ define(
 
             loadingMask: null,
 
-            $refreshBtn: null,
-
             loadTimeout: null,
 
             needsData: true,
-
-            refreshBtnTemplate: _.template(
-                '<span class="AknButtonList-item AknIconButton AknIconButton--grey btn-refresh">' +
-                    '<i class="icon-refresh"></i>' +
-                '</span>'
-            ),
 
             initialize: function (options) {
                 this.options = _.extend({}, this.defaults, this.options, options);
@@ -58,7 +50,6 @@ define(
                 Backbone.View.prototype.setElement.apply(this, arguments);
 
                 this._createLoadingMask();
-                this._createRefreshBtn();
 
                 return this;
             },
@@ -96,14 +87,12 @@ define(
 
             _beforeLoad: function () {
                 this.$el.parent().addClass('loading');
-                this.$refreshBtn.prop('disabled', true).find('i').addClass('icon-spin');
                 this.loadingMask.show();
             },
 
             _afterLoad: function () {
                 this.$el.parent().removeClass('loading');
                 this.loadingMask.hide();
-                this.$refreshBtn.prop('disabled', false).find('i').removeClass('icon-spin');
                 this.loadTimeout = null;
                 setTimeout(_.bind(function () {
                     this.needsData = true;
@@ -116,17 +105,6 @@ define(
                 }
                 this.loadingMask = new LoadingMask();
                 this.loadingMask.render().$el.insertAfter(this.$el);
-            },
-
-            _createRefreshBtn: function () {
-                if (this.$refreshBtn) {
-                    this.$refreshBtn.remove();
-                }
-
-                this.$refreshBtn = $(this.refreshBtnTemplate());
-                this.$refreshBtn.on('click', _.bind(this.reload, this));
-
-                this.$el.closest('.AknWidget').find('.widget-actions').append(this.$refreshBtn);
             },
 
             _processResponse: function (data) {

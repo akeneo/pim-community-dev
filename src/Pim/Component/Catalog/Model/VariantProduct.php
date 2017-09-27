@@ -21,7 +21,7 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getParent(): ?ProductModelInterface
+    public function getParent(): ?EntityWithFamilyVariantInterface
     {
         return $this->parent;
     }
@@ -29,7 +29,7 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setParent(ProductModelInterface $parent): void
+    public function setParent(EntityWithFamilyVariantInterface $parent = null): void
     {
         $this->parent = $parent;
     }

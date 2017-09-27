@@ -25,13 +25,14 @@ Feature: Export product by attribute date
     And I am logged in as "Julia"
     And I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
+    And I filter by "completeness" with operator "No condition on completeness" and value ""
+    And I visit the "Content" tab
     And I add available attributes Purchase date
     And I add available attributes Destocking date
     And I add available attributes Delivery date
     And I filter by "purchase_date" with operator "Is empty" and value ""
     And I filter by "destocking_date" with operator "Greater than" and value "08/13/2015"
     And I filter by "delivery_date" with operator "Between" and value "09/13/2015 and 09/01/2017"
-    And I filter by "completeness" with operator "No condition on completeness" and value ""
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes"
     And I press the "Edit" button

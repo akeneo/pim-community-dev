@@ -4,6 +4,7 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,6 +30,40 @@ abstract class AbstractProductTestCase extends ApiTestCase
         $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
 
         return $product;
+    }
+
+    /**
+     * @param string $identifier
+     * @param array  $data
+     *
+     * @return ProductInterface
+     */
+    protected function createVariantProduct($identifier, array $data = []) : ProductInterface
+    {
+        $product = $this->get('pim_catalog.builder.variant_product')->createProduct($identifier);
+        $this->get('pim_catalog.updater.product')->update($product, $data);
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+
+        return $product;
+    }
+
+    /**
+     * @param array  $data
+     *
+     * @return ProductModelInterface
+     */
+    protected function createProductModel(array $data = []) : ProductModelInterface
+    {
+        $productModel = $this->get('pim_catalog.factory.product_model')->create();
+        $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
+        $this->get('pim_catalog.validator.product')->validate($productModel);
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
+
+        $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
+
+        return $productModel;
     }
 
     /**
