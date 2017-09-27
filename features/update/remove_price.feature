@@ -3,6 +3,7 @@ Feature: Remove price fields
   As an internal process or any user
   I need to be able to remove a price field of a product
 
+  @ce
   Scenario: Successfully remove a price field
     Given a "default" catalog configuration
     And the following attributes:
