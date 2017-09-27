@@ -30,5 +30,7 @@ class PimEnterpriseConnectorExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('array_converters.yml');
+        $loader->load('processors.yml');
+        $loader->load('writers.yml');
     }
 }

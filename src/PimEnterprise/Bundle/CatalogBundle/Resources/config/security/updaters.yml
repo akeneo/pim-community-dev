@@ -50,6 +50,7 @@ services:
             - '@security.authorization_checker'
             - '@pim_catalog.comparator.filter.product_field'
             - '@pim_catalog.comparator.filter.product_association'
+            - '@pim_catalog.comparator.filter.product'
             - ['enabled', 'family', 'categories', 'groups']
             - ['associations']
 
