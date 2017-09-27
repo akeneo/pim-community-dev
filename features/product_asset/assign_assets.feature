@@ -147,6 +147,6 @@ Feature: Assign assets to a product
     And I visit the "Media" group
     And I start to manage assets for "Front view"
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
-    And I check the row "video_20"
-    And I check the row "video_21"
-    Then the asset basket should contain video_20, video_21
+    And I check the row "video_1"
+    And I check the row "video_2"
+    Then the asset basket should contain video_1, video_2
