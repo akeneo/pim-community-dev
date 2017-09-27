@@ -1,5 +1,31 @@
 # 2.0.0-ALPHA1 (2017-09-25)
 
+## New API endpoints
+
+- API-71: Get a single product with EE permissions
+- API-69: Get a list of products with EE permissions
+- API-213: Filter product and product values with EE permissions
+- API-224: Try to update partially a product that cannot be viewed through categories
+- API-223: Try to update partially a product that can only be viewed through categories
+- API-91: Update partially a product that can only be edited through categories with EE permissions
+- API-304: Update partially a product that is not classified at all with EE permissions
+- API-225: Update partially a product whose code does not exist with EE permissions
+- API-72: Update partially a product that is owned through categories with EE permissions
+- API-298: Update partially a list of products with EE permissions
+- API-70: Create a product with EE permissions
+- API-297: Post a media with EE permissions
+- API-74: Delete a product with EE permissions
+- API-229: Get a draft
+- API-228: Submit a draft for approval
+- API-240: Know the status of a working copy
+- API-260: Get a filtered list of published products
+- API-259: Get a list of published products
+
+## EE permissions on the imports, exports and products deletion
+- API-349: Apply permissions on published products export
+- API-247: Apply permissions on products export
+- API-303: Apply permissions on mass product deletion	
+
 ## Remove MongoDB product storage
 
 - Remove container parameter `pim_catalog_product_storage_driver`
