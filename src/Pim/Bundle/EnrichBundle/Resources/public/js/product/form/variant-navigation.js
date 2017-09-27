@@ -154,7 +154,7 @@ define([
                     // TODO: replace this placeholder by the real values, with PIM-6560
                     return {
                         ratio: 20,
-                        display: '1 / 5'
+                        display: '- / -'
                     };
                 }
             },
