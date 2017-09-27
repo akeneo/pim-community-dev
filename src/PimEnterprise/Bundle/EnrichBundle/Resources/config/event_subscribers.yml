@@ -1,7 +1,7 @@
 parameters:
-    pimee_enrich.form.subscriber.category_permissions.class:        PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\CategoryPermissionsSubscriber
-    pimee_enrich.form.subscriber.locale_permissions.class:          PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\LocalePermissionsSubscriber
-    pimee_enrich.subscriber.save_permissions.class:                 PimEnterprise\Bundle\EnrichBundle\EventSubscriber\SavePermissionsSubscriber
+    pimee_enrich.form.subscriber.category_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\CategoryPermissionsSubscriber
+    pimee_enrich.form.subscriber.locale_permissions.class:   PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\LocalePermissionsSubscriber
+    pimee_enrich.subscriber.save_permissions.class:          PimEnterprise\Bundle\EnrichBundle\EventSubscriber\SavePermissionsSubscriber
 
 services:
     pimee_enrich.form.subscriber.category_permissions:

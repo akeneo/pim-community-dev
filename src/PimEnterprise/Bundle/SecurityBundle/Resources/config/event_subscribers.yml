@@ -9,10 +9,9 @@ parameters:
     pimee_security.event_subscriber.enrich.add_default_user_group.class:     PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddDefaultUserGroupSubscriber
 
     # Import & Export
-    pimee_security.event_subscriber.import_export.add_category_permissions.class:        PimEnterprise\Bundle\SecurityBundle\EventSubscriber\ImportExport\AddCategoryPermissionsSubscriber
-    pimee_security.event_subscriber.import_export.add_attribute_group_permissions.class: PimEnterprise\Bundle\SecurityBundle\EventSubscriber\ImportExport\AddAttributeGroupPermissionsSubscriber
+    pimee_security.event_subscriber.import_export.add_category_permissions.class: PimEnterprise\Bundle\SecurityBundle\EventSubscriber\ImportExport\AddCategoryPermissionsSubscriber
 
-    pimee_security.event_subscriber.add_job_instance_permissions.class: PimEnterprise\Bundle\SecurityBundle\EventSubscriber\AddJobInstancePermissionsSubscriber
+    pimee_security.event_subscriber.add_default_permissions.class: PimEnterprise\Bundle\SecurityBundle\EventSubscriber\AddDefaultPermissionsSubscriber
 
 services:
     # Datagrid
@@ -64,7 +63,6 @@ services:
         arguments:
             - '@pim_user.repository.group'
             - '@pimee_security.manager.category_access'
-            - '@pimee_security.manager.attribute_group_access'
         tags:
             - { name: kernel.event_subscriber }
 
@@ -87,18 +85,11 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pimee_security.event_subscriber.import_export.add_attribute_group_permissions:
-        class: '%pimee_security.event_subscriber.import_export.add_attribute_group_permissions.class%'
+    pimee_security.event_subscriber.add_default_permissions:
+        class: '%pimee_security.event_subscriber.add_default_permissions.class%'
         arguments:
+            - '@pim_user.repository.group'
             - '@pimee_security.manager.attribute_group_access'
-            - '@pim_user.repository.group'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pimee_security.event_subscriber.add_job_instance_permissions:
-        class: '%pimee_security.event_subscriber.add_job_instance_permissions.class%'
-        arguments:
             - '@pimee_security.manager.job_profile_access'
-            - '@pim_user.repository.group'
         tags:
             - { name: kernel.event_subscriber }

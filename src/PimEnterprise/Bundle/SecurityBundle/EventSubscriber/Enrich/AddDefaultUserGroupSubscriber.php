@@ -11,12 +11,9 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
-use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
 use Pim\Bundle\UserBundle\Doctrine\ORM\Repository\GroupRepository;
-use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Component\Security\Attributes;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -41,8 +38,7 @@ class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
      */
     public function __construct(
         GroupRepository $groupRepository,
-        CategoryAccessManager $catAccessManager,
-        AttributeGroupAccessManager $attGrpAccessManager
+        CategoryAccessManager $catAccessManager
     ) {
         $this->groupRepository = $groupRepository;
         $this->catAccessManager = $catAccessManager;
