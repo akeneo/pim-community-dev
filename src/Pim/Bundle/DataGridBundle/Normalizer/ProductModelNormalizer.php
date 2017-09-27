@@ -37,8 +37,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
     public function __construct(
         CollectionFilterInterface $filter,
         VariantProductRatioInterface $variantProductRatioQuery
-    )
-    {
+    ) {
         $this->filter = $filter;
         $this->variantProductRatioQuery = $variantProductRatioQuery;
     }

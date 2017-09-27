@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
+use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 
 /**
  * Query variant product completenesses to build the complete variant product ratio on the PMEF
@@ -47,7 +47,7 @@ class VariantProductRatio implements VariantProductRatioInterface
             'channel.code as channel_code, locale.code as locale_code, variant_product.identifier as product_identifier, CASE WHEN (completeness.ratio = 100) THEN 1 ELSE 0 END as complete'
         );
 
-        if (2 === $productModel->getFamilyVariant()->getNumberOfLevel() && $productModel->isRootProductModel()){
+        if (2 === $productModel->getFamilyVariant()->getNumberOfLevel() && $productModel->isRootProductModel()) {
             $queryBuilder
                 ->from(ProductModelInterface::class, 'root_product_model')
                 ->innerJoin('root_product_model.productModels', 'sub_product_model')
