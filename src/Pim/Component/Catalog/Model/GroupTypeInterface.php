@@ -38,22 +38,6 @@ interface GroupTypeInterface extends TranslatableInterface, ReferableInterface
     public function setCode($code);
 
     /**
-     * Is variant
-     *
-     * @return bool
-     */
-    public function isVariant();
-
-    /**
-     * Set variant
-     *
-     * @param bool $variant
-     *
-     * @return GroupTypeInterface
-     */
-    public function setVariant($variant);
-
-    /**
      * Get groups
      *
      * @return ArrayCollection

@@ -34,9 +34,6 @@ class Group implements GroupInterface
     /**  @var ArrayCollection */
     protected $products;
 
-    /**  @var ArrayCollection */
-    protected $axisAttributes;
-
     /**
      * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
@@ -58,7 +55,6 @@ class Group implements GroupInterface
     {
         $this->products = new ArrayCollection();
         $this->translations = new ArrayCollection();
-        $this->axisAttributes = new ArrayCollection();
     }
 
     /**
@@ -235,53 +231,6 @@ class Group implements GroupInterface
     public function setProducts(array $products)
     {
         $this->products = new ArrayCollection($products);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addAxisAttribute(AttributeInterface $axisAttribute)
-    {
-        if (!$this->axisAttributes->contains($axisAttribute)) {
-            $this->axisAttributes[] = $axisAttribute;
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeAxisAttribute(AttributeInterface $axisAttribute)
-    {
-        $this->axisAttributes->removeElement($axisAttribute);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAxisAttributes()
-    {
-        return $this->axisAttributes;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAxisAttributes(array $newAxisAttributes = [])
-    {
-        foreach ($this->axisAttributes as $axisAttribute) {
-            if (!in_array($axisAttribute, $newAxisAttributes)) {
-                $this->removeAxisAttribute($axisAttribute);
-            }
-        }
-        foreach ($newAxisAttributes as $newAxisAttribute) {
-            $this->addAxisAttribute($newAxisAttribute);
-        }
 
         return $this;
     }

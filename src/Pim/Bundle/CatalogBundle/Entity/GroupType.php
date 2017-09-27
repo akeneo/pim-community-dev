@@ -21,9 +21,6 @@ class GroupType implements GroupTypeInterface
     /** @var string */
     protected $code;
 
-    /** @var bool */
-    protected $variant;
-
     /** @var ArrayCollection */
     protected $groups;
 
@@ -45,7 +42,6 @@ class GroupType implements GroupTypeInterface
     {
         $this->translations = new ArrayCollection();
         $this->groups = new ArrayCollection();
-        $this->variant = false;
     }
 
     /**
@@ -70,24 +66,6 @@ class GroupType implements GroupTypeInterface
     public function setCode($code)
     {
         $this->code = $code;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isVariant()
-    {
-        return $this->variant;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setVariant($variant)
-    {
-        $this->variant = $variant;
 
         return $this;
     }
