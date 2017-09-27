@@ -30,7 +30,7 @@
 ## BC breaks
 
 - Change the constructor of `PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber\RuleExecutionSubscriber` to replace `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` by `Symfony\Component\Security\Core\User\ChainUserProvider`. 
-- Change the constructor of `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository` to add `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`, Product parameter class and CategoryAccess parameter class.
+- Change the constructor of `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository` to add `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and CategoryAccess parameter class.
 - Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator` to add `Symfony\Component\HttpFoundation\RequestStack`
 - Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\ContextConfigurator` to add `Symfony\Component\HttpFoundation\RequestStack`
 - Change the constructor of `PimEnterprise\Bundle\TeamworkAssistantBundle\Job\RefreshProjectCompletenessJobLauncher` to add the path of the `logs` directory
