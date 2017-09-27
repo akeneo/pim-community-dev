@@ -127,6 +127,7 @@ class DatabaseCommand extends ContainerAwareCommand
         $output->writeln('<info>Reset elasticsearch indexes</info>');
 
         $this->getContainer()->get('akeneo_elasticsearch.client.product')->resetIndex();
+        $this->getContainer()->get('akeneo_elasticsearch.client.product_model')->resetIndex();
         $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
     }
 
