@@ -2,3 +2,7 @@ jstree:
   asset:
     all: Alle Daten
     unclassified: Unklassifizierte Daten
+asset_grid:
+  label: Produktassets
+create_asset:
+  title: Asset erstellen

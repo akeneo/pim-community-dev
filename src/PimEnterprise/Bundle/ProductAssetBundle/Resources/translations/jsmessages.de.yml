@@ -11,6 +11,7 @@ pimee_product_asset:
           title: Assets verwalten
           cancel: Abbrechen
           confirm: Bestätigen
+        title: Assets verwalten
   enrich_asset:
     grid:
       edit: Eigenschaften des Assets bearbeiten

@@ -11,6 +11,8 @@ pimee_product_asset:
           title: Gérer les ressources
           cancel: Annuler
           confirm: Confirmer
+        title: Gérer les ressources
+        description: Choisissez les ressources que vous souhaitez attacher à votre produit
   enrich_asset:
     grid:
       edit: Editer les propriétés de la ressource

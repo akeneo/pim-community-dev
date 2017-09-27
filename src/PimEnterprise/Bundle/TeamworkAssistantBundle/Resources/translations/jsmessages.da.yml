@@ -13,6 +13,8 @@ teamwork_assistant:
       confirmation:
         remove: Er du sikker på, du vil slette projektet?
         delete: Bekræft sletning
+      popin_title: Opret
+      projects: Projekter
   project:
     label: Navn
     locale: Landestandard

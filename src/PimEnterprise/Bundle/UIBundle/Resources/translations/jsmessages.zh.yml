@@ -2,3 +2,7 @@ jstree:
   asset:
     all: 所有资产
     unclassified: 未分类的资产
+asset_grid:
+  label: 产品资产
+create_asset:
+  title: 创建资产

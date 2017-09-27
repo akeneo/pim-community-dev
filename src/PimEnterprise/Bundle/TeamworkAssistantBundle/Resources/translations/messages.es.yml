@@ -1,25 +1,30 @@
 project_calculation: Cálculo del proyecto
+project_created: Un nuevo proyecto para usted
 project_finished: Proyecto finalizado
 teamwork_assistant:
   project:
     required: Este valor no debe estar vacío.
     label_maxlength: Este valor es demasiado largo. Debe tener {{ max }} caracteres o menos.
     project_identifier: El proyecto {{ project }} no existe.
+    project_locale: El local {{ locale }} del proyecto debe estar habilitado.
     project_due_date: No puede seleccionar una fecha en el pasado.
   notification:
     project_calculation:
       error: Cálculo fallido del proyecto <strong>%project_label%</strong>
       warning: Cálculo del proyecto <strong>%project_label%</strong> finalizado con errores
+      success: El proyecto <strong>%project_label%</strong> está listo y los contribuidores han sido notificados. ¡Comencemos!
       start: Iniciar
     message: Tiene nuevos productos a enriquecer para "%project_label%". La fecha de vencimiento es "%due_date%".
     project_finished:
       contributor: '¡Felicitaciones! Ha realizado el 100% de los productos en %project_label%.'
+      owner: '%project_label% para el %due_date% está listo.'
       show: Mostrar
     due_date:
       contributor: Ha realizado un %percent%% de los productos del proyecto %project_label%. No olvide rellenar los productos pendientes para el %due_date%.
       owner: '%project_label% al %due_date% no está 100% completo.'
       start: Iniciar
   datagrid:
+    project_completeness: Progreso del proyecto
     contributor_todo: Pendientes
     contributor_in_progress: En progreso
     contributor_done: Hecho
@@ -32,6 +37,12 @@ batch_jobs:
       label: Cálculo del proyecto
     prepare_project_calculation:
       label: Preparar el cálculo del proyecto
+    clean_contributor_group:
+      label: Revisar permisiones de usuarios en el local del proyecto
+  refresh_project_completeness_calculation:
+    label: Actualizar la completitud del proyecto
+    refresh_project_completeness_calculation:
+      label: Actualizar la completitud del proyecto
 job_execution:
   summary:
     processed_products: Productos procesados

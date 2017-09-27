@@ -11,6 +11,7 @@ pimee_product_asset:
           title: Administrer aktiver
           cancel: Annuller
           confirm: Bekræft
+        title: Administrer formue
   enrich_asset:
     grid:
       edit: Redigere egenskaberne for aktiverne

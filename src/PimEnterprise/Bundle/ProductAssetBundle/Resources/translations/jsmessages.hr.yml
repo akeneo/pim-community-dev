@@ -11,6 +11,7 @@ pimee_product_asset:
           title: Upravljanje imovinom
           cancel: Poništi
           confirm: Potvrdi
+        title: Upravljanje imovinom
   enrich_asset:
     grid:
       edit: Uredi svojstva imovine

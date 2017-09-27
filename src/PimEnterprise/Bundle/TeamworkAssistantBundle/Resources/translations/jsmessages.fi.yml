@@ -6,6 +6,7 @@ teamwork_assistant:
       loading: Ladataan...
       confirmation:
         delete: Poista vahvistus
+      popin_title: Luo
   project:
     label: Nimi
     locale: Lokaatio

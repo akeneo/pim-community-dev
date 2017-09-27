@@ -46,7 +46,6 @@ pimee_enrich:
           edit.label: 允许编辑属性
   entity:
     product:
-      index_title: 已发布的产品
       navigation: 已发布的产品
       history:
         published: 已发布

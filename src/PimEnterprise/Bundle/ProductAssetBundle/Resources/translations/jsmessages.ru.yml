@@ -11,6 +11,7 @@ pimee_product_asset:
           title: Управление активами
           cancel: Отмена
           confirm: Подтверждение
+        title: Управление активами
   enrich_asset:
     grid:
       edit: Редактирование свойств актива

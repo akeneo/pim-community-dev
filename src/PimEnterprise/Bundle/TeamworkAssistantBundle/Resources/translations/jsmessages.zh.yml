@@ -6,6 +6,7 @@ teamwork_assistant:
       loading: 正在加载...
       confirmation:
         delete: 删除确认
+      popin_title: 创建
   project:
     label: 名称
     locale: 本地化语言

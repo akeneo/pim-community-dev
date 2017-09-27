@@ -11,6 +11,7 @@ pimee_product_asset:
           title: Gestionar recursos
           cancel: Cancelar
           confirm: Confirmar
+        title: Gestionar recursos
   enrich_asset:
     grid:
       edit: Editar prodpiedades del recurso

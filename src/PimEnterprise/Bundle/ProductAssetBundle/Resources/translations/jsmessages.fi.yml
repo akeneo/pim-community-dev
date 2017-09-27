@@ -11,6 +11,7 @@ pimee_product_asset:
           title: Hallinnoi resursseja
           cancel: Peruuta
           confirm: Vahvista
+        title: Hallinnoi resursseja
   enrich_asset:
     grid:
       edit: Muokkaa resurssin ominaisuuksia

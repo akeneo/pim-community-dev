@@ -26,6 +26,10 @@ pim_enrich:
         properties:
           label:
             is_read_only: Sólo lectura
+pim:
+  grid:
+    mass_action:
+      asset_edit: Edición en masa los activos
 pimee_enrich:
   form:
     job_instance:
@@ -46,9 +50,11 @@ pimee_enrich:
           title: Permisos
           view.label: Autorizado a ver los atributos
           edit.label: Autorizado a editar los atributos
+          removed: El grupo {{ group }} no será autorizado a {{ permission }} grupo de atributos
+          added: El grupo {{ group }} será autorizado a {{ permission }} grupo de atributos
   entity:
     product:
-      index_title: Productos publicados
+      index_title: "] -Inf, 1] {{ count }} productos publicados|] 1, Inf [{{ count }} productos publicados"
       navigation: Productos publicados
       history:
         published: Publicado
@@ -80,6 +86,7 @@ pimee_enrich:
           messages:
             approve:
               success: La propuesta ha sido aplicada exitosamente.
+              error: 'La propuesta no puede ser aplicada debido al siguiente error: {{ error }}'
             reject:
               success: La propuesta ha sido rechazada.
             remove:
@@ -158,20 +165,29 @@ pimee_enrich:
         height: 'Alto px %value%'
   mass_edit:
     next: Siguiente
+    previous: Atrás
     cancel: Cancelar
     confirm: Confirmar
     product:
       operation:
         publish:
           label: Publicar
+          label_count: "{1}Publicar <span class=\"AknFullPage-title--highlight\">1 producto</span>|] 1, Inf [Publicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
+          description: Los productos se publicarán
+          warning: Los {{ itemsCount }} seleccionados serán publicados.
         unpublish:
           label: Despublicar
+          label_count: "{1}Despublicar <span class=\"AknFullPage-title--highlight\">1 producto</span>|] 1, Inf [Despublicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
+          description: Los productos serán despublicados
+          warning: Los {{ itemsCount }} productos seleccionados serán quitados de la publicación.
     asset:
+      title: Activos / Edición en masa ({{ itemsCount }} activos)
       step:
         select:
           label: Elegir recurso
         choose:
           label: Elegir operación
+          title: Edición en masa ({{ itemsCount }} activos)
         configure:
           label: Configurar
         confirm:
@@ -179,8 +195,11 @@ pimee_enrich:
       operation:
         add_tag:
           label: Añadir etiquetas a los recursos
+          description: Las etiquetas serán agregadas a los activos
           field: Etiquetas
         add_to_category:
+          label: Clasificar los activos en categorías
+          description: Los activos serán colocados en las siguientes categorías, las categorías actuales serán conservadas.
           field: Categorías
 pim_menu:
   tab:
@@ -190,3 +209,4 @@ pim_menu:
     proposal: Propuestas
     published_product: Productos publicados
     rule: Reglas
+    upload_asset: Subir activos

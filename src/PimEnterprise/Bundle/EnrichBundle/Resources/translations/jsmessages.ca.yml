@@ -46,7 +46,6 @@ pimee_enrich:
           edit.label: Permet editar els atributs
   entity:
     product:
-      index_title: Productes publicats
       navigation: Productes publicats
       history:
         published: Publicat

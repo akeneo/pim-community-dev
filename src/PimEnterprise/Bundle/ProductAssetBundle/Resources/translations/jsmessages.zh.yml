@@ -11,6 +11,7 @@ pimee_product_asset:
           title: 管理资产
           cancel: 取消
           confirm: 确认
+        title: 管理资产
   enrich_asset:
     grid:
       edit: 编辑资产的属性
