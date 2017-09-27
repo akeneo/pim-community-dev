@@ -1,6 +1,6 @@
 'use strict';
 /**
- * This module sets parent attributes as read only and add a message in the footer of the field
+ * This module sets variant axes as read only and add a message in the label of the field
  *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -31,15 +31,15 @@ define(
              * {@inheritdoc}
              */
             addFieldExtension: function (event) {
-                var productModel = this.getFormData();
-                if (!productModel.meta.attributes_for_this_level) {
+                const entity = this.getFormData();
+                if (null === entity.meta.family_variant) {
                     return;
                 }
 
-                var levelAttributeCodes = productModel.meta.attributes_for_this_level;
-                var field = event.field;
+                const axesAttributeCodes = entity.meta.attributes_axes;
+                const field = event.field;
 
-                if (!_.contains(levelAttributeCodes, field.attribute.code)) {
+                if (axesAttributeCodes.includes(field.attribute.code)) {
                     field.setEditable(false);
                     this.updateFieldElements(field);
                 }
@@ -53,18 +53,10 @@ define(
              * @param {Object} field
              */
             updateFieldElements: function (field) {
-                var productModel = this.getFormData();
-                var message = '';
+                const message = '(' + __('pim_enrich.entity.product_model.variant_axis') + ')';
+                const element = '<span class="">' + message + '</span>';
 
-                if ('product_model' === productModel.meta.model_type) {
-                    message = __('pim_enrich.entity.product_model.read_only_parent_attribute_from_common');
-                } else {
-                    // TODO: PIM-6451, specific message for variant products
-                }
-
-                var element = '<span class="AknFieldContainer-unavailable">' + message + '</span>';
-
-                field.addElement('footer', 'read_only_parent_attribute', element);
+                field.addElement('label', 'variant_axis', element);
             }
         });
     }

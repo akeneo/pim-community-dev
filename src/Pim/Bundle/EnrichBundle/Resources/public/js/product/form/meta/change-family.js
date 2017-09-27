@@ -34,6 +34,11 @@ define(
                 'click': 'showModal'
             },
             render: function () {
+                const entity = this.getFormData();
+                if (null !== entity.meta.family_variant) {
+                    return;
+                }
+
                 this.delegateEvents();
 
                 return BaseForm.prototype.render.apply(this, arguments);

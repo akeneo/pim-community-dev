@@ -53,4 +53,11 @@ interface VariantAttributeSetInterface
      * @param int $level
      */
     public function setLevel(int $level): void;
+
+    /**
+     * @param string $locale
+     *
+     * @return array
+     */
+    public function getAxesLabels(string $locale): array;
 }

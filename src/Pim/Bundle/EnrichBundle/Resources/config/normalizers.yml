@@ -67,6 +67,7 @@ services:
             - '@pim_enrich.normalizer.file'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.values_filler.product'
+            - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
             - '@pim_enrich.normalizer.variant_navigation'
         tags:
             - { name: pim_internal_api_serializer.normalizer }

@@ -249,6 +249,7 @@ pim_enrich:
                 update_failed: The product model could not be updated.
                 field_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
             read_only_parent_attribute_from_common: This attribute can be updated on the common attributes.
+            read_only_parent_attribute_from_model: "This attribute can be updated on the attributes by {{ axes }}"
             variant_axis: Variant axis
         association_type:
             info:

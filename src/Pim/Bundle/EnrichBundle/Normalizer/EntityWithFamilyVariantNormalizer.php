@@ -162,8 +162,8 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
                     case AttributeTypes::METRIC:
                         $valuesForLocale[] = sprintf(
                             '%s %s',
-                            $value->getData()->getAmount(),
-                            $value->getData()->getUnit()
+                            $value->getAmount(),
+                            $value->getUnit()
                         );
 
                         break;

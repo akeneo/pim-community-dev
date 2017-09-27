@@ -110,7 +110,7 @@ extensions:
         position: 70
 
     pim-product-model-edit-form-family-variant:
-        module: pim/product-model-edit-form/meta/family-variant
+        module: pim/product-edit-form/meta/family-variant
         parent: pim-product-model-edit-form-meta
         targetZone: meta
         position: 80
@@ -180,13 +180,13 @@ extensions:
         position: 100
 
     pim-product-model-edit-form-read-only-parent-attributes:
-        module: pim/product-model-edit-form/attributes/read-only-parent-attributes
+        module: pim/product-edit-form/attributes/read-only-parent-attributes
         parent: pim-product-model-edit-form-attributes
         targetZone: self
         position: 100
 
     pim-product-model-edit-form-read-only-variant-axes:
-        module: pim/product-model-edit-form/attributes/variant-axes
+        module: pim/product-edit-form/attributes/variant-axes
         parent: pim-product-model-edit-form-attributes
         targetZone: self
         position: 110

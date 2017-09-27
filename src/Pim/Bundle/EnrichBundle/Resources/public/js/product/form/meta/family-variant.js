@@ -11,10 +11,8 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
-        'oro/mediator',
         'pim/form',
         'pim/template/product/meta/family-variant',
-        'pim/fetcher-registry',
         'pim/user-context',
         'pim/i18n'
     ],
@@ -22,10 +20,8 @@ define(
         $,
         _,
         __,
-        mediator,
         BaseForm,
         template,
-        FetcherRegistry,
         UserContext,
         i18n
     ) {
@@ -38,8 +34,7 @@ define(
              * {@inheritdoc}
              */
             configure: function () {
-                UserContext.off('change:catalogLocale change:catalogScope', this.render);
-                this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
+                this.listenTo(UserContext, 'change:catalogLocale', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -52,15 +47,15 @@ define(
                     return this;
                 }
 
-                var productModel = this.getFormData();
-                var familyVariant = productModel.meta.family_variant;
-                var label = __('pim_enrich.entity.product.meta.family_variant.none');
+                const entity = this.getFormData();
+                const familyVariant = entity.meta.family_variant;
+                let label = __('pim_enrich.entity.product.meta.family_variant.none');
 
-                if (familyVariant) {
+                if (null !== familyVariant) {
                     label = i18n.getLabel(
                         familyVariant.labels,
                         UserContext.get('catalogLocale'),
-                        productModel.family_variant
+                        entity.family_variant
                     );
                 }
 

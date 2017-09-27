@@ -15,12 +15,16 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
+use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\AssociationInterface;
 use Pim\Component\Catalog\Model\AssociationTypeInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
@@ -33,7 +37,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class ProductNormalizerSpec extends ObjectBehavior
 {
     function let(
-        NormalizerInterface $productNormalizer,
+        NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
         VersionManager $versionManager,
         LocaleRepositoryInterface $localeRepository,
@@ -51,10 +55,11 @@ class ProductNormalizerSpec extends ObjectBehavior
         FileNormalizer $fileNormalizer,
         ProductBuilderInterface $productBuilder,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer
     ) {
         $this->beConstructedWith(
-            $productNormalizer,
+            $normalizer,
             $versionNormalizer,
             $versionManager,
             $localeRepository,
@@ -72,6 +77,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             $fileNormalizer,
             $productBuilder,
             $productValuesFiller,
+            $attributesProvider,
             $navigationNormalizer
         );
     }
@@ -82,7 +88,7 @@ class ProductNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_products(
-        $productNormalizer,
+        $normalizer,
         $versionNormalizer,
         $versionManager,
         $localeRepository,
@@ -132,7 +138,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'picture'             => [['data' => 'a/b/c/my_picture.jpg', 'locale' => null, 'scope' => null]]
         ];
 
-        $productNormalizer->normalize($mug, 'standard', $options)->willReturn($productNormalized);
+        $normalizer->normalize($mug, 'standard', $options)->willReturn($productNormalized);
         $localizedConverter->convertToLocalizedFormats($productNormalized['values'], $options)->willReturn($valuesLocalized);
 
         $valuesConverted = $valuesLocalized;
@@ -201,21 +207,25 @@ class ProductNormalizerSpec extends ObjectBehavior
                         'filePath'         => '/p/i/m/4/all.png',
                         'originalFileName' => 'all.png',
                     ],
-                    'variant_navigation' => [],
                     'label'             => [
                         'en_US' => 'A nice Mug!',
                         'fr_FR' => 'Un très beau Mug !'
                     ],
                     'associations'      => [
                         'group' => ['groupIds' => [12]]
-                    ]
+                    ],
+                    'variant_navigation'        => [],
+                    'attributes_for_this_level' => [],
+                    'attributes_axes'           => [],
+                    'parent_attributes'         => [],
+                    'family_variant'            => null
                 ]
             ]
         );
     }
 
     function it_normalizes_variant_products(
-        $productNormalizer,
+        $normalizer,
         $versionNormalizer,
         $versionManager,
         $localeRepository,
@@ -230,13 +240,19 @@ class ProductNormalizerSpec extends ObjectBehavior
         $productBuilder,
         $productValuesFiller,
         $navigationNormalizer,
+        $attributesProvider,
         VariantProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
         GroupInterface $group,
         ArrayCollection $groups,
         ValueInterface $image,
-        FileInfoInterface $dataImage
+        FileInfoInterface $dataImage,
+        FamilyVariantInterface $familyVariant,
+        AttributeInterface $color,
+        AttributeInterface $size,
+        AttributeInterface $description,
+        ProductModelInterface $productModel
     ) {
         $options = [
             'decimal_separator' => ',',
@@ -266,7 +282,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'picture'             => [['data' => 'a/b/c/my_picture.jpg', 'locale' => null, 'scope' => null]]
         ];
 
-        $productNormalizer->normalize($mug, 'standard', $options)->willReturn($productNormalized);
+        $normalizer->normalize($mug, 'standard', $options)->willReturn($productNormalized);
         $localizedConverter->convertToLocalizedFormats($productNormalized['values'], $options)->willReturn($valuesLocalized);
 
         $valuesConverted = $valuesLocalized;
@@ -320,6 +336,20 @@ class ProductNormalizerSpec extends ObjectBehavior
         $navigationNormalizer->normalize($mug, 'internal_api', $options)
             ->willReturn(['NAVIGATION NORMALIZED']);
 
+        $mug->getFamilyVariant()->willReturn($familyVariant);
+        $normalizer->normalize($familyVariant, 'standard')->willReturn([
+            'NORMALIZED FAMILY'
+        ]);
+
+        $mug->getParent()->willReturn($productModel);
+        $attributesProvider->getAttributes($mug)->willReturn([$size]);
+        $attributesProvider->getAxes($mug)->willReturn([$size]);
+        $attributesProvider->getAttributes($productModel)->willReturn([$color, $description]);
+
+        $color->getCode()->willReturn('color');
+        $size->getCode()->willReturn('size');
+        $description->getCode()->willReturn('description');
+
         $this->normalize($mug, 'internal_api', $options)->shouldReturn(
             [
                 'enabled'    => true,
@@ -338,14 +368,18 @@ class ProductNormalizerSpec extends ObjectBehavior
                         'filePath'         => '/p/i/m/4/all.png',
                         'originalFileName' => 'all.png',
                     ],
-                    'variant_navigation' => ['NAVIGATION NORMALIZED'],
                     'label'             => [
                         'en_US' => 'A nice Mug!',
                         'fr_FR' => 'Un très beau Mug !'
                     ],
                     'associations'      => [
                         'group' => ['groupIds' => [12]]
-                    ]
+                    ],
+                    'variant_navigation' => ['NAVIGATION NORMALIZED'],
+                    'attributes_for_this_level' => ['size'],
+                    'attributes_axes'           => ['size'],
+                    'parent_attributes'         => ['color', 'description'],
+                    'family_variant'            => ['NORMALIZED FAMILY']
                 ]
             ]
         );
