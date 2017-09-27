@@ -34,9 +34,7 @@ spec:
             failureThreshold: 30
             tcpSocket:
               port: 27017
-          resources:
-            requests:
-              memory: "600Mi"
+          resources: {limits: {memory: "600Mi"},requests: {memory: "600Mi"}}
         - name: mysql
           image: mysql:5.6
           env:
