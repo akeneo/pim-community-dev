@@ -113,13 +113,10 @@ define(
                     this.trigger('teamwork-assistant:widget:contributor-selected', code);
                 }.bind(this));
                 $select.on('select2-open', function () {
-                    $('.teamwork-assistant-widget-contributor-dropdown .select2-search')
-                        .prepend('<i class="icon-search select2-searchIcon"></i>');
                     $('.teamwork-assistant-widget-contributor-dropdown .select2-input')
                         .attr('placeholder', __('teamwork_assistant.widget.placeholder.contributor_selector'));
                 });
                 $select.on('select2-close', function () {
-                    $('.teamwork-assistant-widget-contributor-dropdown .select2-search .icon-search').remove();
                     $('.teamwork-assistant-widget-contributor-dropdown .select2-input').attr('placeholder', null);
                 });
             },
