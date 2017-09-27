@@ -11,6 +11,8 @@ Pim\Component\Catalog\Model\Product:
                 message: 'regex.comma_or_semicolon.message'
             - Length:
                 max: 255
+        family:
+            - NotBlank: ~
     getters:
         values:
             - Symfony\Component\Validator\Constraints\Valid:

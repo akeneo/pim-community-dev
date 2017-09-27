@@ -136,6 +136,18 @@ class ProductUpdater implements ObjectUpdaterInterface
             if (in_array($code, $this->supportedFields)) {
                 $this->updateProductFields($product, $code, $values);
             } elseif ('values' === $code) {
+                if (null !== $product->getFamily()) {
+                    $familyAttributes = [];
+                    foreach ($product->getFamily()->getAttributes() as $attribute) {
+                        $familyAttributes[] = $attribute->getCode();
+                    }
+
+                    $valuesNotInFamily = array_diff(array_keys($values), $familyAttributes);
+                    foreach ($valuesNotInFamily as $valueNotInFamily) {
+                        unset($values[$valueNotInFamily]);
+                    }
+                }
+
                 $this->valuesUpdater->update($product, $values, $options);
                 $this->addEmptyValues($product, $values);
             } elseif (!in_array($code, $this->ignoredFields)) {
