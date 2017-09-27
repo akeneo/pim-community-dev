@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository as BaseProductMassActionRepository;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedProductRepository;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -34,9 +35,6 @@ class ProductMassActionRepository extends BaseProductMassActionRepository
     /** @var string */
     protected $categoryAccessClass;
 
-    /** @var string */
-    protected $productClass;
-
     /**
      * @param EntityManager              $em
      * @param string                     $entityName
@@ -50,15 +48,13 @@ class ProductMassActionRepository extends BaseProductMassActionRepository
         $entityName,
         PublishedProductRepository $publishedRepository,
         TokenStorageInterface $tokenStorage,
-        $categoryAccessClass,
-        $productClass
+        $categoryAccessClass
     ) {
         parent::__construct($em, $entityName);
 
         $this->publishedRepository = $publishedRepository;
         $this->tokenStorage = $tokenStorage;
         $this->categoryAccessClass = $categoryAccessClass;
-        $this->productClass = $productClass;
     }
 
     /**
@@ -99,7 +95,7 @@ class ProductMassActionRepository extends BaseProductMassActionRepository
         $qb = $this->em->createQueryBuilder();
         $qb
             ->select('product.id')->distinct(true)
-            ->from($this->productClass, 'product')
+            ->from(ProductInterface::class, 'product')
             ->leftJoin('product.categories', 'prodCategory')
             ->leftJoin(
                 $this->categoryAccessClass,

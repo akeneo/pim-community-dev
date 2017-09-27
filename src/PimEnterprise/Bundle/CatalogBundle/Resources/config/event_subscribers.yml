@@ -26,6 +26,5 @@ services:
             - '@pimee_catalog.security.merger.not_granted_category'
             - '@pimee_catalog.security.merger.not_granted_associated_product'
             - '@pimee_catalog.security.merger.not_granted_values'
-            - '@security.authorization_checker'
         tags:
             - { name: kernel.event_subscriber }

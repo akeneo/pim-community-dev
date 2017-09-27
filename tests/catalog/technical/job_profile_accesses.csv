@@ -1,24 +1,26 @@
 job_profile;execute_job_profile
-update_product_value;All
-add_product_value;All
-remove_product_value;All
-publish_product;All
-unpublish_product;All
-edit_common_attributes;All
-set_attribute_requirements;All
-approve_product_draft;All
-refuse_product_draft;All
-apply_assets_mass_upload;All
-csv_product_quick_export;All
-csv_product_grid_context_quick_export;All
-csv_published_product_quick_export;All
-csv_published_product_grid_context_quick_export;All
-csv_published_product_export;All
-xlsx_product_quick_export;All
-xlsx_product_grid_context_quick_export;All
-xlsx_published_product_quick_export;All
-xlsx_published_product_grid_context_quick_export;All
-rule_impacted_product_count;All
-classify_assets;All
-add_tags_to_assets;All
-compute_product_models_descendants;All
+update_product_value;IT support,Manager,Redactor
+add_product_value;IT support,Manager,Redactor
+remove_product_value;IT support,Manager,Redactor
+publish_product;IT support,Manager,Redactor
+unpublish_product;IT support,Manager,Redactor
+edit_common_attributes;IT support,Manager,Redactor
+set_attribute_requirements;IT support,Manager,Redactor
+approve_product_draft;IT support,Manager,Redactor
+refuse_product_draft;IT support,Manager,Redactor
+apply_assets_mass_upload;IT support,Manager,Redactor
+csv_product_quick_export;IT support,Manager,Redactor
+csv_product_grid_context_quick_export;IT support,Manager,Redactor
+csv_published_product_quick_export;IT support,Manager,Redactor
+csv_published_product_grid_context_quick_export;IT support,Manager,Redactor
+csv_published_product_export;IT support,Manager,Redactor
+xlsx_product_quick_export;IT support,Manager,Redactor
+xlsx_product_grid_context_quick_export;IT support,Manager,Redactor
+xlsx_published_product_quick_export;IT support,Manager,Redactor
+xlsx_published_product_grid_context_quick_export;IT support,Manager,Redactor
+rule_impacted_product_count;IT support,Manager,Redactor
+classify_assets;IT support,Manager,Redactor
+add_tags_to_assets;IT support,Manager,Redactor
+csv_product_import;IT support,Manager,Redactor
+csv_product_export;IT support,Manager,Redactor
+compute_product_models_descendants;IT support,Manager,Redactor

@@ -1,0 +1,7 @@
+services:
+    pim_connector.writer.database.product:
+        class: '%pim_connector.writer.database.product.class%'
+        arguments:
+            - '@pim_versioning.manager.version'
+            - '@pimee_workflow.saver.product_delegating'
+            - '@pim_connector.doctrine.cache_clearer'

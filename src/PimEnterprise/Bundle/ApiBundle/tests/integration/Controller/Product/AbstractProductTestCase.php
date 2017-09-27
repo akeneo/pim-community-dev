@@ -6,6 +6,7 @@ use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use PimEnterprise\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class AbstractProductTestCase extends ApiTestCase
@@ -85,6 +86,26 @@ abstract class AbstractProductTestCase extends ApiTestCase
         $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
 
         return $product;
+    }
+
+    /**
+     * @param string           $userName
+     * @param ProductInterface $product
+     * @param array            $changes
+     *
+     * @return ProductDraftInterface
+     */
+    protected function createProductDraft(
+        string $userName,
+        ProductInterface $product,
+        array $changes
+    ) : ProductDraftInterface {
+        $this->get('pim_catalog.updater.product')->update($product, $changes);
+
+        $productDraft = $this->get('pimee_workflow.builder.draft')->build($product, $userName);
+        $this->get('pimee_workflow.saver.product_draft')->save($productDraft);
+
+        return $productDraft;
     }
 
     /**

@@ -87,9 +87,10 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $this->save($product);
     }
 
-    function it_throws_an_exception_if_the_user_has_only_the_view_permission_on_product(
+    function it_does_not_save_neither_product_nor_draft_if_the_user_has_only_the_view_permission_on_product(
         $authorizationChecker,
         $tokenStorage,
+        $objectManager,
         ProductInterface $product,
         TokenInterface $token
     ) {
@@ -104,8 +105,10 @@ class DelegatingProductSaverSpec extends ObjectBehavior
 
         $product->getIdentifier()->willReturn('sku');
 
-        $this->shouldThrow('PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException'
-        )->during('save', [$product]);
+        $objectManager->persist($product)->shouldNotBeCalled();
+        $objectManager->flush($product)->shouldNotBeCalled();
+
+        $this->save($product);
     }
 
     function it_saves_the_product_when_user_is_not_the_owner_and_product_not_exists(
@@ -144,9 +147,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $product)
             ->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)
-            ->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::VIEW, $product)
-            ->willReturn(false);
+            ->willReturn(true);
 
         $user->getUsername()->willReturn('username');
         $token->getUser()->willReturn($user);
@@ -183,8 +184,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
             ->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)
             ->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::VIEW, $product)
-            ->willReturn(true);
 
         $user->getUsername()->willReturn('username');
         $token->getUser()->willReturn($user);
@@ -218,9 +217,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $product)
             ->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)
-            ->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::VIEW, $product)
-            ->willReturn(false);
+            ->willReturn(true);
 
         $user->getUsername()->willReturn('username');
         $token->getUser()->willReturn($user);
@@ -254,9 +251,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $product)
             ->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $product)
-            ->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::VIEW, $product)
-            ->willReturn(false);
+            ->willReturn(true);
 
         $user->getUsername()->willReturn('username');
         $token->getUser()->willReturn($user);
@@ -273,27 +268,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
 
         $objectManager->refresh($product)->shouldBeCalled();
-
-        $this->save($product);
-    }
-
-    function it_saves_the_product_when_there_is_no_token_generated(
-        $objectManager,
-        $completenessManager,
-        $eventDispatcher,
-        $tokenStorage,
-        ProductInterface $product
-    ) {
-        $product->getId()->willReturn(42);
-        $tokenStorage->getToken()->willReturn(null);
-
-        $objectManager->persist($product)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
-        $completenessManager->schedule($product)->shouldBeCalled();
-        $completenessManager->generateMissingForProduct($product)->shouldBeCalled();
-
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
 
         $this->save($product);
     }
@@ -317,8 +291,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
             ->willReturn(true);
         $authorizationChecker->isGranted(Attributes::EDIT, $ownedProduct)
             ->willReturn(true);
-        $authorizationChecker->isGranted(Attributes::VIEW, $ownedProduct)
-            ->willReturn(true);
         $user->getUsername()->willReturn('username');
         $token->getUser()->willReturn($user);
         $tokenStorage->getToken()->willReturn($token);
@@ -331,9 +303,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $authorizationChecker->isGranted(Attributes::OWN, $notOwnedProduct)
             ->willReturn(false);
         $authorizationChecker->isGranted(Attributes::EDIT, $notOwnedProduct)
-            ->willReturn(false);
-        $authorizationChecker->isGranted(Attributes::VIEW, $notOwnedProduct)
-            ->willReturn(false);
+            ->willReturn(true);
 
         $productDraftBuilder->build($notOwnedProduct, 'username')
             ->willReturn($productDraft)

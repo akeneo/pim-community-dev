@@ -6,8 +6,6 @@ namespace PimEnterprise\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -34,9 +32,6 @@ class MergeNotGrantedProductDataSubscriber implements EventSubscriberInterface
     /** @var NotGrantedDataMergerInterface */
     private $valuesMerger;
 
-    /** @var AuthorizationCheckerInterface */
-    private $authorizationChecker;
-
     /**
      * @param NotGrantedDataMergerInterface $categoryMerger
      * @param NotGrantedDataMergerInterface $associationMerger
@@ -46,13 +41,11 @@ class MergeNotGrantedProductDataSubscriber implements EventSubscriberInterface
     public function __construct(
         NotGrantedDataMergerInterface $categoryMerger,
         NotGrantedDataMergerInterface $associationMerger,
-        NotGrantedDataMergerInterface $valuesMerger,
-        AuthorizationCheckerInterface $authorizationChecker
+        NotGrantedDataMergerInterface $valuesMerger
     ) {
         $this->categoryMerger = $categoryMerger;
         $this->associationMerger = $associationMerger;
         $this->valuesMerger = $valuesMerger;
-        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -72,18 +65,6 @@ class MergeNotGrantedProductDataSubscriber implements EventSubscriberInterface
 
         if (!$product instanceof ProductInterface) {
             return;
-        }
-
-        if (null !== $product->getId()) {
-            $canEdit = $this->authorizationChecker->isGranted([Attributes::EDIT], $product);
-            $canOwn = $this->authorizationChecker->isGranted([Attributes::OWN], $product);
-
-            if (!$canEdit && !$canOwn) {
-                throw new ResourceAccessDeniedException($product, sprintf(
-                    'Product "%s" cannot be updated. It should be at least in an own category.',
-                    $product->getIdentifier()
-                ));
-            }
         }
 
         $this->categoryMerger->merge($product);

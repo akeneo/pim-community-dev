@@ -11,10 +11,13 @@
 
 namespace PimEnterprise\Component\Catalog\Security\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
@@ -66,6 +69,10 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
      */
     public function setData($entityWithValues, $field, $data, array $options = [])
     {
+        if (!$entityWithValues instanceof EntityWithValuesInterface) {
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($entityWithValues), EntityWithValuesInterface::class);
+        }
+
         $attribute = $this->attributeRepository->findOneByIdentifier($field);
         if (null === $attribute) {
             $this->propertySetter->setData($entityWithValues, $field, $data, $options);
@@ -149,8 +156,8 @@ class EntityWithGrantedValuesPropertySetter implements PropertySetterInterface
     private function checkEditableAttribute(
         AttributeInterface $attribute,
         array $permissions,
-        ValueInterface $oldValue = null,
-        ValueInterface $newValue = null
+        ?ValueInterface $oldValue,
+        ?ValueInterface $newValue
     ): void {
         $valueIsDeleted = null !== $oldValue && $oldValue->hasData() && null === $newValue;
         $valueIsAdded = null === $oldValue && null !== $newValue && $newValue->hasData();
