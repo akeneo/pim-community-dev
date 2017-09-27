@@ -33,56 +33,18 @@ class UpdateUncategorizedProductIntegration extends AbstractProductTestCase
     }
 }
 JSON;
-        $patchedValues = json_decode($data, true)['values'];
-        $expectedProduct = array_merge_recursive(
-            [
-                'identifier'    => 'product_without_category',
-                'family'        => null,
-                'parent'        => null,
-                'groups'        => [],
-                'variant_group' => null,
-                'categories'    => [],
-                'enabled'       => true,
-                'values'        => [
-                    'a_localized_and_scopable_text_area' => $patchedValues['a_localized_and_scopable_text_area'],
-                    'sku'                                => [
-                        [
-                            'locale' => null,
-                            'scope'  => null,
-                            'data'   => 'product_without_category'
-                        ]
-                    ]
-                ],
-                'created'       => 'this is a date formatted to ISO-8601',
-                'updated'       => 'this is a date formatted to ISO-8601',
-                'associations'  => [
-                    'PACK' => [
-                        'groups'   => [],
-                        'products' => []
-                    ],
-                    'SUBSTITUTION' => [
-                        'groups'   => [],
-                        'products' => []
-                    ],
-                    'UPSELL' => [
-                        'groups'   => [],
-                        'products' => []
-                    ],
-                    'X_SELL' => [
-                        'groups'   => [],
-                        'products' => ['product_viewable_by_everybody_2', 'product_not_viewable_by_redactor']
-                    ]
-                ]
-            ],
-            $updatedData
-        );
 
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
         $client->request('PATCH', 'api/rest/v1/products/product_without_category', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
-        $this->assertSameProducts($expectedProduct, 'product_without_category');
+
+        $expectedValues = '{"sku": {"<all_channels>": {"<all_locales>": "product_without_category"}}, ';
+        $expectedValues.= '"a_localized_and_scopable_text_area": {"ecommerce": {"de_DE": "DE ecommerce", "en_US": "Awesome Data !"}}}';
+
+        $sql = 'SELECT p.raw_values FROM pim_catalog_product p WHERE p.identifier = "product_without_category"';
+        $this->assertEquals([['raw_values' => $expectedValues]], $this->getDatabaseData($sql));
     }
 
     public function testFailedUpdateUncategorizedProductWithNotGrantedAttribute()

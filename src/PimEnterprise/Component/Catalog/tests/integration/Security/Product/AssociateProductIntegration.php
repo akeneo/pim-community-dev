@@ -51,12 +51,12 @@ class AssociateProductIntegration extends AbstractSecurityTestCase
         ]);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->assertSame($this->getRawAssociations($product), [
-            'X_SELL' => [
-                'products' => ['product_visible_a', 'product_visible_b', 'product_visible_c', 'product_not_visible_by_redactor'],
-                'groups' => ['groupA', 'groupB']
-            ]
-        ]);
+        $this->assertSame([
+            ['code' => 'X_SELL', 'identifier' => 'product_visible_a'],
+            ['code' => 'X_SELL', 'identifier' => 'product_not_visible_by_redactor'],
+            ['code' => 'X_SELL', 'identifier' => 'product_visible_b'],
+            ['code' => 'X_SELL', 'identifier' => 'product_visible_c'],
+        ], $this->getAssociationFromDatabase('product'));
     }
 
     public function testDeleteAssociatedProductOnProduct()
@@ -73,12 +73,10 @@ class AssociateProductIntegration extends AbstractSecurityTestCase
         ]);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->assertSame($this->getRawAssociations($product), [
-            'X_SELL' => [
-                'products' => ['product_visible_a', 'product_not_visible_by_redactor'],
-                'groups' => ['groupA', 'groupB']
-            ]
-        ]);
+        $this->assertSame([
+            ['code' => 'X_SELL', 'identifier' => 'product_visible_a'],
+            ['code' => 'X_SELL', 'identifier' => 'product_not_visible_by_redactor'],
+        ], $this->getAssociationFromDatabase('product'));
     }
 
     public function testDeleteAllAssociatedProductOnProduct()
@@ -95,12 +93,9 @@ class AssociateProductIntegration extends AbstractSecurityTestCase
         ]);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->assertSame($this->getRawAssociations($product), [
-            'X_SELL' => [
-                'products' => ['product_not_visible_by_redactor'],
-                'groups' => ['groupA', 'groupB']
-            ]
-        ]);
+        $this->assertSame([
+            ['code' => 'X_SELL', 'identifier' => 'product_not_visible_by_redactor'],
+        ], $this->getAssociationFromDatabase('product'));
     }
 
     public function testAddAssociatedProductOnNewAssociation()
@@ -117,32 +112,11 @@ class AssociateProductIntegration extends AbstractSecurityTestCase
         ]);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->assertSame($this->getRawAssociations($product), [
-            'X_SELL' => [
-                'products' => ['product_visible_a', 'product_not_visible_by_redactor', 'product_visible_b'],
-                'groups' => ['groupA', 'groupB']
-            ],
-            'UPSELL' => [
-                'products' => ['product_visible_a']
-            ]
-        ]);
-    }
-
-    private function getRawAssociations(ProductInterface $product): array
-    {
-        $rawAssociations = [];
-
-        foreach ($product->getAssociations() as $association) {
-            $associationTypeCode = $association->getAssociationType()->getCode();
-
-            foreach ($association->getProducts() as $associatedProduct) {
-                $rawAssociations[$associationTypeCode]['products'][] = $associatedProduct->getIdentifier();
-            }
-            foreach ($association->getGroups() as $associatedGroup) {
-                $rawAssociations[$associationTypeCode]['groups'][] = $associatedGroup->getCode();
-            }
-        }
-
-        return $rawAssociations;
+        $this->assertSame([
+            ['code' => 'UPSELL', 'identifier' => 'product_visible_a'],
+            ['code' => 'X_SELL', 'identifier' => 'product_visible_a'],
+            ['code' => 'X_SELL', 'identifier' => 'product_not_visible_by_redactor'],
+            ['code' => 'X_SELL', 'identifier' => 'product_visible_b'],
+        ], $this->getAssociationFromDatabase('product'));
     }
 }

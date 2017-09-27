@@ -30,12 +30,11 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
         $this->generateToken('mary');
         $product = $this->getProduct('product_a');
 
-        $this->updateProduct($product, [
-            'categories' => ['master', 'categoryA', 'categoryA1', 'categoryA2']
-        ]);
+        $categories = ['categoryA', 'categoryA1', 'categoryA2', 'master'];
+        $this->updateProduct($product, ['categories' => $categories]);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->assertSame($product->getCategoryCodes(), ['categoryA', 'categoryA1', 'categoryA2', 'categoryB', 'master']);
+        $this->assertCategories(['master', 'categoryA', 'categoryA1', 'categoryA2', 'categoryB'], $this->getCategoriesFromDatabase('product_a'));
     }
 
     public function testDeleteCategoryOnProduct()
@@ -43,12 +42,11 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
         $this->generateToken('mary');
         $product = $this->getProduct('product_a');
 
-        $this->updateProduct($product, [
-            'categories' => ['master', 'categoryA1', 'categoryA2']
-        ]);
+        $categories = ['categoryA1', 'categoryA2', 'master'];
+        $this->updateProduct($product, ['categories' => $categories]);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->assertSame($product->getCategoryCodes(), ['categoryA1', 'categoryA2', 'categoryB', 'master']);
+        $this->assertCategories(['master', 'categoryA1', 'categoryA2', 'categoryB'], $this->getCategoriesFromDatabase('product_a'));
     }
 
     /**
@@ -83,7 +81,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
      * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "categories" expects a valid category code. The category does not exist, "categoryB" given.
      */
-    public function testCreateAProductWithCategoryNotViewable()
+    public function testFailedToCreateAProductWithCategoryNotViewable()
     {
         $this->generateToken('mary');
         $this->createProduct('product', ['categories' => ['categoryB']]);
@@ -92,32 +90,38 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
     public function testCreateAProductWithCategoryViewable()
     {
         $this->generateToken('mary');
-        $product = $this->createProduct('product', ['categories' => ['categoryA2']]);
+        $categories = ['categoryA2'];
+        $product = $this->createProduct('product', ['categories' => $categories]);
+        $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->assertSame($product->getCategoryCodes(), ['categoryA2']);
+        $this->assertCategories($categories, $this->getCategoriesFromDatabase('product'));
     }
 
     public function testCreateAProductWithCategoryEditable()
     {
         $this->generateToken('mary');
-        $product = $this->createProduct('product', ['categories' => ['categoryA']]);
+        $categories = ['categoryA'];
+        $product = $this->createProduct('product', ['categories' => $categories]);
+        $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->assertSame($product->getCategoryCodes(), ['categoryA']);
+        $this->assertCategories($categories, $this->getCategoriesFromDatabase('product'));
     }
 
     public function testCreateAProductWithOwnCategory()
     {
         $this->generateToken('mary');
-        $product = $this->createProduct('product', ['categories' => ['master']]);
+        $categories = ['master'];
+        $product = $this->createProduct('product', ['categories' => $categories]);
+        $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->assertSame($product->getCategoryCodes(), ['master']);
+        $this->assertCategories($categories, $this->getCategoriesFromDatabase('product'));
     }
 
     /**
      * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
      * @expectedExceptionMessage Property "categories" expects a valid category code. The category does not exist, "categoryB" given.
      */
-    public function testUpdateAProductWithCategoryNotViewable()
+    public function testFailedToUpdateAProductWithCategoryNotViewable()
     {
         $product = $this->saveProduct('product', ['categories' => ['master']]);
         $this->generateToken('mary');
@@ -130,8 +134,11 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
         $product = $this->saveProduct('product', ['categories' => ['master']]);
         $this->generateToken('mary');
 
-        $this->updateProduct($product, ['categories' => ['categoryA2', 'master']]);
-        $this->assertSame($product->getCategoryCodes(), ['categoryA2', 'master']);
+        $categories = ['categoryA2', 'master'];
+        $this->updateProduct($product, ['categories' => $categories]);
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        $this->assertCategories($categories, $this->getCategoriesFromDatabase('product'));
     }
 
     public function testUpdateAProductWithCategoryEditable()
@@ -139,8 +146,11 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
         $product = $this->saveProduct('product', ['categories' => ['master']]);
         $this->generateToken('mary');
 
-        $this->updateProduct($product, ['categories' => ['categoryA', 'master']]);
-        $this->assertSame($product->getCategoryCodes(), ['categoryA', 'master']);
+        $categories = ['categoryA', 'master'];
+        $this->updateProduct($product, ['categories' => $categories]);
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        $this->assertCategories($categories, $this->getCategoriesFromDatabase('product'));
     }
 
     public function testUpdateAProductWithOwnCategory()
@@ -148,15 +158,18 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
         $product = $this->saveProduct('product', ['categories' => ['master']]);
         $this->generateToken('mary');
 
-        $this->updateProduct($product, ['categories' => ['master_china', 'master']]);
-        $this->assertSame($product->getCategoryCodes(), ['master', 'master_china']);
+        $categories = ['master', 'master_china'];
+        $this->updateProduct($product, ['categories' => $categories]);
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        $this->assertCategories($categories, $this->getCategoriesFromDatabase('product'));
     }
 
     /**
      * @expectedException \PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException
      * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
      */
-    public function testUpdateACategoryOnAProductOnlyViewable()
+    public function testFailToUpdateACategoryOnAProductOnlyViewable()
     {
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
@@ -168,7 +181,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
      * @expectedException \PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException
      * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
      */
-    public function testUpdateGroupsOnAProductOnlyViewable()
+    public function testFailToUpdateGroupsOnAProductOnlyViewable()
     {
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
@@ -180,7 +193,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
      * @expectedException \PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException
      * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
      */
-    public function testUpdateEnabledOnAProductOnlyViewable()
+    public function testFailToUpdateEnabledOnAProductOnlyViewable()
     {
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
@@ -192,7 +205,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
      * @expectedException \PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException
      * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
      */
-    public function testUpdateFamilyOnAProductOnlyViewable()
+    public function testFailToUpdateFamilyOnAProductOnlyViewable()
     {
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
@@ -204,7 +217,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
      * @expectedException \PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException
      * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
      */
-    public function testUpdateAssociationsOnAProductOnlyViewable()
+    public function testFailToUpdateAssociationsOnAProductOnlyViewable()
     {
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
@@ -220,7 +233,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
      * @expectedException \PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException
      * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
      */
-    public function testUpdateValuesOnAProductOnlyViewable()
+    public function testFailToUpdateValuesOnAProductOnlyViewable()
     {
         $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
         $this->generateToken('mary');
@@ -228,5 +241,22 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
         $this->updateProduct($product, ['values' => [
             'a_text' => [['data' => 'data', 'locale' => null, 'scope' => null]]
         ]]);
+    }
+
+    /**
+     * @param array $expected
+     * @param array $result
+     */
+    private function assertCategories(array $expected, array $result)
+    {
+        $categories = [];
+        sort($expected);
+        sort($result);
+
+        foreach ($expected as $category) {
+            $categories[] = ['code' => $category];
+        }
+
+        $this->assertSame($categories, $result);
     }
 }
