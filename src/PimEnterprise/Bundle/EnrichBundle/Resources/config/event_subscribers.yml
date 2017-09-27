@@ -1,16 +1,9 @@
 parameters:
-    pimee_enrich.form.subscriber.attribute_group_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\AttributeGroupPermissionsSubscriber
     pimee_enrich.form.subscriber.category_permissions.class:        PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\CategoryPermissionsSubscriber
     pimee_enrich.form.subscriber.locale_permissions.class:          PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\LocalePermissionsSubscriber
     pimee_enrich.subscriber.save_permissions.class:                 PimEnterprise\Bundle\EnrichBundle\EventSubscriber\SavePermissionsSubscriber
 
 services:
-    pimee_enrich.form.subscriber.attribute_group_permissions:
-        class: '%pimee_enrich.form.subscriber.attribute_group_permissions.class%'
-        arguments:
-            - '@pimee_security.manager.attribute_group_access'
-            - '@oro_security.security_facade'
-
     pimee_enrich.form.subscriber.category_permissions:
         class: '%pimee_enrich.form.subscriber.category_permissions.class%'
         arguments:

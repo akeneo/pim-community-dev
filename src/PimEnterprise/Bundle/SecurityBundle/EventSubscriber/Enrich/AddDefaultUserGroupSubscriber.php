@@ -36,9 +36,8 @@ class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
     protected $catAccessManager;
 
     /**
-     * @param GroupRepository             $groupRepository
-     * @param CategoryAccessManager       $catAccessManager
-     * @param AttributeGroupAccessManager $attGrpAccessManager
+     * @param GroupRepository       $groupRepository
+     * @param CategoryAccessManager $catAccessManager
      */
     public function __construct(
         GroupRepository $groupRepository,
@@ -47,7 +46,6 @@ class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
     ) {
         $this->groupRepository = $groupRepository;
         $this->catAccessManager = $catAccessManager;
-        $this->attGrpAccessManager = $attGrpAccessManager;
     }
 
     /**
@@ -56,8 +54,7 @@ class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CategoryEvents::POST_CREATE       => 'addDefaultUserGroupForTree',
-            AttributeGroupEvents::POST_CREATE => 'addDefaultUserGroupForAttributeGroup'
+            CategoryEvents::POST_CREATE => 'addDefaultUserGroupForTree',
         ];
     }
 
@@ -72,20 +69,6 @@ class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
         if ($object instanceof CategoryInterface && $object->isRoot()) {
             $userGroup = $this->groupRepository->getDefaultUserGroup();
             $this->catAccessManager->grantAccess($object, $userGroup, Attributes::OWN_PRODUCTS, true);
-        }
-    }
-
-    /**
-     * Add default user group for attribute group
-     *
-     * @param GenericEvent $event
-     */
-    public function addDefaultUserGroupForAttributeGroup(GenericEvent $event)
-    {
-        $object = $event->getSubject();
-        if ($object instanceof AttributeGroupInterface) {
-            $userGroup = $this->groupRepository->getDefaultUserGroup();
-            $this->attGrpAccessManager->grantAccess($object, $userGroup, Attributes::EDIT_ATTRIBUTES);
         }
     }
 }
