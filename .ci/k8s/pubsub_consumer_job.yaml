@@ -76,7 +76,7 @@ spec:
             failureThreshold: 30
           resources:
             requests:
-              memory: "700Mi"
+              memory: "1000Mi"
         - name: php
           image: eu.gcr.io/akeneo-ci/httpd-php:5.6
           workingDir: /home/jenkins/pim
