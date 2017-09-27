@@ -8,6 +8,21 @@ extensions:
         forwarded-events:
              grid_load:start: grid_load:start
 
+    pimee-asset-index-secondary-actions:
+        module: pim/form/common/secondary-actions
+        parent: pimee-asset-index
+        targetZone: buttons
+        position: 50
+
+    pimee-asset-index-redirect:
+        module: pim/common/redirect
+        parent: pimee-asset-index-secondary-actions
+        targetZone: secondary-actions
+        config:
+            buttonClass: 'AknDropdown-menuLink'
+            route: pimee_product_asset_mass_upload
+            label: pim_menu.item.upload_asset
+
     pimee-asset-index-grid-title:
         module: pim/common/grid-title
         parent: pimee-asset-index

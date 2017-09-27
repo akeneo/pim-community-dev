@@ -79,6 +79,11 @@ config:
                         gridExtension: pimee-asset-index
                         gridName: asset-grid
                         title: asset_grid.label
+                pimee_product_asset_mass_upload:
+                    module: pimee/controller/asset/mass-upload
+                    aclResourceId: pimee_product_asset_mass_upload
+                    config:
+                      title: pim_menu.item.upload_asset
 
         pim/form/common/attributes/create-button:
             attribute_icons:
@@ -91,6 +96,7 @@ config:
     paths:
         pimee/controller/published-product/index: pimenterpriseenrich/js/controller/published-product/index
         pimee/controller/asset/index:             pimenterpriseenrich/js/controller/asset/index
+        pimee/controller/asset/mass-upload:       pimenterpriseenrich/js/controller/asset/mass-upload
         pimee/product-view-form:                  pimenterpriseenrich/js/product/view-form
 
         pimee/manage-permissions:                 pimenterpriseenrich/js/manage-permissions

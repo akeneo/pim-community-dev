@@ -10,23 +10,23 @@ Feature: Mass uploads assets
     Given I am logged in as "Pamela"
 
   Scenario: Successfully add and retrieve two assets
-    And I am on the asset mass upload page
+    Given I am on the asset mass upload page
     And I select the assets to upload:
     | name        |
     | akeneo.jpg  |
     | akeneo2.jpg |
-    Then I should see "Added" status for asset "akeneo.jpg"
-    Then I should see "Added" status for asset "akeneo2.jpg"
+    Then I should see "added" status for asset "akeneo.jpg"
+    Then I should see "added" status for asset "akeneo2.jpg"
     When I start assets mass upload
-    Then I should see "Success" status for asset "akeneo.jpg"
-    Then I should see "Success" status for asset "akeneo2.jpg"
+    Then I should see "success" status for asset "akeneo.jpg"
+    Then I should see "success" status for asset "akeneo2.jpg"
     Given I am on the dashboard page
     When I am on the asset mass upload page
-    Then I should see "Success" status for asset "akeneo.jpg"
-    Then I should see "Success" status for asset "akeneo2.jpg"
+    Then I should see "success" status for asset "akeneo.jpg"
+    Then I should see "success" status for asset "akeneo2.jpg"
 
   Scenario: Validate assets file names
-    And I am on the asset mass upload page
+    Given I am on the asset mass upload page
     And I select the assets to upload:
       | name                  |
       | akeneo.jpg            |
@@ -36,39 +36,39 @@ Feature: Mass uploads assets
       | man-wall.jpg          |
       | akeneo (copy).jpg     |
       | akeneo-fo_FO.jpg      |
-    Then I should see "Added" status for asset "akeneo.jpg"
-    Then I should see "Added" status for asset "akeneo-fr_FR.jpg"
-    Then I should see "Added" status for asset "logo_akeneo-fr_FR.jpg"
-    Then I should see "Added" status for asset "man-wall.jpg"
-    Then I should see "Added" status for asset "chicagoskyline-de.jpg"
-    Then I should see "Error" status for asset "akeneo (copy).jpg"
-    Then I should see "Error" status for asset "akeneo-fo_FO.jpg"
+    Then I should see "added" status for asset "akeneo.jpg"
+    Then I should see "added" status for asset "akeneo-fr_FR.jpg"
+    Then I should see "added" status for asset "logo_akeneo-fr_FR.jpg"
+    Then I should see "added" status for asset "man-wall.jpg"
+    Then I should see "added" status for asset "chicagoskyline-de.jpg"
+    Then I should see "error" status for asset "akeneo (copy).jpg"
+    Then I should see "error" status for asset "akeneo-fo_FO.jpg"
 
   Scenario: Cannot add the same file two times
-    And I am on the asset mass upload page
+    Given I am on the asset mass upload page
     And I select the assets to upload:
     | name       |
     | akeneo.jpg |
-    Then I should see "Added" status for asset "akeneo.jpg"
+    Then I should see "added" status for asset "akeneo.jpg"
     And I start assets mass upload
     When I select the assets to upload:
       | name       |
       | akeneo.jpg |
-    Then I should see "Error" status for asset "akeneo.jpg"
+    Then I should see "error" status for asset "akeneo.jpg"
 
   Scenario: Cancel uploads
-    And I am on the asset mass upload page
+    Given I am on the asset mass upload page
     And I select the assets to upload:
       | name       |
       | akeneo.jpg |
-    And I cancel assets mass upload
+    And I remove assets mass upload
     Then I should not see "akeneo.jpg"
     And The button "Import" should be disabled
     When I select the assets to upload:
       | name       |
       | akeneo.jpg |
     And I start assets mass upload
-    Then I should see "Success" status for asset "akeneo.jpg"
+    Then I should see "success" status for asset "akeneo.jpg"
     And I should see the text "Import"
     When I delete asset upload
     Then I should not see "akeneo.jpg"
@@ -78,16 +78,16 @@ Feature: Mass uploads assets
       | akeneo.jpg  |
       | akeneo2.jpg |
     And I start assets mass upload
-    Then I should see "Success" status for asset "akeneo.jpg"
-    And I should see "Success" status for asset "akeneo2.jpg"
+    Then I should see "success" status for asset "akeneo.jpg"
+    And I should see "success" status for asset "akeneo2.jpg"
     And I should see the text "Import"
-    When I cancel assets mass upload
+    When I remove assets mass upload
     Then I should not see "akeneo.jpg"
     And I should not see "akeneo2.jpg"
     And The button "Import" should be disabled
 
   Scenario: Complete mass upload
-    And I am on the asset mass upload page
+    Given I am on the asset mass upload page
     And I select the assets to upload:
       | name                  |
       | akeneo.jpg            |

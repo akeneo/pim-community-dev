@@ -276,7 +276,7 @@ class EnterpriseAssetContext extends PimContext
 
             foreach ($assetElements as $assetElement) {
                 $row   = $assetElement->getParent();
-                $found = $row->find('css', sprintf('td.status:contains("%s")', $text));
+                $found = $row->find('css', sprintf('.AknProgress[data-status="%s"]', $text));
                 if ($found) {
                     break;
                 }
@@ -287,7 +287,7 @@ class EnterpriseAssetContext extends PimContext
     }
 
     /**
-     * @When /^I (start|import|cancel) assets mass upload$/
+     * @When /^I (start|import|remove) assets mass upload$/
      */
     public function iDoAssetMassUploadAction($action)
     {

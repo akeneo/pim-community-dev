@@ -1,6 +1,6 @@
 <tr class="AknGrid-bodyRow file-row">
     <td class="AknGrid-bodyCell preview">
-        <span class="preview"><img data-dz-thumbnail/></span>
+        <span class="preview"><img class="AknAssetCollectionField-assetThumbnail AknAssetCollectionField-assetThumbnail--small" data-dz-thumbnail/></span>
     </td>
     <td class="AknGrid-bodyCell filename">
         <div class="AknFieldContainer AknFieldContainer--withoutMargin">
@@ -15,9 +15,6 @@
     <td class="AknGrid-bodyCell filetype">
         <p class="dz-type" data-dz-type></p>
     </td>
-    <td class="AknGrid-bodyCell status">
-        <div class="AknBadge dz-status"></div>
-    </td>
     <td class="AknGrid-bodyCell dz-progress-wrapper">
         <div class="AknProgress progress active" role="progressbar" aria-valuemin="0"
              aria-valuemax="100" aria-valuenow="0">
@@ -26,12 +23,7 @@
     </td>
     <td class="AknGrid-bodyCell action-cell">
         <div class="AknButtonList AknButtonList--right">
-            <button data-dz-remove class="AknButtonList-item AknButton AknButton--grey AknButton--small cancel">
-                <%- _.__('pimee_product_asset.mass_upload.action.cancel') %>
-            </button>
-            <button data-dz-remove class="AknButtonList-item AknButton AknButton--hidden AknButton--grey AknButton--small AknButton--important delete">
-                <%- _.__('pimee_product_asset.mass_upload.action.remove') %>
-            </button>
+            <div data-dz-remove class="AknVerticalList-delete delete"></button>
         </div>
     </td>
 </tr>

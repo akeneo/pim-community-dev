@@ -1,61 +1,56 @@
-<div class="AknDefault-mainContent">
-    <header class="AknTitleContainer navigation">
-        <div class="AknTitleContainer-imageContainer"></div>
-        <div class="AknTitleContainer-mainContainer">
-            <div>
-                <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div>
-                <div class="AknTitleContainer-title" data-drop-zone="title"><%- __('pimee_product_asset.mass_upload.menu') %></div>
-            </div>
-            <div data-drop-zone="meta"></div>
-        </div>
-        <div class="AknTitleContainer-buttonsContainer">
-            <div class="AknTitleContainer-userMenu user-menu"></div>
-            <div class="AknTitleContainer-rightButtons" data-drop-zone="buttons">
-                <button class="AknButtonList-item AknButton AknButton--grey cancel AknButton--hidden" type="reset">
-                    <%- __('pimee_product_asset.mass_upload.btn.remove_all_files') %>
-                </button>
-                <button class="AknButtonList-item AknButton AknButton--action start AknButton--disabled" type="submit">
-                    <%- __('pimee_product_asset.mass_upload.btn.upload') %>
-                </button>
-                <button class="AknButtonList-item AknButton AknButton--apply import AknButton--disabled">
-                    <%- __('pimee_product_asset.mass_upload.btn.import') %>
-                </button>
-            </div>
-            <div class="AknTitleContainer-titleButtons AknButtonList" data-drop-zone="title-buttons"></div>
-            <div class="AknTitleContainer-state" data-drop-zone="state"></div>
-        </div>
-    </header>
-
-    <div class="row-fluid buffer-top">
-        <div class="AknFormContainer AknFormContainer--withPadding AknFormContainer--centered control-group upload-zone-container">
-            <div class="AknMediaField controls">
-                <label class="upload-zone file empty">
-                    <div class="upload-info">
-                        <div class="AknMediaField-emptyContainer">
-                            <span title="upload icon" class="AknMediaField-uploadIcon"/>
-                            <span class="upload-filename" data-empty-title="<%- __('pimee_product_asset.mass_upload.drag_and_drop') %>"><%- __('pimee_product_asset.mass_upload.drag_and_drop') %></span>
-                        </div>
-                    </div>
-                </label>
-                <div class="icons-container"></div>
-            </div>
-        </div>
+<div class="AknFullPage AknFullPage--modal">
+  <div class="AknFullPage-buttons">
+    <div class="AknButtonList">
+      <span class="AknButtonList-item AknFullPage-cancel cancel"></span>
     </div>
+    <div class="AknTitleContainer-rightButtons" data-drop-zone="buttons">
+      <button class="AknButtonList-item AknButton AknButton--grey remove AknButton--hidden">
+        <%- __('pimee_product_asset.mass_upload.btn.remove_all_files') %>
+      </button>
+      <button class="AknButtonList-item AknButton AknButton--action start AknButton--disabled"
+        type="submit">
+        <%- __('pimee_product_asset.mass_upload.btn.upload') %>
+      </button>
+      <button class="AknButtonList-item AknButton AknButton--apply import AknButton--disabled">
+        <%- __('pimee_product_asset.mass_upload.btn.import') %>
+      </button>
+    </div>
+  </div>
 
-    <div class="AknGridContainer grid-container">
+  <div class="AknFullPage-content AknFullPage-content--column">
+    <div>
+      <div class="AknFullPage-subTitle">Assets</div>
+      <div class="AknFullPage-title">
+        <%- __('pimee_product_asset.mass_upload.menu') %>
+      </div>
+    </div>
+    <div class="AknDefault-mainContent">
+      <div class="row-fluid buffer-top">
+        <div class="AknFormContainer AknFormContainer--withPadding AknFormContainer--centered AknFormContainer--expanded control-group upload-zone-container">
+          <div class="AknMediaField controls">
+            <label class="upload-zone file empty">
+              <div class="upload-info">
+                <div class="AknMediaField-emptyContainer">
+                  <span title="upload icon" class="AknMediaField-uploadIcon" />
+                  <span class="upload-filename" data-empty-title="<%- __('pimee_product_asset.mass_upload.drag_and_drop') %>">
+                    <%- __('pimee_product_asset.mass_upload.drag_and_drop') %>
+                  </span>
+                </div>
+              </div>
+            </label>
+            <div class="icons-container"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="AknGridContainer AknGridContainer--expanded grid-container">
+        <div class="tabsection-title">Assets uploaded</div>
         <table class="AknGrid AknGrid--unclickable grid files">
-            <thead>
-            <tr>
-                <th class="AknGrid-headerCell preview"><%- __('pimee_product_asset.mass_upload.grid.medias') %></th>
-                <th class="AknGrid-headerCell filename"><%- __('pimee_product_asset.mass_upload.grid.filename') %></th>
-                <th class="AknGrid-headerCell filetype"><%- __('pimee_product_asset.mass_upload.grid.filetype') %></th>
-                <th class="AknGrid-headerCell status"><%- __('pimee_product_asset.mass_upload.grid.status') %></th>
-                <th class="AknGrid-headerCell dz-progress-wrapper"><%- __('pimee_product_asset.mass_upload.grid.progress') %></th>
-                <th class="AknGrid-headerCell AknGrid-headerCell--right action-cell"><%- __('pimee_product_asset.mass_upload.grid.actions') %></th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
+          <tbody class="mass-upload-container"></tbody>
         </table>
+      </div>
     </div>
+  </div>
 </div>
+
+<div class="mass-upload-dropzone"></div>

@@ -11,7 +11,8 @@ define(
         'pimee/template/asset/mass-upload',
         'pimee/template/asset/mass-upload-row',
         'pim/form-builder',
-        'pim/common/breadcrumbs'
+        'pim/common/breadcrumbs',
+        'pim/form'
     ],
     function (
         $,
@@ -24,7 +25,8 @@ define(
         pageTemplate,
         rowTemplate,
         formBuilder,
-        Breadcrumbs
+        Breadcrumbs,
+        BaseForm
     ) {
         /**
          * Override to be able to use template root different other than 'div'
@@ -45,42 +47,67 @@ define(
         var $startButton;
         var $cancelButton;
 
-        return Backbone.View.extend({
+        return BaseForm.extend({
             myDropzone: null,
             pageTemplate: _.template(pageTemplate),
             rowTemplate: _.template(rowTemplate),
 
-            events: {
-                'click .AknTitleContainer .start:not(.AknButton--disabled)': 'startAll',
-                'click .AknTitleContainer .cancel:not(.AknButton--disabled)': 'cancelAll',
-                'click .AknTitleContainer .import:not(.AknButton--disabled)': 'importAll'
+            /**
+             * Clean up modal
+             */
+            clearModal: function() {
+                if (this.modal) {
+                    this.modal.close();
+                    this.modal.remove();
+                }
+
+                $('.mass-upload-modal').remove();
+                this.$el.empty();
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            shutdown: function() {
+                this.clearModal();
+
+                BaseForm.prototype.shutdown.apply(this, arguments);
             },
 
             /**
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.html(this.pageTemplate({__: __}));
+                this.clearModal();
 
-                var breadcrumbs = new Breadcrumbs({
-                    config: {
-                        tab: 'pim-menu-settings',
-                        item: 'pim-menu-collect-upload-asset'
-                    }
-                });
-                breadcrumbs.configure().then(function () {
-                    breadcrumbs.render();
-                    $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                const modal = new Backbone.BootstrapModal({
+                    className: 'modal modal--fullPage modal--topButton mass-upload-modal',
+                    allowCancel: false,
+                    content: this.pageTemplate({
+                      __,
+                      subTitleLabel: 'Assets',
+                      titleLabel: 'Upload assets'
+                    })
                 });
 
-                formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
-                    form.setElement('.user-menu').render();
-                }.bind(this));
+                modal.open();
+                modal.$el.find('.modal-body').addClass('modal-body-full');
+
+                modal.$el.on('click', '.start:not(.AknButton--disabled)', this.startAll.bind(this));
+                modal.$el.on('click', '.remove:not(.AknButton--disabled)', this.cancelAll.bind(this));
+                modal.$el.on('click', '.import:not(.AknButton--disabled)', this.importAll.bind(this));
+                modal.$el.on('click', '.cancel:not(.AknButton--disabled)', () => {
+                    this.myDropzone.removeAllFiles(true);
+                    this.clearModal();
+                    router.redirectToRoute('pimee_product_asset_index')
+                });
+
+                this.modal = modal;
 
                 $navbarButtons = $('.AknTitleContainer-rightButtons');
                 $importButton = $navbarButtons.find('.import');
                 $startButton = $navbarButtons.find('.start');
-                $cancelButton = $navbarButtons.find('.cancel');
+                $cancelButton = $navbarButtons.find('.remove');
 
                 this.initializeDropzone();
 
@@ -88,17 +115,26 @@ define(
             },
 
             /**
+             * Set the status as a data attribute for each asset
+             * @param {Object} file File object for an asset
+             */
+            setStatus: function(file) {
+                const progressBar = $(file.previewElement).find('.AknProgress')
+                progressBar.attr('data-status', file.status);
+            },
+
+            /**
              * Initialize the dropzone element
              */
             initializeDropzone: function () {
-                var myDropzone = new Dropzone('body', {
+                var myDropzone = new Dropzone('.mass-upload-dropzone', {
                     url: router.generate('pimee_product_asset_rest_upload'),
                     thumbnailWidth: 70,
                     thumbnailHeight: 70,
                     parallelUploads: 4,
                     previewTemplate: this.rowTemplate(),
                     autoQueue: false,
-                    previewsContainer: 'tbody',
+                    previewsContainer: '.mass-upload-container',
                     clickable: '.upload-zone-container',
                     maxFilesize: 1000
                 });
@@ -117,7 +153,6 @@ define(
 
                 myDropzone.on('addedfile', function (file) {
                     if (Dropzone.SUCCESS === file.status) {
-                        this.setStatus(file);
                         file.previewElement.querySelector('.dz-type').textContent = file.type;
 
                         return;
@@ -139,8 +174,8 @@ define(
                         file.previewElement.querySelector('.AknFieldContainer-validationError')
                             .textContent = __(message);
                     }).complete(function () {
-                        this.setStatus(file);
                         file.previewElement.querySelector('.dz-type').textContent = file.type;
+                        this.setStatus(file);
                     }.bind(this));
 
                     if ((0 !== file.type.indexOf('image')) || (file.size > myDropzone.options.maxThumbnailFilesize)) {
@@ -154,8 +189,9 @@ define(
                 }.bind(this));
 
                 myDropzone.on('success', function (file) {
+                    const progressBar = file.previewElement.querySelector('.AknProgress')
+                    progressBar.className = 'AknProgress AknProgress--apply';
                     this.setStatus(file);
-                    file.previewElement.querySelector('.AknProgress').className = 'AknProgress AknProgress--apply';
                     file.previewElement.querySelector('.AknProgress .AknProgress-bar').style.width = '100%';
                     $(file.previewElement.querySelector('.AknButton.cancel')).addClass('AknButton--hidden');
                     $(file.previewElement.querySelector('.AknButton.delete')).removeClass('AknButton--hidden');
@@ -164,10 +200,6 @@ define(
                 myDropzone.on('error', function (file, error) {
                     file.previewElement.querySelector('.filename .error.text-danger')
                         .textContent = __(error.error);
-                    this.setStatus(file);
-                }.bind(this));
-
-                myDropzone.on('sending', function (file) {
                     this.setStatus(file);
                 }.bind(this));
 
@@ -275,23 +307,6 @@ define(
                         );
                     })
                 ;
-            },
-
-            /**
-             * Change asset status in the grid
-             *
-             * @param {Object} file
-             */
-            setStatus: function (file) {
-                var statusElement = file.previewElement.querySelector('.dz-status');
-                var statusClasses = {
-                    'error': 'AknBadge--invalid',
-                    'added': 'AknBadge--success',
-                    'success': 'AknBadge--success'
-                };
-                statusElement.classList.add(statusClasses[file.status]);
-                var statusKey = 'pimee_product_asset.mass_upload.status.' + file.status;
-                statusElement.textContent = __(statusKey);
             },
 
             /**
