@@ -60,7 +60,7 @@ class RunCommand extends ContainerAwareCommand
      *
      * @throws \InvalidArgumentException
      */
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $code = $input->hasArgument('code') ? $input->getArgument('code') : null;
         $username = $input->getOption('username') ?: null;
@@ -98,7 +98,7 @@ class RunCommand extends ContainerAwareCommand
      *
      * @throws \Exception
      */
-    protected function runRules(array $rules, $dryRun, $stopOnError, $username = null): array
+    protected function runRules(array $rules, $dryRun, $stopOnError, $username = null)
     {
         $chainedRunner = $this->getRuleRunner($stopOnError);
 
