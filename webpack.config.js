@@ -106,7 +106,19 @@ module.exports = {
                     }
                 ]
             },
-
+            {
+                test: /node_modules\/summernote\/dist\/summernote.js/,
+                use: [
+                    {
+                        loader: 'imports-loader',
+                        options: 'require=>function(){}'
+                    },
+                    {
+                        loader: 'imports-loader',
+                        options: 'require.specified=>function(){}'
+                    }
+                ]
+            },
             // Expose jQuery to window
             {
                 test: /node_modules\/jquery\/dist\/jquery.js/,
@@ -164,9 +176,6 @@ module.exports = {
 
         // Map modules to variables for global use
         new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone', '$': 'jquery', 'jQuery': 'jquery'}),
-
-        // This is for the summernote lib (until it's updated to the latest version)
-        new webpack.DefinePlugin({'require.specified': 'require.resolve'}),
 
         // Ignore these directories when webpack watches for changes
         new webpack.WatchIgnorePlugin([

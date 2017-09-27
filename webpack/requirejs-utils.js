@@ -52,9 +52,8 @@ const utils = {
             'module-registry': path.resolve(baseDir, './web/js/module-registry.js'),
             routes: path.resolve(baseDir, './web/js/routes.js'),
             'fos-routing-base': path.resolve(baseDir, './vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router.js'),
-            summernote: path.resolve(baseDir, 'node_modules/summernote/dist/summernote.min.js'),
+            summernote: path.resolve(baseDir, 'node_modules/summernote/dist/summernote.js'),
             json: path.resolve(baseDir, 'node_modules/JSON2/json2.js'),
-            CodeMirror: path.resolve(baseDir, 'node_modules/codemirror/lib/codemirror.js'),
             jquery: require.resolve('jquery'),
             underscore: require.resolve('underscore')
         });
