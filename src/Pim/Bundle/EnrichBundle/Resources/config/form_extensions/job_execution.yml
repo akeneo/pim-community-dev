@@ -2,6 +2,14 @@ extensions:
     pim-job-execution-form:
         module: pim/form/common/edit-form
 
+    pim-job-execution-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-job-execution-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-job-execution-form-secondary-actions:
         module: pim/form/common/secondary-actions
         parent: pim-job-execution-form
@@ -10,8 +18,8 @@ extensions:
 
     pim-job-execution-form-download-file:
         module: pim/job/execution/download-archives-buttons
-        parent: pim-job-execution-form-secondary-actions
-        targetZone: secondary-actions
+        parent: pim-job-execution-form
+        targetZone: buttons
         position: 70
         config:
             iconName: download-alt
@@ -19,6 +27,16 @@ extensions:
             filesPath: meta.archives
             aclIdImport: pim_importexport_import_execution_download_files
             aclIdExport: pim_importexport_export_execution_download_files
+
+    pim-job-execution-form-show-profile:
+        module: pim/job/execution/show-profile
+        parent: pim-job-execution-form-secondary-actions
+        targetZone: secondary-actions
+        position: 50
+        config:
+            buttonClass: AknDropdown-menuLink
+            label: pim_enrich.form.job_execution.button.show_profile.title
+            route: pim_importexport_import_profile_edit
 
     pim-job-execution-form-download-log:
         module: pim/job/execution/download-log
@@ -33,16 +51,6 @@ extensions:
             urlParams: [{ property: id, path: meta.id }]
             aclIdImport: pim_importexport_import_execution_download_log
             aclIdExport: pim_importexport_export_execution_download_log
-
-    pim-job-execution-form-show-profile:
-        module: pim/job/execution/show-profile
-        parent: pim-job-execution-form
-        targetZone: buttons
-        position: 100
-        config:
-            iconName: eye-open
-            label: pim_enrich.form.job_execution.button.show_profile.title
-            route: pim_importexport_import_profile_edit
 
     pim-job-execution-form-status:
         module: pim/form/common/meta/status

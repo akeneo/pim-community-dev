@@ -46,7 +46,7 @@ class DropdownMenuDecorator extends ElementDecorator
     {
         $links = $this->findAll('css', '.AknDropdown-menuLink');
         foreach ($links as $link) {
-            if (trim($link->getText()) === $actionName) {
+            if (trim($link->getText()) === $actionName && $link->isVisible()) {
                 return $link;
             }
         }

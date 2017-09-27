@@ -84,7 +84,9 @@ define(
                         attributeGroups: attributeGroups,
                         attributeCount: attributeCount,
                         currentGroup: this.currentGroup,
-                        selectedAttributes: selectedAttributes
+                        selectedAttributes: selectedAttributes,
+                        title: __('pim_enrich.export.product.filter.attributes_selector.title'),
+                        description: __('pim_enrich.export.product.filter.attributes_selector.description')
                     }));
 
                     this.initializeSortable();
