@@ -36,8 +36,7 @@ spec:
               port: 27017
           resources:
             requests:
-              cpu: "100m"
-              memory: "300Mi"
+              memory: "600Mi"
         - name: mysql
           image: mysql:5.6
           env:
@@ -56,6 +55,9 @@ spec:
             initialDelaySeconds: 30
             tcpSocket:
               port: 3306
+          resources:
+            requests:
+              memory: "700Mi"
         - name: elasticsearch
           image: eu.gcr.io/akeneo-ci/elasticsearch:5.5
           imagePullPolicy: Always
@@ -74,8 +76,7 @@ spec:
             failureThreshold: 30
           resources:
             requests:
-              cpu: "100m"
-              memory: "1000Mi"
+              memory: "700Mi"
         - name: php
           image: eu.gcr.io/akeneo-ci/httpd-php:5.6
           workingDir: /home/jenkins/pim
@@ -87,10 +88,9 @@ spec:
             preStop:
               exec:
                 command: ["/usr/sbin/apache2ctl", "stop"]
-          resources:
+           resources:
             requests:
-              memory: "800Mi"
-              cpu: "200m"
+              memory: "700Mi"
         - name: selenium
           image: eu.gcr.io/akeneo-ci/selenium:standalone-firefox-2.53.1-beryllium
           imagePullPolicy: Always
@@ -99,9 +99,9 @@ spec:
               name: pim
           resources:
             requests:
-              memory: "1000Mi"
+              memory: "1200Mi"
         - name: pubsub
-          image: eu.gcr.io/akeneo-ci/gcloud:0.2
+          image: eu.gcr.io/akeneo-ci/gcloud
           imagePullPolicy: Always
           command: ["gcloud.phar"]
           args: ["pubsub:message:consume", "SUBSCRIPTION_NAME", "RESULT_TOPIC","-vvvv"]
@@ -114,8 +114,7 @@ spec:
             - { name: artifacts, mountPath: /tmp/behat/screenshots }
           resources:
             requests:
-              cpu: "100m"
-              memory: "100Mi"
+              memory: "200Mi"
       volumes:
         - { name: pim, emptyDir: {}}
         - { name: docker, hostPath: {path: /var/run/docker.sock}}

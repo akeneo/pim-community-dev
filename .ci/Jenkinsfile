@@ -223,7 +223,6 @@ stage("Test") {
                             [container: "php", script: "./app/console --env=behat oro:translation:dump en_US"],
                             [container: "php", script: "./app/console --env=behat oro:translation:dump fr_FR"],
                             [container: "php", script: "./app/console --env=behat oro:translation:dump de_DE"],
-
                             [container: "php", script: "touch app/logs/behat.log"],
                             [container: "php", script: "chmod 777 -R app/cache app/logs/ app/archive app/file_storage"],
                             [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "],
@@ -231,12 +230,13 @@ stage("Test") {
                                 container: "php",
                                 junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                                 artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                                script: "php ./bin/behat --strict --tags=\"~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app\" -vv " + lineCE
+                                script: "php ./bin/behat -c behat.ci.yml --strict --tags=\" " +
+                                        "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app\" -vv " + lineCE
                             ]
                         ])
                     }
                     return messagesCE
-                }, 100, "ce")
+                }, 50, "ce")
             }
     builders["behat-ee"] = {
                 queue({
@@ -260,12 +260,13 @@ stage("Test") {
                                 container: "php",
                                 junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                                 artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                                script: "php ./bin/behat -c behat.ci.yml --strict --tags=\"~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce\" --strict -vv " + lineEE
+                                script: "php ./bin/behat -c behat.ci.yml --strict -vv " +
+                                        "--tags=\"~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce\" " + lineEE
                             ]
                         ])
                     }
                     return messagesEE
-                }, 100, "ee")
+                }, 50, "ee")
             }
     builders["behat-ce-odm"] = {
                 queue(
@@ -290,12 +291,13 @@ stage("Test") {
                                 container: "php",
                                 junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                                 artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                                script: "php ./bin/behat --strict -c behat.ci.yml --tags=\"~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app\" --strict -vv " + lineCE
+                                script: "php ./bin/behat -c behat.ci.yml --strict -vv " +
+                                        "--tags=\"~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app\" " + lineCE
                             ]
                         ])
                     }
                     return messagesCE
-                }, 100, "ceodm")
+                }, 50, "ceodm")
             }
     builders["behat-ee-odm"] = {
                 queue({
@@ -319,7 +321,8 @@ stage("Test") {
                                 container: "php",
                                 junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                                 artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                                script: "php ./bin/behat -c behat.ci.yml --strict --tags=\"~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce\" --strict -vv " + lineEE
+                                script: "php ./bin/behat -c behat.ci.yml --strict -vv " +
+                                        "--tags=\"~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce\" " + lineEE
                             ]
                         ])
                     }
@@ -341,26 +344,28 @@ stage("Test") {
                     sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee"
                     sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ceodm"
                     sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-eeodm"
-
                 }
             }
         }
     }
 }
 
-
 def withBuildNode(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
             podTemplate(label: "build-" + uuid, containers: [
-            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")]),
-            containerTemplate(name: "php", ttyEnabled: true, alwaysPullImage: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/httpd-php:5.6", envVars: [envVar(key: "COMPOSER_HOME", value: "/shared/.composer"), envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")]),
-            containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8"),
-        ], volumes: [
-            nfsVolume(mountPath: '/shared', serverAddress: "${env.NFS_IP}", serverPath: '/exports', readOnly: false),
-            hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
-        ]) {
+                containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud",
+                              ttyEnabled: true, command: 'cat',
+                              envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")]),
+                containerTemplate(name: "php", ttyEnabled: true, alwaysPullImage: true,
+                              command: 'cat', image: "eu.gcr.io/akeneo-ci/httpd-php:5.6",
+                              envVars: [envVar(key: "COMPOSER_HOME", value: "/shared/.composer"), envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")]),
+                containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8"),
+            ], volumes: [
+                nfsVolume(mountPath: '/shared', serverAddress: "${env.NFS_IP}", serverPath: '/exports', readOnly: false),
+                hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
+            ]) {
             node("build-" + uuid) {
                 dir('/home/jenkins/pim') {
                     body()
@@ -373,7 +378,8 @@ def withBuildNode(body) {
 def withDockerScm(body) {
     clearTemplateNames()
     podTemplate(label: "dockerscm", containers: [
-        containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")])
+        containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat',
+                          envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")])
     ], volumes: [
         hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
     ]) {
@@ -391,7 +397,8 @@ def withPhp(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "php-" + uuid, containers: [
-        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/httpd-php:5.6",resourceRequestCpu: '1000m',resourceLimitCpu: '1000m', resourceRequestMemory: '1000Mi', resourceLimitMemory: '1000Mi')
+        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/httpd-php:5.6",
+                          resourceRequestCpu: '1000m',resourceLimitCpu: '1000m', resourceRequestMemory: '1000Mi', resourceLimitMemory: '1000Mi')
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ]) {
@@ -407,7 +414,8 @@ def withNode(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "node-" + uuid, containers: [
-        containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8",resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi')
+        containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8",
+                          resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi')
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ]) {
@@ -423,7 +431,8 @@ def withGrunt(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "grunt-" + uuid, containers: [
-        containerTemplate(name: "grunt", ttyEnabled: true, command: 'cat', image: "digitallyseamless/nodejs-bower-grunt",resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi')
+        containerTemplate(name: "grunt", ttyEnabled: true, command: 'cat', image: "digitallyseamless/nodejs-bower-grunt",
+                          resourceRequestCpu: '750m', resourceLimitCpu: '750m', resourceRequestMemory: '2048Mi', resourceLimitMemory: '2048Mi')
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ]) {
@@ -441,7 +450,8 @@ def queue(body, scale, edition) {
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "pubsub-" + uuid, containers: [
         containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:5.6"),
-        containerTemplate(name: "gcloud", alwaysPullImage: true, ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud", envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
+        containerTemplate(name: "gcloud", alwaysPullImage: true, ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud",
+                          envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ], volumes: [
