@@ -125,15 +125,6 @@ interface ProductModelInterface extends
     public function getRight(): int;
 
     /**
-     * Sets the parent of this product model.
-     *
-     * @param ProductModelInterface $parent
-     *
-     * @return ProductModelInterface
-     */
-    public function setParent(ProductModelInterface $parent = null): ProductModelInterface;
-
-    /**
      * Adds a child product model to this product model.
      *
      * @param ProductModelInterface $productModel

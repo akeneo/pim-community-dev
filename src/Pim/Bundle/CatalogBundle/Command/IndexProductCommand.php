@@ -60,6 +60,8 @@ class IndexProductCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->checkIndexesExist();
+
         $this->productRepository = $this->getContainer()->get('pim_catalog.repository.product');
         $this->bulkProductIndexer = $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product');
         $this->bulkProductDetacher = $this->getContainer()->get('akeneo_storage_utils.doctrine.object_detacher');
@@ -173,5 +175,33 @@ class IndexProductCommand extends ContainerAwareCommand
         }
 
         return $totalProductsIndexed;
+    }
+
+    /**
+     * @throws \RuntimeException
+     */
+    private function checkIndexesExist()
+    {
+        $productClient = $this->getContainer()->get('akeneo_elasticsearch.client.product');
+        if (!$productClient->hasIndex()) {
+            throw new \RuntimeException(
+                sprintf(
+                    'The index "%s" does not exist in Elasticsearch.',
+                    $this->getContainer()->getParameter('product_index_name')
+                )
+            );
+        }
+
+        $productAndProductModelClient = $this->getContainer()->get(
+            'akeneo_elasticsearch.client.product_and_product_model'
+        );
+        if (!$productAndProductModelClient->hasIndex()) {
+            throw new \RuntimeException(
+                sprintf(
+                    'The index "%s" does not exist in Elasticsearch.',
+                    $this->getContainer()->getParameter('product_and_product_model_index_name')
+                )
+            );
+        }
     }
 }

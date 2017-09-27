@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Command;
 
+use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use PhpSpec\ObjectBehavior;
@@ -19,6 +20,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class IndexProductModelCommandSpec extends ObjectBehavior
 {
+    function let(ContainerInterface $container, Client $productClient, Client $productAndProductModelClient)
+    {
+        $container->get('akeneo_elasticsearch.client.product_model')->willReturn($productClient);
+        $container->get('akeneo_elasticsearch.client.product_and_product_model')->willReturn($productAndProductModelClient);
+
+        $productClient->hasIndex()->willReturn(true);
+        $productAndProductModelClient->hasIndex()->willReturn(true);
+    }
+
     function it_has_a_name()
     {
         $this->getName()->shouldReturn('pim:product-model:index');
@@ -30,7 +40,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
     }
 
     function it_indexes_all_product_models(
-        ContainerInterface $container,
+        $container,
         ProductModelRepositoryInterface $productModelRepository,
         BulkIndexerInterface $productModelIndexer,
         BulkIndexerInterface $productModelDescendantsIndexer,
@@ -87,7 +97,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
     }
 
     function it_indexes_a_product_with_identifier(
-        ContainerInterface $container,
+        $container,
         ProductModelRepositoryInterface $productModelRepository,
         BulkIndexerInterface $productModelIndexer,
         BulkIndexerInterface $productModelDescendantsIndexer,
@@ -139,7 +149,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
     }
 
     function it_indexes_multiple_product_models_with_identifiers(
-        ContainerInterface $container,
+        $container,
         ProductModelRepositoryInterface $productModelRepository,
         BulkIndexerInterface $productModelIndexer,
         BulkIndexerInterface $productModelDescendantsIndexer,
@@ -196,7 +206,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
     }
 
     function it_does_not_index_non_existing_product_models(
-        ContainerInterface $container,
+        $container,
         ProductModelRepositoryInterface $productModelRepository,
         BulkIndexerInterface $productModelIndexer,
         BulkIndexerInterface $productModelDescendantsIndexer,
@@ -254,7 +264,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
     }
 
     function it_does_not_index_product_models_if_the_all_flag_is_not_set_and_no_identifier_is_passed(
-        ContainerInterface $container,
+        $container,
         ProductModelRepositoryInterface $productModelRepository,
         BulkIndexerInterface $productModelIndexer,
         BulkIndexerInterface $productModelDescendantsIndexer,
@@ -297,5 +307,75 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $input->getArgument('codes')->willReturn([]);
         $input->getOption('all')->willReturn(false);
         $this->run($input, $output);
+    }
+
+    function it_throws_an_exception_when_the_product_index_does_not_exist(
+        $container,
+        $productClient,
+        Application $application,
+        InputInterface $input,
+        OutputInterface $output,
+        HelperSet $helperSet,
+        InputDefinition $definition
+    ) {
+        $productClient->hasIndex()->willReturn(false);
+        $container->getParameter('product_index_name')->willReturn('foo');
+
+        $commandInput = new ArrayInput([
+            'command'    => 'pim:product:index',
+            '--no-debug' => true,
+        ]);
+        $application->run($commandInput, $output)->willReturn(0);
+
+        $definition->getOptions()->willReturn([]);
+        $definition->getArguments()->willReturn([]);
+
+        $application->getHelperSet()->willReturn($helperSet);
+        $application->getDefinition()->willReturn($definition);
+        $this->setApplication($application);
+        $this->setContainer($container);
+        $input->bind(Argument::any())->shouldBeCalled();
+        $input->isInteractive()->shouldBeCalled();
+        $input->hasArgument(Argument::any())->shouldBeCalled();
+        $input->validate()->shouldBeCalled();
+        $input->getArgument('identifiers')->willReturn([]);
+        $input->getOption('all')->willReturn(true);
+
+        $this->shouldThrow(\RuntimeException::class)->during('run', [$input, $output]);
+    }
+
+    function it_throws_an_exception_when_the_product_and_product_model_index_does_not_exist(
+        $container,
+        $productAndProductModelClient,
+        Application $application,
+        InputInterface $input,
+        OutputInterface $output,
+        HelperSet $helperSet,
+        InputDefinition $definition
+    ) {
+        $productAndProductModelClient->hasIndex()->willReturn(false);
+        $container->getParameter('product_index_name')->willReturn('foo');
+
+        $commandInput = new ArrayInput([
+            'command'    => 'pim:product:index',
+            '--no-debug' => true,
+        ]);
+        $application->run($commandInput, $output)->willReturn(0);
+
+        $definition->getOptions()->willReturn([]);
+        $definition->getArguments()->willReturn([]);
+
+        $application->getHelperSet()->willReturn($helperSet);
+        $application->getDefinition()->willReturn($definition);
+        $this->setApplication($application);
+        $this->setContainer($container);
+        $input->bind(Argument::any())->shouldBeCalled();
+        $input->isInteractive()->shouldBeCalled();
+        $input->hasArgument(Argument::any())->shouldBeCalled();
+        $input->validate()->shouldBeCalled();
+        $input->getArgument('identifiers')->willReturn([]);
+        $input->getOption('all')->willReturn(true);
+
+        $this->shouldThrow(\RuntimeException::class)->during('run', [$input, $output]);
     }
 }
