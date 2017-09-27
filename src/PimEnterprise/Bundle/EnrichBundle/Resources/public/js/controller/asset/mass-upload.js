@@ -7,7 +7,7 @@ define(
     [
         'underscore',
         'jquery',
-        'pim/controller/base',
+        'pim/controller/front',
         'pim/form-builder'
     ],
     function (_, $, BaseController, FormBuilder) {
@@ -16,9 +16,10 @@ define(
             /**
             * @inheritdoc
             */
-            renderRoute() {
+            renderForm() {
                 return FormBuilder.build('pimee-asset-mass-upload').then((form) => {
                     form.setElement(this.$el).render();
+                    return form;
                 });
             },
 

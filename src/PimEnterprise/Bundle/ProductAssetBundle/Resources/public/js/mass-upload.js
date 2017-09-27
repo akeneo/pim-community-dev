@@ -55,16 +55,7 @@ define(
             rowTemplate: _.template(rowTemplate),
 
             /**
-             * {@inheritdoc}
-             */
-            initialize: function() {
-                mediator.once('route_start', this.clearModal.bind(this));
-
-                return BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * Destroys previous modal
+             * Clean up modal 
              */
             clearModal: function() {
                 if (this.modal) {
@@ -74,6 +65,15 @@ define(
 
                 $('.mass-upload-modal').remove();
                 this.$el.empty();
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            shutdown: function() {
+                this.clearModal();
+
+                BaseForm.prototype.shutdown.apply(this, arguments);
             },
 
             /**
@@ -99,9 +99,8 @@ define(
                 modal.$el.on('click', '.remove:not(.AknButton--disabled)', this.cancelAll.bind(this));
                 modal.$el.on('click', '.import:not(.AknButton--disabled)', this.importAll.bind(this));
                 modal.$el.on('click', '.cancel:not(.AknButton--disabled)', () => {
-                    this.myDropzone.destroy();
-                    modal.close();
-                    modal.remove();
+                    this.myDropzone.removeAllFiles(true);
+                    this.clearModal();
                     router.redirectToRoute('pimee_product_asset_index')
                 });
 
