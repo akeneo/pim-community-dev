@@ -11,6 +11,7 @@ use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\StreamedFileResponse;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Api\Exception\PaginationParametersException;
@@ -18,7 +19,6 @@ use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Api\Pagination\PaginatorInterface;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
-use Pim\Component\Api\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\FileStorage;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
@@ -60,7 +60,7 @@ class MediaFileController
     /** @var FileFetcherInterface */
     protected $fileFetcher;
 
-    /** @var ProductRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $productRepository;
 
     /** @var ObjectUpdaterInterface */
@@ -88,21 +88,21 @@ class MediaFileController
     protected $apiConfiguration;
 
     /**
-     * @param ApiResourceRepositoryInterface $mediaRepository
-     * @param NormalizerInterface            $normalizer
-     * @param ParameterValidatorInterface    $parameterValidator
-     * @param PaginatorInterface             $paginator
-     * @param FilesystemProvider             $filesystemProvider
-     * @param FileFetcherInterface           $fileFetcher
-     * @param ProductRepositoryInterface     $productRepository
-     * @param ObjectUpdaterInterface         $productUpdater
-     * @param SaverInterface                 $productSaver
-     * @param ValidatorInterface             $validator
-     * @param SaverInterface                 $fileInfoSaver
-     * @param FileStorerInterface            $fileStorer
-     * @param RemoverInterface               $remover
-     * @param RouterInterface                $router
-     * @param array                          $apiConfiguration
+     * @param ApiResourceRepositoryInterface        $mediaRepository
+     * @param NormalizerInterface                   $normalizer
+     * @param ParameterValidatorInterface           $parameterValidator
+     * @param PaginatorInterface                    $paginator
+     * @param FilesystemProvider                    $filesystemProvider
+     * @param FileFetcherInterface                  $fileFetcher
+     * @param IdentifiableObjectRepositoryInterface $productRepository
+     * @param ObjectUpdaterInterface                $productUpdater
+     * @param SaverInterface                        $productSaver
+     * @param ValidatorInterface                    $validator
+     * @param SaverInterface                        $fileInfoSaver
+     * @param FileStorerInterface                   $fileStorer
+     * @param RemoverInterface                      $remover
+     * @param RouterInterface                       $router
+     * @param array                                 $apiConfiguration
      */
     public function __construct(
         ApiResourceRepositoryInterface $mediaRepository,
@@ -111,7 +111,7 @@ class MediaFileController
         PaginatorInterface $paginator,
         FilesystemProvider $filesystemProvider,
         FileFetcherInterface $fileFetcher,
-        ProductRepositoryInterface $productRepository,
+        IdentifiableObjectRepositoryInterface $productRepository,
         ObjectUpdaterInterface $productUpdater,
         SaverInterface $productSaver,
         ValidatorInterface $validator,

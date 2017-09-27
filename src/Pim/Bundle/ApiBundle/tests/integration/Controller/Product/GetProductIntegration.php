@@ -10,6 +10,9 @@ class GetProductIntegration extends AbstractProductTestCase
 {
     public function testGetACompleteProduct()
     {
+        $products = $this->get('pim_catalog.repository.product')->findAll();
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
+
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products/foo');
