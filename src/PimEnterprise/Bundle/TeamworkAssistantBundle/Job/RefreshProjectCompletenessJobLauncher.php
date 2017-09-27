@@ -12,8 +12,9 @@
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\Job;
 
 use Akeneo\Bundle\BatchBundle\Job\JobInstanceRepository;
+use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Launch the attribute group completeness calculation job
@@ -22,46 +23,42 @@ use Symfony\Component\Process\PhpExecutableFinder;
  */
 class RefreshProjectCompletenessJobLauncher
 {
+    /** @var JobLauncherInterface */
+    protected $jobLauncher;
+
+    /** @var TokenStorageInterface */
+    protected $tokenStorage;
+
     /** @var JobInstanceRepository */
     protected $jobInstanceRepository;
 
     /** @var string */
     protected $jobName;
 
-    /** @var string */
-    protected $rootDirectory;
-
-    /** @var string */
-    protected $environment;
-
-    /** @var string */
-    protected $logsDir;
-
     /**
+     * @param JobLauncherInterface  $jobLauncher
+     * @param TokenStorageInterface $tokenStorage
      * @param JobInstanceRepository $jobInstanceRepository
      * @param string                $jobName
-     * @param string                $rootDirectory
-     * @param string                $environment
-     * @param string                $logsDir
      */
     public function __construct(
+        JobLauncherInterface $jobLauncher,
+        TokenStorageInterface $tokenStorage,
         JobInstanceRepository $jobInstanceRepository,
-        string $jobName,
-        string $rootDirectory,
-        string $environment,
-        string $logsDir
+        string $jobName
     ) {
+        $this->jobLauncher = $jobLauncher;
+        $this->tokenStorage = $tokenStorage;
         $this->jobInstanceRepository = $jobInstanceRepository;
         $this->jobName = $jobName;
-        $this->rootDirectory = $rootDirectory;
-        $this->environment = $environment;
-        $this->logsDir = $logsDir;
     }
 
     /**
      * @param ProductInterface $product
      * @param string           $channel
      * @param string           $locale
+     *
+     * @throws \RuntimeException
      */
     public function launch(ProductInterface $product, $channel, $locale)
     {
@@ -75,23 +72,9 @@ class RefreshProjectCompletenessJobLauncher
             'channel_identifier' => $channel,
             'locale_identifier'  => $locale,
         ];
-        $encodedConfiguration = json_encode($configuration, JSON_HEX_APOS);
 
-        $pathFinder = new PhpExecutableFinder();
-        $command = sprintf(
-            '%s %s%s..%sbin%sconsole akeneo:batch:job --env=%s %s %s >> %s%sbatch_execute.log 2>&1 &',
-            $pathFinder->find(),
-            $this->rootDirectory,
-            DIRECTORY_SEPARATOR,
-            DIRECTORY_SEPARATOR,
-            DIRECTORY_SEPARATOR,
-            $this->environment,
-            escapeshellarg($jobInstance->getCode()),
-            sprintf('--config=%s', escapeshellarg($encodedConfiguration)),
-            $this->logsDir,
-            DIRECTORY_SEPARATOR
-        );
+        $user = $this->tokenStorage->getToken()->getUser();
 
-        exec($command);
+        $this->jobLauncher->launch($jobInstance, $user, $configuration);
     }
 }

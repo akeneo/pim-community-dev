@@ -134,7 +134,7 @@ services:
     pimee_teamwork_assistant.launcher.job.project_calculation:
         class: '%pimee_teamwork_assistant.launcher.job.project_calculation.class%'
         arguments:
-            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
             - '%pimee_teamwork_assistant.project_calculation.job_name%'
 
@@ -191,11 +191,10 @@ services:
     pimee_teamwork_assistant.launcher.job.refresh_project_completeness_calculation:
         class: '%pimee_teamwork_assistant.launcher.job.refresh_project_completeness_calculation.class%'
         arguments:
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
+            - '@security.token_storage'
             - '@akeneo_batch.job.job_instance_repository'
             - '%pimee_teamwork_assistant.refresh_project_completeness_calculation.job_name%'
-            - '%kernel.root_dir%'
-            - '%kernel.environment%'
-            - '%kernel.logs_dir%'
 
     ### Job Parameters
     pimee_teamwork_assistant.job.refresh_project_completeness_calculation_parameter:

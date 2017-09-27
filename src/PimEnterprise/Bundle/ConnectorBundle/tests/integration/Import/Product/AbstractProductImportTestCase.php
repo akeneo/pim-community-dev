@@ -116,7 +116,6 @@ abstract class AbstractProductImportTestCase extends TestCase
     }
 
     /**
-     * @param string $commandName
      * @param string $importCSV
      * @param string $username
      * @param array  $expected
@@ -127,7 +126,6 @@ abstract class AbstractProductImportTestCase extends TestCase
      * @param int    $batchStatus
      */
     protected function assertImport(
-        string $commandName,
         string $importCSV,
         ?string $username,
         array $expected,
@@ -136,8 +134,51 @@ abstract class AbstractProductImportTestCase extends TestCase
         int $countWarning,
         array $expectedWarnings = [],
         int $batchStatus = BatchStatus::COMPLETED
-    ) {
-        $this->jobLauncher->launchSubProcessImport($commandName, 'csv_product_import', $importCSV, $username);
+    ): void {
+        $this->jobLauncher->launchSubProcessImport('csv_product_import', $importCSV, $username);
+        $this->checkImport($expected, $countProducts, $countDrafts, $countWarning, $expectedWarnings, $batchStatus);
+    }
+
+    /**
+     * @param string $importCSV
+     * @param string $username
+     * @param array  $expected
+     * @param int    $countProducts
+     * @param int    $countDrafts
+     * @param int    $countWarning
+     * @param array  $expectedWarnings
+     * @param int    $batchStatus
+     */
+    protected function assertAuthenticatedImport(
+        string $importCSV,
+        ?string $username,
+        array $expected,
+        int $countProducts,
+        int $countDrafts,
+        int $countWarning,
+        array $expectedWarnings = [],
+        int $batchStatus = BatchStatus::COMPLETED
+    ): void {
+        $this->jobLauncher->launchAuthenticatedSubProcessImport('csv_product_import', $importCSV, $username);
+        $this->checkImport($expected, $countProducts, $countDrafts, $countWarning, $expectedWarnings, $batchStatus);
+    }
+
+    /**
+     * @param array $expected
+     * @param int   $countProducts
+     * @param int   $countDrafts
+     * @param int   $countWarning
+     * @param array $expectedWarnings
+     * @param int   $batchStatus
+     */
+    private function checkImport(
+        array $expected,
+        int $countProducts,
+        int $countDrafts,
+        int $countWarning,
+        array $expectedWarnings,
+        int $batchStatus
+    ): void {
         $this->get('doctrine')->getManager()->clear();
         $this->assertSame($countProducts, $this->countProduct());
         $this->assertSame($countDrafts, $this->countProductDraft());
