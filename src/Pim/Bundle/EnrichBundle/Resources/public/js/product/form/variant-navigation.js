@@ -151,10 +151,12 @@ define([
                         ratio: localeCompleteness.ratio
                     };
                 } else {
-                    // TODO: replace this placeholder by the real values, with PIM-6560
+                    const completeProducts = entity.completeness.completenesses[catalogScope][catalogLocale];
+                    const totalProducts  = entity.completeness.total;
+
                     return {
-                        ratio: 20,
-                        display: '- / -'
+                        ratio: (completeProducts > 0) ? Math.floor(totalProducts / completeProducts * 100) : 0,
+                        display: completeProducts + ' / ' + totalProducts
                     };
                 }
             },

@@ -176,7 +176,7 @@ extensions:
     pim-product-model-edit-form-complete-variant-product:
         module: pim/product-model-edit-form/complete-variant-product
         parent: pim-product-model-edit-form
-        targetZone: context
+        targetZone: meta
         position: 120
         config:
             context: base_product

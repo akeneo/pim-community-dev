@@ -179,6 +179,7 @@ services:
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
             - '@pim_enrich.normalizer.completeness_collection'
             - '@pim_catalog.completeness.calculator'
+            - '@pim_catalog.doctrine.query.find_variant_product_completeness'
 
     pim_enrich.normalizer.variant_navigation:
         class: '%pim_enrich.normalizer.variant_navigation.class%'
