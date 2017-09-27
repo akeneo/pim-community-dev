@@ -116,10 +116,9 @@ def runPhpSpecTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("akeneo/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
-                unstash "project_files"
+            docker.image("akeneo/php:5.6").inside("") {
+                unstash "project_files_full"
 
-                sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
 
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
@@ -143,10 +142,9 @@ def runIntegrationTest(storage) {
         try {
             docker.image("mongo:2.4").withRun("--name mongodb", "--smallfiles") {
                 docker.image("mysql:5.5").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim") {
-                    docker.image("akeneo/php:5.6").inside("--link mysql:mysql --link mongodb:mongodb -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
-                        unstash "project_files"
+                    docker.image("akeneo/php:5.6").inside("--link mysql:mysql --link mongodb:mongodb") {
+                        unstash "project_files_full"
 
-                        sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                         sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
                         sh "sed -i 's/database_host:     localhost/database_host:     mysql/' app/config/parameters_test.yml"
 
@@ -182,10 +180,9 @@ def runPhpCsFixerTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("akeneo/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
-                unstash "project_files"
+            docker.image("akeneo/php:5.6").inside("") {
+                unstash "project_files_full"
 
-                sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
 
                 sh "./bin/php-cs-fixer fix --diff --dry-run --format=junit --config=.php_cs.php > app/build/logs/phpcs.xml"
