@@ -2,3 +2,7 @@ jstree:
   asset:
     all: Alle aktiver
     unclassified: Ikke klassificerede aktiver
+asset_grid:
+  label: Produkt aktiver
+create_asset:
+  title: Opret et aktiv

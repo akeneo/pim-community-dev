@@ -11,6 +11,7 @@ pimee_product_asset:
           title: Gestisci asset
           cancel: Annulla
           confirm: Conferma
+        title: Gestisci asset
   enrich_asset:
     grid:
       edit: Modifica le proprietà dell'asset

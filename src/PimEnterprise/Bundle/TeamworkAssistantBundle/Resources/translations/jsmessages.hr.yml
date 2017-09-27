@@ -6,6 +6,7 @@ teamwork_assistant:
       loading: Učitavanje...
       confirmation:
         delete: Potvrdi brisanje
+      popin_title: Kreiraj
   project:
     label: Ime
     locale: Postavke jezika i regije

@@ -6,6 +6,7 @@ teamwork_assistant:
       loading: Загрузка...
       confirmation:
         delete: Подтверждение удаления
+      popin_title: Создать
   project:
     label: Имя
     locale: Локаль

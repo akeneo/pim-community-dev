@@ -2,3 +2,7 @@ jstree:
   asset:
     all: Sva imovina
     unclassified: Neklasificirana imovina
+asset_grid:
+  label: Proizvod imovina
+create_asset:
+  title: Kreiraj imovinu

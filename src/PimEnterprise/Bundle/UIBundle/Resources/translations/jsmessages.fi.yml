@@ -2,3 +2,7 @@ jstree:
   asset:
     all: Kaikki resurssit
     unclassified: Luokittelemattomat resurssit
+asset_grid:
+  label: Tuoteresurssit
+create_asset:
+  title: Luo resurssi

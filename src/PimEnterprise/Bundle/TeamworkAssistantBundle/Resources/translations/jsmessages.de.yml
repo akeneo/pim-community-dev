@@ -13,6 +13,8 @@ teamwork_assistant:
       confirmation:
         remove: Sind Sie sicher, dass Sie dieses Projekt entfernen möchten?
         delete: Löschbestätigung
+      popin_title: Anlegen
+      projects: Projekte
   project:
     label: Name
     locale: Gebietsschema

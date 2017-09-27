@@ -2,3 +2,7 @@ jstree:
   asset:
     all: Tots els recursos
     unclassified: Recursos sense classificar
+asset_grid:
+  label: Recursos de producte
+create_asset:
+  title: Crear un recurs

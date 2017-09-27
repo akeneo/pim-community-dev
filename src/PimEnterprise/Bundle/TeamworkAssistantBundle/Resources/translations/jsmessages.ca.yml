@@ -6,6 +6,7 @@ teamwork_assistant:
       loading: Carregant...
       confirmation:
         delete: Confirmació de l'eliminació
+      popin_title: Crear
   project:
     label: Nom
     locale: Configuració Regional

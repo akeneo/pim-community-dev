@@ -54,7 +54,7 @@ pimee_enrich:
           added: Le groupe {{ group }} sera autorisé à {{ permission }} le groupe d'attributs
   entity:
     product:
-      index_title: Produits publiés
+      index_title: "] -Inf, 1] {{ count }} produit publié|] 1, Inf [{{ count }} produits publiés"
       navigation: Produits publiés
       history:
         published: Publié

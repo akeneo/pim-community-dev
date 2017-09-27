@@ -2,3 +2,9 @@ jstree:
   asset:
     all: Todos los recursos
     unclassified: Recursos no clasificados
+asset_grid:
+  title: "] -Inf, 1] {{ count }} activo de producto|] 1, Inf [{{ count }} activos de producto"
+  selected: activos seleccionados
+  label: Recursos de productos
+create_asset:
+  title: Crear un recurso

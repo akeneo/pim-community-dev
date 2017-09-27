@@ -1,6 +1,7 @@
 teamwork_assistant:
   common:
     required: Requerido
+    warning: No se preocupe, el cálculo del proyecto puede tomar un tiempo. Puede que no sea visible de inmediato.
   grid:
     view_selector:
       create: Crear proyecto
@@ -12,6 +13,8 @@ teamwork_assistant:
       confirmation:
         remove: '¿Estás seguro de que deseas eliminar este proyecto?'
         delete: Confirmación de borrado
+      popin_title: Crear
+      projects: Proyectos
   project:
     label: Nombre
     locale: Local
@@ -33,6 +36,7 @@ teamwork_assistant:
     cancel: Cancelar
   widget:
     no_project: No tiene ningún proyecto
+    no_project_create: crear un nuevo proyecto
     description: Descripción
     due_date: Vencimiento
     todo: PENDIENTES
@@ -44,8 +48,15 @@ teamwork_assistant:
       contributor_selector: Buscar colaborador
       project_selector: Buscar proyecto
     completeness:
+      to_start: PRODUCTOS A COMENZAR
       in_progress: PRODUCTOS EN CURSO
       done: PRODUCTOS TERMINADOS
 pim_datagrid:
   view_selector:
     project: Proyectos
+pim_dashboard:
+  widget:
+    last_operations:
+      job_type:
+        refresh_project_completeness_calculation: Asistente del trabajo en equipo
+        project_calculation: Asistente del trabajo en equipo
