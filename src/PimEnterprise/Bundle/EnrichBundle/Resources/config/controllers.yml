@@ -3,7 +3,6 @@ parameters:
     pim_enrich.controller.product.class:                    PimEnterprise\Bundle\EnrichBundle\Controller\ProductController
     pim_enrich.controller.product_model.class:              PimEnterprise\Bundle\EnrichBundle\Controller\ProductModelController
     pim_enrich.controller.locale.class:                     PimEnterprise\Bundle\EnrichBundle\Controller\LocaleController
-    pim_enrich.controller.rest.job_instance.class:          PimEnterprise\Bundle\EnrichBundle\Controller\Rest\JobInstanceController
     pimee_enrich.controller.rule_relation.class:            PimEnterprise\Bundle\EnrichBundle\Controller\RuleRelationController
     pimee_enrich.controller.channel.class:                  PimEnterprise\Bundle\EnrichBundle\Controller\Rest\ChannelController
 
@@ -152,9 +151,8 @@ services:
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.normalizer.violation'
             - '@akeneo_batch.job_instance_factory'
+            - '@event_dispatcher'
             - '%upload_tmp_dir%'
-            - '@pimee_security.manager.job_profile_access'
-            - '@pim_user.repository.group'
 
     pim_enrich.controller.rest.attribute_group:
         class: '%pim_enrich.controller.rest.attribute_group.class%'
