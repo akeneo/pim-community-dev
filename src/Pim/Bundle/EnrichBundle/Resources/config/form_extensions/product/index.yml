@@ -69,6 +69,7 @@ extensions:
         aclResourceId: pim_enrich_product_category_list
         config:
             gridName: product-grid
+            categoryTreeName: pim_enrich_categorytree
 
     pim-product-index-category-tree-done:
         module: pim/grid/category-tree-done
@@ -131,4 +132,3 @@ extensions:
             gridName: product-grid
             localeParamName: dataLocale
             datagridLoadUrl: pim_datagrid_load
-
