@@ -12,8 +12,7 @@ define(
         'pimee/template/asset/mass-upload-row',
         'pim/form-builder',
         'pim/common/breadcrumbs',
-        'pim/form',
-        'oro/mediator'
+        'pim/form'
     ],
     function (
         $,
@@ -27,8 +26,7 @@ define(
         rowTemplate,
         formBuilder,
         Breadcrumbs,
-        BaseForm,
-        mediator
+        BaseForm
     ) {
         /**
          * Override to be able to use template root different other than 'div'
@@ -55,7 +53,7 @@ define(
             rowTemplate: _.template(rowTemplate),
 
             /**
-             * Clean up modal 
+             * Clean up modal
              */
             clearModal: function() {
                 if (this.modal) {

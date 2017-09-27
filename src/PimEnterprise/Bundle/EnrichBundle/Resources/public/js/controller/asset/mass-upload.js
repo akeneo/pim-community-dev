@@ -19,6 +19,7 @@ define(
             renderForm() {
                 return FormBuilder.build('pimee-asset-mass-upload').then((form) => {
                     form.setElement(this.$el).render();
+
                     return form;
                 });
             },
