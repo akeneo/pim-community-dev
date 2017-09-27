@@ -231,7 +231,7 @@ class WebUser extends PimContext
     public function iShouldSeeVersionsInTheHistory($expectedCount)
     {
         $this->spin(function () use ($expectedCount) {
-            $actualVersions = $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.product-version');
+            $actualVersions = $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.entity-version');
 
             return ((int) $expectedCount) === count($actualVersions);
         }, sprintf(
@@ -1725,9 +1725,24 @@ class WebUser extends PimContext
                 ->click();
 
             return true;
-        }, sprintf('Cannot click on item %s ', $item));
+        }, sprintf('Cannot click on item "%s" on the dropdown "%s"', $item, $button));
 
         $this->wait();
+    }
+
+    /**
+     * @param string $item
+     * @param string $button
+     *
+     * @Given /^I should see "([^"]*)" on the "([^"]*)" dropdown button$/
+     */
+    public function iShouldSeeOnTheDropdownButton($item, $button)
+    {
+        $this->spin(function () use ($item, $button) {
+            return null !== $this->getCurrentPage()->getDropdownButtonItem($item, $button);
+        }, sprintf('Cannot find item "%s" on the dropdown "%s"', $item, $button));
+
+        $this->getCurrentPage()->find('css', 'body')->click();
     }
 
     /**

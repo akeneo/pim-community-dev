@@ -8,11 +8,25 @@ extensions:
         targetZone: breadcrumbs
         config:
             tab: pim-menu-products
+            itemPath: code
+
+    pim-product-model-edit-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-product-model-edit-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
 
     pim-product-model-edit-form-main-image:
         module: pim/form/common/main-image
         parent: pim-product-model-edit-form
         targetZone: main-image
+
+    pim-product-model-edit-form-variant-navigation:
+        module: pim/product-edit-form/variant-navigation
+        parent: pim-product-model-edit-form
+        targetZone: navigation
 
     pim-product-model-edit-form-cache-invalidator:
         module: pim/cache-invalidator

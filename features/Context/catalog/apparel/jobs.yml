@@ -278,3 +278,8 @@ jobs:
         alias:     edit_common_attributes
         label:     Mass edit common product attributes
         type:      mass_edit
+    compute_product_models_descendants:
+        connector: internal
+        alias:     compute_product_models_descendants
+        label:     Compute product models descendants
+        type:      compute_product_models_descendants

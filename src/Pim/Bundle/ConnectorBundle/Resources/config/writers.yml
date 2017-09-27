@@ -3,6 +3,7 @@ parameters:
     pim_connector.writer.database.class:                           Pim\Component\Connector\Writer\Database\Writer
     pim_connector.writer.database.product.class:                   Pim\Component\Connector\Writer\Database\ProductWriter
     pim_connector.writer.database.product_model.class:             Pim\Component\Connector\Writer\Database\ProductModelWriter
+    pim_connector.writer.database.product_model_descendants.class: Pim\Component\Connector\Writer\Database\ProductModelDescendantsWriter
     pim_connector.writer.database.product_association.class:       Pim\Component\Connector\Writer\Database\ProductAssociationWriter
     pim_connector.writer.database.attribute_group.class:           Pim\Component\Connector\Writer\Database\AttributeGroupWriter
     pim_connector.writer.file.abstract.class:                      Pim\Component\Connector\Writer\File\AbstractFileWriter
@@ -61,6 +62,11 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_catalog.saver.product_model'
             - '@pim_connector.doctrine.cache_clearer'
+
+    pim_connector.writer.database.product_model_descendants:
+        class: '%pim_connector.writer.database.product_model_descendants.class%'
+        arguments:
+            - '@pim_catalog.saver.product_model_descendants'
 
     pim_connector.writer.database.product_association:
         class: '%pim_connector.writer.database.product_association.class%'

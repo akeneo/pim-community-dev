@@ -9,6 +9,14 @@ extensions:
         config:
             path: bundles/pimui/images/illustration-import-csv.svg
 
+    pim-job-instance-csv-product-import-edit-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-job-instance-csv-product-import-edit
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-job-instance-csv-product-import-edit-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-job-instance-csv-product-import-edit

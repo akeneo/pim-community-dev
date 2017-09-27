@@ -6,11 +6,13 @@ use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
+use Pim\Bundle\DataGridBundle\Normalizer\IdEncoder;
 use Pim\Component\Catalog\ProductEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -54,6 +56,8 @@ class DeleteProductsMassActionHandler extends DeleteMassActionHandler
         $datasource->setHydrator($this->hydrator);
 
         $resultRecords = $datasource->getResults();
+        $resultRecords = $this->filterProductRecords($resultRecords);
+
         $objectIds = [];
         foreach ($resultRecords['data'] as $resultRecord) {
             /** @var ResultRecord $resultRecord */
@@ -79,5 +83,28 @@ class DeleteProductsMassActionHandler extends DeleteMassActionHandler
         $this->eventDispatcher->dispatch(MassActionEvents::MASS_DELETE_POST_HANDLER, $massActionEvent);
 
         return $this->getResponse($massAction, $countRemoved);
+    }
+
+    /**
+     * Only returns the product records within a list of product and product models records.
+     *
+     * TODO: PIM-6357 - Scenario should be removed once mass edits work for product models
+     *
+     * @param array $resultRecords
+     *
+     * @return array
+     */
+    private function filterProductRecords(array $resultRecords): array
+    {
+        $productRecords = [];
+        foreach ($resultRecords['data'] as $resultRecord) {
+            /** @var ResultRecord $resultRecord */
+            if ($resultRecord->getValue('document_type') === IdEncoder::PRODUCT_TYPE) {
+                $productRecords[] = $resultRecord;
+            }
+        }
+        $resultRecords['data'] = $productRecords;
+
+        return $resultRecords;
     }
 }

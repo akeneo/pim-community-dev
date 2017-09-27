@@ -44,7 +44,6 @@ css:
         - bundles/pimui/less/components/grid/FilterChoice.less
         - bundles/pimui/less/components/grid/FilterDate.less
         - bundles/pimui/less/components/grid/Grid.less
-        - bundles/pimui/less/components/grid/GridsLine.less
         - bundles/pimui/less/components/grid/GridContainer.less
         - bundles/pimui/less/components/grid/GridToolbar.less
         - bundles/pimui/less/components/grid/MassActions.less
@@ -64,6 +63,7 @@ css:
         - bundles/pimui/less/components/product-edit-form/TabHeader.less
         - bundles/pimui/less/components/product-edit-form/TextareaField.less
         - bundles/pimui/less/components/product-edit-form/TextField.less
+        - bundles/pimui/less/components/product-edit-form/VariantNavigation.less
         - bundles/pimui/less/components/product-edit-form/VerticalNavtab.less
 
         - bundles/pimui/less/components/Acl.less
@@ -73,7 +73,6 @@ css:
         - bundles/pimui/less/components/CenteredBox.less
         - bundles/pimui/less/components/Column.less
         - bundles/pimui/less/components/ColumnConfigurator.less
-        - bundles/pimui/less/components/DashboardButtons.less
         - bundles/pimui/less/components/Diff.less
         - bundles/pimui/less/components/Dropdown.less
         - bundles/pimui/less/components/Flash.less
@@ -92,6 +91,7 @@ css:
         - bundles/pimui/less/components/Search.less
         - bundles/pimui/less/components/SequentialEdit.less
         - bundles/pimui/less/components/SquareList.less
+        - bundles/pimui/less/components/State.less
         - bundles/pimui/less/components/Steps.less
         - bundles/pimui/less/components/Subsection.less
         - bundles/pimui/less/components/TabContainer.less

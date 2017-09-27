@@ -20,7 +20,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('pageSize')->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('hide')->defaultFalse()->end()
-                        ->scalarNode('default_per_page')->defaultValue(100)->end()
+                        ->scalarNode('default_per_page')->defaultValue(25)->end()
                         ->arrayNode('items')
                             ->defaultValue([10, 25, 50, 100])
                             ->prototype('variable')->end()

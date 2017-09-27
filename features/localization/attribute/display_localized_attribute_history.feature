@@ -16,5 +16,5 @@ Feature: Display the attribute history localized values
     When I visit the "Historique" tab
     Then there should be 2 update
     And I should see history:
-      | version | author                              | property   | value           |
-      | 2       | Julien Février - Julien@example.com | number_max | 12&nbsp;456,789 |
+      | version | author                              | property   | value      |
+      | 2       | Julien Février - Julien@example.com | number_max | 12 456,789 |

@@ -11,16 +11,48 @@ extensions:
         position: 10
         targetZone: mainMenu
 
-    # Dashboard
-    pim-menu-dashboard:
+    # Activity
+    pim-menu-activity:
         module: pim/menu/tab
         parent: pim-menu
         position: 80
         targetZone: mainMenu
         config:
-            title: pim_menu.tab.dashboard
+            title: pim_menu.tab.activity
             iconModifier: iconCard
+
+    pim-menu-activity-column:
+        module: pim/menu/column
+        parent: pim-menu
+        position: 500
+        targetZone: column
+        config:
+            stateCode: pim-menu-activity
+            tab: pim-menu-activity
+            navigationTitle: pim_menu.navigation.activity
+
+    pim-menu-activity-navigation-block:
+        module: pim/menu/navigation-block
+        parent: pim-menu-activity-column
+        targetZone: navigation
+        config:
+            title: pim_menu.navigation.activity
+
+    pim-menu-activity-dashboard:
+        module: pim/menu/item
+        parent: pim-menu-activity-navigation-block
+        position: 100
+        config:
+            title: pim_menu.item.dashboard
             to: pim_dashboard_index
+
+    pim-menu-activity-job-tracker:
+        module: pim/menu/item
+        parent: pim-menu-activity-navigation-block
+        position: 110
+        config:
+            title: pim_menu.item.job_tracker
+            to: pim_enrich_job_tracker_index
 
     # Imports
     pim-menu-imports:
@@ -222,14 +254,6 @@ extensions:
         config:
             title: pim_menu.item.info
             to: pim_analytics_system_info_index
-
-    pim-menu-system-job-tracker:
-        module: pim/menu/item
-        parent: pim-menu-system-navigation-block
-        position: 0
-        config:
-            title: pim_menu.item.job_tracker
-            to: pim_enrich_job_tracker_index
 
     pim-menu-system-api-connection:
         module: pim/menu/item

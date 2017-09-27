@@ -1,0 +1,39 @@
+parameters:
+    pim_catalog.tasklet.compute_product_models_descendants.class: Pim\Component\Catalog\Job\ComputeProductModelsDescendantsTasklet
+
+    pim_catalog.compute_product_models_descendants.job_type: 'compute_product_models_descendants'
+    pim_catalog.compute_product_models_descendants.job_name: 'compute_product_models_descendants'
+    pim_catalog.compute_product_models_descendants.tasklet_name: 'compute_product_models_descendants'
+    pim_catalog.compute_descendants.connector_name: 'compute descendants completeness'
+
+services:
+    pim_catalog.tasklet.compute_product_models_descendants:
+        class: '%pim_catalog.tasklet.compute_product_models_descendants.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.saver.product_model_descendants'
+        public: false
+
+    pim_catalog.step.compute_product_models_descendants:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - '%pim_catalog.compute_product_models_descendants.tasklet_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_catalog.tasklet.compute_product_models_descendants'
+        public: false
+
+    pim_catalog.job.compute_product_models_descendants:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_catalog.compute_product_models_descendants.job_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_catalog.step.compute_product_models_descendants'
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: '%pim_catalog.compute_descendants.connector_name%'
+                type: '%pim_catalog.compute_product_models_descendants.job_type%'

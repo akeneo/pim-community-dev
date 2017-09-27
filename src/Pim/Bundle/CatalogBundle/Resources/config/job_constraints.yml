@@ -1,0 +1,10 @@
+parameters:
+    pim_catalog.job.job_parameters.constraint_collection_provider.compute_product_models_descendants.class: Pim\Component\Catalog\Job\JobParameters\ConstraintCollectionProvider\ComputeProductModelsDescendants
+
+services:
+    pim_catalog.job.job_parameters.constraint_collection_provider.compute_product_models_descendants:
+        class: '%pim_catalog.job.job_parameters.constraint_collection_provider.compute_product_models_descendants.class%'
+        arguments:
+            - ['compute_product_models_descendants']
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

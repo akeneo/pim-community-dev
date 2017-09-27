@@ -23,8 +23,8 @@ Feature: Export associations in XLSX
     When I am on the "xlsx_footwear_association_type_export" export job page
     And I launch the export job
     And I wait for the "xlsx_footwear_association_type_export" job to finish
-    Then I should see the secondary action "xlsx_footwear_association_type_export_1.xlsx"
-    And I should see the secondary action "xlsx_footwear_association_type_export_2.xlsx"
+    And I should see "xlsx_footwear_association_type_export_1.xlsx" on the "Download generated files" dropdown button
+    And I should see "xlsx_footwear_association_type_export_2.xlsx" on the "Download generated files" dropdown button
     And exported xlsx file 1 of "xlsx_footwear_association_type_export" should contain:
       | code         | label-en_US  |
       | X_SELL       | Cross sell   |

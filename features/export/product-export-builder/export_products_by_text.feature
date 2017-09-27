@@ -26,6 +26,7 @@ Feature: Export products according to text attribute filter
     When I am on the "csv_footwear_product_export" export job edit page
     And I visit the "Content" tab
     And I filter by "completeness" with operator "No condition on completeness" and value ""
+    And I visit the "Content" tab
     And I add available attributes Comment
     And I add available attributes Name
     And I add available attributes Title

@@ -3,6 +3,7 @@
 namespace Context\Page\ProductModel;
 
 use Context\Page\Base\ProductEditForm;
+use Pim\Behat\Decorator\ContextSwitcherDecorator;
 
 /**
  * Product model edit page
@@ -13,6 +14,26 @@ use Context\Page\Base\ProductEditForm;
  */
 class Edit extends ProductEditForm
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($session, $pageFactory, $parameters = [])
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+
+        $this->elements = array_merge(
+            $this->elements,
+            [
+                'Main context selector' => [
+                    'css'        => '.AknTitleContainer-context',
+                    'decorators' => [
+                        ContextSwitcherDecorator::class
+                    ]
+                ]
+            ]
+        );
+    }
+
     /** @var string */
     protected $path = '#/enrich/product-model/{id}';
 }

@@ -7,10 +7,12 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
+use Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Component\Catalog\Comparator\Filter\EntityWithValuesFilter;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -59,18 +61,22 @@ class ProductModelController
     /** @var NormalizerInterface */
     private $constraintViolationNormalizer;
 
+    /** @var EntityWithFamilyVariantNormalizer */
+    private $entityWithFamilyVariantNormalizer;
+
     /**
-     * @param ProductModelRepositoryInterface $productModelRepository
-     * @param NormalizerInterface             $normalizer
-     * @param UserContext                     $userContext
-     * @param ObjectFilterInterface           $objectFilter
-     * @param AttributeConverterInterface     $localizedConverter
-     * @param EntityWithValuesFilter          $emptyValuesFilter
-     * @param ConverterInterface              $productValueConverter
-     * @param ObjectUpdaterInterface          $productModelUpdater
-     * @param ValidatorInterface              $validator
-     * @param SaverInterface                  $productModelSaver
-     * @param NormalizerInterface             $constraintViolationNormalizer
+     * @param ProductModelRepositoryInterface   $productModelRepository
+     * @param NormalizerInterface               $normalizer
+     * @param UserContext                       $userContext
+     * @param ObjectFilterInterface             $objectFilter
+     * @param AttributeConverterInterface       $localizedConverter
+     * @param EntityWithValuesFilter            $emptyValuesFilter
+     * @param ConverterInterface                $productValueConverter
+     * @param ObjectUpdaterInterface            $productModelUpdater
+     * @param ValidatorInterface                $validator
+     * @param SaverInterface                    $productModelSaver
+     * @param NormalizerInterface               $constraintViolationNormalizer
+     * @param EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
@@ -83,7 +89,8 @@ class ProductModelController
         ObjectUpdaterInterface $productModelUpdater,
         ValidatorInterface $validator,
         SaverInterface $productModelSaver,
-        NormalizerInterface $constraintViolationNormalizer
+        NormalizerInterface $constraintViolationNormalizer,
+        EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer
     ) {
         $this->productModelRepository        = $productModelRepository;
         $this->normalizer                    = $normalizer;
@@ -96,6 +103,7 @@ class ProductModelController
         $this->validator                     = $validator;
         $this->productModelSaver             = $productModelSaver;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
+        $this->entityWithFamilyVariantNormalizer = $entityWithFamilyVariantNormalizer;
     }
 
     /**
@@ -174,13 +182,51 @@ class ProductModelController
     }
 
     /**
+     * Return direct children (products or product models) of the parent's given id
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function childrenAction(Request $request): JsonResponse
+    {
+        $parentId = $request->query->get('id');
+        $parent = $this->productModelRepository->find($parentId);
+        if (null === $parent) {
+            throw new NotFoundHttpException(sprintf('ProductModel with id "%s" not found', $parentId));
+        }
+
+        $children = $this->productModelRepository->findChildrenProductModels($parent);
+        if (empty($children)) {
+            $children = $this->productModelRepository->findChildrenProducts($parent);
+        }
+
+        $normalizedChildren = [];
+        foreach ($children as $child) {
+            if (!$child instanceof ProductModelInterface && !$child instanceof VariantProductInterface) {
+                throw new \LogicException(sprintf(
+                    'Child of a product model must be of class "%s" or "%s", "%s" received.',
+                    ProductModelInterface::class,
+                    VariantProductInterface::class,
+                    get_class($child)
+                ));
+            }
+
+            $normalizedChildren[] = $this->entityWithFamilyVariantNormalizer->normalize($child, 'internal_api');
+        }
+
+        return new JsonResponse($normalizedChildren);
+    }
+
+    /**
      * Updates product with the provided request data
      *
      * @param ProductModelInterface $productModel
      * @param array                 $data
      */
-    private function updateProductModel(ProductModelInterface $productModel, array $data)
+    private function updateProductModel(ProductModelInterface $productModel, array $data): void
     {
+        unset($data['parent']);
         $values = $this->productValueConverter->convert($data['values']);
 
         $values = $this->localizedConverter->convertToDefaultFormats($values, [

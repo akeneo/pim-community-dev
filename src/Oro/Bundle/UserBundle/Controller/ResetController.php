@@ -48,8 +48,7 @@ class ResetController extends Controller
         /**
          * @todo Move to postUpdate lifecycle event handler as service
          */
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Reset password')
+        $message = (new \Swift_Message('Reset password'))
             ->setFrom($this->container->getParameter('oro_user.email'))
             ->setTo($user->getEmail())
             ->setBody(

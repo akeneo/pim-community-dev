@@ -2,28 +2,31 @@
     <div class="AknDefault-thirdColumnContainer">
         <div class="AknDefault-thirdColumn" data-drop-zone="tree"></div>
     </div>
-    <div class="AknDefault-mainContent">
-        <header class="AknTitleContainer navigation">
-            <div class="AknTitleContainer-imageContainer" data-drop-zone="main-image"></div>
-            <div class="AknTitleContainer-mainContainer">
-                <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div>
-                <div class="AknTitleContainer-title" data-drop-zone="title"></div>
-            </div>
-            <div class="AknTitleContainer-buttonsContainer">
-                <div class="user-menu" data-drop-zone="user-menu"></div>
-                <div class="AknTitleContainer-rightButtons">
-                    <div class="AknButtonList AknButtonsList--right AknTitleContainer-rightButtons" data-drop-zone="buttons"></div>
+    <div class="AknDefault-contentWithBottom" data-drop-zone="mass-actions">
+        <div class="AknDefault-mainContent">
+            <header class="AknTitleContainer navigation">
+                <div class="AknTitleContainer-imageContainer" data-drop-zone="main-image"></div>
+                <div class="AknTitleContainer-mainContainer">
+                    <div>
+                        <div class="AknTitleContainer-breadcrumbs" data-drop-zone="breadcrumbs"></div>
+                        <div class="AknTitleContainer-title" data-drop-zone="title"></div>
+                    </div>
                 </div>
-                <div class="AknTitleContainer-titleButtons AknButtonList" data-drop-zone="title-buttons"></div>
-                <div class="AknTitleContainer-state state" data-drop-zone="state"> </div>
-            </div>
-        </header>
+                <div class="AknTitleContainer-buttonsContainer">
+                    <div class="user-menu" data-drop-zone="user-menu"></div>
+                    <div class="AknTitleContainer-rightButtons">
+                        <div class="AknButtonList AknButtonsList--right AknTitleContainer-rightButtons" data-drop-zone="buttons"></div>
+                    </div>
+                    <div class="AknTitleContainer-titleButtons AknButtonList" data-drop-zone="title-buttons"></div>
+                    <div class="AknTitleContainer-state state" data-drop-zone="state"> </div>
+                </div>
+            </header>
 
-        <div id="product-grid" data-drop-zone="grid">
-            <div class="AknFilterBox oro-clearfix-width" data-drop-zone="filters"></div>
-            <div class="AknGridToolbar" data-drop-zone="toolbar"></div>
-            <div id="grid-<%- gridName %>" data-type="datagrid"></div>
+            <div id="product-grid" data-drop-zone="grid">
+                <div class="AknFilterBox oro-clearfix-width" data-drop-zone="filters"></div>
+                <div class="AknGridToolbar" data-drop-zone="toolbar"></div>
+                <div id="grid-<%- gridName %>" data-type="datagrid"></div>
+            </div>
         </div>
-        <div data-drop-zone="mass-actions"></div>
     </div>
 </div>

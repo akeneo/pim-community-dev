@@ -282,4 +282,52 @@ class JobLauncher
 
         return $process;
     }
+
+    /**
+     * Launch an import in a subprocess.
+     *
+     * @param string $command
+     * @param string $jobCode
+     * @param string $content
+     * @param string $username
+     *
+     * @throws \Exception
+     */
+    public function launchSubProcessImport(string $command, string $jobCode, string $content, string $username = null): void
+    {
+        $importDirectoryPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::IMPORT_DIRECTORY;
+        $fixturesDirectoryPath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'fixtures';
+        $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'import.csv';
+
+        $fs = new Filesystem();
+        $fs->remove($importDirectoryPath);
+        $fs->remove($fixturesDirectoryPath);
+        $fs->mkdir($importDirectoryPath);
+        $fs->mkdir($fixturesDirectoryPath);
+
+        file_put_contents($filePath, $content);
+
+        $config = [
+            'filePath' => $filePath,
+        ];
+
+        $pathFinder = new PhpExecutableFinder();
+        $command = sprintf(
+            '%s %s/console %s --env=%s --config=\'%s\' -v %s %s',
+            $pathFinder->find(),
+            sprintf('%s/../bin', $this->kernel->getRootDir()),
+            $command,
+            $this->kernel->getEnvironment(),
+            json_encode($config, JSON_HEX_APOS),
+            $jobCode,
+            $username
+        );
+
+        $process = new Process($command);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new \Exception(sprintf('Import failed, "%s".', $process->getOutput() . PHP_EOL . $process->getErrorOutput()));
+        }
+    }
 }

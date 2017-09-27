@@ -1016,10 +1016,15 @@ class Grid extends Index
      */
     public function selectAll()
     {
-        $button = $this->find('css', '.AknSelectButton');
+        $button = $this->spin(function () {
+            return $this->find('css', '.AknSelectButton');
+        }, 'Can not find main select button');
 
-        $this->spin(function () use ($button) {
+        if (!$button->hasClass('AknSelectButton--selected')) {
             $button->click();
+        }
+
+        $this->spin(function () {
             foreach ($this->findAll('css', '.select-row-cell input') as $input) {
                 if (!$input->isChecked()) {
                     return false;

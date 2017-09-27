@@ -1,19 +1,19 @@
-<% _.each(archives, function (archive, archiver) { %>
-    <% if (_.size(archive.files) === 1) { %>
-        <% _.each(archive.files, function (file, key) { %>
-        <a class="AknDropdown-menuLink" title="<%- __(archive.label) %>"
-           href="<%- generateRoute({id: executionId, archiver: archiver, key: key }) %>">
-            <%- __(archive.label) %>
-        </a>
-        <% }); %>
+<% if (Object.keys(files).length > 0) { %>
+    <% if (Object.keys(files).length === 1) { %>
+    <a class="AknButton AknButton--action" title="<%- label %>" href="<%- Object.values(files)[0] %>">
+        <%- label %>
+    </a>
     <% } else { %>
-        <% _.each(archive.files, function (file, key) { %>
-            <li>
-                <a class="AknDropdown-menuLink"
-                   href="<%- generateRoute({id: executionId, archiver: archiver, key: key }) %>">
-                    <%- key %>
-                </a>
-            </li>
-        <% }); %>
+    <div class="AknDropdown">
+        <div class="AknButton AknButton--action" data-toggle="dropdown"><%- label %></div>
+        <div class="AknDropdown-menu">
+            <div class="AknDropdown-menuTitle"><%- label %></div>
+            <% Object.keys(files).forEach((key) => { %>
+            <a class="AknDropdown-menuLink" href="<%- files[key] %>">
+                <%- key %>
+            </a>
+            <% }); %>
+        </div>
+    </div>
     <% } %>
-<% }); %>
+<% } %>
