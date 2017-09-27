@@ -132,4 +132,4 @@ extensions:
         config:
             buttonClass: 'AknDropdown-menuLink'
             route: pim_enrich_product_index
-            label: pim_enrich.entity.product.index_title
+            label: pim_menu.tab.products
