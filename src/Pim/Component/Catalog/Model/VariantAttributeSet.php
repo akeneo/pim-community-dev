@@ -104,4 +104,19 @@ class VariantAttributeSet implements VariantAttributeSetInterface
     {
         $this->level = $level;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAxesLabels(string $localeCode): array
+    {
+        $labels = [];
+
+        foreach ($this->axes as $axis) {
+            $axis->setLocale($localeCode);
+            $labels[] = $axis->getLabel();
+        }
+
+        return $labels;
+    }
 }

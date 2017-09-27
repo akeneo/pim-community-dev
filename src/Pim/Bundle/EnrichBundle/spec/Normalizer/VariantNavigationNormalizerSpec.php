@@ -45,35 +45,15 @@ class VariantNavigationNormalizerSpec extends ObjectBehavior
         $attributeSetsIterator->current()->willReturn($attributeSetOne, $attributeSetTwo);
         $attributeSetsIterator->next()->shouldBeCalled();
 
-        // First axes set, with metric as axis
-        $axesSetsOne->getIterator()->willReturn($axesSetsOneIterator);
-        $axesSetsOneIterator->rewind()->shouldBeCalled();
-        $axesSetsOneIterator->valid()->willReturn(true, true, false);
-        $axesSetsOneIterator->current()->willReturn($metricAttribute);
-        $axesSetsOneIterator->next()->shouldBeCalled();
-
-        // Second axes set, with size as axis
-        $axesSetsTwo->getIterator()->willReturn($axesSetsTwoIterator);
-        $axesSetsTwoIterator->rewind()->shouldBeCalled();
-        $axesSetsTwoIterator->valid()->willReturn(true, true, false);
-        $axesSetsTwoIterator->current()->willReturn($sizeAttribute);
-        $axesSetsTwoIterator->next()->shouldBeCalled();
-
         $familyVariant->getVariantAttributeSets()->willReturn($attributeSets);
 
         $attributeSetOne->getLevel()->willReturn(1);
-        $attributeSetOne->getAxes()->willReturn($axesSetsOne);
+        $attributeSetOne->getAxesLabels('en_US')->willReturn(['Metric']);
+        $attributeSetOne->getAxesLabels('fr_FR')->willReturn(['Metrique']);
 
         $attributeSetTwo->getLevel()->willReturn(2);
-        $attributeSetTwo->getAxes()->willReturn($axesSetsTwo);
-
-        $sizeAttribute->setLocale('en_US')->shouldBeCalled();
-        $sizeAttribute->setLocale('fr_FR')->shouldBeCalled();
-        $metricAttribute->setLocale('en_US')->shouldBeCalled();
-        $metricAttribute->setLocale('fr_FR')->shouldBeCalled();
-
-        $sizeAttribute->getLabel()->willReturn('Size', 'Taille', 'Size', 'Taille');
-        $metricAttribute->getLabel()->willReturn('Metric', 'Metrique', 'Metric', 'Metrique');
+        $attributeSetTwo->getAxesLabels('en_US')->willReturn(['Size']);
+        $attributeSetTwo->getAxesLabels('fr_FR')->willReturn(['Taille']);
 
         // Test start
         $rootProductModel->getFamilyVariant()->willReturn($familyVariant);
@@ -124,35 +104,15 @@ class VariantNavigationNormalizerSpec extends ObjectBehavior
         $attributeSetsIterator->current()->willReturn($attributeSetOne, $attributeSetTwo);
         $attributeSetsIterator->next()->shouldBeCalled();
 
-        // First axes set, with metric as axis
-        $axesSetsOne->getIterator()->willReturn($axesSetsOneIterator);
-        $axesSetsOneIterator->rewind()->shouldBeCalled();
-        $axesSetsOneIterator->valid()->willReturn(true, true, false);
-        $axesSetsOneIterator->current()->willReturn($metricAttribute);
-        $axesSetsOneIterator->next()->shouldBeCalled();
-
-        // Second axes set, with size as axis
-        $axesSetsTwo->getIterator()->willReturn($axesSetsTwoIterator);
-        $axesSetsTwoIterator->rewind()->shouldBeCalled();
-        $axesSetsTwoIterator->valid()->willReturn(true, true, false);
-        $axesSetsTwoIterator->current()->willReturn($sizeAttribute);
-        $axesSetsTwoIterator->next()->shouldBeCalled();
-
         $familyVariant->getVariantAttributeSets()->willReturn($attributeSets);
 
         $attributeSetOne->getLevel()->willReturn(1);
-        $attributeSetOne->getAxes()->willReturn($axesSetsOne);
+        $attributeSetOne->getAxesLabels('en_US')->willReturn(['Metric']);
+        $attributeSetOne->getAxesLabels('fr_FR')->willReturn(['Metrique']);
 
         $attributeSetTwo->getLevel()->willReturn(2);
-        $attributeSetTwo->getAxes()->willReturn($axesSetsTwo);
-
-        $sizeAttribute->setLocale('en_US')->shouldBeCalled();
-        $sizeAttribute->setLocale('fr_FR')->shouldBeCalled();
-        $metricAttribute->setLocale('en_US')->shouldBeCalled();
-        $metricAttribute->setLocale('fr_FR')->shouldBeCalled();
-
-        $sizeAttribute->getLabel()->willReturn('Size', 'Taille', 'Size', 'Taille');
-        $metricAttribute->getLabel()->willReturn('Metric', 'Metrique', 'Metric', 'Metrique');
+        $attributeSetTwo->getAxesLabels('en_US')->willReturn(['Size']);
+        $attributeSetTwo->getAxesLabels('fr_FR')->willReturn(['Taille']);
 
         // Test start
         $productModel->getFamilyVariant()->willReturn($familyVariant);
@@ -208,35 +168,15 @@ class VariantNavigationNormalizerSpec extends ObjectBehavior
         $attributeSetsIterator->current()->willReturn($attributeSetOne, $attributeSetTwo);
         $attributeSetsIterator->next()->shouldBeCalled();
 
-        // First axes set, with metric as axis
-        $axesSetsOne->getIterator()->willReturn($axesSetsOneIterator);
-        $axesSetsOneIterator->rewind()->shouldBeCalled();
-        $axesSetsOneIterator->valid()->willReturn(true, true, false);
-        $axesSetsOneIterator->current()->willReturn($metricAttribute);
-        $axesSetsOneIterator->next()->shouldBeCalled();
-
-        // Second axes set, with size as axis
-        $axesSetsTwo->getIterator()->willReturn($axesSetsTwoIterator);
-        $axesSetsTwoIterator->rewind()->shouldBeCalled();
-        $axesSetsTwoIterator->valid()->willReturn(true, true, false);
-        $axesSetsTwoIterator->current()->willReturn($sizeAttribute);
-        $axesSetsTwoIterator->next()->shouldBeCalled();
-
         $familyVariant->getVariantAttributeSets()->willReturn($attributeSets);
 
         $attributeSetOne->getLevel()->willReturn(1);
-        $attributeSetOne->getAxes()->willReturn($axesSetsOne);
+        $attributeSetOne->getAxesLabels('en_US')->willReturn(['Metric']);
+        $attributeSetOne->getAxesLabels('fr_FR')->willReturn(['Metrique']);
 
         $attributeSetTwo->getLevel()->willReturn(2);
-        $attributeSetTwo->getAxes()->willReturn($axesSetsTwo);
-
-        $sizeAttribute->setLocale('en_US')->shouldBeCalled();
-        $sizeAttribute->setLocale('fr_FR')->shouldBeCalled();
-        $metricAttribute->setLocale('en_US')->shouldBeCalled();
-        $metricAttribute->setLocale('fr_FR')->shouldBeCalled();
-
-        $sizeAttribute->getLabel()->willReturn('Size', 'Taille', 'Size', 'Taille');
-        $metricAttribute->getLabel()->willReturn('Metric', 'Metrique', 'Metric', 'Metrique');
+        $attributeSetTwo->getAxesLabels('en_US')->willReturn(['Size']);
+        $attributeSetTwo->getAxesLabels('fr_FR')->willReturn(['Taille']);
 
         // Test start
         $variantProduct->getFamilyVariant()->willReturn($familyVariant);

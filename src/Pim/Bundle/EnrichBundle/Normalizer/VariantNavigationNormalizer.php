@@ -56,11 +56,9 @@ class VariantNavigationNormalizer implements NormalizerInterface
 
         $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
         foreach ($entity->getFamilyVariant()->getVariantAttributeSets() as $attributeSet) {
-            foreach ($attributeSet->getAxes() as $axis) {
-                foreach ($localeCodes as $localeCode) {
-                    $axis->setLocale($localeCode);
-                    $navigationData[$attributeSet->getLevel()]['axes'][$localeCode] = $axis->getLabel();
-                }
+            foreach ($localeCodes as $localeCode) {
+                $labels = $attributeSet->getAxesLabels($localeCode);
+                $navigationData[$attributeSet->getLevel()]['axes'][$localeCode] = implode(', ', $labels);
             }
         }
 
