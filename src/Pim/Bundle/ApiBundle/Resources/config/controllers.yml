@@ -143,6 +143,8 @@ services:
             - '@pim_api.stream.product_partial_update_stream'
             - '@pim_api.security.primary_key_encrypter'
             - '@pim_catalog.query.product_query_builder_from_size_factory'
+            - '@pim_catalog.builder.variant_product'
+            - '@pim_connector.processor.attribute_filter.product'
             - '%pim_api.configuration%'
 
     pim_api.controller.root_endpoint:
