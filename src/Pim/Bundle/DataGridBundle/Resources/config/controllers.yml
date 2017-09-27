@@ -29,7 +29,7 @@ services:
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@akeneo_batch.job.job_instance_repository'
             - '@security.token_storage'
-            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.mass_action.parameters_parser'
 

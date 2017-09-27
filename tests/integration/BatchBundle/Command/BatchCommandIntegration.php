@@ -7,6 +7,7 @@ namespace Akeneo\Test\Integration\integration\BatchBundle\Command;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Doctrine\DBAL\Driver\Connection;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -30,38 +31,32 @@ class BatchCommandIntegration extends TestCase
     public function testJobExecutionStateWhenJobIsCompleted()
     {
         $output = $this->launchJob();
-        $connection = $this->get('doctrine.orm.default_entity_manager')->getConnection();
-        $stmt = $connection->prepare('SELECT status, pid, start_time, end_time, create_time, user, log_file, raw_parameters from akeneo_batch_job_execution');
-        $stmt->execute();
-        $result = $stmt->fetch();
+        $jobExecution = $this->getJobExecution();
 
-        $this->assertEquals(BatchStatus::COMPLETED, $result['status']);
-        $this->assertNotNull($result['start_time']);
-        $this->assertNotNull($result['end_time']);
-        $this->assertNotNull($result['create_time']);
-        $this->assertNotNull($result['pid']);
-        $this->assertNotNull($result['log_file']);
-        $this->assertNotNull(json_decode($result['raw_parameters'], true));
-        $this->assertNull($result['user']);
+        $this->assertEquals(BatchStatus::COMPLETED, $jobExecution['status']);
+        $this->assertNotNull($jobExecution['start_time']);
+        $this->assertNotNull($jobExecution['end_time']);
+        $this->assertNotNull($jobExecution['create_time']);
+        $this->assertNotNull($jobExecution['pid']);
+        $this->assertNotNull($jobExecution['log_file']);
+        $this->assertNotNull(json_decode($jobExecution['raw_parameters'], true));
+        $this->assertNull($jobExecution['user']);
         $this->assertEquals('Export csv_product_export has been successfully executed.' . PHP_EOL, $output->fetch());
     }
 
     public function testJobExecutionStateWithUsername()
     {
         $output = $this->launchJob(['--username' => 'mary']);
-        $connection = $this->get('doctrine.orm.default_entity_manager')->getConnection();
-        $stmt = $connection->prepare('SELECT status, pid, start_time, end_time, create_time, user, log_file, raw_parameters from akeneo_batch_job_execution');
-        $stmt->execute();
-        $result = $stmt->fetch();
+        $jobExecution = $this->getJobExecution();
 
-        $this->assertEquals(BatchStatus::COMPLETED, $result['status']);
-        $this->assertNotNull($result['start_time']);
-        $this->assertNotNull($result['end_time']);
-        $this->assertNotNull($result['create_time']);
-        $this->assertNotNull($result['pid']);
-        $this->assertNotNull($result['log_file']);
-        $this->assertNotNull(json_decode($result['raw_parameters'], true));
-        $this->assertEquals('mary', $result['user']);
+        $this->assertEquals(BatchStatus::COMPLETED, $jobExecution['status']);
+        $this->assertNotNull($jobExecution['start_time']);
+        $this->assertNotNull($jobExecution['end_time']);
+        $this->assertNotNull($jobExecution['create_time']);
+        $this->assertNotNull($jobExecution['pid']);
+        $this->assertNotNull($jobExecution['log_file']);
+        $this->assertNotNull(json_decode($jobExecution['raw_parameters'], true));
+        $this->assertEquals('mary', $jobExecution['user']);
         $this->assertEquals('Export csv_product_export has been successfully executed.' . PHP_EOL, $output->fetch());
     }
 
@@ -124,15 +119,12 @@ class BatchCommandIntegration extends TestCase
     public function testLaunchJobAlreadyStarted()
     {
         $this->launchJob();
-        $connection = $this->get('doctrine.orm.default_entity_manager')->getConnection();
-        $stmt = $connection->prepare('SELECT id, status from akeneo_batch_job_execution');
-        $stmt->execute();
-        $result = $stmt->fetch();
+        $jobExecution = $this->getJobExecution();
 
-        $this->assertEquals(BatchStatus::COMPLETED, $result['status']);
+        $this->assertEquals(BatchStatus::COMPLETED, $jobExecution['status']);
 
-        $output = $this->launchJob(['execution' => $result['id']]);
-        $this->assertContains('Job execution "19" has invalid status: COMPLETED', $output->fetch());
+        $output = $this->launchJob(['execution' => $jobExecution['id']]);
+        $this->assertContains(sprintf('Job execution "%s" has invalid status: COMPLETED', $jobExecution['id']), $output->fetch());
     }
 
     public function testLaunchJobExecutionWithConfigOverridden()
@@ -172,6 +164,25 @@ class BatchCommandIntegration extends TestCase
         $application->run($input, $output);
 
         return $output;
+    }
+
+    /**
+     * @return Connection
+     */
+    protected function getConnection(): Connection
+    {
+        return $this->get('doctrine.orm.entity_manager')->getConnection();
+    }
+
+    /**
+     * @return array
+     */
+    protected function getJobExecution(): array
+    {
+        $connection = $this->getConnection();
+        $stmt = $connection->prepare('SELECT * from akeneo_batch_job_execution');
+        $stmt->execute();
+        return $stmt->fetch();
     }
 
     /**

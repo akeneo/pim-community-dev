@@ -50,6 +50,9 @@ class JobExecution
     /** @var \DateTime */
     private $updatedTime;
 
+    /** @var \DateTime */
+    private $healthCheckTime;
+
     /* @var ExecutionContext $executionContext */
     private $executionContext;
 
@@ -228,6 +231,30 @@ class JobExecution
     public function setUpdatedTime(\DateTime $updatedTime)
     {
         $this->updatedTime = $updatedTime;
+
+        return $this;
+    }
+
+    /**
+      * Gets the time this execution has been health checked
+      *
+      * @return \DateTime time this execution has been health checked
+      */
+    public function getHealthCheckTime(): ?\DateTime
+    {
+        return $this->healthCheckTime;
+    }
+
+    /**
+     * Sets the time this execution has been health checked
+     *
+     * @param \DateTime $healthCheckTime the time this execution has been health checked
+     *
+     * @return JobExecution
+     */
+    public function setHealthcheckTime(\DateTime $healthCheckTime): JobExecution
+    {
+        $this->healthCheckTime= $healthCheckTime;
 
         return $this;
     }

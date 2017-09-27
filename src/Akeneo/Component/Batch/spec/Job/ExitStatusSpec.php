@@ -130,6 +130,12 @@ class ExitStatusSpec extends ObjectBehavior
         $this->isRunning()->shouldReturn(true);
     }
 
+    function it_is_running_when_status_is_execution()
+    {
+        $this->beConstructedWith(ExitStatus::EXECUTING);
+        $this->isRunning()->shouldReturn(true);
+    }
+
     function it_is_displayable()
     {
         $this->beConstructedWith(ExitStatus::COMPLETED, 'My test description for completed status');

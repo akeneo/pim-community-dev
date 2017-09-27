@@ -12,7 +12,7 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -158,16 +158,16 @@ class SimpleJobLauncher implements JobLauncherInterface
     }
 
     /**
-     * @param ConstraintViolationList $errors
+     * @param ConstraintViolationListInterface $errors
      *
      * @return string
      */
-    private function getErrorMessages(ConstraintViolationList $errors): string
+    private function getErrorMessages(ConstraintViolationListInterface $errors): string
     {
         $errorsStr = '';
 
         foreach ($errors as $error) {
-            $errorsStr .= sprintf("\n  - %s", $error);
+            $errorsStr .= sprintf('%s  - %s', PHP_EOL, $error);
         }
 
         return $errorsStr;

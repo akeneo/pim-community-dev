@@ -178,7 +178,7 @@ abstract class AbstractExportTestCase extends TestCase
      */
     protected function assertProductExport(string $expectedCsv, array $config) : void
     {
-        $csv = $this->jobLauncher->launchExport('akeneo:batch:job', 'csv_product_export', null, $config);
+        $csv = $this->jobLauncher->launchExport('csv_product_export', null, $config);
 
         $this->assertSame($expectedCsv, $csv);
     }
@@ -189,7 +189,7 @@ abstract class AbstractExportTestCase extends TestCase
      */
     protected function assertProductModelExport(string $expectedCsv, array $config) : void
     {
-        $csv = $this->jobLauncher->launchExport('akeneo:batch:job', 'csv_product_model_export', null, $config);
+        $csv = $this->jobLauncher->launchExport('csv_product_model_export', null, $config);
 
         $this->assertSame($expectedCsv, $csv);
     }

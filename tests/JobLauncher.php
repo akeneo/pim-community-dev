@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\Integration;
 
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
+use Akeneo\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -40,7 +41,6 @@ class JobLauncher
     }
 
     /**
-     * @param string      $command
      * @param string      $jobCode
      * @param string|null $username
      * @param array       $config
@@ -49,7 +49,7 @@ class JobLauncher
      *
      * @return string
      */
-    public function launchExport(string $command, string $jobCode, string $username = null, array $config = []) : string
+    public function launchExport(string $jobCode, string $username = null, array $config = []) : string
     {
         $application = new Application($this->kernel);
         $application->setAutoExit(false);
@@ -62,7 +62,7 @@ class JobLauncher
         $config['filePath'] = $filePath;
 
         $arrayInput = [
-            'command'  => $command,
+            'command'  => 'akeneo:batch:job',
             'code'     => $jobCode,
             '--config' => json_encode($config),
             '--no-log' => true,
@@ -70,7 +70,7 @@ class JobLauncher
         ];
 
         if (null !== $username) {
-            $arrayInput['username'] = $username;
+            $arrayInput['--username'] = $username;
         }
 
         $input = new ArrayInput($arrayInput);
@@ -93,12 +93,6 @@ class JobLauncher
     }
 
     /**
-     * Launch an export in a subprocess because it's not possible to launch two exports in the same process.
-     * The cause is that some services are stateful, such as the JSONFileBuffer that is not flushed after an export.
-     *
-     * TODO: fix  stateful services
-     *
-     * @param string      $command
      * @param string      $jobCode
      * @param string|null $username
      * @param array       $config
@@ -107,7 +101,28 @@ class JobLauncher
      *
      * @return string
      */
-    public function launchSubProcessExport(string $command, string $jobCode, string $username = null, array $config = []) : string
+    public function launchAuthenticatedExport(string $jobCode, string $username = null, array $config = []) : string
+    {
+        $config['is_user_authenticated'] = true;
+
+        return self::launchExport($jobCode, $username, $config);
+    }
+
+    /**
+     * Launch an export in a subprocess because it's not possible to launch two exports in the same process.
+     * The cause is that some services are stateful, such as the JSONFileBuffer that is not flushed after an export.
+     *
+     * TODO: fix  stateful services
+     *
+     * @param string      $jobCode
+     * @param string|null $username
+     * @param array       $config
+     *
+     * @throws \Exception
+     *
+     * @return string
+     */
+    public function launchSubProcessExport(string $jobCode, string $username = null, array $config = []) : string
     {
         $filePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR. self::EXPORT_DIRECTORY . DIRECTORY_SEPARATOR . 'export_.csv';
         if (file_exists($filePath)) {
@@ -121,7 +136,7 @@ class JobLauncher
             '%s %s/console %s --env=%s --config=\'%s\' -v %s',
             $pathFinder->find(),
              sprintf('%s/../bin', $this->kernel->getRootDir()),
-            $command,
+            'akeneo:batch:job',
             $this->kernel->getEnvironment(),
             json_encode($config, JSON_HEX_APOS),
             $jobCode
@@ -145,7 +160,6 @@ class JobLauncher
     }
 
     /**
-     * @param string      $command
      * @param string      $jobCode
      * @param string      $content
      * @param string|null $username
@@ -155,7 +169,6 @@ class JobLauncher
      * @throws \Exception
      */
     public function launchImport(
-        string $command,
         string $jobCode,
         string $content,
         string $username = null,
@@ -185,7 +198,7 @@ class JobLauncher
         $config['filePath'] = $filePath;
 
         $arrayInput = [
-            'command'  => $command,
+            'command'  => 'akeneo:batch:job',
             'code'     => $jobCode,
             '--config' => json_encode($config),
             '--no-log' => true,
@@ -193,7 +206,7 @@ class JobLauncher
         ];
 
         if (null !== $username) {
-            $arrayInput['username'] = $username;
+            $arrayInput['--username'] = $username;
         }
 
         $input = new ArrayInput($arrayInput);
@@ -204,6 +217,25 @@ class JobLauncher
         if (BatchCommand::EXIT_SUCCESS_CODE !== $exitCode) {
             throw new \Exception(sprintf('Export failed, "%s".', $output->fetch()));
         }
+    }
+
+    /**
+     * @param string      $jobCode
+     * @param string      $content
+     * @param string|null $username
+     * @param array       $fixturePaths
+     * @param array       $config
+     */
+    public function launchAuthenticatedImport(
+        string $jobCode,
+        string $content,
+        string $username = null,
+        array $fixturePaths = [],
+        array $config = []
+    ) :void {
+        $config['is_user_authenticated'] = true;
+
+        self::launchImport($jobCode, $content, $username, $fixturePaths, $config);
     }
 
     /**
@@ -218,8 +250,7 @@ class JobLauncher
         $timeout = 0;
         $isCompleted = false;
 
-        $em = $this->kernel->getContainer()->get('doctrine.orm.default_entity_manager');
-        $connection = $em->getConnection();
+        $connection = $this->kernel->getContainer()->get('doctrine.orm.default_entity_manager')->getConnection();
         $stmt = $connection->prepare('SELECT status from akeneo_batch_job_execution where id = :id');
 
         while (!$isCompleted) {
@@ -235,21 +266,72 @@ class JobLauncher
             $timeout++;
 
             sleep(1);
-       }
+        }
+    }
+
+    /**
+     * Launch the daemon command to consume and launch one job execution.
+     *
+     * @return BufferedOutput
+     */
+    public function launchConsumerOnce(): BufferedOutput
+    {
+        $application = new Application($this->kernel);
+        $application->setAutoExit(false);
+
+        $arrayInput = [
+            'command'  => JobQueueConsumerCommand::COMMAND_NAME,
+            '--run-once' => true,
+        ];
+
+        $input = new ArrayInput($arrayInput);
+        $output = new BufferedOutput();
+        $application->run($input, $output);
+
+        return $output;
+    }
+
+    /**
+     * Launch the daemon command to consume and launch one job execution, in a detached process in background.
+     * It uses exec to not wrap the process in a subshell, in order to get the correct pid.
+     *
+     * @see https://github.com/symfony/symfony/issues/5759
+     *
+     * @return Process
+     */
+    public function launchConsumerOnceInBackground(): Process
+    {
+        $command = sprintf(
+            'exec %s/console %s --env=%s --run-once',
+            sprintf('%s/../bin', $this->kernel->getRootDir()),
+            JobQueueConsumerCommand::COMMAND_NAME,
+            $this->kernel->getEnvironment()
+        );
+
+        $process = new Process($command);
+        $process->start();
+
+        return $process;
     }
 
     /**
      * Launch an import in a subprocess.
      *
-     * @param string $command
      * @param string $jobCode
      * @param string $content
      * @param string $username
+     * @param array  $fixturePaths
+     * @param array  $config
      *
      * @throws \Exception
      */
-    public function launchSubProcessImport(string $command, string $jobCode, string $content, string $username = null): void
-    {
+    public function launchSubProcessImport(
+        string $jobCode,
+        string $content,
+        ?string $username = null,
+        array $fixturePaths = [],
+        array $config = []
+    ): void {
         $importDirectoryPath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . self::IMPORT_DIRECTORY;
         $fixturesDirectoryPath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'fixtures';
         $filePath = $importDirectoryPath . DIRECTORY_SEPARATOR . 'import.csv';
@@ -260,18 +342,23 @@ class JobLauncher
         $fs->mkdir($importDirectoryPath);
         $fs->mkdir($fixturesDirectoryPath);
 
+        foreach ($fixturePaths as $fixturePath) {
+            $fixturesPath = $fixturesDirectoryPath . DIRECTORY_SEPARATOR . basename($fixturePath);
+            $fs->copy($fixturePath, $fixturesPath, true);
+        }
+
         file_put_contents($filePath, $content);
 
-        $config = [
-            'filePath' => $filePath,
-        ];
+        $config['filePath'] =  $filePath;
+
+        $username = null !== $username ? sprintf('--username=%s', $username) : '';
 
         $pathFinder = new PhpExecutableFinder();
         $command = sprintf(
             '%s %s/console %s --env=%s --config=\'%s\' -v %s %s',
             $pathFinder->find(),
             sprintf('%s/../bin', $this->kernel->getRootDir()),
-            $command,
+            'akeneo:batch:job',
             $this->kernel->getEnvironment(),
             json_encode($config, JSON_HEX_APOS),
             $jobCode,
@@ -281,8 +368,30 @@ class JobLauncher
         $process = new Process($command);
         $process->run();
 
-        if (!$process->isSuccessful()) {
+        if (!$process->isSuccessful() && !BatchCommand::EXIT_WARNING_CODE === $process->getExitCode()) {
             throw new \Exception(sprintf('Import failed, "%s".', $process->getOutput() . PHP_EOL . $process->getErrorOutput()));
         }
+    }
+    /**
+     * Launch an import in a subprocess.
+     *
+     * @param string $jobCode
+     * @param string $content
+     * @param string $username
+     * @param array  $fixturePaths
+     * @param array  $config
+     *
+     * @throws \Exception
+     */
+    public function launchAuthenticatedSubProcessImport(
+        string $jobCode,
+        string $content,
+        string $username,
+        array $fixturePaths = [],
+        array $config = []
+    ): void {
+        $config['is_user_authenticated'] = true;
+
+        self::launchSubProcessImport($jobCode, $content, $username, $fixturePaths, $config);
     }
 }
