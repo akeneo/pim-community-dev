@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Improvements
+
+- PIM-6833: Aligns technical requirements with documentation
+
 # 2.0.6 (2017-11-03)
 
 ## Bug fixes
