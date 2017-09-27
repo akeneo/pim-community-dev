@@ -49,7 +49,7 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
 
         foreach ($product->getAssociations() as $association) {
             foreach ($associatedProductIds as $associatedProductId) {
-                if ($associatedProductId['association_id'] === $association->getId()) {
+                if ($associatedProductId['association_id'] == $association->getId()) {
                     try {
                         $this->productRepository->find($associatedProductId['product_id']);
                     } catch (ResourceAccessDeniedException $e) {

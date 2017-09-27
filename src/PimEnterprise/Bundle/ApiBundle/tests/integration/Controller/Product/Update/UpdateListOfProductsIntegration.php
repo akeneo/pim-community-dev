@@ -197,63 +197,20 @@ JSON;
     {"identifier": "product_without_category", "values": {"a_localized_and_scopable_text_area": [{"locale": "en_US", "scope": "ecommerce", "data": "Awesome Data !"}]}}
     {"identifier": "toto"}
 JSON;
-        $expectedProduct = array_merge_recursive(
-            [
-                'identifier'    => 'product_without_category',
-                'family'        => null,
-                'parent'        => null,
-                'groups'        => [],
-                'variant_group' => null,
-                'categories'    => [],
-                'enabled'       => true,
-                'values'        => [
-                    'a_localized_and_scopable_text_area' => [
-                        [
-                            "locale" => "en_US",
-                            "scope"  => "ecommerce",
-                            "data"   => "Awesome Data !"
-                        ]
-                    ],
-                    'sku'                                => [
-                        [
-                            'locale' => null,
-                            'scope'  => null,
-                            'data'   => 'product_without_category'
-                        ]
-                    ]
-                ],
-                'created'       => 'this is a date formatted to ISO-8601',
-                'updated'       => 'this is a date formatted to ISO-8601',
-                'associations'  => [
-                    'PACK' => [
-                        'groups'   => [],
-                        'products' => []
-                    ],
-                    'SUBSTITUTION' => [
-                        'groups'   => [],
-                        'products' => []
-                    ],
-                    'UPSELL' => [
-                        'groups'   => [],
-                        'products' => []
-                    ],
-                    'X_SELL' => [
-                        'groups'   => [],
-                        'products' => ['product_viewable_by_everybody_2', 'product_not_viewable_by_redactor']
-                    ]
-                ]
-            ],
-            $updatedData
-        );
-        $expectedContent = <<<JSON
+        $response = $this->executeAndCheckStreamRequest($data);
+
+        $expectedResponse = <<<JSON
 {"line":1,"identifier":"product_without_category","status_code":204}
 {"line":2,"identifier":"toto","status_code":201}
 JSON;
 
-        $response = $this->executeAndCheckStreamRequest($data);
+        $this->assertSame($expectedResponse, $response['content']);
 
-        $this->assertSame($expectedContent, $response['content']);
-        $this->assertSameProducts($expectedProduct, 'product_without_category');
+        $expectedValues = '{"sku": {"<all_channels>": {"<all_locales>": "product_without_category"}}, ';
+        $expectedValues.= '"a_localized_and_scopable_text_area": {"ecommerce": {"de_DE": "DE ecommerce", "en_US": "Awesome Data !"}}}';
+
+        $sql = 'SELECT p.raw_values FROM pim_catalog_product p WHERE p.identifier = "product_without_category"';
+        $this->assertEquals([['raw_values' => $expectedValues]], $this->getDatabaseData($sql));
     }
 
     public function testFailedUpdateUncategorizedListOfProductsWithNotGrantedAttribute()

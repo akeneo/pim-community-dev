@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\Product;
 
-use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -43,33 +42,20 @@ class UpsertProductWithPermissionsIntegration extends AbstractProductTestCase
     {
         $data = '{"categories": ["categoryA1", "categoryA2", "master"]}';
 
-        $expected = [
-            'identifier'    => 'product_editable_by_redactor',
-            'family'        => null,
-            'parent'        => null,
-            'groups'        => [],
-            'variant_group' => null,
-            'enabled'       => true,
-            'associations'  => [],
-            'categories'    => ['categoryA1', 'categoryA2', 'categoryB', 'master'],
-            'created'       => '2017-08-08T19:28:43+02:00',
-            'updated'       => '2017-08-08T19:28:43+02:00',
-            'values'        => [
-                'a_localized_and_scopable_text_area' => [
-                    ['data' => 'DE ecommerce', 'locale' => 'de_DE', 'scope' => 'ecommerce'],
-                    ['data' => 'EN ecommerce', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'FR ecommerce', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                ],
-                'a_multi_select' => [
-                    ['locale' => null, 'scope' => null, 'data' => ['optionA', 'optionB']],
-                ],
-                'sku'      => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_editable_by_redactor'],
-                ]
-            ]
-        ];
+        $sql = <<<SQL
+SELECT c.code
+FROM pim_catalog_product p
+INNER JOIN pim_catalog_category_product cp ON p.id = cp.product_id
+INNER JOIN pim_catalog_category c ON c.id = cp.category_id
+WHERE identifier = "product_editable_by_redactor"
+SQL;
 
-        $this->assert('product_editable_by_redactor', $data, $expected);
+        $this->assert('product_editable_by_redactor', $data, $sql, [
+            ['code' => 'master'],
+            ['code' => 'categoryA1'],
+            ['code' => 'categoryA2'],
+            ['code' => 'categoryB'],
+        ]);
     }
 
     public function testToMergeNotGrantedAssociationWithANewAssociation()
@@ -83,44 +69,22 @@ class UpsertProductWithPermissionsIntegration extends AbstractProductTestCase
     }
 }
 JSON;
-        $expected = [
-            'identifier'    => 'product_without_category',
-            'family'        => null,
-            'parent'        => null,
-            'groups'        => [],
-            'variant_group' => null,
-            'enabled'       => true,
-            'categories'    => [],
-            'created'       => '2017-08-08T19:28:43+02:00',
-            'updated'       => '2017-08-08T19:28:43+02:00',
-            'values'        => [
-                'sku' => [
-                    ['data' => 'product_without_category', 'locale' => null, 'scope' => null]
-                ]
-            ],
-            'associations'  => [
-                'X_SELL' => [
-                    'products' => [
-                        'product_viewable_by_everybody_1', 'product_viewable_by_everybody_2', 'product_not_viewable_by_redactor'
-                    ],
-                    'groups'   => []
-                ],
-                'PACK' => [
-                    'products' => [],
-                    'groups'   => []
-                ],
-                'SUBSTITUTION' => [
-                    'products' => [],
-                    'groups'   => []
-                ],
-                'UPSELL' => [
-                    'products' => [],
-                    'groups'   => []
-                ]
-            ]
-        ];
 
-        $this->assert('product_without_category', $data, $expected);
+        $sql = <<<SQL
+SELECT t.code, associated_product.identifier
+FROM pim_catalog_product p 
+INNER JOIN pim_catalog_association a ON a.owner_id = p.id
+INNER JOIN pim_catalog_association_type t ON t.id = a.association_type_id
+INNER JOIN pim_catalog_association_product ap ON a.id = ap.association_id
+INNER JOIN pim_catalog_product associated_product ON associated_product.id = ap.product_id 
+WHERE p.identifier = "product_without_category"
+SQL;
+
+        $this->assert('product_without_category', $data, $sql, [
+            ['code' => 'X_SELL', 'identifier' => 'product_viewable_by_everybody_1'],
+            ['code' => 'X_SELL', 'identifier' => 'product_viewable_by_everybody_2'],
+            ['code' => 'X_SELL', 'identifier' => 'product_not_viewable_by_redactor'],
+        ]);
     }
 
     public function testToMergeNotGrantedValuesWithANewValue()
@@ -138,36 +102,16 @@ JSON;
 }
 JSON;
 
-        $expected = [
-            'identifier'    => 'product_editable_by_redactor',
-            'family'        => null,
-            'parent'        => null,
-            'groups'        => [],
-            'variant_group' => null,
-            'enabled'       => true,
-            'associations'  => [],
-            'categories'    => ['categoryB', 'master'],
-            'created'       => '2017-08-08T19:28:43+02:00',
-            'updated'       => '2017-08-08T19:28:43+02:00',
-            'values'        => [
-                'a_localized_and_scopable_text_area' => [
-                    ['data' => 'DE ecommerce', 'locale' => 'de_DE', 'scope' => 'ecommerce'],
-                    ['data' => 'english', 'locale' => 'en_US', 'scope' => 'ecommerce'],
-                    ['data' => 'FR ecommerce', 'locale' => 'fr_FR', 'scope' => 'ecommerce'],
-                ],
-                'a_multi_select' => [
-                    ['locale' => null, 'scope' => null, 'data' => ['optionA', 'optionB']],
-                ],
-                'a_yes_no' => [
-                    ['locale' => null, 'scope' => null, 'data' => true],
-                ],
-                'sku'      => [
-                    ['locale' => null, 'scope' => null, 'data' => 'product_editable_by_redactor'],
-                ]
-            ]
-        ];
+        $sql = 'SELECT p.raw_values FROM pim_catalog_product p WHERE p.identifier = "product_editable_by_redactor"';
 
-        $this->assert('product_editable_by_redactor', $data, $expected);
+        $values = '{"sku": {"<all_channels>": {"<all_locales>": "product_editable_by_redactor"}}, ';
+        $values.= '"a_yes_no": {"<all_channels>": {"<all_locales>": true}}, ';
+        $values.= '"a_multi_select": {"<all_channels>": {"<all_locales>": ["optionA", "optionB"]}}, ';
+        $values.= '"a_localized_and_scopable_text_area": {"ecommerce": {"de_DE": "DE ecommerce", "en_US": "english", "fr_FR": "FR ecommerce"}}}';
+
+        $expected = [['raw_values' => $values]];
+
+        $this->assert('product_editable_by_redactor', $data, $sql, $expected);
     }
 
     public function testToLostTheOwnershipOfAProduct()
@@ -219,21 +163,16 @@ JSON;
     /**
      * @param string $identifier                code of the product
      * @param string $data                      data submitted
+     * @param string $sql                       SQL for database query
      * @param array  $expectedProductNormalized expected product data normalized in standard format
      */
-    private function assert(string $identifier, string $data, array $expectedProductNormalized)
+    private function assert(string $identifier, string $data, string $sql, array $expectedProductNormalized)
     {
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
 
         $client->request('PATCH', 'api/rest/v1/products/' . $identifier, [], [], [], $data);
         $this->assertSame(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
 
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
-        $productNormalized = $this->get('pim_catalog.normalizer.standard.product')->normalize($product, 'standard');
-
-        NormalizedProductCleaner::clean($expectedProductNormalized);
-        NormalizedProductCleaner::clean($productNormalized);
-
-        $this->assertEquals($expectedProductNormalized, $productNormalized);
+        $this->assertEquals($expectedProductNormalized, $this->getDatabaseData($sql));
     }
 }

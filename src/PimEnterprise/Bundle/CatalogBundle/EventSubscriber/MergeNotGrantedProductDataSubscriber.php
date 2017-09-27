@@ -17,9 +17,7 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  * If user is not the owner of the product, an exception is thrown if he tries to update it.
  * If product is new, there is no check on the own, the product will be created.
  *
- * @author    Marie Bochu <marie.bochu@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Marie Bochu <marie.bochu@akeneo.com>
  */
 class MergeNotGrantedProductDataSubscriber implements EventSubscriberInterface
 {

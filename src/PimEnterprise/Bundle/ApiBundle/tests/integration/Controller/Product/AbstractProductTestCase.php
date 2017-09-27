@@ -133,6 +133,19 @@ abstract class AbstractProductTestCase extends ApiTestCase
     }
 
     /**
+     * @param string $sql
+     *
+     * @return array
+     */
+    protected function getDatabaseData(string $sql): array
+    {
+        $stmt = $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    /**
      * Warning, the values of the key "workflow_status" can change according to the user permissions.
      * They are currently set according to an user having "own" permission on every product.
      *

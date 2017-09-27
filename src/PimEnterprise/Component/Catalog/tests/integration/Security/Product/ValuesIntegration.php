@@ -52,34 +52,13 @@ class ValuesIntegration extends AbstractSecurityTestCase
         ]);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->assertSame($product->getRawValues(), [
-            'sku' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'product_a'
-                ]
-            ],
-            'a_text' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'text'
-                ]
-            ],
-            'a_number_float' => [
-                '<all_channels>' => [
-                    '<all_locales>' => '15.0000'
-                ]
-            ],
-            'a_localized_and_scopable_text_area' => [
-                'ecommerce' => [
-                    'fr_FR' => 'mon text',
-                    'de_DE' => 'mein text',
-                ]
-            ],
-            'a_date' => [
-                '<all_channels>' => [
-                    '<all_locales>' => '2017-03-03T00:00:00+01:00'
-                ]
-            ]
-        ]);
+        $expectedValues = '{"sku": {"<all_channels>": {"<all_locales>": "product_a"}}, ';
+        $expectedValues.= '"a_date": {"<all_channels>": {"<all_locales>": "2017-03-03T00:00:00+01:00"}}, ';
+        $expectedValues.= '"a_text": {"<all_channels>": {"<all_locales>": "text"}}, ';
+        $expectedValues.= '"a_number_float": {"<all_channels>": {"<all_locales>": "15.0000"}}, ';
+        $expectedValues.= '"a_localized_and_scopable_text_area": {"ecommerce": {"de_DE": "mein text", "fr_FR": "mon text"}}}';
+
+        $this->assertSame(['raw_values' => $expectedValues], $this->getValuesFromDatabase('product_a'));
     }
 
     public function testDeleteAttributeOnProduct()
@@ -96,29 +75,12 @@ class ValuesIntegration extends AbstractSecurityTestCase
         ]);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->assertSame($product->getRawValues(), [
-            'sku' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'product_a'
-                ]
-            ],
-            'a_number_float' => [
-                '<all_channels>' => [
-                    '<all_locales>' => '15.0000'
-                ]
-            ],
-            'a_localized_and_scopable_text_area' => [
-                'ecommerce' => [
-                    'fr_FR' => 'mon text',
-                    'de_DE' => 'mein text',
-                ]
-            ],
-            'a_text' => [
-                '<all_channels>' => [
-                    '<all_locales>' => null
-                ]
-            ]
-        ]);
+        $expectedValues = '{"sku": {"<all_channels>": {"<all_locales>": "product_a"}}, ';
+        $expectedValues.= '"a_text": {"<all_channels>": {"<all_locales>": null}}, ';
+        $expectedValues.= '"a_number_float": {"<all_channels>": {"<all_locales>": "15.0000"}}, ';
+        $expectedValues.= '"a_localized_and_scopable_text_area": {"ecommerce": {"de_DE": "mein text", "fr_FR": "mon text"}}}';
+
+        $this->assertSame(['raw_values' => $expectedValues], $this->getValuesFromDatabase('product_a'));
     }
 
     public function testAddNewLocalizableAttributeOnProduct()
@@ -135,30 +97,12 @@ class ValuesIntegration extends AbstractSecurityTestCase
         ]);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->assertSame($product->getRawValues(), [
-            'sku' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'product_a'
-                ]
-            ],
-            'a_text' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'text'
-                ]
-            ],
-            'a_number_float' => [
-                '<all_channels>' => [
-                    '<all_locales>' => '15.0000'
-                ]
-            ],
-            'a_localized_and_scopable_text_area' => [
-                'ecommerce' => [
-                    'fr_FR' => 'mon text',
-                    'de_DE' => 'mein text',
-                    'en_US' => 'my text',
-                ]
-            ]
-        ]);
+        $expectedValues = '{"sku": {"<all_channels>": {"<all_locales>": "product_a"}}, ';
+        $expectedValues.= '"a_text": {"<all_channels>": {"<all_locales>": "text"}}, ';
+        $expectedValues.= '"a_number_float": {"<all_channels>": {"<all_locales>": "15.0000"}}, ';
+        $expectedValues.= '"a_localized_and_scopable_text_area": {"ecommerce": {"de_DE": "mein text", "en_US": "my text", "fr_FR": "mon text"}}}';
+
+        $this->assertSame(['raw_values' => $expectedValues], $this->getValuesFromDatabase('product_a'));
     }
 
     /**
