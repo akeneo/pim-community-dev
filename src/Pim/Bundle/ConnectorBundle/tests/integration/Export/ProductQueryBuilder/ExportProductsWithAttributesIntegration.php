@@ -110,7 +110,7 @@ CSV;
             ],
         ];
 
-        $csv = $this->jobLauncher->launchSubProcessExport('akeneo:batch:job', 'csv_product_export', null, $config);
+        $csv = $this->jobLauncher->launchSubProcessExport('csv_product_export', null, $config);
 
         $this->assertSame($expectedCsv, $csv);
     }
