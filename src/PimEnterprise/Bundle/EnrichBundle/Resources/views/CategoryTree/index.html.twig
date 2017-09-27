@@ -1,0 +1,68 @@
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+
+{% block content %}
+    <div class="AknDefault-mainContent">
+        {% set title = ('category.overview')|trans %}
+        {{ elements.page_header(title) }}
+
+        <div id="category-tree-container" style="display:flex; height:100%">
+            <div id="tree" {% if resource_granted(acl ~ '_category_edit') %} data-editable="true"{% endif %}{% if resource_granted(acl ~ '_category_create') %} data-creatable="true"{% endif %}></div>
+
+            <div id="category-form" style="flex-grow:1" class="AknDefault-mainContent">
+                <div class="AknInfoBlock">
+                    {% if resource_granted(acl ~ '_category_edit') %}
+                        {{ 'category.suggest selection'|trans }}
+                    {% endif %}
+                    {% if resource_granted(acl ~ '_category_create') %}
+                        <br/>
+                        {{ 'category.or'|trans }}
+                        <br/>
+                        <a class="AknButton AknButton--apply" href="#{{ path(route ~ '_categorytree_create', { parent: 0 }) }}">
+                            {{ 'category.create new'|trans }}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% include "PimEnrichBundle:CategoryTree:_scripts.html.twig" %}
+    </div>
+{% endblock %}
+
+<script>
+    window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+</script>
+
+<script>
+    require(
+        [
+            'pim/common/breadcrumbs',
+            'pim/fetcher-registry',
+            'pim/form-builder'
+        ],
+        function(
+            Breadcrumbs,
+            FetcherRegistry,
+            FormBuilder
+        ) {
+            $(function() {
+                var breadcrumbs = new Breadcrumbs({
+                    config: {
+                        tab: 'pim-menu-settings',
+                        item: '{{ (route == 'pimee_asset') ? 'pim-menu-enrich-asset-category' : 'pim-menu-settings-product-category' }}'
+                    }
+                });
+                breadcrumbs.configure().then(function () {
+                    breadcrumbs.render();
+                    $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                });
+
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+                        form.setElement('.user-menu').render();
+                    }.bind(this));
+                });
+            });
+        }
+    );
+</script>
