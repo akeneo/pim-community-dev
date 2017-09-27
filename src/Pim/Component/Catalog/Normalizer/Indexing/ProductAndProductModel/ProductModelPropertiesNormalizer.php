@@ -60,6 +60,8 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
         $data[StandardPropertiesNormalizer::FIELD_FAMILY] = $family;
         $data[self::FIELD_FAMILY_VARIANT] = $familyVariant;
 
+        $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $productModel->getCategoryCodes();
+
         $parentCode = null !== $productModel->getParent() ? $productModel->getParent()->getCode() : null;
         $data[self::FIELD_PARENT] = $parentCode;
 
