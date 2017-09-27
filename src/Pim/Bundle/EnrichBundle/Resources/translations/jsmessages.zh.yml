@@ -26,6 +26,7 @@ pim_datagrid:
   view_selector:
     view: 视图
     create_view_modal:
+      create: 创建
       confirm: 好的
       cancel: 取消
 flash:
@@ -608,6 +609,7 @@ pim_enrich:
           clear: 清除
           all_group: 所有群组
           empty_selection: 将导出所有属性
+          title: 属性
         family:
           title: 产品族
           help: 按品类选中产品进行导出。例如︰ 只导出鞋和衣服。
@@ -929,7 +931,6 @@ batch_jobs:
     validation.label: 文件验证
 pim_menu:
   tab:
-    dashboard: 主界面
     products: 商品
     settings: 设置 
     system: 系统
@@ -940,6 +941,7 @@ pim_menu:
     category: 分类
     channel: 渠道
     currency: 货币
+    dashboard: 主界面
     family: 品类
     group: 分组
     group_type: 分组类型

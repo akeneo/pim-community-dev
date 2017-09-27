@@ -26,6 +26,7 @@ pim_datagrid:
   view_selector:
     view: Vistes
     create_view_modal:
+      create: Crear
       confirm: OK
       cancel: Cancelar
 flash:
@@ -630,6 +631,7 @@ pim_enrich:
           clear: Restablir
           all_group: Tots els grups
           empty_selection: S'exportaran tots els atributs
+          title: Atributs
         family:
           title: Família
           help: 'Seleccionar els productes per exportar de la seva família. Ex: Exportar només sabates i vestits.'
@@ -1018,7 +1020,6 @@ batch_jobs:
     import.label: Importació de tipus de grup
 pim_menu:
   tab:
-    dashboard: Panell de contol
     products: Productes
     settings: Preferències
     system: Sistema
@@ -1029,6 +1030,7 @@ pim_menu:
     category: Categories
     channel: Canals
     currency: Monedes
+    dashboard: Panell de contol
     family: Famílies
     group: Grups
     group_type: Tipus de grup

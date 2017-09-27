@@ -29,6 +29,7 @@ pim_datagrid:
   view_selector:
     view: Vues
     create_view_modal:
+      create: Créer
       confirm: OK
       cancel: Annuler
 flash:
@@ -154,6 +155,7 @@ pim_enrich:
       create: Créer un produit
       filters: Filtres
       selected: produits sélectionnés
+      common: Général
       btn:
         enabled: Activé
         disabled: Désactivé
@@ -754,6 +756,8 @@ pim_enrich:
           clear: Réinitialiser
           all_group: Tous les groupes
           empty_selection: Tous les attributs vont être exportés
+          title: Attributs
+          description: Sélectionnez les informations produit à exporter
         family:
           title: Famille
           help: 'Sélectionner les produits à exporter en fonction de leur famille. Par ex. : exporter seulement les chaussures et les robes.'
@@ -1274,7 +1278,7 @@ job_tracker:
     invalid_csv: Télécharger les données invalides
 pim_menu:
   tab:
-    dashboard: Tableau de bord
+    activity: Activité
     imports: Imports
     products: Produits
     exports: Exports
@@ -1287,6 +1291,7 @@ pim_menu:
     category: Catégories
     channel: Canaux
     currency: Devises
+    dashboard: Tableau de bord
     family: Familles
     group: Groupes
     group_type: Types de groupes
@@ -1305,6 +1310,7 @@ pim_menu:
     job_tracker: Traqueur de processus
     api_connection: Connexions API
   navigation:
+    activity: Centre d'activité
     system: Navigation système
     user: Navigation utilisateurs
     settings: Navigation paramètres

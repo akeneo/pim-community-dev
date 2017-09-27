@@ -26,6 +26,7 @@ pim_datagrid:
   view_selector:
     view: Представления
     create_view_modal:
+      create: Создать
       confirm: Подтвердить
       cancel: Отмена
 flash:
@@ -625,6 +626,7 @@ pim_enrich:
           clear: Очистить
           all_group: Все группы
           empty_selection: Все атрибуты будут экспортированы
+          title: Атрибуты
         family:
           title: Семейство
           help: Выберите продукты для экспорта по семейству. На пример, экспорт только обувей и платьев.
@@ -957,7 +959,6 @@ batch_jobs:
     validation.label: Проверка файла
 pim_menu:
   tab:
-    dashboard: Панель управления
     products: Продукты
     settings: Настройки
     system: Система
@@ -968,6 +969,7 @@ pim_menu:
     category: Категории
     channel: Каналы
     currency: Валюты
+    dashboard: Панель управления
     family: Семейства
     group: Группы
     group_type: Типы групп

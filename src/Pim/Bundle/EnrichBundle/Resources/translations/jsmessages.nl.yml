@@ -26,6 +26,7 @@ pim_datagrid:
   view_selector:
     view: Weergaves
     create_view_modal:
+      create: Aanmaken
       confirm: OK
       cancel: Annuleren
 flash:
@@ -631,6 +632,7 @@ pim_enrich:
           clear: Opruimen
           all_group: Alle groepen
           empty_selection: Alle attributen worden geëxporteerd
+          title: Attributen
         family:
           title: Familie
           help: Selecteer de producten om te importeren volgens hun familie. Bv. exporteer enkel schoenen en jurken.
@@ -982,7 +984,6 @@ batch_jobs:
     import.label: Groepstype import
 pim_menu:
   tab:
-    dashboard: Dashboard
     products: Producten
     settings: Instellingen
     system: Systeem
@@ -993,6 +994,7 @@ pim_menu:
     category: Categorieën
     channel: Kanalen
     currency: Valuta
+    dashboard: Dashboard
     family: Families
     group: Groepen
     group_type: Groepstypen

@@ -89,6 +89,7 @@ batch_jobs:
     validation.label: Validation du fichier
     import_root_product_model.label: Import modèle de produit racine
     import_sub_product_model.label: Import sous-modèle de produit
+    import_product_model_descendants.label: Mise à jour des descendants des modèles de produit
   csv_category_import:
     label: Import des catégories en CSV
     validation.label: Validation du fichier
@@ -196,6 +197,7 @@ batch_jobs:
     validation.label: Validation du fichier
     import_root_product_model.label: Import modèle de produit racine
     import_sub_product_model.label: Import sous-modèle de produit
+    import_product_model_descendants.label: Mise à jour des descendants des modèles de produit
   xlsx_group_export:
     label: Export des groupes en XLSX
     export.label: Export de groupes
