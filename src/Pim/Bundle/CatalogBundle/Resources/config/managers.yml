@@ -3,7 +3,6 @@ parameters:
     pim_catalog.manager.completeness.class:        Pim\Component\Catalog\Manager\CompletenessManager
     pim_catalog.manager.product_template_media.class:    Pim\Component\Catalog\Manager\ProductTemplateMediaManager
     pim_catalog.applier.product_template.class:          Pim\Component\Catalog\Manager\ProductTemplateApplier
-    pim_catalog.resolver.variant_group_attributes.class: Pim\Component\Catalog\Manager\VariantGroupAttributesResolver
     pim_catalog.resolver.attribute_values.class:         Pim\Component\Catalog\Manager\AttributeValuesResolver
 
 services:
@@ -36,11 +35,6 @@ services:
             - '@pim_catalog.validator.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_catalog.saver.product'
-
-    pim_catalog.resolver.variant_group_attributes:
-        class: '%pim_catalog.resolver.variant_group_attributes.class%'
-        arguments:
-            - '@pim_catalog.repository.attribute'
 
     pim_catalog.resolver.attribute_values:
         class: '%pim_catalog.resolver.attribute_values.class%'

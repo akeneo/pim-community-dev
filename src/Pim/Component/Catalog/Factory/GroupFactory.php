@@ -64,10 +64,6 @@ class GroupFactory implements SimpleFactoryInterface
                 throw new \InvalidArgumentException(sprintf('Group type with code "%s" was not found', $groupTypeCode));
             }
             $group->setType($groupType);
-
-            if ($group->getType()->isVariant()) {
-                $group->setProductTemplate($this->productTemplateFactory->create());
-            }
         }
 
         return $group;

@@ -56,9 +56,6 @@ class GroupTypeUpdater implements ObjectUpdaterInterface
           case 'code':
             $groupType->setCode($data);
             break;
-          case 'is_variant':
-            $groupType->setVariant($data);
-            break;
           case 'labels':
           case 'label':
             foreach ($data as $locale => $label) {

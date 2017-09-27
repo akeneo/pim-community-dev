@@ -107,17 +107,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function getEligibleProductsForVariantGroup($variantGroupId)
     {
-        $variantGroup = $this->groupRepository->find($variantGroupId);
-        if (null === $variantGroup || !$variantGroup->getType()->isVariant()) {
-            return [];
-        }
-
-        $pqb = $this->queryBuilderFactory->create();
-        foreach ($variantGroup->getAxisAttributes() as $axisAttribute) {
-            $pqb->addFilter($axisAttribute->getCode(), Operators::IS_NOT_EMPTY, null);
-        }
-
-        return $pqb->execute();
+        // TODO
     }
 
     /**

@@ -128,15 +128,6 @@ class GroupUpdater implements ObjectUpdaterInterface
             );
         }
 
-        if ($groupType->isVariant()) {
-            throw InvalidPropertyException::validGroupTypeExpected(
-                'type',
-                'Cannot process variant group, only groups are supported',
-                static::class,
-                $group->getCode()
-            );
-        }
-
         $group->setType($groupType);
     }
 

@@ -210,22 +210,9 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
             sprintf('Comes from variant group %s', $group->getCode()),
             $context
         );
-
-        if ($group->getType()->isVariant()) {
-            $template = $group->getProductTemplate();
-            if (null !== $template) {
-                $this->templateMediaManager->handleProductTemplateMedia($template);
-            }
-        }
-
         $this->objectManager->persist($group);
 
         $this->saveAssociatedProducts($group);
-
-        if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
-            $this->copyVariantGroupValues($group);
-            $this->detacher->detachAll($group->getProducts()->toArray());
-        }
 
         $this->versionContext->unsetContextInfo($context);
     }

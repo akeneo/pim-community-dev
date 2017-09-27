@@ -44,7 +44,6 @@ class GroupHandlerSpec extends ObjectBehavior
         $request->isMethod('POST')->willReturn(true);
         $group->getProducts()->willReturn([$product]);
         $group->getType()->willReturn($groupType);
-        $groupType->isVariant()->willReturn(false);
 
         $form->handleRequest($request)->shouldBeCalled();
         $form->isValid()->willReturn(true);
@@ -69,7 +68,6 @@ class GroupHandlerSpec extends ObjectBehavior
         $group->getProducts()->willReturn([$product]);
         $group->getType()->willReturn($groupType);
         $group->getProductTemplate()->willReturn(null);
-        $groupType->isVariant()->willReturn(true);
 
         $form->handleRequest($request)->shouldBeCalled();
         $form->isValid()->willReturn(true);
@@ -99,7 +97,6 @@ class GroupHandlerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled();
 
         $form->isValid()->willReturn(false);
-        $groupType->isVariant()->willReturn(false);
 
         $group->getType()->willReturn($groupType);
         $saver->save($group)->shouldNotBeCalled();

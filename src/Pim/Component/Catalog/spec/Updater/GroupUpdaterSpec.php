@@ -112,26 +112,4 @@ class GroupUpdaterSpec extends ObjectBehavior
             )
         )->during('update', [$group, $values, []]);
     }
-
-    function it_throws_an_error_if_it_is_a_variant_group_type($groupTypeRepository, GroupInterface $group, GroupTypeInterface $groupType)
-    {
-        $group->setCode('mycode')->shouldBeCalled();
-        $groupTypeRepository->findOneByIdentifier('variant')->willReturn($groupType);
-        $groupType->isVariant()->willReturn(true);
-        $group->getCode()->willReturn('mycode');
-
-        $values = [
-            'code' => 'mycode',
-            'type' => 'variant',
-        ];
-
-        $this->shouldThrow(
-            InvalidPropertyException::validGroupTypeExpected(
-                'type',
-                'Cannot process variant group, only groups are supported',
-                'Pim\Component\Catalog\Updater\GroupUpdater',
-                'mycode'
-            )
-        )->during('update', [$group, $values, []]);
-    }
 }

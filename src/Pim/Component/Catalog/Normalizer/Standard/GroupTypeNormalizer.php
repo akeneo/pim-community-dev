@@ -30,7 +30,6 @@ class GroupTypeNormalizer implements NormalizerInterface
     {
         return [
             'code'       => $groupType->getCode(),
-            'is_variant' => (bool) $groupType->isVariant(),
             'labels'     => $this->translationNormalizer->normalize($groupType, 'standard', $context),
         ];
     }

@@ -119,18 +119,6 @@ class VariantProductSpec extends ObjectBehavior
         $this->isAttributeEditable($attribute)->shouldReturn(false);
     }
 
-    function it_is_not_attribute_editable_with_group_containing_attribute(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
-    {
-        $groupType->isVariant()->willReturn(true);
-        $groupAttributes->contains($attribute)->willReturn(true);
-        $group->getType()->willReturn($groupType);
-        $group->getAxisAttributes()->willReturn($groupAttributes);
-        $group->addProduct($this)->willReturn($this);
-
-        $this->addGroup($group);
-        $this->isAttributeEditable($attribute)->shouldReturn(false);
-    }
-
     function it_is_attribute_editable_with_family_containing_attribute(AttributeInterface $attribute, FamilyInterface $family, ArrayCollection $familyAttributes)
     {
         $familyAttributes->contains($attribute)->willReturn(true);
@@ -155,18 +143,6 @@ class VariantProductSpec extends ObjectBehavior
         $family->getAttributes()->willReturn($familyAttributes);
 
         $this->setFamily($family);
-        $this->isAttributeRemovable($attribute)->shouldReturn(false);
-    }
-
-    function it_is_not_attribute_removable_with_group_containing_attribute(AttributeInterface $attribute, GroupInterface $group, GroupTypeInterface $groupType, ArrayCollection $groupAttributes)
-    {
-        $groupType->isVariant()->willReturn(true);
-        $groupAttributes->contains($attribute)->willReturn(true);
-        $group->getType()->willReturn($groupType);
-        $group->getAxisAttributes()->willReturn($groupAttributes);
-        $group->addProduct($this)->willReturn($this);
-
-        $this->addGroup($group);
         $this->isAttributeRemovable($attribute)->shouldReturn(false);
     }
 

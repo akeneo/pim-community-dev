@@ -494,20 +494,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function hasAttributeInVariantGroup(AttributeInterface $attribute)
     {
-        foreach ($this->groups as $group) {
-            if ($group->getType()->isVariant()) {
-                if ($group->getAxisAttributes()->contains($attribute)) {
-                    return true;
-                }
-
-                $template = $group->getProductTemplate();
-                if (null !== $template && $template->hasValueForAttribute($attribute)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
+        // TODO remove PIM-6805
     }
 
     /**
@@ -523,10 +510,6 @@ abstract class AbstractProduct implements ProductInterface
             return false;
         }
 
-        if ($this->hasAttributeInVariantGroup($attribute)) {
-            return false;
-        }
-
         return true;
     }
 
@@ -536,10 +519,6 @@ abstract class AbstractProduct implements ProductInterface
     public function isAttributeEditable(AttributeInterface $attribute)
     {
         if (!$this->hasAttributeInFamily($attribute)) {
-            return false;
-        }
-
-        if ($this->hasAttributeInVariantGroup($attribute)) {
             return false;
         }
 
@@ -582,16 +561,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getVariantGroup()
     {
-        $groups = $this->getGroups();
-
-        /** @var GroupInterface $group */
-        foreach ($groups as $group) {
-            if ($group->getType()->isVariant()) {
-                return $group;
-            }
-        }
-
-        return null;
+        // TODO remove PIM-6805
     }
 
     /**
