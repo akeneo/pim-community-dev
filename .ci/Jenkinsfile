@@ -4,6 +4,12 @@ import org.csanchez.jenkins.plugins.kubernetes.pipeline.PodTemplateAction
 import org.apache.commons.lang.ArrayUtils
 
 stage("Build") {
+    milestone 1
+    if (env.BRANCH_NAME =~ /^PR-/) {
+        timeout(time:5, unit:'DAYS') {
+            input 'Launch your build?'
+        }
+    }
     parallel(
         "pim-ce": {withBuildNode({
             checkout scm

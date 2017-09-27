@@ -55,9 +55,7 @@ spec:
             initialDelaySeconds: 30
             tcpSocket:
               port: 3306
-          resources:
-            requests:
-              memory: "700Mi"
+          resources: {limits: {memory: "1000Mi"},requests: {memory: "1000Mi"}}
         - name: elasticsearch
           image: eu.gcr.io/akeneo-ci/elasticsearch:5.5
           imagePullPolicy: Always
@@ -74,9 +72,7 @@ spec:
             successThreshold: 2
             initialDelaySeconds: 5
             failureThreshold: 30
-          resources:
-            requests:
-              memory: "1000Mi"
+          resources: {limits: {memory: "1000Mi"},requests: {memory: "1000Mi"}}
         - name: php
           image: eu.gcr.io/akeneo-ci/httpd-php:5.6
           workingDir: /home/jenkins/pim
@@ -88,18 +84,14 @@ spec:
             preStop:
               exec:
                 command: ["/usr/sbin/apache2ctl", "stop"]
-          resources:
-            requests:
-              memory: "700Mi"
+          resources: {limits: {memory: "700Mi"},requests: {memory: "700Mi"}}
         - name: selenium
           image: eu.gcr.io/akeneo-ci/selenium:standalone-firefox-2.53.1-beryllium
           imagePullPolicy: Always
           volumeMounts:
             - mountPath: /home/jenkins
               name: pim
-          resources:
-            requests:
-              memory: "1200Mi"
+          resources: {limits: {memory: "1000Mi"},requests: {memory: "1000Mi"}}
         - name: pubsub
           image: eu.gcr.io/akeneo-ci/gcloud
           imagePullPolicy: Always
@@ -112,9 +104,7 @@ spec:
             - { name: docker, mountPath: /var/run/docker.sock }
             - { name: pim, mountPath: /home/jenkins }
             - { name: artifacts, mountPath: /tmp/behat/screenshots }
-          resources:
-            requests:
-              memory: "200Mi"
+          resources: {limits: {memory: "200Mi"},requests: {memory: "200Mi"}}
       volumes:
         - { name: pim, emptyDir: {}}
         - { name: docker, hostPath: {path: /var/run/docker.sock}}
