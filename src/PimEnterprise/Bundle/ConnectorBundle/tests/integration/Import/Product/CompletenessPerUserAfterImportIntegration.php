@@ -56,7 +56,7 @@ sku;categories;enabled;family;groups;a_localized_and_scopable_text_area-en_US-ta
 product_viewable_by_everybody_1;categoryA2;1;my_family;;"EN tablet"
 CSV;
 
-        $this->jobLauncher->launchImport('pim:batch:job', 'csv_product_import', $content, 'mary', [$this->getFixturePath('akeneo.pdf')]);
+        $this->jobLauncher->launchAuthenticatedImport('csv_product_import', $content, 'mary', [$this->getFixturePath('akeneo.pdf')]);
         $this->get('doctrine')->getManager()->clear();
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
@@ -79,7 +79,7 @@ sku;categories;enabled;family;groups;a_localized_and_scopable_text_area-en_US-ta
 product_viewable_by_everybody_1;categoryA2;1;my_family;;"EN tablet"
 CSV;
 
-        $this->jobLauncher->launchImport('pim:batch:job', 'csv_product_import', $content, 'julia');
+        $this->jobLauncher->launchAuthenticatedImport('csv_product_import', $content, 'julia');
         $this->get('doctrine')->getManager()->clear();
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
@@ -102,7 +102,7 @@ sku;categories;enabled;family;groups;a_localizable_image-en_US;a_localizable_ima
 product_viewable_by_everybody_1;master;1;my_family;;fixtures/akeneo.pdf;fixtures/akeneo.pdf;"EN tablet";12.0500
 CSV;
 
-        $this->jobLauncher->launchImport('pim:batch:job', 'csv_product_import', $content, 'julia', [$this->getFixturePath('akeneo.pdf')]);
+        $this->jobLauncher->launchAuthenticatedImport('csv_product_import', $content, 'julia', [$this->getFixturePath('akeneo.pdf')]);
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');
 
@@ -120,7 +120,7 @@ sku;categories;enabled;family;groups;a_localized_and_scopable_text_area-en_US-ta
 product_viewable_by_everybody_1;master;1;my_family;;"EN tablet"
 CSV;
 
-        $this->jobLauncher->launchImport('pim:batch:job', 'csv_product_import', $content, 'mary');
+        $this->jobLauncher->launchAuthenticatedImport('csv_product_import', $content, 'mary');
         $this->get('doctrine')->getManager()->clear();
 
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('product_viewable_by_everybody_1');

@@ -35,7 +35,7 @@ CSV;
                 ],
             ],
         ];
-        $csv = $this->jobLauncher->launchExport('akeneo:batch:job', 'csv_published_product_export', null, $config);
+        $csv = $this->jobLauncher->launchExport('csv_published_product_export', null, $config);
 
         $this->assertSame($expectedCsv, $csv);
     }

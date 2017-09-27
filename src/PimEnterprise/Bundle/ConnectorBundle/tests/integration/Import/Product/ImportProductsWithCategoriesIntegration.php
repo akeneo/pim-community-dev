@@ -30,7 +30,7 @@ productB;categoryA1;Product B;English description
 productC;categoryA;Product B;English description
 CSV;
 
-        $this->assertImport('pim:batch:job', $importCSV, 'mary', [], 3, 0, 0);
+        $this->assertAuthenticatedImport($importCSV, 'mary', [], 3, 0, 0);
     }
 
     public function testSuccessfullyToUpdateProductsWithCategoryIOwnWithPermissions()
@@ -49,7 +49,7 @@ CSV;
             ]
         ];
 
-        $this->assertImport('pim:batch:job', $importCSV, 'mary', $expected, 1, 0, 0);
+        $this->assertAuthenticatedImport($importCSV, 'mary', $expected, 1, 0, 0);
     }
 
     public function testSuccessfullyToUpdateProductsWithEditableCategoryWithPermissions()
@@ -61,7 +61,7 @@ sku;enabled;family;groups;categories;X_SELL-products;a_text;a_localized_and_scop
 productA;1;;;categoryA;;My text;English description
 CSV;
 
-        $this->assertImport('pim:batch:job', $importCSV, 'mary', [], 1, 1, 0);
+        $this->assertAuthenticatedImport($importCSV, 'mary', [], 1, 1, 0);
 
         $changes = $this->getProductDraft($productA, 'mary')->getChanges()['values'];
         $this->assertSame('My text', $changes['a_text'][0]['data']);
@@ -90,7 +90,7 @@ CSV;
             'You can neither view, nor update, nor delete the product "productA", as it is only categorized in categories on which you do not have a view permission.'
         ];
 
-        $this->assertImport('pim:batch:job', $importCSV, 'mary', $expected, 1, 0, 1, $expectedWarnings);
+        $this->assertAuthenticatedImport($importCSV, 'mary', $expected, 1, 0, 1, $expectedWarnings);
     }
 
     /**
@@ -126,7 +126,7 @@ CSV;
             'Product "productB" cannot be updated. It should be at least in an own category.',
         ];
 
-        $this->assertImport('pim:batch:job', $importCSV, 'mary', $expected, 2, 0, 1, $expectedWarnings);
+        $this->assertAuthenticatedImport($importCSV, 'mary', $expected, 2, 0, 1, $expectedWarnings);
     }
 
     /**
@@ -164,7 +164,7 @@ CSV;
             'You cannot update the field "associations". You should at least own this product to do it.',
         ];
 
-        $this->assertImport('pim:batch:job', $importCSV, 'mary', [], 6, 1, 5, $expectedWarnings);
+        $this->assertAuthenticatedImport($importCSV, 'mary', [], 6, 1, 5, $expectedWarnings);
     }
 
     public function testSuccessfullyToCreateProductsWhateverTheCategoryWithoutPermission()
@@ -193,7 +193,7 @@ CSV;
             ],
         ];
 
-        $this->assertImport('akeneo:batch:job', $importCSV, null, $expected, 3, 0, 0);
+        $this->assertImport($importCSV, null, $expected, 3, 0, 0);
     }
 
     public function testSuccessfullyToUpdateProductsWithoutPermission()
@@ -230,7 +230,7 @@ CSV;
             ]
         ];
 
-        $this->assertImport('akeneo:batch:job', $importCSV, null, $expected, 4, 0, 0);
+        $this->assertImport($importCSV, null, $expected, 4, 0, 0);
     }
 
     public function testSuccessfullyToUpdateFieldWithoutPermission()
@@ -252,6 +252,6 @@ productE;1;;;categoryA;productA;;
 productF;1;;;master;;;
 CSV;
 
-        $this->assertImport('akeneo:batch:job', $importCSV, null, [], 6, 0, 0);
+        $this->assertImport($importCSV, null, [], 6, 0, 0);
     }
 }
