@@ -21,7 +21,6 @@ use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -104,11 +103,10 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     public function save($product, array $options = [])
     {
         $this->validateObject($product, 'Pim\Component\Catalog\Model\ProductInterface');
-        $hasPermissions = $this->hasPermissions($product);
 
-        if ($hasPermissions) {
+        if ($this->isOwner($product) || null === $product->getId()) {
             $this->saveProduct($product, $options);
-        } else {
+        } elseif ($this->canEdit($product)) {
             $this->saveProductDraft($product, $options);
         }
     }
@@ -126,11 +124,10 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
 
         foreach ($products as $product) {
             $this->validateObject($product, 'Pim\Component\Catalog\Model\ProductInterface');
-            $hasPermissions = $this->hasPermissions($product);
-            if ($hasPermissions) {
+            if ($this->isOwner($product) || null === $product->getId()) {
                 $productsToCompute[] = $product;
                 $this->saveProduct($product, $options, false);
-            } else {
+            } elseif ($this->canEdit($product)) {
                 $this->saveProductDraft($product, $options, false);
             }
         }
@@ -168,33 +165,27 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * Returns true if user is owner of the product or if the product does not exist yet or if the token does not exist
+     * Is user owner of the product?
      *
      * @param ProductInterface $product
      *
      * @return bool
-     *
-     * @throws ResourceAccessDeniedException
      */
-    protected function hasPermissions(ProductInterface $product)
+    protected function isOwner(ProductInterface $product)
     {
-        if (null === $product->getId() || null === $this->tokenStorage->getToken()) {
-            $hasPermissions = true;
-        } else {
-            if ($this->authorizationChecker->isGranted(Attributes::VIEW, $product)
-                && !$this->authorizationChecker->isGranted(Attributes::EDIT, $product)
-                && !$this->authorizationChecker->isGranted(Attributes::OWN, $product)
-            ) {
-                throw new ResourceAccessDeniedException($product, sprintf(
-                    'Product "%s" cannot be updated. It should be at least in an own category.',
-                    $product->getIdentifier()
-                ));
-            }
+        return $this->authorizationChecker->isGranted(Attributes::OWN, $product);
+    }
 
-            $hasPermissions = $this->authorizationChecker->isGranted(Attributes::OWN, $product) && $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
-        }
-
-        return $hasPermissions;
+    /**
+     * Can user edit the product?
+     *
+     * @param ProductInterface $product
+     *
+     * @return bool
+     */
+    protected function canEdit(ProductInterface $product)
+    {
+        return $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
     }
 
     /**

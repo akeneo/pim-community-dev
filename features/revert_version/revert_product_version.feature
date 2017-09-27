@@ -36,7 +36,7 @@ Feature: Revert a product to a previous version
     And I visit the "History" column tab
     When I revert the product version number 1
     Then product "shirt" should be enabled
-    And I should see history in panel:
+    And I should see history:
       | version | author      | property | value |
       | 3       | Julia Stark | enabled  | 1     |
       | 2       | Julia Stark | enabled  | 0     |

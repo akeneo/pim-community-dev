@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -16,6 +18,7 @@ use Akeneo\Bundle\RuleEngineBundle\Engine\BuilderInterface;
 use Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -73,7 +76,7 @@ class ProductRuleRunner implements DryRunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function dryRun(RuleDefinitionInterface $definition, array $options = [])
+    public function dryRun(RuleDefinitionInterface $definition, array $options = []): RuleSubjectSetInterface
     {
         $options = $this->resolveOptions($options);
         $definition = $this->loadRule($definition, $options);
@@ -84,7 +87,7 @@ class ProductRuleRunner implements DryRunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(RuleDefinitionInterface $definition)
+    public function supports(RuleDefinitionInterface $definition): bool
     {
         return 'product' === $definition->getType();
     }
@@ -94,11 +97,12 @@ class ProductRuleRunner implements DryRunnerInterface
      *
      * @return array
      */
-    protected function resolveOptions(array $options)
+    protected function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
-        $resolver->setDefaults(['selected_products' => []]);
+        $resolver->setDefaults(['selected_products' => [], 'username' => null]);
         $resolver->setAllowedTypes('selected_products', 'array');
+        $resolver->setAllowedTypes('username', ['string', 'null']);
         $options = $resolver->resolve($options);
 
         return $options;
@@ -110,7 +114,7 @@ class ProductRuleRunner implements DryRunnerInterface
      *
      * @return RuleInterface
      */
-    protected function loadRule(RuleDefinitionInterface $definition, array $options)
+    protected function loadRule(RuleDefinitionInterface $definition, array $options): RuleInterface
     {
         $definition = $this->builder->build($definition);
         if (!empty($options['selected_products'])) {

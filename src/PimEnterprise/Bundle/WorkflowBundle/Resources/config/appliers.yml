@@ -5,6 +5,6 @@ services:
     pimee_workflow.applier.product_draft:
         class: '%pimee_workflow.applier.product_draft.class%'
         arguments:
-            - '@pim_catalog.updater.property_setter'
+            - '@pim_catalog.updater.entity_with_values_property_setter_without_permission'
             - '@event_dispatcher'
             - '@pim_catalog.repository.attribute'

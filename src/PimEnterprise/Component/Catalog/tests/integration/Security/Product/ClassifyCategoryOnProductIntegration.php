@@ -104,7 +104,7 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
      */
     public function testUpdateAProductWithCategoryNotViewable()
     {
-        $product = $this->saveProduct('product', ['categories' => ['categoryA2']]);
+        $product = $this->saveProduct('product', ['categories' => ['master']]);
         $this->generateToken('mary');
 
         $this->updateProduct($product, ['categories' => ['categoryB']]);
@@ -135,5 +135,83 @@ class ClassifyCategoryOnProductIntegration extends AbstractSecurityTestCase
 
         $this->updateProduct($product, ['categories' => ['master_china', 'master']]);
         $this->assertSame($product->getCategoryCodes(), ['master', 'master_china']);
+    }
+
+    /**
+     * @expectedException \PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException
+     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
+     */
+    public function testUpdateACategoryOnAProductOnlyViewable()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['categories' => ['master']]);
+    }
+
+    /**
+     * @expectedException \PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException
+     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
+     */
+    public function testUpdateGroupsOnAProductOnlyViewable()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['groups' => ['groupA']]);
+    }
+    
+    /**
+     * @expectedException \PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException
+     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
+     */
+    public function testUpdateEnabledOnAProductOnlyViewable()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['enabled' => false]);
+    }
+
+    /**
+     * @expectedException \PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException
+     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
+     */
+    public function testUpdateFamilyOnAProductOnlyViewable()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['family' => 'familyA']);
+    }
+
+    /**
+     * @expectedException \PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException
+     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
+     */
+    public function testUpdateAssociationsOnAProductOnlyViewable()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['associations' => [
+            'X_SELL' => [
+                'products' => ['product_a']
+            ]
+        ]]);
+    }
+
+    /**
+     * @expectedException \PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException
+     * @expectedExceptionMessage Product "product" cannot be updated. It should be at least in an own category
+     */
+    public function testUpdateValuesOnAProductOnlyViewable()
+    {
+        $product = $this->saveProduct('product', ['categories' => ['categoryA1']]);
+        $this->generateToken('mary');
+
+        $this->updateProduct($product, ['values' => [
+            'a_text' => [['data' => 'data', 'locale' => null, 'scope' => null]]
+        ]]);
     }
 }

@@ -25,6 +25,7 @@ class UpdateProductIntegration extends AbstractProductTestCase
 
     public function testFailedToAssociateAProductNotGranted()
     {
+        $this->createProduct('simple_product');
         $data = <<<JSON
 {
     "associations": {
@@ -38,7 +39,7 @@ JSON;
 {"code":403,"message":"You cannot associate a product on which you have not a view permission."}
 JSON;
         $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
-        $client->request('PATCH', 'api/rest/v1/products/product_viewable_by_everybody_2', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/products/simple_product', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());

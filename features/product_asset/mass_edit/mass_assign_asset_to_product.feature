@@ -25,12 +25,12 @@ Feature: Edit asset collection of many products at once
     And I start to manage assets for "Front view"
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
     And I check the row "paint"
-    And I check the row "machine"
-    Then the asset basket should contain paint, machine
+    And I check the row "chicagoskyline"
+    Then the asset basket should contain paint, chicagoskyline
     And I confirm the asset modification
-    Then the "Front view" asset gallery should contain paint, machine
+    Then the "Front view" asset gallery should contain paint, chicagoskyline
     And I confirm mass edit
     And I wait for the "edit_common_attributes" job to finish
     And I am on the "boots" product page
     And I visit the "Media" group
-    Then the "Front view" asset gallery should contain paint, machine
+    Then the "Front view" asset gallery should contain paint, chicagoskyline

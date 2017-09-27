@@ -17,7 +17,7 @@ services:
     pimee_catalog_rule.event_subscriber.rule_execution:
         class: '%pimee_catalog_rule.event_subscriber.rule_execution.class%'
         arguments:
-            - '@security.token_storage'
+            - '@security.user.provider.concrete.chain_provider'
             - '@pim_notification.notifier'
             - '%pim_notification.entity.notification.class%'
         tags:
