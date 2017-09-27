@@ -2,6 +2,7 @@ parameters:
     pimee_workflow.repository.product_draft.class:       PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\ProductDraftRepository
     pimee_workflow.repository.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedProductRepository
     pimee_workflow.repository.published_association.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedAssociationRepository
+    pimee_workflow.repository.delegating_product.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\DelegatingProductRepository
 
 
 services:
@@ -50,3 +51,12 @@ services:
             - '@security.token_storage'
             - '%pimee_security.entity.product_category_access.class%'
             - '%pim_catalog.entity.product.class%'
+
+    pimee_workflow.repository.delegating_product:
+        class: '%pimee_workflow.repository.delegating_product.class%'
+        arguments:
+            - '@security.token_storage'
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.product'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.applier.product_draft'

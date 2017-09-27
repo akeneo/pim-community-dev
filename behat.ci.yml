@@ -47,6 +47,8 @@ default:
                     - 'Context\EnterpriseFeatureContext'
                     - '@pim_catalog.repository.product_model'
                     - '@doctrine.orm.entity_manager'
+                - Pim\Behat\Context\Domain\Enrich\VariantNavigationContext:
+                    - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Spread\ExportBuilderContext:
                     - 'Context\EnterpriseFeatureContext'
                 - Pim\Behat\Context\Domain\Spread\ExportProfilesContext:

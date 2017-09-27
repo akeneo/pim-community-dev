@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -27,5 +29,5 @@ interface DryRunnerInterface extends RunnerInterface
      *
      * @return RuleSubjectSetInterface
      */
-    public function dryRun(RuleDefinitionInterface $definition, array $options = []);
+    public function dryRun(RuleDefinitionInterface $definition, array $options = []): ?RuleSubjectSetInterface;
 }

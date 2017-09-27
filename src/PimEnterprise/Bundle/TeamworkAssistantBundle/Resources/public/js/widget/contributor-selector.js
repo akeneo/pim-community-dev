@@ -94,7 +94,7 @@ define(
                     }.bind(this),
 
                     formatSelection: function (item, $container) {
-                        $container.append(this.formatLine(item.text.toLowerCase(), 'Current'));
+                        $container.append(this.formatLine(item.text, 'Current'));
                     }.bind(this),
 
                     dropdownCssClass: 'select2-drop--forProjectWidget' +

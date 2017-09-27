@@ -32,6 +32,7 @@ Feature: Filter product drafts
     And I edit the "tshirt" product
     When I visit the "Proposals" column tab
     Then the grid should contain 3 elements
+    And I collapse the column
     When I show the filter "<filter>"
     And I filter by "<filter>" with operator "" and value "<value>"
     Then the grid should contain <count> elements

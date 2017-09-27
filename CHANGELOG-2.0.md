@@ -1,4 +1,30 @@
-# 2.0
+# 2.0.0-ALPHA1 (2017-09-25)
+
+## New API endpoints
+
+- API-71: Get a single product with EE permissions
+- API-69: Get a list of products with EE permissions
+- API-213: Filter product and product values with EE permissions
+- API-224: Try to update partially a product that cannot be viewed through categories
+- API-223: Try to update partially a product that can only be viewed through categories
+- API-91: Update partially a product that can only be edited through categories with EE permissions
+- API-304: Update partially a product that is not classified at all with EE permissions
+- API-225: Update partially a product whose code does not exist with EE permissions
+- API-72: Update partially a product that is owned through categories with EE permissions
+- API-298: Update partially a list of products with EE permissions
+- API-70: Create a product with EE permissions
+- API-297: Post a media with EE permissions
+- API-74: Delete a product with EE permissions
+- API-229: Get a draft
+- API-228: Submit a draft for approval
+- API-240: Know the status of a working copy
+- API-260: Get a filtered list of published products
+- API-259: Get a list of published products
+
+## EE permissions on the imports, exports and products deletion
+- API-349: Apply permissions on published products export
+- API-247: Apply permissions on products export
+- API-303: Apply permissions on mass product deletion	
 
 ## Remove MongoDB product storage
 
@@ -29,7 +55,8 @@
 
 ## BC breaks
 
-- Change the constructor of `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository` to add `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface`, Product parameter class and CategoryAccess parameter class.
+- Change the constructor of `PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber\RuleExecutionSubscriber` to replace `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` by `Symfony\Component\Security\Core\User\ChainUserProvider`. 
+- Change the constructor of `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository` to add `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and CategoryAccess parameter class.
 - Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator` to add `Symfony\Component\HttpFoundation\RequestStack`
 - Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\ContextConfigurator` to add `Symfony\Component\HttpFoundation\RequestStack`
 - Change the constructor of `PimEnterprise\Bundle\TeamworkAssistantBundle\Job\RefreshProjectCompletenessJobLauncher` to add the path of the `logs` directory
@@ -85,3 +112,12 @@
 - PIM-6815: Remove `indexAction` from `PimEnterprise\Bundle\ProductAssetBundle\Controller\ProductAssetController`
 - PIM-6815: Remove `src/PimEnterprise/Bundle/ProductAssetBundle/Resources/views/ProductAsset/index.html.twig`
 - Change the constructor of `PimEnterprise\Bundle\TeamworkAssistantBundle\Job\RefreshProjectCompletenessJobLauncher` to add `Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface` and `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and remove `rootDirectory`(string), `environment` (string), `logDir` (string).
+
+
+## Type hint
+
+- Add type hint `Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface` to the return of the function `select` of `Akeneo\Bundle\RuleEngineBundle\Engine\SelectorInterface`
+- Add type hint `array` to the return of the function `dryRunAll` of `Akeneo\Bundle\RuleEngineBundle\Runner\BulkDryRunnerInterface`
+- Add type hint `array` to the return of the function `runAll` of `Akeneo\Bundle\RuleEngineBundle\Runner\BulkRunnerInterface`
+- Add type hint `Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface` to the return of the function `dryRun` of `Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface`
+- Add type hint `bool` to the return of the function `supports` of `Akeneo\Bundle\RuleEngineBundle\Runner\RunnerInterface`

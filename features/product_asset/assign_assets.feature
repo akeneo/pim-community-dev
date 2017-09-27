@@ -18,23 +18,23 @@ Feature: Assign assets to a product
     And I start to manage assets for "Front view"
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
     And I check the row "paint"
-    And I check the row "machine"
-    Then the asset basket should contain paint, machine
+    And I check the row "chicagoskyline"
+    Then the asset basket should contain paint, chicagoskyline
     And I confirm the asset modification
-    Then the "Front view" asset gallery should contain paint, machine
+    Then the "Front view" asset gallery should contain paint, chicagoskyline
     And I save the product
-    Then the "Front view" asset gallery should contain paint, machine
+    Then the "Front view" asset gallery should contain paint, chicagoskyline
     And I start to manage assets for "Front view"
     And I uncheck the row "paint"
-    And I check the row "dog"
+    And I check the row "autumn"
     And I check the row "akene"
-    And the rows "dog, akene" should be checked
-    And I remove "machine" from the asset basket
-    Then the asset basket should contain akene, dog
+    And the rows "autumn, akene" should be checked
+    And I remove "chicagoskyline" from the asset basket
+    Then the asset basket should contain akene, autumn
     And I confirm the asset modification
-    Then the "Front view" asset gallery should contain akene, dog
+    Then the "Front view" asset gallery should contain akene, autumn
     And I save the product
-    Then the "Front view" asset gallery should contain akene, dog
+    Then the "Front view" asset gallery should contain akene, autumn
 
   Scenario: Display assets thumbnails for current scope and locale
     Given I am logged in as "Julia"
@@ -131,22 +131,11 @@ Feature: Assign assets to a product
       | video_8  | videos     |
       | video_9  | videos     |
       | video_10 | videos     |
-      | video_11 | videos     |
-      | video_12 | videos     |
-      | video_13 | videos     |
-      | video_14 | videos     |
-      | video_15 | videos     |
-      | video_16 | videos     |
-      | video_17 | videos     |
-      | video_18 | videos     |
-      | video_19 | videos     |
-      | video_20 | videos     |
-      | video_21 | videos     |
     And I am logged in as "Julia"
     And I am on the "shirt" product page
     And I visit the "Media" group
     And I start to manage assets for "Front view"
     And I should see the columns Thumbnail, Code, Description, End of use, Created at and Last updated at
-    And I check the row "video_20"
-    And I check the row "video_21"
-    Then the asset basket should contain video_20, video_21
+    And I check the row "video_9"
+    And I check the row "video_10"
+    Then the asset basket should contain video_9, video_10

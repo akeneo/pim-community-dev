@@ -75,9 +75,7 @@ datagrid:
                 route: pim_enrich_mass_edit_action
                 route_parameters:
                     actionName: published-product-edit
-                launcherOptions:
-                    iconClassName: icon-pencil
-                className: AknActionButton
+                className: 'AknButton AknButton--action AknButtonList-item'
             quick_export_grid_context_xlsx:
                 type: export
                 label: pim.grid.mass_action.quick_export.xlsx_grid_context

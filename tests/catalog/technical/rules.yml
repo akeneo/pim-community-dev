@@ -14,3 +14,15 @@ rules:
         value: an other text
         locale: en_US
         scope: tablet
+  clear_a_text:
+    priority: 10
+    conditions:
+      -
+        field: family
+        operator: IN
+        value:
+          - familyA
+    actions:
+      - type:   set
+        field:  a_text
+        value:  Nice description for all

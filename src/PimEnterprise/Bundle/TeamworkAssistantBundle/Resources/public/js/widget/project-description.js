@@ -24,7 +24,6 @@ define(
              */
             render: function () {
                 this.$el.html(this.template({
-                    title: __('teamwork_assistant.widget.description'),
                     description: this.getFormData().currentProject.description
                 }));
             }
