@@ -1,6 +1,8 @@
+# 2.0.x
+
 # 2.0.0-ALPHA1 (2017-09-25)
 
-## Better manage products with variants!
+## Better manage products with variants!
 
 - PIM-6330: Family variant - As Julia I would like to import a new variant of a family
 - PIM-6331: Family variant - As Julia, I would like to export a family variant
