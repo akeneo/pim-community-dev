@@ -906,6 +906,9 @@ JSON;
                 'a_yes_no'                           => [
                     ['locale' => null, 'scope' => null, 'data' => false],
                 ],
+                'a_text_area'                           => [
+                    ['locale' => null, 'scope' => null, 'data' => 'this is a very very very very very long  text'],
+                ],
                 "a_localized_and_scopable_text_area" => [
                     [
                         "locale" => "en_US",

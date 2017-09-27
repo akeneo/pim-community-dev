@@ -284,7 +284,7 @@ class ProductController
 
         if (isset($data['parent'])) {
             $data = $this->productAttributeFilter->filter($data);
-            $product = $this->variantProductBuilder->createProduct($data['identifier']);
+            $product = $this->variantProductBuilder->createProduct();
         } else {
             $product = $this->productBuilder->createProduct();
         }
