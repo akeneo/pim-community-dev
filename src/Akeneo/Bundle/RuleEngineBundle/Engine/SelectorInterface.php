@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -26,5 +28,5 @@ interface SelectorInterface
      *
      * @return RuleSubjectSetInterface
      */
-    public function select(RuleInterface $rule);
+    public function select(RuleInterface $rule): RuleSubjectSetInterface;
 }

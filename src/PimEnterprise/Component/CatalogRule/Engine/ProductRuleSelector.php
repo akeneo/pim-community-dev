@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -16,7 +18,7 @@ use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactory;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -31,7 +33,7 @@ class ProductRuleSelector implements SelectorInterface
     /** @var string */
     protected $subjectSetClass;
 
-    /** @var ProductQueryBuilderFactory */
+    /** @var ProductQueryBuilderFactoryInterface */
     protected $queryBuilderFactory;
 
     /** @var ProductRepositoryInterface */
@@ -61,7 +63,7 @@ class ProductRuleSelector implements SelectorInterface
     /**
      * {@inheritdoc}
      */
-    public function select(RuleInterface $rule)
+    public function select(RuleInterface $rule): RuleSubjectSetInterface
     {
         $this->eventDispatcher->dispatch(RuleEvents::PRE_SELECT, new RuleEvent($rule));
 
