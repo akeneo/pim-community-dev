@@ -29,11 +29,11 @@ Feature: Complete variant product
     And I am on the products grid
     And I show the filter "name"
     And I filter by "name" with operator "contains" and value "Bag"
-    Then I should not see the text "N/A"
+    Then I should see the text "N/A"
 
   Scenario: Display the complete variant product for a product model
     When I am logged in as "Mary"
     And I am on the products grid
     And I show the filter "name"
     And I filter by "name" with operator "contains" and value "elegance"
-    Then I should not see the text "0 / 3"
+    Then I should see the text "0 / 3"
