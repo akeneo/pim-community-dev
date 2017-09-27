@@ -26,6 +26,7 @@ pim_datagrid:
   view_selector:
     view: Visualizações
     create_view_modal:
+      create: Criar
       confirm: OK
       cancel: Cancelar
 flash:
@@ -634,6 +635,7 @@ pim_enrich:
           attributes: "Procurar em {{ itemsCount }} atributos"
           clear: Limpar
           all_group: Todos os Grupos
+          title: Atributos
         family:
           title: Família
           operators:
@@ -1000,7 +1002,6 @@ batch_jobs:
     import.label: Grupo tipo importação
 pim_menu:
   tab:
-    dashboard: Painel de controle
     products: Produtos
     settings: Configurações
     system: Sistema
@@ -1011,6 +1012,7 @@ pim_menu:
     category: Categorias
     channel: Canais
     currency: Moedas
+    dashboard: Painel de controle
     family: Famílias
     group: Grupos
     group_type: Tipos de grupos

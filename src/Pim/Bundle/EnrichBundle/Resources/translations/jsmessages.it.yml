@@ -28,6 +28,7 @@ pim_datagrid:
   view_selector:
     view: Visualizzazione
     create_view_modal:
+      create: Crea
       confirm: OK
       cancel: Annulla
 flash:
@@ -717,6 +718,7 @@ pim_enrich:
           clear: Ripulisci
           all_group: Tutti i gruppi
           empty_selection: Tutti gli attributi verranno esportati
+          title: Attributi
         family:
           title: Famiglia
           help: 'Seleziona i prodotti da esportare in base alla loro famiglia. Es: Esportare solo le scarpe e gli abiti.'
@@ -1168,7 +1170,6 @@ job_tracker:
     invalid_csv: Scarica dati non validi
 pim_menu:
   tab:
-    dashboard: Dashboard
     imports: Importazioni
     products: Articoli
     exports: Esportazioni
@@ -1181,6 +1182,7 @@ pim_menu:
     category: Categorie
     channel: Canali
     currency: Valute
+    dashboard: Dashboard
     family: Famiglie
     group: Gruppi
     group_type: Tipi di gruppo

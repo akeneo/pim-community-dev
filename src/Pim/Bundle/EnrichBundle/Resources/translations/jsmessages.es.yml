@@ -26,6 +26,7 @@ pim_datagrid:
   view_selector:
     view: Vistas
     create_view_modal:
+      create: Crear
       confirm: OK
       cancel: Cancelar
 flash:
@@ -56,6 +57,7 @@ flash:
   role:
     removed: Rol eliminado correctamente
 error:
+  common: Ocurrió un error
   creating:
     product: Ningún atributo se ha configurado como identificador de producto o usted no posee derechos de edición.
   removing:
@@ -105,7 +107,9 @@ pim:
         xlsx_all: Excel (todos los atributos)
         xlsx_grid_context: Excel (contexto de la grilla)
       delete: Eliminar
+      mass_edit: Acciones en masa
       category_edit: Mover producto en categorías
+      sequential_edit: Edición secuencial
 jstree.create: Crear
 jstree.done: Hecho
 switch_on: "SÍ"
@@ -121,6 +125,7 @@ pim_enrich:
   navigation:
     link:
       back_to_grid: Regresar a la grilla
+    other_actions: Otras acciones
   entity:
     save:
       label: Guardar
@@ -134,10 +139,14 @@ pim_enrich:
         save: Guardar
         cancel: Cancelar
     product:
+      navigation: Navegación de productos
+      infos: Información de producto
       title: producto
       locale: Local
       category: Categoría
+      create: Crear un producto
       filters: Filtros
+      common: Común
       btn:
         enabled: Habilitado
         disabled: Inhabilitado
@@ -151,6 +160,8 @@ pim_enrich:
         logged_at: Registrado el
         from: De
         modified: Modificado
+        old_value: Valor anterior
+        new_value: Nuevo valor
         actions: Acciones
       info:
         deletion_successful: Producto eliminado con éxito.
@@ -254,6 +265,7 @@ pim_enrich:
         save: Guardar
     family:
       title: familia
+      selected: familias seleccionadas
       info:
         create_successful: Canal creado correctamente.
         update_failed: Ha ocurrido un error durante la actualización de la familia.
@@ -297,6 +309,8 @@ pim_enrich:
         update_failed: No se ha podido actualizar el perfil de trabajo.
         update_successful: El perfil de trabajo ha sido actualizado exitosamente.
     attribute:
+      info:
+        deletion_failed: No se ha podido eliminar el atributo.
       scopable: Scopable
       type:
         pim_catalog_identifier: Identificador
@@ -346,6 +360,7 @@ pim_enrich:
           info:
             none_exist: No existe ningún tipo de asociación.
             show_products: Mostrar productos
+            show_groups: Mostrar grupos
         attributes:
           title: Atributos
           btn:
@@ -520,9 +535,12 @@ pim_enrich:
         export.title: Exportar Ahora
         import.launch: Importar ahora
         import.upload: Subir e importar ahora
+        import.upload_file: Subir un fichero
       meta:
         job: Trabajo
         connector: Conector
+      subsection:
+        last_executions: Últimas ejecuciones
       tab:
         content:
           title: Contenido
@@ -586,7 +604,9 @@ pim_enrich:
     attribute:
       meta:
         created: Creado
+        created_by: por
         updated: Última actualización
+        updated_by: por
       tab:
         properties:
           title: Propiedades
@@ -662,6 +682,7 @@ pim_enrich:
           clear: Restablecer
           all_group: Todos los grupos
           empty_selection: Se exportarán todos los atributos
+          title: Atributos
         family:
           title: Familia
           help: 'Seleccionar los productos a exportar según su familia. Ej.: Exportar sólo los zapatos y vestidos.'
@@ -1050,7 +1071,6 @@ batch_jobs:
     import.label: Importar tipo de grupos
 pim_menu:
   tab:
-    dashboard: Cartelera
     products: Productos
     settings: Configuración
     system: Sistema
@@ -1061,6 +1081,7 @@ pim_menu:
     category: Categorías
     channel: Canales
     currency: Monedas
+    dashboard: Cartelera
     family: Familias
     group: Grupos
     group_type: Tipos de grupo

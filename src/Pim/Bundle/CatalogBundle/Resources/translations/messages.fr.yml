@@ -3,13 +3,13 @@ No products to remove: Aucun produit à supprimer
 "comma (,)": virgule (,)
 pim_catalog:
   constraint:
-    family_variant_attributes_unique: Les attributs doivent être uniques, "%attributes%" sont utilisés pluyisuers fois dans des ensembles d'attributs de variantes
+    family_variant_attributes_unique: Les attributs doivent être uniques, "%attributes%" sont utilisés plusieurs fois dans des ensembles d'attributs de variantes
     family_variant_axes_unique: Les axes de variantes doivent être uniques, "%attributes%" sont utilisés plusieurs fois dans des ensembles d'attributs de variantes
     family_variant_axes_attribute_type: Les axes de variantes "%axis%" doivent être un booléen, une liste à choix unique, une liste à choix unique de données référentielles ou une métrique
     family_variant_axes_wrong_type: L'axe de variante "%axis%" ne peut pas être traduisible, décliné par canal ou spécifique à une locale
     family_variant_axes_number_of_axes: Un ensemble d’attributs de variante ne peut pas avoir plus de 5 attributs
     family_variant_axis_level: L'attribut "%axis%" doit être défini comme attribut dans le même ensemble d'attributs de variantes que son axe
-    family_variant_has_family_attribute: '"%attribute%" attribut ne peut pas être ajouté à la variante de famille "%family_variant%", car ce n''est pas un attribut de la famille "%family%"'
+    family_variant_has_family_attribute: 'L''attribut "%attribute%" ne peut pas être ajouté à la variante de famille "%family_variant%", car ce n''est pas un attribut de la famille "%family%"'
     family_variant_level_do_not_exist: Il n'y a aucun attribut variant pour le niveau "%level%"
     family_variant_unique_attributes_in_last_level: L’attribut unique "%attribute%" doit être défini au niveau du produit
     product_identifier: Ces identifiants "%s" n’existent pas.

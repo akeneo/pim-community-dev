@@ -34,6 +34,8 @@ not_available: N / A
 "No": false
 oro.datagrid.entityHint: Entidad
 oro.datagrid.noentities: No se encontraron registros
+oro.datagrid.noresults: "No hay ningún resultado para su búsqueda."
+oro.datagrid.noresults_subTitle: "Pruebe con nuevos criterios de búsqueda."
 oro.datagrid.nocolumns: Sin columnas configuradas para esta grilla
 oro.datagrid.pagination.label: "Página"
 oro.datagrid.pagination.totalPages: "de {{ totalPages }}"
@@ -52,6 +54,7 @@ pim:
       label_empty: está vacía
       label_not_empty: no está vacío
       label_in_list: en la lista
+      operator: Operador
     price_filter:
       label: Moneda
     category_filter:
@@ -62,6 +65,7 @@ datagrid_view.columns.min_message: Debe seleccionar al menos una columna de data
 pim_datagrid:
   column_configurator:
     label: Columnas
+    title: Configurar columnas
     all_groups: Todos los grupos
     search: Buscar
     clear: Restablecer
@@ -69,6 +73,7 @@ pim_datagrid:
     apply: Aplicar
     cancel: Cancelar
     remove_column: Quitar
+    description: Seleccione la información que desea mostrar como columna
     attribute_groups: Grupos de atributos
   mass_action:
     delete:
@@ -95,5 +100,8 @@ grid.view_selector:
   placeholder: Nombre de la nueva vista
   choose_label: Elija una etiqueta para la vista
   confirmation:
+    remove: '¿Está seguro que desea eliminar esta vista?'
     delete: Confirmación de borrado
 grid.view_selector.flash.updated: Vista de grilla de datos actualizada correctamente
+Client ID: Client ID
+Secret: Secreto

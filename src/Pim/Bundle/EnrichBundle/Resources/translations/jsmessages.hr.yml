@@ -26,6 +26,7 @@ pim_datagrid:
   view_selector:
     view: Pregledi
     create_view_modal:
+      create: Kreiraj
       confirm: OK
       cancel: Poništi
 flash:
@@ -630,6 +631,7 @@ pim_enrich:
           clear: Obriši
           all_group: Sve grupe
           empty_selection: Svi atributi će se izvesti
+          title: Atributi
         family:
           title: Obitelj
           help: 'Odaberite proizvode za izvoz u odnosu na njihovu obitelji. Ex: Izvoz samo za cipele i haljine.'
@@ -1018,7 +1020,6 @@ batch_jobs:
     import.label: Uvoz tipa grupe
 pim_menu:
   tab:
-    dashboard: Nadzorna ploča
     products: Proizvodi
     settings: Postavke
     system: Sustav
@@ -1029,6 +1030,7 @@ pim_menu:
     category: Kategorije
     channel: Kanali
     currency: Valute
+    dashboard: Nadzorna ploča
     family: Obitelji
     group: Grupe
     group_type: Tipovi grupa

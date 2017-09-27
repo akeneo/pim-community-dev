@@ -29,6 +29,7 @@ pim_datagrid:
   view_selector:
     view: Visninger
     create_view_modal:
+      create: Opret
       confirm: OK
       cancel: Annuller
 flash:
@@ -744,6 +745,7 @@ pim_enrich:
           clear: Nustil
           all_group: Alle grupper
           empty_selection: Alle attributter vil blive eksporteret
+          title: Attributter
         family:
           title: Familie
           help: 'Vælg produkterne, der eksporteres af deres familie. Eks: Eksport kun sko og kjoler.'
@@ -1233,7 +1235,6 @@ job_tracker:
     invalid_csv: download ugyldige data
 pim_menu:
   tab:
-    dashboard: Kontrolpanel
     imports: Import
     products: Produkter
     exports: Exports
@@ -1246,6 +1247,7 @@ pim_menu:
     category: Kategorier
     channel: Kanaler
     currency: Valutaer
+    dashboard: Kontrolpanel
     family: Familier
     group: Grupper
     group_type: Gruppetyper

@@ -26,6 +26,7 @@ pim_datagrid:
   view_selector:
     view: Näkymät
     create_view_modal:
+      create: Luo
       confirm: OK
       cancel: Peruuta
 flash:
@@ -625,6 +626,7 @@ pim_enrich:
           clear: Tyhjennä
           all_group: Kaikki ryhmät
           empty_selection: Kaikki attribuutit viedään
+          title: Attribuutit
         family:
           title: Perhe
           help: 'Valitse vietävät tuotteet perheen mukaan. Esim: vie vain kengät ja hameet.'
@@ -958,7 +960,6 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
 pim_menu:
   tab:
-    dashboard: Ohjauspaneeli
     products: Tuotteet
     settings: Asetukset
     system: Järjestelmä
@@ -969,6 +970,7 @@ pim_menu:
     category: Kategoriat
     channel: Kanavat
     currency: Valuutat
+    dashboard: Ohjauspaneeli
     family: Perheet
     group: Ryhmät
     group_type: Ryhmätyypit

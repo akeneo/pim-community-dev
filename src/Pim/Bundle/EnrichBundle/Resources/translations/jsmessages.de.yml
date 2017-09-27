@@ -26,6 +26,7 @@ pim_datagrid:
   view_selector:
     view: Ansichten
     create_view_modal:
+      create: Anlegen
       confirm: OK
       cancel: Abbrechen
 flash:
@@ -680,6 +681,7 @@ pim_enrich:
           clear: Zurücksetzen
           all_group: Alle Gruppen
           empty_selection: Alle Attribute werden exportiert
+          title: Attribute
         family:
           title: Produktfamilie
           help: Wählen Sie die Produkte, die entsprechend Ihrer Produktfamilie exportiert werden sollen. (z.B. nur Schuhe und Anzüge).
@@ -1117,7 +1119,6 @@ job_tracker:
     invalid_csv: Ungültige Daten herunterladen
 pim_menu:
   tab:
-    dashboard: Dashboard
     products: Produkte
     settings: Einstellungen
     system: System
@@ -1128,6 +1129,7 @@ pim_menu:
     category: Kategorien
     channel: Ausgabekanäle
     currency: Währungen
+    dashboard: Dashboard
     family: Produktfamilien
     group: Gruppen
     group_type: Gruppentypen
