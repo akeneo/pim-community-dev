@@ -27,7 +27,7 @@ sku;X_SELL-products
 productA;productB
 CSV;
 
-        $this->assertImport('pim:batch:job', $importCSV, 'mary', [], 3, 0, 0);
+        $this->assertAuthenticatedImport($importCSV, 'mary', [], 3, 0, 0);
     }
 
     /**
@@ -55,7 +55,7 @@ CSV;
             'You cannot update the field "associations". You should at least own this product to do it.',
         ];
 
-        $this->assertImport('pim:batch:job', $importCSV, 'mary', [], 4, 0, 3, $expectedWarnings);
+        $this->assertAuthenticatedImport($importCSV, 'mary', [], 4, 0, 3, $expectedWarnings);
     }
 
     public function testSuccessfullyToUpdateProductWithAssociationsWithoutPermission()
@@ -72,6 +72,6 @@ productB;productA
 productC;productA
 CSV;
 
-        $this->assertImport('akeneo:batch:job', $importCSV, null, [], 4, 0, 0);
+        $this->assertImport( $importCSV, null, [], 4, 0, 0);
     }
 }

@@ -36,7 +36,7 @@ CSV;
             ],
         ];
 
-        $csv = $this->jobLauncher->launchExport('pim:batch:job', 'csv_product_export', 'mary', $config);
+        $csv = $this->jobLauncher->launchAuthenticatedExport('csv_product_export', 'mary', $config);
 
         $this->assertSame($expectedCsv, $csv);
     }
@@ -62,7 +62,7 @@ CSV;
             ],
         ];
 
-        $csv = $this->jobLauncher->launchExport('pim:batch:job', 'csv_product_export', 'julia', $config);
+        $csv = $this->jobLauncher->launchAuthenticatedExport('csv_product_export', 'julia', $config);
         $this->assertSame($expectedCsv, $csv);
     }
 
@@ -90,7 +90,7 @@ CSV;
             ],
         ];
 
-        $csv = $this->jobLauncher->launchExport('pim:batch:job', 'csv_product_export', 'mary', $config);
+        $csv = $this->jobLauncher->launchAuthenticatedExport('csv_product_export', 'mary', $config);
 
         $this->assertSame($expectedCsv, $csv);
     }
@@ -116,7 +116,7 @@ CSV;
             ],
         ];
 
-        $csv = $this->jobLauncher->launchExport('pim:batch:job', 'csv_product_export', 'mary', $config);
+        $csv = $this->jobLauncher->launchAuthenticatedExport('csv_product_export', 'mary', $config);
 
         $this->assertSame($expectedCsv, $csv);
     }

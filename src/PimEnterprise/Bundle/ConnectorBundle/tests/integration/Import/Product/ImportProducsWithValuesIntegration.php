@@ -39,7 +39,7 @@ CSV;
             ]
         ];
 
-        $this->assertImport('pim:batch:job', $importCSV, 'mary', $expected, 1, 0, 0);
+        $this->assertAuthenticatedImport($importCSV, 'mary', $expected, 1, 0, 0);
     }
 
     public function testToImportProductsWithViewableAttributeWithPermissions()
@@ -59,7 +59,7 @@ CSV;
             'Attribute "a_number_integer" belongs to the attribute group "attributeGroupB" on which you only have view permission.',
             'No product with identifier "productA" has been found'
         ];
-        $this->assertImport('pim:batch:job', $importCSV, 'mary', [], 1, 0, 2, $expectedWarnings);
+        $this->assertAuthenticatedImport($importCSV, 'mary', [], 1, 0, 2, $expectedWarnings);
     }
 
     public function testToSkipImportProductsWithNotViewablableAttributeWithPermissions()
@@ -69,7 +69,7 @@ sku;a_text;a_multi_select
 productA;a text;optionA
 CSV;
 
-        $this->assertImport('pim:batch:job', $importCSV, 'mary', [], 0, 0, 0, [], BatchStatus::FAILED);
+        $this->assertAuthenticatedImport($importCSV, 'mary', [], 0, 0, 0, [], BatchStatus::FAILED);
     }
 
     public function testSuccessfullyToImportProductsWithEditableLocalizableAttributeWithPermissions()
@@ -85,7 +85,7 @@ CSV;
             ]
         ];
 
-        $this->assertImport('pim:batch:job', $importCSV, 'mary', $expected, 1, 0, 0);
+        $this->assertAuthenticatedImport($importCSV, 'mary', $expected, 1, 0, 0);
     }
 
     public function testToImportProductsWithViewableLocalizableAttributeWithPermissions()
@@ -99,7 +99,7 @@ CSV;
             'You only have a view permission on the locale "fr_FR".',
             'No product with identifier "productA" has been found'
         ];
-        $this->assertImport('pim:batch:job', $importCSV, 'mary', [], 0, 0, 2, $expectedWarning);
+        $this->assertAuthenticatedImport($importCSV, 'mary', [], 0, 0, 2, $expectedWarning);
     }
 
     public function testToSkipProductsWithNotViewablableLocalizableAttributeWithPermissions()
@@ -109,7 +109,7 @@ sku;a_localized_and_scopable_text_area-de_DE-tablet
 productA;DE text
 CSV;
 
-        $this->assertImport('pim:batch:job', $importCSV, 'mary', [], 0, 0, 0, [], BatchStatus::FAILED);
+        $this->assertAuthenticatedImport($importCSV, 'mary', [], 0, 0, 0, [], BatchStatus::FAILED);
     }
 
     public function testSuccessfullyToUpdateADraft()
@@ -137,7 +137,7 @@ CSV;
 sku;a_localized_and_scopable_text_area-en_US-tablet
 productA;An english text
 CSV;
-        $this->jobLauncher->launchSubProcessImport('pim:batch:job', 'csv_product_import', $importCSV, 'mary');
+        $this->jobLauncher->launchAuthenticatedSubProcessImport('csv_product_import', $importCSV, 'mary');
         $this->get('doctrine')->getManager()->clear();
         $this->assertSame(1, $this->countProduct());
         $this->assertSame(1, $this->countProductDraft());
