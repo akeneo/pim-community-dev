@@ -4,21 +4,16 @@ metadata:
   name: JOB_NAME
 spec:
   completions: JOB_COMPLETIONS
-  parallelism: 0
+  parallelism: JOB_SCALE
   template:
     spec:
       initContainers:
-        - name: sysctl
-          image: "busybox"
-          command: ["sysctl", "-w", "vm.max_map_count=262144"]
-          securityContext:
-            "privileged": true
         - name: pim
           image: PIM_IMAGE
           command: ['sh', '-c', 'cp -Rp /pim /home/jenkins']
+          imagePullPolicy: Always
           volumeMounts:
-            - mountPath: /home/jenkins
-              name: pim
+            - { mountPath: /home/jenkins, name: pim }
       hostAliases:
       - ip: "127.0.0.1"
         hostnames:
@@ -27,38 +22,50 @@ spec:
         - "akeneo-behat.dev"
       containers:
         - name: mongodb
-          image: mongo:2.4
+          image: eu.gcr.io/akeneo-ci/mongo:2.4-3
           readinessProbe:
             timeoutSeconds: 1
             initialDelaySeconds: 5
             failureThreshold: 30
             tcpSocket:
               port: 27017
-          resources: {limits: {memory: "600Mi"},requests: {memory: "600Mi"}}
+          resources: 
+            requests: {cpu: "100m", memory: "600Mi"}
+          volumeMounts:
+            - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
         - name: mysql
-          image: mysql:5.6
+          image: eu.gcr.io/akeneo-ci/mysql:5.5-2
           env:
             - { name: MYSQL_ROOT_PASSWORD, value: root }
             - { name: MYSQL_USER, value: akeneo_pim }
             - { name: MYSQL_PASSWORD, value: akeneo_pim }
             - { name: MYSQL_DATABASE, value: akeneo_pim }
           readinessProbe:
-            timeoutSeconds: 1
+            timeoutSeconds: 5
             initialDelaySeconds: 5
             failureThreshold: 30
             exec:
-              command: [ "/bin/sh", "-i", "-c", "MYSQL_PWD=\"$MYSQL_PASSWORD\" mysql -h 127.0.0.1 -u $MYSQL_USER -D $MYSQL_DATABASE -e 'SELECT 1'"]
-          livenessProbe:
-            timeoutSeconds: 1
-            initialDelaySeconds: 30
-            tcpSocket:
-              port: 3306
-          resources: {limits: {memory: "1000Mi"},requests: {memory: "1000Mi"}}
+               command: ["mysql", "-proot", "-h", "127.0.0.1", "-e", "SELECT 1"]
+          volumeMounts:
+            - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
+          resources:
+            requests: {cpu: "100m", memory: "700Mi"}
         - name: elasticsearch
           image: eu.gcr.io/akeneo-ci/elasticsearch:5.5
-          imagePullPolicy: Always
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              /usr/share/elasticsearch/bin/es-docker &
+              CHILD_PID=$!
+              (while true; do if [[ -f "/tmp/pod/main-terminated" ]]; then kill $CHILD_PID; fi; sleep 1; done) &
+              wait $CHILD_PID
+              if [[ -f "/tmp/pod/main-terminated" ]]; then exit 0; fi
           env:
-            - { name: ES_JAVA_OPTS, value: "-Xms512m -Xmx512m" }
+            - { name: ES_JAVA_OPTS, value: "-Xms1g -Xmx1g" }
+          volumeMounts:
+            - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
+          resources:
+            requests: {cpu: "100m", memory: "1500Mi"}
           readinessProbe:
             httpGet:
               path: /
@@ -67,44 +74,67 @@ spec:
                 - name: Authorization
                   value: Basic ZWxhc3RpYzpjaGFuZ2VtZQ==
             timeoutSeconds: 1
-            successThreshold: 2
             initialDelaySeconds: 5
-            failureThreshold: 30
-          resources: {limits: {memory: "1000Mi"},requests: {memory: "1000Mi"}}
         - name: php
           image: eu.gcr.io/akeneo-ci/httpd-php:5.6
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              /usr/local/bin/apache-foreground &
+              CHILD_PID=$!
+              (while true; do if [[ -f "/tmp/pod/main-terminated" ]]; then kill $CHILD_PID; fi; sleep 1; done) &
+              wait $CHILD_PID
+              if [[ -f "/tmp/pod/main-terminated" ]]; then exit 0; fi
+
           workingDir: /home/jenkins/pim
-          imagePullPolicy: Always
           volumeMounts:
             - { name: pim, mountPath: /home/jenkins }
+            - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
             - { name: artifacts, mountPath: /tmp/behat/screenshots }
           lifecycle:
             preStop:
               exec:
                 command: ["/usr/sbin/apache2ctl", "stop"]
-          resources: {limits: {memory: "700Mi"},requests: {memory: "700Mi"}}
+          resources:
+            requests: {cpu: "300m", memory: "300Mi"}
         - name: selenium
           image: eu.gcr.io/akeneo-ci/selenium:standalone-firefox-2.53.1-beryllium
-          imagePullPolicy: Always
+          command: ["/bin/bash", "-c"]
+          args:
+            - |
+              /opt/bin/entry_point.sh &
+              CHILD_PID=$!
+              (while true; do if [[ -f "/tmp/pod/main-terminated" ]]; then kill $CHILD_PID; fi; sleep 1; done) &
+              wait $CHILD_PID
+              if [[ -f "/tmp/pod/main-terminated" ]]; then exit 0; fi
           volumeMounts:
-            - mountPath: /home/jenkins
-              name: pim
-          resources: {limits: {memory: "1000Mi"},requests: {memory: "1000Mi"}}
-        - name: pubsub
-          image: eu.gcr.io/akeneo-ci/gcloud
-          imagePullPolicy: Always
-          command: ["gcloud.phar"]
-          args: ["pubsub:message:consume", "SUBSCRIPTION_NAME", "RESULT_TOPIC","-vvvv"]
-          env:
-            - { name: DOCKER_API_VERSION, value: "1.23" }
-            - { name: POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
-          volumeMounts:
-            - { name: docker, mountPath: /var/run/docker.sock }
             - { name: pim, mountPath: /home/jenkins }
             - { name: artifacts, mountPath: /tmp/behat/screenshots }
-          resources: {limits: {memory: "200Mi"},requests: {memory: "200Mi"}}
+            - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
+          env:
+            - { name: JAVA_OPTS, value: "-Xms1g -Xmx1g " }
+          resources:
+            requests: {cpu: "300m", memory: "1500Mi"}
+        - name: pubsub
+          image: eu.gcr.io/akeneo-ci/gcloud:1.0.17
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              trap "touch /tmp/pod/main-terminated" EXIT
+              gcloud.phar pubsub:message:consume SUBSCRIPTION_NAME RESULT_TOPIC
+          env:
+            - { name: REDIS_URI, value: "tcp://redis.jenkins-prod:6379" }
+            - { name: POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
+            - { name: NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
+          volumeMounts:
+            - { name: pim, mountPath: /home/jenkins }
+            - { name: artifacts, mountPath: /tmp/behat/screenshots }
+            - { name: tmp-pod, mountPath: /tmp/pod }
+          resources:
+            requests: {cpu: "100m", memory: "100Mi"}
       volumes:
-        - { name: pim, emptyDir: {}}
-        - { name: docker, hostPath: {path: /var/run/docker.sock}}
+        - { name: pim, emptyDir: {medium: Memory}}
+        - { name: tmp-pod, emptyDir: {medium: Memory}}
         - { name: artifacts, emptyDir: {medium: Memory}}
-      restartPolicy: OnFailure
+        - { name: mysql, emptyDir: {medium: Memory}}
+      restartPolicy: Never
