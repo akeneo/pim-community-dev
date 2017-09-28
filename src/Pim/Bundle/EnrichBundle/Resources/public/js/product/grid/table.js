@@ -170,7 +170,7 @@ define(
                 }
 
                 if (filters.pageSize) {
-                    urlParams[`${gridName}[_pager][_per_page]`] = 100;
+                    urlParams[`${gridName}[_pager][_per_page]`] = 25;
                 }
 
                 if (filters.currentPage) {
