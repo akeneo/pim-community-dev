@@ -11,6 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\ProgressBar;
+
 
 /**
  * Refresh versioning data
@@ -64,8 +66,8 @@ class RefreshCommand extends ContainerAwareCommand
             return;
         }
 
-        $progress = $this->getHelperSet()->get('progress');
-        $progress->start($output, $totalPendings);
+        $progress = new ProgressBar($output, $totalPendings);
+        $progress->start();
 
         $batchSize = $input->getOption('batch-size');
 
