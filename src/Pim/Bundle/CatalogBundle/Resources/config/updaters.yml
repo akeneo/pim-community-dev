@@ -25,7 +25,6 @@ parameters:
     pim_catalog.updater.setter.value.class:                   Pim\Component\Catalog\Updater\Setter\AttributeSetter
     pim_catalog.updater.setter.category_field.class:          Pim\Component\Catalog\Updater\Setter\CategoryFieldSetter
     pim_catalog.updater.setter.group_field.class:             Pim\Component\Catalog\Updater\Setter\GroupFieldSetter
-    pim_catalog.updater.setter.variant_group_field.class:     Pim\Component\Catalog\Updater\Setter\VariantGroupFieldSetter
     pim_catalog.updater.setter.family_field.class:            Pim\Component\Catalog\Updater\Setter\FamilyFieldSetter
     pim_catalog.updater.setter.parent_field.class:            Pim\Component\Catalog\Updater\Setter\ParentFieldSetter
     pim_catalog.updater.setter.association_field.class:       Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter
@@ -276,14 +275,6 @@ services:
         arguments:
             - '@pim_catalog.repository.group'
             - ['groups']
-        tags:
-            - { name: 'pim_catalog.updater.setter' }
-
-    pim_catalog.updater.setter.variant_group_field:
-        class: '%pim_catalog.updater.setter.variant_group_field.class%'
-        arguments:
-            - '@pim_catalog.repository.group'
-            - ['variant_group']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 

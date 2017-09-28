@@ -8,7 +8,6 @@ parameters:
     pim_serializer.normalizer.flat.family.class:            Pim\Bundle\VersioningBundle\Normalizer\Flat\FamilyNormalizer
     pim_serializer.normalizer.flat.proxy_group.class:       Pim\Bundle\VersioningBundle\Normalizer\Flat\ProxyGroupNormalizer
     pim_serializer.normalizer.flat.group.class:             Pim\Bundle\VersioningBundle\Normalizer\Flat\GroupNormalizer
-    pim_serializer.normalizer.flat.variant_group.class:     Pim\Bundle\VersioningBundle\Normalizer\Flat\VariantGroupNormalizer
     pim_serializer.normalizer.flat.job_instance.class:      Pim\Bundle\VersioningBundle\Normalizer\Flat\JobInstanceNormalizer
     pim_serializer.normalizer.flat.label_translation.class: Pim\Bundle\VersioningBundle\Normalizer\Flat\TranslationNormalizer
     pim_serializer.normalizer.flat.product.class:           Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductNormalizer
@@ -83,7 +82,6 @@ services:
         class: '%pim_serializer.normalizer.flat.proxy_group.class%'
         arguments:
             - '@pim_versioning.serializer.normalizer.flat.group'
-            - '@pim_versioning.serializer.normalizer.flat.variant_group'
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
@@ -92,12 +90,6 @@ services:
         arguments:
             - '@pim_catalog.normalizer.standard.group'
             - '@pim_versioning.serializer.normalizer.flat.label_translation'
-
-    pim_versioning.serializer.normalizer.flat.variant_group:
-        class: '%pim_serializer.normalizer.flat.variant_group.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.translation'
-            - '@pim_versioning.serializer.normalizer.flat.value'
 
     pim_versioning.serializer.normalizer.flat.job_instance:
         class: '%pim_serializer.normalizer.flat.job_instance.class%'

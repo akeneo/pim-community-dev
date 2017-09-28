@@ -29,21 +29,15 @@ class ProxyGroupNormalizer implements NormalizerInterface
     protected $supportedFormats = ['flat'];
 
     /** @var NormalizerInterface */
-    protected $variantGroupNormalizer;
-
-    /** @var NormalizerInterface */
     protected $groupNormalizer;
 
     /**
      * @param NormalizerInterface $groupNormalizer
-     * @param NormalizerInterface $variantGroupNormalizer
      */
     public function __construct(
-        NormalizerInterface $groupNormalizer,
-        NormalizerInterface $variantGroupNormalizer
+        NormalizerInterface $groupNormalizer
     ) {
         $this->groupNormalizer = $groupNormalizer;
-        $this->variantGroupNormalizer = $variantGroupNormalizer;
     }
 
     /**
@@ -55,10 +49,6 @@ class ProxyGroupNormalizer implements NormalizerInterface
      */
     public function normalize($group, $format = null, array $context = [])
     {
-        if ($group->getType()->isVariant()) {
-            return $this->variantGroupNormalizer->normalize($group, $format, $context);
-        }
-
         return $this->groupNormalizer->normalize($group, $format, $context);
     }
 

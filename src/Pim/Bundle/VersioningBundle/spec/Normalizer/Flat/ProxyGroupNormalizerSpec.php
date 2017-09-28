@@ -11,12 +11,10 @@ use Pim\Component\Catalog\Model\GroupTypeInterface;
 class ProxyGroupNormalizerSpec extends ObjectBehavior
 {
     function let(
-        GroupNormalizer $groupNormalizerFlat,
-        VariantGroupNormalizer $variantGroupNormalizerFlat
+        GroupNormalizer $groupNormalizerFlat
     ) {
         $this->beConstructedWith(
-            $groupNormalizerFlat,
-            $variantGroupNormalizerFlat
+            $groupNormalizerFlat
         );
     }
 
@@ -38,30 +36,12 @@ class ProxyGroupNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_groups_into_flat(
         GroupNormalizer $groupNormalizerFlat,
-        VariantGroupNormalizer $variantGroupNormalizerFlat,
         GroupInterface $group,
         GroupTypeInterface $groupType
     ) {
         $group->getType()->willReturn($groupType);
-        $groupType->isVariant()->willReturn(false);
 
         $groupNormalizerFlat->normalize($group, 'flat', [])->shouldBeCalled();
-        $variantGroupNormalizerFlat->normalize($group, 'flat', [])->shouldNotBeCalled();
-
-        $this->normalize($group, 'flat', []);
-    }
-
-    function it_normalizes_variant_groups_into_flat(
-        GroupNormalizer $groupNormalizerFlat,
-        VariantGroupNormalizer $variantGroupNormalizerFlat,
-        GroupInterface $group,
-        GroupTypeInterface $groupType
-    ) {
-        $group->getType()->willReturn($groupType);
-        $groupType->isVariant()->willReturn(true);
-
-        $variantGroupNormalizerFlat->normalize($group, 'flat', [])->shouldBeCalled();
-        $groupNormalizerFlat->normalize($group, 'flat', [])->shouldNotBeCalled();
 
         $this->normalize($group, 'flat', []);
     }

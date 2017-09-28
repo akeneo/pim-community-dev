@@ -23,7 +23,6 @@ parameters:
     pim_catalog.normalizer.standard.group_type.class: Pim\Component\Catalog\Normalizer\Standard\GroupTypeNormalizer
     pim_catalog.normalizer.standard.locale.class: Pim\Component\Catalog\Normalizer\Standard\LocaleNormalizer
     pim_catalog.normalizer.standard.translation.class: Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer
-    pim_catalog.normalizer.standard.variant_group.class: Pim\Component\Catalog\Normalizer\Standard\VariantGroupNormalizer
     pim_catalog.normalizer.standard.job_instance.class: Akeneo\Component\Batch\Normalizer\Standard\JobInstanceNormalizer
 
 services:
@@ -153,7 +152,6 @@ services:
         class: '%pim_catalog.normalizer.standard.proxy_group.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.group'
-            - '@pim_catalog.normalizer.standard.variant_group'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -178,12 +176,6 @@ services:
         class: '%pim_catalog.normalizer.standard.translation.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 80 }
-
-    pim_catalog.normalizer.standard.variant_group:
-        class: '%pim_catalog.normalizer.standard.variant_group.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.translation'
-            - '@pim_catalog.normalizer.standard.product.product_values'
 
     pim_catalog.normalizer.standard.job_instance:
         class: '%pim_catalog.normalizer.standard.job_instance.class%'
