@@ -2,6 +2,11 @@
 
 # 2.0.0-BETA1 (2017-09-28)
 
+## Better manage products with variants!
+
+- PIM-6560: Product model - As Julia, I would like to have the "complete variant products" on a product model
+- PIM-6451: Variant product - As Julia, I would like to enrich a variant product
+
 # 2.0.0-ALPHA1 (2017-09-25)
 
 ## Better manage products with variants!
