@@ -49,7 +49,6 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 }
                 break;
             case 'groups':
-            case 'variant_group':
                 $convertedItem = $this->convertGroups($data, $convertedItem);
                 break;
             case 'values':

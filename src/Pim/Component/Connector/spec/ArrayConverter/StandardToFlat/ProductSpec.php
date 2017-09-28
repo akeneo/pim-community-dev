@@ -53,7 +53,7 @@ class ProductSpec extends ObjectBehavior
             'enabled'                 => '1',
             'family'                  => 'loudspeakers',
             'parent'                  => 'parent_model_code',
-            'groups'                  => 'sound,audio,mp3,speakers',
+            'groups'                  => 'sound,audio,mp3',
             'UPSELL-groups'           => '',
             'UPSELL-products'         => '',
             'X_SELL-groups'           => 'akeneo_tshirt,oro_tshirt',
@@ -69,7 +69,6 @@ class ProductSpec extends ObjectBehavior
             'family'            => 'loudspeakers',
             'parent'            => 'parent_model_code',
             'groups'            => ['sound', 'audio', 'mp3'],
-            'variant_group'     => 'speakers',
             'associations'      => [
                 'UPSELL' => [
                     'groups'   => [],

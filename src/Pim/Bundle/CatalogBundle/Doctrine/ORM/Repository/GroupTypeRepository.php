@@ -18,36 +18,6 @@ class GroupTypeRepository extends EntityRepository implements GroupTypeRepositor
     /**
      * {@inheritdoc}
      */
-    public function getAllGroupsExceptVariantQB()
-    {
-        $qb = $this->createQueryBuilder('group_type')
-            ->andWhere('group_type.variant = 0')
-            ->addOrderBy('group_type.code', 'ASC');
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTypeByGroup($code)
-    {
-        try {
-            return $this->createQueryBuilder('group_type')
-                ->innerJoin('group_type.groups', 'g')
-                ->select('group_type.variant')
-                ->where('g.code = :code')
-                ->setParameter('code', $code)
-                ->getQuery()
-                ->getSingleScalarResult();
-        } catch (UnexpectedResultException $e) {
-            return null;
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByIdentifier($code)
     {
         return $this->findOneBy(['code' => $code]);
@@ -64,14 +34,16 @@ class GroupTypeRepository extends EntityRepository implements GroupTypeRepositor
     /**
      * {@inheritdoc}
      */
-    public function getVariantGroupType()
+    public function findTypeIds($isVariant)
     {
-        $query = $this
-            ->createQueryBuilder('group_type')
-            ->andWhere('group_type.variant = 1')
-            ->getQuery()
-        ;
+        $query = $this->_em->createQueryBuilder()
+            ->select('g.id')
+            ->from($this->_entityName, 'g', 'g.id')
+            ->leftJoin('g.translations', 't')
+            ->andWhere('g.variant = :variant')
+            ->setParameter('variant', $isVariant)
+            ->getQuery();
 
-        return $query->getOneOrNullResult();
+        return array_keys($query->getArrayResult());
     }
 }

@@ -42,9 +42,6 @@ class Group implements GroupInterface
     /**  @var ArrayCollection $translations */
     protected $translations;
 
-    /**  @var ProductTemplateInterface */
-    protected $productTemplate;
-
     /**
      * Constructor
      */

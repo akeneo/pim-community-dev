@@ -15,19 +15,11 @@ use Doctrine\Common\Persistence\ObjectRepository;
 interface GroupTypeRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
 {
     /**
-     * @return mixed
-     */
-    public function getAllGroupsExceptVariantQB();
-
-    /**
-     * @param string $code
+     * Find axis technical identifiers
      *
-     * @return string
+     * @param bool $isVariant
+     *
+     * @return array
      */
-    public function getTypeByGroup($code);
-
-    /**
-     * @return mixed
-     */
-    public function getVariantGroupType();
+    public function findTypeIds($isVariant);
 }

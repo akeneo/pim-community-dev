@@ -103,9 +103,6 @@ class MassOperationConverter implements ConverterInterface
                 case 'groups':
                     return $this->checkAclForType('groups');
                 break;
-                case 'variant_group':
-                    return $this->checkAclForType('variant_group');
-                break;
                 default:
                     return true;
                 break;

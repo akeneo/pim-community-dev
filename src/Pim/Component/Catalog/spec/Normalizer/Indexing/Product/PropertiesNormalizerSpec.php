@@ -143,8 +143,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         ValueCollectionInterface $valueCollection,
         FamilyInterface $family,
-        Collection $completenesses,
-        Group $variantGroup
+        Collection $completenesses
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 

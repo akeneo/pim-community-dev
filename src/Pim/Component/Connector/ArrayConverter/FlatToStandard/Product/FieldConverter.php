@@ -42,7 +42,7 @@ class FieldConverter implements FieldConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function convert(string $fieldName, string $value): array
+    public function convert(string $fieldName, string $value): ConvertedField
     {
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
 
@@ -50,17 +50,17 @@ class FieldConverter implements FieldConverterInterface
             $value = $this->fieldSplitter->splitCollection($value);
             list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($fieldName);
 
-            return [new ConvertedField('associations', [$associationTypeCode => [$associatedWith => $value]])];
+            return new ConvertedField('associations', [$associationTypeCode => [$associatedWith => $value]]);
         } elseif (in_array($fieldName, ['categories'])) {
             $categories = $this->fieldSplitter->splitCollection($value);
 
-            return [new ConvertedField($fieldName, $categories)];
+            return new ConvertedField($fieldName, $categories);
         } elseif (in_array($fieldName, ['groups'])) {
-            return $this->extractVariantGroup($value);
+            return $this->extractGroup($value);
         } elseif ('enabled' === $fieldName) {
-            return [new ConvertedField($fieldName, (bool) $value)];
+            return new ConvertedField($fieldName, (bool) $value);
         } elseif (in_array($fieldName, ['family', 'parent'])) {
-            return [new ConvertedField($fieldName, $value)];
+            return new ConvertedField($fieldName, $value);
         }
 
         throw new \LogicException(sprintf('No converters found for attribute type "%s"', $fieldName));
@@ -85,17 +85,12 @@ class FieldConverter implements FieldConverterInterface
      *
      * @param string $value
      *
-     * @return array
+     * @return ConvertedField
      */
-    protected function extractVariantGroup($value): array
+    protected function extractGroup($value): ConvertedField
     {
-        $data = $variantGroups = $productGroups = [];
         $productGroups = $this->fieldSplitter->splitCollection($value);
 
-        if (0 < count($productGroups)) {
-            $data[] = new ConvertedField('groups', $productGroups);
-        }
-
-        return $data;
+        return new ConvertedField('groups', $productGroups);
     }
 }

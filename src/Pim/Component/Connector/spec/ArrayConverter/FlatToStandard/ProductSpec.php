@@ -119,17 +119,17 @@ class ProductSpec extends ObjectBehavior
         $fieldConverter->supportsColumn('X_SELL-products')->willReturn(true);
         $fieldConverter->supportsColumn('SUBSTITUTION-products')->willReturn(true);
 
-        $fieldConverter->convert('categories', 'audio_video_sales,loudspeakers,sony')->willReturn([$categories]);
+        $fieldConverter->convert('categories', 'audio_video_sales,loudspeakers,sony')->willReturn($categories);
         $categories->appendTo([])->willReturn(['categories' => ['audio_video_sales', 'loudspeakers', 'sony']]);
 
-        $fieldConverter->convert('enabled', '1')->willReturn([$enable]);
+        $fieldConverter->convert('enabled', '1')->willReturn($enable);
         $enable->appendTo(['categories' => ['audio_video_sales', 'loudspeakers', 'sony']])
             ->willReturn([
                 'categories' => ['audio_video_sales', 'loudspeakers', 'sony'],
                 'enabled' => true
             ]);
 
-        $fieldConverter->convert('X_SELL-groups', 'group-A')->willReturn([$xSellGroup]);
+        $fieldConverter->convert('X_SELL-groups', 'group-A')->willReturn($xSellGroup);
         $xSellGroup->appendTo([
             'categories' => ['audio_video_sales', 'loudspeakers', 'sony'],
             'enabled' => true
@@ -139,7 +139,7 @@ class ProductSpec extends ObjectBehavior
             'associations' => ['X_SELL' => ['groups' => ['group-A']]]
         ]);
 
-        $fieldConverter->convert('X_SELL-products', 'sku-A, sku-B')->willReturn([$xSellProduct]);
+        $fieldConverter->convert('X_SELL-products', 'sku-A, sku-B')->willReturn($xSellProduct);
         $xSellProduct->appendTo([
             'categories' => ['audio_video_sales', 'loudspeakers', 'sony'],
             'enabled' => true,
@@ -155,7 +155,7 @@ class ProductSpec extends ObjectBehavior
             ]
         ]);
 
-        $fieldConverter->convert('SUBSTITUTION-products', 'sku-C')->willReturn([$substitution]);
+        $fieldConverter->convert('SUBSTITUTION-products', 'sku-C')->willReturn($substitution);
         $substitution->appendTo([
             'categories' => ['audio_video_sales', 'loudspeakers', 'sony'],
             'enabled' => true,
@@ -323,7 +323,7 @@ class ProductSpec extends ObjectBehavior
         $fieldConverter->supportsColumn('sku')->willReturn(false);
         $fieldConverter->supportsColumn('enabled')->willReturn(true);
 
-        $fieldConverter->convert('enabled', '1')->willReturn([$enable]);
+        $fieldConverter->convert('enabled', '1')->willReturn($enable);
         $enable->appendTo([])
             ->willReturn([
                 'enabled' => true
