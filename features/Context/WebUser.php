@@ -2709,6 +2709,24 @@ class WebUser extends PimContext
     }
 
     /**
+     * @When /^I uncollapse the column$/
+     */
+    public function iUncollapseTheColumn()
+    {
+        $this->spin(function () {
+            $collapseButtons = $this->getCurrentPage()->findAll('css', '.AknColumn-collapseButton');
+
+            foreach ($collapseButtons as $collapseButton) {
+                if ($collapseButton->isVisible()) {
+                    $collapseButton->click();
+                }
+            }
+
+            return null === $this->getCurrentPage()->find('css', '.AknColumn--collapsed');
+        }, 'Could not uncollapse the column');
+    }
+
+    /**
      * @param NodeElement $tab
      *
      * @return integer

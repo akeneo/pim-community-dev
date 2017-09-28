@@ -20,9 +20,11 @@ Feature: Filter products by text field
       | 13572541 | Canon 5D + EF 24-105 F5L IS    |
       | 135-2541 | Canon 5D + EF 25-15 FL         |
     When I am on the products grid
+    And I collapse the column
     And I display the columns SKU, Name, Family, Complete, Created at and Updated at
     Then I should see products "HP LA2206xc + WF722A", "Canon 5D + EF 24-105 F4L IS", "Canon 5D + EF 24-105mm f/4L IS" and "Canon 5D + EF 24-105 F5L IS"
     And the grid should contain 5 elements
+    And I uncollapse the column
     And I should be able to use the following filters:
       | filter | operator         | value                | result                                                                                      |
       | name   | contains         | HP LA2206xc + WF     | HP LA2206xc + WF722A                                                                        |

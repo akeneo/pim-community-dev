@@ -25,6 +25,7 @@ Feature: Display reference data in the grid
       | high-heels | sole_fabric | cashmerewool, neoprene |
       | high-heels | sole_color  | red                    |
     And I am on the products grid
+    And I collapse the column
     When I display the columns SKU, Sole color and Sole fabric
     Then the row "high-heels" should contain:
       | column      | value                    |
@@ -50,11 +51,13 @@ Feature: Display reference data in the grid
       | high-heels | cap_color   | Purple        | tablet | en_US  |
       | high-heels | cap_color   | Orange        | mobile | en_US  |
     And I am on the products grid
+    And I collapse the column
     When I display the columns SKU, Cap color and Lace fabric
     Then the row "high-heels" should contain:
       | column      | value           |
       | Cap color   | Purple          |
       | Lace fabric | [cotton], Straw |
+    And I uncollapse the column
     When I switch the scope to "Mobile"
     Then the row "high-heels" should contain:
       | column      | value          |

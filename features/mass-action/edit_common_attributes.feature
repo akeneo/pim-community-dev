@@ -96,6 +96,7 @@ Feature: Edit common attributes of many products at once
   @info https://akeneo.atlassian.net/browse/PIM-3070
   Scenario: Successfully mass edit a price not added to the product
     Given I am on the products grid
+    And I collapse the column
     And I create a new product
     And I fill in the following information in the popin:
       | SKU             | Shoes |
