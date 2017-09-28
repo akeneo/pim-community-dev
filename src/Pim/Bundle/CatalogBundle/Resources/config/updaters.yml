@@ -9,7 +9,6 @@ parameters:
     pim_catalog.updater.product_template.class:               Pim\Component\Catalog\Updater\ProductTemplateUpdater
     pim_catalog.updater.attribute_option.class:               Pim\Component\Catalog\Updater\AttributeOptionUpdater
     pim_catalog.updater.attribute.class:                      Pim\Component\Catalog\Updater\AttributeUpdater
-    pim_catalog.updater.variant_group.class:                  Pim\Component\Catalog\Updater\VariantGroupUpdater
     pim_catalog.updater.group.class:                          Pim\Component\Catalog\Updater\GroupUpdater
     pim_catalog.updater.association_type.class:               Pim\Component\Catalog\Updater\AssociationTypeUpdater
     pim_catalog.updater.family.class:                         Pim\Component\Catalog\Updater\FamilyUpdater
@@ -59,7 +58,7 @@ services:
             - '@pim_catalog.updater.property_setter'
             - '@pim_catalog.updater.product_template'
             - '@pim_catalog.updater.entity_with_values'
-            - ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations', 'parent']
+            - ['enabled', 'family', 'categories', 'groups', 'associations', 'parent']
             - ['identifier', 'created', 'updated']
 
     pim_catalog.updater.product_model:
@@ -181,17 +180,6 @@ services:
         class: '%pim_catalog.updater.association_type.class%'
         arguments:
             - '@pim_localization.updater.translatable'
-
-    pim_catalog.updater.variant_group:
-        class: '%pim_catalog.updater.variant_group.class%'
-        arguments:
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.group_type'
-            - '@pim_catalog.factory.value'
-            - '@akeneo_file_storage.repository.file_info'
-            - '@akeneo_file_storage.file_storage.file.file_storer'
-            - '@pim_catalog.query.product_query_builder_factory'
-            - '%pim_catalog.entity.product_template.class%'
 
     pim_catalog.updater.group:
         class: '%pim_catalog.updater.group.class%'
