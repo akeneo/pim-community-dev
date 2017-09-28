@@ -11,6 +11,7 @@ use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -46,25 +47,31 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
     /** @var CompletenessCalculatorInterface */
     private $completenessCalculator;
 
+    /** @var VariantProductRatioInterface */
+    private $variantProductRatioQuery;
+
     /**
      * @param FileNormalizer                            $fileNormalizer
      * @param LocaleRepositoryInterface                 $localeRepository
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      * @param NormalizerInterface                       $completenessCollectionNormalizer
      * @param CompletenessCalculatorInterface           $completenessCalculator
+     * @param VariantProductRatioInterface              $variantProductRatioQuery
      */
     public function __construct(
         FileNormalizer $fileNormalizer,
         LocaleRepositoryInterface $localeRepository,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         NormalizerInterface $completenessCollectionNormalizer,
-        CompletenessCalculatorInterface $completenessCalculator
+        CompletenessCalculatorInterface $completenessCalculator,
+        VariantProductRatioInterface $variantProductRatioQuery
     ) {
         $this->fileNormalizer = $fileNormalizer;
         $this->localeRepository = $localeRepository;
         $this->attributesProvider = $attributesProvider;
         $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
         $this->completenessCalculator = $completenessCalculator;
+        $this->variantProductRatioQuery = $variantProductRatioQuery;
     }
 
     /**
@@ -190,8 +197,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
     private function getCompletenessDependingOnEntity(EntityWithFamilyVariantInterface $entity): array
     {
         if ($entity instanceof ProductModelInterface) {
-            // TODO: replace this placeholder by the real values, with PIM-6560
-            return [];
+            return $this->variantProductRatioQuery->findComplete($entity)->values();
         }
 
         if ($entity instanceof VariantProductInterface) {
@@ -205,6 +211,8 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
 
             return $this->completenessCollectionNormalizer->normalize($completenessCollection, 'internal_api');
         }
+
+        return [];
     }
 
     /**

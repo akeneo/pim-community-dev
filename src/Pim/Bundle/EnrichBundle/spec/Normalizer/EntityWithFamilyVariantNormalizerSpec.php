@@ -14,6 +14,8 @@ use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
+use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -24,14 +26,16 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         LocaleRepositoryInterface $localeRepository,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         NormalizerInterface $completenessCollectionNormalizer,
-        CompletenessCalculatorInterface $completenessCalculator
+        CompletenessCalculatorInterface $completenessCalculator,
+        VariantProductRatioInterface $variantProductRatioQuery
     ) {
         $this->beConstructedWith(
             $fileNormalizer,
             $localeRepository,
             $attributesProvider,
             $completenessCollectionNormalizer,
-            $completenessCalculator
+            $completenessCalculator,
+            $variantProductRatioQuery
         );
     }
 
@@ -118,11 +122,13 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_product_model(
         $localeRepository,
         $attributesProvider,
+        $variantProductRatioQuery,
         ProductModelInterface $productModel,
         AttributeInterface $colorAttribute,
         ValueInterface $colorValue,
         AttributeOptionInterface $colorAttributeOption,
-        AttributeOptionValueInterface $colorAttributeOptionValue
+        AttributeOptionValueInterface $colorAttributeOptionValue,
+        CompleteVariantProducts $completeVariantProducts
     ) {
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
 
@@ -147,6 +153,9 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
 
         $productModel->getImage()->willReturn(null);
 
+        $variantProductRatioQuery->findComplete($productModel)->willReturn($completeVariantProducts);
+        $completeVariantProducts->values()->willReturn(['NORMALIZED COMPLETENESS']);
+
         $this->normalize($productModel, 'internal_api')->shouldReturn([
             'id'                 => 5,
             'identifier'         => 'tshirt_white',
@@ -161,7 +170,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             'order_string'       => '2',
             'image'              => null,
             'model_type'         => 'product_model',
-            'completeness'       => []
+            'completeness'       => ['NORMALIZED COMPLETENESS']
         ]);
     }
 }

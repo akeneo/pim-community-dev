@@ -55,5 +55,6 @@ Feature: Sort products per attributes
       | blue_shirt  | tshirts | blue  |
     And I am logged in as "Mary"
     And I am on the products grid
+    And I collapse the column
     And I display the columns ID, Label, Color, Family, Size, Status, Complete
     Then I should be able to sort the rows by Color

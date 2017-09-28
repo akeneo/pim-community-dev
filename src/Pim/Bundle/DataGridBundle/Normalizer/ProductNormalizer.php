@@ -59,6 +59,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $data['document_type'] = IdEncoder::PRODUCT_TYPE;
         $data['technical_id'] = $product->getId();
         $data['search_id'] = IdEncoder::encode($data['document_type'], $data['technical_id']);
+        $data['complete_variant_product'] = null;
 
         return $data;
     }

@@ -22,6 +22,7 @@ services:
         class: '%pim_datagrid.normalizer.product_model.class%'
         arguments:
             - '@pim_catalog.filter.chained'
+            - '@pim_catalog.doctrine.query.find_variant_product_completeness'
         tags:
             - { name: pim_serializer.normalizer }
 
