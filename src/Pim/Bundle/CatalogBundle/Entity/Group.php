@@ -4,12 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Group entity
@@ -261,23 +258,5 @@ class Group implements GroupInterface
     public function getReference()
     {
         return $this->code;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProductTemplate()
-    {
-        return $this->productTemplate;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProductTemplate(ProductTemplateInterface $productTemplate)
-    {
-        $this->productTemplate = $productTemplate;
-
-        return $this;
     }
 }

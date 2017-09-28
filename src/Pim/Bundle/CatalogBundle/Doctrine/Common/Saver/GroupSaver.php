@@ -10,8 +10,6 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
-use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
-use Pim\Component\Catalog\Manager\ProductTemplateMediaManager;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
@@ -32,12 +30,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
 
     /** @var BulkSaverInterface */
     protected $productSaver;
-
-    /** @var ProductTemplateMediaManager */
-    protected $templateMediaManager;
-
-    /** @var ProductTemplateApplierInterface */
-    protected $productTplApplier;
 
     /** @var VersionContext */
     protected $versionContext;
@@ -60,8 +52,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     /**
      * @param ObjectManager                       $objectManager
      * @param BulkSaverInterface                  $productSaver
-     * @param ProductTemplateMediaManager         $templateMediaManager
-     * @param ProductTemplateApplierInterface     $productTplApplier
      * @param VersionContext                      $versionContext
      * @param SavingOptionsResolverInterface      $optionsResolver
      * @param EventDispatcherInterface            $eventDispatcher
@@ -72,8 +62,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     public function __construct(
         ObjectManager $objectManager,
         BulkSaverInterface $productSaver,
-        ProductTemplateMediaManager $templateMediaManager,
-        ProductTemplateApplierInterface $productTplApplier,
         VersionContext $versionContext,
         SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
@@ -83,8 +71,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
     ) {
         $this->objectManager = $objectManager;
         $this->productSaver = $productSaver;
-        $this->templateMediaManager = $templateMediaManager;
-        $this->productTplApplier = $productTplApplier;
         $this->versionContext = $versionContext;
         $this->optionsResolver = $optionsResolver;
         $this->eventDispatcher = $eventDispatcher;
@@ -139,18 +125,6 @@ class GroupSaver implements SaverInterface, BulkSaverInterface
         }
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($groups, $options));
-    }
-
-    /**
-     * Copy the variant group values on any products belonging in the variant group
-     *
-     * @param GroupInterface $group
-     */
-    protected function copyVariantGroupValues(GroupInterface $group)
-    {
-        $template = $group->getProductTemplate();
-        $products = $group->getProducts()->toArray();
-        $this->productTplApplier->apply($template, $products);
     }
 
     /**

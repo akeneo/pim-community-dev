@@ -31,7 +31,6 @@ parameters:
     pim_enrich.controller.rest.job_execution.class:           Pim\Bundle\EnrichBundle\Controller\Rest\JobExecutionController
     pim_enrich.controller.rest.mass_edit.class:               Pim\Bundle\EnrichBundle\Controller\Rest\MassEditController
     pim_enrich.controller.rest.sequential_edit.class:        Pim\Bundle\EnrichBundle\Controller\Rest\SequentialEditController
-    pim_enrich.controller.rest.product_template.class:        Pim\Bundle\EnrichBundle\Controller\Rest\ProductTemplateController
     pim_enrich.controller.job_tracker.class:                  Pim\Bundle\EnrichBundle\Controller\JobTrackerController
     pim_enrich.controller.rest.api_client.class:              Pim\Bundle\EnrichBundle\Controller\Rest\ApiClientController
 
@@ -238,18 +237,6 @@ services:
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@pim_enrich.query.product_query_sequential_edit_builder_factory'
-
-    pim_enrich.controller.rest.product_template:
-        class: '%pim_enrich.controller.rest.product_template.class%'
-        arguments:
-            - '@pim_catalog.builder.product'
-            - '@pim_user.context.user'
-            - '@pim_enrich.converter.enrich_to_standard.product_value'
-            - '@pim_catalog.localization.localizer.converter'
-            - '@pim_catalog.updater.product'
-            - '@pim_catalog.validator.product'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_enrich.normalizer.product_violation'
 
     pim_enrich.controller.rest.family:
         class: '%pim_enrich.controller.rest.family.class%'

@@ -6,7 +6,6 @@ parameters:
     pim_catalog.updater.product_property_adder.class:         Pim\Component\Catalog\Updater\ProductPropertyAdder
     pim_catalog.updater.product_property_copier.class:        Pim\Component\Catalog\Updater\ProductPropertyCopier
     pim_catalog.updater.product_property_remover.class:       Pim\Component\Catalog\Updater\ProductPropertyRemover
-    pim_catalog.updater.product_template.class:               Pim\Component\Catalog\Updater\ProductTemplateUpdater
     pim_catalog.updater.attribute_option.class:               Pim\Component\Catalog\Updater\AttributeOptionUpdater
     pim_catalog.updater.attribute.class:                      Pim\Component\Catalog\Updater\AttributeUpdater
     pim_catalog.updater.group.class:                          Pim\Component\Catalog\Updater\GroupUpdater
@@ -56,7 +55,6 @@ services:
         class: '%pim_catalog.updater.product.class%'
         arguments:
             - '@pim_catalog.updater.property_setter'
-            - '@pim_catalog.updater.product_template'
             - '@pim_catalog.updater.entity_with_values'
             - ['enabled', 'family', 'categories', 'groups', 'associations', 'parent']
             - ['identifier', 'created', 'updated']
@@ -99,12 +97,6 @@ services:
         arguments:
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.updater.copier.registry'
-
-    pim_catalog.updater.product_template:
-        class: '%pim_catalog.updater.product_template.class%'
-        arguments:
-            - '@pim_catalog.updater.property_setter'
-            - '@pim_serializer'
 
     pim_catalog.updater.attribute_option:
         class: '%pim_catalog.updater.attribute_option.class%'

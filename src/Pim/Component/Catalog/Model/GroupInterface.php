@@ -108,16 +108,4 @@ interface GroupInterface extends
      * @return GroupInterface
      */
     public function setProducts(array $products);
-
-    /**
-     * @return ProductTemplateInterface
-     */
-    public function getProductTemplate();
-
-    /**
-     * @param ProductTemplateInterface $productTemplate
-     *
-     * @return GroupInterface
-     */
-    public function setProductTemplate(ProductTemplateInterface $productTemplate);
 }

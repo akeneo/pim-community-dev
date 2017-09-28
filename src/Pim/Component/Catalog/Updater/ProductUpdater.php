@@ -21,9 +21,6 @@ class ProductUpdater implements ObjectUpdaterInterface
     /** @var PropertySetterInterface */
     protected $propertySetter;
 
-    /** @var ProductTemplateUpdaterInterface */
-    protected $templateUpdater;
-
     /** @var ObjectUpdaterInterface */
     protected $valuesUpdater;
 
@@ -35,20 +32,17 @@ class ProductUpdater implements ObjectUpdaterInterface
 
     /**
      * @param PropertySetterInterface         $propertySetter
-     * @param ProductTemplateUpdaterInterface $templateUpdater
      * @param ObjectUpdaterInterface          $valuesUpdater
      * @param array                           $supportedFields
      * @param array                           $ignoredFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
-        ProductTemplateUpdaterInterface $templateUpdater,
         ObjectUpdaterInterface $valuesUpdater,
         array $supportedFields,
         array $ignoredFields
     ) {
         $this->propertySetter = $propertySetter;
-        $this->templateUpdater = $templateUpdater;
         $this->valuesUpdater = $valuesUpdater;
         $this->supportedFields = $supportedFields;
         $this->ignoredFields = $ignoredFields;

@@ -11,11 +11,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
-use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
-use Pim\Component\Catalog\Manager\ProductTemplateMediaManager;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Prophecy\Argument;
@@ -26,8 +23,6 @@ class GroupSaverSpec extends ObjectBehavior
     function let(
         ObjectManager $objectManager,
         BulkSaverInterface $productSaver,
-        ProductTemplateMediaManager $templateMediaManager,
-        ProductTemplateApplierInterface $templateApplier,
         SavingOptionsResolverInterface $optionsResolver,
         VersionContext $versionContext,
         EventDispatcherInterface $eventDispatcher,
@@ -37,8 +32,6 @@ class GroupSaverSpec extends ObjectBehavior
         $this->beConstructedWith(
             $objectManager,
             $productSaver,
-            $templateMediaManager,
-            $templateApplier,
             $versionContext,
             $optionsResolver,
             $eventDispatcher,

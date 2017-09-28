@@ -4,25 +4,20 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
-use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
-use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
 use Pim\Component\Catalog\Updater\ProductUpdater;
 
 class ProductUpdaterSpec extends ObjectBehavior
 {
     function let(
         PropertySetterInterface $propertySetter,
-        ProductTemplateUpdaterInterface $templateUpdater,
         ObjectUpdaterInterface $valuesUpdater
     ) {
         $this->beConstructedWith(
             $propertySetter,
-            $templateUpdater,
             $valuesUpdater,
             ['enabled', 'family', 'categories', 'groups', 'associations'],
             ['identifier', 'created', 'updated']

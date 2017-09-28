@@ -29,7 +29,6 @@ parameters:
     pim_catalog.entity.locale.class:                       Pim\Bundle\CatalogBundle\Entity\Locale
     pim_catalog.entity.metric.class:                       Pim\Component\Catalog\Model\Metric
     pim_catalog.entity.product_price.class:                Pim\Component\Catalog\Model\ProductPrice
-    pim_catalog.entity.product_template.class:             Pim\Bundle\CatalogBundle\Entity\ProductTemplate
     pim_catalog.entity.family_variant.class:               Pim\Component\Catalog\Model\FamilyVariant
     pim_catalog.entity.family_variant_translation.class:   Pim\Component\Catalog\Model\FamilyVariantTranslation
     pim_catalog.entity.variant_attribute_set.class:        Pim\Component\Catalog\Model\VariantAttributeSet
