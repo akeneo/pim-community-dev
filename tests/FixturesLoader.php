@@ -74,6 +74,7 @@ class FixturesLoader
     public function load()
     {
         $this->container->get('akeneo_elasticsearch.client.product')->resetIndex();
+        $this->container->get('akeneo_elasticsearch.client.product_model')->resetIndex();
 
         $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
