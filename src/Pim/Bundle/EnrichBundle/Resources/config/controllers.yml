@@ -215,6 +215,7 @@ services:
             - '@pim_catalog.saver.attribute'
             - '@oro_security.security_facade'
             - '@pim_catalog.factory.attribute_group'
+            - '@event_dispatcher'
 
     pim_enrich.controller.rest.category:
         class: '%pim_enrich.controller.rest.category.class%'

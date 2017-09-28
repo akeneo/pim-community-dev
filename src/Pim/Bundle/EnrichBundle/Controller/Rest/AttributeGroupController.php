@@ -11,8 +11,11 @@ use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -70,6 +73,9 @@ class AttributeGroupController
     /** @var SimpleFactoryInterface */
     protected $attributeGroupFactory;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /**
      * @param EntityRepository              $attributeGroupRepo
      * @param SearchableRepositoryInterface $attributeGroupSearchableRepository
@@ -84,6 +90,7 @@ class AttributeGroupController
      * @param SaverInterface                $attributeSaver
      * @param SecurityFacade                $securityFacade
      * @param SimpleFactoryInterface        $attributeGroupFactory
+     * @param EventDispatcherInterface      $eventDispatcher
      */
     public function __construct(
         EntityRepository $attributeGroupRepo,
@@ -98,7 +105,8 @@ class AttributeGroupController
         ObjectUpdaterInterface $attributeUpdater,
         SaverInterface $attributeSaver,
         SecurityFacade $securityFacade,
-        SimpleFactoryInterface $attributeGroupFactory
+        SimpleFactoryInterface $attributeGroupFactory,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->attributeGroupRepo                 = $attributeGroupRepo;
         $this->attributeGroupSearchableRepository = $attributeGroupSearchableRepository;
@@ -113,6 +121,7 @@ class AttributeGroupController
         $this->attributeSaver                     = $attributeSaver;
         $this->securityFacade                     = $securityFacade;
         $this->attributeGroupFactory              = $attributeGroupFactory;
+        $this->eventDispatcher                    = $eventDispatcher;
     }
 
     /**
@@ -213,6 +222,11 @@ class AttributeGroupController
 
         $this->saver->save($attributeGroup);
 
+        $this->eventDispatcher->dispatch(
+            AttributeGroupEvents::POST_SAVE,
+            new GenericEvent($attributeGroup, ['data' => $data])
+        );
+
         return new JsonResponse(
             $this->normalizer->normalize(
                 $attributeGroup,
@@ -265,6 +279,11 @@ class AttributeGroupController
             $this->attributeUpdater->update($attribute, $data);
             $this->attributeSaver->save($attribute);
         }
+
+        $this->eventDispatcher->dispatch(
+            AttributeGroupEvents::POST_SAVE,
+            new GenericEvent($attributeGroup, ['data' => $data])
+        );
 
         return new JsonResponse(
             $this->normalizer->normalize(
