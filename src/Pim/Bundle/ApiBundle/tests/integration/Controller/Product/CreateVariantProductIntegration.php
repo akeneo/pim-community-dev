@@ -1028,7 +1028,7 @@ JSON;
         $this->assertNotSame('2014-06-14T13:12:50+02:00', $standardizedProduct['updated']);
     }
 
-    public function testProductVariantCreationWithDuplicatedAxes()
+    public function testProductVariantCreationWithSameIdentifier()
     {
         $this->createVariantProduct('apollon_option_b_true', [
             'categories' => ['master'],

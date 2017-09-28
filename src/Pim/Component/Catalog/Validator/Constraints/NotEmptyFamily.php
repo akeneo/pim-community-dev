@@ -20,7 +20,7 @@ class NotEmptyFamily extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function validatedBy(): string
+    public function validatedBy()
     {
         return 'pim_family_not_empty';
     }
