@@ -29,3 +29,4 @@ pim_dashboard:
                 export: Export
                 mass_edit: Mass edit
                 quick_export: Quick export
+                compute_product_models_descendants: Compute product models descendants
