@@ -36,10 +36,3 @@ services:
         arguments:
             - '@pim_user.repository.group'
             - '@akeneo_batch.job.job_instance_repository'
-
-    pimee_security.updater.attribute_group:
-        class: '%pimee_security.updater.attribute_group.class%'
-        arguments:
-            - '@pim_catalog.updater.attribute_group'
-            - '@pimee_security.manager.attribute_group_access'
-            - '@pim_user.repository.group'
