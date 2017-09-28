@@ -126,6 +126,6 @@ Feature: Publish many products at once
     Then exported file of "csv_published_product_quick_export" should contain:
     """
     sku;categories;datasheet;description-de_DE-mobile;description-en_US-mobile;description-fr_FR-mobile;enabled;family;gallery;groups;handmade;length;length-unit;main_color;manufacturer;name-de_DE;name-en_US;name-fr_FR;number_in_stock-mobile;PACK-groups;PACK-products;price-EUR;price-USD;rating;release_date-mobile;secondary_color;side_view;size;SUBSTITUTION-groups;SUBSTITUTION-products;top_view;UPSELL-groups;UPSELL-products;weather_conditions;X_SELL-groups;X_SELL-products
-    unionjack;jackets;;;;;1;jackets;;;0;;CENTIMETER;;;;UnionJack;;;;;;;;;;;;;;;;;;;jackadi
-    jackadi;jackets;;;;;1;jackets;;;0;;CENTIMETER;;;;Jackadi;;;;;;;;;;;;;;;;;;;
+    unionjack;jackets;;;;;1;jackets;;;0;;;;;;UnionJack;;;;;;;;;;;;;;;;;;;jackadi
+    jackadi;jackets;;;;;1;jackets;;;0;;;;;;Jackadi;;;;;;;;;;;;;;;;;;;
     """
