@@ -8,11 +8,10 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Monolog\Handler\StreamHandler;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\ProgressBar;
-
 
 /**
  * Refresh versioning data
