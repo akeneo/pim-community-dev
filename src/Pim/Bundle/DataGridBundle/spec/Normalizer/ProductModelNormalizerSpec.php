@@ -13,15 +13,20 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
+use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductModelNormalizerSpec extends ObjectBehavior
 {
-    function let(NormalizerInterface $normalizer, CollectionFilterInterface $filter)
-    {
-        $this->beConstructedWith($filter);
+    function let(
+        NormalizerInterface $normalizer,
+        CollectionFilterInterface $filter,
+        VariantProductRatioInterface $findVariantProductCompletenessQuery
+    ) {
+        $this->beConstructedWith($filter, $findVariantProductCompletenessQuery);
 
         $normalizer->implement(NormalizerInterface::class);
         $this->setNormalizer($normalizer);
@@ -49,6 +54,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_product_model_with_label(
         $normalizer,
         $filter,
+        $findVariantProductCompletenessQuery,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
@@ -56,13 +62,20 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ValueCollectionInterface $values,
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce,
-        ValueInterface $image
+        ValueInterface $image,
+        CompleteVariantProducts $completeness
     ) {
         $context = [
             'filter_types' => ['pim.transform.product_value.structured'],
             'locales'      => ['en_US'],
             'channels'     => ['ecommerce'],
         ];
+
+        $findVariantProductCompletenessQuery->findComplete($productModel)->willReturn($completeness);
+        $completeness->value('ecommerce', 'en_US')->willReturn([
+            'complete' => 3,
+            'total' => 12
+        ]);
 
         $productModel->getId()->willReturn(78);
         $filter->filterCollection($values, 'pim.transform.product_value.structured', $context)
@@ -134,6 +147,10 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'document_type' => 'product_model',
             'technical_id' => 78,
             'search_id' => 'product_model_78',
+            'complete_variant_product' => [
+                'complete' => 3,
+                'total' => 12
+            ],
         ];
 
         $this->normalize($productModel, 'datagrid',
@@ -143,6 +160,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     function it_normalizes_a_product_model_without_label(
         $normalizer,
         $filter,
+        $findVariantProductCompletenessQuery,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
@@ -150,13 +168,20 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ValueCollectionInterface $values,
         LocaleInterface $localeEN,
         ChannelInterface $channelEcommerce,
-        ValueInterface $image
+        ValueInterface $image,
+        CompleteVariantProducts $completeness
     ) {
         $context = [
             'filter_types' => ['pim.transform.product_value.structured'],
             'locales'      => ['en_US'],
             'channels'     => ['ecommerce'],
         ];
+
+        $findVariantProductCompletenessQuery->findComplete($productModel)->willReturn($completeness);
+        $completeness->value('ecommerce', 'en_US')->willReturn([
+            'complete' => 3,
+            'total' => 12
+        ]);
 
         $filter->filterCollection($values, 'pim.transform.product_value.structured', $context)
             ->willReturn($values);
@@ -228,6 +253,10 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'document_type' => 'product_model',
             'technical_id' => 78,
             'search_id' => 'product_model_78',
+            'complete_variant_product' => [
+                'complete' => 3,
+                'total' => 12
+            ],
         ];
 
         $this->normalize($productModel, 'datagrid', ['locales' => ['en_US'], 'channels' => ['ecommerce']])

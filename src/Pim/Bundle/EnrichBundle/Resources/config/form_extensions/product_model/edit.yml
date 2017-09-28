@@ -173,6 +173,14 @@ extensions:
         config:
             context: base_product
 
+    pim-product-model-edit-form-complete-variant-product:
+        module: pim/product-model-edit-form/complete-variant-product
+        parent: pim-product-model-edit-form
+        targetZone: context
+        position: 120
+        config:
+            context: base_product
+
     pim-product-model-edit-form-validation:
         module: pim/product-edit-form/attributes/validation
         parent: pim-product-model-edit-form-attributes

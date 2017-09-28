@@ -41,6 +41,10 @@ datagrid:
                 label:         Groups
                 data_name:     groups
                 type:          field
+            complete_variant_products:
+                label:         Complete product
+                data_name:     complete_variant_product
+                frontend_type: complete-variant-product
         properties:
             id:
                 type:          field

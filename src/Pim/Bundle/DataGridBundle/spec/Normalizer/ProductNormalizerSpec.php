@@ -142,6 +142,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'document_type' => 'product',
             'technical_id' => 78,
             'search_id' => 'product_78',
+            'complete_variant_product' => null,
         ];
 
         $this->normalize($product, 'datagrid', ['locales' => ['en_US'], 'channels' => ['ecommerce']])->shouldReturn($data);
@@ -241,6 +242,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'document_type' => 'product',
             'technical_id' => 78,
             'search_id' => 'product_78',
+            'complete_variant_product' => null,
         ];
 
         $this->normalize($product, 'datagrid', ['locales' => ['en_US'], 'channels' => ['ecommerce']])->shouldReturn($data);
