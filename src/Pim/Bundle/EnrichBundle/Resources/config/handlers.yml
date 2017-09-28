@@ -1,15 +1,8 @@
 parameters:
-    pim_enrich.form.handler.base.class:             Pim\Bundle\EnrichBundle\Form\Handler\BaseHandler
-    pim_enrich.form.handler.group.class:            Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler
+    pim_enrich.form.handler.base.class:  Pim\Bundle\EnrichBundle\Form\Handler\BaseHandler
+    pim_enrich.form.handler.group.class: Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler
 
 services:
-    pim_enrich.form.handler.attribute_group:
-        class: '%pim_enrich.form.handler.base.class%'
-        arguments:
-            - '@pim_enrich.form.attribute_group'
-            - '@request_stack'
-            - '@pim_catalog.saver.attribute_group'
-
     pim_enrich.form.handler.group:
         class: '%pim_enrich.form.handler.group.class%'
         arguments:
