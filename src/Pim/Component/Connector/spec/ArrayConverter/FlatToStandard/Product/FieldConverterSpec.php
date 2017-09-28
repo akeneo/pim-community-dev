@@ -60,41 +60,18 @@ class FieldConverterSpec extends ObjectBehavior
         ]);
     }
 
-    function it_extracts_variant_group_from_column_group($assocFieldResolver, $fieldSplitter, $groupTypeRepository)
+    function it_extracts_group_from_column_group($assocFieldResolver, $fieldSplitter, $groupTypeRepository)
     {
         $assocFieldResolver->resolveAssociationColumns()->willReturn(['X_SELL-groups', 'associations']);
-        $fieldSplitter->splitCollection('group1,variant_group1,group2')->willReturn([
+        $fieldSplitter->splitCollection('group1,group2')->willReturn([
             'group1',
-            'variant_group1',
             'group2'
         ]);
-        $groupTypeRepository->getTypeByGroup('variant_group1')->willReturn('1');
         $groupTypeRepository->getTypeByGroup('group1')->willReturn('0');
         $groupTypeRepository->getTypeByGroup('group2')->willReturn('0');
 
-        $this->convert('groups', 'group1,variant_group1,group2')->shouldBeLike([
-            new ConvertedField('variant_group', 'variant_group1'),
+        $this->convert('groups', 'group1,group2')->shouldBeLike([
             new ConvertedField('groups', ['group1', 'group2']),
         ]);
-    }
-
-    function it_throws_exception_when_many_variant_groups_are_passed($assocFieldResolver, $fieldSplitter, $groupTypeRepository)
-    {
-        $assocFieldResolver->resolveAssociationColumns()->willReturn(['X_SELL-groups', 'associations']);
-        $fieldSplitter->splitCollection('group1,variant_group1,variant_group2')->willReturn([
-            'group1',
-            'variant_group1',
-            'variant_group2'
-        ]);
-        $groupTypeRepository->getTypeByGroup('group1')->willReturn('0');
-        $groupTypeRepository->getTypeByGroup('variant_group1')->willReturn('1');
-        $groupTypeRepository->getTypeByGroup('variant_group2')->willReturn('1');
-
-        $this->shouldThrow(
-            new \InvalidArgumentException(
-                'The product cannot belong to many variant groups: variant_group1, variant_group2'
-            )
-        )
-        ->duringConvert('groups', 'group1,variant_group1,variant_group2');
     }
 }

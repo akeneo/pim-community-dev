@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -14,6 +15,7 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface;
+use Pim\Component\Catalog\Updater\GroupUpdater;
 
 class GroupUpdaterSpec extends ObjectBehavior
 {
@@ -27,15 +29,15 @@ class GroupUpdaterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Updater\GroupUpdater');
+        $this->shouldHaveType(GroupUpdater::class);
     }
 
     function it_is_a_updater()
     {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface');
+        $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
-    function it_throws_an_exception_when_trying_to_update_anything_else_than_a_variant_group()
+    function it_throws_an_exception_when_trying_to_update_anything_else_than_a_group()
     {
         $this->shouldThrow(
             InvalidObjectException::objectExpected(

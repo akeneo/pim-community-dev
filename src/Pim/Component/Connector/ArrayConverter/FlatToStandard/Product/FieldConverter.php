@@ -90,26 +90,7 @@ class FieldConverter implements FieldConverterInterface
     protected function extractVariantGroup($value): array
     {
         $data = $variantGroups = $productGroups = [];
-        $groups = $this->fieldSplitter->splitCollection($value);
-
-        foreach ($groups as $group) {
-            $isVariant = $this->groupTypeRepository->getTypeByGroup($group);
-            if ('1' === $isVariant) {
-                $variantGroups[] = $group;
-            } else {
-                $productGroups[] = $group;
-            }
-        }
-
-        if (1 < count($variantGroups)) {
-            throw new \InvalidArgumentException(
-                sprintf('The product cannot belong to many variant groups: %s', implode(', ', $variantGroups))
-            );
-        }
-
-        if (0 < count($variantGroups)) {
-            $data[] = new ConvertedField('variant_group', current($variantGroups));
-        }
+        $productGroups = $this->fieldSplitter->splitCollection($value);
 
         if (0 < count($productGroups)) {
             $data[] = new ConvertedField('groups', $productGroups);

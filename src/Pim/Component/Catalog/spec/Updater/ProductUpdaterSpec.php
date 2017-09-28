@@ -24,7 +24,7 @@ class ProductUpdaterSpec extends ObjectBehavior
             $propertySetter,
             $templateUpdater,
             $valuesUpdater,
-            ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations'],
+            ['enabled', 'family', 'categories', 'groups', 'associations'],
             ['identifier', 'created', 'updated']
         );
     }

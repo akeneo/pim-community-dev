@@ -63,7 +63,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn($sku);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);
-        $product->getGroupCodes()->willReturn(['group1', 'group2', 'variant_group_1']);
+        $product->getGroupCodes()->willReturn(['group1', 'group2', 'group_3']);
         $product->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
         $product->getAssociations()->willReturn([]);
         $product->getValues()->willReturn($values);
@@ -74,7 +74,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
                 'family'     => 'shoes',
-                'groups'     => 'group1,group2,variant_group_1',
+                'groups'     => 'group1,group2,group_3',
                 'categories' => 'nice shoes,converse',
                 'sku'        => 'sku-001',
                 'enabled'    => 1,
@@ -129,7 +129,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn($sku);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);
-        $product->getGroupCodes()->willReturn(['group1,group2', 'variant_group_1']);
+        $product->getGroupCodes()->willReturn(['group1,group2', 'group_3']);
         $product->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
         $product->getAssociations()->willReturn([$myCrossSell, $myUpSell]);
         $product->getValues()->willReturn($values);
@@ -140,7 +140,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
                 'family'              => 'shoes',
-                'groups'              => 'group1,group2,variant_group_1',
+                'groups'              => 'group1,group2,group_3',
                 'categories'          => 'nice shoes,converse',
                 'cross_sell-groups'   => '',
                 'cross_sell-products' => '',
@@ -235,7 +235,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn($price);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);
-        $product->getGroupCodes()->willReturn(['group1', 'group2', 'variant_group_1']);
+        $product->getGroupCodes()->willReturn(['group1', 'group2', 'group_3']);
         $product->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
         $product->getAssociations()->willReturn([]);
 
@@ -251,7 +251,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->normalize($product, 'flat', ['price-EUR' => ''])->shouldReturn(
             [
                 'family'     => 'shoes',
-                'groups'     => 'group1,group2,variant_group_1',
+                'groups'     => 'group1,group2,group_3',
                 'categories' => 'nice shoes,converse',
                 'price-EUR'  => '356.00',
                 'enabled'    => 1,
