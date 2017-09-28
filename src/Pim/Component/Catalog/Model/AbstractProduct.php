@@ -492,14 +492,6 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInVariantGroup(AttributeInterface $attribute)
-    {
-        // TODO remove PIM-6805
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isAttributeRemovable(AttributeInterface $attribute)
     {
         if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
@@ -554,14 +546,6 @@ abstract class AbstractProduct implements ProductInterface
         $this->groups->removeElement($group);
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getVariantGroup()
-    {
-        // TODO remove PIM-6805
     }
 
     /**

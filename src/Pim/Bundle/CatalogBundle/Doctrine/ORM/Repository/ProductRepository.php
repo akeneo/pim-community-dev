@@ -87,27 +87,9 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
-    {
-        $qb = $this->findAllForVariantGroupQB($variantGroup, $criteria);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifierProperties()
     {
         return ['identifier'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getEligibleProductsForVariantGroup($variantGroupId)
-    {
-        // TODO
     }
 
     /**
@@ -206,16 +188,6 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
-    {
-        $queryBuilder = $this->findAllForVariantGroupQB($variantGroup, $criteria);
-
-        return $queryBuilder->execute();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findAllWithOffsetAndSize($offset = 0, $size = 100)
     {
         $queryBuilder = $this->createQueryBuilder('p')
@@ -243,34 +215,5 @@ class ProductRepository extends EntityRepository implements
             ->setParameter(':productId', $product->getId());
 
         return $qb->getQuery()->execute();
-    }
-
-    /**
-     * @param GroupInterface $variantGroup
-     * @param array          $criteria
-     *
-     * @return ProductQueryBuilderInterface
-     */
-    protected function findAllForVariantGroupQB(GroupInterface $variantGroup, array $criteria = [])
-    {
-        $queryBuilder = $this->queryBuilderFactory->create();
-
-        foreach ($criteria as $item) {
-            $value = null;
-
-            if (isset($item['option'])) {
-                $value = $item['option'];
-                $queryBuilder->addFilter($item['attribute']->getCode(), Operators::IN_LIST, [$value->getCode()]);
-            }
-
-            if (isset($item['referenceData'])) {
-                $value = $item['referenceData']['data'];
-                $queryBuilder->addFilter($item['attribute']->getCode(), Operators::IN_LIST, [$value->getCode()]);
-            }
-        }
-
-        $queryBuilder->addFilter('variant_group', Operators::IN_LIST, [$variantGroup->getCode()]);
-
-        return $queryBuilder;
     }
 }
