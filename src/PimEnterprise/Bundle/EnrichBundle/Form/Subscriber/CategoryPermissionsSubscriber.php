@@ -25,6 +25,10 @@ use Symfony\Component\Form\FormEvents;
  * Subscriber to manage permissions on categories
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
+ *
+ * @deprecated Should be replaced by a subscriber not relying on form events
+ *             (like PimEnterprise\Bundle\EnrichBundle\EventSubscriber\SavePermissionsSubscriber).
+ *             Can be done with TIP-741.
  */
 class CategoryPermissionsSubscriber implements EventSubscriberInterface
 {
