@@ -4,6 +4,7 @@ Feature: Enforce rights to manage permissions for attribute groups, categories, 
   As an administrator
   I need to be able to enforce rights to manage permissions for attribute groups, categories, locales and job profiles
 
+  @skip @info Unskip on PIM-6516
   Scenario: Display the Permissions tab only if user has the rights to manage permissions
     Given an "apparel" catalog configuration
     And I am logged in as "Julia"
