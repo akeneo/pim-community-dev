@@ -42,13 +42,11 @@
 {% block content_data %}
     {% set id = 'group-profile' %}
 
-        <div class="AknTabContainer">
-            {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
+        {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
-            <div class="AknTabContainer-content tab-content">
-                {{ elements.form_errors(form) }}
-                {{ view_elements(form.vars.id ~ '.form_tab') }}
-            </div>
+        <div class="AknTabContainer-content tab-content">
+            {{ elements.form_errors(form) }}
+            {{ view_elements(form.vars.id ~ '.form_tab') }}
         </div>
 
     {{ form_end(form) }}

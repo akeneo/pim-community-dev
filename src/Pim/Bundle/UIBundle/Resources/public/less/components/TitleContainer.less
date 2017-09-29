@@ -95,6 +95,18 @@
     margin-left: 20px;
   }
 
+  &-context {
+    padding: 10px 0;
+  }
+
+  &-metaItem {
+    & + & {
+      &:before {
+        content: ' | ';
+      }
+    }
+  }
+
   &--hidden {
     display: none;
   }
