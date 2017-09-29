@@ -18,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
  * Command to delete rules
@@ -45,7 +46,7 @@ class DeleteCommand extends ContainerAwareCommand
     {
         $code = $input->getArgument('code');
 
-        if ($this->confirmDeletion($output, $code)) {
+        if ($this->confirmDeletion($input, $output, $code)) {
             $rules = $this->getRules($code);
             $remover = $this->getRuleDefinitionRemover();
             $remover->removeAll($rules);
@@ -54,20 +55,21 @@ class DeleteCommand extends ContainerAwareCommand
     }
 
     /**
+     * @param InputInterface  $input
      * @param OutputInterface $output
      * @param string          $code
      *
      * @return bool
      */
-    protected function confirmDeletion(OutputInterface $output, $code)
+    protected function confirmDeletion(InputInterface $input, OutputInterface $output, $code)
     {
         $question = null !== $code ?
             sprintf('Are you sure you want to delete the rule "%s"?', $code) :
             'Are you sure you want to delete all the rules?';
 
-        $dialog = $this->getHelper('dialog');
+        $dialog = $this->getHelper('question');
 
-        return $dialog->askConfirmation($output, sprintf('<question>%s</question>', $question), false);
+        return $dialog->ask($input, $output, new ConfirmationQuestion($question, false));
     }
 
     /**

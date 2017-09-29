@@ -1,5 +1,9 @@
 # 2.0.x
 
+## Bug fixes
+
+- Fix `akeneo:rule:delete` command
+
 # 2.0.0 (2017-09-28)
 
 # 2.0.0-BETA1 (2017-09-28)
