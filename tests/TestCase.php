@@ -2,7 +2,12 @@
 
 namespace Akeneo\Test\Integration;
 
+use Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser;
+use Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoader;
+use Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoaderInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -11,6 +16,9 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 abstract class TestCase extends KernelTestCase
 {
+    /** @var KernelInterface */
+    protected $testKernel;
+
     /**
      * @return Configuration
      */
@@ -22,13 +30,15 @@ abstract class TestCase extends KernelTestCase
     protected function setUp()
     {
         static::bootKernel(['debug' => false]);
+        $this->createSystemUser();
+
+        $this->testKernel = new \AppKernelTest('test', false);
+        $this->testKernel->boot();
 
         $configuration = $this->getConfiguration();
+        $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
 
-        $databaseSchemaHandler = $this->getDatabaseSchemaHandler();
-
-        $fixturesLoader = $this->getFixturesLoader($configuration, $databaseSchemaHandler);
-        $fixturesLoader->load();
+        $fixturesLoader->load($configuration);
     }
 
     /**
@@ -46,6 +56,16 @@ abstract class TestCase extends KernelTestCase
      *
      * @return mixed
      */
+    protected function getFromTestKernel($service)
+    {
+        return $this->testKernel->getContainer()->get($service);
+    }
+
+    /**
+     * @param string $service
+     *
+     * @return mixed
+     */
     protected function getParameter($service)
     {
         return static::$kernel->getContainer()->getParameter($service);
@@ -56,37 +76,32 @@ abstract class TestCase extends KernelTestCase
      */
     protected function tearDown()
     {
-        $connectionCloser = $this->getConnectionCloser();
+        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
         parent::tearDown();
     }
 
     /**
-     * @return DatabaseSchemaHandler
+     * Create a token with a user system with all access
      */
-    protected function getDatabaseSchemaHandler()
+    private function createSystemUser()
     {
-        return new DatabaseSchemaHandler(static::$kernel);
-    }
+        $user = $this->get('pim_user.factory.user')->create();
+        $user->setUsername('system');
+        $groups = $this->get('pim_user.repository.group')->findAll();
 
-    /**
-     * @param Configuration         $configuration
-     * @param DatabaseSchemaHandler $databaseSchemaHandler
-     *
-     * @return FixturesLoader
-     */
-    protected function getFixturesLoader(Configuration $configuration, DatabaseSchemaHandler $databaseSchemaHandler)
-    {
-        return new FixturesLoader(static::$kernel, $configuration, $databaseSchemaHandler);
-    }
+        foreach ($groups as $group) {
+            $user->addGroup($group);
+        }
 
-    /**
-     * @return ConnectionCloser
-     */
-    protected function getConnectionCloser()
-    {
-        return new ConnectionCloser(static::$kernel->getContainer());
+        $roles = $this->get('pim_user.repository.role')->findAll();
+        foreach ($roles as $role) {
+            $user->addRole($role);
+        }
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
     }
 
     /**

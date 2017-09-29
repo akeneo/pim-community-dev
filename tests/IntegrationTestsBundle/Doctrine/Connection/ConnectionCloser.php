@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\Test\Integration;
+namespace Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
@@ -11,15 +11,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class ConnectionCloser
 {
-    /** @var ContainerInterface */
-    protected $container;
+    /** @var RegistryInterface */
+    protected $doctrineRegistry;
 
     /**
-     * @param ContainerInterface $container
+     * @param RegistryInterface $registry
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(RegistryInterface $registry)
     {
-        $this->container = $container;
+        $this->doctrineRegistry = $registry;
     }
 
     /**
@@ -29,8 +29,7 @@ class ConnectionCloser
      */
     public function closeConnections()
     {
-        $doctrine = $this->container->get('doctrine');
-        foreach ($doctrine->getConnections() as $connection) {
+        foreach ($this->doctrineRegistry->getConnections() as $connection) {
             $connection->close();
         }
     }

@@ -3,15 +3,14 @@
 namespace Pim\Bundle\ApiBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\ConnectionCloser;
-use Akeneo\Test\Integration\DatabaseSchemaHandler;
-use Akeneo\Test\Integration\FixturesLoader;
+use Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoader;
 use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Test case dedicated to PIM API interaction including authentication handling.
@@ -25,6 +24,9 @@ abstract class ApiTestCase extends WebTestCase
     const USERNAME = 'admin';
     const PASSWORD = 'admin';
 
+    /** @var KernelInterface */
+    protected $testKernel;
+
     /**
      * @return Configuration
      */
@@ -37,11 +39,10 @@ abstract class ApiTestCase extends WebTestCase
     {
         static::bootKernel(['debug' => false]);
 
-        $configuration = $this->getConfiguration();
-        $databaseSchemaHandler = $this->getDatabaseSchemaHandler();
+        $this->testKernel = new \AppKernelTest('test', false);
+        $this->testKernel->boot();
 
-        $fixturesLoader = $this->getFixturesLoader($configuration, $databaseSchemaHandler);
-        $fixturesLoader->load();
+        $this->getFixturesLoader()->load();
     }
 
     /**
@@ -173,7 +174,7 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function tearDown()
     {
-        $connectionCloser = $this->getConnectionCloser();
+        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
         parent::tearDown();
@@ -185,17 +186,6 @@ abstract class ApiTestCase extends WebTestCase
     protected function getDatabaseSchemaHandler()
     {
         return new DatabaseSchemaHandler(static::$kernel);
-    }
-
-    /**
-     * @param Configuration         $configuration
-     * @param DatabaseSchemaHandler $databaseSchemaHandler
-     *
-     * @return FixturesLoader
-     */
-    protected function getFixturesLoader(Configuration $configuration, DatabaseSchemaHandler $databaseSchemaHandler)
-    {
-        return new FixturesLoader(static::$kernel, $configuration, $databaseSchemaHandler);
     }
 
     /**
@@ -279,5 +269,16 @@ abstract class ApiTestCase extends WebTestCase
         ];
 
         return $response;
+    }
+
+    /**
+     * @return FixturesLoader
+     */
+    private function getFixturesLoader(): FixturesLoader
+    {
+        $configuration = $this->getConfiguration();
+        $factory = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader_factory');
+
+        return $factory->create($configuration);
     }
 }
