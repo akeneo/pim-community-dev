@@ -9,6 +9,10 @@
 - GITHUB-6639: Fix Job throwing exception, cheers @dnd-tyler!
 - GITHUB-6824: Update gitignore for web-server-bundle, cheers @xElysioN!
 
+## Better UI\UX!
+
+- TIP-807: Improve menu to pass parameters for routes, cheers @MarieMinasyan!
+
 # 2.0.0 (2017-09-28)
 
 # 2.0.0-BETA1 (2017-09-28)

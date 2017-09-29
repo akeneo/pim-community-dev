@@ -15,7 +15,7 @@
   transition: background 0.1s ease, color 0.1s ease;
 
   &:hover {
-    background: lighten(@AknGrey, 15%);
+    background-color: lighten(@AknGrey, 15%);
     color: white;
     cursor: pointer;
   }
@@ -39,7 +39,7 @@
     color: white;
 
     &:hover {
-      background: darken(@AknGrey, 10%);
+      background-color: darken(@AknGrey, 10%);
     }
   }
 
@@ -48,7 +48,7 @@
     color: white;
 
     &:hover {
-      background: darken(@AknRed, 10%);
+      background-color: darken(@AknRed, 10%);
     }
   }
 
@@ -56,12 +56,31 @@
     color: @AknOrange;
   }
 
+  &--remove, &--ok, &--edit {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 60%;
+  }
+
+  &--ok {
+    background-image: url("../../../images/icon-checkwhite.svg");
+  }
+
+  &--edit {
+    background-image: url("../../../images/icon-edit-white.svg");
+    background-size: 40%;
+  }
+
+  &--remove {
+    background-image: url("../../../images/icon-delete-white.svg");
+  }
+
   &--apply {
     background-color: @AknGreen;
     color: white;
 
     &:hover {
-      background: darken(@AknGreen, 10%);
+      background-color: darken(@AknGreen, 10%);
     }
   }
 
@@ -70,6 +89,10 @@
     width: @AknMicroButtonSize;
     height: @AknMicroButtonSize;
     line-height: @AknMicroButtonSize;
+  }
+
+  &--round {
+    border-radius: 1000px;
   }
 
   &--hide {
