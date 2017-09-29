@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * Test case dedicated to PIM API interaction including authentication handling.
@@ -37,12 +38,16 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function setUp()
     {
-        static::bootKernel(['debug' => false]);
-
         $this->testKernel = new \AppKernelTest('test', false);
         $this->testKernel->boot();
 
-        $this->getFixturesLoader()->load();
+        $configuration = $this->getConfiguration();
+        $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
+
+        $fixturesLoader->load($configuration);
+
+        static::bootKernel(['debug' => false]);
+        $this->createSystemUser();
     }
 
     /**
@@ -181,22 +186,6 @@ abstract class ApiTestCase extends WebTestCase
     }
 
     /**
-     * @return DatabaseSchemaHandler
-     */
-    protected function getDatabaseSchemaHandler()
-    {
-        return new DatabaseSchemaHandler(static::$kernel);
-    }
-
-    /**
-     * @return ConnectionCloser
-     */
-    protected function getConnectionCloser()
-    {
-        return new ConnectionCloser(static::$kernel->getContainer());
-    }
-
-    /**
      * Look in every fixture directory if a fixture $name exists.
      * And return the pathname of the fixture if it exists.
      *
@@ -272,13 +261,24 @@ abstract class ApiTestCase extends WebTestCase
     }
 
     /**
-     * @return FixturesLoader
+     * Create a token with a user system with all access
      */
-    private function getFixturesLoader(): FixturesLoader
+    private function createSystemUser()
     {
-        $configuration = $this->getConfiguration();
-        $factory = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader_factory');
+        $user = $this->get('pim_user.factory.user')->create();
+        $user->setUsername('system');
+        $groups = $this->get('pim_user.repository.group')->findAll();
 
-        return $factory->create($configuration);
+        foreach ($groups as $group) {
+            $user->addGroup($group);
+        }
+
+        $roles = $this->get('pim_user.repository.role')->findAll();
+        foreach ($roles as $role) {
+            $user->addRole($role);
+        }
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
     }
 }

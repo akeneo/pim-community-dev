@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Test\Integration;
+namespace Akeneo\Test\IntegrationTestsBundle\Launcher;
 
 use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Akeneo\Bundle\BatchQueueBundle\Command\JobQueueConsumerCommand;

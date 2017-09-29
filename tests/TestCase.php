@@ -83,28 +83,6 @@ abstract class TestCase extends KernelTestCase
     }
 
     /**
-     * Create a token with a user system with all access
-     */
-    private function createSystemUser()
-    {
-        $user = $this->get('pim_user.factory.user')->create();
-        $user->setUsername('system');
-        $groups = $this->get('pim_user.repository.group')->findAll();
-
-        foreach ($groups as $group) {
-            $user->addGroup($group);
-        }
-
-        $roles = $this->get('pim_user.repository.role')->findAll();
-        foreach ($roles as $role) {
-            $user->addRole($role);
-        }
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
-    }
-
-    /**
      * Look in every fixture directory if a fixture $name exists.
      * And return the pathname of the fixture if it exists.
      *
@@ -125,5 +103,27 @@ abstract class TestCase extends KernelTestCase
         }
 
         throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
+    }
+
+    /**
+     * Create a token with a user system with all access
+     */
+    private function createSystemUser()
+    {
+        $user = $this->get('pim_user.factory.user')->create();
+        $user->setUsername('system');
+        $groups = $this->get('pim_user.repository.group')->findAll();
+
+        foreach ($groups as $group) {
+            $user->addGroup($group);
+        }
+
+        $roles = $this->get('pim_user.repository.role')->findAll();
+        foreach ($roles as $role) {
+            $user->addRole($role);
+        }
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->get('security.token_storage')->setToken($token);
     }
 }
