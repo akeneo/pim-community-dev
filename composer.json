@@ -16,9 +16,10 @@
         },
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
+            "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/IntegrationTestsBundle/",
             "Akeneo\\Test\\Integration\\": "tests/"
         },
-        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/AppKernelTest.php" ]
     },
     "autoload-dev": {
         "files": [
