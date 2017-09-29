@@ -2,6 +2,7 @@
 
 ## Bug Fixes
 
+- GITHUB-6824: Update gitignore for web-server-bundle, cheers @xElysioN!
 - GITHUB-6866: fix the QueryProductCommand, cheers @LeoBenoist!
 
 # 2.0.0 (2017-09-28)
