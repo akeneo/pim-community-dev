@@ -7,6 +7,9 @@ def launchUnitTests = "yes"
 def launchIntegrationTests = "yes"
 def launchBehatTests = "yes"
 
+Integer nbAvailableNode = 8
+def testFilesCE = []
+
 stage("Checkout") {
     milestone 1
     if (env.BRANCH_NAME =~ /^PR-/) {
@@ -56,6 +59,19 @@ stage("Checkout") {
 
                 stash "pim_community_dev_full"
             }
+
+            unstash "pim_community_dev_full"
+
+            def output = sh (
+                returnStdout: true,
+                script: 'find src tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"'
+            )
+            def files = output.tokenize('\n')
+            for (file in files) {
+                def fileInfo = file.tokenize(' ')
+                testFilesCE += ["nbTests": fileInfo[0] as Integer , "path": fileInfo[1]]
+            }
+
             deleteDir()
         }
     }
@@ -95,19 +111,7 @@ if (launchUnitTests.equals("yes")) {
 
 if (launchIntegrationTests.equals("yes")) {
     stage("Integration tests") {
-        def tasks = [:]
-
-        tasks["integration-orm-api-base"] = {runIntegrationTest("orm", "PIM_Api_Base_Integration_Test")}
-        tasks["integration-orm-api-controllers"] = {runIntegrationTest("orm", "PIM_Api_Bundle_Controllers_Integration_Test")}
-        tasks["integration-orm-api-controllers-catalog"] = {runIntegrationTest("orm", "PIM_Api_Bundle_Controllers_Catalog_Integration_Test")}
-        tasks["integration-orm-api-controller-product"] = {runIntegrationTest("orm", "PIM_Api_Bundle_Controller_Product_Integration_Test")}
-        tasks["integration-orm-catalog"] = {runIntegrationTest("orm", "PIM_Catalog_Integration_Test")}
-        tasks["integration-orm-completeness"] = {runIntegrationTest("orm", "PIM_Catalog_Completeness_Integration_Test")}
-        tasks["integration-orm-pqb"] = {runIntegrationTest("orm", "PIM_Catalog_PQB_Integration_Test")}
-
-        // Temporarily deactivate integration tests with MongoDB because of stability issues
-        // tasks["integration-odm"] = {runIntegrationTest("odm")}
-
+        def tasks = buildIntegrationTestTasks('orm', nbAvailableNode, testFilesCE)
         parallel tasks
     }
 }
@@ -149,10 +153,9 @@ def runPhpUnitTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("akeneo/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
-                unstash "pim_community_dev"
+            docker.image("akeneo/php:5.6").inside("") {
+                unstash "pim_community_dev_full"
 
-                sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
 
                 sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit app/build/logs/phpunit.xml"
@@ -170,7 +173,37 @@ def runPhpUnitTest() {
     }
 }
 
-def runIntegrationTest(storage, testSuiteName) {
+/**
+ * Builds a list of tasks to run integration tests on multiple nodes in parallel.
+ * Each nodes should run approximately the same number of tests.
+ *
+ * @param storage         storage of the PIM ('orm' or 'odm')
+ * @param nbAvailableNode number of available nodes to execute the integration tests
+ * @param testFiles       list of file containing the filepath of the file and the number of integration tests in the file
+ *                        [
+ *                            ["path" : "filePath1", "nbTests" : 10],
+ *                            ["path" : "filePath2", "nbTests" : 25]
+ *                        ]
+ *
+ * @return list of tasks to execute in parallel
+ */
+def buildIntegrationTestTasks(String storage, Integer nbAvailableNode, def testFiles) {
+    def tasks = [:]
+
+    def filesPerNode = getTestFilesPerNode(nbAvailableNode, testFiles)
+
+    Integer nodeId = 1
+    for (files in filesPerNode) {
+        def listFiles = files
+
+        tasks["integration-${nodeId}"] = {runIntegrationTest(storage, listFiles)}
+        nodeId++;
+    }
+
+    return tasks
+}
+
+void runIntegrationTest(String storage, def testFiles) {
     node('docker') {
         deleteDir()
         sh "docker stop \$(docker ps -a -q) || true"
@@ -178,12 +211,11 @@ def runIntegrationTest(storage, testSuiteName) {
 
         try {
             docker.image("mongo:2.4").withRun("--name mongodb", "--smallfiles") {
-                docker.image("mysql:5.5").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim", "--sql_mode=ERROR_FOR_DIVISION_BY_ZERO,NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION") {
-                    docker.image("akeneo/php:5.6").inside("--link mysql:mysql --link mongodb:mongodb -v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
-                        unstash "pim_community_dev"
+                docker.image("mysql:5.5").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim --tmpfs=/var/lib/mysql/:rw,noexec,nosuid,size=1000m --tmpfs=/tmp/:rw,noexec,nosuid,size=300m") {
+                    docker.image("akeneo/php:5.6").inside("--link mysql:mysql --link mongodb:mongodb") {
+                        unstash "pim_community_dev_full"
 
 
-                        sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                         sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
                         sh "sed -i 's/database_host:     localhost/database_host:     mysql/' app/config/parameters_test.yml"
                         sh "sed -i \"s@installer_data:    PimInstallerBundle:minimal@installer_data: '%kernel.root_dir%/../features/Context/catalog/footwear'@\" app/config/parameters_test.yml"
@@ -199,7 +231,15 @@ def runIntegrationTest(storage, testSuiteName) {
                         sh "./app/console --env=test pim:install --force"
 
                         sh "mkdir -p app/build/logs/"
-                        sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite ${testSuiteName} --log-junit app/build/logs/phpunit_integration.xml"
+
+                        String testSuiteFiles = ""
+                        for (testFile in testFiles) {
+                            testSuiteFiles += "<file>../${testFile}</file>"
+                        }
+
+                        sh "sed -i \"s#<file></file>#${testSuiteFiles}#\" app/phpunit.xml.dist"
+
+                        sh "php -d error_reporting='E_ALL' ./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
                     }
                 }
             }
@@ -207,22 +247,70 @@ def runIntegrationTest(storage, testSuiteName) {
             sh "docker stop \$(docker ps -a -q) || true"
             sh "docker rm \$(docker ps -a -q) || true"
             sh "docker volume rm \$(docker volume ls -q) || true"
-            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[integration-${storage}-${testSuiteName}] /\" app/build/logs/*.xml"
 
+            sh "sed -i \"s/testcase name=\\\"/testcase name=\\\"[integration] /\" app/build/logs/*.xml"
             junit "app/build/logs/*.xml"
+
             deleteDir()
         }
     }
+}
+
+/**
+ * Calculate and return a list of files to execute in each node, in order to execute approximately the same
+ * number of integration tests per node.
+ *
+ * @param nbNode number of available nodes to execute the integration tests
+ * @param files   list of file containing the filepath of the file and the number of integration tests in the file
+ *                [
+ *                    ["path" : "filePath1", "nbTests" : 10],
+ *                    ["path" : "filePath2", "nbTests" : 25]
+ *                ]
+ *
+ * @return an array, each entry being a list of filepath to execute in a node.
+ *         [
+ *             ["filePath1", "filePath2"]
+ *             ["filePath3", "filePath4"]
+ *         ]
+ */
+def getTestFilesPerNode(Integer nbNode, def files) {
+    def filesPerNode = []
+
+    Integer nbIntegrationTests = 0;
+    for (file in files) {
+        nbIntegrationTests += file["nbTests"]
+    }
+    Integer nbTestsPerNode = nbIntegrationTests.intdiv(nbNode) + 1
+
+    Integer nodeTestCounter = 0
+    def nodeFiles = []
+
+    for (file in files) {
+        nodeTestCounter += file["nbTests"]
+        nodeFiles += file["path"]
+
+        if (nodeTestCounter > nbTestsPerNode) {
+            filesPerNode << nodeFiles
+
+            nodeFiles = []
+            nodeTestCounter = 0
+        }
+    }
+
+    if (nodeTestCounter > 0) {
+        filesPerNode << nodeFiles
+    }
+
+    return filesPerNode
 }
 
 def runPhpSpecTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("akeneo/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
-                unstash "pim_community_dev"
+            docker.image("akeneo/php:5.6").inside("") {
+                unstash "pim_community_dev_full"
 
-                sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
 
                 sh "./bin/phpspec run --no-interaction --format=junit > app/build/logs/phpspec.xml"
@@ -244,11 +332,9 @@ def runPhpCsFixerTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("akeneo/php:5.6").inside("-v /home/akeneo/.composer:/home/akeneo/.composer -e COMPOSER_HOME=/home/akeneo/.composer") {
-                unstash "pim_community_dev"
+            docker.image("akeneo/php:5.6").inside("") {
+                unstash "pim_community_dev_full"
 
-                sh "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"
-                sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                 sh "mkdir -p app/build/logs/"
 
                 sh "./bin/php-cs-fixer fix --diff --dry-run --format=junit --config=.php_cs.php > app/build/logs/phpcs.xml"
