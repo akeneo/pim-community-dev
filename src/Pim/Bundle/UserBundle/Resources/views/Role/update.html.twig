@@ -16,14 +16,14 @@
                             var $target = $($(this).attr('href'));
                             var hasGranted = $target.find('.acl-permission:not(.default-field) .select-button.granted').length;
                             var hasNonGranted = $target.find('.acl-permission:not(.default-field) .select-button.non-granted').length;
-                            var iconClass = ''
+                            var iconClass = 'non-granted'
                             if (hasGranted && 0 === hasNonGranted) {
-                                iconClass = 'AknSelectButton--selected';
+                                iconClass = 'AknSelectButton--selected granted';
                             } else if (hasGranted) {
-                                iconClass = 'AknSelectButton--partial';
+                                iconClass = 'AknSelectButton--partial partial';
                             }
                             var $icon = $(this).find('.select-button').first();
-                            $icon.removeClass('AknSelectButton--selected AknSelectButton--partial').addClass(iconClass);
+                            $icon.removeClass('AknSelectButton--selected AknSelectButton--partial granted partial non-granted').addClass(iconClass);
                         });
                     };
 

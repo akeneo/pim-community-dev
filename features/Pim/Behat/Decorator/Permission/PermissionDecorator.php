@@ -19,7 +19,7 @@ class PermissionDecorator extends ElementDecorator
 
     protected $selectors = [
         'Group'           => '.AknVerticalNavtab .tab:contains("%s") a span',
-        'Group toggle'    => '.AknVerticalNavtab .tab:contains("%s") a .acl-group-permission-toggle',
+        'Group toggle'    => '.AknVerticalNavtab .tab:contains("%s") a .AknSelectButton',
         'Resource'        => '.acl-permission',
         'Resource Toggle' => '.acl-permission-toggle'
     ];
@@ -45,7 +45,7 @@ class PermissionDecorator extends ElementDecorator
     {
         $resourceElement = $this->spin(function () use ($resourceLabel) {
             $resources = $this->findAll('css', $this->selectors['Resource']);
-            
+
             foreach ($resources as $resource) {
                 if ($resourceLabel === strip_tags($resource->getOuterHtml())) {
                     return $resource;
@@ -99,7 +99,7 @@ class PermissionDecorator extends ElementDecorator
     {
         $iconElement = $this->findGroupIcon($group);
 
-        if ($iconElement->hasClass('icon-remove') || $iconElement->hasClass('icon-circle')) {
+        if ($iconElement->hasClass('non-granted') || $iconElement->hasClass('partial')) {
             $iconElement->click();
         }
     }
@@ -111,7 +111,7 @@ class PermissionDecorator extends ElementDecorator
     {
         $iconElement = $this->findGroupIcon($group);
 
-        if ($iconElement->hasClass('icon-ok')) {
+        if ($iconElement->hasClass('granted')) {
             $iconElement->click();
         }
     }
