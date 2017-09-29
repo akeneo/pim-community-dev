@@ -63,7 +63,7 @@
 {% macro deleteLink(url, acl, redirectUrl, message, successMessage, title, class = '') %}{% spaceless %}
     {% if acl is null or resource_granted(acl) %}
         {% import _self as elements %}
-        <a class="AknButton AknButton--important {{ class }}" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, successMessage, title)}} >
+        <a class="{{ class }}" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, successMessage, title)}} >
             {{ 'btn.delete'|trans|capitalize }}
         </a>
     {% endif %}
@@ -73,7 +73,7 @@
 {% spaceless %}
     {% set title = opts.title is defined ? opts.title : text %}
     {% set icon = opts.icon is defined ? opts.icon : null %}
-    <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="AknButton {{ opts.class is defined ? opts.class|join(' ') }}" href="{{ url ? url : 'javascript:void(0);' }}"{% if title %} title="{{ title|trans|capitalize }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
+    <a{% if opts.id is defined %} id="{{ opts.id }}"{% endif %} class="{{ opts.class is defined ? opts.class|join(' ') }}" href="{{ url ? url : 'javascript:void(0);' }}"{% if title %} title="{{ title|trans|capitalize }}"{% endif %}{% if opts.attr is defined %}{% for key, value in opts.attr %} {{ key }}="{{ value }}"{% endfor %}{% endif %}>
         {{ text|trans|capitalize }}
     </a>
 {% endspaceless %}
