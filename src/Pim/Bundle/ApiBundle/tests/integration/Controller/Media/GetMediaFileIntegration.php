@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\MediaFile;
 
-use Akeneo\Test\Integration\MediaSanitizer;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use Pim\Bundle\ApiBundle\tests\integration\Controller\Media\AbstractMediaFileTestCase;
 use Symfony\Component\HttpFoundation\Response;
 

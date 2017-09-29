@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Catalog\tests\integration\Updater\Copier;
 
-use Akeneo\Test\Integration\MediaSanitizer;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
