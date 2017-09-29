@@ -33,7 +33,7 @@ extensions:
     pim-family-index-mass-actions:
         module: pim/grid/mass-actions
         parent: pim-family-index
-        targetZone: mass-actions
+        targetZone: bottom-panel
         config:
             label: pim_enrich.entity.family.selected
 

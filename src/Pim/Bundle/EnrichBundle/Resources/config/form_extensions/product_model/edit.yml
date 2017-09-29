@@ -36,7 +36,7 @@ extensions:
     pim-product-model-edit-form-sequential-edit:
         module: pim/product-edit-form/sequential-edit
         parent: pim-product-model-edit-form
-        targetZone: sequential
+        targetZone: bottom-panel
         aclResourceId: pim_enrich_product_model_edit_attributes
         position: 100
 
