@@ -18,7 +18,6 @@ parameters:
     pim_catalog.normalizer.standard.currency.class: Pim\Component\Catalog\Normalizer\Standard\CurrencyNormalizer
     pim_catalog.normalizer.standard.family.class: Pim\Component\Catalog\Normalizer\Standard\FamilyNormalizer
     pim_catalog.normalizer.standard.family_variant.class: Pim\Component\Catalog\Normalizer\Standard\FamilyVariantNormalizer
-    pim_catalog.normalizer.standard.proxy_group.class: Pim\Component\Catalog\Normalizer\Standard\ProxyGroupNormalizer
     pim_catalog.normalizer.standard.group.class: Pim\Component\Catalog\Normalizer\Standard\GroupNormalizer
     pim_catalog.normalizer.standard.group_type.class: Pim\Component\Catalog\Normalizer\Standard\GroupTypeNormalizer
     pim_catalog.normalizer.standard.locale.class: Pim\Component\Catalog\Normalizer\Standard\LocaleNormalizer
@@ -145,13 +144,6 @@ services:
         class: '%pim_catalog.normalizer.standard.family_variant.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
-
-    pim_catalog.normalizer.standard.proxy_group:
-        class: '%pim_catalog.normalizer.standard.proxy_group.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.group'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
