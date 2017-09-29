@@ -53,12 +53,11 @@
   }
 
   &-mainContent {
-    padding: 0 @mainContentPadding 100px @mainContentPadding;
+    padding: 0 @mainContentPadding @mainContentPadding @mainContentPadding;
     overflow-x: auto;
     flex-grow: 1;
     position: relative;
     height: 100%;
-    margin-bottom: 64px;
 
     &--withoutPadding {
       padding: 10px 0 0 0;
@@ -107,6 +106,7 @@
     min-height: 64px;
     margin-top: -64px;
     margin-bottom: 0;
+    z-index: 1;
     transition:
       margin 0.3s ease-in-out,
       flex-basis 0.3s ease-in-out,
