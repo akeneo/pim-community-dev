@@ -88,7 +88,8 @@
         "phpspec/phpspec": "3.0.*",
         "phpunit/phpunit": "5.4.*",
         "sensiolabs/behat-page-object-extension": "2.1.0",
-        "squizlabs/php_codesniffer": "2.*"
+        "squizlabs/php_codesniffer": "2.*",
+        "liuggio/fastest": "~1.4"
     },
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
