@@ -16,10 +16,6 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                 max: 100
         translations:
             - Valid: ~
-        axisAttributes:
-            - Count:
-                min: 1
-                groups: [variant]
 
 Pim\Bundle\CatalogBundle\Entity\GroupTranslation:
     properties:

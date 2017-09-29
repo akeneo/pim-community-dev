@@ -90,7 +90,6 @@ class ListProductWithCompletenessIntegration extends AbstractProductTestCase
 		        "family": "familyA2",
 		        "parent": null,
 		        "groups": [],
-		        "variant_group": null,
 		        "categories": ["categoryA","categoryB","master"],
 		        "enabled": true,
 		        "values": {
@@ -113,7 +112,6 @@ class ListProductWithCompletenessIntegration extends AbstractProductTestCase
 		        "family": "familyA1",
                 "parent": null,
 		        "groups": [],
-		        "variant_group": null,
 		        "categories": ["categoryA","master","master_china"],
 		        "enabled": true,
 		        "values": {

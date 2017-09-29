@@ -267,7 +267,6 @@ JSON;
                 "family"        : "familyA",
                 "parent"        : "amor",
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master"],
                 "enabled"       : true,
                 "values"        : {},
@@ -490,7 +489,6 @@ JSON;
         "groups": [
           
         ],
-        "variant_group": null,
         "categories": [
           "categoryA1",
           "categoryA2"

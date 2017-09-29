@@ -29,7 +29,6 @@ class ProductStandardIntegration extends TestCase
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => false,
             'values'        => [
@@ -56,7 +55,6 @@ class ProductStandardIntegration extends TestCase
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -84,7 +82,6 @@ class ProductStandardIntegration extends TestCase
                 'family'        => 'familyA',
                 'parent'        => null,
                 'groups'        => ['groupA', 'groupB'],
-                'variant_group' => null,
                 'categories'    => ['categoryA1', 'categoryB'],
                 'enabled'       => true,
                 'values'        => [
