@@ -3,6 +3,7 @@
 ## Bug Fixes
 
 - GITHUB-6866: fix the QueryProductCommand, cheers @LeoBenoist!
+- API-393: add prefix "akeno:batch" to the command "publish-job-to-queue"
 
 ## Tech improvements
 

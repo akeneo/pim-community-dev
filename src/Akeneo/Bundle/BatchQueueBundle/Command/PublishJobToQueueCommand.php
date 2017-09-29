@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class PublishJobToQueueCommand extends ContainerAwareCommand
 {
-    public const COMMAND_NAME = 'publish-job-to-queue';
+    public const COMMAND_NAME = 'akeneo:batch:publish-job-to-queue';
     public const EXIT_SUCCESS_CODE = 0;
 
     /**
