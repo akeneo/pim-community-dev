@@ -2,8 +2,8 @@
 
 ## Bug Fixes
 
-- GITHUB-6866: fix the QueryProductCommand, cheers @LeoBenoist!
-- API-393: add prefix "akeno:batch" to the command "publish-job-to-queue"
+- GITHUB-6866: Fix the QueryProductCommand, cheers @LeoBenoist!
+- API-393: Add prefix "akeno:batch" to the command "publish-job-to-queue"
 
 ## Tech improvements
 
@@ -13,6 +13,8 @@
 ## Better UI\UX!
 
 - TIP-807: Improve menu to pass parameters for routes, cheers @MarieMinasyan!
+- PIM-6839: Fix the design for large titles
+- PIM-6595: Add missing breadcrumb or user navigation on every page
 
 # 2.0.0 (2017-09-28)
 
