@@ -94,12 +94,8 @@
                                 {% block navButtons %}{% endblock navButtons %}
                                 {{ right }}
                                 {% if buttons is not empty %}
-                                    <div class="AknButtonList AknButtonsList--right AknTitleContainer-rightButtons">
-                                        {{ buttons }}
-                                    </div>
+                                    {{ buttons }}
                                 {% endif %}
-                            </div>
-                            <div class="AknButtonList" data-drop-zone="title-buttons">
                                 {% if titleButtons is not empty %}
                                     {{ titleButtons }}
                                 {% endif %}
