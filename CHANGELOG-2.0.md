@@ -1,6 +1,8 @@
-# 2.0.0 (2017-09-28)
+# 2.0.x
 
 - PIM-6843: Update delete buttons in category, user, role and group pages
+
+# 2.0.0 (2017-09-28)
 
 # 2.0.0-BETA1 (2017-09-28)
 
