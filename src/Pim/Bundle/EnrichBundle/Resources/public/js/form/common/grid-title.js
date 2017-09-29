@@ -37,6 +37,10 @@ define(
                     this.$el.text(
                         __(this.config.title, {count: this.count}, this.count)
                     );
+                } else if (false === this.config.countable) {
+                    this.$el.text(
+                        __(this.config.title)
+                    );
                 }
             },
 

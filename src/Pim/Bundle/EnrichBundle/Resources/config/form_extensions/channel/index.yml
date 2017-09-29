@@ -1,6 +1,15 @@
 extensions:
     pim-channel-index:
-        module: pim/form/common/index/index
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    pim-channel-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-channel-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
 
     pim-channel-index-grid-title:
         module: pim/common/grid-title
@@ -19,17 +28,17 @@ extensions:
 
     pim-channel-index-filters-list:
         module: oro/datafilter/filters-list
-        parent: pim-channel-index
+        parent: pim-channel-index-grid-container
         targetZone: filters
 
     pim-channel-index-filters-manage:
         module: oro/datafilter/filters-button
-        parent: pim-channel-index
+        parent: pim-channel-index-grid-container
         targetZone: filters
 
     pim-channel-index-pagination:
         module: oro/datagrid/pagination-input
-        parent: pim-channel-index
+        parent: pim-channel-index-grid-container
         targetZone: toolbar
 
     pim-channel-index-grid:

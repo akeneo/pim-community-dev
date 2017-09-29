@@ -13,6 +13,7 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
+        'pim/template/common/default-template',
         'pim/template/form/index/index',
         'pim/form-builder'
     ],
@@ -22,10 +23,12 @@ define(
         __,
         BaseForm,
         template,
+        gridTemplate,
         formBuilder
     ) {
         return BaseForm.extend({
             template: _.template(template),
+            gridTemplate: _.template(gridTemplate),
 
             /**
              * {@inheritdoc}
@@ -48,12 +51,12 @@ define(
                     title: __(this.config.title)
                 }));
 
-                this.renderExtensions();
-
                 formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
                     $('.user-menu').append(form.el);
                     form.render();
                 }.bind(this));
+
+                this.renderExtensions();
 
                 return this;
             }

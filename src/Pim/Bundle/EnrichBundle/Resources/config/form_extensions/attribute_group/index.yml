@@ -1,8 +1,16 @@
 extensions:
     pim-attribute-group-index:
-        module: pim/form/common/index/index
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    pim-attribute-group-index-title:
+        module: pim/common/grid-title
+        parent: pim-attribute-group-index
+        targetZone: title
         config:
             title: pim_enrich.index.attribute_group.title
+            countable: false
 
     pim-attribute-group-index-breadcrumbs:
         module: pim/common/breadcrumbs

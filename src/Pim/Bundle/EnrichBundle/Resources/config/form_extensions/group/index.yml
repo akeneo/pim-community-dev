@@ -1,6 +1,15 @@
 extensions:
     pim-group-index:
-        module: pim/form/common/index/index
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    pim-group-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-group-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
 
     pim-group-index-grid-title:
         module: pim/common/grid-title
@@ -19,17 +28,17 @@ extensions:
 
     pim-group-index-filters-list:
         module: oro/datafilter/filters-list
-        parent: pim-group-index
+        parent: pim-group-index-grid-container
         targetZone: filters
 
     pim-group-index-filters-manage:
         module: oro/datafilter/filters-button
-        parent: pim-group-index
+        parent: pim-group-index-grid-container
         targetZone: filters
 
     pim-group-index-pagination:
         module: oro/datagrid/pagination-input
-        parent: pim-group-index
+        parent: pim-group-index-grid-container
         targetZone: toolbar
 
     pim-group-index-grid:
