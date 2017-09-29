@@ -181,10 +181,7 @@
 {% macro updated(formId) %}
 {% spaceless %}
     <div id="entity-updated" style="opacity: 0">
-        <span class="AknBadge AknBadge--warning">
-            <i class="AknBadge-icon icon-circle"></i>
-            {{ 'info.updated'|trans }}
-        </span>
+        <span class="AknState">{{ 'info.updated'|trans }}</span>
     </div>
     <script type="text/javascript">
         require(
