@@ -9,11 +9,12 @@
   margin: 0 -@padding 0 -@padding;
   padding: @padding;
   background: white;
-  display: flex;
-  flex-wrap: wrap-reverse;
-  align-items: stretch;
-  min-height: 64px;
   z-index: 10;
+
+  &-line {
+    display: flex;
+    justify-content: space-between;
+  }
 
   &-imageContainer:not(:empty) {
     width: @imageSize + 2px;
@@ -23,6 +24,8 @@
     border-radius: 4px;
     display: flex;
     overflow: hidden;
+    flex-basis: @imageSize + 2px;
+    flex-shrink: 0;
   }
 
   &-image {
@@ -33,58 +36,22 @@
   &-mainContainer {
     flex-grow: 1;
     display: flex;
-    flex-direction: column;
-    max-width: 100%;
     justify-content: space-between;
-  }
-
-  &-meta {
-    display: flex;
-
-    &:empty {
-      display: none;
-    }
-  }
-
-  &-title {
-    color: @AknLightPurple;
-    font-size: @AknTitleFontSize;
-    height: 36px;
-    line-height: 36px;
-    margin: 0;
-    font-weight: normal;
-    white-space: nowrap;
+    flex-direction: column;
     overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: ~"calc(100vw - 180px)";
+  }
 
-    &:first-letter {
-      text-transform: uppercase;
-    }
+  &-breadcrumbs {
+    flex-grow: 1;
+    max-height: 32px;
+    overflow: hidden;
+    margin-right: 20px;
+    line-height: 16px;
   }
 
   &-buttonsContainer {
     display: flex;
-    justify-content: flex-end;
-    flex-grow: 1;
-    align-items: flex-start;
-    flex-wrap: wrap;
     align-content: baseline;
-  }
-
-  &-rightButtons {
-    order: 10;
-    display: flex;
-    justify-content: flex-start;
-  }
-
-  &-state {
-    order: 50;
-    align-self: center;
-    margin-right: 0;
-    flex-basis: 100%;
-    margin-top: 10px;
-    text-align: right;
   }
 
   &-userMenu:not(:empty) {
@@ -101,6 +68,31 @@
     border-radius: 100px;
     cursor: pointer;
     background-size: cover;
+  }
+
+  &-title {
+    color: @AknLightPurple;
+    font-size: @AknTitleFontSize;
+    line-height: 34px;
+    margin: 0;
+    font-weight: normal;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+
+    &:first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  &-state {
+    order: 50;
+    align-self: center;
+    margin-right: 0;
+    margin-top: 6px;
+    text-align: right;
+    margin-left: 20px;
   }
 
   &--hidden {
