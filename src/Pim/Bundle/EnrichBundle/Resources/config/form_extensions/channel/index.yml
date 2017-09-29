@@ -11,6 +11,14 @@ extensions:
         config:
             template: pim/template/form/index/index
 
+    pim-channel-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-channel-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-channel-index-grid-title:
         module: pim/common/grid-title
         parent: pim-channel-index

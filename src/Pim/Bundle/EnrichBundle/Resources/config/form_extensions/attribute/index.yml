@@ -11,6 +11,14 @@ extensions:
         config:
             template: pim/template/form/index/index
 
+    pim-attribute-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-attribute-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-attribute-index-grid-title:
         module: pim/common/grid-title
         parent: pim-attribute-index

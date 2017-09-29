@@ -8,7 +8,7 @@ extensions:
             grid_load:start: grid_load:start
             grid_load:complete: grid_load:complete
 
-    pim-product-index-gridContainer:
+    pim-product-index-grid-container:
         module: pim/common/simple-view
         parent: pim-product-index
         targetZone: content
@@ -16,6 +16,14 @@ extensions:
             template: pim/template/product/index
             templateParams:
                 gridName: product-grid
+
+    pim-product-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-product-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
 
     pim-product-index-grid-title:
         module: pim/common/grid-title
@@ -133,7 +141,7 @@ extensions:
 
     pim-product-index-grid:
         module: pim/grid/table
-        parent: pim-product-index
+        parent: pim-product-index-grid-container
         targetZone: grid
         config:
             gridName: product-grid

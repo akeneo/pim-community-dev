@@ -11,6 +11,14 @@ extensions:
         config:
             template: pim/template/form/index/index
 
+    pim-export-execution-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-export-execution-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
 #        config:
 #            title: pim_enrich.index.export_history.title
 

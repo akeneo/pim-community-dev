@@ -12,6 +12,14 @@ extensions:
             title: pim_enrich.index.attribute_group.title
             countable: false
 
+    pim-attribute-group-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-attribute-group-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-attribute-group-index-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-attribute-group-index

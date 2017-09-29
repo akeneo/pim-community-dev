@@ -12,6 +12,14 @@ extensions:
             title: pim_enrich.index.import_history.title
             countable: false
 
+    pim-import-execution-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-import-execution-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-import-execution-index-grid-container:
         module: pim/common/simple-view
         parent: pim-import-execution-index

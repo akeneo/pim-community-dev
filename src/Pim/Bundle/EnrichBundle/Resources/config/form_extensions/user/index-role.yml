@@ -11,6 +11,14 @@ extensions:
         config:
             template: pim/template/form/index/index
 
+    pim-user-role-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-user-role-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-user-role-title:
         module: pim/common/grid-title
         parent: pim-user-role-index
