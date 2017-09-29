@@ -8,13 +8,10 @@ spec:
   template:
     spec:
       initContainers:
-        - name: sysctl
-          image: "busybox"
-          command: ["sysctl", "-w", "vm.max_map_count=262144"]
-          securityContext: { privileged: true }
         - name: pim
           image: PIM_IMAGE
           command: ['sh', '-c', 'cp -Rp /pim /home/jenkins']
+          imagePullPolicy: Always
           volumeMounts:
             - { mountPath: /home/jenkins, name: pim }
       containers:
@@ -26,11 +23,11 @@ spec:
             - { name: MYSQL_PASSWORD, value: akeneo_pim }
             - { name: MYSQL_DATABASE, value: akeneo_pim }
           resources:
-            requests: {cpu: "170m", memory: "350Mi"}
-            limits: {memory: "350Mi"}
+            requests: {cpu: "150m", memory: "300Mi"}
+            limits: {memory: "300Mi"}
           readinessProbe:
-            timeoutSeconds: 1
-            initialDelaySeconds: 5
+            timeoutSeconds: 5
+            initialDelaySeconds: 2
             exec:
               command: ["mysql", "-proot", "-h", "127.0.0.1", "-e", "SELECT 1"]
         - name: elasticsearch
@@ -38,8 +35,8 @@ spec:
           env:
             - { name: ES_JAVA_OPTS, value: "-Xms512m -Xmx512m" }
           resources:
-            requests: {cpu: "150m", memory: "1500Mi"}
-            limits: {memory: "1500Mi"}
+            requests: {cpu: "150m", memory: "1000Mi"}
+            limits: {memory: "1000Mi"}
           readinessProbe:
             httpGet:
               path: /
@@ -55,8 +52,8 @@ spec:
           volumeMounts:
             - { name: pim, mountPath: /home/jenkins }
           resources:
-            requests: {cpu: "400m", memory: "1000Mi"}
-            limits: {memory: "1000Mi"}
+            requests: {cpu: "400m", memory: "1100Mi"}
+            limits: {memory: "1100Mi"}
         - name: httpd
           image: eu.gcr.io/akeneo-ci/httpd:2.4
           volumeMounts:
@@ -70,10 +67,10 @@ spec:
           volumeMounts:
             - { name: pim, mountPath: /home/jenkins }
           resources:
-            requests: {cpu: "400m", memory: "1300Mi"}
-            limits: {memory: "1300Mi"}
+            requests: {cpu: "400m", memory: "1500Mi"}
+            limits: {memory: "1500Mi"}
         - name: pubsub
-          image: eu.gcr.io/akeneo-ci/gcloud:1.0.1
+          image: eu.gcr.io/akeneo-ci/gcloud:1.0.2
           command: ["gcloud.phar"]
           args: ["pubsub:message:consume", "SUBSCRIPTION_NAME", "RESULT_TOPIC"]
           env:
