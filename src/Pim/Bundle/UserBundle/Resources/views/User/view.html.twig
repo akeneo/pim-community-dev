@@ -56,7 +56,7 @@
 {% endblock stats %}
 
 {% block content_data %}
-  <div>
+    <div>
     {% set id = 'user-profile' %}
 
     {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: ''|trans})] %}
@@ -175,5 +175,40 @@
 
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
-  </div>
+    </div>
+
+    <script>
+        require(
+            [
+                'pim/common/breadcrumbs',
+                'pim/fetcher-registry',
+                'pim/form-builder'
+            ],
+            function(
+                Breadcrumbs,
+                FetcherRegistry,
+                FormBuilder
+            ) {
+                $(function() {
+                    var breadcrumbs = new Breadcrumbs({
+                        config: {
+                            tab: 'pim-menu-system',
+                            item: 'pim-menu-system-user-user'
+                        }
+                    });
+                    breadcrumbs.configure().then(function () {
+                        breadcrumbs.render();
+                        $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                    });
+
+                    FetcherRegistry.initialize().done(function () {
+                        FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+                            $('.user-menu').append(form.el);
+                            form.render();
+                        }.bind(this));
+                    });
+                });
+            }
+        );
+    </script>
 {% endblock content_data %}
