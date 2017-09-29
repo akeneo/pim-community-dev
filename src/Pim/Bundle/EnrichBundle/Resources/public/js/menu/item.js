@@ -52,9 +52,10 @@ define(
              */
             configure: function () {
                 this.trigger('pim_menu:column:register_navigation_item', {
-                    code: this.getRoute(),
+                    route: this.getRoute(),
                     label: this.getLabel(),
-                    position: this.position
+                    position: this.position,
+                    routeParams: this.getRouteParams()
                 });
 
                 BaseForm.prototype.configure.apply(this, arguments);
@@ -66,7 +67,7 @@ define(
             render: function () {
                 this.$el.empty().append(this.template({
                     title: this.getLabel(),
-                    url: Routing.generateHash(this.getRoute()),
+                    url: Routing.generateHash(this.getRoute(), this.getRouteParams()),
                     active: this.active
                 }));
 
@@ -88,7 +89,7 @@ define(
                 if (!(event.metaKey || event.ctrlKey) &&
                     (!_.has(event, 'extension') || event.extension === this.code)
                 ) {
-                    router.redirectToRoute(this.getRoute());
+                    router.redirectToRoute(this.getRoute(), this.getRouteParams());
                 }
             },
 
@@ -99,6 +100,15 @@ define(
              */
             getRoute: function () {
                 return this.config.to;
+            },
+
+            /**
+             * Returns the route parameters.
+             *
+             * @returns {Object}
+             */
+            getRouteParams: function () {
+                return this.config.routeParams !== 'undefined' ? this.config.routeParams : {};
             },
 
             /**

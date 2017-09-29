@@ -16,7 +16,12 @@
             <% if (currentStep === 'configure') { %>
             <span class="<%- currentStep %> AknButton AknButton--apply wizard-action" data-action-target="confirm">
                     <%- nextLabel %>
-                </span>
+            </span>
+            <% } %>
+            <% if (currentStep === 'choose') { %>
+            <span class="AknButton AknButtonList-item AknButton--apply<% if (!currentOperation) { %> AknButton--disabled<% } %> wizard-action" data-action-target="configure">
+                <%- nextLabel %>
+            </span>
             <% } %>
         </div>
     </div>
@@ -30,11 +35,6 @@
         <div class="AknWidget-content AknWidget-content--withPadding">
             <div class="step">
             </div>
-        </div>
-        <div class="AknButtonList AknButtonList--centered choose">
-                <span class="AknButton AknButtonList-item AknButton--apply<% if (!currentOperation) { %> AknButton--disabled<% } %> wizard-action" data-action-target="configure">
-                    <%- nextLabel %>
-                </span>
         </div>
     </div>
     <% } else { %>
