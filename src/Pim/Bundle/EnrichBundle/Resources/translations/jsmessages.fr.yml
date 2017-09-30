@@ -106,8 +106,8 @@ pim:
         csv_grid_context: CSV (contexte de la grille)
         xlsx_all: Excel (tous les attributs)
         xlsx_grid_context: Excel (contexte de la grille)
-      delete: Supprimer des produits
-      mass_edit: Modifier les informations du produit
+      delete: Supprimer
+      mass_edit: Actions de masse
       category_edit: Déplacer des produits vers des catégories
       sequential_edit: Modifier les produits séquentiellement
 jstree.create: Créer
