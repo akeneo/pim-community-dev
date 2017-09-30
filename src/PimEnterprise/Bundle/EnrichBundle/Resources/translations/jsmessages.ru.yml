@@ -167,8 +167,6 @@ pimee_enrich:
       step:
         select:
           label: Выбор медиафайлов
-        choose:
-          label: Выберите операцию
         configure:
           label: Настройка
         confirm:

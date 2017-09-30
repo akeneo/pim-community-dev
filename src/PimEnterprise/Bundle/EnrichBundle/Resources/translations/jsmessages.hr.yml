@@ -146,8 +146,6 @@ pimee_enrich:
       step:
         select:
           label: Odaberi imovinu
-        choose:
-          label: Odabiri operaciju
         configure:
           label: Konfiguriraj
         confirm:

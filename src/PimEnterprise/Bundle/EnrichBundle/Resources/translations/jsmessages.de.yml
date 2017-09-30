@@ -169,8 +169,6 @@ pimee_enrich:
       step:
         select:
           label: Asset auswählen
-        choose:
-          label: Aktion auswählen
         configure:
           label: Konfigurieren
         confirm:

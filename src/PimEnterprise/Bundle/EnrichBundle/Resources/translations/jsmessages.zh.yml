@@ -167,8 +167,6 @@ pimee_enrich:
       step:
         select:
           label: 选择资产
-        choose:
-          label: 选择操作
         configure:
           label: 配置
         confirm:

@@ -88,6 +88,12 @@ rule: Postavke pravila
 mass_edit_rule: Postavke pravila
 job_execution.summary.rule_calculated: Broj pravila
 batch_jobs:
+  yml_rule_import:
+    label: Uvoz pravila u YAML
+    import.label: Uvoz pravila
+  yml_rule_export:
+    label: Izvoz pravila u YAML
+    export.label: Izvoz pravila
   rule_impacted_product_count:
     label: Zahvaćeni proizvodi za pravila
     perform.label: Izračunaj zahvaćene proizvode

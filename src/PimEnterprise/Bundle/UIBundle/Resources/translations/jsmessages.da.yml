@@ -3,6 +3,8 @@ jstree:
     all: Alle aktiver
     unclassified: Ikke klassificerede aktiver
 asset_grid:
+  title: "[] -Inf, 1] {{ count }} produktet aktiv |] 1, Inf [{{ count }} produkt aktiver"
+  selected: udvalgte aktiver
   label: Produkt aktiver
 create_asset:
   title: Opret et aktiv

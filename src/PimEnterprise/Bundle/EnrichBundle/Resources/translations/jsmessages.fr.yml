@@ -186,8 +186,7 @@ pimee_enrich:
         select:
           label: Choisir les ressources
         choose:
-          label: Choisir une opération
-          title: Edit de masse ({{ itemsCount }} ressources)
+          label_count: "] 0, Inf [Sélectionnez votre action"
         configure:
           label: Configurer
         confirm:

@@ -142,8 +142,8 @@ batch_jobs:
     label: Exportació en CSV del producte publicat
     export.label: Exportació del producte publicat
   csv_product_proposal_import:
-    label: Importació en CSV de la proposta de producte
-    import.label: Importació de la proposta de producte
+    label: Importació de proposta de producte en CSV
+    import.label: Importació de proposta de producte
   approve_product_draft:
     label: Aprovar la proposta
     perform.label: Aprovar la proposta

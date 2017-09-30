@@ -167,8 +167,6 @@ pimee_enrich:
       step:
         select:
           label: Triar recursos
-        choose:
-          label: Trieu l'operació
         configure:
           label: Configurar
         confirm:

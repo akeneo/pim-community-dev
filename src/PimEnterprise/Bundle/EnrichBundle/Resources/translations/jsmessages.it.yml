@@ -182,9 +182,6 @@ pimee_enrich:
       step:
         select:
           label: Scegli gli asset
-        choose:
-          label: Scegli l'operazione
-          title: Modifica di massa ({{ itemsCount }} asset)
         configure:
           label: Configura
         confirm:
