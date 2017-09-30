@@ -185,9 +185,6 @@ pimee_enrich:
       step:
         select:
           label: Elegir recurso
-        choose:
-          label: Elegir operación
-          title: Edición en masa ({{ itemsCount }} activos)
         configure:
           label: Configurar
         confirm:

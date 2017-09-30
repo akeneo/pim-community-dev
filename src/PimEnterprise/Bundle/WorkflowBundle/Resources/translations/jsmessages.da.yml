@@ -18,6 +18,8 @@ pimee_workflow:
     proposal:
       modal.title: Efterlad en kommentar (valgfri - max. 255 tegn)
   proposal:
+    overview: "[] -Inf, 1] {{ count }} forslag |] 1, Inf [{{ count }} forslag"
+    selected: udvalgte forslag
     mass_action_group:
       review:
         label: Massehandling

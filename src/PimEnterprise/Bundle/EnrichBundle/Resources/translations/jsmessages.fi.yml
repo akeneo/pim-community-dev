@@ -159,8 +159,6 @@ pimee_enrich:
           label: Peruuta julkaisu
     asset:
       step:
-        choose:
-          label: Valitse toiminto
         configure:
           label: Konfiguroi
         confirm:

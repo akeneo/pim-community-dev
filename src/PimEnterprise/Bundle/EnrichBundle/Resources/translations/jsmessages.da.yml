@@ -54,6 +54,7 @@ pimee_enrich:
           added: Gruppe {{ group }} vil være tilladt at {{ permission }} attributgruppe
   entity:
     product:
+      index_title: "[] -Inf, 1] {{ count }} offentliggjort produkt |] 1, Inf [{{ count }} offentliggjort produkter"
       navigation: Offentliggjorte produkter
       history:
         published: Publiceret
@@ -185,8 +186,8 @@ pimee_enrich:
         select:
           label: Vælg Aktiver
         choose:
-          label: Vælg handling
-          title: Masse edit ({{ itemsCount }} aktiver)
+          title: Aktiver bulk handlinger
+          label_count: "] 0, Inf [Vælg din handling"
         configure:
           label: Konfigurér
         confirm:
