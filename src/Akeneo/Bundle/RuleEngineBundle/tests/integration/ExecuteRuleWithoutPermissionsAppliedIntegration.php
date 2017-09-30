@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Bundle\RuleEngineBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\TestEnterprise\Integration\TestCase;
+use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;

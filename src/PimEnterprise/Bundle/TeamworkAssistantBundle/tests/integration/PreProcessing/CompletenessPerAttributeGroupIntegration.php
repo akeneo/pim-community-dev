@@ -199,8 +199,6 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
     /**
      * For that test all values should be empty, the "other" attribute group completeness should be "done"
      *
-     * Note: We need to insert reference data (color and fabric) to check that "other" is complete
-     *
      * 1 created project with the product 'full-technical-product':
      *     - Channel: ecommerce
      *     - Locale: en_US
@@ -209,30 +207,6 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
      */
     public function testProjectCalculationWhenTheProductPropertiesAreFull()
     {
-        /**
-         * Load reference data in database
-         */
-        $this->getConnection()->insert('acme_reference_data_color', [
-            'code'          => 'red',
-            'name'          => 'red',
-            'hex'           => '#FF0000',
-            'red'           => 1,
-            'green'         => 1,
-            'blue'          => 1,
-            'hue'           => 1,
-            'hslSaturation' => 1,
-            'light'         => 1,
-            'hsvSaturation' => 1,
-            'value'         => 1,
-            'sortOrder'     => 10
-        ]);
-
-        $this->getConnection()->insert('acme_reference_data_fabric', [
-            'code'      => 'latex',
-            'name'      => 'Latex',
-            'sortOrder' => 10
-        ]);
-
         /**
          * Set a value to simple and multiple reference data properties
          */
@@ -248,7 +222,7 @@ class CompletenessPerAttributeGroupIntegration extends TeamworkAssistantTestCase
                 'multi_reference_data_attribute' => [[
                     'locale' => null,
                     'scope'  => null,
-                    'data'   => ['latex'],
+                    'data'   => ['jersey'],
                 ]]
             ]
         ]);

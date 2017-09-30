@@ -17,11 +17,12 @@
             "Pim\\Behat": "vendor/akeneo/pim-community-dev/features/"
         },
         "psr-4": {
-            "Akeneo\\TestEnterprise\\Integration\\": "tests/",
-            "Pim\\Upgrade\\": "upgrades/",
-            "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/"
+            "Akeneo\\Test\\IntegrationTestsBundle\\": "vendor/akeneo/pim-community-dev/tests/IntegrationTestsBundle/",
+            "AkeneoEnterprise\\Test\\IntegrationTestsBundle\\": "tests/IntegrationTestsBundle/",
+            "Akeneo\\Test\\Integration\\": "vendor/akeneo/pim-community-dev/tests/",
+            "Pim\\Upgrade\\": "upgrades/"
         },
-        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/AppKernelTest.php"]
     },
     "autoload-dev": {
         "files": [

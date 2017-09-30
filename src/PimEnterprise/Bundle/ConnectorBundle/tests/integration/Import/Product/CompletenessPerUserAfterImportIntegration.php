@@ -3,8 +3,8 @@
 namespace PimEnterprise\Bundle\ConnectorBundle\tests\integration\Import\Product;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\JobLauncher;
-use Akeneo\TestEnterprise\Integration\TestCase;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 

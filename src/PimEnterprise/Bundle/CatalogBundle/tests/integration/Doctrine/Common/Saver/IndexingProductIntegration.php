@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\CatalogBundle\tests\integration\Doctrine\Common\S
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\TestEnterprise\Integration\TestCase;
+use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;

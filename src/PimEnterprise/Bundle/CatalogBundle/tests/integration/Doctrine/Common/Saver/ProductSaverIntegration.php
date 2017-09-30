@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\CatalogBundle\tests\integration\Doctrine\Common\Saver;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\TestEnterprise\Integration\TestCase;
+use Akeneo\Test\Integration\TestCase;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ProductSaverIntegration extends TestCase
