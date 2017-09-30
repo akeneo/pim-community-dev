@@ -114,7 +114,9 @@ pim:
         xlsx_all: Excel (alle attributter)
         xlsx_grid_context: Excel (gitter kontekst)
       delete: Slet
+      mass_edit: Massehandlinger
       category_edit: Flytte produkter i kategorier
+      sequential_edit: Sekventiel redigering
 jstree.create: Opret
 jstree.done: Gjort
 switch_on: "Ja"
@@ -146,11 +148,14 @@ pim_enrich:
     product:
       navigation: Produkt navigation
       infos: Produkt info
+      index_title: "[] -Inf, 1] {{ count }} produkt |] 1, Inf [{{ count }} produkter"
       title: produkt
       locale: Landestandard
       category: Kategori
       create: Opret produkt
       filters: Filtre
+      selected: udvalgte produkter
+      common: Almindelig
       btn:
         enabled: Aktiveret
         disabled: Deaktiveret
@@ -221,12 +226,16 @@ pim_enrich:
       message:
         created: Produktet blev oprettet
       completeness: Fuldført
+      sequential_edit:
+        item_limit: Kun de første 1000 poster vist i dette sekventiel redigere ({{ count }} udvalgte)
+        empty: Dit valg er tom, skal du ændre dine søgekriterier
     product_model:
       info:
-        update_successful: Produktmodellen opdateret.
+        update_successful: Produktmodellen opdateret. Fuldstændigheden af dens variant produkter vil blive genberegnet.
         update_failed: Produktmodellen kunne ikke opdateres.
         field_not_ready: 'Produktmodellen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
       read_only_parent_attribute_from_common: Denne attribut kan blive opdateret på de fælles attributter.
+      read_only_parent_attribute_from_model: "Denne attribut kan opdateres på attributterne af {{ axes }}"
       variant_axis: Variant akse
     association_type:
       info:
@@ -285,6 +294,7 @@ pim_enrich:
         save: Gem
     family:
       title: familie
+      selected: udvalgte familier
       info:
         update_successful: Familien opdateret
         create_successful: Kanal oprettet.
@@ -387,6 +397,9 @@ pim_enrich:
     error_occured: Der opstod en fejl under indlæsning af siden
   form:
     required: (Påkrævet)
+    product_model:
+      complete_variant_product: variant produkt
+      complete_variant_products: variant produkter
     product:
       tab:
         associations:
@@ -713,6 +726,8 @@ pim_enrich:
             select_attributes: Tilføj egenskab
             add: Tilføj
             attributes_groups_selected: '{{ itemsCount }} gruppe(r) valgt'
+  job:
+    upload: Slip din {{ type }} fil her, eller klik for at gennemse disken
   export:
     product:
       data:
@@ -746,6 +761,7 @@ pim_enrich:
           all_group: Alle grupper
           empty_selection: Alle attributter vil blive eksporteret
           title: Attributter
+          description: Vælg fabrikat oplysningerne eksportere
         family:
           title: Familie
           help: 'Vælg produkterne, der eksporteres af deres familie. Eks: Eksport kun sko og kjoler.'
@@ -857,8 +873,10 @@ pim_enrich:
       description: Den valgte produktattributter vil blive redigeret med følgende data for landestandard <span class="highlight">{{ locale }}</span> og den kanal <span class="highlight">{{ channel }}</span>, valgt i gitteret produkter.
   index:
     association_type:
+      title: "[] -Inf, 1] {{ count }} association type |] 1, Inf [{{ count }} association typer"
       create_btn: opret sammenhængstype
     import_profiles:
+      title: "[] -Inf, 1] {{ count }} import profil |] 1, Inf [{{ count }} import profiler"
       create_btn: opret import profil
       list: Vælg et job
       create_popin:
@@ -868,8 +886,10 @@ pim_enrich:
     import_history:
       title: importer rapporter
     group:
+      title: "[] -Inf, 1] {{ count }} group |] 1, Inf [{{ count }} grupper"
       create_btn: Opret gruppe
     export_profiles:
+      title: "[] -Inf, 1] {{ count }} eksportprofil |] 1, Inf [{{ count }} export profiler"
       create_btn: opret eksportprofil
       create_popin:
         title: Opret
@@ -878,24 +898,38 @@ pim_enrich:
     export_history:
       title: eksportere rapporterne
     family:
+      title: "[] -Inf, 1] {{ count }} familie |] 1, Inf [{{ count }} familier"
       create_btn: opret familie
     grouptype:
+      title: "[] -Inf, 1] {{ count }} gruppetype |] 1, Inf [{{ count }} gruppe typer"
       create_btn: opret gruppetype
+    currency:
+      title: "[] -Inf, 1] {{ count }} valuta |] 1, Inf [{{ count }} valutaer"
+    locale:
+      title: "[] -Inf, 1] {{ count }} locale |] 1, Inf [{{ count }} landestandarder"
     user:
+      title: "[] -Inf, 1] {{ count }} brugeren |] 1, Inf [{{ count }} brugere"
       create_btn: Opret bruger
     user_role:
+      title: "[] -Inf, 1] {{ count }} rolle |] 1, Inf [{{ count }} roller"
       create_btn: Opret rolle
     user_group:
+      title: "[] -Inf, 1] {{ count }} group |] 1, Inf [{{ count }} grupper"
       create_btn: Opret gruppe
+    process_tracker:
+      title: "[] -Inf, 1] {{ count }} operation |] 1, Inf [{{ count }} operationer"
     channel:
+      title: "[] -Inf, 1] {{ count }} kanal |] 1, Inf [{{ count }} kanaler"
       create_btn: opret kanal
     attribute:
+      title: "[] -Inf, 1] {{ count }} attribut |] 1, Inf [{{ count }} attributter"
       create_btn: opret attribut
       modal_title: Vælg attributtype
     attribute_group:
       title: Attributgrupper
       create_btn: Opret
     api_connection:
+      title: "[] -Inf, 1] {{ count }} API tilslutning |] 1, Inf [{{ count }} API forbindelser"
       create_btn: Opret
   mass_edit:
     next: Næste
@@ -908,6 +942,9 @@ pim_enrich:
       step:
         select:
           label: Vælg produkter
+        choose:
+          title: Produkter bulk handling
+          label_count: "] 0, Inf [Vælg din handling"
         configure:
           label: Konfigurér
         confirm:
@@ -919,13 +956,16 @@ pim_enrich:
       operation:
         change_status:
           label: Skift status
+          label_count: "{1}Change <span class=\"AknFullPage-title--highlight\"> 1</span> produkt |] 1, Inf [Skift status af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
           description: De valgte produkter vil blive aktiveret eller deaktiveret.
           field: At aktivere
         edit_common:
           label: Rediger fælles attributter
+          label_count: "{1}Edit fælles attributter af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Rediger fælles attributter af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
           description: Den valgte produktattributter vil blive redigeret med følgende data for landestandard {{ locale }} og kanal {{ scope }}, valgt i gitteret produkter.
         change_family:
           label: Ændre familie
+          label_count: "{1}Change familie af <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Skift familie af <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
           description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
           field: Familie
         add_to_group:
@@ -951,6 +991,9 @@ pim_enrich:
       step:
         select:
           label: Vælg familier
+        choose:
+          title: Familier massehandling
+          label_count: "] 0, Inf [Vælg din handling"
         configure:
           label: Konfigurér
         confirm:
@@ -1040,6 +1083,7 @@ batch_jobs:
     label: Produkt eksport til CSV
     export.label: Produkt eksport
   csv_product_model_export:
+    label: Produkt model eksport i CSV-
     export.label: Produkt eksport
   csv_category_export:
     label: Kategori eksport til CSV
@@ -1159,6 +1203,9 @@ batch_jobs:
   xlsx_product_export:
     label: Produkt eksport til XLSX
     export.label: Produkt eksport
+  xlsx_product_model_export:
+    label: Produkt model eksport i XLSX
+    export.label: Produkt model eksport
   xlsx_product_import:
     label: Produkt import fra XLSX
     validation.label: Filvalidering
@@ -1235,6 +1282,7 @@ job_tracker:
     invalid_csv: download ugyldige data
 pim_menu:
   tab:
+    activity: Aktivitet
     imports: Import
     products: Produkter
     exports: Exports
@@ -1266,6 +1314,7 @@ pim_menu:
     job_tracker: Process overvågning
     api_connection: API-forbindelser
   navigation:
+    activity: Aktivitet navigation
     system: System navigation
     user: Brugere håndtering navigation
     settings: Indstillinger for navigation

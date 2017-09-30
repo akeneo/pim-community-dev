@@ -54,6 +54,7 @@ pim:
       label_empty: er tom
       label_not_empty: ikke er tom
       label_in_list: i listen
+      operator: Operatør
     price_filter:
       label: Valuta
     category_filter:
@@ -64,6 +65,7 @@ datagrid_view.columns.min_message: Du skal vælge mindst én datagrid kolonne de
 pim_datagrid:
   column_configurator:
     label: Kolonner
+    title: Konfigurere kolonner
     all_groups: Alle grupper
     search: Søg
     clear: Nustil
@@ -71,6 +73,7 @@ pim_datagrid:
     apply: Anvend
     cancel: Annuller
     remove_column: Fjern
+    description: Vælg de oplysninger, du vil have vist som kolonne
     attribute_groups: Attributgrupper
   mass_action:
     delete:
@@ -97,6 +100,7 @@ grid.view_selector:
   placeholder: Navn på ny visning
   choose_label: Vælge en etiket til visningen
   confirmation:
+    remove: Er du sikker på du vil slette denne visning?
     delete: Bekræft sletning
 grid.view_selector.flash.updated: DataGrid visningen er opdateret
 Client ID: Klient ID

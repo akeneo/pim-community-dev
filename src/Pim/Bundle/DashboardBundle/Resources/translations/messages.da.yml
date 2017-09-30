@@ -25,3 +25,4 @@ pim_dashboard:
         export: Eksport
         mass_edit: Masse Rediger
         quick_export: Hurtig eksport
+        compute_product_models_descendants: Beregne underliggende produkt modeller
