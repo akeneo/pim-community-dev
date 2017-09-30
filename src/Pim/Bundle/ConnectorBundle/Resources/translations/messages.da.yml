@@ -52,6 +52,9 @@ batch_jobs:
   csv_product_export:
     label: Produkt eksport til CSV
     export.label: Produkt eksport
+  csv_product_model_export:
+    label: Produkt model eksport i CSV-
+    export.label: Produkt model eksport
   csv_category_export:
     label: Kategori eksport til CSV
     export.label: Kategori eksport
@@ -86,6 +89,7 @@ batch_jobs:
     validation.label: Filvalidering
     import_root_product_model.label: Rodprodukt import
     import_sub_product_model.label: Under produkt import
+    import_product_model_descendants.label: Beregne underliggende produkt modeller
   csv_category_import:
     label: Kategori eksport fra CSV
     validation.label: Filvalidering
@@ -180,6 +184,9 @@ batch_jobs:
   xlsx_product_export:
     label: Produkt eksport til XLSX
     export.label: Produkt eksport
+  xlsx_product_model_export:
+    label: Produkt model eksport i XLSX
+    export.label: Produkt model eksport
   xlsx_product_import:
     label: Produkt import fra XLSX
     validation.label: Filvalidering
@@ -190,6 +197,7 @@ batch_jobs:
     validation.label: Filvalidering
     import_root_product_model.label: Rodprodukt import
     import_sub_product_model.label: Under produkt import
+    import_product_model_descendants.label: Beregne underliggende produkt modeller
   xlsx_group_export:
     label: Gruppe eksport til XLSX
     export.label: Gruppe eksport

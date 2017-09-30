@@ -231,7 +231,6 @@ pim_enrich:
         empty: Votre sélection est vide, veuillez modifier vos critères de recherche
     product_model:
       info:
-        update_successful: Le modèle de produit a bien été mis à jour.
         update_failed: Le modèle de produit n'a pas pu être mis à jour.
         field_not_ready: 'Le modèle de produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
       read_only_parent_attribute_from_common: Cet attribut peut être mis à jour sur les attributs communs.
