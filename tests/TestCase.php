@@ -5,6 +5,7 @@ namespace Akeneo\Test\Integration;
 use Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser;
 use Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoader;
 use Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoaderInterface;
+use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -30,7 +31,8 @@ abstract class TestCase extends KernelTestCase
     protected function setUp()
     {
         static::bootKernel(['debug' => false]);
-        $this->createSystemUser();
+        $authenticator = new SystemUserAuthenticator(static::$kernel->getContainer());
+        $authenticator->createSystemUser();
 
         $this->testKernel = new \AppKernelTest('test', false);
         $this->testKernel->boot();
@@ -103,27 +105,5 @@ abstract class TestCase extends KernelTestCase
         }
 
         throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
-    }
-
-    /**
-     * Create a token with a user system with all access
-     */
-    private function createSystemUser()
-    {
-        $user = $this->get('pim_user.factory.user')->create();
-        $user->setUsername('system');
-        $groups = $this->get('pim_user.repository.group')->findAll();
-
-        foreach ($groups as $group) {
-            $user->addGroup($group);
-        }
-
-        $roles = $this->get('pim_user.repository.role')->findAll();
-        foreach ($roles as $role) {
-            $user->addRole($role);
-        }
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
     }
 }

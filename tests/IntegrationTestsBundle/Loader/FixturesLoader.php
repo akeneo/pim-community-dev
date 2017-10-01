@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Akeneo\Test\IntegrationTestsBundle\Loader;
 
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -28,6 +29,9 @@ class FixturesLoader implements FixturesLoaderInterface
     /** @var DatabaseSchemaHandler */
     protected $databaseSchemaHandler;
 
+    /** @var SystemUserAuthenticator */
+    protected $systemUserAuthenticator;
+
     /** @var ContainerInterface */
     protected $container;
 
@@ -35,15 +39,18 @@ class FixturesLoader implements FixturesLoaderInterface
     protected $cli;
 
     /**
-     * @param KernelInterface       $kernel
-     * @param DatabaseSchemaHandler $databaseSchemaHandler
+     * @param KernelInterface         $kernel
+     * @param DatabaseSchemaHandler   $databaseSchemaHandler
+     * @param SystemUserAuthenticator $systemUserAuthenticator
      */
     public function __construct(
         KernelInterface $kernel,
-        DatabaseSchemaHandler $databaseSchemaHandler
+        DatabaseSchemaHandler $databaseSchemaHandler,
+        SystemUserAuthenticator $systemUserAuthenticator
     ) {
         $this->kernel = $kernel;
         $this->databaseSchemaHandler = $databaseSchemaHandler;
+        $this->systemUserAuthenticator = $systemUserAuthenticator;
 
         $this->container = $kernel->getContainer();
         $this->cli = new Application($kernel);
@@ -67,6 +74,7 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     public function load(Configuration $configuration): void
     {
+        $this->systemUserAuthenticator->createSystemUser();
         $this->container->get('akeneo_elasticsearch.client.product')->resetIndex();
         $this->container->get('akeneo_elasticsearch.client.product_model')->resetIndex();
 
