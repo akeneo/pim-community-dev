@@ -2,11 +2,12 @@
 # features/navigation/navigate_using_hash_navigation.feature:7
 # and features/export/browse_export_executions.feature
 # and can not be reached by the UI. Maybe we have to remove it ?
+# Url : /spread/export_execution/
 extensions:
     pim-export-execution-index:
-        module: pim/form/common/index/index
+        module: pim/common/simple-view
         config:
-            title: pim_enrich.index.export_history.title
+            template: pim/template/common/default-template
 
     pim-export-execution-index-grid-container:
         module: pim/common/simple-view
@@ -14,6 +15,22 @@ extensions:
         targetZone: content
         config:
             template: pim/template/form/index/index
+
+    pim-export-execution-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-export-execution-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-export-execution-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-export-execution-index
+        targetZone: title
+        config:
+            title: pim_enrich.index.export_history.title
+            countable: false
 
     pim-export-execution-index-breadcrumbs:
         module: pim/common/breadcrumbs
