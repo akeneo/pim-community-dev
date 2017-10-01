@@ -1,0 +1,48 @@
+# TODO This page is only tested by the test
+# features/navigation/navigate_using_hash_navigation.feature:7
+# and features/export/browse_export_executions.feature
+# and can not be reached by the UI. Maybe we have to remove it ?
+extensions:
+    pim-export-execution-index:
+        module: pim/form/common/index/index
+        config:
+            title: pim_enrich.index.export_history.title
+
+    pim-export-execution-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-export-execution-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pim-export-execution-index-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-export-execution-index
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-exports
+
+    pim-export-execution-index-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pim-export-execution-index-grid-container
+        targetZone: filters
+
+    pim-export-execution-index-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-export-execution-index-grid-container
+        targetZone: filters
+
+    pim-export-execution-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-export-execution-index-grid-container
+        targetZone: toolbar
+
+    pim-export-execution-index-grid:
+        module: pim/form/common/index/grid
+        parent: pim-export-execution-index
+        position: 1000
+        targetZone: content
+        config:
+            alias: export-execution-grid
+            metadata:
+                jobType: export
