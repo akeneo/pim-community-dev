@@ -1,7 +1,3 @@
-# TODO This page is only tested by the test
-# features/navigation/navigate_using_hash_navigation.feature:7
-# and can not be reached by the UI. Maybe we have to remove it ?
-# Url : /collect/import_execution/
 extensions:
     pim-import-execution-index:
         module: pim/common/simple-view
@@ -20,7 +16,7 @@ extensions:
         parent: pim-import-execution-index
         targetZone: user-menu
         config:
-            userAccount: pim_menu.user.user_account
+            userAccounts: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
     pim-import-execution-index-grid-title:
@@ -30,7 +26,7 @@ extensions:
         config:
             title: pim_enrich.index.import_history.title
             countable: false
-            
+
     pim-import-execution-index-breadcrumbs:
         module: pim/common/breadcrumbs
         parent: pim-import-execution-index
