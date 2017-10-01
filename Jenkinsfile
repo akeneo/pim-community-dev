@@ -8,7 +8,7 @@ String launchUnitTests = "yes"
 String launchIntegrationTests = "yes"
 String launchBehatTests = "yes"
 
-Integer nbAvailableNode = 2
+Integer nbAvailableNode = 8
 def testFiles = []
 
 stage("Checkout") {
