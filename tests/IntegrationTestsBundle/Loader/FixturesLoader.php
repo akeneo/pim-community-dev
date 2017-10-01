@@ -197,11 +197,8 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function loadReferenceData(): void
     {
-        $bundles = $this->container->getParameter('kernel.bundles');
-        if (isset($bundles['AcmeAppBundle'])) {
-            $referenceDataLoader = $this->container->get('akeneo_integration_tests.loader.reference_data_loader');
-            $referenceDataLoader->load();
-        }
+        $referenceDataLoader = $this->container->get('akeneo_integration_tests.loader.reference_data_loader');
+        $referenceDataLoader->load();
     }
 
     /**

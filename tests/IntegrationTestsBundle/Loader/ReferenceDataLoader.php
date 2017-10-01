@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Test\IntegrationTestsBundle\Loader;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -17,40 +18,69 @@ class ReferenceDataLoader
     /** @var EntityManagerInterface */
     protected $entityManager;
 
+    /** @var array */
+    protected $bundles;
+
+    /** @var string */
+    protected $acmeBundleName;
+
+    /** @var string */
+    protected $fabricClassName;
+
+    /** @var string */
+    protected $colorClassName;
+
     /**
      * @param EntityManagerInterface $entityManager
+     * @param array                  $bundles
+     * @param string                 $acmeBundleName
+     * @param string                 $fabricClassName
+     * @param string                 $colorClassName
      */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        array $bundles,
+        string $acmeBundleName,
+        string $fabricClassName,
+        string $colorClassName
+    ) {
         $this->entityManager = $entityManager;
+        $this->bundles = $bundles;
+        $this->acmeBundleName = $acmeBundleName;
+        $this->fabricClassName = $fabricClassName;
+        $this->colorClassName = $colorClassName;
     }
 
     /**
-     * Load data fixtures with the passed EntityManager
+     * Load the reference data.
      */
-    public function load()
+    public function load(): void
     {
-        $query = $this->entityManager->createQuery('SELECT COUNT(f) FROM \Acme\Bundle\AppBundle\Entity\Fabric f');
+        if (!isset($this->bundles[$this->acmeBundleName])) {
+            return;
+        }
+
+        $query = $this->entityManager->createQuery(sprintf('SELECT COUNT(f) FROM %s f', $this->fabricClassName));
         if (0 === (int) $query->getSingleScalarResult()) {
             $stmt = $this->entityManager->getConnection()->prepare($this->getFabricsSql());
             $stmt->execute();
         }
 
-        $query = $this->entityManager->createQuery('SELECT COUNT(c) FROM \Acme\Bundle\AppBundle\Entity\Color c');
+        $query = $this->entityManager->createQuery(sprintf('SELECT COUNT(c) FROM %s c', $this->colorClassName));
         if (0 === (int) $query->getSingleScalarResult()) {
             $stmt = $this->entityManager->getConnection()->prepare($this->getColorSql());
             $stmt->execute();
         }
     }
 
-    private function getFabricsSql()
+    private function getFabricsSql(): string
     {
         $path = __DIR__ . '/../../../src/Acme/Bundle/AppBundle/Resources/fixtures/fabrics.sql';
 
         return file_get_contents(realpath($path));
     }
 
-    private function getColorSql()
+    private function getColorSql(): string
     {
         $path = __DIR__ . '/../../../src/Acme/Bundle/AppBundle/Resources/fixtures/colors.sql';
 

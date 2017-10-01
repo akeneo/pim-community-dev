@@ -10,7 +10,10 @@ services:
         class: '%akeneo_integration_tests.loader.reference_data_loader.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '%kernel.project_dir%'
+            - '%kernel.bundles%'
+            - 'AcmeAppBundle'
+            - '\Acme\Bundle\AppBundle\Entity\Fabric'
+            - '\Acme\Bundle\AppBundle\Entity\Color'
 
     akeneo_integration_tests.loader.fixtures_loader:
         class: '%akeneo_integration_tests.loader.fixtures_loader.class%'
