@@ -12,7 +12,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class IntegrationTestsExtension extends Extension
+class AkeneoIntegrationTestsExtension extends Extension
 {
     /**
      * {@inheritdoc}
