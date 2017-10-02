@@ -31,5 +31,6 @@
         <testsuite name="PIM_Integration_Test">
             <file></file>
         </testsuite>
+
     </testsuites>
 </phpunit>

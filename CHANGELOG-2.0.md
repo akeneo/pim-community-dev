@@ -3,6 +3,7 @@
 ## Bug Fixes
 
 - GITHUB-6866: fix the QueryProductCommand, cheers @LeoBenoist!
+- API-393: add prefix "akeno:batch" to the command "publish-job-to-queue"
 - PIM-6843: Update delete buttons in category, user, role and group pages
 
 ## Tech improvements

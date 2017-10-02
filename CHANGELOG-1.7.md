@@ -1,11 +1,12 @@
-# 1.7.x
+# 1.7.9 (2017-09-27)
 
 ## Bug Fixes
 
-- PIM-6804: Fix the positioning (z-index) of the datafilter widgets
 - PIM-6491: Fix file extension validation on import job upload
 - PIM-6798: Fix the simple-select and multi-select copiers
+- PIM-6804: Fix the positioning (z-index) of the datafilter widgets
 - PIM-6820: During an import, prevent to add in a variant group two products with same variant axes
+- PIM-6822: Fix the product conversion from standard to flat format when the product is in one or several groups, but no variant group
 
 # 1.7.8 (2017-08-22)
 

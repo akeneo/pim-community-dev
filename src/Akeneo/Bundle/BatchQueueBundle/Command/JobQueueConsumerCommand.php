@@ -132,14 +132,6 @@ class JobQueueConsumerCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return NodeProviderInterface
-     */
-    private function getNodeProvider(): NodeProviderInterface
-    {
-        return $this->getContainer()->get('ramsey.uuid.provider.node.system_node_provider');
-    }
-
-    /**
      * @return JobExecutionQueueInterface
      */
     private function getQueue(): JobExecutionQueueInterface
