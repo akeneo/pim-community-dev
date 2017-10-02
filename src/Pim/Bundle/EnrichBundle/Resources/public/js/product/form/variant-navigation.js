@@ -108,8 +108,8 @@ define([
                             };
 
                             const html = ('product' === item.model_type)
-                                ? this.templateProduct({ entity: entity })
-                                : this.templateProductModel({ entity: entity })
+                                ? this.templateProduct({ entity: entity, getClass: this.getCompletenessBadgeClass })
+                                : this.templateProductModel({ entity: entity, getClass: this.getCompletenessBadgeClass })
                             ;
 
                             $container.append(html);
@@ -159,6 +159,25 @@ define([
                         display: completeProducts + ' / ' + totalProducts
                     };
                 }
+            },
+
+            /**
+             * Get the CSS class for the completeness badge of the template, depending on the given ratio.
+             *
+             * @param {int} ratio
+             *
+             * @returns {string}
+             */
+            getCompletenessBadgeClass: function (ratio) {
+                if (0 === ratio) {
+                    return 'empty';
+                }
+
+                if (100 === ratio) {
+                    return 'complete';
+                }
+
+                return 'incomplete';
             },
 
             /**
