@@ -281,9 +281,10 @@ class ProductController
         $data = $this->getDecodedContent($request->getContent());
 
         $data = $this->populateIdentifierProductValue($data);
+        $data = $this->productAttributeFilter->filter($data);
+        $data = $this->orderData($data);
 
         if (isset($data['parent'])) {
-            $data = $this->productAttributeFilter->filter($data);
             $product = $this->variantProductBuilder->createProduct($data['identifier']);
         } else {
             $product = $this->productBuilder->createProduct();
@@ -309,13 +310,21 @@ class ProductController
     public function partialUpdateAction(Request $request, $code): Response
     {
         $data = $this->getDecodedContent($request->getContent());
+        $data = $this->productAttributeFilter->filter($data);
+        $data = $this->orderData($data);
 
         $product = $this->productRepository->findOneByIdentifier($code);
         $isCreation = null === $product;
 
         if ($isCreation) {
             $this->validateCodeConsistency($code, $data);
-            $product = $this->productBuilder->createProduct($code);
+
+            if (isset($data['parent'])) {
+                $data = $this->productAttributeFilter->filter($data);
+                $product = $this->variantProductBuilder->createProduct($data['identifier']);
+            } else {
+                $product = $this->productBuilder->createProduct();
+            }
         }
 
         $data['identifier'] = array_key_exists('identifier', $data) ? $data['identifier'] : $code;
@@ -442,7 +451,7 @@ class ProductController
      */
     protected function validateProduct(ProductInterface $product): void
     {
-        $violations = $this->productValidator->validate($product);
+        $violations = $this->productValidator->validate($product, null, ['Default', 'api']);
         if (0 !== $violations->count()) {
             throw new ViolationHttpException($violations);
         }
@@ -747,5 +756,23 @@ class ProductController
         );
 
         return $paginatedProducts;
+    }
+
+    /**
+     * This method order the data by setting the parent field first. It comes from the ParentFieldSetter that sets the
+     * family from the parent if the product family is null. By doing this the validator does not fail if the family
+     * field has been set to nul from the API. So to prevent this we order the parent before the family field. this way
+     * the field family will be updated to null if the data sent from the API for the family field is null.
+     *
+     * @param array $data
+     * @return array
+     */
+    private function orderData(array $data): array
+    {
+        if (!isset($data['parent'])) {
+            return $data;
+        }
+
+        return ['parent' => $data['parent']] + $data;
     }
 }
