@@ -18,12 +18,19 @@ class ExportProductModelsIntegration extends AbstractExportTestCase
             'localizable' => true,
             'scopable'    => false,
         ]);
-        $this->createFamily([
-            'code'        => 'clothing',
-            'attributes'  => ['sku', 'name'],
-            'attribute_requirements' => [
-                'tablet' => ['sku', 'name']
-            ]
+        $this->createAttribute([
+            'code'        => 'variation_name',
+            'type'        => 'pim_catalog_text',
+            'group'       => 'attributeGroupA',
+            'localizable' => false,
+            'scopable'    => false,
+        ]);
+        $this->createAttribute([
+            'code'        => 'variation_image',
+            'type'        => 'pim_catalog_image',
+            'group'       => 'attributeGroupA',
+            'localizable' => false,
+            'scopable'    => false,
         ]);
         $this->createAttribute([
             'code'        => 'color',
@@ -62,19 +69,12 @@ class ExportProductModelsIntegration extends AbstractExportTestCase
             'localizable' => false,
             'scopable'    => false,
         ]);
-        $this->createAttribute([
-            'code'        => 'variation_name',
-            'type'        => 'pim_catalog_text',
-            'group'       => 'attributeGroupA',
-            'localizable' => false,
-            'scopable'    => false,
-        ]);
-        $this->createAttribute([
-            'code'        => 'variation_image',
-            'type'        => 'pim_catalog_image',
-            'group'       => 'attributeGroupA',
-            'localizable' => false,
-            'scopable'    => false,
+        $this->createFamily([
+            'code'        => 'clothing',
+            'attributes'  => ['sku', 'name', 'variation_name', 'variation_image', 'size', 'ean', 'sku', 'color'],
+            'attribute_requirements' => [
+                'tablet' => ['sku', 'name']
+            ]
         ]);
         $this->createFamilyVariant([
             'code'        => 'clothing_color_size',

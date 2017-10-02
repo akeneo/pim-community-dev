@@ -13,6 +13,7 @@ class ExportProductsByLocalesIntegration extends AbstractExportTestCase
     {
         $this->createAttribute([
             'code'              => 'name',
+            'group'             => 'attributeGroupA',
             'type'              => 'pim_catalog_textarea',
             'available_locales' => ['fr_FR', 'en_US'],
             'localizable'       => true,
@@ -25,6 +26,7 @@ class ExportProductsByLocalesIntegration extends AbstractExportTestCase
 
         $this->createAttribute([
             'code'              => 'description',
+            'group'             => 'attributeGroupA',
             'type'              => 'pim_catalog_textarea',
             'available_locales' => ['fr_FR'],
             'localizable'       => true,
@@ -36,8 +38,8 @@ class ExportProductsByLocalesIntegration extends AbstractExportTestCase
         ]);
 
         $this->createFamily([
-            'code'        => 'localized',
-            'attributes'  => ['sku', 'name'],
+            'code'       => 'localized',
+            'attributes' => ['sku', 'name'],
             'attribute_requirements' => [
                 'tablet' => ['sku', 'name']
             ]
