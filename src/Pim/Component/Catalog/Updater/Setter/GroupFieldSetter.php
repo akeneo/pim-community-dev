@@ -9,8 +9,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Pim\Component\Catalog\Model\ProductInterface;
 
 /**
- * Sets the group field, for now, it handles groups and variant group, in the future, we'll separate them, we can
- * already use the VariantGroupFieldSetter
+ * Sets the group field, for now, it handles groups
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

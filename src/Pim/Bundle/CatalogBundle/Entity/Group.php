@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Group entity
