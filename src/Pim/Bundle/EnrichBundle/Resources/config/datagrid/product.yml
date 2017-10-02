@@ -121,6 +121,7 @@ datagrid:
                 handler: product_mass_delete
                 className: 'AknButton AknButton--important AknButtonList-item'
                 messages:
+                    confirm_type: Products
                     confirm_title: pim_datagrid.mass_action.delete.confirm_title
                     confirm_content: pim_datagrid.mass_action.delete.confirm_content
                     confirm_ok: pim_datagrid.mass_action.delete.confirm_ok

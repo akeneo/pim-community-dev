@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/datagrid/abstract-action'],
-function(_, messenger, __, Modal, AbstractAction) {
+define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/datagrid/abstract-action', 'pim/template/grid/mass-actions-confirm'],
+function(_, messenger, __, Modal, AbstractAction, confirmModalTemplate) {
     'use strict';
 
     /**
@@ -11,6 +11,8 @@ function(_, messenger, __, Modal, AbstractAction) {
      * @extends oro.datagrid.AbstractAction
      */
     return AbstractAction.extend({
+        confirmModalTemplate: _.template(confirmModalTemplate),
+
         /** @property {Object} */
         defaultMessages: {
             confirm_title: __('Mass Action Confirmation'),
@@ -160,11 +162,17 @@ function(_, messenger, __, Modal, AbstractAction) {
          * @return {oro.Modal}
          */
         getConfirmDialog: function(callback) {
-            return new Modal({
+            const modal = new Modal({
+                type: this.messages.confirm_type,
                 title: this.messages.confirm_title,
                 content: this.messages.confirm_content,
-                okText: this.messages.confirm_ok
+                okText: this.messages.confirm_ok,
+                template: this.confirmModalTemplate
             }).on('ok', callback);
+
+            modal.$el.addClass('modal--fullPage');
+
+            return modal;
         }
     });
 });
