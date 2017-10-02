@@ -9,7 +9,7 @@
     "webpack-watch": "webpack --progress --config webpack.config.js --watch",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
     "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix",
-    "styles": "node ./node_modules/.bin/lessc src/Pim/Bundle/UIBundle/Resources/public/less/main.less web/css/pim.css --include-path=. --source-map=web/css/pim.map --relative-urls"
+    "styles": "node ./node_modules/.bin/lessc src/Pim/Bundle/UIBundle/Resources/public/less/main.less web/css/pim.css --include-path=. --source-map=web/css/pim.map"
   },
   "repository": {
     "type": "git",

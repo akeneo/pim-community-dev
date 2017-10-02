@@ -189,7 +189,7 @@
   &-collapseButton {
     height: @AknBottomPanelHeight;
     width: @AknSecondColumnWidth;
-    background: url("../../images/icon-panelClose.svg") no-repeat 20px center;
+    background: url("@{AknAssetUrl}/icon-panelClose.svg") no-repeat 20px center;
     background-size: @iconSize;
     cursor: pointer;
     opacity: 0.8;
@@ -229,7 +229,7 @@
   &--collapsed &-collapseButton {
     width: @littleWidth;
     background-position: ((@littleWidth - @iconSize) / 2) center;
-    background-image: url("../../images/icon-panelOpen.svg");
+    background-image: url("@{AknAssetUrl}/icon-panelOpen.svg");
   }
 
   &-bottomButtonContainer {
