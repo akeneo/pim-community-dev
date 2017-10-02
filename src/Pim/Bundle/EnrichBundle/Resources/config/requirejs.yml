@@ -840,7 +840,6 @@ config:
         pim/form/common/attributes/copy-field:               pimenrich/js/form/common/attributes/copy-field
         pim/form/common/attributes/create-button:            pimenrich/js/form/common/attributes/create-button
         pim/form/common/download-file:                       pimenrich/js/form/common/download-file
-        pim/form/common/index/index:                         pimenrich/js/form/common/index/index
         pim/form/common/index/grid:                          pimenrich/js/form/common/index/grid
         pim/form/common/index/create-button:                 pimenrich/js/form/common/index/create-button
         pim/form/common/column:                              pimenrich/js/form/common/column
@@ -904,6 +903,7 @@ config:
         pim/grid/table: pimenrich/js/product/grid/table
 
         # Templates
+        pim/template/common/default-template:                     pimenrich/templates/common/default-template.html
         pim/template/common/drop-zone:                            pimenrich/templates/common/drop-zone.html
         pim/template/common/form-container:                       pimenrich/templates/common/form-container.html
         pim/template/common/no-data:                              pimenrich/templates/common/no-data.html
@@ -930,7 +930,6 @@ config:
         pim/template/form/meta:                                   pimenrich/templates/form/meta.html
         pim/template/form/tab/attributes:                         pimenrich/templates/form/tab/attributes.html
         pim/template/form/save-buttons:                           pimenrich/templates/form/save-buttons.html
-        pim/template/form/edit-form:                              pimenrich/templates/form/edit-form.html
         pim/template/form/tab/attribute/attribute-filter:         pimenrich/templates/form/tab/attributes/attribute-filter.html
         pim/template/form/tab/attribute/attribute-group-selector: pimenrich/templates/form/tab/attributes/attribute-group-selector.html
         pim/template/form/tab/attribute/attribute-group:          pimenrich/templates/form/tab/attributes/attribute-group.html

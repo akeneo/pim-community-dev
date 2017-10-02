@@ -48,15 +48,16 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    width: 100%;
+    overflow: hidden;
   }
 
   &-mainContent {
-    padding: 0 @mainContentPadding 100px @mainContentPadding;
+    padding: 0 @mainContentPadding @mainContentPadding @mainContentPadding;
     overflow-x: auto;
     flex-grow: 1;
     position: relative;
     height: 100%;
-    margin-bottom: 64px;
 
     &--withoutPadding {
       padding: 10px 0 0 0;
@@ -101,20 +102,17 @@
     display: flex;
     align-items: center;
     padding: 0 20px;
-    flex-basis: 64px;
-    min-height: 64px;
-    margin-top: -64px;
-    margin-bottom: 0;
+    flex-basis: @AknBottomPanelHeight;
+    min-height: @AknBottomPanelHeight;
+    z-index: 1;
     transition:
-      margin 0.3s ease-in-out,
       flex-basis 0.3s ease-in-out,
       min-height 0.3s ease-in-out;
 
     &--hidden {
-      margin-bottom: -64px;
-      margin-top: 0;
       flex-basis: 0;
       min-height: 0;
+      overflow: hidden;
     }
   }
 }

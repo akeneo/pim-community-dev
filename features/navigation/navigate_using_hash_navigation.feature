@@ -25,9 +25,7 @@ Feature: Navigate the application in hash navigation mode
       | pim_enrich_product_index                |
       | pim_enrich_attribute_index              |
       | pim_importexport_export_profile_index   |
-      | pim_importexport_export_execution_index |
       | pim_importexport_import_profile_index   |
-      | pim_importexport_import_execution_index |
       | oro_user_create                         |
       | oro_user_group_create                   |
       | oro_user_group_index                    |

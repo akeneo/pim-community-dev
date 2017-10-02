@@ -1021,6 +1021,9 @@ class Grid extends Index
         }, 'Can not find main select button');
 
         if (!$button->hasClass('AknSelectButton--selected')) {
+            $this->spin(function () use ($button) {
+                return $button->isVisible();
+            }, 'Can not show select all button');
             $button->click();
         }
 
