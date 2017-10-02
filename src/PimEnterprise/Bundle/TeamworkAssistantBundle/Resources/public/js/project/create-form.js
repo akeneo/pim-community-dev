@@ -260,6 +260,7 @@ define(
                     this.$el.html(this.templateModal({
                         subTitleLabel: __('teamwork_assistant.grid.view_selector.projects'),
                         titleLabel: __('teamwork_assistant.grid.view_selector.popin_title'),
+                        picture: 'illustrations/Project.svg',
                         fields: this.template({
                             channelLabel: __('teamwork_assistant.project.channel'),
                             channelValue: channelValue,

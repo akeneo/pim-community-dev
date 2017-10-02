@@ -5,6 +5,7 @@ extensions:
             labels:
                 title: pim_enrich.index.export_profiles.create_popin.title
                 subTitle: pim_menu.item.export_profile
+            picture: illustrations/Export.svg
             successMessage: pim_enrich.index.export_profiles.message.created
             editRoute: pim_importexport_export_profile_edit
             postUrl: pim_enrich_job_instance_rest_export_create
