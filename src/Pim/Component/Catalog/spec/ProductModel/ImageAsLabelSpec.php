@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 
-class ProductModelImageAsLabelSpec extends ObjectBehavior
+class ImageAsLabelSpec extends ObjectBehavior
 {
     function let(
         ProductModelRepositoryInterface $productModelRepository,
@@ -57,7 +57,7 @@ class ProductModelImageAsLabelSpec extends ObjectBehavior
         $productModel->getLevel()->willReturn(1);
         $productModel->getImage()->willReturn($imageValue);
 
-        $this->getImage($productModel)->shouldReturn($imageValue);
+        $this->value($productModel)->shouldReturn($imageValue);
     }
 
     function it_gets_the_attribute_as_image_value_of_a_product_model_coming_from_a_parent(
@@ -97,7 +97,7 @@ class ProductModelImageAsLabelSpec extends ObjectBehavior
         $productModel->getLevel()->willReturn(1);
         $productModel->getImage()->willReturn($imageValue);
 
-        $this->getImage($productModel)->shouldReturn($imageValue);
+        $this->value($productModel)->shouldReturn($imageValue);
     }
 
     function it_gets_the_attribute_as_image_value_of_a_product_model_coming_from_a_product_model_child(
@@ -150,7 +150,7 @@ class ProductModelImageAsLabelSpec extends ObjectBehavior
 
         $subProductModel->getImage()->willReturn($imageValue);
 
-        $this->getImage($productModel)->shouldReturn($imageValue);
+        $this->value($productModel)->shouldReturn($imageValue);
     }
 
     function it_gets_the_attribute_as_image_value_of_a_product_model_coming_from_a_variant_product_child(
@@ -203,7 +203,7 @@ class ProductModelImageAsLabelSpec extends ObjectBehavior
 
         $variantProduct->getImage()->willReturn($imageValue);
 
-        $this->getImage($productModel)->shouldReturn($imageValue);
+        $this->value($productModel)->shouldReturn($imageValue);
     }
 
     function it_returns_null_if_no_image_available_anywhere(
@@ -253,6 +253,6 @@ class ProductModelImageAsLabelSpec extends ObjectBehavior
             1
         )->willReturn([]);
 
-        $this->getImage($productModel)->shouldReturn(null);
+        $this->value($productModel)->shouldReturn(null);
     }
 }

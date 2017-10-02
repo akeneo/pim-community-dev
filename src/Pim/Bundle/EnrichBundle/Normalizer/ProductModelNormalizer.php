@@ -10,7 +10,7 @@ use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvide
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\ProductModel\ProductModelImageAsLabel;
+use Pim\Component\Catalog\ProductModel\ImageAsLabel;
 use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -63,8 +63,8 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var VariantNavigationNormalizer */
     private $navigationNormalizer;
 
-    /** @var ProductModelImageAsLabel */
-    private $productModelImageAsLabel;
+    /** @var ImageAsLabel */
+    private $imageAsLabel;
 
     /**
      * @param NormalizerInterface                       $normalizer
@@ -79,7 +79,7 @@ class ProductModelNormalizer implements NormalizerInterface
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      * @param VariantNavigationNormalizer               $navigationNormalizer
      * @param VariantProductRatioInterface              $variantProductRatioQuery
-     * @param ProductModelImageAsLabel                  $productModelImageAsLabel
+     * @param ImageAsLabel                              $imageAsLabel
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -94,7 +94,7 @@ class ProductModelNormalizer implements NormalizerInterface
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         VariantProductRatioInterface $variantProductRatioQuery,
-        ProductModelImageAsLabel $productModelImageAsLabel
+        ImageAsLabel $imageAsLabel
     ) {
         $this->normalizer            = $normalizer;
         $this->versionNormalizer     = $versionNormalizer;
@@ -108,7 +108,7 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->attributesProvider    = $attributesProvider;
         $this->navigationNormalizer  = $navigationNormalizer;
         $this->variantProductRatioQuery = $variantProductRatioQuery;
-        $this->productModelImageAsLabel = $productModelImageAsLabel;
+        $this->imageAsLabel = $imageAsLabel;
     }
 
     /**
@@ -147,7 +147,7 @@ class ProductModelNormalizer implements NormalizerInterface
         $normalizedFamilyVariant = $this->normalizer->normalize($productModel->getFamilyVariant(), 'standard');
 
         $variantProductCompletenesses = $this->variantProductRatioQuery->findComplete($productModel);
-        $closestImage = $this->productModelImageAsLabel->getImage($productModel);
+        $closestImage = $this->imageAsLabel->value($productModel);
 
         $normalizedProductModel['meta'] = [
                 'variant_product_completenesses' => $variantProductCompletenesses->values(),

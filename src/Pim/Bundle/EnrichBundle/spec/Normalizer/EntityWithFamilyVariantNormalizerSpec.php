@@ -14,7 +14,7 @@ use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
-use Pim\Component\Catalog\ProductModel\ProductModelImageAsLabel;
+use Pim\Component\Catalog\ProductModel\ImageAsLabel;
 use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
 use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
@@ -29,7 +29,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         NormalizerInterface $completenessCollectionNormalizer,
         CompletenessCalculatorInterface $completenessCalculator,
         VariantProductRatioInterface $variantProductRatioQuery,
-        ProductModelImageAsLabel $productModelImageAsLabel
+        ImageAsLabel $imageAsLabel
     ) {
         $this->beConstructedWith(
             $fileNormalizer,
@@ -38,7 +38,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             $completenessCollectionNormalizer,
             $completenessCalculator,
             $variantProductRatioQuery,
-            $productModelImageAsLabel
+            $imageAsLabel
         );
     }
 

@@ -18,7 +18,7 @@ use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ProductModelImageAsLabel
+class ImageAsLabel
 {
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
@@ -46,7 +46,7 @@ class ProductModelImageAsLabel
      *
      * @return null|ValueInterface
      */
-    public function getImage(ProductModelInterface $productModel): ?ValueInterface
+    public function value(ProductModelInterface $productModel): ?ValueInterface
     {
         $attributeAsImage = $productModel->getFamily()->getAttributeAsImage();
         $attributeSets = $productModel->getFamilyVariant()->getVariantAttributeSets();

@@ -13,7 +13,7 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\ProductModel\ProductModelImageAsLabel;
+use Pim\Component\Catalog\ProductModel\ImageAsLabel;
 use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
@@ -37,7 +37,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         VariantProductRatioInterface $findVariantProductCompleteness,
-        ProductModelImageAsLabel $productModelImageAsLabel
+        ImageAsLabel $imageAsLabel
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -52,7 +52,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             $attributesProvider,
             $navigationNormalizer,
             $findVariantProductCompleteness,
-            $productModelImageAsLabel
+            $imageAsLabel
         );
     }
 
@@ -73,7 +73,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $attributesProvider,
         $navigationNormalizer,
         $findVariantProductCompleteness,
-        $productModelImageAsLabel,
+        $imageAsLabel,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
@@ -142,7 +142,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('en_US')->willReturn('Tshirt blue');
         $productModel->getLabel('fr_FR')->willReturn('Tshirt bleu');
 
-        $productModelImageAsLabel->getImage($productModel)->willReturn($picture);
+        $imageAsLabel->value($productModel)->willReturn($picture);
         $picture->getData()->willReturn('IMAGE_DATA');
         $fileNormalizer->normalize('IMAGE_DATA', 'internal_api', $options)->willReturn($fileNormalized);
 
@@ -214,7 +214,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $attributesProvider,
         $navigationNormalizer,
         $findVariantProductCompleteness,
-        $productModelImageAsLabel,
+        $imageAsLabel,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
@@ -271,7 +271,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('en_US')->willReturn('Tshirt blue');
         $productModel->getLabel('fr_FR')->willReturn('Tshirt bleu');
 
-        $productModelImageAsLabel->getImage($productModel)->willReturn(null);
+        $imageAsLabel->value($productModel)->willReturn(null);
         $fileNormalizer->normalize(Argument::cetera())->shouldNotBeCalled();
 
         $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
@@ -342,7 +342,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $attributesProvider,
         $navigationNormalizer,
         $findVariantProductCompleteness,
-        $productModelImageAsLabel,
+        $imageAsLabel,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
@@ -411,7 +411,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('en_US')->willReturn('Tshirt blue');
         $productModel->getLabel('fr_FR')->willReturn('Tshirt bleu');
 
-        $productModelImageAsLabel->getImage($productModel)->willReturn($picture);
+        $imageAsLabel->value($productModel)->willReturn($picture);
         $picture->getData()->willReturn('IMAGE_DATA');
         $fileNormalizer->normalize('IMAGE_DATA', 'internal_api', $options)->willReturn($fileNormalized);
 

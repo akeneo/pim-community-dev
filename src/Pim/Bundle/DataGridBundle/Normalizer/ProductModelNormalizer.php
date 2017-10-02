@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\ProductModel\ProductModelImageAsLabel;
+use Pim\Component\Catalog\ProductModel\ImageAsLabel;
 use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -31,22 +31,22 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
     /** @var VariantProductRatioInterface */
     private $variantProductRatioQuery;
 
-    /** @var ProductModelImageAsLabel */
-    private $productModelImageAsLabel;
+    /** @var ImageAsLabel */
+    private $imageAsLabel;
 
     /**
      * @param CollectionFilterInterface    $filter
      * @param VariantProductRatioInterface $variantProductRatioQuery
-     * @param ProductModelImageAsLabel     $productModelImageAsLabel
+     * @param ImageAsLabel                 $imageAsLabel
      */
     public function __construct(
         CollectionFilterInterface $filter,
         VariantProductRatioInterface $variantProductRatioQuery,
-        ProductModelImageAsLabel $productModelImageAsLabel
+        ImageAsLabel $imageAsLabel
     ) {
-        $this->filter = $filter;
+        $this->filter                   = $filter;
         $this->variantProductRatioQuery = $variantProductRatioQuery;
-        $this->productModelImageAsLabel = $productModelImageAsLabel;
+        $this->imageAsLabel             = $imageAsLabel;
     }
 
     /**
@@ -64,7 +64,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $channel = current($context['channels']);
 
         $variantProductCompleteness = $this->variantProductRatioQuery->findComplete($productModel);
-        $closestImage = $this->productModelImageAsLabel->getImage($productModel);
+        $closestImage = $this->imageAsLabel->value($productModel);
 
         $data['identifier'] = $productModel->getCode();
         $data['family'] = $this->getFamilyLabel($productModel, $locale);
