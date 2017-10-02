@@ -25,8 +25,9 @@ extensions:
     pimee-product-view-sequential-edit:
         module: pim/product-edit-form/sequential-edit
         parent: pimee-product-view-form
-        targetZone: sequential
+        targetZone: bottom-panel
         position: 100
+
 
     pimee-product-view-left-column:
         module: pim/form/common/column

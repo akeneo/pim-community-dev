@@ -3,12 +3,19 @@ extensions:
         module: pim/common/simple-view
         targetZone: self
         config:
-            template: pim/template/product/index
-            templateParams:
-                gridName: published-product-grid
+            template: pim/template/common/default-template
         forwarded-events:
             grid_load:start: grid_load:start
             grid_load:complete: grid_load:complete
+
+    pimee-published-product-index-grid-container:
+        module: pim/common/simple-view
+        parent: pimee-published-product-index
+        targetZone: content
+        config:
+            template: pim/template/product/index
+            templateParams:
+                gridName: published-product-grid
 
     pimee-published-product-index-grid-title:
         module: pim/common/grid-title
@@ -81,7 +88,7 @@ extensions:
     pimee-published-product-index-mass-actions:
         module: pim/grid/mass-actions
         parent: pimee-published-product-index
-        targetZone: mass-actions
+        targetZone: bottom-panel
         config:
             label: pim_enrich.entity.product.selected
 
@@ -102,12 +109,12 @@ extensions:
 
     pimee-published-product-index-pagination:
         module: oro/datagrid/pagination-input
-        parent: pimee-published-product-index
+        parent: pimee-published-product-index-grid-container
         targetZone: toolbar
 
     pimee-published-product-index-columns:
         module: pim/datagrid/configure-columns-action
-        parent: pimee-published-product-index
+        parent: pimee-published-product-index-grid-container
         targetZone: toolbar
 
     pimee-published-product-index-grid:
