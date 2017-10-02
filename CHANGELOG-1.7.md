@@ -18,9 +18,14 @@
 ## Bug fixes
 
 - PIM-6465: Fix loading mask issue on asset creation from UI.
+- PIM-6530: Fix pim:installer:grant-backend-processes-accesses command 
+
+# 1.7.5 (2017-06-02)
+
+## Bug fixes
+
 - PIM-6393: Context kept when creating category tree
 - PIM-6470: Fix issue on Permission filter when added to the user default filters
-- PIM-6530: Fix pim:installer:grant-backend-processes-accesses command 
 
 # 1.7.4 (2017-05-10)
 
@@ -121,9 +126,9 @@
 - Update spec to be independent from actual developer timezone
 - GITHUB-5455: Redo channel's form `Asset transformations` tab to fit new form implementation based on internal REST API
 
-## BC breaks
+## BC breaks
 
-### Bundles
+### Bundles
 
 - Remove `PimEnterprise\Bundle\WebServiceBundle\PimEnterpriseWebServiceBundle`
 
