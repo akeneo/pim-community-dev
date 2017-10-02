@@ -108,8 +108,8 @@ define([
                             };
 
                             const html = ('product' === item.model_type)
-                                ? this.templateProduct({ entity: entity, getClass: this.getCompletenessBadgeClass })
-                                : this.templateProductModel({ entity: entity, getClass: this.getCompletenessBadgeClass })
+                                ? this.templateProduct({entity: entity, getClass: this.getCompletenessBadgeClass})
+                                : this.templateProductModel({entity: entity, getClass: this.getCompletenessBadgeClass})
                             ;
 
                             $container.append(html);
