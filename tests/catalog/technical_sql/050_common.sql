@@ -224,17 +224,8 @@ INSERT INTO `pim_catalog_family_variant` (`id`, `family_id`, `code`) VALUES
 
 /*!40000 ALTER TABLE `pim_catalog_group` DISABLE KEYS */;
 DELETE FROM `pim_catalog_group`;
-INSERT INTO `pim_catalog_group` VALUES (240,NULL,323,'groupA'),(241,NULL,323,'groupB');
+INSERT INTO `pim_catalog_group` VALUES (240,323,'groupA'),(241,323,'groupB');
 /*!40000 ALTER TABLE `pim_catalog_group` ENABLE KEYS */;
-
-
---
--- Dumping data for table `pim_catalog_group_attribute`
---
-
-/*!40000 ALTER TABLE `pim_catalog_group_attribute` DISABLE KEYS */;
-INSERT INTO `pim_catalog_group_attribute` VALUES (239,2535);
-/*!40000 ALTER TABLE `pim_catalog_group_attribute` ENABLE KEYS */;
 
 
 --
@@ -243,7 +234,7 @@ INSERT INTO `pim_catalog_group_attribute` VALUES (239,2535);
 
 /*!40000 ALTER TABLE `pim_catalog_group_type` DISABLE KEYS */;
 DELETE FROM `pim_catalog_group_type`;
-INSERT INTO `pim_catalog_group_type` VALUES (323,'RELATED',0);
+INSERT INTO `pim_catalog_group_type` VALUES (323,'RELATED');
 /*!40000 ALTER TABLE `pim_catalog_group_type` ENABLE KEYS */;
 
 
