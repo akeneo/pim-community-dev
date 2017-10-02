@@ -8,6 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\Entity\UserNotificationInterface;
 use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory;
+use Prophecy\Argument;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -79,5 +80,22 @@ class NotifierSpec extends ObjectBehavior
         $userNotifsSaver->saveAll([$userNotification, $userNotificationAuthor])->shouldBeCalled();
 
         $this->notify($notification, [$user, 'author']);
+    }
+
+    function it_does_not_notify_the_system_user(
+        $notificationSaver,
+        $userNotifsSaver,
+        $userNotifFactory,
+        NotificationInterface $notification,
+        UserInterface $userSystem
+    ) {
+        $userSystem->getUsername()->willReturn('system');
+
+        $userNotifFactory->createUserNotification(Argument::cetera())->shouldNotBeCalled();
+
+        $notificationSaver->save($notification)->shouldBeCalled();
+        $userNotifsSaver->saveAll([])->shouldBeCalled();
+
+        $this->notify($notification, [$userSystem, 'system']);
     }
 }

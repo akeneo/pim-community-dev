@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -24,7 +25,7 @@ class Notifier implements NotifierInterface
     /** @var UserProviderInterface */
     protected $userProvider;
 
-    /** @var SaverInterface  */
+    /** @var SaverInterface */
     protected $notificationSaver;
 
     /** @var BulkSaverInterface */
@@ -54,6 +55,8 @@ class Notifier implements NotifierInterface
     public function notify(NotificationInterface $notification, array $users)
     {
         $userNotifications = [];
+        $users = $this->filterSystemUser($users);
+
         foreach ($users as $user) {
             try {
                 $user = is_object($user) ? $user : $this->userProvider->loadUserByUsername($user);
@@ -67,5 +70,29 @@ class Notifier implements NotifierInterface
         $this->userNotifsSaver->saveAll($userNotifications);
 
         return $this;
+    }
+
+    /**
+     * Do not notify the System user.
+     *
+     * @param array $users
+     *
+     * @return array
+     */
+    private function filterSystemUser(array $users)
+    {
+        return array_filter(
+            $users,
+            function ($user) {
+                if (is_string($user) && UserInterface::SYSTEM_USER_NAME === $user) {
+                    return false;
+                }
+                if (is_object($user) && UserInterface::SYSTEM_USER_NAME === $user->getUsername()) {
+                    return false;
+                }
+
+                return true;
+            }
+        );
     }
 }
