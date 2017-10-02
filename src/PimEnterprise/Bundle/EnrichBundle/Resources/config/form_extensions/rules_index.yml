@@ -1,8 +1,25 @@
 extensions:
     pim-rule-index:
-        module: pim/form/common/index/index
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
         forwarded-events:
             grid_load:start: grid_load:start
+
+    pim-rule-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-rule-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pim-rule-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-rule-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
 
     pim-rule-index-grid-title:
         module: pim/common/grid-title
@@ -21,12 +38,12 @@ extensions:
 
     pim-rule-index-filters-manage:
         module: oro/datafilter/filters-button
-        parent: pim-rule-index
+        parent: pim-rule-index-grid-container
         targetZone: filters
 
     pim-rule-index-grid-filters-list:
         module: oro/datafilter/filters-list
-        parent: pim-rule-index
+        parent: pim-rule-index-grid-container
         targetZone: filters
 
     pim-rule-index-mass-actions:
@@ -43,7 +60,7 @@ extensions:
 
     pim-rule-index-pagination:
         module: oro/datagrid/pagination-input
-        parent: pim-rule-index
+        parent: pim-rule-index-grid-container
         targetZone: toolbar
 
     pim-rule-index-grid:

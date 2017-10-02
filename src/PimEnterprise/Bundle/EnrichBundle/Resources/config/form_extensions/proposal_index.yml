@@ -1,8 +1,25 @@
 extensions:
     pim-proposal-index:
-        module: pim/form/common/index/index
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
         forwarded-events:
             grid_load:start: grid_load:start
+
+    pim-proposal-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-proposal-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pim-proposal-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-proposal-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
 
     pim-proposal-index-grid-title:
         module: pim/common/grid-title
@@ -13,12 +30,12 @@ extensions:
 
     pim-proposal-index-filters-manage:
         module: oro/datafilter/filters-button
-        parent: pim-proposal-index
+        parent: pim-proposal-index-grid-container
         targetZone: filters
 
     pim-proposal-index-grid-filters-list:
         module: oro/datafilter/filters-list
-        parent: pim-proposal-index
+        parent: pim-proposal-index-grid-container
         targetZone: filters
 
     pim-proposal-index-mass-actions:
@@ -35,7 +52,7 @@ extensions:
 
     pim-proposal-index-pagination:
         module: oro/datagrid/pagination-input
-        parent: pim-proposal-index
+        parent: pim-proposal-index-grid-container
         targetZone: toolbar
 
     pim-proposal-index-grid:

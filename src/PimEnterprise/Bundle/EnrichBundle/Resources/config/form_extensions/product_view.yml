@@ -28,6 +28,7 @@ extensions:
         targetZone: bottom-panel
         position: 100
 
+
     pimee-product-view-left-column:
         module: pim/form/common/column
         parent: pimee-product-view-form
