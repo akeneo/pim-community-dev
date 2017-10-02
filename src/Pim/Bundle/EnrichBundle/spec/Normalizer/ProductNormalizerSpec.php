@@ -344,6 +344,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $mug->getParent()->willReturn($productModel);
         $attributesProvider->getAttributes($mug)->willReturn([$size]);
         $attributesProvider->getAxes($mug)->willReturn([$size]);
+        $attributesProvider->getAxes($productModel)->willReturn([]);
         $attributesProvider->getAttributes($productModel)->willReturn([$color, $description]);
 
         $color->getCode()->willReturn('color');

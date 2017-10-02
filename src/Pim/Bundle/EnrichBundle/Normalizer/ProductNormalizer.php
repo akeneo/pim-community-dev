@@ -314,6 +314,10 @@ class ProductNormalizer implements NormalizerInterface
             $meta['attributes_axes'][] = $attribute->getCode();
         }
 
+        foreach ($this->attributesProvider->getAxes($product->getParent()) as $attribute) {
+            $meta['attributes_axes'][] = $attribute->getCode();
+        }
+
         foreach ($this->attributesProvider->getAttributes($product->getParent()) as $attribute) {
             $meta['parent_attributes'][] = $attribute->getCode();
         }
