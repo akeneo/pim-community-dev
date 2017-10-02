@@ -123,12 +123,12 @@ extensions:
 
     pim-product-index-pagination:
         module: oro/datagrid/pagination-input
-        parent: pim-product-index
+        parent: pim-product-index-grid-container
         targetZone: toolbar
 
     pim-product-index-columns:
         module: pim/datagrid/configure-columns-action
-        parent: pim-product-index
+        parent: pim-product-index-grid-container
         targetZone: toolbar
 
     pim-product-index-grid:
