@@ -16,14 +16,14 @@ extensions:
             template: pim/template/product/index
             templateParams:
                 gridName: product-grid
-    # 
-    # pim-product-index-user-navigation:
-    #     module: pim/menu/user-navigation
-    #     parent: pim-product-index
-    #     targetZone: user-menu
-    #     config:
-    #         userAccount: pim_menu.user.user_account
-    #         logout: pim_menu.user.logout
+
+    pim-product-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-product-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
 
     pim-product-index-grid-title:
         module: pim/common/grid-title
@@ -98,14 +98,6 @@ extensions:
         targetZone: breadcrumbs
         config:
             tab: pim-menu-products
-
-    pim-product-index-user-navigation:
-        module: pim/menu/user-navigation
-        parent: pim-product-index
-        targetZone: user-menu
-        config:
-            userAccount: pim_menu.user.user_account
-            logout: pim_menu.user.logout
 
     pim-product-index-mass-actions:
         module: pim/grid/mass-actions
