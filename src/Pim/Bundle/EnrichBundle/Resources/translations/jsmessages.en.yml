@@ -25,6 +25,7 @@ pim_datagrid:
             label: Quick Export
     mass_action:
         delete:
+            label: Delete
             confirm_content: Are you sure you want to delete selected products?
             success:         Selected products successfully deleted.
             error:           Error ocurred when trying to delete selected products, please try again.

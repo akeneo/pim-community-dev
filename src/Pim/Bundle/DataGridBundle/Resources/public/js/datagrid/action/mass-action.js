@@ -166,6 +166,7 @@ function(_, messenger, __, Modal, AbstractAction, confirmModalTemplate) {
                 type: this.messages.confirm_type,
                 title: this.messages.confirm_title,
                 content: this.messages.confirm_content,
+                okClass: `${this.className} ok`,
                 okText: this.messages.confirm_ok,
                 template: this.confirmModalTemplate
             }).on('ok', callback);
