@@ -282,7 +282,6 @@ JSON;
                 "family"        : "familyA",
                 "parent"        : "amor",
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA"],
                 "enabled"       : true,
                 "values": {
@@ -304,7 +303,6 @@ JSON;
                 "family"        : "familyA",
                 "parent"        : "amor",
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryB", "categoryC"],
                 "enabled"       : true,
                 "values"        : {},
@@ -320,7 +318,6 @@ JSON;
                 "family"        : "familyA",
                 "parent"        : "amor",
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1", "categoryA2"],
                 "enabled"       : true,
                 "values"        : {},
@@ -336,7 +333,6 @@ JSON;
                 "family"        : "familyA",
                 "parent"        : "amor",
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["categoryA1"],
                 "enabled"       : true,
                 "values"        : {},
@@ -352,7 +348,6 @@ JSON;
                 "family"        : "familyA",
                 "parent"        : "amor",
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : [],
                 "enabled"       : true,
                 "values"        : [],
@@ -398,7 +393,6 @@ JSON;
         "groups": [
           
         ],
-        "variant_group": null,
         "categories": [
           "master"
         ],
@@ -430,7 +424,6 @@ JSON;
         "groups": [
           
         ],
-        "variant_group": null,
         "categories": [
           "categoryA"
         ],
@@ -456,7 +449,6 @@ JSON;
         "groups": [
           
         ],
-        "variant_group": null,
         "categories": [
           "categoryB",
           "categoryC"
@@ -521,7 +513,6 @@ JSON;
         "groups": [
           
         ],
-        "variant_group": null,
         "categories": [
           "categoryA1"
         ],
@@ -585,7 +576,6 @@ JSON;
         "groups": [
           
         ],
-        "variant_group": null,
         "categories": [
           "categoryB",
           "categoryC"
@@ -618,7 +608,6 @@ JSON;
         "groups": [
           
         ],
-        "variant_group": null,
         "categories": [
           "categoryA1",
           "categoryA2"
@@ -694,7 +683,6 @@ JSON;
                 "family"        : "familyA",
                 "parent"        : "amor",
                 "groups"        : [],
-                "variant_group" : null,
                 "categories"    : ["master"],
                 "enabled"       : true,
                 "values": {
@@ -908,7 +896,6 @@ JSON;
   "family": "familyA",
   "parent": "amor",
   "groups": [],
-  "variant_group": null,
   "categories": [
     "master"
   ],
@@ -965,7 +952,6 @@ JSON;
   "family": "familyA",
   "parent": "amor",
   "groups": [],
-  "variant_group": null,
   "categories": [
     "categoryA"
   ],
@@ -1022,7 +1008,6 @@ JSON;
   "family": "familyA",
   "parent": "amor",
   "groups": [],
-  "variant_group": null,
   "categories": [
     "categoryB",
     "categoryC"
@@ -1082,7 +1067,6 @@ JSON;
   "groups": [
     
   ],
-  "variant_group": null,
   "categories": [
     "categoryA1",
     "categoryA2"
@@ -1144,7 +1128,6 @@ JSON;
   "groups": [
     
   ],
-  "variant_group": null,
   "categories": [
     "categoryA1"
   ],
@@ -1205,7 +1188,6 @@ JSON;
       "groups": [
         
       ],
-      "variant_group": null,
       "categories": [
         
       ],
