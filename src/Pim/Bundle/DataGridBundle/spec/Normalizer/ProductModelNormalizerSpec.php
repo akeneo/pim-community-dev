@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\ProductModel\ProductModelImageAsLabel;
 use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
 use Prophecy\Argument;
@@ -24,9 +25,10 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     function let(
         NormalizerInterface $normalizer,
         CollectionFilterInterface $filter,
-        VariantProductRatioInterface $findVariantProductCompletenessQuery
+        VariantProductRatioInterface $findVariantProductCompletenessQuery,
+        ProductModelImageAsLabel $productModelImageAsLabel
     ) {
-        $this->beConstructedWith($filter, $findVariantProductCompletenessQuery);
+        $this->beConstructedWith($filter, $findVariantProductCompletenessQuery, $productModelImageAsLabel);
 
         $normalizer->implement(NormalizerInterface::class);
         $this->setNormalizer($normalizer);
@@ -55,6 +57,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $normalizer,
         $filter,
         $findVariantProductCompletenessQuery,
+        $productModelImageAsLabel,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
@@ -109,7 +112,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $productModel->getLabel('en_US')->willReturn('Purple tshirt');
 
-        $productModel->getImage()->willReturn($image);
+        $productModelImageAsLabel->getImage($productModel)->willReturn($image);
         $normalizer->normalize($image, Argument::any(), Argument::any())->willReturn([
             'data' => [
                 'filePath'         => '/p/i/m/4/all.png',
@@ -160,6 +163,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $normalizer,
         $filter,
         $findVariantProductCompletenessQuery,
+        $productModelImageAsLabel,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
@@ -214,7 +218,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $productModel->getLabel('en_US')->willReturn('Purple tshirt');
 
-        $productModel->getImage()->willReturn($image);
+        $productModelImageAsLabel->getImage($productModel)->willReturn($image);
         $normalizer->normalize($image, Argument::any(), Argument::any())->willReturn([
             'data' => [
                 'filePath'         => '/p/i/m/4/all.png',

@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\ProductModel\ProductModelImageAsLabel;
 use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
@@ -30,16 +31,22 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
     /** @var VariantProductRatioInterface */
     private $variantProductRatioQuery;
 
+    /** @var ProductModelImageAsLabel */
+    private $productModelImageAsLabel;
+
     /**
      * @param CollectionFilterInterface    $filter
      * @param VariantProductRatioInterface $variantProductRatioQuery
+     * @param ProductModelImageAsLabel     $productModelImageAsLabel
      */
     public function __construct(
         CollectionFilterInterface $filter,
-        VariantProductRatioInterface $variantProductRatioQuery
+        VariantProductRatioInterface $variantProductRatioQuery,
+        ProductModelImageAsLabel $productModelImageAsLabel
     ) {
         $this->filter = $filter;
         $this->variantProductRatioQuery = $variantProductRatioQuery;
+        $this->productModelImageAsLabel = $productModelImageAsLabel;
     }
 
     /**
@@ -57,6 +64,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $channel = current($context['channels']);
 
         $variantProductCompleteness = $this->variantProductRatioQuery->findComplete($productModel);
+        $closestImage = $this->productModelImageAsLabel->getImage($productModel);
 
         $data['identifier'] = $productModel->getCode();
         $data['family'] = $this->getFamilyLabel($productModel, $locale);
@@ -64,7 +72,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $data['created'] = $this->normalizer->normalize($productModel->getCreated(), $format, $context);
         $data['updated'] = $this->normalizer->normalize($productModel->getUpdated(), $format, $context);
         $data['label'] = $productModel->getLabel($locale);
-        $data['image'] = $this->normalizeImage($productModel->getImage(), $format, $context);
+        $data['image'] = $this->normalizeImage($closestImage, $format, $context);
 
         $data['groups'] = null;
         $data['enabled'] = null;

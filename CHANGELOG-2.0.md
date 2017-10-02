@@ -16,6 +16,13 @@
 - PIM-6839: Fix the design for large titles
 - PIM-6595: Add missing breadcrumb or user navigation on every page
 - PIM-6841: Add custom pictures for entities creation
+- PIM-6356: Display 1st variant product image in the grid and on the PEF for product models
+
+## BC breaks
+
+- Change constructor of `Pim\Bundle\DataGridBundle\Normalizer\ProductModelNormalizer` to add `Pim\Component\Catalog\ProductModel\ProductModelImageAsLabel`
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer` to add `Pim\Component\Catalog\ProductModel\ProductModelImageAsLabel`
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer` to add `Pim\Component\Catalog\ProductModel\ProductModelImageAsLabel`
 
 # 2.0.0 (2017-09-28)
 
