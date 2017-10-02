@@ -47,11 +47,13 @@ class CachedAuthorizationChecker implements AuthorizationCheckerInterface
     }
 
     /**
+     * Not referable and null objects can't be cached because we can't guarantee a unique index for similar objects.
+     *
      * {@inheritdoc}
      */
     public function isGranted($attributes, $object = null): bool
     {
-        if (null === $object) {
+        if (null === $object || (is_object($object) && !$object instanceof ReferableInterface)) {
             return $this->authorizationChecker->isGranted($attributes, $object);
         }
 
@@ -74,7 +76,7 @@ class CachedAuthorizationChecker implements AuthorizationCheckerInterface
      */
     private function getArgumentsAsIndex($attributes, $object): string
     {
-        $userId = $this->getCurrentUserId();
+        $userId = $this->getCurrentUserAsIndex();
         $attributesAsIndex = $this->getAttributesAsIndex($attributes);
         $objectAsIndex = $this->getObjectAsIndex($object);
 
@@ -92,11 +94,9 @@ class CachedAuthorizationChecker implements AuthorizationCheckerInterface
     {
         if (is_object($object)) {
             $class = get_class($object);
-            $code = spl_object_hash($object);
-            if ($object instanceof ReferableInterface) {
-                $code = $object->getReference();
-            }
-            $objectIndex = sprintf('%s_%s', $class, $code);
+            $reference = $object->getReference();
+
+            $objectIndex = sprintf('%s_%s', $class, $reference);
         } else {
             $objectIndex = (string) $object;
         }
@@ -122,12 +122,14 @@ class CachedAuthorizationChecker implements AuthorizationCheckerInterface
     }
 
     /**
-     * Returns the current user id.
+     * Returns the current user index.
      *
      * @return string
      */
-    private function getCurrentUserId(): string
+    private function getCurrentUserAsIndex(): string
     {
-        return (string) $this->tokenStorage->getToken()->getUser()->getId();
+        $user = $this->tokenStorage->getToken()->getUser();
+
+        return sprintf('%s_%s', $user->getUsername(), (string) $user->getId());
     }
 }
