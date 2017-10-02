@@ -1,10 +1,10 @@
 @import '../base/variables';
 
 .AknColumn {
-  @iconSize: 20px;
+  @verticalPadding: @AknPaddingLeftColumn - 10px;
+  @iconSize: @AknBottomPanelHeight - @verticalPadding * 2;
   @littleWidth: 40px;
   @scrollbarWidth: 16px;
-  @verticalPadding: @AknPaddingLeftColumn - 10px;
 
   flex-basis: @AknSecondColumnWidth;
   width: @AknSecondColumnWidth;
@@ -159,7 +159,7 @@
   }
 
   &-collapseButton {
-    height: @iconSize + @verticalPadding * 2;
+    height: @AknBottomPanelHeight;
     width: @AknSecondColumnWidth;
     background: url("../../images/icon-panelClose.svg") no-repeat 20px center;
     background-size: @iconSize;

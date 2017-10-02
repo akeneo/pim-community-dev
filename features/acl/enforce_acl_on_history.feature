@@ -58,7 +58,7 @@ Feature: Enforce ACL on history
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I am on the "sandals" category page
-    Then I should not see "history"
+    Then I should not see the text "history"
 
   Scenario: Successfully hide channel history when user doesn't have the rights
     Given a "footwear" catalog configuration

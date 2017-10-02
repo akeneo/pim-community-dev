@@ -59,3 +59,10 @@
     margin: 0 auto;
   }
 }
+
+@-moz-document url-prefix() {
+  // On Firefox, there is a bug with the padding of the main page.
+  .AknGridContainer {
+    margin-bottom: 40px;
+  }
+}

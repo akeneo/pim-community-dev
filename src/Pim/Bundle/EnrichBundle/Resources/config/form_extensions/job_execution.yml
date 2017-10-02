@@ -10,6 +10,14 @@ extensions:
             userAccount: pim_menu.user.user_account
             logout: pim_menu.user.logout
 
+    pim-job-execution-form-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-job-execution-form
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-activity
+            item: pim-menu-activity-job-tracker
+
     pim-job-execution-form-secondary-actions:
         module: pim/form/common/secondary-actions
         parent: pim-job-execution-form

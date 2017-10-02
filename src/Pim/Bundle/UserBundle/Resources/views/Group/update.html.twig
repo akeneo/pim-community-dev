@@ -49,13 +49,11 @@
 {% block content_data %}
     {% set id = 'group-profile' %}
 
-        <div class="AknTabContainer">
-            {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
+        {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
-            <div class="AknTabContainer-content tab-content">
-                {{ elements.form_errors(form) }}
-                {{ view_elements(form.vars.id ~ '.form_tab') }}
-            </div>
+        <div class="AknTabContainer-content tab-content">
+            {{ elements.form_errors(form) }}
+            {{ view_elements(form.vars.id ~ '.form_tab') }}
         </div>
 
     {{ form_end(form) }}
@@ -63,5 +61,40 @@
         require('pim/page-title').set({'group': '{{ form.vars.value.name }}'});
 
         window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+    </script>
+
+    <script>
+        require(
+            [
+                'pim/common/breadcrumbs',
+                'pim/fetcher-registry',
+                'pim/form-builder'
+            ],
+            function(
+                Breadcrumbs,
+                FetcherRegistry,
+                FormBuilder
+            ) {
+                $(function() {
+                    var breadcrumbs = new Breadcrumbs({
+                        config: {
+                            tab: 'pim-menu-system',
+                            item: 'pim-menu-system-user-group'
+                        }
+                    });
+                    breadcrumbs.configure().then(function () {
+                        breadcrumbs.render();
+                        $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                    });
+
+                    FetcherRegistry.initialize().done(function () {
+                        FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+                            $('.user-menu').append(form.el);
+                            form.render();
+                        }.bind(this));
+                    });
+                });
+            }
+        );
     </script>
 {% endblock content_data %}

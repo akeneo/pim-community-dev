@@ -43,7 +43,5 @@ Feature: Well display navigation titles
       | imports                                       | Import profiles management                          |
       | "csv_footwear_product_import" import job      | Import profiles CSV footwear product import \| Show |
       | "csv_footwear_product_import" import job edit | Import profiles CSV footwear product import \| Edit |
-      | import executions                             | Import executions history                           |
-      | export executions                             | Export executions history                           |
       | "sandals" product                             | Products sandals \| Edit                            |
       | "'quote'" product                             | Products 'quote' \| Edit                            |

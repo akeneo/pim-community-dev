@@ -36,12 +36,11 @@
 
                 FetcherRegistry.initialize().done(function () {
                     FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
-                        form.setElement('.user-menu').render();
+                        $('.user-menu').append(form.el);
+                        form.render();
                     }.bind(this));
                 });
             });
         }
     );
 </script>
-
-

@@ -1,6 +1,23 @@
 extensions:
     pim-currency-index:
-        module: pim/form/common/index/index
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    pim-currency-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-currency-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pim-currency-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-currency-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
 
     pim-currency-index-grid-title:
         module: pim/common/grid-title
@@ -19,17 +36,17 @@ extensions:
 
     pim-currency-index-filters-list:
         module: oro/datafilter/filters-list
-        parent: pim-currency-index
+        parent: pim-currency-index-grid-container
         targetZone: filters
 
     pim-currency-index-filters-manage:
         module: oro/datafilter/filters-button
-        parent: pim-currency-index
+        parent: pim-currency-index-grid-container
         targetZone: filters
 
     pim-currency-index-pagination:
         module: oro/datagrid/pagination-input
-        parent: pim-currency-index
+        parent: pim-currency-index-grid-container
         targetZone: toolbar
 
     pim-currency-index-grid:

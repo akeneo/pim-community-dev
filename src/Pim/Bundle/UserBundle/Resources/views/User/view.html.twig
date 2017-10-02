@@ -36,8 +36,6 @@
 {% block pageHeader %}
     {% set breadcrumbs = {
         'entity':      entity,
-        'indexPath':   path('oro_user_index'),
-        'indexLabel': 'Users'|trans,
         'entityTitle': fullname,
         'hasAvatar':   true,
         'imagePath':   entity.imagePath,
@@ -46,23 +44,21 @@
     {{ parent() }}
 {% endblock pageHeader %}
 
-{% block titleButtons %}
-    {{ parent() }}
+{% block stats %}
+    <span class="AknTitleContainer-metaItem">
     {% if entity.enabled %}
         <div class="AknBadge AknBadge AknBadge--enabled status-enabled"><i class="AknBadge-icon icon-status-enabled icon-circle"></i>{{ 'Active'|trans }}</div>
     {% else %}
         <div class="AknBadge AknBadge AknBadge--disabled status-disabled"><i class="AknBadge-icon icon-status-disabled icon-circle"></i>{{ 'Inactive'|trans }}</div>
     {% endif %}
-{% endblock titleButtons %}
-
-{% block stats %}
+    </span>
     {{ parent() }}
     <span class="AknTitleContainer-metaItem">{{ 'Last logged in'|trans }}: {{ entity.lastLogin ? entity.lastLogin|datetime_presenter : 'N/A' }}</span>
     <span class="AknTitleContainer-metaItem">{{ 'Login count'|trans }}: {{ entity.loginCount|default(0) }}</span>
 {% endblock stats %}
 
 {% block content_data %}
-  <div>
+    <div>
     {% set id = 'user-profile' %}
 
     {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: ''|trans})] %}
@@ -181,5 +177,40 @@
 
     {% set data = { 'dataBlocks': dataBlocks } %}
     {{ parent() }}
-  </div>
+    </div>
+
+    <script>
+        require(
+            [
+                'pim/common/breadcrumbs',
+                'pim/fetcher-registry',
+                'pim/form-builder'
+            ],
+            function(
+                Breadcrumbs,
+                FetcherRegistry,
+                FormBuilder
+            ) {
+                $(function() {
+                    var breadcrumbs = new Breadcrumbs({
+                        config: {
+                            tab: 'pim-menu-system',
+                            item: 'pim-menu-system-user-user'
+                        }
+                    });
+                    breadcrumbs.configure().then(function () {
+                        breadcrumbs.render();
+                        $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                    });
+
+                    FetcherRegistry.initialize().done(function () {
+                        FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+                            $('.user-menu').append(form.el);
+                            form.render();
+                        }.bind(this));
+                    });
+                });
+            }
+        );
+    </script>
 {% endblock content_data %}
