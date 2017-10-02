@@ -44,7 +44,7 @@ parameters:
     pim_catalog.validator.unique_axes_combination_set.class:               Pim\Component\Catalog\Validator\UniqueAxesCombinationSet
     pim_catalog.validator.constraint.family_variant_axes.class:            Pim\Component\Catalog\Validator\Constraints\FamilyVariantValidator
     pim_catalog.validator.constraint.only_expected_attributes.class:       Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributesValidator
-    pim_catalog.validator.constraint.sibling_unique_variant_axes.class:    Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxesValidator
+    pim_catalog.validator.constraint.sibling_unique_variant_axes.class:    Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxisValidator
     pim_catalog.validator.constraint.not_empty_variant_axes.class:         Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxesValidator
     pim_catalog.validator.constraint.has_a_root_product_model_as_parent.class: Pim\Component\Catalog\Validator\Constraints\ProductModelPositionInTheVariantTreeValidator
     pim_catalog.validator.constraint.family_same_family_than_parent.class: Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParentValidator
