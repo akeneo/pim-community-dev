@@ -15,6 +15,7 @@
 - TIP-807: Improve menu to pass parameters for routes, cheers @MarieMinasyan!
 - PIM-6839: Fix the design for large titles
 - PIM-6595: Add missing breadcrumb or user navigation on every page
+- PIM-6841: Add custom pictures for entities creation
 
 # 2.0.0 (2017-09-28)
 

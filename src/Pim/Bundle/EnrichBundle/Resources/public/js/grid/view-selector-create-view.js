@@ -73,6 +73,7 @@ define(
                 let modalContent = this.templateModal({
                     subTitleLabel: __('pim_datagrid.view_selector.view'),
                     titleLabel: __('pim_datagrid.view_selector.create_view_modal.create'),
+                    picture: 'illustrations/Views.svg',
                     fields: this.templateInput({
                         placeholder: __('grid.view_selector.placeholder'),
                         label: __('grid.view_selector.choose_label')
