@@ -17,7 +17,7 @@ extensions:
             templateParams:
                 gridName: product-grid
 
-    pim-product-index-user-navigation:
+    pim-product-index-useser-navigation:
         module: pim/menu/user-navigation
         parent: pim-product-index
         targetZone: user-menu
