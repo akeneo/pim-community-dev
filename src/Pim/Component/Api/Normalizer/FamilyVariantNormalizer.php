@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pim\Component\Api\Normalizer;
 
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
