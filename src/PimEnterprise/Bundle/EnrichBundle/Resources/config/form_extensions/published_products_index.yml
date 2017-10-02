@@ -109,12 +109,12 @@ extensions:
 
     pimee-published-product-index-pagination:
         module: oro/datagrid/pagination-input
-        parent: pimee-published-product-index
+        parent: pimee-published-product-index-grid-container
         targetZone: toolbar
 
     pimee-published-product-index-columns:
         module: pim/datagrid/configure-columns-action
-        parent: pimee-published-product-index
+        parent: pimee-published-product-index-grid-container
         targetZone: toolbar
 
     pimee-published-product-index-grid:
