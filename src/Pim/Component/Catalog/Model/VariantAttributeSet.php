@@ -57,6 +57,16 @@ class VariantAttributeSet implements VariantAttributeSetInterface
     /**
      * {@inheritdoc}
      */
+    public function addAttribute(AttributeInterface $attribute): void
+    {
+        if (!$this->hasAttribute($attribute)) {
+            $this->attributes->add($attribute);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setAttributes(array $attributes): void
     {
         foreach ($attributes as $attribute) {

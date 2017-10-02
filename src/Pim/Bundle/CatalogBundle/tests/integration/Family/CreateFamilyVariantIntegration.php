@@ -78,6 +78,61 @@ class CreateFamilyVariantIntegration extends TestCase
         );
     }
 
+    public function testUniqueAttributeIsAutomaticallySetAtVariantProductLevel()
+    {
+        $uniqueAttribute = $this->get('pim_catalog.factory.attribute')->createAttribute(AttributeTypes::TEXT);
+        $this->get('pim_catalog.updater.attribute')->update($uniqueAttribute, [
+            'code' => 'unique_attribute',
+            'group' => 'other',
+            'unique' => true,
+        ]);
+
+        $errors = $this->get('validator')->validate($uniqueAttribute);
+        $this->assertEquals(0, $errors->count());
+
+        $this->get('pim_catalog.saver.attribute')->save($uniqueAttribute);
+
+        $bootsFamily = $this->get('pim_catalog.repository.family')->findOneByIdentifier('boots');
+        $bootsFamily->addAttribute($uniqueAttribute);
+        $this->get('pim_catalog.saver.family')->save($bootsFamily);
+
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'code' => 'family_variant',
+            'family' => 'boots',
+            'label' => [
+                'en_US' => 'My family variant'
+            ],
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['color'],
+                    'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
+                    'level'=> 1,
+                ],
+                [
+                    'axes' => ['size'],
+                    'attributes' => ['price'],
+                    'level'=> 2,
+                ]
+            ],
+        ]);
+
+        $errors = $this->get('validator')->validate($familyVariant);
+        $this->assertEquals(0, $errors->count());
+
+        $this->get('pim_catalog.saver.family_variant')->save($familyVariant);
+
+        $this->get('doctrine.orm.entity_manager')->refresh($familyVariant);
+
+        $variantAttributeSet = $familyVariant->getVariantAttributeSet(2);
+        $this->assertEquals(
+            ['size', 'price', 'sku', 'unique_attribute'],
+            $this->extractAttributeCode($variantAttributeSet->getAttributes()),
+            'Variant attribute are invalid (level 2)'
+        );
+    }
+
     /**
      * Validation: Family variant code is unique
      */

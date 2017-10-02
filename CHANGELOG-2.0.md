@@ -11,6 +11,10 @@
 - GITHUB-6639: Fix Job throwing exception, cheers @dnd-tyler!
 - GITHUB-6824: Update gitignore for web-server-bundle, cheers @xElysioN!
 
+## Better manage products with variants!
+
+- PIM-6797: Automatically add "unique value" and identifier attributes at the last variant product level.
+
 ## Better UI\UX!
 
 - TIP-807: Improve menu to pass parameters for routes, cheers @MarieMinasyan!

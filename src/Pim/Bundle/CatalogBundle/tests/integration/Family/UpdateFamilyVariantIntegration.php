@@ -5,6 +5,7 @@ namespace tests\integration\Pim\Bundle\CatalogBundle\EventSubscriber;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -30,7 +31,6 @@ class UpdateFamilyVariantIntegration extends TestCase
             'name',
             'notice',
             'price',
-            'sku',
             'sole_composition',
             'supplier',
             'top_composition',
@@ -95,6 +95,7 @@ class UpdateFamilyVariantIntegration extends TestCase
                 'eu_shoes_size',
                 'image',
                 'size',
+                'sku',
                 'weight',
             ],
             $this->extractAttributeCode($variantAttributeSet->getAttributes()),
@@ -105,6 +106,43 @@ class UpdateFamilyVariantIntegration extends TestCase
             1,
             $familyVariant->getNumberOfLevel(),
             'Number of variant level is invalid'
+        );
+    }
+
+    public function testAddUniqueAttributeToFamily()
+    {
+        $uniqueAttribute = $this->get('pim_catalog.factory.attribute')->createAttribute(AttributeTypes::TEXT);
+        $this->get('pim_catalog.updater.attribute')->update(
+            $uniqueAttribute,
+            [
+                'code' => 'unique_attribute',
+                'group' => 'other',
+                'unique' => true,
+            ]
+        );
+
+        $errors = $this->get('validator')->validate($uniqueAttribute);
+        $this->assertEquals(0, $errors->count());
+
+        $this->get('pim_catalog.saver.attribute')->save($uniqueAttribute);
+
+        $accessories = $this->get('pim_catalog.repository.family')->findOneByIdentifier('accessories');
+        $accessories->addAttribute($uniqueAttribute);
+        $this->get('pim_catalog.saver.family')->save($accessories);
+
+        $accessoriesSize = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier('accessories_size');
+
+        $variantAttributeSet = $accessoriesSize->getVariantAttributeSet(1);
+        $this->assertEquals(
+            [
+                'ean',
+                'size',
+                'sku',
+                'unique_attribute',
+                'variation_name',
+                'weight',
+            ],
+            $this->extractAttributeCode($variantAttributeSet->getAttributes())
         );
     }
 

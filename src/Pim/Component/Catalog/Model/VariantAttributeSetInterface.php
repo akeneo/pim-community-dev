@@ -30,6 +30,11 @@ interface VariantAttributeSetInterface
     public function hasAttribute(AttributeInterface $attribute): bool;
 
     /**
+     * @param AttributeInterface $attribute
+     */
+    public function addAttribute(AttributeInterface $attribute): void;
+
+    /**
      * @param AttributeInterface[] $attributes
      */
     public function setAttributes(array $attributes): void;
