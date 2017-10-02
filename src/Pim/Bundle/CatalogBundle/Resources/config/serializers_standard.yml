@@ -151,6 +151,8 @@ services:
         class: '%pim_catalog.normalizer.standard.group.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.standard.group_type:
         class: '%pim_catalog.normalizer.standard.group_type.class%'
