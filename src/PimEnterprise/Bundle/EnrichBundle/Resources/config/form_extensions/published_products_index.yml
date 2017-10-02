@@ -81,7 +81,7 @@ extensions:
     pimee-published-product-index-mass-actions:
         module: pim/grid/mass-actions
         parent: pimee-published-product-index
-        targetZone: mass-actions
+        targetZone: bottom-panel
         config:
             label: pim_enrich.entity.product.selected
 

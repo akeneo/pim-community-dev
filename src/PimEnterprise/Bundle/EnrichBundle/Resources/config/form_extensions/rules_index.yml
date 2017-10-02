@@ -32,7 +32,7 @@ extensions:
     pim-rule-index-mass-actions:
         module: pim/grid/mass-actions
         parent: pim-rule-index
-        targetZone: mass-actions
+        targetZone: bottom-panel
         config:
             label: pimee_catalog_rule.selected
 

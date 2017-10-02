@@ -101,7 +101,7 @@ extensions:
     pimee-asset-index-mass-actions:
         module: pim/grid/mass-actions
         parent: pimee-asset-index
-        targetZone: mass-actions
+        targetZone: bottom-panel
         config:
             label: asset_grid.selected
 

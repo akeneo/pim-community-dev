@@ -24,7 +24,7 @@ extensions:
     pim-proposal-index-mass-actions:
         module: pim/grid/mass-actions
         parent: pim-proposal-index
-        targetZone: mass-actions
+        targetZone: bottom-panel
         config:
             label: pimee_workflow.proposal.selected
 
