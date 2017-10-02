@@ -58,7 +58,7 @@
     li.jstree-checked {
       & > a > .jstree-checkbox {
         background-color: @AknBlue;
-        background-image: url("../../images/icon-checkwhite.svg");
+        background-image: url("@{AknAssetUrl}/icon-checkwhite.svg");
         background-position: 0 0;
         background-size: @AknCheckboxSize @AknCheckboxSize;
         background-repeat: no-repeat;
@@ -87,18 +87,18 @@
     }
 
     li.jstree-closed > .jstree-icon {
-      .jstree-icon("../../images/jstree/icon-right.svg");
+      .jstree-icon("@{AknAssetUrl}/jstree/icon-right.svg");
       background-size: 20px;
     }
 
     li.jstree-open > .jstree-icon {
-      .jstree-icon("../../images/jstree/icon-down.svg");
+      .jstree-icon("@{AknAssetUrl}/jstree/icon-down.svg");
       background-size: 20px;
     }
 
     li.jstree-leaf.jstree-checked > a:not(.jstree-loading):not(.jstree-clicked) .jstree-icon,
     li.jstree-leaf:not(.jstree-checked) > a:not(.jstree-loading):not(.jstree-clicked) .jstree-icon {
-      .jstree-icon("../../images/jstree/icon-folder.svg")
+      .jstree-icon("@{AknAssetUrl}/jstree/icon-folder.svg")
     }
 
     li.jstree-leaf.jstree-checked > input ~ a:not(.jstree-loading):not(.jstree-clicked),
@@ -113,19 +113,19 @@
     li.jstree-leaf.jstree-checked > input ~ a:not(.jstree-loading).jstree-clicked .jstree-icon,
     li.jstree-leaf.jstree-checked > a:not(.jstree-loading).jstree-clicked .jstree-icon,
     li.jstree-leaf:not(.jstree-checked) > a:not(.jstree-loading).jstree-clicked .jstree-icon {
-      .jstree-icon("../../images/jstree/icon-folderfull.svg")
+      .jstree-icon("@{AknAssetUrl}/jstree/icon-folderfull.svg")
     }
 
     li:not(.jstree-leaf):not(.jstree-checked) > a:not(.jstree-loading):not(.jstree-clicked) .jstree-icon,
     li:not(.jstree-leaf).jstree-checked > a:not(.jstree-loading):not(.jstree-clicked) .jstree-icon {
-      .jstree-icon("../../images/jstree/icon-folders.svg")
+      .jstree-icon("@{AknAssetUrl}/jstree/icon-folders.svg")
     }
 
     li:not(.jstree-leaf).jstree-checked > input ~ a:not(.jstree-loading):not(.jstree-clicked) .jstree-icon,
     li:not(.jstree-leaf).jstree-checked > a:not(.jstree-loading).jstree-clicked .jstree-icon,
     li:not(.jstree-leaf).jstree-checked > input ~ a:not(.jstree-loading).jstree-clicked .jstree-icon,
     li:not(.jstree-leaf):not(.jstree-checked) > a:not(.jstree-loading).jstree-clicked .jstree-icon {
-      .jstree-icon("../../images/jstree/icon-foldersfull.svg")
+      .jstree-icon("@{AknAssetUrl}/jstree/icon-foldersfull.svg")
     }
 
     li:not(.jstree-leaf).jstree-checked > input ~ a:not(.jstree-clicked),
@@ -151,7 +151,7 @@
 
         .select2-arrow {
           border-left: none;
-          background: url("../../images/icon-down.svg") no-repeat 100% center;
+          background: url("@{AknAssetUrl}/icon-down.svg") no-repeat 100% center;
           background-size: 20px;
 
           b {
