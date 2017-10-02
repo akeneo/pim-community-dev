@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GetFamilyVariantIntegration extends ApiTestCase
 {
-
     protected function setUp()
     {
         parent::setUp();
@@ -42,33 +41,33 @@ class GetFamilyVariantIntegration extends ApiTestCase
 
         $client->request('GET', 'api/rest/v1/families/familyA/variants/familyVariantA1');
         $expected = <<<JSON
-    {
-        "code" : "familyVariantA1",
-        "family" : "familyA",
-        "variant_attribute_sets" : [
-            {
-                "level" : 1,
-                "attributes" : [
-                    "a_simple_select",
-                    "a_text"
-                ],
-                "axes" : [
-                    "a_simple_select"
-                ]
-            },
-            {
-                "level" : 2,
-                "attributes" : [
-                    "sku",
-                    "a_yes_no"
-                ],
-                "axes" : [
-                    "a_yes_no"
-                ]
-            }
-        ],
-        "labels" : {}
-    }
+{
+    "code" : "familyVariantA1",
+    "variant_attribute_sets" : [
+        {
+            "level" : 1,
+            "attributes" : [
+                "a_simple_select",
+                "a_text"
+            ],
+            "axes" : [
+                "a_simple_select"
+            ]
+        },
+        {
+            "level" : 2,
+            "attributes" : [
+                "sku",
+                "a_text_area",
+                "a_yes_no"
+            ],
+            "axes" : [
+                "a_yes_no"
+            ]
+        }
+    ],
+    "labels" : {}
+}
 JSON;
 
         $response = $client->getResponse();
@@ -82,10 +81,10 @@ JSON;
 
         $client->request('GET', 'api/rest/v1/families/unknownFamily/variants/familyVariantA1');
         $expected = <<<JSON
-    {
-        "code" : "404",
-        "message" : "Family \"unknownFamily\" does not exist."
-    }
+{
+    "code" : "404",
+    "message" : "Family \"unknownFamily\" does not exist."
+}
 JSON;
 
         $response = $client->getResponse();
@@ -99,10 +98,10 @@ JSON;
 
         $client->request('GET', 'api/rest/v1/families/familyA/variants/unknownFamilyVariant');
         $expected = <<<JSON
-    {
-        "code" : "404",
-        "message" : "Family variant \"unknownFamilyVariant\" does not exist or is not a variant of the family \"familyA\"."
-    }
+{
+    "code" : "404",
+    "message" : "Family variant \"unknownFamilyVariant\" does not exist or is not a variant of the family \"familyA\"."
+}
 JSON;
 
         $response = $client->getResponse();
@@ -116,10 +115,10 @@ JSON;
 
         $client->request('GET', 'api/rest/v1/families/familyA/variants/variantFamilyB');
         $expected = <<<JSON
-    {
-        "code" : "404",
-        "message" : "Family variant \"variantFamilyB\" does not exist or is not a variant of the family \"familyA\"."
-    }
+{
+    "code" : "404",
+    "message" : "Family variant \"variantFamilyB\" does not exist or is not a variant of the family \"familyA\"."
+}
 JSON;
 
         $response = $client->getResponse();

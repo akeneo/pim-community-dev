@@ -53,6 +53,9 @@ services:
             - '@pim_api.repository.family'
             - '@pim_api.repository.family_variant'
             - '@pim_serializer'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '%pim_api.configuration%'
 
     pim_api.controller.attribute:
         class: '%pim_api.controller.attribute.class%'

@@ -34,6 +34,7 @@ class FamilyVariantNormalizerSpec extends ObjectBehavior
     {
         $data = [
             'code' => 'my_family_variant',
+            'family' => 'my_family',
             'labels' => [],
             'variant_attribute_sets' => [
                 'level' => 1,
@@ -45,14 +46,20 @@ class FamilyVariantNormalizerSpec extends ObjectBehavior
         $stdNormalizer->normalize($familyVariant, 'standard', [])->willReturn($data);
 
         $normalizedFamily = $this->normalize($familyVariant, 'external_api', []);
-        $normalizedFamily->shouldHaveLabels($data);
+        $normalizedFamily->shouldReturnApiFormat($normalizedFamily);
     }
 
     public function getMatchers()
     {
         return [
-            'haveLabels' => function ($subject) {
-                return is_object($subject['labels']);
+            'returnApiFormat' => function ($subject) {
+                $variantAttributeSets = ['level' => 1, 'attributes' => ['a_simple_slect', 'a_text'], "axes" => ['a_simple_select']];
+
+                return is_object($subject['labels'])
+                    && !array_key_exists('family', $subject)
+                    && 'my_family_variant' === $subject['code']
+                    && $variantAttributeSets === $subject['variant_attribute_sets']
+                ;
             }
         ];
     }

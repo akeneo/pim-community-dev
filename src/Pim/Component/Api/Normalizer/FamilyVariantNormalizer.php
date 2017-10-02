@@ -33,6 +33,8 @@ class FamilyVariantNormalizer implements NormalizerInterface
     {
         $normalizedFamilyVariant = $this->stdNormalizer->normalize($familyVariant, 'standard', $context);
 
+        unset($normalizedFamilyVariant['family']);
+
         if (empty($normalizedFamilyVariant['labels'])) {
             $normalizedFamilyVariant['labels'] = (object) $normalizedFamilyVariant['labels'];
         }

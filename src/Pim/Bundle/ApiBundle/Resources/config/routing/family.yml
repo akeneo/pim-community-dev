@@ -23,7 +23,12 @@ pim_api_family_partial_update_list:
     defaults: { _controller: pim_api.controller.family:partialUpdateListAction, _format: json }
     methods: [PATCH]
 
+pim_api_family_variant_list:
+    path: /families/{familyCode}/variants
+    defaults: { _controller: pim_api.controller.family_variant:listAction, _format: json }
+    methods: [GET]
+
 pim_api_family_variant_get:
-    path: /families/{familyCode}/variants/{familyVariantCode}
+    path: /families/{familyCode}/variants/{code}
     defaults: { _controller: pim_api.controller.family_variant:getAction, _format: json }
     methods: [GET]
