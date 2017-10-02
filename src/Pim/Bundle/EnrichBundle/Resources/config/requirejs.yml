@@ -840,8 +840,6 @@ config:
         pim/form/common/attributes/copy-field:               pimenrich/js/form/common/attributes/copy-field
         pim/form/common/attributes/create-button:            pimenrich/js/form/common/attributes/create-button
         pim/form/common/download-file:                       pimenrich/js/form/common/download-file
-        # REMOVE
-        pim/form/common/index/index:                         pimenrich/js/form/common/index/index
         pim/form/common/index/grid:                          pimenrich/js/form/common/index/grid
         pim/form/common/index/create-button:                 pimenrich/js/form/common/index/create-button
         pim/form/common/column:                              pimenrich/js/form/common/column
