@@ -78,7 +78,8 @@ define([
             getConfirmDialog: function() {
                 if (!this.confirmModal) {
                     this.confirmModal = new DeleteConfirmation({
-                        content: __('confirmation.remove.' + this.getEntityHint())
+                        content: __('confirmation.remove.' + this.getEntityHint()),
+                        type: this.getEntityHint()
                     });
                     this.confirmModal.on('ok', _.bind(this.doDelete, this));
                 }

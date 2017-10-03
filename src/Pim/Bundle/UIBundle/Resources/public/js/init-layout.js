@@ -1,8 +1,8 @@
 'use strict';
 
 define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout',
-        'oro/delete-confirmation', 'oro/messenger', 'bootstrap', 'jquery-setup'
-], function ($, Backbone, _, __, app, mediator, layout, DeleteConfirmation, messenger) {
+        'oro/delete-confirmation', 'pim/template/grid/mass-actions-confirm', 'oro/messenger', 'bootstrap', 'jquery-setup',
+], function ($, Backbone, _, __, app, mediator, layout, DeleteConfirmation, confirmModalTemplate, messenger) {
 
 
     /* ============================================================
@@ -105,9 +105,11 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
             var confirm;
             var el = $(this);
             var message = el.data('message');
+            const template = _.template(confirmModalTemplate);
 
             confirm = new DeleteConfirmation({
-                content: message
+                content: message,
+                template
             });
 
             confirm.on('ok', function () {
