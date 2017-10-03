@@ -3,7 +3,7 @@
 
 {% block content %}
 
-    {{ elements.page_header(title) }}
+    {{ elements.page_header({ title: title }) }}
 
     {{ dataGrid.renderGrid(gridName, { jobType: jobType }) }}
 

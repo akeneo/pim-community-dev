@@ -49,7 +49,15 @@
             {% endblock titleButtons %}
         {% endset %}
 
-        {{ elements.page_header(title, buttons, titleButtons, meta, '', null, null, image) }}
+        {{ elements.page_header(
+            {
+                title: title,
+                buttons: buttons,
+                titleButtons: titleButtons,
+                meta: meta,
+                image: image
+            }
+        ) }}
 
     {% endblock pageHeader %}
 
