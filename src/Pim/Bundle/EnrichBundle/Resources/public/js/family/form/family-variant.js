@@ -4,17 +4,20 @@ define([
         'underscore',
         'pim/form',
         'pim/common/grid',
-        'oro/translator'
+        'oro/translator',
+        'pim/template/family/tab/family-variant'
     ],
     function (
         _,
         BaseForm,
         Grid,
-        __
+        __,
+        template
     ) {
         return BaseForm.extend({
-            className: 'tabbable tabs-left history',
-            historyGrid: null,
+            template: _.template(template),
+            className: 'tabbable variant',
+            variantGrid: null,
 
             /**
              * @param {Object} meta
@@ -23,7 +26,7 @@ define([
                 this.config = _.extend({}, meta.config);
                 this.config.modelDependent = false;
 
-                return BaseForm.prototype.initialize.call(this, arguments);
+                return BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**
@@ -42,19 +45,20 @@ define([
              * {@inheritdoc}
              */
             render: function () {
-                if (!this.historyGrid) {
-                    this.historyGrid = new Grid(
-                        'history-grid',
+                if (!this.variantGrid) {
+                    this.variantGrid = new Grid(
+                        'family-variant-grid',
                         {
-                            object_class: this.config.class,
-                            object_id: this.getFormData().meta.id
+                            family_id: this.getFormData().meta.id,
+                            localeCode: 'en_US'
                         }
                     );
                 }
 
-                this.$el.empty().append(this.historyGrid.render().$el);
+                this.$el.html(this.template());
 
-                return this;
+                this.renderExtensions();
+                this.getZone('grid').appendChild(this.variantGrid.render().el);
             }
         });
     }

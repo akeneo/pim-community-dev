@@ -66,6 +66,16 @@ services:
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.group-grid, method: onBuildAfter }
 
+    pim_enrich.event_listener.family_variant_grid_listener:
+        class: '%pim_datagrid.event_listener.add_parameters_to_grid.class%'
+        arguments:
+          - [family_id, localeCode]
+          - '@oro_datagrid.datagrid.request_params'
+          - false
+          - true
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.family-variant-grid, method: onBuildAfter }
+
     pim_enrich.event_listener.association_product_grid_before_listener:
         class: '%pim_datagrid.event_listener.configure_product_grid_listener.class%'
         arguments:
