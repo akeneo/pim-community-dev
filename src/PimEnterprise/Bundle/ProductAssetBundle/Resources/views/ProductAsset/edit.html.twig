@@ -42,7 +42,15 @@
         <span class="AknTitleContainer-metaItem">{{ 'Last update'|trans }}: {{ asset.updatedAt ? asset.updatedAt|datetime_presenter : 'N/A'|trans }}</span>
     {% endset %}
 
-    {{ elements.page_header(title, buttons, null, meta, null, backButton, elements.updated(form.vars.id)) }}
+    {{ elements.page_header(
+        {
+            title: title,
+            buttons: buttons,
+            meta: meta,
+            backButton: backButton,
+            state: elements.updated(form.vars.id)
+        }
+    ) }}
 
     <div class="form-horizontal product-edit product-view asset">
         <div class="layout-content">

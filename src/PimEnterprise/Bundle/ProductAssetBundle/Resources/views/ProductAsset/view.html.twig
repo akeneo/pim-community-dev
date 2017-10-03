@@ -15,7 +15,13 @@
         </ul>
     {% endset %}
 
-    {{ elements.page_header(title, null, null, meta, null, backButton) }}
+    {{ elements.page_header(
+        {
+            title: title,
+            meta: meta,
+            backButton: backButton
+        }
+    ) }}
 
     <div class="form-horizontal product-edit product-view asset">
         <div class="layout-content">

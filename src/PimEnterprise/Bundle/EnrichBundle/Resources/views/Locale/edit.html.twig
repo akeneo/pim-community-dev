@@ -50,7 +50,14 @@
             {{ elements.submitBtn('', 'ok') }}
         {% endset %}
 
-        {{ elements.page_header(title, buttons, null, null, null, titleButtons, elements.updated(form.vars.id)) }}
+        {{ elements.page_header(
+            {
+                title: title,
+                buttons: buttons,
+                backButton: titleButtons,
+                state: elements.updated(form.vars.id)
+            }
+        ) }}
 
         {% set tabs = ['pim_enrich.locale.tab.property'] %}
         {% if form.permissions is defined %}
