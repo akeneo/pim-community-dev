@@ -46,6 +46,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 ],
             ],
             'family_variant' => 'familyVariantA1',
+            'categories' => ['categoryA'],
             'parent' => null,
             'values'         => [
                 'a_text-text'            => [
@@ -83,6 +84,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 ],
             ],
             'family_variant' => 'familyVariantA1',
+            'categories' => ['categoryA', 'categoryA1', 'categoryB'],
             'parent' => 'qux',
             'values'         => [
                 'a_text-text'            => [
@@ -125,7 +127,7 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                 ],
             ],
             'enabled'        => true,
-            'categories'     => [],
+            'categories'     => ['categoryA', 'categoryA1', 'categoryA2', 'categoryB'],
             'groups'         => [],
             'completeness'   => [],
             'family_variant' => 'familyVariantA1',

@@ -129,3 +129,22 @@ Feature: Create product models through CSV import
     And I should see the text "processed 2"
     And I should see the text "skipped product model with parent 2"
     And I should see the text "skipped product model without parent 1"
+
+  Scenario: Successfully import root product models and sub product models with categories
+    Given the following CSV file to import:
+      """
+      code;family_variant;categories;parent;color
+      hades;clothing_color_size;tshirts;;
+      hades_blue;;supplier_mongo,tshirts;hades;blue
+      hades_red;;supplier_zaro,master_men;hades;red
+      """
+    And the following job "csv_catalog_modeling_product_model_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "csv_catalog_modeling_product_model_import" import job page
+    And I launch the import job
+    And I wait for the "csv_catalog_modeling_product_model_import" job to finish
+    Then there should be the following root product model:
+      | code       | categories                       |
+      | hades      | tshirts                          |
+      | hades_blue | supplier_mongo,tshirts           |
+      | hades_red  | master_men,supplier_zaro,tshirts |

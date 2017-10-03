@@ -24,18 +24,25 @@
 
 {% block navButtons %}
     {% if entityId and resource_granted('pim_user_group_remove') %}
-        {{ UI.deleteButton({
-            'dataUrl': path('oro_user_group_delete', {'id': entityId}),
-            'dataRedirect': path('oro_user_group_index'),
-            'aCss': 'no-hash remove-button AknButtonList-item',
-            'dataId': entityId,
-            'id': 'btn-remove-group',
-            'dataMessage': 'Are you sure you want to delete this group?'|trans,
-            'successMessage': 'Group removed'|trans,
-            'title': 'Delete group',
-            'label': 'Delete'
-        }) }}
+        <div class="AknSecondaryActions AknDropdown AknButtonList-item secondary-actions">
+          <div class="AknSecondaryActions-button dropdown-button" data-toggle="dropdown"></div>
+          <div class="AknDropdown-menu AknDropdown-menu--right">
+              <div class="AknDropdown-menuTitle">{{'other_actions'|trans}}</div>
+              {{ UI.deleteButton({
+                  'dataUrl': path('oro_user_group_delete', {'id': entityId}),
+                  'dataRedirect': path('oro_user_group_index'),
+                  'aCss': 'AknDropdown-menuLink remove-button no-hash',
+                  'dataId': entityId,
+                  'id': 'btn-remove-group',
+                  'dataMessage': 'Are you sure you want to delete this group?'|trans,
+                  'successMessage': 'Group removed'|trans,
+                  'title': 'Delete group',
+                  'label': 'Delete'
+              }) }}
+          </div>
+        </div>
     {% endif %}
+
     {{ UI.saveAndStayButton('pim_user_group_edit') }}
 {% endblock navButtons %}
 

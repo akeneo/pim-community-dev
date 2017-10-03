@@ -5,6 +5,7 @@ extensions:
            labels:
                title: pim_enrich.entity.product.create_popin.title
                subTitle: pim_menu.tab.products
+           picture: illustrations/Product.svg
            successMessage: pim_enrich.entity.product.message.created
            editRoute: pim_enrich_product_edit
            postUrl: pim_enrich_product_rest_create

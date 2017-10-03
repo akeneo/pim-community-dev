@@ -3,7 +3,7 @@
     <span class="AknVariantNavigation-listProductLabel">
         <%- entity.label %>
     </span>
-    <span class="AknVariantNavigation-listProductCompleteness AknVariantNavigation-listProductCompleteness--<%- (100 === parseInt(entity.completeness.ratio)) ? 'complete' : 'incomplete' %>">
+    <span class="AknVariantNavigation-listProductCompleteness AknVariantNavigation-listProductCompleteness--<%- getClass(entity.completeness.ratio) %>">
         <%- entity.completeness.ratio %>%
     </span>
 </div>

@@ -29,6 +29,8 @@ Feature: Edit a variant product
     Then the field Composition should be read only
     And the field Material should be read only
     And I should see the text "This attribute can be updated on the attributes by Color"
+    And I should see the text "Color (Variant axis)"
+    And I should see the text "Size (Variant axis)"
 
   Scenario: Attributes coming from common attributes are read only
     Given I am logged in as "Mary"

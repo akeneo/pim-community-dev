@@ -4,6 +4,7 @@
 
 - GITHUB-6866: Fix the QueryProductCommand, cheers @LeoBenoist!
 - API-393: Add prefix "akeno:batch" to the command "publish-job-to-queue"
+- PIM-6843: Update delete buttons in category, user, role and group pages
 
 ## Tech improvements
 
@@ -15,8 +16,18 @@
 - TIP-807: Improve menu to pass parameters for routes, cheers @MarieMinasyan!
 - PIM-6839: Fix the design for large titles
 - PIM-6595: Add missing breadcrumb or user navigation on every page
+- PIM-6841: Add custom pictures for entities creation
+- PIM-6356: Display 1st variant product image in the grid and on the PEF for product models
+- PIM-6348: Display a red label in the variant navigation if no product is complete
+- PIM-6451: Now display variant axes coming from parent as "Variant Axis" on the product edit form
 - PIM-6835: [IMP] CSS Glitch compilation
 - PIM-6853: [IMP] Remove the checkboxes from the attributes grids
+
+## BC breaks
+
+- Change constructor of `Pim\Bundle\DataGridBundle\Normalizer\ProductModelNormalizer` to add `Pim\Component\Catalog\ProductModel\ImageAsLabel`
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer` to add `Pim\Component\Catalog\ProductModel\ImageAsLabel`
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer` to add `Pim\Component\Catalog\ProductModel\ImageAsLabel`
 
 # 2.0.0 (2017-09-28)
 

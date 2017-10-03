@@ -73,6 +73,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
         $productValueCollection->isEmpty()->willReturn(true);
 
+        $productModel->getCategoryCodes()->willReturn(['category_A', 'category_B']);
+
         $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)->shouldReturn(
             [
                 'id'             => '67',
@@ -81,6 +83,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                 'updated'        => $now->format('c'),
                 'family'         => 'family_A',
                 'family_variant' => 'family_variant_1',
+                'categories'     => ['category_A', 'category_B'],
                 'parent'         => null,
                 'values'         => [],
             ]
@@ -129,6 +132,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $productModel->getValues()->shouldBeCalledTimes(2)->willReturn($productValueCollection);
         $productValueCollection->isEmpty()->willReturn(false);
 
+        $productModel->getCategoryCodes()->willReturn(['category_A', 'category_B']);
+
         $serializer->normalize($productValueCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX,
             [])
             ->willReturn(
@@ -155,6 +160,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                     ],
                 ],
                 'family_variant' => 'family_variant_B',
+                'categories'     => ['category_A', 'category_B'],
                 'parent'         => null,
                 'values'         => [
                     'a_size-decimal' => [
@@ -211,6 +217,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $productModel->getValues()->shouldBeCalledTimes(2)->willReturn($valueCollection);
         $valueCollection->isEmpty()->willReturn(false);
 
+        $productModel->getCategoryCodes()->willReturn(['category_A', 'category_B']);
+        
         $serializer->normalize($valueCollection, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX, [])
             ->willReturn(
                 [
@@ -246,6 +254,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                     ],
                 ],
                 'family_variant' => 'family_variant_B',
+                'categories'     => ['category_A', 'category_B'],
                 'parent'         => 'parent_A',
                 'values'         => [
                     'a_size-decimal'         => [
