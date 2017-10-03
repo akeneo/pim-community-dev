@@ -10,11 +10,9 @@
 class AppKernelTest extends AppKernel
 {
     /**
-     * Registers your custom bundles
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    protected function registerProjectBundles()
+    protected function registerProjectBundles(): array
     {
         return [
             new Acme\Bundle\AppBundle\AcmeAppBundle(),
@@ -23,7 +21,7 @@ class AppKernelTest extends AppKernel
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getCacheDir(): string
     {
@@ -37,7 +35,7 @@ class AppKernelTest extends AppKernel
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getLogDir(): string
     {
@@ -47,7 +45,7 @@ class AppKernelTest extends AppKernel
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         if (null === $this->name) {
             $this->name =  parent::getName() . '_test';

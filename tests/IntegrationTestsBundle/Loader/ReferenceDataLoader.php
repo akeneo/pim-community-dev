@@ -13,22 +13,22 @@ use Doctrine\ORM\EntityManagerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceDataLoader
+final class ReferenceDataLoader
 {
     /** @var EntityManagerInterface */
-    protected $entityManager;
+    private $entityManager;
 
     /** @var array */
-    protected $bundles;
+    private $bundles;
 
     /** @var string */
-    protected $acmeBundleName;
+    private $acmeBundleName;
 
     /** @var string */
-    protected $fabricClassName;
+    private $fabricClassName;
 
     /** @var string */
-    protected $colorClassName;
+    private $colorClassName;
 
     /**
      * @param EntityManagerInterface $entityManager

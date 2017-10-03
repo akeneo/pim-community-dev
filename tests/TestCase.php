@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Test\Integration;
 
 use Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser;
@@ -48,7 +50,7 @@ abstract class TestCase extends KernelTestCase
      *
      * @return mixed
      */
-    protected function get($service)
+    protected function get(string $service)
     {
         return static::$kernel->getContainer()->get($service);
     }
@@ -58,19 +60,19 @@ abstract class TestCase extends KernelTestCase
      *
      * @return mixed
      */
-    protected function getFromTestKernel($service)
+    protected function getFromTestContainer(string $service)
     {
         return $this->testKernel->getContainer()->get($service);
     }
 
     /**
-     * @param string $service
+     * @param string $parameter
      *
      * @return mixed
      */
-    protected function getParameter($service)
+    protected function getParameter(string $parameter)
     {
-        return static::$kernel->getContainer()->getParameter($service);
+        return static::$kernel->getContainer()->getParameter($parameter);
     }
 
     /**
@@ -94,7 +96,7 @@ abstract class TestCase extends KernelTestCase
      *
      * @return string
      */
-    protected function getFixturePath($name)
+    protected function getFixturePath(string $name): string
     {
         $configuration = $this->getConfiguration();
         foreach ($configuration->getFixtureDirectories() as $fixtureDirectory) {
