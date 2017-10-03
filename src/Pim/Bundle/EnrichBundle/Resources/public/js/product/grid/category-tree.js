@@ -101,7 +101,7 @@ define(
              * @returns {String}
              */
             getCategoryLabel(id) {
-                return this.trimCount($('#node_' + id).text().trim());
+                return this.trimCount($('#node_' + id + ' > a:first').text().trim());
             },
 
             /**
