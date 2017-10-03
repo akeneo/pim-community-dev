@@ -16,7 +16,7 @@ Feature: Export group types
     And I should see the text "Written 2"
     And exported file of "csv_footwear_group_type_export" should contain:
     """
-    code;label-en_US;is_variant
-    RELATED;[RELATED];0
-    XSELL;[XSELL];0
+    code;label-en_US
+    RELATED;[RELATED]
+    XSELL;[XSELL]
     """

@@ -22,7 +22,6 @@ class GroupTypeUpdater implements ObjectUpdaterInterface
      * Expected input format :
      * [
      *     'code'       => 'variant',
-     *     'is_variant' => true,
      *     'label'      => [
      *         'en_US' => 'variant',
      *         'fr_FR' => 'variantes',
