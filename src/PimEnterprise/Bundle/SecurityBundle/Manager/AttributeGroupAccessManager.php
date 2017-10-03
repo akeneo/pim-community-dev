@@ -17,7 +17,6 @@ use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
