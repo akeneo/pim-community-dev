@@ -23,8 +23,10 @@ spec:
             - { name: MYSQL_PASSWORD, value: akeneo_pim }
             - { name: MYSQL_DATABASE, value: akeneo_pim }
           resources:
-            requests: {cpu: "150m", memory: "300Mi"}
-            limits: {memory: "300Mi"}
+            requests: {cpu: "150m", memory: "1000Mi"}
+            limits: {memory: "1000Mi"}
+          volumeMounts:
+            - { name: mysql-tmpfs, mountPath: /var/lib/mysql }
           readinessProbe:
             timeoutSeconds: 5
             initialDelaySeconds: 2
@@ -35,8 +37,8 @@ spec:
           env:
             - { name: ES_JAVA_OPTS, value: "-Xms1g -Xmx1g" }
           resources:
-            requests: {cpu: "150m", memory: "2000Mi"}
-            limits: {memory: "2000Mi"}
+            requests: {cpu: "150m", memory: "1500Mi"}
+            limits: {memory: "1500Mi"}
           readinessProbe:
             httpGet:
               path: /
@@ -52,8 +54,8 @@ spec:
           volumeMounts:
             - { name: pim, mountPath: /home/jenkins }
           resources:
-            requests: {cpu: "400m", memory: "1100Mi"}
-            limits: {memory: "1100Mi"}
+            requests: {cpu: "400m", memory: "1000Mi"}
+            limits: {memory: "1000Mi"}
         - name: httpd
           image: eu.gcr.io/akeneo-ci/httpd:2.4
           volumeMounts:
@@ -69,8 +71,8 @@ spec:
           env:
             - { name: JAVA_OPTS, value: "-Xms1g -Xmx1g " }
           resources:
-            requests: {cpu: "400m", memory: "2000Mi"}
-            limits: {memory: "2000Mi"}
+            requests: {cpu: "400m", memory: "1500Mi"}
+            limits: {memory: "1500Mi"}
         - name: pubsub
           image: eu.gcr.io/akeneo-ci/gcloud:1.0.6
           command: ["gcloud.phar"]
@@ -90,4 +92,5 @@ spec:
         - { name: pim, emptyDir: {}}
         - { name: docker, hostPath: {path: /var/run/docker.sock}}
         - { name: artifacts, emptyDir: {medium: Memory}}
+        - { name: mysql-tmpfs, emptyDir: {medium: Memory}}
       restartPolicy: OnFailure
