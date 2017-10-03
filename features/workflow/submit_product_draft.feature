@@ -113,7 +113,8 @@ Feature: Submit a modification on a product draft
 
   @jira https://akeneo.atlassian.net/browse/PIM-4604
   Scenario: Successfully propose a boolean attribute change
-    When I check the "Handmade" switch
+    Given I should see the text "Handmade"
+    And I check the "Handmade" switch
     And I save the product
     Then attribute handmade of "my-jacket" should be "false"
     But the product Handmade should be "on"

@@ -36,7 +36,8 @@ Feature: Ensure that a published product is safe
 
   Scenario: Successfully remove a category that is not linked to a published product
     Given I am on the "winter_top" category page
-    And I press the "Delete" button and wait for modal
+    And I should see the text "edit category - Winter tops"
+    And I press the secondary action "Delete"
     And I confirm the removal
     Then I should not see the "winter_top" category under the "winter_collection" category
 

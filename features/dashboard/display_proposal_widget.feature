@@ -64,7 +64,7 @@ Feature: Display proposal widget
       | my-jacket | john   | in progress | {"values":{"name":[{"locale":"en_US","scope":null,"data":"My change2"}]}} |
     And I am logged in as "Peter"
     When I am on the "jackets" category page
-    And I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     And I logout
     And I am logged in as "Julia"

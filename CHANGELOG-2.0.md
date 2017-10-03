@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - Fix `akeneo:rule:delete` command
+- PIM-6843: Fix delete buttons on asset and user pages
 
 # 2.0.0 (2017-09-28)
 
@@ -34,7 +35,7 @@
 ## EE permissions on the imports, exports and products deletion
 - API-349: Apply permissions on published products export
 - API-247: Apply permissions on products export
-- API-303: Apply permissions on mass product deletion	
+- API-303: Apply permissions on mass product deletion
 
 ## Remove MongoDB product storage
 
@@ -65,7 +66,7 @@
 
 ## BC breaks
 
-- Change the constructor of `PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber\RuleExecutionSubscriber` to replace `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` by `Symfony\Component\Security\Core\User\ChainUserProvider`. 
+- Change the constructor of `PimEnterprise\Bundle\CatalogRuleBundle\EventSubscriber\RuleExecutionSubscriber` to replace `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` by `Symfony\Component\Security\Core\User\ChainUserProvider`.
 - Change the constructor of `PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository` to add `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` and CategoryAccess parameter class.
 - Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Product\ContextConfigurator` to add `Symfony\Component\HttpFoundation\RequestStack`
 - Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Configuration\Proposal\ContextConfigurator` to add `Symfony\Component\HttpFoundation\RequestStack`

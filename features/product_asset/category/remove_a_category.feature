@@ -14,7 +14,7 @@ Feature: Remove an asset category
 
   Scenario: Remove a simple asset category
     Given I am on the "situ" asset category page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should be on the asset category "images" edit page
     And I should see the flash message "Category successfully removed"
@@ -22,7 +22,7 @@ Feature: Remove an asset category
 
   Scenario: Remove an asset category with sub-categories
     Given I am on the "videos" asset category page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should be on the asset category "asset_main_catalog" edit page
     And I should see the flash message "Category successfully removed"
@@ -30,7 +30,7 @@ Feature: Remove an asset category
 
   Scenario: Remove an asset category with products linked
     Given I am on the "store_documents" asset category page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should be on the asset category "asset_main_catalog" edit page
     And I should see the flash message "Category successfully removed"
@@ -40,7 +40,7 @@ Feature: Remove an asset category
 
   Scenario: Remove an asset category with sub-categories and products linked
     Given I am on the "images" asset category page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should be on the asset category "asset_main_catalog" edit page
     And I should see the flash message "Category successfully removed"
@@ -56,14 +56,14 @@ Feature: Remove an asset category
       | code            | parent | label-en_US     |
       | 2013_collection |        | 2013 collection |
     And I am on the "2013_collection" asset category page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should be redirected on the asset category tree creation page
     And I should see the flash message "Tree successfully removed"
 
   Scenario: Cancel the removal of an asset category
     Given I am on the "images" asset category page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I cancel the deletion
     Then I should see the "images" category under the "asset_main_catalog" category
 
@@ -93,7 +93,7 @@ Feature: Remove an asset category
       | video_20 | videos     |
       | video_21 | videos     |
     And I am on the "videos" asset category page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     Then I should see a confirm dialog with the following content:
       | title   | Delete confirmation                                                                        |
       | content | This category contains more products than allowed for this operation (20 products maximum) |
@@ -123,7 +123,7 @@ Feature: Remove an asset category
       | video_20 | prioritized_videos |
       | video_21 | prioritized_videos |
     And I am on the "videos" asset category page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     Then I should see a confirm dialog with the following content:
       | title   | Delete confirmation                                                                        |
       | content | This category contains more products than allowed for this operation (20 products maximum) |

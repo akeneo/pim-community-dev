@@ -1,13 +1,19 @@
 {% if resource_granted('pimee_product_asset_remove') %}
-    {{ elements.deleteLink(
-        path('pimee_product_asset_remove', { id: asset.id }),
-        'pimee_product_asset_remove',
-        path('pimee_product_asset_index'),
-        'pimee_product_asset.enrich_asset.confirmation.remove'|trans({'%asset%': asset.code}),
-        'pimee_product_asset.enrich_asset.flash.remove.success'|trans,
-        '',
-        'AknButtonList-item'
-    ) }}
+    <div class="AknSecondaryActions AknDropdown AknButtonList-item secondary-actions">
+        <div class="AknSecondaryActions-button dropdown-button" data-toggle="dropdown"></div>
+        <div class="AknDropdown-menu AknDropdown-menu--right">
+            <div class="AknDropdown-menuTitle">{{'other_actions'|trans}}</div>
+            {{ elements.deleteLink(
+                path('pimee_product_asset_remove', { id: asset.id }),
+                'pimee_product_asset_remove',
+                path('pimee_product_asset_index'),
+                'pimee_product_asset.enrich_asset.confirmation.remove'|trans({'%asset%': asset.code}),
+                'pimee_product_asset.enrich_asset.flash.remove.success'|trans,
+                '',
+                'AknDropdown-menuLink delete'
+            ) }}
+        </div>
+    </div>
 {% endif %}
 
 {{ elements.submitBtn(null, 'ok', 'AknButtonList-item') }}
