@@ -20,6 +20,7 @@
 - PIM-6356: Display 1st variant product image in the grid and on the PEF for product models
 - PIM-6348: Display a red label in the variant navigation if no product is complete
 - PIM-6451: Now display variant axes coming from parent as "Variant Axis" on the product edit form
+- PIM-6832: Fix the column category display when category node is expanded
 
 ## BC breaks
 

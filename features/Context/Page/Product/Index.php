@@ -41,6 +41,10 @@ class Index extends Grid
                 'Sidebar collapse button' => ['css' => '.sidebar .sidebar-controls i.icon-double-angle-left'],
                 'Sidebar expand button'   => ['css' => '.separator.collapsed i.icon-double-angle-right'],
                 'Manage filters options'  => ['css' => '.filter-list.select-filter-widget .ui-multiselect-checkboxes li label span'],
+                'Category tree'           => [
+                    'css'        => '#tree',
+                    'decorators' => [ 'Pim\Behat\Decorator\Tree\JsTreeDecorator' ]
+                ]
             ]
         );
     }
