@@ -9,6 +9,7 @@ parameters:
     pim_datagrid.event_listener.configure_history_grid_listener.class: Pim\Bundle\DataGridBundle\EventListener\ConfigureHistoryGridListener
 
     pim_datagrid.event_listener.add_job_code_to_grid_listener.class: Pim\Bundle\DataGridBundle\EventListener\AddJobCodeToGridListener
+    pim_datagrid.event_listener.add_username_to_grid_listener.class: Pim\Bundle\DataGridBundle\EventListener\AddUsernameToGridListener
 
 services:
     pim_datagrid.event_listener.configure_sorters_listener:
