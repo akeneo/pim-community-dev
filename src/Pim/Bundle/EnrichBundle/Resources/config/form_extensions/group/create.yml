@@ -5,6 +5,7 @@ extensions:
             labels:
                 title: pim_enrich.entity.group.create_popin.title
                 subTitle: pim_menu.item.group
+            picture: illustrations/Groups.svg
             successMessage: pim_enrich.entity.group.message.created
             editRoute: pim_enrich_group_edit
             postUrl: pim_enrich_group_rest_create
