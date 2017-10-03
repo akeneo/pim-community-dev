@@ -7,6 +7,7 @@
     {% block pageHeader %}
         {% set buttons %}
             {% block navButtons %}{% endblock navButtons %}
+            {% block titleButtons %}{% endblock titleButtons %}
         {% endset %}
 
         {% set meta %}
@@ -45,15 +46,12 @@
         {% endset %}
 
         {% set titleButtons %}
-            {% block titleButtons %}
-            {% endblock titleButtons %}
         {% endset %}
 
         {{ elements.page_header(
             {
                 title: title,
                 buttons: buttons,
-                titleButtons: titleButtons,
                 meta: meta,
                 image: image
             }

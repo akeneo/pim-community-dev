@@ -82,9 +82,7 @@
 {% macro page_header(options) %}
     {% set title = options.title is defined ? options.title : '' %}
     {% set buttons = options.buttons is defined ? options.buttons : '' %}
-    {% set titleButtons = options.titleButtons is defined ? options.titleButtons : '' %}
     {% set meta = options.meta is defined ? options.meta : '' %}
-    {% set right = options.right is defined ? options.right : '' %}
     {% set backButton = options.backButton is defined ? options.backButton : '' %}
     {% set state = options.state is defined ? options.state : '' %}
     {% set image = options.image is defined ? options.image : '' %}
@@ -100,12 +98,8 @@
                             <div class="user-menu" data-drop-zone="user-menu"></div>
                             <div class="AknButtonList" data-drop-zone="buttons">
                                 {% block navButtons %}{% endblock navButtons %}
-                                {{ right }}
                                 {% if buttons is not empty %}
                                     {{ buttons }}
-                                {% endif %}
-                                {% if titleButtons is not empty %}
-                                    {{ titleButtons }}
                                 {% endif %}
                             </div>
                         </div>
