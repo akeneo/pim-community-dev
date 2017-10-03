@@ -22,7 +22,7 @@ class ConfigureAttributeGridListenerSpec extends ObjectBehavior
             [
                 'smart' => [
                     'label'         => 'pimee_catalog_rule.attribute.grid.is_smart.label',
-                    'frontend_type' => 'boolean',
+                    'frontend_type' => 'boolean-status',
                     'data_name'     => 'is_smart'
                 ]
             ]

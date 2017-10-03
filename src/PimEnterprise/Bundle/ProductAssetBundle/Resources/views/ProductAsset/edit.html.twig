@@ -92,6 +92,7 @@
                     FetcherRegistry.initialize().done(function () {
                         FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
                             form.setElement('.user-menu').render();
+                            form.$el.addClass('AknTitleContainer-userMenu');
                         }.bind(this));
                     });
                 });

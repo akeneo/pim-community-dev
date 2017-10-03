@@ -4,6 +4,7 @@
 
 - Fix `akeneo:rule:delete` command
 - PIM-6843: Fix delete buttons on asset and user pages
+- PIM-6853: [IMP] Remove the checkboxes from the attributes grids
 
 # 2.0.0 (2017-09-28)
 
