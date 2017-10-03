@@ -70,7 +70,7 @@ spec:
             requests: {cpu: "400m", memory: "1500Mi"}
             limits: {memory: "1500Mi"}
         - name: pubsub
-          image: eu.gcr.io/akeneo-ci/gcloud:1.0.2
+          image: eu.gcr.io/akeneo-ci/gcloud:1.0.4
           command: ["gcloud.phar"]
           args: ["pubsub:message:consume", "SUBSCRIPTION_NAME", "RESULT_TOPIC"]
           env:
