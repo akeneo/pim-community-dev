@@ -51,9 +51,8 @@ extensions:
 
     pim-attribute-index-grid:
         module: pim/form/common/index/grid
-        parent: pim-attribute-index
+        parent: pim-attribute-index-grid-container
         position: 1000
-        targetZone: content
         config:
             alias: attribute-grid
 
