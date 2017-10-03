@@ -8,6 +8,7 @@
  */
 define(
     [
+        'backbone',
         'underscore',
         'oro/translator',
         'pim/form',
@@ -15,9 +16,11 @@ define(
         'pim/router',
         'oro/loading-mask',
         'oro/messenger',
-        'pim/dialog'
+        'pim/dialog',
+        'pim/template/grid/mass-actions-confirm'
     ],
     function (
+        Backbone,
         _,
         __,
         BaseForm,
@@ -25,7 +28,8 @@ define(
         router,
         LoadingMask,
         messenger,
-        Dialog
+        Dialog,
+        confirmModalTemplate
     ) {
         return BaseForm.extend({
             tagName: 'button',
@@ -33,6 +37,7 @@ define(
             className: 'AknDropdown-menuLink delete',
 
             template: _.template(template),
+            confirmModalTemplate: _.template(confirmModalTemplate),
 
             events: {
                 'click': 'delete'
@@ -77,11 +82,18 @@ define(
              * Open a dialog to ask the user to confirm the deletion
              */
             delete: function () {
-                Dialog.confirm(
-                    __(this.config.trans.title),
-                    __(this.config.trans.content),
-                    this.doDelete.bind(this)
-                );
+                const modal = new Backbone.BootstrapModal({
+                    type: '',
+                    title: __(this.config.trans.content),
+                    content: __(this.config.trans.title),
+                    okClass: 'AknButton--important',
+                    okText: 'Delete',
+                    template: this.confirmModalTemplate
+                }).on('ok', this.doDelete.bind(this));
+
+                modal.open();
+
+                modal.$el.addClass('modal--fullPage');
             },
 
             /**
