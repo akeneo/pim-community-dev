@@ -1,8 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Test\Integration;
 
+use Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser;
+use Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoader;
+use Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoaderInterface;
+use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -11,6 +19,9 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 abstract class TestCase extends KernelTestCase
 {
+    /** @var KernelInterface */
+    protected $testKernel;
+
     /**
      * @return Configuration
      */
@@ -22,13 +33,16 @@ abstract class TestCase extends KernelTestCase
     protected function setUp()
     {
         static::bootKernel(['debug' => false]);
+        $authenticator = new SystemUserAuthenticator(static::$kernel->getContainer());
+        $authenticator->createSystemUser();
+
+        $this->testKernel = new \AppKernelTest('test', false);
+        $this->testKernel->boot();
 
         $configuration = $this->getConfiguration();
+        $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
 
-        $databaseSchemaHandler = $this->getDatabaseSchemaHandler();
-
-        $fixturesLoader = $this->getFixturesLoader($configuration, $databaseSchemaHandler);
-        $fixturesLoader->load();
+        $fixturesLoader->load($configuration);
     }
 
     /**
@@ -36,7 +50,7 @@ abstract class TestCase extends KernelTestCase
      *
      * @return mixed
      */
-    protected function get($service)
+    protected function get(string $service)
     {
         return static::$kernel->getContainer()->get($service);
     }
@@ -46,9 +60,19 @@ abstract class TestCase extends KernelTestCase
      *
      * @return mixed
      */
-    protected function getParameter($service)
+    protected function getFromTestContainer(string $service)
     {
-        return static::$kernel->getContainer()->getParameter($service);
+        return $this->testKernel->getContainer()->get($service);
+    }
+
+    /**
+     * @param string $parameter
+     *
+     * @return mixed
+     */
+    protected function getParameter(string $parameter)
+    {
+        return static::$kernel->getContainer()->getParameter($parameter);
     }
 
     /**
@@ -56,37 +80,10 @@ abstract class TestCase extends KernelTestCase
      */
     protected function tearDown()
     {
-        $connectionCloser = $this->getConnectionCloser();
+        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
         parent::tearDown();
-    }
-
-    /**
-     * @return DatabaseSchemaHandler
-     */
-    protected function getDatabaseSchemaHandler()
-    {
-        return new DatabaseSchemaHandler(static::$kernel);
-    }
-
-    /**
-     * @param Configuration         $configuration
-     * @param DatabaseSchemaHandler $databaseSchemaHandler
-     *
-     * @return FixturesLoader
-     */
-    protected function getFixturesLoader(Configuration $configuration, DatabaseSchemaHandler $databaseSchemaHandler)
-    {
-        return new FixturesLoader(static::$kernel, $configuration, $databaseSchemaHandler);
-    }
-
-    /**
-     * @return ConnectionCloser
-     */
-    protected function getConnectionCloser()
-    {
-        return new ConnectionCloser(static::$kernel->getContainer());
     }
 
     /**
@@ -99,7 +96,7 @@ abstract class TestCase extends KernelTestCase
      *
      * @return string
      */
-    protected function getFixturePath($name)
+    protected function getFixturePath(string $name): string
     {
         $configuration = $this->getConfiguration();
         foreach ($configuration->getFixtureDirectories() as $fixtureDirectory) {

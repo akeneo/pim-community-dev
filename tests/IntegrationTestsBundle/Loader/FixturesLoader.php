@@ -1,7 +1,11 @@
 <?php
 
-namespace Akeneo\Test\Integration;
+declare(strict_types=1);
 
+namespace Akeneo\Test\IntegrationTestsBundle\Loader;
+
+use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -9,25 +13,24 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class FixturesLoader
+class FixturesLoader implements FixturesLoaderInterface
 {
     const CACHE_DIR = '/pim-integration-tests-data-cache/';
 
     /** @var KernelInterface */
     protected $kernel;
 
-    /** @var Configuration */
-    protected $configuration;
-
     /** @var DatabaseSchemaHandler */
     protected $databaseSchemaHandler;
+
+    /** @var SystemUserAuthenticator */
+    protected $systemUserAuthenticator;
 
     /** @var ContainerInterface */
     protected $container;
@@ -36,18 +39,18 @@ class FixturesLoader
     protected $cli;
 
     /**
-     * @param KernelInterface       $kernel
-     * @param Configuration         $configuration
-     * @param DatabaseSchemaHandler $databaseSchemaHandler
+     * @param KernelInterface         $kernel
+     * @param DatabaseSchemaHandler   $databaseSchemaHandler
+     * @param SystemUserAuthenticator $systemUserAuthenticator
      */
     public function __construct(
         KernelInterface $kernel,
-        Configuration $configuration,
-        DatabaseSchemaHandler $databaseSchemaHandler
+        DatabaseSchemaHandler $databaseSchemaHandler,
+        SystemUserAuthenticator $systemUserAuthenticator
     ) {
         $this->kernel = $kernel;
-        $this->configuration = $configuration;
         $this->databaseSchemaHandler = $databaseSchemaHandler;
+        $this->systemUserAuthenticator = $systemUserAuthenticator;
 
         $this->container = $kernel->getContainer();
         $this->cli = new Application($kernel);
@@ -63,20 +66,19 @@ class FixturesLoader
     }
 
     /**
-     * Loads test catalog.
+     * {@inheritdoc}
      *
      * The elastic search indexes are reset here, at the same time than the database.
      * However, the second index is not reset directly after the first one, as it could
      * prevent the first one to be correctly dilated.
-     *
-     * @throws \Exception
      */
-    public function load()
+    public function load(Configuration $configuration): void
     {
+        $this->systemUserAuthenticator->createSystemUser();
         $this->container->get('akeneo_elasticsearch.client.product')->resetIndex();
         $this->container->get('akeneo_elasticsearch.client.product_model')->resetIndex();
 
-        $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
+        $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
 
         $dumpFile = sys_get_temp_dir().self::CACHE_DIR.$fixturesHash.'.sql';
@@ -86,7 +88,6 @@ class FixturesLoader
             $this->createDatabase();
             $this->restoreDatabase($dumpFile);
             $this->clearAclCache();
-            $this->createUserSystem();
 
             $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
 
@@ -99,13 +100,13 @@ class FixturesLoader
         $this->databaseSchemaHandler->reset();
         $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
 
-        $this->loadData();
+        $this->loadData($configuration);
         $this->dumpDatabase($dumpFile);
     }
 
-    protected function loadData()
+    protected function loadData(Configuration $configuration): void
     {
-        $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
+        $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
         $filesByType = $this->getFilesToLoadByType($files);
 
         $this->loadSqlFiles($filesByType['sql']);
@@ -120,7 +121,7 @@ class FixturesLoader
      *
      * @return string
      */
-    protected function getHashForFiles(array $files)
+    protected function getHashForFiles(array $files): string
     {
         $hashes = array_map('sha1_file', $files);
 
@@ -132,7 +133,7 @@ class FixturesLoader
      *
      * @param array $files
      */
-    protected function loadSqlFiles(array $files)
+    protected function loadSqlFiles(array $files): void
     {
         $db = $this->container->get('doctrine.orm.entity_manager')->getConnection();
 
@@ -148,7 +149,7 @@ class FixturesLoader
      *
      * @throws \RuntimeException
      */
-    protected function loadImportFiles(array $files)
+    protected function loadImportFiles(array $files): void
     {
         // prepare replace paths to use catalog paths and not the minimal fixtures path, please note that we can
         // have several files per job in case of Enterprise Catalog, for instance,
@@ -194,14 +195,10 @@ class FixturesLoader
     /**
      * Load the reference data into the database.
      */
-    protected function loadReferenceData()
+    protected function loadReferenceData(): void
     {
-        $bundles = $this->container->getParameter('kernel.bundles');
-        if (isset($bundles['AcmeAppBundle'])) {
-            $entityManager = $this->container->get('doctrine.orm.entity_manager');
-            $referenceDataLoader = new ReferenceDataLoader();
-            $referenceDataLoader->load($entityManager);
-        }
+        $referenceDataLoader = $this->container->get('akeneo_integration_tests.loader.reference_data_loader');
+        $referenceDataLoader->load();
     }
 
     /**
@@ -213,7 +210,7 @@ class FixturesLoader
      *
      * @return array
      */
-    protected function getFilesToLoadByType(array $files)
+    protected function getFilesToLoadByType(array $files): array
     {
         $filesByType = [
             'sql' => [],
@@ -256,7 +253,7 @@ class FixturesLoader
      *
      * @return array
      */
-    protected function getFilesToLoad(array $directories)
+    protected function getFilesToLoad(array $directories): array
     {
         $rawFiles = [];
         foreach ($directories as $directory) {
@@ -283,7 +280,7 @@ class FixturesLoader
         return $files;
     }
 
-    protected function dropDatabase()
+    protected function dropDatabase(): void
     {
         $this->execCommand([
             'mysql',
@@ -294,7 +291,7 @@ class FixturesLoader
         ]);
     }
 
-    protected function createDatabase()
+    protected function createDatabase(): void
     {
         $this->execCommand([
             'mysql',
@@ -308,7 +305,7 @@ class FixturesLoader
     /**
      * @param string $filepath
      */
-    protected function dumpDatabase($filepath)
+    protected function dumpDatabase($filepath): void
     {
         $dir = dirname($filepath);
         if (!file_exists($dir)) {
@@ -330,7 +327,7 @@ class FixturesLoader
     /**
      * @param string $filepath
      */
-    protected function restoreDatabase($filepath)
+    protected function restoreDatabase($filepath): void
     {
         $this->execCommand([
             'mysql',
@@ -348,7 +345,7 @@ class FixturesLoader
      *
      * @return string
      */
-    protected function execCommand(array $arguments, $timeout = 120)
+    protected function execCommand(array $arguments, $timeout = 120): string
     {
         $process = new Process(implode(' ', $arguments));
         $process->setTimeout($timeout);
@@ -362,45 +359,23 @@ class FixturesLoader
     }
 
     /**
-     * Create a token with a user system with all access
-     */
-    private function createUserSystem()
-    {
-        $user = $this->container->get('pim_user.factory.user')->create();
-        $user->setUsername('system');
-        $groups = $this->container->get('pim_user.repository.group')->findAll();
-
-        foreach ($groups as $group) {
-            $user->addGroup($group);
-        }
-
-        $roles = $this->container->get('pim_user.repository.role')->findAll();
-        foreach ($roles as $role) {
-            $user->addRole($role);
-        }
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->container->get('security.token_storage')->setToken($token);
-    }
-
-    /**
      * Clear Oro cache about Acl.
      * This cache should be cleared when loading the fixtures with mysql dump.
      * It avoids inconsistency between the cache and the new data in the database.
      */
-    protected function clearAclCache()
+    protected function clearAclCache(): void
     {
-        $aclCache = $this->container->get('security.acl.cache');
-        $aclCache->clearCache();
+        $aclManager = $this->container->get('oro_security.acl.manager');
+        $aclManager->clearCache();
     }
 
-    protected function indexProducts()
+    protected function indexProducts(): void
     {
         $products = $this->container->get('pim_catalog.repository.product')->findAll();
         $this->container->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
     }
 
-    protected function indexProductModels()
+    protected function indexProductModels(): void
     {
         $productModels = $this->container->get('pim_catalog.repository.product_model')->findAll();
         $this->container->get('pim_catalog.elasticsearch.indexer.product_model')->indexAll($productModels);

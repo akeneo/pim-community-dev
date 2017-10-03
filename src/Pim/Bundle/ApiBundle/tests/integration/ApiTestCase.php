@@ -3,15 +3,14 @@
 namespace Pim\Bundle\ApiBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\ConnectionCloser;
-use Akeneo\Test\Integration\DatabaseSchemaHandler;
-use Akeneo\Test\Integration\FixturesLoader;
+use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Test case dedicated to PIM API interaction including authentication handling.
@@ -25,6 +24,9 @@ abstract class ApiTestCase extends WebTestCase
     const USERNAME = 'admin';
     const PASSWORD = 'admin';
 
+    /** @var KernelInterface */
+    protected $testKernel;
+
     /**
      * @return Configuration
      */
@@ -36,12 +38,16 @@ abstract class ApiTestCase extends WebTestCase
     protected function setUp()
     {
         static::bootKernel(['debug' => false]);
+        $authenticator = new SystemUserAuthenticator(static::$kernel->getContainer());
+        $authenticator->createSystemUser();
+
+        $this->testKernel = new \AppKernelTest('test', false);
+        $this->testKernel->boot();
 
         $configuration = $this->getConfiguration();
-        $databaseSchemaHandler = $this->getDatabaseSchemaHandler();
+        $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
 
-        $fixturesLoader = $this->getFixturesLoader($configuration, $databaseSchemaHandler);
-        $fixturesLoader->load();
+        $fixturesLoader->load($configuration);
     }
 
     /**
@@ -173,37 +179,10 @@ abstract class ApiTestCase extends WebTestCase
      */
     protected function tearDown()
     {
-        $connectionCloser = $this->getConnectionCloser();
+        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
         parent::tearDown();
-    }
-
-    /**
-     * @return DatabaseSchemaHandler
-     */
-    protected function getDatabaseSchemaHandler()
-    {
-        return new DatabaseSchemaHandler(static::$kernel);
-    }
-
-    /**
-     * @param Configuration         $configuration
-     * @param DatabaseSchemaHandler $databaseSchemaHandler
-     *
-     * @return FixturesLoader
-     */
-    protected function getFixturesLoader(Configuration $configuration, DatabaseSchemaHandler $databaseSchemaHandler)
-    {
-        return new FixturesLoader(static::$kernel, $configuration, $databaseSchemaHandler);
-    }
-
-    /**
-     * @return ConnectionCloser
-     */
-    protected function getConnectionCloser()
-    {
-        return new ConnectionCloser(static::$kernel->getContainer());
     }
 
     /**

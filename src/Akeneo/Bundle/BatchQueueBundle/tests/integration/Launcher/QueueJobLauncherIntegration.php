@@ -9,7 +9,7 @@ use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Component\Batch\Job\ExitStatus;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\JobLauncher;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Driver\Connection;
 use Symfony\Bundle\FrameworkBundle\Console\Application;

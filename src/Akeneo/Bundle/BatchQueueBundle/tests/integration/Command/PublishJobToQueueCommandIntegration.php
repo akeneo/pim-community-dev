@@ -7,7 +7,7 @@ namespace Akeneo\Bundle\BatchQueueBundle\tests\integration\Command;;
 use Akeneo\Bundle\BatchQueueBundle\Command\PublishJobToQueueCommand;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\JobLauncher;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Driver\Connection;
 use Pim\Component\Catalog\Model\ProductInterface;

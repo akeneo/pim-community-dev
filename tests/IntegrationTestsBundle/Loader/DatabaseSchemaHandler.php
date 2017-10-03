@@ -1,12 +1,10 @@
 <?php
 
-namespace Akeneo\Test\Integration;
+namespace Akeneo\Test\IntegrationTestsBundle\Loader;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -19,9 +17,6 @@ class DatabaseSchemaHandler
     /** @var KernelInterface */
     protected $kernel;
 
-    /** @var ContainerInterface */
-    protected $container;
-
     /** @var Application */
     protected $cli;
 
@@ -31,7 +26,6 @@ class DatabaseSchemaHandler
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
-        $this->container = $kernel->getContainer();
         $this->cli = new Application($this->kernel);
         $this->cli->setAutoExit(false);
     }

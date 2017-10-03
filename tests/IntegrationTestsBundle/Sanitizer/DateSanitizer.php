@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Test\Integration;
+namespace Akeneo\Test\IntegrationTestsBundle\Sanitizer;
 
 /**
  * Sanitize a date.
