@@ -46,7 +46,6 @@ services:
         class: '%pimee_catalog_rule.applier.product.updater.class%'
         arguments:
             - '@akeneo_rule_engine.action_applier.registry'
-            - '@pim_catalog.updater.product_template'
 
     pimee_catalog_rule.applier.product.validator:
         class: '%pimee_catalog_rule.applier.product.validator.class%'

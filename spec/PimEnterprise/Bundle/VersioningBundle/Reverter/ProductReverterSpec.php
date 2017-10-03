@@ -57,7 +57,6 @@ class ProductReverterSpec extends ObjectBehavior
         $version->getResourceId()->willReturn('baz');
 
         $product->getValues()->willReturn($productValueCollection);
-        $product->getVariantGroup()->willReturn(null);
         $productValueCollection->clear()->shouldBecalled();
 
         $registry->getRepository('foo')->willReturn($repository);
@@ -106,7 +105,6 @@ class ProductReverterSpec extends ObjectBehavior
         $translator->trans('flash.error.revert.product')->willReturn('This version can not be restored. Some errors occurred during the validation.');
 
         $product->getValues()->willReturn($productValueCollection);
-        $product->getVariantGroup()->willReturn(null);
         $productValueCollection->clear()->shouldBecalled();
 
         $registry->getRepository('foo')->willReturn($repository);

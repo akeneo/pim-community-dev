@@ -17,10 +17,9 @@ use Prophecy\Argument;
 class ProductsUpdaterSpec extends ObjectBehavior
 {
     function let(
-        ActionApplierRegistryInterface $applierRegistry,
-        ProductTemplateUpdaterInterface $templateUpdater
+        ActionApplierRegistryInterface $applierRegistry
     ) {
-        $this->beConstructedWith($applierRegistry, $templateUpdater);
+        $this->beConstructedWith($applierRegistry);
     }
 
     function it_is_initializable()
@@ -30,7 +29,6 @@ class ProductsUpdaterSpec extends ObjectBehavior
 
     function it_does_not_update_products_when_no_actions(
         $applierRegistry,
-        $templateUpdater,
         RuleInterface $rule,
         ProductInterface $product
     ) {
@@ -38,14 +36,11 @@ class ProductsUpdaterSpec extends ObjectBehavior
 
         $applierRegistry->getActionApplier(Argument::any())->shouldNotBeCalled();
 
-        $templateUpdater->update(Argument::any(), Argument::any())->shouldNotBeCalled();
-
         $this->update($rule, [$product]);
     }
 
     function it_updates_product_when_the_rule_has_a_set_action(
         $applierRegistry,
-        $templateUpdater,
         RuleInterface $rule,
         ProductInterface $product,
         ProductSetActionInterface $action,
@@ -57,9 +52,6 @@ class ProductsUpdaterSpec extends ObjectBehavior
 
         $applierRegistry->getActionApplier($action)->willReturn($actionApplier);
         $actionApplier->applyAction($action, [$product]);
-
-        $templateUpdater->update(Argument::any(), Argument::any())
-            ->shouldNotBeCalled();
 
         $this->update($rule, [$product]);
     }

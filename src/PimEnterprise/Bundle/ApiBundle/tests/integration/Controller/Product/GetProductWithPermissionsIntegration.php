@@ -56,7 +56,6 @@ class GetProductWithPermissionsIntegration extends AbstractProductTestCase
     "family": null,
     "parent": null,
     "groups": [],
-    "variant_group": null,
     "categories": ["categoryA2"],
     "enabled": true,
     "values": {
@@ -139,7 +138,6 @@ JSON;
     "family":null,
     "parent":null,
     "groups":[],
-    "variant_group":null,
     "categories":["categoryA"],
     "enabled":true,
     "values":{

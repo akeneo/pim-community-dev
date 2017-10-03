@@ -33,7 +33,6 @@ class GetProductDraftIntegration extends ApiTestCase
   "family": null,
   "parent": null,
   "groups": [],
-  "variant_group": null,
   "categories": ["categoryA"],
   "enabled": true,
   "values": {
