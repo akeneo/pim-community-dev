@@ -42,10 +42,6 @@ abstract class AbstractProductTestCase extends ApiTestCase
     {
         $product = $this->get('pim_catalog.builder.variant_product')->createProduct($identifier);
         $this->get('pim_catalog.updater.product')->update($product, $data);
-        $violations = $this->get('validator')->validate($product);
-        if ($violations->count() > 0) {
-            var_dump($violations);die();
-        }
         $this->get('pim_catalog.saver.product')->save($product);
 
         $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
