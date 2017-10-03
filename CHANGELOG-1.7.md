@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug Fixes
+
+- PIM-6823: Add missing "decimal separator" field on xlsx profil import
+
 # 1.7.9 (2017-09-27)
 
 ## Bug Fixes

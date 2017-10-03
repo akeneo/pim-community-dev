@@ -78,16 +78,16 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.upload_allowed.title
             tooltip: pim_enrich.form.job_instance.tab.properties.upload_allowed.help
 
-    pim-job-instance-xlsx-product-import-show-properties-categories-column:
-        module: pim/job/common/edit/field/text
+    pim-job-instance-xlsx-product-import-show-properties-decimal-separator:
+        module: pim/job/common/edit/field/decimal-separator
         parent: pim-job-instance-xlsx-product-import-show-properties
         position: 140
         targetZone: global-settings
         config:
-            fieldCode: configuration.categoriesColumn
+            fieldCode: configuration.decimalSeparator
             readOnly: true
-            label: pim_enrich.form.job_instance.tab.properties.categories_column.title
-            tooltip: pim_enrich.form.job_instance.tab.properties.categories_column.help
+            label: pim_enrich.form.job_instance.tab.properties.decimal_separator.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.decimal_separator.help
 
     pim-job-instance-xlsx-product-import-show-properties-date-format:
         module: pim/job/product/edit/field/date-format
@@ -110,6 +110,17 @@ extensions:
             readOnly: true
             label: pim_enrich.form.job_instance.tab.properties.enabled.title
             tooltip: pim_enrich.form.job_instance.tab.properties.enabled.help
+
+    pim-job-instance-xlsx-product-import-show-properties-categories-column:
+        module: pim/job/common/edit/field/text
+        parent: pim-job-instance-xlsx-product-import-show-properties
+        position: 165
+        targetZone: global-settings
+        config:
+            fieldCode: configuration.categoriesColumn
+            readOnly: true
+            label: pim_enrich.form.job_instance.tab.properties.categories_column.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.categories_column.help
 
     pim-job-instance-xlsx-product-import-show-properties-family-column:
         module: pim/job/common/edit/field/text
