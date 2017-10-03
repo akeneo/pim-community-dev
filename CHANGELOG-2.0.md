@@ -15,6 +15,8 @@
 - TIP-807: Improve menu to pass parameters for routes, cheers @MarieMinasyan!
 - PIM-6839: Fix the design for large titles
 - PIM-6595: Add missing breadcrumb or user navigation on every page
+- PIM-6835: [IMP] CSS Glitch compilation
+- PIM-6853: [IMP] Remove the checkboxes from the attributes grids
 
 # 2.0.0 (2017-09-28)
 
@@ -106,7 +108,7 @@
 - PIM-6587: GRID - As Julia, I would like to switch from View to Project
 - PIM-6606: IMPORT EXPORT - As Julia, I would like to search for a profile in a new designed drop-down
 - PIM-6607: IMPORT - As Julia I would like to upload a file
-- PIM-6608: IMPORT EXPORT - As Julia I would like to edit an import or export profile properties & settings in a new UI	
+- PIM-6608: IMPORT EXPORT - As Julia I would like to edit an import or export profile properties & settings in a new UI
 - PIM-6613: [IMP] Settings Attributes - Attribute's name isn't display in purple
 - PIM-6614: [IMP] Settings Attributes - type and group dropdowns don't have the right design
 - PIM-6619: ATTRIBUTE CREATION - As Julia, I would like to create an attribute
@@ -125,7 +127,7 @@
 - PIM-6758: PEF - As Julia, I would like to see the missing required attributes in the PEF header
 - PIM-6778: PEF HEADER - As Julia, I would like to view the identifier in the PEF header
 
-## New API endpoints 
+## New API endpoints
 
 - API-347: [Migration script] Label is now mandatory when generating clientId via cmd line
 - API-351: As Peter/Philip, I want that API connection revocation takes effect instantly
