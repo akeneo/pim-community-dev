@@ -83,6 +83,26 @@ services:
             - '@pim_catalog.factory.product_model_cursor'
             - '@pim_catalog.query.product_query_builder_resolver'
 
+    pim_catalog.query.product_model_query_builder_from_size_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_model_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    pim_catalog.query.product_model_query_builder_search_after_size_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_model_search_after_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
+
     pim_catalog.query.product_query_builder_resolver:
         class: '%pim_catalog.query.product_query_builder_resolver.class%'
 

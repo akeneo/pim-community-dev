@@ -687,6 +687,8 @@ class ProductController
      * @param array                 $normalizerOptions
      *
      * @throws UnprocessableEntityHttpException
+     * @throws DocumentedHttpException
+     * @throws ServerErrorResponseException
      *
      * @return array
      */

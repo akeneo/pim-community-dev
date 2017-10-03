@@ -50,7 +50,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
     }
 
     /**
-     * @param array  $data
+     * @param array $data
      *
      * @return ProductModelInterface
      */
