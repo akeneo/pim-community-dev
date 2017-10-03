@@ -62,7 +62,7 @@ define(
                 this.getRoot().trigger('grid:third_column:toggle');
 
                 if (!this.isOpen) {
-                    this.outsideEventListener = this.outsideClickListener.bind(this)
+                    this.outsideEventListener = this.outsideClickListener.bind(this);
                     document.addEventListener('mousedown', this.outsideEventListener);
                 }
                 this.isOpen = !this.isOpen;
