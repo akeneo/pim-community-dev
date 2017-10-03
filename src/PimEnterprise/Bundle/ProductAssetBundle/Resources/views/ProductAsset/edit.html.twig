@@ -30,9 +30,6 @@
         {{ asset.code }}
     {% endset %}
 
-    {% set backButton %}
-    {% endset %}
-
     {% set buttons %}
         {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_buttons.html.twig' %}
     {% endset %}
@@ -47,7 +44,6 @@
             title: title,
             buttons: buttons,
             meta: meta,
-            backButton: backButton,
             state: elements.updated(form.vars.id)
         }
     ) }}

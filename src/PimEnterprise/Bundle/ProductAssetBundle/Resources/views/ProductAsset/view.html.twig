@@ -5,9 +5,6 @@
         {{ 'pimee_product_asset.enrich_asset.view.title'|trans }} / {{ asset.code }}
     {% endset %}
 
-    {% set backButton %}
-    {% endset %}
-
     {% set meta %}
         <ul class="inline">
             <li>{{ 'Created'|trans }}: {{ asset.createdAt ? asset.createdAt|datetime_presenter : 'N/A'|trans }}</li>
@@ -18,8 +15,7 @@
     {{ elements.page_header(
         {
             title: title,
-            meta: meta,
-            backButton: backButton
+            meta: meta
         }
     ) }}
 

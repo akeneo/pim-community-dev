@@ -43,9 +43,6 @@
 
         {% set title = 'locale.edit'|trans ~ ' - ' ~ form.vars.value.code %}
 
-        {% set titleButtons %}
-        {% endset %}
-
         {% set buttons %}
             {{ elements.submitBtn('', 'ok') }}
         {% endset %}
@@ -54,7 +51,6 @@
             {
                 title: title,
                 buttons: buttons,
-                backButton: titleButtons,
                 state: elements.updated(form.vars.id)
             }
         ) }}
