@@ -115,3 +115,10 @@ services:
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.history-grid, method: onBuildBefore }
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-history-grid, method: onBuildBefore }
+
+    pim_enrich.event_listener.add_username_to_grid_listener:
+        class: '%pim_datagrid.event_listener.add_username_to_grid_listener.class%'
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.job-tracker-grid, method: onBuildAfter }
