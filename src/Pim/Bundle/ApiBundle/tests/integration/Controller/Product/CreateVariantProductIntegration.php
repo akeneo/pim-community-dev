@@ -1158,7 +1158,7 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'property' => '',
+                    'property' => 'parent',
                     'message'  => 'The variant product "new_product_variant" cannot have product model "test" as parent, (this product model can only have other product models as children)',
                 ],
             ],
