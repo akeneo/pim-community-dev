@@ -33,10 +33,10 @@ spec:
         - name: elasticsearch
           image: eu.gcr.io/akeneo-ci/elasticsearch:5.5
           env:
-            - { name: ES_JAVA_OPTS, value: "-Xms512m -Xmx512m" }
+            - { name: ES_JAVA_OPTS, value: "-Xms1g -Xmx1g" }
           resources:
-            requests: {cpu: "150m", memory: "1000Mi"}
-            limits: {memory: "1000Mi"}
+            requests: {cpu: "150m", memory: "2000Mi"}
+            limits: {memory: "2000Mi"}
           readinessProbe:
             httpGet:
               path: /
@@ -66,9 +66,11 @@ spec:
           image: eu.gcr.io/akeneo-ci/selenium:standalone-firefox-2.53.1-beryllium
           volumeMounts:
             - { name: pim, mountPath: /home/jenkins }
+          env:
+            - { name: JAVA_OPTS, value: "-Xms1g -Xmx1g " }
           resources:
-            requests: {cpu: "400m", memory: "1500Mi"}
-            limits: {memory: "1500Mi"}
+            requests: {cpu: "400m", memory: "2000Mi"}
+            limits: {memory: "2000Mi"}
         - name: pubsub
           image: eu.gcr.io/akeneo-ci/gcloud:1.0.4
           command: ["gcloud.phar"]
