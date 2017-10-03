@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\ConnectorBundle\tests\integration\Export\ProductModel;
+namespace Pim\Bundle\ConnectorBundle\tests\integration\Export\Product;
 
 use Pim\Bundle\ConnectorBundle\tests\integration\Export\AbstractExportTestCase;
 
-class ExportProductModelsIntegration extends AbstractExportTestCase
+class ExportProductsIntegration extends AbstractExportTestCase
 {
     /**
      * {@inheritdoc}
@@ -16,20 +16,6 @@ class ExportProductModelsIntegration extends AbstractExportTestCase
             'type'        => 'pim_catalog_textarea',
             'group'       => 'attributeGroupA',
             'localizable' => true,
-            'scopable'    => false,
-        ]);
-        $this->createAttribute([
-            'code'        => 'variation_name',
-            'type'        => 'pim_catalog_text',
-            'group'       => 'attributeGroupA',
-            'localizable' => false,
-            'scopable'    => false,
-        ]);
-        $this->createAttribute([
-            'code'        => 'variation_image',
-            'type'        => 'pim_catalog_image',
-            'group'       => 'attributeGroupA',
-            'localizable' => false,
             'scopable'    => false,
         ]);
         $this->createAttribute([
@@ -62,6 +48,10 @@ class ExportProductModelsIntegration extends AbstractExportTestCase
             'code'        => 'l',
             'attribute'   => 'size',
         ]);
+        $this->createAttributeOption([
+            'code'        => 'xl',
+            'attribute'   => 'size',
+        ]);
         $this->createAttribute([
             'code'        => 'ean',
             'type'        => 'pim_catalog_text',
@@ -69,9 +59,16 @@ class ExportProductModelsIntegration extends AbstractExportTestCase
             'localizable' => false,
             'scopable'    => false,
         ]);
+        $this->createAttribute([
+            'code'        => 'variation_name',
+            'type'        => 'pim_catalog_text',
+            'group'       => 'attributeGroupA',
+            'localizable' => false,
+            'scopable'    => false,
+        ]);
         $this->createFamily([
             'code'        => 'clothing',
-            'attributes'  => ['sku', 'name', 'variation_name', 'variation_image', 'size', 'ean', 'sku', 'color'],
+            'attributes'  => ['sku', 'name', 'color', 'variation_name', 'size', 'ean'],
             'attribute_requirements' => [
                 'tablet' => ['sku', 'name']
             ]
@@ -83,7 +80,7 @@ class ExportProductModelsIntegration extends AbstractExportTestCase
                 [
                     'level' => 1,
                     'axes' => ['color'],
-                    'attributes' => ['color', 'variation_name', 'variation_image'],
+                    'attributes' => ['color', 'variation_name'],
                 ],
                 [
                     'level' => 2,
@@ -131,18 +128,53 @@ class ExportProductModelsIntegration extends AbstractExportTestCase
                 ]
             ]
         );
+        $this->createVariantProduct(
+            'apollon_pink_m',
+            [
+                'family' => 'clothing',
+                'parent' => 'apollon_pink',
+                'categories' => ['spring'],
+                'values'  => [
+                    'size'  => [['data' => 'm', 'locale' => null, 'scope' => null]],
+                    'ean'  => [['data' => '12345678', 'locale' => null, 'scope' => null]],
+                ]
+            ]
+        );
+        $this->createVariantProduct(
+            'apollon_pink_l',
+            [
+                'family' => 'clothing',
+                'parent' => 'apollon_pink',
+                'values'  => [
+                    'size'  => [['data' => 'l', 'locale' => null, 'scope' => null]],
+                    'ean'  => [['data' => '12345679', 'locale' => null, 'scope' => null]],
+                ]
+            ]
+        );
+        $this->createVariantProduct(
+            'apollon_pink_xl',
+            [
+                'family' => 'clothing',
+                'parent' => 'apollon_pink',
+                'categories' => ['tshirt','summer'],
+                'values'  => [
+                    'size'  => [['data' => 'xl', 'locale' => null, 'scope' => null]],
+                    'ean'  => [['data' => '12345465', 'locale' => null, 'scope' => null]],
+                ]
+            ]
+        );
     }
 
-    public function testProductModelsExport()
+    public function testVariantProductExport()
     {
         $expectedCsv = <<<CSV
-code;family_variant;parent;categories;color;name-de_DE;name-en_US;name-fr_FR;name-zh_CN;variation_image;variation_name
-apollon;clothing_color_size;;tshirt;;;;;;;
-apollon_blue;clothing_color_size;apollon;summer,tshirt,v-neck;blue;;;;;;"my blue tshirt"
-apollon_pink;clothing_color_size;apollon;round-neck,tshirt;pink;;;;;;"my pink tshirt"
+sku;categories;enabled;family;parent;groups;color;ean;name-en_US;size;variation_name
+apollon_pink_m;round-neck,spring,tshirt;1;clothing;apollon_pink;;pink;12345678;;m;"my pink tshirt"
+apollon_pink_l;round-neck,tshirt;1;clothing;apollon_pink;;pink;12345679;;l;"my pink tshirt"
+apollon_pink_xl;round-neck,summer,tshirt;1;clothing;apollon_pink;;pink;12345465;;xl;"my pink tshirt"
 
 CSV;
 
-        $this->assertProductModelExport($expectedCsv, []);
+        $this->assertProductExport($expectedCsv, []);
     }
 }
