@@ -7,7 +7,7 @@ Feature: Create product models through CSV import
   Background:
     Given the "catalog_modeling" catalog configuration
     And I am logged in as "Peter"
-    And I am on the imports page
+    And I am on the imports grid
 
   Scenario: Peter creates a new CSV import profile to import products models
     Given I create a new import

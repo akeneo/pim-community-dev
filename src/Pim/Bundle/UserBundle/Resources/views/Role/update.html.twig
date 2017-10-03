@@ -80,15 +80,21 @@
 
         {% set buttons %}
             {% if entityId %}
-                {{ elements.deleteLink(
-                    path('oro_user_role_delete', { id: entityId }),
-                    'pim_user_role_remove',
-                    path('oro_user_role_index'),
-                    'Are you sure you want to delete this role?'|trans,
-                    'Role removed'|trans,
-                    '',
-                    'AknButtonList-item'
-                ) }}
+                <div class="AknSecondaryActions AknDropdown AknButtonList-item secondary-actions">
+                    <div class="AknSecondaryActions-button dropdown-button" data-toggle="dropdown"></div>
+                    <div class="AknDropdown-menu AknDropdown-menu--right">
+                        <div class="AknDropdown-menuTitle">{{'other_actions'|trans}}</div>
+                        {{ elements.deleteLink(
+                            path('oro_user_role_delete', { id: entityId }),
+                            'pim_user_role_remove',
+                            path('oro_user_role_index'),
+                            'Are you sure you want to delete this role?'|trans,
+                            'Role removed'|trans,
+                            '',
+                            'AknDropdown-menuLink delete'
+                        ) }}
+                    </div>
+                </div>
             {% endif %}
             {{ elements.submitBtn('', 'ok', 'AknButtonList-item') }}
         {% endset %}

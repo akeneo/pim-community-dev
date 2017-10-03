@@ -47,3 +47,5 @@ pim_ui.system_config:
         loading_messages.tooltip: All available loading messages separated by line breaks
     group:
         loading_message.title: Loading messages
+
+other_actions: Other actions
