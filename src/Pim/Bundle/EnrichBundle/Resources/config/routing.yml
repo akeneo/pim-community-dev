@@ -14,6 +14,10 @@ sequential_edit_rest:
     resource: '@PimEnrichBundle/Resources/config/routing/sequential_edit/rest.yml'
     prefix: /rest/sequential_edit
 
+value_rest:
+    resource: '@PimEnrichBundle/Resources/config/routing/value/rest.yml'
+    prefix: /rest/value
+
 channel:
     resource: '@PimEnrichBundle/Resources/config/routing/channel.yml'
     prefix: /configuration/channel
