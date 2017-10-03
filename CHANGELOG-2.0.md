@@ -21,6 +21,8 @@
 - PIM-6348: Display a red label in the variant navigation if no product is complete
 - PIM-6451: Now display variant axes coming from parent as "Variant Axis" on the product edit form
 - PIM-6832: Fix the column category display when category node is expanded
+- PIM-6835: [IMP] CSS Glitch compilation
+- PIM-6853: [IMP] Remove the checkboxes from the attributes grids
 
 ## BC breaks
 

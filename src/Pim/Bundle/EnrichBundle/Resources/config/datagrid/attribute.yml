@@ -19,10 +19,10 @@ datagrid:
                 data_name: groupLabel
             scopable:
                 label:         Scopable
-                frontend_type: boolean
+                frontend_type: boolean-status
             localizable:
                 label:         Localizable
-                frontend_type: boolean
+                frontend_type: boolean-status
         properties:
             id: ~
             edit_link:
