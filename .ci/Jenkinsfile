@@ -148,7 +148,7 @@ stage("Test") {
                     }
 
                     return messages
-                }, 40, "ce")
+                }, 10, "ce")
             },
             "behat-ce": {
                 queue({
@@ -170,7 +170,7 @@ stage("Test") {
                     }
 
                     return messages
-                }, 100, "ce")
+                }, 60, "ce")
             },
             "phpunit-integration-ee": {
                 queue({
@@ -190,7 +190,7 @@ stage("Test") {
                     }
 
                     return messages
-                }, 20, "ee")
+                }, 10, "ee")
             },
             "behat-ee": {
                 queue({
@@ -212,7 +212,7 @@ stage("Test") {
                     }
 
                     return messages
-                }, 120, "ee")
+                }, 60, "ee")
             }
         )
     } finally {
