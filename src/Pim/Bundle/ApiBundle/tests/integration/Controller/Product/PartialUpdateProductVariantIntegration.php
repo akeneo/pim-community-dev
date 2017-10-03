@@ -1143,7 +1143,7 @@ JSON;
             'message' => 'Validation failed.',
             'errors'  => [
                 [
-                    'property' => '',
+                    'property' => 'attribute',
                     'message'  => 'Variant axis "a_yes_no" cannot be modified, "1" given',
                 ],
             ],
