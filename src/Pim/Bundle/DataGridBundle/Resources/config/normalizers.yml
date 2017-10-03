@@ -23,6 +23,7 @@ services:
         arguments:
             - '@pim_catalog.filter.chained'
             - '@pim_catalog.doctrine.query.find_variant_product_completeness'
+            - '@pim_catalog.product_models.image_as_label'
         tags:
             - { name: pim_serializer.normalizer }
 

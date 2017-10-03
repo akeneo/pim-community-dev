@@ -11,6 +11,7 @@ use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\ProductModel\ImageAsLabel;
 use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -50,6 +51,9 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
     /** @var VariantProductRatioInterface */
     private $variantProductRatioQuery;
 
+    /** @var ImageAsLabel */
+    private $imageAsLabel;
+
     /**
      * @param FileNormalizer                            $fileNormalizer
      * @param LocaleRepositoryInterface                 $localeRepository
@@ -57,6 +61,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
      * @param NormalizerInterface                       $completenessCollectionNormalizer
      * @param CompletenessCalculatorInterface           $completenessCalculator
      * @param VariantProductRatioInterface              $variantProductRatioQuery
+     * @param ImageAsLabel                              $imageAsLabel
      */
     public function __construct(
         FileNormalizer $fileNormalizer,
@@ -64,14 +69,16 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         NormalizerInterface $completenessCollectionNormalizer,
         CompletenessCalculatorInterface $completenessCalculator,
-        VariantProductRatioInterface $variantProductRatioQuery
+        VariantProductRatioInterface $variantProductRatioQuery,
+        ImageAsLabel $imageAsLabel
     ) {
-        $this->fileNormalizer = $fileNormalizer;
-        $this->localeRepository = $localeRepository;
-        $this->attributesProvider = $attributesProvider;
+        $this->fileNormalizer                   = $fileNormalizer;
+        $this->localeRepository                 = $localeRepository;
+        $this->attributesProvider               = $attributesProvider;
         $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
-        $this->completenessCalculator = $completenessCalculator;
-        $this->variantProductRatioQuery = $variantProductRatioQuery;
+        $this->completenessCalculator           = $completenessCalculator;
+        $this->variantProductRatioQuery         = $variantProductRatioQuery;
+        $this->imageAsLabel                     = $imageAsLabel;
     }
 
     /**
@@ -97,13 +104,19 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
 
         $identifier = $entity instanceof ProductModelInterface ? $entity->getCode() : $entity->getIdentifier();
 
+        if ($entity instanceof ProductModelInterface) {
+            $image = $this->imageAsLabel->value($entity);
+        } else {
+            $image = $entity->getImage();
+        }
+
         return [
             'id'                 => $entity->getId(),
             'identifier'         => $identifier,
             'axes_values_labels' => $this->getAxesValuesLabelsForLocales($entity, $localeCodes),
             'labels'             => $labels,
             'order_string'       => $this->getOrderString($entity),
-            'image'              => $this->normalizeImage($entity->getImage(), $format, $context),
+            'image'              => $this->normalizeImage($image, $format, $context),
             'model_type'         => $entity instanceof ProductModelInterface ? 'product_model' : 'product',
             'completeness'       => $this->getCompletenessDependingOnEntity($entity)
         ];

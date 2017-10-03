@@ -183,6 +183,17 @@ services:
         tags:
             - { name: 'pim_repository' }
 
+    pim_catalog.repository.variant_product:
+        class: '%pim_catalog.repository.product.class%'
+        factory: 'doctrine.orm.entity_manager:getRepository'
+        arguments: ['%pim_catalog.entity.variant_product.class%']
+        calls:
+            - [setProductQueryBuilderFactory, ['@pim_catalog.query.product_query_builder_factory']]
+            - [setGroupRepository, ['@pim_catalog.repository.group']]
+            - [setReferenceDataRegistry, ['@?pim_reference_data.registry']]
+        tags:
+            - { name: 'pim_repository' }
+
     pim_catalog.repository.product_mass_action:
         class: '%pim_catalog.repository.product_mass_action.class%'
         arguments:

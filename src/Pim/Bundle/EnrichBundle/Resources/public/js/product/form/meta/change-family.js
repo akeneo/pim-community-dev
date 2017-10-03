@@ -34,8 +34,9 @@ define(
                 'click': 'showModal'
             },
             render: function () {
-                const entity = this.getFormData();
-                if (null !== entity.meta.family_variant) {
+                if (null !== this.getFormData().meta.family_variant) {
+                    this.$el.remove();
+
                     return;
                 }
 
