@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\ProductDra
 use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
-use PimEnterprise\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\HttpFoundation\Response;
 

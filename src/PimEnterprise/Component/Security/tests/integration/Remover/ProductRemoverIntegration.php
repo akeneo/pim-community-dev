@@ -3,7 +3,7 @@
 namespace PimEnterprise\Component\Security\tests\integration\Remover;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\TestEnterprise\Integration\TestCase;
+use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 

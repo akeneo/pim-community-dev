@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\ProductPro
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\ApiBundle\tests\integration\ApiTestCase;
+use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use PimEnterprise\Component\Workflow\Model\ProductDraft;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use Symfony\Component\HttpFoundation\Response;

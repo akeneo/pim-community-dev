@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\ConnectorBundle\tests\integration\Export\Product;
 
-use Akeneo\Test\Integration\JobLauncher;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 
 /**
  * +----------+-------------------------------+-----------------------------------+-----------------------------------------------------+

@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\TeamworkAssistantBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\JobLauncher;
-use Akeneo\TestEnterprise\Integration\TestCase;
+use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Doctrine\DBAL\Connection;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectCompleteness;
 use PimEnterprise\Component\TeamworkAssistant\Model\ProjectInterface;

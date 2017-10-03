@@ -1,0 +1,26 @@
+parameters:
+    akeneo_ee_integration_tests.loader.fixtures_loader.class: AkeneoEnterprise\Test\IntegrationTestsBundle\Loader\FixturesLoader
+    akeneo_ee_integration_tests.loader.permission_cleaner.class: AkeneoEnterprise\Test\IntegrationTestsBundle\Loader\PermissionCleaner
+
+services:
+    akeneo_integration_tests.loader.reference_data_loader:
+        class: '%akeneo_integration_tests.loader.reference_data_loader.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%kernel.bundles%'
+            - 'AcmeEnterpriseAppBundle'
+            - 'AcmeEnterprise\Bundle\AppBundle\Entity\Fabric'
+            - 'AcmeEnterprise\Bundle\AppBundle\Entity\Color'
+
+    akeneo_ee_integration_tests.loader.fixtures_loader:
+        class: '%akeneo_ee_integration_tests.loader.fixtures_loader.class%'
+        decorates: akeneo_integration_tests.loader.fixtures_loader
+        decoration_inner_name: akeneo_integration_tests.loader.fixtures_loader.base
+        arguments:
+            - '@akeneo_integration_tests.loader.fixtures_loader.base'
+            - '@akeneo_ee_integration_tests.loader.permission_cleaner'
+
+    akeneo_ee_integration_tests.loader.permission_cleaner:
+        class: '%akeneo_ee_integration_tests.loader.permission_cleaner.class%'
+        arguments:
+            - '@kernel'

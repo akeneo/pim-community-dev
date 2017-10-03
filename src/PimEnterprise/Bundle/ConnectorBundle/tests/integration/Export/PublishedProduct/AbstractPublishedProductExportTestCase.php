@@ -2,13 +2,10 @@
 
 namespace PimEnterprise\Bundle\ConnectorBundle\tests\integration\Export\PublishedProduct;
 
-use Akeneo\Component\Batch\Job\BatchStatus;
-use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\JobLauncher;
-use Akeneo\TestEnterprise\Integration\TestCase;
+use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 
 class AbstractPublishedProductExportTestCase extends TestCase
 {

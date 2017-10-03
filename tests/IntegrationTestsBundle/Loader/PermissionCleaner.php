@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\TestEnterprise\Integration;
+namespace AkeneoEnterprise\Test\IntegrationTestsBundle\Loader;
 
 use PimEnterprise\Bundle\InstallerBundle\Command\CleanAttributeGroupAccessesCommand;
 use PimEnterprise\Bundle\InstallerBundle\Command\CleanCategoryAccessesCommand;
