@@ -119,7 +119,7 @@ extensions:
 
     pimee-published-product-index-grid:
         module: pim/grid/table
-        parent: pimee-published-product-index
+        parent: pimee-published-product-index-grid-container
         targetZone: grid
         config:
             gridName: published-product-grid
