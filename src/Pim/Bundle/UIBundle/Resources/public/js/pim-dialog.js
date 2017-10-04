@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/translator', 'pim/router', 'bootstrap-modal'],
-    function ($, _, Backbone, __, router) {
+    ['jquery', 'underscore', 'backbone', 'oro/translator', 'pim/router', 'pim/template/grid/mass-actions-confirm', 'bootstrap-modal'],
+    function ($, _, Backbone, __, router, template) {
         'use strict';
 
         /**
@@ -16,6 +16,7 @@ define(
          *      Dialog.alert('{{ 'MyMessage'|trans }}', 'MyTitle');
          */
         return {
+            template: _.template(template),
             /**
              * Open a modal dialog without cancel button
              * @param string content
@@ -85,11 +86,16 @@ define(
                 };
                 if (!_.isUndefined(Backbone.BootstrapModal)) {
                     var confirm = new Backbone.BootstrapModal({
+                        type: '',
                         title: title,
                         content: content,
                         okText: __('OK'),
-                        cancelText: __('Cancel')
+                        cancelText: __('Cancel'),
+                        template: this.template,
+                        okClass: ''
                     });
+
+                    confirm.$el.addClass('modal--fullPage');
                     confirm.on('ok', success);
                     confirm.on('cancel', cancel);
                     confirm.open();

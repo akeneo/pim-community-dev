@@ -11,6 +11,7 @@ define(
     'pim/ui',
     'oro/loading-mask',
     'pim/router',
+    'pim/template/grid/mass-actions-confirm',
     'require-polyfill'
 ],
     function (
@@ -24,7 +25,8 @@ define(
         loadTab,
         UI,
         LoadingMask,
-        router
+        router,
+        confirmModalTemplate
     ) {
         'use strict';
         var initialized = false;
@@ -165,7 +167,20 @@ define(
                     };
                     $el.off('click');
                     if ($el.data('dialog') === 'confirm') {
-                        Dialog.confirm(message, title, doAction);
+                        const template = _.template(confirmModalTemplate);
+                        // Dialog.confirm(message, title, doAction);
+                        const modal = new Backbone.BootstrapModal({
+                            type: '',
+                            title: title,
+                            content: message,
+                            okClass: 'AknButton--important',
+                            okText: '',
+                            template
+                        }).on('ok', this.doAction);
+
+                        modal.open();
+
+                        modal.$el.addClass('modal--fullPage');
                     } else {
                         Dialog.alert(message, title);
                     }
