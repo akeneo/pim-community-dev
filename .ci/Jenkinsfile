@@ -170,7 +170,7 @@ stage("Test") {
                     }
 
                     return messages
-                }, 60, "ce")
+                }, 5, "ce")
             },
             "phpunit-integration-ee": {
                 queue({
@@ -212,7 +212,7 @@ stage("Test") {
                     }
 
                     return messages
-                }, 60, "ee")
+                }, 10, "ee")
             }
         )
     } finally {

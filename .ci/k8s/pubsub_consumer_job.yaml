@@ -103,7 +103,7 @@ spec:
             requests: {cpu: "100m", memory: "100Mi"}
             limits: {memory: "100Mi"}
         - name: selenium
-          image: eu.gcr.io/akeneo-ci/selenium:standalone-firefox-2.53.1-beryllium
+          image: selenium/standalone-firefox:2.53.1-beryllium
           command: ["/bin/bash", "-c"]
           args:
             - |
