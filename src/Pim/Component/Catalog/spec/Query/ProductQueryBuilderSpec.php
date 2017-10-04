@@ -124,12 +124,88 @@ class ProductQueryBuilderSpec extends ObjectBehavior
         AttributeSorterInterface $sorter,
         AttributeInterface $attribute
     ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isLocaleSpecific()->willReturn(false);
+
         $repository->findOneBy(['code' => 'sku'])->willReturn($attribute);
         $sorterRegistry->getAttributeSorter($attribute)->willReturn($sorter);
         $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
-        $sorter->addAttributeSorter($attribute, 'DESC', 'en_US', 'print')->shouldBeCalled();
+        $sorter->addAttributeSorter($attribute, 'DESC', null, null)->shouldBeCalled();
 
         $this->addSorter('sku', 'DESC', []);
+    }
+
+    function it_adds_an_attribute_sorter_on_localizable_attribute(
+        $repository,
+        $sorterRegistry,
+        AttributeSorterInterface $sorter,
+        AttributeInterface $attribute
+    ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->isLocaleSpecific()->willReturn(false);
+
+        $repository->findOneBy(['code' => 'name'])->willReturn($attribute);
+        $sorterRegistry->getAttributeSorter($attribute)->willReturn($sorter);
+        $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $sorter->addAttributeSorter($attribute, 'DESC', 'de_DE', null)->shouldBeCalled();
+
+        $this->addSorter('name', 'DESC', ['locale' => 'de_DE', 'scope' => 'ecommerce']);
+    }
+
+    function it_adds_an_attribute_sorter_on_local_specific_attribute(
+        $repository,
+        $sorterRegistry,
+        AttributeSorterInterface $sorter,
+        AttributeInterface $attribute
+    ) {
+        $attribute->isScopable()->willReturn(false);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isLocaleSpecific()->willReturn(true);
+
+        $repository->findOneBy(['code' => 'name'])->willReturn($attribute);
+        $sorterRegistry->getAttributeSorter($attribute)->willReturn($sorter);
+        $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $sorter->addAttributeSorter($attribute, 'DESC', 'de_DE', null)->shouldBeCalled();
+
+        $this->addSorter('name', 'DESC', ['locale' => 'de_DE', 'scope' => 'ecommerce']);
+    }
+
+    function it_adds_an_attribute_sorter_on_scopable_attribute(
+        $repository,
+        $sorterRegistry,
+        AttributeSorterInterface $sorter,
+        AttributeInterface $attribute
+    ) {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isLocaleSpecific()->willReturn(false);
+
+        $repository->findOneBy(['code' => 'name'])->willReturn($attribute);
+        $sorterRegistry->getAttributeSorter($attribute)->willReturn($sorter);
+        $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $sorter->addAttributeSorter($attribute, 'DESC', null, 'ecommerce')->shouldBeCalled();
+
+        $this->addSorter('name', 'DESC', ['locale' => 'de_DE', 'scope' => 'ecommerce']);
+    }
+
+    function it_adds_an_attribute_sorter_on_scopable_and_localizable_attribute(
+        $repository,
+        $sorterRegistry,
+        AttributeSorterInterface $sorter,
+        AttributeInterface $attribute
+    ) {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->isLocaleSpecific()->willReturn(false);
+
+        $repository->findOneBy(['code' => 'name'])->willReturn($attribute);
+        $sorterRegistry->getAttributeSorter($attribute)->willReturn($sorter);
+        $sorter->setQueryBuilder(Argument::any())->shouldBeCalled();
+        $sorter->addAttributeSorter($attribute, 'DESC', 'de_DE', 'ecommerce')->shouldBeCalled();
+
+        $this->addSorter('name', 'DESC', ['locale' => 'de_DE', 'scope' => 'ecommerce']);
     }
 
     function it_provides_a_query_builder_once_configured($searchQb)
