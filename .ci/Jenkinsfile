@@ -134,15 +134,16 @@ stage("Test") {
                 queue({
                     def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src -name "*Integration.php"').tokenize('\n')
                     def messages = new net.sf.json.JSONArray()
+                    def i = 0;
 
-                    for (file in files) {
+                    for (i = 0; i < 10; i++) {
                         messages.add([
                             [container: "php", script: "chmod 777 -R var/cache var/logs app/archive"],
                             [container: "php", script: "bin/console --env=test pim:install --force"],
                             [
                                 container: "php",
                                 junit: [in: "/home/jenkins/pim/", name: "junit_output.xml"],
-                                script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist " + file + " --log-junit junit_output.xml"
+                                script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist " + files[i] + " --log-junit junit_output.xml"
                             ]
                         ])
                     }
@@ -154,8 +155,9 @@ stage("Test") {
                 queue({
                     def scenarios = sh (returnStdout: true, script: "cd /home/jenkins/pim && php vendor/bin/behat --list-scenarios").tokenize('\n')
                     def messages = new net.sf.json.JSONArray()
+                    def i = 0;
 
-                    for (scenario in scenarios) {
+                    for (i = 0; i < 10; i++) {
                         messages.add([
                             [container: "php", script: "bin/console --env=behat --quiet pim:install --force"],
                             [container: "php", script: "chmod 777 -R var/cache var/logs app/archive"],
@@ -164,7 +166,7 @@ stage("Test") {
                                 container: "php",
                                 junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                                 artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                                script: "php vendor/bin/behat --strict -vv " + scenario
+                                script: "php vendor/bin/behat --strict -vv " + scenarios[i]
                             ]
                         ])
                     }
@@ -177,14 +179,14 @@ stage("Test") {
                     def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src -name "*Integration.php"').tokenize('\n')
                     def messages = new net.sf.json.JSONArray()
 
-                    for (file in files) {
+                    for (i = 0; i < 10; i++) {
                         messages.add([
                             [container: "php", script: "chmod 777 -R var/cache var/logs"],
                             [container: "php", script: "bin/console --env=test pim:install --force"],
                             [
                                 container: "php",
                                 junit: [in: "/home/jenkins/pim/", name: "junit_output.xml"],
-                                script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist " + file + " --log-junit junit_output.xml"
+                                script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist " + files[i] + " --log-junit junit_output.xml"
                             ]
                         ])
                     }
@@ -196,8 +198,10 @@ stage("Test") {
                 queue({
                     def scenarios = sh (returnStdout: true, script: "cd /home/jenkins/pim && php vendor/bin/behat --list-scenarios").tokenize('\n')
                     def messages = new net.sf.json.JSONArray()
+                    def i = 0;
 
-                    for (scenario in scenarios) {
+                    //for (scenario in scenarios) {
+                    for (i = 0; i < 10; i++) {
                         messages.add([
                             [container: "php", script: "chmod 777 -R var/cache var/logs app/archive"],
                             [container: "php", script: "mkdir -m 777 -p app/build/logs/behat"],
@@ -206,7 +210,7 @@ stage("Test") {
                                 container: "php",
                                 junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                                 artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                                script: "php vendor/bin/behat --strict -vv " + scenario
+                                script: "php vendor/bin/behat --strict -vv " + scenarios[i]
                             ]
                         ])
                     }
@@ -309,7 +313,7 @@ def queue(body, scale, edition) {
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "pubsub-" + uuid, containers: [
         containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', resourceLimitMemory: '200Mi'),
-        containerTemplate(name: "gcloud", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:1.0.7", resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', resourceLimitMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
+        containerTemplate(name: "gcloud", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:1.0.8", resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', resourceLimitMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ], volumes: [
