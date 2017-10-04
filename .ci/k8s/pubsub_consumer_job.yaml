@@ -143,3 +143,4 @@ spec:
         - { name: tmp-pod, emptyDir: {}}
         - { name: artifacts, emptyDir: {medium: Memory}}
         - { name: mysql-tmpfs, emptyDir: {medium: Memory}}
+      restartPolicy: Never
