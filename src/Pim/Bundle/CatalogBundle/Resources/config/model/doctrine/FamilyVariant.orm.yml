@@ -11,6 +11,8 @@ Pim\Component\Catalog\Model\FamilyVariant:
                 strategy: AUTO
         code:
             type: string
+            length: 100
+            unique: true
 
     oneToMany:
         translations:
