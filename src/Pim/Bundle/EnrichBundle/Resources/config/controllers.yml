@@ -33,7 +33,7 @@ parameters:
     pim_enrich.controller.rest.job_execution.class:           Pim\Bundle\EnrichBundle\Controller\Rest\JobExecutionController
     pim_enrich.controller.rest.mass_edit.class:               Pim\Bundle\EnrichBundle\Controller\Rest\MassEditController
     pim_enrich.controller.rest.sequential_edit.class:        Pim\Bundle\EnrichBundle\Controller\Rest\SequentialEditController
-    pim_enrich.controller.rest.value.class:        Pim\Bundle\EnrichBundle\Controller\Rest\ValueController
+    pim_enrich.controller.rest.value.class:                   Pim\Bundle\EnrichBundle\Controller\Rest\ValuesController
     pim_enrich.controller.job_tracker.class:                  Pim\Bundle\EnrichBundle\Controller\JobTrackerController
     pim_enrich.controller.rest.api_client.class:              Pim\Bundle\EnrichBundle\Controller\Rest\ApiClientController
 
