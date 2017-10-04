@@ -4,6 +4,7 @@
 {% set fullname = entity.fullName|default('N/A') %}
 
 {% block navButtons %}
+    {{ parent() }}
     {% if resource_granted('pim_user_user_remove') and entity.id!=app.user.id %}
         <div class="AknSecondaryActions AknDropdown AknButtonList-item secondary-actions">
             <div class="AknSecondaryActions-button dropdown-button" data-toggle="dropdown"></div>
@@ -56,23 +57,19 @@
     {{ parent() }}
 {% endblock pageHeader %}
 
-{% block titleButtons %}
-    {{ parent() }}
-    {% if entity.enabled %}
-        <div class="AknBadge AknBadge--enabled status-enabled"><i class="AknBadge-icon icon-status-enabled icon-circle"></i>{{ 'Active'|trans }}</div>
-    {% else %}
-        <div class="AknBadge AknBadge--disabled status-disabled"><i class="AknBadge-icon icon-status-disabled icon-circle"></i>{{ 'Inactive'|trans }}</div>
-    {% endif %}
-{% endblock titleButtons %}
-
 {% block stats %}
     {{ parent() }}
     <span class="AknTitleContainer-metaItem">{{ 'Last logged in'|trans }}: {{ entity.lastLogin ? entity.lastLogin|datetime_presenter : 'N/A' }}</span>
     <span class="AknTitleContainer-metaItem">{{ 'Login count'|trans }}: {{ entity.loginCount|default(0) }}</span>
 {% endblock stats %}
 
-{% block backButton %}
-{% endblock %}
+{% block context %}
+    {% if entity.enabled %}
+        <div class="AknBadge AknBadge--medium AknBadge--enabled status-enabled"><i class="AknBadge-icon icon-status-enabled icon-circle"></i>{{ 'Active'|trans }}</div>
+    {% else %}
+        <div class="AknBadge AknBadge--medium AknBadge--disabled status-disabled"><i class="AknBadge-icon icon-status-disabled icon-circle"></i>{{ 'Inactive'|trans }}</div>
+    {% endif %}
+{% endblock context %}
 
 {% block content_data %}
     <div>
