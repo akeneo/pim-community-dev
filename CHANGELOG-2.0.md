@@ -12,6 +12,10 @@
 - GITHUB-6824: Update gitignore for web-server-bundle, cheers @xElysioN!
 - API-377: Get a single product model via API
 
+## Better manage products with variants!
+
+- PIM-6797: Automatically add "unique value" and identifier attributes at the last variant product level.
+
 ## Better UI\UX!
 
 - TIP-807: Improve menu to pass parameters for routes, cheers @MarieMinasyan!
