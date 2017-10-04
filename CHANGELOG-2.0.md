@@ -10,6 +10,7 @@
 
 - GITHUB-6639: Fix Job throwing exception, cheers @dnd-tyler!
 - GITHUB-6824: Update gitignore for web-server-bundle, cheers @xElysioN!
+- API-377: Get a single product model via API
 
 ## Better UI\UX!
 
