@@ -121,18 +121,17 @@ spec:
             requests: {cpu: "400m", memory: "1500Mi"}
             limits: {memory: "1500Mi"}
         - name: pubsub
-          image: eu.gcr.io/akeneo-ci/gcloud:1.0.6
+          image: eu.gcr.io/akeneo-ci/gcloud:1.0.7
           command: ["/bin/bash", "-c"]
           args:
             - |
               trap "touch /tmp/pod/main-terminated" EXIT
               gcloud.phar pubsub:message:consume SUBSCRIPTION_NAMERESULT_TOPIC
           env:
-            - { name: DOCKER_API_VERSION, value: "1.23" }
             - { name: REDIS_URI, value: "tcp://redis.jenkins-prod:6379" }
             - { name: POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
+            - { name: NAMESPACE, valueFrom: { fieldRef: { fieldPath: metadata.namespace } } }
           volumeMounts:
-            - { name: docker, mountPath: /var/run/docker.sock }
             - { name: pim, mountPath: /home/jenkins }
             - { name: artifacts, mountPath: /tmp/behat/screenshots }
             - { name: tmp-pod, mountPath: /tmp/pod }
@@ -142,7 +141,6 @@ spec:
       volumes:
         - { name: pim, emptyDir: {}}
         - { name: tmp-pod, emptyDir: {}}
-        - { name: docker, hostPath: {path: /var/run/docker.sock}}
         - { name: artifacts, emptyDir: {medium: Memory}}
         - { name: mysql-tmpfs, emptyDir: {medium: Memory}}
       restartPolicy: OnFailure
