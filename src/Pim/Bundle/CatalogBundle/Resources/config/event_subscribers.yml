@@ -110,6 +110,6 @@ services:
     pim_catalog.event_subscriber.add_unique_attributes_to_variant_product_attribute_set:
         class: '%pim_catalog.event_subscriber.add_unique_attributes_to_variant_product_attribute_set.class%'
         arguments:
-            - '@pim_catalog.family_variant.add_unique_attributes_to_variant_product_attribute_set'
+            - '@pim_catalog.family_variant.add_unique_attributes'
         tags:
             - { name: kernel.event_subscriber }

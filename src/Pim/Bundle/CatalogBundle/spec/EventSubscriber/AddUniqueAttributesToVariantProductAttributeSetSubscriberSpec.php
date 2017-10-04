@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber;
-use Pim\Component\Catalog\FamilyVariant\AddUniqueAttributesToVariantProductAttributeSet;
+use Pim\Component\Catalog\FamilyVariant\AddUniqueAttributes;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 
 class AddUniqueAttributesToVariantProductAttributeSetSubscriberSpec extends ObjectBehavior
 {
-    function let(AddUniqueAttributesToVariantProductAttributeSet $addUniqueAttributes)
+    function let(AddUniqueAttributes $addUniqueAttributes)
     {
         $this->beConstructedWith($addUniqueAttributes);
     }
@@ -45,7 +45,7 @@ class AddUniqueAttributesToVariantProductAttributeSetSubscriberSpec extends Obje
     ) {
         $event->getSubject()->willReturn($category);
 
-        $addUniqueAttributes->addUniqueAttributesToFamilyVariant(Argument::any())->shouldNotBeCalled();
+        $addUniqueAttributes->addToFamilyVariant(Argument::any())->shouldNotBeCalled();
 
         $this->addUniqueAttributes($event);
     }
@@ -57,7 +57,7 @@ class AddUniqueAttributesToVariantProductAttributeSetSubscriberSpec extends Obje
     ) {
         $event->getSubject()->willReturn($familyVariant);
 
-        $addUniqueAttributes->addUniqueAttributesToFamilyVariant($familyVariant)->shouldBeCalled();
+        $addUniqueAttributes->addToFamilyVariant($familyVariant)->shouldBeCalled();
 
         $this->addUniqueAttributes($event);
     }
@@ -80,7 +80,7 @@ class AddUniqueAttributesToVariantProductAttributeSetSubscriberSpec extends Obje
         $familyVariantsIterator->current()->willReturn($familyVariant);
         $familyVariantsIterator->next()->shouldBeCalled();
 
-        $addUniqueAttributes->addUniqueAttributesToFamilyVariant($familyVariant)->shouldBeCalled();
+        $addUniqueAttributes->addToFamilyVariant($familyVariant)->shouldBeCalled();
 
         $this->addUniqueAttributes($event);
     }
@@ -95,7 +95,7 @@ class AddUniqueAttributesToVariantProductAttributeSetSubscriberSpec extends Obje
         $family->getFamilyVariants()->willReturn($familyVariants);
         $familyVariants->isEmpty()->willReturn(true);
 
-        $addUniqueAttributes->addUniqueAttributesToFamilyVariant(Argument::any())->shouldNotBeCalled();
+        $addUniqueAttributes->addToFamilyVariant(Argument::any())->shouldNotBeCalled();
 
         $this->addUniqueAttributes($event);
     }
