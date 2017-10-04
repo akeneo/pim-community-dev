@@ -60,7 +60,6 @@ services:
         class: '%pim_catalog.updater.product.class%'
         arguments:
             - '@pim_catalog.updater.property_setter'
-            - '@pim_catalog.updater.product_template'
             - '@pim_catalog.updater.entity_with_values_without_permission'
             - ['enabled', 'family', 'categories', 'groups', 'associations']
             - ['identifier', 'created', 'updated', 'metadata']
@@ -69,7 +68,6 @@ services:
         class: '%pim_catalog.updater.product.class%'
         arguments:
             - '@pim_catalog.updater.property_setter'
-            - '@pim_catalog.updater.product_template'
             - '@pim_catalog.updater.entity_with_values'
             - ['enabled', 'family', 'categories', 'groups', 'associations', 'parent']
             - ['identifier', 'created', 'updated', 'metadata']

@@ -26,19 +26,13 @@ class ProductsUpdater
     /** @var ActionApplierRegistryInterface */
     protected $applierRegistry;
 
-    /** @var ProductTemplateUpdaterInterface */
-    protected $templateUpdater;
-
     /**
      * @param ActionApplierRegistryInterface  $applierRegistry
-     * @param ProductTemplateUpdaterInterface $templateUpdater
      */
     public function __construct(
-        ActionApplierRegistryInterface $applierRegistry,
-        ProductTemplateUpdaterInterface $templateUpdater
+        ActionApplierRegistryInterface $applierRegistry
     ) {
         $this->applierRegistry = $applierRegistry;
-        $this->templateUpdater = $templateUpdater;
     }
 
     /**
