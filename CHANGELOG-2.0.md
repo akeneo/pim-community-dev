@@ -2,6 +2,7 @@
 
 ## Bug Fixes
 
+- [BC BREAK] PIM-6446: fix variant family code uniqueness. Beware, this changes the MySQL table.
 - GITHUB-6866: Fix the QueryProductCommand, cheers @LeoBenoist!
 - API-393: Add prefix "akeno:batch" to the command "publish-job-to-queue"
 - PIM-6843: Update delete buttons in category, user, role and group pages
