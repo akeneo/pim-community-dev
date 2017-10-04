@@ -51,8 +51,7 @@ extensions:
 
     pim-process-index-grid:
         module: pim/form/common/index/grid
-        parent: pim-process-index
+        parent: pim-process-index-grid-container
         position: 1000
-        targetZone: content
         config:
             alias: job-tracker-grid
