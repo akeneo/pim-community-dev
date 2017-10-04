@@ -9,6 +9,7 @@ use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -166,6 +167,8 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                     }
                 }
                 break;
+            default:
+                throw UnknownPropertyException::unknownProperty($field);
         }
     }
 

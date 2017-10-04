@@ -18,6 +18,8 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class FamilyVariantValidator extends ConstraintValidator
 {
+    const MAXIMUM_LEVEL_NUMBER = 2;
+
     const MAXIMUM_AXES_NUMBER = 5;
 
     /** @var TranslatorInterface */
@@ -46,9 +48,24 @@ class FamilyVariantValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, FamilyVariant::class);
         }
 
-        $this->validateAxesAttributes($familyVariant);
-        $this->validateAttributes($familyVariant);
-        $this->validateNumberOfLevelAndAxis($familyVariant);
+        $validateAttributesSets = true;
+
+        if (0 === $familyVariant->getNumberOfLevel()) {
+            $message = $this->translator->trans('pim_catalog.constraint.family_variant_no_level');
+            $this->context->buildViolation($message)->atPath('variant_attribute_sets')->addViolation();
+            $validateAttributesSets = false;
+        }
+
+        // handled by another constraint
+        if (null === $familyVariant->getFamily()) {
+            $validateAttributesSets = false;
+        }
+
+        if (true === $validateAttributesSets) {
+            $this->validateAxesAttributes($familyVariant);
+            $this->validateAttributes($familyVariant);
+            $this->validateNumberOfLevelAndAxis($familyVariant);
+        }
     }
 
     /**
@@ -71,7 +88,7 @@ class FamilyVariantValidator extends ConstraintValidator
                     '%attribute%' => $attribute->getCode(),
                     '%family%' => $family->getCode(),
                     '%family_variant%' => $familyVariant->getCode(),
-                ])->addViolation();
+                ])->atPath('variant_attribute_sets')->addViolation();
             }
 
             if ($attribute->isUnique() &&
@@ -83,7 +100,7 @@ class FamilyVariantValidator extends ConstraintValidator
                 );
                 $this->context->buildViolation($message, [
                     '%attribute%' => $attribute->getCode(),
-                ])->addViolation();
+                ])->atPath('variant_attribute_sets')->addViolation();
             }
         }
 
@@ -91,7 +108,7 @@ class FamilyVariantValidator extends ConstraintValidator
             $message = $this->translator->trans('pim_catalog.constraint.family_variant_attributes_unique');
             $this->context->buildViolation($message, [
                 '%attributes%' => implode(',', array_diff_assoc($attributeCodes, array_unique($attributeCodes)))
-            ])->addViolation();
+            ])->atPath('variant_attribute_sets')->addViolation();
         }
     }
 
@@ -111,7 +128,14 @@ class FamilyVariantValidator extends ConstraintValidator
                 $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_wrong_type');
                 $this->context->buildViolation($message, [
                     '%axis%' => $axis->getCode(),
-                ])->addViolation();
+                ])->atPath('variant_attribute_sets')->addViolation();
+            }
+
+            if ($axis->isUnique()) {
+                $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_attribute_type_unique');
+                $this->context->buildViolation($message, [
+                    '%axis%' => $axis->getCode(),
+                ])->atPath('variant_attribute_sets')->addViolation();
             }
 
             $availableTypes = FamilyVariantModel::getAvailableAxesAttributeTypes();
@@ -119,7 +143,7 @@ class FamilyVariantValidator extends ConstraintValidator
                 $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_attribute_type');
                 $this->context->buildViolation($message, [
                     '%axis%' => $axis->getCode(),
-                ])->addViolation();
+                ])->atPath('variant_attribute_sets')->addViolation();
             }
 
             for ($level = 1; $level <= $familyVariant->getNumberOfLevel(); $level++) {
@@ -131,7 +155,7 @@ class FamilyVariantValidator extends ConstraintValidator
                     $message = $this->translator->trans('pim_catalog.constraint.family_variant_axis_level');
                     $this->context->buildViolation($message, [
                         '%axis%' => $axis->getCode(),
-                    ])->addViolation();
+                    ])->atPath('variant_attribute_sets')->addViolation();
                 }
             }
         }
@@ -140,7 +164,7 @@ class FamilyVariantValidator extends ConstraintValidator
             $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_unique');
             $this->context->buildViolation($message, [
                 '%attributes%' => implode(array_diff_assoc($axisCodes, array_unique($axisCodes))),
-            ])->addViolation();
+            ])->atPath('variant_attribute_sets')->addViolation();
         }
     }
 
@@ -150,6 +174,15 @@ class FamilyVariantValidator extends ConstraintValidator
     private function validateNumberOfLevelAndAxis(FamilyVariantInterface $familyVariant): void
     {
         $numberOfLevel = $familyVariant->getNumberOfLevel();
+
+        if (self::MAXIMUM_LEVEL_NUMBER < $numberOfLevel) {
+            $message = $this->translator->trans('pim_catalog.constraint.family_variant_maximum_number_of_level');
+            $this->context
+                ->buildViolation($message, ['%level%' => self::MAXIMUM_LEVEL_NUMBER,])
+                ->atPath('variant_attribute_sets')
+                ->addViolation();
+        }
+
         $i = 0;
         while ($i !== $numberOfLevel) {
             $attributeSet = $familyVariant->getVariantAttributeSet($i + 1);
@@ -158,7 +191,7 @@ class FamilyVariantValidator extends ConstraintValidator
                 $message = $this->translator->trans('pim_catalog.constraint.family_variant_level_do_not_exist');
                 $this->context->buildViolation($message, [
                     '%level%' => $i + 1,
-                ])->addViolation();
+                ])->atPath('variant_attribute_sets')->addViolation();
             } elseif (static::MAXIMUM_AXES_NUMBER < $attributeSet->getAxes()->count()) {
                 $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_number_of_axes');
                 $this->context->buildViolation($message)->addViolation();

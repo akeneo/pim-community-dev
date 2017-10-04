@@ -20,7 +20,7 @@ interface FamilyVariantInterface extends TranslatableInterface
     /**
      * @return string
      */
-    public function getCode(): string;
+    public function getCode(): ?string;
 
     /**
      * @param string $code
@@ -72,7 +72,7 @@ interface FamilyVariantInterface extends TranslatableInterface
     /**
      * @return FamilyInterface
      */
-    public function getFamily(): FamilyInterface;
+    public function getFamily(): ?FamilyInterface;
 
     /**
      * @return int
