@@ -1,6 +1,7 @@
 Pim\Component\Catalog\Model\VariantProduct:
     constraints:
         - Pim\Component\Catalog\Validator\Constraints\VariantProductParent: ~
+        - Pim\Component\Catalog\Validator\Constraints\NotEmptyFamily: ~
         - Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParent: ~
         - Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxes: ~
         - Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxes: ~

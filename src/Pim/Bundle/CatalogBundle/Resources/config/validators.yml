@@ -53,6 +53,7 @@ parameters:
     pim_catalog.validator.constraint.not_empty_variant_axes.class:         Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxesValidator
     pim_catalog.validator.constraint.has_a_root_product_model_as_parent.class: Pim\Component\Catalog\Validator\Constraints\ProductModelPositionInTheVariantTreeValidator
     pim_catalog.validator.constraint.family_same_family_than_parent.class: Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParentValidator
+    pim_catalog.validator.constraint.not_empty_family.class: Pim\Component\Catalog\Validator\Constraints\NotEmptyFamilyValidator
     pim_catalog.validator.constraint.invalid_variant_product_parent.class: Pim\Component\Catalog\Validator\Constraints\VariantProductParentValidator
     pim_catalog.validator.constraint.immutable_variant_axis_values.class:  Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValuesValidator
 
@@ -429,3 +430,8 @@ services:
         class: '%pim_catalog.validator.constraint.family_same_family_than_parent.class%'
         tags:
             - { name: validator.constraint_validator, alias: pim_family_same_family_than_parent }
+
+    pim_catalog.validator.constraint.not_empty_family:
+        class: '%pim_catalog.validator.constraint.not_empty_family.class%'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_family_not_empty }

@@ -9,13 +9,13 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 /**
- * Check if the variant product family is the same than its parents
+ * Check if the variant product family is not empty
  *
- * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
+ * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SameFamilyThanParentValidator extends ConstraintValidator
+class NotEmptyFamilyValidator extends ConstraintValidator
 {
     /**
      * {@inheritdoc}
@@ -28,18 +28,14 @@ class SameFamilyThanParentValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, VariantProductInterface::class);
         }
 
-        if (!$constraint instanceof SameFamilyThanParent) {
-            throw new UnexpectedTypeException($constraint, SameFamilyThanParent::class);
+        if (!$constraint instanceof NotEmptyFamily) {
+            throw new UnexpectedTypeException($constraint, NotEmptyFamily::class);
         }
 
-        if (null === $parent = $variantProduct->getParent()) {
-            return;
-        }
-
-        $parentFamily = $parent->getFamilyVariant()->getFamily();
-
-        if (null !== $variantProduct->getFamily() && $variantProduct->getFamily()->getCode() !== $parentFamily->getCode()) {
-            $this->context->buildViolation(SameFamilyThanParent::MESSAGE)->atPath($constraint->propertyPath)->addViolation();
+        if (null === $variantProduct->getFamily()) {
+            $this->context->buildViolation(NotEmptyFamily::MESSAGE, [
+                   '%sku%' => $variantProduct->getIdentifier()
+                ])->atPath($constraint->propertyPath)->addViolation();
         }
     }
 }

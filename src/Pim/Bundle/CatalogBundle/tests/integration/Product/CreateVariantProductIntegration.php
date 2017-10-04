@@ -18,6 +18,7 @@ class CreateVariantProductIntegration extends TestCase
     {
         $variantProduct = $this->get('pim_catalog.builder.variant_product')->createProduct('apollon_blue_m');
         $this->get('pim_catalog.updater.product')->update($variantProduct, [
+            'family' => 'clothing',
             'values' => [
                 'size' => [
                     [
