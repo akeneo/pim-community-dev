@@ -146,9 +146,7 @@ class NavigationContext extends PimContext implements PageObjectAware
             $expectedUrl = $this->sanitizeUrl($expectedFullUrl);
             $actualUrl = $this->sanitizeUrl($actualFullUrl);
 
-            $result = $expectedUrl === $actualUrl;
-
-            return true === $result;
+            return $expectedUrl === $actualUrl;
         }, sprintf('You are not on the %s page', $page));
     }
 
@@ -188,7 +186,9 @@ class NavigationContext extends PimContext implements PageObjectAware
     public function iShouldNotBeAbleToAccessThePage($not, $page)
     {
         if (!$not) {
-            return $this->iAmOnThePage($page);
+            $this->iAmOnThePage($page);
+
+            return $this->getMainContext()->getSubcontext('assertions')->assertPageNotContainsText('Forbidden');
         }
 
         $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;

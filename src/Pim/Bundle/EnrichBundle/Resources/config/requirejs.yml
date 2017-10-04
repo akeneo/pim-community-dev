@@ -278,7 +278,7 @@ config:
                         entity: export-profile
                 pim_importexport_import_profile_index:
                     module: pim/controller/common/index
-                    aclResourceId: pim_importexport_export_profile_index
+                    aclResourceId: pim_importexport_import_profile_index
                     config:
                         entity: import-profile
                 pim_importexport_export_profile_edit:
