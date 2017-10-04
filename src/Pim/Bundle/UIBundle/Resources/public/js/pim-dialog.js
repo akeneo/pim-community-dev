@@ -67,6 +67,16 @@ define(
                 }
             },
 
+            getButtonType: function (type) {
+              switch (type) {
+                case 'delete':
+                  return 'AknButton--important'
+                  break;
+                default:
+                  return ''
+              }
+            },
+
             /**
              * Open a confirm modal dialog to validate the action made by user
              * If user validate its action, a js callback function is called
@@ -74,7 +84,7 @@ define(
              * @param string title
              * @param function callback
              */
-            confirm: function (content, title, callback) {
+            confirm: function (content, title, callback, buttonType) {
                 var deferred = $.Deferred();
 
                 var success = function () {
@@ -92,7 +102,7 @@ define(
                         okText: __('OK'),
                         cancelText: __('Cancel'),
                         template: this.template,
-                        okClass: ''
+                        okClass: this.getButtonType(buttonType)
                     });
 
                     confirm.$el.addClass('modal--fullPage');

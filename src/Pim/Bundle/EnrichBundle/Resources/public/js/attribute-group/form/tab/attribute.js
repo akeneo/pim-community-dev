@@ -175,7 +175,8 @@ define(
                     __(this.config.confirmation.title),
                     function () {
                         this.removeAttribute(code);
-                    }.bind(this)
+                    }.bind(this),
+                    'delete'
                 );
             },
 
