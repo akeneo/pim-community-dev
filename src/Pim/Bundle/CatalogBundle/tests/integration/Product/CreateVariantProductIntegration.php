@@ -38,6 +38,30 @@ class CreateVariantProductIntegration extends TestCase
         );
     }
 
+    public function testVariantProductHasValidParent(): void
+    {
+        $variantProduct = $this->get('pim_catalog.builder.variant_product')->createProduct('minerva_blue_m');
+        $this->get('pim_catalog.updater.product')->update($variantProduct, [
+            'parent' => 'minerva',
+            'values' => [
+                'size' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'm',
+                    ],
+                ],
+            ],
+        ]);
+
+        $errors = $this->get('validator')->validate($variantProduct);
+        $this->assertEquals(2, $errors->count());
+        $this->assertEquals(
+            'The variant product "minerva_blue_m" cannot have product model "minerva" as parent, (this product model can only have other product models as children)',
+            $errors->get(0)->getMessage()
+        );
+    }
+
     public function testVariantAxisValuesAreUnique(): void
     {
         $variantProduct1 = $this->get('pim_catalog.builder.variant_product')->createProduct('apollon_blue_m_1');
