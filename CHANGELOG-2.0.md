@@ -41,6 +41,10 @@
 - PIM-6856: List family variants created by import in a new tab "variants" in the family 
 - PIM-6797: Automatically add "unique value" and identifier attributes at the last variant product level in family variants
 
+## Better manage products with variants!
+
+- PIM-6343: Classify product models via the edit form
+
 ## Better UI\UX!
 
 - TIP-807: Improve menu to pass parameters for routes, cheers @MarieMinasyan!

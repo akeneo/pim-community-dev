@@ -19,6 +19,7 @@ parameters:
     pim_catalog.repository.completeness.class:          Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CompletenessRepository
     pim_catalog.repository.product_mass_action.class:   Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository
     pim_catalog.repository.product_category.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductCategoryRepository
+    pim_catalog.repository.product_model_category.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelCategoryRepository
     pim_catalog.repository.entity_with_family_variant.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithFamilyVariantRepository
 
 services:
@@ -198,6 +199,14 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - '%pim_catalog.entity.abstract_product.class%'
+            - '%pim_catalog.entity.category.class%'
+
+    pim_catalog.repository.product_model_category:
+        class:  '%pim_catalog.repository.product_model_category.class%'
+        parent: akeneo_classification.repository.abstract_item_category
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '%pim_catalog.entity.product_model.class%'
             - '%pim_catalog.entity.category.class%'
 
     pim_catalog.repository.association:

@@ -23,7 +23,7 @@ pim_enrich_product_model_rest_children_list:
 
 pim_enrich_product_model_category_rest_list:
     path: /rest/{id}/categories
-    defaults: { _controller: pim_enrich.controller.rest.product_category:listAction }
+    defaults: { _controller: pim_enrich.controller.rest.product_model_category:listAction }
     requirements:
         id: '[0-9a-f]+'
     methods: [GET]
@@ -34,3 +34,10 @@ pim_enrich_product_model_history_rest_get:
     requirements:
         entityId: '[0-9a-f]+'
     methods: [GET]
+
+pim_enrich_product_model_listcategories:
+    path: /list-categories/product-model/{id}/parent/{categoryId}
+    defaults: { _controller: pim_enrich.controller.product_model:listCategoriesAction, _format: json }
+    requirements:
+        id: '[0-9a-f]+'
+        categoryId: \d+
