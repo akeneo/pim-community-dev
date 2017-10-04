@@ -37,10 +37,6 @@ class ParentFieldSetter extends AbstractFieldSetter
      */
     public function setFieldData($product, $field, $data, array $options = []): void
     {
-        if (null === $data) {
-            return;
-        }
-
         // TODO: To test against "VariantProductInterface" instead of "ProductInterface" in PIM-6791.
         if (!$product instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(
