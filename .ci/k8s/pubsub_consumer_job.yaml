@@ -20,7 +20,7 @@ spec:
           command: ["/bin/bash", "-c"]
           args:
             - |
-              mysqld &
+              /usr/local/bin/docker-entrypoint.sh mysql &
               CHILD_PID=$!
               (while true; do if [[ -f "/tmp/pod/main-terminated" ]]; then kill $CHILD_PID; fi; sleep 1; done) &
               wait $CHILD_PID
