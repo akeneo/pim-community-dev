@@ -615,6 +615,7 @@ config:
         # Family
         pim/family-edit-form/delete:                                        pimenrich/js/family/form/delete
         pim/family-edit-form/save:                                          pimenrich/js/family/form/save
+        pim/family-edit-form/family-variant:                                pimenrich/js/family/form/family-variant
         pim/family-edit-form/properties/general/code:                       pimenrich/js/family/form/properties/general/code
         pim/family-edit-form/properties/general/attribute-as-label:         pimenrich/js/family/form/properties/general/attribute-as-label
         pim/family-edit-form/properties/general/attribute-as-image:         pimenrich/js/family/form/properties/general/attribute-as-image
@@ -762,7 +763,7 @@ config:
 
         # Mass family edit
         pim/mass-family-edit-form/attributes:                   pimenrich/js/family/mass-edit/attributes
-        pim/mass-family-edit-form/form-model-updater:         pimenrich/js/family/mass-edit/form-model-updater
+        pim/mass-family-edit-form/form-model-updater:           pimenrich/js/family/mass-edit/form-model-updater
         pim/mass-family-edit-form/toolbar/add-select/attribute: pimenrich/js/family/mass-edit/toolbar/add-select/attribute/select
 
         # Attribute option form
@@ -970,6 +971,7 @@ config:
         pim/template/family/tab/general/attribute-as-label:  pimenrich/templates/family/tab/general/attribute-as-label.html
         pim/template/family/tab/attributes:                  pimenrich/templates/family/tab/attributes.html
         pim/template/family/tab/general/attribute-as-image:  pimenrich/templates/family/tab/general/attribute-as-image.html
+        pim/template/family/tab/family-variant:              pimenrich/templates/family/tab/family-variant.html
 
         # Grid
         pim/template/product/grid/locale-switcher:           pimenrich/templates/product/grid/locale-switcher.html

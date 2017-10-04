@@ -4,6 +4,7 @@ parameters:
     pim_datagrid.datasource.associated_product.class: Pim\Bundle\DataGridBundle\Datasource\AssociatedProductDatasource
     pim_datagrid.datasource.family.class: Pim\Bundle\DataGridBundle\Datasource\FamilyDatasource
     pim_datagrid.datasource.repository.class: Pim\Bundle\DataGridBundle\Datasource\RepositoryDatasource
+    pim_datagrid.datasource.family_variant.class: Pim\Bundle\DataGridBundle\Datasource\FamilyVariantDatasource
     pim_datagrid.datasource.adapter_resolver.class: Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver
 
 services:
@@ -31,6 +32,15 @@ services:
             - '@pim_datagrid.datasource.result_record.hydrator.default'
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_family }
+
+    pim_datagrid.datasource.family_variant:
+        class: '%pim_datagrid.datasource.family_variant.class%'
+        arguments:
+            - '@pim_enrich.repository.family_variant'
+            - '@pim_datagrid.datasource.result_record.hydrator.default'
+            - '@pim_datagrid.normalizer.family_variant'
+        tags:
+            - { name: oro_datagrid.datasource, type: pim_datasource_family_variant }
 
     pim_datagrid.datasource.group_type:
         class: '%pim_datagrid.datasource.repository.class%'

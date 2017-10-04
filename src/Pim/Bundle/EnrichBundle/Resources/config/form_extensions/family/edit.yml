@@ -206,6 +206,24 @@ extensions:
         config:
             label: pim_enrich.form.family.tab.attributes.label_label
 
+    pim-family-edit-form-variant:
+        module: pim/family-edit-form/family-variant
+        parent: pim-family-edit-form-form-tabs
+        targetZone: container
+        position: 155
+        config:
+            title: 'pim_enrich.form.family.tab.variant.title'
+
+    pim-family-edit-form-variant-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pim-family-edit-form-variant
+        targetZone: filters
+
+    pim-family-edit-form-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-family-edit-form-variant
+        targetZone: filters
+
     pim-family-edit-form-history:
         module: pim/common/tab/history
         parent: pim-family-edit-form-form-tabs
