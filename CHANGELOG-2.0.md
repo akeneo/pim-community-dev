@@ -6,6 +6,10 @@
 - PIM-6843: Fix delete buttons on asset and user pages
 - PIM-6853: [IMP] Remove the checkboxes from the attributes grids
 
+## BC breaks
+
+- Remove `$templateUpdater` argument from `PimEnterprise\Component\CatalogRule\Engine\ProductRuleApplier\ProductsUpdater::__construct`
+
 # 2.0.0 (2017-09-28)
 
 # 2.0.0-BETA1 (2017-09-28)
