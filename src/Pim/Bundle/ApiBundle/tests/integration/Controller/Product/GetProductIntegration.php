@@ -239,7 +239,7 @@ class GetProductIntegration extends AbstractProductTestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
+        return $this->catalog->useTechnicalSqlCatalog();
     }
 
     /**

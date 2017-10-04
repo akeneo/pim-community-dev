@@ -97,9 +97,6 @@ class ReferenceDataSimpleAttributeTypeCompletenessIntegration extends AbstractCo
      */
     protected function getConfiguration()
     {
-        return new Configuration([
-            Configuration::getMinimalCatalogPath(),
-            Configuration::getReferenceDataFixtures()
-        ]);
+        return $this->catalog->useMinimalCatalog();
     }
 }

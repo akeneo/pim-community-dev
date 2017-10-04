@@ -21,16 +21,18 @@ class JobExecutionRepositoryIntegration extends TestCase
         $this->jobLauncher->launchExport('csv_product_export', 'admin');
 
         $result = $this->getJobExecutionRepository()->getLastOperationsData([], 'admin');
+        $this->assertNotNull($result[0]['id']);
+
         $result[0]['date'] = DateSanitizer::sanitize($result[0]['date']->format('c'));
+        unset($result[0]['id']);
 
         $expectedResult = [
             [
-                'id'           => 20,
                 'date'         => 'this is a date formatted to ISO-8601',
                 'type'         => 'export',
                 'label'        => 'CSV product export',
                 'status'       => 1,
-                'warningCount' => "0",
+                'warningCount' => '0',
             ],
         ];
 
@@ -58,8 +60,6 @@ class JobExecutionRepositoryIntegration extends TestCase
      */
     protected function getConfiguration(): Configuration
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath()]
-        );
+        return $this->catalog->useTechnicalCatalog();
     }
 }

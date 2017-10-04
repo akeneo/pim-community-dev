@@ -38,19 +38,25 @@ class FixturesLoader implements FixturesLoaderInterface
     /** @var Application */
     protected $cli;
 
+    /** @var Configuration */
+    protected $configuration;
+
     /**
      * @param KernelInterface         $kernel
      * @param DatabaseSchemaHandler   $databaseSchemaHandler
      * @param SystemUserAuthenticator $systemUserAuthenticator
+     * @param Configuration           $configuration
      */
     public function __construct(
         KernelInterface $kernel,
         DatabaseSchemaHandler $databaseSchemaHandler,
-        SystemUserAuthenticator $systemUserAuthenticator
+        SystemUserAuthenticator $systemUserAuthenticator,
+        Configuration $configuration
     ) {
         $this->kernel = $kernel;
         $this->databaseSchemaHandler = $databaseSchemaHandler;
         $this->systemUserAuthenticator = $systemUserAuthenticator;
+        $this->configuration = $configuration;
 
         $this->container = $kernel->getContainer();
         $this->cli = new Application($kernel);
@@ -72,12 +78,12 @@ class FixturesLoader implements FixturesLoaderInterface
      * However, the second index is not reset directly after the first one, as it could
      * prevent the first one to be correctly dilated.
      */
-    public function load(Configuration $configuration): void
+    public function load(): void
     {
         $this->systemUserAuthenticator->createSystemUser();
         $this->container->get('akeneo_elasticsearch.client.product_model')->resetIndex();
 
-        $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
+        $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
 
         $this->container->get('akeneo_elasticsearch.client.product')->resetIndex();
@@ -101,13 +107,13 @@ class FixturesLoader implements FixturesLoaderInterface
         $this->databaseSchemaHandler->reset();
         $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
 
-        $this->loadData($configuration);
+        $this->loadData();
         $this->dumpDatabase($dumpFile);
     }
 
-    protected function loadData(Configuration $configuration): void
+    protected function loadData(): void
     {
-        $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
+        $files = $this->getFilesToLoad($this->configuration->getCatalogDirectories());
         $filesByType = $this->getFilesToLoadByType($files);
 
         $this->loadSqlFiles($filesByType['sql']);

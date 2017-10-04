@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ApiBundle\tests\integration;
 
 use Akeneo\Test\Integration\Configuration;
+use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -27,6 +28,9 @@ abstract class ApiTestCase extends WebTestCase
     /** @var KernelInterface */
     protected $testKernel;
 
+    /** @var CatalogInterface */
+    protected $catalog;
+
     /**
      * @return Configuration
      */
@@ -44,10 +48,11 @@ abstract class ApiTestCase extends WebTestCase
         $this->testKernel = new \AppKernelTest('test', false);
         $this->testKernel->boot();
 
-        $configuration = $this->getConfiguration();
-        $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
+        $this->catalog = $this->testKernel->getContainer()->get('akeneo_integration_tests.configuration.catalog');
+        $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
 
-        $fixturesLoader->load($configuration);
+        $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
+        $fixturesLoader->load();
     }
 
     /**
@@ -199,7 +204,7 @@ abstract class ApiTestCase extends WebTestCase
     {
         $configuration = $this->getConfiguration();
         foreach ($configuration->getFixtureDirectories() as $fixtureDirectory) {
-            $path = $fixtureDirectory . $name;
+            $path = $fixtureDirectory . DIRECTORY_SEPARATOR . $name;
             if (is_file($path) && false !== realpath($path)) {
                 return realpath($path);
             }
