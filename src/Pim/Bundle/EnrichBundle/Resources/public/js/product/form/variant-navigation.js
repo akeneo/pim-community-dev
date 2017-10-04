@@ -239,10 +239,11 @@ define([
              * @param entity
              */
             redirectToEntity: function (entity) {
-                const params = {
-                    id: entity.id
-                };
+                if (!entity) {
+                    return;
+                }
 
+                const params = {id: entity.id};
                 const route = ('product_model' === entity.model_type)
                     ? 'pim_enrich_product_model_edit'
                     : 'pim_enrich_product_edit'

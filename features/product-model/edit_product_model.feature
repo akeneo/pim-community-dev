@@ -48,3 +48,22 @@ Feature: Edit a product model
     And I visit the "Product" group
     Then the field Color (Variant axis) should be read only
     And I should see the text "Color (Variant axis)"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6861
+  Scenario: Display a product model without any children
+    Given I am logged in as "Mary"
+    When I am on the "1111111113" product page
+    And I press the secondary action "Delete"
+    Then I should see the text "Confirm deletion"
+    And I confirm the removal
+    When I am on the "1111111112" product page
+    And I press the secondary action "Delete"
+    Then I should see the text "Confirm deletion"
+    And I confirm the removal
+    When I am on the "1111111111" product page
+    And I press the secondary action "Delete"
+    Then I should see the text "Confirm deletion"
+    And I confirm the removal
+    When I edit the "amor" product model
+    And I visit the "Marketing" group
+    Then the product Model name should be "Heritage jacket navy"
