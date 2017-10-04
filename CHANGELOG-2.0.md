@@ -6,6 +6,7 @@
 - GITHUB-6866: Fix the QueryProductCommand, cheers @LeoBenoist!
 - API-393: Add prefix "akeno:batch" to the command "publish-job-to-queue"
 - PIM-6843: Update delete buttons in category, user, role and group pages
+- PIM-6861: Correctly display a product model if it has no product children
 
 ## Tech improvements
 
