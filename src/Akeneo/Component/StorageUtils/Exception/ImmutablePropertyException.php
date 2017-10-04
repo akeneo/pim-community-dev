@@ -49,7 +49,7 @@ class ImmutablePropertyException extends PropertyException
      */
     public static function immutableProperty($propertyName, $propertyValue, $className)
     {
-        if (null === $propertyValue){
+        if (null === $propertyValue) {
            $propertyValue = 'NULL';
         }
 

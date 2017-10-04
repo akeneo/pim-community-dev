@@ -1561,6 +1561,165 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
+    public function testProductVariantCannotUpdateCommonAttribute()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $files = [
+            'akeneo_pdf' => $this->getFixturePath('akeneo.pdf'),
+            'akeneo_jpg' => $this->getFixturePath('akeneo.jpg'),
+            'ziggy_png'  => $this->getFixturePath('ziggy.png'),
+        ];
+
+        $data =
+<<<JSON
+    {
+        "identifier": "apollon_optionb_false",
+        "groups": ["groupA", "groupB"],
+        "variant_group": null,
+        "family": "familyA",
+        "categories": ["master", "categoryA"],
+        "values": {
+            "a_metric": [{
+                "locale": null,
+                "scope": null,
+                "data": null
+            }],
+            "a_price": [{
+                "locale": null,
+                "scope": null,
+                "data": [{
+                    "amount": "56.53",
+                    "currency": "EUR"
+                },
+                {
+                    "amount": "45.00",
+                    "currency": "USD"
+                }]
+            }],
+            "a_yes_no": [
+              {
+                "locale": null,
+                "scope": null,
+                "data": false
+              }
+            ],
+            "a_price_without_decimal": [{
+                "locale": null,
+                "scope": null,
+                "data": [{
+                    "amount": 56,
+                    "currency": "EUR"
+                },
+                {
+                    "amount": -45,
+                    "currency": "USD"
+                }]
+            }],
+            "a_ref_data_multi_select": [{
+                "locale": null,
+                "scope": null,
+                "data": ["airguard", "braid"]
+            }],
+            "a_ref_data_simple_select": [{
+                "locale": null,
+                "scope": null,
+                "data": "bright-lilac"
+            }],
+            "a_simple_select": [{
+                "locale": null,
+                "scope": null,
+                "data": "optionA"
+            }],
+            "a_localizable_scopable_image": [{
+                "locale": "en_US",
+                "scope": "ecommerce",
+                "data": "${files['ziggy_png']}"
+            }, {
+                "locale": "fr_FR",
+                "scope": "tablet",
+                "data": "${files['akeneo_jpg']}"
+            }],
+            "a_localized_and_scopable_text_area": [{
+                "locale": "en_US",
+                "scope": "ecommerce",
+                "data": "a text area for ecommerce in English"
+            }, {
+                "locale": "en_US",
+                "scope": "tablet",
+                "data": "a text area for tablets in English"
+            }, {
+                "locale": "fr_FR",
+                "scope": "tablet",
+                "data": "une zone de texte pour les tablettes en fran\u00e7ais"
+            }]
+        }
+    }
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/products/apollon_optionb_false', [], [], [], $data);
+
+        $expectedProduct = [
+            'identifier'    => 'apollon_optionb_false',
+            'family'        => 'familyA',
+            'parent'        => "amor",
+            'groups'        => ['groupA', 'groupB'],
+            'variant_group' => null,
+            'categories'    => ['categoryA', 'master'],
+            'enabled'       => true,
+            'values'        => [
+                'sku' => [
+                    ['locale' => null, 'scope' => null, 'data' => 'apollon_optionb_false'],
+                ],
+                'a_simple_select' => [
+                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
+                ],
+                "a_price" => [
+                    [
+                        "locale" => null,
+                        "scope"  => null,
+                        "data"   => [
+                            [
+                                "amount"   => "50.00",
+                                "currency" => "EUR",
+                            ],
+                        ],
+                    ],
+                ],
+                "a_localized_and_scopable_text_area" => [
+                    [
+                        "locale" => "en_US",
+                        "scope"  => "ecommerce",
+                        "data"   => "my pink tshirt",
+                    ],
+                ],
+                "a_number_float" => [
+                    [
+                        "locale" => null,
+                        "scope"  => null,
+                        "data"   => "12.5000",
+                    ],
+                ],
+                "a_yes_no" => [
+                    [
+                        "locale" => null,
+                        "scope"  => null,
+                        "data"   => false,
+                    ],
+                ],
+            ],
+            'created'       => '2016-06-14T13:12:50+02:00',
+            'updated'       => '2016-06-14T13:12:50+02:00',
+            'associations'  => [],
+        ];
+
+        $response = $client->getResponse();
+
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertSameProducts($expectedProduct, 'apollon_optionb_false');
+    }
+
     public function testProductVariantPartialUpdateWithIgnoredProperties()
     {
         $client = $this->createAuthenticatedClient();

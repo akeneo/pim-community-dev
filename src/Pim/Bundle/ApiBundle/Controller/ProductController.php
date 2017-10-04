@@ -310,8 +310,6 @@ class ProductController
     public function partialUpdateAction(Request $request, $code): Response
     {
         $data = $this->getDecodedContent($request->getContent());
-        $data = $this->productAttributeFilter->filter($data);
-        $data = $this->orderData($data);
 
         $product = $this->productRepository->findOneByIdentifier($code);
         $isCreation = null === $product;
@@ -320,7 +318,6 @@ class ProductController
             $this->validateCodeConsistency($code, $data);
 
             if (isset($data['parent'])) {
-                $data = $this->productAttributeFilter->filter($data);
                 $product = $this->variantProductBuilder->createProduct($data['identifier']);
             } else {
                 $product = $this->productBuilder->createProduct();
@@ -332,7 +329,14 @@ class ProductController
 
         if (!$isCreation) {
             $data = $this->filterEmptyValues($product, $data);
+
+            if (!isset($data['parent'])) {
+                $data['parent'] = $product->getParent()->getCode();
+            }
         }
+
+        $data = $this->productAttributeFilter->filter($data);
+        $data = $this->orderData($data);
 
         $this->updateProduct($product, $data, 'patch_products__code_');
         $this->validateProduct($product);

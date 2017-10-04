@@ -136,6 +136,8 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
         $variantProduct->getValue('size')->willReturn($newSizeValue);
         $variantProduct->getValue('color')->willReturn($newColorValue);
 
+        $newSizeValue->getData()->willReturn('[m]');
+        $newColorValue->getData()->willReturn('[blue]');
         $newSizeValue->__toString()->willReturn('[m]');
         $newColorValue->__toString()->willReturn('[blue]');
 
@@ -146,6 +148,7 @@ class ImmutableVariantAxesValuesValidatorSpec extends ObjectBehavior
             '%variant_axis%' => 'size',
             '%provided_value%' => '[m]',
         ])->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->atPath('attribute')->willReturn($constraintViolationBuilder);
         $context->buildViolation(ImmutableVariantAxesValues::UPDATED_VARIANT_AXIS_VALUE, [
             '%variant_axis%' => 'color',
             '%provided_value%' => '[blue]',
