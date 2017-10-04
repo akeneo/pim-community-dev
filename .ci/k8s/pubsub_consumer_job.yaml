@@ -47,7 +47,7 @@ spec:
           command: ["/bin/bash", "-c"]
           args:
             - |
-              bin/es-docker &
+              /usr/share/elasticsearch/bin/es-docker &
               CHILD_PID=$!
               (while true; do if [[ -f "/tmp/pod/main-terminated" ]]; then kill $CHILD_PID; fi; sleep 1; done) &
               wait $CHILD_PID
