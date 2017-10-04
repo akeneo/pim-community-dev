@@ -7,7 +7,6 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-
 /**
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -16,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class FamilyVariantDatasource extends RepositoryDatasource
 {
     /** @var NormalizerInterface */
-    protected $normalizer;
+    private $normalizer;
 
     /**
      * @param DatagridRepositoryInterface $repository
@@ -36,7 +35,7 @@ class FamilyVariantDatasource extends RepositoryDatasource
     /**
      * {@inheritdoc}
      */
-    public function getResults()
+    public function getResults(): array
     {
         $familyVariants = $this->qb->getQuery()->execute();
 
@@ -45,7 +44,10 @@ class FamilyVariantDatasource extends RepositoryDatasource
                 $this->normalizer->normalize(
                     $familyVariant,
                     'datagrid',
-                    ['localeCode' => $this->getParameters()[':localeCode']]
+                    ['localeCode' => isset($this->getParameters()[':localeCode']) ?
+                        $this->getParameters()[':localeCode'] :
+                        ''
+                    ]
                 )
             );
         }, $familyVariants);

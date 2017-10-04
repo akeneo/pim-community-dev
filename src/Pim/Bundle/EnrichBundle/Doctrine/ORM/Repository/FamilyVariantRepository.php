@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterface;
 
 /**
@@ -11,15 +14,22 @@ use Pim\Bundle\DataGridBundle\Doctrine\ORM\Repository\DatagridRepositoryInterfac
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyVariantRepository extends EntityRepository implements DatagridRepositoryInterface
+class FamilyVariantRepository implements DatagridRepositoryInterface
 {
+    /** @var EntityManagerInterface */
+    private $entityManager;
+
+    /** @var string */
+    private $entityName;
+
     /**
-     * @param EntityManager $em
-     * @param string        $class
+     * @param EntityManagerInterface $entityManager
+     * @param string                 $entityName
      */
-    public function __construct(EntityManager $em, $class)
+    public function __construct(EntityManagerInterface $entityManager, $entityName)
     {
-        parent::__construct($em, $em->getClassMetadata($class));
+        $this->entityManager = $entityManager;
+        $this->entityName = $entityName;
     }
 
     /**
@@ -27,9 +37,9 @@ class FamilyVariantRepository extends EntityRepository implements DatagridReposi
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function createDatagridQueryBuilder($parameters = [])
+    public function createDatagridQueryBuilder($parameters = []): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('fv');
+        $qb = $this->entityManager->createQueryBuilder()->select('fv')->from($this->entityName, 'fv');
         $rootAlias = $qb->getRootAlias();
 
         $labelExpr = sprintf(
@@ -38,12 +48,9 @@ class FamilyVariantRepository extends EntityRepository implements DatagridReposi
         );
 
         $qb
-            ->select($rootAlias);
-
-        $qb
-            ->leftJoin($rootAlias . '.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
-
-        $qb->andWhere('fv.family = :family_id');
+            ->select($rootAlias)
+            ->leftJoin($rootAlias . '.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
+            ->andWhere('fv.family = :family_id');
 
         return $qb;
     }

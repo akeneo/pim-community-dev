@@ -35,6 +35,9 @@ class AddParametersToGridListener
     /** @var bool */
     protected $isEditMode;
 
+    /** @var bool */
+    protected $isQueryParam;
+
     /**
      * @param array             $paramNames    Parameter name that should be binded to query
      * @param RequestParameters $requestParams Request params
@@ -42,10 +45,10 @@ class AddParametersToGridListener
      */
     public function __construct($paramNames, RequestParameters $requestParams, $isEditMode = false, $isQueryParam = false)
     {
-        $this->paramNames = $paramNames;
+        $this->paramNames    = $paramNames;
         $this->requestParams = $requestParams;
-        $this->isEditMode = $isEditMode;
-        $this->isQueryParam = $isQueryParam;
+        $this->isEditMode    = $isEditMode;
+        $this->isQueryParam  = $isQueryParam;
     }
 
     /**

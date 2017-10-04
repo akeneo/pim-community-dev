@@ -5,6 +5,7 @@ define([
         'pim/form',
         'pim/common/grid',
         'oro/translator',
+        'pim/user-context',
         'pim/template/family/tab/family-variant'
     ],
     function (
@@ -12,6 +13,7 @@ define([
         BaseForm,
         Grid,
         __,
+        UserContext,
         template
     ) {
         return BaseForm.extend({
@@ -50,7 +52,7 @@ define([
                         'family-variant-grid',
                         {
                             family_id: this.getFormData().meta.id,
-                            localeCode: 'en_US'
+                            localeCode: UserContext.get('uiLocale')
                         }
                     );
                 }

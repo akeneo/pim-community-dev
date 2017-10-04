@@ -213,7 +213,7 @@ extensions:
 
     pim-family-edit-form-filters-manage:
         module: oro/datafilter/filters-button
-        parent: pim-family-edit-form
+        parent: pim-family-edit-form-variant
         targetZone: filters
 
     pim-family-edit-form-history:
