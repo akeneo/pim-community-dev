@@ -68,7 +68,7 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
         $variantProduct->getParent()->willReturn(null);
         $variantProduct->getIdentifier()->willReturn('variant_product');
 
-        $productModel->getProductModels()->shouldNotBeCalled();
+        $productModel->getVariationLevel()->shouldNotBeCalled();
 
 
         $context->buildViolation(VariantProductParent::NO_PARENT, [
@@ -93,7 +93,8 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
         $variantProduct->getParent()->willReturn($productModel);
         $variantProduct->getIdentifier()->willReturn('variant_product');
 
-        $productModel->getProductModels()->willReturn($productModels);
+        $familyVariant->getNumberOfLevel()->willReturn(2);
+        $productModel->getVariationLevel()->willReturn(0);
         $productModels->isEmpty()->willReturn(false);
         $productModel->getCode()->willReturn('product_model');
 
@@ -118,7 +119,8 @@ class VariantProductParentValidatorSpec extends ObjectBehavior
         $variantProduct->getFamilyVariant()->willReturn($familyVariant);
         $variantProduct->getParent()->willReturn($productModel);
 
-        $productModel->getProductModels()->willReturn($productModels);
+        $familyVariant->getNumberOfLevel()->willReturn(2);
+        $productModel->getVariationLevel()->willReturn(1);
         $productModels->isEmpty()->willReturn(true);
 
         $context->buildViolation(Argument::cetera())->shouldNotBeCalled();

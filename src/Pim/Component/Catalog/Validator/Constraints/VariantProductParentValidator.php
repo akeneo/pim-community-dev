@@ -42,7 +42,10 @@ class VariantProductParentValidator extends ConstraintValidator
             return;
         }
 
-        if (!$parent->getProductModels()->isEmpty()) {
+        $numberOfLevels = $variantProduct->getFamilyVariant()->getNumberOfLevel();
+        $parentLevelAllowed = $numberOfLevels - 1;
+
+        if ($parent->getVariationLevel() !== $parentLevelAllowed) {
             $this->context->buildViolation(VariantProductParent::INVALID_PARENT, [
                 '%variant_product%' => $variantProduct->getIdentifier(),
                 '%product_model%' => $parent->getCode(),
