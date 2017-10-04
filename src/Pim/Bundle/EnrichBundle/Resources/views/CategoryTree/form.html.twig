@@ -63,7 +63,13 @@
         {{ elements.submitBtn('', 'ok', 'AknButtonList-item') }}
     {% endset %}
 
-    {{ elements.page_header(title, buttons, null, null, null, null, elements.updated(form.vars.id)) }}
+    {{ elements.page_header(
+        {
+            title: title,
+            buttons: buttons,
+            state: elements.updated(form.vars.id)
+        }
+    ) }}
 
     {# This style is temporary and will be dropped on PEFization of this screen #}
     <div id="category-tree-container" style="display:flex; height:100%">

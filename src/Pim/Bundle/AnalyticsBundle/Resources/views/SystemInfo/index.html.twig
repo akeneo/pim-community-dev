@@ -8,7 +8,12 @@
             </a>
         {% endset %}
 
-        {{ elements.page_header('pim_analytics.system_info.title'|trans, buttons) }}
+        {{ elements.page_header(
+            {
+                title: 'pim_analytics.system_info.title'|trans,
+                buttons: buttons
+            }
+        ) }}
 
         <table class="AknGrid AknGrid--unclickable AknGrid--condensed table">
             {% for infoType,info in data %}

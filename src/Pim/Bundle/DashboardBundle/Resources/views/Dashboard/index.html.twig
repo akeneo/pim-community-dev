@@ -11,7 +11,12 @@
             >
         {% endset %}
 
-        {{ elements.page_header('pim_dashboard.title'|trans, null, null, null, null, null, null, image) }}
+        {{ elements.page_header(
+            {
+                title: 'pim_dashboard.title'|trans,
+                image: image
+            }
+        ) }}
 
         {{ render(controller('pim_dashboard.controller.widget:listAction')) }}
 
