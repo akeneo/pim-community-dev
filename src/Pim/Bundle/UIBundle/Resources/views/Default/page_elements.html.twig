@@ -86,6 +86,7 @@
     {% set backButton = options.backButton is defined ? options.backButton : '' %}
     {% set state = options.state is defined ? options.state : '' %}
     {% set image = options.image is defined ? options.image : '' %}
+    {% set context = options.context is defined ? options.context : '' %}
 
     <header class="AknTitleContainer navigation">
         <div class="AknTitleContainer-line">
@@ -115,7 +116,9 @@
                 </div>
                 <div>
                     <div class="AknTitleContainer-line">
-                        <div class="AknTitleContainer-context AknButtonList" data-drop-zone="context"></div>
+                        <div class="AknTitleContainer-context AknButtonList" data-drop-zone="context">
+                            {{ context }}
+                        </div>
                     </div>
                     <div class="AknTitleContainer-line">
                         <div class="AknTitleContainer-meta" data-drop-zone="meta">

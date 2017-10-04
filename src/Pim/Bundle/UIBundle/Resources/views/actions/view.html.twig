@@ -48,12 +48,18 @@
         {% set titleButtons %}
         {% endset %}
 
+        {% set context %}
+            {% block context %}
+            {% endblock context %}
+        {% endset %}
+
         {{ elements.page_header(
             {
                 title: title,
                 buttons: buttons,
                 meta: meta,
-                image: image
+                image: image,
+                context: context
             }
         ) }}
 
