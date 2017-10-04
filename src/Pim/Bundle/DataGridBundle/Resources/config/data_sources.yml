@@ -1,7 +1,6 @@
 parameters:
     pim_datagrid.datasource.default.class: Pim\Bundle\DataGridBundle\Datasource\Datasource
     pim_datagrid.datasource.product.class: Pim\Bundle\DataGridBundle\Datasource\ProductDatasource
-    pim_datagrid.datasource.variant_group_product.class: Pim\Bundle\DataGridBundle\Datasource\VariantGroupProductDatasource
     pim_datagrid.datasource.associated_product.class: Pim\Bundle\DataGridBundle\Datasource\AssociatedProductDatasource
     pim_datagrid.datasource.family.class: Pim\Bundle\DataGridBundle\Datasource\FamilyDatasource
     pim_datagrid.datasource.repository.class: Pim\Bundle\DataGridBundle\Datasource\RepositoryDatasource
@@ -142,16 +141,6 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_group_product }
 
-    pim_datagrid.datasource.variant_group_product:
-        class: '%pim_datagrid.datasource.variant_group_product.class%'
-        arguments:
-            - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.query.product_query_builder_from_size_factory'
-            - '@pim_datagrid.normalizer.group_product'
-            - '@pim_catalog.repository.group'
-        tags:
-            - { name: oro_datagrid.datasource, type: pim_datasource_variant_group_product }
-
     pim_datagrid.datasource.api_connection:
         class: '%pim_datagrid.datasource.repository.class%'
         arguments:
@@ -169,4 +158,3 @@ services:
             - [addProductDatasource, ['pim_datasource_product']]
             - [addProductDatasource, ['pim_datasource_associated_product']]
             - [addProductDatasource, ['pim_datasource_group_product']]
-            - [addProductDatasource, ['pim_datasource_variant_group_product']]

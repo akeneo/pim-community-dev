@@ -6,8 +6,6 @@ datagrid:
         source:
             acl_resource: pim_enrich_group_index
             type: pim_datasource_group
-            default_query_params:
-                isVariant: false
         columns:
             label:
                 label: Label

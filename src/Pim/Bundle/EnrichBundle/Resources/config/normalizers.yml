@@ -202,7 +202,7 @@ services:
     pim_enrich.normalizer.group:
         class: '%pim_enrich.normalizer.group.class%'
         arguments:
-            - '@pim_catalog.normalizer.standard.proxy_group'
+            - '@pim_catalog.normalizer.standard.group'
             - '@pim_enrich.provider.structure_version.group'
             - '@pim_versioning.manager.version'
             - '@pim_enrich.normalizer.version'

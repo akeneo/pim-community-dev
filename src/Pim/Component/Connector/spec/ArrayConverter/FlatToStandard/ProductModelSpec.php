@@ -74,18 +74,18 @@ class ProductModelSpec extends ObjectBehavior
         $attributeColumnsResolver->resolveAttributeColumns()->willReturn(['name-en_US', 'description-en_US-ecommerce']);
 
         $fieldConverter->supportsColumn('code')->willreturn(true);
-        $fieldConverter->convert('code', 'code')->willreturn([$identifierConverter]);
+        $fieldConverter->convert('code', 'code')->willreturn($identifierConverter);
         $identifierConverter->appendTo([])->willReturn(['code' => 'code']);
 
         $fieldConverter->supportsColumn('parent')->willreturn(1324);
-        $fieldConverter->convert('parent', '1234')->willreturn([$parentConverter]);
+        $fieldConverter->convert('parent', '1234')->willreturn($parentConverter);
         $parentConverter->appendTo(['code' => 'code'])->willReturn([
             'code' => 'code',
             'parent' => 1234,
         ]);
 
         $fieldConverter->supportsColumn('family_variant')->willreturn(true);
-        $fieldConverter->convert('family_variant', 'family_variant')->willreturn([$familyVariantConverter]);
+        $fieldConverter->convert('family_variant', 'family_variant')->willreturn($familyVariantConverter);
         $familyVariantConverter->appendTo([
             'code' => 'code',
             'parent' => 1234,
@@ -96,7 +96,7 @@ class ProductModelSpec extends ObjectBehavior
         ]);
 
         $fieldConverter->supportsColumn('categories')->willreturn(true);
-        $fieldConverter->convert('categories', 'tshirt,pull')->willreturn([$categoryConverter]);
+        $fieldConverter->convert('categories', 'tshirt,pull')->willreturn($categoryConverter);
         $categoryConverter->appendTo([
             'code' => 'code',
             'parent' => 1234,

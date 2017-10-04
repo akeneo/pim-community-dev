@@ -21,7 +21,7 @@ interface FieldConverterInterface
      * @param string $fieldName
      * @param string $value
      *
-     * @return ConvertedField[]
+     * @return ConvertedField
      */
-    public function convert(string $fieldName, string $value): array;
+    public function convert(string $fieldName, string $value): ConvertedField;
 }

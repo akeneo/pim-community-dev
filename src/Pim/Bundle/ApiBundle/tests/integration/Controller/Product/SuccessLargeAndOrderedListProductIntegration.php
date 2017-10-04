@@ -95,7 +95,6 @@ JSON;
     "family": null,
     "parent": null,
     "groups": [],
-    "variant_group": null,
     "categories": [],
     "enabled": true,
     "values": {},

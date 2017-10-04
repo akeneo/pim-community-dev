@@ -163,7 +163,7 @@ services:
         class: '%pim_catalog.query.elasticsearch.filter.group.class%'
         arguments:
             - '@pim_catalog.repository.group'
-            - ['groups', 'variant_group']
+            - ['groups']
             - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }

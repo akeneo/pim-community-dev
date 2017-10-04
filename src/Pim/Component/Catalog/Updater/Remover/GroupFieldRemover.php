@@ -53,14 +53,7 @@ class GroupFieldRemover extends AbstractFieldRemover
                     $groupCode
                 );
             }
-            if ($group->getType()->isVariant()) {
-                throw InvalidPropertyException::validGroupExpected(
-                    $field,
-                    'Cannot process variant group, only groups are supported',
-                    static::class,
-                    $groupCode
-                );
-            }
+
             $groups[] = $group;
         }
 

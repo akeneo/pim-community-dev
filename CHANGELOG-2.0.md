@@ -37,6 +37,61 @@
 - Change constructor of `Pim\Bundle\DataGridBundle\Normalizer\ProductModelNormalizer` to add `Pim\Component\Catalog\ProductModel\ImageAsLabel`
 - Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer` to add `Pim\Component\Catalog\ProductModel\ImageAsLabel`
 - Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer` to add `Pim\Component\Catalog\ProductModel\ImageAsLabel`
+- Rename `Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxesValidator` to `Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxisValidator`
+- Rename `Pim\Bundle\EnrichBundle\Controller\Rest\ProductTemplateController` to `Pim\Bundle\EnrichBundle\Controller\Rest\ValueController`
+- Remove class `Pim\Bundle\VersioningBundle\Normalizer\Flat\ProxyGroupNormalizer`
+- Remove class `Pim\Component\Catalog\Normalizer\Standard\ProxyGroupNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\Command\CleanProductTemplateCommand`
+- Remove class `Pim\Bundle\CatalogBundle\Command\CopyVariantGroupValuesCommand`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductTemplateRepository`
+- Remove class `Pim\Bundle\CatalogBundle\Entity\ProductTemplate`
+- Remove class `Pim\Bundle\CatalogBundle\EventSubscriber\ComputeProductTemplateRawValuesSubscriber`
+- Remove class `Pim\Bundle\CatalogBundle\EventSubscriber\LoadProductTemplateValuesSubscriber`
+- Remove class `Pim\Bundle\CatalogBundle\EventSubscriber\ProductTemplateAttributeSubscriber`
+- Remove class `Pim\Component\Catalog\Builder\ProductTemplateBuilder`
+- Remove class `Pim\Component\Catalog\Builder\ProductTemplateBuilderInterface`
+- Remove class `Pim\Component\Catalog\Factory\ProductTemplateFactory`
+- Remove class `Pim\Component\Catalog\Manager\ProductTemplateApplier`
+- Remove class `Pim\Component\Catalog\Manager\ProductTemplateApplierInterface`
+- Remove class `Pim\Component\Catalog\Manager\ProductTemplateApplierInterface`
+- Remove class `Pim\Component\Catalog\Manager\ProductTemplateMediaManager`
+- Remove class `Pim\Component\Catalog\Model\ProductTemplateInterface`
+- Remove class `Pim\Component\Catalog\Repository\ProductTemplateRepositoryInterface`
+- Remove class `Pim\Component\Catalog\Updater\ProductTemplateUpdater`
+- Remove class `Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\UniqueVariantGroup`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\VariantGroupValues`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\VariantGroupProductDatasource`
+- Remove class `Pim\Bundle\VersioningBundle\Normalizer\Flat\VariantGroupNormalizer`
+- Remove class `Pim\Component\Catalog\Normalizer\Standard\VariantGroupNormalizer`
+- Remove class `Pim\Component\Catalog\Updater\Setter\VariantGroupFieldSetter`
+- Remove class `Pim\Component\Catalog\Updater\VariantGroupUpdater`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\HasVariantAxes`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\HasVariantAxesValidator`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\UniqueVariantGroupType`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\UniqueVariantGroupTypeValidator`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\UniqueVariantGroupValidator`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\VariantGroupAxis`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\VariantGroupAxisValidator`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\VariantGroupValuesValidator`
+- Remove class `Pim\Component\Catalog\Manager\VariantGroupAttributesResolver`
+- Remove method `getTypeByGroup` from `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface`
+- Remove method `getAllGroupsExceptVariantQB` from `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface`
+- Remove `$isVariant` to `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface::findTypeIds()`
+- Remove method `addAxisAttribute` from `Pim\Component\Catalog\Model\GroupInterface`
+- Remove method `removeAxisAttribute` from `Pim\Component\Catalog\Model\GroupInterface`
+- Remove method `getAxisAttributes` from `Pim\Component\Catalog\Model\GroupInterface`
+- Remove method `setAxisAttributes` from `Pim\Component\Catalog\Model\GroupInterface`
+- Remove method `getProductTemplate` from `Pim\Component\Catalog\Model\GroupInterface`
+- Remove method `setProductTemplate` from `Pim\Component\Catalog\Model\GroupInterface`
+- Remove method `isVariant` from `Pim\Component\Catalog\Model\GroupTypeInterface`
+- Remove method `setVariant` from `Pim\Component\Catalog\Model\GroupTypeInterface`
+- Remove method `getVariantGroup` from `Pim\Component\Catalog\Model\ProductInterface`
+- Remove method `hasAttributeInVariantGroup` from `Pim\Component\Catalog\Model\ProductInterface`
+- Remove method `findAllForVariantGroup` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
+- Remove method `getEligibleProductsForVariantGroup` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
+- Remove method `findProductIdsForVariantGroup` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
+- change `Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface::convert()` signature, it return `Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField` instead of an array
 
 # 2.0.0 (2017-09-28)
 

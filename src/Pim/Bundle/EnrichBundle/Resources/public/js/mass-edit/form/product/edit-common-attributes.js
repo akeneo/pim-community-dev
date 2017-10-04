@@ -162,7 +162,7 @@ define(
                     method: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(this.getValue()),
-                    url: Routing.generate('pim_enrich_product_template_rest_validate')
+                    url: Routing.generate('pim_enrich_value_rest_validate')
                 }).then(function (response) {
                     if (!_.isEmpty(response.values)) {
                         this.errors = response.values;

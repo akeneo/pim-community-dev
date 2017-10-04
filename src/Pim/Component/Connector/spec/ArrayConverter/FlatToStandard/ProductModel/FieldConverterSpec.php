@@ -36,21 +36,21 @@ class FieldConverterSpec extends ObjectBehavior
         $fieldSplitter->splitCollection('group1,group2')->willReturn(['group1', 'group2']);
 
         $this->convert('X_SELL-groups', 'group1,group2')
-            ->shouldBeLike([new ConvertedField('associations', ['X_SELL' => ['groups' => ['group1', 'group2']]])]);
+            ->shouldBeLike(new ConvertedField('associations', ['X_SELL' => ['groups' => ['group1', 'group2']]]));
     }
 
     function it_converts_categories($assocFieldResolver, $fieldSplitter)
     {
         $assocFieldResolver->resolveAssociationColumns()->willReturn([]);
         $fieldSplitter->splitCollection('dry,wet')->willReturn(['dry', 'wet']);
-        $this->convert('categories', 'dry,wet')->shouldBeLike([new ConvertedField('categories', ['dry', 'wet'])]);
+        $this->convert('categories', 'dry,wet')->shouldBeLike(new ConvertedField('categories', ['dry', 'wet']));
     }
 
     function it_converts_other_field($assocFieldResolver)
     {
         $assocFieldResolver->resolveAssociationColumns()->willReturn([]);
         $this->convert('family_variant', 'family_variant')
-            ->shouldBeLike([new ConvertedField('family_variant', 'family_variant')]);
+            ->shouldBeLike(new ConvertedField('family_variant', 'family_variant'));
     }
 
     function it_only_converts_a_specific_column($assocFieldResolver)

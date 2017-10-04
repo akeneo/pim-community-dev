@@ -44,8 +44,6 @@ class GroupFieldRemoverSpec extends ObjectBehavior
         $packGroup->getType()->willReturn($nonVariantType);
         $crossGroup->getType()->willReturn($nonVariantType);
 
-        $nonVariantType->isVariant()->willReturn(false);
-
         $product->removeGroup($packGroup)->shouldBeCalled();
         $product->removeGroup($crossGroup)->shouldBeCalled();
 
@@ -60,7 +58,6 @@ class GroupFieldRemoverSpec extends ObjectBehavior
     ) {
         $groupRepository->findOneByIdentifier('pack')->willReturn($pack);
         $pack->getType()->willReturn($nonVariantType);
-        $nonVariantType->isVariant()->willReturn(false);
         $groupRepository->findOneByIdentifier('not valid code')->willReturn(null);
 
         $this->shouldThrow(
@@ -92,30 +89,5 @@ class GroupFieldRemoverSpec extends ObjectBehavior
                 [['array of array']]
             )
         )->during('removeFieldData', [$product, 'groups', [['array of array']]]);
-    }
-
-    function it_fails_if_the_group_code_does_not_correspond_to_a_simple_group(
-        $groupRepository,
-        ProductInterface $product,
-        GroupInterface $pack,
-        GroupInterface $variant,
-        GroupTypeInterface $nonVariantType,
-        GroupTypeInterface $variantType
-    ) {
-        $groupRepository->findOneByIdentifier('pack')->willReturn($pack);
-        $pack->getType()->willReturn($nonVariantType);
-        $nonVariantType->isVariant()->willReturn(false);
-        $groupRepository->findOneByIdentifier('variant')->willReturn($variant);
-        $variant->getType()->willReturn($variantType);
-        $variantType->isVariant()->willReturn(true);
-
-        $this->shouldThrow(
-            InvalidPropertyException::validGroupExpected(
-                'groups',
-                'Cannot process variant group, only groups are supported',
-                'Pim\Component\Catalog\Updater\Remover\GroupFieldRemover',
-                'variant'
-            )
-        )->during('removeFieldData', [$product, 'groups', ['pack', 'variant']]);
     }
 }

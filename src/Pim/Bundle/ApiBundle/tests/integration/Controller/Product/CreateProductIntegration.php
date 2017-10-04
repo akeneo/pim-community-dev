@@ -61,7 +61,6 @@ JSON;
             'family'        => 'familyA',
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -100,7 +99,6 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => ["groupA", "groupB"],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -196,7 +194,6 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => ["categoryA", "master"],
             'enabled'       => true,
             'values'        => [
@@ -240,7 +237,6 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -292,7 +288,6 @@ JSON;
     {
         "identifier": "product_creation_product_values",
         "groups": ["groupA", "groupB"],
-        "variant_group": null,
         "family": "familyA",
         "categories": ["master", "categoryA"],
         "values": {
@@ -476,7 +471,6 @@ JSON;
             'family'        => 'familyA',
             'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => null,
             'categories'    => ['categoryA', 'master'],
             'enabled'       => true,
             'values'        => [
@@ -667,7 +661,6 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -956,7 +949,6 @@ JSON;
         "identifier": "foo",
         "family": null,
         "groups": ["groupA"],
-        "variant_group": null,
         "categories": ["master"],
         "values": {
             "unknown_attribute":[{

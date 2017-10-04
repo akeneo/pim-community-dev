@@ -39,7 +39,6 @@ class ProductIndexingIntegration extends TestCase
             'enabled'       => false,
             'categories'    => [],
             'groups'        => [],
-            'variant_group' => null,
             'completeness'  => [],
             'values'        => [],
         ];
@@ -64,7 +63,6 @@ class ProductIndexingIntegration extends TestCase
             'enabled'       => true,
             'categories'    => [],
             'groups'        => [],
-            'variant_group' => null,
             'completeness'  => [],
             'values'        => [],
         ];
@@ -96,7 +94,6 @@ class ProductIndexingIntegration extends TestCase
             'enabled'       => true,
             'categories'    => ['categoryA1', 'categoryB'],
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => null,
             'in_group'      => [
                 'groupA'   => true,
                 'groupB'   => true,

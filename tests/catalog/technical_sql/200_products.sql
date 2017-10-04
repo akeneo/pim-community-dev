@@ -93,10 +93,6 @@ INSERT INTO `pim_catalog_category_product` VALUES (49,897),(49,899),(50,898);
 -- Dumping data for table `pim_catalog_product_template`
 --
 
-/*!40000 ALTER TABLE `pim_catalog_product_template` DISABLE KEYS */;
-INSERT INTO `pim_catalog_product_template` VALUES (3,'[]');
-/*!40000 ALTER TABLE `pim_catalog_product_template` ENABLE KEYS */;
-
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

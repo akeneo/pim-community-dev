@@ -138,7 +138,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
             ]);
 
         $product->isEnabled()->willReturn(true);
-        $product->getGroupCodes()->willReturn(['first_group', 'second_group', 'a_variant_group']);
+        $product->getGroupCodes()->willReturn(['first_group', 'second_group', 'another_group']);
         $product->getCategoryCodes()->willReturn(
             [
                 'first_category',
@@ -188,11 +188,11 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                 ],
                 'enabled'       => true,
                 'categories'    => ['first_category', 'second_category'],
-                'groups'        => ['first_group', 'second_group', 'a_variant_group'],
+                'groups'        => ['first_group', 'second_group', 'another_group'],
                 'in_group' => [
                     'first_group'     => true,
                     'second_group'    => true,
-                    'a_variant_group' => true,
+                    'another_group' => true,
                 ],
                 'completeness'  => [
                     'ecommerce' => [
@@ -334,7 +334,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         $variantProduct->getFamily()->willReturn($family);
         $variantProduct->getFamilyVariant()->willReturn($familyVariant);
         $variantProduct->isEnabled()->willReturn(true);
-        $variantProduct->getGroupCodes()->willReturn(['first_group', 'second_group', 'a_variant_group']);
+        $variantProduct->getGroupCodes()->willReturn(['first_group', 'second_group', 'another_group']);
         $variantProduct->getCategoryCodes()->willReturn(
             [
                 'first_category',
@@ -394,11 +394,11 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                 ],
                 'enabled'       => true,
                 'categories'    => ['first_category', 'second_category'],
-                'groups'        => ['first_group', 'second_group', 'a_variant_group'],
+                'groups'        => ['first_group', 'second_group', 'another_group'],
                 'in_group' => [
                     'first_group'     => true,
                     'second_group'    => true,
-                    'a_variant_group' => true,
+                    'another_group' => true,
                 ],
                 'completeness'  => [
                     'ecommerce' => [

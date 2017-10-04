@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
-class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
+class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 {
     function let(
         EntityWithFamilyVariantAttributesProvider $axesProvider,
@@ -32,7 +32,7 @@ class SiblingUniqueVariantAxesValidatorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxesValidator');
+        $this->shouldHaveType('Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxisValidator');
     }
 
     function it_throws_an_exception_if_the_entity_is_not_supported(

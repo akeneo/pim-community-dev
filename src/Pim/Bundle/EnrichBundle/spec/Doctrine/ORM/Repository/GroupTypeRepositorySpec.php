@@ -44,7 +44,6 @@ class GroupTypeRepositorySpec extends ObjectBehavior
         $queryBuilder->addSelect('COALESCE(NULLIF(t.label, \'\'), CONCAT(\'[\', g.code, \']\')) as label')->willReturn($queryBuilder);
         $queryBuilder->from('group_type', 'g', null)->willReturn($queryBuilder);
         $queryBuilder->leftJoin('g.translations', 't', 'WITH', 't.locale = :locale')->willReturn($queryBuilder);
-        $queryBuilder->andWhere('g.variant = :is_variant')->willReturn($queryBuilder);
         $queryBuilder->orderBy('t.label')->willReturn($queryBuilder);
         $queryBuilder->setParameter('locale', 'en_US')->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);

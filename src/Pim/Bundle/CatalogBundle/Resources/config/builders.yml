@@ -1,7 +1,6 @@
 parameters:
     pim_catalog.builder.product.class:          Pim\Component\Catalog\Builder\ProductBuilder
     pim_catalog.builder.entity_with_values.class: Pim\Component\Catalog\Builder\EntityWithValuesBuilder
-    pim_catalog.builder.product_template.class: Pim\Component\Catalog\Builder\ProductTemplateBuilder
     pim_catalog.builder.choices.class:          Pim\Bundle\CatalogBundle\Builder\ChoicesBuilder
 
 services:
@@ -33,12 +32,6 @@ services:
             - '@pim_catalog.resolver.attribute_values'
             - '@pim_catalog.factory.value'
 
-    pim_catalog.builder.product_template:
-        class: '%pim_catalog.builder.product_template.class%'
-        arguments:
-            - '@pim_catalog.builder.product'
-            - '@pim_catalog.values_filler.product'
-            - '%pim_catalog.entity.product_template.class%'
 
     pim_catalog.builder.choices:
         class: '%pim_catalog.builder.choices.class%'

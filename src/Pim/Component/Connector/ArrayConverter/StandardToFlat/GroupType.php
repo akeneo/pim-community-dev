@@ -25,9 +25,6 @@ class GroupType extends AbstractSimpleArrayConverter implements ArrayConverterIn
                     $convertedItem[$labelKey] = $label;
                 }
                 break;
-            case 'is_variant':
-                $convertedItem[$property] = (true === $data) ? '1' : '0';
-                break;
             default:
                 $convertedItem[$property] = (string) $data;
         }

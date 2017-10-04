@@ -58,7 +58,6 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
         $this->createProduct('complete', [
             'family'        => 'familyA2',
             'groups'        => ['groupA'],
-            'variant_group' => null,
             'categories'    => ['master'],
             'values'        => [
                 'a_metric' => [
@@ -95,7 +94,6 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -133,7 +131,6 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -199,7 +196,6 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
@@ -237,7 +233,6 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
@@ -280,7 +275,6 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
@@ -359,7 +353,6 @@ JSON;
             'family'        => 'familyA',
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -398,7 +391,6 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -437,7 +429,6 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -476,7 +467,7 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -515,7 +506,7 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => ["categoryA", "categoryA1"],
             'enabled'       => true,
             'values'        => [
@@ -554,7 +545,7 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -648,7 +639,7 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -700,7 +691,7 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -748,7 +739,7 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -801,7 +792,7 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -845,7 +836,7 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => ['master'],
             'enabled'       => false,
             'values'        => [
@@ -892,7 +883,7 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -944,7 +935,7 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -993,7 +984,7 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -1032,7 +1023,6 @@ JSON;
     {
         "identifier": "complete",
         "groups": ["groupA", "groupB"],
-        "variant_group": null,
         "family": "familyA2",
         "categories": ["master", "categoryA"],
         "values": {
@@ -1113,7 +1103,7 @@ JSON;
             'family'        => 'familyA2',
             'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => null,
+
             'categories'    => ['categoryA', 'master'],
             'enabled'       => true,
             'values'        => [
@@ -1224,7 +1214,7 @@ JSON;
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
@@ -1444,7 +1434,6 @@ JSON;
         "identifier": "product_family",
         "family": "familyA2",
         "groups": [],
-        "variant_group": null,
         "categories": [],
         "values": {
             "unknown_attribute":[{

@@ -35,7 +35,7 @@ class FieldConverter implements FieldConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function convert(string $fieldName, string $value): array
+    public function convert(string $fieldName, string $value): ConvertedField
     {
         $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
 
@@ -43,16 +43,16 @@ class FieldConverter implements FieldConverterInterface
             $value = $this->fieldSplitter->splitCollection($value);
             list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($fieldName);
 
-            return [new ConvertedField('associations', [$associationTypeCode => [$associatedWith => $value]])];
+            return new ConvertedField('associations', [$associationTypeCode => [$associatedWith => $value]]);
         }
 
         if ('categories' === $fieldName) {
             $categories = $this->fieldSplitter->splitCollection($value);
 
-            return [new ConvertedField($fieldName, $categories)];
+            return new ConvertedField($fieldName, $categories);
         }
 
-        return [new ConvertedField($fieldName, $value)];
+        return new ConvertedField($fieldName, $value);
     }
 
     /**

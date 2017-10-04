@@ -725,9 +725,7 @@ class FixturesContext extends BaseFixturesContext
 
             foreach ($data as $key => $value) {
                 $matches = null;
-                if ('is_variant' === $key) {
-                    assertEquals($value, (int) $groupType->isVariant());
-                } elseif (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
+                if (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
                     assertEquals($value, $groupType->getTranslation($matches['locale'])->getLabel());
                 } else {
                     throw new \InvalidArgumentException(
@@ -843,16 +841,6 @@ class FixturesContext extends BaseFixturesContext
             assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
             assertEquals($data['label-fr_FR'], $group->getTranslation('fr_FR')->getLabel());
             assertEquals($data['type'], $group->getType()->getCode());
-
-            if ($group->getType()->isVariant()) {
-                $attributes = [];
-                foreach ($group->getAxisAttributes() as $attribute) {
-                    $attributes[] = $attribute->getCode();
-                }
-                asort($attributes);
-                $attributes = implode(',', $attributes);
-                assertEquals($data['axis'], $attributes);
-            }
         }
     }
 
@@ -1915,15 +1903,13 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $code
      * @param string $label
-     * @param bool   $isVariant
      *
      * @return \Pim\Component\Catalog\Model\GroupTypeInterface
      */
-    protected function createGroupType($code, $label, $isVariant)
+    protected function createGroupType($code, $label)
     {
         $type = new GroupType();
         $type->setCode($code);
-        $type->setVariant($isVariant);
         $type->setLocale('en_US')->setLabel($label);
 
         $this->validate($type);

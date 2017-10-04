@@ -49,7 +49,6 @@ JSON;
                 'family'        => 'familyA1',
                 'parent'        => null,
                 'groups'        => [],
-                'variant_group' => null,
                 'categories'    => [],
                 'enabled'       => true,
                 'values'        => [
@@ -66,7 +65,6 @@ JSON;
                 'family'        => 'familyA2',
                 'parent'        => null,
                 'groups'        => [],
-                'variant_group' => null,
                 'categories'    => [],
                 'enabled'       => true,
                 'values'        => [
@@ -236,12 +234,12 @@ JSON;
     {
         $data =
 <<<JSON
-    {"identifier": "foo", "variant_group":"bar"}
+    {"identifier": "foo", "group":"bar"}
 JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"identifier":"foo","status_code":422,"message":"Property \"variant_group\" expects a valid variant group code. The variant group does not exist, \"bar\" given. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"identifier":"foo","status_code":422,"message":"Property \"group\" does not exist. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);

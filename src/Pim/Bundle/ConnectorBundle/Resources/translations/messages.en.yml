@@ -9,11 +9,9 @@ pim_connector:
             invalid_item_columns_count: 'Expecting to have %totalColumnsCount% columns, actually have %itemColumnsCount% in %filePath%:%lineno%'
         csv_product_reader.title:            CSV product reader
         csv_category_reader.title:           CSV category reader
-        csv_variant_group .title:            CSV variant group reader
 
         dummy_processor.title:            Dummy processor
         product_processor.title:          Product creation
-        variant_group_processor.title:    Variant group creation / update
         category_processor.title:         Category creation
         association_processor.title:      Association creation
         product_association_processor.title: Association creation
@@ -28,7 +26,6 @@ pim_connector:
         file_writer.title:                   Output
         product_writer.title:                Product storage
         category_writer.title:               Category storage
-        variant_group_writer.title:          Variant group storage
         writer.title:                        Entity storage
         csv_writer.title:                    Csv Writer
 
@@ -75,9 +72,6 @@ batch_jobs:
     csv_group_export:
         label: Group export in CSV
         export.label: Group export
-    csv_variant_group_export:
-        label: Variant group export in CSV
-        export.label: Variant group export
     csv_family_export:
         label: Family export in CSV
         export.label: Family export
@@ -123,10 +117,6 @@ batch_jobs:
         label: Group import in CSV
         validation.label: File validation
         import.label: Group import
-    csv_variant_group_import:
-        label: Variant group import in CSV
-        validation.label: File validation
-        import.label: Variant group import
     csv_channel_export:
         label: Channel export in CSV
         export.label: Channel export
@@ -206,17 +196,10 @@ batch_jobs:
     xlsx_group_export:
         label: Group export in XLSX
         export.label: Group export
-    xlsx_variant_group_export:
-        label: Variant group export in XLSX
-        export.label: Variant group export
     xlsx_group_import:
         label: Group import in XLSX
         validation.label: File validation
         import.label: Group import
-    xlsx_variant_group_import:
-        label: Variant group import in XLSX
-        validation.label: File validation
-        import.label: Variant Group import
     xlsx_family_export:
         label: Family export in XLSX
         export.label: Family export

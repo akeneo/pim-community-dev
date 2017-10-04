@@ -35,7 +35,6 @@ class GroupTypeUpdaterSpec extends ObjectBehavior
     {
         $values = [
             'code'       => 'variant',
-            'is_variant' => true,
             'label'      => [
                 'en_US' => 'variant',
                 'fr_FR' => 'variantes',
@@ -43,8 +42,6 @@ class GroupTypeUpdaterSpec extends ObjectBehavior
         ];
 
         $groupType->setCode('variant')->shouldBeCalled();
-        $groupType->setVariant(true)->shouldBeCalled();
-
         $groupType->setLocale('en_US')->shouldBeCalled();
         $groupType->setLocale('fr_FR')->shouldBeCalled();
         $groupType->setLabel('variant')->shouldBeCalled();

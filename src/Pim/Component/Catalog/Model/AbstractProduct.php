@@ -492,27 +492,6 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInVariantGroup(AttributeInterface $attribute)
-    {
-        foreach ($this->groups as $group) {
-            if ($group->getType()->isVariant()) {
-                if ($group->getAxisAttributes()->contains($attribute)) {
-                    return true;
-                }
-
-                $template = $group->getProductTemplate();
-                if (null !== $template && $template->hasValueForAttribute($attribute)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isAttributeRemovable(AttributeInterface $attribute)
     {
         if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
@@ -520,10 +499,6 @@ abstract class AbstractProduct implements ProductInterface
         }
 
         if ($this->hasAttributeInFamily($attribute)) {
-            return false;
-        }
-
-        if ($this->hasAttributeInVariantGroup($attribute)) {
             return false;
         }
 
@@ -536,10 +511,6 @@ abstract class AbstractProduct implements ProductInterface
     public function isAttributeEditable(AttributeInterface $attribute)
     {
         if (!$this->hasAttributeInFamily($attribute)) {
-            return false;
-        }
-
-        if ($this->hasAttributeInVariantGroup($attribute)) {
             return false;
         }
 
@@ -575,23 +546,6 @@ abstract class AbstractProduct implements ProductInterface
         $this->groups->removeElement($group);
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getVariantGroup()
-    {
-        $groups = $this->getGroups();
-
-        /** @var GroupInterface $group */
-        foreach ($groups as $group) {
-            if ($group->getType()->isVariant()) {
-                return $group;
-            }
-        }
-
-        return null;
     }
 
     /**

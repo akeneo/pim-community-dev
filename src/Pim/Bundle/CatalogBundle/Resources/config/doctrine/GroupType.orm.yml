@@ -13,9 +13,6 @@ Pim\Bundle\CatalogBundle\Entity\GroupType:
             type: string
             length: 100
             unique: true
-        variant:
-            type: boolean
-            column: is_variant
     oneToMany:
         groups:
             targetEntity: Pim\Component\Catalog\Model\GroupInterface

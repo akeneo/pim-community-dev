@@ -28,12 +28,6 @@ class GroupNormalizerSpec extends ObjectBehavior
     {
         $group->getType()->willReturn($groupType);
 
-        $groupType->isVariant()->willReturn(true);
-        $this->supportsNormalization($group, 'standard')->shouldReturn(false);
-
-        $groupType->isVariant()->willReturn(false);
-        $this->supportsNormalization($group, 'standard')->shouldReturn(true);
-
         $this->supportsNormalization(new \stdClass(), 'standard')->shouldReturn(false);
         $this->supportsNormalization($group, 'xml')->shouldReturn(false);
         $this->supportsNormalization($group, 'json')->shouldReturn(false);

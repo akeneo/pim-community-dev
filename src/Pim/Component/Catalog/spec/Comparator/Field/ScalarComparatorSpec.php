@@ -8,7 +8,7 @@ class ScalarComparatorSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith(['family', 'variant_group']);
+        $this->beConstructedWith(['family', 'group']);
     }
 
     function it_is_a_comparator()
@@ -19,7 +19,7 @@ class ScalarComparatorSpec extends ObjectBehavior
     function it_supports_comparison()
     {
         $this->supports('family')->shouldBe(true);
-        $this->supports('variant_group')->shouldBe(true);
+        $this->supports('group')->shouldBe(true);
         $this->supports('other')->shouldBe(false);
     }
 
