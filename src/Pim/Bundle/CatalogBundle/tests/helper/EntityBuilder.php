@@ -58,6 +58,21 @@ class EntityBuilder
     }
 
     /**
+     * @param array $data
+     *
+     * @return mixed
+     */
+    public function createFamilyVariant(array $data)
+    {
+        $family = $this->container->get('pim_catalog.factory.family_variant')->create();
+        $this->container->get('pim_catalog.updater.family_variant')->update($family, $data);
+        $this->container->get('validator')->validate($family);
+        $this->container->get('pim_catalog.saver.family_variant')->save($family);
+
+        return $family;
+    }
+
+    /**
      * TODO: use the factory/builder of variant products when it exists
      *
      * Creates a variant product with identifier and product model parent
