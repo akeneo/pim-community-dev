@@ -282,10 +282,10 @@ class ProductController
         $data = $this->getDecodedContent($request->getContent());
 
         $data = $this->populateIdentifierProductValue($data);
-        $data = $this->productAttributeFilter->filter($data);
         $data = $this->orderData($data);
 
         if (isset($data['parent'])) {
+            $data = $this->productAttributeFilter->filter($data);
             $product = $this->variantProductBuilder->createProduct($data['identifier']);
         } else {
             $product = $this->productBuilder->createProduct();
@@ -319,6 +319,8 @@ class ProductController
             $this->validateCodeConsistency($code, $data);
 
             if (isset($data['parent'])) {
+                $data = $this->productAttributeFilter->filter($data);
+                $data = $this->orderData($data);
                 $product = $this->variantProductBuilder->createProduct($data['identifier']);
             } else {
                 $product = $this->productBuilder->createProduct();
@@ -331,13 +333,15 @@ class ProductController
         if (!$isCreation) {
             $data = $this->filterEmptyValues($product, $data);
 
-            if ($product instanceof VariantProductInterface && !isset($data['parent'])) {
-                $data['parent'] = $product->getParent()->getCode();
+            if ($product instanceof VariantProductInterface) {
+                if (!array_key_exists('parent', $data)) {
+                    $data['parent'] = $product->getParent()->getCode();
+                }
+
+                $data = $this->productAttributeFilter->filter($data);
+                $data = $this->orderData($data);
             }
         }
-
-        $data = $this->productAttributeFilter->filter($data);
-        $data = $this->orderData($data);
 
         $this->updateProduct($product, $data, 'patch_products__code_');
         $this->validateProduct($product);

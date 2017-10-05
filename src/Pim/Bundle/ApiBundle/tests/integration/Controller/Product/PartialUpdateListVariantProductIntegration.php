@@ -87,7 +87,6 @@ JSON;
                 'family'        => "familyA",
                 'parent'        => "amor",
                 'groups'        => [],
-                'variant_group' => null,
                 'categories'    => ["master"],
                 'enabled'       => true,
                 'values'        => [
@@ -140,7 +139,6 @@ JSON;
                 'family'        => "familyA",
                 'parent'        => "amor",
                 'groups'        => [],
-                'variant_group' => null,
                 'categories'    => [],
                 'enabled'       => true,
                 'values'        => [
