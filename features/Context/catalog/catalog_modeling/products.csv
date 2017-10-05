@@ -151,10 +151,6 @@ sku;color;size;eu_shoes_size;material;family;parent;categories;enabled;name-en_U
 1111111260;red;xxl;;;clothing;juno;master_women_blouses_deals,print_clothing,supplier_zaro;1;;900;GRAM;1234567890272;;
 1111111261;red;xl;;;clothing;juno;master_women_blouses_deals,print_clothing,supplier_zaro;1;;900;GRAM;1234567890273;;
 1111111262;red;m;;;clothing;juno;master_women_blouses_deals,print_clothing,supplier_zaro;1;;800;GRAM;1234567890274;;
-1111111263;yellow;;;;clothing;minerva;master_women_shirts,supplier_mongo;1;;800;GRAM;1234567890275;;
-1111111264;black;;;;clothing;minerva;master_women_shirts,supplier_mongo;1;;800;GRAM;1234567890276;;
-1111111265;red;;;;clothing;minerva;master_women_shirts,supplier_mongo;1;;600;GRAM;1234567890277;;
-1111111266;blue;;;;clothing;minerva;master_women_shirts,supplier_mongo;1;;800;GRAM;1234567890278;;
 1111111267;brown;;410;;shoes;moccasin;master_men_shoes,print_shoes,supplier_abibas;1;;900;GRAM;1234567890279;;
 1111111268;brown;;400;;shoes;moccasin;master_men_shoes,print_shoes,supplier_abibas;1;;900;GRAM;1234567890280;;
 1111111269;brown;;390;;shoes;moccasin;master_men_shoes,print_shoes,supplier_abibas;1;;800;GRAM;1234567890281;;

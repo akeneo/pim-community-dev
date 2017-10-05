@@ -12,6 +12,7 @@
 - PIM-6348: Display a red label in the variant navigation if no variant product is complete
 - PIM-6451: Now display variant axes coming from parent as "Variant Axis" on the product edit form
 - PIM-6847: Fix variant product history
+- PIM-6867: Fix validation of variant product, now it's impossible to have a root product model as parent if there are 2 levels of variation
 
 ## Tech improvements
 
@@ -20,6 +21,10 @@
 - API-377: Get a single product model via API
 - API-379: Get a single family variant via API
 - API-380: Get a list of family variants via API
+- API-369: Get a list of variant products
+- API-370: Get a single variant product
+- API-371: Delete single variant product
+- API-372: Create a variant product
 
 ## Better manage products with variants!
 
