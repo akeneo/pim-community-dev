@@ -1,9 +1,18 @@
 # 2.0.x
 
+## Better manage products with variants!
+
+- PIM-6343: Classify product models via the edit form
+
 ## Bug Fixes
 
 - PIM-6865: Fix ACL on import profile page
 - PIM-6876: Escape u001f character to workaround a mysql bug
+
+## BC breaks
+
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template 
+
 
 # 2.0.1 (2017-10-05)
 
@@ -40,10 +49,6 @@
 - PIM-6356: Display the image of the 1st variant product created in the grid and on the PEF for product models
 - PIM-6856: List family variants created by import in a new tab "variants" in the family 
 - PIM-6797: Automatically add "unique value" and identifier attributes at the last variant product level in family variants
-
-## Better manage products with variants!
-
-- PIM-6343: Classify product models via the edit form
 
 ## Better UI\UX!
 

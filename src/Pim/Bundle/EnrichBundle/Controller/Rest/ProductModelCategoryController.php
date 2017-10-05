@@ -44,15 +44,15 @@ class ProductModelCategoryController
     }
 
     /**
-     * List categories and trees for a product
+     * List categories and trees for a product model
      *
      * @param string $id
      *
-     * @AclAncestor("pim_enrich_product_categories_view")
+     * @AclAncestor("pim_enrich_product_model_categories_view")
      *
      * @return JsonResponse
      */
-    public function listAction($id)
+    public function listAction($id): JsonResponse
     {
         $productModel = $this->findProductModelOr404($id);
         $trees = $this->productModelCategoryRepository->getItemCountByTree($productModel);
@@ -64,7 +64,7 @@ class ProductModelCategoryController
     }
 
     /**
-     * Find a product by its id or return a 404 response
+     * Find a product model by its id or return a 404 response
      *
      * @param string $id the product id
      *
@@ -72,13 +72,13 @@ class ProductModelCategoryController
      *
      * @return ProductModelInterface
      */
-    protected function findProductModelOr404($id)
+    protected function findProductModelOr404(string $id): ProductModelInterface
     {
         $productModel = $this->productModelRepository->find($id);
 
         if (null === $productModel) {
             throw new NotFoundHttpException(
-                sprintf('ProductModel with id %s could not be found.', (string) $id)
+                sprintf('Product model with ID "%s" could not be found.', $id)
             );
         }
 
@@ -90,7 +90,7 @@ class ProductModelCategoryController
      *
      * @return array
      */
-    protected function buildTrees(array $trees)
+    protected function buildTrees(array $trees): array
     {
         $result = [];
 
@@ -115,7 +115,7 @@ class ProductModelCategoryController
      *
      * @return array
      */
-    protected function buildCategories(ProductModelInterface $productModel)
+    protected function buildCategories(ProductModelInterface $productModel): array
     {
         $result = [];
 
