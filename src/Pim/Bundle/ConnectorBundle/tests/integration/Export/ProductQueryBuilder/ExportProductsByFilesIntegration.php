@@ -14,7 +14,7 @@ class ExportProductsByFilesIntegration extends AbstractExportTestCase
         $this->createProduct('product_1', [
             'values'     => [
                 'an_image' => [
-                    ['data' => $this->getFixturePath('akeneo.pdf'), 'locale' => null, 'scope' => null]
+                    ['data' => $this->getFixturePath('akeneo.png'), 'locale' => null, 'scope' => null]
                 ]
             ]
         ]);
@@ -22,7 +22,7 @@ class ExportProductsByFilesIntegration extends AbstractExportTestCase
         $this->createProduct('product_2', [
             'values'     => [
                 'an_image' => [
-                    ['data' => $this->getFixturePath('akeneo.txt'), 'locale' => null, 'scope' => null]
+                    ['data' => $this->getFixturePath('akeneo.jpg'), 'locale' => null, 'scope' => null]
                 ]
             ]
         ]);
@@ -32,7 +32,7 @@ class ExportProductsByFilesIntegration extends AbstractExportTestCase
     {
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;an_image
-product_1;;1;;;files/product_1/an_image/akeneo.pdf
+product_1;;1;;;files/product_1/an_image/akeneo.png
 
 CSV;
 
@@ -42,7 +42,7 @@ CSV;
                     [
                         'field'    => 'an_image',
                         'operator' => '=',
-                        'value'    => 'akeneo.pdf',
+                        'value'    => 'akeneo.png',
                     ],
                 ],
                 'structure' => [
@@ -59,8 +59,8 @@ CSV;
     {
         $expectedCsv = <<<CSV
 sku;categories;enabled;family;groups;an_image
-product_1;;1;;;files/product_1/an_image/akeneo.pdf
-product_2;;1;;;files/product_2/an_image/akeneo.txt
+product_1;;1;;;files/product_1/an_image/akeneo.png
+product_2;;1;;;files/product_2/an_image/akeneo.jpg
 
 CSV;
 
