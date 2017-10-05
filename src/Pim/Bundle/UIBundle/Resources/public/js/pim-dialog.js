@@ -12,7 +12,15 @@
  */
 
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/translator', 'pim/router', 'pim/template/grid/mass-actions-confirm', 'bootstrap-modal'],
+    [
+        'jquery',
+        'underscore',
+        'backbone',
+        'oro/translator',
+        'pim/router',
+        'pim/template/grid/mass-actions-confirm',
+        'bootstrap-modal'
+    ],
     function ($, _, Backbone, __, router, template) {
         'use strict';
 

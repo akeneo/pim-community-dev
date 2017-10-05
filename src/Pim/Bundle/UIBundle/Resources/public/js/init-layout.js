@@ -1,7 +1,8 @@
 'use strict';
 
 define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout',
-        'oro/delete-confirmation', 'pim/template/grid/mass-actions-confirm', 'oro/messenger', 'bootstrap', 'jquery-setup',
+        'oro/delete-confirmation', 'pim/template/grid/mass-actions-confirm',
+        'oro/messenger', 'bootstrap', 'jquery-setup'
 ], function ($, Backbone, _, __, app, mediator, layout, DeleteConfirmation, confirmModalTemplate, messenger) {
 
 
