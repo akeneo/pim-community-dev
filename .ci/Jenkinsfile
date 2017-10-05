@@ -138,7 +138,7 @@ stage("Test") {
 
                     for (i = 0; i < 10; i++) {
                         messages.add([
-                            [container: "php", script: "chmod 777 -R var/cache var/logs app/archive"],
+                          //  [container: "php", script: "chmod 777 -R var/cache var/logs app/archive"],
                             [container: "php", script: "bin/console --env=test pim:install --force"],
                             [
                                 container: "php",
@@ -160,7 +160,7 @@ stage("Test") {
                     for (i = 0; i < 10; i++) {
                         messages.add([
                             [container: "php", script: "bin/console --env=behat --quiet pim:install --force"],
-                            [container: "php", script: "chmod 777 -R var/cache var/logs app/archive"],
+                          //  [container: "php", script: "chmod 777 -R var/cache var/logs app/archive"],
                             [container: "php", script: "mkdir -m 777 -p app/build/logs/behat"],
                             [
                                 container: "php",
@@ -203,7 +203,7 @@ stage("Test") {
                     //for (scenario in scenarios) {
                     for (i = 0; i < 10; i++) {
                         messages.add([
-                            [container: "php", script: "chmod 777 -R var/cache var/logs app/archive"],
+                        //    [container: "php", script: "chmod 777 -R var/cache var/logs app/archive"],
                             [container: "php", script: "mkdir -m 777 -p app/build/logs/behat"],
                             [container: "php", script: "bin/console --env=behat --quiet pim:install --force"],
                             [
