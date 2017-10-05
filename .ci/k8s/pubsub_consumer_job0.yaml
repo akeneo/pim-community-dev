@@ -1,22 +1,22 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: JOB_NAME
+  name: test-sgl
 spec:
-  completions: JOB_COMPLETIONS
-  parallelism: 0
+  completions: 10
+  parallelism: 1
   template:
     spec:
       initContainers:
         - name: pim
-          image: PIM_IMAGE
+          image: eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-6883-build-4-ee
           command: ['sh', '-c', 'cp -Rp /pim /home/jenkins']
           imagePullPolicy: Always
           volumeMounts:
             - { mountPath: /home/jenkins, name: pim }
       containers:
         - name: mysql
-          image: eu.gcr.io/akeneo-ci/mysql:5.7-2
+          image: eu.gcr.io/akeneo-ci/mysql:5.7
           volumeMounts:
             - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
             - { name: mysql-tmpfs, mountPath: /var/lib/mysql }
@@ -112,12 +112,12 @@ spec:
             requests: {cpu: "400m", memory: "2000Mi"}
             limits: {memory: "2000Mi"}
         - name: pubsub
-          image: eu.gcr.io/akeneo-ci/gcloud:1.0.12
+          image: eu.gcr.io/akeneo-ci/gcloud:1.0.10
           command: ["/bin/sh", "-c"]
           args:
             - |
               trap "touch /tmp/pod/main-terminated" EXIT
-              gcloud.phar pubsub:message:consume SUBSCRIPTION_NAME RESULT_TOPIC
+              gcloud.phar pubsub:message:consume projects/akeneo-ci/topics/jenkins-slave-0djw8-5zhhw projects/akeneo-ci/topics/jenkins-slave-0djw8-5zhhw-result
           env:
             - { name: REDIS_URI, value: "tcp://redis.jenkins-prod:6379" }
             - { name: POD_NAME, valueFrom: { fieldRef: { fieldPath: metadata.name } } }
