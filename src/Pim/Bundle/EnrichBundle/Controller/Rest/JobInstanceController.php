@@ -14,6 +14,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\EnrichBundle\Event\JobInstanceEvents;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
@@ -90,6 +91,9 @@ class JobInstanceController
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var CollectionFilterInterface */
+    protected $inputFilter;
+
     /** @var string */
     protected $uploadTmpDir;
 
@@ -111,6 +115,7 @@ class JobInstanceController
      * @param NormalizerInterface                   $constraintViolationNormalizer
      * @param JobInstanceFactory                    $jobInstanceFactory
      * @param EventDispatcherInterface              $eventDispatcher
+     * @param CollectionFilterInterface             $inputFilter
      * @param string                                $uploadTmpDir
      */
     public function __construct(
@@ -131,6 +136,7 @@ class JobInstanceController
         NormalizerInterface $constraintViolationNormalizer,
         JobInstanceFactory $jobInstanceFactory,
         EventDispatcherInterface $eventDispatcher,
+        CollectionFilterInterface $inputFilter,
         string $uploadTmpDir
     ) {
         $this->repository            = $repository;
@@ -150,6 +156,7 @@ class JobInstanceController
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->jobInstanceFactory    = $jobInstanceFactory;
         $this->eventDispatcher       = $eventDispatcher;
+        $this->inputFilter           = $inputFilter;
         $this->uploadTmpDir          = $uploadTmpDir;
     }
 
@@ -302,7 +309,12 @@ class JobInstanceController
         }
 
         $data = json_decode($request->getContent(), true);
-        $this->updater->update($jobInstance, $data);
+        $filteredData = $this->inputFilter->filterCollection(
+            $data,
+            'pim.internal_api.job_instance.edit',
+            ['preserve_keys' => true]
+        );
+        $this->updater->update($jobInstance, $filteredData);
 
         $errors = $this->getValidationErrors($jobInstance);
         if (count($errors) > 0) {

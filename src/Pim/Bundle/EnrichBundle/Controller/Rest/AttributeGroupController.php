@@ -76,6 +76,9 @@ class AttributeGroupController
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var CollectionFilterInterface */
+    protected $inputFilter;
+
     /**
      * @param EntityRepository              $attributeGroupRepo
      * @param SearchableRepositoryInterface $attributeGroupSearchableRepository
@@ -91,6 +94,7 @@ class AttributeGroupController
      * @param SecurityFacade                $securityFacade
      * @param SimpleFactoryInterface        $attributeGroupFactory
      * @param EventDispatcherInterface      $eventDispatcher
+     * @param CollectionFilterInterface     $inputFilter
      */
     public function __construct(
         EntityRepository $attributeGroupRepo,
@@ -106,7 +110,8 @@ class AttributeGroupController
         SaverInterface $attributeSaver,
         SecurityFacade $securityFacade,
         SimpleFactoryInterface $attributeGroupFactory,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        CollectionFilterInterface $inputFilter
     ) {
         $this->attributeGroupRepo                 = $attributeGroupRepo;
         $this->attributeGroupSearchableRepository = $attributeGroupSearchableRepository;
@@ -122,6 +127,7 @@ class AttributeGroupController
         $this->securityFacade                     = $securityFacade;
         $this->attributeGroupFactory              = $attributeGroupFactory;
         $this->eventDispatcher                    = $eventDispatcher;
+        $this->inputFilter                        = $inputFilter;
     }
 
     /**
@@ -258,7 +264,12 @@ class AttributeGroupController
             $data['attributes']
         );
 
-        $this->updater->update($attributeGroup, $data);
+        $filteredData = $this->inputFilter->filterCollection(
+            $data,
+            'pim.internal_api.attribute_group.edit',
+            ['preserve_keys' => true]
+        );
+        $this->updater->update($attributeGroup, $filteredData);
 
         $violations = $this->validator->validate($attributeGroup);
 
@@ -275,8 +286,7 @@ class AttributeGroupController
 
         $attributes = $this->attributeRepository->findBy(['code' => array_keys($sortOrder)]);
         foreach ($attributes as $attribute) {
-            $data = ['sort_order' => $sortOrder[$attribute->getCode()]];
-            $this->attributeUpdater->update($attribute, $data);
+            $this->attributeUpdater->update($attribute, ['sort_order' => $sortOrder[$attribute->getCode()]]);
             $this->attributeSaver->save($attribute);
         }
 
