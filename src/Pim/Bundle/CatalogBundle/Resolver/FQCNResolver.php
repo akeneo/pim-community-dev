@@ -17,6 +17,9 @@ class FQCNResolver
     /** @var array */
     protected $classNames = [];
 
+    /** @var ContainerInterface */
+    protected $container;
+
     /**
      * @param ContainerInterface $container
      */
@@ -36,8 +39,7 @@ class FQCNResolver
     {
         try {
             $className = $this->container->getParameter(
-                sprintf('pim_catalog.entity.%s.class', $entityType),
-                ContainerInterface::NULL_ON_INVALID_REFERENCE
+                sprintf('pim_catalog.entity.%s.class', $entityType)
             );
         } catch (InvalidArgumentException $e) {
             $className = null;

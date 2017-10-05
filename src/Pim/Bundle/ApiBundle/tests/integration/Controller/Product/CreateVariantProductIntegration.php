@@ -74,7 +74,6 @@ JSON;
             'family'        => 'familyA',
             'parent'        => 'amor',
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -158,7 +157,6 @@ JSON;
             'family'        => 'familyA',
             'parent'        => 'amor',
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -433,7 +431,6 @@ JSON;
             'family'        => "familyA",
             'parent'        => 'amor',
             'groups'        => ["groupA", "groupB"],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -518,7 +515,6 @@ JSON;
             'family'        => "familyA",
             'parent'        => "amor",
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => ["categoryA", "master"],
             'enabled'       => true,
             'values'        => [
@@ -608,7 +604,6 @@ JSON;
             'family'        => "familyA",
             'parent'        => "amor",
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -697,7 +692,6 @@ JSON;
         "identifier": "product_variant_creation_product_values",
         "groups": ["groupA", "groupB"],
         "parent": "amor",
-        "variant_group": null,
         "family": "familyA",
         "categories": ["master", "categoryA"],
         "values": {
@@ -881,7 +875,6 @@ JSON;
             'family'        => 'familyA',
             'parent'        => "amor",
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => null,
             'categories'    => ['categoryA', 'master'],
             'enabled'       => true,
             'values'        => [
@@ -964,7 +957,6 @@ JSON;
             'family'        => "familyA",
             'parent'        => "amor",
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [

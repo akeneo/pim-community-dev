@@ -11,6 +11,7 @@
 - PIM-6866: Fix PQB sorter when attribute is not localizable and/or not scopable
 - PIM-6348: Display a red label in the variant navigation if no variant product is complete
 - PIM-6451: Now display variant axes coming from parent as "Variant Axis" on the product edit form
+- PIM-6847: Fix variant product history
 
 ## Tech improvements
 
