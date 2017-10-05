@@ -139,7 +139,7 @@ stage("Test") {
 
                     for (i = 0; i < 10; i++) {
                         messages.add([
-                          //  [container: "php", script: "chmod 777 -R var/cache var/logs app/archive"],
+                            [container: "php", script: "chmod 777 -R var/cache var/logs"],
                             [container: "php", script: "bin/console --env=test pim:install --force"],
                             [
                                 container: "php",
@@ -161,7 +161,8 @@ stage("Test") {
                     for (i = 0; i < 10; i++) {
                         messages.add([
                             [container: "php", script: "bin/console --env=behat --quiet pim:install --force"],
-                          //  [container: "php", script: "chmod 777 -R var/cache var/logs app/archive"],
+                            [container: "php", script: "touch var/logs/behat.log"],
+                            [container: "php", script: "chmod 777 -R var/cache var/logs"],
                             [container: "php", script: "mkdir -m 777 -p app/build/logs/behat"],
                             [
                                 container: "php",
@@ -204,9 +205,10 @@ stage("Test") {
                     //for (scenario in scenarios) {
                     for (i = 0; i < 10; i++) {
                         messages.add([
-                        //    [container: "php", script: "chmod 777 -R var/cache var/logs app/archive"],
-                            [container: "php", script: "mkdir -m 777 -p app/build/logs/behat"],
                             [container: "php", script: "bin/console --env=behat --quiet pim:install --force"],
+                            [container: "php", script: "touch var/logs/behat.log"],
+                            [container: "php", script: "chmod 777 -R var/cache var/logs"],
+                            [container: "php", script: "mkdir -m 777 -p app/build/logs/behat"],
                             [
                                 container: "php",
                                 junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
@@ -338,8 +340,6 @@ def queue(body, scale, edition) {
 
                 writeJSON file: 'output.json', json: messages
                 sh "gcloud.phar pubsub:message:publish ${NODE_NAME} output.json"
-                sh "cp output.json output_${NODE_NAME}.json"
-                archiveArtifacts allowEmptyArchive: true, artifacts: "output_${NODE_NAME}.json"
 
                 sh "sed -i 's#JOB_NAME#${NODE_NAME}#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
                 sh "sed -i 's#JOB_COMPLETIONS#${size}#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"

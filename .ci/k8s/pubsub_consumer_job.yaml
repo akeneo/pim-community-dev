@@ -19,7 +19,6 @@ spec:
           image: eu.gcr.io/akeneo-ci/mysql:5.7-2
           volumeMounts:
             - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
-            - { name: mysql-tmpfs, mountPath: /var/lib/mysql }
           env:
             - { name: MYSQL_ROOT_PASSWORD, value: root }
             - { name: MYSQL_USER, value: akeneo_pim }
@@ -133,5 +132,4 @@ spec:
         - { name: pim, emptyDir: {}}
         - { name: tmp-pod, emptyDir: {}}
         - { name: artifacts, emptyDir: {medium: Memory}}
-        - { name: mysql-tmpfs, emptyDir: {medium: Memory}}
       restartPolicy: Never
