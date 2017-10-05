@@ -78,6 +78,7 @@ stage("Build") {
                 sh "sed -i \"/PimFormatterExtension/a\\ \\ \\ \\ \\ \\ \\ \\ Liuggio\\\\\\\\Fastest\\\\\\\\Behat\\\\\\\\ListFeaturesExtension\\\\\\\\Extension: ~\" behat.yml"
                 sh "sed -i \"/contexts/i\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ filters:\" behat.yml"
                 sh "sed -i \"/filters/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ tags:\\ \\\"~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce\\\"\" behat.yml"
+                sh "sed -i \"/formatters/a\\ \\ \\ \\ \\ \\ \\ \\ pretty:\\ true\" behat.yml"
                 sh "sed -i \"s#http://akeneo#http://127.0.0.1#g\" behat.yml"
                 sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.yml"
 
