@@ -131,12 +131,13 @@ define(
             deleteItem: function () {
                 var itemCode = this.el.firstChild.innerText;
 
-                Dialog.confirm(
+                Dialog.confirmDelete(
                     __('pim_enrich.item.delete.confirm.content', {'itemName': itemCode}),
                     __('pim_enrich.item.delete.confirm.title', {'itemName': itemCode}),
                     function () {
                         this.parent.deleteItem(this);
-                    }.bind(this)
+                    }.bind(this),
+                    'Attributes'
                 );
             },
             updateItem: function () {

@@ -76,35 +76,32 @@ define(
              * @param function callback
              */
             confirm: function (content, title, callback, subTitle, buttonClass, buttonText) {
-                var deferred = $.Deferred();
+                const deferred = $.Deferred();
 
-                var success = function () {
+                const confirm = new Backbone.BootstrapModal({
+                    type: __(subTitle || ''),
+                    title: title,
+                    content: content,
+                    okText: buttonText || __('OK'),
+                    cancelText: __('Cancel'),
+                    template: this.template,
+                    buttonClass: buttonClass || 'AknButton--action'
+                });
+
+                confirm.$el.addClass('modal--fullPage');
+
+                confirm.on('ok', function () {
                     deferred.resolve();
                     (callback || $.noop)();
-                };
-                var cancel = function () {
+                });
+
+                confirm.on('cancel', function () {
+                    this.close();
+                    this.remove();
                     deferred.reject();
-                };
+                });
 
-                if (!_.isUndefined(Backbone.BootstrapModal)) {
-                    var confirm = new Backbone.BootstrapModal({
-                        type: __(subTitle || ''),
-                        title: title,
-                        content: content,
-                        okText: buttonText || __('OK'),
-                        cancelText: __('Cancel'),
-                        template: this.template,
-                        buttonClass: buttonClass || 'AknButton--apply'
-                    });
-
-                    confirm.$el.addClass('modal--fullPage');
-
-                    confirm.on('ok', success);
-                    confirm.on('cancel', cancel);
-                    confirm.open();
-                } else {
-                    (window.confirm(content) ? success : cancel)();
-                }
+                confirm.open();
 
                 return deferred.promise();
             },

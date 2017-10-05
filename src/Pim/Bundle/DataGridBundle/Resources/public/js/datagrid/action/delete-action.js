@@ -76,15 +76,14 @@ define([
              * @return {oro.Modal}
              */
             getConfirmDialog: function() {
-                if (!this.confirmModal) {
-                    const entityType = this.getEntityHint();
-                    this.confirmModal = Dialog.confirmDelete(
-                        __('confirmation.remove.' + entityType),
-                        `Delete ${entityType}`,
-                        this.doDelete.bind(this),
-                        entityType
-                    );
-                }
+                const entityType = this.getEntityHint();
+                this.confirmModal = Dialog.confirmDelete(
+                    __('confirmation.remove.' + entityType),
+                    `Delete ${entityType}`,
+                    this.doDelete.bind(this),
+                    entityType
+                );
+
                 return this.confirmModal;
             },
 

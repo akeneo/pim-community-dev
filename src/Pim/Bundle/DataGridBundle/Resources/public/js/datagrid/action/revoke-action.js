@@ -3,9 +3,9 @@ define([
         'underscore',
         'oro/translator',
         'oro/datagrid/delete-action',
-        'oro/revoke-confirmation'
+        'pim/dialog'
     ],
-    function(_, __, DeleteAction, RevokeConfirmation) {
+    function(_, __, DeleteAction, Dialog) {
         'use strict';
 
         /**
@@ -17,12 +17,15 @@ define([
          */
         return DeleteAction.extend({
             getConfirmDialog: function() {
-                if (!this.confirmModal) {
-                    this.confirmModal = new RevokeConfirmation({
-                        content: __('confirmation.remove.' + this.getEntityHint())
-                    });
-                    this.confirmModal.on('ok', _.bind(this.doDelete, this));
-                }
+                this.confirmModal = Dialog.confirm(
+                    __('confirmation.remove.' + this.getEntityHint()),
+                    __('Revoke confirmation'),
+                    this.doDelete.bind(this),
+                    'API Connections',
+                    null,
+                    __('Revoke')
+                )
+
                 return this.confirmModal;
             },
         });
