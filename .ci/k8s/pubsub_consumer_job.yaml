@@ -112,7 +112,7 @@ spec:
             requests: {cpu: "400m", memory: "2000Mi"}
             limits: {memory: "2000Mi"}
         - name: pubsub
-          image: eu.gcr.io/akeneo-ci/gcloud:1.0.9
+          image: eu.gcr.io/akeneo-ci/gcloud:1.0.10
           command: ["/bin/sh", "-c"]
           args:
             - |
