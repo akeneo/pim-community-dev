@@ -16,17 +16,10 @@ spec:
             - { mountPath: /home/jenkins, name: pim }
       containers:
         - name: mysql
-          image: mysql:5.7
-          command: ["/bin/bash", "-c"]
-          args:
-            - |
-              /usr/local/bin/docker-entrypoint.sh mysql &
-              CHILD_PID=$!
-              (while true; do if [[ -f "/tmp/pod/main-terminated" ]]; then kill $CHILD_PID; fi; sleep 1; done) &
-              wait $CHILD_PID
-              if [[ -f "/tmp/pod/main-terminated" ]]; then exit 0; fi
+          image: eu.gcr.io/akeneo-ci/mysql:5.7
           volumeMounts:
             - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
+            - { name: mysql-tmpfs, mountPath: /var/lib/mysql }
           env:
             - { name: MYSQL_ROOT_PASSWORD, value: root }
             - { name: MYSQL_USER, value: akeneo_pim }
@@ -35,8 +28,6 @@ spec:
           resources:
             requests: {cpu: "150m", memory: "1000Mi"}
             limits: {memory: "1000Mi"}
-          volumeMounts:
-            - { name: mysql-tmpfs, mountPath: /var/lib/mysql }
           readinessProbe:
             timeoutSeconds: 5
             initialDelaySeconds: 2
