@@ -11,6 +11,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
@@ -106,6 +107,10 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
 
         $parent = $item['parent'] ?? '';
         $product = $this->findOrCreateProduct($identifier, $familyCode, $item, $parent);
+
+        if ($product instanceof VariantProductInterface && null !== $product->getParent() && !isset($data['parent'])) {
+            $data['parent'] = $product->getParent()->getCode();
+        }
 
         if (false === $itemHasStatus && null !== $product->getId()) {
             unset($filteredItem['enabled']);
