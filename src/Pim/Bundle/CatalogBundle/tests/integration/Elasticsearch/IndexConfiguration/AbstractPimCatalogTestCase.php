@@ -53,7 +53,7 @@ abstract class AbstractPimCatalogTestCase extends TestCase
      *
      * @param array $products
      */
-    protected function indexProductDocuments(array $products)
+    protected function indexDocuments(array $products)
     {
         foreach ($products as $product) {
             $this->esProductClient->index(self::DOCUMENT_TYPE, $product['identifier'], $product);

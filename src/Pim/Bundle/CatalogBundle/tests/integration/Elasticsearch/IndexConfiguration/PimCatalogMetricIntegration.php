@@ -451,6 +451,6 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
             ],
         ];
 
-        $this->indexProductDocuments($products);
+        $this->indexDocuments($products);
     }
 }

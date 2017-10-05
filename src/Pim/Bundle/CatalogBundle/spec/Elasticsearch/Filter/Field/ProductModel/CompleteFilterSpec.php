@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
+namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\ProductModel;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CompletenessFilter;
+use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\ProductModel\CompleteFilter;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
 use Pim\Component\Catalog\Exception\InvalidOperatorException;
@@ -11,13 +11,13 @@ use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Prophecy\Argument;
 
-class CompletenessFilterSpec extends ObjectBehavior
+class CompleteFilterSpec extends ObjectBehavior
 {
     function let(SearchQueryBuilder $sqb)
     {
-        $this->beConstructedWith(['completeness'], [
-            'AT_LEAST_COMPLETE',
-            'AT_LEAST_INCOMPLETE',
+        $this->beConstructedWith(['complete'], [
+            'COMPLETE',
+            'INCOMPLETE',
         ]);
 
         $this->setQueryBuilder($sqb);
@@ -25,7 +25,7 @@ class CompletenessFilterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(CompletenessFilter::class);
+        $this->shouldHaveType(CompleteFilter::class);
     }
 
     function it_is_a_fieldFilter()
@@ -37,43 +37,55 @@ class CompletenessFilterSpec extends ObjectBehavior
     {
         $this->getOperators()->shouldReturn(
             [
-                'AT_LEAST_COMPLETE',
-                'AT_LEAST_INCOMPLETE',
+                'COMPLETE',
+                'INCOMPLETE',
             ]
         );
     }
 
     function it_supports_operators()
     {
-        $this->supportsOperator('AT_LEAST_COMPLETE')->shouldReturn(true);
-        $this->supportsOperator('AT_LEAST_INCOMPLETE')->shouldReturn(true);
+        $this->supportsOperator('COMPLETE')->shouldReturn(true);
+        $this->supportsOperator('INCOMPLETE')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
     function it_adds_a_complete_filter($sqb)
     {
-        $sqb->addShould(
+        $sqb->addFilter(
             [
-                ['term' => ['completeness.ecommerce.en_US' => 100]],
-                ['term' => ['at_least_complete.ecommerce.en_US' => 1]],
+                'query' => [
+                    'constant_score' => [
+                        'filter' => [
+                            'term' => [
+                                'at_least_complete.ecommerce.en_US' => 1,
+                            ],
+                        ],
+                    ],
+                ],
             ]
         )->shouldBeCalled();
 
-        $this->addFieldFilter('completeness', Operators::AT_LEAST_COMPLETE, null, 'en_US', 'ecommerce', [])
-            ->shouldReturn($this);
+        $this->addFieldFilter('completeness', Operators::AT_LEAST_COMPLETE, null, 'en_US', 'ecommerce', []);
     }
 
     function it_adds_a_incomplete_filter($sqb)
     {
-        $sqb->addShould(
+        $sqb->addFilter(
             [
-                ['range' => ['completeness.ecommerce.fr_FR' => ['lt' => 100]]],
-                ['term' => ['at_least_incomplete.ecommerce.fr_FR' => 1]],
+                'query' => [
+                    'constant_score' => [
+                        'filter' => [
+                            'term' => [
+                                'at_least_incomplete.ecommerce.en_US' => 1,
+                            ],
+                        ],
+                    ],
+                ],
             ]
         )->shouldBeCalled();
 
-        $this->addFieldFilter('completeness', Operators::AT_LEAST_INCOMPLETE, null, 'fr_FR', 'ecommerce', [])
-            ->shouldReturn($this);
+        $this->addFieldFilter('completeness', Operators::AT_LEAST_INCOMPLETE, null, 'en_US', 'ecommerce', []);
     }
 
     function it_filters_with_a_non_empty_locale()

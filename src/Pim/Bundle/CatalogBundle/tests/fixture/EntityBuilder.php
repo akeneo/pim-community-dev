@@ -1,7 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\helper;
+namespace Pim\Bundle\CatalogBundle\tests\fixture;
 
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProduct;
 use Pim\Component\Catalog\Model\VariantProductInterface;
@@ -25,6 +26,41 @@ class EntityBuilder
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $familyCode
+     * @param array  $data
+     *
+     * @return ProductInterface
+     */
+    public function createProduct(
+        string $identifier,
+        string $familyCode,
+        array $data
+    ): ProductInterface {
+        $product = $this->container->get('pim_catalog.builder.product')->createProduct($identifier, $familyCode);
+        $this->container->get('pim_catalog.updater.product')->update($product, $data);
+        $this->container->get('validator')->validate($product);
+        $this->container->get('pim_catalog.saver.product')->save($product);
+
+        return $product;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return mixed
+     */
+    public function createFamilyVariant(array $data)
+    {
+        $family = $this->container->get('pim_catalog.factory.family_variant')->create();
+        $this->container->get('pim_catalog.updater.family_variant')->update($family, $data);
+        $this->container->get('validator')->validate($family);
+        $this->container->get('pim_catalog.saver.family_variant')->save($family);
+
+        return $family;
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB\Filter;
 
-use Pim\Bundle\CatalogBundle\tests\helper\EntityBuilder;
+use Pim\Bundle\CatalogBundle\tests\fixture\EntityBuilder;
 use Pim\Bundle\CatalogBundle\tests\integration\PQB\AbstractProductAndProductModelQueryBuilderTestCase;
 use Pim\Component\Catalog\Query\Filter\Operators;
 

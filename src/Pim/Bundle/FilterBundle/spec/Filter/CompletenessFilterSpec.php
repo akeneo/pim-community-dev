@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
+namespace spec\Pim\Bundle\FilterBundle\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
