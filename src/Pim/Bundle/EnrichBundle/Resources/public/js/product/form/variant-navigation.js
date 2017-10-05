@@ -151,8 +151,15 @@ define([
                         ratio: localeCompleteness.ratio
                     };
                 } else {
-                    const completeProducts = entity.completeness.completenesses[catalogScope][catalogLocale];
+                    const completenesses = entity.completeness.completenesses;
                     const totalProducts  = entity.completeness.total;
+                    let completeProducts = 0;
+
+                    if (_.has(completenesses, catalogScope) &&
+                        _.has(completenesses[catalogScope], catalogLocale)
+                    ) {
+                        completeProducts = completenesses[catalogScope][catalogLocale];
+                    }
 
                     return {
                         ratio: (completeProducts > 0) ? Math.floor(totalProducts / completeProducts * 100) : 0,
