@@ -18,6 +18,8 @@
 - GITHUB-6639: Fix Job throwing exception, cheers @dnd-tyler!
 - GITHUB-6824: Update gitignore for web-server-bundle, cheers @xElysioN!
 - API-377: Get a single product model via API
+- API-379: Get a single family variant via API
+- API-380: Get a list of family variants via API
 
 ## Better manage products with variants!
 
