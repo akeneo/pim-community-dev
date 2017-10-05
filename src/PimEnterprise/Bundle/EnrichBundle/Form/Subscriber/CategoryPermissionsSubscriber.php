@@ -26,7 +26,7 @@ use Symfony\Component\Form\FormEvents;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  *
- * @deprecated Should be replaced by a subscriber not relying on form events
+ * @deprecated Will be removed in 2.1. Should be replaced by a subscriber not relying on form events
  *             (like PimEnterprise\Bundle\EnrichBundle\EventSubscriber\SavePermissionsSubscriber).
  *             Can be done with TIP-741.
  */

@@ -86,7 +86,7 @@ class SavePermissionsSubscriber implements EventSubscriberInterface
 
         $this->attributeGroupAccessManager->setAccess(
             $attributeGroup,
-            $this->getGroups($data['permissions']['execute']),
+            $this->getGroups($data['permissions']['view']),
             $this->getGroups($data['permissions']['edit'])
         );
     }

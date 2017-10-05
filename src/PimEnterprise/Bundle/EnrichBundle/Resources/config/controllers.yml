@@ -152,4 +152,5 @@ services:
             - '@pim_enrich.normalizer.violation'
             - '@akeneo_batch.job_instance_factory'
             - '@event_dispatcher'
+            - '@pim_catalog.filter.chained'
             - '%upload_tmp_dir%'
