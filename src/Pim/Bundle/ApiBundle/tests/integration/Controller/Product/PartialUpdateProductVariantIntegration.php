@@ -1576,7 +1576,6 @@ JSON;
     {
         "identifier": "apollon_optionb_false",
         "groups": ["groupA", "groupB"],
-        "variant_group": null,
         "family": "familyA",
         "categories": ["master", "categoryA"],
         "values": {
@@ -1664,7 +1663,6 @@ JSON;
             'family'        => 'familyA',
             'parent'        => "amor",
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => null,
             'categories'    => ['categoryA', 'master'],
             'enabled'       => true,
             'values'        => [
