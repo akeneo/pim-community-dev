@@ -17,12 +17,12 @@ use Pim\Component\Catalog\Model\FamilyVariantInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddUniqueAttributesToVariantProductAttributeSet
+class AddUniqueAttributes
 {
     /**
      * @param FamilyVariantInterface $familyVariant
      */
-    public function addUniqueAttributesToFamilyVariant(FamilyVariantInterface $familyVariant)
+    public function addToFamilyVariant(FamilyVariantInterface $familyVariant)
     {
         $familyUniqueAttributes = $this->getFamilyUniqueAttributes($familyVariant->getFamily());
 

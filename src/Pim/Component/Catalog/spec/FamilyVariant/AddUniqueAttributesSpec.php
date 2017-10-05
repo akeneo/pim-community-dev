@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog\FamilyVariant;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\FamilyVariant\AddUniqueAttributesToVariantProductAttributeSet;
+use Pim\Component\Catalog\FamilyVariant\AddUniqueAttributes;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -12,11 +12,11 @@ use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Prophecy\Argument;
 
-class AddUniqueAttributesToVariantProductAttributeSetSpec extends ObjectBehavior
+class AddUniqueAttributesSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(AddUniqueAttributesToVariantProductAttributeSet::class);
+        $this->shouldHaveType(AddUniqueAttributes::class);
     }
 
     function it_adds_unique_attributes_for_family_variant(
@@ -65,6 +65,6 @@ class AddUniqueAttributesToVariantProductAttributeSetSpec extends ObjectBehavior
 
         $variantAttributeSet->addAttribute($ean)->shouldBeCalled();
 
-        $this->addUniqueAttributesToFamilyVariant($familyVariant);
+        $this->addToFamilyVariant($familyVariant);
     }
 }

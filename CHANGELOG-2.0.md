@@ -9,6 +9,7 @@
 - PIM-6861: Correctly display a product model if it has no product children
 - PIM-6862: Save products on "pim:completeness:calculate" command
 - PIM-6866: Fix PQB sorter when attribute is not localizable and/or not scopable
+- PIM-6847: Fix variant product history
 
 ## Tech improvements
 

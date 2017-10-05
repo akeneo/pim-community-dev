@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Component\Catalog\FamilyVariant\AddUniqueAttributesToVariantProductAttributeSet;
+use Pim\Component\Catalog\FamilyVariant\AddUniqueAttributes;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -24,13 +24,13 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class AddUniqueAttributesToVariantProductAttributeSetSubscriber implements EventSubscriberInterface
 {
-    /** @var AddUniqueAttributesToVariantProductAttributeSet */
+    /** @var AddUniqueAttributes */
     private $addUniqueAttributes;
 
     /**
-     * @param AddUniqueAttributesToVariantProductAttributeSet $addUniqueAttributes
+     * @param AddUniqueAttributes $addUniqueAttributes
      */
-    public function __construct(AddUniqueAttributesToVariantProductAttributeSet $addUniqueAttributes)
+    public function __construct(AddUniqueAttributes $addUniqueAttributes)
     {
         $this->addUniqueAttributes = $addUniqueAttributes;
     }
@@ -51,7 +51,7 @@ class AddUniqueAttributesToVariantProductAttributeSetSubscriber implements Event
         $subject = $event->getSubject();
 
         if ($subject instanceof FamilyVariantInterface) {
-            $this->addUniqueAttributes->addUniqueAttributesToFamilyVariant($subject);
+            $this->addUniqueAttributes->addToFamilyVariant($subject);
         }
 
         if ($subject instanceof FamilyInterface) {
@@ -61,7 +61,7 @@ class AddUniqueAttributesToVariantProductAttributeSetSubscriber implements Event
             }
 
             foreach ($familyVariants as $familyVariant) {
-                $this->addUniqueAttributes->addUniqueAttributesToFamilyVariant($familyVariant);
+                $this->addUniqueAttributes->addToFamilyVariant($familyVariant);
             }
         }
     }
