@@ -113,7 +113,7 @@ spec:
             limits: {memory: "2000Mi"}
         - name: pubsub
           image: eu.gcr.io/akeneo-ci/gcloud:1.0.9
-          command: ["/bin/bash", "-c"]
+          command: ["/bin/sh", "-c"]
           args:
             - |
               trap "touch /tmp/pod/main-terminated" EXIT
