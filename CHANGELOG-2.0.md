@@ -20,6 +20,10 @@
 - API-377: Get a single product model via API
 - API-379: Get a single family variant via API
 - API-380: Get a list of family variants via API
+- API-369: Get a list of variant products
+- API-370: Get a single variant product
+- API-371: Delete single variant product
+- API-372: Create a variant product
 
 ## Better manage products with variants!
 
