@@ -16,7 +16,7 @@ spec:
             - { mountPath: /home/jenkins, name: pim }
       containers:
         - name: mysql
-          image: eu.gcr.io/akeneo-ci/mysql:5.7
+          image: eu.gcr.io/akeneo-ci/mysql:5.7-1
           volumeMounts:
             - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
             - { name: mysql-tmpfs, mountPath: /var/lib/mysql }
@@ -112,7 +112,7 @@ spec:
             requests: {cpu: "400m", memory: "2000Mi"}
             limits: {memory: "2000Mi"}
         - name: pubsub
-          image: eu.gcr.io/akeneo-ci/gcloud:1.0.10
+          image: eu.gcr.io/akeneo-ci/gcloud:1.0.11
           command: ["/bin/sh", "-c"]
           args:
             - |
