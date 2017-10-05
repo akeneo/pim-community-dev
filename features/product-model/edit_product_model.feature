@@ -67,3 +67,13 @@ Feature: Edit a product model
     When I edit the "amor" product model
     And I visit the "Marketing" group
     Then the product Model name should be "Heritage jacket navy"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6816
+  Scenario: Successfully display a validation error message
+    Given I am logged in as "Mary"
+    And I am on the "amor" product model page
+    And I visit the "ERP" group
+    And I change the Price to "foobar USD"
+    When I press the "Save" button
+    Then I should see validation tooltip "This value should be a valid number."
+    And there should be 1 error in the "ERP" tab
