@@ -9,6 +9,8 @@
 - PIM-6861: Correctly display a product model if it has no product children
 - PIM-6862: Save products on "pim:completeness:calculate" command
 - PIM-6866: Fix PQB sorter when attribute is not localizable and/or not scopable
+- PIM-6348: Display a red label in the variant navigation if no variant product is complete
+- PIM-6451: Now display variant axes coming from parent as "Variant Axis" on the product edit form
 - PIM-6847: Fix variant product history
 
 ## Tech improvements
@@ -19,7 +21,10 @@
 
 ## Better manage products with variants!
 
-- PIM-6797: Automatically add "unique value" and identifier attributes at the last variant product level.
+- PIM-6343: Classify product models by import and export product models with their categories
+- PIM-6356: Display the image of the 1st variant product created in the grid and on the PEF for product models
+- PIM-6856: List family variants created by import in a new tab "variants" in the family 
+- PIM-6797: Automatically add "unique value" and identifier attributes at the last variant product level in family variants
 
 ## Better UI\UX!
 
@@ -27,13 +32,12 @@
 - PIM-6839: Fix the design for large titles
 - PIM-6595: Add missing breadcrumb or user navigation on every page
 - PIM-6841: Add custom pictures for entities creation
-- PIM-6356: Display 1st variant product image in the grid and on the PEF for product models
-- PIM-6348: Display a red label in the variant navigation if no product is complete
-- PIM-6451: Now display variant axes coming from parent as "Variant Axis" on the product edit form
 - PIM-6832: Fix the column category display when category node is expanded
 - PIM-6835: CSS Glitch compilation
 - PIM-6853: Remove the checkboxes from the attributes grids
 - PIM-6534: Move the user status to context dropzone
+- PIM-6537: Wrong display of Role / Permission
+- PIM-6618: Edit attribute options icons
 
 ## BC breaks
 
