@@ -2,9 +2,9 @@
 
 ## Bug Fixes
 
-- [BC BREAK] PIM-6446: fix variant family code uniqueness. Beware, this changes the MySQL table.
+- PIM-6446: fix variant family code uniqueness
 - GITHUB-6866: Fix the QueryProductCommand, cheers @LeoBenoist!
-- API-393: Add prefix "akeno:batch" to the command "publish-job-to-queue"
+- API-393: Add prefix "akeneo:batch" to the command "publish-job-to-queue"
 - PIM-6843: Update delete buttons in category, user, role and group pages
 - PIM-6861: Correctly display a product model if it has no product children
 - PIM-6862: Save products on "pim:completeness:calculate" command
@@ -40,6 +40,10 @@
 - Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer` to add `Pim\Component\Catalog\ProductModel\ImageAsLabel`
 - Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer` to add `Pim\Component\Catalog\ProductModel\ImageAsLabel`
 - Rename `Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxesValidator` to `Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxisValidator`
+- PIM-6446: fix variant family code uniqueness, beware, this changes the MySQL table
+
+## Remove dead code (Variant Group Feature)
+
 - Rename `Pim\Bundle\EnrichBundle\Controller\Rest\ProductTemplateController` to `Pim\Bundle\EnrichBundle\Controller\Rest\ValueController`
 - Remove class `Pim\Bundle\VersioningBundle\Normalizer\Flat\ProxyGroupNormalizer`
 - Remove class `Pim\Component\Catalog\Normalizer\Standard\ProxyGroupNormalizer`
