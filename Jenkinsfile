@@ -1,7 +1,7 @@
 #!groovy
 
 String features = "features,vendor/akeneo/pim-community-dev/features"
-String ceBranch = "dev-master"
+String ceBranch = "2.0.x-dev"
 String ceOwner = "akeneo"
 String phpVersion = "7.1"
 String launchUnitTests = "yes"
@@ -15,7 +15,7 @@ stage("Checkout") {
     milestone 1
     if (env.BRANCH_NAME =~ /^PR-/) {
         userInput = input(message: 'Launch tests?', parameters: [
-            string(defaultValue: 'dev-master', description: 'Community Edition branch used for the build', name: 'ce_branch'),
+            string(defaultValue: '2.0.x-dev', description: 'Community Edition branch used for the build', name: 'ce_branch'),
             string(defaultValue: 'akeneo', description: 'Owner of the repository on GitHub', name: 'ce_owner'),
             choice(choices: 'yes\nno', description: 'Run unit tests and code style checks', name: 'launchUnitTests'),
             choice(choices: 'yes\nno', description: 'Run integration tests', name: 'launchIntegrationTests'),
