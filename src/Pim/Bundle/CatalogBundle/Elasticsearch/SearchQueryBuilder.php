@@ -118,20 +118,24 @@ class SearchQueryBuilder
 
         $searchQuery = [
             '_source' => $source,
-            'query'   => [],
+            'query'   => [
+                'constant_score' => [
+                    'filter' => [],
+                ],
+            ],
         ];
 
         if (!empty($this->filterClauses)) {
-            $searchQuery['query']['bool']['filter'] = $this->filterClauses;
+            $searchQuery['query']['constant_score']['filter']['bool']['filter'] = $this->filterClauses;
         }
 
         if (!empty($this->mustNotClauses)) {
-            $searchQuery['query']['bool']['must_not'] = $this->mustNotClauses;
+            $searchQuery['query']['constant_score']['filter']['bool']['must_not'] = $this->mustNotClauses;
         }
 
         if (!empty($this->shouldClauses)) {
-            $searchQuery['query']['bool']['should'] = $this->shouldClauses;
-            $searchQuery['query']['bool']['minimum_should_match'] = 1;
+            $searchQuery['query']['constant_score']['filter']['bool']['should'] = $this->shouldClauses;
+            $searchQuery['query']['constant_score']['filter']['bool']['minimum_should_match'] = 1;
         }
 
         if (!empty($this->sortClauses)) {
