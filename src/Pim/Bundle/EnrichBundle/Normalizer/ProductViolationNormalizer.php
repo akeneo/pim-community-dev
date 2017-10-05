@@ -8,6 +8,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
 /**
+ * TODO: This normalizer should be reworked and splitted in smaller normalizers
+ *       with more restrictive support constraints.
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -45,8 +48,8 @@ class ProductViolationNormalizer implements NormalizerInterface
         }
 
         if (1 === preg_match('|^values\[(?P<attribute>[a-z0-9-_\<\>]+)|i', $propertyPath, $matches)) {
-            if (!isset($context['product'])) {
-                throw new \InvalidArgumentException('Expects a product context');
+            if (!isset($context['product']) && !isset($context['productModel'])) {
+                throw new \InvalidArgumentException('Expects a product or product model context');
             }
 
             $attribute = explode('-', $matches['attribute']);
@@ -71,8 +74,8 @@ class ProductViolationNormalizer implements NormalizerInterface
         }
 
         if (0 === strpos($propertyPath, 'values[')) {
-            if (!isset($context['product'])) {
-                throw new \InvalidArgumentException('Expects a product context');
+            if (!isset($context['product']) && !isset($context['productModel'])) {
+                throw new \InvalidArgumentException('Expects a product or product model context');
             }
 
             $codeStart = strpos($propertyPath, '[') + 1;

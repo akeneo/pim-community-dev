@@ -13,6 +13,7 @@
 - PIM-6451: Now display variant axes coming from parent as "Variant Axis" on the product edit form
 - PIM-6847: Fix variant product history
 - PIM-6867: Fix validation of variant product, now it's impossible to have a root product model as parent if there are 2 levels of variation
+- PIM-6816: Add validation error messages on product model edit form
 
 ## Tech improvements
 
