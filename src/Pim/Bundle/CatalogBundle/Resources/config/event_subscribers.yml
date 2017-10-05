@@ -1,5 +1,4 @@
 parameters:
-    pim_catalog.event_subscriber.product_template_attribute.class: Pim\Bundle\CatalogBundle\EventSubscriber\ProductTemplateAttributeSubscriber
     pim_catalog.event_subscriber.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventSubscriber\CreateAttributeRequirementSubscriber
     pim_catalog.event_subscriber.localizable.class: Pim\Bundle\CatalogBundle\EventSubscriber\LocalizableSubscriber
     pim_catalog.event_subscriber.scopable.class: Pim\Bundle\CatalogBundle\EventSubscriber\ScopableSubscriber
@@ -13,6 +12,7 @@ parameters:
     pim_catalog.event_subscriber.index_product_models.class: Pim\Bundle\CatalogBundle\EventSubscriber\IndexProductModelsSubscriber
     pim_catalog.event_subscriber.compute_product_model_descendants.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeProductModelDescendantsSubscriber
     pim_catalog.event_subscriber.add_unique_attributes_to_variant_product_attribute_set.class: Pim\Bundle\CatalogBundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber
+    pim_catalog.event_subscriber.product.class: Pim\Bundle\CatalogBundle\EventSubscriber\ProductSubscriber
     pim_catalog.event_subscriber.compute_completeness_on_family_update.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber
 
 services:
@@ -112,6 +112,12 @@ services:
         class: '%pim_catalog.event_subscriber.add_unique_attributes_to_variant_product_attribute_set.class%'
         arguments:
             - '@pim_catalog.family_variant.add_unique_attributes'
+        tags:
+            - { name: kernel.event_subscriber }
+    pim_catalog.event_subscriber.product:
+        class: '%pim_catalog.event_subscriber.product.class%'
+        arguments:
+            - '@pim_catalog.elasticsearch.indexer.product_model'
         tags:
             - { name: kernel.event_subscriber }
 

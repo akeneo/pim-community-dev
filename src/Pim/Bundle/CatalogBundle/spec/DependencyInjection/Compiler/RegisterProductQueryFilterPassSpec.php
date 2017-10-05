@@ -5,27 +5,33 @@ namespace spec\Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\RegisterProductQueryFilterPass;
 use Prophecy\Argument;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
 class RegisterProductQueryFilterPassSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith('product');
+    }
+
     function it_is_a_compiler_pass()
     {
-        $this->shouldHaveType('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface');
+        $this->shouldHaveType(CompilerPassInterface::class);
     }
 
     function it_adds_tagged_filters_to_the_filter_registry(
         ContainerBuilder $container,
         Definition $registryDefinition
     ) {
-        $container->hasDefinition(RegisterProductQueryFilterPass::QUERY_FILTER_REGISTRY)
+        $container->hasDefinition('pim_catalog.query.filter.product_registry')
             ->willReturn(true);
 
-        $container->getDefinition(RegisterProductQueryFilterPass::QUERY_FILTER_REGISTRY)
+        $container->getDefinition('pim_catalog.query.filter.product_registry')
             ->willReturn($registryDefinition);
 
-        $container->findTaggedServiceIds(RegisterProductQueryFilterPass::QUERY_FILTER_TAG)
+        $container->findTaggedServiceIds('pim_catalog.elasticsearch.query.product_filter')
             ->willReturn(['filterId' => [['priority' => '22']]]);
 
         $registryDefinition->addMethodCall('register', Argument::any())->shouldBeCalled();

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FilterBundle\Filter\Product;
+namespace Pim\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
@@ -21,24 +21,20 @@ class CompletenessFilter extends BooleanFilter
      */
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
-        $data = $this->parseData($data);
+        $data = $this->parseData($data); // marche pas!
         if (!$data) {
             return false;
         }
 
         switch ($data['value']) {
             case BooleanFilterType::TYPE_YES:
-                $operator = Operators::EQUALS;
-                $value = 100;
+                $this->util->applyFilter($ds, 'completeness', Operators::AT_LEAST_COMPLETE, null);
                 break;
             case BooleanFilterType::TYPE_NO:
-            default:
-                $operator = Operators::LOWER_THAN;
-                $value = 100;
+                $this->util->applyFilter($ds, 'completeness', Operators::AT_LEAST_INCOMPLETE, null);
                 break;
         }
 
-        $this->util->applyFilter($ds, 'completeness', $operator, $value);
 
         return true;
     }

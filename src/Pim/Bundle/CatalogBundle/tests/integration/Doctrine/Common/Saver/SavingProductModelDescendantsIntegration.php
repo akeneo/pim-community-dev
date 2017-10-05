@@ -5,7 +5,7 @@ namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Bundle\CatalogBundle\tests\helper\EntityBuilder;
+use Pim\Bundle\CatalogBundle\tests\fixture\EntityBuilder;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**

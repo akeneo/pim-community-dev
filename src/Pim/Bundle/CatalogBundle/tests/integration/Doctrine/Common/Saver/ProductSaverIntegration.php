@@ -37,7 +37,7 @@ class ProductSaverIntegration extends TestCase
 
     public function testRawValuesForVariantProduct()
     {
-        $productModel = $this->createProductModel('just-a-product-model');
+        $productModel = $this->createProductModel('just-a-product-model', 'familyVariantA1');
         $this->updateProductModel($productModel, $this->getStandardValuesWithDifferentFewAttributes());
         $this->saveProductModel($productModel);
 
@@ -98,10 +98,13 @@ class ProductSaverIntegration extends TestCase
      *
      * @return ProductModelInterface
      */
-    private function createProductModel(string $identifier): ProductModelInterface
+    private function createProductModel(string $identifier, string $familyVariantCode): ProductModelInterface
     {
+        $familyVariant = $this->get('pim_api.repository.family_variant')->findOneByIdentifier($familyVariantCode);
+        
         $model = new ProductModel();
         $model->setCode($identifier);
+        $model->setFamilyVariant($familyVariant);
 
         return $model;
     }

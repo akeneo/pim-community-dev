@@ -6,28 +6,30 @@ Feature: Filter products
 
   Background:
     Given the "footwear" catalog configuration
+    And the following family:
+      | code   | attributes             | requirements-tablet |
+      | family | color,description,name | color,name          |
+    And the following family variants:
+      | code           | family | variant-axes_1 | variant-attributes_1 |
+      | family_variant | family | color          | description          |
+    And the following root product models:
+      | code               | family_variant | name-en_US |
+      | code-product-model | family_variant | name       |
     And the following products:
-      | sku     | family | name-en_US    | price             | size | color |
-      | BOOTBXS | boots  | Boot 42 Black | 10.00 USD, 10 EUR | 42   | black |
-      | BOOTWXS | boots  | Boot 42 Black | 10.00 USD, 10 EUR | 42   |       |
-      | BOOTBS  | boots  |               |                   | 38   | black |
-      | BOOTBL  | boots  |               |                   |      |       |
-      | BOOTRXS | boots  | Boot 42 Red   |                   |      |       |
+      | sku      | family | parent             | color |
+      | product1 | family | code-product-model | black |
+      | product2 | family | code-product-model | red   |
+      | product3 | family |                    | black |
     And I launched the completeness calculator
     And I am logged in as "Mary"
     And I am on the products grid
+    And I switch the locale to "en_US"
+    And I switch the scope to "tablet"
 
-  Scenario: Successfully filter uncomplete products
-    And I filter by "completeness" with operator "" and value "no"
-    Then the grid should contain 5 elements
-    And I should see products BOOTBXS, BOOTWXS, BOOTBS, BOOTBL, BOOTRXS
-    And I switch the scope to "Mobile"
-    Then the grid should contain 4 elements
-    And I should see products BOOTWXS, BOOTBS, BOOTBL, BOOTRXS
+  Scenario: Filter incomplete products and product model
+    When I filter by "completeness" with operator "" and value "no"
+    Then I should see products product3
 
   Scenario: Successfully filter complete products
-    And I filter by "completeness" with operator "" and value "yes"
-    Then the grid should contain 0 elements
-    And I switch the scope to "Mobile"
-    Then the grid should contain 1 elements
-    And I should see products BOOTBXS
+    When I filter by "completeness" with operator "" and value "yes"
+    Then I should see products code-product-model

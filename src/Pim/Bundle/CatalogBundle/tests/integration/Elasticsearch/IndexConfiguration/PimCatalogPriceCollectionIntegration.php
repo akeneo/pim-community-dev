@@ -419,6 +419,6 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
             ],
         ];
 
-        $this->indexProductDocuments($products);
+        $this->indexDocuments($products);
     }
 }

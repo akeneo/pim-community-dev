@@ -360,6 +360,6 @@ class PimCatalogFamilyIntegration extends AbstractPimCatalogTestCase
             ],
         ];
 
-        $this->indexProductDocuments($products);
+        $this->indexDocuments($products);
     }
 }
