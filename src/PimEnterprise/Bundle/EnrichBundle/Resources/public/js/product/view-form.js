@@ -12,14 +12,18 @@ define(
         'underscore',
         'backbone',
         'pim/form/common/edit-form',
-        'pim/form'
+        'pim/form',
+        'pim/page-title',
+        'pim/user-context'
     ],
     function (
         $,
         _,
         Backbone,
         EditForm,
-        BaseForm
+        BaseForm,
+        PageTitle,
+        UserContext
     ) {
         return EditForm.extend({
             /**
