@@ -173,7 +173,7 @@ define(
                             type: '',
                             title: title,
                             content: message,
-                            okClass: 'AknButton--important',
+                            buttonClass: 'AknButton--important',
                             okText: '',
                             template
                         }).on('ok', this.doAction);

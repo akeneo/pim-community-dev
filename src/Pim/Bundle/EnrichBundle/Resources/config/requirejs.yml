@@ -542,7 +542,6 @@ config:
         oro/translator:                     pimenrich/js/translator
         pim/common/property:                pimenrich/js/common/property
         pim/common/select2/family:          pimenrich/js/common/select2/family
-        pim/confirmation-modal:             pimenrich/js/confirmation-modal
 
         # Security
         pim/security-context: pimenrich/js/security-context

@@ -1,21 +1,22 @@
+/**
+ * Dialog class purposes an easier way to call ModalDialog components
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @uses Backbone.BootstrapModal
+ *
+ * Example:
+ *      Dialog.alert('{{ 'MyMessage'|trans }}', 'MyTitle');
+ */
+
 define(
     ['jquery', 'underscore', 'backbone', 'oro/translator', 'pim/router', 'pim/template/grid/mass-actions-confirm', 'bootstrap-modal'],
     function ($, _, Backbone, __, router, template) {
         'use strict';
 
-        /**
-         * Dialog class purposes an easier way to call ModalDialog components
-         *
-         * @author    Romain Monceau <romain@akeneo.com>
-         * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
-         * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
-         *
-         * @uses Backbone.BootstrapModal
-         *
-         * Example:
-         *      Dialog.alert('{{ 'MyMessage'|trans }}', 'MyTitle');
-         */
-        return {
+        const Dialog = {
             template: _.template(template),
             /**
              * Open a modal dialog without cancel button
@@ -67,16 +68,6 @@ define(
                 }
             },
 
-            getButtonType: function (type) {
-              switch (type) {
-                case 'delete':
-                  return 'AknButton--important'
-                  break;
-                default:
-                  return ''
-              }
-            },
-
             /**
              * Open a confirm modal dialog to validate the action made by user
              * If user validate its action, a js callback function is called
@@ -84,7 +75,7 @@ define(
              * @param string title
              * @param function callback
              */
-            confirm: function (content, title, callback, buttonType) {
+            confirm: function (content, title, callback, subTitle, buttonClass, buttonText) {
                 var deferred = $.Deferred();
 
                 var success = function () {
@@ -94,18 +85,20 @@ define(
                 var cancel = function () {
                     deferred.reject();
                 };
+
                 if (!_.isUndefined(Backbone.BootstrapModal)) {
                     var confirm = new Backbone.BootstrapModal({
-                        type: '',
+                        type: subTitle || '',
                         title: title,
                         content: content,
-                        okText: __('OK'),
+                        okText: buttonText || __('OK'),
                         cancelText: __('Cancel'),
                         template: this.template,
-                        okClass: this.getButtonType(buttonType)
+                        buttonClass: buttonClass || 'AknButton--apply'
                     });
 
                     confirm.$el.addClass('modal--fullPage');
+
                     confirm.on('ok', success);
                     confirm.on('cancel', cancel);
                     confirm.open();
@@ -114,7 +107,20 @@ define(
                 }
 
                 return deferred.promise();
+            },
+
+            confirmDelete: function(content, title, callback, subTitle) {
+                return Dialog.confirm.apply(this, [
+                    content,
+                    title,
+                    callback,
+                    subTitle,
+                    'AknButton--important',
+                    __('Delete')
+                ]);
             }
         };
+
+        return Dialog;
     }
 );

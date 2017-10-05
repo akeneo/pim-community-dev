@@ -21,7 +21,7 @@ function (_, __, Modal, confirmModalTemplate) {
                 cancelText: __('Cancel'),
                 template: this.confirmModalTemplate,
                 type: '',
-                okClass: 'AknButton--important'
+                buttonClass: 'AknButton--important'
             }, options);
 
             arguments[0] = options;

@@ -16,8 +16,7 @@ define(
         'pim/router',
         'oro/loading-mask',
         'oro/messenger',
-        'pim/dialog',
-        'pim/template/grid/mass-actions-confirm'
+        'pim/dialog'
     ],
     function (
         Backbone,
@@ -28,8 +27,7 @@ define(
         router,
         LoadingMask,
         messenger,
-        Dialog,
-        confirmModalTemplate
+        Dialog
     ) {
         return BaseForm.extend({
             tagName: 'button',
@@ -37,7 +35,6 @@ define(
             className: 'AknDropdown-menuLink delete',
 
             template: _.template(template),
-            confirmModalTemplate: _.template(confirmModalTemplate),
 
             events: {
                 'click': 'delete'
@@ -62,7 +59,8 @@ define(
                         title: 'confirmation.remove.item',
                         content: 'pim_enrich.confirmation.delete_item',
                         success: 'flash.item.removed',
-                        fail: 'error.removing.item'
+                        fail: 'error.removing.item',
+                        subTitle: ''
                     },
                     redirect: 'oro_default'
                 }, meta.config);
@@ -82,18 +80,12 @@ define(
              * Open a dialog to ask the user to confirm the deletion
              */
             delete: function () {
-                const modal = new Backbone.BootstrapModal({
-                    type: '',
-                    title: __(this.config.trans.content),
-                    content: __(this.config.trans.title),
-                    okClass: 'AknButton--important',
-                    okText: 'Delete',
-                    template: this.confirmModalTemplate
-                }).on('ok', this.doDelete.bind(this));
-
-                modal.open();
-
-                modal.$el.addClass('modal--fullPage');
+                return Dialog.confirmDelete(
+                    __(this.config.trans.title),
+                    __(this.config.trans.content),
+                    this.doDelete.bind(this),
+                    __(this.config.trans.subTitle)
+                );
             },
 
             /**
