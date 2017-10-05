@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\Product;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
@@ -61,14 +60,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
      */
     protected function getConfiguration()
     {
-        $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
-
-        return new Configuration(
-            [
-                Configuration::getTechnicalCatalogPath(),
-                $rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'technical'
-            ]
-        );
+        return $this->catalog->useTechnicalCatalog();
     }
 
     /**
