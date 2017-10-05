@@ -8,7 +8,6 @@
  */
 define(
     [
-        'backbone',
         'underscore',
         'oro/translator',
         'pim/form',
@@ -19,7 +18,6 @@ define(
         'pim/dialog'
     ],
     function (
-        Backbone,
         _,
         __,
         BaseForm,
