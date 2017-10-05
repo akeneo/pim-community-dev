@@ -3,13 +3,13 @@ define([
         'underscore',
         'oro/messenger',
         'oro/translator',
-        'oro/delete-confirmation',
+        'pim/dialog',
         'oro/modal',
         'oro/datagrid/model-action',
         'oro/mediator',
         'pim/user-context'
     ],
-    function(_, messenger, __, DeleteConfirmation, Modal, ModelAction, mediator, userContext) {
+    function(_, messenger, __, Dialog, Modal, ModelAction, mediator, userContext) {
         'use strict';
 
         /**
@@ -46,7 +46,7 @@ define([
              * Execute delete model
              */
             execute: function() {
-                this.getConfirmDialog().open();
+                this.getConfirmDialog();
             },
 
             /**
@@ -77,11 +77,13 @@ define([
              */
             getConfirmDialog: function() {
                 if (!this.confirmModal) {
-                    this.confirmModal = new DeleteConfirmation({
-                        content: __('confirmation.remove.' + this.getEntityHint()),
-                        type: this.getEntityHint()
-                    });
-                    this.confirmModal.on('ok', _.bind(this.doDelete, this));
+                    const entityType = this.getEntityHint();
+                    this.confirmModal = Dialog.confirmDelete(
+                        __('confirmation.remove.' + entityType),
+                        `Delete ${entityType}`,
+                        this.doDelete.bind(this),
+                        entityType
+                    );
                 }
                 return this.confirmModal;
             },

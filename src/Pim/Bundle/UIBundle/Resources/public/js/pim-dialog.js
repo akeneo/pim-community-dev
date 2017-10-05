@@ -88,7 +88,7 @@ define(
 
                 if (!_.isUndefined(Backbone.BootstrapModal)) {
                     var confirm = new Backbone.BootstrapModal({
-                        type: subTitle || '',
+                        type: __(subTitle || ''),
                         title: title,
                         content: content,
                         okText: buttonText || __('OK'),

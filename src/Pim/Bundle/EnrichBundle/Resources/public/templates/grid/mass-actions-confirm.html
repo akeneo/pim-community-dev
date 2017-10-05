@@ -6,15 +6,17 @@
         <div class="AknFullPage-right">
             <div class="AknFullPage-subTitle"><%- type %></div>
             <div class="AknFullPage-title"><%- title %></div>
-            <div class="AknFullPage-description">
+            <div class="AknFullPage-description AknFullPage-description--bottom">
                 <%- content %>
             </div>
-            <button class="AknButton AknButton--grey cancel %>">
-                Cancel
-            </button>
-            <button class="AknButton <%- buttonClass %> ok %>">
-                <%- okText %>
-            </button>
+            <div class="AknButtonList">
+                <button class="AknButtonList-item AknButton AknButton--grey cancel %>">
+                    Cancel
+                </button>
+                <button class="AknButtonList-item AknButton <%- buttonClass %> ok %>">
+                    <%- okText %>
+                </button>
+            </div>
         </div>
     </div>
 </div>

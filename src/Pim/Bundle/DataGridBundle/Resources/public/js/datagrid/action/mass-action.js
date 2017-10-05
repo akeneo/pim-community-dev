@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/datagrid/abstract-action', 'pim/template/grid/mass-actions-confirm'],
-function(_, messenger, __, Modal, AbstractAction, confirmModalTemplate) {
+define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/datagrid/abstract-action', 'pim/dialog'],
+function(_, messenger, __, Modal, AbstractAction, Dialog) {
     'use strict';
 
     /**
@@ -11,8 +11,6 @@ function(_, messenger, __, Modal, AbstractAction, confirmModalTemplate) {
      * @extends oro.datagrid.AbstractAction
      */
     return AbstractAction.extend({
-        confirmModalTemplate: _.template(confirmModalTemplate),
-
         /** @property {Object} */
         defaultMessages: {
             confirm_title: __('Mass Action Confirmation'),
@@ -163,7 +161,7 @@ function(_, messenger, __, Modal, AbstractAction, confirmModalTemplate) {
          */
         getConfirmDialog: function(callback) {
             const modal = new Modal({
-                type: this.messages.confirm_type,
+                subTitle: this.messages.confirm_type,
                 title: this.messages.confirm_title,
                 content: this.messages.confirm_content,
                 buttonClass: `${this.className} ok`,
