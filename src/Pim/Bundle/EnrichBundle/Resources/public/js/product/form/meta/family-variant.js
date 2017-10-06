@@ -51,13 +51,15 @@ define(
                 const familyVariant = entity.meta.family_variant;
                 let label = __('pim_enrich.entity.product.meta.family_variant.none');
 
-                if (null !== familyVariant) {
-                    label = i18n.getLabel(
-                        familyVariant.labels,
-                        UserContext.get('catalogLocale'),
-                        entity.family_variant
-                    );
+                if (null === familyVariant) {
+                    return this;
                 }
+
+                label = i18n.getLabel(
+                    familyVariant.labels,
+                    UserContext.get('catalogLocale'),
+                    entity.family_variant
+                );
 
                 this.$el.html(
                     this.template({
