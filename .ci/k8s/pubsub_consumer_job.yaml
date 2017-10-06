@@ -4,7 +4,7 @@ metadata:
   name: JOB_NAME
 spec:
   completions: JOB_COMPLETIONS
-  parallelism: JOB_SCALE
+  parallelism: 0
   template:
     spec:
       initContainers:
@@ -19,14 +19,15 @@ spec:
           image: eu.gcr.io/akeneo-ci/mysql:5.7-2
           volumeMounts:
             - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
+            - { name: mysql-tmpfs, mountPath: /var/lib/mysql }
           env:
             - { name: MYSQL_ROOT_PASSWORD, value: root }
             - { name: MYSQL_USER, value: akeneo_pim }
             - { name: MYSQL_PASSWORD, value: akeneo_pim }
             - { name: MYSQL_DATABASE, value: akeneo_pim }
           resources:
-            requests: {cpu: "150m", memory: "1000Mi"}
-            limits: {memory: "1000Mi"}
+            requests: {cpu: "150m", memory: "500Mi"}
+            limits: {memory: "500Mi"}
           readinessProbe:
             timeoutSeconds: 5
             initialDelaySeconds: 2
@@ -47,8 +48,8 @@ spec:
           volumeMounts:
             - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
           resources:
-            requests: {cpu: "150m", memory: "1900Mi"}
-            limits: {memory: "1900Mi"}
+            requests: {cpu: "150m", memory: "1500Mi"}
+            limits: {memory: "1500Mi"}
           readinessProbe:
             httpGet:
               path: /
@@ -74,8 +75,8 @@ spec:
             - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
             - { name: artifacts, mountPath: /tmp/behat/screenshots }
           resources:
-            requests: {cpu: "400m", memory: "1000Mi"}
-            limits: {memory: "1000Mi"}
+            requests: {cpu: "400m", memory: "750Mi"}
+            limits: {memory: "750Mi"}
         - name: httpd
           image: eu.gcr.io/akeneo-ci/httpd:2.4
           command: ["/bin/bash", "-c"]
@@ -109,8 +110,8 @@ spec:
           env:
             - { name: JAVA_OPTS, value: "-Xms1g -Xmx1g " }
           resources:
-            requests: {cpu: "400m", memory: "2000Mi"}
-            limits: {memory: "2000Mi"}
+            requests: {cpu: "400m", memory: "1500Mi"}
+            limits: {memory: "1500Mi"}
         - name: pubsub
           image: eu.gcr.io/akeneo-ci/gcloud:1.0.12
           command: ["/bin/sh", "-c"]
@@ -133,4 +134,5 @@ spec:
         - { name: pim, emptyDir: {}}
         - { name: tmp-pod, emptyDir: {}}
         - { name: artifacts, emptyDir: {medium: Memory}}
+        - { name: mysql-tmpfs, emptyDir: {medium: Memory}}
       restartPolicy: Never
