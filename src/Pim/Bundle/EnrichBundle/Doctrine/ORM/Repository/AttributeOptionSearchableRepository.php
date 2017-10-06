@@ -57,13 +57,17 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
         $qb->select('o')
             ->distinct()
             ->from($this->entityName, 'o')
-            ->leftJoin('o.optionValues', 'v')
             ->leftJoin('o.attribute', 'a')
+            ->leftJoin('o.optionValues', 'v')
             ->andWhere('a.code = :attributeCode')
             ->setParameter('attributeCode', $options['identifier']);
 
-        if ($this->isAttributeAutoSorted($options['identifier'])) {
-            $qb->orderBy('v.value, o.code');
+        if ($this->isAttributeAutoSorted($options['identifier']) && isset($options['catalogLocale'])) {
+            $qb
+                ->addSelect('v.value AS HIDDEN')
+                ->andWhere('v.locale = :localeCode')
+                ->setParameter('localeCode', $options['catalogLocale'])
+                ->orderBy('v.value, o.code');
         } else {
             $qb->orderBy('o.sortOrder');
         }
@@ -118,6 +122,6 @@ class AttributeOptionSearchableRepository implements SearchableRepositoryInterfa
         }
         $attribute = $this->attributeRepository->findOneByIdentifier($attributeIdentifier);
 
-        return $attribute->getProperties()['autoOptionSorting'];
+        return true === $attribute->getProperty('autoOptionSorting');
     }
 }

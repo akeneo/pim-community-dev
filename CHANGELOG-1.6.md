@@ -1,3 +1,12 @@
+# 1.6.19 (2017-09-05)
+
+# 1.6.18 (2017-07-17)
+
+## Bug fixes
+
+- PIM-6529: allow more than 100 elements to be exported with YAML export
+- PIM-6526: Prevent MySQL exclusive locks on completeness calculation requests
+
 # 1.6.17 (2017-06-30)
 
 ## Bug fixes

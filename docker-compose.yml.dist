@@ -1,0 +1,99 @@
+version: '2'
+
+services:
+  akeneo:
+    image: akeneo/apache-php:php-5.6
+    environment:
+      COMPOSER_HOME: '/home/docker/.composer'
+      PHP_IDE_CONFIG: 'serverName=pim-ce'
+      PHP_XDEBUG_ENABLED: 0
+      PHP_XDEBUG_IDE_KEY: XDEBUG_IDE_KEY
+      PHP_XDEBUG_REMOTE_HOST: xxx.xxx.xxx.xxx
+      XDEBUG_CONFIG: 'remote_host=xxx.xxx.xxx.xxx'
+    ports:
+      - '8080:80'
+    user: docker
+    volumes:
+      - ./:/srv/pim
+      - ./docker/akeneo.conf:/etc/apache2/sites-available/000-default.conf:ro
+      - ~/.composer:/home/docker/.composer
+    working_dir: /srv/pim
+    networks:
+      - akeneo
+
+  akeneo-behat:
+    image: akeneo/apache-php:php-5.6
+    depends_on:
+      - mysql-behat
+      - mongodb-behat
+      - selenium
+    environment:
+      BEHAT_TMPDIR: '/srv/pim/app/cache/tmp'
+      COMPOSER_HOME: '/home/docker/.composer'
+      PHP_IDE_CONFIG: 'serverName=pim-ce-behat'
+      PHP_XDEBUG_ENABLED: 0
+      PHP_XDEBUG_IDE_KEY: XDEBUG_IDE_KEY
+      PHP_XDEBUG_REMOTE_HOST: xxx.xxx.xxx.xxx
+      XDEBUG_CONFIG: 'remote_host=xxx.xxx.xxx.xxx'
+    ports:
+      - '8081:80'
+    user: docker
+    volumes:
+      - ./:/srv/pim
+      - ./docker/akeneo-behat.conf:/etc/apache2/sites-available/000-default.conf:ro
+      - ~/.composer:/home/docker/.composer
+      - /tmp/behat/screenshots:/tmp/behat/screenshots
+    working_dir: /srv/pim
+    networks:
+      - behat
+
+  selenium:
+    image: selenium/standalone-firefox-debug:2.53.1-beryllium
+    ports:
+      - '5900:5900'
+    volumes:
+      - .:/srv/pim
+    networks:
+      - behat
+
+  mysql:
+    image: mysql:5.5
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: akeneo_pim
+      MYSQL_PASSWORD: akeneo_pim
+      MYSQL_DATABASE: akeneo_pim
+    ports:
+      - '3306:3306'
+    networks:
+      - akeneo
+
+  mysql-behat:
+    image: mysql:5.5
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: akeneo_pim
+      MYSQL_PASSWORD: akeneo_pim
+      MYSQL_DATABASE: akeneo_pim
+    ports:
+      - '3307:3306'
+    networks:
+      - behat
+
+  mongodb:
+    image: mongo:2.4
+    ports:
+      - '21017:21017'
+    networks:
+      - akeneo
+
+  mongodb-behat:
+    image: mongo:2.4
+    ports:
+      - '21018:21017'
+    networks:
+      - behat
+
+networks:
+  akeneo: ~
+  behat: ~

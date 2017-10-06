@@ -69,11 +69,12 @@ parameters:
     pim_catalog.doctrine.query.cursor.class:              Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor\Cursor
     pim_catalog.doctrine.cursor_factory.product.class:    Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor\CursorFactory
 
-    pim_catalog.doctrine.query.sorter.base.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter
-    pim_catalog.doctrine.query.sorter.completeness.class:  Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter
-    pim_catalog.doctrine.query.sorter.family.class:        Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\FamilySorter
-    pim_catalog.doctrine.query.sorter.in_group.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\InGroupSorter
-    pim_catalog.doctrine.query.sorter.is_associated.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter
+    pim_catalog.doctrine.query.sorter.base.class:             Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter
+    pim_catalog.doctrine.query.sorter.completeness.class:     Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter
+    pim_catalog.doctrine.query.sorter.family.class:           Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\FamilySorter
+    pim_catalog.doctrine.query.sorter.in_group.class:         Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\InGroupSorter
+    pim_catalog.doctrine.query.sorter.is_associated.class:    Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\IsAssociatedSorter
+    pim_catalog.doctrine.query.sorter.attribute_option.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\AttributeOptionSorter
 
     pim_catalog.saver.product.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Saver\ProductSaver
 
@@ -481,3 +482,8 @@ services:
         class: '%pim_catalog.event_subscriber.mongodb.timestampable.class%'
         tags:
             - { name: kernel.event_subscriber, event: akeneo.storage.pre_save }
+
+    pim_catalog.doctrine.query.sorter.attribute_option:
+        class: '%pim_catalog.doctrine.query.sorter.attribute_option.class%'
+        tags:
+            - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }

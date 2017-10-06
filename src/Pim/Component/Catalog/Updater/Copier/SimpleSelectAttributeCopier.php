@@ -4,7 +4,10 @@ namespace Pim\Component\Catalog\Updater\Copier;
 
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 
 /**
@@ -16,19 +19,26 @@ use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
  */
 class SimpleSelectAttributeCopier extends AbstractAttributeCopier
 {
+    /** @var AttributeOptionRepositoryInterface */
+    protected $attributeOptionRepository;
+
     /**
-     * @param \Pim\Component\Catalog\Builder\ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param array                    $supportedFromTypes
-     * @param array                    $supportedToTypes
+     * @param ProductBuilderInterface                 $productBuilder
+     * @param AttributeValidatorHelper                $attrValidatorHelper
+     * @param array                                   $supportedFromTypes
+     * @param array                                   $supportedToTypes
+     * @param AttributeOptionRepositoryInterface|null $attributeOptionRepository
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
         array $supportedFromTypes,
-        array $supportedToTypes
+        array $supportedToTypes,
+        AttributeOptionRepositoryInterface $attributeOptionRepository = null
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
+
+        $this->attributeOptionRepository = $attributeOptionRepository;
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes = $supportedToTypes;
     }
@@ -88,10 +98,60 @@ class SimpleSelectAttributeCopier extends AbstractAttributeCopier
         if (null !== $fromValue) {
             $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
             if (null === $toValue) {
-                $toValue = $this->productBuilder->addOrReplaceProductValue($toProduct, $toAttribute, $toLocale, $toScope);
+                $toValue = $this->productBuilder->addOrReplaceProductValue(
+                    $toProduct,
+                    $toAttribute,
+                    $toLocale,
+                    $toScope
+                );
             }
 
-            $toValue->setOption($fromValue->getData());
+            $toValue->setOption($this->getMatchingOptionForAttribute($fromValue, $toAttribute));
         }
+    }
+
+    /**
+     * Returns the option of the destination attribute corresponding to the one
+     * of the original value.
+     * Return "null" of the original value was empty, so we ensure the
+     * destination value will be empty too.
+     *
+     * @param ProductValueInterface $fromValue
+     * @param AttributeInterface    $toAttribute
+     *
+     * @throws \InvalidArgumentException
+     * @return AttributeOptionInterface|null
+     */
+    protected function getMatchingOptionForAttribute(
+        ProductValueInterface $fromValue,
+        AttributeInterface $toAttribute
+    ) {
+        // TODO: This is the previous, buggy behavior. To remove on master, along with the "= null" of the constructor.
+        if (null === $this->attributeOptionRepository) {
+            return $fromValue->getData();
+        }
+
+        $fromOption = $fromValue->getData();
+        if (null === $fromOption) {
+            return null;
+        }
+
+        $optionCode = $fromOption->getCode();
+        $toAttributeCode = $toAttribute->getCode();
+        $toOption = $this->attributeOptionRepository->findOneByIdentifier(sprintf(
+            '%s.%s',
+            $toAttributeCode,
+            $optionCode
+        ));
+
+        if (null === $toOption) {
+            throw new \InvalidArgumentException(sprintf(
+                'There is no valid option "%s" for attribute "%s".',
+                $optionCode,
+                $toAttributeCode
+            ));
+        }
+
+        return $toOption;
     }
 }

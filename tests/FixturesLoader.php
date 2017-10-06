@@ -79,6 +79,7 @@ class FixturesLoader
             $this->dropDatabase();
             $this->createDatabase();
             $this->restoreDatabase($dumpFile);
+            $this->clearAclCache();
 
             return;
         }
@@ -383,5 +384,16 @@ class FixturesLoader
         }
 
         return $process->getOutput();
+    }
+
+    /**
+     * Clear Oro cache about Acl.
+     * This cache should be cleared when loading the fixtures with mysql dump.
+     * It avoids inconsistency between the cache and the new data in the database.
+     */
+    protected function clearAclCache()
+    {
+        $aclCache = $this->container->get('security.acl.cache');
+        $aclCache->clearCache();
     }
 }

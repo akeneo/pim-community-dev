@@ -14,7 +14,7 @@ oro.filter.form.label_type_empty: è vuoto
 oro.filter.form.label_type_in_list: nell'elenco
 oro.filter.form.label_date_type_between: tra
 oro.filter.form.label_date_type_not_between: non tra
-oro.filter.form.label_date_type_more_than: più di
-oro.filter.form.label_date_type_less_than: meno di
+oro.filter.form.label_date_type_more_than: prima del
+oro.filter.form.label_date_type_less_than: dopo il
 oro.filter.form.label_not_selected: Non Selezionato
 oro.filter.form.label_selected: Selezionato

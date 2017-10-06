@@ -506,6 +506,7 @@ Updated at: Caricato il
 Created: Creato
 Updated: Caricato
 Last update: Ultimo aggiornamento
+by: Da
 N/A: N/A
 Manage products: Gestione articoli
 Manage groups: Gestione gruppi
@@ -563,7 +564,7 @@ Active: Attivo
 Inactive: Inattivo
 Do not convert: Non convertire
 Create: Crea
-Cancel: Cancella
+Cancel: Annulla
 Choose a family: Scegli una famiglia
 Choose a unit: Scegli un'unità
 No matches found: Nessuna corrispondenza trovata
@@ -819,6 +820,7 @@ oro.locale:
       province: "provincia"
   form:
     tooltip:
+      locale: "Selezionare le impostazioni locali utilizzate per formattare numeri, indirizzi, nomi e date"
       location: " Verrà utilizzato per formattare gli indirizzi quando l'opzione 'Formato indirizzo in base alle impostazioni locali' è disabilitata"
       format_address_by_address_country: "Selezionando questa opzione gli indirizzi verranno formattati in base alle impostazioni locali. Disabilitando questa opzione gli indirizzi saranno formattati in base al Paese"
       language: "Selezionare la lingua di sistema che si desidera utilizzare"

@@ -28,7 +28,7 @@ pim_datagrid:
     view: Visualizzazione
     create_view_modal:
       confirm: Ok
-      cancel: Cancella
+      cancel: Annulla
 flash:
   item:
     removed: Articolo rimosso con successo
@@ -181,7 +181,7 @@ pim_enrich:
             close: Chiudi
       copy:
         select: Selezionare
-        all: Tutto
+        all: Tutti
         all_visible: Tutti visibili
         none: Nessun
         copy: Copia
@@ -203,7 +203,7 @@ pim_enrich:
         labels:
           family: Scegli una famiglia
           save: Salva
-          cancel: Cancella
+          cancel: Annulla
     association_type:
       info:
         deletion_successful: Tipo di associazione rimosso con successo.
@@ -572,7 +572,7 @@ pim_enrich:
           empty: Tutti gli attributi verranno esportati
           modal:
             apply: Applica
-            cancel: Cancella
+            cancel: Annulla
             title: Selezione attributi
         attributes_selector:
           attribute_group: Gruppi di attributi
@@ -601,7 +601,7 @@ pim_enrich:
           title: Stato
           help: 'Selezionare i prodotti da esportare in base al loro stato. Es: Esportare prodotti qualunque sia lo stato.'
           value:
-            all: Tutto
+            all: Tutti
             enabled: Attivato
             disabled: Disabilitato
         completeness:
@@ -631,7 +631,7 @@ pim_enrich:
             NOT EMPTY: Non è vuoto
         string:
           operators:
-            ALL: Tutto
+            ALL: Tutti
             CONTAINS: Contiene
             DOES NOT CONTAIN: Non contiene
             "=": È uguale a

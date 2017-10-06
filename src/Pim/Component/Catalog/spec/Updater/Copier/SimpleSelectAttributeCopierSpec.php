@@ -8,18 +8,23 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductValueInterface;
+use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
 use Pim\Component\Catalog\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class SimpleSelectAttributeCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilderInterface $builder, AttributeValidatorHelper $attrValidatorHelper)
-    {
+    function let(
+        ProductBuilderInterface $builder,
+        AttributeValidatorHelper $attrValidatorHelper,
+        AttributeOptionRepositoryInterface $attributeOptionRepository
+    ) {
         $this->beConstructedWith(
             $builder,
             $attrValidatorHelper,
             ['pim_catalog_simpleselect'],
-            ['pim_catalog_simpleselect']
+            ['pim_catalog_simpleselect'],
+            $attributeOptionRepository
         );
     }
 
@@ -59,6 +64,7 @@ class SimpleSelectAttributeCopierSpec extends ObjectBehavior
     function it_copies_simple_select_value_to_a_product_value(
         $builder,
         $attrValidatorHelper,
+        $attributeOptionRepository,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         ProductInterface $product1,
@@ -67,7 +73,8 @@ class SimpleSelectAttributeCopierSpec extends ObjectBehavior
         ProductInterface $product4,
         ProductValueInterface $fromProductValue,
         ProductValueInterface $toProductValue,
-        AttributeOptionInterface $attributeOption
+        AttributeOptionInterface $fromAttributeOption,
+        AttributeOptionInterface $toAttributeOption
     ) {
         $fromLocale = 'fr_FR';
         $toLocale = 'fr_FR';
@@ -80,8 +87,12 @@ class SimpleSelectAttributeCopierSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $fromProductValue->getData()->willReturn($attributeOption);
-        $toProductValue->setOption($attributeOption)->shouldBeCalledTimes(3);
+        $fromProductValue->getData()->willReturn($fromAttributeOption);
+        $fromAttributeOption->getCode()->willReturn('attributeOption');
+        $attributeOptionRepository
+            ->findOneByIdentifier('toAttributeCode.attributeOption')
+            ->willReturn($toAttributeOption);
+        $toProductValue->setOption($toAttributeOption)->shouldBeCalledTimes(3);
 
         $product1->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product1->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
@@ -95,7 +106,10 @@ class SimpleSelectAttributeCopierSpec extends ObjectBehavior
         $product4->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product4->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
 
-        $builder->addOrReplaceProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
+        $builder
+            ->addOrReplaceProductValue($product3, $toAttribute, $toLocale, $toScope)
+            ->shouldBeCalledTimes(1)
+            ->willReturn($toProductValue);
 
         $products = [$product1, $product2, $product3, $product4];
         foreach ($products as $product) {

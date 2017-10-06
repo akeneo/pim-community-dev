@@ -1,0 +1,25 @@
+No products to remove: Inga produkter att ta bort
+"dot (.)": punkt (.)
+"comma (,)": kommatecken (,)
+pim_catalog:
+  constraint:
+    product_identifier: Identifierarna "%s" existerar inte.
+    0: Ett oväntat fel uppstod.
+    100: Icke-förväntat värde
+    101: Det här fältet förväntar sig ett booleskt värde.
+    102: Det här fältet förväntar sig ett flyttal.
+    103: Det här fältet förväntar sig ett heltal.
+    104: Det här fältet förväntar sig ett numeriskt värde.
+    105: Det här fältet förväntar sig ett strängvärde.
+    106: Det här fältet förväntar sig en matris.
+    107: Det här fältet förväntar sig en matris av matriser som värde.
+    200: Ett internt fel uppstod
+    201: Ett internt fel uppstod
+    202: Det här fältet förväntar sig ett numeriskt värde.
+    203: Det här fältet förväntar sig ett strängvärde.
+    204: Det här fältet förväntar sig ett strängvärde.
+    205: Ett internt fel uppstod
+    300: Det här fältet förväntar sig en giltig entitetskod.
+    301: Det här fältet förväntar sig ett giltigt tillämpningsområde och språk.
+    302: Det här fältet förväntar sig ett giltigt tillämpningsområde.
+    303: Det här fältet förväntar sig ett giltigt associationsformat.

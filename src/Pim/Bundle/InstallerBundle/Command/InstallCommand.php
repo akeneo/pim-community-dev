@@ -33,7 +33,9 @@ class InstallCommand extends ContainerAwareCommand
         $this
             ->setName('pim:install')
             ->setDescription(sprintf('%s Application Installer.', static::APP_NAME))
-            ->addOption('force', null, InputOption::VALUE_NONE, 'Force installation');
+            ->addOption('force', null, InputOption::VALUE_NONE, 'Force installation')
+            ->addOption('symlink', null, InputOption::VALUE_NONE, 'Install assets as symlinks')
+            ->addOption('clean', null, InputOption::VALUE_NONE, 'Clean previous install');
     }
 
     /**
@@ -133,7 +135,10 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function assetsStep(InputInterface $input, OutputInterface $output)
     {
-        $this->commandExecutor->runCommand('pim:installer:assets');
+        $options = false === $input->getOption('symlink') ? [] : ['--symlink' => true];
+        $options = false === $input->getOption('clean') ? $options : array_merge($options, ['--clean' => true]);
+
+        $this->commandExecutor->runCommand('pim:installer:assets', $options);
 
         return $this;
     }
@@ -155,6 +160,8 @@ class InstallCommand extends ContainerAwareCommand
         $params = $dumper->parse();
         $params['system']['installed'] = $installed;
         $dumper->dump($params);
+
+        return $this;
     }
 
     /**
