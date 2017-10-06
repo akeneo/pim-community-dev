@@ -9,8 +9,8 @@ use Pim\Component\Catalog\Model\CommonAttributeCollection;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
-use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
-use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductModelAttributeFilter;
+use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\ProductModel\Filter\ProductModelAttributeFilter;
 use Prophecy\Argument;
 
 class ProductModelAttributeFilterSpec extends ObjectBehavior

@@ -9,8 +9,8 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
-use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
-use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductAttributeFilter;
+use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\ProductModel\Filter\ProductAttributeFilter;
 use Prophecy\Argument;
 
 class ProductAttributeFilterSpec extends ObjectBehavior
@@ -24,12 +24,12 @@ class ProductAttributeFilterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProductAttributeFilter::class);
+        $this->shouldHaveType(\Pim\Component\Catalog\ProductModel\Filter\ProductAttributeFilter::class);
     }
 
     function it_is_an_attribute_filter()
     {
-        $this->shouldImplement(AttributeFilterInterface::class);
+        $this->shouldImplement(\Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface::class);
     }
 
     function it_filters_the_attributes_that_does_not_belong_the_family(

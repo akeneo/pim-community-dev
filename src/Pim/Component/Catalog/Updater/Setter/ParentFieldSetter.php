@@ -47,6 +47,10 @@ class ParentFieldSetter extends AbstractFieldSetter
 
         // TODO: This is to be removed in PIM-6791.
         if (!$product instanceof VariantProductInterface) {
+            if (null === $data) {
+                return;
+            }
+
             throw InvalidPropertyException::expected(
                 sprintf('Product "%s" cannot have a parent as it is not a variant product.', $product->getIdentifier()),
                 static::class
