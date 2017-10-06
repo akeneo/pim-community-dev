@@ -65,7 +65,7 @@ class ResetIndexesCommand extends ContainerAwareCommand
      */
     private function userConfirmation(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('<info>This action will entirely remove the product and product model indexes.</info>');
+        $output->writeln('<info>This action will entirely reset all indexes registered in the PIM.</info>');
         $question = new ConfirmationQuestion(
             '<question>Are you sure you want to proceed ?</question> (y/N)',
             false
