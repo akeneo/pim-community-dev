@@ -4,6 +4,7 @@
 
 - PIM-6865: Fix ACL on import profile page
 - PIM-6876: Escape u001f character to workaround a mysql bug
+- TIP-810: Add Symfony command to reset the ES indexes
 - TIP-809: Prevents ES from using the scoring system and bypass the max_clause_count limit.
 
 ## Better UI\UX!
