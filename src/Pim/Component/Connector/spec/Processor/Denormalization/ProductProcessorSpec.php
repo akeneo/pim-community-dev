@@ -12,7 +12,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
+use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;

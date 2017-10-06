@@ -34,7 +34,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Query\Sorter\Directions;
-use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
+use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -319,8 +319,6 @@ class ProductController
             $this->validateCodeConsistency($code, $data);
 
             if (isset($data['parent'])) {
-                $data = $this->productAttributeFilter->filter($data);
-                $data = $this->orderData($data);
                 $product = $this->variantProductBuilder->createProduct($data['identifier']);
             } else {
                 $product = $this->productBuilder->createProduct();
@@ -332,16 +330,13 @@ class ProductController
 
         if (!$isCreation) {
             $data = $this->filterEmptyValues($product, $data);
-
-            if ($product instanceof VariantProductInterface) {
-                if (!array_key_exists('parent', $data)) {
-                    $data['parent'] = $product->getParent()->getCode();
-                }
-
-                $data = $this->productAttributeFilter->filter($data);
-                $data = $this->orderData($data);
-            }
         }
+
+        if ($product instanceof VariantProductInterface) {
+            $data = $this->productAttributeFilter->filter($data);
+        }
+
+        $data = $this->orderData($data);
 
         $this->updateProduct($product, $data, 'patch_products__code_');
         $this->validateProduct($product);
@@ -774,6 +769,16 @@ class ProductController
      * family from the parent if the product family is null. By doing this the validator does not fail if the family
      * field has been set to nul from the API. So to prevent this we order the parent before the family field. this way
      * the field family will be updated to null if the data sent from the API for the family field is null.
+     *
+     * Example:
+     *
+     * {
+     *     "identifier": "test",
+     *     "family": null,
+     *     "parent": "amor"
+     * }
+     *
+     * This example does not work because the parent setter will set the family with the parent family.
      *
      * @param array $data
      * @return array

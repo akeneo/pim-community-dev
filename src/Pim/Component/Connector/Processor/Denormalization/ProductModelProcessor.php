@@ -11,7 +11,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
+use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -56,14 +56,14 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
     private $importType;
 
     /**
-     * @param SimpleFactoryInterface                $productModelFactory
-     * @param ObjectUpdaterInterface                $productModelUpdater
-     * @param IdentifiableObjectRepositoryInterface $productModelRepository
-     * @param ValidatorInterface                    $validator
-     * @param FilterInterface                       $productModelFilter
-     * @param ObjectDetacherInterface               $objectDetacher
-     * @param AttributeFilterInterface              $productModelAttributeFilter
-     * @param string                                $importType
+     * @param SimpleFactoryInterface                                              $productModelFactory
+     * @param ObjectUpdaterInterface                                              $productModelUpdater
+     * @param IdentifiableObjectRepositoryInterface                               $productModelRepository
+     * @param ValidatorInterface                                                  $validator
+     * @param FilterInterface                                                     $productModelFilter
+     * @param ObjectDetacherInterface                                             $objectDetacher
+     * @param \Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface $productModelAttributeFilter
+     * @param string                                                              $importType
      */
     public function __construct(
         SimpleFactoryInterface $productModelFactory,
