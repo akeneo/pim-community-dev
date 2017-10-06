@@ -979,6 +979,42 @@ JSON;
     }
 
     /**
+     * @jira https://akeneo.atlassian.net/browse/PIM-6876
+     */
+    public function testSuccessfullyToCreateProductWithControlCaracter()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "identifier": "foo",
+        "values": {
+            "a_text":[
+                {"locale": null, "scope": null, "data": "15\u001fm"}
+            ]
+        }
+    }
+JSON;
+
+        $client->request('POST', '/api/rest/v1/products', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertEmpty($response->getContent());
+
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+
+        $client->request('GET', '/api/rest/v1/products/foo');
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
+
+        $this->assertSame('15'. chr(31) . 'm', $product->getValue('a_text')->getData());
+        $this->assertSame('15'. chr(31) . 'm', $product->getRawValues()['a_text']['<all_channels>']['<all_locales>']);
+    }
+
+    /**
      * @param array  $expectedProduct normalized data of the product that should be created
      * @param string $identifier identifier of the product that should be created
      */
