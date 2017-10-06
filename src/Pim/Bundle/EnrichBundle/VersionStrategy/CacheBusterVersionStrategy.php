@@ -13,7 +13,8 @@ class CacheBusterVersionStrategy implements VersionStrategyInterface
     /**
      * @param VersionProviderInterface $versionProvider
      */
-    public function __construct(VersionProviderInterface $versionProvider) {
+    public function __construct(VersionProviderInterface $versionProvider)
+    {
         $this->versionProvider = $versionProvider;
     }
 
