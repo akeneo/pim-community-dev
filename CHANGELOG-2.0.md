@@ -1,5 +1,10 @@
 # 2.0.x
 
+## Bug Fixes
+
+- PIM-6814: Fix job profile creation popin validation bug due to permissions
+- PIM-6591: Add default permissions for attribute groups created via the UI
+
 ## Tech improvements
 
 - TIP-808: Add version strategy for js and css assets
@@ -10,7 +15,9 @@
 
 ## BC breaks
 
-- Change constructor of `PimEnterprise\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template 
+- Change constructor of `PimEnterprise\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template
+- Change the constructor of `PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager` to add a dependency to `Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface`
+- Remove `PimEnterprise\Component\Security\Updater\JobInstanceUpdater` and `PimEnterprise\Component\Security\Updater\AttributeGroupUpdater`
 
 # 2.0.1 (2017-10-05)
 
