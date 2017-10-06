@@ -51,9 +51,8 @@ extensions:
 
     pim-user-index-grid:
         module: pim/form/common/index/grid
-        parent: pim-user-index
+        parent: pim-user-index-grid-container
         position: 1000
-        targetZone: content
         config:
             alias: pim-user-grid
 

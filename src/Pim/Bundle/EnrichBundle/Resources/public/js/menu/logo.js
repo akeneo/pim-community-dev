@@ -21,7 +21,7 @@ define(
         template
     ) {
         return BaseForm.extend({
-            className: 'AknHeader-menuItem',
+            className: 'AknHeader-menuItemContainer',
             template: _.template(template),
             events: {
                 'click': 'backHome'

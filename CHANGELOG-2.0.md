@@ -6,6 +6,10 @@
 - PIM-6876: Escape u001f character to workaround a mysql bug
 - TIP-809: Prevents ES from using the scoring system and bypass the max_clause_count limit.
 
+## Better UI\UX!
+
+- PIM-6584: Update main menu order
+
 # 2.0.1 (2017-10-05)
 
 ## Bug Fixes

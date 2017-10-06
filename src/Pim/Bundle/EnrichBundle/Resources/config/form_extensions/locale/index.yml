@@ -51,8 +51,7 @@ extensions:
 
     pim-locale-index-grid:
         module: pim/form/common/index/grid
-        parent: pim-locale-index
+        parent: pim-locale-index-grid-container
         position: 1000
-        targetZone: content
         config:
             alias: locale-grid

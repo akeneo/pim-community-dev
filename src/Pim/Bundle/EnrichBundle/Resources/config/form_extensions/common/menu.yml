@@ -15,7 +15,7 @@ extensions:
     pim-menu-activity:
         module: pim/menu/tab
         parent: pim-menu
-        position: 80
+        position: 20
         targetZone: mainMenu
         config:
             title: pim_menu.tab.activity
@@ -58,7 +58,7 @@ extensions:
     pim-menu-imports:
         module: pim/menu/tab
         parent: pim-menu
-        position: 100
+        position: 40
         targetZone: mainMenu
         aclResourceId: pim_importexport_import_profile_index
         config:
@@ -70,7 +70,7 @@ extensions:
     pim-menu-products:
         module: pim/menu/tab
         parent: pim-menu
-        position: 110
+        position: 30
         targetZone: mainMenu
         aclResourceId: pim_enrich_product_index
         config:
@@ -82,7 +82,7 @@ extensions:
     pim-menu-exports:
         module: pim/menu/tab
         parent: pim-menu
-        position: 120
+        position: 50
         targetZone: mainMenu
         aclResourceId: pim_importexport_export_profile_index
         config:
@@ -94,7 +94,7 @@ extensions:
     pim-menu-settings:
         module: pim/menu/tab
         parent: pim-menu
-        position: 130
+        position: 60
         targetZone: mainMenu
         config:
             title: pim_menu.tab.settings
@@ -213,7 +213,7 @@ extensions:
     pim-menu-system:
         module: pim/menu/tab
         parent: pim-menu
-        position: 140
+        position: 70
         targetZone: mainMenu
         config:
             title: pim_menu.tab.system
