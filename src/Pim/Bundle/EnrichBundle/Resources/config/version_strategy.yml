@@ -1,0 +1,6 @@
+parameters:
+    pim_enrich.version_strategy.class: Pim\Bundle\EnrichBundle\VersionStrategy\CacheBusterVersionStrategy
+
+services:
+    pim_enrich.version_strategy:
+        class: '%pim_enrich.version_strategy.class%'

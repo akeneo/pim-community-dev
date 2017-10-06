@@ -6,7 +6,7 @@
     {% set isLess = ('less' in asset_url|split('.')) %}
     {% set hasLess = isLess ? true : hasLess %}
 
-    <link rel="{% if isLess %}stylesheet/less{% else %}stylesheet{% endif %}" media="all" href="{{ asset_url }}" />
+    <link rel="{% if isLess %}stylesheet/less{% else %}stylesheet{% endif %}" media="all" href="{{ asset(asset_url, 'frontend') }}" />
 {% endoro_css %}
 
 {% if hasLess %}
