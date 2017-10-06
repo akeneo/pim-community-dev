@@ -142,8 +142,8 @@ class SearchQueryBuilder
             $searchQuery['sort'] = $this->sortClauses;
         }
 
-        if (empty($searchQuery['query'])) {
-            $searchQuery['query'] = new \stdClass();
+        if (empty($searchQuery['query']['constant_score']['filter'])) {
+            $searchQuery['query']['constant_score']['filter'] = new \stdClass();
         }
 
         return $searchQuery;

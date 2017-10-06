@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class SearchQueryBuilderSpec extends ObjectBehavior
 {
@@ -27,9 +26,13 @@ class SearchQueryBuilderSpec extends ObjectBehavior
             [
                 '_source' => ['identifier'],
                 'query'   => [
-                    'bool' => [
+                    'constant_score' => [
                         'filter' => [
-                            ['term' => ['family' => 'camcorders']],
+                            'bool' => [
+                                'filter' => [
+                                    ['term' => ['family' => 'camcorders']],
+                                ],
+                            ],
                         ],
                     ],
                 ],
@@ -53,15 +56,19 @@ class SearchQueryBuilderSpec extends ObjectBehavior
             [
                 '_source' => ['identifier'],
                 'query'   => [
-                    'bool' => [
+                    'constant_score' => [
                         'filter' => [
-                            ['term' => ['family' => 'camcorders']],
-                            [
-                                'query_string' => [
-                                    'default_field' => 'values.description-pim_catalog_text.ecommerce.en_US',
-                                    'query'         => '*Best camcorder in town*',
-                                ],
+                            'bool' => [
+                                'filter' => [
+                                    ['term' => ['family' => 'camcorders']],
+                                    [
+                                        'query_string' => [
+                                            'default_field' => 'values.description-pim_catalog_text.ecommerce.en_US',
+                                            'query'         => '*Best camcorder in town*',
+                                        ],
 
+                                    ],
+                                ],
                             ],
                         ],
                     ],
@@ -79,9 +86,13 @@ class SearchQueryBuilderSpec extends ObjectBehavior
             [
                 '_source' => ['identifier'],
                 'query'   => [
-                    'bool' => [
-                        'must_not' => [
-                            ['term' => ['family' => 'camcorders']],
+                    'constant_score' => [
+                        'filter' => [
+                            'bool' => [
+                                'must_not' => [
+                                    ['term' => ['family' => 'camcorders']],
+                                ],
+                            ],
                         ],
                     ],
                 ],
@@ -105,15 +116,19 @@ class SearchQueryBuilderSpec extends ObjectBehavior
             [
                 '_source' => ['identifier'],
                 'query'   => [
-                    'bool' => [
-                        'must_not' => [
-                            ['term' => ['family' => 'camcorders']],
-                            [
-                                'query_string' => [
-                                    'default_field' => 'values.description-pim_catalog_text.ecommerce.en_US',
-                                    'query'         => '*Best camcorder in town*',
-                                ],
+                    'constant_score' => [
+                        'filter' => [
+                            'bool' => [
+                                'must_not' => [
+                                    ['term' => ['family' => 'camcorders']],
+                                    [
+                                        'query_string' => [
+                                            'default_field' => 'values.description-pim_catalog_text.ecommerce.en_US',
+                                            'query'         => '*Best camcorder in town*',
+                                        ],
 
+                                    ],
+                                ],
                             ],
                         ],
                     ],
@@ -131,11 +146,15 @@ class SearchQueryBuilderSpec extends ObjectBehavior
             [
                 '_source' => ['identifier'],
                 'query'   => [
-                    'bool' => [
-                        'should' => [
-                            ['term' => ['family' => 'camcorders']],
+                    'constant_score' => [
+                        'filter' => [
+                            'bool' => [
+                                'should'               => [
+                                    ['term' => ['family' => 'camcorders']],
+                                ],
+                                'minimum_should_match' => 1,
+                            ],
                         ],
-                        'minimum_should_match' => 1,
                     ],
                 ],
             ]
@@ -158,25 +177,89 @@ class SearchQueryBuilderSpec extends ObjectBehavior
             [
                 '_source' => ['identifier'],
                 'query'   => [
-                    'bool' => [
-                        'should' => [
-                            ['term' => ['family' => 'camcorders']],
-                            [
-                                'query_string' => [
-                                    'default_field' => 'values.description-pim_catalog_text.ecommerce.en_US',
-                                    'query'         => '*Best camcorder in town*',
-                                ],
+                    'constant_score' => [
+                        'filter' => [
+                            'bool' => [
+                                'should'               => [
+                                    ['term' => ['family' => 'camcorders']],
+                                    [
+                                        'query_string' => [
+                                            'default_field' => 'values.description-pim_catalog_text.ecommerce.en_US',
+                                            'query'         => '*Best camcorder in town*',
+                                        ],
 
+                                    ],
+                                ],
+                                'minimum_should_match' => 1,
                             ],
                         ],
-                        'minimum_should_match' => 1,
                     ],
                 ],
             ]
         );
     }
 
-    function it_adds_filter__must_not_and_shouldclauses()
+    function it_adds_one_sort_clause()
+    {
+        $this->addSort([
+            'updated' => [
+                'order'   => 'ASC',
+                'missing' => '_last',
+            ],
+        ]);
+
+        $this->getQuery()->shouldBeASimpleSortQuery('updated', 'ASC', '_last');
+    }
+
+    function it_adds_filter_and_multiple_sort_clauses()
+    {
+        $this->addFilter([
+            'term' => ['family' => 'camcorders'],
+        ]);
+
+        $this->addSort([
+            'updated' => [
+                'order'   => 'ASC',
+                'missing' => '_last',
+            ],
+        ]);
+
+        $this->addSort([
+            'created' => [
+                'order'   => 'ASC',
+                'missing' => '_last',
+            ],
+        ]);
+
+        $this->getQuery()->shouldReturn(
+            [
+                '_source' => ['identifier'],
+                'query'   => [
+                    'constant_score' => [
+                        'filter' => [
+                            'bool' => [
+                                'filter' => [
+                                    ['term' => ['family' => 'camcorders']],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'sort'    => [
+                    'updated' => [
+                        'order' => 'ASC',
+                        'missing' => '_last',
+                    ],
+                    'created' => [
+                        'order' => 'ASC',
+                        'missing' => '_last',
+                    ],
+                ],
+            ]
+        );
+    }
+
+    function it_adds_filter_must_not_and_shouldclauses()
     {
         $this->addFilter([
             'term' => ['family' => 'camcorders'],
@@ -201,67 +284,96 @@ class SearchQueryBuilderSpec extends ObjectBehavior
 
         $this->addShould([
             'term' => [
-                'categories' => [1, 2]
-            ]
+                'categories' => [1, 2],
+            ],
         ]);
 
         $this->addShould([
             'bool' => [
                 'must_not' => [
                     'exists' => [
-                        'field' => 'categories'
-                    ]
-                ]
-            ]
+                        'field' => 'categories',
+                    ],
+                ],
+            ],
+        ]);
+
+        $this->addSort([
+            'updated' => [
+                'order'   => 'ASC',
+                'missing' => '_last',
+            ],
+        ]);
+
+        $this->addSort([
+            'created' => [
+                'order'   => 'ASC',
+                'missing' => '_last',
+            ],
         ]);
 
         $this->getQuery()->shouldReturn(
             [
                 '_source' => ['identifier'],
                 'query'   => [
-                    'bool' => [
-                        'filter'   => [
-                            [
-                                'term' => ['family' => 'camcorders'],
-                            ],
-                            [
-                                'query_string' => [
-                                    'default_field' => 'values.description-pim_catalog_text.ecommerce.en_US',
-                                    'query'         => '*Best camcorder in town*',
+                    'constant_score' => [
+                        'filter' => [
+                            'bool' => [
+                                'filter'               => [
+                                    [
+                                        'term' => ['family' => 'camcorders'],
+                                    ],
+                                    [
+                                        'query_string' => [
+                                            'default_field' => 'values.description-pim_catalog_text.ecommerce.en_US',
+                                            'query'         => '*Best camcorder in town*',
+                                        ],
+                                    ],
                                 ],
+                                'must_not'             => [
+                                    [
+                                        'range' => [
+                                            'values.price-pim_catalog_price.<all_channels>.<all_locales>' => ['lte' => 500],
+                                        ],
+                                    ],
+                                    [
+                                        'term' => [
+                                            'name' => 'cheap',
+                                        ],
+                                    ],
+                                ],
+                                'should'               => [
+                                    [
+                                        'term' => [
+                                            'categories' => [1, 2],
+                                        ],
+                                    ],
+                                    [
+                                        'bool' => [
+                                            'must_not' => [
+                                                'exists' => [
+                                                    'field' => 'categories',
+                                                ],
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                                'minimum_should_match' => 1,
                             ],
                         ],
-                        'must_not' => [
-                            [
-                                'range' => [
-                                    'values.price-pim_catalog_price.<all_channels>.<all_locales>' => ['lte' => 500],
-                                ],
-                            ],
-                            [
-                                'term' => [
-                                    'name' => 'cheap',
-                                ],
-                            ],
-                        ],
-                        'should' => [
-                            [
-                                'term' => [
-                                    'categories' => [1, 2]
-                                ]
-                            ],
-                            [
-                                'bool' => [
-                                    'must_not' => [
-                                        'exists' => [
-                                            'field' => 'categories'
-                                        ]
-                                    ]
-                                ]
-                            ]
-                        ],
-                        'minimum_should_match' => 1,
                     ],
                 ],
+                'sort' => [
+                    'updated' => [
+                        'order'   => 'ASC',
+                        'missing' => '_last',
+                    ],
+                    'created' => [
+                        'order'   => 'ASC',
+                        'missing' => '_last',
+                    ],
+
+                ]
             ]
         );
     }
@@ -275,9 +387,27 @@ class SearchQueryBuilderSpec extends ObjectBehavior
                     isset($subject['_source']) &&
                     ['identifier'] === $subject['_source'] &&
                     isset($subject['query']) &&
-                    $subject['query'] instanceof \stdClass
-                ;
-            }
+                    isset($subject['query']['constant_score']) &&
+                    isset($subject['query']['constant_score']['filter']) &&
+                    $subject['query']['constant_score']['filter'] instanceof \stdClass;
+            },
+            'beASimpleSortQuery' => function ($subject, $attribute, $order, $missing) {
+                return
+                    is_array($subject) &&
+                    isset($subject['_source']) &&
+                    ['identifier'] === $subject['_source'] &&
+                    isset($subject['query']) &&
+                    isset($subject['query']['constant_score']) &&
+                    isset($subject['query']['constant_score']['filter']) &&
+                    $subject['query']['constant_score']['filter'] instanceof \stdClass &&
+                    isset($subject['sort']) &&
+                    isset($subject['sort'][$attribute]) &&
+                    isset($subject['sort'][$attribute]['order']) &&
+                    $subject['sort'][$attribute]['order'] === $order &&
+                    $subject['sort'][$attribute]['missing'] === $missing;
+            },
+
+
         ];
     }
 }
