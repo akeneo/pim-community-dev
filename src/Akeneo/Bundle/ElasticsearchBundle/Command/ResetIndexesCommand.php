@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Bundle\ElasticsearchBundle;
+namespace Akeneo\Bundle\ElasticsearchBundle\Command;
 
 use Pim\Bundle\CatalogBundle\Command\IndexProductCommand;
 use Pim\Bundle\CatalogBundle\Command\IndexProductModelCommand;
@@ -39,8 +39,6 @@ class ResetIndexesCommand extends ContainerAwareCommand
 
     /**
      * {@inheritdoc}
-     *
-     * @throws \RuntimeException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -64,7 +62,7 @@ class ResetIndexesCommand extends ContainerAwareCommand
      *
      * @return bool
      */
-    private function userConfirmation(InputInterface $input, OutputInterface $output)
+    private function userConfirmation(InputInterface $input, OutputInterface $output): bool
     {
         $output->writeln('<info>This action will entirely reset all indexes registered in the PIM.</info>');
         $question = new ConfirmationQuestion(
@@ -97,6 +95,7 @@ class ResetIndexesCommand extends ContainerAwareCommand
      * Checks wether the indexes exists.
      *
      * @param OutputInterface $output
+     * @param Client[]        $esClients
      *
      * @return bool
      */
@@ -156,5 +155,4 @@ class ResetIndexesCommand extends ContainerAwareCommand
             )
         );
     }
-
 }

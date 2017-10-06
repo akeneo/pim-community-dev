@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\Akeneo\Bundle\ElasticsearchBundle;
+namespace spec\Akeneo\Bundle\ElasticsearchBundle\Command;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Bundle\ElasticsearchBundle\ClientRegistry;
-use Akeneo\Bundle\ElasticsearchBundle\ResetIndexesCommand;
+use Akeneo\Bundle\ElasticsearchBundle\Command\ResetIndexesCommand;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
