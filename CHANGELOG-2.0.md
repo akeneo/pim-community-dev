@@ -1,3 +1,13 @@
+# 2.0.x
+
+## Better manage products with variants!
+
+- PIM-6343: Classify product models via the edit form
+
+## BC breaks
+
+- Change constructor of `PimEnterprise\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template 
+
 # 2.0.1 (2017-10-05)
 
 ## Bug fixes
