@@ -33,7 +33,7 @@ class CreateFamilyVariantIntegration extends TestCase
                 [
                     'axes' => ['size'],
                     'attributes' => ['sku', 'price'],
-                    'level'=> 2,
+                    'level'=> 1,
                 ]
             ],
         ]);
@@ -452,11 +452,11 @@ class CreateFamilyVariantIntegration extends TestCase
                 'en_US' => 'My family variant'
             ],
             'variant_attribute_sets' => [
-                [
-                    'axes' => ['color'],
-                    'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
-                    'level'=> 1,
-                ],
+                //[
+                //    'axes' => ['color'],
+                //    'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color', 'price'],
+                //    'level'=> 1,
+                //],
                 [
                     'axes' => ['size'],
                     'attributes' => ['sku', 'rating', 'price'],
