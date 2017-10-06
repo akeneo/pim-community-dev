@@ -154,8 +154,8 @@ class ResetProductAndProductModelIndexCommand extends ContainerAwareCommand
         $output->writeln(
             sprintf(
                 '<info>You can now use the command %s and %s to start re-indexing your product and product models.</info>',
-                IndexProductCommand::PRODUCT_INDEX_COMMAND,
-                IndexProductModelCommand::PRODUCT_MODEL_INDEX_COMMAND
+                IndexProductCommand::NAME,
+                IndexProductModelCommand::NAME
             )
         );
     }

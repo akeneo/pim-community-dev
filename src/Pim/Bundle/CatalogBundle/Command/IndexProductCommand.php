@@ -22,7 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class IndexProductCommand extends ContainerAwareCommand
 {
-    public const PRODUCT_INDEX_COMMAND = 'pim:product:index';
+    public const NAME = 'pim:product:index';
     private const BULK_SIZE = 100;
 
     /** @var ProductRepositoryInterface */
@@ -40,7 +40,7 @@ class IndexProductCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName(self::PRODUCT_INDEX_COMMAND)
+            ->setName(self::NAME)
             ->addArgument(
                 'identifiers',
                 InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
