@@ -5,6 +5,10 @@
 - PIM-6865: Fix ACL on import profile page
 - PIM-6876: Escape u001f character to workaround a mysql bug
 
+## Better manage products with variants!
+
+- PIM-6863: Hide "Variant" meta in non variant products
+
 # 2.0.1 (2017-10-05)
 
 ## Bug Fixes
