@@ -278,4 +278,12 @@ class Client
             }
         }
     }
+
+    /**
+     * @return string
+     */
+    public function getIndexName(): string
+    {
+        return $this->indexName;
+    }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
+use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -11,13 +12,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 /**
- * Resets the indexes related to the product and product model indexes.
+ * Resets the indexes registered in the PIM.
  *
  * @author    Samir Boulil <samir.boulil@gmail.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ResetProductAndProductModelIndexCommand extends ContainerAwareCommand
+class ResetIndexesCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -25,14 +26,14 @@ class ResetProductAndProductModelIndexCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:product-and-product-model:reset-indexes')
+            ->setName('pim:indexes:reset')
             ->addOption(
                 'reset-indexes',
                 true,
                 InputOption::VALUE_NONE,
-                'Resets all the ES indexes prior to reindex'
+                'Resets all registered ES indexes prior to reindex'
             )
-            ->setDescription('Index all or some products into Elasticsearch');
+            ->setDescription('Resets all registered ES indexes');
     }
 
     /**
@@ -46,11 +47,13 @@ class ResetProductAndProductModelIndexCommand extends ContainerAwareCommand
             return;
         }
 
-        if (!$this->areIndexesExisting($output)) {
+        $esClients = $this->getEsClients();
+        $this->resetIndexes($output, $esClients);
+
+        if (!$this->areIndexesExisting($output, $esClients)) {
             return;
         }
 
-        $this->resetIndexes();
         $this->showSuccessMessages($output);
     }
 
@@ -64,13 +67,15 @@ class ResetProductAndProductModelIndexCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>This action will entirely remove the product and product model indexes.</info>');
         $question = new ConfirmationQuestion(
-            '<question>Are you sure you want to proceed ?</question> (y/n)',
+            '<question>Are you sure you want to proceed ?</question> (y/N)',
             false
         );
         $question->setMaxAttempts(2);
         $helper = $this->getHelper('question');
 
         if (!$helper->ask($input, $output, $question)) {
+            $output->writeln('<info>Operation aborted. Nothing has been done.</info>');
+
             return false;
         }
 
@@ -78,48 +83,42 @@ class ResetProductAndProductModelIndexCommand extends ContainerAwareCommand
     }
 
     /**
+     * Gets the clients from the registry.
+     *
+     * @return Client[]
+     */
+    private function getEsClients(): array
+    {
+        return $this->getContainer()->get('akeneo_elasticsearch.registry.clients')->getClients();
+    }
+
+    /**
+     * Checks wether the indexes exists.
+     *
      * @param OutputInterface $output
      *
      * @return bool
      */
-    private function areIndexesExisting(OutputInterface $output): bool
+    private function areIndexesExisting(OutputInterface $output, array $esClients): bool
     {
         $errorMessages = [];
         $errorMessage = '- The index "%s" does not exist in Elasticsearch.';
 
-        $productClient = $this->getContainer()->get('akeneo_elasticsearch.client.product');
-        if (!$productClient->hasIndex()) {
-            $errorMessages[] = sprintf(
-                $errorMessage,
-                $this->getContainer()->getParameter('product_index_name')
-            );
-
-        }
-
-        $productAndProductModelClient = $this->getContainer()->get(
-            'akeneo_elasticsearch.client.product_and_product_model'
-        );
-        if (!$productAndProductModelClient->hasIndex()) {
-            $errorMessages[] = sprintf(
-                $errorMessage,
-                $this->getContainer()->getParameter('product_and_product_model_index_name')
-            );
-        }
-
-        $productModelClient = $this->getContainer()->get('akeneo_elasticsearch.client.product_model');
-        if (!$productModelClient->hasIndex()) {
-            $errorMessages[] = sprintf(
-                $errorMessage,
-                $this->getContainer()->getParameter('product_and_product_model_index_name')
-            );
+        foreach ($esClients as $esClient) {
+            if (!$esClient->hasIndex()) {
+                $errorMessages[] = sprintf(
+                    $errorMessage,
+                    $esClient->getIndexName()
+                );
+            }
         }
 
         if (!empty($errorMessages)) {
-            $output->writeln('<info>Some indexes you want to reset do not exist:');
+            $output->writeln('<error>Something wrong happened to those indexes:</error>');
             $output->writeln(implode('\n', $errorMessages));
 
             $output->writeln('');
-            $output->writeln('<info>Something might be wrong with your installation. Nothing has been done</info>');
+            $output->writeln('<error>Please check that the Elasticsearch server is up and accessible and try running the operation again.<error>');
 
             return false;
         }
@@ -128,19 +127,16 @@ class ResetProductAndProductModelIndexCommand extends ContainerAwareCommand
     }
 
     /**
-     * Reset all the indexes related to the products and product models.
+     * Reset all the indexes in the registry.
+     *
+     * @param Client[] $esClients
      */
-    private function resetIndexes(): void
+    private function resetIndexes(OutputInterface $output, array $esClients): void
     {
-        $productClient = $this->getContainer()->get('akeneo_elasticsearch.client.product');
-        $productAndProductModelClient = $this->getContainer()->get(
-            'akeneo_elasticsearch.client.product_and_product_model'
-        );
-        $productModelClient = $this->getContainer()->get('akeneo_elasticsearch.client.product_model');
-
-        $productClient->resetIndex();
-        $productModelClient->resetIndex();
-        $productAndProductModelClient->resetIndex();
+        foreach ($esClients as $esClient) {
+            $output->writeln(sprintf('<info>Resetting the index: %s</info>', $esClient->getIndexName()));
+            $esClient->resetIndex();
+        }
     }
 
     /**
@@ -149,7 +145,7 @@ class ResetProductAndProductModelIndexCommand extends ContainerAwareCommand
     protected function showSuccessMessages(OutputInterface $output): void
     {
         $output->writeln('');
-        $output->writeln('<info>The product and product models indexes have been successfully reset!</info>');
+        $output->writeln('<info>All the registered indexes have been successfully reset!</info>');
         $output->writeln('');
         $output->writeln(
             sprintf(
