@@ -4,7 +4,7 @@ metadata:
   name: JOB_NAME
 spec:
   completions: JOB_COMPLETIONS
-  parallelism: 0
+  parallelism: JOB_SCALE
   template:
     spec:
       initContainers:
