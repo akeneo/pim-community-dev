@@ -73,6 +73,7 @@ spec:
           volumeMounts:
             - { name: pim, mountPath: /home/jenkins }
             - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
+            - { name: artifacts, mountPath: /tmp/behat/screenshots }
           resources:
             requests: {cpu: "400m", memory: "1000Mi"}
             limits: {memory: "1000Mi"}
