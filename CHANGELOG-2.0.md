@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Better UI\UX!
+
+- PIM-6584: Update main menu order
+
 # 2.0.1 (2017-10-05)
 
 ## Bug Fixes
@@ -46,7 +52,6 @@
 - PIM-6534: Move the user status to context dropzone
 - PIM-6537: Wrong display of Role / Permission
 - PIM-6618: Edit attribute options icons
-- PIM-6584: Update main menu order
 
 ## BC breaks
 
