@@ -51,9 +51,8 @@ extensions:
 
     pim-group-index-grid:
         module: pim/form/common/index/grid
-        parent: pim-group-index
+        parent: pim-group-index-grid-container
         position: 1000
-        targetZone: content
         config:
             alias: group-grid
 

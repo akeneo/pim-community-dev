@@ -51,9 +51,8 @@ extensions:
 
     pim-api-connection-index-grid:
         module: pim/form/common/index/grid
-        parent: pim-api-connection-index
+        parent: pim-api-connection-index-grid-container
         position: 1000
-        targetZone: content
         config:
             alias: api-connection-grid
 

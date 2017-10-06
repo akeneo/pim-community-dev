@@ -51,9 +51,8 @@ extensions:
 
     pim-user-role-index-grid:
         module: pim/form/common/index/grid
-        parent: pim-user-role-index
+        parent: pim-user-role-index-grid-container
         position: 1000
-        targetZone: content
         config:
             alias: pim-role-grid
 

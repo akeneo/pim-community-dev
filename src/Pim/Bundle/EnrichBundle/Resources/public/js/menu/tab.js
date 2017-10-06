@@ -34,6 +34,7 @@ define(
             },
             active: false,
             items: [],
+            className: 'AknHeader-menuItemContainer',
 
             /**
              * {@inheritdoc}

@@ -50,9 +50,8 @@ extensions:
 
     pim-import-profile-index-grid:
         module: pim/form/common/index/grid
-        parent: pim-import-profile-index
+        parent: pim-import-profile-index-grid-container
         position: 1000
-        targetZone: content
         config:
             alias: import-profile-grid
             metadata:
