@@ -43,7 +43,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('' . self::PRODUCT_MODEL_INDEX_COMMAND . '')
+            ->setName(self::PRODUCT_MODEL_INDEX_COMMAND)
             ->addArgument(
                 'codes',
                 InputArgument::OPTIONAL | InputArgument::IS_ARRAY,

@@ -40,7 +40,7 @@ class IndexProductCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('' . self::PRODUCT_INDEX_COMMAND . '')
+            ->setName(self::PRODUCT_INDEX_COMMAND)
             ->addArgument(
                 'identifiers',
                 InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
