@@ -2,9 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Akeneo\Bundle\ElasticsearchBundle\Registry;
-
-use Akeneo\Bundle\ElasticsearchBundle\Client;
+namespace Akeneo\Bundle\ElasticsearchBundle;
 
 /**
  * Registry containing all dynamically instanciated Elasticsearch clients.
@@ -13,7 +11,7 @@ use Akeneo\Bundle\ElasticsearchBundle\Client;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ClientRegistry implements ClientRegistryInterface
+class ClientRegistry
 {
     /** @var array */
     private $esClients = [];

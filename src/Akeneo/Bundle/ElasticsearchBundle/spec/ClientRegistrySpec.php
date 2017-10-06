@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Akeneo\Bundle\ElasticsearchBundle\Registry;
+namespace spec\Akeneo\Bundle\ElasticsearchBundle;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\Registry\ClientRegistry;
+use Akeneo\Bundle\ElasticsearchBundle\ClientRegistry;
 use PhpSpec\ObjectBehavior;
 
 class ClientRegistrySpec extends ObjectBehavior

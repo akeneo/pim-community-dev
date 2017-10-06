@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Command;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\Registry\ClientRegistry;
+use Akeneo\Bundle\ElasticsearchBundle\ClientRegistry;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Command\ResetIndexesCommand;
 use Prophecy\Argument;
