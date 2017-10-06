@@ -92,3 +92,14 @@ Feature: Define user rights
     Then I should not see the text "There are unsaved changes."
     When I am on the products grid
     Then I should not see the text "2014 Collection"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6865
+  Scenario: Successfully remove access on export profile page
+    Given I am logged in as "Peter"
+    And I am on the "Administrator" role page
+    And I visit the "Permissions" tab
+    When I revoke rights to resource View export profiles list
+    And I save the role
+    And I should not see the text "There are unsaved changes."
+    Then I should not be able to access the Export index page
+    But I should be able to access the Import index page
