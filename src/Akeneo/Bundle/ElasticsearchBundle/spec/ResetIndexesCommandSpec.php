@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Command;
+namespace spec\Akeneo\Bundle\ElasticsearchBundle;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Bundle\ElasticsearchBundle\ClientRegistry;
+use Akeneo\Bundle\ElasticsearchBundle\ResetIndexesCommand;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Command\ResetIndexesCommand;
 use Prophecy\Argument;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Application;
@@ -26,7 +26,7 @@ class ResetIndexesCommandSpec extends ObjectBehavior
 
     function it_has_a_name()
     {
-        $this->getName()->shouldReturn('pim:indexes:reset');
+        $this->getName()->shouldReturn('akeneo:elasticsearch:reset-indexes');
     }
 
     function it_is_a_command()

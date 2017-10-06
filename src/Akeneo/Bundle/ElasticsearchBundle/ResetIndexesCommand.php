@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Pim\Bundle\CatalogBundle\Command;
+namespace Akeneo\Bundle\ElasticsearchBundle;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Pim\Bundle\CatalogBundle\Command\IndexProductCommand;
+use Pim\Bundle\CatalogBundle\Command\IndexProductModelCommand;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,7 +27,7 @@ class ResetIndexesCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:indexes:reset')
+            ->setName('akeneo:elasticsearch:reset-indexes')
             ->addOption(
                 'reset-indexes',
                 true,
