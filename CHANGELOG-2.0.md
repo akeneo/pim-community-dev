@@ -3,6 +3,7 @@
 ## Bug Fixes
 
 - PIM-6865: Fix ACL on import profile page
+- PIM-6876: Escape u001f character to workaround a mysql bug
 
 # 2.0.1 (2017-10-05)
 
