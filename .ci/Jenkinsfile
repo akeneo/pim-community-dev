@@ -135,22 +135,21 @@ stage("Test") {
                 queue({
                     def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src -name "*Integration.php"').tokenize('\n')
                     def messages = new net.sf.json.JSONArray()
-                    def i = 0;
 
-                    for (i = 0; i < 10; i++) {
+                    for (file in files) {
                         messages.add([
                             [container: "php", script: "chmod 777 -R var/cache var/logs"],
                             [container: "php", script: "bin/console --env=test pim:install --force"],
                             [
                                 container: "php",
                                 junit: [in: "/home/jenkins/pim/", name: "junit_output.xml"],
-                                script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist " + files[i] + " --log-junit junit_output.xml"
+                                script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist " + file + " --log-junit junit_output.xml"
                             ]
                         ])
                     }
 
                     return messages
-                }, 10, "ce")
+                }, 20, "ce")
             },
             "behat-ce": {
                 queue({
@@ -181,14 +180,14 @@ stage("Test") {
                     def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src -name "*Integration.php"').tokenize('\n')
                     def messages = new net.sf.json.JSONArray()
 
-                    for (i = 0; i < 10; i++) {
+                    for (file in files) {
                         messages.add([
                             [container: "php", script: "chmod 777 -R var/cache var/logs"],
                             [container: "php", script: "bin/console --env=test pim:install --force"],
                             [
                                 container: "php",
                                 junit: [in: "/home/jenkins/pim/", name: "junit_output.xml"],
-                                script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist " + files[i] + " --log-junit junit_output.xml"
+                                script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist " + file + " --log-junit junit_output.xml"
                             ]
                         ])
                     }
