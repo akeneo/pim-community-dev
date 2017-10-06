@@ -65,7 +65,6 @@ class NavigationContext extends PimContext implements PageObjectAware
     ];
 
     protected $elements = [
-        'Dot menu'        => ['css' => '.pin-bar .pin-menus i.icon-ellipsis-horizontal'],
         'Loading message' => ['css' => '#progressbar h3'],
     ];
 
@@ -146,9 +145,7 @@ class NavigationContext extends PimContext implements PageObjectAware
             $expectedUrl = $this->sanitizeUrl($expectedFullUrl);
             $actualUrl = $this->sanitizeUrl($actualFullUrl);
 
-            $result = $expectedUrl === $actualUrl;
-
-            return true === $result;
+            return $expectedUrl === $actualUrl;
         }, sprintf('You are not on the %s page', $page));
     }
 
@@ -188,7 +185,9 @@ class NavigationContext extends PimContext implements PageObjectAware
     public function iShouldNotBeAbleToAccessThePage($not, $page)
     {
         if (!$not) {
-            return $this->iAmOnThePage($page);
+            $this->iAmOnThePage($page);
+
+            return $this->getMainContext()->getSubcontext('assertions')->assertPageNotContainsText('Forbidden');
         }
 
         $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
@@ -358,44 +357,6 @@ class NavigationContext extends PimContext implements PageObjectAware
     {
         $this->getMainContext()->getSession()->reload();
         $this->wait();
-    }
-
-    /**
-     * @When /^I pin the current page$/
-     */
-    public function iPinTheCurrentPage()
-    {
-        $pinButton = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.minimize-button');
-        }, 'Cannot find ".minimize-button" to pin current page');
-
-        $pinButton->click();
-    }
-
-    /**
-     * @When /^I click on the pinned item "([^"]+)"$/
-     *
-     * @param string $label
-     */
-    public function iClickOnThePinnedItem($label)
-    {
-        $pinnedItem = $this->spin(function () use ($label) {
-            return $this->getCurrentPage()->find('css', sprintf('.pin-bar a[title="%s"]', $label));
-        }, sprintf('Cannot find "%s" pin item', $label));
-
-        $pinnedItem->click();
-    }
-
-    /**
-     * @When /^I click on the pin bar dot menu$/
-     */
-    public function iClickOnThePinBarDotMenu()
-    {
-        $pinDotMenu = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', $this->elements['Dot menu']['css']);
-        }, 'Unable to click on the pin bar dot menu');
-
-        $pinDotMenu->click();
     }
 
     /**
