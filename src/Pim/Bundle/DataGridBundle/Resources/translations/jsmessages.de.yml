@@ -34,6 +34,8 @@ not_available: N/A
 "No": false
 oro.datagrid.entityHint: Entität
 oro.datagrid.noentities: Keine Einträge gefunden
+oro.datagrid.noresults: "Für Ihre Suche wurden leider keine passenden Treffer gefunden."
+oro.datagrid.noresults_subTitle: "Wiederholen Sie Ihre Suche mit anderen Suchkriterien."
 oro.datagrid.nocolumns: Es sind keine Spalten für diese Tabelle konfiguriert
 oro.datagrid.pagination.label: "Seite"
 oro.datagrid.pagination.totalPages: "von {{ totalPages }}"
@@ -52,6 +54,7 @@ pim:
       label_empty: ist leer
       label_not_empty: ist nicht leer
       label_in_list: in Liste
+      operator: Operator
     price_filter:
       label: Währung
     category_filter:
@@ -62,6 +65,7 @@ datagrid_view.columns.min_message: Sie müssen mindestens eine Spalte der Tabell
 pim_datagrid:
   column_configurator:
     label: Spalten
+    title: Spaltenauswahl anpassen
     all_groups: Alle Gruppen
     search: Suche
     clear: Zurücksetzen
@@ -95,5 +99,8 @@ grid.view_selector:
   placeholder: Name der neuen Ansicht
   choose_label: Wählen Sie eine Bezeichnung für die Ansicht
   confirmation:
+    remove: Sind Sie sicher, dass Sie diese Ansicht löschen möchten?
     delete: Löschbestätigung
 grid.view_selector.flash.updated: Tabellen-Ansicht erfolgreich aktualisiert
+Client ID: Client-ID
+Secret: Secret

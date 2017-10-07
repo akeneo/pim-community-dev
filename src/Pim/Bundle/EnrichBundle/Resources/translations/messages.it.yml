@@ -99,7 +99,7 @@ pim_enrich:
       success_flash: L'articolo/gli articoli è stato classificato nelle categorie selezionate
       launched_flash: L'azione di massa "aggiungi alle categorie" è stata lanciata. Sarai avvisato quando finisce.
     classify-move:
-      description: I prodotti saranno posizionati nelle seguenti categorie, il posizionamento attuale viene perso.
+      description: I prodotti saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso.
       success_flash: Il prodotto/i prodotti è stato spostato/sono stati spostati nelle categorie selezionate
       launched_flash: L'azione di massa "sposta nelle categorie" è stata lanciata. Sarai avvisato quando finisce.
     classify-remove:

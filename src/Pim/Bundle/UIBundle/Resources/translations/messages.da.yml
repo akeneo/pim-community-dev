@@ -46,3 +46,4 @@ pim_ui.system_config:
     loading_messages.tooltip: Alle tilgængelige indlæsnings meddelelser adskilt med linjeskift
   group:
     loading_message.title: Indlæser meddelelser
+other_actions: andre handlinger

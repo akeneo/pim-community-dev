@@ -47,7 +47,7 @@ oro_datagrid.select.visible: "Alle synlige"
 oro_datagrid.select.none: "Ingen"
 oro_datagrid.select.select: "Vælg"
 pim.grid.ajax_choice_filter.label_empty: er tom
-pim.grid.ajax_choice_filter.label_not_empty: er ikke tom
+pim.grid.ajax_choice_filter.label_not_empty: ikke er tom
 pim:
   grid:
     choice_filter:
