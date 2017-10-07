@@ -13,6 +13,7 @@ pim_import_export:
     7: AFGEBROKEN
     8: ONBEKEND
   download_archive:
+    archive: download gegenereerd archief | download gegenereerde archieven
     output: download gegenereerd bestand | download gegenereerde bestanden
     input: download ingelezen bestand | download ingelezen bestanden
     invalid: download ongeldige data

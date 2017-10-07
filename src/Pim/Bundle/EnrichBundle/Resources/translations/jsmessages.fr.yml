@@ -91,7 +91,7 @@ Toggle status: Changer le statut
 pim.grid.mass_action.quick_export.csv_all: CSV (tous les attributs)
 pim.grid.mass_action.delete: Supprimer
 pim.grid.mass_action.mass_edit: Edition en masse
-pim.grid.mass_action.sequential_edit: Modification séquentielle
+pim.grid.mass_action.sequential_edit: Edition séquentielle
 jstree.create: Créer
 switch_on: "Oui"
 switch_off: "Non"
