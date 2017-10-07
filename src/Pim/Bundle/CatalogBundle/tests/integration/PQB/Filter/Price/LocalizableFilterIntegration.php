@@ -25,6 +25,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
             'type' => AttributeTypes::PRICE_COLLECTION,
             'localizable' => true,
             'scopable' => false,
+            'decimals_allowed' => false,
         ]);
 
         $this->createProduct('product_one', [

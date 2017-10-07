@@ -79,6 +79,8 @@ abstract class AbstractCompletenessTestCase extends TestCase
         $scopable = false,
         array $localesSpecific = []
     ) {
+        $group = $this->get('pim_api.repository.attribute_group')->findOneByIdentifier('other');
+
         $attributeFactory = $this->get('pim_catalog.factory.attribute');
         $attributeSaver = $this->get('pim_catalog.saver.attribute');
 
@@ -86,6 +88,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
         $attribute->setCode($code);
         $attribute->setLocalizable($localisable);
         $attribute->setScopable($scopable);
+        $attribute->setGroup($group);
         foreach ($localesSpecific as $locale) {
             $attribute->addAvailableLocale($locale);
         }

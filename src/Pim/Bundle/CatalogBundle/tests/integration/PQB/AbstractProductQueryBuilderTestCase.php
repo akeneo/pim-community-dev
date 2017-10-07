@@ -69,8 +69,12 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
      */
     protected function createAttribute(array $data)
     {
+        $data['group'] = $data['group'] ?? 'other';
+
         $attribute = $this->get('pim_catalog.factory.attribute')->create();
         $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
+        $constraints = $this->get('validator')->validate($attribute);
+        $this->assertCount(0, $constraints);
         $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 
