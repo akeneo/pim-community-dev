@@ -6,6 +6,9 @@ use Akeneo\Test\Integration\Configuration;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group ce
+ */
 class SuccessListProductIntegration extends AbstractProductTestCase
 {
     /** @var Collection */

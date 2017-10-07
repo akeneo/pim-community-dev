@@ -667,6 +667,9 @@ JSON;
     }
      */
 
+    /**
+     * @group ce
+     */
     public function testProductPartialUpdateWithTheAssociationsUpdated()
     {
         $client = $this->createAuthenticatedClient();

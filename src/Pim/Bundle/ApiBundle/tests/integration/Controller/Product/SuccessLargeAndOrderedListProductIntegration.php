@@ -8,6 +8,8 @@ use Pim\Component\Catalog\Model\ProductInterface;
 /**
  * We want to test the API is capable of returning an ordered list of 100 items.
  * ie, twice the size of a cursor page
+ *
+ * @group ce
  */
 class SuccessLargeAndOrderedListProductIntegration extends AbstractProductTestCase
 {

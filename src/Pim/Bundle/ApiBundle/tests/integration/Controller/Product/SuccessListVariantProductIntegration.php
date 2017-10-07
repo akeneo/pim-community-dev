@@ -5,6 +5,9 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * @group ce
+ */
 class SuccessListVariantProductIntegration extends AbstractProductTestCase
 {
     /** @var Collection */

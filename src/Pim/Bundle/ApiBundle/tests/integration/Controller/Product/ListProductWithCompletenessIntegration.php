@@ -5,6 +5,9 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * @group ce
+ */
 class ListProductWithCompletenessIntegration extends AbstractProductTestCase
 {
     /** @var Collection */
@@ -169,8 +172,8 @@ JSON;
      */
     private function getEncryptedId($productIdentifier)
     {
-        $encrypter = $this->get('pim_api.security.primary_key_encrypter');
-        $productRepository = $this->get('pim_catalog.repository.product');
+        $encrypter = $this->getFromTestContainer('pim_api.security.primary_key_encrypter');
+        $productRepository = $this->getFromTestContainer('pim_catalog.repository.product');
 
         $product = $productRepository->findOneByIdentifier($productIdentifier);
 
