@@ -96,8 +96,8 @@ JSON;
      */
     private function getEncryptedId($productModelIdentifier)
     {
-        $encrypter = $this->get('pim_api.security.primary_key_encrypter');
-        $repository = $this->get('pim_catalog.repository.product_model');
+        $encrypter = $this->getFromTestContainer('pim_api.security.primary_key_encrypter');
+        $repository = $this->getFromTestContainer('pim_catalog.repository.product_model');
 
         $productModel = $repository->findOneByIdentifier($productModelIdentifier);
 

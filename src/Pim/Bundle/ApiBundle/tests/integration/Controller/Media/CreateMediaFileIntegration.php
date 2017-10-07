@@ -278,12 +278,12 @@ JSON;
     {
         parent::setUp();
 
-        $this->fileRepository = $this->get('pim_api.repository.media_file');
-        $this->productRepository = $this->get('pim_api.repository.product');
+        $this->fileRepository = $this->getFromTestContainer('pim_api.repository.media_file');
+        $this->productRepository = $this->getFromTestContainer('pim_api.repository.product');
 
-        $product = $this->get('pim_catalog.builder.product')->createProduct('foo');
-        $this->get('pim_catalog.saver.product')->save($product);
-        $this->get('akeneo_storage_utils.doctrine.object_detacher')->detach($product);
+        $product = $this->getFromTestContainer('pim_catalog.builder.product')->createProduct('foo');
+        $this->getFromTestContainer('pim_catalog.saver.product')->save($product);
+        $this->getFromTestContainer('akeneo_storage_utils.doctrine.object_detacher')->detach($product);
 
         $this->files['image'] = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.jpg';
         copy($this->getFixturePath('akeneo.jpg'), $this->files['image']);
@@ -291,7 +291,7 @@ JSON;
         $this->files['file'] = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'akeneo.txt';
         copy($this->getFixturePath('akeneo.txt'), $this->files['file']);
 
-        $mountManager = $this->get('oneup_flysystem.mount_manager');
+        $mountManager = $this->getFromTestContainer('oneup_flysystem.mount_manager');
         $this->fileSystem = $mountManager->getFilesystem(FileStorage::CATALOG_STORAGE_ALIAS);
     }
 
