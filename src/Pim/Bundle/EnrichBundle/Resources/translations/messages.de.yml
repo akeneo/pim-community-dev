@@ -95,14 +95,16 @@ pim_enrich:
         invalid_attribute: Das Attribut mit dem Code "attribute_code" ist kein gemeinsames Attribut der ausgewählten Produkte. Attribut übersprungen.
         no_valid_attribute: Keines der ausgewählten Attribute kann auf dieses Produkt angewendet werden.
     classify-add:
-      description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
+      description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen bleiben erhalten.
       success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
       launched_flash: Die Massenbearbeitung "zu Kategorien hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     classify-move:
+      label: Zwischen Kategorien verschieben
       description: Die Produkte werden folgenden Kategorien zugeordnet, die bestehende Zuordnung wird verworfen.
       success_flash: Produkt(e) wurden in die ausgewählten Kategorien verschoben
       launched_flash: Die Massenbearbeitung "in Kategorien verschieben" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
     classify-remove:
+      label: Aus Kategorien entfernen
       description: Die Produkte werden aus den folgenden Kategorien entfernt.
       success_flash: Produkt(e) wurden aus den ausgewählten Kategorien entfernt
       launched_flash: Die Massenbearbeitung "aus Kategorien entfernen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
@@ -117,6 +119,7 @@ pim_enrich:
       launched_flash: Die Massenbearbeitung "zu Gruppen hinzufügen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
       no_group: Bis jetzt keine Gruppen vorhanden. Beginnen Sie mit dem Anlegen einer Gruppe.
     set-attribute-requirements:
+      label: Benötigte Attribute auswählen
       description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
       success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
       launched_flash: Die Massenbearbeitung "setzen von Attributanforderungen" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
@@ -149,6 +152,8 @@ pim_enrich:
       comment: Produkte kommentieren
       download: Produkt als PDF herunterladen
       history: Produkthistorie ansehen
+    product_model:
+      edit_attributes: Attribute eines Produktmodells bearbeiten
     category:
       list: Kategorien auflisten
       create: Eine Kategorie anlegen
@@ -206,6 +211,8 @@ pim_enrich:
       history: Verbindungstypen-Historie ansehen
     job_tracker:
       index: Prozess-Tracker ansehen
+    api_connection:
+      manage: API-Verbindungen verwalten
   acl_group:
     association_type: Verbindungstypen
     attribute: Attribute
@@ -218,6 +225,7 @@ pim_enrich:
     group_type: Gruppentypen
     locale: Gebietsschemata
     product: Produkte
+    product_model: Produktmodelle
   reference_data:
     empty_value:
       reference_data_type:
@@ -304,7 +312,7 @@ btn:
   next: Vor
   back: Zurück
   confirm: Bestätigen
-  to grid: Zurück zur Übersicht
+  to grid: Zurück zur Listenansicht
   to parent: Zurück zur übergeordneten Ebene
   download_pdf: PDF
   download: Download
@@ -465,8 +473,8 @@ Attribute type: Attributtyp
 Defaultvalue: Standardwert
 Variant: Variante
 Smart: Smart
-Useable as grid column: Verwendbar als Spalte in der Übersicht
-Useable as grid filter: Verwendbar im Raster
+Useable as grid column: Verwendbar als Spalte in der Listenansicht
+Useable as grid filter: Anwendbar in der Listenansicht
 Family: Produktfamilie
 Available locales: Verfügbare Gebietsschemata
 Locale specific: Gebietsschema-spezifisch
@@ -496,6 +504,7 @@ No matches found: Keine Treffer gefunden
 Category tree: Kategorie-Strukturbaum
 Completeness: Vollständigkeit
 Attribute used as label: Attribut als Label verwendet
+Credentials: Anmeldeinformationen
 Global: Global
 Channel: Ausgabekanal
 Expand all channels: Alle Ausgabekanäle erweitern
@@ -630,9 +639,11 @@ pim_enrich.mass_edit_action:
     message.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
     no_attribute.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
   classify:
-    description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
+    label: Zu Kategorien hinzufügen
+    description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen bleiben erhalten.
     success_flash: Die Produkte wurden den ausgewählten Kategorien zugeordnet
   change-family:
+    label: Produktfamilie ändern
     description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
     success_flash: Die Produktfamilie der ausgewählten Produkte wurde erfolgreich geändert
     no_family: Keine Familie
@@ -641,6 +652,7 @@ pim_enrich.mass_edit_action:
     description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
     success_flash: Die Produkte wurden den ausgewählten Gruppen erfolgreich hinzugefügt
   set-attribute-requirements:
+    label: Benötigte Attribute auswählen
     description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
     success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
 To enable: Aktivieren
@@ -762,6 +774,10 @@ batch_jobs:
       label: Gemeinsame Attribute bearbeiten
     clean:
       label: Bereinige Dateien für gemeinsame Attribute
+  set_attribute_requirements:
+    label: Benötigte Attribute auswählen
+    perform:
+      label: Benötigte Attribute auswählen
   csv_product_quick_export:
     quick_export.label: CSV Produkt-Schnellexport
     perform:
@@ -795,4 +811,4 @@ pim_enrich_attribute_form:
   availableLocales: Verfügbare Gebietsschemata
   locale_specific: Gebietsschema-spezifisch
   group: Attributgruppe
-  useableAsGridFilter: Verwendbar im Raster
+  useableAsGridFilter: Anwendbar in der Listenansicht

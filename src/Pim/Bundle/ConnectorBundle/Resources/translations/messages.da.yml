@@ -9,10 +9,8 @@ pim_connector:
       invalid_item_columns_count: 'Forventede at have %totalColumnsCount% kolonner, har %itemColumnsCount% i %filePath%:%lineno%'
     csv_product_reader.title: CSV-produkt læser
     csv_category_reader.title: CSV-kategori læser
-    csv_variant_group .title: CSV-variant gruppe læser
     dummy_processor.title: Dummy processor
     product_processor.title: Produkt oprettelse
-    variant_group_processor.title: Variant gruppe oprettelse / opdatering
     category_processor.title: Kategorien oprettelse
     association_processor.title: Assoationsoprettelse
     product_association_processor.title: Assoationsoprettelse
@@ -26,7 +24,6 @@ pim_connector:
     file_writer.title: Output
     product_writer.title: Produkt opbevaring
     category_writer.title: Kategori opbevaring
-    variant_group_writer.title: Variant gruppe lager
     writer.title: Enhed opbevaring
     csv_writer.title: CSV-Writer
 job_execution.summary:
@@ -70,9 +67,6 @@ batch_jobs:
   csv_group_export:
     label: Gruppen eksport til CSV
     export.label: Gruppe eksport
-  csv_variant_group_export:
-    label: Variant gruppe eksporter til CSV
-    export.label: Variant gruppe eksport
   csv_family_export:
     label: Familie eksport i CSV
     export.label: Familie eksport
@@ -118,10 +112,6 @@ batch_jobs:
     label: Gruppe import fra CSV
     validation.label: Filvalidering
     import.label: Gruppe import
-  csv_variant_group_import:
-    label: Variant gruppe importer fra CSV
-    validation.label: Filvalidering
-    import.label: Variant gruppe import
   csv_channel_export:
     label: Kanal eksportet til CSV
     export.label: Kanal eksport
@@ -201,17 +191,10 @@ batch_jobs:
   xlsx_group_export:
     label: Gruppe eksport til XLSX
     export.label: Gruppe eksport
-  xlsx_variant_group_export:
-    label: Variant gruppe eksport til XLSX
-    export.label: Variant gruppe eksport
   xlsx_group_import:
     label: Gruppe import fra XLSX
     validation.label: Filvalidering
     import.label: Gruppe import
-  xlsx_variant_group_import:
-    label: Variant gruppe import fra XLSX
-    validation.label: Filvalidering
-    import.label: Variant gruppe import
   xlsx_family_export:
     label: Familie eksport til XLSX
     export.label: Familie eksport

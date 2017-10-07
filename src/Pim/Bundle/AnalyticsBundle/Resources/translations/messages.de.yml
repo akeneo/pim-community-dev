@@ -20,6 +20,9 @@ pim_analytics:
     nb_channels: Anzahl der Kanäle
     nb_products: Anzahl der Produkte
     nb_attributes: Anzahl der Attribute
+    nb_scopable_attributes: Anzahl der Attribute mit Gültigkeitsbereichen
+    nb_localizable_attributes: Anzahl der lokalisierbaren Attribute
+    nb_scopable_localizable_attributes: Anzahl der lokalisierbaren Attribute mit Gültigkeitsbereichen
     nb_locales: Anzahl der Gebietsschemas
     nb_families: Anzahl der Familien
     nb_users: Anzahl der Benutzer
