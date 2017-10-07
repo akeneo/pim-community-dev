@@ -3,6 +3,7 @@ No products to remove: Keine Produkte zum Entfernen
 "comma (,)": Komma (,)
 pim_catalog:
   constraint:
+    family_variant_axes_wrong_type: Attribute für Variantenachsen "%axis%" dürfen nicht lokalisierbar sein, nicht auf bestimmte Gebietsschemas eingeschränkt sein und keine Gültigkeitsbereiche haben
     product_identifier: Diese Kennungen "%s" sind nicht vorhanden.
     0: Es ist ein unerwarteter Fehler aufgetreten.
     100: Unerwarteter Wert

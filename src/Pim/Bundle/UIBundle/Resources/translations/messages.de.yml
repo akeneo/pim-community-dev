@@ -46,3 +46,4 @@ pim_ui.system_config:
     loading_messages.tooltip: Alle verfügbaren Nachrichten durch Zeilenschaltungen trennen
   group:
     loading_message.title: Nachrichten werden geladen
+other_actions: Weitere Aktionen

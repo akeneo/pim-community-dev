@@ -1,14 +1,14 @@
 confirmation:
   remove:
-    item: Êtes-vous sûr(e) de vouloir supprimer cet élément ?
+    item: Êtes-vous certain(e) de vouloir supprimer cet élément ?
     association_type: Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?
-    attribute: Êtes-vous sûr(e) de vouloir supprimer cet attribut ?
+    attribute: Êtes-vous sûr(e) de que vouloir supprimer cet attribut ?
     attribute_group: Êtes-vous sûr(e) de vouloir supprimer ce groupe d'attributs ?
     family: Êtes-vous sûr(e) de que vouloir supprimer cette famille ?
     product: Êtes-vous sûr(e) de que vouloir supprimer ce produit ?
     channel: Êtes-vous sûr(e) de que vouloir supprimer ce canal ?
     group: Êtes-vous sûr(e) de vouloir supprimer ce groupe ?
-    group_type: Êtes-vous sûr(e) de vouloir supprimer ce type de groupe ?
+    group_type: Êtes-vous sûr(e) de que vouloir supprimer ce type de groupe ?
     import profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?
     export profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'export ?
     user: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
@@ -34,9 +34,9 @@ pim_datagrid:
       cancel: Annuler
 flash:
   item:
-    removed: Élément supprimé avec succès
+    removed: Elément supprimé avec succès
   association_type:
-    removed: Le type d'association a été supprimé avec succès
+    removed: Le type d'association est supprimé avec succès
   attribute:
     removed: Attribut supprimé avec succès
   attribute_group:
@@ -66,7 +66,7 @@ flash:
 error:
   common: Une erreur est survenue
   creating:
-    product: Aucun attribut n'est configuré comme identifiant produit ou vous ne disposez pas des droits pour le modifier.
+    product: Aucun attribut n'est configuré comme identifiant produit ou vous n'avez pas les droits pour le modifier.
   removing:
     item: Impossible de supprimer cet élément
     association_type: Impossible de supprimer ce type d'association
@@ -127,7 +127,7 @@ pim_enrich:
       delete.label: Supprimer
       delete.error: Erreur lors de la suppression de l'élément
     delete:
-      confirm.content: Êtes-vous sûr(e) de que vouloir supprimer {{ itemName }} ? Il est impossible d'annuler cette action
+      confirm.content: Êtes-vous sûr(e) de que vouloir supprimer {{ itemName }} ? Il n'est pas possible d'annuler cette action
       confirm.title: Supprimer l'élément {{ itemName }}
   navigation:
     link:
@@ -160,7 +160,7 @@ pim_enrich:
         enabled: Activé
         disabled: Désactivé
         download_pdf: PDF
-        compare_translate: Comparer / Traduire
+        compare_translate: Comparer / traduire
         delete: Supprimer
         save: Enregistrer
       history:
@@ -178,13 +178,13 @@ pim_enrich:
         update_successful: Le produit a bien été mis à jour.
         update_failed: Le produit n'a pas pu être mis à jour.
         field_not_ready: 'Le produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
-        already_in_upload: Un fichier est déjà en téléchargement pour cet attribut dans la locale "{{ locale }}" et le canal "{{ scope }}"
+        already_in_upload: Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"
       error:
         upload: Une erreur s'est produite lors du transfert du fichier.
       meta:
         created: Créé
-        created_by: Par
-        updated_by: Par
+        created_by: par
+        updated_by: par
         updated: Dernière mise à jour
         family:
           title: Famille
@@ -216,7 +216,7 @@ pim_enrich:
       localizable:
         channel_locale_unavailable: Ce champ traduisible n'est pas disponible pour la locale '{{ locale }}' et le canal '{{ channel }}'
       media:
-        upload: Glissez et déposez pour télécharger ou cliquez ici
+        upload: Glisser et déposer pour télécharger ou cliquer ici
       create_popin:
         title: Créer
         labels:
@@ -279,7 +279,7 @@ pim_enrich:
         deletion_successful: Le canal a bien été supprimé.
         deletion_failed: Le canal ne peut pas être supprimé.
         update_successful: Le canal a bien été mis à jour.
-        update_failed: Le canal n'a pas pu être mis à jour.
+        update_failed: Le canal ne peut pas être mis à jour.
         create_successful: Canal créé avec succès.
         create_failed: Le canal ne peut pas être créé.
         field_not_ready: 'Le canal ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
@@ -380,9 +380,9 @@ pim_enrich:
   confirmation:
     leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
     discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
-    delete_item: Supprimer l'élément
+    delete_item: Supprimer l'élément.
     delete:
-      attribute: Êtes-vous sûr(e) de vouloir supprimer cet attribut du produit ?
+      attribute: Êtes-vous sûr de que vouloir supprimer cet attribut du produit ?
       attribute_group: Êtes vous sûr(e) de vouloir retirer l'attribut {{ attribute }} de ce groupe d'attributs ?
   info:
     not_applicable: N/A
@@ -583,8 +583,8 @@ pim_enrich:
         header.end: Fin
     job_instance:
       fail:
-        launch: Impossible de lancer le profil. Assurez-vous qu'il est valide et que vous disposez des droits pour le lancer.
-        save: Impossible de sauvegarder le profil. Assurez-vous que vous disposez des droits pour l'éditer.
+        launch: Impossible de lancer le profil. Assurez-vous qu'il est valide et que vous avez les droits pour le lancer.
+        save: Impossible de sauvegarder le profil. Assurez-vous que vous avez les droits pour l'éditer.
       title:
         import: Profil d'import
         export: Profil d'export
@@ -633,7 +633,7 @@ pim_enrich:
             title: Nombre de lignes par fichier
             help: Définit la limite de nombre de lignes par fichier
           upload_allowed:
-            title: Autoriser l'envoi de fichiers sur le serveur
+            title: Autoriser l'envoi de fichier sur le serveur
             help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
           categories_column:
             title: Colonne des catégories
@@ -646,7 +646,7 @@ pim_enrich:
             help: Nom de la colonne qui contient la famille du produit
           groups_column:
             title: Colonne des groupes
-            help: Intitulé de la colonne contenant les groupes de produits
+            help: Nom de la colonne qui contient les groupes du produit
           enabled:
             title: Activer le produit
             help: Activer automatiquement les produits importés
@@ -737,12 +737,12 @@ pim_enrich:
           help: Le canal définit la portée des valeurs des produits, les locales utilisées pour sélectionner les données ainsi que l'arbre de catégories utilisé pour sélectionner les produits.
         locales:
           title: Locales
-          help: 'Les locales définissent les valeurs de produits traduisibles à exporter. Par ex.: les informations des produits en allemand.'
+          help: 'Les locales définissent les valeurs de produits traduisibles à exporter. Par ex : les informations produits en allemand.'
         attributes:
           title: Attributs
           edit: Modifier
           label: "{0}Tous les attributs|{1}1 attribut sélectionné|]1,Inf[{{ count }} attributs sélectionnés"
-          help: 'Sélectionner les informations du produit à exporter. Par ex. : seulement les attributs techniques.'
+          help: 'Sélectionne les informations du produit à exporter. Par ex. : seulement les attributs techniques.'
           empty: Tous les attributs vont être exportés
           modal:
             apply: Appliquer
@@ -759,12 +759,12 @@ pim_enrich:
           description: Sélectionnez les informations produit à exporter
         family:
           title: Famille
-          help: 'Sélectionner les produits à exporter en fonction de leur famille. Par ex. : exporter seulement les chaussures et les robes.'
+          help: 'Sélectionne les produits à exporter en fonction de leur famille. Par ex. : exporter seulement les chaussures et les robes.'
           operators:
             IN: Dans la liste
             "NOT IN": Pas dans la liste
-            EMPTY: Produits ne possédant pas de famille
-            "NOT EMPTY": Produits possédant une famille
+            EMPTY: Produits qui n’ont pas de famille
+            "NOT EMPTY": Produits qui ont une famille
           empty_selection: Pas de condition sur les familles
         updated:
           title: Condition sur la date de mise à jour
@@ -1032,8 +1032,8 @@ page_title:
   pim_enrich_associationtype_edit: Type d'association {{ association type.label }} | Modifier
   pim_enrich_grouptype_index: Types de groupe
   pim_enrich_grouptype_edit: Type de groupes {{ group type.label }} | Modifier
-  pim_enrich_mass_edit_action_choose: Édition de masse | Choisir
-  pim_enrich_mass_edit_action_configure: Édition de masse | Configurer
+  pim_enrich_mass_edit_action_choose: Edition de masse | Choisir
+  pim_enrich_mass_edit_action_configure: Edition de masse | Configurer
   pim_enrich_mass_edit_action_perform: Edition en masse | Effectuer
   pim_enrich_job_tracker_index: Traqueur de processus
   pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
@@ -1293,11 +1293,11 @@ pim_menu:
     dashboard: Tableau de bord
     family: Familles
     group: Groupes
-    group_type: Types de groupes
+    group_type: Types de groupe
     locale: Locales
     product: Produits
     export_history: Historique des exports
-    export_profile: Profils d'exports
+    export_profile: Profils d'export
     import_history: Historique des imports
     import_profile: Profils d'import
     configuration: Configuration
