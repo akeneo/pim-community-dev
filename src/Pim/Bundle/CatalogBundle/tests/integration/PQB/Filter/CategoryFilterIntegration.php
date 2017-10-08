@@ -57,6 +57,17 @@ class CategoryFilterIntegration extends AbstractProductQueryBuilderTestCase
         $this->assert($result, ['bar', 'baz']);
     }
 
+    public function testOperatorInOrUnclassifiedInTwoDifferentFilters()
+    {
+        $this->createProduct('qux', ['categories' => ['categoryA1']]);
+
+        $result = $this->executeFilter([
+            ['categories', Operators::IN_LIST_OR_UNCLASSIFIED, ['categoryB']],
+            ['categories', Operators::IN_LIST_OR_UNCLASSIFIED, ['categoryA1']]
+        ]);
+        $this->assert($result, ['bar', 'baz', 'foo']);
+    }
+
     public function testOperatorInChildren()
     {
         $result = $this->executeFilter([['categories', Operators::IN_CHILDREN_LIST, ['master']]]);
