@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Tech improvements
+
+- TIP-808: Add version strategy for js and css assets
+
 # 2.0.1 (2017-10-05)
 
 ## Bug Fixes
@@ -31,7 +37,7 @@
 
 - PIM-6343: Classify product models by import and export product models with their categories
 - PIM-6356: Display the image of the 1st variant product created in the grid and on the PEF for product models
-- PIM-6856: List family variants created by import in a new tab "variants" in the family 
+- PIM-6856: List family variants created by import in a new tab "variants" in the family
 - PIM-6797: Automatically add "unique value" and identifier attributes at the last variant product level in family variants
 
 ## Better UI\UX!
