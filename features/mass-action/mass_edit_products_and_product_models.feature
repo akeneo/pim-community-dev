@@ -7,6 +7,22 @@ Feature: Apply a mass action on products only (and not product models)
 
   Background:
     Given a "catalog_modeling" catalog configuration
+    And the following categories:
+      | code         | label_en_US  | parent  |
+      | long_sleeves | Long sleeves | tshirts |
+      | seasons      | Seasons      | tshirts |
+      | summer       | Summer       | seasons |
+      | spring       | Spring       | seasons |
+    And the following root product models:
+      | code      | family_variant      | categories |
+      | model-nin | clothing_color_size | tshirts    |
+    And the following sub product models:
+      | code            | parent    | family_variant      | categories                  | color |
+      | model-nin-black | model-nin | clothing_color_size | summer,spring,supplier_zaro | black |
+    And the following products:
+      | sku                  | family      | categories                        | color | size |
+      | cult-of-luna-black-m | clothing    | long_sleeves,summer,supplier_zaro | black | m    |
+      | another-watch        | accessories | supplier_zaro                     | black |      |
     And I am logged in as "Julia"
     And I am on the products page
 
@@ -141,8 +157,8 @@ Feature: Apply a mass action on products only (and not product models)
 
   Scenario: Mass edits remove categories of only products within a selection of products and product models
     Given I show the filter "color"
-    And I filter by "color" with operator "in list" and value "Navy blue"
-    And I select rows watch, tshirt-unique-size-navy-blue and model-tshirt-divided-navy-blue
+    And I filter by "color" with operator "in list" and value "Black"
+    And I select rows another-watch, cult-of-luna-black-m and model-nin-black
     And I press the "Bulk actions" button
     And I choose the "Remove from categories" operation
     And I move on to the choose step
@@ -150,7 +166,10 @@ Feature: Apply a mass action on products only (and not product models)
     And I select the "Master" tree
     And I expand the "master" category
     And I expand the "master_men" category
-    And I press the "T-shirts" button
+    And I expand the "tshirts" category
+    And I expand the "tshirts" category
+    And I expand the "seasons" category
+    And I press the "[summer]" button
     And I select the "Suppliers" tree
     And I expand the "suppliers" category
     And I press the "Zaro" button
@@ -161,5 +180,5 @@ Feature: Apply a mass action on products only (and not product models)
     And I should see the text "processed 2"
     And I should see the text "skipped 1"
     And I should see the text "Bulk actions do not support Product models entities yet."
-    And the product "watch" should not have any category
-    And the product "tshirt-unique-size-navy-blue" should not have any category
+    And the product "another-watch" should not have any category
+    And the categories of the product "cult-of-luna-black-m" should be "long_sleeves"
