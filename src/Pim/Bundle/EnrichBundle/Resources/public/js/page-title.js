@@ -15,8 +15,6 @@ define(['pim-router', 'oro/translator'], function (router, __) {
             routeParams = params;
         },
 
-        render: (name, params) => {
-            render(name, params);
-        }
+        render: render
     };
 });
