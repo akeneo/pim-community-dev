@@ -108,8 +108,8 @@ define([
                             };
 
                             const html = ('product' === item.model_type)
-                                ? this.templateProduct({ entity: entity })
-                                : this.templateProductModel({ entity: entity })
+                                ? this.templateProduct({entity: entity, getClass: this.getCompletenessBadgeClass})
+                                : this.templateProductModel({entity: entity, getClass: this.getCompletenessBadgeClass})
                             ;
 
                             $container.append(html);
@@ -151,14 +151,40 @@ define([
                         ratio: localeCompleteness.ratio
                     };
                 } else {
-                    const completeProducts = entity.completeness.completenesses[catalogScope][catalogLocale];
+                    const completenesses = entity.completeness.completenesses;
                     const totalProducts  = entity.completeness.total;
+                    let completeProducts = 0;
+
+                    if (_.has(completenesses, catalogScope) &&
+                        _.has(completenesses[catalogScope], catalogLocale)
+                    ) {
+                        completeProducts = completenesses[catalogScope][catalogLocale];
+                    }
 
                     return {
                         ratio: (completeProducts > 0) ? Math.floor(totalProducts / completeProducts * 100) : 0,
                         display: completeProducts + ' / ' + totalProducts
                     };
                 }
+            },
+
+            /**
+             * Get the CSS class for the completeness badge of the template, depending on the given ratio.
+             *
+             * @param {int} ratio
+             *
+             * @returns {string}
+             */
+            getCompletenessBadgeClass: function (ratio) {
+                if (0 === ratio) {
+                    return 'empty';
+                }
+
+                if (100 === ratio) {
+                    return 'complete';
+                }
+
+                return 'incomplete';
             },
 
             /**
@@ -220,10 +246,11 @@ define([
              * @param entity
              */
             redirectToEntity: function (entity) {
-                const params = {
-                    id: entity.id
-                };
+                if (!entity) {
+                    return;
+                }
 
+                const params = {id: entity.id};
                 const route = ('product_model' === entity.model_type)
                     ? 'pim_enrich_product_model_edit'
                     : 'pim_enrich_product_edit'

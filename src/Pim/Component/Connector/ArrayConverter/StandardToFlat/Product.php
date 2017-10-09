@@ -49,7 +49,6 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
                 }
                 break;
             case 'groups':
-            case 'variant_group':
                 $convertedItem = $this->convertGroups($data, $convertedItem);
                 break;
             case 'values':
@@ -69,7 +68,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
     }
 
     /**
-     * Convert flat groups & variant_group to flat unified groups.
+     * Convert flat groups to flat unified groups.
      *
      * @param mixed $data
      * @param array $convertedItem

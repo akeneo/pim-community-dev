@@ -4,6 +4,7 @@ parameters:
     pim_api.normalizer.collection.class: Pim\Component\Api\Normalizer\CollectionNormalizer
     pim_api.normalizer.product.class: Pim\Component\Api\Normalizer\ProductNormalizer
     pim_api.normalizer.family.class: Pim\Component\Api\Normalizer\FamilyNormalizer
+    pim_api.normalizer.family_variant.class: Pim\Component\Api\Normalizer\FamilyVariantNormalizer
     pim_api.normalizer.category.class: Pim\Component\Api\Normalizer\CategoryNormalizer
     pim_api.normalizer.attribute.class: Pim\Component\Api\Normalizer\AttributeNormalizer
     pim_api.normalizer.attribute_option.class: Pim\Component\Api\Normalizer\AttributeOptionNormalizer
@@ -56,6 +57,13 @@ services:
         class: '%pim_api.normalizer.family.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.family'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_api.normalizer.family_variant:
+        class: '%pim_api.normalizer.family_variant.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.family_variant'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

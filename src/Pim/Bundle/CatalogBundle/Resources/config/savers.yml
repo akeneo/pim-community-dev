@@ -41,8 +41,6 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.saver.product'
-            - '@pim_catalog.manager.product_template_media'
-            - '@pim_catalog.applier.product_template'
             - '@pim_versioning.context.version'
             - '@pim_catalog.saver.group_options_resolver'
             - '@event_dispatcher'

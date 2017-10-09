@@ -1,10 +1,5 @@
 @import '../../base/variables';
 
-.AknVariantNavigationContainer:not(:empty) {
-  order: -10;
-  width: 100%;
-}
-
 .AknVariantNavigation {
   border: 1px solid @AknBorderColor;
   border-radius: 3px;
@@ -93,6 +88,10 @@
     font-size: @AknFontSizeSmall;
     line-height: 22px;
     color: #ffffff;
+
+    &--empty {
+      background-color: @AknRed;
+    }
 
     &--incomplete {
       background-color: @AknOrange;

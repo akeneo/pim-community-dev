@@ -31,6 +31,9 @@ class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverte
     protected function convertProperty($property, $data, array $convertedItem, array $options)
     {
         switch ($property) {
+            case 'categories':
+                $convertedItem[$property] = implode(',', $data);
+                break;
             case 'code':
             case 'family_variant':
             case 'parent':
@@ -41,7 +44,6 @@ class ProductModel extends AbstractSimpleArrayConverter implements ArrayConverte
                     $convertedItem = $convertedItem + $this->valueConverter->convertAttribute($code, $attribute);
                 }
                 break;
-            case 'categories':
             case 'created':
             case 'updated':
                 break;

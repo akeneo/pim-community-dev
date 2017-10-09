@@ -71,10 +71,9 @@ class GroupRepository extends EntityRepository implements
         ;
 
         $qb
-            ->innerJoin('g.type', 'type', Expr\Join::WITH, 'type.variant = :isVariant')
+            ->innerJoin('g.type', 'type')
             ->leftJoin('g.translations', 'translation', Expr\Join::WITH, 'translation.locale = :localeCode')
             ->leftJoin('type.translations', 'typeTrans', Expr\Join::WITH, 'typeTrans.locale = :localeCode')
-            ->leftJoin('g.axisAttributes', 'attribute')
         ;
 
         $qb->distinct(true);

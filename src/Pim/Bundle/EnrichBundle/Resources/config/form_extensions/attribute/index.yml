@@ -1,6 +1,23 @@
 extensions:
     pim-attribute-index:
-        module: pim/form/common/index/index
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    pim-attribute-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-attribute-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pim-attribute-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-attribute-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
 
     pim-attribute-index-grid-title:
         module: pim/common/grid-title
@@ -19,24 +36,23 @@ extensions:
 
     pim-attribute-index-grid-filters-list:
         module: oro/datafilter/filters-list
-        parent: pim-attribute-index
+        parent: pim-attribute-index-grid-container
         targetZone: filters
 
     pim-attribute-index-grid-filters-manage:
         module: oro/datafilter/filters-button
-        parent: pim-attribute-index
+        parent: pim-attribute-index-grid-container
         targetZone: filters
 
     pim-attribute-index-pagination:
         module: oro/datagrid/pagination-input
-        parent: pim-attribute-index
+        parent: pim-attribute-index-grid-container
         targetZone: toolbar
 
     pim-attribute-index-grid:
         module: pim/form/common/index/grid
-        parent: pim-attribute-index
+        parent: pim-attribute-index-grid-container
         position: 1000
-        targetZone: content
         config:
             alias: attribute-grid
 

@@ -53,7 +53,7 @@ Linked entities are represented only by their identifier as strings. For instanc
 ### Common structure
 
 The products contains inner fields and product values that are linked to attributes.
-All products have the same fields (identifier, label, family, groups, variant groups, categories, associations, status, dates of creation and update) while product values are flexible among products.
+All products have the same fields (identifier, label, family, groups, categories, associations, status, dates of creation and update) while product values are flexible among products.
 
 Let's consider a *bar* product, without any product value, except its identifier *sku*. This product also contains:
 
@@ -61,7 +61,6 @@ Let's consider a *bar* product, without any product value, except its identifier
 * a family
 * a parent
 * several groups
-* a variant group
 * several categories
 * several associations related to groups and/or other products
 
@@ -75,7 +74,6 @@ Its standard format would be the following:
             0 => "groupA"
             1 => "groupB"
           ]
-          "variant_group" => "variantA"
           "categories" => array:2 [
             0 => "categoryA"
             1 => "categoryB"
@@ -123,7 +121,6 @@ Its standard format would be the following:
 | family        | string         | `"familyA"`                                                               | it represents the *code* of the *Pim\Component\Catalog\Model\FamilyInterface*                    |
 | parent        | string         | `"parentA"`                                                               | it represents the *code* of the *Pim\Component\Catalog\Model\ProductModelInterface*              |
 | groups        | array          | `[0 => "groupA", 1 => "groupB"]`                                          | it represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*                     |
-| variant_group | string         | `"variantA"`                                                              | it represents the *code* of the *Pim\Component\Catalog\Model\GroupInterface*                     |
 | categories    | array          | `[0 => "categoryA", 1 => "categoryB"]`                                    | it represents the *code* of the object *Akeneo\Component\Classification\Model\CategoryInterface* |
 | enabled       | boolean        | `true`                                                                    |                                                                                                  |
 | values        | array          |                                                                           | see below                                                                                        |
@@ -164,7 +161,6 @@ Let's now consider a catalog with all attribute types possible and a *foo* produ
 * an identifier
 * a family
 * several groups
-* a variant group
 * several categories
 * several associations related to groups and/or other products
 
@@ -177,7 +173,6 @@ Its standard format would be the following:
             0 => "groupA"
             1 => "groupB"
           ]
-          "variant_group" => "variantA"
           "categories" => array:2 [
             0 => "categoryA1"
             1 => "categoryB"
@@ -777,7 +772,6 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
         
         array:3 [
           "code" => "GROUP"
-          "is_variant" => false
           "labels" => array:1 [
             "en_US" => "Group type"
           ]
@@ -786,7 +780,6 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | type       | data structure | data example                  | notes                                                                                            |
 | ---------- | -------------- | ----------------------------- | ------------------------------------------------------------------------------------------------ |
 | code       | string         | `"GROUP"`                     | it's the identifier of the group type                                                            |
-| is_variant | boolean        | `false`                       |                                                                                                  |
 | labels     | array          | `["en_US" => "GROUP type"]`   | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface* |
 
     
@@ -832,39 +825,6 @@ labels     | string[]       | `["en_US" => "A option"]` | each key of the array 
 | family                 | string         | `"family"`                                                                                                 | the code of the family of the family variant                                                            |
 | labels                 | array          | `["en_US" => "My family variant", "fr_FR" => "Ma variation de famille"]`                                   | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*        |
 | variant_attribute_sets | array          | `[["level" => 1, "axes" => ["a_simple_select"], "attributes" => ["an_attribute", "an_other_attribute"]]]`, | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
-
-
-### Variant group
-
-        array:5 [
-          "code" => "my_variant_group"
-          "type" => "VARIANT"
-          "axes" => array:1 [
-            0 => "a_simple_select"
-          ]
-          "labels" => array:1 [
-            "en_US" => "My variant group"
-            "fr_FR" => "Mon groupe de variante"
-          ]
-          "values" => array:1 [
-            "a_text" => array:1 [
-              0 => array:3 [
-                "locale" => null
-                "scope" => null
-                "data" => "the text"
-              ]
-            ]
-          ]
-        ]
-  
-| type   | data structure | data example                                                           | notes                                                                                                   |
-| ------ | -------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| code   | string         | `"my_variant_group"`                                                   | it's the identifier of the variant group                                                                |
-| type   | string         | `"VARIANT"`                                                            |                                                                                                         |
-| axes   | string[]       | `[0 => "a_simple_select", 1 => "a_multi_select"]`                      | each element of the array represents the *code* of the *Pim\Component\Catalog\Model\AttributeInterface* |
-| labels | string[]       | `["en_US" => "My variant group", "fr_FR" => "Mon groupe de variante"]` | each key of the array represents the *code* of the *Pim\Component\Catalog\Model\LocaleInterface*        |
-| values | array          |                                                                        | has the same structure as product values (see above)                                                    |
-
 
 ### File info
 
@@ -984,7 +944,6 @@ The standard format is used to:
 * export data
 * update objects in memory (imports, PEF for products, Mass Edit)
 * define the data expected in the `Pim\Component\Catalog\Query\ProductQueryBuilderInterface` filters
-* store variant groups values
 * store draft changes (EE)
 
 

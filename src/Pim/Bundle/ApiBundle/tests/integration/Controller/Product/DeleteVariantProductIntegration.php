@@ -11,7 +11,7 @@ class DeleteVariantProductIntegration extends AbstractProductTestCase
     {
         $client = $this->createAuthenticatedClient();
 
-        $this->assertCount(246, $this->get('pim_catalog.repository.product')->findAll());
+        $this->assertCount(242, $this->get('pim_catalog.repository.product')->findAll());
 
         $bikerJacketLeatherXxs = $this->get('pim_catalog.repository.product')->findOneByIdentifier('biker-jacket-leather-xxs');
         $this->get('pim_catalog.elasticsearch.indexer.product')->index($bikerJacketLeatherXxs);
@@ -20,7 +20,7 @@ class DeleteVariantProductIntegration extends AbstractProductTestCase
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
 
-        $this->assertCount(245, $this->get('pim_catalog.repository.product')->findAll());
+        $this->assertCount(241, $this->get('pim_catalog.repository.product')->findAll());
         $this->assertNull($this->get('pim_catalog.repository.product')->findOneByIdentifier('biker-jacket-leather-xxs'));
     }
 

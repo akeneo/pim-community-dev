@@ -6,10 +6,8 @@ parameters:
     pim_catalog.updater.product_property_adder.class:         Pim\Component\Catalog\Updater\ProductPropertyAdder
     pim_catalog.updater.product_property_copier.class:        Pim\Component\Catalog\Updater\ProductPropertyCopier
     pim_catalog.updater.product_property_remover.class:       Pim\Component\Catalog\Updater\ProductPropertyRemover
-    pim_catalog.updater.product_template.class:               Pim\Component\Catalog\Updater\ProductTemplateUpdater
     pim_catalog.updater.attribute_option.class:               Pim\Component\Catalog\Updater\AttributeOptionUpdater
     pim_catalog.updater.attribute.class:                      Pim\Component\Catalog\Updater\AttributeUpdater
-    pim_catalog.updater.variant_group.class:                  Pim\Component\Catalog\Updater\VariantGroupUpdater
     pim_catalog.updater.group.class:                          Pim\Component\Catalog\Updater\GroupUpdater
     pim_catalog.updater.association_type.class:               Pim\Component\Catalog\Updater\AssociationTypeUpdater
     pim_catalog.updater.family.class:                         Pim\Component\Catalog\Updater\FamilyUpdater
@@ -25,7 +23,6 @@ parameters:
     pim_catalog.updater.setter.value.class:                   Pim\Component\Catalog\Updater\Setter\AttributeSetter
     pim_catalog.updater.setter.category_field.class:          Pim\Component\Catalog\Updater\Setter\CategoryFieldSetter
     pim_catalog.updater.setter.group_field.class:             Pim\Component\Catalog\Updater\Setter\GroupFieldSetter
-    pim_catalog.updater.setter.variant_group_field.class:     Pim\Component\Catalog\Updater\Setter\VariantGroupFieldSetter
     pim_catalog.updater.setter.family_field.class:            Pim\Component\Catalog\Updater\Setter\FamilyFieldSetter
     pim_catalog.updater.setter.parent_field.class:            Pim\Component\Catalog\Updater\Setter\ParentFieldSetter
     pim_catalog.updater.setter.association_field.class:       Pim\Component\Catalog\Updater\Setter\AssociationFieldSetter
@@ -58,9 +55,8 @@ services:
         class: '%pim_catalog.updater.product.class%'
         arguments:
             - '@pim_catalog.updater.property_setter'
-            - '@pim_catalog.updater.product_template'
             - '@pim_catalog.updater.entity_with_values'
-            - ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations', 'parent']
+            - ['enabled', 'family', 'categories', 'groups', 'associations', 'parent']
             - ['identifier', 'created', 'updated']
 
     pim_catalog.updater.product_model:
@@ -101,12 +97,6 @@ services:
         arguments:
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.updater.copier.registry'
-
-    pim_catalog.updater.product_template:
-        class: '%pim_catalog.updater.product_template.class%'
-        arguments:
-            - '@pim_catalog.updater.property_setter'
-            - '@pim_serializer'
 
     pim_catalog.updater.attribute_option:
         class: '%pim_catalog.updater.attribute_option.class%'
@@ -182,17 +172,6 @@ services:
         class: '%pim_catalog.updater.association_type.class%'
         arguments:
             - '@pim_localization.updater.translatable'
-
-    pim_catalog.updater.variant_group:
-        class: '%pim_catalog.updater.variant_group.class%'
-        arguments:
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.group_type'
-            - '@pim_catalog.factory.value'
-            - '@akeneo_file_storage.repository.file_info'
-            - '@akeneo_file_storage.file_storage.file.file_storer'
-            - '@pim_catalog.query.product_query_builder_factory'
-            - '%pim_catalog.entity.product_template.class%'
 
     pim_catalog.updater.group:
         class: '%pim_catalog.updater.group.class%'
@@ -276,14 +255,6 @@ services:
         arguments:
             - '@pim_catalog.repository.group'
             - ['groups']
-        tags:
-            - { name: 'pim_catalog.updater.setter' }
-
-    pim_catalog.updater.setter.variant_group_field:
-        class: '%pim_catalog.updater.setter.variant_group_field.class%'
-        arguments:
-            - '@pim_catalog.repository.group'
-            - ['variant_group']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 

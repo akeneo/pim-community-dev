@@ -23,9 +23,9 @@
 
     .select2-arrow {
       width: 25px;
-      background: url("../../images/icon-down.svg") no-repeat 4px 16px;
+      background: url("../../images/icon-down.svg") no-repeat 10px 10px;
       background-color: inherit;
-      background-size: 12px;
+      background-size: 18px;
       border-left: none;
 
       b {
@@ -252,12 +252,13 @@
         margin-right: 30px;
 
         .current {
-          max-width: 100px;
+          max-width: 110px;
           text-overflow: ellipsis;
           display: inline-block;
           overflow: hidden;
           line-height: 33px;
           height: 30px;
+          margin-right: -30px;
         }
       }
 
@@ -365,8 +366,9 @@
       }
 
       .select2-arrow {
-        background-position: 4px 2px;
+        background-position: 4px 3px;
         width: @circleSize;
+        background-size: 12px;
 
         b {
           background: url("../../images/jstree/icon-down.svg") no-repeat center center;
@@ -464,6 +466,7 @@
     .select2-arrow {
       width: 25px;
       border-left: none;
+      background-position: 6px 12px;
     }
   }
 }

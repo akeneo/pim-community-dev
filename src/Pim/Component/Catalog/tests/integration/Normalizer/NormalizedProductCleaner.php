@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Catalog\tests\integration\Normalizer;
 
-use Akeneo\Test\Integration\DateSanitizer;
-use Akeneo\Test\Integration\MediaSanitizer;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 
 /**
  * Cleans a normalized product (aka, an array of data) so that it can be compared with the expected result

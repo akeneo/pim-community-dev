@@ -16,7 +16,7 @@ Feature: Enforce ACL on history
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I am on the "X_SELL" association type page
-    Then I should not see "history"
+    Then I should not see the text "history"
 
   Scenario: Successfully hide attribute group history when user doesn't have the rights
     Given a "footwear" catalog configuration
@@ -30,7 +30,7 @@ Feature: Enforce ACL on history
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I am on the "Sizes" attribute group page
-    Then I should not see "history"
+    Then I should not see the text "history"
 
   Scenario: Successfully hide attribute history when user doesn't have the rights
     Given a "footwear" catalog configuration
@@ -44,7 +44,7 @@ Feature: Enforce ACL on history
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I am on the "color" attribute page
-    Then I should not see "history"
+    Then I should not see the text "history"
 
   Scenario: Successfully hide category history when user doesn't have the rights
     Given a "footwear" catalog configuration
@@ -58,7 +58,7 @@ Feature: Enforce ACL on history
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I am on the "sandals" category page
-    Then I should not see "history"
+    Then I should not see the text "history"
 
   Scenario: Successfully hide channel history when user doesn't have the rights
     Given a "footwear" catalog configuration
@@ -72,7 +72,7 @@ Feature: Enforce ACL on history
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I am on the "mobile" channel page
-    Then I should not see "history"
+    Then I should not see the text "history"
 
   Scenario: Successfully hide family history when user doesn't have the rights
     Given a "footwear" catalog configuration
@@ -86,7 +86,7 @@ Feature: Enforce ACL on history
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I am on the "boots" family page
-    Then I should not see "history"
+    Then I should not see the text "history"
 
   Scenario: Successfully hide group history when user doesn't have the rights
     Given a "footwear" catalog configuration
@@ -100,7 +100,7 @@ Feature: Enforce ACL on history
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I am on the "similar_boots" product group page
-    Then I should not see "history"
+    Then I should not see the text "history"
 
   Scenario: Successfully hide product history when user doesn't have the rights
     Given a "footwear" catalog configuration
@@ -114,7 +114,7 @@ Feature: Enforce ACL on history
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I am on the "boot" product page
-    Then I should not see "history"
+    Then I should not see the text "history"
 
   Scenario: Successfully hide export profile history when user doesn't have the rights
     Given a "footwear" catalog configuration
@@ -128,7 +128,7 @@ Feature: Enforce ACL on history
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I am on the "csv_footwear_option_export" export job page
-    Then I should not see "history"
+    Then I should not see the text "history"
 
   Scenario: Successfully hide import profile history when user doesn't have the rights
     Given a "footwear" catalog configuration
@@ -142,4 +142,4 @@ Feature: Enforce ACL on history
     And I save the role
     Then I should not see the text "There are unsaved changes."
     When I am on the "csv_footwear_group_import" import job edit page
-    Then I should not see "history"
+    Then I should not see the text "history"

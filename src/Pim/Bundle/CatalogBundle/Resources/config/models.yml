@@ -20,7 +20,6 @@ parameters:
     pim_catalog.model.locale.interface:                 Pim\Component\Catalog\Model\LocaleInterface
     pim_catalog.model.metric.interface:                 Pim\Component\Catalog\Model\MetricInterface
     pim_catalog.model.product_price.interface:          Pim\Component\Catalog\Model\ProductPriceInterface
-    pim_catalog.model.product_template.interface:       Pim\Component\Catalog\Model\ProductTemplateInterface
 
     pim_catalog.model.category_translation.interface:         Pim\Component\Catalog\Model\CategoryTranslationInterface
     pim_catalog.model.family_translation.interface:           Pim\Component\Catalog\Model\FamilyTranslationInterface

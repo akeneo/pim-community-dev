@@ -39,10 +39,18 @@ define(
              */
             render: function () {
                 const variantProductCompleteness = this.getFormData().meta.variant_product_completenesses;
+                const completenesses = variantProductCompleteness.completenesses;
                 const channel = UserContext.get('catalogScope');
                 const locale = UserContext.get('catalogLocale');
-                const completeProducts = variantProductCompleteness.completenesses[channel][locale];
+
                 const totalProducts = variantProductCompleteness.total;
+                let completeProducts = 0;
+
+                if (_.has(completenesses, channel) &&
+                    _.has(completenesses[channel], locale)
+                ) {
+                    completeProducts = completenesses[channel][locale];
+                }
 
                 this.$el.html(
                     this.template({

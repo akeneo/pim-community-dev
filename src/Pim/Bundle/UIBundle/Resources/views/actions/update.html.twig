@@ -39,7 +39,13 @@
                     {% endblock breadcrumbs %}
                 {% endset %}
 
-                {{ elements.page_header(title, buttons, [], meta, '', null, null) }}
+                {{ elements.page_header(
+                    {
+                        title: title,
+                        buttons: buttons,
+                        meta: meta
+                    }
+                ) }}
 
             {% endblock pageHeader %}
 

@@ -132,7 +132,12 @@ INSERT INTO `pim_catalog_attribute_translation` VALUES (3521,2523,'SKU','en_US')
 
 /*!40000 ALTER TABLE `pim_catalog_category` DISABLE KEYS */;
 DELETE FROM `pim_catalog_category`;
-INSERT INTO `pim_catalog_category` VALUES (895,NULL,'master','2016-08-04 14:28:49',895,0,1,10),(896,895,'categoryA','2016-08-04 14:28:49',895,1,2,7),(897,896,'categoryA1','2016-08-04 14:28:49',895,2,3,4),(898,896,'categoryA2','2016-08-04 14:28:49',895,2,5,6),(899,895,'categoryB','2016-08-04 14:28:49',895,1,8,9);
+INSERT INTO `pim_catalog_category` VALUES
+(895,NULL,'master','2016-08-04 14:28:49',895,0,1,10),
+(896,895,'categoryA','2016-08-04 14:28:49',895,1,2,7),
+(897,896,'categoryA1','2016-08-04 14:28:49',895,2,3,4),
+(898,896,'categoryA2','2016-08-04 14:28:49',895,2,5,6),
+(899,895,'categoryB','2016-08-04 14:28:49',895,1,8,9);
 /*!40000 ALTER TABLE `pim_catalog_category` ENABLE KEYS */;
 
 
@@ -177,7 +182,9 @@ INSERT INTO `pim_catalog_channel_locale` VALUES (209,21058),(210,21039),(210,210
 
 /*!40000 ALTER TABLE `pim_catalog_family` DISABLE KEYS */;
 DELETE FROM `pim_catalog_family`;
-INSERT INTO `pim_catalog_family` VALUES (466,2523,NULL,'familyA','2016-08-04 14:28:50','2016-08-04 14:28:50');
+INSERT INTO `pim_catalog_family` VALUES
+(466,2523,NULL,'familyA','2016-08-04 14:28:50','2016-08-04 14:28:50'),
+(467,2523,NULL,'familyB','2016-08-04 14:28:50','2016-08-04 14:28:50');
 /*!40000 ALTER TABLE `pim_catalog_family` ENABLE KEYS */;
 
 
@@ -206,7 +213,9 @@ INSERT INTO `pim_catalog_family_attribute` VALUES (466,2523),(466,2524),(466,252
 /*!40000 ALTER TABLE `pim_catalog_family_variant` DISABLE KEYS */;
 DELETE FROM `pim_catalog_family_variant`;
 INSERT INTO `pim_catalog_family_variant` (`id`, `family_id`, `code`) VALUES
-(25,	466,	'familyVariantA1');
+(25,	466,	'familyVariantA1'),
+(26,	466,	'familyVariantA2'),
+(27,	466,	'familyVariantB1');
 /*!40000 ALTER TABLE `pim_catalog_family_variant` DISABLE KEYS */;
 
 --
@@ -215,17 +224,8 @@ INSERT INTO `pim_catalog_family_variant` (`id`, `family_id`, `code`) VALUES
 
 /*!40000 ALTER TABLE `pim_catalog_group` DISABLE KEYS */;
 DELETE FROM `pim_catalog_group`;
-INSERT INTO `pim_catalog_group` VALUES (240,NULL,323,'groupA'),(241,NULL,323,'groupB');
+INSERT INTO `pim_catalog_group` VALUES (240,323,'groupA'),(241,323,'groupB');
 /*!40000 ALTER TABLE `pim_catalog_group` ENABLE KEYS */;
-
-
---
--- Dumping data for table `pim_catalog_group_attribute`
---
-
-/*!40000 ALTER TABLE `pim_catalog_group_attribute` DISABLE KEYS */;
-INSERT INTO `pim_catalog_group_attribute` VALUES (239,2535);
-/*!40000 ALTER TABLE `pim_catalog_group_attribute` ENABLE KEYS */;
 
 
 --
@@ -234,7 +234,7 @@ INSERT INTO `pim_catalog_group_attribute` VALUES (239,2535);
 
 /*!40000 ALTER TABLE `pim_catalog_group_type` DISABLE KEYS */;
 DELETE FROM `pim_catalog_group_type`;
-INSERT INTO `pim_catalog_group_type` VALUES (323,'RELATED',0);
+INSERT INTO `pim_catalog_group_type` VALUES (323,'RELATED');
 /*!40000 ALTER TABLE `pim_catalog_group_type` ENABLE KEYS */;
 
 

@@ -5,6 +5,7 @@ extensions:
            labels:
                title: pim_enrich.entity.api_connection.create_popin.title
                subTitle: pim_menu.item.api_connection
+           picture: illustrations/Api.svg
            successMessage: pim_enrich.entity.api_connection.message.created
            postUrl: pim_enrich_api_connection_rest_create
            editRoute: pim_enrich_api_connection_index

@@ -19,7 +19,6 @@ class GetVariantProductIntegration extends AbstractProductTestCase
             "family"        => "clothing",
             "parent"        => "model-biker-jacket-leather",
             "groups"        => [],
-            "variant_group" => null,
             "categories"    => ["master_men_blazers"],
             "enabled"       => true,
             "values"        => [

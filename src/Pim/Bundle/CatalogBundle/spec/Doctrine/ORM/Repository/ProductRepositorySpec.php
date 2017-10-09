@@ -50,38 +50,6 @@ class ProductRepositorySpec extends ObjectBehavior
         $this->shouldImplement('Doctrine\Common\Persistence\ObjectRepository');
     }
 
-    function it_returns_eligible_products_for_variant_group(
-        $groupRepository,
-        $pqbFactory,
-        ProductQueryBuilderInterface $pqb,
-        AttributeInterface $size,
-        AttributeInterface $color,
-        GroupInterface $variant,
-        GroupTypeInterface $groupType,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        ProductInterface $product3
-    ) {
-        $groupRepository->find(10)->willReturn($variant);
-        $pqbFactory->create()->willReturn($pqb);
-
-        $variant->getAxisAttributes()->willReturn([$size, $color]);
-        $variant->getType()->willReturn($groupType);
-        $groupType->isVariant()->willReturn(true);
-        $size->getCode()->willReturn('size');
-        $color->getCode()->willReturn('color');
-
-        $pqb->addFilter('size', Operators::IS_NOT_EMPTY, Argument::any())->shouldBeCalled();
-        $pqb->addFilter('color', Operators::IS_NOT_EMPTY, Argument::any())->shouldBeCalled();
-
-        $pqb->execute()->willReturn([$product1, $product2, $product3]);
-        $product1->getId()->willReturn(42);
-        $product2->getId()->willReturn(56);
-        $product3->getId()->willReturn(69);
-
-        $this->getEligibleProductsForVariantGroup(10)->shouldReturn([$product1, $product2, $product3]);
-    }
-
     function it_checks_if_the_product_has_an_attribute_in_its_family(
         $em,
         QueryBuilder $queryBuilder,

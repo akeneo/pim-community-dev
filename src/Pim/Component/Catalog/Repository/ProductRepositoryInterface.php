@@ -20,16 +20,6 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 interface ProductRepositoryInterface extends ObjectRepository
 {
     /**
-     * Find all products in a variant group (by variant axis attribute values)
-     *
-     * @param GroupInterface $variantGroup the variant group
-     * @param array          $criteria     the criteria
-     *
-     * @return array
-     */
-    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = []);
-
-    /**
      * @param ProductQueryBuilderFactoryInterface $factory
      *
      * @return ProductRepositoryInterface
@@ -51,13 +41,6 @@ interface ProductRepositoryInterface extends ObjectRepository
      * @return ProductInterface|null
      */
     public function findOneByIdentifier($identifier);
-
-    /**
-     * @param int $variantGroupId
-     *
-     * @return CursorInterface
-     */
-    public function getEligibleProductsForVariantGroup($variantGroupId);
 
     /**
      * @param GroupInterface $group
@@ -90,14 +73,6 @@ interface ProductRepositoryInterface extends ObjectRepository
      * @return bool
      */
     public function hasAttributeInFamily($productId, $attributeCode);
-
-    /**
-     * @param GroupInterface $variantGroup
-     * @param array          $criteria
-     *
-     * @return array
-     */
-    public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = []);
 
     /**
      * @param int $offset

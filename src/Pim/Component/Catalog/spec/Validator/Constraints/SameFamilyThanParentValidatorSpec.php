@@ -51,6 +51,7 @@ class SameFamilyThanParentValidatorSpec extends ObjectBehavior
         $productFamily->getCode()->willReturn('other_code');
 
         $context->buildViolation(SameFamilyThanParent::MESSAGE)->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->atPath('family')->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($variantProduct, $collaborator);

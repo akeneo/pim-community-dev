@@ -41,6 +41,8 @@ Pim\Bundle\CatalogBundle\Entity\Family:
         familyVariants:
             targetEntity: Pim\Component\Catalog\Model\FamilyVariantInterface
             mappedBy: family
+            cascade:
+                - persist
         translations:
             targetEntity: Pim\Component\Catalog\Model\FamilyTranslationInterface
             mappedBy: foreignKey

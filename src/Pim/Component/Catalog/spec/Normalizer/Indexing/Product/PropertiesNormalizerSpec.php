@@ -61,7 +61,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getValues()->willReturn($valueCollection);
         $product->getFamily()->willReturn(null);
         $product->getGroupCodes()->willReturn([]);
-        $product->getVariantGroup()->willReturn(null);
         $product->getCategoryCodes()->willReturn([]);
         $valueCollection->isEmpty()->willReturn(true);
 
@@ -78,7 +77,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'enabled'       => false,
                 'categories'    => [],
                 'groups'        => [],
-                'variant_group' => null,
                 'completeness'  => [],
                 'values'        => [],
             ]
@@ -116,7 +114,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $product->getValues()->willReturn($valueCollection);
         $product->getFamily()->willReturn(null);
         $product->getGroupCodes()->willReturn([]);
-        $product->getVariantGroup()->willReturn(null);
         $product->getCategoryCodes()->willReturn([]);
         $valueCollection->isEmpty()->willReturn(true);
 
@@ -135,7 +132,6 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 'enabled'       => false,
                 'categories'    => [],
                 'groups'        => [],
-                'variant_group' => null,
                 'completeness'  => ['the completenesses'],
                 'values'        => [],
             ]
@@ -147,8 +143,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         ValueCollectionInterface $valueCollection,
         FamilyInterface $family,
-        Collection $completenesses,
-        Group $variantGroup
+        Collection $completenesses
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
@@ -178,9 +173,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 ],
             ]);
         $product->isEnabled()->willReturn(true);
-        $product->getGroupCodes()->willReturn(['first_group', 'second_group', 'a_variant_group']);
-        $product->getVariantGroup()->willReturn($variantGroup);
-        $variantGroup->getCode()->willReturn('a_variant_group');
+        $product->getGroupCodes()->willReturn(['first_group', 'second_group']);
         $product->getCategoryCodes()->willReturn(
             [
                 'first_category',
@@ -231,12 +224,10 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 ],
                 'enabled'       => true,
                 'categories'    => ['first_category', 'second_category'],
-                'groups'        => ['first_group', 'second_group', 'a_variant_group'],
-                'variant_group' => 'a_variant_group',
+                'groups'        => ['first_group', 'second_group'],
                 'in_group' => [
                     'first_group'     => true,
                     'second_group'    => true,
-                    'a_variant_group' => true,
                 ],
                 'completeness'  => [
                     'ecommerce' => [

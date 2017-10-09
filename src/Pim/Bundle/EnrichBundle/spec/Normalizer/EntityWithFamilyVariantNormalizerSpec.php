@@ -14,6 +14,7 @@ use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\ProductModel\ImageAsLabel;
 use Pim\Component\Catalog\ProductModel\Query\CompleteVariantProducts;
 use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
@@ -27,7 +28,8 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         NormalizerInterface $completenessCollectionNormalizer,
         CompletenessCalculatorInterface $completenessCalculator,
-        VariantProductRatioInterface $variantProductRatioQuery
+        VariantProductRatioInterface $variantProductRatioQuery,
+        ImageAsLabel $imageAsLabel
     ) {
         $this->beConstructedWith(
             $fileNormalizer,
@@ -35,7 +37,8 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
             $attributesProvider,
             $completenessCollectionNormalizer,
             $completenessCalculator,
-            $variantProductRatioQuery
+            $variantProductRatioQuery,
+            $imageAsLabel
         );
     }
 
@@ -150,8 +153,6 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $colorAttributeOption->getSortOrder()->willReturn(2);
         $colorAttributeOption->getTranslation()->willReturn($colorAttributeOptionValue);
         $colorAttributeOptionValue->getLabel()->willReturn('Blanc', 'White');
-
-        $productModel->getImage()->willReturn(null);
 
         $variantProductRatioQuery->findComplete($productModel)->willReturn($completeVariantProducts);
         $completeVariantProducts->values()->willReturn(['NORMALIZED COMPLETENESS']);

@@ -158,9 +158,7 @@ define(
 
                         this.groupModal.on('ok', function visitGroup() {
                             this.groupModal.close();
-                            var route = 'VARIANT' === group.type ?
-                                'pim_enrich_variant_group_edit' :
-                                'pim_enrich_group_edit';
+                            var route = 'pim_enrich_group_edit';
                             var parameters = { code: group.code };
 
                             router.redirectToRoute(route, parameters);

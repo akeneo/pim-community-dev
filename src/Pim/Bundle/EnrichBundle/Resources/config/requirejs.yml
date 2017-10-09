@@ -160,6 +160,11 @@ config:
                     options:
                         urls:
                             get: pim_enrich_product_history_rest_get
+                variant-product-history:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: pim_enrich_variant_product_history_rest_get
                 product:
                     module: pim/product-fetcher
                     options:
@@ -278,7 +283,7 @@ config:
                         entity: export-profile
                 pim_importexport_import_profile_index:
                     module: pim/controller/common/index
-                    aclResourceId: pim_importexport_export_profile_index
+                    aclResourceId: pim_importexport_import_profile_index
                     config:
                         entity: import-profile
                 pim_importexport_export_profile_edit:
@@ -615,6 +620,7 @@ config:
         # Family
         pim/family-edit-form/delete:                                        pimenrich/js/family/form/delete
         pim/family-edit-form/save:                                          pimenrich/js/family/form/save
+        pim/family-edit-form/family-variant:                                pimenrich/js/family/form/family-variant
         pim/family-edit-form/properties/general/code:                       pimenrich/js/family/form/properties/general/code
         pim/family-edit-form/properties/general/attribute-as-label:         pimenrich/js/family/form/properties/general/attribute-as-label
         pim/family-edit-form/properties/general/attribute-as-image:         pimenrich/js/family/form/properties/general/attribute-as-image
@@ -762,7 +768,7 @@ config:
 
         # Mass family edit
         pim/mass-family-edit-form/attributes:                   pimenrich/js/family/mass-edit/attributes
-        pim/mass-family-edit-form/form-model-updater:         pimenrich/js/family/mass-edit/form-model-updater
+        pim/mass-family-edit-form/form-model-updater:           pimenrich/js/family/mass-edit/form-model-updater
         pim/mass-family-edit-form/toolbar/add-select/attribute: pimenrich/js/family/mass-edit/toolbar/add-select/attribute/select
 
         # Attribute option form
@@ -840,7 +846,6 @@ config:
         pim/form/common/attributes/copy-field:               pimenrich/js/form/common/attributes/copy-field
         pim/form/common/attributes/create-button:            pimenrich/js/form/common/attributes/create-button
         pim/form/common/download-file:                       pimenrich/js/form/common/download-file
-        pim/form/common/index/index:                         pimenrich/js/form/common/index/index
         pim/form/common/index/grid:                          pimenrich/js/form/common/index/grid
         pim/form/common/index/create-button:                 pimenrich/js/form/common/index/create-button
         pim/form/common/column:                              pimenrich/js/form/common/column
@@ -904,6 +909,7 @@ config:
         pim/grid/table: pimenrich/js/product/grid/table
 
         # Templates
+        pim/template/common/default-template:                     pimenrich/templates/common/default-template.html
         pim/template/common/drop-zone:                            pimenrich/templates/common/drop-zone.html
         pim/template/common/form-container:                       pimenrich/templates/common/form-container.html
         pim/template/common/no-data:                              pimenrich/templates/common/no-data.html
@@ -930,7 +936,6 @@ config:
         pim/template/form/meta:                                   pimenrich/templates/form/meta.html
         pim/template/form/tab/attributes:                         pimenrich/templates/form/tab/attributes.html
         pim/template/form/save-buttons:                           pimenrich/templates/form/save-buttons.html
-        pim/template/form/edit-form:                              pimenrich/templates/form/edit-form.html
         pim/template/form/tab/attribute/attribute-filter:         pimenrich/templates/form/tab/attributes/attribute-filter.html
         pim/template/form/tab/attribute/attribute-group-selector: pimenrich/templates/form/tab/attributes/attribute-group-selector.html
         pim/template/form/tab/attribute/attribute-group:          pimenrich/templates/form/tab/attributes/attribute-group.html
@@ -971,6 +976,7 @@ config:
         pim/template/family/tab/general/attribute-as-label:  pimenrich/templates/family/tab/general/attribute-as-label.html
         pim/template/family/tab/attributes:                  pimenrich/templates/family/tab/attributes.html
         pim/template/family/tab/general/attribute-as-image:  pimenrich/templates/family/tab/general/attribute-as-image.html
+        pim/template/family/tab/family-variant:              pimenrich/templates/family/tab/family-variant.html
 
         # Grid
         pim/template/product/grid/locale-switcher:           pimenrich/templates/product/grid/locale-switcher.html

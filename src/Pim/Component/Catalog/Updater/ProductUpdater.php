@@ -21,9 +21,6 @@ class ProductUpdater implements ObjectUpdaterInterface
     /** @var PropertySetterInterface */
     protected $propertySetter;
 
-    /** @var ProductTemplateUpdaterInterface */
-    protected $templateUpdater;
-
     /** @var ObjectUpdaterInterface */
     protected $valuesUpdater;
 
@@ -35,20 +32,17 @@ class ProductUpdater implements ObjectUpdaterInterface
 
     /**
      * @param PropertySetterInterface         $propertySetter
-     * @param ProductTemplateUpdaterInterface $templateUpdater
      * @param ObjectUpdaterInterface          $valuesUpdater
      * @param array                           $supportedFields
      * @param array                           $ignoredFields
      */
     public function __construct(
         PropertySetterInterface $propertySetter,
-        ProductTemplateUpdaterInterface $templateUpdater,
         ObjectUpdaterInterface $valuesUpdater,
         array $supportedFields,
         array $ignoredFields
     ) {
         $this->propertySetter = $propertySetter;
-        $this->templateUpdater = $templateUpdater;
         $this->valuesUpdater = $valuesUpdater;
         $this->supportedFields = $supportedFields;
         $this->ignoredFields = $ignoredFields;
@@ -142,7 +136,6 @@ class ProductUpdater implements ObjectUpdaterInterface
                 throw UnknownPropertyException::unknownProperty($code);
             }
         }
-        $this->updateVariantProductValues($product, $data);
 
         return $this;
     }
@@ -157,30 +150,6 @@ class ProductUpdater implements ObjectUpdaterInterface
     protected function updateProductFields(ProductInterface $product, $field, $value)
     {
         $this->propertySetter->setData($product, $field, $value);
-    }
-
-    /**
-     * Updates product with its variant group values to ensure that values coming from variant group are always
-     * applied after the product values (if a product value is updated and should come from variant group)
-     *
-     * @param ProductInterface $product
-     * @param array            $data
-     */
-    protected function updateVariantProductValues(ProductInterface $product, array $data)
-    {
-        $variantGroup = $product->getVariantGroup();
-        $shouldEraseData = false;
-        if (null !== $variantGroup && null !== $variantGroup->getProductTemplate()) {
-            $template = $variantGroup->getProductTemplate();
-            foreach (array_keys($data) as $field) {
-                if ($template->hasValueForAttributeCode($field) || null === $product->getValue($field)) {
-                    $shouldEraseData = true;
-                }
-            }
-            if ($shouldEraseData) {
-                $this->templateUpdater->update($template, [$product]);
-            }
-        }
     }
 
     /**

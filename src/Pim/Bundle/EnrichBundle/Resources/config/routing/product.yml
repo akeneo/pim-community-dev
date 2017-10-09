@@ -55,8 +55,15 @@ pim_enrich_product_category_rest_list:
     methods: [GET]
 
 pim_enrich_product_history_rest_get:
-    path: /rest/{entityId}/history
+    path: /rest/product/{entityId}/history
     defaults: { _controller: pim_enrich.controller.rest.versioning:getAction, entityType: product }
+    requirements:
+        entityId: '[0-9a-f]+'
+    methods: [GET]
+
+pim_enrich_variant_product_history_rest_get:
+    path: /rest/variant-product/{entityId}/history
+    defaults: { _controller: pim_enrich.controller.rest.versioning:getAction, entityType: variant_product }
     requirements:
         entityId: '[0-9a-f]+'
     methods: [GET]

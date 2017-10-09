@@ -3,10 +3,11 @@
 namespace Pim\Bundle\ConnectorBundle\tests\integration\Export;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\JobLauncher;
 use Akeneo\Test\Integration\TestCase;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -53,6 +54,8 @@ abstract class AbstractExportTestCase extends TestCase
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
         $this->get('pim_catalog.updater.product')->update($product, $data);
+        $constraintList = $this->get('pim_catalog.validator.product')->validate($product);
+        $this->assertEquals(0, $constraintList->count());
         $this->get('pim_catalog.saver.product')->save($product);
 
         $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
@@ -70,7 +73,8 @@ abstract class AbstractExportTestCase extends TestCase
     {
         $product = $this->get('pim_catalog.builder.variant_product')->createProduct($identifier);
         $this->get('pim_catalog.updater.product')->update($product, $data);
-        $this->get('pim_catalog.validator.product')->validate($product);
+        $constraintList = $this->get('pim_catalog.validator.product')->validate($product);
+        $this->assertEquals(0, $constraintList->count());
         $this->get('pim_catalog.saver.product')->save($product);
 
         $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
@@ -87,7 +91,8 @@ abstract class AbstractExportTestCase extends TestCase
     {
         $productModel = $this->get('pim_catalog.factory.product_model')->create();
         $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
-        $this->get('pim_catalog.validator.product')->validate($productModel);
+        $constraintList = $this->get('pim_catalog.validator.product')->validate($productModel);
+        $this->assertEquals(0, $constraintList->count());
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
         $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
@@ -121,10 +126,26 @@ abstract class AbstractExportTestCase extends TestCase
     {
         $attribute = $this->get('pim_catalog.factory.attribute')->create();
         $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
-        $this->get('validator')->validate($attribute);
+        $constraintList = $this->get('validator')->validate($attribute);
+        $this->assertEquals(0, $constraintList->count());
         $this->get('pim_catalog.saver.attribute')->save($attribute);
 
         return $attribute;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return CategoryInterface
+     */
+    protected function createCategory(array $data = []) : CategoryInterface
+    {
+        $category = $this->get('pim_catalog.factory.category')->create();
+        $this->get('pim_catalog.updater.category')->update($category, $data);
+        $this->get('validator')->validate($category);
+        $this->get('pim_catalog.saver.category')->save($category);
+
+        return $category;
     }
 
     /**
@@ -136,7 +157,8 @@ abstract class AbstractExportTestCase extends TestCase
     {
         $attributeOption = $this->get('pim_catalog.factory.attribute_option')->create();
         $this->get('pim_catalog.updater.attribute_option')->update($attributeOption, $data);
-        $this->get('validator')->validate($attributeOption);
+        $constraintList = $this->get('validator')->validate($attributeOption);
+        $this->assertEquals(0, $constraintList->count());
         $this->get('pim_catalog.saver.attribute_option')->save($attributeOption);
 
         return $attributeOption;
@@ -151,7 +173,8 @@ abstract class AbstractExportTestCase extends TestCase
     {
         $family = $this->get('pim_catalog.factory.family')->create();
         $this->get('pim_catalog.updater.family')->update($family, $data);
-        $this->get('validator')->validate($family);
+        $constraintList = $this->get('validator')->validate($family);
+        $this->assertEquals(0, $constraintList->count());
         $this->get('pim_catalog.saver.family')->save($family);
 
         return $family;
@@ -166,7 +189,8 @@ abstract class AbstractExportTestCase extends TestCase
     {
         $family = $this->get('pim_catalog.factory.family_variant')->create();
         $this->get('pim_catalog.updater.family_variant')->update($family, $data);
-        $this->get('validator')->validate($family);
+        $constraintList = $this->get('validator')->validate($family);
+        $this->assertEquals(0, $constraintList->count());
         $this->get('pim_catalog.saver.family_variant')->save($family);
 
         return $family;

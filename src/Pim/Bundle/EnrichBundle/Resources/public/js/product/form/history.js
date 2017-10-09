@@ -101,8 +101,10 @@ define(
              * Update the history by fetching it from the backend
              */
             update: function () {
-                if (this.getFormData().meta) {
-                    FetcherRegistry.getFetcher('product-history').clear(this.getFormData().meta.id);
+                const entityMeta = this.getFormData().meta;
+
+                if (entityMeta) {
+                    this.getHistoryFetcher(entityMeta).clear(entityMeta.id);
                 }
 
                 this.render();
@@ -114,10 +116,25 @@ define(
              * @return {Promise}
              */
             getVersions: function () {
-                return FetcherRegistry.getFetcher('product-history').fetch(
-                    this.getFormData().meta.id,
-                    { entityId: this.getFormData().meta.id }
+                const entityMeta = this.getFormData().meta;
+
+                return this.getHistoryFetcher(entityMeta).fetch(
+                    entityMeta.id,
+                    { entityId: entityMeta.id }
                 ).then(this.addAttributesLabelToVersions.bind(this));
+            },
+
+            /**
+             * @param {Object} entityMeta
+             *
+             * @returns Fetcher
+             */
+            getHistoryFetcher: function (entityMeta) {
+                if (null !== entityMeta.family_variant) {
+                    return FetcherRegistry.getFetcher('variant-product-history');
+                }
+
+                return FetcherRegistry.getFetcher('product-history');
             },
 
             /**

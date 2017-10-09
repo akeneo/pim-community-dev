@@ -36,7 +36,7 @@ extensions:
     pim-product-edit-form-sequential-edit:
         module: pim/product-edit-form/sequential-edit
         parent: pim-product-edit-form
-        targetZone: sequential
+        targetZone: bottom-panel
         aclResourceId: pim_enrich_product_edit_attributes
         position: 100
 
@@ -204,6 +204,9 @@ extensions:
         targetZone: container
         aclResourceId: pim_enrich_product_categories_view
         position: 100
+        config:
+            itemCategoryListRoute: pim_enrich_product_listcategories
+            itemCategoryTreeRoute: pim_enrich_product_category_rest_list
 
     pim-product-edit-form-associations:
         module: pim/product-edit-form/associations

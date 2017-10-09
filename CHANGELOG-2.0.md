@@ -1,18 +1,146 @@
 # 2.0.x
 
+## Tech improvements
+
+- TIP-808: Add version strategy for js and css assets
+
+## Better manage products with variants!
+
+- PIM-6343: Classify product models via the edit form
+
 ## Bug Fixes
 
-- GITHUB-6866: fix the QueryProductCommand, cheers @LeoBenoist!
-- API-393: add prefix "akeno:batch" to the command "publish-job-to-queue"
+- PIM-6865: Fix ACL on import profile page
+- PIM-6876: Escape u001f character to workaround a mysql bug
+- TIP-810: Add Symfony command to reset the ES indexes
+- TIP-809: Prevents ES from using the scoring system and bypass the max_clause_count limit.
+
+## Better UI\UX!
+
+- PIM-6584: Update main menu order
+
+## Better manage products with variants!
+
+- PIM-6863: Hide "Variant" meta in non variant products
+
+## BC breaks
+
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template 
+
+
+# 2.0.1 (2017-10-05)
+
+## Bug Fixes
+
+- PIM-6446: fix variant family code uniqueness
+- GITHUB-6866: Fix the QueryProductCommand, cheers @LeoBenoist!
+- API-393: Add prefix "akeneo:batch" to the command "publish-job-to-queue"
+- PIM-6843: Update delete buttons in category, user, role and group pages
+- PIM-6861: Correctly display a product model if it has no product children
+- PIM-6862: Save products on "pim:completeness:calculate" command
+- PIM-6866: Fix PQB sorter when attribute is not localizable and/or not scopable
+- PIM-6348: Display a red label in the variant navigation if no variant product is complete
+- PIM-6451: Now display variant axes coming from parent as "Variant Axis" on the product edit form
+- PIM-6847: Fix variant product history
+- PIM-6867: Fix validation of variant product, now it's impossible to have a root product model as parent if there are 2 levels of variation
+- PIM-6816: Add validation error messages on product model edit form
 
 ## Tech improvements
 
 - GITHUB-6639: Fix Job throwing exception, cheers @dnd-tyler!
 - GITHUB-6824: Update gitignore for web-server-bundle, cheers @xElysioN!
+- API-377: Get a single product model via API
+- API-379: Get a single family variant via API
+- API-380: Get a list of family variants via API
+- API-369: Get a list of variant products
+- API-370: Get a single variant product
+- API-371: Delete single variant product
+- API-372: Create a variant product
+
+## Better manage products with variants!
+
+- PIM-6343: Classify product models by import and export product models with their categories
+- PIM-6356: Display the image of the 1st variant product created in the grid and on the PEF for product models
+- PIM-6856: List family variants created by import in a new tab "variants" in the family
+- PIM-6797: Automatically add "unique value" and identifier attributes at the last variant product level in family variants
 
 ## Better UI\UX!
 
 - TIP-807: Improve menu to pass parameters for routes, cheers @MarieMinasyan!
+- PIM-6839: Fix the design for large titles
+- PIM-6595: Add missing breadcrumb or user navigation on every page
+- PIM-6841: Add custom pictures for entities creation
+- PIM-6832: Fix the column category display when category node is expanded
+- PIM-6835: CSS Glitch compilation
+- PIM-6853: Remove the checkboxes from the attributes grids
+- PIM-6534: Move the user status to context dropzone
+- PIM-6537: Wrong display of Role / Permission
+- PIM-6618: Edit attribute options icons
+
+## BC breaks
+
+- Change constructor of `Pim\Bundle\DataGridBundle\Normalizer\ProductModelNormalizer` to add `Pim\Component\Catalog\ProductModel\ImageAsLabel`
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer` to add `Pim\Component\Catalog\ProductModel\ImageAsLabel`
+- Change constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer` to add `Pim\Component\Catalog\ProductModel\ImageAsLabel`
+- Rename `Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxesValidator` to `Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxisValidator`
+- PIM-6446: fix variant family code uniqueness, beware, this changes the MySQL table
+
+## Remove dead code (Variant Group Feature)
+
+- Rename `Pim\Bundle\EnrichBundle\Controller\Rest\ProductTemplateController` to `Pim\Bundle\EnrichBundle\Controller\Rest\ValueController`
+- Remove class `Pim\Bundle\VersioningBundle\Normalizer\Flat\ProxyGroupNormalizer`
+- Remove class `Pim\Component\Catalog\Normalizer\Standard\ProxyGroupNormalizer`
+- Remove class `Pim\Bundle\CatalogBundle\Command\CleanProductTemplateCommand`
+- Remove class `Pim\Bundle\CatalogBundle\Command\CopyVariantGroupValuesCommand`
+- Remove class `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductTemplateRepository`
+- Remove class `Pim\Bundle\CatalogBundle\Entity\ProductTemplate`
+- Remove class `Pim\Bundle\CatalogBundle\EventSubscriber\ComputeProductTemplateRawValuesSubscriber`
+- Remove class `Pim\Bundle\CatalogBundle\EventSubscriber\LoadProductTemplateValuesSubscriber`
+- Remove class `Pim\Bundle\CatalogBundle\EventSubscriber\ProductTemplateAttributeSubscriber`
+- Remove class `Pim\Component\Catalog\Builder\ProductTemplateBuilder`
+- Remove class `Pim\Component\Catalog\Builder\ProductTemplateBuilderInterface`
+- Remove class `Pim\Component\Catalog\Factory\ProductTemplateFactory`
+- Remove class `Pim\Component\Catalog\Manager\ProductTemplateApplier`
+- Remove class `Pim\Component\Catalog\Manager\ProductTemplateApplierInterface`
+- Remove class `Pim\Component\Catalog\Manager\ProductTemplateApplierInterface`
+- Remove class `Pim\Component\Catalog\Manager\ProductTemplateMediaManager`
+- Remove class `Pim\Component\Catalog\Model\ProductTemplateInterface`
+- Remove class `Pim\Component\Catalog\Repository\ProductTemplateRepositoryInterface`
+- Remove class `Pim\Component\Catalog\Updater\ProductTemplateUpdater`
+- Remove class `Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\UniqueVariantGroup`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\VariantGroupValues`
+- Remove class `Pim\Bundle\DataGridBundle\Datasource\VariantGroupProductDatasource`
+- Remove class `Pim\Bundle\VersioningBundle\Normalizer\Flat\VariantGroupNormalizer`
+- Remove class `Pim\Component\Catalog\Normalizer\Standard\VariantGroupNormalizer`
+- Remove class `Pim\Component\Catalog\Updater\Setter\VariantGroupFieldSetter`
+- Remove class `Pim\Component\Catalog\Updater\VariantGroupUpdater`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\HasVariantAxes`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\HasVariantAxesValidator`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\UniqueVariantGroupType`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\UniqueVariantGroupTypeValidator`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\UniqueVariantGroupValidator`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\VariantGroupAxis`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\VariantGroupAxisValidator`
+- Remove class `Pim\Component\Catalog\Validator\Constraints\VariantGroupValuesValidator`
+- Remove class `Pim\Component\Catalog\Manager\VariantGroupAttributesResolver`
+- Remove method `getTypeByGroup` from `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface`
+- Remove method `getAllGroupsExceptVariantQB` from `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface`
+- Remove `$isVariant` to `Pim\Component\Catalog\Repository\GroupTypeRepositoryInterface::findTypeIds()`
+- Remove method `addAxisAttribute` from `Pim\Component\Catalog\Model\GroupInterface`
+- Remove method `removeAxisAttribute` from `Pim\Component\Catalog\Model\GroupInterface`
+- Remove method `getAxisAttributes` from `Pim\Component\Catalog\Model\GroupInterface`
+- Remove method `setAxisAttributes` from `Pim\Component\Catalog\Model\GroupInterface`
+- Remove method `getProductTemplate` from `Pim\Component\Catalog\Model\GroupInterface`
+- Remove method `setProductTemplate` from `Pim\Component\Catalog\Model\GroupInterface`
+- Remove method `isVariant` from `Pim\Component\Catalog\Model\GroupTypeInterface`
+- Remove method `setVariant` from `Pim\Component\Catalog\Model\GroupTypeInterface`
+- Remove method `getVariantGroup` from `Pim\Component\Catalog\Model\ProductInterface`
+- Remove method `hasAttributeInVariantGroup` from `Pim\Component\Catalog\Model\ProductInterface`
+- Remove method `findAllForVariantGroup` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
+- Remove method `getEligibleProductsForVariantGroup` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
+- Remove method `findProductIdsForVariantGroup` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
+- change `Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface::convert()` signature, it return `Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField` instead of an array
 
 # 2.0.0 (2017-09-28)
 
@@ -104,7 +232,7 @@
 - PIM-6587: GRID - As Julia, I would like to switch from View to Project
 - PIM-6606: IMPORT EXPORT - As Julia, I would like to search for a profile in a new designed drop-down
 - PIM-6607: IMPORT - As Julia I would like to upload a file
-- PIM-6608: IMPORT EXPORT - As Julia I would like to edit an import or export profile properties & settings in a new UI	
+- PIM-6608: IMPORT EXPORT - As Julia I would like to edit an import or export profile properties & settings in a new UI
 - PIM-6613: [IMP] Settings Attributes - Attribute's name isn't display in purple
 - PIM-6614: [IMP] Settings Attributes - type and group dropdowns don't have the right design
 - PIM-6619: ATTRIBUTE CREATION - As Julia, I would like to create an attribute
@@ -123,7 +251,7 @@
 - PIM-6758: PEF - As Julia, I would like to see the missing required attributes in the PEF header
 - PIM-6778: PEF HEADER - As Julia, I would like to view the identifier in the PEF header
 
-## New API endpoints 
+## New API endpoints
 
 - API-347: [Migration script] Label is now mandatory when generating clientId via cmd line
 - API-351: As Peter/Philip, I want that API connection revocation takes effect instantly

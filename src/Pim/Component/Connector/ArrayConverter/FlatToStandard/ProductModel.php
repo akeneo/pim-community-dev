@@ -158,14 +158,8 @@ class ProductModel implements ArrayConverterInterface
         $convertedValues = $convertedFlatProductModel = [];
         foreach ($mergedFlatProductModel as $column => $value) {
             if ($this->fieldConverter->supportsColumn($column)) {
-                $convertedFields = $this->fieldConverter->convert($column, $value);
-                /**
-                 * TODO: PIM-6444, when the variant group will be removed, we should remove this loop because
-                 * the field converter should return a simple object instead an array.
-                 */
-                foreach ($convertedFields as $convertedField) {
-                    $convertedFlatProductModel = $convertedField->appendTo($convertedFlatProductModel);
-                }
+                $convertedField = $this->fieldConverter->convert($column, $value);
+                $convertedFlatProductModel = $convertedField->appendTo($convertedFlatProductModel);
             } else {
                 $convertedValues[$column] = $value;
             }

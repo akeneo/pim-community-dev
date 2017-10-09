@@ -90,13 +90,6 @@ interface ProductInterface extends
     public function getOrderedGroups();
 
     /**
-     * Get the variant group of the product
-     *
-     * @return GroupInterface|null
-     */
-    public function getVariantGroup();
-
-    /**
      * Get groups code
      *
      * @return array
@@ -195,13 +188,6 @@ interface ProductInterface extends
      * @return bool
      */
     public function hasAttributeInFamily(AttributeInterface $attribute);
-
-    /**
-     * @param AttributeInterface $attribute
-     *
-     * @return bool
-     */
-    public function hasAttributeInVariantGroup(AttributeInterface $attribute);
 
     /**
      * Check if an attribute can be removed from the product

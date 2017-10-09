@@ -33,6 +33,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Query\Sorter\Directions;
+use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -113,6 +114,9 @@ class ProductController
     /** @var ProductQueryBuilderFactoryInterface */
     protected $fromSizePqbFactory;
 
+    /** @var ProductBuilderInterface */
+    protected $variantProductBuilder;
+
     /**
      * @param ProductQueryBuilderFactoryInterface   $searchAfterPqbFactory
      * @param NormalizerInterface                   $normalizer
@@ -133,6 +137,7 @@ class ProductController
      * @param StreamResourceResponse                $partialUpdateStreamResource
      * @param PrimaryKeyEncrypter                   $primaryKeyEncrypter
      * @param ProductQueryBuilderFactoryInterface   $fromSizePqbFactory
+     * @param ProductBuilderInterface               $variantProductBuilder
      * @param array                                 $apiConfiguration
      */
     public function __construct(
@@ -155,6 +160,8 @@ class ProductController
         StreamResourceResponse $partialUpdateStreamResource,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
         ProductQueryBuilderFactoryInterface $fromSizePqbFactory,
+        ProductBuilderInterface $variantProductBuilder,
+        AttributeFilterInterface $productAttributeFilter,
         array $apiConfiguration
     ) {
         $this->searchAfterPqbFactory = $searchAfterPqbFactory;
@@ -176,7 +183,9 @@ class ProductController
         $this->partialUpdateStreamResource = $partialUpdateStreamResource;
         $this->primaryKeyEncrypter = $primaryKeyEncrypter;
         $this->fromSizePqbFactory = $fromSizePqbFactory;
+        $this->variantProductBuilder = $variantProductBuilder;
         $this->apiConfiguration = $apiConfiguration;
+        $this->productAttributeFilter = $productAttributeFilter;
     }
 
     /**
@@ -273,7 +282,12 @@ class ProductController
 
         $data = $this->populateIdentifierProductValue($data);
 
-        $product = $this->productBuilder->createProduct();
+        if (isset($data['parent'])) {
+            $data = $this->productAttributeFilter->filter($data);
+            $product = $this->variantProductBuilder->createProduct($data['identifier']);
+        } else {
+            $product = $this->productBuilder->createProduct();
+        }
 
         $this->updateProduct($product, $data, 'post_products');
         $this->validateProduct($product);
@@ -605,9 +619,9 @@ class ProductController
      * @param array                 $queryParameters
      * @param array                 $normalizerOptions
      *
-     * @throws UnprocessableEntityHttpException
-     *
      * @return array
+     *
+     * @throws ServerErrorResponseException
      */
     protected function searchAfterOffset(
         Request $request,

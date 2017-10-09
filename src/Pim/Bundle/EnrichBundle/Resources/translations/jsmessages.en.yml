@@ -531,6 +531,8 @@ pim_enrich:
                         attributes_groups_selected: '{{ itemsCount }} group(s) selected'
                     not_required_label: Not required
                     required_label: Required
+                variant:
+                    title: Variants
                 history:
                     title: History
 

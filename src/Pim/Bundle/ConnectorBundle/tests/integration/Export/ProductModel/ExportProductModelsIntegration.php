@@ -18,12 +18,19 @@ class ExportProductModelsIntegration extends AbstractExportTestCase
             'localizable' => true,
             'scopable'    => false,
         ]);
-        $this->createFamily([
-            'code'        => 'clothing',
-            'attributes'  => ['sku', 'name'],
-            'attribute_requirements' => [
-                'tablet' => ['sku', 'name']
-            ]
+        $this->createAttribute([
+            'code'        => 'variation_name',
+            'type'        => 'pim_catalog_text',
+            'group'       => 'attributeGroupA',
+            'localizable' => false,
+            'scopable'    => false,
+        ]);
+        $this->createAttribute([
+            'code'        => 'variation_image',
+            'type'        => 'pim_catalog_image',
+            'group'       => 'attributeGroupA',
+            'localizable' => false,
+            'scopable'    => false,
         ]);
         $this->createAttribute([
             'code'        => 'color',
@@ -62,19 +69,12 @@ class ExportProductModelsIntegration extends AbstractExportTestCase
             'localizable' => false,
             'scopable'    => false,
         ]);
-        $this->createAttribute([
-            'code'        => 'variation_name',
-            'type'        => 'pim_catalog_text',
-            'group'       => 'attributeGroupA',
-            'localizable' => false,
-            'scopable'    => false,
-        ]);
-        $this->createAttribute([
-            'code'        => 'variation_image',
-            'type'        => 'pim_catalog_image',
-            'group'       => 'attributeGroupA',
-            'localizable' => false,
-            'scopable'    => false,
+        $this->createFamily([
+            'code'        => 'clothing',
+            'attributes'  => ['sku', 'name', 'variation_name', 'variation_image', 'size', 'ean', 'sku', 'color'],
+            'attribute_requirements' => [
+                'tablet' => ['sku', 'name']
+            ]
         ]);
         $this->createFamilyVariant([
             'code'        => 'clothing_color_size',
@@ -93,10 +93,18 @@ class ExportProductModelsIntegration extends AbstractExportTestCase
             ]
         ]);
 
+        $this->createCategory(['code' => 'tshirt']);
+        $this->createCategory(['code' => 'summer', 'parent' => 'tshirt']);
+        $this->createCategory(['code' => 'spring', 'parent' => 'tshirt']);
+        $this->createCategory(['code' => 'long-sleeves', 'parent' => 'tshirt']);
+        $this->createCategory(['code' => 'v-neck', 'parent' => 'long-sleeves']);
+        $this->createCategory(['code' => 'round-neck', 'parent' => 'long-sleeves']);
+
         $this->createProductModel(
             [
                 'code' => 'apollon',
                 'family_variant' => 'clothing_color_size',
+                'categories' => ['tshirt'],
             ]
         );
         $this->createProductModel(
@@ -104,6 +112,7 @@ class ExportProductModelsIntegration extends AbstractExportTestCase
                 'code' => 'apollon_blue',
                 'family_variant' => 'clothing_color_size',
                 'parent' => 'apollon',
+                'categories' => ['v-neck', 'summer'],
                 'values'  => [
                     'color'  => [['data' => 'blue', 'locale' => null, 'scope' => null]],
                     'variation_name'  => [['data' => 'my blue tshirt', 'locale' => null, 'scope' => null]],
@@ -115,31 +124,10 @@ class ExportProductModelsIntegration extends AbstractExportTestCase
                 'code' => 'apollon_pink',
                 'family_variant' => 'clothing_color_size',
                 'parent' => 'apollon',
+                'categories' => ['round-neck', 'tshirt'],
                 'values'  => [
                     'color'  => [['data' => 'pink', 'locale' => null, 'scope' => null]],
                     'variation_name'  => [['data' => 'my pink tshirt', 'locale' => null, 'scope' => null]],
-                ]
-            ]
-        );
-        $this->createVariantProduct(
-            'apollon_pink_m',
-            [
-                'family' => 'clothing',
-                'parent' => 'apollon_pink',
-                'values'  => [
-                    'size'  => [['data' => 'm', 'locale' => null, 'scope' => null]],
-                    'ean'  => [['data' => '12345678', 'locale' => null, 'scope' => null]],
-                ]
-            ]
-        );
-        $this->createVariantProduct(
-            'apollon_pink_l',
-            [
-                'family' => 'clothing',
-                'parent' => 'apollon_pink',
-                'values'  => [
-                    'size'  => [['data' => 'l', 'locale' => null, 'scope' => null]],
-                    'ean'  => [['data' => '12345679', 'locale' => null, 'scope' => null]],
                 ]
             ]
         );
@@ -148,10 +136,10 @@ class ExportProductModelsIntegration extends AbstractExportTestCase
     public function testProductModelsExport()
     {
         $expectedCsv = <<<CSV
-code;family_variant;parent;color;name-de_DE;name-en_US;name-fr_FR;name-zh_CN;variation_image;variation_name
-apollon;clothing_color_size;;;;;;;;
-apollon_blue;clothing_color_size;apollon;blue;;;;;;"my blue tshirt"
-apollon_pink;clothing_color_size;apollon;pink;;;;;;"my pink tshirt"
+code;family_variant;parent;categories;color;name-de_DE;name-en_US;name-fr_FR;name-zh_CN;variation_image;variation_name
+apollon;clothing_color_size;;tshirt;;;;;;;
+apollon_blue;clothing_color_size;apollon;summer,tshirt,v-neck;blue;;;;;;"my blue tshirt"
+apollon_pink;clothing_color_size;apollon;round-neck,tshirt;pink;;;;;;"my pink tshirt"
 
 CSV;
 

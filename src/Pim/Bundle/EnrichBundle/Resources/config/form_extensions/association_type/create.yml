@@ -5,6 +5,7 @@ extensions:
             labels:
                 title: pim_enrich.entity.association_type.create_popin.title
                 subTitle: pim_menu.item.association_type
+            picture: illustrations/Association-types.svg
             successMessage: pim_enrich.entity.association_type.message.created
             editRoute: pim_enrich_associationtype_edit
             postUrl: pim_enrich_associationtype_rest_create

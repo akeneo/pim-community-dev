@@ -28,6 +28,10 @@ framework:
     serializer:
         enabled:              true
     http_method_override: true
+    assets:
+        packages:
+            frontend:
+                version_strategy: pim_enrich.version_strategy
 
 # Twig Configuration
 twig:

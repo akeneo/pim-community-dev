@@ -38,8 +38,8 @@ class SameFamilyThanParentValidator extends ConstraintValidator
 
         $parentFamily = $parent->getFamilyVariant()->getFamily();
 
-        if ($variantProduct->getFamily()->getCode() !== $parentFamily->getCode()) {
-            $this->context->buildViolation(SameFamilyThanParent::MESSAGE)->addViolation();
+        if (null !== $variantProduct->getFamily() && $variantProduct->getFamily()->getCode() !== $parentFamily->getCode()) {
+            $this->context->buildViolation(SameFamilyThanParent::MESSAGE)->atPath($constraint->propertyPath)->addViolation();
         }
     }
 }

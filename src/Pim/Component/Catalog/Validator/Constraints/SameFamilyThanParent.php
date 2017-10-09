@@ -14,6 +14,9 @@ class SameFamilyThanParent extends Constraint
 {
     public const MESSAGE = 'pim_catalog.constraint.variant_product_invalid_family';
 
+    /** @var string */
+    public $propertyPath = 'family';
+
     /**
      * {@inheritdoc}
      */

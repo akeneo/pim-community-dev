@@ -24,7 +24,7 @@ class QueryParametersCheckerSpec extends ObjectBehavior
             $localeRepository,
             $attributeRepository,
             $categoryRepository,
-            ['family', 'enabled', 'groups', 'variant_group', 'categories', 'completeness']
+            ['family', 'enabled', 'groups', 'categories', 'completeness']
         );
     }
 

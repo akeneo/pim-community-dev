@@ -22,6 +22,8 @@ define([
             initialize: function (meta) {
                 this.config = _.extend({}, meta.config);
                 this.config.modelDependent = false;
+
+                return BaseForm.prototype.initialize.call(this, arguments);
             },
 
             /**

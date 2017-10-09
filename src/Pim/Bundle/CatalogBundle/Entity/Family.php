@@ -65,6 +65,7 @@ class Family implements FamilyInterface
         $this->attributes = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->requirements = new ArrayCollection();
+        $this->familyVariants = new ArrayCollection();
     }
 
     /**

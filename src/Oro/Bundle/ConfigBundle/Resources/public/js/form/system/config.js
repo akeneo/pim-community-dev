@@ -6,7 +6,7 @@ define([
         'oro/mediator',
         'pim/form',
         'pim/fetcher-registry',
-        'pim/template/form/index/index'
+        'pim/template/common/default-template'
     ],
     function(
         __,
@@ -51,9 +51,7 @@ define([
 
                 this.getRoot().trigger('oro_config:form:render:before');
 
-                this.$el.html(this.template({
-                    title: __('oro_config.form.config.title')
-                }));
+                this.$el.html(this.template());
 
                 this.renderExtensions();
 

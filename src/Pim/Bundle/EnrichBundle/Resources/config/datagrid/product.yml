@@ -42,7 +42,7 @@ datagrid:
                 data_name:     groups
                 type:          field
             complete_variant_products:
-                label:         Complete product
+                label:         Variant products
                 data_name:     complete_variant_product
                 frontend_type: complete-variant-product
         properties:

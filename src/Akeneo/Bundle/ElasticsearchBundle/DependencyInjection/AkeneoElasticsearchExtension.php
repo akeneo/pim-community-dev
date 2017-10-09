@@ -24,8 +24,28 @@ class AkeneoElasticsearchExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('cursors.yml');
+        $loader->load('services.yml');
+
+        $this->registerEsClientsFromConfiguration($configs, $container);
+    }
+
+    /**
+     * Dynamicaly instanciates Elasticsearch clients for each configuration made in parameter
+     * `akeneo_elasticsearch.indexes`.
+     *
+     * Also registers those clients in the elasticsearch client registry `akeneo_elasticsearch.registry.clients`.
+     *
+     * @param array            $configs
+     * @param ContainerBuilder $container
+     */
+    private function registerEsClientsFromConfiguration(array $configs, ContainerBuilder $container): void
+    {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
+
+        $esClientRegistryDefinition = $container->getDefinition('akeneo_elasticsearch.registry.clients');
 
         foreach ($config['indexes'] as $index) {
             $configurationLoaderServiceName = sprintf(
@@ -40,12 +60,10 @@ class AkeneoElasticsearchExtension extends Extension
                     new Reference('akeneo_elasticsearch.client_builder'),
                     new Reference($configurationLoaderServiceName),
                     $config['hosts'],
-                    $index['index_name']
+                    $index['index_name'],
                 ]);
-        }
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('cursors.yml');
-        $loader->load('services.yml');
+            $esClientRegistryDefinition->addMethodCall('register', [new Reference($index['service_name'])]);
+        }
     }
 }

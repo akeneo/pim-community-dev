@@ -3,8 +3,7 @@
 namespace Pim\Component\Api\tests\integration\Normalizer;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\DateSanitizer;
-use Akeneo\Test\Integration\MediaSanitizer;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
@@ -29,7 +28,6 @@ class ProductNormalizerIntegration extends TestCase
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => false,
             'values'        => new \StdClass(),
@@ -48,7 +46,6 @@ class ProductNormalizerIntegration extends TestCase
             'family'        => null,
             'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => new \StdClass(),
@@ -67,7 +64,6 @@ class ProductNormalizerIntegration extends TestCase
             'family'        => 'familyA',
             'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => null,
             'categories'    => ['categoryA1', 'categoryB'],
             'enabled'       => true,
             'values'        => [
@@ -271,7 +267,6 @@ class ProductNormalizerIntegration extends TestCase
             'family'        => 'familyA',
             'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => null,
             'categories'    => ['categoryA1', 'categoryB'],
             'enabled'       => true,
             'values'        => [

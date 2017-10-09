@@ -16,12 +16,6 @@ Feature: Edit a product group
     And I press the "Save" button
     Then I should see the text "My similar boots"
 
-  @skip-nav
-  Scenario: Successfully display a dialog when we quit a page with unsaved changes
-    Given I fill in the product group property "English (United States)" with "My similar boots"
-    And I click back to grid
-    Then I should see "You will lose changes to the Group if you leave the page." in popup
-
   Scenario: Successfully display a message when there are unsaved changes
     When I fill in the product group property "English (United States)" with "My similar boots"
     Then I should see the text "There are unsaved changes."

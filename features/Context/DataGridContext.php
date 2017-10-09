@@ -942,18 +942,6 @@ class DataGridContext extends PimContext implements PageObjectAware
     }
 
     /**
-     * @Then /^I click back to grid$/
-     */
-    public function iClickBackToGrid()
-    {
-        $backButton = $this->spin(function () {
-            return $this->getSession()->getPage()->find('css', '.back-link');
-        }, 'Cannot find the button "Back to grid"');
-
-        $backButton->click();
-    }
-
-    /**
      * @param string $column
      *
      * @When /^I hide the "([^"]*)" column$/

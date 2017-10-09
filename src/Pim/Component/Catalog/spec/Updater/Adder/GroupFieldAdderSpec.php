@@ -58,17 +58,14 @@ class GroupFieldAdderSpec extends ObjectBehavior
         ProductInterface $product,
         GroupInterface $pack,
         GroupInterface $cross,
-        GroupInterface $up,
         GroupTypeInterface $nonVariantType
     ) {
         $groupRepository->findOneByIdentifier('pack')->willReturn($pack);
         $groupRepository->findOneByIdentifier('cross')->willReturn($cross);
 
         $pack->getType()->willReturn($nonVariantType);
-        $nonVariantType->isVariant()->willReturn(false);
 
         $cross->getType()->willReturn($nonVariantType);
-        $nonVariantType->isVariant()->willReturn(false);
 
         $product->addGroup($pack)->shouldBeCalled();
         $product->addGroup($cross)->shouldBeCalled();
@@ -84,7 +81,6 @@ class GroupFieldAdderSpec extends ObjectBehavior
     ) {
         $groupRepository->findOneByIdentifier('pack')->willReturn($pack);
         $pack->getType()->willReturn($nonVariantType);
-        $nonVariantType->isVariant()->willReturn(false);
         $groupRepository->findOneByIdentifier('not valid code')->willReturn(null);
 
         $this->shouldThrow(
@@ -96,30 +92,5 @@ class GroupFieldAdderSpec extends ObjectBehavior
                 'not valid code'
             )
         )->during('addFieldData', [$product, 'groups', ['pack', 'not valid code']]);
-    }
-
-    function it_fails_if_the_group_code_does_not_correspond_to_a_simple_group(
-        $groupRepository,
-        ProductInterface $product,
-        GroupInterface $pack,
-        GroupInterface $variant,
-        GroupTypeInterface $nonVariantType,
-        GroupTypeInterface $variantType
-    ) {
-        $groupRepository->findOneByIdentifier('pack')->willReturn($pack);
-        $pack->getType()->willReturn($nonVariantType);
-        $nonVariantType->isVariant()->willReturn(false);
-        $groupRepository->findOneByIdentifier('variant')->willReturn($variant);
-        $variant->getType()->willReturn($variantType);
-        $variantType->isVariant()->willReturn(true);
-
-        $this->shouldThrow(
-            InvalidPropertyException::validGroupExpected(
-                'groups',
-                'Cannot process variant group, only groups are supported',
-                'Pim\Component\Catalog\Updater\Adder\GroupFieldAdder',
-                'variant'
-            )
-        )->during('addFieldData', [$product, 'groups', ['pack', 'variant']]);
     }
 }

@@ -12,7 +12,7 @@ define(
         'underscore',
         'oro/translator',
         'backbone',
-        'pim/template/form/edit-form',
+        'pim/template/common/default-template',
         'pim/form',
         'oro/mediator',
         'pim/fetcher-registry',

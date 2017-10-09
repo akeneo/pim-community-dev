@@ -29,6 +29,9 @@ class JsonType extends JsonArrayType
      */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
+        // workaround to fix mysql bug. see https://bugs.mysql.com/bug.php?id=86898
+        $value = preg_replace('/[\x00-\x1F]/', '\\u001f', $value);
+
         return $value === null ? null : parent::convertToPHPValue($value, $platform);
     }
 

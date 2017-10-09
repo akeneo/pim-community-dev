@@ -49,6 +49,7 @@ define(
                 this.$el.html(this.template({
                     titleLabel: __(this.config.labels.title),
                     subTitleLabel: __(this.config.labels.subTitle),
+                    picture: this.config.picture,
                     fields: null
                 }));
 

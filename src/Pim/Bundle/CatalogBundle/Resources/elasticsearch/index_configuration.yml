@@ -13,8 +13,6 @@ mappings:
                 type: 'boolean'
             groups:
                 type: 'keyword'
-            variant_group:
-                type: 'keyword'
             created:
                 type: 'date'
             updated:
