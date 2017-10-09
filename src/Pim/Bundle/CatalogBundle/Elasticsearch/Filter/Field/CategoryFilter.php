@@ -100,21 +100,27 @@ class CategoryFilter extends AbstractFieldFilter implements FieldFilterInterface
                 break;
 
             case Operators::IN_LIST_OR_UNCLASSIFIED:
-                $shouldClauseInList = [
-                    'terms' => [
-                        'categories' => $value
-                    ],
-                ];
-                $shouldClauseUnclassified = [
+                $clause = [
                     'bool' => [
-                        'must_not' => [
-                            'exists' => ['field' => 'categories']
-                        ]
+                        'should' => [
+                            [
+                                'terms' => [
+                                    'categories' => $value
+                                ]
+                            ],
+                            [
+                                'bool' => [
+                                    'must_not' => [
+                                        'exists' => ['field' => 'categories']
+                                    ]
+                                ]
+                            ]
+                        ],
+                        'minimum_should_match' => 1,
                     ]
                 ];
 
-                $this->searchQueryBuilder->addShould($shouldClauseInList);
-                $this->searchQueryBuilder->addShould($shouldClauseUnclassified);
+                $this->searchQueryBuilder->addFilter($clause);
                 break;
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);

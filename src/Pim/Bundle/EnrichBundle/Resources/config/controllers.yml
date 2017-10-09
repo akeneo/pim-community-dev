@@ -4,6 +4,7 @@ parameters:
     pim_enrich.controller.family.class:                       Pim\Bundle\EnrichBundle\Controller\FamilyController
     pim_enrich.controller.attribute_option.class:             Pim\Bundle\EnrichBundle\Controller\AttributeOptionController
     pim_enrich.controller.product.class:                      Pim\Bundle\EnrichBundle\Controller\ProductController
+    pim_enrich.controller.product_model.class:                Pim\Bundle\EnrichBundle\Controller\ProductModelController
     pim_enrich.controller.group.class:                        Pim\Bundle\EnrichBundle\Controller\GroupController
     pim_enrich.controller.association_type.class:             Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
     pim_enrich.controller.file.class:                         Pim\Bundle\EnrichBundle\Controller\FileController
@@ -24,6 +25,7 @@ parameters:
     pim_enrich.controller.rest.product.class:                 Pim\Bundle\EnrichBundle\Controller\Rest\ProductController
     pim_enrich.controller.rest.product_model.class:           Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController
     pim_enrich.controller.rest.product_category.class:        Pim\Bundle\EnrichBundle\Controller\Rest\ProductCategoryController
+    pim_enrich.controller.rest.product_model_category.class:  Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelCategoryController
     pim_enrich.controller.rest.product_comment.class:         Pim\Bundle\EnrichBundle\Controller\Rest\ProductCommentController
     pim_enrich.controller.rest.versioning.class:              Pim\Bundle\EnrichBundle\Controller\Rest\VersioningController
     pim_enrich.controller.rest.attribute_option.class:        Pim\Bundle\EnrichBundle\Controller\Rest\AttributeOptionController
@@ -89,6 +91,20 @@ services:
             - '@pim_catalog.builder.product'
             - '@pim_catalog.values_filler.product'
             - '%pim_catalog.entity.category.class%'
+            - '@oro_security.security_facade'
+            - 'pim_enrich_product_categories_view'
+            - '@@PimEnrich/Product/listCategories.json.twig'
+
+    pim_enrich.controller.product_model:
+        class: '%pim_enrich.controller.product_model.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.values_filler.entity_with_family_variant'
+            - '@pim_catalog.repository.category'
+            - '@oro_security.security_facade'
+            - '%pim_catalog.entity.category.class%'
+            - 'pim_enrich_product_model_categories_view'
+            - '@@PimEnrich/ProductModel/listCategories.json.twig'
 
     pim_enrich.controller.group:
         class: '%pim_enrich.controller.group.class%'
@@ -344,6 +360,13 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.product_category'
+            - '@pim_catalog.filter.chained'
+
+    pim_enrich.controller.rest.product_model_category:
+        class: '%pim_enrich.controller.rest.product_model_category.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.product_model_category'
             - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.rest.product_comment:

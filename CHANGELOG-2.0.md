@@ -4,6 +4,10 @@
 
 - TIP-808: Add version strategy for js and css assets
 
+## Better manage products with variants!
+
+- PIM-6343: Classify product models via the edit form
+
 ## Bug Fixes
 
 - PIM-6865: Fix ACL on import profile page
@@ -14,6 +18,15 @@
 ## Better UI\UX!
 
 - PIM-6584: Update main menu order
+
+## Better manage products with variants!
+
+- PIM-6863: Hide "Variant" meta in non variant products
+
+## BC breaks
+
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template 
+
 
 # 2.0.1 (2017-10-05)
 

@@ -74,6 +74,10 @@ pim_enrich_product_model_edit_attributes:
     type: action
     label: pim_enrich.acl.product_model.edit_attributes
     group_name: pim_enrich.acl_group.product_model
+pim_enrich_product_model_categories_view:
+    type: action
+    label: pim_enrich.acl.product_model.categories_view
+    group_name: pim_enrich.acl_group.product_model
 
 # Mass edit action
 pim_enrich_mass_edit:

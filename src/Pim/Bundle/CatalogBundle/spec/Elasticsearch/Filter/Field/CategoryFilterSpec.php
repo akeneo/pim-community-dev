@@ -158,23 +158,25 @@ class CategoryFilterSpec extends ObjectBehavior
     ) {
         $categoryRepository->findOneByIdentifier('t-shirt')->willReturn($category);
 
-        $sqb->addShould(
-            [
-                'terms' => [
-                    'categories' => ['t-shirt'],
-                ],
-            ]
-        )->shouldBeCalled();
-
-        $sqb->addShould(
-            [
-                'bool' => [
-                    'must_not' => [
-                        'exists' => ['field' => 'categories'],
+        $sqb->addFilter([
+            'bool' => [
+                'should' => [
+                    [
+                        'terms' => [
+                            'categories' => ['t-shirt']
+                        ]
                     ],
+                    [
+                        'bool' => [
+                            'must_not' => [
+                                'exists' => ['field' => 'categories']
+                            ]
+                        ]
+                    ]
                 ],
+                'minimum_should_match' => 1,
             ]
-        )->shouldBeCalled();
+        ])->shouldBeCalled();
 
         $this->setQueryBuilder($sqb);
         $this->addFieldFilter('categories', Operators::IN_LIST_OR_UNCLASSIFIED, ['t-shirt'], 'en_US', 'ecommerce', []);

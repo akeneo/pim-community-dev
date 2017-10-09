@@ -4,16 +4,13 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -25,7 +22,7 @@ use Symfony\Component\Translation\TranslatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductController
+class ProductController extends AbstractListCategoryController
 {
     /** @var TranslatorInterface */
     protected $translator;
@@ -39,12 +36,6 @@ class ProductController
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
-    /** @var string */
-    protected $categoryClass;
-
-    /** @var CategoryRepositoryInterface */
-    protected $categoryRepository;
-
     /** @var EntityWithFamilyValuesFillerInterface */
     protected $valuesFiller;
 
@@ -55,7 +46,10 @@ class ProductController
      * @param SaverInterface                        $productSaver
      * @param ProductBuilderInterface               $productBuilder
      * @param EntityWithFamilyValuesFillerInterface $valuesFiller
+     * @param SecurityFacade                        $securityFacade
      * @param string                                $categoryClass
+     * @param string                                $acl
+     * @param string                                $template
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -64,21 +58,25 @@ class ProductController
         SaverInterface $productSaver,
         ProductBuilderInterface $productBuilder,
         EntityWithFamilyValuesFillerInterface $valuesFiller,
-        $categoryClass
+        string $categoryClass,
+        SecurityFacade $securityFacade,
+        string $acl,
+        string $template
     ) {
-        $this->translator         = $translator;
-        $this->productRepository  = $productRepository;
-        $this->productSaver       = $productSaver;
-        $this->productBuilder     = $productBuilder;
-        $this->categoryRepository = $categoryRepository;
-        $this->valuesFiller       = $valuesFiller;
-        $this->categoryClass      = $categoryClass;
+        parent::__construct($categoryRepository, $securityFacade, $categoryClass, $acl, $template);
+
+        $this->productRepository = $productRepository;
+        $this->translator = $translator;
+        $this->productSaver = $productSaver;
+        $this->productBuilder = $productBuilder;
+        $this->valuesFiller = $valuesFiller;
+        $this->acl = $acl;
     }
 
     /**
      * Toggle product status (enabled/disabled)
      *
-     * @param int $id
+     * @param string $id
      *
      * @return Response
      *
@@ -86,7 +84,7 @@ class ProductController
      */
     public function toggleStatusAction($id)
     {
-        $product = $this->findProductOr404($id);
+        $product = $this->findEntityWithCategoriesOr404($id);
 
         $toggledStatus = !$product->isEnabled();
         $product->setEnabled($toggledStatus);
@@ -100,70 +98,20 @@ class ProductController
     }
 
     /**
-     * List categories associated with the provided product and descending from the category
-     * defined by the parent parameter.
-     *
-     * @param Request    $request    The request object
-     * @param int|string $id         Product id
-     * @param int        $categoryId The parent category id
-     *
-     * httpparam include_category if true, will include the parentCategory in the response
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_product_categories_view")
-     *
-     * @return array
-     */
-    public function listCategoriesAction(Request $request, $id, $categoryId)
-    {
-        $product = $this->findProductOr404($id);
-        $parent = $this->categoryRepository->find($categoryId);
-
-        if (null === $parent) {
-            throw new NotFoundHttpException(sprintf('%s entity not found', $this->categoryClass));
-        }
-
-        $categories = null;
-        $selectedCategoryIds = $request->get('selected', null);
-        if (null !== $selectedCategoryIds) {
-            $categories = $this->categoryRepository->getCategoriesByIds($selectedCategoryIds);
-        } elseif (null !== $product) {
-            $categories = $product->getCategories();
-        }
-
-        $trees = $this->getFilledTree($parent, $categories);
-
-        return ['trees' => $trees, 'categories' => $categories];
-    }
-
-    /**
-     * Fetch the filled tree
-     *
-     * @param CategoryInterface $parent
-     * @param Collection        $categories
-     *
-     * @return CategoryInterface[]
-     */
-    protected function getFilledTree(CategoryInterface $parent, Collection $categories)
-    {
-        return $this->categoryRepository->getFilledTree($parent, $categories);
-    }
-
-    /**
      * Find a product by its id or return a 404 response
      *
-     * @param int $id the product id
+     * @param string $id the product id
      *
      * @throws NotFoundHttpException
      *
      * @return ProductInterface
      */
-    protected function findProductOr404($id)
+    protected function findEntityWithCategoriesOr404(string $id)
     {
         $product = $this->productRepository->find($id);
-        if (!$product) {
+        if (null === $product) {
             throw new NotFoundHttpException(
-                sprintf('Product with id %s could not be found.', (string) $id)
+                sprintf('Product with with ID "%s" could not be found.', $id)
             );
         }
         // With this version of the form we need to add missing values from family

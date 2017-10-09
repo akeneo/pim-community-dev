@@ -145,6 +145,16 @@ extensions:
             tabTitle: pim_enrich.form.product.tab.attributes.title
             deletionFailed: pim_enrich.form.product.flash.attribute_deletion_error
 
+    pim-product-model-edit-form-categories:
+        module: pim/product-edit-form/categories
+        parent: pim-product-model-edit-form-column-tabs
+        targetZone: container
+        aclResourceId: pim_enrich_product_categories_view #TODO
+        position: 100
+        config:
+            itemCategoryListRoute: pim_enrich_product_model_listcategories
+            itemCategoryTreeRoute: pim_enrich_product_model_category_rest_list
+
     pim-product-model-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector
         parent: pim-product-model-edit-form-attributes
