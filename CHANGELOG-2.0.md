@@ -18,6 +18,9 @@
 ## Better UI\UX!
 
 - PIM-6584: Update main menu order
+- API-398: As Mary, I want to only see my launched exports/imports
+- API-397: As Mary, I want to only see my launched jobs in the dashboard
+- API-389: As Mary, I want to only see my launched jobs in the process tracker
 
 ## Better manage products with variants!
 

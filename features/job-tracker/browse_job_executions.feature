@@ -26,12 +26,11 @@ Feature: Display jobs execution in job tracker
     Then I should see entities <result>
 
     Examples:
-      | filter | operator    | value  | result                                                    | count |
-      | user   | is equal to | Julia  | CSV footwear product export                               | 1     |
-      | type   | is equal to | import |                                                           | 0     |
-      | type   | is equal to | export | CSV footwear product export, CSV footwear category export | 2     |
+      | filter | operator    | value  | result                       | count |
+      | type   | is equal to | import |                              | 0     |
+      | type   | is equal to | export | CSV footwear category export | 1     |
 
   Scenario: Successfully search on label
-    When I search "footwear product export"
+    When I search "footwear category export"
     Then the grid should contain 1 element
-    And I should see entity CSV footwear product export
+    And I should see entity CSV footwear category export
