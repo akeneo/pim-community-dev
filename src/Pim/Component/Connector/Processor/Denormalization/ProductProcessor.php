@@ -11,7 +11,8 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -53,14 +54,14 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     private $productAttributeFilter;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository
-     * @param ProductBuilderInterface               $productBuilder
-     * @param ProductBuilderInterface               $variantProductBuilder
-     * @param ObjectUpdaterInterface                $updater
-     * @param ValidatorInterface                    $validator
-     * @param ObjectDetacherInterface               $detacher
-     * @param FilterInterface                       $productFilter
-     * @param AttributeFilterInterface              $productAttributeFilter
+     * @param IdentifiableObjectRepositoryInterface                               $repository
+     * @param ProductBuilderInterface                                             $productBuilder
+     * @param ProductBuilderInterface                                             $variantProductBuilder
+     * @param ObjectUpdaterInterface                                              $updater
+     * @param ValidatorInterface                                                  $validator
+     * @param ObjectDetacherInterface                                             $detacher
+     * @param FilterInterface                                                     $productFilter
+     * @param \Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface $productAttributeFilter
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
@@ -99,12 +100,12 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             $this->skipItemWithMessage($item, 'The identifier must be filled');
         }
 
+        $parent = $item['parent'] ?? '';
         $item = $this->productAttributeFilter->filter($item);
 
         $familyCode = $this->getFamilyCode($item);
         $filteredItem = $this->filterItemData($item);
 
-        $parent = $item['parent'] ?? '';
         $product = $this->findOrCreateProduct($identifier, $familyCode, $item, $parent);
 
         if (false === $itemHasStatus && null !== $product->getId()) {
