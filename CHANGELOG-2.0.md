@@ -21,6 +21,7 @@
 
 ## Better manage products with variants!
 
+- PIM-6346: Add history on product model edit page
 - PIM-6863: Hide "Variant" meta in non variant products
 
 ## BC breaks
