@@ -114,14 +114,14 @@ define(
                 return deferred.promise();
             },
 
-            confirmDelete: function(content, title, callback, subTitle) {
+            confirmDelete: function(content, title, callback, subTitle, buttonText) {
                 return Dialog.confirm.apply(this, [
                     content,
                     title,
                     callback,
                     subTitle,
                     'AknButton--important',
-                    __('Delete')
+                    __(buttonText) || __('Delete')
                 ]);
             }
         };

@@ -58,7 +58,8 @@ define(
                         content: 'pim_enrich.confirmation.delete_item',
                         success: 'flash.item.removed',
                         fail: 'error.removing.item',
-                        subTitle: ''
+                        subTitle: '',
+                        buttonText: 'pim_datagrid.mass_action.delete.label'
                     },
                     redirect: 'oro_default'
                 }, meta.config);
@@ -82,7 +83,8 @@ define(
                     __(this.config.trans.title),
                     __(this.config.trans.content),
                     this.doDelete.bind(this),
-                    __(this.config.trans.subTitle)
+                    __(this.config.trans.subTitle),
+                    __(this.config.trans.buttonText)
                 );
             },
 
