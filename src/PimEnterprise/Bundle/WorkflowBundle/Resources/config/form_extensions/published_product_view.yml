@@ -1,6 +1,8 @@
 extensions:
     pimee-published-product-view-form:
         module: pimee/product-view-form
+        config:
+            routeKey: pimee_workflow_published_product_view
 
     pimee-published-product-view-main-image:
         module: pim/form/common/main-image

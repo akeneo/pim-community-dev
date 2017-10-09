@@ -1,6 +1,8 @@
 extensions:
     pimee-product-view-form:
         module: pimee/product-view-form
+        config:
+            routeKey: pim_enrich_product_edit
 
     pimee-product-view-breadcrumbs:
         module: pim/common/breadcrumbs

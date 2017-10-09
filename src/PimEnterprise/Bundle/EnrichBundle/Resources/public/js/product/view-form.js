@@ -29,6 +29,15 @@ define(
             /**
              * {@inheritdoc}
              */
+            initialize: function (meta) {
+                this.config = meta.config;
+
+                return BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 Backbone.Router.prototype.once('route', this.unbindEvents);
 
@@ -39,6 +48,17 @@ define(
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            render: function () {
+                PageTitle.render(this.config.routeKey, {
+                    'product.label': this.getFormData().meta.label[UserContext.get('catalogLocale')]
+                });
+
+                return EditForm.prototype.render.apply(this, arguments);
             },
 
             /**
