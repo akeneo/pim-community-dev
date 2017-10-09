@@ -31,16 +31,10 @@ class CacheBusterVersionStrategy implements VersionStrategyInterface
      */
     public function applyVersion($path)
     {
-        $version = $this->getVersion($path);
+        $versioned = sprintf('%s?%s', ltrim($path, DIRECTORY_SEPARATOR), $this->getVersion($path));
 
-        if ('' === $version) {
-            return $path;
-        }
-
-        $versioned = sprintf('%s?%s', ltrim($path, '/'), $version);
-
-        if ($path && '/' === $path[0]) {
-            return '/'.$versioned;
+        if ($path && DIRECTORY_SEPARATOR == $path[0]) {
+            return DIRECTORY_SEPARATOR.$versioned;
         }
 
         return $versioned;
