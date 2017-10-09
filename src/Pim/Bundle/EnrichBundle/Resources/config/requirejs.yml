@@ -160,6 +160,11 @@ config:
                     options:
                         urls:
                             get: pim_enrich_product_history_rest_get
+                variant-product-history:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: pim_enrich_variant_product_history_rest_get
                 product:
                     module: pim/product-fetcher
                     options:

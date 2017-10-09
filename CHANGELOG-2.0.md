@@ -11,6 +11,10 @@
 
 - PIM-6584: Update main menu order
 
+## Better manage products with variants!
+
+- PIM-6863: Hide "Variant" meta in non variant products
+
 # 2.0.1 (2017-10-05)
 
 ## Bug Fixes
