@@ -1,6 +1,7 @@
 parameters:
     pim_enrich.controller.category_tree.class:              PimEnterprise\Bundle\EnrichBundle\Controller\CategoryTreeController
     pim_enrich.controller.product.class:                    PimEnterprise\Bundle\EnrichBundle\Controller\ProductController
+    pim_enrich.controller.product_model.class:              PimEnterprise\Bundle\EnrichBundle\Controller\ProductModelController
     pim_enrich.controller.locale.class:                     PimEnterprise\Bundle\EnrichBundle\Controller\LocaleController
     pimee_enrich.controller.rule_relation.class:            PimEnterprise\Bundle\EnrichBundle\Controller\RuleRelationController
     pimee_enrich.controller.channel.class:                  PimEnterprise\Bundle\EnrichBundle\Controller\Rest\ChannelController
@@ -16,8 +17,23 @@ services:
             - '@pim_catalog.saver.product'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.values_filler.product'
-            - '@pim_catalog.manager.category'
             - '%pim_catalog.entity.category.class%'
+            - '@oro_security.security_facade'
+            - 'pim_enrich_product_categories_view'
+            - '@@PimEnrich/Product/listCategories.json.twig'
+            - '@pim_catalog.manager.category'
+
+    pim_enrich.controller.product_model:
+        class: '%pim_enrich.controller.product_model.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.values_filler.entity_with_family_variant'
+            - '@pim_catalog.repository.category'
+            - '@oro_security.security_facade'
+            - '%pim_catalog.entity.category.class%'
+            - 'pim_enrich_product_model_categories_view'
+            - '@@PimEnrich/ProductModel/listCategories.json.twig'
+            - '@pim_catalog.manager.category'
 
     pim_enrich.controller.rest.product:
         class: '%pim_enrich.controller.rest.product.class%'
