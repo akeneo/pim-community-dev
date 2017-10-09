@@ -1,5 +1,9 @@
 # 2.0.x
 
+## Tech improvements
+
+- TIP-808: Add version strategy for js and css assets
+
 ## Better manage products with variants!
 
 - PIM-6343: Classify product models via the edit form
