@@ -51,8 +51,7 @@ extensions:
 
     pim-currency-index-grid:
         module: pim/form/common/index/grid
-        parent: pim-currency-index
+        parent: pim-currency-index-grid-container
         position: 1000
-        targetZone: content
         config:
             alias: currency-grid

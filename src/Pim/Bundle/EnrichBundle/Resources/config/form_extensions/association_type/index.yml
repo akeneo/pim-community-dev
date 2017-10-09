@@ -51,9 +51,8 @@ extensions:
 
     pim-association-type-index-grid:
         module: pim/form/common/index/grid
-        parent: pim-association-type-index
+        parent: pim-association-type-index-grid-container
         position: 1000
-        targetZone: content
         config:
             alias: association-type-grid
 

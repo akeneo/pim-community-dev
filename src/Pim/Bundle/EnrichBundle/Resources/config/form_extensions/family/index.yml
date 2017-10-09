@@ -66,9 +66,8 @@ extensions:
 
     pim-family-index-grid:
         module: pim/form/common/index/grid
-        parent: pim-family-index
+        parent: pim-family-index-grid-container
         position: 1000
-        targetZone: content
         config:
             alias: family-grid
 
