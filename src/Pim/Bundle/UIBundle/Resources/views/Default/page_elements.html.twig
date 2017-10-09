@@ -53,17 +53,17 @@
 {% endspaceless %}
 {% endmacro %}
 
-{% macro deleteLinkAttributes(url, redirectUrl, message, successMessage, title) %}{% spaceless %}
+{% macro deleteLinkAttributes(url, redirectUrl, message, successMessage, title, subTitle) %}{% spaceless %}
     {% set message = message|default('confirmation.remove.item') %}
     {% set title = title|default('confirmation.delete'|trans) %}
     {% set successMessage = successMessage|default('flash.entity.removed'|trans) %}
-    href="javascript:void(0);" data-dialog="confirm" data-title="{{ title }}" data-message="{{ message }}" data-url="{{ url }}" data-redirect-url="{{ redirectUrl }}" data-method="DELETE" data-error-message="{% trans %}The element could not be deleted{% endtrans %}" data-success-message="{{ successMessage }}"
+    href="javascript:void(0);" data-dialog="confirm" data-title="{{ title }}" data-subtitle="{{ subTitle }}" data-message="{{ message }}" data-url="{{ url }}" data-redirect-url="{{ redirectUrl }}" data-method="DELETE" data-error-message="{% trans %}The element could not be deleted{% endtrans %}" data-success-message="{{ successMessage }}"
 {% endspaceless %}{% endmacro %}
 
-{% macro deleteLink(url, acl, redirectUrl, message, successMessage, title, class = '') %}{% spaceless %}
+{% macro deleteLink(url, acl, redirectUrl, message, successMessage, title, class = '', subTitle = '') %}{% spaceless %}
     {% if acl is null or resource_granted(acl) %}
         {% import _self as elements %}
-        <a class="{{ class }}" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, successMessage, title)}} >
+        <a class="{{ class }}" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, successMessage, title, subTitle)}} >
             {{ 'btn.delete'|trans|capitalize }}
         </a>
     {% endif %}

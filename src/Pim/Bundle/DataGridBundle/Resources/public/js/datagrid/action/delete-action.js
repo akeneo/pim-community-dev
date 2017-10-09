@@ -76,12 +76,11 @@ define([
              * @return {oro.Modal}
              */
             getConfirmDialog: function() {
-                const entityType = this.getEntityHint();
                 this.confirmModal = Dialog.confirmDelete(
-                    __('confirmation.remove.' + entityType),
-                    `Delete ${entityType}`,
+                    __(`confirmation.remove.${this.getEntityHint()}`),
+                    __('pim_enrich.confirmation.delete_item'),
                     this.doDelete.bind(this),
-                    entityType
+                    this.getEntityHint(true)
                 );
 
                 return this.confirmModal;
@@ -103,8 +102,14 @@ define([
                 return this.errorModal;
             },
 
-            getEntityHint: function() {
-                return this.datagrid && this.datagrid.entityHint ? this.datagrid.entityHint : 'item';
+            getEntityHint: function(plural) {
+                const entityHint = this.datagrid && this.datagrid.entityHint ? this.datagrid.entityHint : 'item';
+
+                if (plural) {
+                    return `${entityHint}s`;
+                }
+
+                return entityHint;
             }
         });
     }
