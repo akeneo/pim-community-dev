@@ -12,8 +12,7 @@ Feature: Display the variant product history
     And I change the "Weight" to "750 Gram"
     And I press the "Save" button
     Then I should not see the text "There are unsaved changes."
-    When the history of the product "tshirt-unique-color-kurt-l" has been built
-    And I visit the "History" column tab
+    When I visit the "History" column tab
     Then there should be 2 update
     And I should see history:
       | version | property | value |

@@ -14,6 +14,9 @@ use Pim\Behat\Decorator\ContextSwitcherDecorator;
  */
 class Edit extends ProductEditForm
 {
+    /** @var string */
+    protected $path = '#/enrich/product-model/{id}';
+
     /**
      * {@inheritdoc}
      */
@@ -34,6 +37,11 @@ class Edit extends ProductEditForm
         );
     }
 
-    /** @var string */
-    protected $path = '#/enrich/product-model/{id}';
+    /**
+     * {@inheritdoc}
+     */
+    public function getHistoryRows()
+    {
+        return $this->findAll('css', '.entity-version');
+    }
 }
