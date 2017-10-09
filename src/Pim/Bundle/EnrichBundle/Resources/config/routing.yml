@@ -30,6 +30,10 @@ family:
     resource: '@PimEnrichBundle/Resources/config/routing/family.yml'
     prefix: /configuration/family
 
+family_variant:
+    resource: '@PimEnrichBundle/Resources/config/routing/family_variant.yml'
+    prefix: /configuration/family-variant
+
 locale:
     resource: '@PimEnrichBundle/Resources/config/routing/locale.yml'
     prefix: /configuration/locale

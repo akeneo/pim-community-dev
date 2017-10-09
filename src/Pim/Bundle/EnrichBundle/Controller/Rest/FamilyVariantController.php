@@ -1,14 +1,20 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Family variant controller
@@ -25,16 +31,46 @@ class FamilyVariantController
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var SimpleFactoryInterface */
+    protected $familyVariantFactory;
+
+    /** @var ObjectUpdaterInterface */
+    protected $updater;
+
+    /** @var ValidatorInterface */
+    protected $validator;
+
+    /** @var NormalizerInterface */
+    protected $constraintViolationNormalizer;
+
+    /** @var SaverInterface */
+    protected $saver;
+
     /**
      * @param FamilyVariantRepositoryInterface $familyVariantRepository
      * @param NormalizerInterface              $normalizer
+     * @param SimpleFactoryInterface           $familyVariantFactory
+     * @param ObjectUpdaterInterface           $updater
+     * @param ValidatorInterface               $validator
+     * @param NormalizerInterface              $constraintViolationNormalizer
+     * @param SaverInterface                   $saver
      */
     public function __construct(
         FamilyVariantRepositoryInterface $familyVariantRepository,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        SimpleFactoryInterface $familyVariantFactory,
+        ObjectUpdaterInterface $updater,
+        ValidatorInterface $validator,
+        NormalizerInterface $constraintViolationNormalizer,
+        SaverInterface $saver
     ) {
         $this->familyVariantRepository = $familyVariantRepository;
         $this->normalizer = $normalizer;
+        $this->familyVariantFactory = $familyVariantFactory;
+        $this->updater = $updater;
+        $this->validator = $validator;
+        $this->constraintViolationNormalizer = $constraintViolationNormalizer;
+        $this->saver = $saver;
     }
 
     /**
@@ -54,6 +90,37 @@ class FamilyVariantController
                 'internal_api'
             )
         );
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function createAction(Request $request): JsonResponse
+    {
+        $familyVariant = $this->familyVariantFactory->create();
+        $content = json_decode($request->getContent(), true);
+
+        $this->updater->update($familyVariant, $content);
+        $violations = $this->validator->validate($familyVariant);
+
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['family_variant' => $familyVariant]
+            );
+        }
+
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse(['values' => $normalizedViolations], 400);
+        }
+
+        $this->saver->save($familyVariant);
+
+        return new JsonResponse();
     }
 
     /**

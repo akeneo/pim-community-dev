@@ -165,6 +165,11 @@ class FamilyVariantValidator extends ConstraintValidator
             } elseif (static::MAXIMUM_AXES_NUMBER < $attributeSet->getAxes()->count()) {
                 $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_number_of_axes');
                 $this->context->buildViolation($message)->addViolation();
+            } elseif (0 === $attributeSet->getAxes()->count()) {
+                $message = $this->translator->trans('pim_catalog.constraint.family_variant_no_axis');
+                $this->context->buildViolation($message, [
+                    '%level%' => $i + 1,
+                ])->addViolation();
             }
 
             $i++;

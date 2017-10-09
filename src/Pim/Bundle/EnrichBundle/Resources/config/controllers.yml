@@ -289,6 +289,11 @@ services:
         arguments:
             - '@pim_catalog.repository.family_variant'
             - '@pim_internal_api_serializer'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_catalog.updater.family_variant'
+            - '@validator'
+            - '@pim_enrich.normalizer.violation'
+            - '@pim_catalog.saver.family_variant'
 
     pim_enrich.controller.rest.form_extension:
         class: '%pim_enrich.controller.rest.form_extension.class%'

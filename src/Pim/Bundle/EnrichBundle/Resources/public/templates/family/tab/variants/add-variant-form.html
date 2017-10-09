@@ -1,0 +1,66 @@
+<div class="AknFullPage AknFullPage--modal">
+    <div class="AknFullPage-content">
+        <div class="AknFullPage-left">
+            <img src="bundles/pimui/images/illustrations/Variant.svg" class="AknFullPage-image">
+        </div>
+        <div class="AknFullPage-right">
+            <div class="AknFullPage-subTitle"><%- __('pim_enrich.entity.family.title') %> <%- familyName %></div>
+            <div class="AknFullPage-title"><%- __('pim_enrich.entity.family.variant.create_label') %></div>
+            <div class="AknFullPage-description"><%- __('pim_enrich.entity.family.variant.create_description') %></div>
+            <div>
+                <div class="AknFieldContainer">
+                    <div class="AknFieldContainer-header">
+                        <label class="AknFieldContainer-label"><%- __('pim_enrich.entity.family.variant.code') %> (<%- __('pim_enrich.entity.family.variant.required') %>)</label>
+                    </div>
+                    <div class="AknFieldContainer-inputContainer">
+                        <input type="text" value="" name="code" class="AknTextField" />
+                    </div>
+                    <footer>
+                        <div class="AknFieldContainer-footer footer-elements-container error-code">
+                        </div>
+                    </footer>
+                </div>
+                <div class="AknFieldContainer">
+                    <div class="AknFieldContainer-header">
+                        <label class="AknFieldContainer-label"><%- __('pim_enrich.entity.family.variant.label') %></label>
+                    </div>
+                    <div class="AknFieldContainer-inputContainer">
+                        <input type="text" value="" name="label" class="AknTextField" />
+                    </div>
+                </div>
+                <div class="AknFieldContainer">
+                    <div class="AknFieldContainer-header">
+                        <label class="AknFieldContainer-label"><%- __('pim_enrich.entity.family.variant.levels') %></label>
+                    </div>
+                    <div class="AknFieldContainer-inputContainer">
+                        <select name="numberOfLevels" class="AknChoicesField">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="AknFieldContainer">
+                    <div class="AknFieldContainer-header">
+                        <label class="AknFieldContainer-label"><%- __('pim_enrich.entity.family.variant.axis_level') %> 1 (<%- __('pim_enrich.entity.family.variant.required') %>)</label>
+                    </div>
+                    <div class="AknFieldContainer-inputContainer">
+                        <input type="hidden" value="" name="axis1" class="select-field" />
+                    </div>
+                </div>
+                <div class="AknFieldContainer axis_level_2">
+                    <div class="AknFieldContainer-header">
+                        <label class="AknFieldContainer-label"><%- __('pim_enrich.entity.family.variant.axis_level') %> 2 (<%- __('pim_enrich.entity.family.variant.required') %>)</label>
+                    </div>
+                    <div class="AknFieldContainer-inputContainer">
+                        <input type="hidden" value="" name="axis2" class="select-field" />
+                    </div>
+                </div>
+                <div class="AknMessageBox AknMessageBox--danger">
+                    <ul class="AknMessageBox-list">
+                        <li class="error-axis"></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
