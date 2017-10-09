@@ -28,6 +28,14 @@
 
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template 
 
+## Tech improvements
+
+- PRE_SAVE and POST_SAVE events dispatched by instances of BaseSaver now include an "is_new" argument indicating if entities are being inserted or updated.
+
+## BC breaks
+
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController` to add dependencies to `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add dependencies to `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
 
 # 2.0.1 (2017-10-05)
 

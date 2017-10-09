@@ -1,9 +1,0 @@
-parameters:
-    pim_enrich.form.subscriber.set_attribute_group_sort_order.class:    Pim\Bundle\EnrichBundle\Form\Subscriber\SetAttributeGroupSortOrderSubscriber
-
-services:
-    # Subscribers
-    pim_enrich.form.subscriber.set_attribute_group_sort_order:
-        class: '%pim_enrich.form.subscriber.set_attribute_group_sort_order.class%'
-        arguments:
-            - '@pim_catalog.repository.attribute_group'
