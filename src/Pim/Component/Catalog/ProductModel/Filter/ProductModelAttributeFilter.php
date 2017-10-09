@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
-use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 
 /**
  * Filter data according to attributes defined on the family variant. All

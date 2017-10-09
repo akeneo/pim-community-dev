@@ -100,13 +100,13 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             $this->skipItemWithMessage($item, 'The identifier must be filled');
         }
 
+        $parent = $item['parent'] ?? '';
+        $item = $this->productAttributeFilter->filter($item);
+
         $familyCode = $this->getFamilyCode($item);
         $filteredItem = $this->filterItemData($item);
 
-        $parent = $item['parent'] ?? '';
         $product = $this->findOrCreateProduct($identifier, $familyCode, $item, $parent);
-
-        $item = $this->productAttributeFilter->filter($item);
 
         if (false === $itemHasStatus && null !== $product->getId()) {
             unset($filteredItem['enabled']);
