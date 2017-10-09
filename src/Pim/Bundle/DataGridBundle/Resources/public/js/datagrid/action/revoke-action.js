@@ -19,11 +19,9 @@ define([
             getConfirmDialog: function() {
                 this.confirmModal = Dialog.confirm(
                     __('confirmation.remove.' + this.getEntityHint()),
-                    __('Revoke confirmation'),
+                    __('Confirm revocation'),
                     this.doDelete.bind(this),
-                    'API Connections',
-                    null,
-                    __('Revoke')
+                    this.getEntityHint(true)
                 )
 
                 return this.confirmModal;

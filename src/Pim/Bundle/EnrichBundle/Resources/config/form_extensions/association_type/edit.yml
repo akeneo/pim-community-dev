@@ -50,6 +50,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.association_type
+                subTitle: pim_menu.item.association_type
                 content: pim_enrich.confirmation.delete_item
                 success: flash.association_type.removed
                 fail: error.removing.association_type

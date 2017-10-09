@@ -26,23 +26,27 @@ define(
 
         const Dialog = {
             template: _.template(template),
+
             /**
              * Open a modal dialog without cancel button
              * @param string content
              * @param string title
              */
-            alert: function (content, title) {
-                if (!_.isUndefined(Backbone.BootstrapModal)) {
-                    var alert = new Backbone.BootstrapModal({
-                        allowCancel: false,
-                        title: title,
-                        content: content,
-                        okText: __('OK')
-                    });
-                    alert.open();
-                } else {
-                    window.alert(content);
-                }
+            alert: function (content, title, subTitle) {
+                const alert = new Backbone.BootstrapModal({
+                    type: __(subTitle) || '',
+                    allowCancel: false,
+                    title: title,
+                    content: content,
+                    okText: __('OK'),
+                    cancelText: __('Cancel'),
+                    template: this.template,
+                    buttonClass: 'AknButton--action'
+                });
+
+                alert.$el.addClass('modal--fullPage');
+
+                alert.open();
             },
 
             /**
@@ -88,12 +92,13 @@ define(
 
                 const confirm = new Backbone.BootstrapModal({
                     type: __(subTitle || ''),
-                    title: title,
-                    content: content,
+                    title: __(title),
+                    content: __(content),
                     okText: buttonText || __('OK'),
                     cancelText: __('Cancel'),
+                    buttonClass: buttonClass || 'AknButton--action',
                     template: this.template,
-                    buttonClass: buttonClass || 'AknButton--action'
+                    allowCancel: true
                 });
 
                 confirm.$el.addClass('modal--fullPage');

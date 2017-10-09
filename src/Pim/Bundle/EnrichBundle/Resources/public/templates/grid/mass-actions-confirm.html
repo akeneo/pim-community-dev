@@ -10,9 +10,11 @@
                 <%= content %>
             </div>
             <div class="AknButtonList">
-                <button class="AknButtonList-item AknButton AknButton--grey cancel %>">
-                    Cancel
-                </button>
+                <% if (allowCancel) { %>
+                    <button class="AknButtonList-item AknButton AknButton--grey cancel %>">
+                        Cancel
+                    </button>
+                <% } %>
                 <button class="AknButtonList-item AknButton <%- buttonClass %> ok %>">
                     <%- okText %>
                 </button>
