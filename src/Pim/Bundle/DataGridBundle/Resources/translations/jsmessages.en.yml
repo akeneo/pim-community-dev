@@ -113,7 +113,7 @@ grid.view_selector:
     choose_label: Choose a label for the view
     confirmation:
         remove: Are you sure you want to delete this view?
-        delete: Delete confirmation
+        delete: Confirm deletion
 
 # View selector flash messages
 grid.view_selector.flash.updated: Datagrid view successfully updated
