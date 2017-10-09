@@ -27,7 +27,7 @@ datagrid:
                 label: Revoke
                 link:  delete_link
                 launcherOptions:
-                    className: 'AknButton AknButton--important'
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
         sorters:
             columns:
                 label:

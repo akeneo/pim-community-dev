@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Better UI\UX!
+
+- PIM-6504: Update action icons on datagrids
+
 # 2.0.2 (2017-10-12)
 
 ## Tech improvements

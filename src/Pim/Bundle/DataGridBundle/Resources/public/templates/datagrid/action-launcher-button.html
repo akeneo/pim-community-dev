@@ -7,10 +7,7 @@
 >
     <% if (icon) { %>
         <i class="icon-<%- icon %>"></i>
-    <% } else { %>
-        <% if (iconClassName) { %>
-            <i class="<%- iconClassName %>"></i>
-        <% } %>
-        <%- label %>
+    <% } else if (iconClassName) { %>
+        <i class="<%- iconClassName %>"></i>
     <% } %>
 </<%- tagName %>>

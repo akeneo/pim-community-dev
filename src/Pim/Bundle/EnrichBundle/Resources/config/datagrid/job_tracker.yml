@@ -30,9 +30,10 @@ datagrid:
                 frontend_type: html
         actions:
             view:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--view
                 type:      navigate
                 label:     pim.grid.action.show.title
-                icon:      list-alt
                 link:      show_link
                 rowAction: true
         sorters:

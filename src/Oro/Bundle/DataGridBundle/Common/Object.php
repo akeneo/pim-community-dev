@@ -185,7 +185,7 @@ class Object implements \ArrayAccess, \IteratorAggregate
      */
     public function merge(array $params)
     {
-        $this->params = array_merge($this->params, $params);
+        $this->params = array_merge_recursive($this->params, $params);
 
         return $this;
     }
