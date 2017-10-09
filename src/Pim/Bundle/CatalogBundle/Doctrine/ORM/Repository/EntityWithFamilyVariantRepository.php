@@ -3,10 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\EntityWithFamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
+use Pim\Component\Catalog\Repository\VariantProductRepositoryInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -18,12 +19,19 @@ class EntityWithFamilyVariantRepository implements EntityWithFamilyVariantReposi
     /** @var ProductModelRepositoryInterface */
     protected $productModelRepository;
 
+    /** @var VariantProductRepositoryInterface */
+    protected $productRepository;
+
     /**
-     * @param ProductModelRepositoryInterface $productModelRepository
+     * @param ProductModelRepositoryInterface   $productModelRepository
+     * @param VariantProductRepositoryInterface $productRepository
      */
-    public function __construct(ProductModelRepositoryInterface $productModelRepository)
-    {
+    public function __construct(
+        ProductModelRepositoryInterface $productModelRepository,
+        VariantProductRepositoryInterface $productRepository
+    ) {
         $this->productModelRepository = $productModelRepository;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -37,8 +45,8 @@ class EntityWithFamilyVariantRepository implements EntityWithFamilyVariantReposi
             return [];
         }
 
-        if ($entity instanceof ProductInterface) {
-            // TODO: link between product & family variant
+        if ($entity instanceof VariantProductInterface) {
+            return $this->productRepository->findSiblingsProducts($entity);
         }
 
         if ($entity instanceof ProductModelInterface) {

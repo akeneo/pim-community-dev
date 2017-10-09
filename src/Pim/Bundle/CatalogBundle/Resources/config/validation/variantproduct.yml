@@ -6,7 +6,7 @@ Pim\Component\Catalog\Model\VariantProduct:
               - api
         - Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParent: ~
         - Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxes: ~
-        - Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxes: ~
+        - Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis: ~
         - Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues: ~
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: [identifier]

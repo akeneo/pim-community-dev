@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxes;
+use Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis;
 use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
@@ -37,7 +37,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_entity_is_not_supported(
         \DateTime $entity,
-        SiblingUniqueVariantAxes $constraint
+        UniqueVariantAxis $constraint
     ) {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [$entity, $constraint]);
     }
@@ -52,7 +52,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
     function it_raises_no_violation_if_the_entity_has_no_family_variant(
         $context,
         EntityWithFamilyVariantInterface $entity,
-        SiblingUniqueVariantAxes $constraint
+        UniqueVariantAxis $constraint
     ) {
         $entity->getFamilyVariant()->willReturn(null);
 
@@ -67,7 +67,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         $axesProvider,
         FamilyVariantInterface $familyVariant,
         EntityWithFamilyVariantInterface $entity,
-        SiblingUniqueVariantAxes $constraint
+        UniqueVariantAxis $constraint
     ) {
         $entity->getParent()->willReturn(null);
         $axesProvider->getAxes($entity)->willReturn([]);
@@ -86,7 +86,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         EntityWithFamilyVariantInterface $entity,
         EntityWithFamilyVariantInterface $sibling,
-        SiblingUniqueVariantAxes $constraint
+        UniqueVariantAxis $constraint
     ) {
         $entity->getParent()->willReturn(null);
         $entity->getFamilyVariant()->willReturn($familyVariant);
@@ -108,7 +108,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         EntityWithFamilyVariantInterface $sibling1,
         EntityWithFamilyVariantInterface $sibling2,
         AttributeInterface $color,
-        SiblingUniqueVariantAxes $constraint,
+        UniqueVariantAxis $constraint,
         ValueInterface $blue,
         ValueInterface $red,
         ValueInterface $yellow
@@ -144,7 +144,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         EntityWithFamilyVariantInterface $sibling1,
         EntityWithFamilyVariantInterface $sibling2,
         AttributeInterface $color,
-        SiblingUniqueVariantAxes $constraint,
+        UniqueVariantAxis $constraint,
         ValueInterface $blue,
         ValueInterface $yellow,
         ConstraintViolationBuilderInterface $violation
@@ -164,7 +164,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 
         $context
             ->buildViolation(
-                SiblingUniqueVariantAxes::DUPLICATE_VALUE_IN_SIBLING, [
+                UniqueVariantAxis::DUPLICATE_VALUE_IN_SIBLING, [
                     '%values%' => '[blue]',
                     '%attributes%' => 'color',
                 ]
@@ -188,7 +188,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         EntityWithFamilyVariantInterface $sibling2,
         AttributeInterface $color,
         AttributeInterface $size,
-        SiblingUniqueVariantAxes $constraint,
+        UniqueVariantAxis $constraint,
         ValueInterface $blue,
         ValueInterface $yellow,
         ValueInterface $xl,
@@ -215,7 +215,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 
         $context
             ->buildViolation(
-                SiblingUniqueVariantAxes::DUPLICATE_VALUE_IN_SIBLING,
+                UniqueVariantAxis::DUPLICATE_VALUE_IN_SIBLING,
                 [
                     '%values%' => '[blue],[xl]',
                     '%attributes%' => 'color,size',
@@ -239,7 +239,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
         EntityWithFamilyVariantInterface $entity2,
         ProductModelInterface $parent,
         AttributeInterface $color,
-        SiblingUniqueVariantAxes $constraint,
+        UniqueVariantAxis $constraint,
         ValueInterface $blue,
         ConstraintViolationBuilderInterface $violation
     ) {
@@ -263,7 +263,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
 
         $context
             ->buildViolation(
-                SiblingUniqueVariantAxes::DUPLICATE_VALUE_IN_SIBLING,
+                UniqueVariantAxis::DUPLICATE_VALUE_IN_SIBLING,
                 [
                     '%values%' => '[blue]',
                     '%attributes%' => 'color',
