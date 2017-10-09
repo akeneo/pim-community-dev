@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
@@ -31,18 +32,27 @@ class JobProfileAccessManager
     /** @var BulkSaverInterface */
     protected $saver;
 
+    /** @var BulkObjectDetacherInterface */
+    protected $objectDetacher;
+
     /** @var string */
     protected $objectAccessClass;
 
     /**
-     * @param JobProfileAccessRepository $repository
-     * @param BulkSaverInterface         $saver
-     * @param string                     $objectAccessClass
+     * @param JobProfileAccessRepository  $repository
+     * @param BulkSaverInterface          $saver
+     * @param BulkObjectDetacherInterface $objectDetacher
+     * @param string                      $objectAccessClass
      */
-    public function __construct(JobProfileAccessRepository $repository, BulkSaverInterface $saver, $objectAccessClass)
-    {
+    public function __construct(
+        JobProfileAccessRepository $repository,
+        BulkSaverInterface $saver,
+        BulkObjectDetacherInterface $objectDetacher,
+        $objectAccessClass
+    ) {
         $this->repository = $repository;
         $this->saver = $saver;
+        $this->objectDetacher = $objectDetacher;
         $this->objectAccessClass = $objectAccessClass;
     }
 
@@ -97,6 +107,7 @@ class JobProfileAccessManager
             $this->revokeAccess($jobProfile, $grantedGroups);
         }
         $this->saver->saveAll($grantedAccesses);
+        $this->objectDetacher->detachAll($grantedAccesses);
     }
 
     /**
@@ -110,6 +121,7 @@ class JobProfileAccessManager
     {
         $access = $this->buildGrantAccess($jobProfile, $group, $accessLevel);
         $this->saver->saveAll([$access]);
+        $this->objectDetacher->detachAll([$access]);
     }
 
     /**

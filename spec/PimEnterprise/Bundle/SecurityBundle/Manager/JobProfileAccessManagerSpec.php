@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Akeneo\Component\Batch\Model\JobInstance;
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
@@ -13,9 +14,17 @@ use Prophecy\Argument;
 
 class JobProfileAccessManagerSpec extends ObjectBehavior
 {
-    function let(JobProfileAccessRepository $repository, BulkSaverInterface $saver)
-    {
-        $this->beConstructedWith($repository, $saver, 'PimEnterprise\Bundle\SecurityBundle\Entity\JobProfileAccess');
+    function let(
+        JobProfileAccessRepository $repository,
+        BulkSaverInterface $saver,
+        BulkObjectDetacherInterface $detacher
+    ) {
+        $this->beConstructedWith(
+            $repository,
+            $saver,
+            $detacher,
+            'PimEnterprise\Bundle\SecurityBundle\Entity\JobProfileAccess'
+        );
     }
 
     function it_provides_user_groups_that_have_access_to_a_job_profile(JobInstance $jobProfile, $repository)
@@ -31,6 +40,7 @@ class JobProfileAccessManagerSpec extends ObjectBehavior
         JobInstance $jobProfile,
         $repository,
         $saver,
+        $detacher,
         Group $user,
         Group $admin
     ) {
@@ -38,6 +48,7 @@ class JobProfileAccessManagerSpec extends ObjectBehavior
         $repository->findOneBy(Argument::any())->willReturn(array());
         $repository->revokeAccess($jobProfile, [$admin, $user])->shouldBeCalled();
         $saver->saveAll(Argument::size(2))->shouldBeCalled();
+        $detacher->detachAll(Argument::size(2))->shouldBeCalled();
 
         $this->setAccess($jobProfile, [$user, $admin], [$admin]);
     }
@@ -46,6 +57,7 @@ class JobProfileAccessManagerSpec extends ObjectBehavior
         JobInstance $jobProfile,
         $repository,
         $saver,
+        $detacher,
         Group $user,
         Group $admin
     ) {
@@ -53,6 +65,7 @@ class JobProfileAccessManagerSpec extends ObjectBehavior
         $repository->findOneBy(Argument::any())->willReturn(array());
         $repository->revokeAccess($jobProfile, Argument::any())->shouldNotBeCalled();
         $saver->saveAll(Argument::size(2))->shouldBeCalled();
+        $detacher->detachAll(Argument::size(2))->shouldBeCalled();
 
         $this->setAccess($jobProfile, [$user, $admin], [$admin]);
     }

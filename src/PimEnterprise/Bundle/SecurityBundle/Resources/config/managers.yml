@@ -28,6 +28,7 @@ services:
         arguments:
             - '@pimee_security.repository.job_profile_access'
             - '@pimee_security.saver.job_profile_access'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
             - '%pimee_security.entity.job_profile_access.class%'
 
     pimee_security.manager.locale_access:

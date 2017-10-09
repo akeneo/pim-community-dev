@@ -31,8 +31,6 @@ PimEnterprise\Bundle\SecurityBundle\Entity\JobProfileAccess:
                     referencedColumnName: id
                     onDelete: CASCADE
                     nullable: false
-            cascade:
-                - persist
         userGroup:
             targetEntity: Oro\Bundle\UserBundle\Entity\Group
             joinColumns:

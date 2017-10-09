@@ -6,20 +6,7 @@ parameters:
     pimee_enrich.form.type.locale.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\LocaleType
     pimee_enrich.form.type.product_grid_filter_choice.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\ProductGridFilterChoiceType
 
-    ## Form extensions
-    pimee_enrich.form.extension.attribute.class: PimEnterprise\Bundle\EnrichBundle\Form\Extension\AttributeTypeExtension
-
 services:
-    pim_enrich.form.type.attribute_group:
-        class: '%pim_enrich.form.type.attribute_group.class%'
-        arguments:
-            - '%pim_catalog.entity.attribute_group.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_attributegroup }
-        calls:
-            - [addEventSubscriber, ['@pim_enrich.form.subscriber.set_attribute_group_sort_order']]
-            - [addEventSubscriber, ['@pimee_enrich.form.subscriber.attribute_group_permissions']]
-
     pim_enrich.form.type.category:
         class: '%pim_enrich.form.type.category.class%'
         arguments:

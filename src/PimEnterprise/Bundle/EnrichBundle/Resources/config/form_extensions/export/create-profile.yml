@@ -10,7 +10,3 @@ extensions:
             editRoute: pim_importexport_export_profile_edit
             postUrl: pim_enrich_job_instance_rest_export_create
             routerKey: code
-            defaultValues:
-                permissions:
-                    execute: [All]
-                    edit: [All]

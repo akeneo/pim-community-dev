@@ -3,6 +3,8 @@ parameters:
     pimee_enrich.filter.product_values_edit_data.class: PimEnterprise\Bundle\EnrichBundle\Filter\ProductValuesEditDataFilter
     pimee_enrich.filter.job_instance_execute_right.class: PimEnterprise\Bundle\EnrichBundle\Filter\JobInstanceExecuteRightFilter
     pimee_enrich.filter.job_instance_edit_right.class: PimEnterprise\Bundle\EnrichBundle\Filter\JobInstanceEditRightFilter
+    pimee_enrich.filter.attribute_group_edit.class: PimEnterprise\Bundle\EnrichBundle\Filter\EntityWithPermissionsEditFilter
+    pimee_enrich.filter.job_instance_edit.class: PimEnterprise\Bundle\EnrichBundle\Filter\EntityWithPermissionsEditFilter
 
 services:
     pimee_enrich.filter.product_edit_data:
@@ -29,3 +31,17 @@ services:
             - '@oro_security.security_facade'
         tags:
             - { name: pim_catalog.filter.object, type: pim.internal_api.job_instance.edit }
+
+    pimee_enrich.filter.attribute_group_edit:
+        class: '%pimee_enrich.filter.attribute_group_edit.class%'
+        arguments:
+            - ['permissions']
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.attribute_group.edit }
+
+    pimee_enrich.filter.job_instance_edit:
+        class: '%pimee_enrich.filter.job_instance_edit.class%'
+        arguments:
+            - ['permissions']
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.job_instance.edit }
