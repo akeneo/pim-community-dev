@@ -84,6 +84,18 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
     }
 
     /**
+     * @jira https://akeneo.atlassian.net/browse/PIM-6872
+     */
+    public function testSorterWithNoDataOnSorterField()
+    {
+        $result = $this->executeSorter([['a_localizable_scopable_text_area', Directions::DESCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
+        $this->assertOrder($result, ['cat', 'cattle', 'dog', 'empty_product']);
+
+        $result = $this->executeSorter([['a_localizable_scopable_text_area', Directions::ASCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
+        $this->assertOrder($result, ['cat', 'cattle', 'dog', 'empty_product']);
+    }
+
+    /**
      * @expectedException \Pim\Component\Catalog\Exception\InvalidDirectionException
      * @expectedExceptionMessage Direction "A_BAD_DIRECTION" is not supported
      */
