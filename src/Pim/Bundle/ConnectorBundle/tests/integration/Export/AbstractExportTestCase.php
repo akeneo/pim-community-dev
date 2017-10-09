@@ -7,6 +7,7 @@ use Akeneo\Test\Integration\TestCase;
 use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -130,6 +131,21 @@ abstract class AbstractExportTestCase extends TestCase
         $this->get('pim_catalog.saver.attribute')->save($attribute);
 
         return $attribute;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return CategoryInterface
+     */
+    protected function createCategory(array $data = []) : CategoryInterface
+    {
+        $category = $this->get('pim_catalog.factory.category')->create();
+        $this->get('pim_catalog.updater.category')->update($category, $data);
+        $this->get('validator')->validate($category);
+        $this->get('pim_catalog.saver.category')->save($category);
+
+        return $category;
     }
 
     /**

@@ -184,6 +184,7 @@ pim_enrich:
             history: View product history
         product_model:
             edit_attributes: Edit attributes of a product model
+            categories_view: Consult the categories of a product model
         category:
             list: List categories
             create: Create a category

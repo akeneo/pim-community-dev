@@ -58,10 +58,14 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function () {
+            initialize: function (config) {
                 this.state = new Backbone.Model();
 
                 this.state.set('selectedCategories', []);
+
+                if (undefined !== config) {
+                    this.config = config.config;
+                }
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -105,7 +109,7 @@ define(
                     );
 
                     this.treeAssociate = new TreeAssociate('#trees', '#hidden-tree-input', {
-                        list_categories: 'pim_enrich_product_listcategories',
+                        list_categories: this.config.itemCategoryListRoute,
                         children:        'pim_enrich_categorytree_children'
                     });
 
@@ -142,7 +146,7 @@ define(
              */
             loadTrees: function () {
                 return $.getJSON(
-                    Routing.generate('pim_enrich_product_category_rest_list', { id: this.getFormData().meta.id })
+                    Routing.generate(this.config.itemCategoryTreeRoute, { id: this.getFormData().meta.id })
                 ).then(function (data) {
                     _.each(data.categories, function (category) {
                         this.cache[category.id] = category;
