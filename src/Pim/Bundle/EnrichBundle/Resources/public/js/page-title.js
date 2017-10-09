@@ -1,15 +1,22 @@
 'use strict';
 
 define(['pim-router', 'oro/translator'], function (router, __) {
-    var routeParams = {};
+    let routeParams = {};
+    let render = (name, params) => {
+        document.title = __('page_title.' + name, params);
+    };
 
-    router.on('route_complete', function (name) {
-        document.title = __('page_title.' + name, routeParams);
+    router.on('route_complete', (name) => {
+        render(name, routeParams);
     });
 
     return {
-        set: function (params) {
+        set: (params) => {
             routeParams = params;
+        },
+
+        render: (name, params) => {
+            render(name, params);
         }
     };
 });

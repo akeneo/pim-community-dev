@@ -1043,8 +1043,8 @@ page_title:
     pim_enrich_attribute_create:           Attributes | Create
     pim_enrich_attribute_edit:             Attributes {{ attribute.label }} | Edit
     pim_enrich_product_index:              Products
-    pim_enrich_product_edit:               Products {{ product.sku }} | Edit
-    pim_enrich_product_model_edit:         Product models {{ product.sku }} | Edit
+    pim_enrich_product_edit:               Products {{ product.label }} | Edit
+    pim_enrich_product_model_edit:         Product models {{ product.label }} | Edit
     pim_enrich_family_index:               Families
     pim_enrich_family_edit:                Families {{ family.label }} | Edit
     pim_enrich_channel_index:              Channels
