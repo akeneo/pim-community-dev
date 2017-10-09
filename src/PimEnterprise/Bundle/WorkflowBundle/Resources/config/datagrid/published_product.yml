@@ -51,15 +51,17 @@ datagrid:
                     - id
         actions:
             view:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--view
                 type:      navigate
                 label:     View the product
-                icon:      eye-open
                 link:      view_link
                 rowAction: true
             unpublish:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--unpublish
                 type:  ajax
                 label: Unpublish the product
-                icon:  cloud-download
                 link:  unpublish_link
         action_configuration: '@pimee_datagrid.datagrid.configuration.published_product.grid_helper->getActionConfigurationClosure'
         mass_actions_groups:
