@@ -163,7 +163,14 @@ services:
         class: '%pim_api.controller.product_model.class%'
         arguments:
             - '@pim_catalog.query.product_model_query_builder_factory'
+            - '@pim_catalog.query.product_model_query_builder_from_size_factory'
+            - '@pim_catalog.query.product_model_query_builder_search_after_size_factory'
             - '@pim_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.search_after_hal_paginator'
+            - '@pim_api.security.primary_key_encrypter'
+            - '%pim_api.configuration%'
 
     pim_api.controller.root_endpoint:
         class: '%pim_api.controller.root_endpoint.class%'
