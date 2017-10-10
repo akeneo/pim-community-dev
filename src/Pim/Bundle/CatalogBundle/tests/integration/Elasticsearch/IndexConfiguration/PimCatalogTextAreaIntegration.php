@@ -31,7 +31,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_2', 'product_5']);
+        $this->assertDocument($productsFound, ['product_2', 'product_5']);
     }
 
     public function testContainsOperator()
@@ -51,7 +51,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1']);
+        $this->assertDocument($productsFound, ['product_1']);
     }
 
     public function testDoesNotContainOperator()
@@ -74,7 +74,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_3', 'product_4', 'product_5']);
+        $this->assertDocument($productsFound, ['product_1', 'product_3', 'product_4', 'product_5']);
     }
 
     public function testEqualsOperator()
@@ -93,7 +93,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_3']);
+        $this->assertDocument($productsFound, ['product_3']);
     }
 
     public function testNotEqualsOperator()
@@ -115,7 +115,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_4', 'product_5']);
+        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_4', 'product_5']);
     }
 
     public function testEmptyOperator()
@@ -132,7 +132,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_6']);
+        $this->assertDocument($productsFound, ['product_6']);
     }
 
     public function testNotEmptyOperator()
@@ -149,7 +149,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_3', 'product_4', 'product_5']);
+        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_3', 'product_4', 'product_5']);
     }
 
     public function testSortAscending()
@@ -170,7 +170,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['product_4', 'product_5', 'product_2', 'product_1', 'product_3', 'product_6']
         );
@@ -194,7 +194,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['product_3', 'product_1', 'product_2', 'product_5', 'product_4', 'product_6']
         );
@@ -203,7 +203,7 @@ class PimCatalogTextAreaIntegration extends AbstractPimCatalogTestCase
     /**
      * {@inheritdoc}
      */
-    protected function addProducts()
+    protected function addDocuments()
     {
         $products = [
             [

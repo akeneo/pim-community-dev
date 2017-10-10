@@ -28,7 +28,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_2']);
+        $this->assertDocument($productsFound, ['product_1', 'product_2']);
 
         $query = [
             'query' => [
@@ -44,7 +44,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_3']);
+        $this->assertDocument($productsFound, ['product_3']);
     }
 
     public function testLowerOrEqualThanOperator()
@@ -63,7 +63,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_4']);
+        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_4']);
 
         $query = [
             'query' => [
@@ -79,7 +79,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_3', 'product_4']);
+        $this->assertDocument($productsFound, ['product_3', 'product_4']);
     }
 
     public function testEqualsOperator()
@@ -98,7 +98,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_4']);
+        $this->assertDocument($productsFound, ['product_4']);
     }
 
     public function testNotEqualsOperator()
@@ -122,7 +122,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['product_1', 'product_2', 'product_3', 'product_6']
         );
@@ -144,7 +144,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_3', 'product_4', 'product_6']);
+        $this->assertDocument($productsFound, ['product_3', 'product_4', 'product_6']);
 
         $query = [
             'query' => [
@@ -160,7 +160,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_4']);
+        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_4']);
     }
 
     public function testGreaterThanOperator()
@@ -179,7 +179,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_3', 'product_6']);
+        $this->assertDocument($productsFound, ['product_3', 'product_6']);
 
         $query = [
             'query' => [
@@ -195,7 +195,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_2']);
+        $this->assertDocument($productsFound, ['product_1', 'product_2']);
     }
 
     /**
@@ -217,7 +217,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_5']);
+        $this->assertDocument($productsFound, ['product_5']);
     }
 
     public function testEmptyForCurrencyOperator()
@@ -236,7 +236,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_5', 'product_7']);
+        $this->assertDocument($productsFound, ['product_5', 'product_7']);
 
         $query = [
             'query' => [
@@ -252,7 +252,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['product_1', 'product_2', 'product_3', 'product_4', 'product_5', 'product_6']
         );
@@ -277,7 +277,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['product_1', 'product_2', 'product_3', 'product_4', 'product_6', 'product_7']
         );
@@ -299,7 +299,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_3', 'product_4']);
+        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_3', 'product_4']);
 
         $query = [
             'query' => [
@@ -315,7 +315,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_7']);
+        $this->assertDocument($productsFound, ['product_7']);
     }
 
     /**
@@ -335,7 +335,7 @@ class PimCatalogPriceCollectionIntegration extends AbstractPimCatalogTestCase
      * In this precise case, some data might not be catched by our dynamic mapping, but ES is capable of casting them
      * and the queries are still working.
      */
-    protected function addProducts()
+    protected function addDocuments()
     {
         $products = [
             [

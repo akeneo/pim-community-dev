@@ -97,7 +97,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
     /**
      * {@inheritdoc}
      */
-    protected function addProducts()
+    protected function addDocuments()
     {
         $rootProductModels = [
             // simple tshirt

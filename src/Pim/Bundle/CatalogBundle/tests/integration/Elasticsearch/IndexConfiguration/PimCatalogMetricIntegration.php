@@ -28,7 +28,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_2', 'product_5', 'product_6']);
+        $this->assertDocument($productsFound, ['product_2', 'product_5', 'product_6']);
     }
 
     public function testLowerThanOperatorWithStringValue()
@@ -47,7 +47,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_2', 'product_5', 'product_6']);
+        $this->assertDocument($productsFound, ['product_2', 'product_5', 'product_6']);
     }
 
     public function testLowerThanOrEqualsOperatorWithNumberValue()
@@ -66,7 +66,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_5', 'product_6']);
+        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_5', 'product_6']);
     }
 
     public function testLowerThanOrEqualsOperatorWithStringValue()
@@ -85,7 +85,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_5', 'product_6']);
+        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_5', 'product_6']);
     }
 
     public function testEqualsOperatorWithNumberValue()
@@ -104,7 +104,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_3']);
+        $this->assertDocument($productsFound, ['product_3']);
     }
 
     public function testEqualsOperatorWithStringValue()
@@ -123,7 +123,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_3']);
+        $this->assertDocument($productsFound, ['product_3']);
     }
 
     public function testNotEqualsOperatorWithNumberValue()
@@ -147,7 +147,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['product_1', 'product_2', 'product_4', 'product_5', 'product_6']
         );
@@ -174,7 +174,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['product_1', 'product_2', 'product_4', 'product_5', 'product_6']
         );
@@ -196,7 +196,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_3', 'product_4']);
+        $this->assertDocument($productsFound, ['product_1', 'product_3', 'product_4']);
     }
 
     public function testGreaterThanOrEqualsOperatorWithStringValue()
@@ -215,7 +215,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_3', 'product_4']);
+        $this->assertDocument($productsFound, ['product_1', 'product_3', 'product_4']);
     }
 
     public function testGreaterThanOperatorWithNumberValue()
@@ -234,7 +234,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_3', 'product_4']);
+        $this->assertDocument($productsFound, ['product_3', 'product_4']);
     }
 
     public function testGreaterThanOperatorWithStringValue()
@@ -253,7 +253,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_3', 'product_4']);
+        $this->assertDocument($productsFound, ['product_3', 'product_4']);
     }
 
     public function testEmptyOperator()
@@ -272,7 +272,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_7']);
+        $this->assertDocument($productsFound, ['product_7']);
     }
 
     public function testNotEmptyOperator()
@@ -291,7 +291,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['product_1', 'product_2', 'product_3', 'product_4', 'product_5', 'product_6']
         );
@@ -315,7 +315,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['product_2', 'product_5', 'product_6', 'product_1', 'product_4', 'product_3', 'product_7']
         );
@@ -339,7 +339,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['product_3', 'product_4', 'product_1', 'product_6', 'product_5', 'product_2', 'product_7']
         );
@@ -361,7 +361,7 @@ class PimCatalogMetricIntegration extends AbstractPimCatalogTestCase
      * In this precise case, some data might not be catched by our dynamic mapping, but ES is capable of casting them
      * and the queries are still working.
      */
-    protected function addProducts()
+    protected function addDocuments()
     {
         $products = [
             [

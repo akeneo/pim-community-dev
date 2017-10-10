@@ -31,7 +31,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_2', 'product_5']);
+        $this->assertDocument($productsFound, ['product_2', 'product_5']);
     }
 
     public function testStartWithOperatorWithWhiteSpace()
@@ -52,7 +52,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1']);
+        $this->assertDocument($productsFound, ['product_1']);
     }
 
     public function testContainsOperator()
@@ -72,7 +72,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_3', 'product_6', 'product_7', 'product_8']);
+        $this->assertDocument($productsFound, ['product_3', 'product_6', 'product_7', 'product_8']);
     }
 
     public function testContainsOperatorWithWhiteSpace()
@@ -92,7 +92,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_3', 'product_6']);
+        $this->assertDocument($productsFound, ['product_3', 'product_6']);
     }
 
     public function testDoesNotContainOperator()
@@ -117,7 +117,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_5']);
+        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_5']);
     }
 
     public function testEqualsOperator()
@@ -136,7 +136,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_8']);
+        $this->assertDocument($productsFound, ['product_8']);
     }
 
     public function testNotEqualsOperator()
@@ -158,7 +158,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['product_1', 'product_2', 'product_3', 'product_5', 'product_6', 'product_7']
         );
@@ -178,7 +178,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_4']);
+        $this->assertDocument($productsFound, ['product_4']);
     }
 
     public function testNotEmptyOperator()
@@ -195,7 +195,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['product_1', 'product_2', 'product_3', 'product_5', 'product_6', 'product_7', 'product_8']
         );
@@ -219,7 +219,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['product_5', 'product_2', 'product_8', 'product_7', 'product_6', 'product_1', 'product_3', 'product_4']
         );
@@ -243,7 +243,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['product_3', 'product_1', 'product_6', 'product_7', 'product_8', 'product_2', 'product_5', 'product_4']
         );
@@ -252,7 +252,7 @@ class PimCatalogTextIntegration extends AbstractPimCatalogTestCase
     /**
      * {@inheritdoc}
      */
-    protected function addProducts()
+    protected function addDocuments()
     {
         $products = [
             [
