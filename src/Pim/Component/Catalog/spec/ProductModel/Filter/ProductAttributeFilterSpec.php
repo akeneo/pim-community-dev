@@ -1,45 +1,51 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Processor\Denormalization\AttributeFilter;
+namespace spec\Pim\Component\Catalog\ProductModel\Filter;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
-use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
-use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductAttributeFilter;
+use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
+use Pim\Component\Catalog\ProductModel\Filter\ProductAttributeFilter;
 use Prophecy\Argument;
 
 class ProductAttributeFilterSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $productModelRepository,
-        IdentifiableObjectRepositoryInterface $familyRepository
+        IdentifiableObjectRepositoryInterface $familyRepository,
+        IdentifiableObjectRepositoryInterface $productRepository
     ) {
-        $this->beConstructedWith($productModelRepository, $familyRepository);
+        $this->beConstructedWith($productModelRepository, $familyRepository, $productRepository);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProductAttributeFilter::class);
+        $this->shouldHaveType(\Pim\Component\Catalog\ProductModel\Filter\ProductAttributeFilter::class);
     }
 
     function it_is_an_attribute_filter()
     {
-        $this->shouldImplement(AttributeFilterInterface::class);
+        $this->shouldImplement(\Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface::class);
     }
 
     function it_filters_the_attributes_that_does_not_belong_the_family(
         $familyRepository,
+        $productRepository,
         FamilyInterface $family,
+        ProductInterface $product,
         Collection $attribute
     ) {
         $familyRepository->findOneByIdentifier('Summer Tshirt')->willReturn($family);
         $family->getAttributes()->willReturn($attribute);
         $attribute->exists(Argument::any())->shouldBeCalledTimes(3);
+
+        $productRepository->findOneByIdentifier('tshirt')->willReturn($product);
 
         $this->filter(
             [
@@ -74,7 +80,9 @@ class ProductAttributeFilterSpec extends ObjectBehavior
 
     function it_filters_the_attributes_that_does_not_belong_to_a_family_variant(
         $productModelRepository,
+        $productRepository,
         ProductModelInterface $productModel,
+        ProductInterface $product,
         FamilyVariantInterface $familyVariant,
         VariantAttributeSetInterface $variantAttributeSet,
         Collection $attribute
@@ -82,6 +90,8 @@ class ProductAttributeFilterSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier('parent-code')->willReturn($productModel);
         $productModel->getFamilyVariant()->willreturn($familyVariant);
         $productModel->getVariationLevel()->willreturn(1);
+
+        $productRepository->findOneByIdentifier('tshirt')->willReturn($product);
 
         $familyVariant->getVariantAttributeSet(2)->willReturn($variantAttributeSet);
         $variantAttributeSet->getAttributes()->willReturn($attribute);

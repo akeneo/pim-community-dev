@@ -17,6 +17,9 @@ class ImmutableVariantAxesValues extends Constraint
 {
     public const UPDATED_VARIANT_AXIS_VALUE = 'pim_catalog.constraint.modified_variant_axis_value';
 
+    /** @var string */
+    public $propertyPath = 'attribute';
+
     /**
      * {@inheritdoc}
      */

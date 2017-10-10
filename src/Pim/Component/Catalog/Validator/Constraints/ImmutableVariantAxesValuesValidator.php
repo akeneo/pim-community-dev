@@ -74,13 +74,16 @@ class ImmutableVariantAxesValuesValidator extends ConstraintValidator
             $originalValue = $originalValues->getByCodes($code);
             $newValue = $entity->getValue($code);
             if (null !== $originalValue && !$originalValue->isEqual($newValue)) {
+                if (is_bool($newValue->getData())) {
+                    $newValue = $newValue ? 'true' : 'false';
+                }
                 $this->context->buildViolation(
                     ImmutableVariantAxesValues::UPDATED_VARIANT_AXIS_VALUE,
                     [
                         '%variant_axis%' => $code,
                         '%provided_value%' => (string) $newValue,
                     ]
-                )->addViolation();
+                )->atPath($constraint->propertyPath)->addViolation();
             }
         }
     }
