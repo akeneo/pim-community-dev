@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 
 /**
  * Filter data according to attributes defined on the family (for the products)
@@ -53,7 +54,7 @@ class ProductAttributeFilter implements AttributeFilterInterface
     public function filter(array $standardProduct): array
     {
         if (!array_key_exists('identifier', $standardProduct)) {
-            throw new \InvalidArgumentException('Missing identifier key');
+            throw new MissingOptionsException('The "identifier" key is missing');
         }
 
         $product = $this->productRepository->findOneByIdentifier($standardProduct['identifier']);

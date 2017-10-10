@@ -319,9 +319,9 @@ class ProductController
             $this->validateCodeConsistency($code, $data);
 
             if (isset($data['parent'])) {
-                $product = $this->variantProductBuilder->createProduct($data['identifier']);
+                $product = $this->variantProductBuilder->createProduct($code);
             } else {
-                $product = $this->productBuilder->createProduct();
+                $product = $this->productBuilder->createProduct($code);
             }
         }
 
