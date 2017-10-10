@@ -76,4 +76,16 @@ class LocalizableSorterIntegration extends AbstractProductQueryBuilderTestCase
     {
         $this->executeSorter([['a_localizable_yes_no', 'A_BAD_DIRECTION', ['locale' => 'fr_FR']]]);
     }
+
+    /**
+     * @jira https://akeneo.atlassian.net/browse/PIM-6872
+     */
+    public function testSorterWithNoDataOnSorterField()
+    {
+        $result = $this->executeSorter([['a_localizable_yes_no', Directions::DESCENDING, ['locale' => 'de_DE']]]);
+        $this->assertOrder($result, ['product_one', 'product_two', 'empty_product']);
+
+        $result = $this->executeSorter([['a_localizable_yes_no', Directions::ASCENDING, ['locale' => 'de_DE']]]);
+        $this->assertOrder($result, ['product_one', 'product_two', 'empty_product']);
+    }
 }

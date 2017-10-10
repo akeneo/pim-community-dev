@@ -3,10 +3,8 @@
 ## Tech improvements
 
 - TIP-808: Add version strategy for js and css assets
-
-## Better manage products with variants!
-
-- PIM-6343: Classify product models via the edit form
+- PRE_SAVE and POST_SAVE events dispatched by instances of BaseSaver now include an "is_new" argument indicating if entities are being inserted or updated.
+- API-395: Get list of product models via API
 
 ## Bug Fixes
 
@@ -14,19 +12,27 @@
 - PIM-6876: Escape u001f character to workaround a mysql bug
 - TIP-810: Add Symfony command to reset the ES indexes
 - TIP-809: Prevents ES from using the scoring system and bypass the max_clause_count limit.
+- PIM-6872: Fix PQB sorters with Elasticsearch
+- PIM-6859: Fix missing attribute values in PDF
 
 ## Better UI\UX!
 
 - PIM-6584: Update main menu order
+- API-398: As Mary, I want to only see my launched exports/imports
+- API-397: As Mary, I want to only see my launched jobs in the dashboard
+- API-389: As Mary, I want to only see my launched jobs in the process tracker
 
 ## Better manage products with variants!
 
+- PIM-6343: Classify product models via the edit form
+- PIM-6346: Add history on product model edit page
 - PIM-6863: Hide "Variant" meta in non variant products
 
 ## BC breaks
 
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController` to add dependencies to `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add dependencies to `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template 
-
 
 # 2.0.1 (2017-10-05)
 

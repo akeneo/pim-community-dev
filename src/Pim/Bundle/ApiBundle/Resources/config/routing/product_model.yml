@@ -1,3 +1,8 @@
+pim_api_product_model_list:
+    path: /product-models
+    defaults: { _controller: pim_api.controller.product_model:listAction, _format: json }
+    methods: [GET]
+
 pim_api_product_model_get:
     path: /product-models/{code}
     defaults: { _controller: pim_api.controller.product_model:getAction, _format: json }

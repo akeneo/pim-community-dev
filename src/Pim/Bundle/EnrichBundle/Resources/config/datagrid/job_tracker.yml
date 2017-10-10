@@ -12,8 +12,6 @@ datagrid:
             type:
                 label: Type
                 type:  job_type
-            user:
-                label: User
             started_at:
                 label: job_tracker.filter.started_at
                 data_name: startTime
@@ -43,8 +41,6 @@ datagrid:
                     data_name: jobLabel
                 type:
                     data_name: type
-                user:
-                    data_name: user
                 started_at:
                     data_name: startTime
                 status:
@@ -63,10 +59,6 @@ datagrid:
                     type:      string
                     label:     Type
                     data_name: j.type
-                user:
-                    type:      string
-                    label:     User
-                    data_name: e.user
                 status:
                     type:             choice
                     data_name:        status

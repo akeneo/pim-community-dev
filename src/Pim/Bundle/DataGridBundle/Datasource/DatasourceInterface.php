@@ -18,7 +18,7 @@ interface DatasourceInterface extends OroDatasourceInterface
     /**
      * Get the query builder
      *
-     * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
+     * @return \Doctrine\ORM\QueryBuilder
      *
      * @deprecated you should avoid this method, it's a design flaw, still used by,
      *  `Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher`,

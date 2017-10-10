@@ -155,6 +155,11 @@ config:
                     options:
                         urls:
                             list: pim_enrich_mass_edit_action_sequential_edit_get
+                product-model-history:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: pim_enrich_product_model_history_rest_get
                 product-history:
                     module: pim/base-fetcher
                     options:
@@ -687,6 +692,7 @@ config:
         pim/product-model-edit-form/product-model-label: pimenrich/js/product-model/form/product-model-label
         pim/product-model-edit-form/save: pimenrich/js/product-model/form/save
         pim/product-model-edit-form/complete-variant-product: pimenrich/js/product-model/form/complete-variant-product
+        pim/product-model-edit-form/history: pimenrich/js/product/form/history
 
         # Attribute group
         pim/attribute-group-form/tab/attribute: pimenrich/js/attribute-group/form/tab/attribute
@@ -1126,6 +1132,7 @@ config:
 
         # Product model
         pim/template/product-model/complete-variant-product: pimenrich/templates/product_model/complete-variant-product.html
+        pim/template/product-model/history:                  pimenrich/templates/product/history.html
 
         # Order last
         pim/form: pimenrich/js/product/form

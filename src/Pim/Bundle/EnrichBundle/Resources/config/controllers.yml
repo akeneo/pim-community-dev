@@ -215,6 +215,8 @@ services:
             - '@pim_catalog.saver.attribute'
             - '@oro_security.security_facade'
             - '@pim_catalog.factory.attribute_group'
+            - '@event_dispatcher'
+            - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.rest.category:
         class: '%pim_enrich.controller.rest.category.class%'
@@ -415,6 +417,8 @@ services:
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.normalizer.violation'
             - '@akeneo_batch.job_instance_factory'
+            - '@event_dispatcher'
+            - '@pim_catalog.filter.chained'
             - '%upload_tmp_dir%'
 
     pim_enrich.controller.rest.job_execution:
