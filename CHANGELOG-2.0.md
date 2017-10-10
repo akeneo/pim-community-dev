@@ -22,6 +22,7 @@
 - API-397: As Mary, I want to only see my launched jobs in the dashboard
 - API-389: As Mary, I want to only see my launched jobs in the process tracker
 - PIM-6881: Fix common attributes design
+- PIM-6895: Improve performances on products datagrid
 
 ## Better manage products with variants!
 
@@ -43,6 +44,7 @@
 - Rename service `pim_catalog.validator.constraint.sibling_unique_variant_axes` into `pim_catalog.validator.constraint.unique_variant_axes`
 - Rename class parameter `pim_catalog.validator.constraint.sibling_unique_variant_axes.class` into `pim_catalog.validator.constraint.unique_variant_axes.class`
 - Replace the class parameter of the service `pim_catalog.repository.variant_product` with `pim_catalog.repository.variant_product.class`
+- Add method `getCodesIfExist` to `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
 
 # 2.0.1 (2017-10-05)
 
