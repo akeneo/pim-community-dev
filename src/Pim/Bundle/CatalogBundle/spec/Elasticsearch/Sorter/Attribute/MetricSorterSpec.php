@@ -39,7 +39,8 @@ class MetricSorterSpec extends ObjectBehavior
         $sqb->addSort([
             'values.a_metric-metric.<all_channels>.<all_locales>.base_data' => [
                 'order' => 'ASC',
-                'missing' => '_last'
+                'missing' => '_last',
+                'unmapped_type' => 'long'
             ]
         ])->shouldBeCalled();
 
@@ -62,7 +63,8 @@ class MetricSorterSpec extends ObjectBehavior
         $sqb->addSort([
             'values.a_metric-metric.ecommerce.fr_FR.base_data' => [
                 'order' => 'ASC',
-                'missing' => '_last'
+                'missing' => '_last',
+                'unmapped_type' => 'long'
             ]
         ])->shouldBeCalled();
 
@@ -84,7 +86,8 @@ class MetricSorterSpec extends ObjectBehavior
         $sqb->addSort([
             'values.a_metric-metric.ecommerce.fr_FR.base_data' => [
                 'order' => 'DESC',
-                'missing' => '_last'
+                'missing' => '_last',
+                'unmapped_type' => 'long'
             ]
         ])->shouldBeCalled();
 

@@ -38,7 +38,8 @@ class TextAreaSorterSpec extends ObjectBehavior
         $sqb->addSort([
             'values.a_text_area-textarea.<all_channels>.<all_locales>.preprocessed' => [
                 'order' => 'ASC',
-                'missing' => '_last'
+                'missing' => '_last',
+                'unmapped_type' => 'long'
             ]
         ])->shouldBeCalled();
 
@@ -56,7 +57,8 @@ class TextAreaSorterSpec extends ObjectBehavior
         $sqb->addSort([
             'values.a_text_area-textarea.ecommerce.fr_FR.preprocessed' => [
                 'order' => 'ASC',
-                'missing' => '_last'
+                'missing' => '_last',
+                'unmapped_type' => 'long'
             ]
         ])->shouldBeCalled();
 
@@ -74,7 +76,8 @@ class TextAreaSorterSpec extends ObjectBehavior
         $sqb->addSort([
             'values.a_text_area-textarea.ecommerce.fr_FR.preprocessed' => [
                 'order' => 'DESC',
-                'missing' => '_last'
+                'missing' => '_last',
+                'unmapped_type' => 'long'
             ]
         ])->shouldBeCalled();
 

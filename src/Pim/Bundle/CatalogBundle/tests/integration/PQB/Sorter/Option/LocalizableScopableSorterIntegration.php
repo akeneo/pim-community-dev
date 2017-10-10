@@ -116,4 +116,16 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
             ],
         ]);
     }
+
+    /**
+     * @jira https://akeneo.atlassian.net/browse/PIM-6872
+     */
+    public function testSorterWithNoDataOnSorterField()
+    {
+        $result = $this->executeSorter([['a_localizable_scopable_simple_select', Directions::DESCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
+        $this->assertOrder($result, ['product_one', 'product_two', 'empty_product']);
+
+        $result = $this->executeSorter([['a_localizable_scopable_simple_select', Directions::ASCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
+        $this->assertOrder($result, ['product_one', 'product_two', 'empty_product']);
+    }
 }

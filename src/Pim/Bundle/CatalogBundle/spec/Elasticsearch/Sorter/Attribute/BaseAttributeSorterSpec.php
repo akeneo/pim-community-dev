@@ -39,7 +39,8 @@ class BaseAttributeSorterSpec extends ObjectBehavior
         $sqb->addSort([
             'values.a_custom_attribute-backend_type.<all_channels>.<all_locales>' => [
                 'order' => 'ASC',
-                'missing' => '_last'
+                'missing' => '_last',
+                'unmapped_type' => 'long'
             ]
         ])->shouldBeCalled();
 
@@ -62,7 +63,8 @@ class BaseAttributeSorterSpec extends ObjectBehavior
         $sqb->addSort([
             'values.a_custom_attribute-backend_type.ecommerce.fr_FR' => [
                 'order' => 'ASC',
-                'missing' => '_last'
+                'missing' => '_last',
+                'unmapped_type' => 'long'
             ]
         ])->shouldBeCalled();
 
@@ -84,7 +86,8 @@ class BaseAttributeSorterSpec extends ObjectBehavior
         $sqb->addSort([
             'values.a_custom_attribute-backend_type.ecommerce.fr_FR' => [
                 'order' => 'DESC',
-                'missing' => '_last'
+                'missing' => '_last',
+                'unmapped_type' => 'long'
             ]
         ])->shouldBeCalled();
 
