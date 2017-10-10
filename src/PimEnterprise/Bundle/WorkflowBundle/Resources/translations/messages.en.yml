@@ -115,10 +115,10 @@ pim_menu:
 pim_title:
     published_product:
         index: Published products
-        view: Published products %product.sku% | View
+        view: Published product %product.label% | View
     product:
-        dispatch: "Products %product.sku%"
-        show: "Products %product.sku% | Show"
+        dispatch: "Product %product.label%"
+        show: "Product %product.label% | Show"
     proposal:
         index: Proposals
 
