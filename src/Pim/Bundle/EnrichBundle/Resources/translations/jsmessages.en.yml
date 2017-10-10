@@ -1044,7 +1044,7 @@ page_title:
     pim_enrich_attribute_edit:             Attribute {{ attribute.label }} | Edit
     pim_enrich_product_index:              Products
     pim_enrich_product_edit:               Product {{ product.label }} | Edit
-    pim_enrich_product_model_edit:         Product models {{ product.label }} | Edit
+    pim_enrich_product_model_edit:         Product model {{ product.label }} | Edit
     pim_enrich_family_index:               Families
     pim_enrich_family_edit:                Family {{ family.label }} | Edit
     pim_enrich_channel_index:              Channels
@@ -1064,7 +1064,7 @@ page_title:
     pim_enrich_job_tracker_index:          Process tracker
     pim_enrich_job_tracker_show:           Process tracker | Show job
     pim_enrich_api_connection_index:       API connections
-    pim_enrich_api_connection_create:      API connection | Create
+    pim_enrich_api_connection_create:      API connections | Create
     pim_analytics_system_info_index:       System information
 
 # Batch job labels

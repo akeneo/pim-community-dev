@@ -11,7 +11,7 @@ Feature: Navigate to product model and product edit pages
     And I show the filter "color"
     And I filter by "color" with operator "in list" and value "Crimson red"
     When I click on the "tshirt-unique-size-crimson-red" row
-    Then I should see the title "Products tshirt-unique-size-crimson-red | Edit"
+    Then I should see the title "Product tshirt-unique-size-crimson-red | Edit"
     When I am on the products page
     And I click on the "model-tshirt-divided-crimson-red" row
-    Then I should see the title "Product models Divided crimson red | Edit"
+    Then I should see the title "Product model Divided crimson red | Edit"

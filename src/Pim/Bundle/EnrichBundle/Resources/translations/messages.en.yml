@@ -622,7 +622,7 @@ pim_title.attribute:
 
 pim_title.product:
     index: "Products"
-    edit: "Products %product.sku% | Edit"
+    edit: "Products %product.label% | Edit"
 
 pim_title.family:
     index: "Families"
