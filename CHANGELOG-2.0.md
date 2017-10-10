@@ -10,6 +10,10 @@
 - PIM-6891: Keep the tab context between product and product model forms
 - PIM-6918: Fix error when deleteing boolean attribute linked to a published product
 
+## Better manage products with variants!
+
+- API-381: Create family variant via API.
+
 ## Better UI\UX!
 
 - PIM-6667: Update loading mask design

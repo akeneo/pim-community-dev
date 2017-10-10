@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Pim\Bundle\ApiBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
-use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -211,18 +210,8 @@ class FamilyVariantController
     {
         $data = $this->getDecodedContent($request->getContent());
 
-        if (isset($data['family'])) {
-            $exception = UnknownPropertyException::unknownProperty('family');
-            throw new DocumentedHttpException(
-                Documentation::URL . 'post_families_variant',
-                sprintf('%s Check the standard format documentation.', $exception->getMessage()),
-                $exception
-            );
-        }
-        $data['family'] = $familyCode;
-
         $familyVariant = $this->factory->create();
-        $this->updateFamilyVariant($familyVariant, $data, 'post_families_variant');
+        $this->updateFamilyVariant($familyVariant, $data, $familyCode, 'post_families__family_code__variants');
         $this->validateFamilyVariant($familyVariant);
 
         $this->saver->save($familyVariant);
@@ -258,14 +247,19 @@ class FamilyVariantController
      *
      * @param FamilyVariantInterface $familyVariant family variant to update
      * @param array                  $data          data of the request already decoded, it should be the standard format
+     * @param string                 $familyCode
      * @param string                 $anchor
      *
      * @throws DocumentedHttpException
      */
-    protected function updateFamilyVariant(FamilyVariantInterface $familyVariant, array $data, $anchor): void
-    {
+    protected function updateFamilyVariant(
+        FamilyVariantInterface $familyVariant,
+        array $data,
+        $familyCode,
+        $anchor
+    ): void {
         try {
-            $this->updater->update($familyVariant, $data);
+            $this->updater->update($familyVariant, $data, ['familyCode' => $familyCode]);
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . $anchor,
@@ -290,7 +284,6 @@ class FamilyVariantController
             throw new ViolationHttpException($violations);
         }
     }
-
 
     /**
      * Get the JSON decoded content. If the content is not a valid JSON, it throws an error 400.

@@ -51,7 +51,7 @@ JSON;
                 [
                     'level'      => 2,
                     'axes'       => ['a_yes_no'],
-                    'attributes' => ['a_yes_no'],
+                    'attributes' => ['a_yes_no', 'sku'],
                 ],
             ],
         ];
@@ -70,16 +70,17 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data = '';
-
-        $expectedContent = [
-            'code'    => 400,
-            'message' => 'Invalid json message received',
-        ];
+        $expectedContent = <<<JSON
+{
+    "code": 400,
+    "message": "Invalid json message received"
+}
+JSON;
 
         $client->request('POST', 'api/rest/v1/families/familyA/variants', [], [], [], $data);
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
     public function testResponseWhenContentIsNotValid()
@@ -87,16 +88,14 @@ JSON;
         $client = $this->createAuthenticatedClient();
 
         $data = '{';
-
-        $expectedContent = [
-            'code'    => 400,
-            'message' => 'Invalid json message received',
-        ];
+        $expectedContent = <<<JSON
+{"code":400,"message":"Invalid json message received"}
+JSON;
 
         $client->request('POST', 'api/rest/v1/families/familyA/variants', [], [], [], $data);
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertSame($expectedContent, $response->getContent());
     }
 
     public function testResponseWhenValidationFailed()
@@ -122,10 +121,39 @@ JSON;
     "message": "Validation failed.",
     "errors": [
         {
-            "property":"variant_attribute_sets",
+            "property":"",
             "message":"There is no variant attribute set for level \"1\""
         }
     ]
+}
+JSON;
+
+        $client->request('POST', 'api/rest/v1/families/familyA/variants', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+    }
+
+    public function testResponseWhenAttributeSetIsNotAnArray()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data = <<<JSON
+{
+    "code": "new_family_variant",
+    "variant_attribute_sets": ["yo"]
+}
+JSON;
+
+        $expectedContent = <<<JSON
+{
+	"code": 422,
+	"message": "Property \"variant_attribute_sets\" expects an array as data, \"string\" given. Check the standard format documentation.",
+	"_links": {
+		"documentation": {
+			"href": "http://api.akeneo.com/api-reference.html#post_families__family_code__variants"
+		}
+	}
 }
 JSON;
 
@@ -164,7 +192,7 @@ JSON;
     "message": "Property \"family\" does not exist. Check the standard format documentation.",
     "_links": {
         "documentation": {
-            "href": "http://api.akeneo.com/api-reference.html#post_families_variant"
+            "href": "http://api.akeneo.com/api-reference.html#post_families__family_code__variants"
         }
     }
 }
