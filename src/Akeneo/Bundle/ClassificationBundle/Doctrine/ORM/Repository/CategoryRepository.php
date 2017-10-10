@@ -387,6 +387,26 @@ class CategoryRepository extends NestedTreeRepository implements
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getCodesIfExist(array $codes = []): array
+    {
+        $categoryCodes = $this->createQueryBuilder('c')
+            ->select('c.code')
+            ->where('c.code IN (:codes)')
+            ->setParameter('codes', $codes)
+            ->getQuery()
+            ->getScalarResult();
+
+        $result = [];
+        foreach ($categoryCodes as $categoryCode) {
+            $result[] = $categoryCode['code'];
+        }
+
+        return $result;
+    }
+
+    /**
      * Shortcut to get all children query builder
      *
      * @param CategoryInterface $category    the requested node
