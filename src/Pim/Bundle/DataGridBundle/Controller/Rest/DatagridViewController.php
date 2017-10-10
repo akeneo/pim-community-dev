@@ -246,7 +246,7 @@ class DatagridViewController
      */
     public function defaultViewColumnsAction($alias)
     {
-        $columns = array_keys($this->datagridViewManager->getColumnChoices($alias, true));
+        $columns = $this->datagridViewManager->getDefaultColumns($alias);
 
         return new JsonResponse($columns);
     }
