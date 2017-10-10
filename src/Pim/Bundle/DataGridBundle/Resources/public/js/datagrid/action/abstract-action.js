@@ -1,7 +1,7 @@
  /* global define */
 define(['jquery', 'underscore', 'backbone', 'routing', 'pim/router', 'oro/translator', 'oro/mediator',
-    'oro/messenger', 'oro/error', 'oro/modal', 'oro/datagrid/action-launcher', 'require-context'],
-function($, _, Backbone, routing, router, __, mediator, messenger, error, Modal, ActionLauncher, requireContext) {
+    'oro/messenger', 'oro/error', 'pim/dialog', 'oro/datagrid/action-launcher', 'require-context'],
+function($, _, Backbone, routing, router, __, mediator, messenger, error, Dialog, ActionLauncher, requireContext) {
     'use strict';
 
     /**
@@ -156,7 +156,7 @@ function($, _, Backbone, routing, router, __, mediator, messenger, error, Modal,
 
         _confirmationExecutor: function(callback) {
             if (this.confirmation) {
-                this.getConfirmDialog(callback).open();
+                this.getConfirmDialog(callback);
             } else {
                 callback();
             }
@@ -277,11 +277,23 @@ function($, _, Backbone, routing, router, __, mediator, messenger, error, Modal,
          * @return {oro.Modal}
          */
         getConfirmDialog: function(callback) {
-            return new Modal({
-                title: this.messages.confirm_title,
-                content: this.messages.confirm_content,
-                okText: this.messages.confirm_ok
-            }).on('ok', callback);
+            return Dialog.confirm(
+              this.messages.confirm_content,
+              this.messages.confirm_title,
+              callback,
+              this.getEntityHint(true)
+            );
+        },
+
+        // @TODO rewrite
+        getEntityHint: function(plural)
+            const entityHint = this.datagrid && this.datagrid.entityHint ? this.datagrid.entityHint : 'item';
+
+            if (plural) {
+                return `${entityHint}s`.split('_').join(' ');
+            }
+
+            return entityHint.split(' ').join('_');
         }
     });
 });

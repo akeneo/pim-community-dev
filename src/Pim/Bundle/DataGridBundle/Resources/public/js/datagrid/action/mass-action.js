@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/datagrid/abstract-action', 'pim/template/grid/mass-actions-confirm'],
-function(_, messenger, __, Modal, AbstractAction, confirmModalTemplate) {
+define(['underscore', 'oro/messenger', 'oro/translator', 'pim/dialog', 'oro/datagrid/abstract-action'],
+function(_, messenger, __, Dialog, AbstractAction) {
     'use strict';
 
     /**
@@ -11,8 +11,6 @@ function(_, messenger, __, Modal, AbstractAction, confirmModalTemplate) {
      * @extends oro.datagrid.AbstractAction
      */
     return AbstractAction.extend({
-        confirmModalTemplate: _.template(confirmModalTemplate),
-
         /** @property {Object} */
         defaultMessages: {
             confirm_title: __('Mass Action Confirmation'),
@@ -162,18 +160,14 @@ function(_, messenger, __, Modal, AbstractAction, confirmModalTemplate) {
          * @return {oro.Modal}
          */
         getConfirmDialog: function(callback) {
-            const modal = new Modal({
-                type: this.messages.confirm_type,
-                title: this.messages.confirm_title,
-                content: this.messages.confirm_content,
-                buttonClass: `${this.className} ok`,
-                okText: this.messages.confirm_ok,
-                template: this.confirmModalTemplate
-            }).on('ok', callback);
-
-            modal.$el.addClass('modal--fullPage');
-
-            return modal;
+            return Dialog.confirm(
+              this.messages.confirm_content,
+              this.messages.confirm_title,
+              callback,
+              this.getEntityHint(true),
+              `${this.className} ok`,
+              this.messages.confirm_ok
+            );
         }
     });
 });

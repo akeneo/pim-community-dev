@@ -100,16 +100,6 @@ define([
                     });
                 }
                 return this.errorModal;
-            },
-
-            getEntityHint: function(plural) {
-                const entityHint = this.datagrid && this.datagrid.entityHint ? this.datagrid.entityHint : 'item';
-
-                if (plural) {
-                    return `${entityHint}s`.split('_').join(' ');
-                }
-
-                return entityHint.split(' ').join('_');
             }
         });
     }
