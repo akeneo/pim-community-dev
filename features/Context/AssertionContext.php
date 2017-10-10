@@ -348,12 +348,6 @@ class AssertionContext extends PimContext
                 return $block->find('css', sprintf('.entity-version[data-version="%d"]', $expectedVersion));
             }, sprintf('Cannot find the version "%s"', $expectedVersion));
 
-            if (!$row->hasClass('AknGrid-bodyRow--expanded')) {
-                $this->spin(function () use ($row) {
-                    return $row->find('css', '.version-expander');
-                }, sprintf('Can not find the expand button of version "%s"', json_encode($data)))->click();
-            }
-
             if (array_key_exists('author', $data)) {
                 $expectedAuthor = $data['author'];
                 $author = $row->find('css', '[data-column="author"]')->getText();
@@ -367,6 +361,12 @@ class AssertionContext extends PimContext
                         $author
                     )
                 );
+            }
+
+            if (!$row->hasClass('AknGrid-bodyRow--expanded')) {
+                $this->spin(function () use ($row) {
+                    return $row->find('css', '.version-expander');
+                }, sprintf('Can not find the expand button of version "%s"', json_encode($data)))->click();
             }
 
             $changesetRow = $this->spin(function () use ($block, $expectedVersion) {
