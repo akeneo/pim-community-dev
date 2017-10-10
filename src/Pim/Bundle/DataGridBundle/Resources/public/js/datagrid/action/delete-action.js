@@ -76,8 +76,10 @@ define([
              * @return {oro.Modal}
              */
             getConfirmDialog: function() {
+                const entityType = this.getEntityHint().split(' ').join('_');
+
                 this.confirmModal = Dialog.confirmDelete(
-                    __(`confirmation.remove.${this.getEntityHint()}`),
+                    __(`confirmation.remove.${entityType}`),
                     __('pim_enrich.confirmation.delete_item'),
                     this.doDelete.bind(this),
                     this.getEntityHint(true)

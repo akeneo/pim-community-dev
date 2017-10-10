@@ -285,15 +285,24 @@ function($, _, Backbone, routing, router, __, mediator, messenger, error, Dialog
             );
         },
 
-        // @TODO rewrite
-        getEntityHint: function(plural)
-            const entityHint = this.datagrid && this.datagrid.entityHint ? this.datagrid.entityHint : 'item';
-
-            if (plural) {
-                return `${entityHint}s`.split('_').join(' ');
+        // Move elsewhere
+        pluralizeEntityHint: function(entityHint) {
+            if (entityHint.endsWith('y')) {
+                return entityHint.replace('y', 'ies')
             }
 
-            return entityHint.split(' ').join('_');
+            return `${entityHint}s`;
+        },
+
+        getEntityHint: function(plural) {
+            const datagrid = this.datagrid || {};
+            const entityHint = datagrid.entityHint || 'item';
+
+            if (plural) {
+                return this.pluralizeEntityHint(entityHint);
+            }
+
+            return entityHint;
         }
     });
 });

@@ -1330,6 +1330,7 @@ pim_menu:
         group_type: Group types
         locale: Locales
         product: Products
+        published_product: Published Products
         export_history: Exports history
         export_profile: Export profiles
         import_history: Imports history
