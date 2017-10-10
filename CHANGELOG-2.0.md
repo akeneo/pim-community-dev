@@ -21,6 +21,7 @@
 - API-398: As Mary, I want to only see my launched exports/imports
 - API-397: As Mary, I want to only see my launched jobs in the dashboard
 - API-389: As Mary, I want to only see my launched jobs in the process tracker
+- PIM-6881: Fix common attributes design
 
 ## Better manage products with variants!
 
