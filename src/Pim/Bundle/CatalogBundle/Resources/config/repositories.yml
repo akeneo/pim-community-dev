@@ -21,6 +21,7 @@ parameters:
     pim_catalog.repository.product_category.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductCategoryRepository
     pim_catalog.repository.product_model_category.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductModelCategoryRepository
     pim_catalog.repository.entity_with_family_variant.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithFamilyVariantRepository
+    pim_catalog.repository.variant_product.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\VariantProductRepository
 
 services:
     # Base repositories
@@ -177,7 +178,7 @@ services:
             - { name: 'pim_repository' }
 
     pim_catalog.repository.variant_product:
-        class: '%pim_catalog.repository.product.class%'
+        class: '%pim_catalog.repository.variant_product.class%'
         factory: 'doctrine.orm.entity_manager:getRepository'
         arguments: ['%pim_catalog.entity.variant_product.class%']
         calls:
@@ -226,3 +227,4 @@ services:
         class: '%pim_catalog.repository.entity_with_family_variant.class%'
         arguments:
             - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.variant_product'

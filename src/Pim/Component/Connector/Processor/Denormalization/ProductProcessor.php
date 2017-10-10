@@ -204,8 +204,12 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      *
      * @return ProductInterface
      */
-    protected function findOrCreateProduct(string $identifier, ?string $familyCode, array $item, string $parentCode): ProductInterface
-    {
+    protected function findOrCreateProduct(
+        string $identifier,
+        ?string $familyCode,
+        array $item,
+        string $parentCode
+    ): ProductInterface {
         try {
             $product = $this->repository->findOneByIdentifier($identifier);
             if (null === $product && '' !== $parentCode) {
