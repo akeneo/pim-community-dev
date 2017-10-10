@@ -7,7 +7,6 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
-use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 
 /**
  * Filter data according to attributes defined on the family (for the products)

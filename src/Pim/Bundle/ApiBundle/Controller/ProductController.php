@@ -767,7 +767,7 @@ class ProductController
     /**
      * This method order the data by setting the parent field first. It comes from the ParentFieldSetter that sets the
      * family from the parent if the product family is null. By doing this the validator does not fail if the family
-     * field has been set to nul from the API. So to prevent this we order the parent before the family field. this way
+     * field has been set to null from the API. So to prevent this we order the parent before the family field. this way
      * the field family will be updated to null if the data sent from the API for the family field is null.
      *
      * Example:

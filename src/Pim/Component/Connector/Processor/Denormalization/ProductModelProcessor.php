@@ -56,14 +56,14 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
     private $importType;
 
     /**
-     * @param SimpleFactoryInterface                                              $productModelFactory
-     * @param ObjectUpdaterInterface                                              $productModelUpdater
-     * @param IdentifiableObjectRepositoryInterface                               $productModelRepository
-     * @param ValidatorInterface                                                  $validator
-     * @param FilterInterface                                                     $productModelFilter
-     * @param ObjectDetacherInterface                                             $objectDetacher
-     * @param \Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface $productModelAttributeFilter
-     * @param string                                                              $importType
+     * @param SimpleFactoryInterface                $productModelFactory
+     * @param ObjectUpdaterInterface                $productModelUpdater
+     * @param IdentifiableObjectRepositoryInterface $productModelRepository
+     * @param ValidatorInterface                    $validator
+     * @param FilterInterface                       $productModelFilter
+     * @param ObjectDetacherInterface               $objectDetacher
+     * @param AttributeFilterInterface              $productModelAttributeFilter
+     * @param string                                $importType
      */
     public function __construct(
         SimpleFactoryInterface $productModelFactory,
