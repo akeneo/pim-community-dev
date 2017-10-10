@@ -1,0 +1,6 @@
+parameters:
+    pim_catalog.entity_with_family.required_value_collection_factory.class: Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory
+
+services:
+    pim_catalog.completeness.required_value_collection_factory:
+        class: '%pim_catalog.entity_with_family.required_value_collection_factory.class%'
