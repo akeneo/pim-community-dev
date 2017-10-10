@@ -63,6 +63,11 @@ abstract class AbstractReferenceData implements ReferenceDataInterface
 
         return $this;
     }
+    
+    public function getReference()
+    {
+        return $this->getId();
+    }
 
     /**
      * {@inheritdoc}
