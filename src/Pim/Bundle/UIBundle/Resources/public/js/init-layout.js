@@ -105,6 +105,7 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
             var confirm;
             var el = $(this);
             var message = el.data('message');
+            const subTitle = el.data('subtitle');
 
             const doDelete = function () {
                 router.showLoadingMask();
@@ -143,6 +144,7 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
                 message,
                 __('pim_enrich.confirmation.delete_item'),
                 doDelete,
+                subTitle
             );
 
             return false;
