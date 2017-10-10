@@ -40,13 +40,13 @@ abstract class AbstractPimCatalogTestCase extends TestCase
         parent::setUp();
 
         $this->esProductClient = $this->get('akeneo_elasticsearch.client.product');
-        $this->addProducts();
+        $this->addDocuments();
     }
 
     /**
      * This method indexes dummy products in elastic search.
      */
-    abstract protected function addProducts();
+    abstract protected function addDocuments();
 
     /**
      * Indexes the given list of products
@@ -89,7 +89,7 @@ abstract class AbstractPimCatalogTestCase extends TestCase
      * @param array $actualProductIdentifiers
      * @param array $expectedProductIdentifiers
      */
-    protected function assertProducts(array $actualProductIdentifiers, array $expectedProductIdentifiers)
+    protected function assertDocument(array $actualProductIdentifiers, array $expectedProductIdentifiers)
     {
         sort($actualProductIdentifiers);
         sort($expectedProductIdentifiers);
