@@ -1617,6 +1617,30 @@ class WebUser extends PimContext
     }
 
     /**
+     * @param string $buttonLabel
+     *
+     * @When /^I press the "([^"]*)" bottom button$/
+     */
+    public function iPressTheBottomButton($buttonLabel)
+    {
+        $this->spin(function () use ($buttonLabel) {
+            $buttons = $this->getCurrentPage()->findAll('css', '.mass-actions-panel a');
+            foreach ($buttons as $button) {
+                if ((strtolower(trim($button->getText())) === $buttonLabel ||
+                        $button->getAttribute('title') === $buttonLabel
+                    ) && $button->isVisible()
+                ) {
+                    $button->click();
+
+                    return true;
+                }
+            }
+
+            return false;
+        }, sprintf('Can not find any bottom button "%s"', $buttonLabel));
+    }
+
+    /**
      * @param string $locator
      *
      * @When /^I hover over the element "([^"]*)"$/
