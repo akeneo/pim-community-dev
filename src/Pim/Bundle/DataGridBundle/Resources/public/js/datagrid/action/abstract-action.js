@@ -285,24 +285,45 @@ function($, _, Backbone, routing, router, __, mediator, messenger, error, Dialog
             );
         },
 
-        // Move elsewhere
-        pluralizeEntityHint: function(entityHint) {
-            if (entityHint.endsWith('y')) {
-                return entityHint.replace('y', 'ies')
-            }
-
-            return `${entityHint}s`;
-        },
-
+        /**
+         * Get the entity type from datagrid metadata
+         *
+         * @param {Boolean} plural Pluralize the entity code
+         */
         getEntityHint: function(plural) {
             const datagrid = this.datagrid || {};
             const entityHint = datagrid.entityHint || 'item';
 
             if (plural) {
-                return this.pluralizeEntityHint(entityHint);
+                return this.getEntityPlural(entityHint);
             }
 
             return entityHint;
+        },
+
+        /**
+         * Get the entity hint separated by dashes
+         */
+        getEntityCode: function() {
+            const entityHint = this.getEntityHint();
+            return entityHint.toLowerCase().split(' ').join('_');
+        },
+
+        /**
+         * Very basic pluralize method for entity types
+         *
+         * Example:
+         *      Product -> products
+         *      Family -> families
+         *
+         * @return {String}
+         */
+        getEntityPlural: function(entityHint) {
+            if (entityHint.endsWith('y')) {
+                return entityHint.replace(/y$/, 'ies');
+            }
+
+            return `${entityHint}s`;
         }
     });
 });

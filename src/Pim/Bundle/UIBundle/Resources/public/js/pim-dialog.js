@@ -10,7 +10,6 @@
  * Example:
  *      Dialog.alert('{{ 'MyMessage'|trans }}', 'MyTitle');
  */
-
 define(
     [
         'jquery',
@@ -28,6 +27,13 @@ define(
             template: _.template(template),
 
             /**
+             * Returns class name for modal illustration
+             */
+            getIllustrationClass: function(entityType) {
+                return entityType.toLowerCase().split(' ').join('-');
+            },
+
+            /**
              * Open a modal dialog without cancel button
              * @param string content
              * @param string title
@@ -42,7 +48,7 @@ define(
                     cancelText: __('Cancel'),
                     template: this.template,
                     buttonClass: 'AknButton--action',
-                    illustrationType: this.getIllustrationType(subTitle)
+                    entityCode: this.getIllustrationClass(subTitle)
                 });
 
                 alert.$el.addClass('modal--fullPage');
@@ -81,10 +87,6 @@ define(
                 }
             },
 
-            getIllustrationType: function(type = '') {
-                return type.toLowerCase().split(' ').join('-');
-            },
-
             /**
              * Open a confirm modal dialog to validate the action made by user
              * If user validate its action, a js callback function is called
@@ -104,7 +106,7 @@ define(
                     buttonClass: buttonClass || 'AknButton--action',
                     template: this.template,
                     allowCancel: true,
-                    illustrationType: this.getIllustrationType(subTitle)
+                    entityCode: this.getIllustrationClass(subTitle)
                 });
 
                 confirm.$el.addClass('modal--fullPage');

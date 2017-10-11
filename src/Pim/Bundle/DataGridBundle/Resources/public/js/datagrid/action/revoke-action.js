@@ -17,7 +17,8 @@ define([
          */
         return DeleteAction.extend({
             getConfirmDialog: function() {
-                const entityType = this.getEntityHint().split(' ').join('_')
+                const entityType = this.getEntityCode();
+
                 this.confirmModal = Dialog.confirm(
                     __(`confirmation.remove.${entityType}`),
                     __('Confirm revocation'),
