@@ -130,6 +130,7 @@ define(
                     const message  = $el.data('message');
                     const title    = $el.data('title');
                     const subTitle = $el.data('subtitle');
+                    const buttonLabel = $el.data('buttonlabel');
 
                     const doAction = function () {
                         const loadingMask = new LoadingMask();
@@ -166,8 +167,9 @@ define(
                         });
                     };
                     $el.off('click');
+
                     if ($el.data('dialog') === 'confirm') {
-                        Dialog.confirmDelete(message, title, doAction, subTitle);
+                        Dialog.confirm(message, title, doAction, subTitle, '', buttonLabel);
                     } else {
                         Dialog.alert(message, title, subTitle);
                     }

@@ -166,7 +166,8 @@ function(_, messenger, __, Dialog, AbstractAction) {
               callback,
               this.getEntityHint(true),
               `${this.className} ok`,
-              this.messages.confirm_ok
+              this.messages.confirm_ok,
+              this.type
             );
         }
     });

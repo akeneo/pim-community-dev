@@ -48,7 +48,7 @@ define(
                     cancelText: __('Cancel'),
                     template: this.template,
                     buttonClass: 'AknButton--action',
-                    entityCode: this.getIllustrationClass(subTitle)
+                    illustrationClass: this.getIllustrationClass(subTitle)
                 });
 
                 alert.$el.addClass('modal--fullPage');
@@ -94,7 +94,7 @@ define(
              * @param string title
              * @param function callback
              */
-            confirm: function (content, title, callback, subTitle, buttonClass, buttonText) {
+            confirm: function (content, title, callback, subTitle, buttonClass, buttonText, illustrationClass) {
                 const deferred = $.Deferred();
 
                 const confirm = new Backbone.BootstrapModal({
@@ -106,7 +106,7 @@ define(
                     buttonClass: buttonClass || 'AknButton--action',
                     template: this.template,
                     allowCancel: true,
-                    entityCode: this.getIllustrationClass(subTitle)
+                    illustrationClass: illustrationClass || this.getIllustrationClass(subTitle)
                 });
 
                 confirm.$el.addClass('modal--fullPage');
@@ -134,7 +134,8 @@ define(
                     callback,
                     subTitle,
                     'AknButton--important',
-                    __(buttonText) || __('Delete')
+                    __(buttonText) || __('Delete'),
+                    'delete'
                 ]);
             }
         };
