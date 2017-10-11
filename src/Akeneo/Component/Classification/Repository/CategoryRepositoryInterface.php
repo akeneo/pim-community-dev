@@ -170,4 +170,13 @@ interface CategoryRepositoryInterface extends
      * @return array Multi-dimensional array representing the tree
      */
     public function getFilledTree(CategoryInterface $root, Collection $categories);
+
+    /**
+     * Return only codes which exist in database
+     *
+     * @param array $codes
+     *
+     * @return array
+     */
+    public function getCodesIfExist(array $codes = []): array;
 }

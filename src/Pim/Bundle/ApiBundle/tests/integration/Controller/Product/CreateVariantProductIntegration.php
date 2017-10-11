@@ -1030,7 +1030,7 @@ JSON;
                     [
                         'locale' => null,
                         'scope' => null,
-                        'data' => true,
+                        'data' => false,
                     ],
                 ],
             ],
@@ -1049,7 +1049,7 @@ JSON;
               {
                 "locale": null,
                 "scope": null,
-                "data": true
+                "data": false
               }
             ]
         }

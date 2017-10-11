@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraint;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class SiblingUniqueVariantAxes extends Constraint
+class UniqueVariantAxis extends Constraint
 {
     public const DUPLICATE_VALUE_IN_SIBLING = 'pim_catalog.constraint.can_have_family_variant_duplicate_axis_value';
 
@@ -18,7 +18,7 @@ class SiblingUniqueVariantAxes extends Constraint
      */
     public function validatedBy()
     {
-        return 'pim_sibling_unique_variant_axes_validator';
+        return 'pim_unique_variant_axes_validator';
     }
 
     /**

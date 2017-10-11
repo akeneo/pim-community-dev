@@ -51,8 +51,8 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, EntityWithFamilyVariantInterface::class);
         }
 
-        if (!$constraint instanceof SiblingUniqueVariantAxes) {
-            throw new UnexpectedTypeException($constraint, SiblingUniqueVariantAxes::class);
+        if (!$constraint instanceof UniqueVariantAxis) {
+            throw new UnexpectedTypeException($constraint, UniqueVariantAxis::class);
         }
 
         if (null === $entity->getFamilyVariant()) {
@@ -75,7 +75,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             $duplicateCombination = $this->buildAxesCombination($entity, $axes);
 
             $this->context->buildViolation(
-                SiblingUniqueVariantAxes::DUPLICATE_VALUE_IN_SIBLING,
+                UniqueVariantAxis::DUPLICATE_VALUE_IN_SIBLING,
                 ['%values%' => $duplicateCombination, '%attributes%' => $axesCodes]
             )->addViolation();
         }

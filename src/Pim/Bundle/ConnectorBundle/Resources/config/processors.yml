@@ -12,8 +12,8 @@ parameters:
     pim_connector.processor.normalization.product_model.class:    Pim\Component\Connector\Processor\Normalization\ProductModelProcessor
 
     pim_connector.processor.bulk_media_fetcher.class: Pim\Component\Connector\Processor\BulkMediaFetcher
-    pim_connector.processor.attribute_filter.product_model.class: Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductModelAttributeFilter
-    pim_connector.processor.attribute_filter.product.class: Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductAttributeFilter
+    pim_connector.processor.attribute_filter.product_model.class: Pim\Component\Catalog\ProductModel\Filter\ProductModelAttributeFilter
+    pim_connector.processor.attribute_filter.product.class: Pim\Component\Catalog\ProductModel\Filter\ProductAttributeFilter
 
 services:
     # Dummy processor
@@ -328,4 +328,4 @@ services:
         arguments:
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.repository.family'
-
+            - '@pim_catalog.repository.product'

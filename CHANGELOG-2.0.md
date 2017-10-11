@@ -2,7 +2,7 @@
 
 ## Tech improvements
 
-- TIP-808: Add version strategy for js and css assets
+- TIP-808: Add version strategy for js and css assets, no more need to ask final users to refresh their browser cache when applying a new patch!
 - PRE_SAVE and POST_SAVE events dispatched by instances of BaseSaver now include an "is_new" argument indicating if entities are being inserted or updated.
 - API-395: Get list of product models via API
 
@@ -23,6 +23,7 @@
 - API-389: As Mary, I want to only see my launched jobs in the process tracker
 - PIM-6881: Fix common attributes design
 - PIM-6581: Fix completeness panel in case of a big number of channels
+- PIM-6895: Improve performances on products datagrid
 
 ## Better manage products with variants!
 
@@ -32,9 +33,19 @@
 
 ## BC breaks
 
-- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController` to add dependencies to `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
-- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add dependencies to `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
-- Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template 
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template 
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
+- Change the constructor of `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithFamilyVariantRepository` to add `Pim\Component\Catalog\Repository\VariantProductRepositoryInterface`
+- Change the constructor of `Pim\Component\Catalog\ProductModel\Filter` to add `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
+- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\AttributeFilterInterface` 
+- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductAttributeFilter` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\ProductAttributeFilter` 
+- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductModelAttributeFilter` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\ProductModelAttributeFilter` 
+- Rename `Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxes` into `Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis`
+- Rename service `pim_catalog.validator.constraint.sibling_unique_variant_axes` into `pim_catalog.validator.constraint.unique_variant_axes`
+- Rename class parameter `pim_catalog.validator.constraint.sibling_unique_variant_axes.class` into `pim_catalog.validator.constraint.unique_variant_axes.class`
+- Replace the class parameter of the service `pim_catalog.repository.variant_product` with `pim_catalog.repository.variant_product.class`
+- Add method `getCodesIfExist` to `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
 
 # 2.0.1 (2017-10-05)
 
