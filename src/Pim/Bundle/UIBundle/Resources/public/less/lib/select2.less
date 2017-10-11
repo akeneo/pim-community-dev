@@ -181,10 +181,21 @@
         }
       }
     }
-  }
 
-  .select2-search-choice-close {
-    top: 7px;
+    .select2-search-choice {
+      .select2-search-choice-close {
+        background: url("../../images/icon-remove.svg") no-repeat center;
+        background-size: 10px;
+        opacity: 0.7;
+        top: 7px;
+        transition: opacity 0.1s ease-in;
+
+        &:hover {
+          background-position: center;
+          opacity: 1;
+        }
+      }
+    }
   }
 
   &.select2-container-active .select2-choices {
