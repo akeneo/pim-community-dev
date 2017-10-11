@@ -40,7 +40,7 @@ define(
                         this.$el.html(
                             this.template({
                                 __: __,
-                                familyName: i18n.getLabel(family.labels, catalogLocal, family.code),
+                                familyName: i18n.getLabel(family.labels, catalogLocal, family.code)
                             })
                         );
                     })

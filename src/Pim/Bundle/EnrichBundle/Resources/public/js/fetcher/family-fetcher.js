@@ -23,6 +23,6 @@ define([
                 )
                 .then(_.identity)
                 .promise();
-            },
+            }
         });
 });

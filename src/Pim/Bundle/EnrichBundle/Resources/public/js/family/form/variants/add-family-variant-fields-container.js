@@ -111,7 +111,7 @@ define(
             initializeSelectWidgets() {
                 const $selects = this.$('input[type="hidden"]');
 
-                _.each($selects, (select, index) => {
+                _.each($selects, (select) => {
                     const $select = $(select);
                     const options = {
                         dropdownCssClass: '',
@@ -150,7 +150,7 @@ define(
                             const entities = _.map(attributeResults, (attribute) => {
                                 return {
                                     id: attribute.code,
-                                    text: attribute.labels[catalogLocale],
+                                    text: attribute.labels[catalogLocale]
                                 }
                             });
 
@@ -266,7 +266,7 @@ define(
              */
             setValidationErrors(errors) {
                 this.validationErrors = errors;
-            },
+            }
         });
     }
 );

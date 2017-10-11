@@ -10,12 +10,14 @@ define(
     [
         'jquery',
         'underscore',
+        'routing',
         'pim/form',
         'pim/template/family-variant/add-variant-form'
     ],
     function(
         $,
         _,
+        Routing,
         BaseForm,
         template
     ) {
