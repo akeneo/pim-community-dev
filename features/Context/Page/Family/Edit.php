@@ -45,6 +45,7 @@ class Edit extends Form
                     'decorators' => [AttributeGroupAddSelectDecorator::class],
                 ],
                 'Select2 dropmask'                  => ['css' => '.select2-drop-mask'],
+                'Add family variant'                => ['css' => '.add-variant'],
             ]
         );
     }
@@ -225,5 +226,17 @@ class Edit extends Form
         }, 'Can not find add by group select');
 
         $addGroupElement->addOptions($groups);
+    }
+
+    /**
+     * Open the add family variant creation form
+     */
+    public function openFamilyVariantCreationForm()
+    {
+        $addFamilyVariantButton = $this->spin(function () {
+            return $this->getElement('Add family variant');
+        }, 'Can not find Add family variant button');
+
+        $addFamilyVariantButton->click();
     }
 }

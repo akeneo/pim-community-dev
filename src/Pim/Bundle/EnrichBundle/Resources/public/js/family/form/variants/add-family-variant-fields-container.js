@@ -87,7 +87,7 @@ define(
                 const fieldErrors = _.indexBy(this.validationErrors.filter((error) => {
                     return false === error.global;
                 }), 'path');
-
+                
                 this.$el.html(
                     this.template({
                         __: __,
