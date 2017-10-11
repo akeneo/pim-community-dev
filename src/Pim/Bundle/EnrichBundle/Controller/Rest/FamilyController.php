@@ -145,12 +145,8 @@ class FamilyController
      */
     public function getAction(Request $request, $identifier)
     {
-        $family = $this->familyRepository->findOneByIdentifier($identifier);
+        $family = $this->getFamily($identifier);
         $applyFilters = $request->query->getBoolean('apply_filters', true);
-
-        if (null === $family) {
-            throw new NotFoundHttpException(sprintf('Family with code "%s" not found', $identifier));
-        }
 
         return new JsonResponse(
             $this->normalizer->normalize(

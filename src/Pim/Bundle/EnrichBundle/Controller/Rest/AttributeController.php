@@ -130,7 +130,7 @@ class AttributeController
         $options = [];
 
         if ($request->request->has('identifiers')) {
-            $options['identifiers'] = explode(',', $request->request->get('identifiers'));
+            $options['identifiers'] = array_unique(explode(',', $request->request->get('identifiers')));
         }
 
         if ($request->request->has('types')) {
