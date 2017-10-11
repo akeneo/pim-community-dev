@@ -61,7 +61,7 @@ define([
                         this.getErrorDialog().open();
                     }.bind(this),
                     success: function() {
-                        var messageText = __('flash.' + this.getEntityHint() + '.removed');
+                        var messageText = __('flash.' + this.getEntityCode() + '.removed');
                         messenger.notify('success', messageText);
                         userContext.initialize();
 
