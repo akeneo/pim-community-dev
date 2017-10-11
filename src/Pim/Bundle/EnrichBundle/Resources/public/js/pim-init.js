@@ -170,6 +170,8 @@ define(
 
                     if ($el.data('dialog') === 'confirm') {
                         Dialog.confirm(message, title, doAction, subTitle, '', buttonLabel);
+                    } else if ($el.data('dialog') === 'delete') {
+                        Dialog.confirmDelete(message, title, doAction, subTitle);
                     } else {
                         Dialog.alert(message, title, subTitle);
                     }
