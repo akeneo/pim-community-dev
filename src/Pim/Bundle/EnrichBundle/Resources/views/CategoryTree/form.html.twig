@@ -85,9 +85,6 @@
     </div>
 
 {{ form_end(form) }}
-<script type="text/javascript">
-    document.title = '{{ "pim_title.category.edit"|trans({ "%category.label%": form.vars.value.label }) }}';
-</script>
 
 <script type="text/javascript">
     window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
