@@ -102,7 +102,6 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
 
         /* global router */
         $(document).on('click', '.remove-button', function () {
-            var confirm;
             var el = $(this);
             var message = el.data('message');
             const subTitle = el.data('subtitle');
@@ -138,7 +137,7 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
                         );
                     }
                 });
-            }
+            };
 
             this.confirmModal = Dialog.confirmDelete(
                 message,
@@ -149,5 +148,5 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
 
             return false;
         });
-    }
+    };
 });
