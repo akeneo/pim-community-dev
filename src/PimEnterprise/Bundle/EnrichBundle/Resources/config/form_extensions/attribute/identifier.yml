@@ -1,6 +1,6 @@
 extensions:
     pim-attribute-identifier-edit-form-properties-common-is-read-only:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/form/common/fields/boolean
         parent: pim-attribute-identifier-edit-form-properties-common
         targetZone: content
         position: 180
@@ -8,7 +8,7 @@ extensions:
             fieldName: is_read_only
 
     pim-attribute-identifier-create-form-properties-common-is-read-only:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/form/common/fields/boolean
         parent: pim-attribute-identifier-create-form-properties-common
         targetZone: content
         position: 180

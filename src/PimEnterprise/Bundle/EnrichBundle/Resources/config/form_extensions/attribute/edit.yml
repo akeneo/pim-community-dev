@@ -1,6 +1,6 @@
 extensions:
     pim-attribute-edit-form-properties-common-is-read-only:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/form/common/fields/boolean
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
         position: 180
