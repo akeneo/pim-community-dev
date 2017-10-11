@@ -95,11 +95,12 @@ class NavigationContext extends PimContext implements PageObjectAware
     }
 
     /**
-     * @param string $username
+     * @param string      $username
+     * @param string|null $password
      *
-     * @Given /^I am logged in as "([^"]*)"$/
+     * @Given /^I am logged in as "([^"]*)"( with password (?P<password>[^"]*))?$/
      */
-    public function iAmLoggedInAs($username)
+    public function iAmLoggedInAs($username, ?string $password = null)
     {
         $this->getMainContext()->getSubcontext('fixtures')->setUsername($username);
 
@@ -109,8 +110,9 @@ class NavigationContext extends PimContext implements PageObjectAware
             return $this->getSession()->getPage()->find('css', '.AknLogin-title');
         }, 'Cannot open the login page');
 
+        $password = null !== $password ? $password : $username;
         $this->getSession()->getPage()->fillField('_username', $username);
-        $this->getSession()->getPage()->fillField('_password', $username);
+        $this->getSession()->getPage()->fillField('_password', $password);
 
         $this->getSession()->getPage()->find('css', '.form-signin button')->press();
 
