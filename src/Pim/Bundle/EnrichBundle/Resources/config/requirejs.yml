@@ -645,8 +645,10 @@ config:
         pim/family-edit-form/attributes:                                    pimenrich/js/family/form/attributes
         pim/family-edit-form/properties/general:                            pimenrich/js/family/form/properties/general
         pim/family-edit-form/attributes:                                    pimenrich/js/family/form/attributes
-        pim/family-edit-form/add-family-variant:                            pimenrich/js/family/form/add-family-variant
-        pim/family-edit-form/add-family-variant-form:                       pimenrich/js/family/form/add-family-variant-form
+        pim/family-edit-form/add-family-variant:                            pimenrich/js/family/form/variants/add-family-variant
+        pim/family-edit-form/add-family-variant-form:                       pimenrich/js/family/form/variants/add-family-variant-form
+        pim/family-edit-form/add-family-variant-header:                     pimenrich/js/family/form/variants/add-family-variant-header
+        pim/family-edit-form/add-family-variant-fields-container:           pimenrich/js/family/form/variants/add-family-variant-fields-container
 
         pim/family-variant-edit-form/edit:                                  pimenrich/js/family-variant/form/edit
         pim/family-variant-edit-form/axes:                                  pimenrich/js/family-variant/form/axes
@@ -1012,8 +1014,11 @@ config:
         pim/template/family/tab/attributes:                  pimenrich/templates/family/tab/attributes.html
         pim/template/family/tab/general/attribute-as-image:  pimenrich/templates/family/tab/general/attribute-as-image.html
         pim/template/family/tab/family-variant:              pimenrich/templates/family/tab/family-variant.html
-        pim/template/family/tab/variants/add-variant-form:   pimenrich/templates/family/tab/variants/add-variant-form.html
-        pim/template/family/tab/variants/validation-error:   pimenrich/templates/family/tab/variants/validation-error.html
+
+        # Family variant
+        pim/template/family-variant/add-variant-form:                  pimenrich/templates/family/tab/variants/add-variant-form.html
+        pim/template/family-variant/add-variant-form-header:           pimenrich/templates/family/tab/variants/add-variant-form-header.html
+        pim/template/family-variant/add-variant-form-fields-container: pimenrich/templates/family/tab/variants/add-variant-form-fields-container.html
 
         pim/template/family-variant/edit:                    pimenrich/templates/family-variant/edit.html
         pim/template/family-variant/axes:                    pimenrich/templates/family-variant/axes.html
