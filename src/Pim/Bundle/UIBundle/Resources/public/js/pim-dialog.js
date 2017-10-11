@@ -127,6 +127,15 @@ define(
                 return deferred.promise();
             },
 
+            /**
+             * Open a delete confirmation modal and execute callback after
+             * user validation
+             * @param  {String}   content    The message text
+             * @param  {String}   title      The title
+             * @param  {Function} callback   Action to execute after validation
+             * @param  {String}   subTitle   The entity type
+             * @param  {String}   buttonText The 'ok' button label
+             */
             confirmDelete: function(content, title, callback, subTitle, buttonText) {
                 return Dialog.confirm.apply(this, [
                     content,
