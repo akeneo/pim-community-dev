@@ -89,7 +89,7 @@ class AttributeIntegration extends AbstractFlatNormalizerTestCase
             'group'                  => 'attributeGroupA',
             'unique'                 => false,
             'useable_as_grid_filter' => false,
-            'allowed_extensions'     => 'pdf,doc,docx',
+            'allowed_extensions'     => 'pdf,doc,docx,txt',
             'metric_family'          => null,
             'default_metric_unit'    => null,
             'reference_data_name'    => null,
