@@ -14,6 +14,7 @@
 - TIP-809: Prevents ES from using the scoring system and bypass the max_clause_count limit.
 - PIM-6872: Fix PQB sorters with Elasticsearch
 - PIM-6859: Fix missing attribute values in PDF
+- PIM-6894: Allow any special characters in password field
 
 ## Better UI\UX!
 
