@@ -216,3 +216,13 @@ pim_menu:
         published_product: Published products
         rule: Rules
         upload_asset: Upload Assets
+
+page_title:
+    pimee_workflow_proposal_index: Proposals
+    pimee_workflow_published_product_index: Published products
+    pimee_workflow_published_product_view: Published product {{ product.label }} | View
+    pimee_product_asset_index: Assets
+    pimee_product_asset_edit: Asset {{ asset.label }} | Edit
+    pimee_asset_categorytree_index: Categories
+    pimee_asset_categorytree_edit: Category {{ category.label }} | Edit
+    pimee_catalog_rule_rule_index: Rules
