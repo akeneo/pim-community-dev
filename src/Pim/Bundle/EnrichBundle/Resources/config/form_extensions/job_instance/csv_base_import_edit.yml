@@ -156,7 +156,7 @@ extensions:
         position: 100
         config:
             trans:
-                title: confirmation.remove.job_instance
+                title: confirmation.remove.import_profile
                 content: pim_enrich.confirmation.delete_item
                 success: flash.job_instance.removed
                 failed: error.removing.job_instance
