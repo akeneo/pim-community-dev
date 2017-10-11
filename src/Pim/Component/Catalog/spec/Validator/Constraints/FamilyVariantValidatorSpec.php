@@ -24,12 +24,7 @@ class FamilyVariantValidatorSpec extends ObjectBehavior
 {
     function let(TranslatorInterface $translator)
     {
-        $this->beConstructedWith($translator, [
-            AttributeTypes::METRIC,
-            AttributeTypes::OPTION_SIMPLE_SELECT,
-            AttributeTypes::BOOLEAN,
-            AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT
-        ]);
+        $this->beConstructedWith($translator);
     }
 
     function it_is_initializable()

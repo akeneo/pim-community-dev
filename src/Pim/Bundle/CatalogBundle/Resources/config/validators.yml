@@ -74,11 +74,6 @@ services:
         class: '%pim_catalog.validator.constraint.family_variant_axes.class%'
         arguments:
             - '@translator'
-            -
-                - 'pim_catalog_metric'
-                - 'pim_catalog_simpleselect'
-                - 'pim_catalog_boolean'
-                - 'pim_reference_data_simpleselect'
         tags:
             - { name: validator.constraint_validator, alias: pim_family_variant }
 

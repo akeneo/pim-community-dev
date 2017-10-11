@@ -11,6 +11,7 @@ use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\FamilyFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyVariant;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Updater\FamilyUpdater;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -206,12 +207,7 @@ class FamilyController
     public function getAvailableAxesAction(string $code): JsonResponse
     {
         $family = $this->getFamily($code);
-        $allowedTypes = [
-            AttributeTypes::METRIC,
-            AttributeTypes::OPTION_SIMPLE_SELECT,
-            AttributeTypes::BOOLEAN,
-            AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
-        ];
+        $allowedTypes = FamilyVariant::getAvailableAxesAttributeTypes();
 
         $availableAxes = $family->getAttributes()->filter(function (AttributeInterface $attribute) use ($allowedTypes) {
             return in_array($attribute->getType(), $allowedTypes);
