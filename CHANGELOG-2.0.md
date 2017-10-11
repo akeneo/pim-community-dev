@@ -24,6 +24,7 @@
 - PIM-6881: Fix common attributes design
 - PIM-6851: Fix completeness panel in case of a big number of channels
 - PIM-6895: Improve performances on products datagrid
+- PIM-6539: Update cross icons with new design
 
 ## Better manage products with variants!
 
