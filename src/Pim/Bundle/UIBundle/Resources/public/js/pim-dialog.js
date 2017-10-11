@@ -29,7 +29,7 @@ define(
             /**
              * Returns class name for modal illustration
              */
-            getIllustrationClass: function(entityType) {
+            getIllustrationClass: function(entityType = '') {
                 return entityType.toLowerCase().split(' ').join('-');
             },
 
