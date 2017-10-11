@@ -184,7 +184,9 @@
 
     .select2-search-choice {
       .select2-search-choice-close {
-        background: url("../../images/icon-remove.svg") no-repeat center;
+        background-image: url("../../images/icon-remove.svg") !important;
+        background-repeat: no-repeat;
+        background-position: center;
         background-size: 10px;
         opacity: 0.7;
         top: 7px;
@@ -515,9 +517,12 @@
 // Fix for Retina icons
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi)  {
   .select2-search-choice-close,
-  .select2-container .select2-choice abbr,
-  .select2-container .select2-choice .select2-arrow b {
-    background-size: 90px 48px !important
+  .select2.select2-container .select2-choice abbr,
+  .select2.select2-container .select2-choice .select2-arrow b {
+    background-image: url("../../images/icon-remove.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 10px !important;
   }
 
   .select2-search input {
@@ -525,7 +530,7 @@
   }
 
   .select2-search-choice-close {
-    background-position: -75px 0 !important;
+    background-position: center !important;
   }
 
   .select2-search input {
