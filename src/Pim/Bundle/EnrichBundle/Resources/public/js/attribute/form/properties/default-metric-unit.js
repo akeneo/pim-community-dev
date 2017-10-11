@@ -9,9 +9,9 @@ define([
     'jquery',
     'underscore',
     'oro/translator',
-    'pim/attribute-edit-form/properties/field',
+    'pim/form/common/fields/field',
     'pim/fetcher-registry',
-    'pim/template/attribute/tab/properties/select'
+    'pim/template/form/common/fields/select'
 ],
 function (
     $,

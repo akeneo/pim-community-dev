@@ -8,8 +8,8 @@
 define([
     'jquery',
     'underscore',
-    'pim/attribute-edit-form/properties/field',
-    'pim/template/attribute/tab/properties/text'
+    'pim/form/common/fields/field',
+    'pim/template/form/common/fields/text'
 ],
 function (
     $,

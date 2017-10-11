@@ -6,7 +6,7 @@
 'use strict';
 
 define([
-    'pim/attribute-edit-form/properties/boolean'
+    'pim/form/common/fields/boolean'
 ],
 function (
     BaseField

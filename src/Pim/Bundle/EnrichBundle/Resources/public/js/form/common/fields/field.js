@@ -13,7 +13,7 @@ define([
     'oro/translator',
     'pim/form',
     'pim/common/tab',
-    'pim/template/attribute/tab/properties/field'
+    'pim/template/form/common/fields/field'
 ],
 function (
     $,

@@ -8,8 +8,8 @@
 define([
     'underscore',
     'oro/translator',
-    'pim/attribute-edit-form/properties/field',
-    'pim/template/attribute/tab/properties/select'
+    'pim/form/common/fields/field',
+    'pim/template/form/common/fields/select'
 ],
 function (
     _,
