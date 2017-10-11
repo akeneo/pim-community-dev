@@ -1,6 +1,5 @@
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
-
 {% block head_script %}
     {% if form.permissions is defined %}
     <script type="text/javascript">
@@ -32,7 +31,7 @@
 {% endblock %}
 
 {% block content %}
-
+    <div class="AknDefault-mainContent">
     {{ form_start(form, {
         'action': path('pimee_enrich_locale_edit', { id: form.vars.value.id }),
         'attr': {
@@ -60,28 +59,62 @@
             {% set tabs = tabs|merge(['pimee_enrich.locale.tab.permission']) %}
         {% endif %}
 
-        <div class="AknTabContainer">
-            {{ elements.form_navbar(tabs) }}
+        {{ elements.form_navbar(tabs) }}
 
-            <div class="AknTabContainer-content tab-content">
-                {{ elements.form_errors(form) }}
+        <div class="AknTabContainer-content tab-content">
+            {{ elements.form_errors(form) }}
 
-                <div class="tab-pane active" id="pim_enrich-locale-tab-property">
-                    {% set generalProperties %}
-                        {{ form_row(form.code) }}
-                    {% endset %}
-                    {{ elements.tabSections({ 'pane.accordion.general_properties': elements.form_container(generalProperties) }) }}
-                </div>
-                {% if form.permissions is defined %}
-                <div class="tab-pane" id="pimee_enrich-locale-tab-permission">
-                    {{ elements.tabSections({ '': elements.form_container(form_widget(form.permissions)) }) }}
-                </div>
-                {% endif %}
+            <div class="tab-pane active" id="pim_enrich-locale-tab-property">
+                {% set generalProperties %}
+                    {{ form_row(form.code) }}
+                {% endset %}
+                {{ elements.tabSections({ 'pane.accordion.general_properties': elements.form_container(generalProperties) }) }}
             </div>
+            {% if form.permissions is defined %}
+            <div class="tab-pane" id="pimee_enrich-locale-tab-permission">
+                {{ elements.tabSections({ '': elements.form_container(form_widget(form.permissions)) }) }}
+            </div>
+            {% endif %}
         </div>
     {{ form_end(form) }}
+    </div>
 {% endblock %}
 
 <script>
     window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+</script>
+
+<script>
+    require(
+        [
+            'pim/common/breadcrumbs',
+            'pim/fetcher-registry',
+            'pim/form-builder'
+        ],
+        function(
+            Breadcrumbs,
+            FetcherRegistry,
+            FormBuilder
+        ) {
+            $(function() {
+                var breadcrumbs = new Breadcrumbs({
+                    config: {
+                        tab: 'pim-menu-settings',
+                        item: 'pim-menu-settings-locale'
+                    }
+                });
+                breadcrumbs.configure().then(function () {
+                    breadcrumbs.render();
+                    $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                });
+
+                FetcherRegistry.initialize().done(function () {
+                    FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+                        $('.user-menu').append(form.el);
+                        form.render();
+                    }.bind(this));
+                });
+            });
+        }
+    );
 </script>
