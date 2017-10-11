@@ -5,15 +5,15 @@ page_title:
     oro_user_group_index:            Groups
     oro_config_configuration_system: Configuration
 
-    oro_user_view: '{{ username }}'
-    oro_user_update: '{{ username }} | Edit'
-    oro_user_create: Create User
+    oro_user_view: 'User {{ username }} | View'
+    oro_user_update: 'User {{ username }} | Edit'
+    oro_user_create: 'Users | Create'
 
     oro_user_profile_view: '{{ username }}'
     oro_user_profile_update: '{{ username }} | Edit'
 
-    oro_user_role_update: '{{ role }} | Edit'
-    oro_user_role_create: Create Role
+    oro_user_role_update: 'Role {{ role }} | Edit'
+    oro_user_role_create: 'Role | Create'
 
     oro_user_security_login: Login
 
@@ -21,5 +21,5 @@ page_title:
     oro_user_reset_request: Forgot Password
     oro_user_reset_check_email: Password Reset | Check Email
 
-    oro_user_group_create: Create Group
-    oro_user_group_update: '{{ group }} | Edit'
+    oro_user_group_create: 'Groups | Create'
+    oro_user_group_update: 'Group {{ group }} | Edit'

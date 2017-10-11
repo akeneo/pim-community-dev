@@ -93,4 +93,23 @@ class DatagridViewManager
 
         return $choices;
     }
+
+    /**
+     * Get default datagrid columns for the provided datagrid alias
+     *
+     * @param string $alias
+     *
+     * @return array
+     */
+    public function getDefaultColumns(string $alias): array
+    {
+        $path = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
+
+        $columnsConfig = $this
+            ->datagridManager
+            ->getConfigurationForGrid($alias)
+            ->offsetGetByPath($path);
+
+        return is_array($columnsConfig) ? array_keys($columnsConfig) : [];
+    }
 }

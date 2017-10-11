@@ -23,7 +23,7 @@ define(
                             return;
                         }
 
-                        PageTitle.set({'product.sku': product.meta.label[UserContext.get('catalogLocale')] })
+                        PageTitle.set({ 'product.label': product.meta.label[UserContext.get('catalogLocale')] });
 
                         return FormBuilder.build(product.meta.form)
                             .then((form) => {

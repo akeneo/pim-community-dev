@@ -39,7 +39,6 @@
                                   'class': 'AknDropdown-menuLink delete',
                                   'attr': {
                                       'data-title':   'confirmation.delete'|trans,
-                                      'data-subtitle': 'category.overview'|trans,
                                       'data-dialog':  'alert',
                                       'data-message': 'info.category.products limit exceeded'|trans({ '%limit%': get_products_limit_for_removal()|default('0') })
                                   }
@@ -55,8 +54,7 @@
                                   ~ 'info.category.keep products'|trans,
                               (form.vars.value.parent ? 'flash.category.removed' : 'flash.tree.removed')|trans,
                               '',
-                              'AknDropdown-menuLink delete',
-                              'category.overview'|trans
+                              'AknDropdown-menuLink delete'
                           ) }}
                       {% endif %}
                   </div>
@@ -87,7 +85,7 @@
     </div>
 
 {{ form_end(form) }}
+
 <script type="text/javascript">
-    document.title = '{{ "pim_title.category.edit"|trans({ "%category.label%": form.vars.value.label }) }}';
     window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
 </script>

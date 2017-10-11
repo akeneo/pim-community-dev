@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Component\Connector\Processor\Denormalization\AttributeFilter;
+namespace Pim\Component\Catalog\ProductModel\Filter;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
@@ -44,24 +44,24 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function filter(array $flatProductModel): array
+    public function filter(array $standardProductModel): array
     {
-        $parent = $flatProductModel['parent'] ?? '';
-        $familyVariant = $flatProductModel['family_variant'] ?? '';
+        $parent = $standardProductModel['parent'] ?? '';
+        $familyVariant = $standardProductModel['family_variant'] ?? '';
         // Skip the attribute filtration if there is no parent nor family variant, updater/validation will raise error.
         if (empty($parent) && empty($familyVariant)) {
-            return $flatProductModel;
+            return $standardProductModel;
         }
 
         $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariant);
         if (empty($parent) && null !== $familyVariant) {
-            return $this->keepOnlyAttributes($flatProductModel, $familyVariant->getCommonAttributes());
+            return $this->keepOnlyAttributes($standardProductModel, $familyVariant->getCommonAttributes());
         }
 
         $parentProductModel = $this->productModelRepository->findOneByIdentifier($parent);
         // Skip the attribute filtration if the parent does not exist, updater/validation will raise error.
         if (null === $parentProductModel) {
-            return $flatProductModel;
+            return $standardProductModel;
         }
 
         // Family variant field is not mandatory for sub product models.
@@ -71,7 +71,7 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
 
         $variantAttributeSet = $familyVariant->getVariantAttributeSet($parentProductModel->getVariationLevel() + 1);
 
-        return $this->keepOnlyAttributes($flatProductModel, $variantAttributeSet->getAttributes());
+        return $this->keepOnlyAttributes($standardProductModel, $variantAttributeSet->getAttributes());
     }
 
     /**

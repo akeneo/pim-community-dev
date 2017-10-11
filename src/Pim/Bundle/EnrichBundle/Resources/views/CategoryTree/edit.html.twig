@@ -15,12 +15,14 @@
         [
             'pim/common/breadcrumbs',
             'pim/fetcher-registry',
-            'pim/form-builder'
+            'pim/form-builder',
+            'pim/page-title'
         ],
         function(
             Breadcrumbs,
             FetcherRegistry,
-            FormBuilder
+            FormBuilder,
+            PageTitle
         ) {
             $(function() {
                 var breadcrumbs = new Breadcrumbs({
@@ -33,6 +35,8 @@
                     breadcrumbs.render();
                     $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
                 });
+
+                PageTitle.set({ 'category.label': '{{ form.vars.value.label }}' });
 
                 FetcherRegistry.initialize().done(function () {
                     FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
