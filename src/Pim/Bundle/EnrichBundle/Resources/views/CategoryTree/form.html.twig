@@ -39,7 +39,7 @@
                                   'class': 'AknDropdown-menuLink delete',
                                   'attr': {
                                       'data-title':   'confirmation.delete'|trans,
-                                      'data-subtitle': 'pim_menu.item.category',
+                                      'data-subtitle': 'category.overview'|trans,
                                       'data-dialog':  'alert',
                                       'data-message': 'info.category.products limit exceeded'|trans({ '%limit%': get_products_limit_for_removal()|default('0') })
                                   }
@@ -56,7 +56,7 @@
                               (form.vars.value.parent ? 'flash.category.removed' : 'flash.tree.removed')|trans,
                               '',
                               'AknDropdown-menuLink delete',
-                              'pim_menu.item.category'
+                              'category.overview'|trans
                           ) }}
                       {% endif %}
                   </div>

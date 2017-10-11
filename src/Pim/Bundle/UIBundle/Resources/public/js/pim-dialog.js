@@ -41,7 +41,8 @@ define(
                     okText: __('OK'),
                     cancelText: __('Cancel'),
                     template: this.template,
-                    buttonClass: 'AknButton--action'
+                    buttonClass: 'AknButton--action',
+                    illustrationType: this.getIllustrationType(subTitle)
                 });
 
                 alert.$el.addClass('modal--fullPage');
@@ -80,6 +81,10 @@ define(
                 }
             },
 
+            getIllustrationType: function(type = '') {
+                return type.toLowerCase().split(' ').join('-');
+            },
+
             /**
              * Open a confirm modal dialog to validate the action made by user
              * If user validate its action, a js callback function is called
@@ -98,7 +103,8 @@ define(
                     cancelText: __('Cancel'),
                     buttonClass: buttonClass || 'AknButton--action',
                     template: this.template,
-                    allowCancel: true
+                    allowCancel: true,
+                    illustrationType: this.getIllustrationType(subTitle)
                 });
 
                 confirm.$el.addClass('modal--fullPage');

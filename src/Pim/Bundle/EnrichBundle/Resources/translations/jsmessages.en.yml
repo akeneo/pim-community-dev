@@ -10,8 +10,8 @@ confirmation:
         channel:          Are you sure you want to delete this channel?
         group:            Are you sure you want to delete this group?
         group_type:       Are you sure you want to delete this group type?
-        import profile:   Are you sure you want to delete this import profile?
-        export profile:   Are you sure you want to delete this export profile?
+        import_profile:   Are you sure you want to delete this import profile?
+        export_profile:   Are you sure you want to delete this export profile?
         user:             Are you sure you want to delete this user?
         role:             Are you sure you want to delete this role?
         job_instance:     Are you sure you want to delete this job instance?
