@@ -22,7 +22,7 @@
 - API-397: As Mary, I want to only see my launched jobs in the dashboard
 - API-389: As Mary, I want to only see my launched jobs in the process tracker
 - PIM-6881: Fix common attributes design
-- PIM-6581: Fix completeness panel in case of a big number of channels
+- PIM-6851: Fix completeness panel in case of a big number of channels
 - PIM-6895: Improve performances on products datagrid
 
 ## Better manage products with variants!
