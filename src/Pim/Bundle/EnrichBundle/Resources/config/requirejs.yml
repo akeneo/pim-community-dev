@@ -873,6 +873,7 @@ config:
         pim/form/common/fields/date:     pimenrich/js/form/common/fields/date
         pim/form/common/fields/select:   pimenrich/js/form/common/fields/select
         pim/form/common/fields/text:     pimenrich/js/form/common/fields/text
+        pim/form/common/fields/textarea: pimenrich/js/form/common/fields/textarea
 
         # PEF fields
         pim/field:                  pimenrich/js/product/field/field
@@ -978,6 +979,7 @@ config:
         pim/template/form/common/fields/date:     pimenrich/templates/form/common/fields/date.html
         pim/template/form/common/fields/select:   pimenrich/templates/form/common/fields/select.html
         pim/template/form/common/fields/text:     pimenrich/templates/form/common/fields/text.html
+        pim/template/form/common/fields/textarea: pimenrich/templates/form/common/fields/textarea.html
 
         # Attribute group
         pim/template/form/attribute-group/tab/attribute: pimenrich/templates/attribute-group/tab/attribute.html
