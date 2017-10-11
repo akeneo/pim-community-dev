@@ -23,7 +23,7 @@ class ViolationNormalizer implements NormalizerInterface
     {
         $path = $this->getStandardPath($violation);
 
-        if (null === $path) {
+        if (null === $path || '' === $path) {
             return [
                 'message' => $violation->getMessage(),
                 'global'  => true,
