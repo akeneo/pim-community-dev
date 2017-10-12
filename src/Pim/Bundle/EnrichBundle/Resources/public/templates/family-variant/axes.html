@@ -1,0 +1,49 @@
+<div  class="AknFamilyVariant-level">
+    <div class="common-attribute AknFamilyVariant-column AknFamilyVariant-column--common" style="display:flex,">
+        <div class="attribute-list">
+        <% groupAttributes(commonAttributes).forEach(section => { %>
+            <span class="AknFamilyVariant-columTitle AknVerticalList-item">
+                <%- i18n.getLabel(section.attributeGroup.labels, UserContext.get('uiLocale'), section.attributeGroup.code) %>
+            </span>
+            <ul class="AknFamilyVariant-columnList">
+                <% section.attributes.forEach(function (attribute) { %>
+                    <li class="AknVerticalList-item">
+                        <%- i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code) %>
+                    </li>
+                <% }) %>
+            </ul>
+        <% }) %>
+        </div>
+    </div>
+</div>
+<% familyVariant.variant_attribute_sets.forEach(function (level) { %>
+<div class="AknFamilyVariant-level">
+    <div class="AknFamilyVariant-levelPath">
+        <span class="AknFamilyVariant-levelPathLabel"><%- __('pim_enrich.entity.family.variant.level_' + level.level + '.label') %></span>
+    </div>
+    <div class="family-variant-level AknFamilyVariant-column AknFamilyVariant-column--level<%- level.level %>" data-level="<%- level.level %>">
+        <div class="AknFamilyVariant-axes AknVerticalList-item">
+            <%- level.axes.reduce(function (result, axis) {
+                result.push(i18n.getLabel(getAttribute(axis).labels, UserContext.get('uiLocale'), getAttribute(axis).code))
+
+                return result;
+            }, []).join(', ') %>
+            (<%- __('pim_enrich.entity.family.variant.axis.label') %>)
+        </div>
+        <span class="attribute-list">
+        <% groupAttributes(level.attributes).forEach(section => { %>
+            <span class="AknFamilyVariant-columTitle AknVerticalList-item">
+                <%- i18n.getLabel(section.attributeGroup.labels, UserContext.get('uiLocale'), section.attributeGroup.code) %>
+            </span>
+            <ul class="AknFamilyVariant-columnList">
+                <% section.attributes.forEach(function (attribute) { %>
+                    <li class="AknVerticalList-item AknFamilyVariant-columnListItem">
+                        <%- i18n.getLabel(attribute.labels, UserContext.get('uiLocale'), attribute.code) %>
+                    </li>
+                <% }) %>
+            </ul>
+        <% }) %>
+        </span>
+    </div>
+</div>
+<% }); %>

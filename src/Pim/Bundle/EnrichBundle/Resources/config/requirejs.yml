@@ -123,6 +123,11 @@ config:
                         urls:
                             list: pim_enrich_family_rest_index
                             get: pim_enrich_family_rest_get
+                family-variant:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: pim_enrich_family_variant_rest_get
                 channel:
                     module: pim/base-fetcher
                     options:
@@ -639,6 +644,10 @@ config:
         pim/family-edit-form/properties/general:                            pimenrich/js/family/form/properties/general
         pim/family-edit-form/attributes:                                    pimenrich/js/family/form/attributes
 
+        pim/family-variant-edit-form/edit:                                  pimenrich/js/family-variant/form/edit
+        pim/family-variant-edit-form/axes:                                  pimenrich/js/family-variant/form/axes
+        pim/family-variant-edit-form/save:                                  pimenrich/js/family-variant/form/save
+
         # Exports
         pim/job-instance-edit-form/save:        pimenrich/js/job/common/edit/save
         pim/job-instance-export-edit-form/save: pimenrich/js/job/export/edit/save
@@ -693,6 +702,9 @@ config:
         pim/product-model-edit-form/save: pimenrich/js/product-model/form/save
         pim/product-model-edit-form/complete-variant-product: pimenrich/js/product-model/form/complete-variant-product
         pim/product-model-edit-form/history: pimenrich/js/product/form/history
+
+        oro/datagrid/navigate-product-and-product-model-action: pimenrich/js/datagrid/action/navigate-product-and-product-model-action
+        oro/datagrid/edit-in-modal-action:                      pimenrich/js/datagrid/action/edit-in-modal-action
 
         # Attribute group
         pim/attribute-group-form/tab/attribute: pimenrich/js/attribute-group/form/tab/attribute
@@ -997,6 +1009,9 @@ config:
         pim/template/family/tab/general/attribute-as-image:  pimenrich/templates/family/tab/general/attribute-as-image.html
         pim/template/family/tab/family-variant:              pimenrich/templates/family/tab/family-variant.html
 
+        pim/template/family-variant/edit:                    pimenrich/templates/family-variant/edit.html
+        pim/template/family-variant/axes:                    pimenrich/templates/family-variant/axes.html
+
         # Grid
         pim/template/product/grid/locale-switcher:           pimenrich/templates/product/grid/locale-switcher.html
         pim/template/product/grid/column-inner:              pimenrich/templates/product/grid/column-inner.html
@@ -1149,5 +1164,3 @@ config:
         pimcommunity/grid/view-selector/selector: pimenrich/js/grid/view-selector
         pimcommunity/grid/view-selector/line:     pimenrich/js/grid/view-selector-line
         pimcommunity/grid/view-selector/current:  pimenrich/js/grid/view-selector-current
-
-        oro/datagrid/navigate-product-and-product-model-action: pimenrich/js/datagrid/action/navigate-product-and-product-model-action

@@ -327,6 +327,10 @@ pim_enrich:
                 title: Create
             message:
                 created: Family successfully created
+            variant:
+                axis.label: Variant axis
+                level_1.label: Variant attributes level one
+                level_2.label: Variant attributes level two
         attribute_option:
             code: Code
             label: Label

@@ -30,19 +30,21 @@
         <h3>{{title}}</h3>\
       </div>\
     <% } %>\
-    <div class="modal-body">{{content}}</div>\
-    <div class="AknButtonList AknButtonList--right modal-footer">\
-      <% if (allowCancel) { %>\
-        <% if (cancelText) { %>\
-          <a href="#" title="{{cancelText}}" class="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text">\
-            {{cancelText}}\
-          </a>\
+    <div class="modal-body {{ (!buttons && !title) ? \'modal-full-body\' : \'\' }}">{{content}}</div>\
+    <% if (buttons) { %>\
+      <div class="AknButtonList AknButtonList--right modal-footer">\
+        <% if (allowCancel) { %>\
+          <% if (cancelText) { %>\
+            <a href="#" title="{{cancelText}}" class="AknButtonList-item AknButton AknButton--grey cancel icons-holder-text">\
+              {{cancelText}}\
+            </a>\
+          <% } %>\
         <% } %>\
-      <% } %>\
-      <a href="#" title="{{okText}}" class="AknButtonList-item AknButton AknButton--apply ok icons-holder-text">\
-        {{okText}}\
-      </a>\
-    </div>\
+        <a title="{{okText}}" class="AknButtonList-item AknButton AknButton--apply ok icons-holder-text">\
+          {{okText}}\
+        </a>\
+      </div>\
+    <% } %>\
   ');
 
   //Reset to users' template settings
@@ -112,6 +114,7 @@
         allowCancel: true,
         escape: true,
         animate: false,
+        buttons: true,
         template: template
       }, options);
     },
