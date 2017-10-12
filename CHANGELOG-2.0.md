@@ -31,11 +31,13 @@
 ## Better manage products with variants!
 
 - PIM-6343: Classify product models via the edit form
+- API-394: Warn API user if they try to use `variant_group` field on product POST/PATCH
 - PIM-6346: Add history on product model edit page
 - PIM-6863: Hide "Variant" meta in non variant products
 
 ## BC breaks
 
+- Throw exception when trying to create or update a product with the `variant_group` field through the API, now you have to use `parent` field [please see the link below](http://api.akeneo.com/documentation/products-with-variants.html)
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template 
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`

@@ -394,6 +394,13 @@ class ProductController
      */
     protected function updateProduct(ProductInterface $product, array $data, string $anchor): void
     {
+        if (array_key_exists('variant_group', $data)) {
+            throw new DocumentedHttpException(
+                Documentation::URL_DOCUMENTATION . 'products-with-variants.html',
+                'Property "variant_group" does not exist anymore. Check the link below to understand why.'
+            );
+        }
+
         try {
             $this->updater->update($product, $data);
         } catch (PropertyException $exception) {
