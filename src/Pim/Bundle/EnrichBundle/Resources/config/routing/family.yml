@@ -43,3 +43,10 @@ pim_enrich_family_variant_rest_get:
     requirements:
         identifier: '[a-zA-Z0-9_]+'
     methods: [GET]
+
+pim_enrich_family_rest_get_available_axes:
+    path: /rest/{code}/available_axes
+    defaults: { _controller: pim_enrich.controller.rest.family:getAvailableAxesAction }
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+    methods: [GET]

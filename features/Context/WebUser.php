@@ -1113,6 +1113,15 @@ class WebUser extends PimContext
     }
 
     /**
+     * @Given /^I open the family variant creation form$/
+     */
+    public function iOpenFamilyVariantCreationForm()
+    {
+        $this->getCurrentPage()->openFamilyVariantCreationForm();
+        $this->wait();
+    }
+
+    /**
      * @param string $families
      *
      * @Then /^I should see the families (.*)$/

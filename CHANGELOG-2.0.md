@@ -34,6 +34,7 @@
 - API-394: Warn API user if they try to use `variant_group` field on product POST/PATCH
 - PIM-6346: Add history on product model edit page
 - PIM-6863: Hide "Variant" meta in non variant products
+- PIM-6327: Create a family variant through the UI
 
 ## BC breaks
 

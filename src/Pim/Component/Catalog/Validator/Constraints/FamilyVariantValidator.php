@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
+use Pim\Component\Catalog\Model\FamilyVariant as FamilyVariantModel;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraint;
@@ -22,17 +23,12 @@ class FamilyVariantValidator extends ConstraintValidator
     /** @var TranslatorInterface */
     private $translator;
 
-    /** @var array */
-    private $availableTypes;
-
     /**
      * @param TranslatorInterface $translator
-     * @param array               $availableTypes
      */
-    public function __construct(TranslatorInterface $translator, array $availableTypes)
+    public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
-        $this->availableTypes = $availableTypes;
     }
 
     /**
@@ -118,7 +114,8 @@ class FamilyVariantValidator extends ConstraintValidator
                 ])->addViolation();
             }
 
-            if (!in_array($axis->getType(), $this->availableTypes)) {
+            $availableTypes = FamilyVariantModel::getAvailableAxesAttributeTypes();
+            if (!in_array($axis->getType(), $availableTypes)) {
                 $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_attribute_type');
                 $this->context->buildViolation($message, [
                     '%axis%' => $axis->getCode(),
@@ -165,6 +162,11 @@ class FamilyVariantValidator extends ConstraintValidator
             } elseif (static::MAXIMUM_AXES_NUMBER < $attributeSet->getAxes()->count()) {
                 $message = $this->translator->trans('pim_catalog.constraint.family_variant_axes_number_of_axes');
                 $this->context->buildViolation($message)->addViolation();
+            } elseif (0 === $attributeSet->getAxes()->count()) {
+                $message = $this->translator->trans('pim_catalog.constraint.family_variant_no_axis');
+                $this->context->buildViolation($message, [
+                    '%level%' => $i + 1,
+                ])->addViolation();
             }
 
             $i++;

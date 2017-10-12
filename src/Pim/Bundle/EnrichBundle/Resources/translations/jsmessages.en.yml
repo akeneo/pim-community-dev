@@ -331,6 +331,16 @@ pim_enrich:
                 axis.label: Variant axis
                 level_1.label: Variant attributes level one
                 level_2.label: Variant attributes level two
+                add_variant: Add variant
+                create_label: Create a new family variant
+                create_description: In a family variant, you can define a structure for products with variants. Choose the number of managed variant levels, the attributes used as variant axes for each level, and then define how the attributes are distributed.
+                create: Create
+                cancel: Cancel
+                code: Code
+                label: Label
+                levels: Variant levels
+                axis_level: Variant axis level
+                required: required
         attribute_option:
             code: Code
             label: Label
@@ -536,6 +546,8 @@ pim_enrich:
                     required_label: Required
                 variant:
                     title: Variants
+                    flash:
+                        family_variant_created: Family variant successfully created
                 history:
                     title: History
 

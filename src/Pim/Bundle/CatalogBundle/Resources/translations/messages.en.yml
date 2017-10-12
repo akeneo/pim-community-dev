@@ -9,6 +9,7 @@ pim_catalog:
         family_variant_axes_attribute_type: Variant axes "%axis%" must be a boolean, a simple select, a simple reference data or a metric
         family_variant_axes_wrong_type: Variant axes "%axis%" cannot be localizable, not scopable and not locale specific
         family_variant_axes_number_of_axes: A variant attribute set cannot have more than 5 attributes
+        family_variant_no_axis: There should be at least one attribute defined as axis for the attribute set for level "%level%"
         family_variant_axis_level: Attribute "%axis%" must be set as attribute in the same variant attribute set it was set as axis
         family_variant_has_family_attribute: '"%attribute%" attribute cannot be added to "%family_variant%" family variant, as it is not an attribute of the "%family%" family'
         family_variant_level_do_not_exist: There is no variant attribute set for level "%level%"

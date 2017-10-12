@@ -7,8 +7,11 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\FamilySearchableRepository;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Factory\FamilyFactory;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyVariant;
 use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
 use Pim\Component\Catalog\Updater\FamilyUpdater;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -194,6 +197,28 @@ class FamilyController
         $this->remover->remove($family);
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @param string  $code
+     *
+     * @return JsonResponse
+     */
+    public function getAvailableAxesAction(string $code): JsonResponse
+    {
+        $family = $this->getFamily($code);
+        $allowedTypes = FamilyVariant::getAvailableAxesAttributeTypes();
+
+        $availableAxes = $family->getAttributes()->filter(function (AttributeInterface $attribute) use ($allowedTypes) {
+            return in_array($attribute->getType(), $allowedTypes);
+        });
+
+        $normalizedAvailableAttributes = [];
+        foreach ($availableAxes as $availableAxis) {
+            $normalizedAvailableAttributes[] = $this->normalizer->normalize($availableAxis, 'internal_api');
+        }
+
+        return new JsonResponse($normalizedAvailableAttributes);
     }
 
     /**
