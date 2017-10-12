@@ -4,7 +4,6 @@
 
 - TIP-808: Add version strategy for js and css assets, no more need to ask final users to refresh their browser cache when applying a new patch!
 - PRE_SAVE and POST_SAVE events dispatched by instances of BaseSaver now include an "is_new" argument indicating if entities are being inserted or updated.
-- API-395: Get list of product models via API
 - TIP-813: Move attribute form fields to make them generic
 
 ## Bug Fixes
@@ -27,14 +26,21 @@
 - PIM-6851: Fix completeness panel in case of a big number of channels
 - PIM-6895: Improve performances on products datagrid
 - PIM-6539: Update cross icons with new design
+- PIM-6776: Missing translations for page titles
 
 ## Better manage products with variants!
 
-- PIM-6343: Classify product models via the edit form
-- API-394: Warn API user if they try to use `variant_group` field on product POST/PATCH
-- PIM-6346: Add history on product model edit page
+- PIM-6343: Classify product models via the product form in the tab "categories"
+- PIM-6327: Create a family variant from the UI (without distribution of the attributes)
+- PIM-6857: Display a family variant from the UI
+- PIM-6346: Add history on product model form
 - PIM-6863: Hide "Variant" meta in non variant products
-- PIM-6327: Create a family variant through the UI
+- PIM-6816: Manage validation error messages for product models
+- PIM-6893: Fix cannot create a variant product if the axes combination already exist
+- API-394: Warn API user if they try to use `variant_group` field on product POST/PATCH
+- API-395: Get list of product models via API
+- API-373: Update a single variant product via API
+- API-376: Update a list of variant products via API
 
 ## BC breaks
 
