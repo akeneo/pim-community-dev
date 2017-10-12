@@ -30,11 +30,12 @@ spec:
             tcpSocket:
               port: 27017
           resources: 
-            requests: {cpu: "100m", memory: "600Mi"}
+            requests: {cpu: "200m", memory: "1000Mi"}
           volumeMounts:
             - { name: tmp-pod, mountPath: /tmp/pod, readOnly: true }
+            - { name: mongo-data, mountPath: /data/db }
         - name: mysql
-          image: eu.gcr.io/akeneo-ci/mysql:5.5-2
+          image: eu.gcr.io/akeneo-ci/mysql:5.5-3
           env:
             - { name: MYSQL_ROOT_PASSWORD, value: root }
             - { name: MYSQL_USER, value: akeneo_pim }
@@ -98,7 +99,7 @@ spec:
           resources:
             requests: {cpu: "300m", memory: "300Mi"}
         - name: selenium
-          image: eu.gcr.io/akeneo-ci/selenium:standalone-firefox-2.53.1-beryllium
+          image: selenium/standalone-firefox:2.53.1-beryllium
           command: ["/bin/bash", "-c"]
           args:
             - |
@@ -137,4 +138,5 @@ spec:
         - { name: tmp-pod, emptyDir: {medium: Memory}}
         - { name: artifacts, emptyDir: {medium: Memory}}
         - { name: mysql, emptyDir: {medium: Memory}}
+        - { name: mongo-data, emptyDir: {medium: Memory}}
       restartPolicy: Never
