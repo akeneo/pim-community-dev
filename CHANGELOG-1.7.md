@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug Fixes
+
+PIM-6901: Fix ACL with a new role when we want to edit users
+
 # 1.7.10 (2017-10-10)
 
 ## Bug Fixes
