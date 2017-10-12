@@ -1,7 +1,10 @@
 <div data-toggle="dropdown">
     <div class="AknColumn-subtitle"><%- label %></div>
     <div class="AknColumn-value product-status" data-status="<%- status ? 'enabled' : 'disabled' %>">
-        <div class="status-switcher"><%- status ? enabledLabel : disabledLabel %></div>
+        <div class="status-switcher">
+            <%- status ? enabledLabel : disabledLabel %>
+            <div class="AknColumn-blockDown"></div>
+        </div>
     </div>
 </div>
 <ul class="AknDropdown-menu">
