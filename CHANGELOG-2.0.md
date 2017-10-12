@@ -27,6 +27,7 @@
 - PIM-6895: Improve performances on products datagrid
 - PIM-6539: Update cross icons with new design
 - PIM-6776: Missing translations for page titles
+- PIM-6667: Update loading mask design
 
 ## Better manage products with variants!
 
