@@ -35,8 +35,9 @@ define(
 
             /**
              * Open a modal dialog without cancel button
-             * @param string content
-             * @param string title
+             * @param string content The message in the modal
+             * @param string title The title of the modal
+             * @param string subTitle The subtitle for the modal
              */
             alert: function (content, title, subTitle) {
                 const alert = new Backbone.BootstrapModal({
@@ -88,11 +89,16 @@ define(
             },
 
             /**
-             * Open a confirm modal dialog to validate the action made by user
-             * If user validate its action, a js callback function is called
-             * @param string content
-             * @param string title
-             * @param function callback
+            * Open a confirm modal dialog to validate the action made by user
+            * If user validate its action, a js callback function is called
+             * @param  {String}   content           Message inside the modal
+             * @param  {String}   title             Title of the modal
+             * @param  {Function} callback          Action to execute after validation
+             * @param  {String}   subTitle          The subtitle (can be entity type)
+             * @param  {String}   buttonClass       The class for OK button
+             * @param  {String}   buttonText        The OK button label
+             * @param  {String}   illustrationClass Class for the illustration
+             * @return {Promise}                    
              */
             confirm: function (content, title, callback, subTitle, buttonClass, buttonText, illustrationClass) {
                 const deferred = $.Deferred();
