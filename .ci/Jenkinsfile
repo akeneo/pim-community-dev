@@ -44,14 +44,12 @@ stage("Build") {
             }
             container("docker") {
                 sh "cp behat.ci.yml behat.yml"
-		sh "sed -i '/features:/d' behat.yml"  
                 sh "sed -i \"/contexts/i\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ paths:\" behat.yml"
                 for (feature in features) {
-                    sh "sed -i \"/paths/a\\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
+                    sh "sed -i \"/features:/a\\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
                 }
-
                 sh "sed -i \"/contexts/i\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ paths:\" behat.yml"
-		sh "cat behat.yml"
+        		sh "cat behat.yml"
 
                 sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
                 sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
