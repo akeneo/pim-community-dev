@@ -23,9 +23,10 @@ datagrid:
                     - id
         actions:
             edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:         navigate
                 label:        Edit locale
-                icon:         pencil
                 link:         edit_link
                 acl_resource: pimee_enrich_locale_edit_permissions
                 rowAction:    true

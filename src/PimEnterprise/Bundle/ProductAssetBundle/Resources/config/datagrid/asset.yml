@@ -97,10 +97,11 @@ datagrid:
                             choices: '@pim_catalog.repository.channel->getLabelsIndexedByCode(@pim_user.context.user->getCurrentLocaleCode())'
         actions:
             edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:      navigate
                 label:     pimee_product_asset.enrich_asset.grid.edit
                 tab:       pim_product_asset_properties
-                icon:      pencil
                 link:      edit_link
                 rowAction: true
         properties:
