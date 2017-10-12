@@ -22,6 +22,7 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
@@ -53,6 +54,14 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     public function setLocaleRepository($localeRepository)
     {
         $this->localeRepository = $localeRepository;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProductQueryBuilderFactory(ProductQueryBuilderFactoryInterface $factory)
+    {
+        $this->queryBuilderFactory = $factory;
     }
 
     /**
