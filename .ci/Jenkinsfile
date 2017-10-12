@@ -45,7 +45,7 @@ stage("Build") {
             container("docker") {
                 sh "cp behat.ci.yml behat.yml"
                 sh "sed -i '/features:/d' behat.yml"
-                		sh "sed -i '/path:/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ features:\' behat.yml"
+                		sh "sed -i '/paths:/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ features:\' behat.yml"
                 sh "sed -i \"/contexts/i\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ paths:\" behat.yml"
                 for (feature in features) {
                     sh "sed -i \"/features:/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
