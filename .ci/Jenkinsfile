@@ -46,9 +46,8 @@ stage("Build") {
                 sh "cp behat.ci.yml behat.yml"
                 sh "sed -i \"/contexts/i\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ paths:\" behat.yml"
                 for (feature in features) {
-                    sh "sed -i \"/features:/a\\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
+                    sh "sed -i \"/features:/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
                 }
-                sh "sed -i \"/contexts/i\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ paths:\" behat.yml"
         		sh "cat behat.yml"
 
                 sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
