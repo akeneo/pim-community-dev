@@ -22,7 +22,7 @@ spec:
         - "akeneo-behat.dev"
       containers:
         - name: mongodb
-          image: eu.gcr.io/akeneo-ci/mongo:2.4-3
+          image: eu.gcr.io/akeneo-ci/mongo:2.4-4
           readinessProbe:
             timeoutSeconds: 1
             initialDelaySeconds: 5
