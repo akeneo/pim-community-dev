@@ -16,7 +16,7 @@ extensions:
                 dropZone: content
 
     pim-attribute-form-textarea-type-specific-params-wysiwyg-enabled:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/form/common/fields/boolean
         parent: pim-attribute-form-textarea-type-specific-params
         targetZone: content
         position: 100
@@ -35,7 +35,7 @@ extensions:
                 dropZone: content
 
     pim-attribute-form-textarea-validation-params-max-characters:
-        module: pim/attribute-edit-form/properties/text
+        module: pim/form/common/fields/text
         parent: pim-attribute-form-textarea-validation-params
         targetZone: content
         position: 100

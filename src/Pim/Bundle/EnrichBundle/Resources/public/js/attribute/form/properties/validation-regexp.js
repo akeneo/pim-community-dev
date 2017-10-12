@@ -6,7 +6,7 @@
 'use strict';
 
 define([
-    'pim/attribute-edit-form/properties/text'
+    'pim/form/common/fields/text'
 ],
 function (
     BaseField

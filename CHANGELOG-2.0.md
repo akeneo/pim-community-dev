@@ -5,6 +5,7 @@
 - TIP-808: Add version strategy for js and css assets, no more need to ask final users to refresh their browser cache when applying a new patch!
 - PRE_SAVE and POST_SAVE events dispatched by instances of BaseSaver now include an "is_new" argument indicating if entities are being inserted or updated.
 - API-395: Get list of product models via API
+- TIP-813: Move attribute form fields to make them generic
 
 ## Bug Fixes
 

@@ -8,21 +8,20 @@
 define([
     'jquery',
     'underscore',
+    'pim/form/common/fields/field',
     'oro/translator',
-    'pim/attribute-edit-form/properties/field',
-    'pim/template/attribute/tab/properties/boolean',
-    'bootstrap.bootstrapswitch'
+    'pim/template/form/common/fields/select'
 ],
 function (
     $,
     _,
-    __,
     BaseField,
+    __,
     template
 ) {
     return BaseField.extend({
         events: {
-            'change input': function (event) {
+            'change select': function (event) {
                 this.errors = [];
                 this.updateModel(this.getFieldValue(event.target));
                 this.getRoot().render();
@@ -40,9 +39,10 @@ function (
 
             return this.template(_.extend(templateContext, {
                 value: this.getFormData()[this.fieldName],
+                choices: this.formatChoices(this.config.choices || []),
+                multiple: this.config.isMultiple,
                 labels: {
-                    on: __('switch_on'),
-                    off: __('switch_off')
+                    defaultLabel: ''
                 }
             }));
         },
@@ -51,14 +51,26 @@ function (
          * {@inheritdoc}
          */
         postRender: function () {
-            this.$('.switch').bootstrapSwitch();
+            this.$('select.select2').select2({allowClear: true});
+        },
+
+        /**
+         * @param {Array} choices
+         */
+        formatChoices: function (choices) {
+            return Array.isArray(choices) ?
+                _.object(choices, choices) :
+                _.mapObject(choices, __)
+            ;
         },
 
         /**
          * {@inheritdoc}
          */
         getFieldValue: function (field) {
-            return $(field).is(':checked');
+            var value = $(field).val();
+
+            return this.config.isMultiple && null === value ? [] : value;
         }
     });
 });

@@ -46,7 +46,7 @@ extensions:
                 dropZone: content
 
     pim-attribute-form-metric-edit-validation-params-negative-allowed:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/form/common/fields/boolean
         parent: pim-attribute-form-metric-edit-validation-params
         targetZone: content
         position: 100
@@ -54,7 +54,7 @@ extensions:
             fieldName: negative_allowed
 
     pim-attribute-form-metric-edit-validation-params-decimals-allowed:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/form/common/fields/boolean
         parent: pim-attribute-form-metric-edit-validation-params
         targetZone: content
         position: 110
@@ -62,7 +62,7 @@ extensions:
             fieldName: decimals_allowed
 
     pim-attribute-form-metric-edit-validation-params-number-min:
-        module: pim/attribute-edit-form/properties/text
+        module: pim/form/common/fields/text
         parent: pim-attribute-form-metric-edit-validation-params
         targetZone: content
         position: 120
@@ -70,7 +70,7 @@ extensions:
             fieldName: number_min
 
     pim-attribute-form-metric-edit-validation-params-number-max:
-        module: pim/attribute-edit-form/properties/text
+        module: pim/form/common/fields/text
         parent: pim-attribute-form-metric-edit-validation-params
         targetZone: content
         position: 130

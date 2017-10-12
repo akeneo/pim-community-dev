@@ -13,7 +13,7 @@ define([
     'oro/translator',
     'pim/form',
     'pim/common/tab',
-    'pim/template/attribute/tab/properties/field'
+    'pim/template/form/common/fields/field'
 ],
 function (
     $,
@@ -113,6 +113,7 @@ function (
                     fieldLabel: __('pim_enrich.form.attribute.tab.properties.label.' + this.fieldName),
                     requiredLabel: __('pim_enrich.form.required'),
                     fieldName: this.fieldName,
+                    fieldId: this.getFieldId(),
                     errors: this.errors,
                     readOnly: this.isReadOnly(),
                     required: this.config.required || false
@@ -168,6 +169,15 @@ function (
          */
         getFieldValue: function () {
             throw new Error('Please implement the getFieldValue() method in your concrete field class.');
+        },
+
+        /**
+         * Returns a pseudo-unique code used as reference inside templates (as "for" attributes values for example).
+         *
+         * @returns {String}
+         */
+        getFieldId: function () {
+            return Math.random().toString(10).substring(2);
         }
     });
 });

@@ -16,7 +16,7 @@ extensions:
                 dropZone: content
 
     pim-attribute-form-date-validation-params-date-min:
-        module: pim/attribute-edit-form/properties/date
+        module: pim/form/common/fields/date
         parent: pim-attribute-form-date-validation-params
         targetZone: content
         position: 100
@@ -24,7 +24,7 @@ extensions:
             fieldName: date_min
 
     pim-attribute-form-date-validation-params-date-max:
-        module: pim/attribute-edit-form/properties/date
+        module: pim/form/common/fields/date
         parent: pim-attribute-form-date-validation-params
         targetZone: content
         position: 110

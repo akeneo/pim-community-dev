@@ -8,8 +8,8 @@
 define([
     'jquery',
     'underscore',
-    'pim/attribute-edit-form/properties/field',
-    'pim/template/attribute/tab/properties/text'
+    'pim/form/common/fields/field',
+    'pim/template/form/common/fields/textarea'
 ],
 function (
     $,
@@ -20,12 +20,9 @@ function (
     return BaseField.extend({
         template: _.template(template),
         events: {
-            'keyup input': function (event) {
+            'keyup textarea': function (event) {
                 this.errors = [];
                 this.updateModel(this.getFieldValue(event.target));
-                // Text fields don't trigger form render because there is no case of dependency with other fields.
-                // Also, the fact the form is rendered when the focus is lost causes issues with other events triggering
-                // (e.g. click on another field or on a button).
             }
         },
 

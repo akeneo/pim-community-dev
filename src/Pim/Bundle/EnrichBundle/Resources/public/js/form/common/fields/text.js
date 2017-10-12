@@ -6,50 +6,43 @@
 'use strict';
 
 define([
+    'jquery',
     'underscore',
-    'oro/translator',
     'pim/form/common/fields/field',
-    'pim/template/form/common/fields/select'
+    'pim/template/form/common/fields/text'
 ],
 function (
+    $,
     _,
-    __,
     BaseField,
     template
 ) {
     return BaseField.extend({
+        template: _.template(template),
         events: {
-            'change select': function (event) {
+            'keyup input': function (event) {
                 this.errors = [];
                 this.updateModel(this.getFieldValue(event.target));
-                this.getRoot().render();
+                // Text fields don't trigger form render because there is no case of dependency with other fields.
+                // Also, the fact the form is rendered when the focus is lost causes issues with other events triggering
+                // (e.g. click on another field or on a button).
             }
         },
-        template: _.template(template),
 
         /**
          * {@inheritdoc}
          */
         renderInput: function (templateContext) {
-            var value = this.getFormData()[this.fieldName];
-            var choices = {};
-            choices[value] = __('pim_enrich.entity.attribute.type.' + value);
-
             return this.template(_.extend(templateContext, {
-                value: value,
-                choices: choices,
-                multiple: false,
-                labels: {
-                    defaultLabel: ''
-                }
+                value: this.getFormData()[this.fieldName]
             }));
         },
 
         /**
          * {@inheritdoc}
          */
-        postRender: function () {
-            this.$('select.select2').select2();
+        getFieldValue: function (field) {
+            return $(field).val();
         }
     });
 });
