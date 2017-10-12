@@ -17,13 +17,6 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 interface ProductRepositoryInterface extends ObjectRepository
 {
     /**
-     * @param ProductQueryBuilderFactoryInterface $factory
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setProductQueryBuilderFactory(ProductQueryBuilderFactoryInterface $factory);
-
-    /**
      * Get available attribute ids from a product ids list
      *
      * @param array $productIds

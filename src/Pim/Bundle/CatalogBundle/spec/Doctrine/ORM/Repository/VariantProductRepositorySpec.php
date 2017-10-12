@@ -20,16 +20,10 @@ class VariantProductRepositorySpec extends ObjectBehavior
 {
     function let(
         EntityManager $em,
-        ClassMetadata $class,
-        ConfigurationRegistryInterface $registry,
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        GroupRepositoryInterface $groupRepository
+        ClassMetadata $class
     ) {
         $class->name = 'Pim\Component\Catalog\Model\Product';
         $this->beConstructedWith($em, $class);
-        $this->setReferenceDataRegistry($registry);
-        $this->setProductQueryBuilderFactory($pqbFactory);
-        $this->setGroupRepository($groupRepository);
     }
 
     function it_is_initializable()

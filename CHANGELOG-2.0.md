@@ -48,6 +48,9 @@
 - Rename class parameter `pim_catalog.validator.constraint.sibling_unique_variant_axes.class` into `pim_catalog.validator.constraint.unique_variant_axes.class`
 - Replace the class parameter of the service `pim_catalog.repository.variant_product` with `pim_catalog.repository.variant_product.class`
 - Add method `getCodesIfExist` to `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
+- Rename `Pim\Bundle\EnrichBundle\Controller\Rest\ValueController` to `Pim\Bundle\EnrichBundle\Controller\Rest\ValuesController`
+- Remove method `Pim\Component\Catalog\Repository\ProductRepositoryInterface::setProductQueryBuilderFactory()`
+- Remove method `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository::setReferenceDataRegistry()`
 
 # 2.0.1 (2017-10-05)
 
@@ -161,7 +164,7 @@
 - Remove method `findAllForVariantGroup` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
 - Remove method `getEligibleProductsForVariantGroup` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
 - Remove method `findProductIdsForVariantGroup` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
-- change `Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface::convert()` signature, it return `Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField` instead of an array
+- Change `Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface::convert()` signature, it return `Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField` instead of an array
 
 # 2.0.0 (2017-09-28)
 
