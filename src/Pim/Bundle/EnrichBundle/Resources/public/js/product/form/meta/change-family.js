@@ -27,8 +27,7 @@ define(
         initSelect2
     ) {
         return BaseForm.extend({
-            tagName: 'i',
-            className: 'icon-pencil change-family AknTitleContainer-metaLink',
+            className: 'AknColumn-blockDown change-family',
             modalTemplate: _.template(modalTemplate),
             events: {
                 'click': 'showModal'
