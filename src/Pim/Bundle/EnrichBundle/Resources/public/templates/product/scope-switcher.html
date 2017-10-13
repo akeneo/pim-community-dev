@@ -1,5 +1,6 @@
 <a class="AknActionButton <% if (displayInline) { %>AknActionButton--big AknActionButton--noLeftBorder<% } else { %>AknActionButton--withoutBorder<% } %>" data-toggle="dropdown" href="#">
-    <% if (!displayInline) { %><%- label %>: <% } %><span class="AknActionButton-highlight"><%- currentScope %></span>
+    <% if (!displayInline && displayLabel) { %><%- label %>: <% } %>
+    <span class="AknActionButton-highlight"><%- currentScope %></span>
     <span class="AknActionButton-caret"></span>
 </a>
 <ul class="AknDropdown-menu">
