@@ -27,5 +27,6 @@ Feature: Create an import
     When I fill in the following information:
       | Code  | PRODUCT_IMPORT  |
       | Label | Products import |
+    And the field Job should contain ""
     And I press the "Save" button
     Then I should see validation error "Failed to create an import with an unknown job definition"
