@@ -4,15 +4,14 @@ namespace Oro\Bundle\UserBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Bundle\UserBundle\Event\UserEvent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class UserController extends Controller
 {
@@ -24,6 +23,7 @@ class UserController extends Controller
     public function viewAction($id)
     {
         $user = $this->get('pim_user.repository.user')->find($id);
+
         return $this->view($user);
     }
 
@@ -40,11 +40,19 @@ class UserController extends Controller
      */
     public function updateProfileAction()
     {
-        return $this->update(
-            $this->getUser(),
-            'oro_user_profile_update',
-            ['route' => 'oro_user_profile_view']
-        );
+        $user = $this->getUser();
+        $route = $this->get('router')->generate('oro_user_profile_update');
+
+        if ($this->get('oro_user.form.handler.user')->process($user)) {
+            $this->update($user);
+
+            return new RedirectResponse($route);
+        }
+
+        return [
+            'form'      => $this->get('oro_user.form.user')->createView(),
+            'editRoute' => $route,
+        ];
     }
 
     /**
@@ -57,27 +65,45 @@ class UserController extends Controller
     {
         $user = $this->get('pim_user.factory.user')->create();
 
-        return $this->update($user);
+        if ($this->get('oro_user.form.handler.user')->process($user)) {
+            $user = $this->update($user);
+
+            return new RedirectResponse(
+                $this->get('router')->generate('oro_user_update', ['id' => $user->getId()])
+            );
+        }
+
+        return [
+            'form'      => $this->get('oro_user.form.user')->createView(),
+            'editRoute' => $this->get('router')->generate('oro_user_create')
+        ];
     }
 
     /**
      * Edit user form
      *
      * @Template
+     * @AclAncestor("pim_user_user_edit")
      */
     public function updateAction($id)
     {
-        $user = $this->get('pim_user.repository.user')->findOneBy(['id' => $id]);
-
-        if ($this->getUser()->getUsername() !== $user->getUsername()) {
-            $authorizationChecker = $this->get('security.authorization_checker');
-
-            if (false === $authorizationChecker->isGranted('EDIT', $user)) {
-                throw new AccessDeniedException();
-            }
+        $user = $this->get('pim_user.repository.user')->find($id);
+        if (null === $user) {
+            throw new NotFoundHttpException(sprintf('User with the ID "%s" does not exit', $id));
         }
 
-        return $this->update($user);
+        $route = $this->get('router')->generate('oro_user_update', ['id' => $user->getId()]);
+
+        if ($this->get('oro_user.form.handler.user')->process($user)) {
+            $this->update($user);
+
+            return new RedirectResponse($route);
+        }
+
+        return [
+            'form'      => $this->get('oro_user.form.user')->createView(),
+            'editRoute' => $route
+        ];
     }
 
     /**
@@ -117,40 +143,25 @@ class UserController extends Controller
     }
 
     /**
-     * @param mixed  $user
-     * @param string $updateRoute
-     * @param array  $viewRoute
+     * @param UserInterface $user
      *
-     * @return array
+     * @return UserInterface
      */
-    protected function update($user, $updateRoute = '', $viewRoute = [])
+    protected function update(UserInterface $user)
     {
-        if (!$user instanceof UserInterface) {
-            $user = $this->get('pim_user.repository.user')->find($user);
-        }
+        $this->get('event_dispatcher')->dispatch(
+            UserEvent::POST_UPDATE,
+            new GenericEvent($user, ['current_user' => $this->getUser()])
+        );
 
-        if ($this->get('oro_user.form.handler.user')->process($user)) {
-            $this->get('event_dispatcher')->dispatch(
-                UserEvent::POST_UPDATE,
-                new GenericEvent($user, ['current_user' => $this->getUser()])
-            );
+        $this->get('session')->getFlashBag()->add(
+            'success',
+            $this->get('translator')->trans('oro.user.controller.user.message.saved')
+        );
 
-            $this->get('session')->getFlashBag()->add(
-                'success',
-                $this->get('translator')->trans('oro.user.controller.user.message.saved')
-            );
+        $this->get('session')->remove('dataLocale');
 
-            $this->get('session')->remove('dataLocale');
-
-            return new RedirectResponse(
-                $this->get('router')->generate('oro_user_update', ['id' => $user->getId()])
-            );
-        }
-
-        return [
-            'form'      => $this->get('oro_user.form.user')->createView(),
-            'editRoute' => $updateRoute
-        ];
+        return $user;
     }
 
     /**
