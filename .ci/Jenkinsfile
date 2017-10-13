@@ -47,7 +47,7 @@ stage("Build") {
                 sh "sed -i '/features:/d' behat.yml"
                 sh "sed -i         '/paths:/a\\ \\ \\ \\ \\ \\ \\ \\ features:\' behat.yml"
                 for (feature in features) {
-                    sh "sed -i \"/features:/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
+                    sh "sed -i \"/features:/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
                 }
         		sh "cat behat.yml"
 
@@ -94,12 +94,12 @@ stage("Build") {
                         sh "cp vendor/akeneo/pim-community-dev/Dockerfile ."
                         sh "cp -R vendor/akeneo/pim-community-dev/.ci ."
                         sh "cp behat.ci.yml behat.yml"
-			            sh "sed -i \"#features.*#d\" behat.yml"                        
-			            sh "sed -i \"/Extensions:/i\\ \\ \\ \\ \\ \\ \\ \\ Liuggio\\\\\\\\Fastest\\\\\\\\Behat2\\\\\\\\ListFeaturesExtension\\\\\\\\Extension: ~\" behat.yml"
-                        sh "sed -i \"/contexts/i\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ paths:\" behat.yml"
+                        sh "sed -i '/features:/d' behat.yml"
+                        sh "sed -i         '/paths:/a\\ \\ \\ \\ \\ \\ \\ \\ features:\' behat.yml"
                         for (feature in features) {
-                            sh "sed -i \"/paths/a\\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
+                            sh "sed -i \"/features:/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
                         }
+			            sh "sed -i \"/Extensions:/i\\ \\ \\ \\ \\ \\ \\ \\ Liuggio\\\\\\\\Fastest\\\\\\\\Behat2\\\\\\\\ListFeaturesExtension\\\\\\\\Extension: ~\" behat.yml"
                         sh "sed -i \"s#http://akeneo#http://127.0.0.1#g\" behat.yml"
                         sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.yml"
                         sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.yml"
