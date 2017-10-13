@@ -170,6 +170,12 @@ services:
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.search_after_hal_paginator'
             - '@pim_api.security.primary_key_encrypter'
+            - '@pim_catalog.updater.product_model'
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.saver.product_model'
+            - '@router'
+            - '@validator'
+            - '@pim_connector.processor.attribute_filter.product_model'
             - '%pim_api.configuration%'
 
     pim_api.controller.root_endpoint:
