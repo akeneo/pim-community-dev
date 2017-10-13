@@ -76,15 +76,17 @@ abstract class AbstractProductImportTestCase extends TestCase
     }
 
     /**
-     * @param string $identifier
-     * @param string $username
-     * @param array  $productData
-     * @param array  $draftData
+     * @param ProductInterface $product
+     * @param string           $username
+     * @param array            $draftData
      *
      * @return ProductDraftInterface
      */
-    protected function createProductDraft(ProductInterface $product, string $username, array $draftData): ProductDraftInterface
-    {
+    protected function createProductDraft(
+        ProductInterface $product,
+        string $username,
+        array $draftData
+    ): ProductDraftInterface {
         $productDraft = $this->get('pimee_workflow.factory.product_draft')->createProductDraft($product, $username);
         $productDraft->setChanges($draftData);
         $productDraft->setAllReviewStatuses(ProductDraftInterface::CHANGE_DRAFT);
@@ -194,7 +196,9 @@ abstract class AbstractProductImportTestCase extends TestCase
                 $attributeCode = $codes[0];
                 $localeCode = isset($codes[1]) ? $codes[1] : null;
                 $channelCode = isset($codes[2]) ? $codes[2] : null;
-                $result = null !== $product->getValue($attributeCode, $localeCode, $channelCode) ? $product->getValue($attributeCode, $localeCode, $channelCode)->getData() : null;
+                $result = null !== $product->getValue($attributeCode, $localeCode, $channelCode)
+                    ? $product->getValue($attributeCode, $localeCode, $channelCode)->getData()
+                    : null;
                 $this->assertSame($value, $result);
             }
         }
