@@ -88,9 +88,9 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
     /**
      * {@inheritdoc}
      */
-    public function process($flatProductModel): ?ProductModelInterface
+    public function process($standardProductModel): ?ProductModelInterface
     {
-        $parent = $flatProductModel['parent'] ?? '';
+        $parent = $standardProductModel['parent'] ?? '';
         if ($this->importType === self::ROOT_PRODUCT_MODEL && !empty($parent) ||
             $this->importType === self::SUB_PRODUCT_MODEL && empty($parent)
         ) {
@@ -99,22 +99,22 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
             return null;
         }
 
-        if (!isset($flatProductModel['code'])) {
-            $this->skipItemWithMessage($flatProductModel, 'The code must be filled');
+        if (!isset($standardProductModel['code'])) {
+            $this->skipItemWithMessage($standardProductModel, 'The code must be filled');
         }
 
-        $flatProductModel = $this->productModelAttributeFilter->filter($flatProductModel);
-        $productModel = $this->findOrCreateProductModel($flatProductModel['code']);
+        $standardProductModel = $this->productModelAttributeFilter->filter($standardProductModel);
+        $productModel = $this->findOrCreateProductModel($standardProductModel['code']);
 
         $jobParameters = $this->stepExecution->getJobParameters();
         if ($jobParameters->get('enabledComparison') && null !== $productModel->getId()) {
             // We don't compare immutable fields
-            $flatProductModelToCompare = $flatProductModel;
-            unset($flatProductModelToCompare['code']);
+            $standardProductModelToCompare = $standardProductModel;
+            unset($standardProductModelToCompare['code']);
 
-            $flatProductModel = $this->productModelFilter->filter($productModel, $flatProductModelToCompare);
+            $standardProductModel = $this->productModelFilter->filter($productModel, $standardProductModelToCompare);
 
-            if (empty($flatProductModel)) {
+            if (empty($standardProductModel)) {
                 $this->objectDetacher->detach($productModel);
                 $this->stepExecution->incrementSummaryInfo('product_model_skipped_no_diff');
 
@@ -123,18 +123,18 @@ class ProductModelProcessor extends AbstractProcessor implements ItemProcessorIn
         }
 
         try {
-            $this->productModelUpdater->update($productModel, $flatProductModel);
+            $this->productModelUpdater->update($productModel, $standardProductModel);
         } catch (PropertyException $exception) {
             $this->objectDetacher->detach($productModel);
             $message = sprintf('%s: %s', $exception->getPropertyName(), $exception->getMessage());
-            $this->skipItemWithMessage($flatProductModel, $message, $exception);
+            $this->skipItemWithMessage($standardProductModel, $message, $exception);
         }
 
         $violations = $this->validator->validate($productModel);
 
         if ($violations->count() > 0) {
             $this->objectDetacher->detach($productModel);
-            $this->skipItemWithConstraintViolations($flatProductModel, $violations);
+            $this->skipItemWithConstraintViolations($standardProductModel, $violations);
         }
 
         return $productModel;
