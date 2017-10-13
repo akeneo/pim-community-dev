@@ -315,7 +315,7 @@ class ProductModelController
      *
      * @throws DocumentedHttpException
      */
-    private function updateProductModel(ProductModelInterface $productModel, array $data, string $anchor): void
+    protected function updateProductModel(ProductModelInterface $productModel, array $data, string $anchor): void
     {
         try {
             $this->updater->update($productModel, $data);
