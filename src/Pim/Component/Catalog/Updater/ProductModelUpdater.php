@@ -75,7 +75,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
             );
         }
 
-        if (isset($data['parent'])) {
+        if (array_key_exists('parent', $data)) {
             $this->updateParentAndFamily($productModel, $data);
             unset($data['parent']);
         }
@@ -126,12 +126,12 @@ class ProductModelUpdater implements ObjectUpdaterInterface
      * exception will be thrown.
      *
      * @param ProductModelInterface $productModel
-     * @param string                $parentCode
+     * @param string|null                $parentCode
      *
      * @throws ImmutablePropertyException
      * @throws InvalidPropertyException
      */
-    private function updateParent(ProductModelInterface $productModel, string $parentCode): void
+    private function updateParent(ProductModelInterface $productModel, ?string $parentCode): void
     {
         if (empty($parentCode)) {
             return;
