@@ -46,3 +46,4 @@ pim_ui.system_config:
     loading_messages.tooltip: Tutti i messagi disponibili di caricamento separati da interruzioni di riga
   group:
     loading_message.title: Messaggi per "caricamento in corso"
+other_actions: Altre azioni

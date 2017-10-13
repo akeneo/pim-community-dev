@@ -46,3 +46,4 @@ pim_ui.system_config:
     loading_messages.tooltip: Tous les messages de chargement disponibles, séparés par des sauts de ligne
   group:
     loading_message.title: Messages de chargement
+other_actions: Autres actions
