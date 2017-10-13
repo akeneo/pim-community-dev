@@ -43,7 +43,7 @@ define(
                 var $form = $(data);
                 var formTitle = $form.data('title');
                 var formId = '#' + $form.attr('id');
-                var loadingMask = $('<div class="AknLoadingMask-wrapper">').hide();
+                var loadingMask = $('<div class="AknLoadingMask">').hide();
                 $('body').append(loadingMask);
 
                 var formButtons = [];

@@ -133,7 +133,7 @@ class Form extends Base
     public function visitGroup($groupName, $type = 'Group')
     {
         $this->spin(function () use ($groupName, $type) {
-            $loadingMasks = $this->findAll('css', '.loading-wrapper');
+            $loadingMasks = $this->findAll('css', '.loading-mask');
             if (0 < count(array_filter($loadingMasks, function ($loadingMask) {
                 return $loadingMask->isVisible();
             }))) {
@@ -152,7 +152,7 @@ class Form extends Base
     public function filterAttributes($filter)
     {
         $this->spin(function () use ($filter) {
-            $loadingMasks = $this->findAll('css', '.loading-wrapper');
+            $loadingMasks = $this->findAll('css', '.loading-mask');
             if (0 < count(array_filter($loadingMasks, function ($loadingMask) {
                 return $loadingMask->isVisible();
             }))) {
@@ -171,7 +171,7 @@ class Form extends Base
     public function clickOnAttributeGroupHeader($attributeGroup)
     {
         $this->spin(function () use ($attributeGroup) {
-            $loadingMasks = $this->findAll('css', '.loading-wrapper');
+            $loadingMasks = $this->findAll('css', '.loading-mask');
             if (0 < count(array_filter($loadingMasks, function ($loadingMask) {
                 return $loadingMask->isVisible();
             }))) {
