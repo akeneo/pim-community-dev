@@ -1,6 +1,7 @@
 # 2.0.x
 
-## Tech improvements
+## Better manage products with variants!
+
 - API-399: Create a product model
 
 ## Bug fixes
