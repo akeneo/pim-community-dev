@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug Fixes
+
+- PIM-6896: Do not display restore button on product model versions.
+
 # 2.0.2 (2017-10-12)
 
 ## Bug Fixes
