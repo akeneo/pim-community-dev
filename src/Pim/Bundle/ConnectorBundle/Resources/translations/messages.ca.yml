@@ -7,10 +7,8 @@ pim_connector:
       title: Lector de CSV
     csv_product_reader.title: Lector CSV de productes
     csv_category_reader.title: Lector CSV de categories
-    csv_variant_group .title: Lector CSV de grups de variants
     dummy_processor.title: Processador de proves
     product_processor.title: Creació de productes
-    variant_group_processor.title: Creació / actualització de grup de variants
     category_processor.title: Creació de categories
     association_processor.title: Creació d'associacions
     product_association_processor.title: Creació d'associacions
@@ -24,7 +22,6 @@ pim_connector:
     file_writer.title: Sortida
     product_writer.title: Emmagatzematge de productes
     category_writer.title: Emmagatzematge de categories
-    variant_group_writer.title: Emmagatzematge de grup variants
     writer.title: Emmagatzematge d'entitats
     csv_writer.title: Editor de CSV
 job_execution.summary:
@@ -61,9 +58,6 @@ batch_jobs:
   csv_group_export:
     label: Exportar grups en CSV
     export.label: Exportar grups
-  csv_variant_group_export:
-    label: Exportar grup de variants a CSV
-    export.label: Exportar grup de variants
   csv_family_export:
     label: Exportar famílies en CSV
     export.label: Exportar família
@@ -100,10 +94,6 @@ batch_jobs:
     label: Importar grups en CSV
     validation.label: Validar arxius
     import.label: Importar grups
-  csv_variant_group_import:
-    label: Importar Grup de variants des d'un CSV
-    validation.label: Validar arxius
-    import.label: Importació de grupo de variants
   csv_channel_export:
     label: Canal d'exportació en CSV
     export.label: Canal d'exportació
@@ -174,17 +164,10 @@ batch_jobs:
   xlsx_group_export:
     label: Exportació de grup en XLSX
     export.label: Exportar grups
-  xlsx_variant_group_export:
-    label: Exportació de variant de grup en XLSX
-    export.label: Exportar grup de variants
   xlsx_group_import:
     label: Importació de grup en XLSX
     validation.label: Validar arxius
     import.label: Importar grups
-  xlsx_variant_group_import:
-    label: Importacin de variant de grup en XLSX
-    validation.label: Validar arxius
-    import.label: Importació de variant grup
   xlsx_family_export:
     label: Exportació de família en XLSX
     export.label: Exportar família

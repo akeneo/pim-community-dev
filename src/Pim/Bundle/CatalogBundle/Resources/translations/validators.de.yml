@@ -14,6 +14,7 @@ Option code may contain only letters (at least one), numbers and underscores: De
 This value should not be a decimal.: Dieser Wert darf keine Dezimalzahl sein.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Die Dateierweiterung ist nicht zulässig (Erlaubte Dateierweiterungen: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": Der Wert %value% ist bereits bei einem anderen Produkt für das eindeutige Attribut %attribute% gesetzt
+The same identifier is already set on another product: Diese Kennung ist bereits für ein anderes Produkt in Verwendung
 regex.comma_or_semicolon.message: Dieses Feld sollte keine Komma oder Semikolon enthalten.
 file.extensions.message: 'Die Dateierweiterung ist nicht zulässig (Erlaubte Dateierweiterungen: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Dieser Wertetyp erwartet die Benutzung von {{ decimal_separator }} als Dezimaltrennzeichen.
@@ -21,3 +22,17 @@ file.extensions.message: 'Die Dateierweiterung ist nicht zulässig (Erlaubte Dat
 "This type of value expects the use of comma (,) to separate decimals.": Dieser Wertetyp erwartet die Verwendung eines Kommas (,) als Dezimaltrennzeichen.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Dieser Wertetyp erwartet die Benutzung von arabischen (٫) Dezimaltrennzeichen.
 "This type of value expects the use of the format {{ date_format }} for dates.": Dieser Wertetyp erwartet die Benutzung von {{ date_format }} als Datumsformat.
+"The category \"%category%\" has to be a root category.": Die Kategorie "%category%" muss eine Hauptkategorie sein.
+"The attribute \"%attributeCode%\" does not exist.": Das Attribute "%attributeCode%" existiert nicht.
+"The attribute \"%attributeCode%\" is not a metric attribute.": Das Attribut "%attributeCode%" ist kein metrisches Attribut.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Die Einheit "%unitCode%" ist nicht vorhanden oder gehört nicht zu der metrischen Standardfamilie des angegebenen Attributs "%attributeCode%".
+"The currency \"%currency%\" has to be activated.": Die Währung "%currency%" muss erst aktiviert werden.
+product_model.code.not_blank.message: Der Codes des Produktmodells darf nicht leer sein.
+product_model.code.unique.message: Diese Kennung ist bereits für ein anderes Produktmodell in Verwendung.
+product_model.family_variant.not_blank.message: Die Produktfamilie des Produktmodells darf nicht leer sein.
+pim_catalog:
+  constraint:
+    cannot_have_product_model_as_parent: 'Das Produktmodell "%product_model%" kann nicht dem Produktmodell "%parent_product_model%" untergeordnet werden'
+    cannot_have_parent: 'Das Produktmodell "%product_model%" kann keine übergeordnete Ebene haben'
+    attribute_does_not_belong_to_family: 'Attribut "%attribute%" gehört nicht zu der Familie "%family%"'
+    invalid_variant_product_parent: 'Die Produktvariante "%variant_product%" kann nicht dem Produktmodell "%product_model%" untergeordnet werden (dem Produktmodell können nur andere Produktmodelle untergeordnet werden)'
