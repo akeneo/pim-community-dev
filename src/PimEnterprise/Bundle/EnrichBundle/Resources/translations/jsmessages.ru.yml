@@ -185,3 +185,9 @@ pim_menu:
     proposal: Предложения
     published_product: Опубликованные продукты
     rule: Правила
+page_title:
+  pimee_workflow_proposal_index: Предложения
+  pimee_workflow_published_product_index: Опубликованные продукты
+  pimee_product_asset_index: Медиафайлы
+  pimee_asset_categorytree_index: Категории
+  pimee_catalog_rule_rule_index: Правила

@@ -185,3 +185,9 @@ pim_menu:
     proposal: Propostes
     published_product: Productes publicats
     rule: Regles
+page_title:
+  pimee_workflow_proposal_index: Propostes
+  pimee_workflow_published_product_index: Productes publicats
+  pimee_product_asset_index: Recursos
+  pimee_asset_categorytree_index: Categories
+  pimee_catalog_rule_rule_index: Regles
