@@ -36,13 +36,13 @@ pim_import_export:
       history.title: Cronologia
       job_content.title: Contenuto
 pim_title.export_profile.index: Gestione profili di esportazione
-pim_title.export_profile.edit: Profilo di esportazione %job.label% | Modifica
-pim_title.export_profile.show: Profilo di esportazione %job.label% | Visualizza
+pim_title.export_profile.edit: Esportare profili %job.label% | Modifica
+pim_title.export_profile.show: Esportare profili %job.label% | Visualizza
 pim_title.export_execution.index: Esportare la cronologia delle esecuzioni
 pim_title.export_execution.show: Esecuzioni di esportazione | Dettagli
 pim_title.import_profile.index: Gestione profili di importazione
-pim_title.import_profile.edit: Profilo di importazione %job.label% | Modifica
-pim_title.import_profile.show: Profilo di importazione %job.label% | Visualizza
+pim_title.import_profile.edit: Importare i profili %job.label% | Modifica
+pim_title.import_profile.show: Importare i profili %job.label% | Visualizza
 pim_title.import_execution.index: Importare la cronologia delle esecuzioni
 pim_title.import_execution.show: Importare le esecuzioni | Dettagli
 export profile:
@@ -142,7 +142,7 @@ Warnings: Avvisi
 Summary: Riepilogo
 Start: Inizio
 End: Fine
-set_attribute_requirements: Impostare gli attributi richiesti
+set_attribute_requirements: Imposta i requisiti degli attributi
 COMPLETED: Completato
 STARTING: In avvio
 STARTED: Avviato

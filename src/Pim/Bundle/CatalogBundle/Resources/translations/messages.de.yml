@@ -1,3 +1,26 @@
 No products to remove: Keine Produkte zum Entfernen
 "dot (.)": Punkt (.)
 "comma (,)": Komma (,)
+pim_catalog:
+  constraint:
+    family_variant_axes_wrong_type: Attribute für Variantenachsen "%axis%" dürfen nicht lokalisierbar sein, nicht auf bestimmte Gebietsschemas eingeschränkt sein und keine Gültigkeitsbereiche haben
+    product_identifier: Diese Kennungen "%s" sind nicht vorhanden.
+    0: Es ist ein unerwarteter Fehler aufgetreten.
+    100: Unerwarteter Wert
+    101: Dieses Feld erwartet Werte vom Typ Boolean.
+    102: Dieses Feld erwartet Werte vom Typ Float.
+    103: Dieses Feld erwartet Werte vom Typ Integer.
+    104: Dieses Feld erwartet Werte vom Typ Numeric.
+    105: Dieses Feld erwartet Werte vom Typ String.
+    106: Dieses Feld erwartet Werte vom Typ Array.
+    107: Dieses Feld erwartet Werte vom Typ Array von Arrays.
+    200: Ein interner Fehler ist aufgetreten
+    201: Ein interner Fehler ist aufgetreten
+    202: Dieses Feld erwartet Werte vom Typ Numeric.
+    203: Dieses Feld erwartet Werte vom Typ String.
+    204: Dieses Feld erwartet Werte vom Typ String.
+    205: Ein interner Fehler ist aufgetreten
+    300: Dieses Feld erwartet einen validen Entitätscode.
+    301: Dieses Feld erwartet einen validen Gültigkeitsbereich und Gebietsschema.
+    302: Dieses Feld erwartet einen validen Gültigkeitsbereich.
+    303: Dieses Feld erwartet ein valides Format für Verbindungen.

@@ -9,8 +9,8 @@ confirmation:
     channel: Êtes-vous sûr(e) de que vouloir supprimer ce canal ?
     group: Êtes-vous sûr(e) de vouloir supprimer ce groupe ?
     group_type: Êtes-vous sûr(e) de vouloir supprimer ce type de groupe ?
-    import_profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?
-    export_profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'export ?
+    import profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?
+    export profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'export ?
     user: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
     role: Êtes-vous sûr(e) de vouloir supprimer ce rôle ?
     job_instance: Êtes-vous sûr(e) de vouloir supprimer cette opération ?
@@ -23,7 +23,6 @@ pim_datagrid:
       label: Export rapide
   mass_action:
     delete:
-      label: Supprimer
       confirm_content: Êtes-vous sûr(e) de vouloir supprimer les produits sélectionnés ?
       success: Les produits sélectionnés ont été supprimés.
       error: Une erreur s'est produite lors de la suppression des produits sélectionnés, merci d'essayer à nouveau.
@@ -149,14 +148,13 @@ pim_enrich:
     product:
       navigation: Navigation produit
       infos: Infos produit
-      index_title: "] -Inf, 1] {{ count }} résultat|] 1, Inf [{{ count }} résultats"
+      index_title: "] -Inf, 1] {{ count }} produit|] 1, Inf [{{ count }} produits"
       title: produit
       locale: Locale
       category: Catégorie
-      create: Créer
-      modalTitle: Sélectionnez une action
+      create: Créer un produit
       filters: Filtres
-      selected: résultats sélectionnés
+      selected: produits sélectionnés
       common: Commun
       btn:
         enabled: Activé
@@ -180,7 +178,7 @@ pim_enrich:
         update_successful: Le produit a bien été mis à jour.
         update_failed: Le produit n'a pas pu être mis à jour.
         field_not_ready: 'Le produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
-        already_in_upload: Un fichier est déjà en téléchargement pour cet attribut dans la locale "{{ locale }}" et le canal "{{ scope }}"
+        already_in_upload: Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"
       error:
         upload: Une erreur s'est produite lors du transfert du fichier.
       meta:
@@ -220,7 +218,6 @@ pim_enrich:
       media:
         upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
       create_popin:
-        type: Produit
         title: Créer
         labels:
           family: Choisir une famille
@@ -233,12 +230,7 @@ pim_enrich:
         item_limit: Seuls les 1000 premiers sont affichés dans cette modification séquentielle ({{ count }} sélectionnés)
         empty: Votre sélection est vide, veuillez modifier vos critères de recherche
     product_model:
-      create_popin:
-        type: Modèle de produit
-        title: Créer un modèle de produit
-        content: Un modèle de produit rassemble des variantes de produits pour faciliter l'enrichissement de leurs propriétés communes.
       info:
-        create_successful: Le modèle de produit a bien été créé
         update_successful: Le modèle de produit a été mis à jour. La complétude de ses produits variants va être recalculée.
         update_failed: Le modèle de produit n'a pas pu être mis à jour.
         field_not_ready: 'Le modèle de produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
@@ -321,20 +313,6 @@ pim_enrich:
         title: Créer
       message:
         created: Famille créée avec succès
-      variant:
-        axis.label: Axe de variante
-        level_1.label: Attributs variants niveau 1
-        level_2.label: Attributs variants niveau 2
-        add_variant: Ajouter une variante
-        create_label: Créer une nouvelle variante de famille
-        create_description: Dans une variante de famille, vous pouvez définir la structure de vos produits avec variantes. Choisissez le nombreux de niveaux variants gérés, les attributs utilisés comme axes de variantes pour chaque niveau. Puis, définissez la répartition des attributs de la famille.
-        create: Créer
-        cancel: Annuler
-        code: Code
-        label: Libellé
-        levels: Niveaux variants
-        axis_level: Axe de variantes niveau
-        required: obligatoire
     attribute_option:
       code: Code
       label: Libellé
@@ -405,8 +383,6 @@ pim_enrich:
     leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
     discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
     delete_item: Supprimer l'élément
-    remove_item: Confirmer la suppression
-    remove: Supprimer
     delete:
       attribute: Êtes-vous sûr(e) de vouloir supprimer cet attribut du produit ?
       attribute_group: Êtes vous sûr(e) de vouloir retirer l'attribut {{ attribute }} de ce groupe d'attributs ?
@@ -422,7 +398,6 @@ pim_enrich:
   form:
     required: (obligatoire)
     product_model:
-      choose_variant: Choisissez une variante
       complete_variant_product: produit variant
       complete_variant_products: produits variants
     product:
@@ -543,8 +518,6 @@ pim_enrich:
           required_label: Obligatoire
         variant:
           title: Variantes
-          flash:
-            family_variant_created: La variante de famille a été créée
         history:
           title: Historique
     attribute_option:
@@ -735,7 +708,6 @@ pim_enrich:
             validation_regexp: Expression régulière
             validation_rule: Règle de validation
             wysiwyg_enabled: Éditeur de texte enrichi activé
-            family_variant: Variante
           default_label:
             default_metric_unit: Choisir une unité
             group: Choisir le groupe d'attributs
@@ -1043,38 +1015,37 @@ page_title:
   oro_default: Tableau de bord
   pim_enrich_attributegroup_index: Groupes d'attributs
   pim_enrich_attributegroup_create: Groupe d'attributs | Créer
-  pim_enrich_attributegroup_edit: Groupe d'attributs {{ group.label }} | Modification
+  pim_enrich_attributegroup_edit: Groupe d'attribut {{ group.label }} | Editer
   pim_enrich_categorytree_index: Arborescences des catégories
   pim_enrich_categorytree_create: Arborescences | Créer
-  pim_enrich_categorytree_edit: Arbre de catégories {{ category.label }} | Modification
+  pim_enrich_categorytree_edit: Arborescence {{ category.label }} | Editer
   pim_enrich_categorytree_create_tree: Arborescences | Créer
   pim_enrich_attribute_index: Attributs
   pim_enrich_attribute_create: Attributs | Créer
-  pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Modification
+  pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Editer
   pim_enrich_product_index: Produits
-  pim_enrich_product_edit: Produit {{ product.label }} | Modification
-  pim_enrich_product_model_edit: Modèle de produit {{ product.label }} | Modification
+  pim_enrich_product_edit: Produit {{ product.sku }} | Editer
+  pim_enrich_product_model_edit: Modèles de produit {{ product.sku }} | Editer
   pim_enrich_family_index: Familles
-  pim_enrich_family_edit: Famille {{ family.label }} | Modification
+  pim_enrich_family_edit: Famille {{ family.label }} Editer
   pim_enrich_channel_index: Canaux
   pim_enrich_channel_create: Canaux | Créer
-  pim_enrich_channel_edit: Canal {{ channel.label }} | Modification
+  pim_enrich_channel_edit: Canal {{ channel.label }} | Editer
   pim_enrich_currency_index: Devises
   pim_enrich_locale_index: Locales
   pim_enrich_group_index: Groupes
-  pim_enrich_group_edit: Groupe {{ group.label }} | Modification
+  pim_enrich_group_edit: Groupe {{ group.label }} | Editer
   pim_enrich_associationtype_index: Types d'association
-  pim_enrich_associationtype_edit: Type d'association {{ association type.label }} | Modification
+  pim_enrich_associationtype_edit: Type d'association {{ association type.label }} | Modifier
   pim_enrich_grouptype_index: Types de groupe
-  pim_enrich_grouptype_edit: Type de groupe {{ group type.label }} | Modification
+  pim_enrich_grouptype_edit: Types de groupe {{ group type.label }} | Modifier
   pim_enrich_mass_edit_action_choose: Édition de masse | Choisir
   pim_enrich_mass_edit_action_configure: Édition de masse | Configurer
   pim_enrich_mass_edit_action_perform: Edition en masse | Effectuer
   pim_enrich_job_tracker_index: Traqueur de processus
   pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
   pim_enrich_api_connection_index: Connexions API
-  pim_enrich_api_connection_create: Connexions d'API | Créer
-  pim_analytics_system_info_index: Informations système
+  pim_enrich_api_connection_create: Connexions API
 batch_jobs:
   add_product_value:
     label: Ajouter une valeur de produit
@@ -1332,7 +1303,6 @@ pim_menu:
     group_type: Types de groupe
     locale: Locales
     product: Produits
-    published_product: Produits publiés
     export_history: Historique des exports
     export_profile: Profils d'export
     import_history: Historique des imports

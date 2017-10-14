@@ -13,7 +13,7 @@ pim_dashboard:
     completeness:
       title: Færdiggørelse af kanaler og lande
     last_operations:
-      title: Seneste handlinger
+      title: Sidste handlinger
       empty: Ingen, handlinger fundet
       status: Status
       date: Dato

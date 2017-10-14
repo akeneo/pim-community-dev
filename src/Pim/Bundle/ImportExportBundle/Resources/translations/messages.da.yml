@@ -16,8 +16,8 @@ pim_import_export:
     8: Ukendt
   download_archive:
     archive: Download genereret arkiv | download genererede arkiver
-    output: download genererede fil|download genererede filer
-    input: download læs file|download læse filer
+    output: hent genererede fil|hent genererede filer
+    input: hent læs file|hent læse filer
     invalid_xlsx: download ugyldige data
     invalid_csv: download ugyldige data
   notification:
@@ -77,8 +77,8 @@ pim_importexport:
     import_execution:
       index: Se import rapport liste
       show: Se import rapportdetaljer
-      dl_log: Download import rapport log
-      dl_files: Download importerede filer
+      dl_log: Hent import rapport log
+      dl_files: Hent importerede filer
   acl_group:
     export: Eksport profiler
     import: Import profiler

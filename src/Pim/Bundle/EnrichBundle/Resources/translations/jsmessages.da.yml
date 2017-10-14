@@ -9,8 +9,8 @@ confirmation:
     channel: Er du sikker på du vil slette denne kanal?
     group: Er du sikker på du vil slette denne gruppe?
     group_type: Er du sikker på du vil slette denne gruppe type?
-    import_profile: Er du sikker på du vil slette denne import profil?
-    export_profile: Er du sikker på du vil slette denne eksportprofil?
+    import profile: Er du sikker på du vil slette denne import profil?
+    export profile: Er du sikker på du vil slette denne eksportprofil?
     user: Er du sikker på du vil slette denne bruger?
     role: Er du sikker på du vil slette denne rolle?
     job_instance: Er du sikker på du vil slette dette job?
@@ -23,7 +23,7 @@ pim_datagrid:
       label: Hurtig eksport
   mass_action:
     delete:
-      label: Slet
+      confirm_content: Er du sikker på du vil slette de valgte produkter?
       success: Udvalgte produkter blev slettet.
       error: Der opstod en fejl under forsøget på at slette de valgte produkter, prøv venligst igen.
   view_selector:
@@ -148,11 +148,13 @@ pim_enrich:
     product:
       navigation: Produkt navigation
       infos: Produkt info
+      index_title: "[] -Inf, 1] {{ count }} produkt |] 1, Inf [{{ count }} produkter"
       title: produkt
       locale: Landestandard
       category: Kategori
-      create: Opret
+      create: Opret produkt
       filters: Filtre
+      selected: udvalgte produkter
       common: Almindelig
       btn:
         enabled: Aktiveret
@@ -171,7 +173,7 @@ pim_enrich:
         new_value: Ny værdi
         actions: Aktioner
       info:
-        deletion_successful: Produkt slettet.
+        deletion_successful: Produktet blev slettet.
         deletion_failed: Produktet kunne ikke slettes.
         update_successful: Produktet blev opdateret.
         update_failed: Produktet kunne ikke opdateres.
@@ -216,7 +218,6 @@ pim_enrich:
       media:
         upload: Træk og slip for at indlæse eller klik her
       create_popin:
-        type: Produkt
         title: Opret
         labels:
           family: Vælg familie
@@ -312,12 +313,6 @@ pim_enrich:
         title: Opret
       message:
         created: Familien blev oprettet
-      variant:
-        axis.label: Variant akse
-        create: Opret
-        cancel: Annuller
-        code: Kode
-        label: Etiket
     attribute_option:
       code: Kode
       label: Etiket
@@ -388,7 +383,6 @@ pim_enrich:
     leave: Er du sikker på du vil forlade denne side?
     discard_changes: Du vil miste ændringer til {{ entity }}, hvis du forlader siden.
     delete_item: Bekræft sletning
-    remove: Fjern
     delete:
       attribute: Er du sikker på du vil slette denne attribut fra produktet?
       attribute_group: Vil du fjerne attributten {{ attribute }} fra denne attributgruppe?
@@ -409,7 +403,7 @@ pim_enrich:
     product:
       tab:
         associations:
-          title: Tilknytninger
+          title: Associationer
           info:
             none_exist: Der findes ingen sammenhængstype.
             show_products: Display-produkter
@@ -418,7 +412,7 @@ pim_enrich:
           association_type_selector: Sammenhængstyper
           target: Mål
         attributes:
-          title: Egenskaber
+          title: Attributter
           btn:
             add: Tilføj
             add_attributes: Tilføj egenskab
@@ -442,7 +436,7 @@ pim_enrich:
           title: Fuldstændighed
           info:
             no_family: Ingen familie defineret. Definér venligst en familie for at beregne fuldstændigheden af dette produkt.
-            no_completeness: Du har lige ændret familie af produktet. Gem det første for at beregne fuldstændighed for den nye familie.
+            no_completeness: Du har lige ændret familie på produktet. Gem det først for at beregne fuldstændigheden for den nye familie.
           missing_values: "{1} 1 mangler værdi |] 1, Inf [{{ count }} manglende værdier"
         history:
           title: Historik
@@ -460,7 +454,7 @@ pim_enrich:
       change_family:
         modal:
           title: Ændre produktfamilien
-          merge_attributes: Aktuelle attributter flettes med dem i den nye familie.
+          merge_attributes: Aktuelle attributter flettes sammen med dem i den nye familie.
           keep_attributes: Ingen attributter vil blive fjernet.
           change_family_to: Ændre familien til
           empty_selection: Vælg familie
@@ -513,7 +507,7 @@ pim_enrich:
           empty_attribute_as_image: Ikke valgte
           label_translations: Etiket oversættelser
         attributes:
-          title: Egenskaber
+          title: Attributter
           label_label: Etiket
           toolbox:
             select_attributes_by_groups: Tilføj efter gruppe
@@ -527,7 +521,7 @@ pim_enrich:
     attribute_option:
       flash:
         option_created: Attribut tilvalg oprettet
-        error_creating_option: Der opstod en fejl hvor prøver hen til oprette indstillingen attribut
+        error_creating_option: Der opstod en fejl under oprettelsen af attribut egenskaben
       add_option_modal:
         title: Tilføj attribut tilvalg
         confirm: Tilføj
@@ -556,7 +550,7 @@ pim_enrich:
           code: Kode
           label_translations: Etiket oversættelser
         attribute:
-          title: Egenskaber
+          title: Attributter
           table:
             name: Navn
             type: Type
@@ -632,7 +626,7 @@ pim_enrich:
             title: Afgrænser
             help: Ét tegn bruges til at angive feltafgrænseren
           enclosure:
-            title: Beholder
+            title: Indgrænse
             help: Ét tegn bruges til at angive felt-indgrænsningen
           with_header:
             title: Med hoved
@@ -651,7 +645,7 @@ pim_enrich:
             help: Navnet på kolonnen kategorier
           escape:
             title: Forlad
-            help: Ét tegn bruges til at angive felt adskillelse
+            help: One character used to set the field escape
           family_column:
             title: Familie kolonne
             help: Navnet på kolonnen familie
@@ -712,7 +706,6 @@ pim_enrich:
             validation_regexp: Regulære udtryk
             validation_rule: Valideringsregel
             wysiwyg_enabled: RTF-editoren aktiveret
-            family_variant: Variant
           default_label:
             default_metric_unit: Vælg enhed
             group: Vælg attributgruppe
@@ -742,7 +735,7 @@ pim_enrich:
       structure:
         title: Filtrere data
         attributes:
-          title: Egenskaber
+          title: Attributter
       filter:
         channel:
           title: Kanal
@@ -751,10 +744,10 @@ pim_enrich:
           title: Landestandarder
           help: 'Landestandarderne definerer de lokaliserede produkt værdier at eksportere. Ex: kun produktinformation på fransk.'
         attributes:
-          title: Egenskaber
+          title: Attributter
           edit: Redigér
           label: "{0} alle attributter |{1} én attribut valgt |] 1, Inf [{{ count }} attributter valgt"
-          help: 'Vælg produktinformation til eksport. Eks: kun de tekniske egenskaber.'
+          help: 'Vælg produktinformation til eksport. Eks: kun de tekniske attributter.'
           empty: Alle attributter vil blive eksporteret
           modal:
             apply: Anvend
@@ -1013,34 +1006,44 @@ pim_enrich:
           description: Følgende attribut krav vil blive anvendt til de valgte familier
           label_count: "Sæt attribut kravene for  <span class=\"AknFullPage-title--highlight\">1 familie</span>|] 1, Inf [Sæt attribut kravene for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} familier</span>"
 pim_enrich.error:
-  exception.title: Beklager! Der opstod en {{ status_code }}...
+  exception.title: Beklager! Der opstod en {{ status_code }} fejl...
   http:
-    403: Forbudt. Du har ikke adgang til denne side
+    403: Du har ikke adgang til denne side
 page_title:
   oro_default: Kontrolpanel
   pim_enrich_attributegroup_index: Attributgrupper
   pim_enrich_attributegroup_create: Attribut grupper | Oprette
+  pim_enrich_attributegroup_edit: Attribut grupper {{ group.label }} | Rediger
   pim_enrich_categorytree_index: Kategoritræstrukturen
   pim_enrich_categorytree_create: Kategori træer | Oprette
+  pim_enrich_categorytree_edit: Kategori træer {{ category.label }} | Rediger
   pim_enrich_categorytree_create_tree: Kategori træer | Oprette
-  pim_enrich_attribute_index: Egenskaber
-  pim_enrich_attribute_create: Attributter | Oprette
+  pim_enrich_attribute_index: Attributter
+  pim_enrich_attribute_create: Attributter | Opret
+  pim_enrich_attribute_edit: Attributter {{ attribute.label }} | Rediger
   pim_enrich_product_index: Produkter
+  pim_enrich_product_edit: Produkter {{ product.sku }} | Rediger
+  pim_enrich_product_model_edit: Produkt modeller {{ product.sku }} | Rediger
   pim_enrich_family_index: Familier
+  pim_enrich_family_edit: Familier {{ family.label }} | Rediger
   pim_enrich_channel_index: Kanaler
-  pim_enrich_channel_create: Kanaler | Oprette
+  pim_enrich_channel_create: Kanaler | Opret
+  pim_enrich_channel_edit: Kanaler {{ channel.label }} | Rediger
   pim_enrich_currency_index: Valutaer
   pim_enrich_locale_index: Landestandarder
   pim_enrich_group_index: Grupper
+  pim_enrich_group_edit: Grupper {{ group.label }} | Rediger
   pim_enrich_associationtype_index: Sammenhængstyper
+  pim_enrich_associationtype_edit: Foreningen typer {{ association type.label }} | Rediger
   pim_enrich_grouptype_index: Gruppetyper
+  pim_enrich_grouptype_edit: Gruppe typer {{ group type.label }} | Rediger
   pim_enrich_mass_edit_action_choose: Masse Rediger | Vælg
   pim_enrich_mass_edit_action_configure: Masse Rediger | Konfigurere
   pim_enrich_mass_edit_action_perform: Masse Rediger | Udføre
   pim_enrich_job_tracker_index: Process overvågning
   pim_enrich_job_tracker_show: Process overvågning | Vis job
   pim_enrich_api_connection_index: API-forbindelser
-  pim_analytics_system_info_index: Systemoplysninger
+  pim_enrich_api_connection_create: API-forbindelser
 batch_jobs:
   add_product_value:
     label: Tilføj produktværdi
@@ -1298,7 +1301,6 @@ pim_menu:
     group_type: Gruppetyper
     locale: Landestandarder
     product: Produkter
-    published_product: Offentliggjorte produkter
     export_history: Eksport historik
     export_profile: Eksport profiler
     import_history: Import historik

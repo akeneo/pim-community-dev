@@ -71,7 +71,7 @@ batch_jobs:
     label: Familie eksport i CSV
     export.label: Familie eksport
   csv_family_variant_export:
-    label: Familie eksport i CSV
+    label: Familie variant eksport i CSV
     export.label: Familie variant eksport
   csv_product_import:
     label: Produkt eksport fra CSV-fil
@@ -105,7 +105,7 @@ batch_jobs:
     validation.label: Filvalidering
     import.label: Familie import
   csv_family_variant_import:
-    label: Familie import i CSV
+    label: Familie variant import i CSV
     validation.label: Filvalidering
     import.label: Familie variant import
   csv_group_import:
@@ -199,7 +199,7 @@ batch_jobs:
     label: Familie eksport til XLSX
     export.label: Familie eksport
   xlsx_family_variant_export:
-    label: Familie eksport til XLSX
+    label: Familie variant eksport i XLSX
     export.label: Familie variant eksport
   xlsx_category_export:
     label: Kategori eksport til XLSX

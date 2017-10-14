@@ -41,17 +41,13 @@ job_execution.summary:
     skipped: saltato, estensione nella white list
   product_skipped_no_diff: prodotto saltato (nessuna differenza)
   product_skipped_no_associations: prodotto saltato (nessuna associazione rilevata)
-  product_model_skipped_no_diff: modello di prodotto saltato (nessuna differenza)
   item_position: linee lette
-  skipped_in_root_product_model: modello di prodotto con padre saltato
-  skipped_in_sub_product_model: modello di prodotto senza padre saltato
 batch_jobs:
   csv_product_export:
     label: Esportazione prodotti in CSV
     export.label: Esportazione Prodotti
   csv_product_model_export:
-    label: Esportazione modello di prodotto in CSV
-    export.label: Esportazione modello di prodotto
+    label: Esportazione modelli di prodotto in CSV
   csv_category_export:
     label: Esportazione categorie in CSV
     export.label: Esportazione categorie
@@ -71,19 +67,15 @@ batch_jobs:
     label: Esportazione famiglie in CSV
     export.label: Esportazione famiglie
   csv_family_variant_export:
-    label: Esportazione famiglia variante in CSV
-    export.label: Esportazione famiglia variante
+    label: Esportazione famiglie varianti in CSV
+    export.label: Esportazione famiglie varianti
   csv_product_import:
     label: Importazione prodotti in CSV
     validation.label: Validazione file
     import.label: Importazione prodotti
     import_associations.label: Importazione associazioni
   csv_product_model_import:
-    label: Importazione modello di prodotto in CSV
     validation.label: Validazione file
-    import_root_product_model.label: Importazione modello di prodotto radice
-    import_sub_product_model.label: Importazione sotto-modelli di prodotto
-    import_product_model_descendants.label: Calcola i modelli di prodotto discendenti
   csv_category_import:
     label: Importazione categorie in CSV
     validation.label: Validazione file
@@ -105,9 +97,7 @@ batch_jobs:
     validation.label: Validazione file
     import.label: Importazione famiglie
   csv_family_variant_import:
-    label: Importazione famiglia variante in CSV
     validation.label: Validazione file
-    import.label: Importazione famiglia variante
   csv_group_import:
     label: importazione gruppi in CSV
     validation.label: Validazione file
@@ -168,26 +158,17 @@ batch_jobs:
     validation.label: Validazione file
     import.label: Importazione famiglie
   xlsx_family_variant_import:
-    label: Importazione famiglia variante in XLSX
     validation.label: Validazione file
-    import.label: Importazione famiglia variante
   xlsx_product_export:
     label: Esportazione prodotti in XLSX
     export.label: Esportazione Prodotti
-  xlsx_product_model_export:
-    label: Esportazione modello di prodotto in XLSX
-    export.label: Esportazione modello di prodotto
   xlsx_product_import:
     label: Importazione prodotti in XLSX
     validation.label: Validazione file
     import.label: Importazione prodotti
     import_associations.label: Importazione associazioni
   xlsx_product_model_import:
-    label: Importazione modello di prodotto in XLSX
     validation.label: Validazione file
-    import_root_product_model.label: Importazione modello di prodotto radice
-    import_sub_product_model.label: Importazione sotto-modelli di prodotto
-    import_product_model_descendants.label: Calcola i modelli di prodotto discendenti
   xlsx_group_export:
     label: Esportazione gruppi in XLSX
     export.label: Esportazione gruppi
@@ -199,8 +180,7 @@ batch_jobs:
     label: Esportazione famiglie in XLSX
     export.label: Esportazione famiglie
   xlsx_family_variant_export:
-    label: Esportazione famiglia variante in XLSX
-    export.label: Esportazione famiglia variante
+    export.label: Esportazione famiglie varianti
   xlsx_category_export:
     label: Esportazione categorie in XLSX
     export.label: Esportazione categorie

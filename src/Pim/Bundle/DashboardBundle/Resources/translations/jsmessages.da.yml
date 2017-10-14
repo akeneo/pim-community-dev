@@ -16,6 +16,6 @@ pim_dashboard:
     completeness:
       load_more: 'Indlæs mere...'
     header:
-      view_all: Vis alle
+      view_all: Se alle
 page_title:
   pim_dashboard_index: Kontrolpanel
