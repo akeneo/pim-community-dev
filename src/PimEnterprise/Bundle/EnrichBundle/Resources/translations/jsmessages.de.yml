@@ -26,6 +26,10 @@ pim_enrich:
         properties:
           label:
             is_read_only: Nur Lesezugriff
+pim:
+  grid:
+    mass_action:
+      asset_edit: Massenbearbeitung Assets
 pimee_enrich:
   form:
     job_instance:
@@ -46,8 +50,11 @@ pimee_enrich:
           title: Berechtigungen
           view.label: Berechtigt Attribute anzuzeigen
           edit.label: Berechtigt Attribute zu bearbeiten
+          removed: Die Gruppe {{ group }} wird nicht das Recht haben Attributgruppen zu {{ permission }}
+          added: Die Gruppe {{ group }} wird das Recht haben Attributgruppen zu {{ permission }}
   entity:
     product:
+      index_title: "] -Inf, 1] {{ count }} veröffentlichtes Produkt|] 1, Inf [{{ count }} veröffentlichte Produkte"
       navigation: Veröffentlichte Produkte
       history:
         published: Veröffentlicht
@@ -79,6 +86,7 @@ pimee_enrich:
           messages:
             approve:
               success: Der Vorschlag wurde erfolgreich freigegeben.
+              error: 'Der Vorschlag kann aufgrund des folgenden Fehlers nicht freigegeben werden: {{ error }}'
             reject:
               success: Der Vorschlag wurde abgelehnt.
             remove:
@@ -157,18 +165,28 @@ pimee_enrich:
         height: '%value%px Höhe'
   mass_edit:
     next: Vor
+    previous: Zurück
     cancel: Abbrechen
     confirm: Bestätigen
     product:
       operation:
         publish:
           label: Veröffentlichen
+          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1 Produkt</span> veröffentlichen|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> veröffentlichen"
+          description: Die Produkte werden veröffentlicht
+          warning: '{{ itemsCount }} gewählte Produkte werden veröffentlicht.'
         unpublish:
           label: Veröffentlichung entziehen
+          label_count: "{1}Veröffentlichung für <span class=\"AknFullPage-title--highlight\">1 Produkt</span> wird entzogen|] 1, Inf [Veröffentlichung für  <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> wird entzogen"
+          description: Die Veröffentlichung der Produkte wird entzogen
+          warning: '{{ itemsCount }} Produkten wird die Veröffentlichung entzogen.'
     asset:
+      title: Asset / Massenbearbeitung ({{ itemsCount }} Assets)
       step:
         select:
           label: Asset auswählen
+        choose:
+          title: Massenbearbeitung Assets
         configure:
           label: Konfigurieren
         confirm:
@@ -176,8 +194,11 @@ pimee_enrich:
       operation:
         add_tag:
           label: Stichworte zu Assets hinzufügen
+          description: Tags werden den Assets hinzugefügt.
           field: Stichworte
         add_to_category:
+          label: Zuordnung von Assets in Kategorien
+          description: Die Assets werden folgenden Kategorien zugeordnet, die bestehende Zuordnung bleibt erhalten.
           field: Kategorien
 pim_menu:
   tab:

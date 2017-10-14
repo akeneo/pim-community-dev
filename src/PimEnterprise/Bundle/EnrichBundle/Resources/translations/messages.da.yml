@@ -4,9 +4,9 @@ Permissions: Rettigheder
 pane.accordion.permissions: Rettigheder
 attribute group.permissions:
   view.label: Rettighed til at se attributter
-  view.help: Rettighed til at se produkterne i denne attribut gruppe
+  view.help: Tillad at se produkterne i denne attribut gruppe
   edit.label: Tillad at redigere attributter
-  edit.help: Rettighed til at se produkterne i denne attribut gruppe
+  edit.help: Tillad at redigere produkter i denne attribut gruppe
   no_access_to_attributes: Du har ikke adgang til nogen attributter for dette produkt. Kontakt din administrator.
 category.permissions:
   view.label: Rettighed til at se produkter
@@ -50,7 +50,7 @@ pim_enrich:
     publish:
       label: Publicér
       description: Udgiv de udvalgte produkter, de nuværende offentliggjorte data vil blive slettet af de aktuelle data.
-      success_flash: Udvalgte produkter har været publiceret.
+      success_flash: Udvalgte produkter er publiceret.
       launched_flash: Jobbet "Publisering af produkt(er)" kører i øjeblikket.
       message:
         error: Du er ikke ejeren af produktet, du kan ikke udgive den.
@@ -119,13 +119,13 @@ pimee_enrich:
         resolution: '%value%'
         resolution-unit: '%value%'
     scale:
-      title: Skaler
+      title: Skala
       options:
         width: '%value%px bredde'
         height: '%value%px højde'
         ratio: '%value%% forhold'
     thumbnail:
-      title: Miniature
+      title: Thumbnail
       options:
         width: '%value%px bredde'
         height: '%value%px højde'

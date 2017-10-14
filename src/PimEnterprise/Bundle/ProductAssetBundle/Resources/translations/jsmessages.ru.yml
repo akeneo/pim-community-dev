@@ -29,7 +29,7 @@ pimee_product_asset:
       remove_all_files: Удалить все файлы
       delete: Удалить
       import: Импорт
-      upload: Загрузить
+      upload: Загрузить медиафайлы
     success:
       new: Будет создан новый медиафайл
       imported: Файлы, импортированные для обработки активов

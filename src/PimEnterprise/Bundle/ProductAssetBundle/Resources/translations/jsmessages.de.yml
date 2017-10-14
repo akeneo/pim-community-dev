@@ -12,6 +12,7 @@ pimee_product_asset:
           cancel: Abbrechen
           confirm: Bestätigen
         title: Assets verwalten
+        description: Wählen Sie die Assets die dem Produkt zugeordnet werden sollen
   enrich_asset:
     grid:
       edit: Eigenschaften des Assets bearbeiten
@@ -29,7 +30,7 @@ pimee_product_asset:
       remove_all_files: Alle Dateien entfernen
       delete: Löschen
       import: Import
-      upload: Hochladen
+      upload: Assets hochladen
     success:
       new: Ein neues Asset wird erstellt
       imported: Dateien importiert für Verarbeitung von Assets

@@ -29,7 +29,7 @@ pimee_product_asset:
       remove_all_files: 删除所有文件
       delete: 删除
       import: 导入
-      upload: 上传 
+      upload: 上传资产
     success:
       new: 将创建一个新的资产
       imported: 为资产处理，文件已经导入

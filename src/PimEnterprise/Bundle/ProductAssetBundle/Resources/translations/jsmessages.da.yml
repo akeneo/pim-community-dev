@@ -2,13 +2,13 @@ pimee_product_asset:
   form:
     product:
       asset:
-        manage: Administrer aktiver
+        manage: Administrer formue
         panel:
           basket:
             title: Indkøbskurv
             empty_basket: Indkøbskurven er tom
         manage_asset:
-          title: Administrer aktiver
+          title: Administrer formue
           cancel: Annuller
           confirm: Bekræft
         title: Administrer formue
@@ -30,11 +30,11 @@ pimee_product_asset:
       remove_all_files: Fjerne alle filer
       delete: Slet
       import: Import
-      upload: Upload
+      upload: Indlæs aktiver
     success:
       new: Der oprettes et nyt aktiv
       imported: Filerne importeres til aktiv behandling
-      canceled: Indlæsningen blev annulleret
+      canceled: Upload succesrig annulleret
       deleted: Den uploadede fil blev slettet
     error:
       list: Kan ikke læse filer, der allerede er uploadet
