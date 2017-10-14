@@ -252,6 +252,11 @@ pim_enrich:
         title: Kreiraj
       message:
         created: Obitelj je uspješno kreirana
+      variant:
+        create: Kreiraj
+        cancel: Poništi
+        code: Kod
+        label: Oznaka
     attribute_option:
       code: Kod
       label: Oznaka
@@ -827,6 +832,7 @@ page_title:
   pim_enrich_mass_edit_action_configure: Masovno uredi | Konfiguriraj
   pim_enrich_job_tracker_index: Proces praćenja
   pim_enrich_job_tracker_show: Proces praćenja | Pokaži posao
+  pim_analytics_system_info_index: Informacije o sustavu
 batch_jobs:
   add_product_value:
     label: Dodaj vrijednosti proizvoda

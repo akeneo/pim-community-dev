@@ -514,7 +514,6 @@ pim_title.attribute:
   edit: "Attributen %attribute.label% | Bewerken"
 pim_title.product:
   index: "Producten"
-  edit: "Producten %product.sku% | Bewerken"
 pim_title.family:
   index: "Families"
   edit: "Families %family.label%|Bewerken"

@@ -252,6 +252,11 @@ pim_enrich:
         title: Luo
       message:
         created: Tuoteperhe luotu
+      variant:
+        create: Luo
+        cancel: Peruuta
+        code: Koodi
+        label: Nimike
     attribute_option:
       code: Koodi
       label: Nimike
@@ -821,6 +826,7 @@ page_title:
   pim_enrich_mass_edit_action_configure: Massaedit | Määritä
   pim_enrich_job_tracker_index: Prosessiseurain
   pim_enrich_job_tracker_show: Prosessin tracker | Näytä työ
+  pim_analytics_system_info_index: Järjestelmätiedot
 batch_jobs:
   update_product_value:
     label: Päivitä tuotteen arvo
