@@ -99,7 +99,7 @@ stage("Build") {
 //                        for (feature in features) {
 //                            sh "sed -i \"/features:/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
 //                        }
-			            sh "sed -i \"/Extensions:/i\\ \\ \\ \\ \\ \\ \\ \\ Liuggio\\\\\\\\Fastest\\\\\\\\Behat2\\\\\\\\ListFeaturesExtension\\\\\\\\Extension: ~\" behat.yml"
+			            sh "sed -i \"/Extensions:/a\\ \\ \\ \\ \\ \\ \\ \\ Liuggio\\\\\\\\Fastest\\\\\\\\Behat2\\\\\\\\ListFeaturesExtension\\\\\\\\Extension: ~\" behat.yml"
                         sh "sed -i \"s#http://akeneo#http://127.0.0.1#g\" behat.yml"
                         sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.yml"
                         sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.yml"
@@ -144,7 +144,7 @@ stage("Build") {
 //                for (feature in features) {
 //                    sh "sed -i \"/features:/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
 //                }
-                sh "sed -i \"/Extensions:/i\\ \\ \\ \\ \\ \\ \\ \\ Liuggio\\\\\\\\Fastest\\\\\\\\Behat2\\\\\\\\ListFeaturesExtension\\\\\\\\Extension: ~\" behat.yml"
+                sh "sed -i \"/Extensions:/a\\ \\ \\ \\ \\ \\ \\ \\ Liuggio\\\\\\\\Fastest\\\\\\\\Behat2\\\\\\\\ListFeaturesExtension\\\\\\\\Extension: ~\" behat.yml"
                 sh "sed -i \"s#http://akeneo#http://127.0.0.1#g\" behat.yml"
                 sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.yml"
                 sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.yml"
@@ -183,7 +183,7 @@ stage("Build") {
 //                for (feature in features) {
 //                    sh "sed -i \"/features:/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
 //                }
-                sh "sed -i \"/Extensions:/i\\ \\ \\ \\ \\ \\ \\ \\ Liuggio\\\\\\\\Fastest\\\\\\\\Behat2\\\\\\\\ListFeaturesExtension\\\\\\\\Extension: ~\" behat.yml"
+                sh "sed -i \"/Extensions:/a\\ \\ \\ \\ \\ \\ \\ \\ Liuggio\\\\\\\\Fastest\\\\\\\\Behat2\\\\\\\\ListFeaturesExtension\\\\\\\\Extension: ~\" behat.yml"
                 sh "sed -i \"s#http://akeneo#http://127.0.0.1#g\" behat.yml"
                 sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.yml"
                 sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.yml"

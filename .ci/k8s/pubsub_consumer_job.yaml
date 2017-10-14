@@ -52,7 +52,7 @@ spec:
           resources:
             requests: {cpu: "100m", memory: "700Mi"}
         - name: elasticsearch
-          image: eu.gcr.io/akeneo-ci/elasticsearch:5.5
+          image: docker.elastic.co/elasticsearch/elasticsearch:5.5.2
           command: ["/bin/bash", "-c"]
           args:
             - |
