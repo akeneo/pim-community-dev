@@ -162,6 +162,7 @@ stage("Build") {
              ])
              sh "mkdir -m 777 vendor"
              container("php") {
+                 sh "composer require --dev --no-update liuggio/fastest:~1.4"                 
                  sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --ansi"
                  sh "chmod 777 -R vendor/akeneo"
                  dir('vendor/akeneo/pim-community-dev') {
