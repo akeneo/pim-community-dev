@@ -543,7 +543,6 @@ pim_title.attribute:
   edit: "Attributi %attribute.label% | Modifica"
 pim_title.product:
   index: "Articoli"
-  edit: "Articoli %product.sku% | Modifica"
 pim_title.family:
   index: "Famiglie"
   edit: "Famiglie %family.label% | Modifica"

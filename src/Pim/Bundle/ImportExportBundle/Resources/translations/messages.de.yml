@@ -36,13 +36,9 @@ pim_import_export:
       history.title: Historie
       job_content.title: Inhalt
 pim_title.export_profile.index: Verwaltung der Export-Profile
-pim_title.export_profile.edit: Export-Profile %job.label% | Bearbeiten
-pim_title.export_profile.show: Export-Profile %job.label% | Anzeigen
 pim_title.export_execution.index: Historie der ausgeführten Exporte
 pim_title.export_execution.show: Ausgeführte Exporte | Details
 pim_title.import_profile.index: Verwaltung der Import-Profile
-pim_title.import_profile.edit: Import-Profile %job.label% | Bearbeiten
-pim_title.import_profile.show: Import-Profile %job.label% | Anzeigen
 pim_title.import_execution.index: Historie der ausgeführten Importe
 pim_title.import_execution.show: Ausgeführte Importe | Details
 export profile:
@@ -142,6 +138,7 @@ Warnings: Warnungen
 Summary: Zusammenfassung
 Start: Start
 End: Ende
+set_attribute_requirements: Benötigte Attribute auswählen
 COMPLETED: Vollständig
 STARTING: Wird gestartet...
 STARTED: Gestartet

@@ -25,13 +25,9 @@ pim_import_export:
       history.title: 历史
       job_content.title: 内容
 pim_title.export_profile.index: 导出配置文件管理
-pim_title.export_profile.edit: 导出配置文件 %job.label% |编辑
-pim_title.export_profile.show: 导出配置文件 %job.label% |显示
 pim_title.export_execution.index: 导出处理记录
 pim_title.export_execution.show: 导出处理记录|详情
 pim_title.import_profile.index: 导入配置文件管理
-pim_title.import_profile.edit: 导入配置文件 %job.label% |编辑
-pim_title.import_profile.show: 导入配置文件 %job.label% |显示
 pim_title.import_execution.index: 导入处理记录
 pim_title.import_execution.show: 导入处理记录|详情
 export profile:

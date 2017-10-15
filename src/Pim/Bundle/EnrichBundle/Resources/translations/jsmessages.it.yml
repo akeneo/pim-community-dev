@@ -14,6 +14,7 @@ confirmation:
     user: Sei sicuro di voler eliminare questo utente?
     role: Sei sicuro di voler eliminare questo ruolo?
     job_instance: È sicuro di che volere cancellare questa istanza di lavoro?
+    api_connection: Sei sicuro di voler revocare questa connessione API? Tutte le chiamate API fatte attraverso questa connessione da ora in poi genereranno un errore.
 pim_datagrid:
   mass_action_group:
     bulk_actions:
@@ -60,6 +61,8 @@ flash:
     removed: Ruolo rimosso con successo
   job_instance:
     removed: Istanza di lavoro rimossa correttamente
+  api_connection:
+    removed: Connessione API revocata correttamente
 error:
   common: Si è verificato un errore
   creating:
@@ -111,7 +114,9 @@ pim:
         xlsx_all: Excel (Tutti gli attributi)
         xlsx_grid_context: Excel (Contesto di griglia)
       delete: Eliminare
+      mass_edit: Azioni di massa
       category_edit: Spostare i prodotti nelle categorie
+      sequential_edit: Modifica sequenziale
 jstree.create: Crea
 jstree.done: Completato
 switch_on: "Sì"
@@ -146,7 +151,10 @@ pim_enrich:
       title: Articoli
       locale: Impostazioni locali
       category: Categoria
+      create: Crea prodotto
       filters: Filtri
+      selected: prodotti selezionati
+      common: In comune
       btn:
         enabled: Attivato
         disabled: Disabilitato
@@ -160,6 +168,8 @@ pim_enrich:
         logged_at: Loggato il
         from: Da
         modified: Modificato
+        old_value: Vecchio valore
+        new_value: Nuovo valore
         actions: Azioni
       info:
         deletion_successful: Prodotto eliminato correttamente.
@@ -215,6 +225,17 @@ pim_enrich:
       message:
         created: Articolo creato con successo
       completeness: Completo
+      sequential_edit:
+        item_limit: Sono visualizzati solo i primi 1000 articoli di questa modifica sequenziale ({{ count }} selezionati)
+        empty: La selezione è vuota, modificare i criteri di ricerca
+    product_model:
+      info:
+        update_successful: Modello di prodotto aggiornato correttamente. La completezza delle sue varianti sarà ricalcolata.
+        update_failed: Il modello di prodotto non può essere aggiornato.
+        field_not_ready: 'Il modello di prodotto non può essere salvato in questo momento. I campi seguenti non sono pronti: {{ fields }}'
+      read_only_parent_attribute_from_common: Questo attributo può essere aggiornato con gli attributi in comune.
+      read_only_parent_attribute_from_model: "Questo attributo può essere aggiornato con gli attributi per {{ axes }}"
+      variant_axis: Asse di variante
     association_type:
       info:
         deletion_successful: Tipo di associazione rimosso con successo.
@@ -272,6 +293,7 @@ pim_enrich:
         save: Salva
     family:
       title: famiglia
+      selected: famiglie selezionate
       info:
         update_successful: Famiglia aggiornata con successo.
         create_successful: Canale creato con successo.
@@ -290,6 +312,12 @@ pim_enrich:
         title: Crea
       message:
         created: Famiglia creata con successo
+      variant:
+        axis.label: Asse di variante
+        create: Crea
+        cancel: Annulla
+        code: Codice
+        label: Etichetta
     attribute_option:
       code: Codice
       label: Etichetta
@@ -354,6 +382,8 @@ pim_enrich:
     api_connection:
       create_popin:
         title: Crea
+      message:
+        created: Connessione API creata correttamente
   confirmation:
     leave: Sei sicuro di voler lasciare questa pagina?
     discard_changes: Perderai le modifiche a {{ entity }} se lasci la pagina.
@@ -372,6 +402,9 @@ pim_enrich:
     error_occured: Si è verificato un errore durante il caricamento della pagina
   form:
     required: (richiesto)
+    product_model:
+      complete_variant_product: prodotto variante
+      complete_variant_products: prodotti varianti
     product:
       tab:
         associations:
@@ -379,7 +412,9 @@ pim_enrich:
           info:
             none_exist: Nessun tipo di associazione esistente.
             show_products: Visualizza i prodotti
+            show_groups: Mostra gruppi
           association_type_selector: Tipi di associazione
+          target: Target
         attributes:
           title: Attributi
           btn:
@@ -393,6 +428,10 @@ pim_enrich:
             load_more: Carica ulteriori risultati...
           attribute_group_selector: Attributo di gruppo
           attribute_group_all: Tutti
+          attribute_filter:
+            display: Mostra
+            all: Tutti gli attributi
+            missing_required: Tutti gli attributi richiesti mancanti
         categories:
           title: Categorie
       panel:
@@ -479,6 +518,8 @@ pim_enrich:
             attributes_groups_selected: '{{ itemsCount }} gruppo(i) selezionato(i)'
           not_required_label: Non obbligatorio
           required_label: Obbligatorio
+        variant:
+          title: Varianti
         history:
           title: Cronologia
     attribute_option:
@@ -624,6 +665,8 @@ pim_enrich:
           real_time_versioning:
             title: Aggiornamento cronologia in tempo reale
             help: Significa che la cronologia del prodotto viene aggiornata automaticamente, può essere disattivato per migliorare le prestazioni
+          family_variant_column:
+            title: Colonna famiglia variante
         history:
           title: Cronologia
       file_path: Percorso del file
@@ -687,6 +730,8 @@ pim_enrich:
             select_attributes: Aggiungi attributi
             add: Aggiungi
             attributes_groups_selected: '{{ itemsCount }} gruppo(i) selezionato(i)'
+  job:
+    upload: Rilascia i tuoi file {{ type }} qui, o clicca per selezionare dal disco
   export:
     product:
       data:
@@ -719,6 +764,7 @@ pim_enrich:
           all_group: Tutti i gruppi
           empty_selection: Tutti gli attributi verranno esportati
           title: Attributi
+          description: Seleziona le informazioni di prodotto da esportare
         family:
           title: Famiglia
           help: 'Seleziona i prodotti da esportare in base alla loro famiglia. Es: Esportare solo le scarpe e gli abiti.'
@@ -876,9 +922,14 @@ pim_enrich:
     cancel: Annulla
     confirm: Conferma
     product:
+      title: Azioni di massa sui prodotti
+      confirm: "{1}Si sta per aggiornare un prodotto con le informazioni seguenti, confermare.|] 1, Inf [Si stanno per aggiornare {{ itemsCount }} prodotti con le informazioni seguenti, confermare."
       step:
         select:
           label: Scegli gli articoli
+        choose:
+          title: Azioni di massa sui prodotti
+          label_count: "] 0, Inf [Seleziona azione"
         configure:
           label: Configura
         confirm:
@@ -896,6 +947,7 @@ pim_enrich:
           label: Modifica gli attributi comuni
           description: Gli attributi del prodotto selezionato verranno modificati con i seguenti dati per le impostazioni locali {{ locale }} e per il canale {{ scope }}, selezionati nella griglia prodotti.
         change_family:
+          label: Cambia famiglia
           description: La famiglia degli articoli selezionati verrà modificata nella famiglia selezionata
           field: Famiglia
         add_to_group:
@@ -903,21 +955,31 @@ pim_enrich:
           description: Selezionare i gruppi in cui aggiungere gli articoli selezionati
           field: Gruppi
         add_to_category:
+          label: Aggiungi alle categorie
           description: Gli articoli saranno posizionati nelle seguenti categorie, il posizionamento attuale è mantenuto.
         move_to_category:
+          label: Sposta tra categorie
           description: I prodotti saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso.
         remove_from_category:
+          label: Rimuovi dalle categorie
           description: I prodotti verranno rimossi dalle seguenti categorie.
     family:
+      title: Azione di massa sulle famiglie
       step:
         select:
           label: Scegli le famiglie
+        choose:
+          title: Azioni di massa sulle famiglie
+          label_count: "] 0, Inf [Seleziona azione"
         configure:
           label: Configura
         confirm:
           label: Conferma
         launched:
           label: L'azione di massa "{{ operation }}" è stato lanciata. Sarai avvisato quando finisce.
+      operation:
+        set_requirements:
+          label: Imposta i requisiti degli attributi
 pim_enrich.error:
   exception.title: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
   http:
@@ -926,34 +988,27 @@ page_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Gruppi di attributi
   pim_enrich_attributegroup_create: Gruppi di attributo | Crea
-  pim_enrich_attributegroup_edit: Gruppi attributo {{ group.label }} | Modifica
   pim_enrich_categorytree_index: Albero della categoria
   pim_enrich_categorytree_create: Strutture di categoria | Crea
-  pim_enrich_categorytree_edit: Albero categorie {{ category.label }} | Modifica
   pim_enrich_categorytree_create_tree: Strutture di categoria | Crea
   pim_enrich_attribute_index: Attributi
   pim_enrich_attribute_create: Attributi | Crea
-  pim_enrich_attribute_edit: Attributi {{ attribute.label }} | Modifica
   pim_enrich_product_index: Articoli
-  pim_enrich_product_edit: Prodotti {{ product.sku }} | Modifica
   pim_enrich_family_index: Famiglie
-  pim_enrich_family_edit: Famiglie {{ family.label }} | Modifica
   pim_enrich_channel_index: Canali
   pim_enrich_channel_create: Canali | Crea
-  pim_enrich_channel_edit: Canali {{ channel.label }} | Modifica
   pim_enrich_currency_index: Valute
   pim_enrich_locale_index: Impostazioni locali
   pim_enrich_group_index: Gruppi
-  pim_enrich_group_edit: Gruppi {{ group.label }} | Modifica
   pim_enrich_associationtype_index: Tipi di associazione
-  pim_enrich_associationtype_edit: Tipi associazione {{ association type.label }} | Modifica
   pim_enrich_grouptype_index: Tipi di gruppo
-  pim_enrich_grouptype_edit: Tipi di gruppo {{ group type.label }} | Modifica
   pim_enrich_mass_edit_action_choose: Modifica di massa| Scegli
   pim_enrich_mass_edit_action_configure: Modifica di massa| Configura
   pim_enrich_mass_edit_action_perform: Modifica di massa | Esegui
   pim_enrich_job_tracker_index: Tracker di processo
   pim_enrich_job_tracker_show: Tracker di processo | Visualizza lavoro
+  pim_enrich_api_connection_index: Connessioni API
+  pim_analytics_system_info_index: Informazioni di sistema
 batch_jobs:
   add_product_value:
     label: Aggiungi un valore di prodotto
@@ -969,6 +1024,10 @@ batch_jobs:
       label: Modifica gli attributi comuni
     cleaner:
       label: Pulisci i file per gli attributi comuni
+  set_attribute_requirements:
+    label: Imposta i requisiti degli attributi
+    perform:
+      label: Imposta i requisiti degli attributi
   csv_product_quick_export:
     quick_export.label: Esportazione rapida prodotti in Csv
     perform:
@@ -989,6 +1048,7 @@ batch_jobs:
     label: Esportazione prodotti in CSV
     export.label: Esportazione Prodotti
   csv_product_model_export:
+    label: Esportazione modelli di prodotto in CSV
     export.label: Esportazione Prodotti
   csv_category_export:
     label: Esportazione categorie in CSV
@@ -1008,6 +1068,9 @@ batch_jobs:
   csv_family_export:
     label: Esportazione famiglie in CSV
     export.label: Esportazione famiglie
+  csv_family_variant_export:
+    label: Esportazione famiglie varianti in CSV
+    export.label: Esportazione famiglie varianti
   csv_product_import:
     label: Importazione prodotti in CSV
     validation.label: Validazione file
@@ -1114,6 +1177,8 @@ batch_jobs:
   xlsx_family_export:
     label: Esportazione famiglie in XLSX
     export.label: Esportazione famiglie
+  xlsx_family_variant_export:
+    export.label: Esportazione famiglie varianti
   xlsx_category_export:
     label: Esportazione categorie in XLSX
     export.label: Esportazione categorie
@@ -1199,6 +1264,7 @@ pim_menu:
     user_role: Ruoli
     info: Informazioni di sistema
     job_tracker: Tracker di processo
+    api_connection: Connessioni API
   navigation:
     system: Sistema
     user: Gestione utenti

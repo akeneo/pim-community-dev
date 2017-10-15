@@ -554,7 +554,6 @@ pim_title.attribute:
   edit: "Attributter %attribute.label% | Rediger"
 pim_title.product:
   index: "Produkter"
-  edit: "Produkter %product.sku% | Rediger"
 pim_title.family:
   index: "Familier"
   edit: "Familier %family.label% | Rediger"
