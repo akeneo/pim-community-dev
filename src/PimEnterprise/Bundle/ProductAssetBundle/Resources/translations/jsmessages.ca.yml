@@ -29,7 +29,7 @@ pimee_product_asset:
       remove_all_files: Eliminar tots els arxius
       delete: Suprimir
       import: Importar
-      upload: Carregar
+      upload: Carregar recursos
     success:
       new: Es crearà un nou recurs
       imported: Arxius importats per al recurs actiu
@@ -75,3 +75,5 @@ pim_dashboard:
     last_operations:
       job_type:
         mass_upload: Carregar en massa
+page_title:
+  pimee_product_asset_mass_upload: Carregar recursos

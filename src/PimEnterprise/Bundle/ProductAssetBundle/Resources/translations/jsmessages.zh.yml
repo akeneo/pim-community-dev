@@ -29,7 +29,7 @@ pimee_product_asset:
       remove_all_files: 删除所有文件
       delete: 删除
       import: 导入
-      upload: 上传 
+      upload: 上传资产
     success:
       new: 将创建一个新的资产
       imported: 为资产处理，文件已经导入
@@ -75,3 +75,5 @@ pim_dashboard:
     last_operations:
       job_type:
         mass_upload: 批量上传
+page_title:
+  pimee_product_asset_mass_upload: 上传资产

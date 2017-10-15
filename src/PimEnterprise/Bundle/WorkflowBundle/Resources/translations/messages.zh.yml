@@ -101,10 +101,6 @@ pim_menu:
 pim_title:
   published_product:
     index: 已发布的产品
-    view: 已发布产品 %product.sku% |查看
-  product:
-    dispatch: "产品%product.sku%"
-    show: "产品 %product.sku% |显示"
   proposal:
     index: 提案
 btn.editworkingcopy: 编辑工作副本
