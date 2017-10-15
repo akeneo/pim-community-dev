@@ -1,7 +1,7 @@
 pim_enrich:
   product:
     tab:
-      attribute.title: Egenskaber
+      attribute.title: Attributter
       category.title: Kategorier
       association.title: Associationer
       completeness.title: Fuldstændighed
@@ -16,12 +16,12 @@ pim_enrich:
   attribute_group:
     tab:
       property.title: Egenskaber
-      attribute.title: Egenskaber
+      attribute.title: Attributter
       history.title: Historik
   family:
     tab:
       property.title: Egenskaber
-      attribute.title: Egenskaber
+      attribute.title: Attributter
       history.title: Historik
   association_type:
     tab:
@@ -89,7 +89,7 @@ pim_enrich:
       description: De valgte produktattributter vil blive redigeret med følgende data for den valgte landestandard.
       empty: Vælg venligst den eller de attribut(ter), du vil redigere
       success_flash: Kørslen der opdaterer produkt(er) status kører i øjeblikket
-      launched_flash: Handlingen bulk "redigere fælles attributter" er blevet statrtet. Du får besked, når det er afsluttet.
+      launched_flash: Handlingen bulk "redigere fælles attributter" er blevet startet. Du får besked, når det er afsluttet.
       message:
         warning: Der er ingen fælles egenskaber for de valgte produkter. Ændre venligst dit valg.
         invalid_attribute: Attribut med koden "attribute_code" er ikke fælles for de valgte produkter, attributten springes over.
@@ -164,7 +164,7 @@ pim_enrich:
       move: Flyt kategori
       children: Se underliggende kategorier
       products: Se produkter i denne kategori
-      history: Se kategori historie
+      history: Se kategori historik
     channel:
       index: Liste over kanaler
       create: Opret en kanal
@@ -217,7 +217,7 @@ pim_enrich:
       manage: Administrere API-forbindelser
   acl_group:
     association_type: Sammenhængstyper
-    attribute: Egenskaber
+    attribute: Attributter
     attribute_group: Attributgrupper
     category: Kategorier
     channel: Kanaler
@@ -383,7 +383,7 @@ flash:
     invalid: Kontrollér din indtastning og prøv igen
     attributes added: Attributter føjet til produktet
     attribute removed: Attributten er nu fjernet fra produktet
-    attribute not removable: Attributtet kan ikke fjernes fra dette produkt
+    attribute not removable: Attributten kan ikke fjernes fra dette produkt
     enabled: Produktet er blevet aktiveret
     disabled: Produktet er blevet deaktiveret
   group:
@@ -511,7 +511,7 @@ Global: Global
 Channel: Kanal
 Expand all channels: Udvid alle kanaler
 Collapse all channels: Skjul alle kanaler
-Always override: Altid tilsidesætte
+Always override: Altid tilsidesæt
 Ask: Spørg
 General Properties: Generelle egenskaber
 Group values: Gruppeværdier
@@ -538,7 +538,7 @@ URL: URL
 Regular expression: Regulære udtryk
 Minimum input length: Minimum inputlængde
 Default: Standard
-Attributes: Egenskaber
+Attributes: Attributter
 Title: Titel
 pim_title.attribute_group:
   index: "Attributgrupper"
@@ -751,7 +751,7 @@ job_execution.summary:
   mass_edited: Masse redigeret
   skip: Sprunget over
   skipped_products: produkter sprunget over
-  skipped_attributes: Egneskaber sprunget over
+  skipped_attributes: Attributter sprunget over
   skipped_families: Familier sprunget over
 pim_mass_edit_execution_show: Masse redigere udførsler | Detaljer
 edit_common_attributes.steps.edit_common_attributes_processor.title: Rediger fælles attributter
@@ -805,7 +805,7 @@ job_tracker:
     started_at: Startede på
 pim_enrich_attribute_form:
   code: Kode
-  type: Egenskabstype
+  type: Attribute Type
   reference_data_name: Referencenavn data
   scopable: Værdi pr. kanal
   localizable: Værdi pr. landestandard

@@ -7,10 +7,8 @@ pim_connector:
       title: CSV-lukija
     csv_product_reader.title: CSV-tuotteen lukija
     csv_category_reader.title: CSV-kategorian lukija
-    csv_variant_group .title: CSV-vaihtoehtojen ryhmälukija
     dummy_processor.title: Malliprosessori
     product_processor.title: Tuotteen luominen
-    variant_group_processor.title: Malliryhmän luonti / päivitys
     category_processor.title: Kategorian luominen
     association_processor.title: Assosiaation luominen
     product_association_processor.title: Assosiaation luominen
@@ -24,7 +22,6 @@ pim_connector:
     file_writer.title: Ulostulo
     product_writer.title: Tuotteen varastointi
     category_writer.title: Kategorian varastointi
-    variant_group_writer.title: Variant ryhmän varastointi
     writer.title: Yksikön varastointi
     csv_writer.title: CSV-kirjoittaja
 job_execution.summary:
@@ -61,9 +58,6 @@ batch_jobs:
   csv_group_export:
     label: Ryhmän vienti CSV-muodossa
     export.label: Ryhmän vienti
-  csv_variant_group_export:
-    label: Muuttujaryhmien vienti CSV-muodossa
-    export.label: Muutujaryhmien vienti
   csv_family_export:
     label: Ryhmän tuonti CSV-tiedostona
     export.label: Ryhmän vienti
@@ -100,10 +94,6 @@ batch_jobs:
     label: Ryhmien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmien tuonti
-  csv_variant_group_import:
-    label: Muuttujaryhmien tuonti CSV-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Muutujaryhmien tuonti
   csv_channel_import:
     validation.label: Tiedostojen tarkistaminen
   csv_locale_import:
@@ -149,17 +139,10 @@ batch_jobs:
   xlsx_group_export:
     label: Ryhmävienti XLSX-muodossa
     export.label: Ryhmän vienti
-  xlsx_variant_group_export:
-    label: Muuttujaryhmien vienti XLSX-muodossa
-    export.label: Muutujaryhmien vienti
   xlsx_group_import:
     label: Ryhmätuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmien tuonti
-  xlsx_variant_group_import:
-    label: Muuttujaryhmien tuonti XLSX-muodossa
-    validation.label: Tiedostojen tarkistaminen
-    import.label: Muuttujaryhmien tuonti
   xlsx_family_export:
     label: Perhevienti XLSX-muodossa
     export.label: Ryhmän vienti

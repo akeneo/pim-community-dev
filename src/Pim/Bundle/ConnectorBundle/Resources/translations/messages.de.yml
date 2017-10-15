@@ -9,10 +9,8 @@ pim_connector:
       invalid_item_columns_count: 'Erwartet wurden %totalColumnsCount% Spalten, tatsächlich vorhanden sind %itemColumnsCount% in %filePath%:%lineno%'
     csv_product_reader.title: CSV Produkt-Leser
     csv_category_reader.title: CSV Kategorie-Leser
-    csv_variant_group .title: CSV Variantengruppen-Leser
     dummy_processor.title: Dummy-Prozessor
     product_processor.title: Produkterstellung
-    variant_group_processor.title: Variantengruppenerstellung / -aktualisierung
     category_processor.title: Kategorieerstellung
     association_processor.title: Verbindungserstellung
     product_association_processor.title: Verbindungserstellung
@@ -26,7 +24,6 @@ pim_connector:
     file_writer.title: Ausgabe
     product_writer.title: Produkt-Speicher
     category_writer.title: Kategorie-Speicher
-    variant_group_writer.title: Variantengruppen-Speicher
     writer.title: Entitäten-Speicher
     csv_writer.title: CSV-Schreiber
 job_execution.summary:
@@ -44,11 +41,17 @@ job_execution.summary:
     skipped: übersprungen, Erweiterung in der Whitelist
   product_skipped_no_diff: Übersprungenes Produkt (keine Unterschiede)
   product_skipped_no_associations: Produkt übersprungen (keine Verbindungen vorhanden)
+  product_model_skipped_no_diff: Produktmodell übersprungen (keine Unterschiede)
   item_position: gelesene Zeilen
+  skipped_in_root_product_model: Produktmodell mit übergeordneter Ebene übersprungen
+  skipped_in_sub_product_model: Produktmodell ohne übergeordnete Ebene übersprungen
 batch_jobs:
   csv_product_export:
     label: Produkt-Export als CSV-Datei
-    export.label: Produkt-Export
+    export.label: Produkt export
+  csv_product_model_export:
+    label: Produktmodell-Export als CSV-Datei
+    export.label: Produktmodell-Export
   csv_category_export:
     label: Kategorie-Export als CSV-Datei
     export.label: Kategorie export
@@ -64,19 +67,20 @@ batch_jobs:
   csv_group_export:
     label: Gruppen-Export in CSV-Datei
     export.label: Gruppen-Export
-  csv_variant_group_export:
-    label: Variantengruppen-Export als CSV
-    export.label: Variantengruppen-Export
   csv_family_export:
     label: Exportiere Produktfamilie in CSV-Datei
     export.label: Exportiere Produktfamilie
   csv_product_import:
-    label: Produkt-Import aus CSV-Datei
+    label: Produkt-Export als CSV-Datei
     validation.label: Dateivalidierung
     import.label: Produkt import
     import_associations.label: Produktverbindungen-Import
   csv_product_model_import:
+    label: Produktmodell-Import aus CSV-Datei
     validation.label: Dateivalidierung
+    import_root_product_model.label: Produktmodell-Import Hauptebene
+    import_sub_product_model.label: Produktmodell-Import Subebene
+    import_product_model_descendants.label: Vererbungen der Produktmodelle berechnen
   csv_category_import:
     label: Kategorie-Import aus CSV-Datei
     validation.label: Dateivalidierung
@@ -103,10 +107,6 @@ batch_jobs:
     label: Gruppen-Import aus CSV-Datei
     validation.label: Dateivalidierung
     import.label: Gruppen-Import
-  csv_variant_group_import:
-    label: Variantengruppen-Import als CSV
-    validation.label: Dateivalidierung
-    import.label: Variantengruppen-Import
   csv_channel_export:
     label: Ausgabekanal-Export als CSV-Datei
     export.label: Ausgabekanal-Export
@@ -167,27 +167,27 @@ batch_jobs:
   xlsx_product_export:
     label: Produkt-Export als XLSX-Datei
     export.label: Produkt export
+  xlsx_product_model_export:
+    label: Produktmodell-Export als XLSX-Datei
+    export.label: Produktmodell-Export
   xlsx_product_import:
     label: Produkt-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import.label: Produkt import
     import_associations.label: Produktverbindungen-Import
   xlsx_product_model_import:
+    label: Produktmodell-Import aus XLSX-Datei
     validation.label: Dateivalidierung
+    import_root_product_model.label: Produktmodell-Import Hauptebene
+    import_sub_product_model.label: Produktmodell-Import Subebene
+    import_product_model_descendants.label: Vererbungen der Produktmodelle berechnen
   xlsx_group_export:
     label: Gruppen-Export als XSLX-Datei
     export.label: Gruppen-Export
-  xlsx_variant_group_export:
-    label: Variantengruppen-Export als XLSX-Datei
-    export.label: Variantengruppen-Export
   xlsx_group_import:
     label: Gruppen-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import.label: Gruppen-Import
-  xlsx_variant_group_import:
-    label: Variantengruppen-Import aus XLSX-Datei
-    validation.label: Dateivalidierung
-    import.label: Variantengruppen-Import
   xlsx_family_export:
     label: Produktfamilien-Eport als XLSX-Datei
     export.label: Exportiere Produktfamilie

@@ -9,10 +9,8 @@ pim_connector:
       invalid_item_columns_count: 'Erano attese %totalColumnsCount% colonne, invece ci sono %itemColumnsCount% in %filePath%:%lineno%'
     csv_product_reader.title: Lettore prodotti in CSV
     csv_category_reader.title: Lettore categorie in CSV
-    csv_variant_group .title: Lettore CSV del gruppo di varianti
     dummy_processor.title: Processore di prova
     product_processor.title: Creazione prodotti
-    variant_group_processor.title: Creazione /aggiornamento di gruppo di varianti
     category_processor.title: Creazione categorie
     association_processor.title: Creazione associazioni
     product_association_processor.title: Creazione associazioni
@@ -26,7 +24,6 @@ pim_connector:
     file_writer.title: Output
     product_writer.title: Archivio prodotti
     category_writer.title: Archivio categorie
-    variant_group_writer.title: Memorizzazione del gruppo di varianti
     writer.title: Archivio entità
     csv_writer.title: Csv Writer
 job_execution.summary:
@@ -49,6 +46,8 @@ batch_jobs:
   csv_product_export:
     label: Esportazione prodotti in CSV
     export.label: Esportazione Prodotti
+  csv_product_model_export:
+    label: Esportazione modelli di prodotto in CSV
   csv_category_export:
     label: Esportazione categorie in CSV
     export.label: Esportazione categorie
@@ -64,12 +63,12 @@ batch_jobs:
   csv_group_export:
     label: Esportazione gruppi in CSV
     export.label: Esportazione gruppi
-  csv_variant_group_export:
-    label: Esportazione in CSV dei gruppi di varianti
-    export.label: Esportazione gruppo varianti
   csv_family_export:
     label: Esportazione famiglie in CSV
     export.label: Esportazione famiglie
+  csv_family_variant_export:
+    label: Esportazione famiglie varianti in CSV
+    export.label: Esportazione famiglie varianti
   csv_product_import:
     label: Importazione prodotti in CSV
     validation.label: Validazione file
@@ -103,10 +102,6 @@ batch_jobs:
     label: importazione gruppi in CSV
     validation.label: Validazione file
     import.label: importazione gruppi
-  csv_variant_group_import:
-    label: Importazione in CSV dei gruppi di varianti
-    validation.label: Validazione file
-    import.label: Importazione gruppi di varianti
   csv_channel_export:
     label: Esportazione canali in CSV
     export.label: Esportazione canali
@@ -177,20 +172,15 @@ batch_jobs:
   xlsx_group_export:
     label: Esportazione gruppi in XLSX
     export.label: Esportazione gruppi
-  xlsx_variant_group_export:
-    label: Esportazione in XLSX dei gruppi di varianti
-    export.label: Esportazione gruppo varianti
   xlsx_group_import:
     label: Importazione gruppi in XLSX
     validation.label: Validazione file
     import.label: importazione gruppi
-  xlsx_variant_group_import:
-    label: Importazione gruppi di varianti in XLSX
-    validation.label: Validazione file
-    import.label: Importazione dei gruppi di varianti
   xlsx_family_export:
     label: Esportazione famiglie in XLSX
     export.label: Esportazione famiglie
+  xlsx_family_variant_export:
+    export.label: Esportazione famiglie varianti
   xlsx_category_export:
     label: Esportazione categorie in XLSX
     export.label: Esportazione categorie

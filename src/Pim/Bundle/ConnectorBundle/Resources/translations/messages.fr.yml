@@ -9,10 +9,8 @@ pim_connector:
       invalid_item_columns_count: '%totalColumnsCount% colonnes attendues, %itemColumnsCount% trouvées dans %filePath%:%lineno%'
     csv_product_reader.title: Lecteur de produits en CSV
     csv_category_reader.title: Lecteur de catégories en CSV
-    csv_variant_group .title: Lecteur de groupes de variantes en CSV
     dummy_processor.title: Processeur factice
     product_processor.title: Création des produits
-    variant_group_processor.title: Création / Mise à jour des groupes de variantes
     category_processor.title: Création des catégories
     association_processor.title: Création d'association
     product_association_processor.title: Création d'association
@@ -26,7 +24,6 @@ pim_connector:
     file_writer.title: Sortie
     product_writer.title: Stockage des produits
     category_writer.title: Stockage des catégories
-    variant_group_writer.title: Stockage des groupes de variantes
     writer.title: Stockage des entités
     csv_writer.title: Ecriture des fichiers en CSV
 job_execution.summary:
@@ -70,9 +67,6 @@ batch_jobs:
   csv_group_export:
     label: Export des groupes en CSV
     export.label: Export de groupes
-  csv_variant_group_export:
-    label: Export des groupes de variantes en CSV
-    export.label: Export des groupes de variantes
   csv_family_export:
     label: Export des familles en CSV
     export.label: Export des familles
@@ -118,10 +112,6 @@ batch_jobs:
     label: Import des groupes en CSV
     validation.label: Validation du fichier
     import.label: Import des groupes
-  csv_variant_group_import:
-    label: Import des groupes de variantes en CSV
-    validation.label: Validation du fichier
-    import.label: Import des groupes de variantes
   csv_channel_export:
     label: Export des canaux en CSV
     export.label: Export des canaux
@@ -135,8 +125,8 @@ batch_jobs:
     label: Export des devises en CSV
     export.label: Export des devises
   csv_group_type_export:
-    label: Export des types de groupes en CSV
-    export.label: Export des types de groupes
+    label: Export des types de groupe en CSV
+    export.label: Export des types de groupe
   csv_channel_import:
     label: Import des canaux en CSV
     validation.label: Validation du fichier
@@ -154,9 +144,9 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des devises
   csv_group_type_import:
-    label: Import des types de groupes en CSV
+    label: Import des types de groupe en CSV
     validation.label: Validation du fichier
-    import.label: Import des types de groupes
+    import.label: Import des types de groupe
   xlsx_category_import:
     label: Import des catégories en XLSX
     validation.label: Validation du fichier
@@ -201,17 +191,10 @@ batch_jobs:
   xlsx_group_export:
     label: Export des groupes en XLSX
     export.label: Export de groupes
-  xlsx_variant_group_export:
-    label: Export des groupes de variantes en XLSX
-    export.label: Export des groupes de variantes
   xlsx_group_import:
     label: Import des groupes en XLSX
     validation.label: Validation du fichier
     import.label: Import des groupes
-  xlsx_variant_group_import:
-    label: Import des groupes de variantes en XLSX
-    validation.label: Validation du fichier
-    import.label: Import des groupes de variantes
   xlsx_family_export:
     label: Export des familles en XLSX
     export.label: Export des familles
@@ -243,8 +226,8 @@ batch_jobs:
     label: Export des devises en XLSX
     export.label: Export des devises
   xlsx_group_type_export:
-    label: Export des types de groupes en XLSX
-    export.label: Export des types de groupes
+    label: Export des types de groupe en XLSX
+    export.label: Export des types de groupe
   xlsx_channel_import:
     label: Import des canaux en XLSX
     validation.label: Validation du fichier
@@ -262,6 +245,6 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des devises
   xlsx_group_type_import:
-    label: Import des types de groupes en XLSX
+    label: Import des types de groupe en XLSX
     validation.label: Validation du fichier
-    import.label: Import des types de groupes
+    import.label: Import des types de groupe

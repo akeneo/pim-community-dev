@@ -20,6 +20,9 @@ pim_analytics:
     nb_channels: Anzahl der Kanäle
     nb_products: Anzahl der Produkte
     nb_attributes: Anzahl der Attribute
+    nb_scopable_attributes: Anzahl der Attribute mit Gültigkeitsbereichen
+    nb_localizable_attributes: Anzahl der lokalisierbaren Attribute
+    nb_scopable_localizable_attributes: Anzahl der lokalisierbaren Attribute mit Gültigkeitsbereichen
     nb_locales: Anzahl der Gebietsschemas
     nb_families: Anzahl der Familien
     nb_users: Anzahl der Benutzer
@@ -28,7 +31,7 @@ pim_analytics:
     php_version: PHP-Version
     mysql_version: MySQL-Version
     mariadb_version: MariaDB-Version
-    mongodb_version: MongoDB-Version
+    mongodb_version: MongoDB-version
     server_version: Server-Version
     php_extensions: PHP-Erweiterungen
   acl:

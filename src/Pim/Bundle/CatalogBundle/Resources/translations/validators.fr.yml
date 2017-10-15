@@ -39,6 +39,7 @@ pim_catalog:
     cannot_have_parent: 'Le modèle de produit "%product_model%" ne peut pas avoir de parent'
     attribute_does_not_belong_to_family: 'L''attribut "%attribute%" n''appartient pas à la famille "%family%"'
     variant_product_invalid_family: 'La famille du produit variant doit être la même que son parent'
+    not_null_family: La famille ne peut pas être vide car votre produit avec l'identifiant "%sku%" est un produit variant.
     variant_product_has_parent: 'Le produit variant "%variant_product%" doit avoir un parent'
     invalid_variant_product_parent: 'Le produit variant "%variant_product%" ne peut pas avoir le modèle de produit "%product_model%" comme parent, (ce modèle de produit ne peut avoir que d''autres modèles de produit comme enfants)'
     modified_variant_axis_value: 'L''axe de variante "%variant_axis%" ne peut pas être modifié, "%provided_value%" donné'
