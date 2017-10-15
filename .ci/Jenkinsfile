@@ -1,0 +1,370 @@
+#!groovy
+
+import org.csanchez.jenkins.plugins.kubernetes.pipeline.PodTemplateAction
+
+stage("Build") {
+
+    milestone 1
+    if (env.BRANCH_NAME =~ /^PR-/) {
+        timeout(time:5, unit:'DAYS') {
+            input 'Launch your build?'
+        }
+    }
+    milestone 2
+
+    parallel(
+        "pim-ce": {withBuildNode({
+            checkout scm
+            container("php") {
+                sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --ignore-platform-reqs --no-suggest"
+                sh "bin/console --ansi assets:install"
+                sh "bin/console --ansi pim:installer:dump-require-paths"
+            }
+            container("node") {
+                sh "yarn config set cache-folder /shared/.yarn"
+                sh "yarn install --no-progress"
+                sh "yarn run webpack"
+            }
+            container("docker") {
+                sh "cp behat.ci.yml behat.yml"
+                sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
+                sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
+                sh "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"
+                sh "sed \"\$a    installer_data: 'PimInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
+
+                sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce ."
+                sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce"
+            }
+        })},
+        "pim-ee": {withBuildNode({
+            checkout([$class: 'GitSCM',
+              branches: [[name: 'master']],
+              userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
+            ])
+            // Required to avoid permission error when "composer update"
+            sh "mkdir -m 777 vendor"
+
+            container("php") {
+                sh "composer require --dev --no-update liuggio/fastest:~1.4"
+                sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-scripts --ignore-platform-reqs --no-suggest"
+
+                // Required to avoid permission error when "deleteDir()"
+                sh "chmod 777 -R vendor/akeneo"
+
+                dir('vendor/akeneo/pim-community-dev') {
+                    deleteDir()
+                    checkout scm
+                }
+
+                sh "php -d memory_limit=-1 /usr/bin/composer --ansi -n run-script post-update-cmd"
+                sh "bin/console --ansi assets:install"
+                sh "bin/console --ansi pim:installer:dump-require-paths"
+            }
+            container("node") {
+                sh "yarn config set cache-folder /shared/.yarn"
+                sh "yarn install --no-progress"
+                sh "yarn run webpack"
+            }
+            container("docker") {
+                sh "cp behat.ci.yml behat.yml"
+                sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
+                sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
+                sh "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"
+                sh "sed \"\$a    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
+
+                // Compatibility layer while the EE is not up to date with the new CI
+                sh "cp vendor/akeneo/pim-community-dev/Dockerfile ."
+                sh "cp -R vendor/akeneo/pim-community-dev/.ci ."
+                sh "sed -i \"/PimFormatterExtension/a\\ \\ \\ \\ \\ \\ \\ \\ Liuggio\\\\\\\\Fastest\\\\\\\\Behat\\\\\\\\ListFeaturesExtension\\\\\\\\Extension: ~\" behat.yml"
+                sh "sed -i \"/contexts/i\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ filters:\" behat.yml"
+                sh "sed -i \"/filters/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ tags:\\ \\\"~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce\\\"\" behat.yml"
+                sh "sed -i \"s#http://akeneo#http://127.0.0.1#g\" behat.yml"
+                sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.yml"
+
+                sh "docker build -t eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee ."
+                sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee"
+            }
+        })}
+    )
+}
+
+stage("Test") {
+    try {
+        parallel(
+            "phpunit": {
+                withPhp({
+                    try {
+                        sh "cd /home/jenkins/pim && vendor/bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit ${env.WORKSPACE}/junit_output.xml"
+                    } finally {
+                        junit "junit_output.xml"
+                    }
+                })
+            },
+            "phpspec": {
+                withPhp({
+                    sh "chown -R phpuser /home/jenkins/pim"
+                    try {
+                        sh "cd /home/jenkins/pim && su phpuser -c './vendor/bin/phpspec run --format=junit > junit_output.xml'"
+                        sh "mv /home/jenkins/pim/junit_output.xml ${env.WORKSPACE}/"
+                    } finally {
+                        junit "junit_output.xml"
+                    }
+                })
+            },
+            "php-cs-fixer": {
+                withPhp({
+                    try {
+                        sh "cd /home/jenkins/pim && vendor/bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ${env.WORKSPACE}/junit_output.xml"
+                    } finally {
+                        junit "junit_output.xml"
+                    }
+                })
+            },
+            "grunt": {
+                withNode({
+                    sh "cd /home/jenkins/pim && yarn run lint"
+                })
+            },
+            "php-coupling-detector": {
+                withPhp({
+                    sh "cd /home/jenkins/pim && vendor/bin/php-coupling-detector detect --config-file=.php_cd.php src"
+                })
+            },
+            "phpunit-integration-ce": {
+                queue({
+                    def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src -name "*Integration.php"').tokenize('\n')
+                    def messages = new net.sf.json.JSONArray()
+
+                    for (file in files) {
+                        messages.add([
+                            [container: "php", script: "chmod 777 -R var/cache var/logs app/archive"],
+                            [container: "php", script: "bin/console --env=test pim:install --force"],
+                            [
+                                container: "php",
+                                junit: [in: "/home/jenkins/pim/", name: "junit_output.xml"],
+                                script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist " + file + " --log-junit junit_output.xml"
+                            ]
+                        ])
+                    }
+
+                    return messages
+                }, 10, "ce")
+            },
+            "behat-ce": {
+                queue({
+                    def scenarios = sh (returnStdout: true, script: "cd /home/jenkins/pim && php vendor/bin/behat --list-scenarios").tokenize('\n')
+                    def messages = new net.sf.json.JSONArray()
+
+                    for (scenario in scenarios) {
+                        messages.add([
+                            [container: "php", script: "bin/console --env=behat --quiet pim:install --force"],
+                            [container: "php", script: "chmod 777 -R var/cache var/logs app/archive"],
+                            [container: "php", script: "mkdir -m 777 -p app/build/logs/behat"],
+                            [
+                                container: "php",
+                                junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
+                                artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
+                                script: "php vendor/bin/behat --strict -vv " + scenario
+                            ]
+                        ])
+                    }
+
+                    return messages
+                }, 60, "ce")
+            },
+            "phpunit-integration-ee": {
+                queue({
+                    def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src -name "*Integration.php"').tokenize('\n')
+                    def messages = new net.sf.json.JSONArray()
+
+                    for (file in files) {
+                        messages.add([
+                            [container: "php", script: "chmod 777 -R var/cache var/logs"],
+                            [container: "php", script: "bin/console --env=test pim:install --force"],
+                            [
+                                container: "php",
+                                junit: [in: "/home/jenkins/pim/", name: "junit_output.xml"],
+                                script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist " + file + " --log-junit junit_output.xml"
+                            ]
+                        ])
+                    }
+
+                    return messages
+                }, 10, "ee")
+            },
+            "behat-ee": {
+                queue({
+                    def scenarios = sh (returnStdout: true, script: "cd /home/jenkins/pim && php vendor/bin/behat --list-scenarios").tokenize('\n')
+                    def messages = new net.sf.json.JSONArray()
+
+                    for (scenario in scenarios) {
+                        messages.add([
+                            [container: "php", script: "chmod 777 -R var/cache var/logs app/archive"],
+                            [container: "php", script: "mkdir -m 777 -p app/build/logs/behat"],
+                            [container: "php", script: "bin/console --env=behat --quiet pim:install --force"],
+                            [
+                                container: "php",
+                                junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
+                                artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
+                                script: "php vendor/bin/behat --strict -vv " + scenario
+                            ]
+                        ])
+                    }
+
+                    return messages
+                }, 60, "ee")
+            }
+        )
+    } finally {
+        clearTemplateNames()
+        podTemplate(label: "cleanup", containers: [
+            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")])
+        ], volumes: [
+            hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
+        ]) {
+            node("cleanup") {
+                container("docker") {
+                    sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce"
+                    sh "gcloud -q container images delete eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ee"
+                }
+            }
+        }
+    }
+}
+
+def withBuildNode(body) {
+    clearTemplateNames()
+    def uuid = UUID.randomUUID().toString()
+
+    withCredentials([string(credentialsId: 'composer-token', variable: 'token')]) {
+        podTemplate(label: "build-" + uuid, containers: [
+            containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")], resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', resourceLimitMemory: '200Mi'),
+            containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", envVars: [envVar(key: "COMPOSER_HOME", value: "/shared/.composer"), envVar(key: "COMPOSER_AUTH", value: "{\"github-oauth\":{\"github.com\": \"$token\"}}")], resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi', resourceLimitMemory: '2000Mi'),
+            containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '750m', resourceRequestMemory: '2000Mi', resourceLimitMemory: '2000Mi')
+        ], volumes: [
+            nfsVolume(mountPath: '/shared', serverAddress: "${env.NFS_IP}", serverPath: '/exports', readOnly: false),
+            hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
+        ]) {
+            node("build-" + uuid) {
+                dir('/home/jenkins/pim') {
+                    body()
+                }
+            }
+        }
+    }
+}
+
+def withPhp(body) {
+    clearTemplateNames()
+    def uuid = UUID.randomUUID().toString()
+    podTemplate(label: "php-" + uuid, containers: [
+        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", resourceRequestCpu: '500m', resourceRequestMemory: '1000Mi', resourceLimitMemory: '1000Mi')
+    ], annotations: [
+        podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
+    ]) {
+        node("php-" + uuid) {
+            container("php") {
+                body()
+            }
+        }
+    }
+}
+
+def withNode(body) {
+    clearTemplateNames()
+    def uuid = UUID.randomUUID().toString()
+    podTemplate(label: "node-" + uuid, containers: [
+        containerTemplate(name: "node", ttyEnabled: true, command: 'cat', image: "node:8", resourceRequestCpu: '500m', resourceRequestMemory: '1000Mi', resourceLimitMemory: '1000Mi')
+    ], annotations: [
+        podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
+    ]) {
+        node("node-" + uuid) {
+            container("node") {
+                body()
+            }
+        }
+    }
+}
+
+def withDockerScm(body) {
+    clearTemplateNames()
+    def uuid = UUID.randomUUID().toString()
+    podTemplate(label: "dockerscm-" + uuid, containers: [
+        containerTemplate(name: "docker", image: "paulwoelfel/docker-gcloud", ttyEnabled: true, command: 'cat', resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', resourceLimitMemory: '200Mi', envVars: [envVar(key: "DOCKER_API_VERSION", value: "1.23")])
+    ], volumes: [
+        hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock")
+    ]) {
+        node("dockerscm") {
+            checkout scm
+
+            container("docker") {
+                body()
+            }
+        }
+    }
+}
+
+def queue(body, scale, edition) {
+    clearTemplateNames()
+    def uuid = UUID.randomUUID().toString()
+    podTemplate(label: "pubsub-" + uuid, containers: [
+        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', resourceLimitMemory: '200Mi'),
+        containerTemplate(name: "gcloud", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:1.0.6", resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', resourceLimitMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
+    ], annotations: [
+        podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
+    ], volumes: [
+        hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock"),
+        hostPathVolume(hostPath: "/usr/bin/docker", mountPath: "/usr/bin/docker")
+    ]) {
+        node("pubsub-" + uuid) {
+            def messages = []
+
+            container("php") {
+                messages = body()
+            }
+
+            container("gcloud") {
+                sh "gcloud.phar pubsub:topic:create ${NODE_NAME}"
+                sh "gcloud.phar pubsub:topic:create ${NODE_NAME}-results"
+                sh "gcloud.phar pubsub:subscription:create ${NODE_NAME} ${NODE_NAME}-subscription"
+                sh "gcloud.phar pubsub:subscription:create ${NODE_NAME}-results ${NODE_NAME}-results-subscription"
+
+                def size = messages.size()
+
+                writeJSON file: 'output.json', json: messages
+                sh "gcloud.phar pubsub:message:publish ${NODE_NAME} output.json"
+                sh "cp output.json output_${NODE_NAME}.json"
+                archiveArtifacts allowEmptyArchive: true, artifacts: "output_${NODE_NAME}.json"
+
+                sh "sed -i 's#JOB_NAME#${NODE_NAME}#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
+                sh "sed -i 's#JOB_COMPLETIONS#${size}#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
+                sh "sed -i 's#SUBSCRIPTION_NAME#${NODE_NAME}-subscription#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
+                sh "sed -i 's#RESULT_TOPIC#${NODE_NAME}-results#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
+                sh "sed -i 's#PIM_IMAGE#eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}#g' /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
+
+                try {
+                    sh "cat /home/jenkins/pim/.ci/k8s/pubsub_consumer_job.yaml"
+                    sh "kubectl apply -f /home/jenkins/pim/.ci/k8s/"
+                    sh "kubectl scale --replicas=${scale} jobs/${NODE_NAME}"
+                    sh "gcloud.phar job:wait ${NODE_NAME}-results-subscription ${size} ${env.WORKSPACE} --ansi"
+                } finally {
+                    sh "kubectl delete job ${NODE_NAME} --namespace=jenkins-prod"
+                    sh "gcloud.phar pubsub:topic:delete ${NODE_NAME}"
+                    sh "gcloud.phar pubsub:topic:delete ${NODE_NAME}-results"
+                    sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-subscription"
+                    sh "gcloud.phar pubsub:subscription:delete ${NODE_NAME}-results-subscription"
+
+                    junit allowEmptyResults: true, testResults: 'junit/**/*.xml'
+                    archiveArtifacts allowEmptyArchive: true, artifacts: 'artifacts/**/*.png'
+                }
+            }
+        }
+    }
+}
+
+@NonCPS
+def clearTemplateNames() {
+    // see https://issues.jenkins-ci.org/browse/JENKINS-42184
+    def action = currentBuild.rawBuild.getAction(PodTemplateAction.class);
+    if(action) { action.names.clear() }
+}
