@@ -121,6 +121,7 @@ stage("Build") {
         "pim-ce-odm": {withBuildNode({
              checkout scm
              container("php") {
+                 sh "composer require --dev --no-update liuggio/fastest:~1.4"
                  sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                  sh "app/console oro:requirejs:generate-config"
                  sh "app/console assets:install"
