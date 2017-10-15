@@ -29,7 +29,7 @@ pimee_product_asset:
       remove_all_files: Eliminar todos los archivos
       delete: Eliminar
       import: Importar
-      upload: Cargar
+      upload: Cargar recursos
     success:
       new: Un nuevo recurso ha sido creado
       imported: Archivos importados para el procesamiento de recursos

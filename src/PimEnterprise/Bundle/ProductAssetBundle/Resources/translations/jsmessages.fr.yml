@@ -30,7 +30,7 @@ pimee_product_asset:
       remove_all_files: Supprimer tous les fichiers
       delete: Supprimer
       import: Import
-      upload: Télécharger
+      upload: Télécharger les ressources
     success:
       new: Une nouvelle ressource sera créée
       imported: Fichiers importés pour le traitement des ressources

@@ -28,7 +28,7 @@ pimee_product_asset:
     btn:
       delete: Poista
       import: Tuonti
-      upload: Tuo
+      upload: Tuo resursseja
     success:
       new: Uusi resurssi luodaan
       canceled: Tuonti onnistuneesti keskeytetty

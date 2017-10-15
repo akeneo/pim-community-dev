@@ -186,6 +186,7 @@ pimee_enrich:
         select:
           label: Choisir les ressources
         choose:
+          title: Actions de masse sur les ressources
           label_count: "] 0, Inf [Sélectionnez votre action"
         configure:
           label: Configurer

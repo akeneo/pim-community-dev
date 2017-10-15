@@ -60,7 +60,7 @@ pimee_catalog_rule:
     tab:
       rule.title: Reglas
     grid:
-      is_smart.label: Atributo inteligente
+      is_smart.label: Inteligente
     acl:
       rule.view_permissions: Ver reglas
   product:

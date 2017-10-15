@@ -36,7 +36,7 @@ pimee_workflow:
         success: Ændringerne er blevet godkendt
     partial_reject:
       modal:
-        title: Delvist afvist ændringer
+        title: Delvist afvise ændringer
         label: Tilføj en kommentar (valgfrit)
         error: Der opstod en fejl, forslag er ikke blevet delvist afvist
         success: Ændringerne er blevet afvist
