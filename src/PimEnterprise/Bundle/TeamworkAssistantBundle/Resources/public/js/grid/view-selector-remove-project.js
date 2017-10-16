@@ -69,12 +69,13 @@ define(
             promptDeletion: function (event) {
                 event.stopPropagation();
 
-                Dialog.confirm(
+                Dialog.confirmDelete(
                     __('teamwork_assistant.grid.view_selector.confirmation.remove'),
                     __('teamwork_assistant.grid.view_selector.confirmation.delete'),
                     function () {
                         this.removeCurrentProject();
-                    }.bind(this)
+                    }.bind(this),
+                    __('pim_datagrid.view_selector.project')
                 );
             },
 

@@ -10,6 +10,7 @@
 
 - PIM-6814: Fix job profile creation popin validation bug due to permissions
 - PIM-6591: Add default permissions for attribute groups created via the UI
+- PIM-6589: Add new template for confirmation modals
 
 ## Tech improvements
 

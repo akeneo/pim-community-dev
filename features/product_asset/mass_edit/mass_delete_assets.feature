@@ -12,7 +12,7 @@ Feature: Mass delete assets
   Scenario: Successfully mass delete many assets
     Given I select rows mouette, mountain and mugs
     And I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete selected assets?"
+    Then I should see the text "Are you sure you want to delete the selected assets?"
     When I confirm the removal
     Then I should not see assets mouette, mountain and mugs
     And the grid should contain 12 elements
@@ -20,7 +20,7 @@ Feature: Mass delete assets
   Scenario: Successfully mass delete one asset
     Given I select rows paint
     When I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete selected assets?"
+    Then I should see the text "Are you sure you want to delete the selected assets?"
     When I confirm the removal
     Then I should not see assets paint
     And the grid should contain 14 elements
@@ -30,7 +30,7 @@ Feature: Mass delete assets
     And I select rows paint
     And I select all visible entities
     When I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete selected assets?"
+    Then I should see the text "Are you sure you want to delete the selected assets?"
     When I confirm the removal
     Then the grid should contain 0 elements
 
@@ -38,6 +38,6 @@ Feature: Mass delete assets
     Given I select rows paint
     And I select all entities
     When I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete selected assets?"
+    Then I should see the text "Are you sure you want to delete the selected assets?"
     When I confirm the removal
     Then the grid should contain 0 elements
