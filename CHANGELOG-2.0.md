@@ -11,6 +11,10 @@
 - PIM-6848: Fix design on export builder fields
 - PIM-6868: CSS glitches compilation
 
+## Better manage products with variants!
+
+- PIM-6903: Adds compare/translate functionality for product models
+
 # 2.0.2 (2017-10-12)
 
 ## Tech improvements

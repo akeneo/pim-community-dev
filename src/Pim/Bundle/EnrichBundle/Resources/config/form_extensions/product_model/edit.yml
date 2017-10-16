@@ -71,7 +71,7 @@ extensions:
         targetZone: content
         position: 100
 
-    pim-product-edit-form-product-model-label:
+    pim-product-model-edit-form-product-model-label:
         module: pim/product-model-edit-form/product-model-label
         parent: pim-product-model-edit-form
         targetZone: title
@@ -82,6 +82,12 @@ extensions:
         parent: pim-product-model-edit-form
         targetZone: buttons
         position: 50
+
+    pim-product-model-edit-form-start-copy:
+        module: pim/product-edit-form/start-copy
+        parent: pim-product-model-edit-form-secondary-actions
+        targetZone: secondary-actions
+        position: 80
 
     pim-product-model-edit-form-save-buttons:
         module: pim/form/common/save-buttons
