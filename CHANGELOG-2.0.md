@@ -8,6 +8,7 @@
 
 - PIM-6667: Update loading mask design
 - PIM-6504: Update action icons on datagrids
+- PIM-6848: Fix design on export builder fields
 - PIM-6868: CSS glitches compilation
 
 # 2.0.2 (2017-10-12)
