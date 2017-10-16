@@ -48,6 +48,15 @@ define(
             /**
              * {@inheritdoc}
              */
+            initialize: function () {
+                this.actions = {};
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
