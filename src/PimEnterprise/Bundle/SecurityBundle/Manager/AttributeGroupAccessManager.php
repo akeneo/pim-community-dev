@@ -17,7 +17,6 @@ use Pim\Component\User\Model\GroupInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Component\Security\Attributes;
-use PimEnterprise\Component\Security\Model\AttributeGroupAccessInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -86,7 +85,7 @@ class AttributeGroupAccessManager
      *
      * @param AttributeGroupInterface $group
      *
-     * @return UserGroup[]
+     * @return GroupInterface[]
      */
     public function getViewUserGroups(AttributeGroupInterface $group)
     {
@@ -98,7 +97,7 @@ class AttributeGroupAccessManager
      *
      * @param AttributeGroupInterface $group
      *
-     * @return UserGroup[]
+     * @return GroupInterface[]
      */
     public function getEditUserGroups(AttributeGroupInterface $group)
     {
@@ -109,8 +108,8 @@ class AttributeGroupAccessManager
      * Grant access on an attribute group to specified user group
      *
      * @param AttributeGroupInterface $attributeGroup
-     * @param UserGroup[]             $viewUserGroups
-     * @param UserGroup[]             $editGroups
+     * @param GroupInterface[]        $viewUserGroups
+     * @param GroupInterface[]        $editGroups
      */
     public function setAccess(AttributeGroupInterface $attributeGroup, $viewUserGroups, $editGroups)
     {
@@ -150,7 +149,7 @@ class AttributeGroupAccessManager
      * If $excludedUserGroups are provided, access will not be revoked for groups with them
      *
      * @param AttributeGroupInterface $attributeGroup
-     * @param UserGroup[]             $excludedUserGroups
+     * @param GroupInterface[]        $excludedUserGroups
      *
      * @return int
      */
@@ -178,7 +177,6 @@ class AttributeGroupAccessManager
             );
 
         if (!$access) {
-            /** @var AttributeGroupAccessInterface $access */
             $access = new $this->attGroupAccessClass();
             $access
                 ->setAttributeGroup($attributeGroup)

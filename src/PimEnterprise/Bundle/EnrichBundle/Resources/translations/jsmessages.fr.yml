@@ -210,3 +210,12 @@ pim_menu:
     published_product: Produits publiés
     rule: Règles
     upload_asset: Télécharger les ressources
+page_title:
+  pimee_workflow_proposal_index: Propositions
+  pimee_workflow_published_product_index: Produits publiés
+  pimee_workflow_published_product_view: Produit publié {{ product.label }} | Visualisation
+  pimee_product_asset_index: Ressources
+  pimee_product_asset_edit: Ressource {{ asset.label }} | Modification
+  pimee_asset_categorytree_index: Catégories
+  pimee_asset_categorytree_edit: Catégorie {{ category.label }} | Modification
+  pimee_catalog_rule_rule_index: Règles

@@ -26,14 +26,15 @@ class JobExecutionRepository extends BaseJobExecutionRepository
      *
      * @param array        $types
      * @param QueryBuilder $subQB
+     * @param null|string  $user
      *
      * @return array
      *
      * @see JobExecutionRepository::getLastOperationsData()
      */
-    public function getLastOperations(array $types, QueryBuilder $subQB)
+    public function getLastOperations(array $types, QueryBuilder $subQB, ?string $user = null)
     {
-        $qb = parent::getLastOperationsQB($types);
+        $qb = parent::getLastOperationsQB($types, $user);
         $qb
             ->andWhere($qb->expr()->in('j.id', $subQB->getDQL()))
             ->setParameters($subQB->getParameters());

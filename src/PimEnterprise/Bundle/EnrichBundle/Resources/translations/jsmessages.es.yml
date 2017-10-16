@@ -206,3 +206,9 @@ pim_menu:
     published_product: Productos publicados
     rule: Reglas
     upload_asset: Subir activos
+page_title:
+  pimee_workflow_proposal_index: Propuestas
+  pimee_workflow_published_product_index: Productos publicados
+  pimee_product_asset_index: Recursos
+  pimee_asset_categorytree_index: Categorías
+  pimee_catalog_rule_rule_index: Reglas

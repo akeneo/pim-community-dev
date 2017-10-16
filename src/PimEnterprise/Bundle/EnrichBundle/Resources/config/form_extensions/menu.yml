@@ -2,7 +2,7 @@ extensions:
     pim-menu-asset:
         module: pim/menu/tab
         parent: pim-menu
-        position: 115
+        position: 35
         targetZone: mainMenu
         config:
             title: pim_menu.tab.asset

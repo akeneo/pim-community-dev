@@ -206,3 +206,9 @@ pim_menu:
     published_product: Prodotti pubblicati
     rule: Regole
     upload_asset: Carica asset
+page_title:
+  pimee_workflow_proposal_index: Proposte
+  pimee_workflow_published_product_index: Prodotti pubblicati
+  pimee_product_asset_index: Asset
+  pimee_asset_categorytree_index: Categorie
+  pimee_catalog_rule_rule_index: Regole

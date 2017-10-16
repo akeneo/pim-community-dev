@@ -101,6 +101,9 @@ class RowActionsConfigurator implements ConfiguratorInterface
         $actions = $this->configuration->offsetGetByPath('[actions]');
         unset($actions['edit']['rowAction']);
         $actions['row_action'] = [
+            'launcherOptions' => [
+                'className' => 'AknIconButton AknIconButton--small AknIconButton--edit'
+            ],
             'type'      => 'navigate-product-and-product-model',
             'rowAction' => true,
         ];
@@ -137,10 +140,12 @@ class RowActionsConfigurator implements ConfiguratorInterface
     protected function addShowRowAction()
     {
         $viewAction = [
-            'type' =>      'navigate-product-and-product-model',
-            'label'     => 'View the product',
-            'icon'      => 'eye-open',
-            'rowAction' => true,
+            'launcherOptions' => [
+                'className' => 'AknIconButton AknIconButton--small AknIconButton--view'
+            ],
+            'type'            => 'navigate-product-and-product-model',
+            'label'           => 'View the product',
+            'rowAction'       => true,
         ];
         $this->configuration->offsetSetByPath('[actions][show]', $viewAction);
 

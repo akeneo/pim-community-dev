@@ -185,3 +185,9 @@ pim_menu:
     proposal: 提案
     published_product: 已发布的产品
     rule: 规则
+page_title:
+  pimee_workflow_proposal_index: 提案
+  pimee_workflow_published_product_index: 已发布的产品
+  pimee_product_asset_index: 资产
+  pimee_asset_categorytree_index: 分类
+  pimee_catalog_rule_rule_index: 规则

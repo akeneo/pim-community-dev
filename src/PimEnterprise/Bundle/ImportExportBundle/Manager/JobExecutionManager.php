@@ -68,11 +68,12 @@ class JobExecutionManager extends BaseJobExecutionManager
             }
         );
 
+        $token = $this->tokenStorage->getToken();
         $subQB = $this->accessRepository->getGrantedJobsQB(
-            $this->tokenStorage->getToken()->getUser(),
+            $token->getUser(),
             Attributes::EXECUTE
         );
 
-        return $this->repository->getLastOperations($types, $subQB);
+        return $this->repository->getLastOperations($types, $subQB, $token->getUsername());
     }
 }

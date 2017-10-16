@@ -187,6 +187,7 @@ pimee_enrich:
           label: Asset auswählen
         choose:
           title: Massenbearbeitung Assets
+          label_count: "] 0, Inf [Wählen Sie die gewünschte Funktion"
         configure:
           label: Konfigurieren
         confirm:
@@ -209,3 +210,9 @@ pim_menu:
     published_product: Veröffentlichte Produkte
     rule: Regeln
     upload_asset: Assets hochladen
+page_title:
+  pimee_workflow_proposal_index: Vorschläge
+  pimee_workflow_published_product_index: Veröffentlichte Produkte
+  pimee_product_asset_index: Assets
+  pimee_asset_categorytree_index: Kategorien
+  pimee_catalog_rule_rule_index: Regeln

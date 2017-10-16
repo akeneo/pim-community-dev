@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\Security\Authorization;
 
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ReferableInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -93,7 +94,7 @@ class CachedAuthorizationChecker implements AuthorizationCheckerInterface
     private function getObjectAsIndex($object): string
     {
         if (is_object($object)) {
-            $class = get_class($object);
+            $class = ClassUtils::getClass($object);
             $reference = $object->getReference();
 
             $objectIndex = sprintf('%s_%s', $class, $reference);

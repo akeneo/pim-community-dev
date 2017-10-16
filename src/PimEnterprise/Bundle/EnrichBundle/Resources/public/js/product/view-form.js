@@ -12,16 +12,29 @@ define(
         'underscore',
         'backbone',
         'pim/form/common/edit-form',
-        'pim/form'
+        'pim/form',
+        'pim/page-title',
+        'pim/user-context'
     ],
     function (
         $,
         _,
         Backbone,
         EditForm,
-        BaseForm
+        BaseForm,
+        PageTitle,
+        UserContext
     ) {
         return EditForm.extend({
+            /**
+             * {@inheritdoc}
+             */
+            initialize: function (meta) {
+                this.config = meta.config;
+
+                return BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
             /**
              * {@inheritdoc}
              */
@@ -35,6 +48,17 @@ define(
                 this.listenTo(this.getRoot(), 'pim_enrich:form:field:extension:add', this.addFieldExtension);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            render: function () {
+                PageTitle.render(this.config.routeKey, {
+                    'product.label': this.getFormData().meta.label[UserContext.get('catalogLocale')]
+                });
+
+                return EditForm.prototype.render.apply(this, arguments);
             },
 
             /**

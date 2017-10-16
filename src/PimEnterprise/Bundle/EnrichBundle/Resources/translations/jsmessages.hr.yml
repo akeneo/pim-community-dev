@@ -162,3 +162,7 @@ pim_menu:
   item:
     asset_category: Kategorije imovine
     rule: Pravila
+page_title:
+  pimee_product_asset_index: Imovine
+  pimee_asset_categorytree_index: Kategorije
+  pimee_catalog_rule_rule_index: Pravila

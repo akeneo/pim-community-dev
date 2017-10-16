@@ -28,8 +28,7 @@ class AddDefaultUserGroupSubscriberSpec extends ObjectBehavior
     {
         $this->getSubscribedEvents()->shouldReturn(
             [
-                CategoryEvents::POST_CREATE       => 'addDefaultUserGroupForTree',
-                AttributeGroupEvents::POST_CREATE => 'addDefaultUserGroupForAttributeGroup'
+                CategoryEvents::POST_CREATE => 'addDefaultUserGroupForTree',
             ]
         );
     }
@@ -65,31 +64,5 @@ class AddDefaultUserGroupSubscriberSpec extends ObjectBehavior
         $category->isRoot()->willReturn(false);
 
         $this->addDefaultUserGroupForTree($event)->shouldReturn(null);
-    }
-
-    function it_grants_access_to_the_attribute_group_for_default_user_group(
-        $groupRepository,
-        $attGrpAccessManager,
-        GenericEvent $event,
-        AttributeGroupInterface $attributeGroup,
-        Group $userGroup
-    ) {
-        $event->getSubject()->willReturn($attributeGroup);
-
-        $groupRepository->getDefaultUserGroup()->willReturn($userGroup);
-        $attGrpAccessManager->grantAccess(
-            $attributeGroup,
-            $userGroup,
-            Attributes::EDIT_ATTRIBUTES
-        )->shouldBeCalled();
-
-        $this->addDefaultUserGroupForAttributeGroup($event)->shouldReturn(null);
-    }
-
-    function it_does_not_grant_anything_on_a_non_attribute_group(GenericEvent $event)
-    {
-        $event->getSubject()->willReturn(null);
-
-        $this->addDefaultUserGroupForAttributeGroup($event)->shouldReturn(null);
     }
 }

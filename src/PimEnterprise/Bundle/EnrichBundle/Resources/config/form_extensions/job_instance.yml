@@ -3,7 +3,7 @@ extensions:
 #Tab permission
     pim-job-instance-csv-base-export-edit-permission:
         module: pimee/common/tab/permission
-        parent: pim-job-instance-csv-base-export-edit-tabs
+        parent: pim-job-instance-csv-base-export-show-tabs
         targetZone: container
         aclResourceId: pimee_importexport_export_profile_edit_permissions
         position: 115
@@ -11,18 +11,6 @@ extensions:
             title: pimee_enrich.form.job_instance.tab.permission.title
             entity: job_instance
             tabCode: pim-job-instance-permission
-
-    pim-job-instance-csv-base-export-show-permission:
-        module: pimee/common/tab/permission
-        parent: pim-job-instance-csv-base-export-show-tabs
-        targetZone: container
-        aclResourceId: pimee_importexport_export_profile_show_permissions
-        position: 115
-        config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
-            entity: job_instance
-            tabCode: pim-job-instance-permission
-            readOnly: true
 
     pim-job-instance-csv-base-import-edit-permission:
         module: pimee/common/tab/permission
@@ -35,18 +23,6 @@ extensions:
             entity: job_instance
             tabCode: pim-job-instance-permission
 
-    pim-job-instance-csv-base-import-show-permission:
-        module: pimee/common/tab/permission
-        parent: pim-job-instance-csv-base-import-show-tabs
-        targetZone: container
-        position: 115
-        aclResourceId: pimee_importexport_export_profile_show_permissions
-        config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
-            entity: job_instance
-            tabCode: pim-job-instance-permission
-            readOnly: true
-
     pim-job-instance-csv-product-import-edit-permission:
         module: pimee/common/tab/permission
         parent: pim-job-instance-csv-product-import-edit-tabs
@@ -57,18 +33,6 @@ extensions:
             title: pimee_enrich.form.job_instance.tab.permission.title
             entity: job_instance
             tabCode: pim-job-instance-permission
-
-    pim-job-instance-csv-product-import-show-permission:
-        module: pimee/common/tab/permission
-        parent: pim-job-instance-csv-product-import-show-tabs
-        targetZone: container
-        position: 115
-        aclResourceId: pimee_importexport_export_profile_show_permissions
-        config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
-            entity: job_instance
-            tabCode: pim-job-instance-permission
-            readOnly: true
 
     pim-job-instance-csv-product-export-edit-permission:
         module: pimee/common/tab/permission
@@ -81,18 +45,6 @@ extensions:
             entity: job_instance
             tabCode: pim-job-instance-permission
 
-    pim-job-instance-csv-product-export-show-permission:
-        module: pimee/common/tab/permission
-        parent: pim-job-instance-csv-product-export-show-tabs
-        targetZone: container
-        position: 115
-        aclResourceId: pimee_importexport_export_profile_show_permissions
-        config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
-            entity: job_instance
-            tabCode: pim-job-instance-permission
-            readOnly: true
-
     pim-job-instance-xlsx-base-import-edit-permission:
         module: pimee/common/tab/permission
         parent: pim-job-instance-xlsx-base-import-edit-tabs
@@ -103,18 +55,6 @@ extensions:
             title: pimee_enrich.form.job_instance.tab.permission.title
             entity: job_instance
             tabCode: pim-job-instance-permission
-
-    pim-job-instance-xlsx-base-import-show-permission:
-        module: pimee/common/tab/permission
-        parent: pim-job-instance-xlsx-base-import-show-tabs
-        targetZone: container
-        position: 115
-        aclResourceId: pimee_importexport_import_profile_show_permissions
-        config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
-            entity: job_instance
-            tabCode: pim-job-instance-permission
-            readOnly: true
 
     pim-job-instance-xlsx-product-import-edit-permission:
         module: pimee/common/tab/permission
@@ -127,18 +67,6 @@ extensions:
             entity: job_instance
             tabCode: pim-job-instance-permission
 
-    pim-job-instance-xlsx-product-import-show-permission:
-        module: pimee/common/tab/permission
-        parent: pim-job-instance-xlsx-product-import-show-tabs
-        targetZone: container
-        position: 115
-        aclResourceId: pimee_importexport_import_profile_show_permissions
-        config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
-            entity: job_instance
-            tabCode: pim-job-instance-permission
-            readOnly: true
-
     pim-job-instance-xlsx-base-export-edit-permission:
         module: pimee/common/tab/permission
         parent: pim-job-instance-xlsx-base-export-edit-tabs
@@ -149,18 +77,6 @@ extensions:
             title: pimee_enrich.form.job_instance.tab.permission.title
             entity: job_instance
             tabCode: pim-job-instance-permission
-
-    pim-job-instance-xlsx-base-export-show-permission:
-        module: pimee/common/tab/permission
-        parent: pim-job-instance-xlsx-base-export-show-tabs
-        targetZone: container
-        position: 115
-        aclResourceId: pimee_importexport_export_profile_show_permissions
-        config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
-            entity: job_instance
-            tabCode: pim-job-instance-permission
-            readOnly: true
 
     pim-job-instance-xlsx-product-export-edit-permission:
         module: pimee/common/tab/permission
@@ -173,18 +89,6 @@ extensions:
             entity: job_instance
             tabCode: pim-job-instance-permission
 
-    pim-job-instance-xlsx-product-export-show-permission:
-        module: pimee/common/tab/permission
-        parent: pim-job-instance-xlsx-product-export-show-tabs
-        targetZone: container
-        position: 115
-        aclResourceId: pimee_importexport_export_profile_show_permissions
-        config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
-            entity: job_instance
-            tabCode: pim-job-instance-permission
-            readOnly: true
-
     pim-job-instance-yml-base-export-edit-permission:
         module: pimee/common/tab/permission
         parent: pim-job-instance-yml-base-export-edit-tabs
@@ -196,18 +100,6 @@ extensions:
             entity: job_instance
             tabCode: pim-job-instance-permission
 
-    pim-job-instance-yml-base-export-show-permission:
-        module: pimee/common/tab/permission
-        parent: pim-job-instance-yml-base-export-show-tabs
-        targetZone: container
-        aclResourceId: pimee_importexport_export_profile_show_permissions
-        position: 115
-        config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
-            entity: job_instance
-            tabCode: pim-job-instance-permission
-            readOnly: true
-
     pim-job-instance-yml-base-import-edit-permission:
         module: pimee/common/tab/permission
         parent: pim-job-instance-yml-base-import-edit-tabs
@@ -218,18 +110,6 @@ extensions:
             title: pimee_enrich.form.job_instance.tab.permission.title
             entity: job_instance
             tabCode: pim-job-instance-permission
-
-    pim-job-instance-yml-base-import-show-permission:
-        module: pimee/common/tab/permission
-        parent: pim-job-instance-yml-base-import-show-tabs
-        targetZone: container
-        aclResourceId: pimee_importexport_export_profile_show_permissions
-        position: 115
-        config:
-            title: pimee_enrich.form.job_instance.tab.permission.title
-            entity: job_instance
-            tabCode: pim-job-instance-permission
-            readOnly: true
 
     pim-job-instance-csv-base-export-show-edit:
         module: pimee/job/export/edit/edit-button

@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 use Akeneo\Component\Classification\Repository\CategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
@@ -33,20 +34,17 @@ class ProductController extends BaseProductController
     protected $categoryManager;
 
     /**
-     * @param RouterInterface                       $router
-     * @param TokenStorageInterface                 $tokenStorage
-     * @param FormFactoryInterface                  $formFactory
      * @param TranslatorInterface                   $translator
      * @param ProductRepositoryInterface            $productRepository
      * @param CategoryRepositoryInterface           $categoryRepository
-     * @param UserContext                           $userContext
-     * @param SecurityFacade                        $securityFacade
      * @param SaverInterface                        $productSaver
-     * @param SequentialEditManager                 $seqEditManager
      * @param ProductBuilderInterface               $productBuilder
      * @param EntityWithFamilyValuesFillerInterface $valuesFiller
+     * @param string                                $categoryClass
+     * @param SecurityFacade                        $securityFacade
+     * @param string                                $acl
+     * @param string                                $template
      * @param CategoryManager                       $categoryManager
-     * @param                                       $categoryClass
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -55,8 +53,11 @@ class ProductController extends BaseProductController
         SaverInterface $productSaver,
         ProductBuilderInterface $productBuilder,
         EntityWithFamilyValuesFillerInterface $valuesFiller,
-        CategoryManager $categoryManager,
-        $categoryClass
+        string $categoryClass,
+        SecurityFacade $securityFacade,
+        string $acl,
+        string $template,
+        CategoryManager $categoryManager
     ) {
         parent::__construct(
             $translator,
@@ -65,7 +66,10 @@ class ProductController extends BaseProductController
             $productSaver,
             $productBuilder,
             $valuesFiller,
-            $categoryClass
+            $categoryClass,
+            $securityFacade,
+            $acl,
+            $template
         );
 
         $this->categoryManager = $categoryManager;
@@ -76,7 +80,7 @@ class ProductController extends BaseProductController
      *
      * {@inheritdoc}
      */
-    protected function getFilledTree(CategoryInterface $parent, Collection $categories)
+    protected function getFilledTree(CategoryInterface $parent, Collection $categories): array
     {
         return $this->categoryManager->getGrantedFilledTree($parent, $categories);
     }

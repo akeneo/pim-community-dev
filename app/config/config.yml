@@ -27,6 +27,10 @@ framework:
         path:                 /_fragment # used for controller action in template
     serializer:
         enabled:              true
+    assets:
+        packages:
+            frontend:
+                version_strategy: pim_enrich.version_strategy
 
 # Twig Configuration
 twig:

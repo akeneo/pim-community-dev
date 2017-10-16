@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Bundle\ApiBundle\tests\integration\Controller\Media;
 
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use League\Flysystem\FilesystemInterface;
 use Pim\Component\Api\Repository\ApiResourceRepositoryInterface;
 use Pim\Component\Api\Repository\ProductRepositoryInterface;
@@ -12,7 +11,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-class CreateMediaFileIntegrationWithPermissions extends AbstractMediaFileTestCase
+class CreateMediaFileWithPermissionsIntegration extends AbstractMediaFileTestCase
 {
     /** @var array */
     private $files = [];
@@ -81,7 +80,7 @@ class CreateMediaFileIntegrationWithPermissions extends AbstractMediaFileTestCas
         $this->assertSame('catalogStorage', $fileInfo->getStorage());
 
         // check if product value has been created
-        $productDraft = $this->productDraftRepository->findByProduct($product);
+        $productDraft = $this->testKernel->getContainer()->get('pimee_workflow.repository.product_draft')->findByProduct($product);
         $this->assertContains('akeneo.jpg', $productDraft[0]->getChange('an_image', null, null));
     }
 
@@ -116,7 +115,7 @@ JSON;
 
         $file = new UploadedFile($this->files['file'], 'akeneo.txt');
         $content = [
-            'product' => '{"identifier":"product_viewable_by_everybody_1", "attribute":"a_localizable_image", "locale":"en_US", "scope":null}',
+            'product' => '{"identifier":"product_without_category", "attribute":"a_localizable_image", "locale":"en_US", "scope":null}',
         ];
 
         $client->request('POST', '/api/rest/v1/media-files', $content, ['file' => $file]);
@@ -140,7 +139,7 @@ JSON;
 
         $file = new UploadedFile($this->files['file'], 'akeneo.txt');
         $content = [
-            'product' => '{"identifier":"product_viewable_by_everybody_1", "attribute":"a_multi_select", "locale":"en_US", "scope":null}',
+            'product' => '{"identifier":"product_without_category", "attribute":"a_multi_select", "locale":"en_US", "scope":null}',
         ];
 
         $client->request('POST', '/api/rest/v1/media-files', $content, ['file' => $file]);

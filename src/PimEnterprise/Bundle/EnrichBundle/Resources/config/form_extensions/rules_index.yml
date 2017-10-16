@@ -65,9 +65,8 @@ extensions:
 
     pim-rule-index-grid:
         module: pim/form/common/index/grid
-        parent: pim-rule-index
+        parent: pim-rule-index-grid-container
         position: 1000
-        targetZone: content
         config:
             alias: rule-grid
             localeKey: dataLocale

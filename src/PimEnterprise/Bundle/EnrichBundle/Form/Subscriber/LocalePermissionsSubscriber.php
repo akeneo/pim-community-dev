@@ -23,6 +23,10 @@ use Symfony\Component\Form\FormEvents;
  * Subscriber to manage permissions on locales
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
+ *
+ * @deprecated Will be removed in 2.1. Should be replaced by a subscriber not relying on form events
+ *             (like PimEnterprise\Bundle\EnrichBundle\EventSubscriber\SavePermissionsSubscriber).
+ *             Can be done with TIP-738.
  */
 class LocalePermissionsSubscriber implements EventSubscriberInterface
 {
