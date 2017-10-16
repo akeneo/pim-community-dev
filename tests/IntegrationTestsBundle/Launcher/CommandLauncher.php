@@ -8,6 +8,7 @@ use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -49,10 +50,15 @@ class CommandLauncher
             $arrayInput['--username'] = $username;
         }
 
-        $input = new ArrayInput($arrayInput);
+        $command = $application->find($commandName);
+        $commandTester = new CommandTester($command);
+        if (isset($config['inputs'])) {
+            $commandTester->setInputs($config['inputs']);
+        }
+        $commandTester->execute($arrayInput);
 
-        $output = new BufferedOutput();
-        $exitCode = $application->run($input, $output);
+        $output = $commandTester->getOutput();
+        $exitCode = $commandTester->getStatusCode();
 
         if (BatchCommand::EXIT_SUCCESS_CODE !== $exitCode) {
             throw new \Exception(sprintf('Command "%s" failed, "%s".', $commandName, $output->fetch()));
