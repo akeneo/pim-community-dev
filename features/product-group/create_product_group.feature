@@ -8,7 +8,7 @@ Feature: Product group creation
     Given the "default" catalog configuration
     And I am logged in as "Julia"
     And I am on the product groups page
-    And I create a new product group
+    And I create a product group
     Then I should see the Code and Type fields
 
   Scenario: Successfully create a cross sell

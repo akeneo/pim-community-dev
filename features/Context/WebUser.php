@@ -68,6 +68,21 @@ class WebUser extends PimContext
      *
      * @return Then[]
      *
+     * @Given /^I create a product$/
+     */
+    public function iCreateAProduct()
+    {
+        return [
+            new Step\Then('I create a new product'),
+            new Step\Then(sprintf('I press the "Product" button'))
+        ];
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return Then[]
+     *
      * @Given /^I create a(?:n)? "([^"]*)" attribute$/
      */
     public function iCreateAnAttribute($type)

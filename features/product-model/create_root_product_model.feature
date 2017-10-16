@@ -6,7 +6,7 @@ Feature: Create a root product model
     And I am on the products grid
 
   Scenario: Create a root product model with single variant
-    Given I create a new product model
+    Given I create a product model
     And I should see the Code, Family, Variant fields
     And the field Variant should be disabled
     When I fill in the following information in the popin:
