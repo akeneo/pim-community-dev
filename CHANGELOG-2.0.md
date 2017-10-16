@@ -27,6 +27,7 @@
 - PIM-6872: Fix PQB sorters with Elasticsearch
 - PIM-6859: Fix missing attribute values in PDF
 - PIM-6894: Allow any special characters in password field
+- PIM-6821: Options "Edit attributes" and "classify the product" not working on the Product grid
 
 ## Better UI\UX!
 
