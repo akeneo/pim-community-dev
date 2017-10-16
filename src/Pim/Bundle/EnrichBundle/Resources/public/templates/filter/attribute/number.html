@@ -7,5 +7,5 @@
 </select>
 
 <% if (!_.contains(['EMPTY', 'NOT EMPTY'], operator)) { %>
-    <input type="text" name="filter-value" class="value" value="<%- value %>" <%- editable ? '' : 'disabled' %>/>
+    <input type="text" name="filter-value" class="AknTextField AknTextField--noLeftRadius value" value="<%- value %>" <%- editable ? '' : 'disabled' %>/>
 <% } %>
