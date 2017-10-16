@@ -1,6 +1,7 @@
 parameters:
     pimee_catalog.security.filter.not_granted_category.class: PimEnterprise\Component\Catalog\Security\Filter\NotGrantedCategoryFilter
     pimee_catalog.security.filter.not_granted_associated_product.class: PimEnterprise\Component\Catalog\Security\Filter\NotGrantedAssociatedProductFilter
+    pimee_catalog.security.filter.not_granted_values.class: PimEnterprise\Component\Catalog\Security\Filter\NotGrantedValuesFilter
 
 services:
     pimee_catalog.security.filter.not_granted_category:
@@ -12,6 +13,12 @@ services:
         class: '%pimee_catalog.security.filter.not_granted_associated_product.class%'
         arguments:
             - '@pim_catalog.repository.product'
+
+    pimee_catalog.security.filter.not_granted_values:
+        class: '%pimee_catalog.security.filter.not_granted_values.class%'
+        arguments:
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.cached_locale'
 
     pimee_catalog.security.filter.not_granted_associated_published_product:
         class: '%pimee_catalog.security.filter.not_granted_associated_product.class%'

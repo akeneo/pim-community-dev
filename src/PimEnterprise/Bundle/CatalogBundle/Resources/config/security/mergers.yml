@@ -22,4 +22,4 @@ services:
             - '@security.authorization_checker'
             - '@pim_catalog.repository.cached_attribute'
             - '@pim_catalog.repository.cached_locale'
-            - '@pim_catalog.factory.value_collection_without_permission'
+            - '@pim_catalog.factory.value_collection'
