@@ -34,7 +34,6 @@ Feature: Create product assets
     And I should see the Tablette variation upload zone
     And the locale "fr_FR" should be selected
 
-  @skip-nav
   Scenario: Create a non localized asset
     Given I am logged in as "Pamela"
     And I am on the assets grid
