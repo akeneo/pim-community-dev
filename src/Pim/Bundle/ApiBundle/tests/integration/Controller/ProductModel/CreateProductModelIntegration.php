@@ -175,19 +175,22 @@ JSON;
 
         $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
 
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Property "family_variant" cannot be modified, "familyVariantA2" given. Check the standard format documentation.',
-            '_links'  => [
-                'documentation' => [
-                    'href' => 'http://api.akeneo.com/api-reference.html#post_product_model'
-                ],
-            ],
-        ];
+        $expectedContent =
+<<<JSON
+{
+  "code": 422,
+  "message": "Property \"family_variant\" cannot be modified, \"familyVariantA2\" given. Check the standard format documentation.",
+  "_links": {
+    "documentation": {
+      "href": "http://api.akeneo.com/api-reference.html#post_product_model"
+    }
+  }
+}
+JSON;
 
         $response = $client->getResponse();
 
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
@@ -232,20 +235,23 @@ JSON;
 
         $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
 
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property' => '',
-                    'message'  => 'The product model "sub_product_model" cannot have the product model "tshirt_sub_product_model" as parent',
-                ],
-            ],
-        ];
+        $expectedContent =
+            <<<JSON
+{
+  "code": 422,
+  "message": "Validation failed.",
+  "errors": [
+    {
+      "property": "",
+      "message": "The product model \"sub_product_model\" cannot have the product model \"tshirt_sub_product_model\" as parent"
+    }
+  ]
+}
+JSON;
 
         $response = $client->getResponse();
 
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
@@ -273,19 +279,23 @@ JSON;
 
         $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
 
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Property "family_variant" cannot be modified, "familyVariantA2" given. Check the standard format documentation.',
-            '_links'  => [
-                'documentation' => [
-                    'href' => 'http://api.akeneo.com/api-reference.html#post_product_model'
-                ],
-            ],
-        ];
+        $expectedContent =
+            <<<JSON
+{
+  "code": 422,
+  "message": "Property \"family_variant\" cannot be modified, \"familyVariantA2\" given. Check the standard format documentation.",
+  "_links": {
+    "documentation": {
+      "href": "http://api.akeneo.com/api-reference.html#post_product_model"
+    }
+  }
+}
+JSON;
+
 
         $response = $client->getResponse();
 
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
@@ -313,21 +323,23 @@ JSON;
 
         $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
 
-
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property' => 'attribute',
-                    'message'  => 'Attribute "a_simple_select" cannot be empty, as it is defined as an axis for this entity',
-                ],
-            ],
-        ];
+        $expectedContent =
+            <<<JSON
+{
+  "code": 422,
+  "message": "Validation failed.",
+  "errors": [
+    {
+      "property": "attribute",
+      "message": "Attribute \"a_simple_select\" cannot be empty, as it is defined as an axis for this entity"
+    }
+  ]
+}
+JSON;
 
         $response = $client->getResponse();
 
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
@@ -354,21 +366,24 @@ JSON;
 
         $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
 
+        $expectedContent =
+            <<<JSON
+{
+  "code": 422,
+  "message": "Validation failed.",
+  "errors": [
+    {
+      "property": "code",
+      "message": "The product model code must not be empty."
+    }
+  ]
+}
+JSON;
 
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property' => 'code',
-                    'message'  => 'The product model code must not be empty.',
-                ],
-            ],
-        ];
 
         $response = $client->getResponse();
 
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
@@ -395,19 +410,22 @@ JSON;
 
         $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
 
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Property "a_simple_select" expects an array with the key "scope". Check the standard format documentation.',
-            '_links'  => [
-                'documentation' => [
-                    'href' => 'http://api.akeneo.com/api-reference.html#post_product_model'
-                ],
-            ],
-        ];
+        $expectedContent =
+            <<<JSON
+{
+  "code": 422,
+  "message": "Property \"a_simple_select\" expects an array with the key \"scope\". Check the standard format documentation.",
+  "_links": {
+    "documentation": {
+      "href": "http://api.akeneo.com/api-reference.html#post_product_model"
+    }
+  }
+}
+JSON;
 
         $response = $client->getResponse();
 
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
@@ -481,20 +499,23 @@ JSON;
 
         $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
 
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property' => 'family_variant',
-                    'message'  => 'The product model family variant must not be empty.',
-                ],
-            ],
-        ];
+        $expectedContent =
+            <<<JSON
+{
+  "code": 422,
+  "message": "Validation failed.",
+  "errors": [
+    {
+      "property": "family_variant",
+      "message": "The product model family variant must not be empty."
+    }
+  ]
+}
+JSON;
 
         $response = $client->getResponse();
 
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
