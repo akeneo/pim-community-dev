@@ -73,6 +73,16 @@ abstract class AbstractProductTestCase extends ApiTestCase
     }
 
     /**
+     * Each time we create a product model, a batch job is ran to calculate the
+     * completeness of its descendants.
+     *
+     * This is done by a batch job, and if several product models are created one
+     * after the other, we can end up with a MySQL error because several jobs run
+     * at the same time.
+     *
+     * Here, we use `akeneo_integration_tests.doctrine.job_execution` to be sure
+     * the batch jobs are done running before continuing the test.
+     *
      * @param array $data
      *
      * @return ProductModelInterface
@@ -93,7 +103,12 @@ abstract class AbstractProductTestCase extends ApiTestCase
         }
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $this->waitForProductModelsDescendantsJob();
+        if ($this->testKernel->getContainer()
+            ->get('akeneo_integration_tests.doctrine.job_execution')
+            ->isRunning('compute_product_models_descendants', 2)
+        ) {
+            throw new \RuntimeException('There are still "compute_product_models_descendants" jobs running.');
+        }
 
         $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
 
@@ -122,50 +137,5 @@ abstract class AbstractProductTestCase extends ApiTestCase
         }
 
         $this->assertEquals($expected, $result);
-    }
-
-    /**
-     * Each time we create a product model, a batch job is ran to calculate the
-     * completeness of its descendants.
-     *
-     * This is done by a batch job, and if several product models are created one
-     * after the other, we can end up with a MySQL error because several jobs run
-     * at the same time.
-     *
-     * So this method ensures the completeness is calculated, but will stop and
-     * throw an exception after 2 seconds max (we loops as we loop every 0.2
-     * seconds).
-     *
-     */
-    private function waitForProductModelsDescendantsJob()
-    {
-        $loop = 0;
-        $count = 0;
-        while (10 > $loop && 0 !== $count = $this->getComputeProductModelsDescendantsJobExecutionCount()) {
-            usleep(200000);
-            $loop++;
-        }
-
-        if (0 !== $count) {
-            throw new \PHPUnit_Framework_IncompleteTestError(sprintf('There is still running "" jobs: %d', $count));
-        }
-    }
-
-    /**
-     * Finds the number of execution for a project calculation job.
-     *
-     * @return int
-     */
-    private function getComputeProductModelsDescendantsJobExecutionCount()
-    {
-        $sql = <<<SQL
-SELECT count(`execution`.`id`)
-FROM `akeneo_batch_job_execution` AS `execution`
-LEFT JOIN `akeneo_batch_job_instance` AS `instance` ON `execution`.`job_instance_id` = `instance`.`id`
-WHERE `instance`.`code` = 'compute_product_models_descendants'
-AND `execution`.`exit_code` != 'COMPLETED'
-SQL;
-
-        return (int) $this->get('doctrine.orm.default_entity_manager')->getConnection()->fetchColumn($sql);
     }
 }

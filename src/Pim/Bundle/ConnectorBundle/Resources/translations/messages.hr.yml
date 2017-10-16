@@ -7,10 +7,8 @@ pim_connector:
       title: CSV čitač
     csv_product_reader.title: CSV čitač proizvoda
     csv_category_reader.title: CSV čitač kategorija
-    csv_variant_group .title: CSV čitač varijanti grupa
     dummy_processor.title: Pseudo procesor
     product_processor.title: Stvaranje proizvoda
-    variant_group_processor.title: Stvaranje / ažuriranje varijante grupa
     category_processor.title: Stvaranje kategorije
     association_processor.title: Stvaranje pridruživanja
     product_association_processor.title: Stvaranje pridruživanja
@@ -24,7 +22,6 @@ pim_connector:
     file_writer.title: Izlazni podatak
     product_writer.title: Pohrana proizvoda
     category_writer.title: Pohrana kategorije
-    variant_group_writer.title: Pohrana grupne varijante
     writer.title: Pohrana entiteta
     csv_writer.title: CSV pisač
 job_execution.summary:
@@ -61,9 +58,6 @@ batch_jobs:
   csv_group_export:
     label: Izvoz grupe u CSV
     export.label: Izvoz grupe
-  csv_variant_group_export:
-    label: Izvoz grupne varijante u CSV
-    export.label: Izvoz grupne varijante
   csv_family_export:
     label: Izvoz porodice u CSV
     export.label: Izvoz porodice
@@ -100,10 +94,6 @@ batch_jobs:
     label: Uvoz grupa iz CSV
     validation.label: Provjera valjanosti datoteke
     import.label: Uvoz grupa
-  csv_variant_group_import:
-    label: Uvoz varijante grupa iz CSV
-    validation.label: Provjera valjanosti datoteke
-    import.label: Uvoz varijante grupa
   csv_channel_export:
     label: Izvoz kanala u CSV
     export.label: Izvoz kanala
@@ -174,17 +164,10 @@ batch_jobs:
   xlsx_group_export:
     label: Izvoz grupe u XLSX
     export.label: Izvoz grupe
-  xlsx_variant_group_export:
-    label: Izvoz varijante grupe u XLSX
-    export.label: Izvoz grupne varijante
   xlsx_group_import:
     label: Uvoz grupe iz XLSX
     validation.label: Provjera valjanosti datoteke
     import.label: Uvoz grupa
-  xlsx_variant_group_import:
-    label: Uvoz varijante grupe iz XLSX
-    validation.label: Provjera valjanosti datoteke
-    import.label: Uvoz varijante grupe
   xlsx_family_export:
     label: Izvoz obitelji u XLSX
     export.label: Izvoz porodice

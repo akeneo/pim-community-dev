@@ -8,20 +8,21 @@
 define([
     'jquery',
     'underscore',
-    'pim/attribute-edit-form/properties/field',
     'oro/translator',
-    'pim/template/attribute/tab/properties/select'
+    'pim/form/common/fields/field',
+    'pim/template/form/common/fields/boolean',
+    'bootstrap.bootstrapswitch'
 ],
 function (
     $,
     _,
-    BaseField,
     __,
+    BaseField,
     template
 ) {
     return BaseField.extend({
         events: {
-            'change select': function (event) {
+            'change input': function (event) {
                 this.errors = [];
                 this.updateModel(this.getFieldValue(event.target));
                 this.getRoot().render();
@@ -39,10 +40,9 @@ function (
 
             return this.template(_.extend(templateContext, {
                 value: this.getFormData()[this.fieldName],
-                choices: this.formatChoices(this.config.choices || []),
-                multiple: this.config.isMultiple,
                 labels: {
-                    defaultLabel: ''
+                    on: __('switch_on'),
+                    off: __('switch_off')
                 }
             }));
         },
@@ -51,26 +51,14 @@ function (
          * {@inheritdoc}
          */
         postRender: function () {
-            this.$('select.select2').select2({allowClear: true});
-        },
-
-        /**
-         * @param {Array} choices
-         */
-        formatChoices: function (choices) {
-            return Array.isArray(choices) ?
-                _.object(choices, choices) :
-                _.mapObject(choices, __)
-            ;
+            this.$('.switch').bootstrapSwitch();
         },
 
         /**
          * {@inheritdoc}
          */
         getFieldValue: function (field) {
-            var value = $(field).val();
-
-            return this.config.isMultiple && null === value ? [] : value;
+            return $(field).is(':checked');
         }
     });
 });

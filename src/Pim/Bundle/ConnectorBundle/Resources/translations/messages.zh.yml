@@ -9,10 +9,8 @@ pim_connector:
       invalid_item_columns_count: '期望获得 %totalColumnsCount% 列，实际获得 %itemColumnsCount% 列。路径：%filePath%:%lineno%'
     csv_product_reader.title: CSV产品阅读器
     csv_category_reader.title: CSV分类阅读器
-    csv_variant_group .title: CSV多样组读
     dummy_processor.title: 虚拟处理器
     product_processor.title: 创建产品
-    variant_group_processor.title: 多样组创建/更新
     category_processor.title: 创建分类
     association_processor.title: 创建相关性
     product_association_processor.title: 创建相关性
@@ -26,7 +24,6 @@ pim_connector:
     file_writer.title: 输出
     product_writer.title: 产品存储
     category_writer.title: 分类存储
-    variant_group_writer.title: 多种组存储
     writer.title: 实体存储
     csv_writer.title: CSV写入器
 job_execution.summary:
@@ -94,8 +91,6 @@ batch_jobs:
     label: 从CSV导入分组
     validation.label: 文件验证
     import.label: 分组导入
-  csv_variant_group_import:
-    validation.label: 文件验证
   csv_channel_import:
     validation.label: 文件验证
   csv_locale_import:
@@ -140,16 +135,10 @@ batch_jobs:
   xlsx_group_export:
     label: 分组导出到 XLSX
     export.label: 分组导出
-  xlsx_variant_group_export:
-    label: 款式组导出到XLSX
   xlsx_group_import:
     label: 从XLSX导入分组
     validation.label: 文件验证
     import.label: 分组导入
-  xlsx_variant_group_import:
-    label: 在 XLSX 中导入款式组
-    validation.label: 文件验证
-    import.label: 导入款式组
   xlsx_family_export:
     label: 在XLSX导入品类
   xlsx_category_export:

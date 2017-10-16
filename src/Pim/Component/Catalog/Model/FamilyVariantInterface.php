@@ -78,4 +78,11 @@ interface FamilyVariantInterface extends TranslatableInterface
      * @return int
      */
     public function getNumberOfLevel(): int;
+
+    /**
+     * Get available axes attribute types
+     *
+     * @return array
+     */
+    public static function getAvailableAxesAttributeTypes(): array;
 }

@@ -1,10 +1,21 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-6898: Fixes some data can break ES index and crashes new products indexing
+
+## Better UI\UX!
+
+- PIM-6667: Update loading mask design
+- PIM-6504: Update action icons on datagrids
+
+# 2.0.2 (2017-10-12)
+
 ## Tech improvements
 
 - TIP-808: Add version strategy for js and css assets, no more need to ask final users to refresh their browser cache when applying a new patch!
 - PRE_SAVE and POST_SAVE events dispatched by instances of BaseSaver now include an "is_new" argument indicating if entities are being inserted or updated.
-- API-395: Get list of product models via API
+- TIP-813: Move attribute form fields to make them generic
 - PIM-6589: Add new template for confirmation modals
 
 ## Bug Fixes
@@ -27,15 +38,25 @@
 - PIM-6851: Fix completeness panel in case of a big number of channels
 - PIM-6895: Improve performances on products datagrid
 - PIM-6539: Update cross icons with new design
+- PIM-6776: Missing translations for page titles
 
 ## Better manage products with variants!
 
-- PIM-6343: Classify product models via the edit form
-- PIM-6346: Add history on product model edit page
+- PIM-6343: Classify product models via the product form in the tab "categories"
+- PIM-6327: Create a family variant from the UI (without distribution of the attributes)
+- PIM-6857: Display a family variant from the UI
+- PIM-6346: Add history on product model form
 - PIM-6863: Hide "Variant" meta in non variant products
+- PIM-6816: Manage validation error messages for product models
+- PIM-6893: Fix cannot create a variant product if the axes combination already exist
+- API-394: Warn API user if they try to use `variant_group` field on product POST/PATCH
+- API-395: Get list of product models via API
+- API-373: Update a single variant product via API
+- API-376: Update a list of variant products via API
 
 ## BC breaks
 
+- Throw exception when trying to create or update a product with the `variant_group` field through the API, now you have to use `parent` field [please see the link below](http://api.akeneo.com/documentation/products-with-variants.html)
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
@@ -49,6 +70,9 @@
 - Rename class parameter `pim_catalog.validator.constraint.sibling_unique_variant_axes.class` into `pim_catalog.validator.constraint.unique_variant_axes.class`
 - Replace the class parameter of the service `pim_catalog.repository.variant_product` with `pim_catalog.repository.variant_product.class`
 - Add method `getCodesIfExist` to `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
+- Rename `Pim\Bundle\EnrichBundle\Controller\Rest\ValueController` to `Pim\Bundle\EnrichBundle\Controller\Rest\ValuesController`
+- Remove method `Pim\Component\Catalog\Repository\ProductRepositoryInterface::setProductQueryBuilderFactory()`
+- Remove method `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository::setReferenceDataRegistry()`
 
 # 2.0.1 (2017-10-05)
 
@@ -162,7 +186,7 @@
 - Remove method `findAllForVariantGroup` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
 - Remove method `getEligibleProductsForVariantGroup` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
 - Remove method `findProductIdsForVariantGroup` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
-- change `Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface::convert()` signature, it return `Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField` instead of an array
+- Change `Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface::convert()` signature, it return `Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField` instead of an array
 
 # 2.0.0 (2017-09-28)
 

@@ -17,20 +17,10 @@ class ProductRepositorySpec extends ObjectBehavior
     function let(
         EntityManager $em,
         ClassMetadata $class,
-        ConfigurationRegistryInterface $registry,
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        GroupRepositoryInterface $groupRepository
+        ConfigurationRegistryInterface $registry
     ) {
         $class->name = 'Pim\Component\Catalog\Model\Product';
         $this->beConstructedWith($em, $class);
-        $this->setReferenceDataRegistry($registry);
-        $this->setProductQueryBuilderFactory($pqbFactory);
-        $this->setGroupRepository($groupRepository);
-    }
-
-    function it_has_group_repository(GroupRepositoryInterface $groupRepository)
-    {
-        $this->setGroupRepository($groupRepository)->shouldReturn($this);
     }
 
     function it_is_a_product_repository()

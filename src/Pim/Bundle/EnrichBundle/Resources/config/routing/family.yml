@@ -36,3 +36,17 @@ pim_enrich_family_rest_remove:
     requirements:
         code: '[a-zA-Z0-9_]+'
     methods: [DELETE]
+
+pim_enrich_family_variant_rest_get:
+    path: /rest/family_variant/{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.family_variant:getAction }
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+    methods: [GET]
+
+pim_enrich_family_rest_get_available_axes:
+    path: /rest/{code}/available_axes
+    defaults: { _controller: pim_enrich.controller.rest.family:getAvailableAxesAction }
+    requirements:
+        code: '[a-zA-Z0-9_]+'
+    methods: [GET]

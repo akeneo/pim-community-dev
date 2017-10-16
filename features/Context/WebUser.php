@@ -1113,6 +1113,15 @@ class WebUser extends PimContext
     }
 
     /**
+     * @Given /^I open the family variant creation form$/
+     */
+    public function iOpenFamilyVariantCreationForm()
+    {
+        $this->getCurrentPage()->openFamilyVariantCreationForm();
+        $this->wait();
+    }
+
+    /**
      * @param string $families
      *
      * @Then /^I should see the families (.*)$/
@@ -1605,6 +1614,30 @@ class WebUser extends PimContext
 
             return true;
         }, sprintf("Can not find any '%s' button", $button));
+    }
+
+    /**
+     * @param string $buttonLabel
+     *
+     * @When /^I press the "([^"]*)" bottom button$/
+     */
+    public function iPressTheBottomButton($buttonLabel)
+    {
+        $this->spin(function () use ($buttonLabel) {
+            $buttons = $this->getCurrentPage()->findAll('css', '.mass-actions-panel a');
+            foreach ($buttons as $button) {
+                if ((strtolower(trim($button->getText())) === $buttonLabel ||
+                        $button->getAttribute('title') === $buttonLabel
+                    ) && $button->isVisible()
+                ) {
+                    $button->click();
+
+                    return true;
+                }
+            }
+
+            return false;
+        }, sprintf('Can not find any bottom button "%s"', $buttonLabel));
     }
 
     /**

@@ -543,7 +543,6 @@ pim_title.attribute:
   edit: "属性%attribute.label%|编辑"
 pim_title.product:
   index: "商品"
-  edit: "产品%product.sku%|编辑"
 pim_title.family:
   index: "品类"
   edit: "产品族%family.label%|编辑"

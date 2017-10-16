@@ -19,6 +19,17 @@ datagrid:
                 frontend_type: label
         properties:
             id: ~
+            familyVariantCode: ~
+            familyCode: ~
+        actions:
+            edit:
+                type:         edit-in-modal
+                label:        Edit family variant
+                propertyCode: familyVariantCode
+                fetcher:      family-variant
+                form:         pim-family-variant-edit-form
+                icon:         eye-open
+                rowAction:    true
         filters:
             columns:
                 label:

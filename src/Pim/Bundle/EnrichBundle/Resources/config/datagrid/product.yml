@@ -68,27 +68,31 @@ datagrid:
                 icon:
                 rowAction: true
             edit_attributes:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:      tab-redirect
                 label:     Edit attributes of the product
                 tab:       pim-product-edit-form-attributes
-                icon:      pencil
                 link:      edit_link
             edit_categories:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--folder
                 type:  tab-redirect
                 label: Classify the product
                 tab:   pim-product-edit-form-categories
-                icon:  folder-close
                 link:  edit_link
             delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:  delete
                 label: Delete the product
-                icon:  trash
                 link:  delete_link
                 acl_resource: pim_enrich_product_remove
             toggle_status:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--switch
                 type:  ajax
                 label: Toggle status
-                icon:  retweet
                 link:  toggle_status_link
                 acl_resource: pim_enrich_product_change_state
         mass_actions_groups:

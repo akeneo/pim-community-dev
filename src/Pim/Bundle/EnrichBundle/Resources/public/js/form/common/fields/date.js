@@ -8,11 +8,11 @@
 define([
     'jquery',
     'underscore',
-    'pim/attribute-edit-form/properties/field',
+    'pim/form/common/fields/field',
     'datepicker',
     'pim/formatter/date',
     'pim/date-context',
-    'pim/template/attribute/tab/properties/date'
+    'pim/template/form/common/fields/date'
 ],
 function (
     $,

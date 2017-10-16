@@ -280,6 +280,11 @@ pim_enrich:
         title: Crear
       message:
         created: Familia creada correctamente
+      variant:
+        create: Crear
+        cancel: Cancelar
+        code: Código
+        label: Etiqueta
     attribute_option:
       code: Código
       label: Etiqueta
@@ -878,6 +883,7 @@ page_title:
   pim_enrich_mass_edit_action_configure: Edición masiva | Configurar
   pim_enrich_job_tracker_index: Seguimiento de procesos
   pim_enrich_job_tracker_show: Seguimiento de procesos | Ver el trabajo
+  pim_analytics_system_info_index: Información del sistema
 batch_jobs:
   add_product_value:
     label: Agregar un valor de producto

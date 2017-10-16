@@ -7,7 +7,7 @@
 
 define([
     'underscore',
-    'pim/attribute-edit-form/properties/boolean'
+    'pim/form/common/fields/boolean'
 ],
 function (_, BaseField) {
     return BaseField.extend({

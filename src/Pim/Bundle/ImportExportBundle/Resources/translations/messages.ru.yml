@@ -27,13 +27,9 @@ pim_import_export:
       history.title: Журнал
       job_content.title: Содержание
 pim_title.export_profile.index: Управление профилями экспорта
-pim_title.export_profile.edit: Профиль экспорта %job.label% | Редактировать
-pim_title.export_profile.show: Профиль экспорта %job.label% | Показать
 pim_title.export_execution.index: История запусков экспорта
 pim_title.export_execution.show: Запуск экспорта | Детали
 pim_title.import_profile.index: Управление профилями импорта
-pim_title.import_profile.edit: Профиль импорта %job.label% | Редактировать
-pim_title.import_profile.show: Профиль импорта %job.label% | Показать
 pim_title.import_execution.index: История запусков импорта
 pim_title.import_execution.show: Запуск импорта | Детали
 export profile:

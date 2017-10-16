@@ -10,7 +10,8 @@ define(
         'pim/form',
         'pim/user-context',
         'pim/fetcher-registry',
-        'pim/datagrid/state-listener'
+        'pim/datagrid/state-listener',
+        'oro/loading-mask'
     ],
     function(
         _,
@@ -23,16 +24,19 @@ define(
         BaseForm,
         UserContext,
         FetcherRegistry,
-        StateListener
+        StateListener,
+        LoadingMask
     ) {
         return BaseForm.extend({
             config: {},
+            loadingMask: null,
 
             /**
              * @inheritdoc
              */
             initialize(options) {
                 this.config = options.config;
+                this.loadingMask = new LoadingMask();
 
                 return BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -91,6 +95,8 @@ define(
                 resp.metadata.options.url =  `${url}?${localeParam}`;
 
                 datagridBuilder([StateListener]);
+
+                this.loadingMask.hide();
             },
 
             /**
@@ -219,10 +225,13 @@ define(
              * @inheritdoc
              */
             render() {
+                this.$el.empty().append(this.loadingMask.$el);
+                this.loadingMask.render().show();
+
                 $.when(this.getDefaultColumns(), this.getDefaultView())
-                .then((defaultColumns, defaultView) => {
-                    return this.setDatagridState(defaultColumns, defaultView);
-                });
+                    .then((defaultColumns, defaultView) => {
+                        return this.setDatagridState(defaultColumns, defaultView);
+                    });
             }
         });
     }

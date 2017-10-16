@@ -308,10 +308,10 @@ class Base extends Page
     public function confirmDialog()
     {
         $this->spin(function () {
-            $loading = $this->find('css', '.loading-wrapper');
+            $loading = $this->find('css', '.loading-mask');
 
             return null === $loading || !$loading->isVisible();
-        }, 'Loading wrapper is still visible');
+        }, 'Loading mask is still visible');
 
         $button = $this->spin(function () {
             return $this->getConfirmDialog()->find('css', '.ok');
@@ -477,7 +477,7 @@ class Base extends Page
         }, sprintf('Could not find a tab named "%s"', $tab));
 
         $this->spin(function () {
-            $loading = $this->find('css', '#loading-wrapper');
+            $loading = $this->find('css', '.loading-mask');
 
             return null === $loading || !$loading->isVisible();
         }, sprintf('Could not visit tab %s because of loading wrapper', $tab));

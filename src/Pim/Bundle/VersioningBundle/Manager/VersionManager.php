@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\VersioningBundle\Manager;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -50,6 +49,9 @@ class VersionManager
 
     /** @var VersionContext */
     protected $versionContext;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
 
     /**
      * @param ObjectManager            $objectManager

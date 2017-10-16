@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
-use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductModelNormalizer;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -43,14 +43,14 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         Serializer $serializer,
         ProductModelInterface $productModel,
         ValueInterface $sku,
-        Collection $values,
+        ValueCollectionInterface $values,
         \Iterator $iterator
     ) {
         $this->setSerializer($serializer);
 
         $productModel->getCode()->willReturn($sku);
         $productModel->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
-        $productModel->getValues()->willReturn($values);
+        $productModel->getValuesForVariation()->willReturn($values);
 
         $values->getIterator()->willReturn($iterator);
         $iterator->rewind()->shouldBeCalled();

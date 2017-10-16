@@ -27,13 +27,9 @@ pim_import_export:
       history.title: Històric
       job_content.title: Contingut
 pim_title.export_profile.index: Gestió de perfils d'exportació
-pim_title.export_profile.edit: Exportar perfils de %job.label% | Editar
-pim_title.export_profile.show: Exportar perfils de %job.label% | Mostrar
 pim_title.export_execution.index: Exportar històric d'execucions
 pim_title.export_execution.show: Exportar execucions | Detalls
 pim_title.import_profile.index: Gestió de perfils d'importació
-pim_title.import_profile.edit: Importar perfils %job.label% | Editar
-pim_title.import_profile.show: Importar perfils %job.label% | Mostrar
 pim_title.import_execution.index: Importar històric d'execucions
 pim_title.import_execution.show: Importar execucions | Detalls
 export profile:
