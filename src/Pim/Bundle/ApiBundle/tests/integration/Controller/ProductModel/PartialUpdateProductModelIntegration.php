@@ -534,29 +534,10 @@ JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sweat', [], [], [], $data);
 
-        $expectedProductModel = [
-            'code'           => 'root_product_model',
-            'family_variant' => 'familyVariantA1',
-            'parent'         => null,
-            'categories'     => [],
-            'values'        => [
-                'a_number_float' => [
-                    [
-                        'locale' => null,
-                        'scope'  => null,
-                        'data'   => '12.5000',
-                    ],
-                ],
-            ],
-            'created' => '2016-06-14T13:12:50+02:00',
-            'updated' => '2016-06-14T13:12:50+02:00',
-        ];
-
         $response = $client->getResponse();
 
         $this->assertSame('', $response->getContent());
-        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
-        $this->assertSameProductModels($expectedProductModel, 'sweat');
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 
     public function testUpdateRootProductModelWithInvalidValue()

@@ -214,7 +214,7 @@ class ProductModelController
             $productModel = $this->factory->create();
         }
 
-        $data['identifier'] = array_key_exists('identifier', $data) ? $data['identifier'] : $code;
+        $data['code'] = array_key_exists('code', $data) ? $data['code'] : $code;
 
         $this->updateProductModel($productModel, $data, 'patch_product_models__code_');
         $this->validateProductModel($productModel);
