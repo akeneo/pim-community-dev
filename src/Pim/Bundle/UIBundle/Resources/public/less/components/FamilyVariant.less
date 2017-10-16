@@ -40,6 +40,7 @@
         border: 1px solid @AknBorderColor;
         padding: 5px 20px;
         overflow-y: auto;
+        color: @AknDarkBlue
     }
 
     &-axes {
@@ -62,9 +63,14 @@
 
     &-columTitle {
         text-transform: uppercase;
-        border-bottom: 1px solid @AknMediumGrey;
+        border-bottom: 1px solid @AknSlateGrey;
         font-size: @AknFontSizeBig;
         color: @AknGrey;
+        cursor: move;
+        background: url("../../images/icon-dragcolumns.svg") no-repeat 0 center;
+        background-size: 13px;
+        padding-left: 20px;
+        margin: 0;
     }
 
     &-columnList {
@@ -108,6 +114,23 @@
             height: 60px;
             background-image: url("../../images/connector-end.svg");
             display: inline-block;
+        }
+    }
+
+    &-attribute {
+        background-color: white;
+        margin: 0;
+
+        &--common {
+            background-color: @AknLightGray;
+        }
+    }
+
+    &-attributeGroup {
+        background-color: white;
+
+        &--common {
+            background-color: @AknLightGray;
         }
     }
 }

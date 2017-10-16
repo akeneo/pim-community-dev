@@ -71,14 +71,13 @@ define([
                     .fetch(familyVariant.family)
                     .then((family) => {
                         const axesAttributeCodes = familyVariant.variant_attribute_sets
-                            .reduce((result, attributeSet) =>
-                                [...result, ...attributeSet.attributes],
+                            .reduce(
+                                (result, attributeSet) => result.concat(attributeSet.attributes),
                                 []
                             );
-                        const attributeCodes = [
-                            ...axesAttributeCodes,
-                            ...family.attributes.map(attribute => attribute.code)
-                        ];
+                        const attributeCodes = axesAttributeCodes.concat(
+                            family.attributes.map(attribute => attribute.code)
+                        );
 
                         return $.when(
                             fetcherRegistry.getFetcher('attribute-group').fetchAll(),
@@ -90,9 +89,25 @@ define([
                     .then((attributeGroups, attributes, axesAttributeCodes, family) => {
                         const commonAttributes = family.attributes
                             .map(attribute => attribute.code)
-                            .filter(attributeCode => axesAttributeCodes.indexOf(attributeCode) === -1)
+                            .filter(attributeCode => axesAttributeCodes.indexOf(attributeCode) === -1);
+
+                        const axisAttributes = familyVariant
+                            .variant_attribute_sets
+                            .map(set => set.axes)
+                            .reduce((allAxes, axes) => allAxes.concat(axes));
+
+                        const lockedAttributes = family.attributes
+                            .filter(attribute => {
+                                const isUnique = attribute.unique;
+                                const isAxis = axisAttributes.includes(attribute.code);
+
+                                return isAxis || isUnique;
+                            })
+                            .map(attribute => attribute.code);
 
                         this.$el.empty().append(this.template({
+                            lockedAttributes,
+                            axisAttributes,
                             familyVariant,
                             attributeGroups,
                             family,
@@ -104,11 +119,103 @@ define([
                             getAttribute: getAttribute(attributes)
                         }));
 
+                        this.$(
+                            '#common-attributes-column,' +
+                            '#attributes-column-level-1,' +
+                            '#attributes-column-level-2'
+                        )
+                        .sortable({
+                            connectWith: '.connected-sortable',
+                            containment: this.$el,
+                            tolerance: 'pointer',
+                            cursor: 'move',
+                            cancel: 'div.alert',
+                            receive: (event, ui) => {
+                                const originLevel = parseInt(ui.sender[0].dataset.level);
+                                const destinationLevel = parseInt(ui.item[0].parentNode.dataset.level);
+                                const movedAttributeCode = ui.item[0].dataset.attributeCode;
+
+                                this.handleAttributeDrop(
+                                    originLevel,
+                                    destinationLevel,
+                                    movedAttributeCode
+                                );
+
+                                this.render();
+                            }
+                        }).disableSelection();
+
+                        this.$(
+                            '#common-attribute-groups-column,' +
+                            '#attribute-groups-column-level-1,' +
+                            '#attribute-groups-column-level-2'
+                        )
+                        .sortable({
+                            connectWith: '.connected-group-sortable',
+                            containment: this.$el,
+                            tolerance: 'pointer',
+                            cursor: 'move',
+                            cancel: 'div.alert',
+                            receive: (event, ui) => {
+                                const destinationLevel = parseInt(ui.item[0].parentNode.dataset.level);
+                                const originLevel = parseInt(ui.sender[0].dataset.level);
+                                const movedAttributes = Object.values(ui.item[0].querySelectorAll('li')).map(
+                                    domElement => domElement.dataset.attributeCode
+                                );
+
+                                this.handleAttributeGroupDrop(
+                                    originLevel,
+                                    destinationLevel,
+                                    movedAttributes
+                                );
+
+                                this.render();
+                            }
+                        }).disableSelection();
+
                         this.renderExtensions();
                     });
 
 
                 return this;
+            },
+
+            handleAttributeDrop(originLevel, destinationLevel, movedAttributeCode) {
+                const data = this.getFormData();
+                data.variant_attribute_sets.map((attributeSet) => {
+                    if (attributeSet.level === originLevel) {
+                        attributeSet.attributes = attributeSet.attributes.filter(
+                            attributeCode => attributeCode !== movedAttributeCode
+                        );
+                    }
+
+                    if (attributeSet.level === destinationLevel) {
+                        attributeSet.attributes.push(movedAttributeCode);
+                    }
+
+                    return attributeSet;
+                });
+
+                this.setData(data);
+            },
+
+            handleAttributeGroupDrop(originLevel, destinationLevel, movedAttributes) {
+                const data = this.getFormData();
+                data.variant_attribute_sets.map((attributeSet) => {
+                    if (attributeSet.level === originLevel) {
+                        attributeSet.attributes = attributeSet.attributes.filter(
+                            attributeCode => movedAttributes.indexOf(attributeCode) === -1
+                        );
+                    }
+
+                    if (attributeSet.level === destinationLevel) {
+                        attributeSet.attributes.push(...movedAttributes);
+                    }
+
+                    return attributeSet;
+                });
+
+                this.setData(data);
             }
         });
     }
