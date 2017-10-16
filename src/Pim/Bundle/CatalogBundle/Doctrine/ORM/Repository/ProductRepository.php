@@ -5,13 +5,9 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
-use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 
@@ -32,45 +28,6 @@ class ProductRepository extends EntityRepository implements
 
     /** @var ConfigurationRegistryInterface */
     protected $referenceDataRegistry;
-
-    /** @var GroupRepositoryInterface */
-    protected $groupRepository;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProductQueryBuilderFactory(ProductQueryBuilderFactoryInterface $factory)
-    {
-        $this->queryBuilderFactory = $factory;
-    }
-
-    /**
-     * Set group repository
-     *
-     * @param GroupRepositoryInterface $groupRepository
-     *
-     * @return ProductRepository
-     */
-    public function setGroupRepository(GroupRepositoryInterface $groupRepository)
-    {
-        $this->groupRepository = $groupRepository;
-
-        return $this;
-    }
-
-    /**
-     * Set reference data registry
-     *
-     * @param ConfigurationRegistryInterface $registry
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setReferenceDataRegistry(ConfigurationRegistryInterface $registry = null)
-    {
-        $this->referenceDataRegistry = $registry;
-
-        return $this;
-    }
 
     /**
      * {@inheritdoc}

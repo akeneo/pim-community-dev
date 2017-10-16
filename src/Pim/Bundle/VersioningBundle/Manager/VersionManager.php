@@ -10,8 +10,6 @@ use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Event\BuildVersionEvent;
 use Pim\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
-use Pim\Component\Catalog\Model\Product;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -143,7 +141,7 @@ class VersionManager
                     $versionable,
                     $this->username,
                     $previousVersion,
-                    $this->versionContext->getContextInfo($this->getResourceName($versionable))
+                    $this->versionContext->getContextInfo(ClassUtils::getClass($versionable))
                 );
 
             if (null !== $previousVersion) {
@@ -155,7 +153,7 @@ class VersionManager
                     $versionable,
                     $this->username,
                     $changeset,
-                    $this->versionContext->getContextInfo($this->getResourceName($versionable))
+                    $this->versionContext->getContextInfo(ClassUtils::getClass($versionable))
                 );
         }
 
@@ -189,10 +187,7 @@ class VersionManager
      */
     public function getLogEntries($versionable)
     {
-        return $this->getVersionRepository()->getLogEntries(
-            $this->getResourceName($versionable),
-            $versionable->getId()
-        );
+        return $this->getVersionRepository()->getLogEntries(ClassUtils::getClass($versionable), $versionable->getId());
     }
 
     /**
@@ -207,7 +202,7 @@ class VersionManager
     public function getOldestLogEntry($versionable, $pending = false)
     {
         return $this->getVersionRepository()->getOldestLogEntry(
-            $this->getResourceName($versionable),
+            ClassUtils::getClass($versionable),
             $versionable->getId(),
             $pending
         );
@@ -225,7 +220,7 @@ class VersionManager
     public function getNewestLogEntry($versionable, $pending = false)
     {
         return $this->getVersionRepository()->getNewestLogEntry(
-            $this->getResourceName($versionable),
+            ClassUtils::getClass($versionable),
             $versionable->getId(),
             $pending
         );
@@ -262,9 +257,9 @@ class VersionManager
 
         $pendingVersions = $this->getVersionRepository()->findBy(
             [
-                'resourceId' => $versionable->getId(),
-                'resourceName' => $this->getResourceName($versionable),
-                'pending' => true,
+                'resourceId'   => $versionable->getId(),
+                'resourceName' => ClassUtils::getClass($versionable),
+                'pending'      => true
             ],
             ['loggedAt' => 'asc']
         );
@@ -279,19 +274,5 @@ class VersionManager
         }
 
         return $createdVersions;
-    }
-
-    /**
-     * @param object $versionable
-     *
-     * @return string
-     */
-    private function getResourceName($versionable)
-    {
-        if ($versionable instanceof ProductInterface) {
-            return Product::class;
-        }
-
-        return ClassUtils::getClass($versionable);
     }
 }

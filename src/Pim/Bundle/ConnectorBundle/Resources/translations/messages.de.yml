@@ -48,7 +48,7 @@ job_execution.summary:
 batch_jobs:
   csv_product_export:
     label: Produkt-Export als CSV-Datei
-    export.label: Produkt export
+    export.label: Produkt-Export
   csv_product_model_export:
     label: Produktmodell-Export als CSV-Datei
     export.label: Produktmodell-Export
@@ -70,6 +70,9 @@ batch_jobs:
   csv_family_export:
     label: Exportiere Produktfamilie in CSV-Datei
     export.label: Exportiere Produktfamilie
+  csv_family_variant_export:
+    label: Produktfamilienvarianten-Export als CSV-Datei
+    export.label: Produktfamilienvarianten-Export
   csv_product_import:
     label: Produkt-Export als CSV-Datei
     validation.label: Dateivalidierung
@@ -102,7 +105,9 @@ batch_jobs:
     validation.label: Dateivalidierung
     import.label: Produktfamilien-Import
   csv_family_variant_import:
+    label: Produktfamilienvarianten-Import aus CSV-Datei
     validation.label: Dateivalidierung
+    import.label: Produktfamilienvarianten-Import
   csv_group_import:
     label: Gruppen-Import aus CSV-Datei
     validation.label: Dateivalidierung
@@ -163,7 +168,9 @@ batch_jobs:
     validation.label: Dateivalidierung
     import.label: Produktfamilien-Import
   xlsx_family_variant_import:
+    label: Produktfamilienvarianten-Import aus XLSX-Datei
     validation.label: Dateivalidierung
+    import.label: Produktfamilienvarianten-Import
   xlsx_product_export:
     label: Produkt-Export als XLSX-Datei
     export.label: Produkt export
@@ -191,6 +198,9 @@ batch_jobs:
   xlsx_family_export:
     label: Produktfamilien-Eport als XLSX-Datei
     export.label: Exportiere Produktfamilie
+  xlsx_family_variant_export:
+    label: Produktfamilienvarianten-Export als XLSX-Datei
+    export.label: Produktfamilienvarianten-Export
   xlsx_category_export:
     label: Kategorie-Export als XLSX-Datei
     export.label: Kategorie export

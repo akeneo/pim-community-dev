@@ -115,7 +115,7 @@ pim:
         xlsx_grid_context: Excel (Contesto di griglia)
       delete: Eliminare
       mass_edit: Azioni di massa
-      category_edit: Sposta i prodotti nelle categorie
+      category_edit: Spostare i prodotti nelle categorie
       sequential_edit: Modifica sequenziale
 jstree.create: Crea
 jstree.done: Completato
@@ -312,6 +312,12 @@ pim_enrich:
         title: Crea
       message:
         created: Famiglia creata con successo
+      variant:
+        axis.label: Asse di variante
+        create: Crea
+        cancel: Annulla
+        code: Codice
+        label: Etichetta
     attribute_option:
       code: Codice
       label: Etichetta
@@ -982,36 +988,29 @@ page_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Gruppi di attributi
   pim_enrich_attributegroup_create: Gruppi di attributo | Crea
-  pim_enrich_attributegroup_edit: Gruppi attributo {{ group.label }} | Modifica
   pim_enrich_categorytree_index: Albero della categoria
   pim_enrich_categorytree_create: Strutture di categoria | Crea
-  pim_enrich_categorytree_edit: Albero categorie {{ category.label }} | Modifica
   pim_enrich_categorytree_create_tree: Strutture di categoria | Crea
   pim_enrich_attribute_index: Attributi
   pim_enrich_attribute_create: Attributi | Crea
-  pim_enrich_attribute_edit: Attributi {{ attribute.label }} | Modifica
   pim_enrich_product_index: Articoli
   pim_enrich_product_edit: Prodotti {{ product.sku }} | Modifica
   pim_enrich_product_model_edit: Modelli di prodotto {{ product.sku }} | Modifica
   pim_enrich_family_index: Famiglie
-  pim_enrich_family_edit: Famiglie {{ family.label }} | Modifica
   pim_enrich_channel_index: Canali
   pim_enrich_channel_create: Canali | Crea
-  pim_enrich_channel_edit: Canali {{ channel.label }} | Modifica
   pim_enrich_currency_index: Valute
   pim_enrich_locale_index: Impostazioni locali
   pim_enrich_group_index: Gruppi
-  pim_enrich_group_edit: Gruppi {{ group.label }} | Modifica
   pim_enrich_associationtype_index: Tipi di associazione
-  pim_enrich_associationtype_edit: Tipi associazione {{ association type.label }} | Modifica
   pim_enrich_grouptype_index: Tipi di gruppo
-  pim_enrich_grouptype_edit: Tipi di gruppo {{ group type.label }} | Modifica
   pim_enrich_mass_edit_action_choose: Modifica di massa| Scegli
   pim_enrich_mass_edit_action_configure: Modifica di massa| Configura
   pim_enrich_mass_edit_action_perform: Modifica di massa | Esegui
   pim_enrich_job_tracker_index: Tracker di processo
   pim_enrich_job_tracker_show: Tracker di processo | Visualizza lavoro
   pim_enrich_api_connection_index: Connessioni API
+  pim_analytics_system_info_index: Informazioni di sistema
   pim_enrich_api_connection_create: Connessioni API
 batch_jobs:
   add_product_value:

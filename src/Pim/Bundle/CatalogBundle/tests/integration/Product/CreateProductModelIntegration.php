@@ -208,7 +208,7 @@ class CreateProductModelIntegration extends TestCase
     /**
      * Advanced validation, we can't set the same value for axes, as axes values are unique
      */
-    public function testTheProductModelAxesDontHaveDuplicateInTheFamilyVariant()
+    public function testVariantAxisValuesCombinationIsUniqueInDatabase()
     {
         $productModelParent = $this->createProductModel(
             [
@@ -240,6 +240,65 @@ class CreateProductModelIntegration extends TestCase
         $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
         $this->assertEquals(0, $errors->count());
         $this->get('pim_catalog.saver.product_model')->save($productModel);
+        $this->get('pim_catalog.validator.unique_axes_combination_set')->reset();
+
+        $productModelDuplicate = $this->createProductModel(
+            [
+                'code' => 'product_model_duplicate_code',
+                'family_variant' => 'clothing_color_size',
+                'values' => [
+                    'color' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'blue',
+                        ]
+                    ],
+                ]
+            ]
+        );
+        $productModelDuplicate->setParent($productModelParent);
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModelDuplicate);
+        $this->assertEquals(
+            'Cannot set value "[blue]" for the attribute axis "color", as another sibling entity already has this value',
+            $errors->get(0)->getMessage()
+        );
+    }
+
+    /**
+     * Advanced validation, we can't set the same value for axes, as axes values are unique
+     */
+    public function testVariantAxisValuesCombinationIsUniqueInMemory()
+    {
+        $productModelParent = $this->createProductModel(
+            [
+                'code' => 'product_model_parent_code',
+                'family_variant' => 'clothing_color_size',
+            ]
+        );
+
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModelParent);
+        $this->assertEquals(0, $errors->count());
+        $this->get('pim_catalog.saver.product_model')->save($productModelParent);
+
+        $productModel = $this->createProductModel(
+            [
+                'code' => 'product_model_code',
+                'family_variant' => 'clothing_color_size',
+                'values' => [
+                    'color' => [
+                        [
+                            'locale' => null,
+                            'scope' => null,
+                            'data' => 'blue',
+                        ]
+                    ],
+                ]
+            ]
+        );
+        $productModel->setParent($productModelParent);
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
+        $this->assertEquals(0, $errors->count());
 
         $productModelDuplicate = $this->createProductModel(
             [

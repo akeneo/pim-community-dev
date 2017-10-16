@@ -327,6 +327,20 @@ pim_enrich:
                 title: Create
             message:
                 created: Family successfully created
+            variant:
+                axis.label: Variant axis
+                level_1.label: Variant attributes level one
+                level_2.label: Variant attributes level two
+                add_variant: Add variant
+                create_label: Create a new family variant
+                create_description: In a family variant, you can define a structure for products with variants. Choose the number of managed variant levels, the attributes used as variant axes for each level, and then define how the attributes are distributed.
+                create: Create
+                cancel: Cancel
+                code: Code
+                label: Label
+                levels: Variant levels
+                axis_level: Variant axis level
+                required: required
         attribute_option:
             code: Code
             label: Label
@@ -532,6 +546,8 @@ pim_enrich:
                     required_label: Required
                 variant:
                     title: Variants
+                    flash:
+                        family_variant_created: Family variant successfully created
                 history:
                     title: History
 
@@ -1034,37 +1050,38 @@ page_title:
     oro_default:                           Dashboard
     pim_enrich_attributegroup_index:       Attribute groups
     pim_enrich_attributegroup_create:      Attribute groups | Create
-    pim_enrich_attributegroup_edit:        Attribute groups {{ group.label }} | Edit
+    pim_enrich_attributegroup_edit:        Attribute group {{ group.label }} | Edit
     pim_enrich_categorytree_index:         Category trees
     pim_enrich_categorytree_create:        Category trees | Create
-    pim_enrich_categorytree_edit:          Category trees {{ category.label }} | Edit
+    pim_enrich_categorytree_edit:          Category tree {{ category.label }} | Edit
     pim_enrich_categorytree_create_tree:   Category trees | Create
     pim_enrich_attribute_index:            Attributes
     pim_enrich_attribute_create:           Attributes | Create
-    pim_enrich_attribute_edit:             Attributes {{ attribute.label }} | Edit
+    pim_enrich_attribute_edit:             Attribute {{ attribute.label }} | Edit
     pim_enrich_product_index:              Products
-    pim_enrich_product_edit:               Products {{ product.sku }} | Edit
-    pim_enrich_product_model_edit:         Product models {{ product.sku }} | Edit
+    pim_enrich_product_edit:               Product {{ product.label }} | Edit
+    pim_enrich_product_model_edit:         Product model {{ product.label }} | Edit
     pim_enrich_family_index:               Families
-    pim_enrich_family_edit:                Families {{ family.label }} | Edit
+    pim_enrich_family_edit:                Family {{ family.label }} | Edit
     pim_enrich_channel_index:              Channels
     pim_enrich_channel_create:             Channels | Create
-    pim_enrich_channel_edit:               Channels {{ channel.label }} | Edit
+    pim_enrich_channel_edit:               Channel {{ channel.label }} | Edit
     pim_enrich_currency_index:             Currencies
     pim_enrich_locale_index:               Locales
     pim_enrich_group_index:                Groups
-    pim_enrich_group_edit:                 Groups {{ group.label }} | Edit
+    pim_enrich_group_edit:                 Group {{ group.label }} | Edit
     pim_enrich_associationtype_index:      Association types
-    pim_enrich_associationtype_edit:       Association types {{ association type.label }} | Edit
+    pim_enrich_associationtype_edit:       Association type {{ association type.label }} | Edit
     pim_enrich_grouptype_index:            Group types
-    pim_enrich_grouptype_edit:             Group types {{ group type.label }} | Edit
+    pim_enrich_grouptype_edit:             Group type {{ group type.label }} | Edit
     pim_enrich_mass_edit_action_choose:    Mass Edit | Choose
     pim_enrich_mass_edit_action_configure: Mass Edit | Configure
     pim_enrich_mass_edit_action_perform:   Mass Edit | Perform
     pim_enrich_job_tracker_index:          Process tracker
     pim_enrich_job_tracker_show:           Process tracker | Show job
     pim_enrich_api_connection_index:       API connections
-    pim_enrich_api_connection_create:      API connections
+    pim_enrich_api_connection_create:      API connections | Create
+    pim_analytics_system_info_index:       System information
 
 # Batch job labels
 batch_jobs:

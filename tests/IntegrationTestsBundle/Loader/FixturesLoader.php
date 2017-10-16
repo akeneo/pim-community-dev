@@ -75,11 +75,12 @@ class FixturesLoader implements FixturesLoaderInterface
     public function load(Configuration $configuration): void
     {
         $this->systemUserAuthenticator->createSystemUser();
-        $this->container->get('akeneo_elasticsearch.client.product')->resetIndex();
         $this->container->get('akeneo_elasticsearch.client.product_model')->resetIndex();
 
         $files = $this->getFilesToLoad($configuration->getCatalogDirectories());
         $fixturesHash = $this->getHashForFiles($files);
+
+        $this->container->get('akeneo_elasticsearch.client.product')->resetIndex();
 
         $dumpFile = sys_get_temp_dir().self::CACHE_DIR.$fixturesHash.'.sql';
 

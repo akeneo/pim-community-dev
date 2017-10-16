@@ -9,7 +9,7 @@ define([
     'jquery',
     'underscore',
     'oro/translator',
-    'pim/attribute-edit-form/properties/field',
+    'pim/form/common/fields/field',
     'pim/fetcher-registry',
     'pim/user-context',
     'pim/i18n',

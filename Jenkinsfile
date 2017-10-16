@@ -40,7 +40,7 @@ stage("Checkout") {
 
         if (editions.contains('ee') && ('yes' == launchBehatTests || 'yes' == launchIntegrationTests)) {
             checkout([$class: 'GitSCM',
-              branches: [[name: 'master']],
+              branches: [[name: '2.0']],
               userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
             ])
 
@@ -262,10 +262,10 @@ void runIntegrationTest(String phpVersion, String edition, def testFiles) {
     node('docker') {
         deleteDir()
         sh "docker stop \$(docker ps -a -q) || true"
-        sh "docker rm \$(docker ps -a -q) || true"
+        sh "docker rm -f \$(docker ps -a -q) || true"
 
         try {
-            docker.image("elasticsearch:5.5").withRun("--name elasticsearch -e ES_JAVA_OPTS=\"-Xms256m -Xmx256m\"") {
+            docker.image("elasticsearch:5.5").withRun("--name elasticsearch -e ES_JAVA_OPTS=\"-Xms512m -Xmx512m\"") {
                 docker.image("mysql:5.7").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim --tmpfs=/var/lib/mysql/:rw,noexec,nosuid,size=1000m --tmpfs=/tmp/:rw,noexec,nosuid,size=300m") {
                     docker.image("akeneo/php:${phpVersion}").inside("--link mysql:mysql --link elasticsearch:elasticsearch") {
                         if ('ce' == edition) {

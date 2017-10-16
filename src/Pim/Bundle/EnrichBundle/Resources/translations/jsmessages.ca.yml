@@ -252,6 +252,11 @@ pim_enrich:
         title: Crear
       message:
         created: Família creada correctament
+      variant:
+        create: Crear
+        cancel: Cancelar
+        code: Codi
+        label: Etiqueta
     attribute_option:
       code: Codi
       label: Etiqueta
@@ -827,6 +832,7 @@ page_title:
   pim_enrich_mass_edit_action_configure: Editar en massa | Configurar
   pim_enrich_job_tracker_index: Seguiment del procés
   pim_enrich_job_tracker_show: Seguiment del procés | Mostrar tasca
+  pim_analytics_system_info_index: Informació del sistema
 batch_jobs:
   add_product_value:
     label: Afegir valor de producte

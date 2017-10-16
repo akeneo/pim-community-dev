@@ -29,11 +29,12 @@ use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Exception\UnsupportedFilterException;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Query\Sorter\Directions;
-use Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -281,6 +282,7 @@ class ProductController
         $data = $this->getDecodedContent($request->getContent());
 
         $data = $this->populateIdentifierProductValue($data);
+        $data = $this->orderData($data);
 
         if (isset($data['parent'])) {
             $data = $this->productAttributeFilter->filter($data);
@@ -315,7 +317,12 @@ class ProductController
 
         if ($isCreation) {
             $this->validateCodeConsistency($code, $data);
-            $product = $this->productBuilder->createProduct($code);
+
+            if (isset($data['parent'])) {
+                $product = $this->variantProductBuilder->createProduct($code);
+            } else {
+                $product = $this->productBuilder->createProduct($code);
+            }
         }
 
         $data['identifier'] = array_key_exists('identifier', $data) ? $data['identifier'] : $code;
@@ -324,6 +331,12 @@ class ProductController
         if (!$isCreation) {
             $data = $this->filterEmptyValues($product, $data);
         }
+
+        if ($product instanceof VariantProductInterface) {
+            $data = $this->productAttributeFilter->filter($data);
+        }
+
+        $data = $this->orderData($data);
 
         $this->updateProduct($product, $data, 'patch_products__code_');
         $this->validateProduct($product);
@@ -381,6 +394,13 @@ class ProductController
      */
     protected function updateProduct(ProductInterface $product, array $data, string $anchor): void
     {
+        if (array_key_exists('variant_group', $data)) {
+            throw new DocumentedHttpException(
+                Documentation::URL_DOCUMENTATION . 'products-with-variants.html',
+                'Property "variant_group" does not exist anymore. Check the link below to understand why.'
+            );
+        }
+
         try {
             $this->updater->update($product, $data);
         } catch (PropertyException $exception) {
@@ -442,7 +462,7 @@ class ProductController
      */
     protected function validateProduct(ProductInterface $product): void
     {
-        $violations = $this->productValidator->validate($product);
+        $violations = $this->productValidator->validate($product, null, ['Default', 'api']);
         if (0 !== $violations->count()) {
             throw new ViolationHttpException($violations);
         }
@@ -687,6 +707,8 @@ class ProductController
      * @param array                 $normalizerOptions
      *
      * @throws UnprocessableEntityHttpException
+     * @throws DocumentedHttpException
+     * @throws ServerErrorResponseException
      *
      * @return array
      */
@@ -747,5 +769,33 @@ class ProductController
         );
 
         return $paginatedProducts;
+    }
+
+    /**
+     * This method order the data by setting the parent field first. It comes from the ParentFieldSetter that sets the
+     * family from the parent if the product family is null. By doing this the validator does not fail if the family
+     * field has been set to null from the API. So to prevent this we order the parent before the family field. this way
+     * the field family will be updated to null if the data sent from the API for the family field is null.
+     *
+     * Example:
+     *
+     * {
+     *     "identifier": "test",
+     *     "family": null,
+     *     "parent": "amor"
+     * }
+     *
+     * This example does not work because the parent setter will set the family with the parent family.
+     *
+     * @param array $data
+     * @return array
+     */
+    private function orderData(array $data): array
+    {
+        if (!isset($data['parent'])) {
+            return $data;
+        }
+
+        return ['parent' => $data['parent']] + $data;
     }
 }

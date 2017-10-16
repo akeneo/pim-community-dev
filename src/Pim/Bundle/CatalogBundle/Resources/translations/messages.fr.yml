@@ -8,6 +8,7 @@ pim_catalog:
     family_variant_axes_attribute_type: Les axes de variantes "%axis%" doivent être un booléen, une liste à choix unique, une liste à choix unique de données référentielles ou une métrique
     family_variant_axes_wrong_type: L'axe de variante "%axis%" ne peut pas être traduisible, décliné par canal ou spécifique à une locale
     family_variant_axes_number_of_axes: Un ensemble d’attributs de variante ne peut pas avoir plus de 5 attributs
+    family_variant_no_axis: Au moins un attribut doit être défini comme axe pour le niveau "%level%"
     family_variant_axis_level: L'attribut "%axis%" doit être défini comme attribut dans le même ensemble d'attributs de variantes que son axe
     family_variant_has_family_attribute: 'L''attribut "%attribute%" ne peut pas être ajouté à la variante de famille "%family_variant%", car ce n''est pas un attribut de la famille "%family%"'
     family_variant_level_do_not_exist: Il n'y a aucun attribut variant pour le niveau "%level%"

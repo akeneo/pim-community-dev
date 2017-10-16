@@ -106,7 +106,7 @@ extensions:
                 dropZone: content
 
     pim-attribute-identifier-edit-form-properties-common-code:
-        module: pim/attribute-edit-form/properties/text
+        module: pim/form/common/fields/text
         parent: pim-attribute-identifier-edit-form-properties-common
         targetZone: content
         position: 90
@@ -135,7 +135,7 @@ extensions:
             required: true
 
     pim-attribute-identifier-edit-form-properties-common-unique:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/form/common/fields/boolean
         parent: pim-attribute-identifier-edit-form-properties-common
         targetZone: content
         position: 120
@@ -144,7 +144,7 @@ extensions:
             readOnly: true
 
     pim-attribute-identifier-edit-form-properties-common-scopable:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/form/common/fields/boolean
         parent: pim-attribute-identifier-edit-form-properties-common
         targetZone: content
         position: 130
@@ -153,7 +153,7 @@ extensions:
             readOnly: true
 
     pim-attribute-identifier-edit-form-properties-common-localizable:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/form/common/fields/boolean
         parent: pim-attribute-identifier-edit-form-properties-common
         targetZone: content
         position: 140
@@ -171,7 +171,7 @@ extensions:
             readOnly: true
 
     pim-attribute-identifier-edit-form-properties-common-usable-as-grid-filter:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/form/common/fields/boolean
         parent: pim-attribute-identifier-edit-form-properties-common
         targetZone: content
         position: 170
@@ -226,7 +226,7 @@ extensions:
                 dropZone: content
 
     pim-attribute-identifier-edit-form-validation-params-max-characters:
-        module: pim/attribute-edit-form/properties/text
+        module: pim/form/common/fields/text
         parent: pim-attribute-identifier-edit-form-validation-params
         targetZone: content
         position: 100
@@ -234,7 +234,7 @@ extensions:
             fieldName: max_characters
 
     pim-attribute-identifier-edit-form-validation-params-validation-rule:
-        module: pim/attribute-edit-form/properties/select
+        module: pim/form/common/fields/select
         parent: pim-attribute-identifier-edit-form-validation-params
         targetZone: content
         position: 110

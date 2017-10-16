@@ -812,76 +812,6 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-    /**
-     * TODO PIM-6733: Variant group to be null or to be an alias for parent?
-    public function testResponseWhenAttributeValidationFailed()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-<<<JSON
-    {
-        "identifier": "wrong_amount",
-        "variant_group": "variantB",
-        "values": {
-            "a_scopable_price": [{
-                "locale": null,
-                "scope": "ecommerce",
-                "data": [
-                    { "amount": "string", "currency": "EUR" },
-                    { "amount": 12, "currency": "USD" }
-                ]
-            }],
-            "a_number_float_negative":[{
-                "locale": null,
-                "scope": null,
-                "data": -300
-            }]
-        }
-    }
-JSON;
-
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
-
-        $expectedContent = <<<JSON
-{
-    "code": 422,
-    "message": "Validation failed.",
-    "errors": [
-        {
-            "property": "variant_group",
-            "message": "The product \"wrong_amount\" is in the variant group \"variantB\" but it misses the following axes: a_simple_select."
-        },
-        {
-            "property": "variant_group",
-            "message": "Product \"wrong_amount\" should have value for axis \"a_simple_select\" of variant group \"Variant B\""
-        },
-        {
-            "property": "values",
-            "message": "This value should be a valid number.",
-            "attribute": "a_scopable_price",
-            "locale": null,
-            "scope": "ecommerce",
-            "currency": "EUR"
-        },
-        {
-            "property": "values",
-            "message": "This value should be -250 or more.",
-            "attribute": "a_number_float_negative",
-            "locale": null,
-            "scope": null
-        }
-    ]
-}
-JSON;
-
-        $response = $client->getResponse();
-
-        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-    }
-     */
-
     public function testResponseWhenProductAlreadyExists()
     {
         $client = $this->createAuthenticatedClient();
@@ -976,6 +906,80 @@ JSON;
         $response = $client->getResponse();
         $this->assertSame($expectedContent, json_decode($response->getContent(), true));
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    public function testProductCreationWithVariantGroupAttribute()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "identifier": "foo",
+        "family": null,
+        "variant_group": "group_variant",
+        "groups": ["groupA"],
+        "categories": ["master"],
+        "associations": {
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $message = addslashes('Property "variant_group" does not exist anymore. Check the link below to understand why.');
+        $link = addslashes('http://api.akeneo.com/documentation/products-with-variants.html');
+
+        $expected = <<<JSON
+{
+    "code":422,
+    "message":"${message}",
+    "_links":{
+        "documentation":{
+            "href": "${link}"
+        }
+    }
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    /**
+     * @jira https://akeneo.atlassian.net/browse/PIM-6876
+     */
+    public function testSuccessfullyToCreateProductWithControlCaracter()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "identifier": "foo",
+        "values": {
+            "a_text":[
+                {"locale": null, "scope": null, "data": "15\u001fm"}
+            ]
+        }
+    }
+JSON;
+
+        $client->request('POST', '/api/rest/v1/products', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertEmpty($response->getContent());
+
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+
+        $client->request('GET', '/api/rest/v1/products/foo');
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
+
+        $this->assertSame('15'. chr(31) . 'm', $product->getValue('a_text')->getData());
+        $this->assertSame('15'. chr(31) . 'm', $product->getRawValues()['a_text']['<all_channels>']['<all_locales>']);
     }
 
     /**

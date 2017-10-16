@@ -55,7 +55,7 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
      */
     private function normalizeValues(ProductModelInterface $productModel, $format = null, array $context = []): array
     {
-        $values = $productModel->getValues();
+        $values = $productModel->getValuesForVariation();
 
         $normalizedValues = [];
         foreach ($values as $value) {

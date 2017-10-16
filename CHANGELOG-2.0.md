@@ -1,5 +1,80 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-6898: Fixes some data can break ES index and crashes new products indexing
+
+## Better UI\UX!
+
+- PIM-6667: Update loading mask design
+- PIM-6504: Update action icons on datagrids
+
+# 2.0.2 (2017-10-12)
+
+## Tech improvements
+
+- TIP-808: Add version strategy for js and css assets, no more need to ask final users to refresh their browser cache when applying a new patch!
+- PRE_SAVE and POST_SAVE events dispatched by instances of BaseSaver now include an "is_new" argument indicating if entities are being inserted or updated.
+- TIP-813: Move attribute form fields to make them generic
+
+## Bug Fixes
+
+- PIM-6865: Fix ACL on import profile page
+- PIM-6876: Escape u001f character to workaround a mysql bug
+- TIP-810: Add Symfony command to reset the ES indexes
+- TIP-809: Prevents ES from using the scoring system and bypass the max_clause_count limit.
+- PIM-6872: Fix PQB sorters with Elasticsearch
+- PIM-6859: Fix missing attribute values in PDF
+- PIM-6894: Allow any special characters in password field
+
+## Better UI\UX!
+
+- PIM-6584: Update main menu order
+- API-398: As Mary, I want to only see my launched exports/imports
+- API-397: As Mary, I want to only see my launched jobs in the dashboard
+- API-389: As Mary, I want to only see my launched jobs in the process tracker
+- PIM-6881: Fix common attributes design
+- PIM-6851: Fix completeness panel in case of a big number of channels
+- PIM-6895: Improve performances on products datagrid
+- PIM-6539: Update cross icons with new design
+- PIM-6776: Missing translations for page titles
+
+## Better manage products with variants!
+
+- PIM-6343: Classify product models via the product form in the tab "categories"
+- PIM-6327: Create a family variant from the UI (without distribution of the attributes)
+- PIM-6857: Display a family variant from the UI
+- PIM-6346: Add history on product model form
+- PIM-6863: Hide "Variant" meta in non variant products
+- PIM-6816: Manage validation error messages for product models
+- PIM-6893: Fix cannot create a variant product if the axes combination already exist
+- API-394: Warn API user if they try to use `variant_group` field on product POST/PATCH
+- API-395: Get list of product models via API
+- API-373: Update a single variant product via API
+- API-376: Update a list of variant products via API
+
+## BC breaks
+
+- Throw exception when trying to create or update a product with the `variant_group` field through the API, now you have to use `parent` field [please see the link below](http://api.akeneo.com/documentation/products-with-variants.html)
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template 
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
+- Change the constructor of `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithFamilyVariantRepository` to add `Pim\Component\Catalog\Repository\VariantProductRepositoryInterface`
+- Change the constructor of `Pim\Component\Catalog\ProductModel\Filter` to add `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
+- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\AttributeFilterInterface` 
+- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductAttributeFilter` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\ProductAttributeFilter` 
+- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductModelAttributeFilter` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\ProductModelAttributeFilter` 
+- Rename `Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxes` into `Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis`
+- Rename service `pim_catalog.validator.constraint.sibling_unique_variant_axes` into `pim_catalog.validator.constraint.unique_variant_axes`
+- Rename class parameter `pim_catalog.validator.constraint.sibling_unique_variant_axes.class` into `pim_catalog.validator.constraint.unique_variant_axes.class`
+- Replace the class parameter of the service `pim_catalog.repository.variant_product` with `pim_catalog.repository.variant_product.class`
+- Add method `getCodesIfExist` to `Akeneo\Component\Classification\Repository\CategoryRepositoryInterface`
+- Rename `Pim\Bundle\EnrichBundle\Controller\Rest\ValueController` to `Pim\Bundle\EnrichBundle\Controller\Rest\ValuesController`
+- Remove method `Pim\Component\Catalog\Repository\ProductRepositoryInterface::setProductQueryBuilderFactory()`
+- Remove method `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository::setReferenceDataRegistry()`
+
+# 2.0.1 (2017-10-05)
+
 ## Bug Fixes
 
 - PIM-6446: fix variant family code uniqueness
@@ -13,6 +88,7 @@
 - PIM-6451: Now display variant axes coming from parent as "Variant Axis" on the product edit form
 - PIM-6847: Fix variant product history
 - PIM-6867: Fix validation of variant product, now it's impossible to have a root product model as parent if there are 2 levels of variation
+- PIM-6816: Add validation error messages on product model edit form
 
 ## Tech improvements
 
@@ -30,7 +106,7 @@
 
 - PIM-6343: Classify product models by import and export product models with their categories
 - PIM-6356: Display the image of the 1st variant product created in the grid and on the PEF for product models
-- PIM-6856: List family variants created by import in a new tab "variants" in the family 
+- PIM-6856: List family variants created by import in a new tab "variants" in the family
 - PIM-6797: Automatically add "unique value" and identifier attributes at the last variant product level in family variants
 
 ## Better UI\UX!
@@ -109,7 +185,7 @@
 - Remove method `findAllForVariantGroup` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
 - Remove method `getEligibleProductsForVariantGroup` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
 - Remove method `findProductIdsForVariantGroup` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
-- change `Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface::convert()` signature, it return `Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField` instead of an array
+- Change `Pim\Component\Connector\ArrayConverter\FlatToStandard\FieldConverterInterface::convert()` signature, it return `Pim\Component\Connector\ArrayConverter\FlatToStandard\ConvertedField` instead of an array
 
 # 2.0.0 (2017-09-28)
 

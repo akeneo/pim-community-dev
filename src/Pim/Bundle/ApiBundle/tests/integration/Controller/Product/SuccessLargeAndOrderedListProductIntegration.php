@@ -4,7 +4,6 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
 use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * We want to test the API is capable of returning an ordered list of 100 items.

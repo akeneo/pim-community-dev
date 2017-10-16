@@ -99,6 +99,7 @@ css:
         - bundles/pimui/less/components/TitleContainer.less
         - bundles/pimui/less/components/VerticalList.less
         - bundles/pimui/less/components/Widget.less
+        - bundles/pimui/less/components/FamilyVariant.less
 
         - bundles/pimui/less/pages/Default.less
         - bundles/pimui/less/pages/FullPage.less

@@ -1,5 +1,6 @@
 parameters:
     pim_enrich.extension.action.type.navigate_product_and_product_model.class: 'Pim\Bundle\EnrichBundle\Extension\Action\Actions\NavigateProductAndProductModelAction'
+    pim_enrich.extension.action.type.edit_in_modal.class: 'Pim\Bundle\EnrichBundle\Extension\Action\Actions\NavigateProductAndProductModelAction'
 
 services:
     pim_enrich.extension.action.type.navigate_product_and_product_model:
@@ -7,3 +8,9 @@ services:
         shared: false
         tags:
             - { name: oro_datagrid.extension.action.type, type: navigate-product-and-product-model }
+
+    pim_enrich.extension.action.type.edit_in_modal:
+        class: '%pim_enrich.extension.action.type.edit_in_modal.class%'
+        shared: false
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: edit-in-modal }

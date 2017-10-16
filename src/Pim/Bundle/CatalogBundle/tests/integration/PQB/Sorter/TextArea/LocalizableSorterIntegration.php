@@ -85,4 +85,16 @@ class LocalizableSorterIntegration extends AbstractProductQueryBuilderTestCase
     {
         $this->executeSorter([['a_localizable_text_area', 'A_BAD_DIRECTION', ['locale' => 'fr_FR']]]);
     }
+
+    /**
+     * @jira https://akeneo.atlassian.net/browse/PIM-6872
+     */
+    public function testSorterWithNoDataOnSorterField()
+    {
+        $result = $this->executeSorter([['a_localizable_text_area', Directions::DESCENDING, ['locale' => 'de_DE']]]);
+        $this->assertOrder($result, ['cat', 'cattle', 'dog', 'empty_product']);
+
+        $result = $this->executeSorter([['a_localizable_text_area', Directions::ASCENDING, ['locale' => 'de_DE']]]);
+        $this->assertOrder($result, ['cat', 'cattle', 'dog', 'empty_product']);
+    }
 }

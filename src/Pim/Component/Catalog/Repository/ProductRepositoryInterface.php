@@ -2,10 +2,7 @@
 
 namespace Pim\Component\Catalog\Repository;
 
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\ORM\NonUniqueResultException;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
@@ -19,13 +16,6 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
  */
 interface ProductRepositoryInterface extends ObjectRepository
 {
-    /**
-     * @param ProductQueryBuilderFactoryInterface $factory
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setProductQueryBuilderFactory(ProductQueryBuilderFactoryInterface $factory);
-
     /**
      * Get available attribute ids from a product ids list
      *

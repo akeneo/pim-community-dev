@@ -46,7 +46,6 @@ class PimEnrichExtension extends Extension
         $loader->load('factories.yml');
         $loader->load('files.yml');
         $loader->load('filters.yml');
-        $loader->load('form_subscribers.yml');
         $loader->load('form_types.yml');
         $loader->load('forms.yml');
         $loader->load('handlers.yml');
@@ -64,6 +63,7 @@ class PimEnrichExtension extends Extension
         $loader->load('serializers.yml');
         $loader->load('steps.yml');
         $loader->load('twig.yml');
+        $loader->load('version_strategy.yml');
         $loader->load('view_elements.yml');
         $loader->load('view_elements/attribute.yml');
         $loader->load('view_elements/category.yml');

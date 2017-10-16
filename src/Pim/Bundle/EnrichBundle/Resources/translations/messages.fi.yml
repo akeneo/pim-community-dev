@@ -543,7 +543,6 @@ pim_title.attribute:
   edit: "Attribuutit %attribute.label% | Muokkaa"
 pim_title.product:
   index: "Tuotteet"
-  edit: "Tuotteiden %product.sku% | Muokkaa"
 pim_title.family:
   index: "Perheet"
   edit: "Tuoteperheiden %family.label% | Muokkaa"

@@ -51,11 +51,13 @@ class WebUser extends PimContext
     {
         $entity = implode('', array_map('ucfirst', explode(' ', $entity)));
         $this->spin(function () use ($entity) {
+            if (null !== $this->getCurrentPage()->find('css', '.modal, .ui-dialog')) {
+                return true;
+            }
+
             $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
 
-            sleep(1);
-
-            return null !== $this->getCurrentPage()->find('css', '.modal, .ui-dialog');
+            return false;
         }, sprintf('Cannot create a new %s: cannot click on the creation link', $entity));
 
         $this->getNavigationContext()->currentPage = sprintf('%s creation', $entity);
@@ -1111,6 +1113,15 @@ class WebUser extends PimContext
     }
 
     /**
+     * @Given /^I open the family variant creation form$/
+     */
+    public function iOpenFamilyVariantCreationForm()
+    {
+        $this->getCurrentPage()->openFamilyVariantCreationForm();
+        $this->wait();
+    }
+
+    /**
      * @param string $families
      *
      * @Then /^I should see the families (.*)$/
@@ -1606,6 +1617,30 @@ class WebUser extends PimContext
     }
 
     /**
+     * @param string $buttonLabel
+     *
+     * @When /^I press the "([^"]*)" bottom button$/
+     */
+    public function iPressTheBottomButton($buttonLabel)
+    {
+        $this->spin(function () use ($buttonLabel) {
+            $buttons = $this->getCurrentPage()->findAll('css', '.mass-actions-panel a');
+            foreach ($buttons as $button) {
+                if ((strtolower(trim($button->getText())) === $buttonLabel ||
+                        $button->getAttribute('title') === $buttonLabel
+                    ) && $button->isVisible()
+                ) {
+                    $button->click();
+
+                    return true;
+                }
+            }
+
+            return false;
+        }, sprintf('Can not find any bottom button "%s"', $buttonLabel));
+    }
+
+    /**
      * @param string $locator
      *
      * @When /^I hover over the element "([^"]*)"$/
@@ -1878,23 +1913,48 @@ class WebUser extends PimContext
      * @param string $sku
      * @param string $categoryCode
      *
-     * @Then /^the category of (?:the )?product "([^"]*)" should be "([^"]*)"$/
+     * @Then /^the categor(?:y|ies) of (?:the )?product "([^"]*)" should be "([^"]*)"$/
      */
-    public function theCategoryOfProductShouldBe($sku, $categoryCode)
+    public function theCategoryOfProductShouldBe($sku, $expectedCategoryCodes)
     {
         $product = $this->getFixturesContext()->getProduct($sku);
+        $actualCategoryCodes = $product->getCategoryCodes();
 
-        $categoryCodes = $product->getCategoryCodes();
-        assertEquals(
-            [$categoryCode],
-            $categoryCodes,
-            sprintf(
-                'Expecting the category of "%s" to be "%s", not "%s".',
-                $sku,
-                $categoryCode,
-                implode(', ', $categoryCodes)
-            )
-        );
+        foreach ($this->listToArray($expectedCategoryCodes) as $expectedCategoryCode) {
+            assertContains(
+                $expectedCategoryCode,
+                $actualCategoryCodes,
+                sprintf(
+                    'Product "%s" should contain "%s" as category.',
+                    $sku,
+                    $expectedCategoryCode
+                )
+            );
+        }
+    }
+
+    /**
+     * @param string $code
+     * @param string $expectedCategoryCodes
+     *
+     * @Then /^the categor(?:y|ies) of (?:the )?product model "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theCategoryOfProductModelShouldBe($code, $expectedCategoryCodes)
+    {
+        $productModel = $this->getFixturesContext()->getProductModel($code);
+        $actualCategoryCodes = $productModel->getCategoryCodes();
+
+        foreach ($this->listToArray($expectedCategoryCodes) as $expectedCategoryCode) {
+            assertContains(
+                $expectedCategoryCode,
+                $actualCategoryCodes,
+                sprintf(
+                    'Product model "%s" should contain "%s" as category.',
+                    $code,
+                    $expectedCategoryCode
+                )
+            );
+        }
     }
 
     /**

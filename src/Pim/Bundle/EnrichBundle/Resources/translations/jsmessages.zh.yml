@@ -252,6 +252,11 @@ pim_enrich:
         title: 创建
       message:
         created: 产品族已创建
+      variant:
+        create: 创建
+        cancel: 取消
+        code: 代码
+        label: 标签
     attribute_option:
       code: 代码
       label: 标签
@@ -795,6 +800,7 @@ page_title:
   pim_enrich_mass_edit_action_configure: 批量编辑|配置
   pim_enrich_job_tracker_index: 过程跟踪器
   pim_enrich_job_tracker_show: 过程跟踪器 |显示作业
+  pim_analytics_system_info_index: 系统信息
 batch_jobs:
   add_product_value:
     label: 添加商品值

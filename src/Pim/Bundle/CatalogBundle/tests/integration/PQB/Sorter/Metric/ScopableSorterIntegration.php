@@ -79,4 +79,16 @@ class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
     {
         $this->executeSorter([['a_scopable_metric', 'A_BAD_DIRECTION', ['scope' => 'ecommerce']]]);
     }
+
+    /**
+     * @jira https://akeneo.atlassian.net/browse/PIM-6872
+     */
+    public function testSorterWithNoDataOnSorterField()
+    {
+        $result = $this->executeSorter([['a_scopable_metric', Directions::DESCENDING, ['scope' => 'ecommerce_china']]]);
+        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'empty_product']);
+
+        $result = $this->executeSorter([['a_scopable_metric', Directions::ASCENDING, ['scope' => 'ecommerce_china']]]);
+        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'empty_product']);
+    }
 }

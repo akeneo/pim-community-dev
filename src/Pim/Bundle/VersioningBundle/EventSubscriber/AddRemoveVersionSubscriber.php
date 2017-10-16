@@ -9,8 +9,6 @@ use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
-use Pim\Component\Catalog\Model\Product;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -89,12 +87,12 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
         }
 
         $previousVersion = $this->versionRepository->getNewestLogEntry(
-            $this->getRessourceName($subject),
+            ClassUtils::getClass($subject),
             $event->getSubjectId()
         );
 
         $version = $this->versionFactory->create(
-            $this->getRessourceName($subject),
+            ClassUtils::getClass($subject),
             $event->getSubjectId(),
             $author,
             'Deleted'
@@ -106,19 +104,5 @@ class AddRemoveVersionSubscriber implements EventSubscriberInterface
 
         $options = $event->getArguments();
         $this->versionSaver->save($version, $options);
-    }
-
-    /**
-     * @param object $versionable
-     *
-     * @return string
-     */
-    private function getRessourceName($versionable)
-    {
-        if ($versionable instanceof ProductInterface) {
-            return Product::class;
-        }
-
-        return ClassUtils::getClass($versionable);
     }
 }

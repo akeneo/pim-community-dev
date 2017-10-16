@@ -26,9 +26,10 @@ datagrid:
                     - id
         actions:
             toggle:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--switch
                 type:         navigate
                 label:        Change status
-                icon:         random
                 link:         toggle_link
                 acl_resource: pim_enrich_currency_toggle
         sorters:

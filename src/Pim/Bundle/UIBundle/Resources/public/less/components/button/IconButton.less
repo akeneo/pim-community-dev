@@ -1,13 +1,26 @@
 @import '../../base/variables';
 
 .AknIconButton {
+  .imageIcon(@url) {
+    background: url(@url) no-repeat center;
+    background-size: 20px;
+    opacity: 0.8;
+    transition: opacity 0.1s ease-in;
+    font-size: 0;
+
+    &:hover {
+      background-color: inherit;
+      opacity: 1;
+    }
+  }
+
   color: lighten(@AknGrey, 15%);
   width: @AknIconSize;
   height: @AknIconSize;
   line-height: @AknIconSize;
   font-size: @AknBigIconFontSize;
   border: none;
-  background: white;
+  background-color: white;
   display: inline-block;
   padding: 0;
   border-radius: 2px;
@@ -103,5 +116,37 @@
     &:focus {
       outline: none;
     }
+  }
+
+  &--plus {
+    .imageIcon("../../../images/icon-plus.svg");
+  }
+
+  &--edit {
+    .imageIcon("../../../images/icon-edit.svg");
+  }
+
+  &--folder {
+    .imageIcon("../../../images/icon-folder.svg");
+  }
+
+  &--trash {
+    .imageIcon("../../../images/icon-trash.svg");
+  }
+
+  &--switch {
+    .imageIcon("../../../images/icon-switch.svg");
+  }
+
+  &--view {
+    .imageIcon("../../../images/icon-view.svg");
+  }
+
+  &--unpublish {
+    .imageIcon("../../../images/icon-unpublish.svg");
+  }
+
+  &--play {
+    .imageIcon("../../../images/icon-play.svg");
   }
 }

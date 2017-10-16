@@ -313,6 +313,20 @@ pim_enrich:
         title: Créer
       message:
         created: Famille créée avec succès
+      variant:
+        axis.label: Axe de variante
+        level_1.label: Attributs variants niveau 1
+        level_2.label: Attributs variants niveau 2
+        add_variant: Ajouter une variante
+        create_label: Créer une nouvelle variante de famille
+        create_description: Dans une variante de famille, vous pouvez définir la structure de vos produits avec variantes. Choisissez le nombreux de niveaux variants gérés, les attributs utilisés comme axes de variantes pour chaque niveau. Puis, définissez la répartition des attributs de la famille.
+        create: Créer
+        cancel: Annuler
+        code: Code
+        label: Libellé
+        levels: Niveaux variants
+        axis_level: Axe de variantes niveau
+        required: obligatoire
     attribute_option:
       code: Code
       label: Libellé
@@ -518,6 +532,8 @@ pim_enrich:
           required_label: Obligatoire
         variant:
           title: Variantes
+          flash:
+            family_variant_created: La variante de famille a été créée
         history:
           title: Historique
     attribute_option:
@@ -1015,37 +1031,38 @@ page_title:
   oro_default: Tableau de bord
   pim_enrich_attributegroup_index: Groupes d'attributs
   pim_enrich_attributegroup_create: Groupe d'attributs | Créer
-  pim_enrich_attributegroup_edit: Groupe d'attribut {{ group.label }} | Editer
+  pim_enrich_attributegroup_edit: Groupe d'attributs {{ group.label }} | Modification
   pim_enrich_categorytree_index: Arborescences des catégories
   pim_enrich_categorytree_create: Arborescences | Créer
-  pim_enrich_categorytree_edit: Arborescence {{ category.label }} | Editer
+  pim_enrich_categorytree_edit: Arbre de catégories {{ category.label }} | Modification
   pim_enrich_categorytree_create_tree: Arborescences | Créer
   pim_enrich_attribute_index: Attributs
   pim_enrich_attribute_create: Attributs | Créer
-  pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Editer
+  pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Modification
   pim_enrich_product_index: Produits
-  pim_enrich_product_edit: Produit {{ product.sku }} | Editer
-  pim_enrich_product_model_edit: Modèles de produit {{ product.sku }} | Editer
+  pim_enrich_product_edit: Produit {{ product.label }} | Modification
+  pim_enrich_product_model_edit: Modèle de produit {{ product.label }} | Modification
   pim_enrich_family_index: Familles
-  pim_enrich_family_edit: Famille {{ family.label }} Editer
+  pim_enrich_family_edit: Famille {{ family.label }} | Modification
   pim_enrich_channel_index: Canaux
   pim_enrich_channel_create: Canaux | Créer
-  pim_enrich_channel_edit: Canal {{ channel.label }} | Editer
+  pim_enrich_channel_edit: Canal {{ channel.label }} | Modification
   pim_enrich_currency_index: Devises
   pim_enrich_locale_index: Locales
   pim_enrich_group_index: Groupes
-  pim_enrich_group_edit: Groupe {{ group.label }} | Editer
+  pim_enrich_group_edit: Groupe {{ group.label }} | Modification
   pim_enrich_associationtype_index: Types d'association
-  pim_enrich_associationtype_edit: Type d'association {{ association type.label }} | Modifier
+  pim_enrich_associationtype_edit: Type d'association {{ association type.label }} | Modification
   pim_enrich_grouptype_index: Types de groupe
-  pim_enrich_grouptype_edit: Types de groupe {{ group type.label }} | Modifier
+  pim_enrich_grouptype_edit: Type de groupe {{ group type.label }} | Modification
   pim_enrich_mass_edit_action_choose: Édition de masse | Choisir
   pim_enrich_mass_edit_action_configure: Édition de masse | Configurer
   pim_enrich_mass_edit_action_perform: Edition en masse | Effectuer
   pim_enrich_job_tracker_index: Traqueur de processus
   pim_enrich_job_tracker_show: Traqueur de processus | Voir la tâche
   pim_enrich_api_connection_index: Connexions API
-  pim_enrich_api_connection_create: Connexions API
+  pim_enrich_api_connection_create: Connexions d'API | Créer
+  pim_analytics_system_info_index: Informations système
 batch_jobs:
   add_product_value:
     label: Ajouter une valeur de produit

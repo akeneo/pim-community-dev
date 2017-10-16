@@ -5,16 +5,9 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Model\GroupTypeInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Prophecy\Argument;
@@ -24,20 +17,10 @@ class ProductRepositorySpec extends ObjectBehavior
     function let(
         EntityManager $em,
         ClassMetadata $class,
-        ConfigurationRegistryInterface $registry,
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        GroupRepositoryInterface $groupRepository
+        ConfigurationRegistryInterface $registry
     ) {
         $class->name = 'Pim\Component\Catalog\Model\Product';
         $this->beConstructedWith($em, $class);
-        $this->setReferenceDataRegistry($registry);
-        $this->setProductQueryBuilderFactory($pqbFactory);
-        $this->setGroupRepository($groupRepository);
-    }
-
-    function it_has_group_repository(GroupRepositoryInterface $groupRepository)
-    {
-        $this->setGroupRepository($groupRepository)->shouldReturn($this);
     }
 
     function it_is_a_product_repository()

@@ -15,7 +15,7 @@ class GetProductModelIntegration extends ApiTestCase
             'code' => 'model-biker-jacket-leather',
             'family_variant' => 'clothing_material_size',
             'parent' => 'model-biker-jacket',
-            'categories' => [],
+            'categories' => ['master_men_blazers'],
             'values' => [
                 'color' => [
                     [

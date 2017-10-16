@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Model;
 use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * A variant in a family defines the structure for the products with variants:
@@ -240,5 +241,18 @@ class FamilyVariant implements FamilyVariantInterface
     public function getTranslationFQCN()
     {
         return FamilyVariantTranslation::class;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getAvailableAxesAttributeTypes(): array
+    {
+        return [
+            AttributeTypes::METRIC,
+            AttributeTypes::OPTION_SIMPLE_SELECT,
+            AttributeTypes::BOOLEAN,
+            AttributeTypes::REFERENCE_DATA_SIMPLE_SELECT,
+        ];
     }
 }

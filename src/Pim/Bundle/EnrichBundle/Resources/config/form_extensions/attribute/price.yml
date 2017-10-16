@@ -16,7 +16,7 @@ extensions:
                 dropZone: content
 
     pim-attribute-form-price-validation-params-decimals-allowed:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/form/common/fields/boolean
         parent: pim-attribute-form-price-validation-params
         targetZone: content
         position: 100
@@ -25,7 +25,7 @@ extensions:
             defaultValue: true
 
     pim-attribute-form-price-validation-params-number-min:
-        module: pim/attribute-edit-form/properties/text
+        module: pim/form/common/fields/text
         parent: pim-attribute-form-price-validation-params
         targetZone: content
         position: 110
@@ -33,7 +33,7 @@ extensions:
             fieldName: number_min
 
     pim-attribute-form-price-validation-params-number-max:
-        module: pim/attribute-edit-form/properties/text
+        module: pim/form/common/fields/text
         parent: pim-attribute-form-price-validation-params
         targetZone: content
         position: 120

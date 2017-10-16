@@ -89,7 +89,7 @@ extensions:
                 dropZone: content
 
     pim-attribute-create-form-properties-common-code:
-        module: pim/attribute-edit-form/properties/text
+        module: pim/form/common/fields/text
         parent: pim-attribute-create-form-properties-common
         targetZone: content
         position: 90
@@ -158,7 +158,7 @@ extensions:
             fieldName: available_locales
 
     pim-attribute-create-form-properties-common-usable-as-grid-filter:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/form/common/fields/boolean
         parent: pim-attribute-create-form-properties-common
         targetZone: content
         position: 170

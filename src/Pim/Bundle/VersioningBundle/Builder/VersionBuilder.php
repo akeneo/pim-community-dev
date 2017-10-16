@@ -5,8 +5,6 @@ namespace Pim\Bundle\VersioningBundle\Builder;
 use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Factory\VersionFactory;
-use Pim\Component\Catalog\Model\Product;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -35,10 +33,7 @@ class VersionBuilder
     }
 
     /**
-     * Builds a version for a versionable entity.
-     *
-     * Products and variant products will both have `Pim\Component\Catalog\Model\Product`
-     * as resource name.
+     * Build a version for a versionable entity
      *
      * @param object       $versionable
      * @param string       $author
@@ -49,8 +44,7 @@ class VersionBuilder
      */
     public function buildVersion($versionable, $author, Version $previousVersion = null, $context = null)
     {
-        $resourceName = $this->getResourceName($versionable);
-
+        $resourceName = ClassUtils::getClass($versionable);
         $resourceId = $versionable->getId();
 
         $versionNumber = $previousVersion ? $previousVersion->getVersion() + 1 : 1;
@@ -70,10 +64,7 @@ class VersionBuilder
     }
 
     /**
-     * Creates a pending version for a versionable entity.
-     *
-     * Products and variant products will both have `Pim\Component\Catalog\Model\Product`
-     * as resource name.
+     * Create a pending version for a versionable entity
      *
      * @param object      $versionable
      * @param string      $author
@@ -84,10 +75,8 @@ class VersionBuilder
      */
     public function createPendingVersion($versionable, $author, array $changeset, $context = null)
     {
-        $resourceName = $this->getResourceName($versionable);
-
         $version = $this->versionFactory->create(
-            $resourceName,
+            ClassUtils::getClass($versionable),
             $versionable->getId(),
             $author,
             $context
@@ -186,19 +175,5 @@ class VersionBuilder
                 return $item['old'] != $item['new'];
             }
         );
-    }
-
-    /**
-     * @param object $versionable
-     *
-     * @return string
-     */
-    protected function getResourceName($versionable)
-    {
-        if ($versionable instanceof ProductInterface) {
-            return Product::class;
-        }
-
-        return ClassUtils::getClass($versionable);
     }
 }

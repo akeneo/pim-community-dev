@@ -27,13 +27,9 @@ pim_import_export:
       history.title: Povijest
       job_content.title: Sadržaj
 pim_title.export_profile.index: Upravljanje profilima izvoza
-pim_title.export_profile.edit: Izvoz profila %job.label% | Uredi
-pim_title.export_profile.show: Izvoz profila %job.label% | Prikaži
 pim_title.export_execution.index: Povijest izvođenja izvoza
 pim_title.export_execution.show: Izvoz izvođenja | Detalji
 pim_title.import_profile.index: Upravljanje profilima uvoza
-pim_title.import_profile.edit: Uvoz profila %job.label% | Uredi
-pim_title.import_profile.show: Uvoz profila %job.label% | Prikaži
 pim_title.import_execution.index: Povijest izvođenja uvoza
 pim_title.import_execution.show: Uvoz izvođenja | Detalji
 export profile:

@@ -338,8 +338,6 @@ class BatchCommand extends ContainerAwareCommand
                 )
             );
         }
-
-        $this->getDefaultEntityManager()->clear(ClassUtils::getClass($jobInstance));
     }
 
     /**

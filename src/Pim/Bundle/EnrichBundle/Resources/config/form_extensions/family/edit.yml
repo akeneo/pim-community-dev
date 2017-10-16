@@ -224,6 +224,12 @@ extensions:
         parent: pim-family-edit-form-variant
         targetZone: filters
 
+    pim-family-edit-form-add-family-variant:
+        module: pim/family-edit-form/add-family-variant
+        parent: pim-family-edit-form-variant
+        targetZone: variant-toolbar
+        position: 100
+
     pim-family-edit-form-history:
         module: pim/common/tab/history
         parent: pim-family-edit-form-form-tabs

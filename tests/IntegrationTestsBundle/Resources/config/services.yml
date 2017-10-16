@@ -3,6 +3,7 @@ parameters:
     akeneo_integration_tests.loader.fixtures_loader.class: Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoader
     akeneo_integration_tests.loader.database_schema_handler.class: Akeneo\Test\IntegrationTestsBundle\Loader\DatabaseSchemaHandler
     akeneo_integration_tests.doctrine.connection.connection_closer.class: Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser
+    akeneo_integration_tests.doctrine.job_execution.class: Akeneo\Test\IntegrationTestsBundle\Doctrine\JobExecution
     akeneo_integration_tests.security.system_user_authenticator.class: Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator
 
 services:
@@ -31,6 +32,11 @@ services:
         class: '%akeneo_integration_tests.doctrine.connection.connection_closer.class%'
         arguments:
             - '@doctrine'
+
+    akeneo_integration_tests.doctrine.job_execution:
+        class: '%akeneo_integration_tests.doctrine.job_execution.class%'
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
 
     akeneo_integration_tests.security.system_user_authenticator:
         class: '%akeneo_integration_tests.security.system_user_authenticator.class%'

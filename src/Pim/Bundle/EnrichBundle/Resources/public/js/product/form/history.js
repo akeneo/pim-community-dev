@@ -48,6 +48,15 @@ define(
             /**
              * {@inheritdoc}
              */
+            initialize: function () {
+                this.actions = {};
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
@@ -101,8 +110,10 @@ define(
              * Update the history by fetching it from the backend
              */
             update: function () {
-                if (this.getFormData().meta) {
-                    FetcherRegistry.getFetcher('product-history').clear(this.getFormData().meta.id);
+                const entity = this.getFormData();
+
+                if (entity.meta) {
+                    this.getHistoryFetcher(entity).clear(entity.meta.id);
                 }
 
                 this.render();
@@ -114,10 +125,29 @@ define(
              * @return {Promise}
              */
             getVersions: function () {
-                return FetcherRegistry.getFetcher('product-history').fetch(
-                    this.getFormData().meta.id,
-                    { entityId: this.getFormData().meta.id }
+                const entity = this.getFormData();
+
+                return this.getHistoryFetcher(entity).fetch(
+                    entity.meta.id,
+                    { entityId: entity.meta.id }
                 ).then(this.addAttributesLabelToVersions.bind(this));
+            },
+
+            /**
+             * @param {Object} entity
+             *
+             * @returns Fetcher
+             */
+            getHistoryFetcher: function (entity) {
+                if ('product_model' === entity.meta.model_type) {
+                    return FetcherRegistry.getFetcher('product-model-history');
+                }
+
+                if (null !== entity.meta.family_variant) {
+                    return FetcherRegistry.getFetcher('variant-product-history');
+                }
+
+                return FetcherRegistry.getFetcher('product-history');
             },
 
             /**

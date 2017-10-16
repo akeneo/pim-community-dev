@@ -98,12 +98,14 @@
                         <h2>{{ group }}</h2>
                         {% for attribute in attributes %}
                             {% block attribute %}
+                                {% set locale_attribute = attribute.isLocalizable or attribute.isLocaleSpecific ? locale : null %}
+                                {% set channel_attribute = attribute.isScopable ? scope : null %}
+                                {% set content = product.getValue(attribute.code, locale_attribute, channel_attribute) %}
 
-                                {% if 'pim_catalog_image' == attribute.type and product.getValue(attribute.code, locale, scope).media is not null %}
-                                    {% set content = product.getValue(attribute.code, locale, scope).media.originalFilename %}
+                                {% if 'pim_catalog_image' == attribute.type and content.media is not null %}
+                                    {% set content = content.media.originalFilename %}
                                     {% set manualHeight = false %}
                                 {% else %}
-                                    {% set content = product.getValue(attribute.code, locale, scope) %}
                                     {% if content != null %}
                                         {% set manualHeight = attribute.label|length >(content.__toString()|length / 3) %}
                                     {% else %}

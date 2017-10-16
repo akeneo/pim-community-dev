@@ -313,6 +313,12 @@ pim_enrich:
         title: Opret
       message:
         created: Familien blev oprettet
+      variant:
+        axis.label: Variant akse
+        create: Opret
+        cancel: Annuller
+        code: Kode
+        label: Etiket
     attribute_option:
       code: Kode
       label: Etiket
@@ -1013,37 +1019,29 @@ page_title:
   oro_default: Kontrolpanel
   pim_enrich_attributegroup_index: Attributgrupper
   pim_enrich_attributegroup_create: Attribut grupper | Oprette
-  pim_enrich_attributegroup_edit: Attribut grupper {{ group.label }} | Rediger
   pim_enrich_categorytree_index: Kategoritræstrukturen
   pim_enrich_categorytree_create: Kategori træer | Oprette
-  pim_enrich_categorytree_edit: Kategori træer {{ category.label }} | Rediger
   pim_enrich_categorytree_create_tree: Kategori træer | Oprette
   pim_enrich_attribute_index: Attributter
   pim_enrich_attribute_create: Attributter | Opret
   pim_enrich_attribute_edit: Attributter {{ attribute.label }} | Rediger
   pim_enrich_product_index: Produkter
-  pim_enrich_product_edit: Produkter {{ product.sku }} | Rediger
-  pim_enrich_product_model_edit: Produkt modeller {{ product.sku }} | Rediger
   pim_enrich_family_index: Familier
-  pim_enrich_family_edit: Familier {{ family.label }} | Rediger
   pim_enrich_channel_index: Kanaler
   pim_enrich_channel_create: Kanaler | Opret
   pim_enrich_channel_edit: Kanaler {{ channel.label }} | Rediger
   pim_enrich_currency_index: Valutaer
   pim_enrich_locale_index: Landestandarder
   pim_enrich_group_index: Grupper
-  pim_enrich_group_edit: Grupper {{ group.label }} | Rediger
   pim_enrich_associationtype_index: Sammenhængstyper
-  pim_enrich_associationtype_edit: Foreningen typer {{ association type.label }} | Rediger
   pim_enrich_grouptype_index: Gruppetyper
-  pim_enrich_grouptype_edit: Gruppe typer {{ group type.label }} | Rediger
   pim_enrich_mass_edit_action_choose: Masse Rediger | Vælg
   pim_enrich_mass_edit_action_configure: Masse Rediger | Konfigurere
   pim_enrich_mass_edit_action_perform: Masse Rediger | Udføre
   pim_enrich_job_tracker_index: Process overvågning
   pim_enrich_job_tracker_show: Process overvågning | Vis job
   pim_enrich_api_connection_index: API-forbindelser
-  pim_enrich_api_connection_create: API-forbindelser
+  pim_analytics_system_info_index: Systemoplysninger
 batch_jobs:
   add_product_value:
     label: Tilføj produktværdi
