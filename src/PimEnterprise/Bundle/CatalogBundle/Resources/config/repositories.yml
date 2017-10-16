@@ -1,6 +1,7 @@
 parameters:
     pim_catalog.repository.attribute.class: PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository
     pim_catalog.repository.product_mass_action.class: PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository
+    pimee_catalog.repository.product.class: PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository
 
 services:
     pim_catalog.repository.product_mass_action:
@@ -11,3 +12,13 @@ services:
             - '@pimee_workflow.repository.published_product'
             - '@security.token_storage'
             - '%pimee_security.entity.product_category_access.class%'
+
+    pimee_catalog.repository.product:
+        class: '%pimee_catalog.repository.product.class%'
+        decorates: pim_catalog.repository.product
+        decoration_inner_name: pim_catalog.repository.product_without_permission
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.repository.product_without_permission'
+            - '@pimee_catalog.security.factory.filtered_product'
+            - '%pim_catalog.entity.product.class%'
