@@ -117,7 +117,7 @@ define([
          * @param {Object} attribute
          */
         addContextDropdowns: function (attribute) {
-            var container = $('<span class="AknFieldContainer-contextContainer filter-context">');
+            var container = $('<span class="AknFieldContainer-contextContainer AknButtonList filter-context">');
 
             if (attribute.scopable) {
                 var scopeSwitcher = new ScopeSwitcher();
@@ -210,7 +210,7 @@ define([
 
             $.when.apply($, promises)
                 .then(function () {
-                    var container = $('<span class="filter-context">');
+                    var container = $('<span class="AknButtonList filter-context">');
                     _.each(_.toArray(arguments), function (item) {
                         container.append(item);
                     });
