@@ -13,6 +13,8 @@ parameters:
     pim_catalog.event_subscriber.index_product_models.class: Pim\Bundle\CatalogBundle\EventSubscriber\IndexProductModelsSubscriber
     pim_catalog.event_subscriber.compute_product_model_descendants.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeProductModelDescendantsSubscriber
     pim_catalog.event_subscriber.add_unique_attributes_to_variant_product_attribute_set.class: Pim\Bundle\CatalogBundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber
+    pim_catalog.event_subscriber.scalability.product_creation_threshold.class: Pim\Bundle\CatalogBundle\EventSubscriber\Scalability\ProductCreationThresholdSubscriber
+    pim_catalog.event_subscriber.scalability.attribute_creation_threshold.class: Pim\Bundle\CatalogBundle\EventSubscriber\Scalability\AttributeCreationThresholdSubscriber
 
 services:
     # Subscribers
@@ -111,5 +113,23 @@ services:
         class: '%pim_catalog.event_subscriber.add_unique_attributes_to_variant_product_attribute_set.class%'
         arguments:
             - '@pim_catalog.family_variant.add_unique_attributes'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.scalability.product_creation_threshold.class:
+        class: '%pim_catalog.event_subscriber.scalability.product_creation_threshold.class%'
+        arguments:
+              - '@pim_catalog.repository.product'
+              - '%scalability_thresholds_catalog_product%'
+              - '%scalability_thresholds_enabled%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.scalability.attribute_creation_threshold.class:
+        class: '%pim_catalog.event_subscriber.scalability.attribute_creation_threshold.class%'
+        arguments:
+              - '@pim_catalog.repository.attribute'
+              - '%scalability_thresholds_catalog_attribute%'
+              - '%scalability_thresholds_enabled%'
         tags:
             - { name: kernel.event_subscriber }

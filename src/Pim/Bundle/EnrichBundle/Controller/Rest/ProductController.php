@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Exception\TooManyEntitiesException;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -173,7 +174,23 @@ class ProductController
         $violations = $this->validator->validate($product);
 
         if (0 === $violations->count()) {
-            $this->productSaver->save($product);
+            try {
+                $this->productSaver->save($product);
+            } catch (TooManyEntitiesException $exception) {
+                return new JsonResponse(
+                    [
+                        'values' => [
+                            [
+                                'attribute' => 'sku', // TODO: for the example
+                                'locale' => null,
+                                'scope' => null,
+                                'message' => $exception->getMessage()
+                            ]
+                        ]
+                    ],
+                    400
+                );
+            }
 
             $normalizationContext = $this->userContext->toArray() + [
                 'filter_types'               => ['pim.internal_api.product_value.view'],

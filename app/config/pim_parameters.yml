@@ -54,3 +54,8 @@ parameters:
     # Files used as configuration for the Elasticsearch index
     elasticsearch_index_configuration_files:
         - '%kernel.root_dir%/../src/Pim/Bundle/CatalogBundle/Resources/elasticsearch/index_configuration.yml'
+
+    scalability_thresholds_enabled: true
+    scalability_thresholds_catalog_product: 2000
+    scalability_thresholds_catalog_attribute: 100
+
