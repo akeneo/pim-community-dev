@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6898: Fixes some data can break ES index and crashes new products indexing
+- PIM-6891: Keep the tab context between product and product model forms
 
 ## Better UI\UX!
 

@@ -75,7 +75,7 @@ define(
              */
             configure: function () {
                 this.trigger('tab:register', {
-                    code: this.code,
+                    code: (undefined === this.config.tabCode) ? this.code : this.config.tabCode,
                     isVisible: this.isVisible.bind(this),
                     label: __('pim_enrich.form.product.tab.categories.title')
                 });
