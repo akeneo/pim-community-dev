@@ -337,7 +337,7 @@ stage("Test") {
                                     container: "php",
                                     junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                                     artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                                    script: "php vendor/bin/behat --strict -vv " + scenarioCE
+                                    script: "php ./bin/behat --strict -vv " + scenarioCE
                                 ]
                             ])
                         }
@@ -373,12 +373,12 @@ stage("Test") {
                                     container: "php",
                                     junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                                     artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                                    script: "php ./bin/behat -c behat.ci.yml --strict -vv " + scenarioEE
+                                    script: "php ./bin/behat --strict -vv " + scenarioEE
                                 ]
                             ])
                         }
-             return messagesEE
-         }, 50, "ee")
+                        return messagesEE
+                    }, 50, "ee")
                 } else {
                     echo "Skipping behat test"
                 }
@@ -407,7 +407,7 @@ stage("Test") {
                                     container: "php",
                                     junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                                     artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                                    script: "php ./bin/behat -c behat.ci.yml --strict -vv " + scenarioCE
+                                    script: "php ./bin/behat --strict -vv " + scenarioCE
                                 ]
                             ])
                         }
@@ -440,7 +440,7 @@ stage("Test") {
                                 [
                                     container: "php",
                                     junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
-                                    script: "php ./bin/behat -c behat.ci.yml --strict -vv " + scenarioEE
+                                    script: "php ./bin/behat --strict -vv " + scenarioEE
                                 ]
                             ])
                         }
