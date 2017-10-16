@@ -266,7 +266,7 @@ stage("Test") {
                             messagesICE.add([
                                 [container: "php", script: "composer remove --dev --no-update doctrine/mongodb-odm-bundle;"],
                                 [container: "php", script: "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"],
-                                [container: "php", script: "mkdir -p var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
+                                [container: "php", script: "mkdir -p var/cache var/logs app/archive /tmp/pim/file_storage app/file_storage app/uploads"],
                                 [container: "php", script: "chmod 777 -R var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
                                 [container: "php", script: "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"],
                                 [container: "php", script: "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"],
@@ -294,7 +294,7 @@ stage("Test") {
                         for (file in files) {
                             messagesICE.add([
                                 [container: "php", script: "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"],
-                                [container: "php", script: "mkdir -p var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
+                                [container: "php", script: "mkdir -p var/cache var/logs app/archive /tmp/pim/file_storage app/file_storage app/uploads"],
                                 [container: "php", script: "chmod 777 -R app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads"],
                                 [container: "php", script: "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"],
                                 [container: "php", script: "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"],
@@ -330,7 +330,7 @@ stage("Test") {
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump fr_FR"],
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump de_DE"],
                                 [container: "php", script: "touch app/logs/behat.log"],
-                                [container: "php", script: "mkdir -p var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
+                                [container: "php", script: "mkdir -p var/cache var/logs app/archive /tmp/pim/file_storage app/file_storage app/uploads"],
                                 [container: "php", script: "chmod 777 -R app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads"],
                                 [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "],
                                 [
@@ -366,7 +366,7 @@ stage("Test") {
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump fr_FR"],
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump de_DE"],
                                 [container: "php", script: "touch app/logs/behat.log"],
-                                [container: "php", script: "mkdir -p var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
+                                [container: "php", script: "mkdir -p var/cache var/logs app/archive /tmp/pim/file_storage app/file_storage app/uploads"],
                                 [container: "php", script: "chmod 777 -R app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads"],
                                 [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "],
                                 [
@@ -400,7 +400,7 @@ stage("Test") {
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump fr_FR"],
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump de_DE"],
                                 [container: "php", script: "touch app/logs/behat.log"],
-                                [container: "php", script: "mkdir -p var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
+                                [container: "php", script: "mkdir -p var/cache var/logs app/archive /tmp/pim/file_storage app/file_storage app/uploads"],
                                 [container: "php", script: "chmod 777 -R app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads"],
                                 [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "],
                                 [
@@ -434,7 +434,7 @@ stage("Test") {
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump fr_FR"],
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump de_DE"],
                                 [container: "php", script: "touch app/logs/behat.log"],
-                                [container: "php", script: "mkdir -p var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
+                                [container: "php", script: "mkdir -p var/cache var/logs app/archive /tmp/pim/file_storage app/file_storage app/uploads"],
                                 [container: "php", script: "chmod 777 -R app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads"],
                                 [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "],
                                 [
