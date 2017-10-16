@@ -2,17 +2,17 @@ View the product: Mostra il prodotto
 pimee_enrich.product_history.action.revert: Ritorna a questa versione
 permission-changes:
   category:
-    grant: Il gruppo <strong>{{ group }}</strong> avrà il permesso <strong>{{ permission }}</strong> in questa categoria
-    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non avrà il permesso {{ permission }}</strong> in questa categoria
+    grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> in questa categoria
+    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> in questa categoria
   locale:
-    grant: Il gruppo <strong>{{ group }}</strong> avrà il permesso <strong>{{ permission }}</strong> in questa impostazione locale
-    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non avrà il permesso {{ permission }}</strong> in questa impostazione locale
+    grant: Il gruppo <strong>{{ group }}</strong> verrà <strong>{{ permission }}</strong> in questa impostazione locale
+    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong> in questa impostazione locale
   attribute group:
-    grant: Il gruppo <strong>{{ group }}</strong> avrà il permesso <strong>{{ permission }}</strong> per questo gruppo di attributi
-    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non avrà il permesso {{ permission }}</strong> per questo gruppo di attributi
+    grant: Il gruppo <strong>{{ group }}</strong> sarà <strong>{{ permission }}</strong> per questo gruppo di attributi
+    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non avrà il permesso di {{ permission }}</strong> per questo gruppo di attributi
   job profile:
     grant: Il gruppo <strong>{{ group }}</strong> avrà il permesso <strong>{{ permission }}</strong>
-    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non avrà il permesso {{ permission }}</strong>
+    revoke: Il gruppo <strong>{{ group }}</strong> <strong>non verrà {{ permission }}</strong>
 pim_enrich:
   entity:
     attribute_label:
@@ -63,7 +63,7 @@ pimee_enrich:
       btn:
         publish: Pubblica
         publish_this_version: Pubblica questa versione
-        unpublish: Ritira
+        unpublish: Annulla la pubblicazione
         save_draft: Salva bozza
       flash:
         product_unpublished: Prodotto ritirato con successo
@@ -145,7 +145,7 @@ pimee_enrich:
       title: Ridimensiona
       options:
         width: '%value%px di larghezza'
-        height: '% value%px di altezza'
+        height: '%value%px di altezza'
     resolution:
       title: Risoluzione
       options:

@@ -4,7 +4,7 @@ pimee_catalog_rule:
   selected: 'udvalgte regler'
   popin:
     execute_rules:
-      confirm_title: Udfør bekræftelse
+      confirm_title: Bekræft kørsel
       confirm_content: Er du sikker på du vil udføre alle regler? (dette kan tage lang tid)
   notification:
     fail: Handlingen kunne ikke udføres
@@ -30,7 +30,7 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         execute:
-          confirm_title: Udfør bekræftelse
+          confirm_title: Bekræft kørsel
           confirm_content: Er du sikker på, du vil køre reglen?
           confirm_ok: OK
       mass_edit_action:
@@ -40,7 +40,7 @@ pimee_catalog_rule:
       mass_action:
         execute:
           confirm_ok: OK
-          confirm_title: Bekræft udførsel
+          confirm_title: Bekræft kørsel
           confirm_content: Er du sikker på du vil udføre de valgte regler?
           success: Massehandling til at udføre de valgte regler er blevet igangsat. Du vil blive underrettet, når det er gennemført
           error: Der opstod en fejl under udførelse af reglerne.

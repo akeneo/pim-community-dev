@@ -27,7 +27,7 @@ teamwork_assistant:
     project_completeness: Projektets fremdrift
     contributor_todo: Todo
     contributor_in_progress: Igangværende
-    contributor_done: Udført
+    contributor_done: Gjort
     owner_todo: Todo (projektoversigt)
     owner_in_progress: Igangværende (projektoversigt)
     owner_done: Gennemført (Projekt oversigt)

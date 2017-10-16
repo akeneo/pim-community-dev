@@ -116,7 +116,7 @@ confirmation:
   product:
     publish: Er du sikker på at du vil publicere dette produkt ?
     unpublish: Er du sikker på du vil afpublicere dette produkt ?
-Attributes.title: Egenskaber
+Attributes.title: Attributter
 Completeness.title: Fuldstændighed
 publish_product.steps.publish_product_tasklet.title: Publicer produkter
 unpublish_product.steps.unpublish_product_tasklet.title: Afpublicer af produkter

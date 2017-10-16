@@ -1,13 +1,13 @@
 pimee_product_asset:
   acl:
     asset:
-      index: Berig aktiv
+      index: Berig asset
       create: Opret et aktiv
       remove: Fjern et aktiv
       categories_view: Konsultere kategorierne af et aktiv
       mass_upload: Mass-upload aktiver
     category_asset_picker:
-      list: List emne kategorier i emne vælgeren
+      list: List aktiver kategorier i vælgeren til aktiver
     category:
       create: Opret en aktiver-kategori
       edit: Redigere en aktiver-kategori
@@ -22,7 +22,7 @@ pimee_product_asset:
     button:
       upload: Upload
       delete: Slet
-      download: Hent
+      download: ' Download'
       generate_from_reference: Generere via reference
       reset_variations: Nulstil variationerne
     confirmation.remove: Er du sikker at du ønsker at fjerne aktivet "%asset%"?
@@ -42,8 +42,8 @@ pimee_product_asset:
       filesize: Filstørrelse
       filetype: Filtype
       actions: Aktioner
-      download: Hent
-      tag: Etiketter
+      download: ' Download'
+      tag: Tags
       no_reference: Ingen reference fil er blevet uploadet endnu.
       no_variation: Ingen variation fil er blevet genereret endnu.
     flash:
@@ -88,7 +88,7 @@ pimee_product_asset:
   code:
     label: Kode
   thumbnail:
-    label: Miniature
+    label: Thumbnail
   status:
     label: Status
   description:
@@ -113,13 +113,13 @@ pimee_product_asset:
   notAvailable:
     label: ikke tilgængelig
   asset:
-    title: Aktiv
+    title: Aktiver
   mass_upload:
     menu: Indlæs aktiver
     new: Der oprettes et nyt aktiv
     add_files: tilføj filer
-    start: Begynd indlæsning
-    cancel: Annuller indlæsning
+    start: Begynd upload
+    cancel: Annuller upload
     import: Import
     executed: Masse indlæsning udført
     error:
@@ -130,10 +130,10 @@ pimee_product_asset:
   category:
     menu: Aktiver kategorier
     permissions:
-      view.label: Lov til at se aktiver
-      view.help: Gør det muligt for at se aktiverne i denne kategori
-      edit.label: Tilladelse til at redigere aktiver
-      edit.help: Gør det muligt at redigere produkter i denne kategori (forventer tilladelsen visning)
+      view.label: Rettighed til at se aktiver
+      view.help: Rettighed at se aktiverne i denne kategori
+      edit.label: Rettighed til at redigere aktiver
+      edit.help: Rettighed at redigere produkter i denne kategori (forventer visning tilladelse)
       no_access_to_products: Du har ikke adgang til produkter i nogen af de tilgængelige samlinger. Kontakt venligst administratoren
       apply_on_children.label: Anvend ændringer på underliggende kategorier
       apply_on_children.help: Kopier tilladelses ændringer på alle underliggende elementer, eksisterende tilladelser bibeholdes
@@ -154,17 +154,17 @@ pim_enrich:
       success_flash: Aktiver(ne) er blevet flyttet til udvalgte kategorier
       launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
     add-tags-to-assets:
-      label: Tilføje tags til aktiver
-      description: Tags vil blive tilføjet til aktiverne. Hvis nogle tags ikke findes, vil de blive oprettet.
-      success_flash: Tag (s) er blevet tilføjet til aktiver(ne)
-      launched_flash: Massehandling "Tilføj tags til aktiver" er blevet igangsat. Du får besked, når det er afsluttet.
-      message.error: Det angivne tag findes ikke
+      label: Tilføj etiketter til aktiver
+      description: Etiketter vil blive tilføjet til aktiverne. Hvis nogle tags ikke findes, vil de blive oprettet.
+      success_flash: Etiket(ter) er blevet tilføjet til aktiver(ne)
+      launched_flash: Massehandling "Tilføj etiketter til aktiver" er blevet igangsat. Du får besked, når det er afsluttet.
+      message.error: Den angivne etiket findes ikke
 pim:
   grid:
     mass_action:
       mass_classify_assets: Klassificere
-      add_tags_to_assets: Tilføj Tags
-      delete_assets: Slet fil
+      add_tags_to_assets: Tilføj etiketter
+      delete_assets: Slet aktiver
 btn.create.asset: Opret et aktiv
 btn.drag_or_upload: Træk og slip en fil eller klik her
 job_execution.summary:
@@ -186,8 +186,8 @@ batch_jobs:
     validation.label: Filvalidering
     import_asset.label: Aktiv kanal konfiguration import i Yaml
   yml_asset_channel_configuration_export:
-    label: Aktiv kanal konfiguration import i Yaml
-    export.label: Aktiv kanal konfiguration import i Yaml
+    label: Aktiver kanal konfiguration import i Yaml
+    export.label: Aktiver kanal konfiguration import i Yaml
   csv_asset_import:
     label: Aktiv import i CSV-
     validation.label: Filvalidering
@@ -215,13 +215,13 @@ batch_jobs:
     label: Aktiver kategori import i CSV-
     export.label: Aktiver kategori import i CSV-
   xlsx_tag_import:
-    label: Tag import i XLSX
+    label: Etiket import i XLSX
     validation.label: Filvalidering
-    import.label: Tag import i XLSX
+    import.label: Etiket import i XLSX
   xlsx_asset_import:
     label: Aktiver import i XLSX
     validation.label: Filvalidering
-    import_tags.label: Tag import i XLSX
+    import_tags.label: Etiket import i XLSX
     import_asset.label: Aktiver import i XLSX
   xlsx_asset_category_import:
     label: Aktiver kategori import i XLSX
@@ -239,7 +239,7 @@ batch_jobs:
   classify_assets:
     perform.label: Flytte aktiver til kategorier
   add_tags_to_assets:
-    perform.label: Tilføje tags til aktiver
+    perform.label: Tilføj etiketter til aktiver
 pim_analytics:
   info_type:
     nb_assets: Antallet af aktiver
