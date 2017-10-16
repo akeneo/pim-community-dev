@@ -82,7 +82,7 @@ error:
     role: Non è possibile eliminare questo ruolo
     attribute_option: Errore durante la cancellazione dell'opzione attributo
   saving:
-    attribute_option: Non è possibile salvare l'opzione dell'attributo
+    attribute_option: Impossibile salvare l'opzione dell'attributo
     export_profile: Non è possibile salvare il profilo di esportazione. Si prega di verificare che tutti i filtri siano correttamente valorizzati
 alert:
   attribute_option:
@@ -125,10 +125,10 @@ pim_enrich:
   item:
     list:
       delete.label: Eliminare
-      delete.error: Errore durante l'eliminazione dell'articolo
+      delete.error: Errore durante l'eliminazione della voce
     delete:
-      confirm.content: Sei sicuro di che voler eliminare questo {{ itemName }}? Non è possibile annullare questa azione
-      confirm.title: Elimina questo {{ itemName }}
+      confirm.content: Sei sicuro di che voler eliminare la voce {{ itemName }}? Non è possibile annullare questa azione
+      confirm.title: Elimina la voce {{ itemName }}
   navigation:
     link:
       back_to_grid: Torna alla griglia
@@ -138,7 +138,7 @@ pim_enrich:
       label: Salva
     info:
       update_failed: Aggiornamento non riuscito
-      update_successful: Aggiornamento completato
+      update_successful: Aggiornato correttamente
     create_popin:
       code: Codice
       label: Etichetta
@@ -197,7 +197,7 @@ pim_enrich:
             title: Gruppo {{ group }}
             view_group: Visualizzazione gruppo
             group_label: Etichetta
-            more_products: '{{ count }} prodotti in più...'
+            more_products: '{{ count }} altri prodotti...'
             close: Chiudi
         status: Stato
         scope: Canale
@@ -215,7 +215,7 @@ pim_enrich:
       localizable:
         channel_locale_unavailable: Questo campo localizzabile non è disponibile per l'impostazione internazionale '{{ locale }}' e per il canale '{{ channel }}'
       media:
-        upload: Rilascia i file qui dentro per caricarli oppure clicca qui
+        upload: Trascina e rilascia qui un file per caricarlo o fai click qui
       create_popin:
         title: Crea
         labels:
@@ -640,7 +640,7 @@ pim_enrich:
             help: Esportare o meno i file e le immagini del prodotto
           lines_per_file:
             title: Numero di linee per file
-            help: Definire il numero limite di righe per file
+            help: Definisci il numero limite di righe per file
           upload_allowed:
             title: Consentire il caricamento di file
             help: Consentire o no il caricamento diretto di file
@@ -795,7 +795,7 @@ pim_enrich:
             ALL: Nessuna condizione sulla completezza
             ">=": Completo in almeno una delle impostazioni internazionali selezionate
             "GREATER OR EQUALS THAN ON ALL LOCALES": Completo in tutte le impostazioni internazionali selezionate
-            LOWER THAN ON ALL LOCALES: Non completo in tutte le impostazione internazionali selezionate
+            LOWER THAN ON ALL LOCALES: Non completo in tutte le impostazioni internazionali selezionate
           empty_selection: Seleziona una famiglia
         category:
           title: Categoria
@@ -994,6 +994,8 @@ page_title:
   pim_enrich_attribute_index: Attributi
   pim_enrich_attribute_create: Attributi | Crea
   pim_enrich_product_index: Articoli
+  pim_enrich_product_edit: Prodotti {{ product.sku }} | Modifica
+  pim_enrich_product_model_edit: Modelli di prodotto {{ product.sku }} | Modifica
   pim_enrich_family_index: Famiglie
   pim_enrich_channel_index: Canali
   pim_enrich_channel_create: Canali | Crea
@@ -1009,6 +1011,7 @@ page_title:
   pim_enrich_job_tracker_show: Tracker di processo | Visualizza lavoro
   pim_enrich_api_connection_index: Connessioni API
   pim_analytics_system_info_index: Informazioni di sistema
+  pim_enrich_api_connection_create: Connessioni API
 batch_jobs:
   add_product_value:
     label: Aggiungi un valore di prodotto

@@ -74,7 +74,7 @@ batch_jobs:
     label: Produktfamilienvarianten-Export als CSV-Datei
     export.label: Produktfamilienvarianten-Export
   csv_product_import:
-    label: Produkt-Import aus CSV-Datei
+    label: Produkt-Export als CSV-Datei
     validation.label: Dateivalidierung
     import.label: Produkt import
     import_associations.label: Produktverbindungen-Import

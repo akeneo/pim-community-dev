@@ -178,7 +178,7 @@ pim_enrich:
         update_successful: Le produit a bien été mis à jour.
         update_failed: Le produit n'a pas pu être mis à jour.
         field_not_ready: 'Le produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
-        already_in_upload: Un fichier est déjà en téléchargement pour cet attribut dans la locale "{{ locale }}" et le canal "{{ scope }}"
+        already_in_upload: Un fichier est déjà en téléchargement pour cet attribut pour la locale "{{ locale }}" et le canal "{{ scope }}"
       error:
         upload: Une erreur s'est produite lors du transfert du fichier.
       meta:

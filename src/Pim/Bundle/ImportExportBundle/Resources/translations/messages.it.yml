@@ -138,6 +138,7 @@ Warnings: Avvisi
 Summary: Riepilogo
 Start: Inizio
 End: Fine
+set_attribute_requirements: Imposta i requisiti degli attributi
 COMPLETED: Completato
 STARTING: In avvio
 STARTED: Avviato

@@ -976,10 +976,13 @@ page_title:
   pim_enrich_attributegroup_create: Attributgruppen | Anlegen
   pim_enrich_categorytree_index: Kategorie-Strukturbäume
   pim_enrich_categorytree_create: Kategorie-Strukturbäume | Anlegen
+  pim_enrich_categorytree_edit: Kategorie-Strukturbäume {{ category.label }} | Bearbeiten
   pim_enrich_categorytree_create_tree: Kategorie-Strukturbäume | Anlegen
   pim_enrich_attribute_index: Attribute
   pim_enrich_attribute_create: Attribute | Anlegen
   pim_enrich_product_index: Produkte
+  pim_enrich_product_edit: Produkte {{ product.sku }} | Bearbeiten
+  pim_enrich_product_model_edit: Produktmodell {{ product.sku }} | Bearbeiten
   pim_enrich_family_index: Produktfamilien
   pim_enrich_channel_index: Ausgabekanäle
   pim_enrich_channel_create: Ausgabekanäle | Anlegen
@@ -995,6 +998,7 @@ page_title:
   pim_enrich_job_tracker_show: Prozess-Tracker | Job anzeigen
   pim_enrich_api_connection_index: API-Verbindungen
   pim_analytics_system_info_index: Systeminformationen
+  pim_enrich_api_connection_create: API-Verbindungen
 batch_jobs:
   add_product_value:
     label: Produktwert hinzufügen
