@@ -97,7 +97,7 @@ spec:
               exec:
                 command: ["/usr/sbin/apache2ctl", "stop"]
           resources:
-            requests: {cpu: "300m", memory: "300Mi"}
+            requests: {cpu: "300m", memory: "2200Mi"}
         - name: selenium
           image: selenium/standalone-firefox:2.53.1-beryllium
           command: ["/bin/bash", "-c"]
