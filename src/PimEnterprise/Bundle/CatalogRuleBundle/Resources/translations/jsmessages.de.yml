@@ -63,6 +63,6 @@ confirmation:
 flash:
   rule:
     removed: Regel erfolgreich entfernt
-    impacted_product_count: Die Berechnung der von dieser Regel betroffenen Produkte wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
+    impacted_product_count: Die Berechnung, der von dieser Regel betroffenen Produkte wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
     executed: Die Anwendung der Regel wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Regeleinstellungen

@@ -145,7 +145,7 @@ batch_jobs:
     perform.label: Aggiungi un valore di prodotto
     execute_rules.label: Esecuzione regole
   update_product_value_with_permission_and_rules:
-    label: Aggiorna il valore del prodotto con controllo dei permessi & dell'applicazione delle regole
+    label: Aggiorna il valore del prodotto con controllo dei permessi & con l'applicazione delle regole
     perform.label: Aggiorna il valore di prodotto
     execute_rules.label: Esecuzione regole
   remove_product_value_with_permission_and_rules:

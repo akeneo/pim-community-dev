@@ -165,7 +165,6 @@ pimee_enrich:
         height: 'Alto px %value%'
   mass_edit:
     next: Siguiente
-    previous: Atrás
     cancel: Cancelar
     confirm: Confirmar
     product:

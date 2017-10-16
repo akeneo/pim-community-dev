@@ -78,7 +78,7 @@ pimee_catalog_rule:
     rules_execution.title: Regler udførelse
   notification:
     rule:
-      executed: Udførelse af de færdige regler
+      executed: Udførelse af regler afsluttet
     mass_edit_rule:
       success: Beregningen af de berørte produkter for de færdige bestemmelser
       error: Der opstod en fejl under beregningen af de berørte produkter for reglerne, der
