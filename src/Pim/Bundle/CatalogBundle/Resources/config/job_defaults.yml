@@ -6,3 +6,11 @@ services:
                 - '%pim_catalog.compute_product_models_descendants.job_name%'
         tags:
             - { name: akeneo_batch.job.job_parameters.default_values_provider }
+
+    pim_catalog.job.job_parameters.default_values_provider.compute_completeness_of_products_family:
+        class: '%akeneo_batch.job.job_parameters.empty_values_provider.class%'
+        arguments:
+            -
+                - '%pim_catalog.compute_completeness_of_products_family.job_name%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.default_values_provider }
