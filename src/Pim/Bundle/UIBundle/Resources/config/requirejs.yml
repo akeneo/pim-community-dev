@@ -60,7 +60,6 @@ config:
         oro/messenger:                 pimui/js/messenger
         oro/modal:                     pimui/js/modal
         oro/delete-confirmation:       pimui/js/delete-confirmation
-        oro/revoke-confirmation:       pimui/js/revoke-confirmation
         oro/tools:                     pimui/js/tools
 
         oro/form/state:                pimui/js/form/state.js

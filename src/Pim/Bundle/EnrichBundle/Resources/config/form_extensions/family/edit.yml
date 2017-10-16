@@ -50,6 +50,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.family
+                subTitle: pim_menu.item.family
                 content: pim_enrich.confirmation.delete_item
                 success: flash.family.removed
                 fail: error.removing.family

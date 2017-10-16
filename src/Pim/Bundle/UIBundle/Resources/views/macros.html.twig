@@ -95,6 +95,9 @@
         {% if (parameters.title is defined) %}
             title="{{ parameters.title|trans }}"
         {% endif %}
+        {% if (parameters.subTitle is defined) %}
+            data-subtitle="{{ parameters.subTitle }}"
+        {% endif %}
         >{{ parameters.label|trans -}}
     </a>
 {% endmacro %}

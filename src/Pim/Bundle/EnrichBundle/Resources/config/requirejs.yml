@@ -1075,6 +1075,7 @@ config:
         pim/template/i18n/flag:                              pimenrich/templates/i18n/flag.html
         pim/template/error/error:                            pimenrich/templates/error/error.html
         pim/template/grid/mass-actions:                      pimenrich/templates/grid/mass-actions.html
+        pim/template/grid/mass-actions-confirm:              pimenrich/templates/grid/mass-actions-confirm.html
 
         pim/template/mass-edit/form:                           pimenrich/templates/mass-edit/form.html
         pim/template/mass-edit/choose:                         pimenrich/templates/mass-edit/choose.html

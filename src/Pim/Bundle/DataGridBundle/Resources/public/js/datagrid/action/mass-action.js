@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/datagrid/abstract-action'],
-function(_, messenger, __, Modal, AbstractAction) {
+define(['underscore', 'oro/messenger', 'oro/translator', 'pim/dialog', 'oro/datagrid/abstract-action'],
+function(_, messenger, __, Dialog, AbstractAction) {
     'use strict';
 
     /**
@@ -160,11 +160,15 @@ function(_, messenger, __, Modal, AbstractAction) {
          * @return {oro.Modal}
          */
         getConfirmDialog: function(callback) {
-            return new Modal({
-                title: this.messages.confirm_title,
-                content: this.messages.confirm_content,
-                okText: this.messages.confirm_ok
-            }).on('ok', callback);
+            return Dialog.confirm(
+              this.messages.confirm_content,
+              this.messages.confirm_title,
+              callback,
+              this.getEntityHint(true),
+              `${this.className} ok`,
+              this.messages.confirm_ok,
+              this.type
+            );
         }
     });
 });
