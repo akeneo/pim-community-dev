@@ -26,6 +26,7 @@
 - PIM-6872: Fix PQB sorters with Elasticsearch
 - PIM-6859: Fix missing attribute values in PDF
 - PIM-6894: Allow any special characters in password field
+- PIM-6821: Options "Edit attributes" and "classify the product" not working on the Product grid
 
 ## Better UI\UX!
 
@@ -56,14 +57,14 @@
 ## BC breaks
 
 - Throw exception when trying to create or update a product with the `variant_group` field through the API, now you have to use `parent` field [please see the link below](http://api.akeneo.com/documentation/products-with-variants.html)
-- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template 
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
 - Change the constructor of `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithFamilyVariantRepository` to add `Pim\Component\Catalog\Repository\VariantProductRepositoryInterface`
 - Change the constructor of `Pim\Component\Catalog\ProductModel\Filter` to add `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
-- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\AttributeFilterInterface` 
-- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductAttributeFilter` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\ProductAttributeFilter` 
-- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductModelAttributeFilter` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\ProductModelAttributeFilter` 
+- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\AttributeFilterInterface`
+- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductAttributeFilter` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\ProductAttributeFilter`
+- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductModelAttributeFilter` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\ProductModelAttributeFilter`
 - Rename `Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxes` into `Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis`
 - Rename service `pim_catalog.validator.constraint.sibling_unique_variant_axes` into `pim_catalog.validator.constraint.unique_variant_axes`
 - Rename class parameter `pim_catalog.validator.constraint.sibling_unique_variant_axes.class` into `pim_catalog.validator.constraint.unique_variant_axes.class`
