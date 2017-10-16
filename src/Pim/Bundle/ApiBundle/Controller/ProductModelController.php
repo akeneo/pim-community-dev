@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\ApiBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -23,11 +24,13 @@ use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\Sorter\Directions;
+use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -86,6 +89,9 @@ class ProductModelController
     /** @var AttributeFilterInterface */
     protected $productModelAttributeFilter;
 
+    /** @var ProductModelRepositoryInterface */
+    protected $productModelRepository;
+
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ProductQueryBuilderFactoryInterface $pqbFromSizeFactory
@@ -101,6 +107,7 @@ class ProductModelController
      * @param UrlGeneratorInterface               $router
      * @param ValidatorInterface                  $productValidator
      * @param AttributeFilterInterface            $productModelAttributeFilter
+     * @param ProductModelRepositoryInterface     $productModelRepository
      * @param array                               $apiConfiguration
      */
     public function __construct(
@@ -118,6 +125,7 @@ class ProductModelController
         UrlGeneratorInterface $router,
         ValidatorInterface $productValidator,
         AttributeFilterInterface $productModelAttributeFilter,
+        ProductModelRepositoryInterface $productModelRepository,
         array $apiConfiguration
     ) {
         $this->pqbFactory                  = $pqbFactory;
@@ -135,6 +143,7 @@ class ProductModelController
         $this->router                      = $router;
         $this->productValidator            = $productValidator;
         $this->productModelAttributeFilter = $productModelAttributeFilter;
+        $this->productModelRepository = $productModelRepository;
     }
 
     /**
@@ -177,10 +186,42 @@ class ProductModelController
         }
 
         $this->updateProductModel($productModel, $data, 'post_product_model');
-        $this->validateProduct($productModel);
+        $this->validateProductModel($productModel);
         $this->saver->save($productModel);
 
         $response = $this->getResponse($productModel, Response::HTTP_CREATED);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $code
+     *
+     * @throws HttpException
+     *
+     * @return Response
+     */
+    public function partialUpdateAction(Request $request, $code): Response
+    {
+        $data = $this->getDecodedContent($request->getContent());
+
+        $productModel = $this->productModelRepository->findOneByIdentifier($code);
+        $isCreation = null === $productModel;
+
+        if ($isCreation) {
+            $this->validateCodeConsistency($code, $data);
+            $productModel = $this->factory->create();
+        }
+
+        $data['identifier'] = array_key_exists('identifier', $data) ? $data['identifier'] : $code;
+
+        $this->updateProductModel($productModel, $data, 'patch_product_models__code_');
+        $this->validateProductModel($productModel);
+        $this->saver->save($productModel);
+
+        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $response = $this->getResponse($productModel, $status);
 
         return $response;
     }
@@ -286,6 +327,30 @@ class ProductModelController
     }
 
     /**
+     * Throw an exception if the code provided in the url and the identifier provided in the request body
+     * are not equals when creating a product with a PATCH method.
+     *
+     * The identifier in the request body is optional when we create a resource with PATCH.
+     *
+     * @param string $code code provided in the url
+     * @param array  $data body of the request already decoded
+     *
+     * @throws UnprocessableEntityHttpException
+     */
+    protected function validateCodeConsistency(string $code, array $data): void
+    {
+        if (array_key_exists('code', $data) && $code !== $data['code']) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'The code "%s" provided in the request body must match the code "%s" provided in the url.',
+                    $data['code'],
+                    $code
+                )
+            );
+        }
+    }
+
+    /**
      * Get a response with a location header to the created or updated resource.
      *
      * @param ProductModelInterface $productModel
@@ -334,11 +399,11 @@ class ProductModelController
      * Validate a product. It throws an error 422 with every violated constraints if
      * the validation failed.
      *
-     * @param ProductModelInterface $productproductModel
+     * @param ProductModelInterface $productModel
      *
      * @throws ViolationHttpException
      */
-    protected function validateProduct(ProductModelInterface $productModel): void
+    protected function validateProductModel(ProductModelInterface $productModel): void
     {
         $violations = $this->productValidator->validate($productModel, null, ['Default', 'api']);
         if (0 !== $violations->count()) {

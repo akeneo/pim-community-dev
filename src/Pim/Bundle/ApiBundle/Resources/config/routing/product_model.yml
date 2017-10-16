@@ -12,3 +12,8 @@ pim_api_product_model_create:
     path: /product-models
     defaults: { _controller: pim_api.controller.product_model:createAction, _format: json }
     methods: [POST]
+
+pim_api_product_model_partial_update:
+    path: /product-models/{code}
+    defaults: { _controller: pim_api.controller.product_model:partialUpdateAction, _format: json }
+    methods: [PATCH]
