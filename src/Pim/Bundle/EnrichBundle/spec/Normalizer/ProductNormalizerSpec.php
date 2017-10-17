@@ -223,7 +223,9 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'attributes_for_this_level' => [],
                     'attributes_axes'           => [],
                     'parent_attributes'         => [],
+                    'parent_id'                 => null,
                     'family_variant'            => null,
+                    'level'                     => null,
                 ]
             ]
         );
@@ -348,10 +350,13 @@ class ProductNormalizerSpec extends ObjectBehavior
         ]);
 
         $mug->getParent()->willReturn($productModel);
+        $productModel->getId()->willReturn(42);
         $attributesProvider->getAttributes($mug)->willReturn([$size]);
         $attributesProvider->getAxes($mug)->willReturn([$size]);
         $attributesProvider->getAxes($productModel)->willReturn([]);
         $attributesProvider->getAttributes($productModel)->willReturn([$color, $description]);
+
+        $mug->getVariationLevel()->willReturn(1);
 
         $color->getCode()->willReturn('color');
         $size->getCode()->willReturn('size');
@@ -389,7 +394,9 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'attributes_for_this_level' => ['size'],
                     'attributes_axes'           => ['size'],
                     'parent_attributes'         => ['color', 'description'],
-                    'family_variant'            => ['NORMALIZED FAMILY']
+                    'parent_id'                 => 42,
+                    'family_variant'            => ['NORMALIZED FAMILY'],
+                    'level'                     => 1,
                 ]
             ]
         );

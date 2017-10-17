@@ -7,7 +7,8 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
+define(
+    [
         'jquery',
         'underscore',
         'oro/translator',
@@ -18,9 +19,12 @@ define([
         'pim/initselect2',
         'pim/fetcher-registry',
         'pim/media-url-generator',
+        'oro/messenger',
+        'pim/form-modal',
         'pim/template/product/form/variant-navigation/navigation',
         'pim/template/product/form/variant-navigation/product-item',
-        'pim/template/product/form/variant-navigation/product-model-item'
+        'pim/template/product/form/variant-navigation/product-model-item',
+        'pim/template/product/form/variant-navigation/add-child-button'
     ],
     function (
         $,
@@ -33,14 +37,18 @@ define([
         initSelect2,
         FetcherRegistry,
         MediaUrlGenerator,
+        messenger,
+        FormModal,
         template,
         templateProduct,
-        templateProductModel
+        templateProductModel,
+        templateAddChild
     ) {
         return BaseForm.extend({
             template: _.template(template),
             templateProduct: _.template(templateProduct),
             templateProductModel: _.template(templateProductModel),
+            templateAddChild: _.template(templateAddChild),
             dropdowns: {},
             queryTimer: null,
             events: {
@@ -119,17 +127,103 @@ define([
                             this.queryChildrenEntities(
                                 options,
                                 entity.meta.variant_navigation[index].selected.id
-                            )
+                            );
                         }
                     };
 
-                    const dropdown = initSelect2.init($select, options);
-                    dropdown.on('select2-selecting', (event) => {
-                        this.redirectToEntity(event.object)
+                    const dropDown = initSelect2.init($select, options);
+
+                    dropDown.on('select2-selecting', (event) => {
+                        this.redirectToEntity(event.object);
+                    }).on('select2-open', () => {
+                        const footer = this.templateAddChild({
+                            label: __('pim_enrich.entity.product_model.add_child.create')
+                        });
+                        const targetLevel = dropDown[0].dataset.level;
+
+                        $('#select2-drop .select2-drop-footer').remove();
+                        $('#select2-drop')
+                            .append(footer)
+                            .find('.select2-drop-footer').on('click', '.add-child', () => {
+                                dropDown.select2('close');
+
+                                this.getEntityParentCode(targetLevel).then((parentCode) => {
+                                    this.openModal(parentCode);
+                                });
+                            })
+                        ;
                     });
 
-                    this.dropdowns[index] = dropdown;
+                    this.dropdowns[index] = dropDown;
                 });
+            },
+
+            /**
+             * Get the parent code for the new product model child.
+             *
+             * @param {Number} targetLevel
+             *
+             * @return {Promise}
+             */
+            getEntityParentCode: function (targetLevel) {
+                const entity = this.getFormData();
+                const entityLevel = entity.meta.level;
+
+                if (targetLevel < entityLevel) {
+                    return FetcherRegistry
+                        .getFetcher('product-model')
+                        .fetch(entity.meta.parent_id)
+                        .then((parent) => {
+                            return parent.parent;
+                        })
+                    ;
+                }
+
+                if (targetLevel > entityLevel) {
+                    return $.Deferred().resolve(entity.code).promise();
+                }
+
+                return $.Deferred().resolve(entity.parent).promise();
+            },
+
+            /**
+             * Opens the modal containing the form to create a new family variant.
+             *
+             * @param {String} parent
+             */
+            openModal: function (parent) {
+                const modalParameters = {
+                    className: 'modal modal--fullPage add-product-model-child',
+                    content: '',
+                    cancelText: __('pim_enrich.entity.product_model.add_child.cancel'),
+                    okText: __('pim_enrich.entity.product_model.add_child.confirm'),
+                    okCloses: false
+                };
+
+                const formModal = new FormModal(
+                    'pim-product-model-add-child-form',
+                    this.submitForm.bind(this),
+                    modalParameters,
+                    {parent: parent}
+                );
+
+                formModal.open();
+            },
+
+            /**
+             * Action made when user submit the modal.
+             *
+             * @param {Object} formModal
+             */
+            submitForm: function (formModal) {
+                return formModal.saveProductModelChild().done(
+                    () => {
+                        messenger.notify(
+                            'success',
+                            __('pim_enrich.form.product_model.flash.child_added')
+                        );
+                    }
+                );
             },
 
             /**

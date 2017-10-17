@@ -1,0 +1,3 @@
+extensions:
+    pim-product-model-add-child-form:
+        module: pim/product-model-edit-form/add-child-form

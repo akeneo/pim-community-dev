@@ -709,6 +709,7 @@ config:
         pim/product-model-edit-form/complete-variant-product: pimenrich/js/product-model/form/complete-variant-product
         pim/product-model-edit-form/history: pimenrich/js/product/form/history
         pim/product-model/form/creation/variant: pimenrich/js/product-model/form/creation/variant
+        pim/product-model-edit-form/add-child-form: pimenrich/js/product-model/form/add-child
 
         oro/datagrid/navigate-product-and-product-model-action: pimenrich/js/datagrid/action/navigate-product-and-product-model-action
         oro/datagrid/edit-in-modal-action:                      pimenrich/js/datagrid/action/edit-in-modal-action
@@ -1072,6 +1073,7 @@ config:
         pim/template/product/form/variant-navigation/navigation: pimenrich/templates/product/form/variant-navigation/navigation.html
         pim/template/product/form/variant-navigation/product-item: pimenrich/templates/product/form/variant-navigation/product-item.html
         pim/template/product/form/variant-navigation/product-model-item: pimenrich/templates/product/form/variant-navigation/product-model-item.html
+        pim/template/product/form/variant-navigation/add-child-button: pimenrich/templates/product/form/variant-navigation/add-child-button.html
         pim/template/attribute-option/form:                  pimenrich/templates/attribute-option/form.html
         pim/template/attribute-option/validation-error:      pimenrich/templates/attribute-option/validation-error.html
         pim/template/attribute-option/index:                 pimenrich/templates/attribute-option/index.html
@@ -1172,6 +1174,7 @@ config:
         # Product model
         pim/template/product-model/complete-variant-product: pimenrich/templates/product_model/complete-variant-product.html
         pim/template/product-model/history:                  pimenrich/templates/product/history.html
+        pim/template/product-model-edit-form/add-child-form: pimenrich/templates/product_model/add-child-form.html
 
         # Order last
         pim/form: pimenrich/js/product/form

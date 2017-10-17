@@ -260,6 +260,10 @@ pim_enrich:
             read_only_parent_attribute_from_common: This attribute can be updated on the common attributes.
             read_only_parent_attribute_from_model: "This attribute can be updated on the attributes by {{ axes }}"
             variant_axis: Variant axis
+            add_child:
+                create: Create new
+                cancel: Cancel
+                confirm: Confirm
         association_type:
             info:
                 deletion_successful: Association type successfully deleted.
@@ -503,6 +507,9 @@ pim_enrich:
             mass_edit:
                 select_attributes: Select attributes
                 select: Select
+        product_model:
+            flash:
+                child_added: Product model successfully added to the product model
         association_type:
             tab:
                 properties:
