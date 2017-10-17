@@ -38,10 +38,3 @@ Feature: Delete an attribute
     And I should be able to use the following filters:
       | filter | operator | value          | result |
       | name   | contains | My caterpillar |        |
-
-  @jira https://akeneo.atlassian.net/browse/PIM-6918
-  Scenario: Successfully delete an attribute
-    Given I am on the attributes page
-    When I click on the "delete" action of the row which contains "Handmade"
-    And I confirm the deletion
-    Then I should not see the text "Handmade"
