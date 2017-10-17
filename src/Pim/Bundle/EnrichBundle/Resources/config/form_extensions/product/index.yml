@@ -67,7 +67,7 @@ extensions:
                     title: Product
                     icon: icon-product
                 create-product-model:
-                    form: pim-product-create-modal
+                    form: pim-product-model-create-modal
                     title: Product model
                     icon: bulk/icon-template
 

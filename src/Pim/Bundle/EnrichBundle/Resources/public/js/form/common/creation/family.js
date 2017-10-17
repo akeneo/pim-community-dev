@@ -114,7 +114,9 @@ define([
             this.$el.html(this.template({
                 label: __('pim_enrich.form.product.change_family.modal.empty_selection'),
                 code: this.getFormData().family,
-                errors: errors.filter(error => error.path === this.identifier)
+                errors: errors.filter(error => error.path === this.identifier),
+                requiredLabel: __('pim_enrich.form.required') || false,
+                fieldLabel: __(this.config.fieldLabel) || false
             }));
 
             this.delegateEvents();

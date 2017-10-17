@@ -708,6 +708,7 @@ config:
         pim/product-model-edit-form/save: pimenrich/js/product-model/form/save
         pim/product-model-edit-form/complete-variant-product: pimenrich/js/product-model/form/complete-variant-product
         pim/product-model-edit-form/history: pimenrich/js/product/form/history
+        pim/product-model/form/creation/variant: pimenrich/js/product-model/form/creation/variant
 
         oro/datagrid/navigate-product-and-product-model-action: pimenrich/js/datagrid/action/navigate-product-and-product-model-action
         oro/datagrid/edit-in-modal-action:                      pimenrich/js/datagrid/action/edit-in-modal-action

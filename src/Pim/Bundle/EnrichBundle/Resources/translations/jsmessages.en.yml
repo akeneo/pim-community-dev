@@ -247,7 +247,11 @@ pim_enrich:
                 item_limit: Only first 1000 items shown in this sequential edit ({{ count }} selected)
                 empty: Your selection is empty, please change your search criteria
         product_model:
+            create_popin:
+                title: Create a product model
+                content: A product model gathers variant products and eases the enrichment of their common properties.
             info:
+                create_successful: Product model successfully created
                 update_successful: Product model successfully updated. The completeness of its variant products will be recalculated.
                 update_failed: The product model could not be updated.
                 field_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
@@ -744,6 +748,7 @@ pim_enrich:
                         validation_regexp: Regular expression
                         validation_rule: Validation rule
                         wysiwyg_enabled: Rich text editor enabled
+                        variant: Variant
                     default_label:
                         default_metric_unit: Choose a unit
                         group: Choose the attribute group
