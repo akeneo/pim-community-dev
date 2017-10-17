@@ -2,27 +2,18 @@
 
 namespace Pim\Component\Catalog\Completeness;
 
-use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
-use Pim\Component\Catalog\Factory\ValueFactory;
+use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
+use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ValueCollection;
-use Pim\Component\Catalog\Model\ValueCollectionInterface;
 
 /**
  * Calculates the completenesses for a provided product.
- *
- * This calculator creates a "fake" collection of required product values
- * according to the product family requirements. Then, it compares this
- * collection of fake values with the real values of the product, and generates
- * a list of completenesses, one completeness for each channel/locale possible
- * combinations.
  *
  * @author    Damien Carcel (damien.carcel@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -30,40 +21,28 @@ use Pim\Component\Catalog\Model\ValueCollectionInterface;
  */
 class CompletenessCalculator implements CompletenessCalculatorInterface
 {
-    /** @var ValueFactory */
-    protected $productValueFactory;
+    /** @var RequiredValueCollectionFactory */
+    private $requiredValueCollectionFactory;
 
-    /** @var CachedObjectRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var CachedObjectRepositoryInterface */
-    protected $localeRepository;
-
-    /** @var ValueCompleteCheckerInterface */
-    protected $productValueCompleteChecker;
+    /** @var IncompleteValueCollectionFactory */
+    private $incompleteValueCollectionFactory;
 
     /** @var string */
-    protected $completenessClass;
+    private $completenessClass;
 
     /**
-     * @param ValueFactory                    $productValueFactory
-     * @param CachedObjectRepositoryInterface $channelRepository
-     * @param CachedObjectRepositoryInterface $localeRepository
-     * @param ValueCompleteCheckerInterface   $productValueCompleteChecker
-     * @param string                          $completenessClass
+     * @param RequiredValueCollectionFactory   $requiredValueCollectionFactory
+     * @param IncompleteValueCollectionFactory $incompleteValueCollectionFactory
+     * @param string                           $completenessClass
      */
     public function __construct(
-        ValueFactory $productValueFactory,
-        CachedObjectRepositoryInterface $channelRepository,
-        CachedObjectRepositoryInterface $localeRepository,
-        ValueCompleteCheckerInterface $productValueCompleteChecker,
+        RequiredValueCollectionFactory $requiredValueCollectionFactory,
+        IncompleteValueCollectionFactory $incompleteValueCollectionFactory,
         $completenessClass
     ) {
-        $this->productValueFactory = $productValueFactory;
-        $this->channelRepository = $channelRepository;
-        $this->localeRepository = $localeRepository;
-        $this->productValueCompleteChecker = $productValueCompleteChecker;
         $this->completenessClass = $completenessClass;
+        $this->requiredValueCollectionFactory = $requiredValueCollectionFactory;
+        $this->incompleteValueCollectionFactory = $incompleteValueCollectionFactory;
     }
 
     /**
@@ -71,171 +50,37 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
      */
     public function calculate(ProductInterface $product)
     {
-        if (null === $product->getFamily()) {
+        $family = $product->getFamily();
+        if (null === $family) {
             return [];
         }
 
         $completenesses = [];
-        $requiredProductValues = $this->getRequiredProductValues($product->getFamily());
 
-        foreach ($requiredProductValues as $channelCode => $requiredProductValuesByChannel) {
-            foreach ($requiredProductValuesByChannel as $localeCode => $requiredProductValuesByChannelAndLocale) {
-                $completenesses[] = $this->generateCompleteness(
+        foreach ($this->getChannelsFromRequirements($family) as $channel) {
+            $requiredValuesForChannel = $this->requiredValueCollectionFactory->forChannel($family, $channel);
+
+            foreach ($channel->getLocales() as $locale) {
+                $requiredValues = $requiredValuesForChannel->filterByChannelAndLocale($channel, $locale);
+                $incompleteValues = $this->incompleteValueCollectionFactory->forChannelAndLocale(
+                    $requiredValues,
+                    $channel,
+                    $locale,
+                    $product
+                );
+
+                $completenesses[] = $this->createCompleteness(
                     $product,
-                    $requiredProductValuesByChannelAndLocale,
-                    $channelCode,
-                    $localeCode
+                    $channel,
+                    $locale,
+                    $incompleteValues->attributes(),
+                    $incompleteValues->count(),
+                    $requiredValues->count()
                 );
             }
         }
 
         return $completenesses;
-    }
-
-    /**
-     * Generates a two dimensional array indexed by channel and locale containing
-     * the required product values for those channel/locale combinations. Those
-     * are determined from the attribute requirements of the product family and
-     * from the channel activated locales.
-     *
-     * This method takes into account the localizable and scopable characteristic
-     * of the product value and local specific characteristic of the attribute.
-     *
-     * For example, you have 2 channels "mobile" and "print", two locales "en_US"
-     * and "fr_FR", and the following attrbutes:
-     * - "name" is non scopable and not localisable,
-     * - "short_description" is scopable,
-     * - "long_description" is scobable and localisable.
-     *
-     * The resulting array of product values would be like:
-     * [
-     *     "mobile" => [
-     *         "en_US" => [
-     *             ValueCollection {
-     *                 name product value,
-     *                 short_description-mobile product value,
-     *                 long_description-mobile-en_US product value,
-     *             }
-     *         ],
-     *         "fr_FR" => [
-     *             ValueCollection {
-     *                 name product value,
-     *                 short_description-mobile product value,
-     *                 long_description-mobile-fr_FR product value,
-     *             }
-     *         ],
-     *     ],
-     *     "print"  => [
-     *         "en_US" => [
-     *             ValueCollection {
-     *                 name product value,
-     *                 short_description-print product value,
-     *                 long_description-print-en_US product value,
-     *             }
-     *         ],
-     *         "fr_FR" => [
-     *             ValueCollection {
-     *                 name product value,
-     *                 short_description-print product value,
-     *                 long_description-print-fr_FR product value,
-     *             }
-     *         ],
-     *     ],
-     * ]
-     *
-     * @param FamilyInterface $family
-     *
-     * @return array
-     */
-    protected function getRequiredProductValues(FamilyInterface $family)
-    {
-        $productValues = [];
-
-        foreach ($family->getAttributeRequirements() as $attributeRequirement) {
-            foreach ($attributeRequirement->getChannel()->getLocales() as $locale) {
-                if ($attributeRequirement->isRequired()) {
-                    $channelCode = $attributeRequirement->getChannelCode();
-                    $localeCode = $locale->getCode();
-
-                    $attribute = $attributeRequirement->getAttribute();
-                    if ($attribute->isLocaleSpecific() && !$attribute->hasLocaleSpecific($locale)) {
-                        continue;
-                    }
-
-                    $productValue = $this->productValueFactory->create(
-                        $attribute,
-                        $attribute->isScopable() ? $channelCode : null,
-                        $attribute->isLocalizable() ? $localeCode : null,
-                        null
-                    );
-
-                    if (!isset($productValues[$channelCode][$localeCode])) {
-                        $productValues[$channelCode][$localeCode] = new ValueCollection();
-                    }
-                    $productValues[$channelCode][$localeCode]->add($productValue);
-                }
-            }
-        }
-
-        return $productValues;
-    }
-
-    /**
-     * Generates one completeness for the given required product value, channel
-     * code, locale code and the product values to compare.
-     *
-     * @param ProductInterface         $product
-     * @param ValueCollectionInterface $requiredValues
-     * @param string                   $channelCode
-     * @param string                   $localeCode
-     *
-     * @return CompletenessInterface
-     */
-    protected function generateCompleteness(
-        ProductInterface $product,
-        ValueCollectionInterface $requiredValues,
-        $channelCode,
-        $localeCode
-    ) {
-        $channel = $this->channelRepository->findOneByIdentifier($channelCode);
-        $locale = $this->localeRepository->findOneByIdentifier($localeCode);
-
-        $actualValues = $product->getValues();
-        $missingAttributes = new ArrayCollection();
-        $missingCount = 0;
-        $requiredCount = 0;
-
-        foreach ($requiredValues as $requiredValue) {
-            $attribute = $requiredValue->getAttribute();
-
-            $productValue = $actualValues->getByCodes(
-                $attribute->getCode(),
-                $requiredValue->getScope(),
-                $requiredValue->getLocale()
-            );
-
-            if (null === $productValue ||
-                !$this->productValueCompleteChecker->isComplete($productValue, $channel, $locale)
-            ) {
-                if (!$missingAttributes->contains($attribute)) {
-                    $missingAttributes->add($attribute);
-                    $missingCount++;
-                }
-            }
-
-            $requiredCount++;
-        }
-
-        $completeness = $this->createCompleteness(
-            $product,
-            $channel,
-            $locale,
-            $missingAttributes,
-            $missingCount,
-            $requiredCount
-        );
-
-        return $completeness;
     }
 
     /**
@@ -264,5 +109,23 @@ class CompletenessCalculator implements CompletenessCalculatorInterface
             $missingCount,
             $requiredCount
         );
+    }
+
+    /**
+     * @param FamilyInterface $family
+     *
+     * @return Collection
+     */
+    private function getChannelsFromRequirements(FamilyInterface $family): Collection
+    {
+        $channels = new ArrayCollection();
+        foreach ($family->getAttributeRequirements() as $attributeRequirement) {
+            $channel = $attributeRequirement->getChannel();
+            if (!$channels->contains($channel)) {
+                $channels->add($channel);
+            }
+        }
+
+        return $channels;
     }
 }

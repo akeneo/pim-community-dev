@@ -6,10 +6,8 @@ services:
     pim_catalog.completeness.calculator:
         class: '%pim_catalog.completeness.calculator.class%'
         arguments:
-            - '@pim_catalog.factory.value'
-            - '@pim_catalog.repository.cached_channel'
-            - '@pim_catalog.repository.cached_locale'
-            - '@pim_catalog.completeness.checker'
+            - '@pim_catalog.completeness.required_value_collection_factory'
+            - '@pim_catalog.entity_with_family.incomplete_value_collection_factory'
             - '%pim_catalog.entity.completeness.class%'
 
     pim_catalog.completeness.generator:
@@ -17,3 +15,4 @@ services:
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_catalog.completeness.calculator'
+
