@@ -16,7 +16,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository as BaseProductMassActionRepository;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\User\Model\GroupInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedProductRepository;
+use PimEnterprise\Component\Workflow\Repository\PublishedProductRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class ProductMassActionRepository extends BaseProductMassActionRepository
 {
-    /** @var PublishedProductRepository */
+    /** @var PublishedProductRepositoryInterface */
     protected $publishedRepository;
 
     /** @var TokenStorageInterface */
@@ -36,17 +36,16 @@ class ProductMassActionRepository extends BaseProductMassActionRepository
     protected $categoryAccessClass;
 
     /**
-     * @param EntityManager              $em
-     * @param string                     $entityName
-     * @param PublishedProductRepository $publishedRepository
-     * @param TokenStorageInterface      $tokenStorage
-     * @param string                     $categoryAccessClass
-     * @param string                     $productClass
+     * @param EntityManager                       $em
+     * @param string                              $entityName
+     * @param PublishedProductRepositoryInterface $publishedRepository
+     * @param TokenStorageInterface               $tokenStorage
+     * @param string                              $categoryAccessClass
      */
     public function __construct(
         EntityManager $em,
         $entityName,
-        PublishedProductRepository $publishedRepository,
+        PublishedProductRepositoryInterface $publishedRepository,
         TokenStorageInterface $tokenStorage,
         $categoryAccessClass
     ) {

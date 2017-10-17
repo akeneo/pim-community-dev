@@ -681,7 +681,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
      */
     public function setAssociations(Collection $associations)
     {
-        $this->associations = new ArrayCollection($associations);
+        $this->associations = $associations;
 
         return $this;
     }

@@ -281,7 +281,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
+     * @return PublishedProductInterface
      */
     public function getPublishedProduct($sku)
     {
@@ -291,8 +291,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             throw new \InvalidArgumentException(sprintf('Could not find a published product with sku "%s"', $sku));
         }
 
-        $this->refresh($published);
-
         return $published;
     }
 
@@ -301,7 +299,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      *
      * @throws \InvalidArgumentException
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
+     * @return PublishedProductInterface
      */
     public function getPublishedByOriginal($sku)
     {
@@ -311,8 +309,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         if (!$published) {
             throw new \InvalidArgumentException(sprintf('Could not find a published product with sku "%s"', $sku));
         }
-
-        $this->refresh($published);
 
         return $published;
     }

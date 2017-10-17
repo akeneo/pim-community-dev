@@ -29,7 +29,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
 
     function let(
         ProductRepositoryInterface $productRepository,
-        PublishedProductRepositoryInterface $repository,
+        PublishedProductRepositoryInterface $repositoryWithPermission,
         AttributeRepositoryInterface $attributeRepository,
         EventDispatcherInterface $eventDispatcher,
         PublisherInterface $publisher,
@@ -37,11 +37,12 @@ class PublishedProductManagerSpec extends ObjectBehavior
         ObjectManager $objectManager,
         SaverInterface $publishedProductSaver,
         RemoverInterface $remover,
-        BulkRemoverInterface $bulkRemover
+        BulkRemoverInterface $bulkRemover,
+        PublishedProductRepositoryInterface $repositoryWithoutPermission
     ) {
         $this->beConstructedWith(
             $productRepository,
-            $repository,
+            $repositoryWithPermission,
             $attributeRepository,
             $eventDispatcher,
             $publisher,
@@ -49,19 +50,23 @@ class PublishedProductManagerSpec extends ObjectBehavior
             $objectManager,
             $publishedProductSaver,
             $remover,
-            $bulkRemover
+            $bulkRemover,
+            $repositoryWithoutPermission
         );
     }
 
     function it_publishes_a_product(
         $eventDispatcher,
         $publisher,
-        $repository,
+        $repositoryWithPermission,
         $publishedProductSaver,
+        $productRepository,
         ProductInterface $product,
         PublishedProductInterface $published
     ) {
-        $repository->findOneByOriginalProduct(Argument::any())->willReturn(null);
+        $product->getId()->willReturn(1);
+        $productRepository->find(1)->willReturn($product);
+        $repositoryWithPermission->findOneByOriginalProduct(Argument::any())->willReturn(null);
         $publisher->publish($product, [])->willReturn($published);
 
         $eventDispatcher->dispatch(PublishedProductEvents::PRE_PUBLISH, Argument::any(), null)->shouldBeCalled();
@@ -74,8 +79,10 @@ class PublishedProductManagerSpec extends ObjectBehavior
 
     function it_publishes_products_with_associations(
         $publisher,
-        $repository,
+        $repositoryWithPermission,
         $remover,
+        $productRepository,
+        $repositoryWithoutPermission,
         BulkSaverInterface $publishedProductSaver,
         ProductInterface $productFoo,
         ProductInterface $productBar,
@@ -83,17 +90,23 @@ class PublishedProductManagerSpec extends ObjectBehavior
         PublishedProductInterface $publishedBar,
         AssociationInterface $association
     ) {
+        $productFoo->getId()->willReturn(1);
+        $productBar->getId()->willReturn(2);
+        $productRepository->find(1)->willReturn($productFoo);
+        $productRepository->find(2)->willReturn($productBar);
         $publishedFoo->getOriginalProduct()->willReturn($productFoo);
         $publishedBar->getOriginalProduct()->willReturn($productBar);
 
-        $repository->findOneByOriginalProduct($productBar)->willReturn($publishedFoo);
-        $repository->findOneByOriginalProduct($productFoo)->willReturn($publishedBar);
+        $repositoryWithPermission->findOneByOriginalProduct($productBar)->willReturn($publishedFoo);
+        $repositoryWithPermission->findOneByOriginalProduct($productFoo)->willReturn($publishedBar);
 
         $publisher->publish($productFoo, ['with_associations' => false, 'flush' => false])->willReturn($publishedFoo);
         $publisher->publish($productBar, ['with_associations' => false, 'flush' => false])->willReturn($publishedBar);
 
+        $repositoryWithoutPermission->findOneByOriginalProduct($productBar)->willReturn($publishedBar);
+        $repositoryWithoutPermission->findOneByOriginalProduct($productFoo)->willReturn($publishedFoo);
+
         $publishedProductSaver->saveAll([$publishedFoo, $publishedBar])->shouldBeCalled();
-        $publishedProductSaver->saveAll([$publishedBar, $publishedFoo])->shouldBeCalled();
 
         $productFoo->getAssociations()->willReturn([$association]);
         $productBar->getAssociations()->willReturn([$association]);
@@ -113,15 +126,19 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $eventDispatcher,
         $publisher,
         $unpublisher,
-        $repository,
+        $productRepository,
         $remover,
         $publishedProductSaver,
-        ProductInterface $product,
+        $repositoryWithoutPermission,
+        ProductInterface $filteredProduct,
         PublishedProductInterface $alreadyPublished,
-        PublishedProductInterface $published
+        PublishedProductInterface $published,
+        ProductInterface $fullProduct
     ) {
-        $repository->findOneByOriginalProduct(Argument::any())->willReturn($alreadyPublished);
-        $publisher->publish($product, [])->willReturn($published);
+        $repositoryWithoutPermission->findOneByOriginalProduct(Argument::any())->willReturn($alreadyPublished);
+        $productRepository->find(1)->willReturn($fullProduct);
+        $publisher->publish($fullProduct, [])->willReturn($published);
+        $filteredProduct->getId()->willReturn(1);
 
         $eventDispatcher->dispatch(PublishedProductEvents::PRE_PUBLISH, Argument::any(), null)->shouldBeCalled();
         $eventDispatcher->dispatch(PublishedProductEvents::POST_PUBLISH, Argument::cetera())->shouldBeCalled();
@@ -131,46 +148,58 @@ class PublishedProductManagerSpec extends ObjectBehavior
 
         $publishedProductSaver->save($published)->shouldBeCalled();
 
-        $this->publish($product);
+        $this->publish($filteredProduct);
     }
 
     function it_unpublishes_a_product(
         $eventDispatcher,
         $unpublisher,
         $remover,
-        PublishedProductInterface $published,
+        $repositoryWithoutPermission,
+        PublishedProductInterface $fullPublished,
+        PublishedProductInterface $filteredPublished,
         ProductInterface $product
     ) {
-        $published->getOriginalProduct()->willReturn($product);
-        $unpublisher->unpublish($published)->shouldBeCalled();
+        $filteredPublished->getId()->willReturn(1);
+
+        $repositoryWithoutPermission->find(1)->willReturn($fullPublished);
+        $fullPublished->getOriginalProduct()->willReturn($product);
+        $unpublisher->unpublish($fullPublished)->shouldBeCalled();
 
         $eventDispatcher->dispatch(PublishedProductEvents::PRE_UNPUBLISH, Argument::cetera())->shouldBeCalled();
         $eventDispatcher->dispatch(PublishedProductEvents::POST_UNPUBLISH, Argument::any(), null)->shouldBeCalled();
 
-        $remover->remove($published)->shouldBeCalled();
+        $remover->remove($fullPublished)->shouldBeCalled();
 
-        $this->unpublish($published);
+        $this->unpublish($filteredPublished);
     }
 
     function it_unpublishes_products(
         $eventDispatcher,
         $unpublisher,
         $bulkRemover,
-        PublishedProductInterface $published1,
-        PublishedProductInterface $published2,
+        $repositoryWithoutPermission,
+        PublishedProductInterface $fullPublished1,
+        PublishedProductInterface $filteredPublished1,
+        PublishedProductInterface $fullPublished2,
+        PublishedProductInterface $filteredPublished2,
         ProductInterface $product
-    )
-    {
-        $published1->getOriginalProduct()->willReturn($product);
-        $published2->getOriginalProduct()->willReturn($product);
+    ) {
+        $filteredPublished1->getId()->willReturn(1);
+        $filteredPublished2->getId()->willReturn(2);
 
-        $unpublisher->unpublish($published1)->shouldBeCalled();
-        $unpublisher->unpublish($published2)->shouldBeCalled();
+        $repositoryWithoutPermission->find(1)->willReturn($fullPublished1);
+        $repositoryWithoutPermission->find(2)->willReturn($fullPublished2);
+        $fullPublished1->getOriginalProduct()->willReturn($product);
+        $fullPublished2->getOriginalProduct()->willReturn($product);
+
+        $unpublisher->unpublish($fullPublished1)->shouldBeCalled();
+        $unpublisher->unpublish($fullPublished2)->shouldBeCalled();
 
         $eventDispatcher->dispatch(PublishedProductEvents::PRE_UNPUBLISH, Argument::cetera())->shouldBeCalled();
 
-        $bulkRemover->removeAll([$published1, $published2])->shouldBeCalled();
+        $bulkRemover->removeAll([$fullPublished1, $fullPublished2])->shouldBeCalled();
 
-        $this->unpublishAll([$published1, $published2]);
+        $this->unpublishAll([$filteredPublished1, $filteredPublished2]);
     }
 }
