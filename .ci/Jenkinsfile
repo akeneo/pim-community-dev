@@ -328,7 +328,7 @@ stage("Test") {
             "behat-ce": {
                 if (launchBehatTests.equals("yes")&& editions.contains("ce")) {
                     queue({
-                        def scenariosCE = sh (returnStdout: true, script: "sudo cd /home/jenkins/pim && php ./bin/behat --list-scenarios").tokenize('\n')
+                        def scenariosCE = sh (returnStdout: true, script: "cd /home/jenkins/pim && php ./bin/behat --list-scenarios").tokenize('\n')
                         def messagesCE = new net.sf.json.JSONArray()
 
                         for (scenarioCE in scenariosCE) {
@@ -363,7 +363,7 @@ stage("Test") {
             "behat-ee": {
                 if (launchBehatTests.equals("yes") && editions.contains("ee")) {
                     queue({
-                        scenariosEE = sh (returnStdout: true, script: "sudo cd /home/jenkins/pim && php ./bin/behat --list-scenarios").tokenize('\n')
+                        scenariosEE = sh (returnStdout: true, script: "cd /home/jenkins/pim && php ./bin/behat --list-scenarios").tokenize('\n')
                         def messagesEE = new net.sf.json.JSONArray()
 
                         for (scenarioEE in scenariosEE) {
@@ -398,7 +398,7 @@ stage("Test") {
             "behat-ce-odm": {
                 if (launchBehatTests.equals("yes") && editions.contains("ceodm")) {
                     queue({
-                        def scenariosCE = sh (returnStdout: true, script: "sudo cd /home/jenkins/pim && php ./bin/behat --list-scenarios").tokenize('\n')
+                        def scenariosCE = sh (returnStdout: true, script: "cd /home/jenkins/pim && php ./bin/behat --list-scenarios").tokenize('\n')
                         def messagesCE = new net.sf.json.JSONArray()
                         for (scenarioCE in scenariosCE) {
 
@@ -433,7 +433,7 @@ stage("Test") {
             "behat-ee-odm": {
                 if (launchBehatTests.equals("yes") && editions.contains("eeodm")) {
                     queue({
-                        scenariosEE = sh (returnStdout: true, script: "sudo cd /home/jenkins/pim && php ./bin/behat --list-scenarios").tokenize('\n')
+                        scenariosEE = sh (returnStdout: true, script: "cd /home/jenkins/pim && php ./bin/behat --list-scenarios").tokenize('\n')
                         def messagesEE = new net.sf.json.JSONArray()
                         for (scenarioEE in scenariosEE) {
                             messagesEE.add([
