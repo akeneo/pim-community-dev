@@ -11,6 +11,7 @@
 - PIM-6504: Update action icons on datagrids
 - PIM-6848: Fix design on export builder fields
 - PIM-6868: CSS glitches compilation
+- PIM-6909: Replace 'products' by 'results' in products indexes
 
 ## Better manage products with variants!
 
