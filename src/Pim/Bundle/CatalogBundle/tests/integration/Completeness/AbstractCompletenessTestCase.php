@@ -115,12 +115,12 @@ abstract class AbstractCompletenessTestCase extends TestCase
     }
 
     /**
-     * @param string $familyCode
-     * @param string $channelCode
-     * @param string $attributeCode
-     * @param string $attributeType
-     * @param bool $localisable
-     * @param bool $scopable
+     * @param string            $familyCode
+     * @param string            $channelCode
+     * @param string            $attributeCode
+     * @param string            $attributeType
+     * @param bool              $localisable
+     * @param bool              $scopable
      * @param LocaleInterface[] $localesSpecific
      *
      * @return FamilyInterface
@@ -171,14 +171,12 @@ abstract class AbstractCompletenessTestCase extends TestCase
         return $family;
     }
 
-    protected function removeFamilyRequirement($familyCode, $channelCode, $attributeCode)
+    protected function removeFamilyRequirement($familyCode, $channelCode, $attributeCode): void
     {
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier($familyCode);
         $attributeRequirementToRemove = $this->getAttributeRequirement($family, $channelCode, $attributeCode);
         $family->removeAttributeRequirement($attributeRequirementToRemove);
         $this->get('pim_catalog.saver.family')->save($family);
-
-        return $family;
     }
 
     /**
@@ -199,8 +197,8 @@ abstract class AbstractCompletenessTestCase extends TestCase
 
     /**
      * @param FamilyInterface $family
-     * @param string $channelCode
-     * @param string $attributeCode
+     * @param string          $channelCode
+     * @param string          $attributeCode
      *
      * @return null|AttributeRequirementInterface
      */

@@ -65,7 +65,7 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_SAVE  => 'areAttributeRequirementsUpdated',
@@ -76,7 +76,7 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
     /**
      * @param GenericEvent $event
      */
-    public function areAttributeRequirementsUpdated(GenericEvent $event)
+    public function areAttributeRequirementsUpdated(GenericEvent $event): void
     {
         $subject = $event->getSubject();
 
@@ -100,7 +100,7 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
     /**
      * @param GenericEvent $event
      */
-    public function computeCompletenessOfProductsFamily(GenericEvent $event)
+    public function computeCompletenessOfProductsFamily(GenericEvent $event): void
     {
         $subject = $event->getSubject();
 

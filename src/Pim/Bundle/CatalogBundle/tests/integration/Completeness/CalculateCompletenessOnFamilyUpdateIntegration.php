@@ -39,6 +39,14 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
     /**
      * {@inheritdoc}
      */
+    protected function getConfiguration(): Configuration
+    {
+        return $this->catalog->useFunctionalCatalog('catalog_modeling');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         parent::setUp();
@@ -61,14 +69,6 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
         }
 
         $this->get('akeneo_batch.saver.job_instance')->save($jobInstance);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration(): Configuration
-    {
-        return $this->catalog->useFunctionalCatalog('catalog_modeling');
     }
 
     /**

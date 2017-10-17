@@ -16,17 +16,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
  */
 class ComputeCompletenessOfProductsFamily implements ConstraintCollectionProviderInterface
 {
-    /** @var array */
-    protected $supportedJobNames;
-
-    /**
-     * @param array $supportedJobNames
-     */
-    public function __construct(array $supportedJobNames)
-    {
-        $this->supportedJobNames = $supportedJobNames;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -46,6 +35,6 @@ class ComputeCompletenessOfProductsFamily implements ConstraintCollectionProvide
      */
     public function supports(JobInterface $job): bool
     {
-        return in_array($job->getName(), $this->supportedJobNames);
+        return 'compute_completeness_of_products_family' === $job->getName();
     }
 }

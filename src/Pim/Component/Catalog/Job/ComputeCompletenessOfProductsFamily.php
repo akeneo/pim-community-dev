@@ -78,9 +78,7 @@ class ComputeCompletenessOfProductsFamily implements TaskletInterface
      */
     public function execute(): void
     {
-        $jobParameters = $this->stepExecution->getJobParameters();
-        $familyCode = $jobParameters->get('family_code');
-
+        $familyCode = $this->stepExecution->getJobParameters()->get('family_code');
         $this->resetCompletenessOfProductsForFamily($familyCode);
         $this->computeCompletenesses($familyCode);
     }
@@ -129,7 +127,7 @@ class ComputeCompletenessOfProductsFamily implements TaskletInterface
     private function findProductsForFamily(string $familyCode): CursorInterface
     {
         $pqb = $this->productQueryBuilderFactory->create();
-        $pqb->addFilter('family', Operators::IN_LIST, [$familyCode]);
+        $pqb->addFilter('family', Operators::EQUALS, $familyCode);
 
         return $pqb->execute();
     }
