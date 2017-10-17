@@ -479,6 +479,125 @@ JSON;
         $this->assertSameProductModels($expectedProductModel, 'root_product_model');
     }
 
+    public function testRootProductModelCreationWithParentToNull()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "code": "root_product_model",
+        "family_variant": "familyVariantA1",
+        "parent": null,
+        "values": {
+            "a_number_float":[
+                {
+                    "locale":null,
+                    "scope":null,
+                    "data":"12.5000"
+                }
+            ]
+        }
+    }
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/root_product_model', [], [], [], $data);
+
+        $expectedProductModel = [
+            'code'           => 'root_product_model',
+            'family_variant' => 'familyVariantA1',
+            'parent'         => null,
+            'categories'     => [],
+            'values'        => [
+                'a_number_float' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => '12.5000',
+                    ],
+                ],
+            ],
+            'created' => '2016-06-14T13:12:50+02:00',
+            'updated' => '2016-06-14T13:12:50+02:00',
+        ];
+
+        $response = $client->getResponse();
+
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSameProductModels($expectedProductModel, 'root_product_model');
+    }
+
+    public function testRootProductModelUpdateWithParentToNull()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "code": "sweat",
+        "family_variant": "familyVariantA1",
+        "parent": null,
+        "values": {
+            "a_number_float":[
+                {
+                    "locale":null,
+                    "scope":null,
+                    "data":"12.5000"
+                }
+            ]
+        }
+    }
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/sweat', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+    }
+
+    public function testSubProductModelUpdateWithParentToNull()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "code": "sub_sweat",
+        "parent": null,
+        "family_variant": "familyVariantA1",
+        "parent": null,
+        "values": {
+            "a_simple_select":[
+                {
+                    "locale":null,
+                    "scope":null,
+                    "data":"optionB"
+                }
+            ]
+        }
+    }
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
+
+        $expectedContent =
+            <<<JSON
+{
+  "code": 422,
+  "message": "Property parent cannot be set to null."
+}
+JSON;
+
+        $response = $client->getResponse();
+
+
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
     public function testUpdateRootProductModelWithNoFamilyGiven()
     {
         $client = $this->createAuthenticatedClient();
@@ -561,48 +680,6 @@ JSON;
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sweat', [], [], [], $data);
-
-        $expectedContent =
-            <<<JSON
-{
-  "code": 422,
-  "message": "Property \"invalid\" does not exist. Check the standard format documentation.",
-  "_links": {
-    "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
-    }
-  }
-}
-JSON;
-
-        $response = $client->getResponse();
-
-        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-    }
-
-    public function testUpdateSubProductModelWithInvalidValue()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-<<<JSON
-    {
-        "code": "sub_sweat",
-        "parent": "sweat",
-        "values": {
-            "invalid":[
-                {
-                    "locale":null,
-                    "scope":null,
-                    "data":"15.3"
-                }
-            ]
-        }
-    }
-JSON;
-
-        $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
 
         $expectedContent =
             <<<JSON
@@ -761,6 +838,49 @@ JSON;
 JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sweat', [], [], [], $data);
+
+        $expectedContent =
+            <<<JSON
+{
+  "code": 422,
+  "message": "Property \"parent\" cannot be modified, \"hat\" given. Check the standard format documentation.",
+  "_links": {
+    "documentation": {
+      "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+    }
+  }
+}
+JSON;
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+
+    public function testUpdateSubProductModelWithAParent()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "code": "sub_sweat",
+        "parent": "hat",
+        "values": {
+            "a_simple_select":[
+                {
+                    "locale":null,
+                    "scope":null,
+                    "data":"optionB"
+                }
+            ]
+        }
+    }
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
 
         $expectedContent =
             <<<JSON

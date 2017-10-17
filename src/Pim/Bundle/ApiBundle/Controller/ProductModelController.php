@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\ApiBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
@@ -205,6 +206,7 @@ class ProductModelController
     public function partialUpdateAction(Request $request, $code): Response
     {
         $data = $this->getDecodedContent($request->getContent());
+        $data = $this->productModelAttributeFilter->filter($data);
 
         $productModel = $this->productModelRepository->findOneByIdentifier($code);
         $isCreation = null === $productModel;
@@ -212,6 +214,10 @@ class ProductModelController
         if ($isCreation) {
             $this->validateCodeConsistency($code, $data);
             $productModel = $this->factory->create();
+        } else {
+            if (null !== $productModel->getParent() && array_key_exists('parent', $data) && null === $data['parent']) {
+                throw new HttpException(Response::HTTP_UNPROCESSABLE_ENTITY, 'Property parent cannot be set to null.');
+            }
         }
 
         $data['code'] = array_key_exists('code', $data) ? $data['code'] : $code;
