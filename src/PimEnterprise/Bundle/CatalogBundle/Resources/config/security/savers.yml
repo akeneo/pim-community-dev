@@ -1,0 +1,12 @@
+parameters:
+    pimee_catalog.security.saver.filtered_entity.class: PimEnterprise\Bundle\CatalogBundle\Security\Doctrine\Common\Saver\FilteredEntitySaver
+
+services:
+    pimee_catalog.security.saver.product:
+        class: '%pimee_catalog.security.saver.filtered_entity.class%'
+        decorates: pim_catalog.saver.product
+        decoration_inner_name: pim_catalog.saver.product_without_permission
+        arguments:
+            - '@pim_catalog.saver.product_without_permission'
+            - '@pim_catalog.saver.product_without_permission'
+            - '@pimee_catalog.security.applier.apply_data_on_product'
