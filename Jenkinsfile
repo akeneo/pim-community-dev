@@ -74,7 +74,7 @@ stage("Checkout") {
 
         def output = sh (
             returnStdout: true,
-            script: 'find src -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"'
+            script: 'find src vendor/akeneo/pim-community-dev -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"'
         )
         def files = output.tokenize('\n')
         for (file in files) {
@@ -203,7 +203,7 @@ void runIntegrationTest(String phpVersion, testFiles) {
 
         try {
             docker.image("elasticsearch:5.5").withRun("--name elasticsearch -e ES_JAVA_OPTS=\"-Xms256m -Xmx256m\"") {
-                docker.image("mysql:5.7").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim --tmpfs=/var/lib/mysql/:rw,noexec,nosuid,size=250m --tmpfs=/tmp/:rw,noexec,nosuid,size=100m") {
+                docker.image("mysql:5.7").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim --tmpfs=/var/lib/mysql/:rw,noexec,nosuid,size=1000m --tmpfs=/tmp/:rw,noexec,nosuid,size=300m") {
                     docker.image("akeneo/php:${phpVersion}").inside("--link mysql:mysql --link elasticsearch:elasticsearch") {
                         unstash "project_files_full"
 
@@ -224,7 +224,7 @@ void runIntegrationTest(String phpVersion, testFiles) {
 
                         sh "sed -i \"s#<file></file>#${testSuiteFiles}#\" app/phpunit.xml.dist"
 
-                        sh "php -d error_reporting='E_ALL' ./vendor/bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Integration_Test --log-junit app/build/logs/phpunit_integration.xml"
+                        sh "php -d error_reporting='E_ALL' ./vendor/bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Integration_Test --exclude-group ce --log-junit app/build/logs/phpunit_integration.xml"
                     }
                 }
             }
