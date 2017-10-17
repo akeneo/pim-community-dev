@@ -30,6 +30,8 @@ class BooleanFilterIntegration extends AbstractProductQueryBuilderTestCase
                 'a_yes_no' => [['data' => false, 'locale' => null, 'scope' => null]]
             ]
         ]);
+
+        $this->createProduct('empty', []);
     }
 
     public function testOperatorEquals()
@@ -48,6 +50,12 @@ class BooleanFilterIntegration extends AbstractProductQueryBuilderTestCase
 
         $result = $this->executeFilter([['a_yes_no', Operators::NOT_EQUAL, false]]);
         $this->assert($result, ['yes']);
+    }
+
+    public function testOperatorNotEmpty()
+    {
+        $result = $this->executeFilter([['a_yes_no', Operators::IS_NOT_EMPTY, '']]);
+        $this->assert($result, ['yes', 'no']);
     }
 
     /**
