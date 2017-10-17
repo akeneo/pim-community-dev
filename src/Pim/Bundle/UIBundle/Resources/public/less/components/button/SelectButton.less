@@ -27,4 +27,14 @@
     background-position: center;
     background-size: @AknCheckboxSize @AknCheckboxSize - 1px;
   }
+
+  &--disabled {
+    cursor: not-allowed;
+    border-color: lighten(@AknSlateGrey, 10%);
+    background-color: lighten(@AknSlateGrey, 10%);
+    background-image: url("../../../images/icon-checkwhite.svg");
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: @AknCheckboxSize - 1px;
+  }
 }

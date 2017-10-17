@@ -161,6 +161,7 @@ class ProductModelNormalizer implements NormalizerInterface
                 'attributes_axes'           => $axesAttributes,
                 'image'                     => $this->normalizeImage($closestImage, $format, $context),
                 'variant_navigation'        => $this->navigationNormalizer->normalize($productModel, $format, $context),
+                'locked_category_ids'       => $this->lockedCategoryIds($productModel)
             ] + $this->getLabels($productModel);
 
         return $normalizedProductModel;
@@ -204,5 +205,26 @@ class ProductModelNormalizer implements NormalizerInterface
         }
 
         return $this->fileNormalizer->normalize($data->getData(), $format, $context);
+    }
+
+    /**
+     * Returns the category ids inherited from parent product model
+     *
+     * @param ProductModelInterface $productModel
+     *
+     * @return integer[]
+     */
+    private function lockedCategoryIds(ProductModelInterface $productModel): array
+    {
+        $result = [];
+
+        $parent = $productModel->getParent();
+        if (null !== $parent) {
+            foreach ($parent->getCategories() as $category) {
+                $result[] = $category->getId();
+            }
+        }
+
+        return $result;
     }
 }

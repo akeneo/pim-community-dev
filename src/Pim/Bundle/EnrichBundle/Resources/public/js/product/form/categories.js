@@ -16,6 +16,7 @@ define(
         'pim/form',
         'pim/template/product/tab/categories',
         'pim/template/product/tab/catalog-switcher',
+        'pim/template/product/tab/jstree-locked-item',
         'pim/user-context',
         'routing',
         'pim/tree/associate',
@@ -29,6 +30,7 @@ define(
         BaseForm,
         formTemplate,
         switcherTemplate,
+        lockedTemplate,
         UserContext,
         Routing,
         TreeAssociate,
@@ -37,6 +39,7 @@ define(
         return BaseForm.extend({
             template: _.template(formTemplate),
             switcherTemplate: _.template(switcherTemplate),
+            lockedTemplate: _.template(lockedTemplate),
             className: 'tab-pane active',
             id: 'product-categories',
             treeLinkSelector: 'tree-link-',
@@ -114,6 +117,16 @@ define(
                     });
 
                     this.delegateEvents();
+
+                    mediator.on('jstree:loaded', () => {
+                        const lockedCategoryIds = this.getFormData().meta.locked_category_ids;
+                        lockedCategoryIds.forEach((categoryId) => {
+                            const node = $('#node_' + categoryId);
+                            node.find('a').replaceWith(this.lockedTemplate({
+                                label: node.text().trim()
+                            }));
+                        });
+                    });
 
                     this.initCategoryCount();
                     this.renderCategorySwitcher();
