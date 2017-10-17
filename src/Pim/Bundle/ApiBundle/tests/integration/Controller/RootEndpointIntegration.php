@@ -242,6 +242,10 @@ class RootEndpointIntegration extends ApiTestCase
             "pim_api_product_model_list": {
                 "route": "/api/rest/v1/product-models",
                 "methods": ["GET"]
+            },
+            "pim_api_product_model_create": {
+                "route": "/api/rest/v1/product-models",
+                "methods": ["POST"]
             }
         }
     }

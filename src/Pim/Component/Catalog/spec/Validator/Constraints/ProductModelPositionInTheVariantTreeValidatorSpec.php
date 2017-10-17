@@ -52,6 +52,7 @@ class ProductModelPositionInTheVariantTreeValidatorSpec extends ObjectBehavior
                 '%parent_product_model%' => 'parent_product_model',
             ]
         )->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->atPath('parent')->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
         $productModel->getFamilyVariant()->willReturn($familyVariant);
@@ -80,6 +81,7 @@ class ProductModelPositionInTheVariantTreeValidatorSpec extends ObjectBehavior
                 '%product_model%' => 'product_model',
             ]
         )->willReturn($constraintViolationBuilder);
+        $constraintViolationBuilder->atPath('parent')->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
         $productModel->getFamilyVariant()->willReturn($familyVariant);

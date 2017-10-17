@@ -4,22 +4,35 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\ApiBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
 use Pim\Bundle\ApiBundle\Documentation;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
+use Pim\Component\Api\Exception\ViolationHttpException;
 use Pim\Component\Api\Pagination\PaginationTypes;
 use Pim\Component\Api\Pagination\PaginatorInterface;
 use Pim\Component\Api\Pagination\ParameterValidatorInterface;
 use Pim\Component\Api\Security\PrimaryKeyEncrypter;
+use Pim\Component\Catalog\Exception\InvalidArgumentException;
+use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\Sorter\Directions;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @author    Willy MESNAGE <willy.mesnage@akeneo.com>
@@ -55,6 +68,24 @@ class ProductModelController
     /** @var array */
     protected $apiConfiguration;
 
+    /** @var ObjectUpdaterInterface */
+    protected $updater;
+
+    /** @var SimpleFactoryInterface */
+    protected $factory;
+
+    /** @var SaverInterface */
+    protected $saver;
+
+    /** @var UrlGeneratorInterface */
+    protected $router;
+
+    /** @var ValidatorInterface */
+    protected $productValidator;
+
+    /** @var AttributeFilterInterface */
+    protected $productModelAttributeFilter;
+
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ProductQueryBuilderFactoryInterface $pqbFromSizeFactory
@@ -64,6 +95,12 @@ class ProductModelController
      * @param PaginatorInterface                  $offsetPaginator
      * @param PaginatorInterface                  $searchAfterPaginator
      * @param PrimaryKeyEncrypter                 $primaryKeyEncrypter
+     * @param ObjectUpdaterInterface              $updater
+     * @param SimpleFactoryInterface              $factory
+     * @param SaverInterface                      $saver
+     * @param UrlGeneratorInterface               $router
+     * @param ValidatorInterface                  $productValidator
+     * @param AttributeFilterInterface            $productModelAttributeFilter
      * @param array                               $apiConfiguration
      */
     public function __construct(
@@ -75,17 +112,29 @@ class ProductModelController
         PaginatorInterface $offsetPaginator,
         PaginatorInterface $searchAfterPaginator,
         PrimaryKeyEncrypter $primaryKeyEncrypter,
+        ObjectUpdaterInterface $updater,
+        SimpleFactoryInterface $factory,
+        SaverInterface $saver,
+        UrlGeneratorInterface $router,
+        ValidatorInterface $productValidator,
+        AttributeFilterInterface $productModelAttributeFilter,
         array $apiConfiguration
     ) {
-        $this->pqbFactory            = $pqbFactory;
-        $this->pqbFromSizeFactory    = $pqbFromSizeFactory;
-        $this->pqbSearchAfterFactory = $pqbSearchAfterFactory;
-        $this->normalizer            = $normalizer;
-        $this->parameterValidator    = $parameterValidator;
-        $this->offsetPaginator       = $offsetPaginator;
-        $this->searchAfterPaginator  = $searchAfterPaginator;
-        $this->primaryKeyEncrypter   = $primaryKeyEncrypter;
-        $this->apiConfiguration      = $apiConfiguration;
+        $this->pqbFactory                  = $pqbFactory;
+        $this->pqbFromSizeFactory          = $pqbFromSizeFactory;
+        $this->pqbSearchAfterFactory       = $pqbSearchAfterFactory;
+        $this->normalizer                  = $normalizer;
+        $this->parameterValidator          = $parameterValidator;
+        $this->offsetPaginator             = $offsetPaginator;
+        $this->searchAfterPaginator        = $searchAfterPaginator;
+        $this->primaryKeyEncrypter         = $primaryKeyEncrypter;
+        $this->apiConfiguration            = $apiConfiguration;
+        $this->updater                     = $updater;
+        $this->factory                     = $factory;
+        $this->saver                       = $saver;
+        $this->router                      = $router;
+        $this->productValidator            = $productValidator;
+        $this->productModelAttributeFilter = $productModelAttributeFilter;
     }
 
     /**
@@ -108,6 +157,32 @@ class ProductModelController
         $productModelApi = $this->normalizer->normalize($productModels->current(), 'standard');
 
         return new JsonResponse($productModelApi);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @throws BadRequestHttpException
+     *
+     * @return Response
+     */
+    public function createAction(Request $request): Response
+    {
+        $data = $this->getDecodedContent($request->getContent());
+        $data = $this->productModelAttributeFilter->filter($data);
+        $productModel = $this->factory->create();
+
+        if (!isset($data['code'])) {
+            $data['code'] = '';
+        }
+
+        $this->updateProductModel($productModel, $data, 'post_product_model');
+        $this->validateProduct($productModel);
+        $this->saver->save($productModel);
+
+        $response = $this->getResponse($productModel, Response::HTTP_CREATED);
+
+        return $response;
     }
 
     /**
@@ -188,6 +263,87 @@ class ProductModelController
         }
 
         return $paginatedProductModels;
+    }
+
+    /**
+     * Get the JSON decoded content. If the content is not a valid JSON, it throws an error 400.
+     *
+     * @param string $content content of a request to decode
+     *
+     * @throws BadRequestHttpException
+     *
+     * @return array
+     */
+    protected function getDecodedContent($content): array
+    {
+        $decodedContent = json_decode($content, true);
+
+        if (null === $decodedContent) {
+            throw new BadRequestHttpException('Invalid json message received');
+        }
+
+        return $decodedContent;
+    }
+
+    /**
+     * Get a response with a location header to the created or updated resource.
+     *
+     * @param ProductModelInterface $productModel
+     * @param int                   $status
+     *
+     * @return Response
+     */
+    protected function getResponse(ProductModelInterface $productModel, int $status): Response
+    {
+        $response = new Response(null, $status);
+        $route = $this->router->generate(
+            'pim_api_product_model_get',
+            ['code' => $productModel->getCode()],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
+        $response->headers->set('Location', $route);
+
+        return $response;
+    }
+
+    /**
+     * Updates product with the provided request data
+     *
+     * @param ProductModelInterface $productModel
+     * @param array                 $data
+     * @param string                $anchor
+     *
+     * @throws DocumentedHttpException
+     */
+    protected function updateProductModel(ProductModelInterface $productModel, array $data, string $anchor): void
+    {
+        try {
+            $this->updater->update($productModel, $data);
+        } catch (PropertyException $exception) {
+            throw new DocumentedHttpException(
+                Documentation::URL . $anchor,
+                sprintf('%s Check the standard format documentation.', $exception->getMessage()),
+                $exception
+            );
+        } catch (InvalidArgumentException $exception) {
+            throw new AccessDeniedHttpException($exception->getMessage(), $exception);
+        }
+    }
+
+    /**
+     * Validate a product. It throws an error 422 with every violated constraints if
+     * the validation failed.
+     *
+     * @param ProductModelInterface $productproductModel
+     *
+     * @throws ViolationHttpException
+     */
+    protected function validateProduct(ProductModelInterface $productModel): void
+    {
+        $violations = $this->productValidator->validate($productModel, null, ['Default', 'api']);
+        if (0 !== $violations->count()) {
+            throw new ViolationHttpException($violations);
+        }
     }
 
     /**

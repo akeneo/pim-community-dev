@@ -1,5 +1,9 @@
 # 2.0.x
 
+## Better manage products with variants!
+
+- API-399: Create a product model
+
 ## Bug fixes
 
 - PIM-6898: Fixes some data can break ES index and crashes new products indexing
