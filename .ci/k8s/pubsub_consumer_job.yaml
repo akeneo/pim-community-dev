@@ -77,14 +77,14 @@ spec:
             timeoutSeconds: 1
             initialDelaySeconds: 5
         - name: php
-          image: eu.gcr.io/akeneo-ci/httpd-php:5.6
+          image: akeneo/apache-php:php-5.6
           command: ["/bin/bash", "-c"]
           args:
             - |
-              /usr/local/bin/apache-foreground &
+              sudo /usr/local/bin/apache-foreground &
               CHILD_PID=$!
-              (while true; do if [[ -f "/tmp/pod/main-terminated" ]]; then kill $CHILD_PID; fi; sleep 1; done) &
-              wait $CHILD_PID
+              (while true; do if [[ -f "/tmp/pod/main-terminated" ]]; then sudo kill $CHILD_PID; fi; sleep 1; done) &
+              sudo wait $CHILD_PID
               if [[ -f "/tmp/pod/main-terminated" ]]; then exit 0; fi
 
           workingDir: /home/jenkins/pim
