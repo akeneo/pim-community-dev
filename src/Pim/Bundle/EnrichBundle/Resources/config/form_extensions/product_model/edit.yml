@@ -158,6 +158,7 @@ extensions:
         aclResourceId: pim_enrich_product_categories_view #TODO
         position: 100
         config:
+            tabCode: pim-product-edit-form-categories
             itemCategoryListRoute: pim_enrich_product_model_listcategories
             itemCategoryTreeRoute: pim_enrich_product_model_category_rest_list
 
@@ -233,6 +234,8 @@ extensions:
         targetZone: container
         aclResourceId: pim_enrich_product_model_history
         position: 140
+        config:
+            tabCode: pim-product-edit-form-history
 
     pim-product-model-edit-form-copy-scope-switcher:
         module: pim/product-edit-form/scope-switcher
