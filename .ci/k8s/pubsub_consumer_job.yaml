@@ -84,7 +84,7 @@ spec:
               sudo /usr/local/bin/apache-foreground &
               CHILD_PID=$!
               (while true; do if [[ -f "/tmp/pod/main-terminated" ]]; then sudo kill -9 $CHILD_PID; fi; sleep 1; done) &
-              sudo wait $CHILD_PID
+              wait $CHILD_PID
               if [[ -f "/tmp/pod/main-terminated" ]]; then exit 0; fi
 
           workingDir: /home/jenkins/pim
