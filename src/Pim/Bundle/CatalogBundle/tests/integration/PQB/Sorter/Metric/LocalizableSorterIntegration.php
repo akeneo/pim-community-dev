@@ -27,6 +27,7 @@ class LocalizableSorterIntegration extends AbstractProductQueryBuilderTestCase
             'type'                => AttributeTypes::METRIC,
             'localizable'         => true,
             'scopable'            => false,
+            'negative_allowed'    => true,
             'decimals_allowed'    => true,
             'metric_family'       => 'Power',
             'default_metric_unit' => 'WATT'

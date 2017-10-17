@@ -17,8 +17,6 @@ class IndexProductsIntegration extends TestCase
 {
     const DOCUMENT_TYPE = 'pim_catalog_product';
 
-    private const PAGE_SIZE = 100;
-
     /** @var Client */
     protected $esProductClient;
 
@@ -27,7 +25,7 @@ class IndexProductsIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getMinimalCatalogPath()]);
+        return $this->catalog->useMinimalCatalog();
     }
 
     /**

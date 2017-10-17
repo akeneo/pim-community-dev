@@ -80,7 +80,7 @@ class UpdateVariantProductIntegration extends TestCase
      */
     protected function getConfiguration(): Configuration
     {
-        return new Configuration([Configuration::getFunctionalCatalogPath('catalog_modeling')]);
+        return $this->catalog->useFunctionalCatalog('catalog_modeling');
     }
 
     /**

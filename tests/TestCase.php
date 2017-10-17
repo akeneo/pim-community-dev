@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Akeneo\Test\Integration;
 
-use Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser;
-use Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoader;
-use Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoaderInterface;
+use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
 use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -21,6 +18,9 @@ abstract class TestCase extends KernelTestCase
 {
     /** @var KernelInterface */
     protected $testKernel;
+
+    /** @var CatalogInterface */
+    protected $catalog;
 
     /**
      * @return Configuration
@@ -39,10 +39,11 @@ abstract class TestCase extends KernelTestCase
         $this->testKernel = new \AppKernelTest('test', false);
         $this->testKernel->boot();
 
-        $configuration = $this->getConfiguration();
-        $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
+        $this->catalog = $this->testKernel->getContainer()->get('akeneo_integration_tests.configuration.catalog');
+        $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
 
-        $fixturesLoader->load($configuration);
+        $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
+        $fixturesLoader->load();
     }
 
     /**
@@ -100,7 +101,7 @@ abstract class TestCase extends KernelTestCase
     {
         $configuration = $this->getConfiguration();
         foreach ($configuration->getFixtureDirectories() as $fixtureDirectory) {
-            $path = $fixtureDirectory . $name;
+            $path = $fixtureDirectory . DIRECTORY_SEPARATOR . $name;
             if (is_file($path) && false !== realpath($path)) {
                 return realpath($path);
             }

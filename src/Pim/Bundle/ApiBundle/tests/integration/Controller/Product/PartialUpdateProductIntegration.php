@@ -667,6 +667,9 @@ JSON;
     }
      */
 
+    /**
+     * @group ce
+     */
     public function testProductPartialUpdateWithTheAssociationsUpdated()
     {
         $client = $this->createAuthenticatedClient();
@@ -1545,6 +1548,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

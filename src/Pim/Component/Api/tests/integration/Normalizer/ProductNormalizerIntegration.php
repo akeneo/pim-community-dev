@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Api\tests\integration\Normalizer;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -10,6 +9,8 @@ use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
 /**
  * Integration tests to verify data from database are well formatted in the external api format
+ *
+ * @group ce
  */
 class ProductNormalizerIntegration extends TestCase
 {
@@ -18,7 +19,7 @@ class ProductNormalizerIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
+        return $this->catalog->useTechnicalSqlCatalog();
     }
 
     public function testEmptyDisabledProduct()

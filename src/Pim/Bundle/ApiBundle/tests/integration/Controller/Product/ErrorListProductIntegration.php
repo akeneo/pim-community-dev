@@ -248,12 +248,12 @@ class ErrorListProductIntegration extends AbstractProductTestCase
 
         $products = [];
         for ($i = 0; $i<=10001; $i++) {
-            $products[] = $this->get('pim_catalog.builder.product')->createProduct('sku' . $i);
+            $products[] = $this->getFromTestContainer('pim_catalog.builder.product')->createProduct('sku' . $i);
         }
 
-        $this->get('pim_versioning.manager.version')->setRealTimeVersioning(false);
-        $this->get('pim_catalog.saver.product')->saveAll($products);
-        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+        $this->getFromTestContainer('pim_versioning.manager.version')->setRealTimeVersioning(false);
+        $this->getFromTestContainer('pim_catalog.saver.product')->saveAll($products);
+        $this->getFromTestContainer('akeneo_elasticsearch.client.product')->refreshIndex();
 
         $client->request('GET', 'api/rest/v1/products?page=101&limit=100');
 
@@ -294,6 +294,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

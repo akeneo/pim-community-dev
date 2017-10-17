@@ -27,6 +27,7 @@ class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
             'type'                => AttributeTypes::METRIC,
             'localizable'         => false,
             'scopable'            => true,
+            'negative_allowed'    => true,
             'decimals_allowed'    => true,
             'metric_family'       => 'Power',
             'default_metric_unit' => 'WATT'

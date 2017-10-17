@@ -581,7 +581,7 @@ class CreateFamilyVariantIntegration extends TestCase
      */
     protected function getConfiguration(): Configuration
     {
-        return new Configuration([Configuration::getFunctionalCatalogPath('footwear')]);
+        return $this->catalog->useFunctionalCatalog('footwear');
     }
 
     /**

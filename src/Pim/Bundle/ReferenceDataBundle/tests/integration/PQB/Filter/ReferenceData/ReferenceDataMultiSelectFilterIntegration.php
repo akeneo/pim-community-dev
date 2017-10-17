@@ -139,8 +139,6 @@ class ReferenceDataMultiSelectFilterIntegration extends AbstractProductQueryBuil
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalCatalogPath(), Configuration::getReferenceDataFixtures()]
-        );
+        return $this->catalog->useTechnicalCatalog();
     }
 }
