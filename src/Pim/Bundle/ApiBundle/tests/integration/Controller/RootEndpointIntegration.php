@@ -250,6 +250,10 @@ class RootEndpointIntegration extends ApiTestCase
             "pim_api_family_variant_create": {
                 "route": "/api/rest/v1/families/{familyCode}/variants",
                 "methods": ["POST"]
+            },
+            "pim_api_product_model_partial_update": {
+                "route": "/api/rest/v1/product-models/{code}",
+                "methods": ["PATCH"]
             }
         }
     }

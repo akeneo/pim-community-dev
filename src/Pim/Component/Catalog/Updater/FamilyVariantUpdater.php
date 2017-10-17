@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\Localization\TranslatableUpdater;
+use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
@@ -118,6 +119,11 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                 if (null !== $familyVariant->getId() &&
                     $familyVariant->getNumberOfLevel() < $this->getNumberOfLevel($value)
                 ) {
+                    throw ImmutablePropertyException::immutableProperty(
+                        'number of attribute sets',
+                        sprintf('%d attribute sets', count($value)),
+                        static::class
+                    );
                 }
 
                 foreach ($value as $attributeSetData) {

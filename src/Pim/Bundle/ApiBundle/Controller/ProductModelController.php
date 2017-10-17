@@ -214,8 +214,6 @@ class ProductModelController
         if ($isCreation) {
             $this->validateCodeConsistency($code, $data);
             $productModel = $this->factory->create();
-        } elseif (null !== $productModel->getParent() && array_key_exists('parent', $data) && null === $data['parent']) {
-            throw new HttpException(Response::HTTP_UNPROCESSABLE_ENTITY, 'Property parent cannot be set to null.');
         }
 
         $data['code'] = array_key_exists('code', $data) ? $data['code'] : $code;

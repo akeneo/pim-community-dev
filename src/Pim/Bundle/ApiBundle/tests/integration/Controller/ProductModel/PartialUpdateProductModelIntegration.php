@@ -124,7 +124,7 @@ JSON;
         $this->assertSame($standardizedProduct['values']['a_text'][0]['data'], 'My awesome text');
     }
 
-    public function testUpdateAxeSubProductModel()
+    public function testUpdateAxisSubProductModel()
     {
         $client = $this->createAuthenticatedClient();
 
@@ -587,7 +587,12 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "Property parent cannot be set to null."
+  "message": "Property \"parent\" cannot be modified, \"NULL\" given. Check the standard format documentation.",
+  "_links": {
+    "documentation": {
+      "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
+    }
+  }
 }
 JSON;
 
@@ -803,7 +808,7 @@ JSON;
   "message": "Validation failed.",
   "errors": [
     {
-      "property": "",
+      "property": "attribute",
       "message": "Cannot set value \"Option B\" for the attribute axis \"a_simple_select\", as another sibling entity already has this value"
     }
   ]
@@ -1046,6 +1051,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }
