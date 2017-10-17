@@ -122,7 +122,12 @@ class Cursor extends AbstractCursor
                 ->from($from->getFrom(), $from->getAlias(), $rootIdExpr)
                 ->groupBy($rootIdExpr);
 
-            $results = $this->queryBuilder->getQuery()->getArrayResult();
+            $query = $this->queryBuilder->getQuery();
+            $query->useQueryCache(false);
+            //$query->setQueryCacheDriver(null);
+            //$query->useResultCache(false);
+
+            $results = $query->getArrayResult();
             $this->entitiesIds = array_keys($results);
         }
 
