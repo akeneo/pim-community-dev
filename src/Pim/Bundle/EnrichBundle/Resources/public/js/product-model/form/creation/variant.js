@@ -8,15 +8,24 @@
 define([
     'jquery',
     'underscore',
-    'pim/form/common/fields/select'
+    'pim/form/common/fields/select',
+    'pim/form'
 ],
 function (
     $,
     _,
-    BaseField
+    BaseField,
+    BaseForm
 ) {
     return BaseField.extend({
-        // listen to event - set this.config.choices and this.config.value and re-render ?
-        // render input with choices
+
+        configure() {
+            this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', form => {
+                // Trigger variant display
+            })
+
+
+            return BaseForm.prototype.configure.apply(this, arguments);
+        }
     });
 });

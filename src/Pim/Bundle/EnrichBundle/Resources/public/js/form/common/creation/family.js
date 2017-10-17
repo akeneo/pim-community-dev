@@ -57,7 +57,7 @@ define([
          * @param  {Object} event jQuery event
          */
         updateModel(event) {
-            this.getFormModel().set('family', event.target.value);
+            this.getParent().setData({ family: event.target.value });
         },
 
         /**
