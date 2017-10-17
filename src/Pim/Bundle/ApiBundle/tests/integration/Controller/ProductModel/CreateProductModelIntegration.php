@@ -194,7 +194,198 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-    public function testSubProductModelCreationWithAFamilyVariantWithOnlyOneLevelOfVariant()
+    public function testRootProductModelCreationWithAFamilyVariantDifferentFromTheParent()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "code": "product_model",
+        "family_variant": null,
+        "values": {
+          "a_simple_select": [
+            {
+              "locale": null,
+              "scope": null,
+              "data": "optionB"
+            }
+          ]
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
+
+        $expectedContent =
+            <<<JSON
+{
+  "code": 422,
+  "message": "Property \"family_variant\" does not expect an empty value. Check the standard format documentation.",
+  "_links": {
+    "documentation": {
+      "href": "http://api.akeneo.com/api-reference.html#post_product_model"
+    }
+  }
+}
+JSON;
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    public function testSubProductModelCreationWithAFamilyVariantSetToNull()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "code": "sub_product_model",
+        "parent": "sweat",
+        "family_variant": null,
+        "values": {
+          "a_simple_select": [
+            {
+              "locale": null,
+              "scope": null,
+              "data": "optionB"
+            }
+          ]
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
+
+        $expectedContent =
+<<<JSON
+{
+  "code": 422,
+  "message": "Property \"family_variant\" does not expect an empty value. Check the standard format documentation.",
+  "_links": {
+    "documentation": {
+      "href": "http://api.akeneo.com/api-reference.html#post_product_model"
+    }
+  }
+}
+JSON;
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    public function testRootProductModelCreationWithParentToNull()
+    {
+        $client = $this->createAuthenticatedClient();
+        $data =
+            <<<JSON
+{
+        "code": "root_product_model",
+        "parent": null,
+        "family_variant": "familyVariantA1",
+        "values": {
+            "a_number_float":[
+                {
+                    "locale":null,
+                    "scope":null,
+                    "data":"12.5000"
+                }
+            ]
+        }
+    }
+JSON;
+        $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
+        $expectedProductModel = [
+            'code'           => 'root_product_model',
+            'family_variant' => 'familyVariantA1',
+            'parent'         => null,
+            'categories'     => [],
+            'values'        => [
+                'a_number_float' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => '12.5000',
+                    ],
+                ],
+            ],
+            'created' => '2016-06-14T13:12:50+02:00',
+            'updated' => '2016-06-14T13:12:50+02:00',
+        ];
+        $response = $client->getResponse();
+        $this->assertSame('', $response->getContent());
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertSameProductModels($expectedProductModel, 'root_product_model');
+    }
+
+    //TODO: to be fixed in API-407
+//    public function testSubProductModelCreationThatSetsASubProductModelAsParent()
+//    {
+//        $this->createProductModel(
+//            [
+//                'code'           => 'tshirt_sub_product_model',
+//                'family_variant' => 'familyVariantA1',
+//                'parent'         => 'tshirt',
+//                'values'         => [
+//                    'a_simple_select' => [
+//                        [
+//                            'scope'  => null,
+//                            'locale' => null,
+//                            'data'   => "optionB",
+//                        ],
+//                    ],
+//                ],
+//            ]
+//        );
+//
+//        $client = $this->createAuthenticatedClient();
+//
+//        $data =
+//            <<<JSON
+//    {
+//        "code": "sub_product_model",
+//        "parent": "tshirt_sub_product_model",
+//        "family_variant": "familyVariantA1",
+//        "values": {
+//          "a_simple_select": [
+//            {
+//              "locale": null,
+//              "scope": null,
+//              "data": "optionB"
+//            }
+//          ]
+//        }
+//    }
+//JSON;
+//
+//        $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
+//
+//        $expectedContent =
+//            <<<JSON
+//{
+//  "code": 422,
+//  "message": "Validation failed.",
+//  "errors": [
+//    {
+//      "property": "parent",
+//      "message": "The product model \"sub_product_model\" cannot have the product model \"tshirt_sub_product_model\" as parent"
+//    }
+//  ]
+//}
+//JSON;
+//
+//        $response = $client->getResponse();
+//
+//        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+//        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+//    }
+
+    public function testSubProductModelCreationWithAlreadyExistingAxes()
     {
         $this->createProductModel(
             [
@@ -219,14 +410,14 @@ JSON;
             <<<JSON
     {
         "code": "sub_product_model",
-        "parent": "tshirt_sub_product_model",
+        "parent": "tshirt",
         "family_variant": "familyVariantA1",
         "values": {
-          "a_yes_no": [
+          "a_simple_select": [
             {
               "locale": null,
               "scope": null,
-              "data": true
+              "data": "optionB"
             }
           ]
         }
@@ -242,8 +433,8 @@ JSON;
   "message": "Validation failed.",
   "errors": [
     {
-      "property": "",
-      "message": "The product model \"sub_product_model\" cannot have the product model \"tshirt_sub_product_model\" as parent"
+      "property": "attribute",
+      "message": "Cannot set value \"Option B\" for the attribute axis \"a_simple_select\", as another sibling entity already has this value"
     }
   ]
 }

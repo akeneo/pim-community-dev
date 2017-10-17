@@ -1,0 +1,9 @@
+
+parameters:
+    pim_api.updater.product_model.class: Pim\Component\Api\Updater\ProductModelUpdater
+
+services:
+    pim_api.updater.product_model:
+        class: '%pim_api.updater.product_model.class%'
+        arguments:
+            - '@pim_catalog.updater.product_model'
