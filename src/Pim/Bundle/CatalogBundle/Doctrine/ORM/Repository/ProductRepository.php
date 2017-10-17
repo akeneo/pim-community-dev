@@ -171,7 +171,12 @@ class ProductRepository extends EntityRepository implements
         );
         $qb->setParameter(':product_ids', $productIds);
 
-        return $qb->getQuery()->execute();
+        $query = $qb->getQuery();
+        $query->useQueryCache(false);
+        //$query->setQueryCacheDriver(null);
+        //$query->useResultCache(false);
+
+        return $query->execute();
     }
 
     /**
@@ -391,7 +396,13 @@ class ProductRepository extends EntityRepository implements
         $qb = $pqb->getQueryBuilder();
         $attribute = $this->getIdentifierAttribute();
         $pqb->addFilter($attribute->getCode(), Operators::EQUALS, $identifier);
-        $result = $qb->getQuery()->execute();
+
+        $query = $qb->getQuery();
+        $query->useQueryCache(false);
+        //$query->useResultCache(false);
+        //$query->setQueryCacheDriver(null);
+
+        $result = $query->execute();
 
         if (empty($result)) {
             return null;
