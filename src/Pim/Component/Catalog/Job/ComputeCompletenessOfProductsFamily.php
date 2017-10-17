@@ -6,7 +6,10 @@ namespace Pim\Component\Catalog\Job;
 
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
@@ -21,25 +24,45 @@ use Pim\Component\Connector\Step\TaskletInterface;
  */
 class ComputeCompletenessOfProductsFamily implements TaskletInterface
 {
+    private const BATCH_SIZE = 100;
+
     /** @var StepExecution */
     private $stepExecution;
 
-    /** @var SaverInterface */
-    private $productSaver;
+    /** @var IdentifiableObjectRepositoryInterface */
+    private $familyRepository;
+
+    /** @var CompletenessManager */
+    private $completenessManager;
 
     /** @var ProductQueryBuilderFactoryInterface */
     private $productQueryBuilderFactory;
 
+    /** @var BulkObjectDetacherInterface */
+    private $bulkObjectDetacher;
+
+    /** @var BulkSaverInterface */
+    private $bulkProductSaver;
+
     /**
-     * @param ProductQueryBuilderFactoryInterface $productQueryBuilderFactory
-     * @param SaverInterface                      $productSaver
+     * @param IdentifiableObjectRepositoryInterface $familyRepository
+     * @param CompletenessManager                   $completenessManager
+     * @param ProductQueryBuilderFactoryInterface   $productQueryBuilderFactory
+     * @param BulkObjectDetacherInterface           $bulkObjectDetacher
+     * @param BulkSaverInterface                    $bulkProductSaver
      */
     public function __construct(
+        IdentifiableObjectRepositoryInterface $familyRepository,
+        CompletenessManager $completenessManager,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
-        SaverInterface $productSaver
+        BulkSaverInterface $bulkProductSaver,
+        BulkObjectDetacherInterface $bulkObjectDetacher
     ) {
+        $this->familyRepository = $familyRepository;
+        $this->completenessManager = $completenessManager;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
-        $this->productSaver = $productSaver;
+        $this->bulkProductSaver = $bulkProductSaver;
+        $this->bulkObjectDetacher = $bulkObjectDetacher;
     }
 
     /**
@@ -58,10 +81,44 @@ class ComputeCompletenessOfProductsFamily implements TaskletInterface
         $jobParameters = $this->stepExecution->getJobParameters();
         $familyCode = $jobParameters->get('family_code');
 
-        $products = $this->findProductsForFamily($familyCode);
-        foreach ($products as $product) {
-            $this->productSaver->save($product);
+        $this->resetCompletenessOfProductsForFamily($familyCode);
+        $this->computeCompletenesses($familyCode);
+    }
+
+    /**
+     * Resets the completeness of products belonging to the family.
+     *
+     * @param string $familyCode
+     */
+    private function resetCompletenessOfProductsForFamily(string $familyCode): void
+    {
+        $family = $this->familyRepository->findOneByIdentifier($familyCode);
+        $this->completenessManager->scheduleForFamily($family);
+    }
+
+    /**
+     * Recompute the completenesses of all products belonging to the family by calling 'save' on them.
+     *
+     * @param string $familyCode
+     */
+    private function computeCompletenesses(string $familyCode): void
+    {
+        $productToSave = $this->findProductsForFamily($familyCode);
+
+        $productBatch = [];
+        foreach ($productToSave as $product) {
+            $productBatch[] = $product;
+
+            if (self::BATCH_SIZE === $productBatch) {
+                $this->bulkProductSaver->saveAll($productBatch);
+                $this->bulkObjectDetacher->detachAll($productBatch);
+
+                $productBatch = [];
+            }
         }
+
+        $this->bulkProductSaver->saveAll($productBatch);
+        $this->bulkObjectDetacher->detachAll($productBatch);
     }
 
     /**

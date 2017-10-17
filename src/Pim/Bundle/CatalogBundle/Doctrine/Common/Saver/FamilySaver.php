@@ -58,8 +58,6 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
 
         $this->objectManager->persist($family);
 
-        $this->completenessManager->scheduleForFamily($family);
-
         $this->objectManager->flush();
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family, $options));

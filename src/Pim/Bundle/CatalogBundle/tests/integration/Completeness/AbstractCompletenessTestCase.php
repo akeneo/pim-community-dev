@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -171,6 +171,16 @@ abstract class AbstractCompletenessTestCase extends TestCase
         return $family;
     }
 
+    protected function removeFamilyRequirement($familyCode, $channelCode, $attributeCode)
+    {
+        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier($familyCode);
+        $attributeRequirementToRemove = $this->getAttributeRequirement($family, $channelCode, $attributeCode);
+        $family->removeAttributeRequirement($attributeRequirementToRemove);
+        $this->get('pim_catalog.saver.family')->save($family);
+
+        return $family;
+    }
+
     /**
      * @param string $code
      *
@@ -185,5 +195,32 @@ abstract class AbstractCompletenessTestCase extends TestCase
         }
 
         return $family;
+    }
+
+    /**
+     * @param FamilyInterface $family
+     * @param string $channelCode
+     * @param string $attributeCode
+     *
+     * @return null|AttributeRequirementInterface
+     */
+    private function getAttributeRequirement(
+        FamilyInterface $family,
+        string $channelCode,
+        string $attributeCode
+    ): ?AttributeRequirementInterface {
+        $attributeRequirementToRemove = null;
+
+        $attributeRequirements = $family->getAttributeRequirements();
+        foreach ($attributeRequirements as $attributeRequirement) {
+            if ($channelCode === $attributeRequirement->getChannelCode() &&
+                $attributeCode === $attributeRequirement->getAttributeCode()
+            ) {
+                $attributeRequirementToRemove = $attributeRequirement;
+                break;
+            }
+        }
+
+        return $attributeRequirementToRemove;
     }
 }

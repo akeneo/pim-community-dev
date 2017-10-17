@@ -23,8 +23,11 @@ services:
     pim_catalog.tasklet.compute_completeness_of_products_family:
         class: '%pim_catalog.tasklet.compute_completeness_of_products_family.class%'
         arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.manager.completeness'
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_catalog.saver.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
         public: false
 
     pim_catalog.step.compute_product_models_descendants:
