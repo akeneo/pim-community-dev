@@ -5,6 +5,15 @@
 - GITHUB-7035: Change class alias for proper LocaleType form parent indication, cheers @mkilmanas!
 - PIM-6567: Fix attributes filter to not remove axes
 
+## Better manage products with variants!
+
+- PIM-6773: Add the missing required attributes filter in the product model edit form
+
+## BC breaks
+
+- Change the constructor of `Pim\Component\Catalog\Completeness\CompletenessCalculator`. Remove `Pim\Component\Catalog\Factory\ValueFactory` and both `Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface`. Add `Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory` and `Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory`. 
+- Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer` to add `Symfony\Component\Serializer\Normalizer\NormalizerInterface`.
+
 # 2.0.4 (2017-10-19)
 
 # 2.0.3 (2017-10-19)
