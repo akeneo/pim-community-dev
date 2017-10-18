@@ -39,7 +39,6 @@ class FamilySaverSpec extends ObjectBehavior
     }
 
     function it_saves_multiple_family(
-        $completenessManager,
         $objectManager,
         $eventDispatcher,
         FamilyInterface $family1,
@@ -50,9 +49,6 @@ class FamilySaverSpec extends ObjectBehavior
 
         $objectManager->persist($family1)->shouldBeCalled();
         $objectManager->persist($family2)->shouldBeCalled();
-
-//        $completenessManager->scheduleForFamily($family1)->shouldBeCalled($family1);
-//        $completenessManager->scheduleForFamily($family2)->shouldBeCalled($family2);
 
         $objectManager->flush()->shouldBeCalled();
 
