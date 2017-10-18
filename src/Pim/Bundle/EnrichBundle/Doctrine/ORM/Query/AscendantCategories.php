@@ -50,8 +50,7 @@ class AscendantCategories implements AscendantCategoriesInterface
             $result = array_map(function ($id) {
                 return intval($id['id']);
             }, $queryBuilder->getQuery()->getResult());
-        }
-        else if ($entity instanceof VariantProductInterface) {
+        } elseif ($entity instanceof VariantProductInterface) {
             $queryBuilder
                 ->select('category.id AS id, parent_category.id AS parent_id')
                 ->from(VariantProductInterface::class, 'variant_product')

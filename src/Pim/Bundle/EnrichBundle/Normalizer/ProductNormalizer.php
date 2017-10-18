@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
@@ -188,18 +189,19 @@ class ProductNormalizer implements NormalizerInterface
         $updated = null !== $newestLog ? $this->versionNormalizer->normalize($newestLog, 'internal_api') : null;
 
         $normalizedProduct['meta'] = [
-            'form'                   => $this->formProvider->getForm($product),
-            'id'                     => $product->getId(),
-            'created'                => $created,
-            'updated'                => $updated,
-            'model_type'             => 'product',
-            'structure_version'      => $this->structureVersionProvider->getStructureVersion(),
-            'completenesses'         => $this->getNormalizedCompletenesses($product),
-            'image'                  => $this->normalizeImage($product->getImage(), $format, $context),
+            'form'              => $this->formProvider->getForm($product),
+            'id'                => $product->getId(),
+            'created'           => $created,
+            'updated'           => $updated,
+            'model_type'        => 'product',
+            'structure_version' => $this->structureVersionProvider->getStructureVersion(),
+            'completenesses'    => $this->getNormalizedCompletenesses($product),
+            'image'             => $this->normalizeImage($product->getImage(), $format, $context),
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
         // TODO Refactor this condition in 2.1 to remove default null parameter.
-        $normalizedProduct['meta']['ascendant_category_ids'] = (null !== $this->ascendantCategoriesQuery)
+        $normalizedProduct['meta']['ascendant_category_ids'] =
+            (null !== $this->ascendantCategoriesQuery) && ($product instanceof EntityWithFamilyVariantInterface)
             ? $this->ascendantCategoriesQuery->getCategoryIds($product)
             : [];
 
