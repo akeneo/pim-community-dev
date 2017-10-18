@@ -636,6 +636,70 @@ JSON;
         $this->assertSame('', $response->getContent());
     }
 
+    public function testUpdateSubProductModelWithNoParentAndIgnoreAttribute()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "values": {
+            "a_description":[
+                {
+                    "locale":null,
+                    "scope":null,
+                    "data":"trololo le texte"
+                }
+            ]
+        }
+    }
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/sub_sweat', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertArrayHasKey('location', $response->headers->all());
+        $this->assertSame(
+            'http://localhost/api/rest/v1/product-models/sub_sweat',
+            $response->headers->get('location')
+        );
+        $this->assertSame('', $response->getContent());
+    }
+
+    public function testUpdateRootProductModelWithNoParentAndIgnoreAttribute()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "values": {
+            "a_description":[
+                {
+                    "locale":null,
+                    "scope":null,
+                    "data":"trololo le texte"
+                }
+            ]
+        }
+    }
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/sweat', [], [], [], $data);
+
+        $response = $client->getResponse();
+
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertArrayHasKey('location', $response->headers->all());
+        $this->assertSame(
+            'http://localhost/api/rest/v1/product-models/sweat',
+            $response->headers->get('location')
+        );
+        $this->assertSame('', $response->getContent());
+    }
+
     public function testUpdateRootProductModelWithNoCode()
     {
         $client = $this->createAuthenticatedClient();
@@ -686,23 +750,15 @@ JSON;
 
         $client->request('PATCH', 'api/rest/v1/product-models/sweat', [], [], [], $data);
 
-        $expectedContent =
-            <<<JSON
-{
-  "code": 422,
-  "message": "Property \"invalid\" does not exist. Check the standard format documentation.",
-  "_links": {
-    "documentation": {
-      "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
-    }
-  }
-}
-JSON;
-
         $response = $client->getResponse();
 
-        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertArrayHasKey('location', $response->headers->all());
+        $this->assertSame(
+            'http://localhost/api/rest/v1/product-models/sweat',
+            $response->headers->get('location')
+        );
+        $this->assertSame('', $response->getContent());
     }
 
     public function testUpdateSubProductModelWithDifferentCodeInUrlThanInData()

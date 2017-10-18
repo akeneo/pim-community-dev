@@ -206,6 +206,7 @@ class ProductModelController
     public function partialUpdateAction(Request $request, $code): Response
     {
         $data = $this->getDecodedContent($request->getContent());
+        $data['code'] = array_key_exists('code', $data) ? $data['code'] : $code;
         $data = $this->productModelAttributeFilter->filter($data);
 
         $productModel = $this->productModelRepository->findOneByIdentifier($code);
@@ -215,8 +216,6 @@ class ProductModelController
             $this->validateCodeConsistency($code, $data);
             $productModel = $this->factory->create();
         }
-
-        $data['code'] = array_key_exists('code', $data) ? $data['code'] : $code;
 
         $this->updateProductModel($productModel, $data, 'patch_product_models__code_');
         $this->validateProductModel($productModel);
