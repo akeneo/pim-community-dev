@@ -29,6 +29,7 @@ extensions:
             identifier: family
             required: true
             fieldLabel: pim_enrich.entity.product.meta.family.title
+            useId: true
 
     pim-product-model-create-variant:
         module: pim/product-model/form/creation/variant
@@ -38,3 +39,4 @@ extensions:
         config:
             fieldName: variant
             required: true
+            loadUrl: pim_datagrid_load

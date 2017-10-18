@@ -38,6 +38,7 @@ define([
         template: _.template(template),
         validationErrors: {},
         defaultIdentifier: 'family',
+        useId: false,
         events: {
             'change input': 'updateModel'
         },
@@ -48,6 +49,7 @@ define([
         initialize: function (config) {
             this.config = config.config;
             this.identifier = this.config.identifier || this.defaultIdentifier;
+            this.useId = this.config.useId || this.useId;
 
             BaseForm.prototype.initialize.apply(this, arguments);
         },
@@ -61,6 +63,20 @@ define([
         },
 
         /**
+         * Use the family id instead of the code
+         * @param  {Object} families   Object with families
+         * @param  {String} familyCode The family code e.g. 'clothing'
+         * @return {String}            The family code or id
+         */
+        getIdentifierFromPath(families, familyCode) {
+            if (this.useId) {
+                return families[familyCode].meta.id
+            }
+
+            return familyCode;
+        },
+
+        /**
          * Parses the family results and translates the labels
          * @param  {Array} families An array of family entities
          * @return {Array}          The formatted array of families
@@ -71,7 +87,7 @@ define([
 
             for (const family in families) {
                 data.results.push({
-                    id: family,
+                    id: this.getIdentifierFromPath(families, family),
                     text: i18n.getLabel(families[family].labels, locale, family)
                 });
             };
@@ -92,7 +108,9 @@ define([
                 FetcherRegistry.getFetcher('family')
                 .fetch(formData)
                 .then(function(family) {
-                    const { labels, code } = family;
+                    let { labels, code } = family;
+                    if (this.useId) code = family.meta.id;
+
                     callback({
                         id: code,
                         text: i18n.getLabel(labels, locale, code)
