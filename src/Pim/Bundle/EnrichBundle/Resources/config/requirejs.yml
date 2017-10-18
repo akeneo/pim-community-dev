@@ -187,6 +187,11 @@ config:
                         urls:
                             get: pim_enrich_product_model_rest_get
                             children: pim_enrich_product_model_rest_children_list
+                product-model-by-code:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            get: pim_enrich_product_model_rest_get_by_code
                 category:
                     module: pim/base-fetcher
                     options:

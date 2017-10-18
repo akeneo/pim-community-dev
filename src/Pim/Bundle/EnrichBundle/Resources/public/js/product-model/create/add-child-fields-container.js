@@ -29,11 +29,10 @@ define(
             render: function () {
                 const familyVariantCode = this.getFormData().family_variant;
                 const parentCode = this.getFormData().parent;
-                const parentId = 3;
 
                 $.when(
                     FetcherRegistry.getFetcher('family-variant').fetch(familyVariantCode),
-                    FetcherRegistry.getFetcher('product-model').fetch(parentId)
+                    FetcherRegistry.getFetcher('product-model-by-code').fetch(parentCode)
                 ).then((familyVariant, parent) => {
                     const parentLevel = parent.meta.level;
                     const variantAttributeSets = familyVariant.variant_attribute_sets;
