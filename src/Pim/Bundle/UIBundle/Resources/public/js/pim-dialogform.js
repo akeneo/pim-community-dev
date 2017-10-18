@@ -1,7 +1,7 @@
 /* global console */
 define(
-    ['jquery', 'oro/mediator', 'pim/router', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui', 'bootstrap'],
-    function ($, mediator, router, LoadingMask, initSelect2) {
+    ['jquery', 'underscore', 'oro/mediator', 'pim/router', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui', 'bootstrap'],
+    function ($, _, mediator, router, LoadingMask, initSelect2) {
         'use strict';
 
         // Allow using select2 search box in jquery ui dialog
@@ -129,6 +129,15 @@ define(
                         callback(data);
                     } else {
                         router.redirect(data.url);
+                    }
+                } else if (_.isObject(data)) {
+                    destroyDialog();
+                    if (callback) {
+                        callback(data);
+                    } else if (data.url) {
+                        router.redirect(data.url);
+                    } else if (data.route) {
+                        router.redirectToRoute(data.route, data.params);
                     }
                 } else if ($(data).prop('tagName').toLowerCase() === 'form') {
                     createDialog(data);
