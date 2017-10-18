@@ -335,7 +335,7 @@ stage("Test") {
 
                         for (scenarioCE in scenariosCE) {
                             messagesCE.add([
-                                [container: "php", script: "cd /home/jenkins/pim && sudo chown -R docker ."],
+                                [container: "php", script: "sudo cd /home/jenkins/pim && chown -R docker ."],
                                 [container: "php", script: "sudo cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "sudo rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sudo /usr/sbin/apache2ctl graceful"],
@@ -373,7 +373,7 @@ stage("Test") {
                         for (scenarioEE in scenariosEE) {
 
                             messagesEE.add([
-                                [container: "php", script: "cd /home/jenkins/pim && sudo chown -R docker ."],
+                                [container: "php", script: "sudo cd /home/jenkins/pim && chown -R docker ."],
                                 [container: "php", script: "sudo  cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "sudo rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sudo /usr/sbin/apache2ctl graceful"],
@@ -409,7 +409,7 @@ stage("Test") {
                         for (scenarioCE in scenariosCE) {
 
                             messagesCE.add([
-                                [container: "php", script: "cd /home/jenkins/pim && sudo chown -R docker ."],
+                                [container: "php", script: "sudo cd /home/jenkins/pim && chown -R docker ."],
                                 [container: "php", script: "sudo cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "sudo rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sudo /usr/sbin/apache2ctl graceful"],
@@ -445,7 +445,7 @@ stage("Test") {
                         def messagesEE = new net.sf.json.JSONArray()
                         for (scenarioEE in scenariosEE) {
                             messagesEE.add([
-                                [container: "php", script: "cd /home/jenkins/pim && sudo chown -R docker ."],
+                                [container: "php", script: "sudo cd /home/jenkins/pim && chown -R docker ."],
                                 [container: "php", script: "sudo cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "sudo rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sudo /usr/sbin/apache2ctl graceful"],
@@ -571,7 +571,9 @@ def queue(body, scale, edition) {
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ], volumes: [
+        hostPathVolume(hostPath: "/var/run/docker.sock", mountPath: "/var/run/docker.sock"),
         hostPathVolume(hostPath: "/usr/bin/docker", mountPath: "/usr/bin/docker")
+
     ]) {
         node("pubsub-" + uuid) {
             def messages = []
