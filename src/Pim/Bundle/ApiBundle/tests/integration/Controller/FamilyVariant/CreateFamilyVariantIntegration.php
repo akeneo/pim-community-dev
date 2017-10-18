@@ -148,7 +148,7 @@ JSON;
         $expectedContent = <<<JSON
 {
 	"code": 422,
-	"message": "Property \"variant_attribute_sets\" expects an array as data, \"string\" given. Check the standard format documentation.",
+	"message": "Property \"variant_attribute_sets\" expects an array of objects as data. Check the standard format documentation.",
 	"_links": {
 		"documentation": {
 			"href": "http://api.akeneo.com/api-reference.html#post_families__family_code__variants"

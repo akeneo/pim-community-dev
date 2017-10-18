@@ -1,9 +1,5 @@
 # 2.0.x
 
-## Better manage products with variants!
-
-- API-399: Create a product model
-
 ## Bug fixes
 
 - PIM-6898: Fixes some data can break ES index and crashes new products indexing
@@ -13,6 +9,8 @@
 ## Better manage products with variants!
 
 - API-381: Create family variant via API.
+- API-399: Create a product model
+- PIM-6903: Adds compare/translate functionality for product models
 
 ## Better UI\UX!
 
@@ -20,10 +18,6 @@
 - PIM-6504: Update action icons on datagrids
 - PIM-6848: Fix design on export builder fields
 - PIM-6868: CSS glitches compilation
-
-## Better manage products with variants!
-
-- PIM-6903: Adds compare/translate functionality for product models
 
 # 2.0.2 (2017-10-12)
 

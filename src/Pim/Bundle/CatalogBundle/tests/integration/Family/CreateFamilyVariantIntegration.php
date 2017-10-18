@@ -398,6 +398,46 @@ class CreateFamilyVariantIntegration extends TestCase
     }
 
     /**
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "variant_attribute_sets" expects an array of objects as data.
+     */
+    public function testCreateFamilyVariantWithVariantAttributeSetAsString()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'code'   => 'familyVariantCode',
+                'family' => 'boots',
+                'labels' => [
+                    'en_US' => 'My family variant'
+                ],
+                'variant_attribute_sets' => 'color',
+            ]
+        );
+    }
+
+    /**
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "variant_attribute_sets" expects an array of objects as data.
+     */
+    public function testCreateFamilyVariantWithVariantAttributeSetAsArrayOfString()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'code'   => 'familyVariantCode',
+                'family' => 'boots',
+                'labels' => [
+                    'en_US' => 'My family variant'
+                ],
+                'variant_attribute_sets' => ['color'],
+            ]
+        );
+    }
+
+    /**
      * Validation: If level of attribute set is not specified it is not set, so validation must return an error.
      */
     public function testTheAttributeSetWithoutLevelSpecified()

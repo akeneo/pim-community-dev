@@ -128,7 +128,11 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
 
                 foreach ($value as $attributeSetData) {
                     if (!is_array($attributeSetData)) {
-                        throw InvalidPropertyTypeException::arrayExpected($field, static::class, $attributeSetData);
+                        throw InvalidPropertyTypeException::arrayOfObjectsExpected(
+                            $field,
+                            static::class,
+                            $attributeSetData
+                        );
                     }
                     if (!isset($attributeSetData['level'])) {
                         continue;
