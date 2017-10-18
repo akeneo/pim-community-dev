@@ -9,7 +9,7 @@ use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Job\ComputeCompletenessOfProductsFamily;
+use Pim\Component\Catalog\Job\ComputeCompletenessOfProductsFamilyTasklet;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -17,7 +17,7 @@ use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 
-class ComputeCompletenessOfProductsFamilySpec extends ObjectBehavior
+class ComputeCompletenessOfProductsFamilyTaskletSpec extends ObjectBehavior
 {
     function let(
         IdentifiableObjectRepositoryInterface $familyRepository,
@@ -37,7 +37,7 @@ class ComputeCompletenessOfProductsFamilySpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ComputeCompletenessOfProductsFamily::class);
+        $this->shouldHaveType(ComputeCompletenessOfProductsFamilyTasklet::class);
     }
 
     function it_calls_recomputes_the_completeness_of_all_the_products_belonging_the_given_family(

@@ -1,6 +1,6 @@
 parameters:
     pim_catalog.tasklet.compute_product_models_descendants.class: Pim\Component\Catalog\Job\ComputeProductModelsDescendantsTasklet
-    pim_catalog.tasklet.compute_completeness_of_products_family.class: Pim\Component\Catalog\Job\ComputeCompletenessOfProductsFamily
+    pim_catalog.tasklet.compute_completeness_of_products_family.class: Pim\Component\Catalog\Job\ComputeCompletenessOfProductsFamilyTasklet
 
     pim_catalog.compute_product_models_descendants.job_type: 'compute_product_models_descendants'
     pim_catalog.compute_product_models_descendants.job_name: 'compute_product_models_descendants'
