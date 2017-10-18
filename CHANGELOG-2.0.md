@@ -3,6 +3,7 @@
 ## Bug Fixes
 
 - PIM-6896: Do not display restore button on product model versions.
+- PIM-6930: Do not apply validation on the faked identifier when importing rules
 
 # 2.0.2 (2017-10-12)
 
