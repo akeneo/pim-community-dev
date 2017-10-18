@@ -11,6 +11,33 @@ use Symfony\Component\Validator\Constraint;
  */
 class FamilyVariant extends Constraint
 {
+    public const FAMILY_VARIANT_NO_LEVEL = 'pim_catalog.constraint.family_variant_no_level';
+
+    public const HAS_FAMILY_ATTRIBUTE = 'pim_catalog.constraint.family_variant_has_family_attribute';
+
+    public const UNIQUE_ATTRIBUTE_IN_LAST_LEVEL =
+        'pim_catalog.constraint.family_variant_unique_attributes_in_last_level';
+
+    public const ATTRIBUTES_UNIQUE = 'pim_catalog.constraint.family_variant_attributes_unique';
+
+    public const AXES_WRONG_TYPE = 'pim_catalog.constraint.family_variant_axes_wrong_type';
+
+    public const AXES_ATTRIBUTE_TYPE_UNIQUE = 'pim_catalog.constraint.family_variant_axes_attribute_type_unique';
+
+    public const AXES_ATTRIBUTE_TYPE = 'pim_catalog.constraint.family_variant_axes_attribute_type';
+
+    public const AXES_LEVEL = 'pim_catalog.constraint.family_variant_axis_level';
+
+    public const AXES_UNIQUE = 'pim_catalog.constraint.family_variant_axes_unique';
+
+    public const MAXIMUM_NUMBER_OF_LEVEL = 'pim_catalog.constraint.family_variant_maximum_number_of_level';
+
+    public const LEVEL_DO_NOT_EXIST = 'pim_catalog.constraint.family_variant_level_do_not_exist';
+
+    public const NUMBER_OF_AXES = 'pim_catalog.constraint.family_variant_axes_number_of_axes';
+
+    public const NO_AXIS = 'pim_catalog.constraint.family_variant_no_axis';
+
     /**
      * {@inheritdoc}
      */

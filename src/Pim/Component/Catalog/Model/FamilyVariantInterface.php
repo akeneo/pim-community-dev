@@ -13,14 +13,14 @@ use Doctrine\Common\Collections\Collection;
 interface FamilyVariantInterface extends TranslatableInterface
 {
     /**
-     * @return int
+     * @return null|int
      */
     public function getId(): ?int;
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getCode(): string;
+    public function getCode(): ?string;
 
     /**
      * @param string $code
@@ -70,9 +70,9 @@ interface FamilyVariantInterface extends TranslatableInterface
     public function setFamily(FamilyInterface $family): void;
 
     /**
-     * @return FamilyInterface
+     * @return null|FamilyInterface
      */
-    public function getFamily(): FamilyInterface;
+    public function getFamily(): ?FamilyInterface;
 
     /**
      * @return int

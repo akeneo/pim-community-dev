@@ -44,7 +44,7 @@ class UpdateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update(
             $familyVariant,
             [
-                'label' => [
+                'labels' => [
                     'en_US' => 'My family variant',
                 ],
                 'variant_attribute_sets' => [

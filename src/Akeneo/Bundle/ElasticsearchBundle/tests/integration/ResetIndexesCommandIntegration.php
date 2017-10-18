@@ -25,7 +25,7 @@ class ResetIndexesCommandIntegration extends TestCase
     }
 
     /**
-     * @return Configuration
+     * {@inheritdoc}
      */
     protected function getConfiguration(): Configuration
     {

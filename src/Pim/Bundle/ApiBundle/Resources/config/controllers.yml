@@ -55,6 +55,11 @@ services:
             - '@pim_serializer'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
+            - '@validator'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_api.updater.family_variant'
+            - '@pim_catalog.saver.family_variant'
+            - '@router'
             - '%pim_api.configuration%'
 
     pim_api.controller.attribute:

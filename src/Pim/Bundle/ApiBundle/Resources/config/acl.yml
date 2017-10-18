@@ -67,6 +67,10 @@ pim_api_family_variant_list:
     type: action
     label: pim_api.acl.family_variant.list
     group_name: pim_api.acl_group.family_variant
+pim_api_family_variant_edit:
+    type: action
+    label: pim_api.acl.family_variant.edit
+    group_name: pim_api.acl_group.family_variant
 
 pim_api_currency_list:
     type: action

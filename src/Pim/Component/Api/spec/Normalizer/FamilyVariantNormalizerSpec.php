@@ -3,11 +3,8 @@
 namespace spec\Pim\Component\Api\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Api\Normalizer\FamilyNormalizer;
 use Pim\Component\Api\Normalizer\FamilyVariantNormalizer;
-use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class FamilyVariantNormalizerSpec extends ObjectBehavior

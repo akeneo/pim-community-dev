@@ -1,8 +1,13 @@
-
 parameters:
+    pim_api.updater.family_variant.class: Pim\Component\Api\Updater\FamilyVariantUpdater
     pim_api.updater.product_model.class: Pim\Component\Api\Updater\ProductModelUpdater
 
 services:
+    pim_api.updater.family_variant:
+        class: '%pim_api.updater.family_variant.class%'
+        arguments:
+            - '@pim_catalog.updater.family_variant'
+
     pim_api.updater.product_model:
         class: '%pim_api.updater.product_model.class%'
         arguments:

@@ -1,14 +1,16 @@
 # 2.0.x
 
-## Better manage products with variants!
-
-- API-399: Create a product model
-
 ## Bug fixes
 
 - PIM-6898: Fixes some data can break ES index and crashes new products indexing
 - PIM-6891: Keep the tab context between product and product model forms
 - PIM-6918: Fix error when deleteing boolean attribute linked to a published product
+
+## Better manage products with variants!
+
+- API-381: Create family variant via API.
+- API-399: Create a product model
+- PIM-6903: Adds compare/translate functionality for product models
 
 ## Better UI\UX!
 
@@ -17,10 +19,6 @@
 - PIM-6848: Fix design on export builder fields
 - PIM-6868: CSS glitches compilation
 - PIM-6909: Replace 'products' by 'results' in products indexes
-
-## Better manage products with variants!
-
-- PIM-6903: Adds compare/translate functionality for product models
 
 # 2.0.2 (2017-10-12)
 

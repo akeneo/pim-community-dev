@@ -21,7 +21,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
             'code' => 'family_variant',
             'family' => 'boots',
-            'label' => [
+            'labels' => [
                 'en_US' => 'My family variant'
             ],
             'variant_attribute_sets' => [
@@ -101,7 +101,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
             'code' => 'family_variant',
             'family' => 'boots',
-            'label' => [
+            'labels' => [
                 'en_US' => 'My family variant'
             ],
             'variant_attribute_sets' => [
@@ -145,7 +145,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
             'code' => 'family_variant',
             'family' => 'boots',
-            'label' => [
+            'labels' => [
                 'en_US' => 'My family variant'
             ],
             'variant_attribute_sets' => [
@@ -165,6 +165,307 @@ class CreateFamilyVariantIntegration extends TestCase
         $errors = $this->get('validator')->validate($familyVariant);
         $this->assertEquals(1, $errors->count());
         $this->assertEquals('This value is already used.', $errors->get(0)->getMessage());
+        $this->assertSame('code', $errors->get(0)->getPropertyPath());
+    }
+
+    public function testFamilyVariantMissingCode()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'family' => 'boots',
+                'labels' => [
+                    'en_US' => 'My family variant'
+                ],
+                'variant_attribute_sets' => [
+                    [
+                        'axes' => ['color'],
+                        'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
+                        'level'=> 1,
+                    ],
+                    [
+                        'axes' => ['size'],
+                        'attributes' => ['sku', 'price'],
+                        'level'=> 2,
+                    ]
+                ],
+            ]
+        );
+
+        $violations = $this->get('validator')->validate($familyVariant);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This value should not be blank.', $violations->get(0)->getMessage());
+        $this->assertSame('code', $violations->get(0)->getPropertyPath());
+    }
+
+    public function testFamilyVariantBlankCode()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'code'   => '',
+                'family' => 'boots',
+                'labels' => [
+                    'en_US' => 'My family variant'
+                ],
+                'variant_attribute_sets' => [
+                    [
+                        'axes' => ['color'],
+                        'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
+                        'level'=> 1,
+                    ],
+                    [
+                        'axes' => ['size'],
+                        'attributes' => ['sku', 'price'],
+                        'level'=> 2,
+                    ]
+                ],
+            ]
+        );
+
+        $violations = $this->get('validator')->validate($familyVariant);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This value should not be blank.', $violations->get(0)->getMessage());
+        $this->assertSame('code', $violations->get(0)->getPropertyPath());
+    }
+
+    public function testFamilyVariantRegexCode()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'code'   => '@code',
+                'family' => 'boots',
+                'labels' => [
+                    'en_US' => 'My family variant'
+                ],
+                'variant_attribute_sets' => [
+                    [
+                        'axes' => ['color'],
+                        'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
+                        'level'=> 1,
+                    ],
+                    [
+                        'axes' => ['size'],
+                        'attributes' => ['sku', 'price'],
+                        'level'=> 2,
+                    ]
+                ],
+            ]
+        );
+
+        $violations = $this->get('validator')->validate($familyVariant);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('Family variant code may contain only letters, numbers and underscores', $violations->get(0)->getMessage());
+        $this->assertSame('code', $violations->get(0)->getPropertyPath());
+    }
+
+    public function testFamilyVariantTooLongCode()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'code'   => 'A_SQL_query_goes_into_a_bar_walks_up_to_two_tables_and_asks__Can_I_join_you___hip_hip_Array_for_the_joke_in_integration_tests',
+                'family' => 'boots',
+                'labels' => [
+                    'en_US' => 'My family variant'
+                ],
+                'variant_attribute_sets' => [
+                    [
+                        'axes' => ['color'],
+                        'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
+                        'level'=> 1,
+                    ],
+                    [
+                        'axes' => ['size'],
+                        'attributes' => ['sku', 'price'],
+                        'level'=> 2,
+                    ]
+                ],
+            ]
+        );
+
+        $violations = $this->get('validator')->validate($familyVariant);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('code', $violations->get(0)->getPropertyPath());
+        $this->assertSame('This value is too long. It should have 100 characters or less.', $violations->get(0)->getMessage());
+    }
+
+    /**
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Property "family" expects a valid family code. The family does not exist, "unknown_family" given
+     */
+    public function testCreateFamilyVariantUnknownFamily()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'code'   => 'familyVariantCode',
+                'family' => 'unknown_family',
+                'labels' => [
+                    'en_US' => 'My family variant'
+                ],
+                'variant_attribute_sets' => [
+                    [
+                        'axes' => ['color'],
+                        'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
+                        'level'=> 1,
+                    ],
+                    [
+                        'axes' => ['size'],
+                        'attributes' => ['sku', 'price'],
+                        'level'=> 2,
+                    ]
+                ],
+            ]
+        );
+    }
+
+    public function testCreateFamilyVariantMissingFamily()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'code'   => 'familyVariantCode',
+                'labels' => [
+                    'en_US' => 'My family variant'
+                ],
+                'variant_attribute_sets' => [
+                    [
+                        'axes' => ['color'],
+                        'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
+                        'level'=> 1,
+                    ],
+                    [
+                        'axes' => ['size'],
+                        'attributes' => ['sku', 'price'],
+                        'level'=> 2,
+                    ]
+                ],
+            ]
+        );
+
+        $violations = $this->get('validator')->validate($familyVariant);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('This value should not be null.', $violations->get(0)->getMessage());
+        $this->assertSame('family', $violations->get(0)->getPropertyPath());
+    }
+
+    public function testFamilyVariantMissingAttributeSets()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'code' => 'newFamilyVariantA1',
+                'family' => 'boots',
+            ]
+        );
+
+        $violations = $this->get('validator')->validate($familyVariant);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('There should be at least one level defined in the family variant', $violations->get(0)->getMessage());
+    }
+
+    public function testCreateFamilyVariantNoLevel()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'code' => 'newFamilyVariantA1',
+                'family' => 'boots',
+                'variant_attribute_sets' => []
+            ]
+        );
+
+        $violations = $this->get('validator')->validate($familyVariant);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('There should be at least one level defined in the family variant', $violations->get(0)->getMessage());
+    }
+
+    /**
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "variant_attribute_sets" expects an array of objects as data.
+     */
+    public function testCreateFamilyVariantWithVariantAttributeSetAsString()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'code'   => 'familyVariantCode',
+                'family' => 'boots',
+                'labels' => [
+                    'en_US' => 'My family variant'
+                ],
+                'variant_attribute_sets' => 'color',
+            ]
+        );
+    }
+
+    /**
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
+     * @expectedExceptionMessage Property "variant_attribute_sets" expects an array of objects as data.
+     */
+    public function testCreateFamilyVariantWithVariantAttributeSetAsArrayOfString()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'code'   => 'familyVariantCode',
+                'family' => 'boots',
+                'labels' => [
+                    'en_US' => 'My family variant'
+                ],
+                'variant_attribute_sets' => ['color'],
+            ]
+        );
+    }
+
+    /**
+     * Validation: If level of attribute set is not specified it is not set, so validation must return an error.
+     */
+    public function testTheAttributeSetWithoutLevelSpecified()
+    {
+        $this->createDefaultFamilyVariant();
+
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'code'                   => 'a_family_variant',
+            'family'                 => 'boots',
+            'labels'                 => [
+                'en_US' => 'My family variant'
+            ],
+            'variant_attribute_sets' => [
+                [
+                    'axes'       => ['color'],
+                    'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color']
+                ]
+            ],
+        ]);
+
+        $this->assertSame(0, $familyVariant->getVariantAttributeSets()->count());
+
+        $violations = $this->get('validator')->validate($familyVariant);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('There should be at least one level defined in the family variant', $violations->get(0)->getMessage());
     }
 
     /**
@@ -179,7 +480,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
             'code' => 'invalid_axis',
             'family' => 'boots',
-            'label' => [
+            'labels' => [
                 'en_US' => 'My family variant'
             ],
             'variant_attribute_sets' => [
@@ -208,9 +509,6 @@ class CreateFamilyVariantIntegration extends TestCase
         );
     }
 
-    /**
-     * Validation: An attribute can only be used for one attribute set
-     */
     public function testTheAttributeSetAttributeUniqueness()
     {
         $this->createDefaultFamilyVariant();
@@ -220,7 +518,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
             'code' => 'invalid_attribute',
             'family' => 'boots',
-            'label' => [
+            'labels' => [
                 'en_US' => 'My family variant'
             ],
             'variant_attribute_sets' => [
@@ -258,7 +556,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
             'code' => 'invalid_axis_type',
             'family' => 'boots',
-            'label' => [
+            'labels' => [
                 'en_US' => 'My family variant'
             ],
             'variant_attribute_sets' => [
@@ -288,6 +586,42 @@ class CreateFamilyVariantIntegration extends TestCase
         );
     }
 
+    public function testCreateFamilyVariantWithIdentifierAsAxis()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'code' => 'invalid_axis_type',
+                'family' => 'boots',
+                'labels' => [
+                    'en_US' => 'My family variant'
+                ],
+                'variant_attribute_sets' => [
+                    [
+                        'axes' => ['color'],
+                        'attributes' => ['side_view', 'rating', 'color', 'top_view', 'lace_color'],
+                        'level'=> 1,
+                    ],
+                    [
+                        'axes' => ['size', 'sku'],
+                        'attributes' => ['sku', 'weather_conditions'],
+                        'level'=> 2,
+                    ]
+                ]
+            ]
+        );
+
+        $violations = $this->get('validator')->validate($familyVariant);
+
+        $this->assertCount(2, $violations);
+        $this->assertSame('Variant axes "sku" cannot be unique or an identifier', $violations->get(0)->getMessage());
+        $this->assertSame(
+            'Variant axes "sku" must be a boolean, a simple select, a simple reference data or a metric',
+            $violations->get(1)->getMessage()
+        );
+    }
+
     /**
      * Validation: Available attributes for axis are metric, simple select and reference data simple select
      * Validation: Variant axes "%axis%" cannot be localizable, not scopable and not locale specific
@@ -299,7 +633,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
             'code' => 'family_variant',
             'family' => 'boots',
-            'label' => [
+            'labels' => [
                 'en_US' => 'My family variant'
             ],
             'variant_attribute_sets' => [
@@ -314,8 +648,36 @@ class CreateFamilyVariantIntegration extends TestCase
 
         $errors = $this->get('validator')->validate($familyVariant);
         $this->assertEquals(
-            'A variant attribute set cannot have more than 5 attributes',
+            'A variant attribute set cannot have more than 5 axes',
             $errors->get(2)->getMessage()
+        );
+    }
+
+    public function testCreateFamilyVariantWithNoAttributeInAxes()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'code' => 'family_variant',
+            'family' => 'boots',
+            'labels' => [
+                'en_US' => 'My family variant'
+            ],
+            'variant_attribute_sets' => [
+                [
+                    'axes' => [],
+                    'attributes' => [],
+                    'level'=> 1,
+                ],
+
+            ],
+        ]);
+
+        $violations = $this->get('validator')->validate($familyVariant);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame(
+            'There should be at least one attribute defined as axis for the attribute set for level "1"',
+            $violations->get(0)->getMessage()
         );
     }
 
@@ -329,7 +691,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
             'code' => 'family_variant',
             'family' => 'boots',
-            'label' => [
+            'labels' => [
                 'en_US' => 'My family variant'
             ],
             'variant_attribute_sets' => [
@@ -357,6 +719,41 @@ class CreateFamilyVariantIntegration extends TestCase
         );
     }
 
+    public function testCreateFamilyVariantTooManyLevels()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'code' => 'newFamilyVariantA1',
+                'family' => 'boots',
+                'variant_attribute_sets' => [
+                    [
+                        'axes' => ['color'],
+                        'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view'],
+                        'level'=> 1,
+                    ],
+                    [
+                        'axes' => ['lace_color'],
+                        'attributes' => ['price'],
+                        'level'=> 2,
+                    ],
+                    [
+                        'axes' => ['size'],
+                        'attributes' => ['sku'],
+                        'level'=> 3,
+                    ]
+                ]
+            ]
+        );
+
+        $violations = $this->get('validator')->validate($familyVariant);
+
+        $this->assertCount(1, $violations);
+        $this->assertSame('Family variant cannot have more than "2" level', $violations->get(0)->getMessage());
+    }
+
     /**
      * Validation: Family variant attributes must be present in the family the family variant is attached too
      */
@@ -367,7 +764,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
             'code' => 'family_variant',
             'family' => 'boots',
-            'label' => [
+            'labels' => [
                 'en_US' => 'My family variant'
             ],
             'variant_attribute_sets' => [
@@ -407,7 +804,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
             'code' => 'family_variant',
             'family' => 'boots',
-            'label' => [
+            'labels' => [
                 'en_US' => 'My family variant'
             ],
             'variant_attribute_sets' => [
@@ -449,7 +846,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
             'code' => 'family_variant',
             'family' => 'boots',
-            'label' => [
+            'labels' => [
                 'en_US' => 'My family variant'
             ],
             'variant_attribute_sets' => [
@@ -485,7 +882,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
             'code' => 'family_variant',
             'family' => 'boots',
-            'label' => [
+            'labels' => [
                 'en_US' => 'My family variant'
             ],
             'variant_attribute_sets' => [
@@ -516,7 +913,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
             'code' => 'family_variant',
             'family' => 'boots',
-            'label' => [
+            'labels' => [
                 'en_US' => 'My family variant'
             ],
             'variant_attribute_sets' => [
@@ -558,7 +955,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
             'code' => 'family_variant',
             'family' => 'boots',
-            'label' => [
+            'labels' => [
                 'en_US' => 'My family variant'
             ],
             'variant_attribute_sets' => [
@@ -574,6 +971,60 @@ class CreateFamilyVariantIntegration extends TestCase
                 ]
             ],
         ]);
+    }
+
+    /**
+     * Validation: The attribute set attributes must exists
+     *
+     * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyException
+     * @expectedExceptionMessage Property "attribute_set_1" expects a valid attribute code. The attribute does not exist, "weather" given.
+     */
+    public function testAxisAttributesExist()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'code' => 'family_variant',
+            'family' => 'boots',
+            'labels' => [
+                'en_US' => 'My family variant'
+            ],
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['weather'],
+                    'attributes' => ['rating', 'side_view', 'top_view', 'lace_color'],
+                    'level'=> 1,
+                ],
+                [
+                    'axes' => ['size'],
+                    'attributes' => ['sku', 'price'],
+                    'level'=> 2,
+                ]
+            ],
+        ]);
+    }
+
+    public function testLabelHasExistingLocale()
+    {
+        $familyVariant = $this->get('pim_catalog.factory.family_variant')->create();
+
+        $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
+            'code' => 'family_variant',
+            'family' => 'boots',
+            'labels' => [
+                'klingon' => 'qorDu\''
+            ],
+            'variant_attribute_sets' => [
+                [
+                    'axes' => ['color'],
+                    'attributes' => ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
+                    'level' => 1,
+                ]
+            ],
+        ]);
+        $errors = $this->get('validator')->validate($familyVariant);
+
+        $this->assertSame('The locale "klingon" does not exist.', $errors->get(0)->getMessage());
     }
 
     /**
@@ -596,7 +1047,7 @@ class CreateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update($familyVariant, [
             'code' => 'family_variant',
             'family' => 'boots',
-            'label' => [
+            'labels' => [
                 'en_US' => 'My family variant'
             ],
             'variant_attribute_sets' => [
