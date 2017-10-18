@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace tests\integration\Pim\Bundle\CatalogBundle\Completeness;
 
+use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessTestCase;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 
@@ -18,22 +20,89 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenessTestCase
 {
-    public function testComputeCompletenessForProductWhenUpdatingAttributeRequirements()
+    public function testComputeCompletenessesForProductWhenUpdatingAttributeRequirements()
     {
-        $this->assertJobWasNotExecuted('compute_completeness_of_products_family');
+        $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 0);
         $this->assertCompleteness('watch', 'ecommerce', 'fr_FR', 20);
-        $this->addFamilyRequirement('accessories', 'ecommerce', 'color');
-        $this->assertJobWasExecutedOnce('compute_completeness_of_products_family', ['family_code' => 'accessories']);
-        $this->assertCompleteness('watch', 'ecommerce', 'fr_FR', 33);
+        $this->assertCompleteness('braided-hat-xxxl', 'ecommerce', 'fr_FR', 80);
+        $this->addFamilyRequirement('accessories', 'ecommerce', 'composition');
+        $this->waitForJobExecutionsToEnd('compute_completeness_of_products_family');
+        $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 1);
+        $this->assertJobWasExecutedWithJobParameters(
+            'compute_completeness_of_products_family',
+            ['family_code' => 'accessories']
+        );
+        $this->assertCompleteness('watch', 'ecommerce', 'fr_FR', 16);
+        $this->assertCompleteness('braided-hat-xxxl', 'ecommerce', 'fr_FR', 66);
     }
 
-    public function testDoesNotComputeCompletenessForProductsWhenNotUpdatingAttributeRequirements()
+    public function testDoesNotComputeCompletenessesForProductsWhenNotUpdatingAttributeRequirements()
     {
-        $this->assertJobWasNotExecuted('compute_completeness_of_products_family');
+        $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 0);
         $this->assertCompleteness('watch', 'ecommerce', 'fr_FR', 20);
+        $this->assertCompleteness('braided-hat-xxxl', 'ecommerce', 'fr_FR', 80);
         $this->updateFamilyPropertiesNotTriggeringCompletenessRecomputation('accessories');
-        $this->assertJobWasNotExecuted('compute_completeness_of_products_family');
+        $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 0);
         $this->assertCompleteness('watch', 'ecommerce', 'fr_FR', 20);
+        $this->assertCompleteness('braided-hat-xxxl', 'ecommerce', 'fr_FR', 80);
+    }
+
+    public function testDoesNotComputeCompletenessesOnFamilyCreation()
+    {
+        $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 0);
+        $this->createFamilyWithRequirement(
+            'new_family',
+            'ecommerce',
+            'a_text',
+            AttributeTypes::TEXT
+        );
+        $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 0);
+    }
+
+    /**
+     * This case checks that running family updates concurrently does not break the computation of the completeness.
+     * - Both family updates should trigger completeness recomputations
+     */
+    public function testComputeCompletenessesOfTwoSubsquentDifferentFamiliesUpdates()
+    {
+        $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 0);
+        $this->assertCompleteness('watch', 'ecommerce', 'fr_FR', 20);
+        $this->assertCompleteness('tshirt-unique-size-navy-blue', 'ecommerce', 'fr_FR', 54);
+        $this->addFamilyRequirement('accessories', 'ecommerce', 'composition');
+        $this->addFamilyRequirement('clothing', 'ecommerce', 'price');
+        $this->waitForJobExecutionsToEnd('compute_completeness_of_products_family');
+        $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 2);
+        $this->assertJobWasExecutedWithJobParameters(
+            'compute_completeness_of_products_family',
+            ['family_code' => 'accessories']
+        );
+        $this->assertJobWasExecutedWithJobParameters(
+            'compute_completeness_of_products_family',
+            ['family_code' => 'clothing']
+        );
+        $this->assertCompleteness('watch', 'ecommerce', 'fr_FR', 16);
+        $this->assertCompleteness('tshirt-unique-size-navy-blue', 'ecommerce', 'fr_FR', 50);
+    }
+
+    /**
+     * This case checks that running family updates concurrently does not break the computation of the completeness.
+     * - One out of the two families should trigger the recomputations
+     */
+    public function testComputeCompletenessesOnceForTwoSubsquentDifferentFamiliesUpdates()
+    {
+        $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 0);
+        $this->assertCompleteness('watch', 'ecommerce', 'fr_FR', 20);
+        $this->assertCompleteness('tshirt-unique-size-navy-blue', 'ecommerce', 'fr_FR', 54);
+        $this->addFamilyRequirement('accessories', 'ecommerce', 'composition');
+        $this->updateFamilyPropertiesNotTriggeringCompletenessRecomputation('clothing');
+        $this->waitForJobExecutionsToEnd('compute_completeness_of_products_family');
+        $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 1);
+        $this->assertJobWasExecutedWithJobParameters(
+            'compute_completeness_of_products_family',
+            ['family_code' => 'accessories']
+        );
+        $this->assertCompleteness('watch', 'ecommerce', 'fr_FR', 16);
+        $this->assertCompleteness('tshirt-unique-size-navy-blue', 'ecommerce', 'fr_FR', 54);
     }
 
     /**
@@ -72,23 +141,6 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
     }
 
     /**
-     * @param string $productIdentifier
-     * @param string $channelCode
-     * @param string $localeCode
-     * @param int    $ratio
-     */
-    private function assertCompleteness($productIdentifier, $channelCode, $localeCode, $ratio): void
-    {
-        $this->get('doctrine.orm.default_entity_manager')->clear();
-
-        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier);
-        $completeness = $this->getCompletenesses($product, $channelCode, $localeCode);
-
-        $this->assertNotNull($completeness);
-        $this->assertEquals($ratio, $completeness->getRatio());
-    }
-
-    /**
      * Return the completeness of a product for a channel and a locale.
      *
      * @param ProductInterface $product
@@ -115,6 +167,23 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
     }
 
     /**
+     * @param string $productIdentifier
+     * @param string $channelCode
+     * @param string $localeCode
+     * @param int    $ratio
+     */
+    private function assertCompleteness($productIdentifier, $channelCode, $localeCode, $ratio): void
+    {
+        $this->get('doctrine.orm.default_entity_manager')->clear();
+
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($productIdentifier);
+        $completeness = $this->getCompletenesses($product, $channelCode, $localeCode);
+
+        $this->assertNotNull($completeness);
+        $this->assertEquals($ratio, $completeness->getRatio());
+    }
+
+    /**
      * Series of family updates that do not trigger completeness recalculations.
      *
      * @param string $familyCode
@@ -138,32 +207,83 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
     }
 
     /**
-     * Asserts a job instance has not run (no current job executions).
+     * Checks whether a job has been executed a given number of times.
      *
      * @param string $jobName
+     * @param int    $times
      */
-    private function assertJobWasNotExecuted(string $jobName): void
+    private function assertJobWasExecutedTimes(string $jobName, int $times): void
     {
         $jobInstance = $this->get('pim_enrich.repository.job_instance')->findOneBy(['code' => $jobName]);
+        $jobExecutionsCount = $jobInstance->getJobExecutions()->count();
         $this->assertEquals(
-            0,
-            $jobInstance->getJobExecutions()->count(),
-            'Not expected job run: compute_completeness_of_products_family.'
+            $times,
+            $jobExecutionsCount,
+            sprintf('Expected job to run %s times, ran %s.', $times, $jobExecutionsCount)
         );
     }
 
     /**
-     * Checks wether a job has been executed once or not.
+     * @param string $jobName
+     * @param array $jobParameters
+     */
+    private function assertJobWasExecutedWithJobParameters(string $jobName, array $jobParameters = [])
+    {
+        $found = false;
+        $jobInstance = $this->get('pim_enrich.repository.job_instance')->findOneBy(['code' => $jobName]);
+        foreach ($jobInstance->getJobExecutions() as $jobExecution) {
+            $executedJobParameters = $jobExecution->getRawParameters();
+            $diff = array_merge(
+                array_diff($executedJobParameters, $jobParameters),
+                array_diff($jobParameters, $executedJobParameters)
+            );
+
+            if (0 === count($diff)) {
+                $found = true;
+                break;
+            }
+        }
+
+        $this->assertTrue($found, 'Job execution with job parameters given not found.');
+    }
+
+    /**
+     * Wait for all the job executions of the given jobName to finnish within a given timeout.
      *
      * @param string $jobName
-     * @param array  $expectedRawParameters
      */
-    private function assertJobWasExecutedOnce(string $jobName, array $expectedRawParameters = []): void
+    private function waitForJobExecutionsToEnd(string $jobName)
     {
+        $maxRetry = 30;
+        for ($retry = 0; $retry < $maxRetry; $retry++) {
+            sleep(1);
+            if ($this->areJobExecutionsEnded($jobName)) {
+                return;
+            }
+        }
+    }
+
+    /**
+     * Checks whether all the jobExecutions for the given jobName.
+     *
+     * @param string $jobName
+     *
+     * @return bool
+     */
+    private function areJobExecutionsEnded(string $jobName): bool
+    {
+        $jobExecutionsEnded = true;
+
         $jobInstance = $this->get('pim_enrich.repository.job_instance')->findOneBy(['code' => $jobName]);
         $jobExecutions = $jobInstance->getJobExecutions();
-        $this->assertCount(1, $jobExecutions);
-        $jobExecution = $jobExecutions->first();
-        $this->assertSame($expectedRawParameters, $jobExecution->getRawParameters());
+
+        foreach ($jobExecutions as $jobExecution) {
+            $jobExecutionStatus = $jobExecution->getStatus();
+            if ($jobExecutionStatus->isRunning() || $jobExecutionStatus->isStarting()) {
+                $jobExecutionsEnded = false;
+            }
+        }
+
+        return $jobExecutionsEnded;
     }
 }

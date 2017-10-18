@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Job;
 
+use Akeneo\Component\Batch\Job\UndefinedJobParameterException;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
+use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
@@ -75,33 +77,53 @@ class ComputeCompletenessOfProductsFamily implements TaskletInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws UndefinedJobParameterException
      */
     public function execute(): void
     {
+        $family = $this->getFamilyFromJobParameters();
+        if (null === $family) {
+            return;
+        }
+        $this->resetCompletenessOfProductsForFamily($family);
+        $this->computeCompletenesses($family);
+    }
+
+    /**
+     * Get the family instance from the job parameters or null.
+     *
+     * @return null|FamilyInterface
+     *
+     * @throws UndefinedJobParameterException
+     */
+    private function getFamilyFromJobParameters(): ?FamilyInterface
+    {
         $familyCode = $this->stepExecution->getJobParameters()->get('family_code');
-        $this->resetCompletenessOfProductsForFamily($familyCode);
-        $this->computeCompletenesses($familyCode);
+
+        return $this->familyRepository->findOneByIdentifier($familyCode);
     }
 
     /**
      * Resets the completeness of products belonging to the family.
      *
-     * @param string $familyCode
+     * @param FamilyInterface $family
      */
-    private function resetCompletenessOfProductsForFamily(string $familyCode): void
+    private function resetCompletenessOfProductsForFamily(FamilyInterface $family): void
     {
-        $family = $this->familyRepository->findOneByIdentifier($familyCode);
         $this->completenessManager->scheduleForFamily($family);
     }
 
     /**
      * Recompute the completenesses of all products belonging to the family by calling 'save' on them.
      *
-     * @param string $familyCode
+     * @param FamilyInterface $family
+     *
+     * @internal param string $familyCode
      */
-    private function computeCompletenesses(string $familyCode): void
+    private function computeCompletenesses(FamilyInterface $family): void
     {
-        $productToSave = $this->findProductsForFamily($familyCode);
+        $productToSave = $this->findProductsForFamily($family);
 
         $productBatch = [];
         foreach ($productToSave as $product) {
@@ -120,14 +142,16 @@ class ComputeCompletenessOfProductsFamily implements TaskletInterface
     }
 
     /**
-     * @param string $familyCode
+     * Returns a cursor of all products belonging to the family.
+     *
+     * @param FamilyInterface $family
      *
      * @return CursorInterface
      */
-    private function findProductsForFamily(string $familyCode): CursorInterface
+    private function findProductsForFamily(FamilyInterface $family): CursorInterface
     {
         $pqb = $this->productQueryBuilderFactory->create();
-        $pqb->addFilter('family', Operators::EQUALS, $familyCode);
+        $pqb->addFilter('family', Operators::IN_LIST, [$family->getCode()]);
 
         return $pqb->execute();
     }

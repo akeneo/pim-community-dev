@@ -37,8 +37,8 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
     /** @var AttributeRequirementRepositoryInterface */
     private $attributeRequirementRepository;
 
-    /** @var bool */
-    protected $areAttributeRequirementsUpdated;
+    /** @var array */
+    private $areAttributeRequirementsUpdatedForFamilies;
 
     /**
      * @param TokenStorageInterface                   $tokenStorage
@@ -59,7 +59,7 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
         $this->jobInstanceRepository = $jobInstanceRepository;
         $this->attributeRequirementRepository = $attributeRequirementRepository;
         $this->jobName = $jobName;
-        $this->areAttributeRequirementsUpdated = false;
+        $this->areAttributeRequirementsUpdatedForFamilies = [];
     }
 
     /**
@@ -74,6 +74,13 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
     }
 
     /**
+     * Defines whether the computation of the completenesses for products belonging to this family should be done in the
+     * POST_SAVE event.
+     *
+     * It does not recompute completenesses if:
+     * - We are creating a new family
+     * - Attribute requirements of the family did not change
+     *
      * @param GenericEvent $event
      */
     public function areAttributeRequirementsUpdated(GenericEvent $event): void
@@ -88,13 +95,17 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
             return;
         }
 
+        if (null === $subject->getId()) {
+            $this->areAttributeRequirementsUpdatedForFamilies[$subject->getCode()] = false;
+
+            return;
+        }
+
         $oldAttributeRequirementsKeys = $this->getOldAttributeRequirementKeys($subject);
         $newAttributeRequirementsKeys = array_keys($subject->getAttributeRequirements());
 
-        $this->areAttributeRequirementsUpdated = $this->areAttributeRequirementsListsDifferent(
-            $oldAttributeRequirementsKeys,
-            $newAttributeRequirementsKeys
-        );
+        $this->areAttributeRequirementsUpdatedForFamilies[$subject->getCode()] =
+            $this->areAttributeRequirementsListsDifferent($oldAttributeRequirementsKeys, $newAttributeRequirementsKeys);
     }
 
     /**
@@ -112,14 +123,13 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
             return;
         }
 
-        if (!$this->areAttributeRequirementsUpdated) {
-            return;
+        if ($this->areAttributeRequirementsUpdatedForFamilies[$subject->getCode()]) {
+            $user = $this->tokenStorage->getToken()->getUser();
+            $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
+            $this->jobLauncher->launch($jobInstance, $user, ['family_code' => $subject->getCode()]);
         }
 
-        $user = $this->tokenStorage->getToken()->getUser();
-        $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
-
-        $this->jobLauncher->launch($jobInstance, $user, ['family_code' => $subject->getCode()]);
+        unset($this->areAttributeRequirementsUpdatedForFamilies[$subject->getCode()]);
     }
 
     /**
