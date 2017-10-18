@@ -51,7 +51,7 @@ define(
             treeAssociate: null,
             cache: {},
             trees: [],
-            loadedEvent: null,
+            onLoadedEvent: null,
 
             /**
              * Associates the tree code to the number of selected categories
@@ -119,8 +119,8 @@ define(
 
                     this.delegateEvents();
 
-                    this.loadedEvent = this.lockCategories.bind(this);
-                    mediator.on('jstree:loaded', this.loadedEvent);
+                    this.onLoadedEvent = this.lockCategories.bind(this);
+                    mediator.on('jstree:loaded', this.onLoadedEvent);
 
                     this.initCategoryCount();
                     this.renderCategorySwitcher();
@@ -133,7 +133,7 @@ define(
              * {@inheritdoc}
              */
             shutdown: function () {
-                mediator.off('jstree:loaded', this.loadedEvent);
+                mediator.off('jstree:loaded', this.onLoadedEvent);
 
                 BaseForm.prototype.shutdown.apply(this, arguments);
             },

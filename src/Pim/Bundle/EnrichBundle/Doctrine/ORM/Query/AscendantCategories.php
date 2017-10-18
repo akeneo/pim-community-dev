@@ -62,7 +62,7 @@ class AscendantCategories implements AscendantCategoriesInterface
                 ->setParameter(':id', $entity->getId());
 
             foreach ($queryBuilder->getQuery()->getResult() as $resultItem) {
-                if (null !== $resultItem['id'] && !in_array(intval($resultItem['id']), $result)) {
+                if (!in_array(intval($resultItem['id']), $result)) {
                     $result[] = intval($resultItem['id']);
                 }
                 if (null !== $resultItem['parent_id'] && !in_array(intval($resultItem['parent_id']), $result)) {
