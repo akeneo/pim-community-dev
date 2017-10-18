@@ -7,7 +7,7 @@ parameters:
     pim_filter.product_scope_filter.class:         Pim\Bundle\FilterBundle\Filter\Product\ScopeFilter
     pim_filter.product_groups_filter.class:        Pim\Bundle\FilterBundle\Filter\Product\GroupsFilter
     pim_filter.product_family_filter.class:        Pim\Bundle\FilterBundle\Filter\Product\FamilyFilter
-    pim_filter.product_completeness_filter.class:  Pim\Bundle\FilterBundle\Filter\Product\CompletenessFilter
+    pim_filter.product_completeness_filter.class:  Pim\Bundle\FilterBundle\Filter\CompletenessFilter
     pim_filter.product_date_filter.class:          Pim\Bundle\FilterBundle\Filter\ProductValue\DateTimeRangeFilter
     pim_filter.category_filter.class:              Pim\Bundle\FilterBundle\Filter\CategoryFilter
     pim_filter.product_enabled_filter.class:       Pim\Bundle\FilterBundle\Filter\Product\EnabledFilter
