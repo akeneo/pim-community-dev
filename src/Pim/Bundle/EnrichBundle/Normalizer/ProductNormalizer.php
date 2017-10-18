@@ -20,6 +20,7 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
+use Pim\Component\Enrich\Query\AscendantCategoriesInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -94,6 +95,9 @@ class ProductNormalizer implements NormalizerInterface
     /** @var VariantNavigationNormalizer */
     protected $navigationNormalizer;
 
+    /** @var AscendantCategoriesInterface */
+    protected $ascendantCategoriesQuery;
+
     /**
      * @param NormalizerInterface                       $normalizer
      * @param NormalizerInterface                       $versionNormalizer
@@ -136,7 +140,8 @@ class ProductNormalizer implements NormalizerInterface
         ProductBuilderInterface $productBuilder,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
-        VariantNavigationNormalizer $navigationNormalizer
+        VariantNavigationNormalizer $navigationNormalizer,
+        AscendantCategoriesInterface $ascendantCategoriesQuery = null
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -158,6 +163,7 @@ class ProductNormalizer implements NormalizerInterface
         $this->productValuesFiller              = $productValuesFiller;
         $this->attributesProvider               = $attributesProvider;
         $this->navigationNormalizer             = $navigationNormalizer;
+        $this->ascendantCategoriesQuery         = $ascendantCategoriesQuery;
     }
 
     /**
@@ -190,8 +196,12 @@ class ProductNormalizer implements NormalizerInterface
             'structure_version'      => $this->structureVersionProvider->getStructureVersion(),
             'completenesses'         => $this->getNormalizedCompletenesses($product),
             'image'                  => $this->normalizeImage($product->getImage(), $format, $context),
-            'ascendant_category_ids' => $this->AscendantCategoryIds($product),
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
+
+        // TODO Refactor this condition in 2.1 to remove default null parameter.
+        $normalizedProduct['meta']['ascendant_category_ids'] = (null !== $this->ascendantCategoriesQuery)
+            ? $this->ascendantCategoriesQuery->getCategoryIds($product)
+            : [];
 
         $normalizedProduct['meta'] += $this->getMetaForVariantProduct($product, $format, $context);
 
@@ -324,33 +334,5 @@ class ProductNormalizer implements NormalizerInterface
         }
 
         return $meta;
-    }
-
-    /**
-     * Returns the category ids inherited from parent product models
-     *
-     * @param ProductInterface $product
-     *
-     * @return integer[]
-     */
-    private function AscendantCategoryIds(ProductInterface $product): array
-    {
-        $result = [];
-
-        $parent = $product->getParent();
-        if (null !== $parent) {
-            foreach ($parent->getCategories() as $category) {
-                $result[] = $category->getId();
-            }
-
-            $root = $parent->getParent();
-            if (null !== $root) {
-                foreach ($root->getCategories() as $category) {
-                    $result[] = $category->getId();
-                }
-            }
-        }
-
-        return array_unique($result);
     }
 }
