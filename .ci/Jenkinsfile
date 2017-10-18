@@ -338,7 +338,11 @@ stage("Test") {
             "behat-ce": {
                 if (launchBehatTests.equals("yes")&& editions.contains("ce")) {
                     queue({
-                        def scenariosCE = sh (returnStdout: true, script: "cd /home/jenkins/pim && php ./bin/behat --list-scenarios").tokenize('\n')
+                        def scenariosCE = []
+                        for (feature in features) {
+                            scenariosCE = (scenariosCE + sh (returnStdout: true, script: "cd /home/jenkins/pim && php ./bin/behat $feature --list-scenarios").tokenize('\n'))
+                        }
+                        scenariosCE = scenariosCE.unique()   
                         def messagesCE = new net.sf.json.JSONArray()
 
                         for (scenarioCE in scenariosCE) {
@@ -375,7 +379,11 @@ stage("Test") {
             "behat-ee": {
                 if (launchBehatTests.equals("yes") && editions.contains("ee")) {
                     queue({
-                        scenariosEE = sh (returnStdout: true, script: "cd /home/jenkins/pim && php ./bin/behat --list-scenarios").tokenize('\n')
+                        def scenariosEE = []
+                        for (feature in features) {
+                            scenariosEE = (scenariosEE + sh (returnStdout: true, script: "cd /home/jenkins/pim && php ./bin/behat $feature --list-scenarios").tokenize('\n'))
+                        }
+                        scenariosEE = scenariosEE.unique()   
                         def messagesEE = new net.sf.json.JSONArray()
 
                         for (scenarioEE in scenariosEE) {
@@ -454,7 +462,11 @@ stage("Test") {
             "behat-ee-odm": {
                 if (launchBehatTests.equals("yes") && editions.contains("eeodm")) {
                     queue({
-                        scenariosEE = sh (returnStdout: true, script: "cd /home/jenkins/pim && php ./bin/behat --list-scenarios").tokenize('\n')
+                        def scenariosEE = []
+                        for (feature in features) {
+                            scenariosEE = (scenariosEE + sh (returnStdout: true, script: "cd /home/jenkins/pim && php ./bin/behat $feature --list-scenarios").tokenize('\n'))
+                        }
+                        scenariosEE = scenariosEE.unique()   
                         def messagesEE = new net.sf.json.JSONArray()
                         for (scenarioEE in scenariosEE) {
                             messagesEE.add([
