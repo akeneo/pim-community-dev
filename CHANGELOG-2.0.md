@@ -11,6 +11,7 @@
 - API-381: Create family variant via API.
 - API-399: Create a product model
 - PIM-6903: Adds compare/translate functionality for product models
+- API-404: Update partially a single product model
 
 ## Better UI\UX!
 

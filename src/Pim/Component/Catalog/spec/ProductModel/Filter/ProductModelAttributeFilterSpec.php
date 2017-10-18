@@ -68,6 +68,8 @@ class ProductModelAttributeFilterSpec extends ObjectBehavior
         Collection $familyVariantAttribute
     ) {
         $familyVariantRepository->findOneByIdentifier('family_variant')->willreturn($familyVariant);
+        $productModelRepository->findOneByIdentifier('code')->willreturn($productModel);
+        $productModel->getParent()->willReturn(null);
         $productModelRepository->findOneByIdentifier('parent')->willreturn($productModel);
         $productModel->getVariationLevel()->willReturn(1);
         $familyVariant->getVariantAttributeSet(2)->willReturn($variantAttributeSet);
@@ -107,6 +109,7 @@ class ProductModelAttributeFilterSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant
     ) {
         $familyVariantRepository->findOneByIdentifier('family_variant')->willreturn($familyVariant);
+        $productModelRepository->findOneByIdentifier('code')->willreturn(null);
         $productModelRepository->findOneByIdentifier('parent')->willreturn(null);
 
         $this->filter([

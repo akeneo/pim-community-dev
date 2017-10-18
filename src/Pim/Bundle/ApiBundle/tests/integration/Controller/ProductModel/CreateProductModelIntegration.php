@@ -483,7 +483,6 @@ JSON;
 }
 JSON;
 
-
         $response = $client->getResponse();
 
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());

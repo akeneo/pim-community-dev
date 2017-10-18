@@ -181,6 +181,7 @@ services:
             - '@router'
             - '@validator'
             - '@pim_connector.processor.attribute_filter.product_model'
+            - '@pim_catalog.repository.product_model'
             - '%pim_api.configuration%'
 
     pim_api.controller.root_endpoint:

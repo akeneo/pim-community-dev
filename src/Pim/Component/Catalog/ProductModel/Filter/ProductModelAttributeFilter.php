@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\ProductModel\Filter;
 
+use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 
@@ -46,12 +48,22 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
      */
     public function filter(array $standardProductModel): array
     {
-        $parent = $standardProductModel['parent'] ?? '';
-        $familyVariant = $standardProductModel['family_variant'] ?? '';
-        // Skip the attribute filtration if there is no parent nor family variant, updater/validation will raise error.
-        if (empty($parent) && empty($familyVariant)) {
+        if (!array_key_exists('code', $standardProductModel)) {
             return $standardProductModel;
         }
+
+        $productModel = $this->productModelRepository->findOneByIdentifier($standardProductModel['code']);
+        if (null !== $productModel && !isset($standardProductModel['family_variant'])) {
+            $standardProductModel['family_variant'] = $productModel->getFamilyVariant()->getCode();
+        }
+
+        if (null !== $productModel && null !== $productModel->getParent() && !array_key_exists('parent', $standardProductModel)) {
+            $standardProductModel['parent'] = $productModel->getParent()->getCode();
+            $standardProductModel['family_variant'] = $productModel->getFamilyVariant()->getCode();
+        }
+
+        $parent = $standardProductModel['parent'] ?? '';
+        $familyVariant = $standardProductModel['family_variant'] ?? '';
 
         $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariant);
         if (empty($parent) && null !== $familyVariant) {
