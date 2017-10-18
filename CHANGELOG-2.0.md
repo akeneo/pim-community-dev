@@ -5,6 +5,7 @@
 - PIM-6898: Fixes some data can break ES index and crashes new products indexing
 - PIM-6891: Keep the tab context between product and product model forms
 - PIM-6918: Fix error when deleteing boolean attribute linked to a published product
+- PIM-5817: move datepicker above field instead of under
 
 ## Better manage products with variants!
 
