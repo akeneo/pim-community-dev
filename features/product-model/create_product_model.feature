@@ -1,11 +1,11 @@
 @javascript
-Feature: Create a root product model
+Feature: Create a product model
   Background:
     Given a "catalog_modeling" catalog configuration
     And I am logged in as "Julia"
     And I am on the products grid
 
-  Scenario: Create a root product model with single variant
+  Scenario: Create a product model with single variant
     Given I create a product model
     And I should see the Code, Family, Variant fields
     And the field Variant should be disabled
@@ -16,13 +16,13 @@ Feature: Create a root product model
     And I press the "Confirm" button
     Then I should see the flash message "Product model successfully created"
 
-    # Scenario: Create a root product model with multiple variants
+    # Scenario: Create a product model with multiple variants
     #   clothing_color_size
     #
-    # Scenario: Create a root product model with single variant and metric
+    # Scenario: Create a product model with single variant and metric
     #   Create family variant with metric
     #
-    # Scenario: Create a root product model with single variant and multiple axes
+    # Scenario: Create a product model with single variant and multiple axes
     #   clothing_colorsize
     #
     # Scenario: Display only families that have at least one variant

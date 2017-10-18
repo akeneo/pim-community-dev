@@ -325,4 +325,26 @@ class FamilyController
             'internal_api'
         ));
     }
+
+
+    /**
+     * Gets families with familyVariants
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function getWithVariantsAction(Request $request)
+    {
+        $options = $request->query->get('options', ['limit' => 20]);
+
+        $families = $this->familySearchableRepo->findFamiliesWithVariants($options);
+
+        $normalizedFamilies = [];
+        foreach ($families as $family) {
+            $normalizedFamilies[$family->getCode()] = $this->normalizer->normalize($family, 'internal_api');
+        }
+
+        return new JsonResponse($normalizedFamilies);
+    }
 }

@@ -39,6 +39,7 @@ define([
         validationErrors: {},
         defaultIdentifier: 'family',
         useId: false,
+        loadUrl: 'pim_enrich_family_rest_index',
         events: {
             'change input': 'updateModel'
         },
@@ -50,6 +51,7 @@ define([
             this.config = config.config;
             this.identifier = this.config.identifier || this.defaultIdentifier;
             this.useId = this.config.useId || this.useId;
+            this.loadUrl = this.config.loadUrl || this.loadUrl;
 
             BaseForm.prototype.initialize.apply(this, arguments);
         },
@@ -70,7 +72,10 @@ define([
          */
         getIdentifierFromPath(families, familyCode) {
             if (this.useId) {
-                return families[familyCode].meta.id
+                const family = families[familyCode];
+                if (_.has(family, 'meta')) return family.meta.id;
+
+                return family.id;
             }
 
             return familyCode;
@@ -143,7 +148,7 @@ define([
                 allowClear: true,
                 initSelection: this.fetchFamilies.bind(this),
                 ajax: {
-                    url: Routing.generate('pim_enrich_family_rest_index'),
+                    url: Routing.generate(this.loadUrl),
                     results: this.parseResults.bind(this),
                     quietMillis: 250,
                     cache: true,
