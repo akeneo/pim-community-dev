@@ -239,7 +239,7 @@ stage("Test") {
             "phpspec": {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
-                        sh "cd /home/jenkins/pim && chown -R docker ."
+                        sh "cd /home/jenkins/pim && sudo chown -R docker ."
                         try {
                             sh "cd /home/jenkins/pim && su docker -c './bin/phpspec run --format=junit > junit_output.xml'"
                             sh "mv /home/jenkins/pim/junit_output.xml ${env.WORKSPACE}/"
@@ -335,7 +335,7 @@ stage("Test") {
 
                         for (scenarioCE in scenariosCE) {
                             messagesCE.add([
-                                [container: "php", script: "sudo cd /home/jenkins/pim && chown -R docker ."],
+                                [container: "php", script: "cd /home/jenkins/pim && sudo chown -R docker ."],
                                 [container: "php", script: "sudo cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "sudo rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sudo /usr/sbin/apache2ctl graceful"],
@@ -373,7 +373,7 @@ stage("Test") {
                         for (scenarioEE in scenariosEE) {
 
                             messagesEE.add([
-                                [container: "php", script: "sudo cd /home/jenkins/pim && chown -R docker ."],
+                                [container: "php", script: "cd /home/jenkins/pim && sudo chown -R docker ."],
                                 [container: "php", script: "sudo  cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "sudo rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sudo /usr/sbin/apache2ctl graceful"],
@@ -409,7 +409,7 @@ stage("Test") {
                         for (scenarioCE in scenariosCE) {
 
                             messagesCE.add([
-                                [container: "php", script: "sudo cd /home/jenkins/pim && chown -R docker ."],
+                                [container: "php", script: "cd /home/jenkins/pim && sudo chown -R docker ."],
                                 [container: "php", script: "sudo cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "sudo rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sudo /usr/sbin/apache2ctl graceful"],
@@ -445,7 +445,7 @@ stage("Test") {
                         def messagesEE = new net.sf.json.JSONArray()
                         for (scenarioEE in scenariosEE) {
                             messagesEE.add([
-                                [container: "php", script: "sudo cd /home/jenkins/pim && chown -R docker ."],
+                                [container: "php", script: "cd /home/jenkins/pim && sudo chown -R docker ."],
                                 [container: "php", script: "sudo cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "sudo rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sudo /usr/sbin/apache2ctl graceful"],
@@ -517,7 +517,7 @@ def withPhp(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "php-" + uuid, containers: [
-        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/httpd-php:5.6", resourceRequestCpu: '500m', resourceRequestMemory: '1000Mi')
+        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "akeneo/apache-php:php-5.6", resourceRequestCpu: '500m', resourceRequestMemory: '1000Mi')
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ]) {
