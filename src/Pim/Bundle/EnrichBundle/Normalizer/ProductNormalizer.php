@@ -182,15 +182,15 @@ class ProductNormalizer implements NormalizerInterface
         $updated = null !== $newestLog ? $this->versionNormalizer->normalize($newestLog, 'internal_api') : null;
 
         $normalizedProduct['meta'] = [
-            'form'                => $this->formProvider->getForm($product),
-            'id'                  => $product->getId(),
-            'created'             => $created,
-            'updated'             => $updated,
-            'model_type'          => 'product',
-            'structure_version'   => $this->structureVersionProvider->getStructureVersion(),
-            'completenesses'      => $this->getNormalizedCompletenesses($product),
-            'image'               => $this->normalizeImage($product->getImage(), $format, $context),
-            'locked_category_ids' => $this->lockedCategoryIds($product),
+            'form'                   => $this->formProvider->getForm($product),
+            'id'                     => $product->getId(),
+            'created'                => $created,
+            'updated'                => $updated,
+            'model_type'             => 'product',
+            'structure_version'      => $this->structureVersionProvider->getStructureVersion(),
+            'completenesses'         => $this->getNormalizedCompletenesses($product),
+            'image'                  => $this->normalizeImage($product->getImage(), $format, $context),
+            'ascendant_category_ids' => $this->AscendantCategoryIds($product),
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
         $normalizedProduct['meta'] += $this->getMetaForVariantProduct($product, $format, $context);
@@ -333,7 +333,7 @@ class ProductNormalizer implements NormalizerInterface
      *
      * @return integer[]
      */
-    private function lockedCategoryIds(ProductInterface $product): array
+    private function AscendantCategoryIds(ProductInterface $product): array
     {
         $result = [];
 

@@ -161,7 +161,7 @@ class ProductModelNormalizer implements NormalizerInterface
                 'attributes_axes'           => $axesAttributes,
                 'image'                     => $this->normalizeImage($closestImage, $format, $context),
                 'variant_navigation'        => $this->navigationNormalizer->normalize($productModel, $format, $context),
-                'locked_category_ids'       => $this->lockedCategoryIds($productModel)
+                'ascendant_category_ids'    => $this->AscendantCategoryIds($productModel)
             ] + $this->getLabels($productModel);
 
         return $normalizedProductModel;
@@ -214,7 +214,7 @@ class ProductModelNormalizer implements NormalizerInterface
      *
      * @return integer[]
      */
-    private function lockedCategoryIds(ProductModelInterface $productModel): array
+    private function AscendantCategoryIds(ProductModelInterface $productModel): array
     {
         $result = [];
 

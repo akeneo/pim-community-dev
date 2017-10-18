@@ -142,8 +142,7 @@ define(
              * Locks a set of categories
              */
             lockCategories: function() {
-                const lockedCategoryIds = this.getFormData().meta.locked_category_ids;
-                console.log(lockedCategoryIds);
+                const lockedCategoryIds = this.getFormData().meta.ascendant_category_ids;
                 lockedCategoryIds.forEach((categoryId) => {
                     const node = $('#node_' + categoryId);
                     node.find('> a').replaceWith(this.lockedTemplate({
