@@ -36,6 +36,10 @@ stage("Build") {
                 withBuildNode({
                     checkout scm
                     container("php") {
+                        sh "composer require --dev --no-update phpspec/phpspec:~3.4.2"
+                        sh "composer require --dev --no-update phpunit/phpunit:~5.7.22"
+                        sh "composer require --dev --no-update sebastian/exporter:~2.0.0"
+                        sh "composer require --dev --no-update liuggio/fastest:~1.4.4"
                         sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                         sh "app/console oro:requirejs:generate-config"
                         sh "app/console assets:install"
@@ -46,11 +50,6 @@ stage("Build") {
                     }
                     container("docker") {
                         sh "cp behat.ci.yml behat.yml"
-        //                sh "sed -i '/features:/d' behat.yml"
-        //                sh "sed -i         '/paths:/a\\ \\ \\ \\ \\ \\ \\ \\ features:\' behat.yml"
-        //                for (feature in features) {
-        //                    sh "sed -i \"/features:/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
-        //                }
                         sh "cat behat.yml"
 
                         sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
@@ -75,7 +74,10 @@ stage("Build") {
                     sh "mkdir -m 777 vendor"
 
                     container("php") {
-                        sh "composer require --dev --no-update liuggio/fastest:~1.4"
+                        sh "composer require --dev --no-update phpspec/phpspec:~3.4.2"
+                        sh "composer require --dev --no-update phpunit/phpunit:~5.7.22"
+                        sh "composer require --dev --no-update sebastian/exporter:~2.0.0"
+                        sh "composer require --dev --no-update liuggio/fastest:~1.4.4"
                         sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --ansi"
 
                         // Required to avoid permission error when "deleteDir()"
@@ -127,7 +129,10 @@ stage("Build") {
                 withBuildNode({
                     checkout scm
                     container("php") {
-                        sh "composer require --dev --no-update liuggio/fastest:~1.4"
+                        sh "composer require --dev --no-update phpspec/phpspec:~3.4.2"
+                        sh "composer require --dev --no-update phpunit/phpunit:~5.7.22"
+                        sh "composer require --dev --no-update sebastian/exporter:~2.0.0"
+                        sh "composer require --dev --no-update liuggio/fastest:~1.4.4"
                         sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                         sh "app/console oro:requirejs:generate-config"
                         sh "app/console assets:install"
@@ -172,7 +177,10 @@ stage("Build") {
                     ])
                     sh "mkdir -m 777 vendor"
                     container("php") {
-                        sh "composer require --dev --no-update liuggio/fastest:~1.4"                 
+                        sh "composer require --dev --no-update phpspec/phpspec:~3.4.2"
+                        sh "composer require --dev --no-update phpunit/phpunit:~5.7.22"
+                        sh "composer require --dev --no-update sebastian/exporter:~2.0.0"
+                        sh "composer require --dev --no-update liuggio/fastest:~1.4.4"              
                         sh "php -d memory_limit=-1 /usr/local/bin/composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist --ansi"
                         sh "chmod 777 -R vendor/akeneo"
                         dir('vendor/akeneo/pim-community-dev') {
@@ -406,8 +414,7 @@ stage("Test") {
                     queue({
                         def scenariosCE = []
                         for (feature in features) {
-                            // @TODO remove Path
-                            scenariosCE = (scenariosCE + sh (returnStdout: true, script: "cd /home/jenkins/pim && php ./bin/behat features/channel --list-scenarios").tokenize('\n'))
+                            scenariosCE = (scenariosCE + sh (returnStdout: true, script: "cd /home/jenkins/pim && php ./bin/behat $feature --list-scenarios").tokenize('\n'))
                         }
                         scenariosCE = scenariosCE.unique()            
                         def messagesCE = new net.sf.json.JSONArray()
