@@ -163,13 +163,13 @@ pim_enrich:
         product:
             navigation: Product navigation
             infos: Product infos
-            index_title: "] -Inf, 1] {{ count }} product|] 1, Inf [{{ count }} products"
+            index_title: "] -Inf, 1] {{ count }} result|] 1, Inf [{{ count }} results"
             title: product
             locale: Locale
             category: Category
             create: Create product
             filters: Filters
-            selected: selected products
+            selected: selected results
             common: Common
             btn:
                 enabled: Enabled
