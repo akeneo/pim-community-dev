@@ -182,14 +182,15 @@ class ProductNormalizer implements NormalizerInterface
         $updated = null !== $newestLog ? $this->versionNormalizer->normalize($newestLog, 'internal_api') : null;
 
         $normalizedProduct['meta'] = [
-            'form'              => $this->formProvider->getForm($product),
-            'id'                => $product->getId(),
-            'created'           => $created,
-            'updated'           => $updated,
-            'model_type'        => 'product',
-            'structure_version' => $this->structureVersionProvider->getStructureVersion(),
-            'completenesses'    => $this->getNormalizedCompletenesses($product),
-            'image'             => $this->normalizeImage($product->getImage(), $format, $context),
+            'form'                => $this->formProvider->getForm($product),
+            'id'                  => $product->getId(),
+            'created'             => $created,
+            'updated'             => $updated,
+            'model_type'          => 'product',
+            'structure_version'   => $this->structureVersionProvider->getStructureVersion(),
+            'completenesses'      => $this->getNormalizedCompletenesses($product),
+            'image'               => $this->normalizeImage($product->getImage(), $format, $context),
+            'locked_category_ids' => $this->lockedCategoryIds($product),
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
         $normalizedProduct['meta'] += $this->getMetaForVariantProduct($product, $format, $context);
@@ -323,5 +324,33 @@ class ProductNormalizer implements NormalizerInterface
         }
 
         return $meta;
+    }
+
+    /**
+     * Returns the category ids inherited from parent product models
+     *
+     * @param ProductInterface $product
+     *
+     * @return integer[]
+     */
+    private function lockedCategoryIds(ProductInterface $product): array
+    {
+        $result = [];
+
+        $parent = $product->getParent();
+        if (null !== $parent) {
+            foreach ($parent->getCategories() as $category) {
+                $result[] = $category->getId();
+            }
+
+            $root = $parent->getParent();
+            if (null !== $root) {
+                foreach ($root->getCategories() as $category) {
+                    $result[] = $category->getId();
+                }
+            }
+        }
+
+        return array_unique($result);
     }
 }

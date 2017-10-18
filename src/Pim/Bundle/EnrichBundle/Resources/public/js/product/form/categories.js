@@ -51,6 +51,7 @@ define(
             treeAssociate: null,
             cache: {},
             trees: [],
+            loadedEvent: null,
 
             /**
              * Associates the tree code to the number of selected categories
@@ -118,21 +119,37 @@ define(
 
                     this.delegateEvents();
 
-                    mediator.on('jstree:loaded', () => {
-                        const lockedCategoryIds = this.getFormData().meta.locked_category_ids;
-                        lockedCategoryIds.forEach((categoryId) => {
-                            const node = $('#node_' + categoryId);
-                            node.find('a').replaceWith(this.lockedTemplate({
-                                label: node.text().trim()
-                            }));
-                        });
-                    });
+                    this.loadedEvent = this.lockCategories.bind(this);
+                    mediator.on('jstree:loaded', this.loadedEvent);
 
                     this.initCategoryCount();
                     this.renderCategorySwitcher();
                 }.bind(this));
 
                 return this;
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            shutdown: function () {
+                mediator.off('jstree:loaded', this.loadedEvent);
+
+                BaseForm.prototype.shutdown.apply(this, arguments);
+            },
+
+            /**
+             * Locks a set of categories
+             */
+            lockCategories: function() {
+                const lockedCategoryIds = this.getFormData().meta.locked_category_ids;
+                console.log(lockedCategoryIds);
+                lockedCategoryIds.forEach((categoryId) => {
+                    const node = $('#node_' + categoryId);
+                    node.find('> a').replaceWith(this.lockedTemplate({
+                        label: node.find('> a').text().trim()
+                    }));
+                });
             },
 
             /**
