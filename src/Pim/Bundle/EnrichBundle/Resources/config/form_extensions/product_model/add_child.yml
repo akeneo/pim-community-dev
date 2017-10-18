@@ -1,3 +1,13 @@
 extensions:
     pim-product-model-add-child-form:
         module: pim/product-model-edit-form/add-child-form
+
+#    pim-product-model-add-child-form-header:
+#        module: pim/product-model-edit-form/add-child-form-header
+#        parent: pim-product-model-add-child-form
+#        targetZone: header
+
+    pim-product-model-add-child-form-fields-container:
+        module: pim/product-model-edit-form/add-child-form-fields-container
+        parent: pim-product-model-add-child-form
+        targetZone: fields-container

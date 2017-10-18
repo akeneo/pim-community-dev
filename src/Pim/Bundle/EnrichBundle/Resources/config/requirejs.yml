@@ -710,6 +710,8 @@ config:
         pim/product-model-edit-form/history: pimenrich/js/product/form/history
         pim/product-model/form/creation/variant: pimenrich/js/product-model/form/creation/variant
         pim/product-model-edit-form/add-child-form: pimenrich/js/product-model/form/add-child
+        # pim/product-model-edit-form/add-child-form-header:
+        pim/product-model-edit-form/add-child-form-fields-container: pimenrich/js/product-model/create/add-child-fields-container
 
         oro/datagrid/navigate-product-and-product-model-action: pimenrich/js/datagrid/action/navigate-product-and-product-model-action
         oro/datagrid/edit-in-modal-action:                      pimenrich/js/datagrid/action/edit-in-modal-action

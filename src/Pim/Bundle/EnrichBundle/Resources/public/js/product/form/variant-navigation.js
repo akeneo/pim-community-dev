@@ -204,7 +204,11 @@ define(
                     'pim-product-model-add-child-form',
                     this.submitForm.bind(this),
                     modalParameters,
-                    {parent: parent}
+                    {
+                        parent: parent,
+                        family: this.getFormData().family,
+                        family_variant: this.getFormData().family_variant
+                    }
                 );
 
                 formModal.open();

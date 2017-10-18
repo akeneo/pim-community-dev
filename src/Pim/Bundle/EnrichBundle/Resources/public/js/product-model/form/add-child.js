@@ -12,23 +12,15 @@ define(
     [
         'jquery',
         'underscore',
-        'oro/translator',
         'pim/form',
         'routing',
-        'pim/i18n',
-        'pim/user-context',
-        'pim/fetcher-registry',
         'pim/template/product-model-edit-form/add-child-form'
     ],
     function (
         $,
         _,
-        __,
         BaseForm,
         Routing,
-        i18n,
-        UserContext,
-        FetcherRegistry,
         template
     ) {
         return BaseForm.extend({
