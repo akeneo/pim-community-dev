@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\ApiBundle\Controller;
 
-use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
-use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Elasticsearch\Common\Exceptions\ServerErrorResponseException;
 use Pim\Bundle\ApiBundle\Documentation;
+use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
@@ -93,6 +92,9 @@ class ProductModelController
     /** @var ProductModelRepositoryInterface */
     protected $productModelRepository;
 
+    /** @var StreamResourceResponse */
+    protected $partialUpdateStreamResource;
+
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ProductQueryBuilderFactoryInterface $pqbFromSizeFactory
@@ -109,6 +111,7 @@ class ProductModelController
      * @param ValidatorInterface                  $productValidator
      * @param AttributeFilterInterface            $productModelAttributeFilter
      * @param ProductModelRepositoryInterface     $productModelRepository
+     * @param StreamResourceResponse              $partialUpdateStreamResource
      * @param array                               $apiConfiguration
      */
     public function __construct(
@@ -127,6 +130,7 @@ class ProductModelController
         ValidatorInterface $productValidator,
         AttributeFilterInterface $productModelAttributeFilter,
         ProductModelRepositoryInterface $productModelRepository,
+        StreamResourceResponse $partialUpdateStreamResource,
         array $apiConfiguration
     ) {
         $this->pqbFactory                  = $pqbFactory;
@@ -137,7 +141,6 @@ class ProductModelController
         $this->offsetPaginator             = $offsetPaginator;
         $this->searchAfterPaginator        = $searchAfterPaginator;
         $this->primaryKeyEncrypter         = $primaryKeyEncrypter;
-        $this->apiConfiguration            = $apiConfiguration;
         $this->updater                     = $updater;
         $this->factory                     = $factory;
         $this->saver                       = $saver;
@@ -145,6 +148,8 @@ class ProductModelController
         $this->productValidator            = $productValidator;
         $this->productModelAttributeFilter = $productModelAttributeFilter;
         $this->productModelRepository = $productModelRepository;
+        $this->partialUpdateStreamResource = $partialUpdateStreamResource;
+        $this->apiConfiguration            = $apiConfiguration;
     }
 
     /**
@@ -255,6 +260,21 @@ class ProductModelController
             $this->listSearchAfter($queryParameters);
 
         return new JsonResponse($paginatedProductModels);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @throws HttpException
+     *
+     * @return Response
+     */
+    public function partialUpdateListAction(Request $request): Response
+    {
+        $resource = $request->getContent(true);
+        $response = $this->partialUpdateStreamResource->streamResponse($resource);
+
+        return $response;
     }
 
     /**
