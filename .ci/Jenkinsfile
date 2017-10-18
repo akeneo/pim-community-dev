@@ -404,7 +404,7 @@ stage("Test") {
             "behat-ce-odm": {
                 if (launchBehatTests.equals("yes") && editions.contains("ceodm")) {
                     queue({
-                        def scenariosCE = sh (returnStdout: true, script: "cd /home/jenkins/pim && php ./bin/behat --list-scenarios").tokenize('\n')
+                        def scenariosCE = sh (returnStdout: true, script: "cd /home/jenkins/pim && php ./bin/behat features/channel --list-scenarios").tokenize('\n')
                         def messagesCE = new net.sf.json.JSONArray()
                         for (scenarioCE in scenariosCE) {
 
