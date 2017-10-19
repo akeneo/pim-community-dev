@@ -4,7 +4,7 @@ services:
         arguments:
             - '%pim_catalog.query.product_query_builder.class%'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.filter.product_registry'
             - '@pim_catalog.query.sorter.registry'
             - '@pimee_workflow.factory.published_product_cursor'
             - '@pim_catalog.query.product_query_builder_resolver'
@@ -14,7 +14,7 @@ services:
         arguments:
             - '%pim_catalog.query.product_query_builder.class%'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.filter.product_registry'
             - '@pim_catalog.query.sorter.registry'
             - '@pimee_workflow.factory.published_product_from_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
@@ -24,7 +24,7 @@ services:
         arguments:
             - '%pim_catalog.query.product_query_builder.class%'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.filter.product_registry'
             - '@pim_catalog.query.sorter.registry'
             - '@pimee_workflow.factory.published_product_search_after_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
