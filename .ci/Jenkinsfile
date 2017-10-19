@@ -414,7 +414,7 @@ stage("Test") {
                             ])
                         }
                         return messagesEE
-                    }, 70, "ee")
+                    }, 100, "ee")
                 } else {
                     echo "Skipping behat test"
                 }
@@ -495,7 +495,7 @@ stage("Test") {
                         }
 
                         return messagesEE
-                    }, 70, "eeodm")
+                    }, 100, "eeodm")
                 } else {
                     echo "Skipping behat test"
                 }
