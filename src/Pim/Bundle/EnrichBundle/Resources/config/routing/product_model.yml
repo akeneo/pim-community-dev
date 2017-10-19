@@ -9,6 +9,11 @@ pim_enrich_product_model_rest_get:
         id: '[0-9a-f]+'
     methods: [GET]
 
+pim_enrich_product_model_rest_create:
+    path: /rest/create
+    defaults: { _controller: pim_enrich.controller.rest.product_model:createAction }
+    methods: [POST]
+
 pim_enrich_product_model_rest_post:
     path: /rest/{id}
     defaults: { _controller: pim_enrich.controller.rest.product_model:postAction }
