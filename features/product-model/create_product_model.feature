@@ -7,13 +7,13 @@ Feature: Create a product model
 
   Scenario: Create a product model with single variant
     Given I create a product model
-    And I should see the Code, Family, Variant fields
-    And the field Variant should be disabled
+    And I should see the Code, Family and family_variant fields
+    And the field family_variant should be disabled
     When I fill in the following information in the popin:
-      | Code | clothing_variant |
-    Then I select the family "Clothing"
-    Then I select the variant "shoes_size"
-    And I press the "Confirm" button
+      | Code | shoes_variant             |
+      | Choose a family | Shoes          |
+      | Choose a variant | Shoes by size  |
+    And I press the "Save" button
     Then I should see the flash message "Product model successfully created"
 
     # Scenario: Create a product model with multiple variants

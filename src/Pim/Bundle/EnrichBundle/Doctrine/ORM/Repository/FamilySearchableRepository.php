@@ -63,7 +63,8 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
      *
      * @return QueryBuilder
      */
-    protected function applySearchParameters($search = null, array $options = []) {
+    protected function applySearchParameters($search = null, array $options = [])
+    {
         $qb = $this->entityManager->createQueryBuilder()->select('f')->from($this->entityName, 'f');
 
         if (null !== $search && '' !== $search) {
