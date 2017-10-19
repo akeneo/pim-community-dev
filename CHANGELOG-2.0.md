@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- GITHUB-7035: Change class alias for proper LocaleType form parent indication, cheers @mkilmanas!
+
 # 2.0.4 (2017-10-19)
 
 # 2.0.3 (2017-10-19)
