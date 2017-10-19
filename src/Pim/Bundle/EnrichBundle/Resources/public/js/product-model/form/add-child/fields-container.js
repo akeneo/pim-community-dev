@@ -41,6 +41,8 @@ define(
              */
             initialize(config) {
                 this.config = config;
+
+                BaseForm.prototype.initialize.apply(arguments);
             },
 
             /**
@@ -65,8 +67,8 @@ define(
                         .fetchByIdentifiers(variantAttributeSetForLevel.axes)
                         .then((axesAttributes) => {
                             const fieldModules = axesAttributes
-                                .map((attribute) => this.config[attribute.field_type]);
-                                // .map((fieldKey) => formBuilder.buildForm(fieldKey));
+                                .map((attribute) => this.config[attribute.field_type])
+                                .map((fieldKey) => formBuilder.buildForm(fieldKey));
 
                             console.log(fieldModules);
                         })
