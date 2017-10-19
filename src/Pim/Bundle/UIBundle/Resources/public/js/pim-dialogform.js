@@ -1,7 +1,22 @@
 /* global console */
 define(
-    ['jquery', 'underscore', 'oro/mediator', 'pim/router', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui', 'bootstrap'],
-    function ($, _, mediator, router, LoadingMask, initSelect2) {
+    [
+        'jquery',
+        'underscore',
+        'oro/mediator',
+        'pim/router',
+        'oro/loading-mask',
+        'pim/initselect2',
+        'jquery-ui',
+        'bootstrap'
+    ], function (
+        $,
+         _,
+         mediator,
+         router,
+         LoadingMask,
+         initSelect2
+    ) {
         'use strict';
 
         // Allow using select2 search box in jquery ui dialog
