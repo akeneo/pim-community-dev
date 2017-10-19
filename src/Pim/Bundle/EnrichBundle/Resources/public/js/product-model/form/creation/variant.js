@@ -42,6 +42,7 @@ function (
         fieldName: 'family_variant',
         readOnly: true,
         choices: [],
+        defaultValue: null,
 
         /**
          * {@inheritdoc}
@@ -49,6 +50,7 @@ function (
         initialize(config) {
             this.config = config.config;
             this.choices = [];
+            this.defaultValue = null;
 
             BaseForm.prototype.initialize.apply(this, arguments);
         },
@@ -88,7 +90,7 @@ function (
             return this.template({
                 fieldId: this.fieldId,
                 fieldName: this.fieldName,
-                value: this.getFormData()[this.fieldName],
+                value: this.defaultValue || this.getFormData()[this.fieldName],
                 choices: this.choices,
                 multiple: false,
                 readOnly: this.readOnly,
@@ -124,10 +126,18 @@ function (
             });
 
             return $.getJSON(variantLoadUrl).then((response) => {
-                const variants = JSON.parse(response.data);
+                const responseJSON = JSON.parse(response.data);
+                const variantData = responseJSON.data;
+
                 this.readOnly = false;
-                this.choices = this.formatChoices(variants.data);
+                this.choices = this.formatChoices(variantData);
+
+                if (variantData.length === 1) {
+                    this.defaultValue = variantData[0].familyVariantCode;
+                }
+
                 this.render();
+                this.$('select.select2').trigger('change');
             });
         },
 
@@ -138,8 +148,8 @@ function (
          *         'Clothing color and size': 'clothing_color_and_size',
          *         ...
          *     }
-         * @param  {[type]} variants [description]
-         * @return {[type]}          [description]
+         * @param  {Array} variants An array of variant for a family
+         * @return {Object}
          */
         formatChoices(variants) {
             const choices = {};
