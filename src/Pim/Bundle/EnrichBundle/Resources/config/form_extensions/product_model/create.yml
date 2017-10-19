@@ -11,6 +11,7 @@ extensions:
            editRoute: pim_enrich_product_model_edit
            postUrl: pim_enrich_product_model_rest_create
            excludedProperties: [ family ]
+           displayGlobalErrors: true
 
     pim-product-model-create-sku:
         module: pim/form/common/creation/field

@@ -16,6 +16,15 @@
                     <%= fields %>
                 <% } %>
             </div>
+            <% if (displayGlobalErrors && errors.length > 0) { %>
+                <div class="AknMessageBox AknMessageBox--danger global-errors">
+                    <ul class="AknMessageBox-list">
+                        <% _.each(errors, error => { %>
+                            <li class="global-error"><%- error.message %></li>
+                        <% }) %>
+                    </ul>
+                </div>
+            <% } %>
         </div>
     </div>
 </div>
