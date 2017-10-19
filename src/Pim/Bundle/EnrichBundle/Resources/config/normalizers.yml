@@ -27,6 +27,7 @@ parameters:
     pim_enrich.normalizer.structured.attribute_option.class:       Pim\Bundle\EnrichBundle\Normalizer\StructuredAttributeOptionNormalizer
     pim_enrich.normalizer.entity_with_family_variant.class:        Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer
     pim_enrich.normalizer.variant_navigation.class:                Pim\Bundle\EnrichBundle\Normalizer\VariantNavigationNormalizer
+    pim_enrich.normalizer.missing_required_attributes.class:       Pim\Bundle\EnrichBundle\Normalizer\MissingRequiredAttributesNormalizer
 
 services:
     pim_enrich.normalizer.attribute_option_value_collection:
@@ -89,6 +90,9 @@ services:
             - '@pim_enrich.normalizer.variant_navigation'
             - '@pim_catalog.doctrine.query.find_variant_product_completeness'
             - '@pim_catalog.product_models.image_as_label'
+            - '@pim_catalog.generator.required_values'
+            - '@pim_catalog.calculator.missing_required_attributes'
+            - '@pim_enrich.normalizer.missing_required_attributes'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -101,6 +105,10 @@ services:
         class: '%pim_enrich.normalizer.completeness_collection.class%'
         arguments:
             - '@pim_enrich.normalizer.completeness'
+            - '@pim_enrich.normalizer.missing_required_attributes'
+
+    pim_enrich.normalizer.missing_required_attributes:
+        class: '%pim_enrich.normalizer.missing_required_attributes.class%'
 
     pim_enrich.normalizer.version:
         class: '%pim_enrich.normalizer.version.class%'

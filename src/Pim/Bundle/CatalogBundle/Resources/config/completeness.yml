@@ -2,18 +2,35 @@ parameters:
     pim_catalog.completeness.calculator.class: Pim\Component\Catalog\Completeness\CompletenessCalculator
     pim_catalog.completeness.generator.class: Pim\Component\Catalog\Completeness\CompletenessGenerator
 
-services:
-    pim_catalog.completeness.calculator:
-        class: '%pim_catalog.completeness.calculator.class%'
-        arguments:
-            - '@pim_catalog.factory.value'
-            - '@pim_catalog.repository.cached_channel'
-            - '@pim_catalog.repository.cached_locale'
-            - '@pim_catalog.completeness.checker'
-            - '%pim_catalog.entity.completeness.class%'
+#    To move in dedicated files
+    pim_catalog.family.required_values.class: Pim\Component\Catalog\Family\RequiredValues
+    pim_catalog.missing_required_attributes.calculator.class: Pim\Component\Catalog\MissingRequiredAttributes\MissingRequiredValuesCalculator
 
+services:
     pim_catalog.completeness.generator:
         class: '%pim_catalog.completeness.generator.class%'
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_catalog.completeness.calculator'
+
+    pim_catalog.generator.required_values:
+        class: '%pim_catalog.family.required_values.class%'
+        arguments:
+            - '@pim_catalog.factory.value'
+
+    pim_catalog.completeness.calculator:
+        class: '%pim_catalog.completeness.calculator.class%'
+        arguments:
+            - '@pim_catalog.repository.cached_channel'
+            - '@pim_catalog.repository.cached_locale'
+            - '@pim_catalog.calculator.missing_required_attributes'
+            - '@pim_catalog.generator.required_values'
+            - '%pim_catalog.entity.completeness.class%'
+
+    pim_catalog.calculator.missing_required_attributes:
+        class: '%pim_catalog.missing_required_attributes.calculator.class%'
+        arguments:
+            - '@pim_catalog.factory.value'
+            - '@pim_catalog.completeness.checker'
+            - '@pim_catalog.repository.cached_channel'
+            - '@pim_catalog.repository.cached_locale'

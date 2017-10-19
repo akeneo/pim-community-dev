@@ -6,8 +6,11 @@ namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Family\RequiredValues;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
+use Pim\Component\Catalog\MissingRequiredAttributes\MissingRequiredValuesCalculator;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\ProductModel\ImageAsLabel;
@@ -66,20 +69,32 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var ImageAsLabel */
     private $imageAsLabel;
 
+    /** @var \Pim\Component\Catalog\Family\RequiredValues */
+    private $requiredValuesGenerator;
+
+    /** @var \Pim\Component\Catalog\MissingRequiredAttributes\MissingRequiredValuesCalculator */
+    private $missingRequiredAttributesCalculator;
+
+    /** @var NormalizerInterface */
+    private $missingRequiredAttributesNormalizer;
+
     /**
-     * @param NormalizerInterface                       $normalizer
-     * @param NormalizerInterface                       $versionNormalizer
-     * @param NormalizerInterface                       $fileNormalizer
-     * @param VersionManager                            $versionManager
-     * @param AttributeConverterInterface               $localizedConverter
-     * @param ConverterInterface                        $productValueConverter
-     * @param FormProviderInterface                     $formProvider
-     * @param LocaleRepositoryInterface                 $localeRepository
-     * @param EntityWithFamilyValuesFillerInterface     $entityValuesFiller
+     * @param NormalizerInterface                                                                 $normalizer
+     * @param NormalizerInterface                                                                 $versionNormalizer
+     * @param NormalizerInterface                                                                 $fileNormalizer
+     * @param VersionManager                                                                       $versionManager
+     * @param AttributeConverterInterface                                                          $localizedConverter
+     * @param ConverterInterface                 $productValueConverter
+     * @param FormProviderInterface                                                         $formProvider
+     * @param LocaleRepositoryInterface                                                            $localeRepository
+     * @param EntityWithFamilyValuesFillerInterface                                                $entityValuesFiller
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      * @param VariantNavigationNormalizer               $navigationNormalizer
      * @param VariantProductRatioInterface              $variantProductRatioQuery
      * @param ImageAsLabel                              $imageAsLabel
+     * @param RequiredValues                            $requiredValuesGenerator
+     * @param \Pim\Component\Catalog\MissingRequiredAttributes\MissingRequiredValuesCalculator       $missingRequiredAttributesCalculator
+     * @param NormalizerInterface                       $missingRequiredAttributesNormalizer
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -94,7 +109,10 @@ class ProductModelNormalizer implements NormalizerInterface
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         VariantProductRatioInterface $variantProductRatioQuery,
-        ImageAsLabel $imageAsLabel
+        ImageAsLabel $imageAsLabel,
+        RequiredValues $requiredValuesGenerator,
+        MissingRequiredValuesCalculator $missingRequiredAttributesCalculator,
+        NormalizerInterface $missingRequiredAttributesNormalizer
     ) {
         $this->normalizer            = $normalizer;
         $this->versionNormalizer     = $versionNormalizer;
@@ -109,6 +127,9 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->navigationNormalizer  = $navigationNormalizer;
         $this->variantProductRatioQuery = $variantProductRatioQuery;
         $this->imageAsLabel = $imageAsLabel;
+        $this->requiredValuesGenerator = $requiredValuesGenerator;
+        $this->missingRequiredAttributesCalculator = $missingRequiredAttributesCalculator;
+        $this->missingRequiredAttributesNormalizer = $missingRequiredAttributesNormalizer;
     }
 
     /**
@@ -161,6 +182,7 @@ class ProductModelNormalizer implements NormalizerInterface
                 'attributes_axes'           => $axesAttributes,
                 'image'                     => $this->normalizeImage($closestImage, $format, $context),
                 'variant_navigation'        => $this->navigationNormalizer->normalize($productModel, $format, $context),
+                'completenesses'            => $this->normalizeCompletenesses($productModel),
             ] + $this->getLabels($productModel);
 
         return $normalizedProductModel;
@@ -204,5 +226,85 @@ class ProductModelNormalizer implements NormalizerInterface
         }
 
         return $this->fileNormalizer->normalize($data->getData(), $format, $context);
+    }
+
+    /**
+     * @param ProductModelInterface $productModel
+     *
+     * @return array
+     */
+    private function normalizeCompletenesses(ProductModelInterface $productModel): array
+    {
+        $completenesses = [];
+
+        $requiredMissingAttributes = $this->generateRequiredMissingAttributes($productModel);
+
+        $locales = $this->extractLocales($requiredMissingAttributes);
+
+        foreach ($requiredMissingAttributes as $channelCode => $requiredMissingAttributesChannel) {
+            $normalizedRequiredMissingAttributes = [];
+            $normalizedRequiredMissingAttributes['channel'] = $channelCode;
+            $normalizedRequiredMissingAttributes['labels'] = []; // TODO
+            $normalizedRequiredMissingAttributes['locales'] = $this->normalizeMissingAttributesForChannelAndLocale(
+                $requiredMissingAttributesChannel,
+                $locales
+            );
+
+            $completenesses[] = $normalizedRequiredMissingAttributes;
+        }
+
+        return $completenesses;
+    }
+
+    private function generateRequiredMissingAttributes(EntityWithFamilyVariantInterface $productModel): array
+    {
+        $family = $productModel->getFamily();
+        $requiredValues = $this->requiredValuesGenerator->fromFamily($family);
+        $missingAttributes = $this->missingRequiredAttributesCalculator->generate(
+            $productModel->getValues(),
+            $requiredValues
+        );
+
+        return $missingAttributes;
+    }
+
+    /**
+     * @param array $requiredmissingAttributes
+     *
+     * @return array
+     */
+    private function extractLocales(array $requiredmissingAttributes): array
+    {
+        $localeCodes = [];
+        foreach ($requiredmissingAttributes as $requiredmissingAttributeChannel) {
+            $localeCodes = array_merge($localeCodes, array_keys($requiredmissingAttributeChannel));
+        }
+
+        return array_unique($localeCodes);
+    }
+
+    /**
+     * @param array $requiredMissingAttributeChannel
+     * @param array $locales
+     *
+     * @return array
+     */
+    private function normalizeMissingAttributesForChannelAndLocale(
+        array $requiredMissingAttributeChannel,
+        array $locales
+    ): array {
+        $allMissingRequiredAttributes = [];
+        foreach ($requiredMissingAttributeChannel as $localeCode => $requiredMissingAttributeChannelAndLocale) {
+            $normalizedMissingRequiredAttributes['missing'] = $this->missingRequiredAttributesNormalizer->normalize(
+                $requiredMissingAttributeChannelAndLocale->getAttributes(),
+                'internal_api',
+                ['locales' => $locales]
+            );
+            $normalizedMissingRequiredAttributes['label'] = 'ProductModelNormalizer::normalizeMissingAttributesForChannelAndLocale';
+
+            $allMissingRequiredAttributes[$localeCode] = $normalizedMissingRequiredAttributes;
+        }
+
+        return $allMissingRequiredAttributes;
     }
 }

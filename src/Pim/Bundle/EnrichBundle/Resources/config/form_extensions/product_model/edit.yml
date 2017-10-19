@@ -222,6 +222,12 @@ extensions:
         targetZone: self
         position: 100
 
+    pim-product-model-edit-form-completeness-filter:
+        module: pim/product-edit-form/attributes/completeness
+        parent: pim-product-model-edit-form-attributes
+        targetZone: self
+        position: 100
+
     pim-product-model-edit-form-localizable:
         module: pim/product-edit-form/attributes/localizable
         parent: pim-product-model-edit-form-attributes
@@ -252,3 +258,19 @@ extensions:
         position: 110
         config:
             context: copy_product
+
+    pim-product-model-edit-form-attribute-filter:
+        module: pim/product-edit-form/attribute-filter
+        parent: pim-product-model-edit-form-attributes
+        targetZone: other-actions
+        position: 110
+
+    pim-product-model-edit-form-attribute-filter-all:
+        module: pim/product-edit-form/attribute-filter-all
+        parent: pim-product-model-edit-form-attribute-filter
+        position: 100
+
+    pim-product-model-edit-form-attribute-filter-missing-required:
+        module: pim/product-edit-form/attribute-filter-missing-required
+        parent: pim-product-model-edit-form-attribute-filter
+        position: 110
