@@ -17,7 +17,7 @@ Feature: Delete many products at once that I own
     And I select row blue_sandal
     And I select all visible entities
     And I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete the selected products?"
+    Then I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
     And I refresh current page
     Then I should not see products blue_sandal and black_sandal
@@ -32,7 +32,7 @@ Feature: Delete many products at once that I own
     And I select row blue_sandal
     And I select all visible entities
     And I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete the selected products?"
+    Then I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
     And I refresh current page
     Then I should not see products blue_sandal and black_sandal
@@ -47,7 +47,7 @@ Feature: Delete many products at once that I own
     And I select row blue_boot
     And I select all visible entities
     And I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete the selected products?"
+    Then I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
     And I refresh current page
     Then I should not see products blue_boot and black_boot
@@ -69,7 +69,7 @@ Feature: Delete many products at once that I own
     And I select row blue_sandal
     And I select all visible entities
     And I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete the selected products?"
+    Then I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
     And I refresh current page
     Then I should see products blue_sandal and black_sandal
@@ -85,7 +85,7 @@ Feature: Delete many products at once that I own
     And I select row blue_boot
     And I select all visible entities
     And I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete the selected products?"
+    Then I should see the text "Are you sure you want to delete selected products?"
     When I confirm the removal
     And I refresh current page
     Then I should see products blue_boot and black_boot
