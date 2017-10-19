@@ -234,7 +234,7 @@ stage("Test") {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
                         try {
-                            sh "cd /home/jenkins/pim && ./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit ${env.WORKSPACE}/junit_output.xml"
+                            sh "cd /home/jenkins/pim && sudo ./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit ${env.WORKSPACE}/junit_output.xml"
                         } finally {
                             junit "junit_output.xml"
                         }
@@ -250,7 +250,7 @@ stage("Test") {
                         sh "cd /home/jenkins/pim && sudo chown -R docker ."
                         try {
                             sh "cd /home/jenkins/pim && su docker -c './bin/phpspec run --format=junit > junit_output.xml'"
-                            sh "mv /home/jenkins/pim/junit_output.xml ${env.WORKSPACE}/"
+                            sh "sudo mv /home/jenkins/pim/junit_output.xml ${env.WORKSPACE}/"
                         } finally {
                             junit "junit_output.xml"
                         }
@@ -263,7 +263,7 @@ stage("Test") {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
                         try {
-                             sh "cd /home/jenkins/pim && ./bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ${env.WORKSPACE}/junit_output.xml"
+                             sh "cd /home/jenkins/pim && sudo ./bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ${env.WORKSPACE}/junit_output.xml"
                         } finally {
                             junit "junit_output.xml"
                         }
@@ -347,20 +347,19 @@ stage("Test") {
 
                         for (scenarioCE in scenariosCE) {
                             messagesCE.add([
-                                [container: "php", script: "cd /home/jenkins/pim && sudo chown -R docker ."],
                                 [container: "php", script: "sudo cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "sudo rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sudo /usr/sbin/apache2ctl graceful"],
-                                [container: "php", script: "./app/console --env=behat ca:c"],
+                                [container: "php", script: "mkdir -p app/cache app/logs app/archive /tmp/pim/file_storage app/file_storage app/uploads"],
+                                [container: "php", script: "chmod 777 -R app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads"],
+                                [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "],
+                                [container: "php", script: "./app/console -e=behat ca:c"],
                                 [container: "php", script: "./app/console --env=behat pim:install --force --clean "],
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump en_US"],
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump en_GB"],
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump fr_FR"],
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump de_DE"],
                                 [container: "php", script: "touch app/logs/behat.log"],
-                                [container: "php", script: "mkdir -p app/cache app/logs app/archive /tmp/pim/file_storage app/file_storage app/uploads"],
-                                [container: "php", script: "chmod 777 -R app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads"],
-                                [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "],
                                 [
                                     container: "php",
                                     junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
@@ -371,7 +370,7 @@ stage("Test") {
                         }
 
                         return messagesCE
-                    }, 10, "ce")
+                    }, 30, "ce")
                 } else {
                     echo "Skipping behat test"
                 }
@@ -389,10 +388,13 @@ stage("Test") {
                         for (scenarioEE in scenariosEE) {
 
                             messagesEE.add([
-                                [container: "php", script: "cd /home/jenkins/pim && sudo chown -R docker ."],
-                                [container: "php", script: "sudo  cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
+                                [container: "php", script: "sudo chown -R docker /home/jenkins/pim"],
+                                [container: "php", script: "sudo cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "sudo rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sudo /usr/sbin/apache2ctl graceful"],
+                                [container: "php", script: "mkdir -p app/cache app/logs app/archive /tmp/pim/file_storage app/file_storage app/uploads"],
+                                [container: "php", script: "chmod 777 -R app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads"],
+                                [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "],
                                 [container: "php", script: "./app/console -e=behat ca:c"],
                                 [container: "php", script: "./app/console --env=behat pim:install --force --clean "],
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump en_US"],
@@ -400,9 +402,6 @@ stage("Test") {
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump fr_FR"],
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump de_DE"],
                                 [container: "php", script: "touch app/logs/behat.log"],
-                                [container: "php", script: "mkdir -p app/cache app/logs app/archive /tmp/pim/file_storage app/file_storage app/uploads"],
-                                [container: "php", script: "chmod 777 -R app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads"],
-                                [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "],
                                 [
                                     container: "php",
                                     junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
@@ -412,7 +411,7 @@ stage("Test") {
                             ])
                         }
                         return messagesEE
-                    }, 50, "ee")
+                    }, 30, "ee")
                 } else {
                     echo "Skipping behat test"
                 }
@@ -454,7 +453,7 @@ stage("Test") {
                         }
 
                         return messagesCE
-                    }, 50, "ceodm")
+                    }, 20, "ceodm")
                 } else {
                     echo "Skipping behat test"
                 }
@@ -470,10 +469,13 @@ stage("Test") {
                         def messagesEE = new net.sf.json.JSONArray()
                         for (scenarioEE in scenariosEE) {
                             messagesEE.add([
-                                [container: "php", script: "cd /home/jenkins/pim && sudo chown -R docker ."],
+                                [container: "php", script: "sudo chown -R docker /home/jenkins/pim"],
                                 [container: "php", script: "sudo cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "sudo rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sudo /usr/sbin/apache2ctl graceful"],
+                                [container: "php", script: "mkdir -p app/cache app/logs app/archive /tmp/pim/file_storage app/file_storage app/uploads"],
+                                [container: "php", script: "chmod 777 -R app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads"],
+                                [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "],
                                 [container: "php", script: "./app/console -e=behat ca:c"],
                                 [container: "php", script: "./app/console --env=behat pim:install --force --clean "],
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump en_US"],
@@ -481,9 +483,6 @@ stage("Test") {
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump fr_FR"],
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump de_DE"],
                                 [container: "php", script: "touch app/logs/behat.log"],
-                                [container: "php", script: "mkdir -p app/cache app/logs app/archive /tmp/pim/file_storage app/file_storage app/uploads"],
-                                [container: "php", script: "chmod 777 -R app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads"],
-                                [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "],
                                 [
                                     container: "php",
                                     junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
@@ -493,7 +492,7 @@ stage("Test") {
                         }
 
                         return messagesEE
-                    }, 150, "eeodm")
+                    }, 50, "eeodm")
                 } else {
                     echo "Skipping behat test"
                 }
