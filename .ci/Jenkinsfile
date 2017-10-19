@@ -233,7 +233,6 @@ stage("Test") {
             "phpunit": {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
-                        sh "sudo chown -R docker /home/jenkins/pim"
                         try {
                             sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit ${env.WORKSPACE}/junit_output.xml"
                         } finally {
@@ -248,7 +247,6 @@ stage("Test") {
             "phpspec": {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
-                        sh "sudo chown -R docker /home/jenkins/pim"
                         try {
                             sh "./bin/phpspec run --format=junit > junit_output.xml"
                             sh "mv /home/jenkins/pim/junit_output.xml ${env.WORKSPACE}/"
@@ -262,7 +260,6 @@ stage("Test") {
             },
             "php-cs-fixer": {
                 if (launchUnitTests.equals("yes")) {
-                    sh "sudo chown -R docker /home/jenkins/pim"
                     withPhp({
                         try {
                              sh "./bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ${env.WORKSPACE}/junit_output.xml"
