@@ -323,67 +323,66 @@ JSON;
         $this->assertSameProductModels($expectedProductModel, 'root_product_model');
     }
 
-    //TODO: to be fixed in API-407
-//    public function testSubProductModelCreationThatSetsASubProductModelAsParent()
-//    {
-//        $this->createProductModel(
-//            [
-//                'code'           => 'tshirt_sub_product_model',
-//                'family_variant' => 'familyVariantA1',
-//                'parent'         => 'tshirt',
-//                'values'         => [
-//                    'a_simple_select' => [
-//                        [
-//                            'scope'  => null,
-//                            'locale' => null,
-//                            'data'   => "optionB",
-//                        ],
-//                    ],
-//                ],
-//            ]
-//        );
-//
-//        $client = $this->createAuthenticatedClient();
-//
-//        $data =
-//            <<<JSON
-//    {
-//        "code": "sub_product_model",
-//        "parent": "tshirt_sub_product_model",
-//        "family_variant": "familyVariantA1",
-//        "values": {
-//          "a_simple_select": [
-//            {
-//              "locale": null,
-//              "scope": null,
-//              "data": "optionB"
-//            }
-//          ]
-//        }
-//    }
-//JSON;
-//
-//        $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
-//
-//        $expectedContent =
-//            <<<JSON
-//{
-//  "code": 422,
-//  "message": "Validation failed.",
-//  "errors": [
-//    {
-//      "property": "parent",
-//      "message": "The product model \"sub_product_model\" cannot have the product model \"tshirt_sub_product_model\" as parent"
-//    }
-//  ]
-//}
-//JSON;
-//
-//        $response = $client->getResponse();
-//
-//        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
-//        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-//    }
+    public function testSubProductModelCreationThatSetsASubProductModelAsParent()
+    {
+        $this->createProductModel(
+            [
+                'code'           => 'tshirt_sub_product_model',
+                'family_variant' => 'familyVariantA1',
+                'parent'         => 'tshirt',
+                'values'         => [
+                    'a_simple_select' => [
+                        [
+                            'scope'  => null,
+                            'locale' => null,
+                            'data'   => "optionB",
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "code": "sub_product_model",
+        "parent": "tshirt_sub_product_model",
+        "family_variant": "familyVariantA1",
+        "values": {
+          "a_simple_select": [
+            {
+              "locale": null,
+              "scope": null,
+              "data": "optionB"
+            }
+          ]
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
+
+        $expectedContent =
+            <<<JSON
+{
+  "code": 422,
+  "message": "Validation failed.",
+  "errors": [
+    {
+      "property": "parent",
+      "message": "The product model \"sub_product_model\" cannot have the product model \"tshirt_sub_product_model\" as parent"
+    }
+  ]
+}
+JSON;
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
 
     public function testSubProductModelCreationWithAlreadyExistingAxes()
     {

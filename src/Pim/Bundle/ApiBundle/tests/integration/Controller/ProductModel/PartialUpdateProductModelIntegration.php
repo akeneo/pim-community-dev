@@ -124,6 +124,49 @@ JSON;
         $this->assertSame($standardizedProduct['values']['a_text'][0]['data'], 'My awesome text');
     }
 
+    public function testCreateSubProductModelWithSubProductModelAsParent()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "family_variant": "familyVariantA1",
+        "parent": "sub_sweat",
+        "values": {
+          "a_text": [
+            {
+              "locale": null,
+              "scope": null,
+              "data": "My awesome text"
+            }
+          ]
+        }
+    }
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/new_sub_sweat', [], [], [], $data);
+
+        $expectedContent =
+            <<<JSON
+{
+  "code": 422,
+  "message": "Validation failed.",
+  "errors": [
+    {
+      "property": "parent",
+      "message": "The product model \"new_sub_sweat\" cannot have the product model \"sub_sweat\" as parent"
+    }
+  ]
+}
+JSON;
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
     public function testUpdateAxisSubProductModel()
     {
         $client = $this->createAuthenticatedClient();
