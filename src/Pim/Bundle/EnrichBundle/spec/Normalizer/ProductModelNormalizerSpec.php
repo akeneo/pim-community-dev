@@ -199,11 +199,11 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'attributes_axes' => ['picture'],
                     'image'          => $fileNormalized,
                     'variant_navigation' => ['NAVIGATION NORMALIZED'],
+                    'ascendant_category_ids' => [42],
                     'label'          => [
                         'en_US' => 'Tshirt blue',
                         'fr_FR' => 'Tshirt bleu',
                     ],
-                    'ascendant_category_ids' => [42],
                 ]
             ]
         );
@@ -331,11 +331,11 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'attributes_axes' => ['picture'],
                     'image'          => null,
                     'variant_navigation' => ['NAVIGATION NORMALIZED'],
+                    'ascendant_category_ids' => [42],
                     'label'          => [
                         'en_US' => 'Tshirt blue',
                         'fr_FR' => 'Tshirt bleu',
                     ],
-                    'ascendant_category_ids' => [42],
                 ]
             ]
         );
@@ -476,11 +476,11 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'attributes_axes' => ['picture'],
                     'image'          => $fileNormalized,
                     'variant_navigation' => ['NAVIGATION NORMALIZED'],
+                    'ascendant_category_ids' => [42],
                     'label'          => [
                         'en_US' => 'Tshirt blue',
                         'fr_FR' => 'Tshirt bleu',
                     ],
-                    'ascendant_category_ids' => [42],
                 ]
             ]
         );

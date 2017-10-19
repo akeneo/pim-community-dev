@@ -23,6 +23,10 @@
 - PIM-6868: CSS glitches compilation
 - PIM-6909: Replace 'products' by 'results' in products indexes
 
+## BC breaks
+
+- Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer` to add `Pim\Component\Enrich\Query\AscendantCategoriesInterface`
+
 # 2.0.2 (2017-10-12)
 
 ## Tech improvements

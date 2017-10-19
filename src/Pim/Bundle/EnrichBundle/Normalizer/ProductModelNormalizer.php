@@ -100,7 +100,7 @@ class ProductModelNormalizer implements NormalizerInterface
         VariantNavigationNormalizer $navigationNormalizer,
         VariantProductRatioInterface $variantProductRatioQuery,
         ImageAsLabel $imageAsLabel,
-        AscendantCategoriesInterface $ascendantCategoriesQuery = null
+        AscendantCategoriesInterface $ascendantCategoriesQuery
     ) {
         $this->normalizer            = $normalizer;
         $this->versionNormalizer     = $versionNormalizer;
@@ -168,12 +168,8 @@ class ProductModelNormalizer implements NormalizerInterface
                 'attributes_axes'           => $axesAttributes,
                 'image'                     => $this->normalizeImage($closestImage, $format, $context),
                 'variant_navigation'        => $this->navigationNormalizer->normalize($productModel, $format, $context),
+                'ascendant_category_ids'    => $this->ascendantCategoriesQuery->getCategoryIds($productModel),
             ] + $this->getLabels($productModel);
-
-        // TODO Refactor this condition in 2.1 to remove default null parameter.
-        $normalizedProductModel['meta']['ascendant_category_ids'] = (null !== $this->ascendantCategoriesQuery)
-            ? $this->ascendantCategoriesQuery->getCategoryIds($productModel)
-            : [];
 
         return $normalizedProductModel;
     }
