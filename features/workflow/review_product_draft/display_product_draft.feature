@@ -48,3 +48,15 @@ Feature: Review a product draft
     Then I save the product
     When I visit the "Proposals" column tab
     Then I should see the text "The value \"your-jacket\" is the same between the proposal and the working copy."
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6935
+  Scenario: Successfully got to a product from proposal grid
+    Given Mary proposed the following change to "my-jacket":
+      | field | value       | tab                 |
+      | SKU   | your-jacket | Product information |
+    And I am logged in as "Julia"
+    And I am on the proposals page
+    Then I should see the text "Jacket"
+    And I follow the link "Jacket"
+    Then I should see the text "Product information"
+    And I should see the text "Display all attributes"
