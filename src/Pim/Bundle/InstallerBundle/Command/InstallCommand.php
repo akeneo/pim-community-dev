@@ -135,8 +135,8 @@ class InstallCommand extends ContainerAwareCommand
      */
     protected function assetsStep(InputInterface $input, OutputInterface $output)
     {
-        $options = null === $input->getOption('symlink') ? [] : ['--symlink' => true];
-        $options = null === $input->getOption('clean') ? $options : array_merge($options, ['--clean' => true]);
+        $options = false === $input->getOption('symlink') ? [] : ['--symlink' => true];
+        $options = false === $input->getOption('clean') ? $options : array_merge($options, ['--clean' => true]);
 
         $this->commandExecutor->runCommand('pim:installer:assets', $options);
 

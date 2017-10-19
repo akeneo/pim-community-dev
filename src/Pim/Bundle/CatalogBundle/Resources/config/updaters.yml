@@ -45,7 +45,7 @@ parameters:
     pim_catalog.updater.copier.image_value.class:             Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier
     pim_catalog.updater.copier.file_value.class:              Pim\Component\Catalog\Updater\Copier\MediaAttributeCopier
     pim_catalog.updater.copier.metric_value.class:            Pim\Component\Catalog\Updater\Copier\MetricAttributeCopier
-    pim_catalog.updater.copier.simpleselect_value.class:      Pim\Component\Catalog\Updater\Copier\BaseAttributeCopier
+    pim_catalog.updater.copier.simpleselect_value.class:      Pim\Component\Catalog\Updater\Copier\SimpleSelectAttributeCopier
     pim_catalog.updater.copier.multiselect_value.class:       Pim\Component\Catalog\Updater\Copier\MultiSelectAttributeCopier
     pim_catalog.updater.copier.price_collection_value.class:  Pim\Component\Catalog\Updater\Copier\PriceCollectionAttributeCopier
 
@@ -422,6 +422,7 @@ services:
         arguments:
             - ['pim_catalog_simpleselect']
             - ['pim_catalog_simpleselect']
+            - '@pim_catalog.repository.attribute_option'
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
@@ -431,6 +432,7 @@ services:
         arguments:
             - ['pim_catalog_multiselect']
             - ['pim_catalog_multiselect']
+            - '@pim_catalog.repository.attribute_option'
         tags:
             - { name: 'pim_catalog.updater.copier' }
 

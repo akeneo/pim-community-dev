@@ -14,6 +14,8 @@ class VariantGroupIntegration extends AbstractFlatNormalizerTestCase
     public function testVariantGroup()
     {
         $variantGroup = $this->get('pim_catalog.repository.group')->findOneByIdentifier('variantA');
+
+        $this->get('pim_serializer');
         $flatVariantGroup = $this->get('pim_versioning.serializer')->normalize($variantGroup, 'flat');
 
         $this->assertSame($flatVariantGroup, [

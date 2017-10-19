@@ -1,7 +1,7 @@
 btn:
   post: Aggiugni un nuovo commento
   reply: Rispondi
-  cancel: Cancella
+  cancel: Annulla
 confirmation:
   remove:
     comment: Sei sicuro di voler eliminare questo commento?

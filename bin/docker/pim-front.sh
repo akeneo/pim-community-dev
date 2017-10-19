@@ -1,11 +1,8 @@
 #!/usr/bin/env bash
 
-currentDir=$(dirname "$0")
+docker-compose exec akeneo app/console --env=prod cache:clear --no-warmup
+docker-compose exec akeneo app/console --env=dev cache:clear --no-warmup
+docker-compose exec akeneo-behat app/console --env=behat cache:clear --no-warmup
+docker-compose exec akeneo-behat app/console --env=test cache:clear --no-warmup
 
-echo "Clean previous assets"
-
-rm -rf ${currentDir}/../../app/cache/*
-
-echo "Install the assets"
-
-docker-compose exec akeneo app/console --env=prod pim:installer:assets --symlink
+docker-compose exec akeneo app/console --env=prod pim:installer:assets --symlink --clean

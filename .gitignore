@@ -24,12 +24,15 @@ build/
 vendor
 composer.phar
 /cov
-bin/*
+/bin/*
 !/bin/docker
 /bin/docker/*
 !/bin/docker/pim-initialize.sh
 !/bin/docker/pim-front.sh
 !/bin/merge-coverage
+!/bin/docker/pim-dependencies.sh
+!/bin/docker/pim-front.sh
+!/bin/docker/pim-initialize.sh
 behat.yml
 /phpspec.yml
 web/uploads/*

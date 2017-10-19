@@ -58,6 +58,40 @@ Feature: Edit an import
     And I should see the text "Allow file upload"
     And the "Allow file upload" field should contain ""
 
+  Scenario: Successfully update XLSX import job configuration
+    Given I am on the "xlsx_footwear_product_import" import job edit page
+    Then I should see the File, Allow file upload, Enable the product, Categories column, Family column, Groups column, Real time history update, Decimal separator, Date format fields
+    When I fill in the following information:
+      | File              | /tmp/file.csv |
+      | Categories column | cat           |
+      | Family column     | fam           |
+      | Groups column     | grp           |
+      | Decimal separator | dot (.)       |
+      | Date format       | dd/mm/yyyy    |
+    And I uncheck the "Allow file upload" switch
+    And I uncheck the "Enable the product" switch
+    And I uncheck the "Real time history update" switch
+    And I press the "Save" button
+    And I should not see the text "There are unsaved changes."
+    Then I should see the text "File path"
+    And the "File path" field should contain "/tmp/file.csv"
+    And I should see the text "Real time history"
+    And the "Real time history" field should contain ""
+    And I should see the text "Enable the product"
+    And the "Enable the product" field should contain ""
+    And I should see the text "Categories column"
+    And the "Categories column" field should contain "cat"
+    And I should see the text "Family column"
+    And the "Family column" field should contain "fam"
+    And I should see the text "Groups column"
+    And the "Groups column" field should contain "grp"
+    And I should see the text "Decimal separator"
+    And the field Decimal separator should contain "dot (.)"
+    And I should see the text "Date format"
+    And the field Date format should contain "dd/mm/yyyy"
+    And I should see the text "Allow file upload"
+    And the "Allow file upload" field should contain ""
+
   @javascript
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "csv_footwear_product_import" import job edit page

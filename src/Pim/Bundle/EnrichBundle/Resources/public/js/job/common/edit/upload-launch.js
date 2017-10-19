@@ -56,19 +56,30 @@ define(
                     .then(function (response) {
                         Navigation.getInstance().setLocation(response.redirectUrl);
                     }.bind(this))
-                    .fail(function () {
-                        messenger.notificationFlashMessage('error', __('pim_enrich.form.job_instance.fail.launch'));
-                    });
+                    .fail(this.handleErrors);
                 } else {
                     $.post(this.getUrl(), {method: 'POST'}).
                         then(function (response) {
                             Navigation.getInstance().setLocation(response.redirectUrl);
                         })
-                        .fail(function () {
-                            messenger.notificationFlashMessage('error', __('pim_enrich.form.job_instance.fail.launch'));
-                        });
+                        .fail(this.handleErrors);
                 }
+            },
 
+            /**
+             * Displays error messages in case of failed launch.
+             *
+             * @param {Object} response
+             */
+            handleErrors: function (response) {
+                // Warning: this method changed on master
+                messenger.notificationFlashMessage('error', __('pim_enrich.form.job_instance.fail.launch'));
+
+                if (_.has(response.responseJSON, 'configuration')) {
+                    _.each(response.responseJSON.configuration, function (message) {
+                        messenger.notificationFlashMessage('error', message);
+                    });
+                }
             }
         });
     }

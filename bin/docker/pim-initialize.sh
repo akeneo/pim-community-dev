@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
 
-currentDir=$(dirname "$0")
+docker-compose exec akeneo app/console --env=prod cache:clear --no-warmup
+docker-compose exec akeneo app/console --env=dev cache:clear --no-warmup
+docker-compose exec akeneo-behat app/console --env=behat cache:clear --no-warmup
+docker-compose exec akeneo-behat app/console --env=test cache:clear --no-warmup
 
-echo "Clean previous install"
-
-rm -rf ${currentDir}/../../app/cache/*
-rm -rf ${currentDir}/../../app/logs/*
-
-echo "Install the PIM database"
-
-docker-compose exec akeneo app/console --env=prod pim:install --force --symlink
+docker-compose exec akeneo app/console --env=prod pim:install --force --symlink --clean
 docker-compose exec akeneo-behat app/console --env=behat pim:installer:db

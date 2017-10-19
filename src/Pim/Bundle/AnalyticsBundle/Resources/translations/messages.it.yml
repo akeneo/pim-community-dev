@@ -8,7 +8,7 @@ pim_analytics:
       version_update.label: Notifiche di nuove versioni
       version_update.tooltip: Invia la richiesta a un server remoto per recuperare informazioni sul rilascio di nuove patches
   system_info:
-    title: Informazioni sistema
+    title: Informazioni di sistema
     download: TXT
   info_type:
     pim_edition: Edizione
@@ -33,7 +33,7 @@ pim_analytics:
     php_extensions: Estensioni PHP
   acl:
     system_info:
-      index: Informazioni sistema
+      index: Informazioni di sistema
 pim_menu:
   item:
-    system_info: Informazioni sistema
+    system_info: Informazioni di sistema

@@ -384,7 +384,8 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
 
             this.selectWidget.getWidget().css({
                 top: buttonPosition.top + button.outerHeight(),
-                left: widgetLeftOffset
+                left: widgetLeftOffset,
+                'z-index': 1050
             });
         }
     });

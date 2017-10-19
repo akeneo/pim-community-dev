@@ -1,0 +1,153 @@
+pim_user:
+  user:
+    tab:
+      general.title: Allmänna
+      additional.title: Ytterligare
+      group_and_role.title: Grupper och roller
+      password.title: Lösenord
+      business_unit.title: Affärsenheter
+      email_synchronization.title: Inställningar för synkronisering av e-post
+      interfaces.title: Gränssnitt
+oro.user.controller:
+  group.message.saved: "Grupp sparad"
+  role.message.saved: "Roll sparad"
+  user.message.saved: "Användare sparad"
+  status.message.saved: "Status sparad"
+oro.user.grid.users:
+  columns:
+    username: "Användarnanm"
+    email: "E-postadress"
+    firstName: "Förnamn"
+    lastName: "Efternamn"
+    createdAt: "Skapad den"
+    updatedAt: "Uppdaterad den"
+    enabled: "Status"
+oro.user.grid.roles:
+  columns:
+    label: "Etikett"
+oro.user.grid.groups:
+  columns:
+    name: "Namn"
+pim_title:
+  user.index: Användare
+  user_role.index: Roller
+  user_group.index: Grupper
+  system_configuration.index: Inställningar
+user.title: Användare
+user.overview: Användare
+Users Management: Hantering av användare
+Create user: Skapa användare
+btn.create.user: Skapa användare
+New user: Ny användare
+Additional: Ytterligare
+Groups and Roles: Grupper och roller
+Username: Användarnanm
+Password: Lösenord
+Re-enter password: Ange lösenordet igen
+Name prefix: Namnprefix
+First name: Förnamn
+Middle name: Mellannamn
+Last name: Efternamn
+Name suffix: Namnsuffix
+Date of birth: Födelsedatum
+Avatar: Profilbild
+Additional emails: Ytterligare e-post
+Add another email: Lägga till en annan e-post
+Catalog locale: Katalogspråk
+Catalog scope: Område för katalog
+Default tree: Standardträd
+Business Units: Affärsenheter
+Email synchronization settings: Inställningar för synkronisering av e-post
+Host: Värd
+Port: Port
+Ssl: SSL
+Last logged in: Senast inloggad
+Login count: Loginräknare
+Additional Information: Övrig information
+Interfaces: Gränssnitt
+Basic Information: Allmän information
+Contact Information: Kontaktuppgifter
+User name: Användarnamn
+Birthday: Födelsedag
+API key: API-nyckel
+Ui locale: Gränssnittspråk
+UI locale: Gränssnittspråk
+User salt: Användarsalt
+Current password: Nuvarande lösenord
+New password: Nytt Lösenord
+Repeat new password: Nytt lösenord (upprepa)
+Generate key: Skapa nyckel
+Primary: primära
+Removed user: Raderad användare
+user:
+  product_grid_filters: Filter för produktlista
+  default_product_grid_view:
+    label: Standard produktlistningsvy
+  default_grid_view:
+    none: Inga
+Role: Roll
+Owner: Ägare
+General: Allmänna
+Entity: Enhet
+Capabilities: Funktioner
+Save and close: Spara och stäng
+Has role: Har roll
+role:
+  title: roll
+  overview: roll
+  edit: Redigera roll
+  create: Skapa roll
+btn.create.role: Skapa roll
+rights:
+  action: Behörigheter
+oro_security:
+  acl_group:
+    user: Användare
+    role: Roller
+    group: Användargrupper
+  acl:
+    user:
+      view: Visa användare
+      create: Skapa en användare
+      edit: Redigera användare
+      delete: Ta bort en användare
+    role:
+      view: Visa roller
+      create: Skapa en roll
+      edit: Redigera roller
+      delete: Ta bort en roll
+    group:
+      view: Visa användargrupper
+      create: Skapa en användargrupp
+      edit: Redigera användargrupper
+      delete: Ta bort en användargrupp
+(default): Standardbehörighet på entiteter
+VIEW: Visa
+CREATE: Skapa
+EDIT: Redigera
+DELETE: Radera
+ASSIGN: Tilldela
+SHARE: Dela
+oro:
+  security:
+    access-level:
+      BASIC: Användare
+      LOCAL: Affärsenhet
+      DEEP: Avdelning
+      GLOBAL: Organisation
+      SYSTEM: System
+      NONE: Inga
+Create group: Skapa grupp
+btn.create.user-group: Skapa grupp
+Has group: Har gruppen
+Save and Close: Spara och stäng
+user-group.overview: Grupper
+Log in: Logga in
+Remember me on this computer: Kom ihåg mig på den här datorn
+Forgot your password?: Glömt ditt lösenord?
+Username or Email: Användarnamn eller e-post
+Forgot Password: Glömt Lösenord
+Request: Förfrågan
+Check Email: Kontrollera e-post
+password_reset_email_sent: Ett e-postmeddelande har skickats till %email% som innehåller en länk du måste klicka för att återställa ditt lösenord.
+Go to homepage: Gå till hemsidan

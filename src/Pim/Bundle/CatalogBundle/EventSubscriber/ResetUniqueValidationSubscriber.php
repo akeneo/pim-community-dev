@@ -2,11 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
+use Pim\Component\Catalog\Validator\UniqueAxesCombinationSet;
 use Pim\Component\Catalog\Validator\UniqueValuesSet;
 
 /**
  * The UniqueValueSet class is stateful, and used when you import several product, to check if in the product batch
- * there is no unique identifier issues.
+ * there is no unique identifier issues or unique axis combination issues.
  * This listener listen the StorageEvents::POST_SAVE_ALL to reset the UniqueValueSet information, to be able to
  * work in another product batch without uniqueness issues.
  *
@@ -19,12 +20,19 @@ class ResetUniqueValidationSubscriber
     /** @var UniqueValuesSet */
     protected $uniqueValueSet;
 
+    /** @var UniqueAxesCombinationSet */
+    protected $uniqueAxesCombinationSet;
+
     /**
-     * @param UniqueValuesSet $uniqueValueSet
+     * @param UniqueValuesSet          $uniqueValueSet
+     * @param UniqueAxesCombinationSet $uniqueAxesCombinationSet
      */
-    public function __construct(UniqueValuesSet $uniqueValueSet)
-    {
+    public function __construct(
+        UniqueValuesSet $uniqueValueSet,
+        UniqueAxesCombinationSet $uniqueAxesCombinationSet = null
+    ) {
         $this->uniqueValueSet = $uniqueValueSet;
+        $this->uniqueAxesCombinationSet = $uniqueAxesCombinationSet;
     }
 
     /**
@@ -34,5 +42,9 @@ class ResetUniqueValidationSubscriber
     public function onAkeneoStoragePostsaveall()
     {
         $this->uniqueValueSet->reset();
+
+        if (null !== $this->uniqueAxesCombinationSet) {
+            $this->uniqueAxesCombinationSet->reset();
+        }
     }
 }

@@ -10,6 +10,7 @@ Feature: Update simple select fields
       | front_color | pim_catalog_simpleselect | other |
       | back_color  | pim_catalog_simpleselect | other |
     And the following "front_color" attribute options: Red and Yellow
+    And the following "back_color" attribute options: Red and Yellow
     And the following products:
       | sku                 | front_color |
       | MONOCHROMATIC_PAPER | Red         |
