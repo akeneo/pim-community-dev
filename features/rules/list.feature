@@ -143,7 +143,7 @@ Feature: List all rules
 
   Scenario: Successfully delete a rule
     When I click on the "Delete" action of the row which contains "copy_description"
-    And I should see the text "Confirm deletion"
+    And I should see the text "Delete Confirmation"
     And I should see the text "Are you sure you want to delete this item?"
     And I confirm the deletion
     And the grid should contain 1 elements

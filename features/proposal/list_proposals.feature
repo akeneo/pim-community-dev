@@ -123,7 +123,7 @@ Feature: List proposals
     Given I am logged in as "Julia"
     And I am on the "name" attribute page
     And I press the secondary action "Delete"
-    And I press the "Delete" button in the popin
+    And I press the "OK" button in the popin
     When I am on the proposals page
     Then I should see the following proposals:
       | product | author | attribute   | original | new                        |
@@ -141,9 +141,9 @@ Feature: List proposals
     Given I am logged in as "Julia"
     And I am on the "name" attribute page
     And I press the secondary action "Delete"
-    And I press the "Delete" button in the popin
+    And I press the "OK" button in the popin
     And I am on the "description" attribute page
     And I press the secondary action "Delete"
-    And I press the "Delete" button in the popin
+    And I press the "OK" button in the popin
     When I am on the proposals page
     Then I should see the text "There is no proposal to review"
