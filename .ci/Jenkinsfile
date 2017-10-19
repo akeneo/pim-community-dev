@@ -233,8 +233,9 @@ stage("Test") {
             "phpunit": {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
+                        sh "sudo chown -R docker /home/jenkins/pim"
                         try {
-                            sh "cd /home/jenkins/pim && sudo ./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit ${env.WORKSPACE}/junit_output.xml"
+                            sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit ${env.WORKSPACE}/junit_output.xml"
                         } finally {
                             junit "junit_output.xml"
                         }
@@ -247,10 +248,10 @@ stage("Test") {
             "phpspec": {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
-                        sh "cd /home/jenkins/pim && sudo chown -R docker ."
+                        sh "sudo chown -R docker /home/jenkins/pim"
                         try {
-                            sh "cd /home/jenkins/pim && su docker -c './bin/phpspec run --format=junit > junit_output.xml'"
-                            sh "sudo mv /home/jenkins/pim/junit_output.xml ${env.WORKSPACE}/"
+                            sh "./bin/phpspec run --format=junit > junit_output.xml"
+                            sh "mv /home/jenkins/pim/junit_output.xml ${env.WORKSPACE}/"
                         } finally {
                             junit "junit_output.xml"
                         }
@@ -261,9 +262,10 @@ stage("Test") {
             },
             "php-cs-fixer": {
                 if (launchUnitTests.equals("yes")) {
+                    sh "sudo chown -R docker /home/jenkins/pim"
                     withPhp({
                         try {
-                             sh "cd /home/jenkins/pim && sudo ./bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ${env.WORKSPACE}/junit_output.xml"
+                             sh "./bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ${env.WORKSPACE}/junit_output.xml"
                         } finally {
                             junit "junit_output.xml"
                         }
