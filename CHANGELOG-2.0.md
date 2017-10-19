@@ -3,17 +3,18 @@
 ## Bug fixes
 
 - PIM-6898: Fixes some data can break ES index and crashes new products indexing
-- PIM-6891: Keep the tab context between product and product model forms
 - PIM-6918: Fix error when deleteing boolean attribute linked to a published product
 - PIM-5817: move datepicker above field instead of under
 
 ## Better manage products with variants!
 
 - API-381: Create family variant via API.
-- API-399: Create a product model
+- API-399: Create a product model via API.
 - PIM-6903: Adds compare/translate functionality for product models
-- API-404: Update partially a single product model
+- API-404: Update partially a single product model via API
 - PIM-6892: Forbids users to unselect categories of parent product models
+- PIM-6896: Remove the button restore displayed on product models
+- PIM-6891: Keep the tab context between product and product model forms
 
 ## Better UI\UX!
 
