@@ -86,51 +86,55 @@ class SendForApprovalSubscriber implements EventSubscriberInterface
         $productDraft = $event->getSubject();
         $product = $productDraft->getProduct();
 
-        $usersToNotify = $this->usersProvider->getUsersToNotify(
-            $this->ownerGroupsProvider->getOwnerGroupIds($product)
-        );
+        $groupsToNotify = $this->ownerGroupsProvider->getOwnerGroupIds($product);
+        if (empty($groupsToNotify)) {
+            return;
+        }
 
-        if (!empty($usersToNotify)) {
-            $author = $this->userRepository->findOneBy(['username' => $productDraft->getAuthor()]);
-            $authorCatalogLocale = $author->getCatalogLocale()->getCode();
+        $usersToNotify = $this->usersProvider->getUsersToNotify($groupsToNotify);
+        if (empty($usersToNotify)) {
+            return;
+        }
 
-            $gridParameters = [
-                'f' => [
-                    'author' => [
-                        'value' => [
-                            $author->getUsername()
-                        ]
-                    ],
-                    'product' => [
-                        'value' => [
-                            $product->getId()
-                        ]
+        $author = $this->userRepository->findOneBy(['username' => $productDraft->getAuthor()]);
+        $authorCatalogLocale = $author->getCatalogLocale()->getCode();
+
+        $gridParameters = [
+            'f' => [
+                'author' => [
+                    'value' => [
+                        $author->getUsername()
                     ]
                 ],
-            ];
-
-            $notification = $this->notificationFactory->create();
-            $notification
-                ->setMessage('pimee_workflow.proposal.to_review')
-                ->setMessageParams(
-                    [
-                        '%product.label%'    => $product->getLabel($authorCatalogLocale),
-                        '%author.firstname%' => $author->getFirstName(),
-                        '%author.lastname%'  => $author->getLastName()
+                'product' => [
+                    'value' => [
+                        $product->getId()
                     ]
-                )
-                ->setType('add')
-                ->setRoute('pimee_workflow_proposal_index')
-                ->setComment($event->getArgument('comment'))
-                ->setContext(
-                    [
-                        'actionType'       => static::NOTIFICATION_TYPE,
-                        'showReportButton' => false,
-                        'gridParameters'   => http_build_query($gridParameters, 'flags_')
-                    ]
-                );
+                ]
+            ],
+        ];
 
-            $this->notifier->notify($notification, $usersToNotify);
-        }
+        $notification = $this->notificationFactory->create();
+        $notification
+            ->setMessage('pimee_workflow.proposal.to_review')
+            ->setMessageParams(
+                [
+                    '%product.label%'    => $product->getLabel($authorCatalogLocale),
+                    '%author.firstname%' => $author->getFirstName(),
+                    '%author.lastname%'  => $author->getLastName()
+                ]
+            )
+            ->setType('add')
+            ->setRoute('pimee_workflow_proposal_index')
+            ->setComment($event->getArgument('comment'))
+            ->setContext(
+                [
+                    'actionType'       => static::NOTIFICATION_TYPE,
+                    'showReportButton' => false,
+                    'gridParameters'   => http_build_query($gridParameters, 'flags_')
+                ]
+            );
+
+        $this->notifier->notify($notification, $usersToNotify);
     }
 }

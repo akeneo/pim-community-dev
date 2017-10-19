@@ -3,6 +3,7 @@
 ## Bug Fixes
 
 - PIM-6870: Fix asset creation.
+- PIM-6935: Fix proposal link to product on proposal grid
 
 # 2.0.3 (2017-10-19)
 
