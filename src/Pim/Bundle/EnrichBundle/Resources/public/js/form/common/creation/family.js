@@ -38,7 +38,6 @@ define([
         template: _.template(template),
         validationErrors: {},
         defaultIdentifier: 'family',
-        useId: false,
         loadUrl: 'pim_enrich_family_rest_index',
         events: {
             'change input': 'updateModel'
@@ -50,7 +49,6 @@ define([
         initialize: function (config) {
             this.config = config.config;
             this.identifier = this.config.identifier || this.defaultIdentifier;
-            this.useId = this.config.useId || this.useId;
             this.loadUrl = this.config.loadUrl || this.loadUrl;
 
             BaseForm.prototype.initialize.apply(this, arguments);
@@ -65,23 +63,6 @@ define([
         },
 
         /**
-         * Use the family id instead of the code
-         * @param  {Object} families   Object with families
-         * @param  {String} familyCode The family code e.g. 'clothing'
-         * @return {String}            The family code or id
-         */
-        getIdentifierFromPath(families, familyCode) {
-            if (this.useId) {
-                const family = families[familyCode];
-                if (_.has(family, 'meta')) return family.meta.id;
-
-                return family.id;
-            }
-
-            return familyCode;
-        },
-
-        /**
          * Parses the family results and translates the labels
          * @param  {Array} families An array of family entities
          * @return {Array}          The formatted array of families
@@ -92,7 +73,7 @@ define([
 
             for (const family in families) {
                 data.results.push({
-                    id: this.getIdentifierFromPath(families, family),
+                    id: family,
                     text: i18n.getLabel(families[family].labels, locale, family)
                 });
             };
@@ -113,9 +94,7 @@ define([
                 FetcherRegistry.getFetcher('family')
                 .fetch(formData)
                 .then(function(family) {
-                    let { labels, code } = family;
-                    if (this.useId) code = family.meta.id;
-
+                    const { labels, code } = family;
                     callback({
                         id: code,
                         text: i18n.getLabel(labels, locale, code)

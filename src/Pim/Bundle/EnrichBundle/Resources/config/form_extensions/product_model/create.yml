@@ -10,6 +10,7 @@ extensions:
            successMessage: pim_enrich.entity.product_model.info.create_successful
            editRoute: pim_enrich_product_model_edit
            postUrl: pim_enrich_product_model_rest_create
+           excludedProperties: [ family ]
 
     pim-product-model-create-sku:
         module: pim/form/common/creation/field

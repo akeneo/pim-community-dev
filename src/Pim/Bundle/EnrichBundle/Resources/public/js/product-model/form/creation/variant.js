@@ -32,7 +32,6 @@ function (
             'change select': function (event) {
                 const family_variant = event.target.value;
                 this.setData({ family_variant });
-                this.getFormModel().unset('family');
             }
         },
 
@@ -74,9 +73,11 @@ function (
          */
         updateOnFamilyChange() {
             const formModel = this.getFormModel();
+            const family = formModel.get('family');
 
             if (formModel.hasChanged('family')) {
-                this.renderVariantsForFamily(formModel.get('family'));
+                this.getFamilyIdFromCode(family)
+                    .then(this.renderVariantsForFamily.bind(this))
             }
         },
 
@@ -95,6 +96,17 @@ function (
                     defaultLabel: this.defaultLabel
                 }
             });
+        },
+
+        /**
+         * Get the code for a given family id
+         * @TODO Get the family code directly instead
+         * @return {String}
+         */
+        getFamilyIdFromCode(code) {
+            return FetcherRegistry.getFetcher('family')
+                .fetch(code)
+                .then(family => family.meta.id);
         },
 
         /**

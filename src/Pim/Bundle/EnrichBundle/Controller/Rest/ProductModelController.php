@@ -171,7 +171,7 @@ class ProductModelController
         }
 
         if (count($normalizedViolations) > 0) {
-            return new JsonResponse($normalizedViolations, 400);
+            return new JsonResponse(['values' => $normalizedViolations], 400);
         }
 
         $this->productModelSaver->save($productModel);
