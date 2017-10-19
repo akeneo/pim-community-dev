@@ -1,4 +1,5 @@
 'use strict';
+
 /**
  * Display navigation links in column for the tab display
  *
