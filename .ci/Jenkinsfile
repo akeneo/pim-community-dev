@@ -371,7 +371,7 @@ stage("Test") {
                         }
 
                         return messagesCE
-                    }, 30, "ce")
+                    }, 50, "ce")
                 } else {
                     echo "Skipping behat test"
                 }
@@ -412,7 +412,7 @@ stage("Test") {
                             ])
                         }
                         return messagesEE
-                    }, 30, "ee")
+                    }, 70, "ee")
                 } else {
                     echo "Skipping behat test"
                 }
@@ -454,7 +454,7 @@ stage("Test") {
                         }
 
                         return messagesCE
-                    }, 20, "ceodm")
+                    }, 50, "ceodm")
                 } else {
                     echo "Skipping behat test"
                 }
@@ -493,7 +493,7 @@ stage("Test") {
                         }
 
                         return messagesEE
-                    }, 50, "eeodm")
+                    }, 70, "eeodm")
                 } else {
                     echo "Skipping behat test"
                 }
