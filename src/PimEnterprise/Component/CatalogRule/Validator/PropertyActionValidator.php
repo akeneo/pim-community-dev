@@ -15,8 +15,10 @@ use Akeneo\Bundle\RuleEngineBundle\Model\ActionInterface;
 use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
@@ -35,19 +37,25 @@ class PropertyActionValidator extends ConstraintValidator
     /** @var ValidatorInterface */
     protected $productValidator;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /**
      * @param ActionApplierRegistryInterface $applierRegistry
      * @param ProductBuilderInterface        $productBuilder
      * @param ValidatorInterface             $validator
+     * @param AttributeRepositoryInterface   $attributeRepository
      */
     public function __construct(
         ActionApplierRegistryInterface $applierRegistry,
         ProductBuilderInterface $productBuilder,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        AttributeRepositoryInterface $attributeRepository = null
     ) {
         $this->applierRegistry = $applierRegistry;
         $this->productBuilder = $productBuilder;
         $this->productValidator = $validator;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -70,6 +78,8 @@ class PropertyActionValidator extends ConstraintValidator
         }
 
         $errors = $this->productValidator->validate($fakeProduct);
+        $errors = $this->removeIdentifierViolations($errors);
+
         foreach ($errors as $error) {
             $this->context->buildViolation(
                 $constraint->message,
@@ -90,5 +100,25 @@ class PropertyActionValidator extends ConstraintValidator
         $product = $this->productBuilder->createProduct('FAKE_SKU_FOR_RULE_VALIDATION_' . microtime());
 
         return $product;
+    }
+
+    /**
+     * Remove all violations related to identifier, because the faked identifier could not pass the validation
+     * due to custom constraints on it, as a regex on the identifier attribute.
+     *
+     * @param ConstraintViolationListInterface $violations
+     *
+     * @return ConstraintViolationListInterface
+     */
+    protected function removeIdentifierViolations(ConstraintViolationListInterface $violations): ConstraintViolationListInterface
+    {
+        $identifierPath = sprintf('values[%s-<all_channels>-<all_locales>]', $this->attributeRepository->getIdentifierCode());
+        foreach ($violations as $offset => $violation) {
+            if (0 === strpos($violation->getPropertyPath(), $identifierPath)) {
+                $violations->remove($offset);
+            }
+        }
+
+        return $violations;
     }
 }
