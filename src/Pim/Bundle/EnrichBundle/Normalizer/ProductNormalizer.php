@@ -120,6 +120,7 @@ class ProductNormalizer implements NormalizerInterface
      * @param EntityWithFamilyValuesFillerInterface     $productValuesFiller
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      * @param VariantNavigationNormalizer               $navigationNormalizer
+     * @param AscendantCategoriesInterface|null         $ascendantCategoriesQuery
      */
     public function __construct(
         NormalizerInterface $normalizer,

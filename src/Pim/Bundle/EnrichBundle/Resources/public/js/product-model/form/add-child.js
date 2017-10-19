@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Extension to display the variant navigation to browse variant product structure (parents and children)
+ * Modal to create a product model child.
  *
  * @author    Damien Carcel <damien.carcel@akeneo.com>
  * @author    Yohan Blain <yohan.blain@akeneo.com>
