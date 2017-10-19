@@ -16,6 +16,7 @@ define(
         'pim/form',
         'pim/template/product/tab/categories',
         'pim/template/product/tab/catalog-switcher',
+        'pim/template/product/tab/jstree-locked-item',
         'pim/user-context',
         'routing',
         'pim/tree/associate',
@@ -29,6 +30,7 @@ define(
         BaseForm,
         formTemplate,
         switcherTemplate,
+        lockedTemplate,
         UserContext,
         Routing,
         TreeAssociate,
@@ -37,6 +39,7 @@ define(
         return BaseForm.extend({
             template: _.template(formTemplate),
             switcherTemplate: _.template(switcherTemplate),
+            lockedTemplate: _.template(lockedTemplate),
             className: 'tab-pane active',
             id: 'product-categories',
             treeLinkSelector: 'tree-link-',
@@ -48,6 +51,7 @@ define(
             treeAssociate: null,
             cache: {},
             trees: [],
+            onLoadedEvent: null,
 
             /**
              * Associates the tree code to the number of selected categories
@@ -115,11 +119,36 @@ define(
 
                     this.delegateEvents();
 
+                    this.onLoadedEvent = this.lockCategories.bind(this);
+                    mediator.on('jstree:loaded', this.onLoadedEvent);
+
                     this.initCategoryCount();
                     this.renderCategorySwitcher();
                 }.bind(this));
 
                 return this;
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            shutdown: function () {
+                mediator.off('jstree:loaded', this.onLoadedEvent);
+
+                BaseForm.prototype.shutdown.apply(this, arguments);
+            },
+
+            /**
+             * Locks a set of categories
+             */
+            lockCategories: function() {
+                const lockedCategoryIds = this.getFormData().meta.ascendant_category_ids;
+                lockedCategoryIds.forEach((categoryId) => {
+                    const node = $('#node_' + categoryId);
+                    node.find('> a').replaceWith(this.lockedTemplate({
+                        label: node.find('> a').text().trim()
+                    }));
+                });
             },
 
             /**

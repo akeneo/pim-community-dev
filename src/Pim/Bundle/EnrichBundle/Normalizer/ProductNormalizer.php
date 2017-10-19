@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
@@ -20,6 +21,7 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
+use Pim\Component\Enrich\Query\AscendantCategoriesInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -94,6 +96,9 @@ class ProductNormalizer implements NormalizerInterface
     /** @var VariantNavigationNormalizer */
     protected $navigationNormalizer;
 
+    /** @var AscendantCategoriesInterface */
+    protected $ascendantCategoriesQuery;
+
     /**
      * @param NormalizerInterface                       $normalizer
      * @param NormalizerInterface                       $versionNormalizer
@@ -136,7 +141,8 @@ class ProductNormalizer implements NormalizerInterface
         ProductBuilderInterface $productBuilder,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
-        VariantNavigationNormalizer $navigationNormalizer
+        VariantNavigationNormalizer $navigationNormalizer,
+        AscendantCategoriesInterface $ascendantCategoriesQuery = null
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
@@ -158,6 +164,7 @@ class ProductNormalizer implements NormalizerInterface
         $this->productValuesFiller              = $productValuesFiller;
         $this->attributesProvider               = $attributesProvider;
         $this->navigationNormalizer             = $navigationNormalizer;
+        $this->ascendantCategoriesQuery         = $ascendantCategoriesQuery;
     }
 
     /**
@@ -191,6 +198,12 @@ class ProductNormalizer implements NormalizerInterface
             'completenesses'    => $this->getNormalizedCompletenesses($product),
             'image'             => $this->normalizeImage($product->getImage(), $format, $context),
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
+
+        // TODO Refactor this condition in 2.1 to remove default null parameter.
+        $normalizedProduct['meta']['ascendant_category_ids'] =
+            (null !== $this->ascendantCategoriesQuery) && ($product instanceof EntityWithFamilyVariantInterface)
+            ? $this->ascendantCategoriesQuery->getCategoryIds($product)
+            : [];
 
         $normalizedProduct['meta'] += $this->getMetaForVariantProduct($product, $format, $context);
 

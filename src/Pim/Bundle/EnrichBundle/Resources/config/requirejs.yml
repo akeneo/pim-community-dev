@@ -1034,6 +1034,7 @@ config:
         pim/template/product/tab/attribute/validation-error: pimenrich/templates/product/tab/attributes/validation-error.html
         pim/template/product/tab/associations:               pimenrich/templates/product/tab/associations.html
         pim/template/product/tab/association-panes:          pimenrich/templates/product/tab/association-panes.html
+        pim/template/product/tab/jstree-locked-item:         pimenrich/templates/product/tab/jstree-locked-item.html
         pim/template/product/completeness:                   pimenrich/templates/product/completeness.html
         pim/template/product/history:                        pimenrich/templates/product/history.html
         pim/template/product/comments:                       pimenrich/templates/product/comments.html

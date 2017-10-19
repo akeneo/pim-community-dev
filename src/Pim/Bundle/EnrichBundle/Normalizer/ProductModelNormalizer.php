@@ -15,6 +15,7 @@ use Pim\Component\Catalog\ProductModel\Query\VariantProductRatioInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
+use Pim\Component\Enrich\Query\AscendantCategoriesInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -66,6 +67,9 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var ImageAsLabel */
     private $imageAsLabel;
 
+    /** @var AscendantCategoriesInterface */
+    private $ascendantCategoriesQuery;
+
     /**
      * @param NormalizerInterface                       $normalizer
      * @param NormalizerInterface                       $versionNormalizer
@@ -80,6 +84,7 @@ class ProductModelNormalizer implements NormalizerInterface
      * @param VariantNavigationNormalizer               $navigationNormalizer
      * @param VariantProductRatioInterface              $variantProductRatioQuery
      * @param ImageAsLabel                              $imageAsLabel
+     * @param AscendantCategoriesInterface              $ascendantCategoriesQuery
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -94,7 +99,8 @@ class ProductModelNormalizer implements NormalizerInterface
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
         VariantProductRatioInterface $variantProductRatioQuery,
-        ImageAsLabel $imageAsLabel
+        ImageAsLabel $imageAsLabel,
+        AscendantCategoriesInterface $ascendantCategoriesQuery
     ) {
         $this->normalizer            = $normalizer;
         $this->versionNormalizer     = $versionNormalizer;
@@ -109,6 +115,7 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->navigationNormalizer  = $navigationNormalizer;
         $this->variantProductRatioQuery = $variantProductRatioQuery;
         $this->imageAsLabel = $imageAsLabel;
+        $this->ascendantCategoriesQuery = $ascendantCategoriesQuery;
     }
 
     /**
@@ -161,6 +168,7 @@ class ProductModelNormalizer implements NormalizerInterface
                 'attributes_axes'           => $axesAttributes,
                 'image'                     => $this->normalizeImage($closestImage, $format, $context),
                 'variant_navigation'        => $this->navigationNormalizer->normalize($productModel, $format, $context),
+                'ascendant_category_ids'    => $this->ascendantCategoriesQuery->getCategoryIds($productModel),
             ] + $this->getLabels($productModel);
 
         return $normalizedProductModel;

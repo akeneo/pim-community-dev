@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Pim\Bundle\EnrichBundle\Doctrine\ORM\Query\AscendantCategories;
 use Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer;
 use Pim\Bundle\EnrichBundle\Normalizer\VariantNavigationNormalizer;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
@@ -31,6 +32,7 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
+use Pim\Component\Enrich\Query\AscendantCategoriesInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -56,7 +58,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         ProductBuilderInterface $productBuilder,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
-        VariantNavigationNormalizer $navigationNormalizer
+        VariantNavigationNormalizer $navigationNormalizer,
+        AscendantCategoriesInterface $ascendantCategories
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -78,7 +81,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             $productBuilder,
             $productValuesFiller,
             $attributesProvider,
-            $navigationNormalizer
+            $navigationNormalizer,
+            $ascendantCategories
         );
     }
 
@@ -214,11 +218,12 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'associations'      => [
                         'group' => ['groupIds' => [12]]
                     ],
+                    'ascendant_category_ids'    => [],
                     'variant_navigation'        => [],
                     'attributes_for_this_level' => [],
                     'attributes_axes'           => [],
                     'parent_attributes'         => [],
-                    'family_variant'            => null
+                    'family_variant'            => null,
                 ]
             ]
         );
@@ -241,6 +246,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $productValuesFiller,
         $navigationNormalizer,
         $attributesProvider,
+        $ascendantCategories,
         VariantProductInterface $mug,
         AssociationInterface $upsell,
         AssociationTypeInterface $groupType,
@@ -351,6 +357,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $size->getCode()->willReturn('size');
         $description->getCode()->willReturn('description');
 
+        $ascendantCategories->getCategoryIds($mug)->willReturn([42]);
+
         $this->normalize($mug, 'internal_api', $options)->shouldReturn(
             [
                 'enabled'    => true,
@@ -376,6 +384,7 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'associations'      => [
                         'group' => ['groupIds' => [12]]
                     ],
+                    'ascendant_category_ids'    => [42],
                     'variant_navigation' => ['NAVIGATION NORMALIZED'],
                     'attributes_for_this_level' => ['size'],
                     'attributes_axes'           => ['size'],
