@@ -1,6 +1,6 @@
 /**
  * A select2 field displaying family variants dependent on the family field in the same parent form.
- * 
+ *
  * @author    Tamara Robichet <tamara.robichet@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -30,16 +30,17 @@ function (
     return BaseField.extend({
         events: {
             'change select': function (event) {
-                const variant = event.target.value;
-                this.setData({ variant });
+                const family_variant = event.target.value;
+                this.setData({ family_variant });
+                this.getFormModel().unset('family');
             }
         },
 
         template: _.template(template),
         defaultLabel: 'Choose a variant',
-        fieldLabel: 'variant',
-        fieldId: 'variant',
-        fieldName: 'variant',
+        fieldLabel: 'family_variant',
+        fieldId: 'family_variant',
+        fieldName: 'family_variant',
         readOnly: true,
         choices: [],
 

@@ -157,7 +157,7 @@ class ProductModelController
         $productModel = $this->productModelFactory->create();
         $content = json_decode($request->getContent(), true);
 
-        $this->updater->update($productModel, $content);
+        $this->productModelUpdater->update($productModel, $content);
 
         $violations = $this->validator->validate($productModel);
 
@@ -174,9 +174,16 @@ class ProductModelController
             return new JsonResponse($normalizedViolations, 400);
         }
 
-        $this->saver->save($productModel);
+        $this->productModelSaver->save($productModel);
 
-        return new JsonResponse();
+        $normalizationContext = $this->userContext->toArray() + ['disable_grouping_separator' => true];
+        $normalizedProduct = $this->normalizer->normalize(
+            $productModel,
+            'internal_api',
+            $normalizationContext
+        );
+
+        return new JsonResponse($normalizedProduct);
     }
 
     /**

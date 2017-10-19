@@ -38,6 +38,6 @@ extensions:
         targetZone: fields
         position: 30
         config:
-            fieldName: variant
+            fieldName: family_variant
             required: true
             loadUrl: pim_datagrid_load
