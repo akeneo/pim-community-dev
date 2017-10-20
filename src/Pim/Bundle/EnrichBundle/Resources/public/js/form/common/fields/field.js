@@ -164,14 +164,6 @@ function (
         },
 
         /**
-         * Method responsible for reading the current value from the  DOM.
-         * Must be implemented in concrete classes.
-         */
-        getFieldValue: function () {
-            throw new Error('Please implement the getFieldValue() method in your concrete field class.');
-        },
-
-        /**
          * Returns a pseudo-unique code used as reference inside templates (as "for" attributes values for example).
          *
          * @returns {String}

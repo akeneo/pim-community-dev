@@ -17,7 +17,6 @@ define(
         'pim/i18n',
         'pim/user-context',
         'pim/fetcher-registry',
-        'pim/form-config-provider',
         'pim/form-builder',
         'pim/template/product-model-edit-form/add-child-form-fields-container'
     ],
@@ -29,8 +28,7 @@ define(
         i18n,
         UserContext,
         FetcherRegistry,
-        configProvider,
-        formBuilder,
+        FormBuilder,
         template
     ) => {
         return BaseForm.extend({
@@ -40,7 +38,7 @@ define(
              * {@inheritdoc}
              */
             initialize(config) {
-                this.config = config;
+                this.config = _.defaults(config, {fieldModules: {}});
 
                 BaseForm.prototype.initialize.apply(arguments);
             },
@@ -56,24 +54,50 @@ define(
                     FetcherRegistry.getFetcher('family-variant').fetch(familyVariantCode),
                     FetcherRegistry.getFetcher('product-model-by-code').fetch(parentCode)
                 ).then((familyVariant, parent) => {
-                    const targetLevel = parent.meta.level + 1;
-                    const variantAttributeSets = familyVariant.variant_attribute_sets;
-                    const variantAttributeSetForLevel = variantAttributeSets.find((variantAttributeSet) => {
-                        return variantAttributeSet.level === targetLevel;
-                    });
-
-                    FetcherRegistry
-                        .getFetcher('attribute')
-                        .fetchByIdentifiers(variantAttributeSetForLevel.axes)
+                    this.getAxesAttributes(familyVariant, parent.meta.level + 1)
                         .then((axesAttributes) => {
-                            const fieldModules = axesAttributes
-                                .map((attribute) => this.config[attribute.field_type])
-                                .map((fieldKey) => formBuilder.buildForm(fieldKey));
-
-                            console.log(fieldModules);
+                            return $.when(axesAttributes.map((attribute) => this.createField(attribute)))
                         })
-                    ;
+                        .then((...fields) => {
+                            let position = 100;
+                            fields.forEach((field) => {
+                                this.addExtension(
+                                    field.code,
+                                    field,
+                                    'self',
+                                    position++
+                                );
+                            });
+                        });
                 });
+            },
+
+            getAxesAttributes: function(familyVariant, level) {
+                const variantAttributeSets = familyVariant.variant_attribute_sets;
+                const variantAttributeSetForLevel = variantAttributeSets.find((variantAttributeSet) => {
+                    return variantAttributeSet.level === level;
+                });
+
+                FetcherRegistry
+                    .getFetcher('attribute')
+                    .fetchByIdentifiers(variantAttributeSetForLevel.axes)
+            },
+
+            createField(attribute) {
+                const fieldModuleName = this.config.fieldModules[attribute.field_type];
+
+                if (undefined === fieldModuleName) {
+                    throw new Error('No module set for field type "' + attribute.field_type + '"');
+                }
+
+                return FormBuilder.buildForm(fieldModuleName)
+                    .then((field) => {
+                        if ('pim_catalog_metric' === attribute.type) {
+                            field.setMetricFamily(attribute.metric_family);
+                        }
+
+                        return field;
+                    });
             }
         });
     }

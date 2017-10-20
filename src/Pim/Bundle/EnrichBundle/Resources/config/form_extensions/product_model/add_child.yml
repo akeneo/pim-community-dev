@@ -12,12 +12,13 @@ extensions:
         parent: pim-product-model-add-child-form
         targetZone: fields-container
         config:
-            akeneo-simple-select-field: pim-product-model-add-child-field-simple-select
-            akeneo-multi-select-field: pim-product-model-add-child-field-multi-select
-            akeneo-metric-field: pim-product-model-add-child-field-metric
-            akeneo-switch-field: pim-product-model-add-child-field-switch
-            akeneo-simple-select-reference-data-field: pim-product-model-add-child-field-simple-select-reference-data
-            akeneo-multi-select-reference-data-field: pim-product-model-add-child-field-multi-select-reference-data
+            fieldModules:
+                akeneo-simple-select-field: pim-product-model-add-child-field-simple-select
+                akeneo-multi-select-field: pim-product-model-add-child-field-multi-select
+                akeneo-metric-field: pim-product-model-add-child-field-metric
+                akeneo-switch-field: pim-product-model-add-child-field-switch
+                akeneo-simple-select-reference-data-field: pim-product-model-add-child-field-simple-select-reference-data
+                akeneo-multi-select-reference-data-field: pim-product-model-add-child-field-multi-select-reference-data
 
     pim-product-model-add-child-field-simple-select:
         module: pim/form/common/fields/select
