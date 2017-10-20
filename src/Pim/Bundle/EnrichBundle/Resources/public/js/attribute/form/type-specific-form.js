@@ -46,7 +46,8 @@ define([
             var formName = FormRegistry.getFormName(this.getRoot().getType(), this.config.mode);
 
             if (undefined !== formName && null !== formName) {
-                return FormBuilder.buildForm(formName)
+                return FormBuilder.getFormMeta(formName)
+                    .then(FormBuilder.buildForm)
                     .then(function (form) {
                         this.addExtension(
                             form.code,

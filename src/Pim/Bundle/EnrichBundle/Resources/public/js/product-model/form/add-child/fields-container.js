@@ -56,19 +56,18 @@ define(
                 ).then((familyVariant, parent) => {
                     this.getAxesAttributes(familyVariant, parent.meta.level + 1)
                         .then((axesAttributes) => {
-                            // $.when(
-                            //     axesAttributes.map((attribute) => this.createField(attribute))
-                            // ).then((...fields) => {
-                            //     let position = 100;
-                            //     fields.forEach((field) => {
-                            //         this.addExtension(
-                            //             field.code,
-                            //             field,
-                            //             'self',
-                            //             position++
-                            //         );
-                            //     });
-                            // });
+                            return $.when(axesAttributes.map((attribute) => this.createField(attribute)));
+                        })
+                        .then((...fields) => {
+                            let position = 100;
+                            fields.forEach((field) => {
+                                this.addExtension(
+                                    field.code,
+                                    field,
+                                    'self',
+                                    position++
+                                );
+                            });
                         });
                 });
             },
