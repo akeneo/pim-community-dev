@@ -56,7 +56,6 @@ extensions:
         module: pim/form/common/product/create-button
         parent: pim-product-index
         targetZone: buttons
-        aclResourceId: pim_enrich_product_create
         config:
             buttonTitle: pim_enrich.entity.product.create
             modalTitle: pim_enrich.entity.product.modalTitle
@@ -66,10 +65,12 @@ extensions:
                     form: pim-product-create-modal
                     title: Product
                     icon: icon-product
+                    aclResourceId: pim_enrich_product_create
                 create-product-model:
                     form: pim-product-model-create-modal
                     title: Product model
                     icon: bulk/icon-template
+                    aclResourceId: pim_enrich_product_model_create
 
     pim-product-index-locale-switcher:
         module: pim/grid/locale-switcher

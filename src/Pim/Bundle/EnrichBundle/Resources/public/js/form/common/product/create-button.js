@@ -16,7 +16,8 @@ define(
         'pim/template/product/create-modal-content',
         'pim/fetcher-registry',
         'bootstrap-modal',
-        'pim/form-builder'
+        'pim/form-builder',
+        'pim/security-context'
     ],
     function (
         $,
@@ -28,7 +29,8 @@ define(
         templateModal,
         FetcherRegistry,
         BootstrapModal,
-        FormBuilder
+        FormBuilder,
+        SecurityContext
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -52,22 +54,45 @@ define(
              * Closes the selection modal and unbinds the click events
              */
             closeModal() {
-                this.modal.close();
-                this.modal.$el.off();
+                if (this.modal) {
+                    this.modal.close();
+                    this.modal.$el.off();
+                }
+            },
+
+            /**
+             * Returns a list of choices that are allowed by permissions
+             * @return {Object} choices
+             */
+            getAllowedChoices(choices) {
+                return _.filter(choices, choice => {
+                    return SecurityContext.isGranted(choice.aclResourceId);
+                });
             },
 
             /**
              * Opens the selection modal with the configured choices
+             * If there's only one available choice, directly open the form
+             * for that choice.
+             *
              * @return {Backbone.BootstrapModal} The modal
              */
             openModal() {
                 if (this.modal) this.closeModal();
 
+                const { choices, modalTitle, subTitle } = this.config;
+                const allowedChoices = this.getAllowedChoices(choices);
+
+                if (allowedChoices.length === 1) {
+                    const firstChoice = allowedChoices[0];
+                    return this.openFormModal(null, firstChoice.form);
+                }
+
                 this.modal = new Backbone.BootstrapModal({
                     content: this.templateModal({
-                        choices: this.config.choices,
-                        modalTitle: __(this.config.modalTitle),
-                        subTitle: __(this.config.subTitle)
+                        choices: allowedChoices,
+                        modalTitle: __(modalTitle),
+                        subTitle: __(subTitle)
                     })
                 }).open();
 
@@ -80,24 +105,35 @@ define(
             },
 
             /**
-             * Opens the form modal for the selected choice e.g. create product form
-             * @param  {jQuery.Event} event The event with the selected choice as target
+             * Opens a form model for the selected choice. If formName is passed in, it
+             * overrides the formName from the event target element.
+             *
+             * @param  {jQuery.Event} event The click event from the selection modal
+             * @param  {String} formName The name of the form extension defined for a choice
+             * @return {Promise}
              */
-            openFormModal(event) {
-                const form = $(event.currentTarget).attr('data-form');
+            openFormModal(event, formName) {
+                const form = formName || $(event.currentTarget).attr('data-form');
 
-                FormBuilder.build(form).then(modal => {
+                return FormBuilder.build(form).then(modal => {
                     this.closeModal();
                     modal.open();
                 });
             },
 
             /**
-             * {@inheritdoc}
+             * Render the create button
+             * If the user is not allowed to create products and product models,
+             * don't render the create button.
              */
             render() {
+                const { choices, buttonTitle } = this.config;
+                if (this.getAllowedChoices(choices).length === 0) {
+                    return;
+                }
+
                 this.$el.html(this.template({
-                    buttonTitle: __(this.config.buttonTitle)
+                    buttonTitle: __(buttonTitle)
                 }));
             }
         });
