@@ -126,7 +126,7 @@ class IndexProductCommand extends ContainerAwareCommand
      */
     private function index(OutputInterface $output, array $identifiers): int
     {
-        $products = $this->productRepository->findBy(['identifiers' => $identifiers]);
+        $products = $this->productRepository->findBy(['identifier' => $identifiers]);
         $productsCount = count($products);
 
         if ($productsCount !== count($identifiers)) {

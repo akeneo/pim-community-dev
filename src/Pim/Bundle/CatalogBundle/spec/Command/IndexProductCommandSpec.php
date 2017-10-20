@@ -28,7 +28,7 @@ class IndexProductCommandSpec extends ObjectBehavior
         $productClient->hasIndex()->willReturn(true);
         $productAndProductModelClient->hasIndex()->willReturn(true);
     }
-    
+
     function it_has_a_name()
     {
         $this->getName()->shouldReturn('pim:product:index');
@@ -106,7 +106,7 @@ class IndexProductCommandSpec extends ObjectBehavior
         $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
         $container->get('akeneo_storage_utils.doctrine.object_detacher')->willReturn($productDetacher);
 
-        $productRepository->findBy(['identifiers' => ['product_identifier_to_index']])->willReturn([$productToIndex]);
+        $productRepository->findBy(['identifier' => ['product_identifier_to_index']])->willReturn([$productToIndex]);
 
         $productIndexer->indexAll([$productToIndex])->shouldBeCalled();
         $productDetacher->detachAll([$productToIndex])->shouldBeCalled();
@@ -155,7 +155,7 @@ class IndexProductCommandSpec extends ObjectBehavior
         $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
         $container->get('akeneo_storage_utils.doctrine.object_detacher')->willReturn($productDetacher);
 
-        $productRepository->findBy(['identifiers' => ['product_1', 'product_2']])->willReturn([$product1, $product2]);
+        $productRepository->findBy(['identifier' => ['product_1', 'product_2']])->willReturn([$product1, $product2]);
 
         $productIndexer->indexAll([$product1, $product2])->shouldBeCalled();
         $productDetacher->detachAll([$product1, $product2])->shouldBeCalled();
@@ -203,7 +203,7 @@ class IndexProductCommandSpec extends ObjectBehavior
         $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
         $container->get('akeneo_storage_utils.doctrine.object_detacher')->willReturn($productDetacher);
 
-        $productRepository->findBy(['identifiers' => ['product_1', 'wrong_product']])->willReturn([$productToIndex]);
+        $productRepository->findBy(['identifier' => ['product_1', 'wrong_product']])->willReturn([$productToIndex]);
 
         $productToIndex->getIdentifier()->willReturn('product_1');
 
