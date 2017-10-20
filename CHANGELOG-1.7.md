@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug Fixes
+
+PIM-6939: fix sort order on export
+
 # 1.7.11 (2017-10-16)
 
 ## Bug Fixes
