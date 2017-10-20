@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace tests\integration\Pim\Bundle\CatalogBundle\Completeness;
 
-use Akeneo\Component\Batch\Job\BatchStatus;
 use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\CatalogBundle\tests\integration\Completeness\AbstractCompletenessTestCase;
 use Pim\Component\Catalog\AttributeTypes;

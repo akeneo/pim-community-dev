@@ -119,7 +119,7 @@ services:
         class: '%pim_catalog.event_subscriber.compute_completeness_on_family_update.class%'
         arguments:
             - '@security.token_storage'
-            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
             - '@pim_catalog.repository.attribute_requirement'
             - '%pim_catalog.compute_completeness_of_products_family.job_name%'

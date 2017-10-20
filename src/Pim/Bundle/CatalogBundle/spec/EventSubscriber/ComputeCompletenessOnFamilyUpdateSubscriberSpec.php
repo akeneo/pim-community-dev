@@ -217,4 +217,90 @@ class ComputeCompletenessOnFamilyUpdateSubscriberSpec extends ObjectBehavior
         $this->computeCompletenessOfProductsFamily($event1);
         $this->computeCompletenessOfProductsFamily($event2);
     }
+
+    function it_only_handles_family_objects(
+        $jobLauncher,
+        GenericEvent $event
+    ) {
+        $event->getSubject()->willReturn(new \StdClass());
+        $event->hasArgument('unitary')->willReturn(true);
+        $event->getArgument('unitary')->willReturn(true);
+
+        $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
+
+        $this->areAttributeRequirementsUpdated($event);
+        $this->computeCompletenessOfProductsFamily($event);
+    }
+
+    function it_only_handles_events_having_a_unitary_argument_at_pre_and_post_save(
+        $jobLauncher,
+        $attributeRequirementRepository,
+        AttributeRequirementInterface $attributeRequirement1,
+        GenericEvent $event,
+        FamilyInterface $family
+    ) {
+        $event->getSubject()->willReturn($family);
+        $event->hasArgument('unitary')->willReturn(false);
+
+        $family->getId()->willReturn(152);
+        $family->getAttributeRequirements()->willReturn(
+            [
+                'price_ecommerce' => $attributeRequirement1
+            ]
+        );
+
+        $attributeRequirementRepository->findRequiredAttributesCodesByFamily($family)->willReturn(
+            [
+                [
+                    'attribute' => 'price',
+                    'channel'   => 'ecommerce',
+                ],
+                [
+                    'attribute' => 'text',
+                    'channel'   => 'ecommerce',
+                ],
+            ]
+        );
+
+        $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
+
+        $this->areAttributeRequirementsUpdated($event);
+        $this->computeCompletenessOfProductsFamily($event);
+    }
+
+    function it_only_handles_unitary_updates_at_pre_and_post_save(
+        $jobLauncher,
+        $attributeRequirementRepository,
+        AttributeRequirementInterface $attributeRequirement1,
+        GenericEvent $event,
+        FamilyInterface $family
+    ) {
+        $event->getSubject()->willReturn($family);
+        $event->hasArgument('unitary')->willReturn(true);
+        $event->getArgument('unitary')->willReturn(false);
+
+        $family->getId()->willReturn(152);
+        $family->getAttributeRequirements()->willReturn(
+            [
+                'price_ecommerce' => $attributeRequirement1
+            ]
+        );
+        $attributeRequirementRepository->findRequiredAttributesCodesByFamily($family)->willReturn(
+            [
+                [
+                    'attribute' => 'price',
+                    'channel'   => 'ecommerce',
+                ],
+                [
+                    'attribute' => 'text',
+                    'channel'   => 'ecommerce',
+                ],
+            ]
+        );
+
+        $jobLauncher->launch(Argument::cetera())->shouldNotBeCalled();
+
+        $this->areAttributeRequirementsUpdated($event);
+        $this->computeCompletenessOfProductsFamily($event);
+    }
 }

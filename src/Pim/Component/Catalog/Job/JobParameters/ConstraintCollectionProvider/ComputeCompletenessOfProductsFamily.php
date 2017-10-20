@@ -21,13 +21,7 @@ class ComputeCompletenessOfProductsFamily implements ConstraintCollectionProvide
      */
     public function getConstraintCollection(): Collection
     {
-        return new Collection(
-            [
-                'fields' => [
-                    'family_code' => new NotBlank(),
-                ],
-            ]
-        );
+        return new Collection(['fields' => ['family_code' => new NotBlank()]]);
     }
 
     /**

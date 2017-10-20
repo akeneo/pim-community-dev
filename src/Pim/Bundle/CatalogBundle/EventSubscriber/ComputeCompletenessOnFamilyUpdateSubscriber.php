@@ -104,8 +104,10 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
         $oldAttributeRequirementsKeys = $this->getOldAttributeRequirementKeys($subject);
         $newAttributeRequirementsKeys = array_keys($subject->getAttributeRequirements());
 
-        $this->areAttributeRequirementsUpdatedForFamilies[$subject->getCode()] =
-            $this->areAttributeRequirementsListsDifferent($oldAttributeRequirementsKeys, $newAttributeRequirementsKeys);
+        $this->areAttributeRequirementsUpdatedForFamilies = $this->areAttributeRequirementsListsDifferent(
+            $oldAttributeRequirementsKeys,
+            $newAttributeRequirementsKeys
+        );
     }
 
     /**
@@ -123,13 +125,15 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
             return;
         }
 
-        if ($this->areAttributeRequirementsUpdatedForFamilies[$subject->getCode()]) {
+        if (null === $subject->getId()) {
+            return;
+        }
+
+        if ($this->areAttributeRequirementsUpdatedForFamilies) {
             $user = $this->tokenStorage->getToken()->getUser();
             $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
             $this->jobLauncher->launch($jobInstance, $user, ['family_code' => $subject->getCode()]);
         }
-
-        unset($this->areAttributeRequirementsUpdatedForFamilies[$subject->getCode()]);
     }
 
     /**
@@ -143,8 +147,8 @@ class ComputeCompletenessOnFamilyUpdateSubscriber implements EventSubscriberInte
 
         $oldAttributeRequirements = $this->attributeRequirementRepository->findRequiredAttributesCodesByFamily($family);
         foreach ($oldAttributeRequirements as $oldAttributeRequirement) {
-            $oldAttributeRequirementsKeys[] =
-                $oldAttributeRequirement['attribute'] . '_' . $oldAttributeRequirement['channel'];
+            $oldAttributeRequirementsKeys[] = $oldAttributeRequirement['attribute'] . '_' .
+                $oldAttributeRequirement['channel'];
         }
 
         return $oldAttributeRequirementsKeys;

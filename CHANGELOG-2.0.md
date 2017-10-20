@@ -818,7 +818,7 @@
 
 - Change `Pim\Component\Catalog\Model\FamilyInterface` to add `setAttributeAsImage` and `getAttributeAsImage`
 - Remove method `addMissingProductValues` of `Pim\Component\Catalog\Builder\ProductBuilderInterface` (this method is now handled by `Pim\Component\Catalog\ValuesFiller\ProductValuesFiller::fillMissingValues`)
-- Remove method `getFamilyFromJobParameters` of `Pim\Component\Catalog\Model\ProductInterface`
+- Remove method `getFamily` of `Pim\Component\Catalog\Model\ProductInterface`
 - PIM-6732: Remove `AddProductToVariantGroupProcessor` from `Pim\Component\Catalog\Repository\ProductRepositoryInterface`
 
 ### Type hint

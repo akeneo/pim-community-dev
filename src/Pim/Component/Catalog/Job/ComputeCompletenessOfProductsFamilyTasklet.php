@@ -10,7 +10,6 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
@@ -34,9 +33,6 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
     /** @var IdentifiableObjectRepositoryInterface */
     private $familyRepository;
 
-    /** @var CompletenessManager */
-    private $completenessManager;
-
     /** @var ProductQueryBuilderFactoryInterface */
     private $productQueryBuilderFactory;
 
@@ -48,20 +44,17 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
 
     /**
      * @param IdentifiableObjectRepositoryInterface $familyRepository
-     * @param CompletenessManager                   $completenessManager
      * @param ProductQueryBuilderFactoryInterface   $productQueryBuilderFactory
      * @param BulkObjectDetacherInterface           $bulkObjectDetacher
      * @param BulkSaverInterface                    $bulkProductSaver
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
-        CompletenessManager $completenessManager,
         ProductQueryBuilderFactoryInterface $productQueryBuilderFactory,
         BulkSaverInterface $bulkProductSaver,
         BulkObjectDetacherInterface $bulkObjectDetacher
     ) {
         $this->familyRepository = $familyRepository;
-        $this->completenessManager = $completenessManager;
         $this->productQueryBuilderFactory = $productQueryBuilderFactory;
         $this->bulkProductSaver = $bulkProductSaver;
         $this->bulkObjectDetacher = $bulkObjectDetacher;
@@ -83,10 +76,6 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
     public function execute(): void
     {
         $family = $this->getFamilyFromJobParameters();
-        if (null === $family) {
-            return;
-        }
-        $this->resetCompletenessOfProductsForFamily($family);
         $this->computeCompletenesses($family);
     }
 
@@ -96,30 +85,24 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
      * @return null|FamilyInterface
      *
      * @throws UndefinedJobParameterException
+     * @throws \InvalidArgumentException
      */
     private function getFamilyFromJobParameters(): ?FamilyInterface
     {
         $familyCode = $this->stepExecution->getJobParameters()->get('family_code');
+        $family = $this->familyRepository->findOneByIdentifier($familyCode);
 
-        return $this->familyRepository->findOneByIdentifier($familyCode);
-    }
+        if (null === $family) {
+            throw new \InvalidArgumentException(sprintf('Family not found, "%s" given', $familyCode));
+        }
 
-    /**
-     * Resets the completeness of products belonging to the family.
-     *
-     * @param FamilyInterface $family
-     */
-    private function resetCompletenessOfProductsForFamily(FamilyInterface $family): void
-    {
-        $this->completenessManager->scheduleForFamily($family);
+        return $family;
     }
 
     /**
      * Recompute the completenesses of all products belonging to the family by calling 'save' on them.
      *
      * @param FamilyInterface $family
-     *
-     * @internal param string $familyCode
      */
     private function computeCompletenesses(FamilyInterface $family): void
     {
