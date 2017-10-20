@@ -85,6 +85,7 @@ define(
 
                 if (allowedChoices.length === 1) {
                     const firstChoice = allowedChoices[0];
+
                     return this.openFormModal(null, firstChoice.form);
                 }
 
@@ -123,12 +124,15 @@ define(
 
             /**
              * Render the create button
-             * If the user is not allowed to create products and product models,
+             * If the user is not allowed to access the forms for the choices
              * don't render the create button.
              */
             render() {
                 const { choices, buttonTitle } = this.config;
+
                 if (this.getAllowedChoices(choices).length === 0) {
+                    this.$el.hide();
+
                     return;
                 }
 

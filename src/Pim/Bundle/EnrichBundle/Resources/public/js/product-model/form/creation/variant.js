@@ -69,9 +69,7 @@ function (
         },
 
         /**
-         * This field is dependent on the 'family' field in the same form. It will listen
-         * to changes on the form model to see if we need to render the family variants
-         * for the selected family.
+         * Listen for changes on the 'family' key in the form data
          */
         updateOnFamilyChange() {
             const formModel = this.getFormModel();
@@ -102,7 +100,6 @@ function (
 
         /**
          * Get the code for a given family id
-         * @TODO Get the family code directly instead
          * @return {String}
          */
         getFamilyIdFromCode(code) {
@@ -112,7 +109,7 @@ function (
         },
 
         /**
-         * Loads the variants for a family based on a family id and renders
+         * Loads the variants for a family based on a family id then render
          * a select2 dropdown with the variants
          * @param  {String} family The id of a family
          * @return {Promise}       The JSON load promise

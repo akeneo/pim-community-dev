@@ -6,7 +6,7 @@
         <div class="AknFullPage-right">
             <div class="AknFullPage-subTitle"><%- subTitleLabel %></div>
             <div class="AknFullPage-title"><%- titleLabel %></div>
-            <% if (contentLabel) { %>
+            <% if (typeof contentLabel !== 'undefined') { %>
                 <div class="AknFullPage-description">
                     <%- contentLabel %>
                 </div>
@@ -16,7 +16,7 @@
                     <%= fields %>
                 <% } %>
             </div>
-            <% if (displayGlobalErrors && errors.length > 0) { %>
+            <% if (typeof displayGlobalErrors !== 'undefined' && errors.length > 0) { %>
                 <div class="AknMessageBox AknMessageBox--danger global-errors">
                     <ul class="AknMessageBox-list">
                         <% _.each(errors, error => { %>

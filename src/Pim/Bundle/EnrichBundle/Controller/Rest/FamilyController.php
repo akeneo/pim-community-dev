@@ -334,7 +334,7 @@ class FamilyController
      *
      * @return JsonResponse
      */
-    public function getWithVariantsAction(Request $request)
+    public function getWithVariantsAction(Request $request): JsonResponse
     {
         $options = $request->query->get('options', ['limit' => 20]);
 

@@ -77,9 +77,7 @@ define(
                     fields: this.templateInput({
                         placeholder: __('grid.view_selector.placeholder'),
                         label: __('grid.view_selector.choose_label')
-                    }),
-                    contentLabel: '',
-                    displayGlobalErrors: false
+                    })
                 });
 
                 let modal = new Backbone.BootstrapModal({
