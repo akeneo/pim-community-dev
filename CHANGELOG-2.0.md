@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - GITHUB-7035: Change class alias for proper LocaleType form parent indication, cheers @mkilmanas!
+- PIM-6567: Fix attributes filter to not remove axes
 
 # 2.0.4 (2017-10-19)
 

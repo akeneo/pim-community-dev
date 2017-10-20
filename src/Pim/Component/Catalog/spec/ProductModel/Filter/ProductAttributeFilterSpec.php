@@ -5,13 +5,12 @@ namespace spec\Pim\Component\Catalog\ProductModel\Filter;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
-use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
-use Pim\Component\Catalog\ProductModel\Filter\ProductAttributeFilter;
 use Prophecy\Argument;
 
 class ProductAttributeFilterSpec extends ObjectBehavior
@@ -39,13 +38,36 @@ class ProductAttributeFilterSpec extends ObjectBehavior
         $productRepository,
         FamilyInterface $family,
         ProductInterface $product,
-        Collection $attribute
+        Collection $familyAttributes,
+        Collection $familyAttributeCodes
     ) {
         $familyRepository->findOneByIdentifier('Summer Tshirt')->willReturn($family);
-        $family->getAttributes()->willReturn($attribute);
-        $attribute->exists(Argument::any())->shouldBeCalledTimes(3);
+        $family->getAttributes()->willReturn($familyAttributes);
+        $familyAttributes->map(Argument::any())->willReturn($familyAttributeCodes);
+        $familyAttributeCodes->toArray()->willReturn(['sku', 'description']);
 
         $productRepository->findOneByIdentifier('tshirt')->willReturn($product);
+
+        $expected = [
+            'identifier' => 'tshirt',
+            'family' => 'Summer Tshirt',
+            'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'tshirt',
+                    ],
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' => 'mobile',
+                        'data' => 'My awesome description',
+                    ],
+                ],
+            ],
+        ];
 
         $this->filter(
             [
@@ -75,7 +97,7 @@ class ProductAttributeFilterSpec extends ObjectBehavior
                     ],
                 ],
             ]
-        );
+        )->shouldReturn($expected);
     }
 
     function it_filters_the_attributes_that_does_not_belong_to_a_family_variant(
@@ -85,7 +107,12 @@ class ProductAttributeFilterSpec extends ObjectBehavior
         ProductInterface $product,
         FamilyVariantInterface $familyVariant,
         VariantAttributeSetInterface $variantAttributeSet,
-        Collection $attribute
+        Collection $attributes,
+        Collection $axes,
+        AttributeInterface $sku,
+        AttributeInterface $weight,
+        AttributeInterface $description,
+        AttributeInterface $color
     ) {
         $productModelRepository->findOneByIdentifier('parent-code')->willReturn($productModel);
         $productModel->getFamilyVariant()->willreturn($familyVariant);
@@ -94,8 +121,53 @@ class ProductAttributeFilterSpec extends ObjectBehavior
         $productRepository->findOneByIdentifier('tshirt')->willReturn($product);
 
         $familyVariant->getVariantAttributeSet(2)->willReturn($variantAttributeSet);
-        $variantAttributeSet->getAttributes()->willReturn($attribute);
-        $attribute->exists(Argument::any())->shouldBeCalledTimes(3);
+        $variantAttributeSet->getAttributes()->willReturn($attributes);
+        $variantAttributeSet->getAxes()->willReturn($axes);
+        $attributes->toArray()->willReturn([$sku, $weight, $description]);
+        $axes->toArray()->willReturn([$color]);
+
+        $sku->getCode()->willReturn('sku');
+        $weight->getCode()->willReturn('weight');
+        $description->getCode()->willReturn('description');
+        $color->getCode()->willReturn('color');
+
+        $expected = [
+            'identifier' => 'tshirt',
+            'parent' => 'parent-code',
+            'values' => [
+                'sku' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'data' => 'tshirt',
+                    ],
+                ],
+                'weight' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' => 'mobile',
+                        'data' => [
+                            'unit' => 'GRAM',
+                            'amount' => '30'
+                        ]
+                    ],
+                ],
+                'description' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' => 'mobile',
+                        'data' => 'My awesome description',
+                    ],
+                ],
+                'color' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope' => 'mobile',
+                        'data' => '[blue]',
+                    ],
+                ],
+            ],
+        ];
 
         $this->filter(
             [
@@ -116,6 +188,16 @@ class ProductAttributeFilterSpec extends ObjectBehavior
                             'data' => 'My very awesome T-shirt',
                         ],
                     ],
+                    'weight' => [
+                        [
+                            'locale' => 'en_US',
+                            'scope' => 'mobile',
+                            'data' => [
+                                'unit' => 'GRAM',
+                                'amount' => '30'
+                            ]
+                        ],
+                    ],
                     'description' => [
                         [
                             'locale' => 'en_US',
@@ -123,8 +205,15 @@ class ProductAttributeFilterSpec extends ObjectBehavior
                             'data' => 'My awesome description',
                         ],
                     ],
+                    'color' => [
+                        [
+                            'locale' => 'en_US',
+                            'scope' => 'mobile',
+                            'data' => '[blue]',
+                        ],
+                    ],
                 ],
             ]
-        );
+        )->shouldReturn($expected);
     }
 }
