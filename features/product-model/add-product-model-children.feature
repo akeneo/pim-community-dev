@@ -11,7 +11,7 @@ Feature: Add children to product model
   Scenario: Successfully add a sub product model with one axis to a root product model
     Given I am on the "apollon" product model page
     When I open the variant navigation children selector for level 1
-    And I add a new child
+    And I press "Create new"
     Then I should see the text "Add a color"
     When I fill in "color" with "black"
     And I fill in "code" with "apollon_black"
