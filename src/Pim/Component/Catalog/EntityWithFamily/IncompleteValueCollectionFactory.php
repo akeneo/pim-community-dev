@@ -36,20 +36,19 @@ class IncompleteValueCollectionFactory
      * Create a collection of incomplete values depending of a collection of required values.
      * This method will create the incomplete values for the given couple $channel/$locale.
      *
-     * @param RequiredValueCollectionInterface $requiredValues
-     * @param ChannelInterface                 $channel
-     * @param LocaleInterface                  $locale
-     * @param EntityWithValuesInterface        $entityWithValues
+     * @param RequiredValueCollection   $requiredValues
+     * @param ChannelInterface          $channel
+     * @param LocaleInterface           $locale
+     * @param EntityWithValuesInterface $entityWithValues
      *
-     * @return IncompleteValueCollectionInterface
+     * @return IncompleteValueCollection
      */
     public function forChannelAndLocale(
-        RequiredValueCollectionInterface $requiredValues,
+        RequiredValueCollection $requiredValues,
         ChannelInterface $channel,
         LocaleInterface $locale,
         EntityWithValuesInterface $entityWithValues
-    ): IncompleteValueCollectionInterface {
-
+    ): IncompleteValueCollection {
         $requiredValuesForChannelAndLocale = $requiredValues->filterByChannelAndLocale($channel, $locale);
         $incompleteValues = [];
 

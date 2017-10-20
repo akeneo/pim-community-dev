@@ -26,9 +26,9 @@ class RequiredValueCollectionFactory
      * @param FamilyInterface  $family
      * @param ChannelInterface $channel
      *
-     * @return RequiredValueCollectionInterface
+     * @return RequiredValueCollection
      */
-    public function forChannel(FamilyInterface $family, ChannelInterface $channel): RequiredValueCollectionInterface
+    public function forChannel(FamilyInterface $family, ChannelInterface $channel): RequiredValueCollection
     {
         $requiredValues = [];
 

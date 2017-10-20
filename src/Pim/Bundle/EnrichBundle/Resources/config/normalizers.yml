@@ -100,7 +100,7 @@ services:
         class: '%pim_enrich.normalizer.product_model_incomplete_values.class%'
         arguments:
             - '@pim_serializer'
-            - '@pim_catalog.completeness.required_value_collection_factory'
+            - '@pim_catalog.entity_with_family.required_value_collection_factory'
             - '@pim_catalog.entity_with_family.incomplete_value_collection_factory'
         tags:
             - { name: pim_internal_api_serializer.normalizer }

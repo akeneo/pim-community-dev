@@ -24,7 +24,7 @@ use Pim\Component\Catalog\Model\ValueInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class IncompleteValueCollection implements IncompleteValueCollectionInterface
+class IncompleteValueCollection implements \Countable, \IteratorAggregate
 {
     /** @var ValueInterface[] */
     private $values;
@@ -48,7 +48,11 @@ class IncompleteValueCollection implements IncompleteValueCollectionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Is there already a value with the same attribute, channel and locale than $value?
+     *
+     * @param ValueInterface $value
+     *
+     * @return bool
      */
     public function hasSame(ValueInterface $value): bool
     {
@@ -56,7 +60,9 @@ class IncompleteValueCollection implements IncompleteValueCollectionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Get the list of attributes within those incomplete values
+     *
+     * @return Collection
      */
     public function attributes(): Collection
     {

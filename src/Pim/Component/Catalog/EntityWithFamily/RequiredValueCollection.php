@@ -21,7 +21,7 @@ use Pim\Component\Catalog\Model\ValueInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class RequiredValueCollection implements RequiredValueCollectionInterface
+class RequiredValueCollection implements \Countable, \IteratorAggregate
 {
     /** @var ValueInterface[] */
     private $values;
@@ -45,7 +45,11 @@ class RequiredValueCollection implements RequiredValueCollectionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Is there already a value with the same attribute, channel and locale than $value?
+     *
+     * @param ValueInterface $value
+     *
+     * @return bool
      */
     public function hasSame(ValueInterface $value): bool
     {
@@ -53,13 +57,17 @@ class RequiredValueCollection implements RequiredValueCollectionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * Returns all the elements of this collection that satisfy the given channel and locale.
+     *
+     * @param ChannelInterface $channel
+     * @param LocaleInterface  $locale
+     *
+     * @return RequiredValueCollection
      */
     public function filterByChannelAndLocale(
         ChannelInterface $channel,
         LocaleInterface $locale
-    ): RequiredValueCollectionInterface {
-
+    ): RequiredValueCollection {
         $filteredValues = array_filter(
             $this->values,
             function (ValueInterface $value) use ($channel, $locale) {

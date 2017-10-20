@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Catalog\EntityWithFamily;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Completeness\Checker\ValueCompleteCheckerInterface;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
-use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionInterface;
+use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollection;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\EntityWithFamilyInterface;
@@ -58,8 +58,8 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         $ecommerce,
         EntityWithFamilyInterface $product,
         ValueCollectionInterface $productValues,
-        \Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionInterface $requiredValues,
-        RequiredValueCollectionInterface $requiredValuesForChannelAndLocale,
+        RequiredValueCollection $requiredValues,
+        RequiredValueCollection $requiredValuesForChannelAndLocale,
         \Iterator $requiredValuesForChannelAndLocaleIterator,
         ValueInterface $requiredValue1,
         ValueInterface $requiredValue2,
@@ -111,8 +111,8 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         $ecommerce,
         EntityWithFamilyInterface $product,
         ValueCollectionInterface $productValues,
-        RequiredValueCollectionInterface $requiredValues,
-        \Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionInterface $requiredValuesForChannelAndLocale,
+        RequiredValueCollection $requiredValues,
+        RequiredValueCollection $requiredValuesForChannelAndLocale,
         \Iterator $requiredValuesForChannelAndLocaleIterator,
         ValueInterface $requiredValue,
         ValueInterface $productValue
@@ -145,8 +145,8 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         $ecommerce,
         EntityWithFamilyInterface $product,
         ValueCollectionInterface $productValues,
-        \Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionInterface $requiredValues,
-        RequiredValueCollectionInterface $requiredValuesForChannelAndLocale,
+        RequiredValueCollection $requiredValues,
+        RequiredValueCollection $requiredValuesForChannelAndLocale,
         \Iterator $requiredValuesForChannelAndLocaleIterator,
         ValueInterface $requiredValue
     ) {
@@ -178,8 +178,8 @@ class IncompleteValueCollectionFactorySpec extends ObjectBehavior
         $ecommerce,
         EntityWithFamilyInterface $product,
         ValueCollectionInterface $productValues,
-        \Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionInterface $requiredValues,
-        \Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionInterface $requiredValuesForChannelAndLocale,
+        RequiredValueCollection $requiredValues,
+        RequiredValueCollection $requiredValuesForChannelAndLocale,
         \Iterator $requiredValuesForChannelAndLocaleIterator,
         ValueInterface $requiredValue,
         ValueInterface $productValue

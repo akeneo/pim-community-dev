@@ -4,7 +4,6 @@ namespace spec\Pim\Component\Catalog\EntityWithFamily;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollection;
-use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -100,7 +99,7 @@ class RequiredValueCollectionSpec extends ObjectBehavior
 
         $filteredValues = $this->filterByChannelAndLocale($ecommerce, $frFR);
 
-        $filteredValues->shouldHaveType(\Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionInterface::class);
+        $filteredValues->shouldHaveType(RequiredValueCollection::class);
         $filteredValues->count()->shouldReturn(4);
         $filteredValues->hasSame($value1)->shouldReturn(true);
         $filteredValues->hasSame($value2)->shouldReturn(true);

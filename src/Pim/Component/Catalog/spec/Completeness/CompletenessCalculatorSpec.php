@@ -7,9 +7,9 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Completeness\CompletenessCalculator;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory;
-use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionInterface;
+use Pim\Component\Catalog\EntityWithFamily\RequiredValueCollection;
 use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory;
-use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionInterface;
+use Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollection;
 use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\Completeness;
@@ -58,8 +58,8 @@ class CompletenessCalculatorSpec extends ObjectBehavior
         AttributeRequirementInterface $attributeRequirement,
         ChannelInterface $channel,
         LocaleInterface $locale,
-        RequiredValueCollectionInterface $requiredValues,
-        IncompleteValueCollectionInterface $incompleteValues,
+        RequiredValueCollection $requiredValues,
+        IncompleteValueCollection $incompleteValues,
         ValueInterface $requiredValue,
         Collection $incompleteAttributes,
         CompletenessInterface $expectedCompleteness
