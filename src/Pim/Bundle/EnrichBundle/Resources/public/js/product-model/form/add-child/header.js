@@ -43,30 +43,29 @@ define(
                     FetcherRegistry.getFetcher('family-variant').fetch(familyVariantCode),
                     FetcherRegistry.getFetcher('product-model-by-code').fetch(parentCode)
                 ).then((familyVariant, parent) => {
-                    const targetLevel = parent.meta.level + 1;
-                    const variantAttributeSets = familyVariant.variant_attribute_sets;
-                    const variantAttributeSetForLevel = variantAttributeSets.find((variantAttributeSet) => {
-                        return variantAttributeSet.level === targetLevel;
+                    this.getAxesAttributes(familyVariant, parent.meta.level + 1).then((axesAttributes) => {
+                        const catalogLocale = UserContext.get('catalogLocale');
+                        const axesLabels = axesAttributes.map((attribute) => {
+                            return i18n.getLabel(attribute.labels, catalogLocale, attribute.code);
+                        });
+
+                        this.$el.html(
+                            this.template({
+                                __: __,
+                                axes: axesLabels.join(', ')
+                            })
+                        );
                     });
-
-                    FetcherRegistry
-                        .getFetcher('attribute')
-                        .fetchByIdentifiers(variantAttributeSetForLevel.axes)
-                        .then((axesAttributes) => {
-                            const catalogLocale = UserContext.get('catalogLocale');
-                            const axesLabels = axesAttributes.map((attribute) => {
-                                return i18n.getLabel(attribute.labels, catalogLocale, attribute.code);
-                            });
-
-                            this.$el.html(
-                                this.template({
-                                    __: __,
-                                    axes: axesLabels.join()
-                                })
-                            );
-                        })
-                    ;
                 });
+            },
+
+            getAxesAttributes(familyVariant, level) {
+                const variantAttributeSets = familyVariant.variant_attribute_sets;
+                const variantAttributeSetForLevel = variantAttributeSets.find((variantAttributeSet) => {
+                    return variantAttributeSet.level === level;
+                });
+
+                FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(variantAttributeSetForLevel.axes);
             }
         });
     }

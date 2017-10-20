@@ -37,8 +37,8 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize(config) {
-                this.config = _.defaults(config, {fieldModules: {}});
+            initialize(meta) {
+                this.config = _.defaults(meta.config, {fieldModules: {}});
 
                 BaseForm.prototype.initialize.apply(arguments);
             },
@@ -46,7 +46,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            render: function () {
+            render() {
                 const familyVariantCode = this.getFormData().family_variant;
                 const parentCode = this.getFormData().parent;
 
@@ -56,7 +56,7 @@ define(
                 ).then((familyVariant, parent) => {
                     this.getAxesAttributes(familyVariant, parent.meta.level + 1)
                         .then((axesAttributes) => {
-                            return $.when(axesAttributes.map((attribute) => this.createField(attribute)))
+                            return $.when(axesAttributes.map((attribute) => this.createField(attribute)));
                         })
                         .then((...fields) => {
                             let position = 100;
@@ -72,7 +72,7 @@ define(
                 });
             },
 
-            getAxesAttributes: function(familyVariant, level) {
+            getAxesAttributes(familyVariant, level) {
                 const variantAttributeSets = familyVariant.variant_attribute_sets;
                 const variantAttributeSetForLevel = variantAttributeSets.find((variantAttributeSet) => {
                     return variantAttributeSet.level === level;
@@ -80,7 +80,7 @@ define(
 
                 FetcherRegistry
                     .getFetcher('attribute')
-                    .fetchByIdentifiers(variantAttributeSetForLevel.axes)
+                    .fetchByIdentifiers(variantAttributeSetForLevel.axes);
             },
 
             createField(attribute) {

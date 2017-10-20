@@ -220,14 +220,12 @@ define(
              * @param {Object} formModal
              */
             submitForm: function (formModal) {
-                return formModal.saveProductModelChild().done(
-                    () => {
-                        messenger.notify(
-                            'success',
-                            __('pim_enrich.form.product_model.flash.child_added')
-                        );
-                    }
-                );
+                // TODO: Detect what we created: variant product or product model, and adapt the message
+                const message = __('pim_enrich.form.product_model.flash.product_model_added');
+
+                return formModal
+                    .saveProductModelChild()
+                    .done(() => messenger.notify('success', message));
             },
 
             /**

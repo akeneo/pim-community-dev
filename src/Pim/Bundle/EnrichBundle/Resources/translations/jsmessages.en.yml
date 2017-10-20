@@ -511,7 +511,8 @@ pim_enrich:
                 select: Select
         product_model:
             flash:
-                child_added: Product model successfully added to the product model
+                product_model_added: Product model successfully added to the product model
+                variant_product_added: Variant product successfully added to the product model
         association_type:
             tab:
                 properties:

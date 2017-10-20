@@ -22,48 +22,18 @@ extensions:
 
     pim-product-model-add-child-field-simple-select:
         module: pim/form/common/fields/select
-        parent: pim-product-model-add-child-form-fields-container
-        targetZone: content
-        position: 100
-        config:
-            fieldName: simple_select
 
     pim-product-model-add-child-field-multi-select:
         module: pim/form/common/fields/select
-        parent: pim-product-model-add-child-form-fields-container
-        targetZone: content
-        position: 100
-        config:
-            fieldName: multi_select
 
     pim-product-model-add-child-field-metric:
         module: pim/form/common/fields/metric
-        parent: pim-product-model-add-child-form-fields-container
-        targetZone: content
-        position: 100
-        config:
-            fieldName: metric
 
     pim-product-model-add-child-field-switch:
         module: pim/form/common/fields/boolean
-        parent: pim-product-model-add-child-form-fields-container
-        targetZone: content
-        position: 100
-        config:
-            fieldName: switch
 
     pim-product-model-add-child-field-simple-select-reference-data:
         module: pim/form/common/fields/select
-        parent: pim-product-model-add-child-form-fields-container
-        targetZone: content
-        position: 100
-        config:
-            fieldName: simple_select_reference_data
 
     pim-product-model-add-child-field-multi-select-reference-data:
         module: pim/form/common/fields/select
-        parent: pim-product-model-add-child-form-fields-container
-        targetZone: content
-        position: 100
-        config:
-            fieldName: multi_select_reference_data
