@@ -52,7 +52,7 @@ define(
                         this.$el.html(
                             this.template({
                                 __: __,
-                                axes: axesLabels.join(', ')
+                                axes: axesLabels.sort().join(', ')
                             })
                         );
                     });
@@ -61,11 +61,11 @@ define(
 
             getAxesAttributes(familyVariant, level) {
                 const variantAttributeSets = familyVariant.variant_attribute_sets;
-                const variantAttributeSetForLevel = variantAttributeSets.find((variantAttributeSet) => {
-                    return variantAttributeSet.level === level;
-                });
+                const variantAttributeSetForLevel = variantAttributeSets.find(
+                    (variantAttributeSet) => variantAttributeSet.level === level
+                );
 
-                FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(variantAttributeSetForLevel.axes);
+                return FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(variantAttributeSetForLevel.axes);
             }
         });
     }

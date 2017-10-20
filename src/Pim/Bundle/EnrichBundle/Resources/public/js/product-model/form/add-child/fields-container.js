@@ -56,31 +56,30 @@ define(
                 ).then((familyVariant, parent) => {
                     this.getAxesAttributes(familyVariant, parent.meta.level + 1)
                         .then((axesAttributes) => {
-                            return $.when(axesAttributes.map((attribute) => this.createField(attribute)));
-                        })
-                        .then((...fields) => {
-                            let position = 100;
-                            fields.forEach((field) => {
-                                this.addExtension(
-                                    field.code,
-                                    field,
-                                    'self',
-                                    position++
-                                );
-                            });
+                            // $.when(
+                            //     axesAttributes.map((attribute) => this.createField(attribute))
+                            // ).then((...fields) => {
+                            //     let position = 100;
+                            //     fields.forEach((field) => {
+                            //         this.addExtension(
+                            //             field.code,
+                            //             field,
+                            //             'self',
+                            //             position++
+                            //         );
+                            //     });
+                            // });
                         });
                 });
             },
 
             getAxesAttributes(familyVariant, level) {
                 const variantAttributeSets = familyVariant.variant_attribute_sets;
-                const variantAttributeSetForLevel = variantAttributeSets.find((variantAttributeSet) => {
-                    return variantAttributeSet.level === level;
-                });
+                const variantAttributeSetForLevel = variantAttributeSets.find(
+                    (variantAttributeSet) => variantAttributeSet.level === level
+                );
 
-                FetcherRegistry
-                    .getFetcher('attribute')
-                    .fetchByIdentifiers(variantAttributeSetForLevel.axes);
+                return FetcherRegistry.getFetcher('attribute').fetchByIdentifiers(variantAttributeSetForLevel.axes);
             },
 
             createField(attribute) {
@@ -90,7 +89,8 @@ define(
                     throw new Error('No module set for field type "' + attribute.field_type + '"');
                 }
 
-                return FormBuilder.buildForm(fieldModuleName)
+                return FormBuilder
+                    .buildForm(fieldModuleName)
                     .then((field) => {
                         if ('pim_catalog_metric' === attribute.type) {
                             field.setMetricFamily(attribute.metric_family);
