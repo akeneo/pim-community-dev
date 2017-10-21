@@ -54,7 +54,6 @@ pimee_enrich:
           added: El grupo {{ group }} será autorizado a {{ permission }} grupo de atributos
   entity:
     product:
-      index_title: "] -Inf, 1] {{ count }} productos publicados|] 1, Inf [{{ count }} productos publicados"
       navigation: Productos publicados
       history:
         published: Publicado
@@ -176,7 +175,6 @@ pimee_enrich:
           warning: Los {{ itemsCount }} seleccionados serán publicados.
         unpublish:
           label: Despublicar
-          label_count: "{1}Despublicar <span class=\"AknFullPage-title--highlight\">1 producto</span>|] 1, Inf [Despublicar <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} productos</span>"
           description: Los productos serán despublicados
           warning: Los {{ itemsCount }} productos seleccionados serán quitados de la publicación.
     asset:

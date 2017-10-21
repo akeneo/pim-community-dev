@@ -54,7 +54,6 @@ pimee_enrich:
           added: Gruppe {{ group }} vil være tilladt at {{ permission }} attributgruppe
   entity:
     product:
-      index_title: "[] -Inf, 1] {{ count }} offentliggjort produkt |] 1, Inf [{{ count }} offentliggjort produkter"
       navigation: Offentliggjorte produkter
       history:
         published: Publiceret
@@ -177,7 +176,6 @@ pimee_enrich:
           warning: '{{ itemsCount }} udvalgte produkter vil blive offentliggjort.'
         unpublish:
           label: Afpublisér
-          label_count: "{1}Afpubliser <span class=\"AknFullPage-title--highlight\"> 1 produkt</span> |] 1, Inf [Afpubliser <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produkter</span>"
           description: Produkterne vil blive afpubliseret
           warning: '{{ itemsCount }} udvalgte produkter vil blive afpubliseret.'
     asset:

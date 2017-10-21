@@ -54,7 +54,6 @@ pimee_enrich:
           added: Die Gruppe {{ group }} wird das Recht haben Attributgruppen zu {{ permission }}
   entity:
     product:
-      index_title: "] -Inf, 1] {{ count }} veröffentlichtes Produkt|] 1, Inf [{{ count }} veröffentlichte Produkte"
       navigation: Veröffentlichte Produkte
       history:
         published: Veröffentlicht
@@ -177,7 +176,6 @@ pimee_enrich:
           warning: '{{ itemsCount }} gewählte Produkte werden veröffentlicht.'
         unpublish:
           label: Veröffentlichung entziehen
-          label_count: "{1}Veröffentlichung für <span class=\"AknFullPage-title--highlight\">1 Produkt</span> wird entzogen|] 1, Inf [Veröffentlichung für  <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} Produkte</span> wird entzogen"
           description: Die Veröffentlichung der Produkte wird entzogen
           warning: '{{ itemsCount }} Produkten wird die Veröffentlichung entzogen.'
     asset:
@@ -187,7 +185,6 @@ pimee_enrich:
           label: Asset auswählen
         choose:
           title: Massenbearbeitung Assets
-          label_count: "] 0, Inf [Wählen Sie die gewünschte Funktion"
         configure:
           label: Konfigurieren
         confirm:

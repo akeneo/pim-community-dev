@@ -22,7 +22,7 @@ pimee_workflow:
     selected: Vorschläge ausgewählt
     mass_action_group:
       review:
-        label: Massenbearbeitung
+        label: Stapelverarbeitung
     partial_accept:
       modal.title: Teilinformationen genehmigen
       modal.label: Kommentar hinterlassen (optional)
