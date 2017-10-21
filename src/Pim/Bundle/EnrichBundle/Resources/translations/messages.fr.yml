@@ -322,7 +322,7 @@ btn:
   download: télécharger
 confirmation:
   confirm: Confirmation
-  delete: Confirmation de la suppression
+  delete: Supprimer l'élément
   leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
   discard changes: Vous perdrez toutes les modifications apportées à l'objet %entity% si vous quittez cette page.
   remove:

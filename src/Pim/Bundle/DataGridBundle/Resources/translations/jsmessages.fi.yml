@@ -70,7 +70,7 @@ pim_datagrid:
     attribute_groups: Attribuuttiryhmät
   mass_action:
     delete:
-      confirm_title: Poista vahvistus
+      confirm_title: Vahvista poisto
       confirm_ok: OK
       empty_selection: Ei valittuja tuotteita
 pim.grid.mass_action.quick_export.title: Nopea vienti
@@ -93,5 +93,5 @@ grid.view_selector:
   placeholder: Uuden näkymän nimi
   choose_label: Valitse näkymälle nimike
   confirmation:
-    delete: Poista vahvistus
+    delete: Vahvista poisto
 grid.view_selector.flash.updated: Datagrid-näkymä päivitetty

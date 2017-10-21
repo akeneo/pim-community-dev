@@ -9,8 +9,8 @@ confirmation:
     channel: Möchten Sie diesen Ausgabekanal wirklich löschen?
     group: Möchten Sie diese Gruppe wirklich löschen?
     group_type: Möchten Sie diesen Gruppentyp wirklich löschen?
-    import profile: Möchten Sie dieses Importprofil wirklich löschen?
-    export profile: Möchten Sie dieses Exportprofil wirklich löschen?
+    import_profile: Möchten Sie dieses Importprofil wirklich löschen?
+    export_profile: Möchten Sie dieses Exportprofil wirklich löschen?
     user: Möchten Sie diesen Benutzer wirklich löschen?
     role: Möchten Sie diese Rolle wirklich löschen?
     job_instance: Möchten Sie diesen Auftrag wirklich löschen?
@@ -22,7 +22,7 @@ pim_datagrid:
       label: Schnell-Export
   mass_action:
     delete:
-      confirm_content: Sind Sie sicher, dass Sie die ausgewählten Produkte löschen möchten?
+      label: Löschen
       success: Ausgewählte Produkte erfolgreich gelöscht.
       error: Es ist ein Fehler beim Löschen der ausgewählten Produkte aufgetreten, bitte versuchen Sie es erneut.
   view_selector:
@@ -150,7 +150,6 @@ pim_enrich:
       category: Kategorie
       create: Produkt anlegen
       filters: Filter
-      selected: ausgewählte Produkte
       btn:
         enabled: Aktiviert
         disabled: Deaktiviert
@@ -380,6 +379,7 @@ pim_enrich:
     leave: Möchten Sie diese Seite wirklich verlassen?
     discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
     delete_item: Löschen bestätigen
+    remove: Entfernen
     delete:
       attribute: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
       attribute_group: Soll das Attribut {{ attribute }} wirklich aus dieser Attributgruppe entfernt werden?
@@ -1242,6 +1242,7 @@ pim_menu:
     group_type: Gruppentypen
     locale: Gebietsschemata
     product: Produkte
+    published_product: Veröffentlichte Produkte
     export_history: Export-Historie
     export_profile: Export-Profile
     import_history: Import-Historie

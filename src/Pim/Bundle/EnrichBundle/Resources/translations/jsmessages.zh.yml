@@ -8,8 +8,8 @@ confirmation:
     channel: 确定要删除这个频道吗？
     group: 确定要删除这个组吗？
     group_type: 确定要删除这个组类型吗？
-    import profile: 确定要删除这个导入配置文件吗？
-    export profile: 确定要删除这个导出配置文件吗？
+    import_profile: 确定要删除这个导入配置文件吗？
+    export_profile: 确定要删除这个导出配置文件吗？
     user: 确定要删除这个用户吗？
     role: 确定要删除这个角色吗？
 pim_datagrid:
@@ -20,7 +20,7 @@ pim_datagrid:
       label: 快速导出
   mass_action:
     delete:
-      confirm_content: 您确定需要删除选定的产品吗？
+      label: 删除
       success: 选定的产品被成功删除。
       error: 删除选定的产品时发生错误，请重试。
   view_selector:
@@ -306,6 +306,7 @@ pim_enrich:
     leave: 你确定你要离开此页面？
     discard_changes: 如果你离开页面，将丢失更改 {{ entity }}。
     delete_item: 确定删除
+    remove: 删除
   info:
     not_applicable: 不适用
     entity:
@@ -953,6 +954,7 @@ pim_menu:
     group_type: 分组类型
     locale: 本地化语言
     product: 商品
+    published_product: 已发布的产品
     export_history: 导出历史
     export_profile: 导出配置文件
     import_history: 导入历史

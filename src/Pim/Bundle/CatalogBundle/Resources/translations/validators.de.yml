@@ -36,3 +36,23 @@ pim_catalog:
     cannot_have_parent: 'Das Produktmodell "%product_model%" kann keine übergeordnete Ebene haben'
     attribute_does_not_belong_to_family: 'Attribut "%attribute%" gehört nicht zu der Familie "%family%"'
     invalid_variant_product_parent: 'Die Produktvariante "%variant_product%" kann nicht dem Produktmodell "%product_model%" untergeordnet werden (dem Produktmodell können nur andere Produktmodelle untergeordnet werden)'
+    product_identifier: Diese Kennungen "%s" sind nicht vorhanden.
+    0: Es ist ein unerwarteter Fehler aufgetreten.
+    100: Unerwarteter Wert
+    101: Dieses Feld erwartet Werte vom Typ Boolean.
+    102: Dieses Feld erwartet Werte vom Typ Float.
+    103: Dieses Feld erwartet Werte vom Typ Integer.
+    104: Dieses Feld erwartet Werte vom Typ Numeric.
+    105: Dieses Feld erwartet Werte vom Typ String.
+    106: Dieses Feld erwartet Werte vom Typ Array.
+    107: Dieses Feld erwartet Werte vom Typ Array von Arrays.
+    200: Ein interner Fehler ist aufgetreten
+    201: Ein interner Fehler ist aufgetreten
+    202: Dieses Feld erwartet Werte vom Typ Numeric.
+    203: Dieses Feld erwartet Werte vom Typ String.
+    204: Dieses Feld erwartet Werte vom Typ String.
+    205: Ein interner Fehler ist aufgetreten
+    300: Dieses Feld erwartet einen validen Entitätscode.
+    301: Dieses Feld erwartet einen validen Gültigkeitsbereich und Gebietsschema.
+    302: Dieses Feld erwartet einen validen Gültigkeitsbereich.
+    303: Dieses Feld erwartet ein valides Format für Verbindungen.

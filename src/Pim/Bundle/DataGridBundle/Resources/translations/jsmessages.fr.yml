@@ -77,7 +77,7 @@ pim_datagrid:
     attribute_groups: Groupes d'attributs
   mass_action:
     delete:
-      confirm_title: Confirmation de la suppression
+      confirm_title: Supprimer l'élément
       confirm_ok: OK
       empty_selection: Aucun produit sélectionné
 pim.grid.mass_action.quick_export.title: Export rapide
@@ -101,7 +101,7 @@ grid.view_selector:
   choose_label: Choisissez un titre pour la vue
   confirmation:
     remove: Êtes-vous sûr(e) de vouloir supprimer cette vue ?
-    delete: Confirmation de la suppression
+    delete: Supprimer l'élément
 grid.view_selector.flash.updated: Vue de grille mise à jour avec succès
 Client ID: ID du client
 Secret: Secret 

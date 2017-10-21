@@ -318,7 +318,7 @@ btn:
   download: Download
 confirmation:
   confirm: Bestätigung
-  delete: Löschbestätigung
+  delete: Löschen bestätigen
   leave: Möchten Sie diese Seite wirklich verlassen?
   discard changes: Änderungen an der %entity% gehen verloren, wenn Sie die Seite verlassen.
   remove:

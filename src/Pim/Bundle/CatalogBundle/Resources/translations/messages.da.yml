@@ -1,34 +1,3 @@
 No products to remove: Ingen produkter at fjerne
 "dot (.)": punktum (.)
 "comma (,)": komma (,)
-pim_catalog:
-  constraint:
-    family_variant_attributes_unique: Attributter skal være entydige, "%attributes%" der bruges flere gange i variant attributter sæt
-    family_variant_axes_unique: Variant akser skal være entydige, "%attributes%" der bruges flere gange i variant attributter sæt
-    family_variant_axes_attribute_type: Variant akser "%axis%" skal være en boolesk værdi, en simpel select, en simpel referencedata eller en metrisk
-    family_variant_axes_wrong_type: Variant akser "%axis%" kan ikke være oversættelige, ikke scopable og ikke landestandard specifikke
-    family_variant_axes_number_of_axes: En variant attributtet kan ikke have mere end 5 attributter
-    family_variant_axis_level: Attributten "%axis%" skal være angivet som attribut i den samme variant attribut placere det var sat som akse
-    family_variant_has_family_attribute: '"%attribute%" attribut kan ikke føjes til "%family_variant%" familie variant, som det ikke er en attribut af familien "%family%"'
-    family_variant_level_do_not_exist: Der er ingen variant attribut angivet til niveau "%level%"
-    family_variant_unique_attributes_in_last_level: Unikke attributten "%attribute%" skal angives på niveauet product
-    product_identifier: Disse identifikatorer "%s" findes ikke.
-    0: Der opstod en uventet fejl!
-    100: Ikke-forventet værdi
-    101: Dette felt forventer en boolesk værdi.
-    102: Dette felt forventer en float-værdi.
-    103: Dette felt forventer en heltalsværdi.
-    104: Dette felt forventer en numerisk værdi.
-    105: Dette felt forventer en strengværdi.
-    106: Dette felt forventer en array-værdi.
-    107: Dette felt forventer en matrix af matrixer som værdi.
-    200: Der opstod en intern fejl.
-    201: Der opstod en intern fejl.
-    202: Dette felt forventer en numerisk værdi.
-    203: Dette felt forventer en strengværdi.
-    204: Dette felt forventer en strengværdi.
-    205: Der opstod en intern fejl.
-    300: Dette felt forventer en gyldig enhed kode.
-    301: Dette felt forventer en gyldig anvendelsesområde og landestandard.
-    302: Dette felt forventer et gyldigt område.
-    303: Dette felt forventer en gyldig association format.
