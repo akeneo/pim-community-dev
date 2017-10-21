@@ -7,10 +7,6 @@ pim_import_export:
     - Valmis
   download_archive:
     archive: lataa luotu arkisto|lataa luodut arkistot
-    output: lataus loi tiedoston|latauksien luomat tiedostot
-    input: lataus lukema tiedosto|latauksien lukemat tiedostot
-    invalid_xlsx: lataa virheellisiä tietoja
-    invalid_csv: lataa virheellisiä tietoja
   notification:
     export:
       error: Vienti <strong>%label%</strong> epäonnistui
@@ -36,13 +32,6 @@ pim_title.import_profile.edit: Vie profiilit %job.label% | Muokkaa
 pim_title.import_profile.show: Tuo profiilit %job.label% | Näytä
 pim_title.import_execution.index: Tuontihistoria
 pim_title.import_execution.show: Tuontisuoritukset | Yksityiskohdat
-export profile:
-  title: tuontiprofiili
-  overview: tuontiprofiilin esittely
-  create: luo tuontiprofiili
-  edit: muokkaa tuontiprofiilia
-export report:
-  overview: tuontiraportit
 import profile:
   title: tuontiprofiili
   overview: tuontiprofiilin esittely
@@ -80,7 +69,6 @@ pim_importexport:
     import_execution:
       index: Näytä vientiraporttien lista
       show: Näytä vientiraportin yksityiskohdat
-      dl_log: Lataa vientiraporttilogi
       dl_files: Lataa tuodut tiedostot
   acl_group:
     export: Vientiprofiili
@@ -126,11 +114,9 @@ popin.create:
 'Hide item': Piilota kohde
 'Collecting data about job execution...': Kerää tietoja työsuorituksesta...
 'You must select a file to upload': Valitse ladattava tiedosto
-Download log: Latauslogi
 Show profile: Näytä profiili
 execution details: suorittamisen yksityiskohdat
 job_execution.summary:
-  read: lue
   write: kirjoitettu
   skip: ohitettu
   create: luotu

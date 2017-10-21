@@ -28,7 +28,6 @@ pim_connector:
     writer.title: Yksikön varastointi
     csv_writer.title: CSV-kirjoittaja
 job_execution.summary:
-  read: lue
   write: kirjoitettu
   skip: ohitettu
   create: luotu
