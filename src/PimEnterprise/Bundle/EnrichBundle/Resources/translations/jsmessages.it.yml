@@ -171,6 +171,7 @@ pimee_enrich:
       operation:
         publish:
           label: Pubblica
+          label_count: "{1}Pubblica <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|] 1, Inf [Pubblica <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
           description: I prodotti saranno pubblicati
           warning: I {{ itemsCount }} prodotti selezionati saranno pubblicati.
         unpublish:
@@ -183,6 +184,7 @@ pimee_enrich:
         select:
           label: Scegli gli asset
         choose:
+          title: Azioni in massa per gli asset
           label_count: "] 0, Inf [Seleziona azione"
         configure:
           label: Configura
@@ -209,6 +211,9 @@ pim_menu:
 page_title:
   pimee_workflow_proposal_index: Proposte
   pimee_workflow_published_product_index: Prodotti pubblicati
+  pimee_workflow_published_product_view: Pubblica prodotto {{ product.label }} | Visualizza
   pimee_product_asset_index: Asset
+  pimee_product_asset_edit: Asset {{ asset.label }} | Modifica
   pimee_asset_categorytree_index: Categorie
+  pimee_asset_categorytree_edit: Categoria {{ category.label }} | Modifica
   pimee_catalog_rule_rule_index: Regole

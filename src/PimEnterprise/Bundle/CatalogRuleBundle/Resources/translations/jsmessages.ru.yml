@@ -2,7 +2,6 @@ pimee_catalog_rule:
   execution_button: Выполнить привила
   popin:
     execute_rules:
-      confirm_title: Подтверждение исполнения
       confirm_content: Вы уверены, что хотите выполнить все правила? (это может занять много времени)
   notification:
     launched: Начато выполнение правил. Вы будете уведомлены, когда это будет сделано.
@@ -27,24 +26,21 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         execute:
-          confirm_title: Подтверждение исполнения
           confirm_content: Вы уверены, что хотите выполнить правило?
           confirm_ok: Подтвердить
       mass_edit_action:
-        confirm_title: Подтверждение расчета
         confirm_content: Вы уверены, что вы хотите вычислить количество продуктов затрагиваемых правилами?
         confirm_ok: Подтвердить
       mass_action:
         execute:
           confirm_ok: Подтвердить
-          confirm_title: Подтверждение исполнения
           confirm_content: Вы уверены, что хотите выполнить выбранные правила?
           success: Выполнение выбранных правил начато. Вы будете уведомлены, когда это будет сделано
           error: Произошла ошибка во время выполнения правил.
           empty_selection: Правила не выбраны.
         delete:
           confirm_ok: Подтвердить
-          confirm_title: Подтверждение удаления
+          confirm_title: Подтвердить удаление
           confirm_content: Вы уверены, что хотите удалить выбранные правила?
           success: Вы успешно удалили правила.
           error: Произошла ошибка при удалении правил.

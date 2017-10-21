@@ -4,7 +4,7 @@ pimee_catalog_rule:
   selected: 'règles sélectionnées'
   popin:
     execute_rules:
-      confirm_title: Confirmation de l'exécution
+      confirm_title: Confirmer l’exécution
       confirm_content: Êtes-vous certain de vouloir exécuter toutes les règles ? (cela peut prendre un certain temps)
   notification:
     fail: L'action ne peut pas être executée
@@ -30,24 +30,24 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         execute:
-          confirm_title: Confirmation de l'exécution
+          confirm_title: Confirmer l’exécution
           confirm_content: Êtes-vous sûr de vouloir exécuter la règle ?
           confirm_ok: OK
       mass_edit_action:
-        confirm_title: Confirmation de calcul
+        confirm_title: Confirmer le calcul
         confirm_content: Êtes-vous sûr de vouloir calculer le nombre de produits affecté par les règles ?
         confirm_ok: OK
       mass_action:
         execute:
           confirm_ok: OK
-          confirm_title: Confirmation de l'exécution
+          confirm_title: Confirmer l’exécution
           confirm_content: Êtes-vous sûr de vouloir exécuter les règles sélectionnées ?
           success: L'exécution des règles choisies est en cours, vous serez notifié(e) lorsque cela sera terminé
           error: Une erreur s'est produite lors de l'exécution des règles.
           empty_selection: Aucune règle n'a été sélectionnée.
         delete:
           confirm_ok: OK
-          confirm_title: Confirmation de la suppression
+          confirm_title: Supprimer l'élément
           confirm_content: Êtes-vous sûr de vouloir supprimer la (les) règle(s) sélectionnée(s) ?
           success: Les règles ont bien été supprimées.
           error: Une erreur s'est produite lors de la suppression des règles.

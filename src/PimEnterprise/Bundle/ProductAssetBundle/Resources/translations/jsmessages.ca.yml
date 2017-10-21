@@ -18,7 +18,7 @@ pimee_product_asset:
   enrich_variation:
     popin:
       delete:
-        title: Confirmació de l'eliminació
+        title: Confirmar l'eliminació
         message: Esteu segur que voleu eliminar aquest element?
       reset:
         title: Reiniciar variacions
@@ -66,7 +66,6 @@ pimee_product_asset:
   datagrid:
     mass_action:
       delete:
-        confirm_content: Està segur que vol eliminar els recursos seleccionats?
         success: Recursos seleccionats correctament.
         error: S'ha produït un error en intentar suprimir els recursos seleccionats, torneu-ho a intentar.
         empty_selection: No hi ha cap recurs seleccionat

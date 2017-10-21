@@ -18,7 +18,7 @@ pimee_product_asset:
   enrich_variation:
     popin:
       delete:
-        title: 删除确认
+        title: 确定删除
         message: 确实要删除这个条目吗?
       reset:
         title: 重置变化
@@ -66,7 +66,6 @@ pimee_product_asset:
   datagrid:
     mass_action:
       delete:
-        confirm_content: 您确定要删除选定的资产吗?
         success: 选定的产品被成功删除。
         error: 当试图删除选定的资产时，发生了错误，请重试。
         empty_selection: 尚未选定资产

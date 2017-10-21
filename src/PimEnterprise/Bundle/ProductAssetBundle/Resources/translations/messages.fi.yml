@@ -25,7 +25,7 @@ pimee_product_asset:
       download: Lataa
       generate_from_reference: Luo viittauksesta
       reset_variations: Nollaa variaatiot
-    confirmation.remove: Oletko varma, että haluat poistaa resurssin "%asset%" ?
+    confirmation.subTitle: Resurssit
     grid:
       edit: Muokkaa resurssin ominaisuuksia
     view:

@@ -18,7 +18,7 @@ pimee_product_asset:
   enrich_variation:
     popin:
       delete:
-        title: Poista vahvistus
+        title: Vahvista poisto
         message: Oletko varma että haluat poistaa tämän kohteen?
       reset:
         title: Nollaa variaatiot

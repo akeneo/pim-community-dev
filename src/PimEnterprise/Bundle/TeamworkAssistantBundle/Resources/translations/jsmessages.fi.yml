@@ -5,7 +5,7 @@ teamwork_assistant:
     view_selector:
       loading: Ladataan...
       confirmation:
-        delete: Poista vahvistus
+        delete: Vahvista poisto
       popin_title: Luo
   project:
     label: Nimi

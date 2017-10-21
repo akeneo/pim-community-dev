@@ -12,7 +12,7 @@ teamwork_assistant:
       start_new_project: Démarrer un nouveau projet
       confirmation:
         remove: Etes vous sûr de vouloir supprimer ce projet?
-        delete: Confirmation de la suppression
+        delete: Supprimer l'élément
       popin_title: Créer
       projects: Projets
   project:

@@ -25,7 +25,7 @@ pimee_product_asset:
       download: Herunterladen
       generate_from_reference: Aus Referenz generieren
       reset_variations: Variationen zurücksetzen
-    confirmation.remove: Sind Sie sicher, dass Sie das Asset "%asset%" entfernen möchten?
+    confirmation.subTitle: Assets
     grid:
       edit: Eigenschaften des Assets bearbeiten
     view:

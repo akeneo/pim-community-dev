@@ -27,7 +27,7 @@ pimee_catalog_rule:
           confirm_ok: OK
         delete:
           confirm_ok: OK
-          confirm_title: Poista vahvistus
+          confirm_title: Vahvista poisto
   form:
     attribute:
       tab:

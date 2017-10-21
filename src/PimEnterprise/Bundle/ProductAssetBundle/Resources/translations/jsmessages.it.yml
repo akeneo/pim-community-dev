@@ -12,6 +12,7 @@ pimee_product_asset:
           cancel: Annulla
           confirm: Conferma
         title: Gestisci asset
+        description: Scegli gli asset che vuoi allegare al prodotto
   enrich_asset:
     grid:
       edit: Modifica le proprietà dell'asset
@@ -66,7 +67,6 @@ pimee_product_asset:
   datagrid:
     mass_action:
       delete:
-        confirm_content: Sei sicuro di che voler eliminare gli asset selezionati?
         success: Gli asset selezionati sono stati eliminati con successo.
         error: Si è verificato un errore cancellando gli asset selezionati, per favore riprova.
         empty_selection: Nessun asset selezionato

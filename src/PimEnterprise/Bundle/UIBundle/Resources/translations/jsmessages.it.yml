@@ -3,6 +3,8 @@ jstree:
     all: Tutti gli asset
     unclassified: Asset non classificati
 asset_grid:
+  title: "] -Inf, 1] {{ count }} Asset prodotto|] 1, Inf [{{ count }} Asset prodotto"
+  selected: seleziona gli asset
   label: Asset di prodotto
 create_asset:
   title: Crea un asset
