@@ -17,7 +17,7 @@ confirmation:
 pim_datagrid:
   mass_action_group:
     bulk_actions:
-      label: Massenbearbeitung
+      label: Stapelverarbeitung
     quick_export:
       label: Schnell-Export
   mass_action:
@@ -63,7 +63,7 @@ flash:
 error:
   common: Es ist ein Fehler aufgetreten
   creating:
-    product: Es ist kein Attribut als Kennung konfiguriert oder Sie haben keine Rechte die Kennung zu bearbeiten.
+    product: Es ist kein Attribut ist als Produktidentifikator konfiguriert oder Sie haben keine Rechte diesen zu bearbeiten.
   removing:
     item: Dieses Element kann nicht gelöscht werden
     association_type: Dieser Verbindungstyp kann nicht gelöscht werden
@@ -128,7 +128,7 @@ pim_enrich:
       confirm.title: '{{ itemName }} löschen'
   navigation:
     link:
-      back_to_grid: Zurück zur Listenansicht
+      back_to_grid: Zurück zur Übersicht
     other_actions: Weitere Aktionen
   entity:
     save:
@@ -172,7 +172,7 @@ pim_enrich:
         deletion_failed: Das Produkt konnte nicht gelöscht werden.
         update_successful: Produkt erfolgreich aktualisiert.
         update_failed: Das Produkt konnte nicht aktualisiert werden.
-        field_not_ready: 'Das Produkt kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}'
+        field_not_ready: 'Das Produkt kann gerade nicht gespeichert. Folgende Felder sind nicht bereit: {{ fields }}'
         already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
       error:
         upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
@@ -697,7 +697,7 @@ pim_enrich:
             scopable: Wert je Ausgabekanal
             type: Typ
             unique: Eindeutiger Wert
-            useable_as_grid_filter: Anwendbar in der Listenansicht
+            useable_as_grid_filter: Verwendbar im Raster
             validation_regexp: Regulärer Ausdruck
             validation_rule: Validierungsregel
             wysiwyg_enabled: Rich-Text-Editor aktiviert
@@ -942,7 +942,7 @@ pim_enrich:
           description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
           field: Gruppen
         add_to_category:
-          description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen bleiben erhalten.
+          description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
         move_to_category:
           label: Zwischen Kategorien verschieben
           description: Die Produkte werden folgenden Kategorien zugeordnet, die bestehende Zuordnung wird verworfen.
@@ -976,13 +976,10 @@ page_title:
   pim_enrich_attributegroup_create: Attributgruppen | Anlegen
   pim_enrich_categorytree_index: Kategorie-Strukturbäume
   pim_enrich_categorytree_create: Kategorie-Strukturbäume | Anlegen
-  pim_enrich_categorytree_edit: Kategorie-Strukturbäume {{ category.label }} | Bearbeiten
   pim_enrich_categorytree_create_tree: Kategorie-Strukturbäume | Anlegen
   pim_enrich_attribute_index: Attribute
   pim_enrich_attribute_create: Attribute | Anlegen
   pim_enrich_product_index: Produkte
-  pim_enrich_product_edit: Produkte {{ product.sku }} | Bearbeiten
-  pim_enrich_product_model_edit: Produktmodell {{ product.sku }} | Bearbeiten
   pim_enrich_family_index: Produktfamilien
   pim_enrich_channel_index: Ausgabekanäle
   pim_enrich_channel_create: Ausgabekanäle | Anlegen
@@ -998,7 +995,6 @@ page_title:
   pim_enrich_job_tracker_show: Prozess-Tracker | Job anzeigen
   pim_enrich_api_connection_index: API-Verbindungen
   pim_analytics_system_info_index: Systeminformationen
-  pim_enrich_api_connection_create: API-Verbindungen
 batch_jobs:
   add_product_value:
     label: Produktwert hinzufügen

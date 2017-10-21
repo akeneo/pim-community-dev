@@ -34,6 +34,8 @@ not_available: N/A
 "No": false
 oro.datagrid.entityHint: Entità
 oro.datagrid.noentities: Nessun record trovato
+oro.datagrid.noresults: "Non ci sono risultati per la tua ricerca."
+oro.datagrid.noresults_subTitle: "Riprova con nuovi criteri di ricerca."
 oro.datagrid.nocolumns: Nessuna colonna configurata per questa griglia
 oro.datagrid.pagination.label: "Pagina"
 oro.datagrid.pagination.totalPages: "di {{ totalPages }}"
@@ -52,6 +54,7 @@ pim:
       label_empty: è vuoto
       label_not_empty: non è vuoto
       label_in_list: nell'elenco
+      operator: Operatore
     price_filter:
       label: Valuta
     category_filter:
@@ -62,6 +65,7 @@ datagrid_view.columns.min_message: È necessario selezionare almeno una colonna 
 pim_datagrid:
   column_configurator:
     label: Colonne
+    title: Configurare le colonne
     all_groups: Tutti i gruppi
     search: Ricerca
     clear: Ripulisci
@@ -69,6 +73,7 @@ pim_datagrid:
     apply: Applica
     cancel: Annulla
     remove_column: Rimuovere
+    description: Seleziona le informazioni da visualizzare come colonne
     attribute_groups: Gruppi di attributi
   mass_action:
     delete:
@@ -95,5 +100,8 @@ grid.view_selector:
   placeholder: Nome della nuova visualizzazione
   choose_label: Scegliere un'etichetta per la visualizzazione
   confirmation:
+    remove: Sei sicuro di voler cancellare questa visualizzazione?
     delete: Conferma cancellazione
 grid.view_selector.flash.updated: La griglia di dati è stata aggiornata con successo
+Client ID: ID cliente
+Secret: Segreto
