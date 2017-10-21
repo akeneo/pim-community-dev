@@ -20,8 +20,8 @@ datagrid_view:
     unique_message: Die Bezeichnung muss eindeutig sein.
     not_blank_message: Die Bezeichnung darf nicht leer sein.
 grid.view_selector.flash:
-  created: Listenansicht erfolgreich erstellt
-  removed: Listenansicht erfolgreich entfernt
+  created: Tabellen-Ansicht erfolgreich erstellt
+  removed: Tabellen-Ansicht erfolgreich entfernt
   not_removable: Sie haben nicht die Rechte um diese Ansicht zu entfernen
 quick_export: Schnell-Export
 import: Import

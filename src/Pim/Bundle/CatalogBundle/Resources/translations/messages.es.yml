@@ -3,15 +3,6 @@ No products to remove: No hay productos para eliminar
 "comma (,)": coma (,)
 pim_catalog:
   constraint:
-    family_variant_attributes_unique: Los atributos deben ser únicos, "%attributes%" ha sido usado varias veces en el grupo de atributos de variantes
-    family_variant_axes_unique: Los ejes de variación deben ser únicos, "%attributes%" ha sido usado varias veces en grupos de atributos de variantes
-    family_variant_axes_attribute_type: Los ejes de variación "%axis%" deben ser un valor boleano, de selección simple, una referencia simple o una métrica
-    family_variant_axes_wrong_type: Los ejes de variantes "%axis%" no puede ser traducible, ni personalizado por canal o único de una local
-    family_variant_axes_number_of_axes: Un atributo de variante no puede tener más de 5 atributos
-    family_variant_axis_level: El atributo "%axis%" debe ser definido como atributo en el mismo grupo de atrbutos de variantes  que fue seleccionado como eje
-    family_variant_has_family_attribute: 'El atributo "%attribute%" no puede ser agregado a la variante de familia "%family_variant%", debido a que no es un atributo de la familia  "%family%"'
-    family_variant_level_do_not_exist: No hay atributo de variantes para el nivel "%level%"
-    family_variant_unique_attributes_in_last_level: El único atributo "%attribute%" debe ser definido al nivel de producto
     product_identifier: Estos identificadores "%s" no existen.
     0: Se ha producido un error inesperado.
     100: Valor no previsto

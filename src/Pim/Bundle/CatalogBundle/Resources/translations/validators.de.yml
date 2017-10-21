@@ -1,7 +1,7 @@
 An identifier attribute already exists.: Ein identifizierendes Attribut existiert bereits.
 Attribute code may contain only letters, numbers and underscore: Ein Attributcode darf sich nur aus Buchstaben, Nummern und Unterstrichen zusammensetzen
 Attribute code may contain only letters (at least one), numbers and underscores: Der Attributcode kann nur Buchstaben (mind. 1), Zahlen und Unterstriche enthalten.
-This attribute type can't be used as a grid filter: Dieser Attributtyp kann nicht als Filter in der Listenansicht verwendet werden
+This attribute type can't be used as a grid filter: Dieser Attributtyp kann nicht als Tabellenfilter verwendet werden
 This code is not available: Dieser Code ist nicht verfügbar
 This attribute type must be required: Dieser Attributtyp muss ein Pflichtfeld sein
 This attribute type can't be required: Dieser Attributtyp kann kein Pflichtfeld sein
