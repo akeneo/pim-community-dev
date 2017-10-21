@@ -348,7 +348,7 @@ btn:
     variant group: Créer un groupe de variantes
     association type: Créer un type d'association
     group type: Créer le type de groupe
-    drag_or_upload: Glisser et déposer pour télécharger ou cliquer ici
+    drag_or_upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
   edit: Modifier
   save: Enregistrer
   save and back: Enregistrer et revenir à la grille
@@ -371,7 +371,7 @@ confirmation:
   leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
   discard changes: Vous perdrez toutes les modifications apportées à l'objet %entity% si vous quittez cette page.
   remove:
-    item: Êtes-vous certain(e) de vouloir supprimer cet élément ?
+    item: Êtes-vous sûr(e) de vouloir supprimer cet élément ?
     attribute: Êtes-vous sûr(e) de vouloir supprimer l'attribut %name% ?
     attribute group: Êtes-vous sûr(e) de vouloir supprimer le groupe d'attributs %name% ?
     category: Êtes-vous sûr(e) de vouloir supprimer la catégorie %name% ?
@@ -463,7 +463,7 @@ flash:
   association type:
     created: Le type d'association est créé avec succès
     updated: Le type d'association est mis à jour avec succès
-    removed: Le type d'association est supprimé avec succès
+    removed: Le type d'association a été supprimé avec succès
   user:
     removed: Utilisateur supprimé avec succès
   error ocurred: Opération échouée. Merci de réessayer.
@@ -653,10 +653,10 @@ pim_title.association_type:
   edit: "Types d'association %association type.label% | Modifier"
 pim_title.group_type:
   index: "Types de groupe"
-  edit: "Type de groupes %group type.label% | Modifier"
+  edit: "Type de groupe %group type.label% | Modifier"
 pim_title.mass_edit_action:
-  choose: "Edition de masse | Choisir"
-  configure: "Edition de masse | Configurer"
+  choose: "Édition de masse | Choisir"
+  configure: "Édition de masse | Configurer"
 pim_title.job_tracker:
   index: Traqueur de processus
   show: "Traqueur de processus | Voir la tâche"
