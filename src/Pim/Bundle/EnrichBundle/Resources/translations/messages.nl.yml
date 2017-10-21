@@ -289,7 +289,7 @@ btn:
   download_pdf: PDF
 confirmation:
   confirm: Bevestiging
-  delete: Bevestig verwijderen
+  delete: Verwijderen bevestigen
   leave: Weet u zeker dat u deze pagina wilt verlaten?
   discard changes: Als u deze pagina verlaat worden veranderingen aan %entity% niet opgeslagen.
   remove:

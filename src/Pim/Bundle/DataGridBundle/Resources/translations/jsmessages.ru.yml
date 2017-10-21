@@ -72,7 +72,7 @@ pim_datagrid:
     attribute_groups: Группы атрибутов
   mass_action:
     delete:
-      confirm_title: Подтверждение удаления
+      confirm_title: Подтвердить удаление
       confirm_ok: Подтвердить
       empty_selection: Не выбрано ни одного продукта
 pim.grid.mass_action.quick_export.title: Быстрый экспорт
@@ -95,5 +95,5 @@ grid.view_selector:
   placeholder: Название нового представления
   choose_label: Выберите ярлык для представления
   confirmation:
-    delete: Подтверждение удаления
+    delete: Подтвердить удаление
 grid.view_selector.flash.updated: Представление табличных данных успешно обновлено

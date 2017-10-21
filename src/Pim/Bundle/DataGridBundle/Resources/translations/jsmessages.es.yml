@@ -77,7 +77,7 @@ pim_datagrid:
     attribute_groups: Grupos de atributos
   mass_action:
     delete:
-      confirm_title: Confirmación de borrado
+      confirm_title: Confirmar la eliminación
       confirm_ok: OK
       empty_selection: Ningún producto seleccionado
 pim.grid.mass_action.quick_export.title: Exportación rápida
@@ -101,7 +101,7 @@ grid.view_selector:
   choose_label: Elija una etiqueta para la vista
   confirmation:
     remove: '¿Está seguro que desea eliminar esta vista?'
-    delete: Confirmación de borrado
+    delete: Confirmar la eliminación
 grid.view_selector.flash.updated: Vista de grilla de datos actualizada correctamente
 Client ID: Client ID
 Secret: Secreto

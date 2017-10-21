@@ -1,34 +1,3 @@
 No products to remove: No hay productos para eliminar
 "dot (.)": punto (.)
 "comma (,)": coma (,)
-pim_catalog:
-  constraint:
-    family_variant_attributes_unique: Los atributos deben ser únicos, "%attributes%" ha sido usado varias veces en el grupo de atributos de variantes
-    family_variant_axes_unique: Los ejes de variación deben ser únicos, "%attributes%" ha sido usado varias veces en grupos de atributos de variantes
-    family_variant_axes_attribute_type: Los ejes de variación "%axis%" deben ser un valor boleano, de selección simple, una referencia simple o una métrica
-    family_variant_axes_wrong_type: Los ejes de variantes "%axis%" no puede ser traducible, ni personalizado por canal o único de una local
-    family_variant_axes_number_of_axes: Un atributo de variante no puede tener más de 5 atributos
-    family_variant_axis_level: El atributo "%axis%" debe ser definido como atributo en el mismo grupo de atrbutos de variantes  que fue seleccionado como eje
-    family_variant_has_family_attribute: 'El atributo "%attribute%" no puede ser agregado a la variante de familia "%family_variant%", debido a que no es un atributo de la familia  "%family%"'
-    family_variant_level_do_not_exist: No hay atributo de variantes para el nivel "%level%"
-    family_variant_unique_attributes_in_last_level: El único atributo "%attribute%" debe ser definido al nivel de producto
-    product_identifier: Estos identificadores "%s" no existen.
-    0: Se ha producido un error inesperado.
-    100: Valor no previsto
-    101: Este campo debe contener un valor booleano.
-    102: Este campo debe contener un valor de coma flotante.
-    103: Este campo debe contener un número entero.
-    104: Este campo debe contener un valor numérico.
-    105: Este campo debe contener un valor string.
-    106: Este campo debe contener un valor array.
-    107: Este campo debe contener un valor array de arrays.
-    200: Se ha producido un error interno
-    201: Se ha producido un error interno
-    202: Este campo debe contener un valor numérico.
-    203: Este campo debe contener un valor string.
-    204: Este campo debe contener un valor string.
-    205: Se ha producido un error interno
-    300: Este campo debe contener un código de entidad válido.
-    301: Este campo debe contener un objetivo y local válidos.
-    302: Este campo debe contener un objetivo válido.
-    303: Este campo debe contener un formato de asociación válido.

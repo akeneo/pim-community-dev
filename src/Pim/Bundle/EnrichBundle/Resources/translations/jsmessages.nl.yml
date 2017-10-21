@@ -8,8 +8,8 @@ confirmation:
     channel: Weet u zeker dat u dit kanaal wilt verwijderen?
     group: Weet u zeker dat u deze groep wilt verwijderen?
     group_type: Weet u zeker dat u dit groepstype wilt verwijderen?
-    import profile: Weet u zeker dat u dit importprofiel wilt verwijderen?
-    export profile: Weet u zeker dat u dit exportprofiel wilt verwijderen?
+    import_profile: Weet u zeker dat u dit importprofiel wilt verwijderen?
+    export_profile: Weet u zeker dat u dit exportprofiel wilt verwijderen?
     user: Weet u zeker dat u deze gebruiker wilt verwijderen?
     role: Weet u zeker dat u deze rol wilt verwijderen?
 pim_datagrid:
@@ -20,7 +20,7 @@ pim_datagrid:
       label: Snelle Export
   mass_action:
     delete:
-      confirm_content: Weet u zeker dat u de geselecteerde producten wilt verwijderen?
+      label: Verwijderen
       success: Geselecteerde producten succesvol verwijderd.
       error: Er is een fout opgetreden tijdens het verwijderen van de geselecteerde producten, probeer het opnieuw.
   view_selector:
@@ -324,6 +324,7 @@ pim_enrich:
     leave: Weet u zeker dat u deze pagina wilt verlaten?
     discard_changes: Als u deze pagina verlaat worden veranderingen aan {{ entity }} niet opgeslagen.
     delete_item: Verwijderen bevestigen
+    remove: Verwijderen
   info:
     not_applicable: Niet beschikbaar
     entity:
@@ -1006,6 +1007,7 @@ pim_menu:
     group_type: Groepstypen
     locale: Lokalisaties
     product: Producten
+    published_product: Gepubliceerde producten
     export_history: Exportgeschiedenis
     export_profile: Exportprofielen
     import_history: Importgeschiedenis

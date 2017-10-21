@@ -9,8 +9,8 @@ confirmation:
     channel: Sei sicuro di voler eliminare questo canale?
     group: Sei sicuro di voler eliminare questo gruppo?
     group_type: Sei sicuro di voler eliminare questo tipo di gruppo?
-    import profile: Sei sicuro di voler eliminare questo profilo di importazione?
-    export profile: Sei sicuro di voler eliminare questo profilo di esportazione?
+    import_profile: Sei sicuro di voler eliminare questo profilo di importazione?
+    export_profile: Sei sicuro di voler eliminare questo profilo di esportazione?
     user: Sei sicuro di voler eliminare questo utente?
     role: Sei sicuro di voler eliminare questo ruolo?
     job_instance: È sicuro di che volere cancellare questa istanza di lavoro?
@@ -23,7 +23,7 @@ pim_datagrid:
       label: Esportazione rapida
   mass_action:
     delete:
-      confirm_content: Sei sicuro di che voler eliminare i prodotti selezionati?
+      label: Eliminare
       success: I prodotti selezionati sono stati eliminati con successo.
       error: Si è verificato un errore cancellando i prodotti selezionati, per favore riprova.
   view_selector:
@@ -148,12 +148,11 @@ pim_enrich:
     product:
       navigation: Navigazione prodotti
       infos: Info prodotto
-      title: Articoli
+      title: prodotto
       locale: Impostazioni locali
       category: Categoria
       create: Crea prodotto
       filters: Filtri
-      selected: prodotti selezionati
       common: In comune
       btn:
         enabled: Attivato
@@ -314,10 +313,18 @@ pim_enrich:
         created: Famiglia creata con successo
       variant:
         axis.label: Asse di variante
+        level_1.label: Attributi varianti livello uno
+        level_2.label: Attributi varianti livello due
+        add_variant: Aggiungi variante
+        create_label: Crea una nuova famiglia variante
+        create_description: In una famiglia variante si può definire una struttura per i prodotti con varianti. Scegli il numero dei livelli di varianti gestite, gli attributi usati come assi varianti e poi definisci come gli attributi vengono distribuiti.
         create: Crea
         cancel: Annulla
         code: Codice
         label: Etichetta
+        levels: Livelli varianti
+        axis_level: Livello asse variante
+        required: richiesto
     attribute_option:
       code: Codice
       label: Etichetta
@@ -388,6 +395,7 @@ pim_enrich:
     leave: Sei sicuro di voler lasciare questa pagina?
     discard_changes: Perderai le modifiche a {{ entity }} se lasci la pagina.
     delete_item: Conferma cancellazione
+    remove: Rimuovere
     delete:
       attribute: Sei sicuro di voler rimuovere questo attributo dal prodotto?
       attribute_group: Sei sicuro di che voler rimuovere l'attributo {{ attribute }} da questo gruppo di attributi?
@@ -413,6 +421,7 @@ pim_enrich:
             none_exist: Nessun tipo di associazione esistente.
             show_products: Visualizza i prodotti
             show_groups: Mostra gruppi
+            number_of_associations: "{{ productCount }} prodotto(i) e {{ groupCount }} gruppo(i)"
           association_type_selector: Tipi di associazione
           target: Target
         attributes:
@@ -426,8 +435,9 @@ pim_enrich:
             attributes_selected: "{{ itemsCount }} attributo(i) selezionato(i)"
             no_match: Nessuna corrispondenza trovata
             load_more: Carica ulteriori risultati...
-          attribute_group_selector: Attributo di gruppo
+          attribute_group_selector: Gruppo attributi
           attribute_group_all: Tutti
+          attribute_group.to_fill_count: "{1}1 attibuto obbligatorio vuoto|]1, Inf [{{ count }} attributi obbligatori vuoti"
           attribute_filter:
             display: Mostra
             all: Tutti gli attributi
@@ -440,6 +450,7 @@ pim_enrich:
           info:
             no_family: Nessuna famiglia definita. Si prega di definire una famiglia per calcolare il livello di completamento di questo prodotto.
             no_completeness: Hai appena cambiato la famiglia del prodotto. Si prega di salvare prima di calcolare il livello di completamento per la nuova famiglia.
+          missing_values: "{1}1 valore mancante|] 1, Inf [{{ count }} valori mancanti"
         history:
           title: Cronologia
       switch:
@@ -447,7 +458,7 @@ pim_enrich:
         "yes": "Sì"
       sequential_edit:
         info:
-          products: Articoli
+          products: prodotti
           previous: Torna indietro a {{ product }} senza salvare.
           next: Vai a {{ product }} senza salvare.
         btn:
@@ -520,6 +531,8 @@ pim_enrich:
           required_label: Obbligatorio
         variant:
           title: Varianti
+          flash:
+            family_variant_created: Famiglia variante creata correttamente
         history:
           title: Cronologia
     attribute_option:
@@ -692,7 +705,7 @@ pim_enrich:
             date_min: Data minima
             decimals_allowed: Valori decimali ammessi
             default_metric_unit: Unità metrica di default
-            group: Attributo di gruppo
+            group: Gruppo attributi
             is_locale_specific: Impostazioni locali specifiche
             localizable: Valore per impostazioni internazionali
             max_characters: Numero massimo di caratteri
@@ -712,7 +725,7 @@ pim_enrich:
             wysiwyg_enabled: Editor di testo RTF abilitato
           default_label:
             default_metric_unit: Scegli un'unità
-            group: Scegliere l'attributo di gruppo
+            group: Scegliere il gruppo attributi
             metric_family: Scegli una famiglia
             reference_data_name: Scegli il tipo di dati di riferimento
         labels:
@@ -750,6 +763,7 @@ pim_enrich:
         attributes:
           title: Attributi
           edit: Modifica
+          label: "{0}Tutti gli attributi|{1}Un attributo selezionato|]1,Inf[{{ count }} attributi selezionati"
           help: 'Seleziona le informazioni di prodotto da esportare. Es: solo gli attributi tecnici.'
           empty: Tutti gli attributi verranno esportati
           modal:
@@ -876,8 +890,10 @@ pim_enrich:
       description: Gli attributi dei prodotto selezionati nella griglia verranno modificati con i dati seguenti per le impostazioni internazionali <span class="highlight">{{ locale }}</span> e per il canale <span class="highlight">{{ channel }}</span>.
   index:
     association_type:
+      title: "] -Inf, 1] {{ count }} tipo di associazione|] 1, Inf [{{ count }} tipi di associazione"
       create_btn: Crea tipo associazione
     import_profiles:
+      title: "] -Inf, 1] {{ count }} profilo di importazione|] 1, Inf [{{ count }} profili di importazione"
       create_btn: Crea un profilo di importazione
       list: Seleziona un job
       create_popin:
@@ -887,8 +903,10 @@ pim_enrich:
     import_history:
       title: Report di importazione
     group:
+      title: "] -Inf, 1] {{ count }} gruppo|] 1, Inf [{{ count }} gruppi"
       create_btn: Crea gruppo
     export_profiles:
+      title: "] -Inf, 1] {{ count }} profilo di esportazione|] 1, Inf [{{ count }} profili di esportazione"
       create_btn: Crea un profilo di esportazione
       create_popin:
         title: Crea
@@ -897,24 +915,38 @@ pim_enrich:
     export_history:
       title: Report di esportazione
     family:
+      title: "] -Inf, 1] {{ count }} famiglia|] 1, Inf [{{ count }} famiglie"
       create_btn: Crea famiglia
     grouptype:
+      title: "] -Inf, 1] {{ count }} tipo di gruppo|] 1, Inf [{{ count }} tipi di gruppo"
       create_btn: Crea tipo gruppo
+    currency:
+      title: "] -Inf, 1] {{ count }} valuta|] 1, Inf [{{ count }} valute"
+    locale:
+      title: "] -Inf, 1] {{ count }} impostazione locale|] 1, Inf [{{ count }} impostazioni locali"
     user:
+      title: "] -Inf, 1] {{ count }} utente|] 1, Inf [{{ count }} utenti"
       create_btn: Crea utente
     user_role:
+      title: "] -Inf, 1] {{ count }} ruolo|] 1, Inf [{{ count }} ruoli"
       create_btn: Crea Ruolo
     user_group:
+      title: "] -Inf, 1] {{ count }} gruppo|] 1, Inf [{{ count }} gruppi"
       create_btn: Crea gruppo
+    process_tracker:
+      title: "] -Inf, 1] {{ count }} operazione|] 1, Inf [{{ count }} operazioni"
     channel:
+      title: "] -Inf, 1] {{ count }} canale|] 1, Inf [{{ count }} canali"
       create_btn: Crea canale
     attribute:
+      title: "] -Inf, 1] {{ count }} attributo|] 1, Inf [{{ count }} attributi"
       create_btn: Crea attributo
       modal_title: Scegliere il tipo di attributo
     attribute_group:
       title: Gruppi di attributi
       create_btn: Crea
     api_connection:
+      title: "] -Inf, 1] {{ count }} connessoine API|] 1, Inf [{{ count }} connessioni API"
       create_btn: Crea
   mass_edit:
     next: Successivo
@@ -941,30 +973,38 @@ pim_enrich:
       operation:
         change_status:
           label: Modificare lo stato
+          label_count: "{1}Cambia lo stato di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|] 1, Inf [Cambia lo stato di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
           description: Gli articoli selezionati saranno attivati o disattivati.
           field: Per attivare
         edit_common:
           label: Modifica gli attributi comuni
+          label_count: "{1}Modifica gli attributi comuni di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|] 1, Inf [Modifica gli attributi comuni di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
           description: Gli attributi del prodotto selezionato verranno modificati con i seguenti dati per le impostazioni locali {{ locale }} e per il canale {{ scope }}, selezionati nella griglia prodotti.
         change_family:
           label: Cambia famiglia
+          label_count: "{1}Modifica la famiglia di <span class=\"AknFullPage-title--highlight\">1 prodotto</span>|] 1, Inf [Modifica la famiglia di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span>"
           description: La famiglia degli articoli selezionati verrà modificata nella famiglia selezionata
           field: Famiglia
         add_to_group:
           label: Aggiungere ai gruppi
+          label_count: "{1}Aggiungi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> to groups|] 1, Inf [Aggiungi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> to groups"
           description: Selezionare i gruppi in cui aggiungere gli articoli selezionati
           field: Gruppi
         add_to_category:
           label: Aggiungi alle categorie
+          label_count: "{1}Aggiungi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> to categories|] 1, Inf [Aggiungi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> to categories"
           description: Gli articoli saranno posizionati nelle seguenti categorie, il posizionamento attuale è mantenuto.
         move_to_category:
           label: Sposta tra categorie
+          label_count: "{1}Sposta <span class=\"AknFullPage-title--highlight\">1 prodotto</span> between categories|] 1, Inf [Sposta <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> between categories"
           description: I prodotti saranno posizionati nelle seguenti categorie; il posizionamento attuale viene perso.
         remove_from_category:
           label: Rimuovi dalle categorie
+          label_count: "{1}Rimuovi <span class=\"AknFullPage-title--highlight\">1 prodotto</span> from categories|] 1, Inf [Rmuovi <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} prodotti</span> from categories"
           description: I prodotti verranno rimossi dalle seguenti categorie.
     family:
       title: Azione di massa sulle famiglie
+      confirm: "{1}Si sta per aggiornare una famiglia con le informazioni seguenti, confermare.|] 1, Inf [Si stanno per aggiornare {{ itemsCount }} famiglie con le informazioni seguenti, confermare."
       step:
         select:
           label: Scegli le famiglie
@@ -980,6 +1020,8 @@ pim_enrich:
       operation:
         set_requirements:
           label: Imposta i requisiti degli attributi
+          description: I requisiti degli attributi seguenti saranno applicati alle famiglie selezionate
+          label_count: "{1}Imposta i requisiti degli attributi di <span class=\"AknFullPage-title--highlight\">1 famiglia</span>|] 1, Inf [Imposta i requisiti degli attributi di <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} famiglie</span>"
 pim_enrich.error:
   exception.title: Accidenti! Si è verificato un errore con il codice {{ status_code }}...
   http:
@@ -988,26 +1030,37 @@ page_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Gruppi di attributi
   pim_enrich_attributegroup_create: Gruppi di attributo | Crea
+  pim_enrich_attributegroup_edit: Gruppo attributi {{ group.label }} | Modifica
   pim_enrich_categorytree_index: Albero della categoria
   pim_enrich_categorytree_create: Strutture di categoria | Crea
+  pim_enrich_categorytree_edit: Albero di categoria {{ category.label }} | Modifica
   pim_enrich_categorytree_create_tree: Strutture di categoria | Crea
   pim_enrich_attribute_index: Attributi
   pim_enrich_attribute_create: Attributi | Crea
+  pim_enrich_attribute_edit: Attributo {{ attribute.label }} | Modifica
   pim_enrich_product_index: Articoli
+  pim_enrich_product_edit: Prodotto {{ product.label }} | Modifica
+  pim_enrich_product_model_edit: Modello di prodotto {{ product.label }} | Modifica
   pim_enrich_family_index: Famiglie
+  pim_enrich_family_edit: Famiglia {{ family.label }} | Modifica
   pim_enrich_channel_index: Canali
   pim_enrich_channel_create: Canali | Crea
+  pim_enrich_channel_edit: Canale {{ channel.label }} | Modifica
   pim_enrich_currency_index: Valute
   pim_enrich_locale_index: Impostazioni locali
   pim_enrich_group_index: Gruppi
+  pim_enrich_group_edit: Gruppo {{ group.label }} | Modifica
   pim_enrich_associationtype_index: Tipi di associazione
+  pim_enrich_associationtype_edit: Tipo di associazione {{ association type.label }} | Modifica
   pim_enrich_grouptype_index: Tipi di gruppo
+  pim_enrich_grouptype_edit: Tipo di gruppo {{ group type.label }} | Modifica
   pim_enrich_mass_edit_action_choose: Modifica di massa| Scegli
   pim_enrich_mass_edit_action_configure: Modifica di massa| Configura
   pim_enrich_mass_edit_action_perform: Modifica di massa | Esegui
   pim_enrich_job_tracker_index: Tracker di processo
   pim_enrich_job_tracker_show: Tracker di processo | Visualizza lavoro
   pim_enrich_api_connection_index: Connessioni API
+  pim_enrich_api_connection_create: Connessione API | Crea
   pim_analytics_system_info_index: Informazioni di sistema
 batch_jobs:
   add_product_value:
@@ -1076,6 +1129,8 @@ batch_jobs:
     validation.label: Validazione file
     import.label: Importazione prodotti
     import_associations.label: Importazione associazioni
+  csv_product_model_import:
+    label: Importazione modelli di prodotto in CSV
   csv_category_import:
     label: Importazione categorie in CSV
     validation.label: Validazione file
@@ -1097,7 +1152,9 @@ batch_jobs:
     validation.label: Validazione file
     import.label: Importazione famiglie
   csv_family_variant_import:
+    label: Importazione famiglia variante in CSV
     validation.label: Validazione file
+    import.label: Importazione famiglia variante
   csv_group_import:
     label: importazione gruppi in CSV
     validation.label: Validazione file
@@ -1158,15 +1215,22 @@ batch_jobs:
     validation.label: Validazione file
     import.label: Importazione famiglie
   xlsx_family_variant_import:
+    label: Importazione famiglia variante in XLSX
     validation.label: Validazione file
+    import.label: Importazione famiglia variante
   xlsx_product_export:
     label: Esportazione prodotti in XLSX
     export.label: Esportazione Prodotti
+  xlsx_product_model_export:
+    label: Esportazione modello di prodotto in XLSX
+    export.label: Esportazione modello di prodotto
   xlsx_product_import:
     label: Importazione prodotti in XLSX
     validation.label: Validazione file
     import.label: Importazione prodotti
     import_associations.label: Importazione associazioni
+  xlsx_product_model_import:
+    label: Importazione modello di prodotto in XLSX
   xlsx_group_export:
     label: Esportazione gruppi in XLSX
     export.label: Esportazione gruppi
@@ -1178,6 +1242,7 @@ batch_jobs:
     label: Esportazione famiglie in XLSX
     export.label: Esportazione famiglie
   xlsx_family_variant_export:
+    label: Esportazione famiglia variante in XLSX
     export.label: Esportazione famiglie varianti
   xlsx_category_export:
     label: Esportazione categorie in XLSX
@@ -1235,6 +1300,7 @@ job_tracker:
     invalid_csv: Scarica dati non validi
 pim_menu:
   tab:
+    activity: Attività
     imports: Importazioni
     products: Articoli
     exports: Esportazioni
@@ -1253,6 +1319,7 @@ pim_menu:
     group_type: Tipi di gruppo
     locale: Impostazioni locali
     product: Articoli
+    published_product: Prodotti Pubblicati
     export_history: Cronologia esportazioni
     export_profile: Profili di esportazione
     import_history: Cronologia importazioni
@@ -1266,6 +1333,7 @@ pim_menu:
     job_tracker: Tracker di processo
     api_connection: Connessioni API
   navigation:
+    activity: Navigazione attività
     system: Sistema
     user: Gestione utenti
     settings: Impostazioni
