@@ -1020,7 +1020,6 @@ page_title:
   pim_enrich_categorytree_create_tree: Kategori træer | Oprette
   pim_enrich_attribute_index: Attributter
   pim_enrich_attribute_create: Attributter | Opret
-  pim_enrich_attribute_edit: Attributter {{ attribute.label }} | Rediger
   pim_enrich_product_index: Produkter
   pim_enrich_product_edit: Produkter {{ product.sku }} | Rediger
   pim_enrich_product_model_edit: Produkt modeller {{ product.sku }} | Rediger
@@ -1028,7 +1027,6 @@ page_title:
   pim_enrich_family_edit: Familier {{ family.label }} | Rediger
   pim_enrich_channel_index: Kanaler
   pim_enrich_channel_create: Kanaler | Opret
-  pim_enrich_channel_edit: Kanaler {{ channel.label }} | Rediger
   pim_enrich_currency_index: Valutaer
   pim_enrich_locale_index: Landestandarder
   pim_enrich_group_index: Grupper

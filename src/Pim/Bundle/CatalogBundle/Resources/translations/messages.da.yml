@@ -1,3 +1,25 @@
 No products to remove: Ingen produkter at fjerne
 "dot (.)": punktum (.)
 "comma (,)": komma (,)
+pim_catalog:
+  constraint:
+    product_identifier: Disse identifikatorer "%s" findes ikke.
+    0: Der opstod en uventet fejl!
+    100: Ikke-forventet værdi
+    101: Dette felt forventer en boolesk værdi.
+    102: Dette felt forventer en float-værdi.
+    103: Dette felt forventer en heltalsværdi.
+    104: Dette felt forventer en numerisk værdi.
+    105: Dette felt forventer en strengværdi.
+    106: Dette felt forventer en array-værdi.
+    107: Dette felt forventer en matrix af matrixer som værdi.
+    200: Der opstod en intern fejl.
+    201: Der opstod en intern fejl.
+    202: Dette felt forventer en numerisk værdi.
+    203: Dette felt forventer en strengværdi.
+    204: Dette felt forventer en strengværdi.
+    205: Der opstod en intern fejl.
+    300: Dette felt forventer en gyldig enhed kode.
+    301: Dette felt forventer en gyldig anvendelsesområde og landestandard.
+    302: Dette felt forventer et gyldigt område.
+    303: Dette felt forventer en gyldig association format.
