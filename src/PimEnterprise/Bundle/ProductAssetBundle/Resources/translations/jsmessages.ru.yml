@@ -18,7 +18,7 @@ pimee_product_asset:
   enrich_variation:
     popin:
       delete:
-        title: Подтверждение удаления
+        title: Подтвердить удаление
         message: Вы действительно хотите удалить этот элемент?
       reset:
         title: Сбросить вариации
@@ -66,7 +66,6 @@ pimee_product_asset:
   datagrid:
     mass_action:
       delete:
-        confirm_content: Вы уверены, что хотите удалить выбранные активы?
         success: Выбранные активы успешно удалены.
         error: Произошла ошибка при попытке удаления выбранных активов, пожалуйста, попробуйте еще раз.
         empty_selection: Ничего не выбрано

@@ -2,7 +2,6 @@ pimee_catalog_rule:
   execution_button: 执行规则
   popin:
     execute_rules:
-      confirm_title: 执行确认
       confirm_content: 你确定要执行所有的规则吗？(这可能需要很长时间)
   notification:
     launched: 规则执行已经启动。完成后会通知您。
@@ -27,24 +26,21 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         execute:
-          confirm_title: 执行确认
           confirm_content: 确定要执行这条规则吗？
           confirm_ok: 好的
       mass_edit_action:
-        confirm_title: 计算确认
         confirm_content: 确定要计算受这些规则影响的产品吗？
         confirm_ok: 好的
       mass_action:
         execute:
           confirm_ok: 好的
-          confirm_title: 执行确认
           confirm_content: 确定要执行被选定的规则吗？
           success: 执行所选定规则的批量操作已经启动。当完成的时候，您将收到通知。
           error: 在执行此规则时发生了一个错误
           empty_selection: 没有选中的规则
         delete:
           confirm_ok: 好的
-          confirm_title: 删除确认
+          confirm_title: 确定删除
           confirm_content: 确定要删除所选中的规则吗？
           success: 成功删除规则
           error: 在删除规则时发生了错误

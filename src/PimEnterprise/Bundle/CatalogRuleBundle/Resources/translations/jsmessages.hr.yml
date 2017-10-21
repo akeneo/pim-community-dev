@@ -2,7 +2,6 @@ pimee_catalog_rule:
   execution_button: Izvrši pravila
   popin:
     execute_rules:
-      confirm_title: Potvrda izvršenja
       confirm_content: Jeste li sigurni da želite izvršiti sva pravila? (to može potrajati duže vrijeme)
   notification:
     launched: Izvođenje pravila je pokrenuto. Biti ćete obaviješteni kad bude gotovo.
@@ -27,17 +26,14 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         execute:
-          confirm_title: Potvrda izvršenja
           confirm_content: Jeste li sigurni da želite izvršiti pravilo?
           confirm_ok: OK
       mass_edit_action:
-        confirm_title: Potvrda izračuna
         confirm_content: Sigurno želite izračunati zahvaćene proizvode za pravila?
         confirm_ok: OK
       mass_action:
         execute:
           confirm_ok: OK
-          confirm_title: Potvrda izvršenja
           confirm_content: Jeste li sigurni da želite izvršiti odabrana pravila?
           success: Pokrenuta je masovna radnja izvršenja odabranih pravila. Biti ćete obaviješteni kad bude gotovo
           error: Došlo je do pogreške tijekom izvođenja pravila.

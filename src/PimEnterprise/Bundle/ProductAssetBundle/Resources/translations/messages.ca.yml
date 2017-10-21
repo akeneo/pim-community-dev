@@ -25,7 +25,7 @@ pimee_product_asset:
       download: Descarregar
       generate_from_reference: Generar des de la referència
       reset_variations: Reiniciar variacions
-    confirmation.remove: Esteu segur que voleu suprimir el recurs "%asset%"?
+    confirmation.subTitle: Recursos
     grid:
       edit: Edita les propietats del recurs
     view:
