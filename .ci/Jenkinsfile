@@ -234,6 +234,7 @@ stage("Test") {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
                         try {
+                            sh " cd /home/jenkins/pim"
                             sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit ${env.WORKSPACE}/junit_output.xml"
                         } finally {
                             junit "junit_output.xml"
@@ -248,6 +249,7 @@ stage("Test") {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
                         try {
+                            sh " cd /home/jenkins/pim"
                             sh "./bin/phpspec run --format=junit > junit_output.xml"
                             sh "mv /home/jenkins/pim/junit_output.xml ${env.WORKSPACE}/"
                         } finally {
@@ -262,7 +264,8 @@ stage("Test") {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
                         try {
-                             sh "./bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ${env.WORKSPACE}/junit_output.xml"
+                            sh " cd /home/jenkins/pim"
+                            sh "./bin/php-cs-fixer fix --diff --dry-run --config=.php_cs.php --format=junit > ${env.WORKSPACE}/junit_output.xml"
                         } finally {
                             junit "junit_output.xml"
                         }
@@ -547,7 +550,7 @@ def withPhp(body) {
     podTemplate(label: "php-" + uuid, containers: [
         containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "akeneo/apache-php:php-5.6", resourceRequestCpu: '500m', resourceRequestMemory: '1000Mi')
     ], annotations: [
-        podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins && chmod -R 777 /home/jenkins \"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
+        podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins && chmod 777 /home/jenkins \"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ]) {
         node("php-" + uuid) {
             container("php") {
