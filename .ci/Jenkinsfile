@@ -233,8 +233,8 @@ stage("Test") {
 
             "phpunit": {
                 if (launchUnitTests.equals("yes")) {
-                        input(message: "wait ...")
                     withPhp({
+                        input(message: "wait ...")
                         sh "ls -al"
                         sh "cd /home/jenkins/pim"
                         try {                            
