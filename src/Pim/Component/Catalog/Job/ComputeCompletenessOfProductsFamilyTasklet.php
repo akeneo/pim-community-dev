@@ -82,7 +82,7 @@ class ComputeCompletenessOfProductsFamilyTasklet implements TaskletInterface
     /**
      * Get the family instance from the job parameters or null.
      *
-     * @return null|FamilyInterface
+     * @return FamilyInterface
      *
      * @throws UndefinedJobParameterException
      * @throws \InvalidArgumentException
