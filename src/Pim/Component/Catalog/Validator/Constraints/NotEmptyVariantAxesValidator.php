@@ -49,7 +49,7 @@ class NotEmptyVariantAxesValidator extends ConstraintValidator
         // be on the 3 level sub_product_model_2 -> sub_product_model_1 -> root_product_model) and will return the axes
         // on the 3 level.
         if ($entity instanceof ProductModelInterface && null !== $entity->getParent()) {
-            if (null !== $entity->getParent()->getParent()) {
+            if (null !== $entity->getParent()->getParent() || 1 === (int) $entity->getParent()->getFamilyVariant()->getNumberOfLevel()) {
                 return;
             }
         }

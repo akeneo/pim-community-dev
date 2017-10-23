@@ -1005,6 +1005,59 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
+    public function testCreateASubProductModelWithAFamilyWithOnlyOneLevelOfVariation()
+    {
+        $this->createProductModel(
+            [
+                'code' => 'root_product_model',
+                'family_variant' => 'familyVariantA2',
+                'values'  => [
+                    'a_number_float'  => [['data' => '12.5', 'locale' => null, 'scope' => null]],
+                ]
+            ]
+        );
+
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "code": "sub_product",
+        "parent": "root_product_model",
+        "values": {
+            "a_simple_select":[
+                {
+                    "locale":null,
+                    "scope":null,
+                    "data":"optionB"
+                }
+            ]
+        }
+    }
+JSON;
+
+        $client->request('PATCH', 'api/rest/v1/product-models/sub_product', [], [], [], $data);
+
+        $expectedContent =
+            <<<JSON
+{
+  "code": 422,
+  "message": "Validation failed.",
+  "errors": [
+    {
+      "property": "",
+      "message": "The product model \"sub_product\" cannot have a parent"
+    }
+  ]
+}
+JSON;
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
     public function testUpdateRootProductModelWithANewFamily()
     {
         $client = $this->createAuthenticatedClient();
