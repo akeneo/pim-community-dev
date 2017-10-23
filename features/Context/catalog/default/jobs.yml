@@ -44,7 +44,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/products_export_grid_context_%locale%_%scope%.csv
+            filePathProduct:      /tmp/products_export_grid_context_%locale%_%scope%.csv
+            filePathProductModel: /tmp/product_models_export_grid_context_%locale%_%scope%.csv
     xlsx_product_quick_export:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_quick_export

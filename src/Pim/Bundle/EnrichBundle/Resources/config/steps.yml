@@ -37,6 +37,17 @@ services:
             - '@pim_connector.writer.file.xlsx_product_quick_export'
             - 1000
 
+    pim_enrich.step.xlsx_product_model.quick_export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'quick_export'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.product_model'
+            - '@pim_enrich.connector.processor.quick_export.product_model'
+            - '@pim_connector.writer.file.xlsx_product_model_quick_export'
+            - 1000
+
     # Mass Edit steps -------------------------------------------------------------------------------------------------
     pim_enrich.step.update_product_value.mass_edit:
         class: '%pim_connector.step.item_step.class%'
