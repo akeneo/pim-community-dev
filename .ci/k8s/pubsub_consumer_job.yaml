@@ -86,7 +86,8 @@ spec:
               (while true; do if [[ -f "/tmp/pod/main-terminated" ]]; then sudo kill -9 $CHILD_PID; fi; sleep 1; done) &
               wait $CHILD_PID
               if [[ -f "/tmp/pod/main-terminated" ]]; then exit 0; fi
-
+          env:
+            - { name: BEHAT_TMPDIR, value: /home/jenkins/var/cahe/tmp }    
           workingDir: /home/jenkins/pim
           volumeMounts:
             - { name: pim, mountPath: /home/jenkins }
