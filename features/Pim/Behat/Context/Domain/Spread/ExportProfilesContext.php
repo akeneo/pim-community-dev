@@ -16,18 +16,21 @@ class ExportProfilesContext extends ImportExportContext
     use SpinCapableTrait;
 
     /**
+     * @param string       $number
      * @param string       $code
      * @param PyStringNode $csv
      *
-     * @Then /^exported file of "([^"]*)" should contain:$/
+     * @Then /^exported file (\d+ )?of "([^"]*)" should contain:$/
      *
      * @throws ExpectationException
      * @throws \Exception
      */
-    public function exportedFileOfShouldContain($code, PyStringNode $csv)
+    public function exportedFileOfShouldContain($number = null, $code, PyStringNode $csv)
     {
-        $this->spin(function () use ($code, $csv) {
-            $path = $this->getExportedFile($code);
+        $number = null !== $number ? intval($number) : null;
+        $this->spin(function () use ($code, $csv, $number) {
+            $path = $this->getExportedFile($code, $number);
+
             $config = $this->getCsvJobConfiguration($code);
 
             $expectedLines = $this->getExpectedLines($csv, $config);
@@ -151,6 +154,8 @@ class ExportProfilesContext extends ImportExportContext
      * @param string $path
      *
      * @Then /^the name of the exported file of "([^"]+)" should be "([^"]+)"$/
+     *
+     * @throws ExpectationException
      */
     public function theNameOfTheExportedFileOfShouldBe($code, $path)
     {
@@ -217,6 +222,8 @@ class ExportProfilesContext extends ImportExportContext
      * @param bool      $shouldBeInDirectory true if the files should be in the directory, false otherwise
      * @param TableNode $table               Files to check
      * @param string    $path                Path of item on filesystem
+     *
+     * @throws ExpectationException
      */
     protected function checkExportDirectoryFiles($shouldBeInDirectory, TableNode $table, $path)
     {
@@ -244,15 +251,16 @@ class ExportProfilesContext extends ImportExportContext
     }
 
     /**
-     * @param string $code
+     * @param string       $code
+     * @param integer|null $number
      *
      * @throws ExpectationException
      * @return string
      *
      */
-    protected function getExportedFile($code)
+    protected function getExportedFile($code, $number = null)
     {
-        $filePath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
+        $filePath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code, $number);
         if (!is_file($filePath)) {
             throw $this->getMainContext()->createExpectationException(
                 sprintf('File "%s" doesn\'t exist', $filePath)

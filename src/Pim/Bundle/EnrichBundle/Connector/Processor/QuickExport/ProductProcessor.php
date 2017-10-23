@@ -10,6 +10,7 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -110,7 +111,11 @@ class ProductProcessor extends AbstractProcessor
             $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
                 ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
 
-            $this->fetchMedia($product, $directory);
+            if ($product instanceof ProductInterface) {
+                $this->fetchMedia($product, $directory);
+            } else {
+                $this->fetchMediaProductModel($product, $directory);
+            }
         }
 
         $this->detacher->detach($product);
@@ -167,6 +172,22 @@ class ProductProcessor extends AbstractProcessor
     {
         $identifier = $product->getIdentifier();
         $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
+
+        foreach ($this->mediaFetcher->getErrors() as $error) {
+            $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
+        }
+    }
+
+    /**
+     * Fetch medias on the local filesystem
+     *
+     * @param ProductModelInterface $productModel
+     * @param string                $directory
+     */
+    protected function fetchMediaProductModel(ProductModelInterface $productModel, $directory)
+    {
+        $identifier = $productModel->getCode();
+        $this->mediaFetcher->fetchAll($productModel->getValues(), $directory, $identifier);
 
         foreach ($this->mediaFetcher->getErrors() as $error) {
             $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
