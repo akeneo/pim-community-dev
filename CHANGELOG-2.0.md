@@ -24,6 +24,7 @@
 - PIM-6892: Forbids users to unselect categories of parent product models
 - PIM-6896: Remove the button restore displayed on product models
 - PIM-6891: Keep the tab context between product and product model forms
+- API-405: Update partially a list of product models
 
 ## Better UI\UX!
 

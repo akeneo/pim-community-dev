@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Security;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
