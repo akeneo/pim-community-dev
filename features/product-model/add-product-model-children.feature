@@ -12,7 +12,7 @@ Feature: Add children to product model
     Given I am on the "apollon" product model page
     When I open the variant navigation children selector for level 1
     And I press "Create new"
-    Then I should see the text "Add a color"
+    Then I should see the text "Add a Color"
     When I fill in "code" with "apollon_black"
     And I fill in "color" with "black"
     And I confirm the child creation
@@ -37,30 +37,71 @@ Feature: Add children to product model
     When I am on the "root_model" product model page
     And I open the variant navigation children selector for level 1
     And I press "Create new"
-    Then I should see the text "Add a color, handmade, material, weight"
+    Then I should see the text "Add a Color, Handmade, Material, Weight"
     When I fill in "code" with "model_with_four_axes"
     And I fill in "color" with "black"
-    And I fill in "handmade" with ""
-    And I fill in "material" with ""
-    And I fill in "weight" with ""
+    And I fill in "handmade" with "yes"
+    And I fill in "material" with "leather"
+    And I fill in "weight" with "800 GRAM"
     And I confirm the child creation
     Then I should see the text "Product model successfully added to the product model"
     And I should be on the product model "model_with_four_axes" edit page
 
   Scenario: Successfully add a new sub product model when I already am on a sub product product model
+    Given I am on the "apollon_blue" product model page
+    When I open the variant navigation children selector for level 1
+    And I press "Create new"
+    Then I should see the text "Add a Color"
+    When I fill in "code" with "apollon_black"
+    And I fill in "color" with "black"
+    And I confirm the child creation
+    Then I should see the text "Product model successfully added to the product model"
+    And I should be on the product model "apollon_black" edit page
 
   Scenario: Successfully add a sub product model when I am on a variant product
+    Given I am on the "1111111121" product page
+    When I open the variant navigation children selector for level 1
+    And I press "Create new"
+    Then I should see the text "Add a Color"
+    When I fill in "code" with "apollon_black"
+    And I fill in "color" with "black"
+    And I confirm the child creation
+    Then I should see the text "Product model successfully added to the product model"
+    And I should be on the product model "apollon_black" edit page
 
   Scenario: Successfully add a variant product to a root product model
-    # shoes on the variant size (1 level)
+    Given I am on the "amor" product model page
+    When I open the variant navigation children selector for level 1
+    And I press "Create new"
+    Then I should see the text "Add a Color, Size"
+    When I fill in "code" with "amor_black_xl"
+    And I fill in "color" with "black"
+    And I fill in "size" with "xl"
+    And I confirm the child creation
+    Then I should see the text "Variant product successfully added to the product model"
+    And I should be on the product "amor_black_xl" edit page
 
   Scenario: Successfully add a variant product to a sub product model
-    # t-shirts on the variant size (2 levels)
+    Given I am on the "apollon_blue" product model page
+    When I open the variant navigation children selector for level 2
+    And I press "Create new"
+    Then I should see the text "Add a Size"
+    When I fill in "code" with "apollon_blue_xl"
+    And I fill in "size" with "xl"
+    And I confirm the child creation
+    Then I should see the text "Variant product successfully added to the product model"
+    And I should be on the product "apollon_blue_xl" edit page
 
   Scenario: Successfully add a new variant product when I already am on a variant product
-
-  Scenario: Successfully add a variant product to a product model with metric as variant axis
-    # tvs on the variant display diagonal (1 levels with metric)
+    When I am on the "1111111121" product model page
+    And I open the variant navigation children selector for level 2
+    And I press "Create new"
+    Then I should see the text "Add a Size"
+    When I fill in "code" with "apollon_blue_xl"
+    And I fill in "size" with "xl"
+    And I confirm the child creation
+    Then I should see the text "Variant product successfully added to the product model"
+    And I should be on the product "apollon_blue_xl" edit page
 
   Scenario: Successfully add a variant product with many axes to a root product model
     Given the following attribute:
@@ -80,29 +121,69 @@ Feature: Add children to product model
     When I am on the "root_model" product model page
     And I open the variant navigation children selector for level 1
     And I press "Create new"
-    Then I should see the text "Add a color, handmade, material, size, weight"
+    Then I should see the text "Add a Color, Handmade, Material, Size, Weight"
     When I fill in "code" with "tshirt_with_five_axes"
     And I fill in "color" with "black"
-    And I fill in "handmade" with ""
-    And I fill in "material" with ""
+    And I fill in "handmade" with "yes"
+    And I fill in "material" with "leather"
     And I fill in "size" with "xl"
-    And I fill in "weight" with ""
+    And I fill in "weight" with "800 GRAM"
     And I confirm the child creation
     Then I should see the text "Variant product successfully added to the product model"
     And I should be on the product "tshirt_with_five_axes" edit page
 
-  Scenario: I cannot add a variant product to a root product model when there is two levels of variations
-    When I am on the "apollon" product model page
-    Then I should not see the variant navigation children selector for level 2
-
   Scenario: I cannot add a sub product model without code
+    Given I am on the "apollon" product model page
+    When I open the variant navigation children selector for level 1
+    And I press "Create new"
+    Then I should see the text "Add a Color"
+    And I fill in "color" with "black"
+    And I confirm the child creation
+    Then I should see a validation error "This value should not be blank."
 
   Scenario: I cannot add a variant product without code
+    Given I am on the "apollon_blue" product model page
+    When I open the variant navigation children selector for level 2
+    And I press "Create new"
+    Then I should see the text "Add a size"
+    And I fill in "size" with "xl"
+    And I confirm the child creation
+    Then I should see a validation error "This value should not be blank."
 
   Scenario: I cannot add a sub product model without axis value
+    Given I am on the "apollon" product model page
+    When I open the variant navigation children selector for level 1
+    And I press "Create new"
+    Then I should see the text "Add a color"
+    When I fill in "code" with "apollon_black"
+    And I confirm the child creation
+    Then I should see a validation error "This value should not be blank."
 
   Scenario: I cannot add a variant product without axis value
+    Given I am on the "apollon_blue" product model page
+    When I open the variant navigation children selector for level 2
+    And I press "Create new"
+    Then I should see the text "Add a size"
+    When I fill in "code" with "apollon_black_xl"
+    And I confirm the child creation
+    Then I should see a validation error "This value should not be blank."
 
   Scenario: I cannot add a sub product model with an already existing axis value combination
+    Given I am on the "apollon" product model page
+    When I open the variant navigation children selector for level 1
+    And I press "Create new"
+    Then I should see the text "Add a color"
+    When I fill in "code" with "apollon_new_blue"
+    And I fill in "color" with "blue"
+    And I confirm the child creation
+    Then I should see a validation error "A variant blue already exists for this product model."
 
   Scenario: I cannot add a variant product with an already existing axis value combination
+    Given I am on the "amor" product model page
+    When I open the variant navigation children selector for level 1
+    And I press "Create new"
+    Then I should see the text "Add a Color, Size"
+    And I fill in "color" with "blue"
+    And I fill in "size" with "xl"
+    And I confirm the child creation
+    Then I should see a validation error "A variant blue, xl already exists for this product model."
