@@ -292,7 +292,7 @@ stage("Test") {
                                 [container: "php", script: "sudo composer remove --dev --no-update doctrine/mongodb-odm-bundle;"],
                                 [container: "php", script: "sudo composer remove --dev --no-update doctrine/mongodb-odm-bundle;"],
                                 [container: "php", script: "sudo cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"],
-                                [container: "php", script: "sudo  mkdir -p app/cache app/logs app/archive var/cace /tmp/pim/file_storage app/file_storage app/uploads"],
+                                [container: "php", script: "sudo  mkdir -p app/cache app/logs app/archive var/cache /tmp/pim/file_storage app/file_storage app/uploads"],
                                 [container: "php", script: "sudo chmod 777 -R app/cache app/logs var/cache app/archive /tmp/pim app/file_storage app/uploads"],
                                 [container: "php", script: "sudo sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"],
                                 [container: "php", script: "sudo sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"],
