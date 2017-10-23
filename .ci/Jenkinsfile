@@ -537,7 +537,7 @@ def withPhp(body) {
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "php-" + uuid, containers: [
         containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "akeneo/apache-php:php-5.6", resourceRequestCpu: '500m',
-                        resourceRequestMemory: '1000Mi', imagePullPolicy: 'Always')
+                        resourceRequestMemory: '1000Mi', imagePullPolicy: 'Always', workingDir: '/home/jenkins')
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ]) {
