@@ -372,7 +372,7 @@ stage("Test") {
                     queue({
                         def scenariosEE = []
                         for (feature in features) {
-                            scenariosEE = (scenariosEE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -d $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
+                            scenariosEE = (scenariosEE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -d $feature ]; then path=\$(dirname $feature) ;php ./bin/behat $feature --list-scenarios | echo \"\$path\$(cat -)\"; fi").tokenize('\n'))
                         }
                         scenariosEE = scenariosEE.unique()   
                         def messagesEE = new net.sf.json.JSONArray()
@@ -414,7 +414,7 @@ stage("Test") {
                     queue({
                         def scenariosCE = []
                         for (feature in features) {
-                            scenariosCE = (scenariosCE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -d $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
+                            scenariosCE = (scenariosCE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -d $feature ]; then path=\$(dirname $feature) ;php ./bin/behat $feature --list-scenarios | echo \"\$path\$(cat -)\"; fi").tokenize('\n'))
                         }
                         scenariosCE = scenariosCE.unique()            
                         def messagesCE = new net.sf.json.JSONArray()
@@ -457,7 +457,7 @@ stage("Test") {
                     queue({
                         def scenariosEE = []
                         for (feature in features) {
-                            scenariosEE = (scenariosEE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -d $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
+                            scenariosEE = (scenariosEE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -d $feature ]; then path=\$(dirname $feature) ;php ./bin/behat $feature --list-scenarios | echo \"\$path\$(cat -)\"; fi").tokenize('\n'))
                         }
                         scenariosEE = scenariosEE.unique()   
                         def messagesEE = new net.sf.json.JSONArray()
