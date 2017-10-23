@@ -102,7 +102,7 @@ services:
         class: '%pim_catalog.event_subscriber.compute_product_model_descendants.class%'
         arguments:
             - '@security.token_storage'
-            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
             - '%pim_catalog.compute_product_models_descendants.job_name%'
         tags:

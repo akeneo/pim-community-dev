@@ -145,6 +145,13 @@ class EntityBuilder
     {
         $this->container->get('pim_catalog.updater.product_model')->update($productModel, $data);
         $this->container->get('pim_catalog.saver.product_model')->save($productModel);
+
+        $launcher = $this->container->get('akeneo_integration_tests.launcher.job_launcher');
+
+        while ($launcher->hasJobInQueue()) {
+            $launcher->launchConsumerOnce();
+        }
+
         $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
