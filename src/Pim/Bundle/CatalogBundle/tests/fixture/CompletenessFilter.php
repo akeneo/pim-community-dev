@@ -53,7 +53,7 @@ class CompletenessFilter
      * To check that that numbers are right, here an SQL query:
      *
      * SELECT p.identifier, ch.code, lo.code, co.ratio
-     * FROM pim_pcd_behat.pim_catalog_completeness AS co
+     * FROM pim_catalog_completeness AS co
      * INNER JOIN pim_catalog_product AS p ON co.product_id = p.id
      * INNER JOIN pim_catalog_channel AS ch ON ch.id = co.channel_id
      * INNER JOIN pim_catalog_locale AS lo ON lo.id = co.locale_id
@@ -120,7 +120,7 @@ class CompletenessFilter
             [
                 'values' => [
                     'sku' => [['data' => 'variant_product_1', 'locale' => null, 'scope' => null]],
-                    'a_yes_no' => [['data' => '12345678', 'locale' => null, 'scope' => null]],
+                    'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]],
                     'a_localized_and_scopable_text_area' => [
                         ['data' => 'my text', 'locale' => 'en_US', 'scope' => 'ecommerce'],
                         ['data' => 'my text', 'locale' => 'en_US', 'scope' => 'tablet'],
@@ -138,7 +138,7 @@ class CompletenessFilter
             [
                 'values' => [
                     'sku' => [['data' => 'variant_product_2', 'locale' => null, 'scope' => null]],
-                    'a_yes_no' => [['data' => '12345678', 'locale' => null, 'scope' => null]],
+                    'a_yes_no' => [['data' => false, 'locale' => null, 'scope' => null]],
                     'a_localized_and_scopable_text_area' => [
                         ['data' => 'my text', 'locale' => 'en_US', 'scope' => 'ecommerce'],
                         ['data' => null, 'locale' => 'en_US', 'scope' => 'tablet'],
@@ -165,7 +165,7 @@ class CompletenessFilter
                     'sku' => [['data' => 'variant_product_3', 'locale' => null, 'scope' => null]],
                     'a_simple_select' => [['data' => 'optionA', 'locale' => null, 'scope' => null]],
                     'a_text' => [['data' => 'text', 'locale' => null, 'scope' => null]],
-                    'a_yes_no' => [['data' => '12345678', 'locale' => null, 'scope' => null]],
+                    'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]],
                     'a_localized_and_scopable_text_area' => [
                         ['data' => 'my text', 'locale' => 'en_US', 'scope' => 'ecommerce'],
                         ['data' => 'my text', 'locale' => 'en_US', 'scope' => 'tablet'],
@@ -183,9 +183,9 @@ class CompletenessFilter
             [
                 'values' => [
                     'sku' => [['data' => 'variant_product_4', 'locale' => null, 'scope' => null]],
-                    'a_simple_select' => [['data' => 'optionA', 'locale' => null, 'scope' => null]],
+                    'a_simple_select' => [['data' => 'optionB', 'locale' => null, 'scope' => null]],
                     'a_text' => [['data' => 'text', 'locale' => null, 'scope' => null]],
-                    'a_yes_no' => [['data' => '12345678', 'locale' => null, 'scope' => null]],
+                    'a_yes_no' => [['data' => false, 'locale' => null, 'scope' => null]],
                     'a_localized_and_scopable_text_area' => [
                         ['data' => 'my text', 'locale' => 'en_US', 'scope' => 'ecommerce'],
                         ['data' => null, 'locale' => 'en_US', 'scope' => 'tablet'],
@@ -201,7 +201,7 @@ class CompletenessFilter
                 'sku' => [['data' => 'simple_product', 'locale' => null, 'scope' => null]],
                 'a_simple_select' => [['data' => 'optionA', 'locale' => null, 'scope' => null]],
                 'a_text' => [['data' => 'text', 'locale' => null, 'scope' => null]],
-                'a_yes_no' => [['data' => '12345678', 'locale' => null, 'scope' => null]],
+                'a_yes_no' => [['data' => true, 'locale' => null, 'scope' => null]],
                 'a_localized_and_scopable_text_area' => [
                     ['data' => 'my text', 'locale' => 'en_US', 'scope' => 'ecommerce'],
                 ],

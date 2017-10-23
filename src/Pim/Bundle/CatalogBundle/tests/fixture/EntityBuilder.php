@@ -42,7 +42,7 @@ class EntityBuilder
     ): ProductInterface {
         $product = $this->container->get('pim_catalog.builder.product')->createProduct($identifier, $familyCode);
         $this->container->get('pim_catalog.updater.product')->update($product, $data);
-        $this->container->get('validator')->validate($product);
+        $this->validate($product, sprintf('The product %s is invalid', $product->getIdentifier()));
         $this->container->get('pim_catalog.saver.product')->save($product);
 
         return $product;
@@ -58,6 +58,7 @@ class EntityBuilder
         $family = $this->container->get('pim_catalog.factory.family_variant')->create();
         $this->container->get('pim_catalog.updater.family_variant')->update($family, $data);
         $this->container->get('validator')->validate($family);
+        $this->validate($family, sprintf('The family variant %s is invalid', $family->getCode()));
         $this->container->get('pim_catalog.saver.family_variant')->save($family);
 
         return $family;
@@ -144,8 +145,8 @@ class EntityBuilder
     protected function updateProductModel(ProductModelInterface $productModel, array $data): void
     {
         $this->container->get('pim_catalog.updater.product_model')->update($productModel, $data);
+        $this->validate($productModel, sprintf('The product model %s is invalid', $productModel->getCode()));
         $this->container->get('pim_catalog.saver.product_model')->save($productModel);
-        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
     }
 
     /**
@@ -155,7 +156,21 @@ class EntityBuilder
     protected function updateVariantProduct(VariantProductInterface $variantProduct, array $data): void
     {
         $this->container->get('pim_catalog.updater.product')->update($variantProduct, $data);
+        $this->validate($variantProduct, sprintf('The variant product %s is invalid', $variantProduct->getIdentifier()));
         $this->container->get('pim_catalog.saver.product')->save($variantProduct);
-        $this->container->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+    }
+
+    /**
+     * @param object $entity
+     * @param string $message
+     *
+     * @throws \Exception
+     */
+    private function validate($entity, string $message): void
+    {
+        $error = $this->container->get('validator')->validate($entity);
+        if(0 < count($error)) {
+            throw new \Exception(sprintf('%s: %s', $message, implode("\n", (array) $error)));
+        }
     }
 }
