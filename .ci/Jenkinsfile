@@ -330,7 +330,7 @@ stage("Test") {
                     queue({
                         def scenariosCE = []
                         for (feature in features) {
-                            scenariosCE = (scenariosCE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -d $feature ]; then path=\$(dirname $feature) ;php ./bin/behat $feature --list-scenarios | \"\$path\$(cat -)\"; fi").tokenize('\n'))
+                            scenariosCE = (scenariosCE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -d $feature ]; then path=\$(dirname $feature) ;php ./bin/behat $feature --list-scenarios | echo \"\$path\$(cat -)\"; fi").tokenize('\n'))
                         }
                         scenariosCE = scenariosCE.unique()   
                         def messagesCE = new net.sf.json.JSONArray()
