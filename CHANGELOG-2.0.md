@@ -23,6 +23,7 @@
 - PIM-6898: Fixes some data can break ES index and crashes new products indexing
 - PIM-6918: Fix error when deleteing boolean attribute linked to a published product
 - PIM-5817: move datepicker above field instead of under
+- API-407: Fix too many error messages when trying to create a product model that extends a product model with a parent
 
 ## Better manage products with variants!
 
