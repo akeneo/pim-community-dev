@@ -81,6 +81,10 @@ class ProductModelAttributeFilter implements AttributeFilterInterface
 
         $variantAttributeSet = $familyVariant->getVariantAttributeSet($parentProductModel->getVariationLevel() + 1);
 
+        if (null === $variantAttributeSet) {
+            return $standardProductModel;
+        }
+
         return $this->keepOnlyAttributes($standardProductModel, $variantAttributeSet->getAttributes());
     }
 
