@@ -77,3 +77,17 @@ Feature: Edit a product model
     When I press the "Save" button
     Then I should see validation tooltip "This value should be a valid number."
     And there should be 1 error in the "ERP" tab
+
+  Scenario: Quickly view missing values to fill in
+    Given I am logged in as "Mary"
+    When I am on the "amor" product model page
+    Then the Care instructions, Material, Model picture fields should be highlighted
+    When I visit the "Marketing" group
+    And I fill in the following information:
+      | Collection |        |
+    And I visit the "Product" group
+    And I fill in the following information:
+      | Material   | cotton |
+    And I press the "Save" button
+    And I visit the "All" group
+    Then the Care instructions, Collection, Model picture fields should be highlighted

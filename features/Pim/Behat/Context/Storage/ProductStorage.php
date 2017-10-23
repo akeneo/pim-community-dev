@@ -46,8 +46,6 @@ class ProductStorage implements Context
      */
     public function theProductShouldNotHaveTheFollowingValues($identifier, TableNode $table)
     {
-        $this->entityManager->clear();
-
         /** @var ProductInterface $product */
         $product = $this->productRepository->findOneByIdentifier($identifier);
 

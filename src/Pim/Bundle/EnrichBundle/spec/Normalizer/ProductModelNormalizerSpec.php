@@ -39,7 +39,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         VariantNavigationNormalizer $navigationNormalizer,
         VariantProductRatioInterface $findVariantProductCompleteness,
         ImageAsLabel $imageAsLabel,
-        AscendantCategoriesInterface $ascendantCategories
+        AscendantCategoriesInterface $ascendantCategories,
+        NormalizerInterface $incompleteValuesNormalizer
     ) {
         $this->beConstructedWith(
             $normalizer,
@@ -55,7 +56,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             $navigationNormalizer,
             $findVariantProductCompleteness,
             $imageAsLabel,
-            $ascendantCategories
+            $ascendantCategories,
+            $incompleteValuesNormalizer
         );
     }
 
@@ -78,6 +80,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $findVariantProductCompleteness,
         $imageAsLabel,
         $ascendantCategories,
+        $incompleteValuesNormalizer,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
@@ -177,6 +180,9 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $ascendantCategories->getCategoryIds($productModel)->willReturn([42]);
 
+        $incompleteValuesNormalizer->normalize($productModel, Argument::cetera())
+            ->willReturn(['kind of completenesses data normalized here']);
+
         $this->normalize($productModel, 'internal_api', $options)->shouldReturn(
             [
                 'code'           => 'tshirt_blue',
@@ -200,6 +206,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'image'          => $fileNormalized,
                     'variant_navigation' => ['NAVIGATION NORMALIZED'],
                     'ascendant_category_ids' => [42],
+                    'completenesses' => ['kind of completenesses data normalized here'],
                     'label'          => [
                         'en_US' => 'Tshirt blue',
                         'fr_FR' => 'Tshirt bleu',
@@ -223,6 +230,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $findVariantProductCompleteness,
         $imageAsLabel,
         $ascendantCategories,
+        $incompleteValuesNormalizer,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
@@ -309,6 +317,9 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $ascendantCategories->getCategoryIds($productModel)->willReturn([42]);
 
+        $incompleteValuesNormalizer->normalize($productModel, Argument::cetera())
+            ->willReturn(['kind of completenesses data normalized here']);
+
         $this->normalize($productModel, 'internal_api', $options)->shouldReturn(
             [
                 'code'           => 'tshirt_blue',
@@ -332,6 +343,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'image'          => null,
                     'variant_navigation' => ['NAVIGATION NORMALIZED'],
                     'ascendant_category_ids' => [42],
+                    'completenesses' => ['kind of completenesses data normalized here'],
                     'label'          => [
                         'en_US' => 'Tshirt blue',
                         'fr_FR' => 'Tshirt bleu',
@@ -355,6 +367,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $findVariantProductCompleteness,
         $imageAsLabel,
         $ascendantCategories,
+        $incompleteValuesNormalizer,
         AttributeInterface $pictureAttribute,
         ProductModelInterface $productModel,
         FamilyVariantInterface $familyVariant,
@@ -454,6 +467,9 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $ascendantCategories->getCategoryIds($productModel)->willReturn([42]);
 
+        $incompleteValuesNormalizer->normalize($productModel, Argument::cetera())
+            ->willReturn(['kind of completenesses data normalized here']);
+
         $this->normalize($productModel, 'internal_api', $options)->shouldReturn(
             [
                 'code'           => 'tshirt_blue',
@@ -477,6 +493,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'image'          => $fileNormalized,
                     'variant_navigation' => ['NAVIGATION NORMALIZED'],
                     'ascendant_category_ids' => [42],
+                    'completenesses' => ['kind of completenesses data normalized here'],
                     'label'          => [
                         'en_US' => 'Tshirt blue',
                         'fr_FR' => 'Tshirt bleu',

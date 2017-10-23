@@ -174,6 +174,17 @@ class ValueCollection implements ValueCollectionInterface
     /**
      * {@inheritDoc}
      */
+    public function getSame(ValueInterface $value)
+    {
+        $channelCode = null !== $value->getScope() ? $value->getScope() : '<all_channels>';
+        $localeCode = null !== $value->getLocale() ? $value->getLocale() : '<all_locales>';
+
+        return $this->getByCodes($value->getAttribute()->getCode(), $channelCode, $localeCode);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getByKey($key)
     {
         return isset($this->values[$key]) ? $this->values[$key] : null;
