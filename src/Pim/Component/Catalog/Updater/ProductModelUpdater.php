@@ -195,7 +195,7 @@ class ProductModelUpdater implements ObjectUpdaterInterface
                     $familyVariantCode,
                     $parent->getFamilyVariant()->getCode()
                 ),
-                ''
+                static::class
             );
         }
 
