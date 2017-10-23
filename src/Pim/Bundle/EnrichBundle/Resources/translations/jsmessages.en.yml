@@ -169,7 +169,7 @@ pim_enrich:
             category: Category
             create: Create
             subTitle: Create products
-            modalTitle: Select your actions
+            modalTitle: Select your action
             filters: Filters
             selected: selected results
             common: Common

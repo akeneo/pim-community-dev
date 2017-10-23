@@ -30,7 +30,13 @@ function (
     return BaseField.extend({
         events: {
             'change select': function (event) {
+                const formModel = this.getFormModel();
                 const family_variant = event.target.value;
+
+                if (_.isEmpty(family_variant)) {
+                    return formModel.unset('family_variant');
+                }
+
                 this.setData({ family_variant });
             }
         },
@@ -75,10 +81,25 @@ function (
             const formModel = this.getFormModel();
             const family = formModel.get('family');
 
+            if (_.isEmpty(family)) {
+                return this.resetSelectField();
+            }
+
             if (formModel.hasChanged('family')) {
                 this.getFamilyIdFromCode(family)
                     .then(this.renderVariantsForFamily.bind(this))
             }
+        },
+
+        /**
+         * Clear the choices and selected value of the field and re-render
+         */
+        resetSelectField() {
+            this.choices = [];
+            this.readOnly = true;
+            this.$('select.select2').select2('val', '');
+            this.getFormModel().unset('family_variant');
+            this.render();
         },
 
         /**

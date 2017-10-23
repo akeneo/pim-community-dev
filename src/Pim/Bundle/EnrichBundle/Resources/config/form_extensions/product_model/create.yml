@@ -6,7 +6,7 @@ extensions:
                title: pim_enrich.entity.product_model.create_popin.title
                subTitle: pim_menu.tab.products
                content: pim_enrich.entity.product_model.create_popin.content
-           picture: illustrations/Product.svg
+           picture: illustrations/Product-model.svg
            successMessage: pim_enrich.entity.product_model.info.create_successful
            editRoute: pim_enrich_product_model_edit
            postUrl: pim_enrich_product_model_rest_create

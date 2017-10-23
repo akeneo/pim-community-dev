@@ -81,7 +81,7 @@ class ProductModelController
      * @param SaverInterface                    $productModelSaver
      * @param NormalizerInterface               $constraintViolationNormalizer
      * @param EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer
-     * @param SimpleFactoryInterface            $familyVariantFactory
+     * @param SimpleFactoryInterface            $productModelFactory
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,

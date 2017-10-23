@@ -59,7 +59,7 @@ Feature: Create a product model
     And the field family_variant should be disabled
     Given I fill in the following information in the popin:
     | Code             | clothing_color_size    |
-    | Choose a family  | Clothing                   |
+    | Choose a family  | Clothing               |
     | Choose a variant | Clothing by color/size |
     And I press the "Save" button
     Then I should see the flash message "Product model successfully created"
@@ -84,8 +84,13 @@ Feature: Create a product model
     And I should see the Code, Family and family_variant fields
     And the field family_variant should be disabled
     Given I fill in the following information in the popin:
-      | Choose a family  | Accessories   |
+      | Code             | accessories_size |
+      | Choose a family  | Accessories      |
     Then I should see the text "Accessories by size"
+    And I press the "Save" button
+    Then I should see the flash message "Product model successfully created"
+    And I should be on the product model "accessories_size" edit page
+    And I should see the text "accessories_size"
 
   Scenario: Display validation error for duplicate code and missing family variant
     Given I create a product model
@@ -115,3 +120,15 @@ Feature: Create a product model
     And I am on the products grid
     And I press the "Create product and product models" button
     Then I should see the SKU and Family fields
+
+  Scenario: Remove family variant field value if family is removed
+    Given I create a product model
+    And I should see the Code, Family and family_variant fields
+    And the field family_variant should be disabled
+    Given I fill in the following information in the popin:
+      | Choose a family | Clothing |
+      | Choose a variant | Clothing by color/size |
+    And I press the "Save" button
+    Then I should see the text "The product model code must not be empty."
+    And I clear the family of the product model
+    Then the field family_variant should be disabled
