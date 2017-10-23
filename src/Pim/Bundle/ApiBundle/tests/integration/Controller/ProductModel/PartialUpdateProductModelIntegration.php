@@ -1045,7 +1045,7 @@ JSON;
   "message": "Validation failed.",
   "errors": [
     {
-      "property": "",
+      "property": "parent",
       "message": "The product model \"sub_product\" cannot have a parent"
     }
   ]

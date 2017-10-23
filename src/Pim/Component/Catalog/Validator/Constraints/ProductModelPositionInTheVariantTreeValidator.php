@@ -57,7 +57,7 @@ class ProductModelPositionInTheVariantTreeValidator extends ConstraintValidator
                 [
                     '%product_model%' => $productModel->getCode(),
                 ]
-            )->addViolation();
+            )->atPath('parent')->addViolation();
         }
     }
 }
