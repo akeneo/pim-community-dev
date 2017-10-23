@@ -234,7 +234,7 @@ stage("Test") {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
                         try {
-                            sh "sudo cd /home/jenkins/pim && chown docker:docker ."
+//                            sh "sudo cd /home/docker/pim && chown docker:docker ."
                             sh "./bin/phpunit -c app/phpunit.xml.dist --testsuite PIM_Unit_Test --log-junit ${env.WORKSPACE}/junit_output.xml"
                         } finally {
                             junit "junit_output.xml"
@@ -548,9 +548,9 @@ def withPhp(body) {
     clearTemplateNames()
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "php-" + uuid, containers: [
-        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "akeneo/apache-php:php-5.6", resourceRequestCpu: '500m', resourceRequestMemory: '1000Mi')
+        containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "akeneo/apache-php:php-5.6", resourceRequestCpu: '500m', resourceRequestMemory: '1000Mi', workingDir='/home/docker')
     ], annotations: [
-        podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins && chmod 777 /home/jenkins \"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
+        podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/docker && chmod 777 /home/docker \"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/docker\"}]}]")
     ]) {
         node("php-" + uuid) {
             container("php") {
