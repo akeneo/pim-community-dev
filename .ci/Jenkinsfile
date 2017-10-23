@@ -234,6 +234,7 @@ stage("Test") {
             "phpunit": {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
+                        input
                         sh "ls -al"
                         sh "cd /home/jenkins/pim"
                         try {                            
