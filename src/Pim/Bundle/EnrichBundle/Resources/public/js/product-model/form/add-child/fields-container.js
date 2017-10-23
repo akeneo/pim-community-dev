@@ -38,7 +38,7 @@ define(
              * {@inheritdoc}
              */
             initialize(meta) {
-                this.config = _.defaults(meta.config, {fieldModules: {}});
+                this.config = _.defaults(meta.config, {fieldModules: {}, codeFieldModule: null});
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -54,13 +54,30 @@ define(
 
                 $.when(
                     FetcherRegistry.getFetcher('family-variant').fetch(familyVariantCode),
-                    FetcherRegistry.getFetcher('product-model-by-code').fetch(parentCode)
-                ).then((familyVariant, parent) => {
-                    this.getAxesAttributes(familyVariant, parent.meta.level + 1)
+                    FetcherRegistry.getFetcher('product-model-by-code').fetch(parentCode),
+                    FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
+                ).then((familyVariant, parent, identifier) => {
+                    const currentLevel = parent.meta.level + 1;
+                    const numberOfLevels = familyVariant.variant_attribute_sets.length;
+
+                    this.getAxesAttributes(familyVariant, currentLevel)
                         .then((axesAttributes) => {
-                            return $.when.apply($, axesAttributes.map((attribute) => this.createField(attribute)));
+                            return $.when.apply($, axesAttributes.map(
+                                (attribute) => this.createAttributeField(attribute)
+                            ));
                         })
                         .then((...fields) => {
+                            if (currentLevel === numberOfLevels) {
+                                return this.createAttributeField(identifier).then(
+                                    (identifierField) => fields.concat(identifierField)
+                                );
+                            }
+
+                            return this.createProductModelCodeField().then(
+                                (codeField) => fields.concat(codeField)
+                            );
+                        })
+                        .then((fields) => {
                             let position = 100;
                             fields.forEach((field) => {
                                 this.addExtension(
@@ -106,7 +123,7 @@ define(
              *
              * @returns {Promise}
              */
-            createField(attribute) {
+            createAttributeField(attribute) {
                 const fieldModuleName = this.config.fieldModules[attribute.field_type];
 
                 if (undefined === fieldModuleName) {
@@ -127,9 +144,26 @@ define(
                             field.setMetricFamily(attribute.metric_family);
                         }
 
-                        return field.configure().then(() => {
-                            return field;
-                        });
+                        return field.configure().then(() => field);
+                    });
+            },
+
+            /**
+             * Instantiates a field view corresponding to the product model code.
+             *
+             * @returns {Promise}
+             */
+            createProductModelCodeField() {
+                return FormBuilder
+                    .getFormMeta(this.config.codeFieldModule)
+                    .then((formMeta) => {
+                        const newFormMeta = Object.assign({}, formMeta);
+                        newFormMeta.config.fieldName = 'code';
+
+                        return FormBuilder.buildForm(newFormMeta);
+                    })
+                    .then((field) => {
+                        return field.configure().then(() => field);
                     });
             }
         });

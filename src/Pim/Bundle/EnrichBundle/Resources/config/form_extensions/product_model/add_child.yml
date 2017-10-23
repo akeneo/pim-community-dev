@@ -19,21 +19,40 @@ extensions:
                 akeneo-switch-field: pim-product-model-add-child-field-switch
                 akeneo-simple-select-reference-data-field: pim-product-model-add-child-field-simple-select-reference-data
                 akeneo-multi-select-reference-data-field: pim-product-model-add-child-field-multi-select-reference-data
+                akeneo-text-field: pim-product-model-add-child-field-text
+            codeFieldModule: pim-product-model-add-child-field-text
 
     pim-product-model-add-child-field-simple-select:
         module: pim/form/common/fields/select
+        config:
+            required: true
 
     pim-product-model-add-child-field-multi-select:
         module: pim/form/common/fields/select
+        config:
+            required: true
 
     pim-product-model-add-child-field-metric:
         module: pim/form/common/fields/metric
+        config:
+            required: true
 
     pim-product-model-add-child-field-switch:
         module: pim/form/common/fields/boolean
+        config:
+            required: true
 
     pim-product-model-add-child-field-simple-select-reference-data:
         module: pim/form/common/fields/select
+        config:
+            required: true
 
     pim-product-model-add-child-field-multi-select-reference-data:
         module: pim/form/common/fields/select
+        config:
+            required: true
+
+    pim-product-model-add-child-field-text:
+        module: pim/form/common/fields/text
+        config:
+            required: true
