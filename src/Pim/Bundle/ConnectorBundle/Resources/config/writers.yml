@@ -229,6 +229,16 @@ services:
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - ['pim_catalog_file', 'pim_catalog_image']
 
+    pim_connector.writer.file.csv_product_model_quick_export:
+        class: '%pim_connector.writer.file.csv_product_model.class%'
+        arguments:
+            - '@pim_connector.array_converter.standard_to_flat.product_model_localized'
+            - '@pim_connector.factory.flat_item_buffer'
+            - '@pim_connector.writer.file.product_quick_export.flat_item_buffer_flusher'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_connector.writer.file.media_exporter_path_generator'
+            - ['pim_catalog_file', 'pim_catalog_image']
+
     pim_connector.writer.file.csv_category:
         class: '%pim_connector.writer.file.csv.class%'
         arguments:

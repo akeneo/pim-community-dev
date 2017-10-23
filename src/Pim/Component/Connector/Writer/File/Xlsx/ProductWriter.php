@@ -38,4 +38,14 @@ class ProductWriter extends AbstractItemMediaWriter implements
     {
         return $product['identifier'];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getFilePath()
+    {
+        $parameters = $this->stepExecution->getJobParameters();
+
+        return $parameters->get('filePathProduct');
+    }
 }

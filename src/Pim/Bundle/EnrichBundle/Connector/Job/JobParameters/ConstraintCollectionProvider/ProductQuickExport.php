@@ -4,8 +4,10 @@ namespace Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollecti
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
+use Pim\Component\Catalog\Validator\Constraints\WritableDirectory;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
@@ -40,6 +42,23 @@ class ProductQuickExport implements ConstraintCollectionProviderInterface
     {
         $baseConstraint = $this->simpleConstraint->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
+        $constraintFields['filePath'] = null;
+        $constraintFields['filePathProduct'] = [
+            new NotBlank(['groups' => ['Execution', 'FileConfiguration']]),
+            new WritableDirectory(['groups' => ['Execution', 'FileConfiguration']]),
+            new Regex([
+                'pattern' => '/.\.csv$/',
+                'message' => 'The extension file must be ".csv"'
+            ])
+        ];
+        $constraintFields['filePathProductModel'] = [
+            new NotBlank(['groups' => ['Execution', 'FileConfiguration']]),
+            new WritableDirectory(['groups' => ['Execution', 'FileConfiguration']]),
+            new Regex([
+                'pattern' => '/.\.csv$/',
+                'message' => 'The extension file must be ".csv"'
+            ])
+        ];
         $constraintFields['filters'] = [];
         $constraintFields['selected_properties'] = null;
         $constraintFields['with_media'] = new Type('bool');

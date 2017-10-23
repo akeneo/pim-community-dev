@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 
-use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -14,23 +13,18 @@ use Pim\Component\Catalog\Converter\MetricConverter;
 use Pim\Component\Catalog\Exception\ObjectNotFoundException;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 
 /**
- * Product reader that only returns product entities and skips product models.
+ * Product reader that only returns product model entities and skips simple products.
  *
- * TODO: To remove with PIM-6357 (mass actions on product models)
- *
- * TODO: This class only read "Products". Maybe it will be better to rename it.
- *
- * @author Samir Boulil <samir.boulil@akeneo.com>
+ * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilteredProductAndProductModelReader implements
+class FilteredProductModelReader implements
     ItemReaderInterface,
     InitializableInterface,
     StepExecutionAwareInterface
@@ -94,7 +88,7 @@ class FilteredProductAndProductModelReader implements
     /**
      * {@inheritdoc}
      */
-    public function read(): ?ProductInterface
+    public function read(): ?ProductModelInterface
     {
         $product = null;
         $product = $this->getNextProduct();
@@ -182,9 +176,9 @@ class FilteredProductAndProductModelReader implements
     /**
      * This reader makes sure we return only product entities.
      *
-     * @return null|ProductInterface
+     * @return null|ProductModelInterface
      */
-    private function getNextProduct(): ?ProductInterface
+    private function getNextProduct(): ?ProductModelInterface
     {
         $entity = null;
 
@@ -193,7 +187,7 @@ class FilteredProductAndProductModelReader implements
 
             $this->productsAndProductModels->next();
 
-            if ($entity instanceof ProductModelInterface) {
+            if (!$entity instanceof ProductModelInterface) {
                 if ($this->stepExecution) {
                     $this->stepExecution->incrementSummaryInfo('skip');
                 }

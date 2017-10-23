@@ -157,8 +157,7 @@ abstract class AbstractItemMediaWriter implements
      */
     public function getPath(array $placeholders = [])
     {
-        $parameters = $this->stepExecution->getJobParameters();
-        $filePath = $parameters->get('filePath');
+        $filePath = $this->getFilePath();
 
         if (false !== strpos($filePath, '%')) {
             $defaultPlaceholders = ['%datetime%' => date($this->datetimeFormat), '%job_label%' => ''];
@@ -343,5 +342,17 @@ abstract class AbstractItemMediaWriter implements
     protected function sanitize($value)
     {
         return preg_replace('#[^A-Za-z0-9\.]#', '_', $value);
+    }
+
+    /**
+     * Returns the file path to write
+     *
+     * @return string
+     */
+    protected function getFilePath()
+    {
+        $parameters = $this->stepExecution->getJobParameters();
+
+        return $parameters->get('filePath');
     }
 }
