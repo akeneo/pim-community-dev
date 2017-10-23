@@ -2,9 +2,6 @@
 Feature: Create a product model
   Background:
     Given a "catalog_modeling" catalog configuration
-    And the following families:
-      | code     |
-      | Hats     |
     And I am logged in as "Julia"
     And I am on the products grid
 
@@ -34,7 +31,27 @@ Feature: Create a product model
     And I should be on the product model "clothing_color_and_size" edit page
     And I should see the text "clothing_color_and_size"
 
-  # Scenario: Create a product model with single level variant and metric
+  Scenario: Create a product model with single level variant and metric
+    Given I create a product model
+    And the following attributes:
+      | code             | type               | group | metric_family | default_metric_unit | decimals_allowed | negative_allowed |
+      | display_diagonal | pim_catalog_metric | other | Length        | CENTIMETER          | 0                | 0                |
+    And the following families:
+      | code     | attributes             | label-en_US |
+      | led_tvs  | name,display_diagonal  | LED TVs     |
+    And the following family variants:
+     | code  | family  | variant-axes_1    | variant-attributes_1 | label-en_US |
+     | tv    | led_tvs | display_diagonal  | name                 | LED TV      |
+    And I should see the Code, Family and family_variant fields
+    And the field family_variant should be disabled
+    Given I fill in the following information in the popin:
+    | Code             | tv_display_diagonal |
+    | Choose a family  | LED TVs             |
+    | Choose a variant | LED TV              |
+    And I press the "Save" button
+    Then I should see the flash message "Product model successfully created"
+    And I should be on the product model "tv_display_diagonal" edit page
+    And I should see the text "tv_display_diagonal"
 
   Scenario: Create a product model with single variant and multiple axes
     Given I create a product model
@@ -51,6 +68,9 @@ Feature: Create a product model
 
   Scenario: Display only families with variants
     Given I create a product model
+    And the following families:
+      | code     |
+      | hats     |
     And I should see the Code, Family and family_variant fields
     And the field family_variant should be disabled
     Given I press the "Choose a family" button
