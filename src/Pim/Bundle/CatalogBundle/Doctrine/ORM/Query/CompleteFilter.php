@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\ProductModel\Query\CompletenessGridFilterInterface;
-use Pim\Component\Catalog\ProductModel\Query\NormalizedCompletenessGridFilterData;
+use Pim\Component\Catalog\ProductAndProductModel\Query\CompleteFilterData;
+use Pim\Component\Catalog\ProductAndProductModel\Query\CompleteFilterInterface;
 
 /**
  * Find data used by the datagrid completeness filter. We need to know if a product model has at least one
@@ -16,7 +16,7 @@ use Pim\Component\Catalog\ProductModel\Query\NormalizedCompletenessGridFilterDat
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CompletenessGridFilter implements CompletenessGridFilterInterface
+class CompleteFilter implements CompleteFilterInterface
 {
     /** @var EntityManagerInterface */
     private $entityManager;
@@ -32,7 +32,7 @@ class CompletenessGridFilter implements CompletenessGridFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function findNormalizedData(ProductModelInterface $productModel): NormalizedCompletenessGridFilterData
+    public function findCompleteFilterData(ProductModelInterface $productModel): CompleteFilterData
     {
         $select = <<<SELECT
 channel.code AS channel_code,
@@ -67,6 +67,6 @@ SELECT;
 
         $result = $queryBuilder->getQuery()->getArrayResult();
 
-        return new NormalizedCompletenessGridFilterData($result);
+        return new CompleteFilterData($result);
     }
 }

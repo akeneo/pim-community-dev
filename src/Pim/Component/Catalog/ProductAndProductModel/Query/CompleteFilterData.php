@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\ProductModel\Query;
+namespace Pim\Component\Catalog\ProductAndProductModel\Query;
 
 /**
  * Object that represents the data used by the completeness filter to filter the grid.
@@ -11,8 +11,23 @@ namespace Pim\Component\Catalog\ProductModel\Query;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NormalizedCompletenessGridFilterData
+class CompleteFilterData
 {
+    private const DATA_STRUCTURE_RULES = [
+        'channel_code' => FILTER_REQUIRE_SCALAR,
+        'locale_code' => FILTER_REQUIRE_SCALAR,
+        'complete' => [
+            'filter' => FILTER_VALIDATE_INT,
+            'flags'  => FILTER_REQUIRE_SCALAR,
+            'options' => ['min_range' => 0, 'max_range' => 1]
+        ],
+        'incomplete' => [
+            'filter' => FILTER_VALIDATE_INT,
+            'flags'  => FILTER_REQUIRE_SCALAR,
+            'options' => ['min_range' => 0, 'max_range' => 1]
+        ],
+    ];
+
     /** @var array */
     private $flatData;
 
@@ -21,6 +36,19 @@ class NormalizedCompletenessGridFilterData
      */
     public function __construct(array $flatData)
     {
+        foreach ($flatData as $row) {
+            $hasInvalidData = array_filter(
+                filter_var_array($row, self::DATA_STRUCTURE_RULES),
+                function ($item) {
+                    return false === $item || null === $item;
+                }
+            );
+
+            if (0 < count($hasInvalidData)) {
+                throw new \InvalidArgumentException('The provided data are not valid');
+            }
+        }
+
         $this->flatData = $flatData;
     }
 
@@ -29,7 +57,7 @@ class NormalizedCompletenessGridFilterData
      *    - 1 means that there is at least variant product complete
      *    - 0 means that all variant product are incomplete
      *
-     * This method will return an array loke that:
+     * This method will return an array like that:
      * [
      *      'ecommerce' => [
      *            'en_US => 1
@@ -65,7 +93,7 @@ class NormalizedCompletenessGridFilterData
      *    - 1 means that there is at least variant product incomplete
      *    - 0 means that all variant product are complete
      *
-     * This method will return an array loke that:
+     * This method will return an array like that:
      * [
      *      'ecommerce' => [
      *            'en_US => 1

@@ -1,6 +1,6 @@
 parameters:
     pim_catalog.doctrine.query.find_variant_product_completeness.class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\VariantProductRatio'
-    pim_catalog.doctrine.query.completeness_grid_filter.class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CompletenessGridFilter'
+    pim_catalog.doctrine.query.complete_filter.class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CompleteFilter'
 
 services:
     pim_catalog.doctrine.query.find_variant_product_completeness:
@@ -8,7 +8,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
 
-    pim_catalog.doctrine.query.completeness_grid_filter:
-        class: '%pim_catalog.doctrine.query.completeness_grid_filter.class%'
+    pim_catalog.doctrine.query.complete_filter:
+        class: '%pim_catalog.doctrine.query.complete_filter.class%'
         arguments:
             - '@doctrine.orm.entity_manager'

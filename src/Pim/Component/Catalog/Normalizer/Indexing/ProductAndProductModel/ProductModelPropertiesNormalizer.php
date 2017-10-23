@@ -6,7 +6,7 @@ namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
-use Pim\Component\Catalog\ProductModel\Query;
+use Pim\Component\Catalog\ProductAndProductModel\Query\CompleteFilterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
@@ -29,10 +29,10 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
     private const FIELD_AT_LEAST_COMPLETE = 'at_least_complete';
     private const FIELD_AT_LEAST_INCOMPLETE = 'at_least_incomplete';
 
-    /** @var Query\CompletenessGridFilterInterface */
+    /** @var CompleteFilterInterface */
     private $completenessGridFilterQuery;
 
-    public function __construct(Query\CompletenessGridFilterInterface $completenessGridFilterQuery)
+    public function __construct(CompleteFilterInterface $completenessGridFilterQuery)
     {
         $this->completenessGridFilterQuery = $completenessGridFilterQuery;
     }
@@ -83,7 +83,7 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
                 $context
             ) : [];
 
-        $normalizedData = $this->completenessGridFilterQuery->findNormalizedData($productModel);
+        $normalizedData = $this->completenessGridFilterQuery->findCompleteFilterData($productModel);
         $data[self::FIELD_AT_LEAST_COMPLETE] = $normalizedData->atLeastComplete();
         $data[self::FIELD_AT_LEAST_INCOMPLETE] = $normalizedData->atLeastIncomplete();
 

@@ -50,7 +50,7 @@ class CompletenessFilter
      * | simple_product    |  100%     |  75%   | 75 %  |  75%  |  100%  |  100%  |              -               |              -               |
      * +--------------------------------------------------------------------------+------------------------------+------------------------------+
      *
-     * To check that that numbers are right, here an SQL query:
+     * To check that that numbers are right, here is a SQL query:
      *
      * SELECT p.identifier, ch.code, lo.code, co.ratio
      * FROM pim_catalog_completeness AS co

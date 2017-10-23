@@ -44,7 +44,6 @@ class PimCatalogBundle extends Bundle
             ->addCompilerPass(new RegisterValueFactoryPass())
             ->addCompilerPass(new RegisterProductQueryFilterPass('product'))
             ->addCompilerPass(new RegisterProductQueryFilterPass('product_model'))
-            ->addCompilerPass(new RegisterProductQueryFilterPass('product_and_product_model'))
             ->addCompilerPass(new RegisterProductQuerySorterPass())
             ->addCompilerPass(new RegisterProductUpdaterPass())
             ->addCompilerPass(new RegisterFilterPass())

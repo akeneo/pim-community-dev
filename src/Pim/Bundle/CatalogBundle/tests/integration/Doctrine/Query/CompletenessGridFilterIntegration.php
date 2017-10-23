@@ -23,13 +23,13 @@ class CompletenessGridFilterIntegration extends TestCase
         sleep(5);
     }
 
-    public function testThatItFindsTheIncompleteVariantProductForARootProductModelWithOneLevel()
+    public function testThatItFindsCompleteFilterDataForARootProductModelWhichHaveTwoLevel()
     {
         $productModel = $this->get('pim_catalog.repository.product_model')
             ->findOneByIdentifier('root_product_model_two_level');
 
-        $result = $this->get('pim_catalog.doctrine.query.completeness_grid_filter')
-            ->findNormalizedData($productModel);
+        $result = $this->get('pim_catalog.doctrine.query.complete_filter')
+            ->findCompleteFilterData($productModel);
 
         $this->assertEquals(
             [
@@ -70,13 +70,13 @@ class CompletenessGridFilterIntegration extends TestCase
         );
     }
 
-    public function testThatItFindsTheIncompleteVariantProductForARootProductModelWithTwoLevel()
+    public function testThatItFindsCompleteFilterDataForASubProductModel()
     {
         $productModel = $this->get('pim_catalog.repository.product_model')
             ->findOneByIdentifier('sub_product_model');
 
-        $result = $this->get('pim_catalog.doctrine.query.completeness_grid_filter')
-            ->findNormalizedData($productModel);
+        $result = $this->get('pim_catalog.doctrine.query.complete_filter')
+            ->findCompleteFilterData($productModel);
 
         $this->assertEquals(
             [
@@ -117,13 +117,13 @@ class CompletenessGridFilterIntegration extends TestCase
         );
     }
 
-    public function testThatItFindsTheCompleteVariantProductForASubProductModel()
+    public function testThatItFindsCompleteFilterDataForARootProductModelWhichHaveOneLevel()
     {
         $productModel = $this->get('pim_catalog.repository.product_model')
             ->findOneByIdentifier('root_product_model_one_level');
 
-        $result = $this->get('pim_catalog.doctrine.query.completeness_grid_filter')
-            ->findNormalizedData($productModel);
+        $result = $this->get('pim_catalog.doctrine.query.complete_filter')
+            ->findCompleteFilterData($productModel);
 
         $this->assertEquals(
             [

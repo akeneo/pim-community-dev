@@ -9,8 +9,8 @@ use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
 
 /**
- * Filter in/complete product model and product depending their completeness. This filter mixes
- * CompletenessFilter and CompleteFilter to display result in the datagrid.
+ * Filter in/complete product model and product depending their completeness (variant product) or if it has at least
+ * one in/complete variant product (product model).
  *
  * The supported operator are:
  *   - AT_LEAST_COMPLETE
@@ -52,7 +52,7 @@ class CompletenessFilter extends AbstractFieldFilter implements FieldFilterInter
                 $productModelFilterField = sprintf('at_least_complete.%s.%s', $channel, $locale);
                 $this->searchQueryBuilder->addShould(
                     [
-                        ['term' => [$productFilterField=> 100]],
+                        ['term' => [$productFilterField => 100]],
                         ['term' => [$productModelFilterField => 1]],
                     ]
                 );

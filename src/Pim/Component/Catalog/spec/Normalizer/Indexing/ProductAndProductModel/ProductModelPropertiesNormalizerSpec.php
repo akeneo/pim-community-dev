@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
@@ -10,8 +9,8 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel\ProductModelPropertiesNormalizer;
-use Pim\Component\Catalog\ProductModel\Query\CompletenessGridFilterInterface;
-use Pim\Component\Catalog\ProductModel\Query\NormalizedCompletenessGridFilterData;
+use Pim\Component\Catalog\ProductAndProductModel\Query\CompleteFilterData;
+use Pim\Component\Catalog\ProductAndProductModel\Query\CompleteFilterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -19,8 +18,8 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 {
     function let(
         SerializerInterface $serializer,
-        CompletenessGridFilterInterface $completenessGridFilter,
-        NormalizedCompletenessGridFilterData $completenessGridFilterData
+        CompleteFilterInterface $completenessGridFilter,
+        CompleteFilterData $completenessGridFilterData
     ) {
         $this->beConstructedWith($completenessGridFilter);
 
@@ -97,7 +96,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
 
         $productValueCollection->isEmpty()->willReturn(true);
 
-        $completenessGridFilter->findNormalizedData($productModel)->willReturn($completenessGridFilterData);
+        $completenessGridFilter->findCompleteFilterData($productModel)->willReturn($completenessGridFilterData);
 
         $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
@@ -182,7 +181,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                 ]
             );
 
-        $completenessGridFilter->findNormalizedData($productModel)->willReturn($completenessGridFilterData);
+        $completenessGridFilter->findCompleteFilterData($productModel)->willReturn($completenessGridFilterData);
 
         $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [
@@ -290,7 +289,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                 ]
             );
 
-        $completenessGridFilter->findNormalizedData($productModel)->willReturn($completenessGridFilterData);
+        $completenessGridFilter->findCompleteFilterData($productModel)->willReturn($completenessGridFilterData);
 
         $this->normalize($productModel, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)->shouldReturn(
             [

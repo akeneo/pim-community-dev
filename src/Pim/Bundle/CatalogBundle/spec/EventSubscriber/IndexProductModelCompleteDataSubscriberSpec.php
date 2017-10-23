@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Akeneo\Component\StorageUtils\Indexer\IndexerInterface;
 use Akeneo\Component\StorageUtils\StorageEvents;
-use Pim\Bundle\CatalogBundle\EventSubscriber\ProductSubscriber;
+use Pim\Bundle\CatalogBundle\EventSubscriber\IndexProductModelCompleteDataSubscriber;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
@@ -12,7 +12,7 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class ProductSubscriberSpec extends ObjectBehavior
+class IndexProductModelCompleteDataSubscriberSpec extends ObjectBehavior
 {
     function let(IndexerInterface $productModelIndexer)
     {
@@ -21,7 +21,7 @@ class ProductSubscriberSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(ProductSubscriber::class);
+        $this->shouldHaveType(IndexProductModelCompleteDataSubscriber::class);
     }
 
     function it_is_a_subscriber()
@@ -29,7 +29,7 @@ class ProductSubscriberSpec extends ObjectBehavior
         $this->shouldImplement(EventSubscriberInterface::class);
     }
 
-    function it_subscribes_to_pre_save_event()
+    function it_subscribes_to_post_save_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
             StorageEvents::POST_SAVE => 'computeNumberOfCompleteVariantProduct'

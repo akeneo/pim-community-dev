@@ -1,17 +1,16 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\ProductModel\Query;
+namespace spec\Pim\Component\Catalog\ProductAndProductModel\Query;
 
-use Pim\Component\Catalog\ProductModel\Query\NormalizedCompletenessGridFilterData;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Pim\Component\Catalog\ProductAndProductModel\Query\CompleteFilterData;
 
-class NormalizedCompletenessGridFilterDataSpec extends ObjectBehavior
+class CompleteFilterDataSpec extends ObjectBehavior
 {
     function let()
     {
         $this->beConstructedWith([
-            ['channel_code' => 'ecommerce', 'locale_code' => 'en_US',  'complete' => "0", 'incomplete' => "1"],
+            ['channel_code' => 'ecommerce', 'locale_code' => 'en_US', 'complete' => "0", 'incomplete' => "1"],
             ['channel_code' => 'print', 'locale_code' => 'en_US', 'complete' => "0", 'incomplete' => "1"],
             ['channel_code' => 'print', 'locale_code' => 'fr_FR', 'complete' => "1", 'incomplete' => "0"],
             ['channel_code' => 'tablet', 'locale_code' => 'en_US', 'complete' => "0", 'incomplete' => "1"],
@@ -20,9 +19,38 @@ class NormalizedCompletenessGridFilterDataSpec extends ObjectBehavior
         ]);
     }
 
+    function it_throws_an_exception_if_the_locale_is_invalid()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during(
+            '__construct',
+            [[['channel_code' => 'ecommerce', 'complete' => "0", 'incomplete' => "0"]]]
+        );
+    }
+    function it_throws_an_exception_if_the_channel_is_invalid()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during(
+            '__construct',
+            [[['locale_code' => 'en_US', 'complete' => "0", 'incomplete' => "0"]]]
+        );
+    }
+    function it_throws_an_exception_if_complete_is_invalid()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during(
+            '__construct',
+            [[['channel_code' => 'ecommerce', 'locale_code' => 'en_US', 'complete' => "0", 'incomplete' => "11"]]]
+        );
+    }
+    function it_throws_an_exception_if_incomplete_is_invalid()
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during(
+            '__construct',
+            [[['channel_code' => 'ecommerce', 'locale_code' => 'en_US', 'complete' => "0", 'incomplete' => "11"]]]
+        );
+    }
+
     function it_is_initializable()
     {
-        $this->shouldHaveType(NormalizedCompletenessGridFilterData::class);
+        $this->shouldHaveType(CompleteFilterData::class);
     }
 
     function it_has_complete_variant_product()

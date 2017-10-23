@@ -21,7 +21,7 @@ class CompletenessFilter extends BooleanFilter
      */
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
-        $data = $this->parseData($data); // marche pas!
+        $data = $this->parseData($data);
         if (!$data) {
             return false;
         }

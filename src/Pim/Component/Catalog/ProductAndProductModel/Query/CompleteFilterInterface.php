@@ -1,7 +1,6 @@
 <?php
 
-
-namespace Pim\Component\Catalog\ProductModel\Query;
+namespace Pim\Component\Catalog\ProductAndProductModel\Query;
 
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
@@ -13,12 +12,12 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface CompletenessGridFilterInterface
+interface CompleteFilterInterface
 {
     /**
      * @param ProductModelInterface $productModel
      *
-     * @return NormalizedCompletenessGridFilterData
+     * @return CompleteFilterData
      */
-    public function findNormalizedData(ProductModelInterface $productModel): NormalizedCompletenessGridFilterData;
+    public function findCompleteFilterData(ProductModelInterface $productModel): CompleteFilterData;
 }
