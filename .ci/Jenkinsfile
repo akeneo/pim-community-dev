@@ -100,11 +100,6 @@ stage("Build") {
                         sh "cp vendor/akeneo/pim-community-dev/Dockerfile ."
                         sh "cp -R vendor/akeneo/pim-community-dev/.ci ."
                         sh "cp behat.ci.yml behat.yml"
-//                        sh "sed -i '/features:/d' behat.yml"
-//                        sh "sed -i         '/paths:/a\\ \\ \\ \\ \\ \\ \\ \\ features:\' behat.yml"
-//                        for (feature in features) {
-//                            sh "sed -i \"/features:/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
-//                        }
 			            sh "sed -i \"/extensions:/a\\ \\ \\ \\ \\ \\ \\ \\ Liuggio\\\\\\\\Fastest\\\\\\\\Behat2\\\\\\\\ListFeaturesExtension\\\\\\\\Extension: ~\" behat.yml"
                         sh "sed -i \"s#http://akeneo#http://127.0.0.1#g\" behat.yml"
                         sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.yml"
@@ -151,11 +146,6 @@ stage("Build") {
                         sh "sed -i \"s@# mongodb_server: .*@mongodb_server: 'mongodb://127.0.0.1:27017'@g\" app/config/pim_parameters.yml"
                         sh "printf \"    pim_catalog_product_storage_driver: doctrine/mongodb-odm\n\" >> app/config/parameters_test.yml"
                         sh "cp behat.ci.yml behat.yml"
-        //                sh "sed -i '/features:/d' behat.yml"
-        //                sh "sed -i         '/paths:/a\\ \\ \\ \\ \\ \\ \\ \\ features:\' behat.yml"
-        //                for (feature in features) {
-        //                    sh "sed -i \"/features:/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
-        //                }
                         sh "sed -i \"/extensions:/a\\ \\ \\ \\ \\ \\ \\ \\ Liuggio\\\\\\\\Fastest\\\\\\\\Behat2\\\\\\\\ListFeaturesExtension\\\\\\\\Extension: ~\" behat.yml"
                         sh "sed -i \"s#http://akeneo#http://127.0.0.1#g\" behat.yml"
                         sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.yml"
@@ -198,11 +188,6 @@ stage("Build") {
                         sh "cp vendor/akeneo/pim-community-dev/Dockerfile ."
                         sh "cp -R vendor/akeneo/pim-community-dev/.ci ."
                         sh "cp behat.ci.yml behat.yml"
-        //                sh "sed -i '/features:/d' behat.yml"
-        //                sh "sed -i         '/paths:/a\\ \\ \\ \\ \\ \\ \\ \\ features:\' behat.yml"
-        //                for (feature in features) {
-        //                    sh "sed -i \"/features:/a\\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ \\ -\\ ${feature}\" behat.yml"
-        //                }
                         sh "sed -i \"/extensions:/a\\ \\ \\ \\ \\ \\ \\ \\ Liuggio\\\\\\\\Fastest\\\\\\\\Behat2\\\\\\\\ListFeaturesExtension\\\\\\\\Extension: ~\" behat.yml"
                         sh "sed -i \"s#http://akeneo#http://127.0.0.1#g\" behat.yml"
                         sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.yml"
@@ -345,7 +330,7 @@ stage("Test") {
                     queue({
                         def scenariosCE = []
                         for (feature in features) {
-                            scenariosCE = (scenariosCE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -d $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
+                            scenariosCE = (scenariosCE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -d $feature ]; then path=$(dirname $feature) ;php ./bin/behat $feature --list-scenarios | \"\$path\$(cat -)\"; fi").tokenize('\n'))
                         }
                         scenariosCE = scenariosCE.unique()   
                         def messagesCE = new net.sf.json.JSONArray()
