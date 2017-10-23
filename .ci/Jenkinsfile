@@ -228,6 +228,7 @@ stage("Build") {
 
 stage("Test") {
     try {
+        milestone 3
         parallel(
 
             "phpunit": {
