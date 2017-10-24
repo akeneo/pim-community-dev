@@ -23,7 +23,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/products-quick-export.csv
+            filePathProduct:      /tmp/products-quick-export.csv
+            filePathProductModel: /tmp/product-models-quick-export.csv
     apparel_asset_channel_configuration_import:
         connector: Akeneo Product Asset Connector
         alias:     yml_asset_channel_configuration_import
