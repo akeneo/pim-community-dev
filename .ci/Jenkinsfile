@@ -43,6 +43,7 @@ stage("Build") {
                         sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                         sh "app/console oro:requirejs:generate-config"
                         sh "app/console assets:install"
+                        sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"                        
                         sh "app/console --env=behat oro:translation:dump en_US"
                         sh "app/console --env=behat oro:translation:dump en_GB"
                         sh "app/console --env=behat oro:translation:dump fr_FR"
@@ -56,7 +57,6 @@ stage("Build") {
                         sh "cp behat.ci.yml behat.yml"
                         sh "cat behat.yml"
 
-                        sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
                         sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
                         sh "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"
                         sh "sed \"\$a    installer_data: 'PimInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
@@ -94,6 +94,7 @@ stage("Build") {
 
                         sh "app/console oro:requirejs:generate-config"
                         sh "app/console assets:install"
+                        sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"                        
                         sh "app/console --env=behat oro:translation:dump en_US"
                         sh "app/console --env=behat oro:translation:dump en_GB"
                         sh "app/console --env=behat oro:translation:dump fr_FR"
@@ -113,7 +114,6 @@ stage("Build") {
                         sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.yml"
                         sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.yml"
                         sh "cat behat.yml"
-                        sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
                         sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
                         sh "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"
                         sh "sed \"\$a    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
@@ -139,6 +139,7 @@ stage("Build") {
                         sh "composer update --optimize-autoloader --no-interaction --no-progress --prefer-dist"
                         sh "app/console oro:requirejs:generate-config"
                         sh "app/console assets:install"
+                        sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"                        
                         sh "app/console --env=behat oro:translation:dump en_US"
                         sh "app/console --env=behat oro:translation:dump en_GB"
                         sh "app/console --env=behat oro:translation:dump fr_FR"
@@ -149,7 +150,6 @@ stage("Build") {
                         sh "npm install --color=always"
                     }
                     container("docker") {
-                        sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
                         sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
                         sh "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"
                         sh "sed \"\$a    installer_data: 'PimInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
@@ -191,6 +191,7 @@ stage("Build") {
                         }
                         sh "app/console oro:requirejs:generate-config"
                         sh "app/console assets:install"
+                        sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
                         sh "app/console --env=behat oro:translation:dump en_US"
                         sh "app/console --env=behat oro:translation:dump en_GB"
                         sh "app/console --env=behat oro:translation:dump fr_FR"
@@ -210,7 +211,6 @@ stage("Build") {
                         sh "sed -i \"s#http://selenium#http://127.0.0.1#g\" behat.yml"
                         sh "cat behat.yml"
 
-                        sh "cp app/config/parameters_test.yml.dist app/config/parameters_test.yml"
                         sh "sed -i \"s#database_host: .*#database_host: 127.0.0.1#g\" app/config/parameters_test.yml"
                         sh "sed -i \"s#index_hosts: .*#index_hosts: 'elastic:changeme@127.0.0.1:9200'#g\" app/config/parameters_test.yml"
                         sh "sed \"\$a    installer_data: 'PimEnterpriseInstallerBundle:minimal'\n\" app/config/parameters_test.yml"
