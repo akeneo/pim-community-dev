@@ -10,7 +10,6 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -21,7 +20,8 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Product processor to process and normalize entities to the standard format
+ * Product and Product Model processor to process and normalize entities to the standard format.
+ * This class is only used for Quick Export feature.
  *
  * This processor doesn't use the channel in configuration field but from job configuration
  *
@@ -29,7 +29,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductProcessor extends AbstractProcessor
+class ProductAndProductModelProcessor extends AbstractProcessor
 {
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -111,10 +111,11 @@ class ProductProcessor extends AbstractProcessor
             $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
                 ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
 
-            if ($product instanceof ProductInterface) {
-                $this->fetchMedia($product, $directory);
-            } else {
-                $this->fetchMediaProductModel($product, $directory);
+            $identifier = ($product instanceof ProductInterface) ? $product->getIdentifier() : $product->getCode();
+            $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
+
+            foreach ($this->mediaFetcher->getErrors() as $error) {
+                $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
             }
         }
 
@@ -163,36 +164,14 @@ class ProductProcessor extends AbstractProcessor
     }
 
     /**
-     * Fetch medias on the local filesystem
+     * Fetch product media on the local filesystem
      *
      * @param ProductInterface $product
      * @param string           $directory
      */
-    protected function fetchMedia(ProductInterface $product, $directory)
-    {
-        $identifier = $product->getIdentifier();
-        $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
-
-        foreach ($this->mediaFetcher->getErrors() as $error) {
-            $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
-        }
-    }
-
-    /**
-     * Fetch medias on the local filesystem
-     *
-     * @param ProductModelInterface $productModel
-     * @param string                $directory
-     */
-    protected function fetchMediaProductModel(ProductModelInterface $productModel, $directory)
+    protected function fetchMedia(ProductInterface $product, string $directory): void
     {
 
-        $identifier = $productModel->getCode();
-        $this->mediaFetcher->fetchAll($productModel->getValues(), $directory, $identifier);
-
-        foreach ($this->mediaFetcher->getErrors() as $error) {
-            $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
-        }
     }
 
     /**

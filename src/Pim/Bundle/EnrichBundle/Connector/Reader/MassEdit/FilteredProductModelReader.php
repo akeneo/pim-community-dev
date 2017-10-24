@@ -35,14 +35,8 @@ class FilteredProductModelReader implements
     /** @var ChannelRepositoryInterface */
     private $channelRepository;
 
-    /** @var CompletenessManager */
-    private $completenessManager;
-
     /** @var MetricConverter */
     private $metricConverter;
-
-    /** @var bool */
-    private $generateCompleteness;
 
     /** @var StepExecution */
     private $stepExecution;
@@ -53,22 +47,16 @@ class FilteredProductModelReader implements
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param ChannelRepositoryInterface          $channelRepository
-     * @param CompletenessManager                 $completenessManager
      * @param MetricConverter                     $metricConverter
-     * @param bool                                $generateCompleteness
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager,
-        MetricConverter $metricConverter,
-        $generateCompleteness
+        MetricConverter $metricConverter
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->channelRepository = $channelRepository;
-        $this->completenessManager = $completenessManager;
         $this->metricConverter = $metricConverter;
-        $this->generateCompleteness = (bool) $generateCompleteness;
     }
 
     /**
@@ -77,12 +65,8 @@ class FilteredProductModelReader implements
     public function initialize(): void
     {
         $channel = $this->getConfiguredChannel();
-        if (null !== $channel && $this->generateCompleteness) {
-            $this->completenessManager->generateMissingForChannel($channel);
-        }
-
         $filters = $this->getConfiguredFilters();
-        $this->productsAndProductModels = $this->getProductsCursor($filters, $channel);
+        $this->productsAndProductModels = $this->getProductModelsCursor($filters, $channel);
     }
 
     /**
@@ -90,17 +74,15 @@ class FilteredProductModelReader implements
      */
     public function read(): ?ProductModelInterface
     {
-        $product = null;
-        $product = $this->getNextProduct();
+        $productModel = null;
+        $productModel = $this->getNextProductModel();
 
-        if (null !== $product) {
+        if (null !== $productModel) {
             $channel = $this->getConfiguredChannel();
-            if (null !== $channel) {
-                $this->metricConverter->convert($product, $channel);
-            }
+            $this->metricConverter->convert($productModel, $channel);
         }
 
-        return $product;
+        return $productModel;
     }
 
     /**
@@ -113,19 +95,14 @@ class FilteredProductModelReader implements
 
     /**
      * Returns the configured channel from the parameters.
-     * If no channel is specified, returns null.
      *
      * @throws ObjectNotFoundException
      *
-     * @return ChannelInterface|null
+     * @return ChannelInterface
      */
-    private function getConfiguredChannel(): ?ChannelInterface
+    private function getConfiguredChannel(): ChannelInterface
     {
         $parameters = $this->stepExecution->getJobParameters();
-        if (!isset($parameters->get('filters')['structure']['scope'])) {
-            return null;
-        }
-
         $channelCode = $parameters->get('filters')['structure']['scope'];
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         if (null === $channel) {
@@ -160,25 +137,24 @@ class FilteredProductModelReader implements
      *
      * @return CursorInterface
      */
-    private function getProductsCursor(array $filters, ChannelInterface $channel = null): CursorInterface
+    private function getProductModelsCursor(array $filters, ChannelInterface $channel = null): CursorInterface
     {
         $options = ['filters' => $filters];
-
         if (null !== $channel) {
             $options['default_scope'] = $channel->getCode();
         }
 
-        $productQueryBuilder = $this->pqbFactory->create($options);
+        $productModelQueryBuilder = $this->pqbFactory->create($options);
 
-        return $productQueryBuilder->execute();
+        return $productModelQueryBuilder->execute();
     }
 
     /**
-     * This reader makes sure we return only product entities.
+     * This reader makes sure we return only product model entities.
      *
      * @return null|ProductModelInterface
      */
-    private function getNextProduct(): ?ProductModelInterface
+    private function getNextProductModel(): ?ProductModelInterface
     {
         $entity = null;
 
@@ -197,8 +173,6 @@ class FilteredProductModelReader implements
             }
 
             $this->stepExecution->incrementSummaryInfo('read');
-
-            break;
         }
 
         return $entity;

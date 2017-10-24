@@ -20,14 +20,16 @@ class ExportProfilesContext extends ImportExportContext
      * @param string       $code
      * @param PyStringNode $csv
      *
-     * @Then /^exported file (\d+ )?of "([^"]*)" should contain:$/
+     * @Then /^(first |second )?exported file of "([^"]*)" should contain:$/
      *
      * @throws ExpectationException
      * @throws \Exception
      */
     public function exportedFileOfShouldContain($number = null, $code, PyStringNode $csv)
     {
-        $number = null !== $number ? intval($number) : null;
+        if (null !== $number) {
+            $number = 'first ' === $number ? 1 : 2;
+        }
         $this->spin(function () use ($code, $csv, $number) {
             $path = $this->getExportedFile($code, $number);
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 
-use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -22,15 +21,11 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 /**
  * Product reader that only returns product entities and skips product models.
  *
- * TODO: To remove with PIM-6357 (mass actions on product models)
- *
- * TODO: This class only read "Products". Maybe it will be better to rename it.
- *
- * @author Samir Boulil <samir.boulil@akeneo.com>
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilteredProductAndProductModelReader implements
+class FilteredProductReader implements
     ItemReaderInterface,
     InitializableInterface,
     StepExecutionAwareInterface

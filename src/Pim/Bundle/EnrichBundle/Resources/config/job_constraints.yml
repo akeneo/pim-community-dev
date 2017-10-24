@@ -1,6 +1,6 @@
 parameters:
     pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_mass_edit.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductMassEdit
-    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_quick_export.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductQuickExport
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_and_product_model_quick_export.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelQuickExport
     pim_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleMassEdit
 
 services:
@@ -15,8 +15,8 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
-    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_csv_quick_export:
-        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_quick_export.class%'
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_and_product_model_csv_quick_export:
+        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_and_product_model_quick_export.class%'
         arguments:
             - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_csv_export'
             -
@@ -25,8 +25,8 @@ services:
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
 
-    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_xlsx_quick_export:
-        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_quick_export.class%'
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_and_product_model_xlsx_quick_export:
+        class: '%pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_and_product_model_quick_export.class%'
         arguments:
             - '@pim_connector.job.job_parameters.constraint_collection_provider.simple_xlsx_export'
             -
