@@ -1,11 +1,13 @@
 'use strict';
 
 define([
+        'jquery',
         'pim/controller/form',
         'pim/security-context',
         'pim/form-config-provider',
         'pim/router'
     ], function (
+        $,
         FormController,
         securityContext,
         configProvider,

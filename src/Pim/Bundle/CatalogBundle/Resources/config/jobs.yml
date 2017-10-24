@@ -1,10 +1,16 @@
 parameters:
     pim_catalog.tasklet.compute_product_models_descendants.class: Pim\Component\Catalog\Job\ComputeProductModelsDescendantsTasklet
+    pim_catalog.tasklet.compute_completeness_of_products_family.class: Pim\Component\Catalog\Job\ComputeCompletenessOfProductsFamilyTasklet
 
     pim_catalog.compute_product_models_descendants.job_type: 'compute_product_models_descendants'
     pim_catalog.compute_product_models_descendants.job_name: 'compute_product_models_descendants'
     pim_catalog.compute_product_models_descendants.tasklet_name: 'compute_product_models_descendants'
     pim_catalog.compute_descendants.connector_name: 'compute descendants completeness'
+
+    pim_catalog.compute_completeness_of_products_family.job_type: 'compute_completeness_of_products_family'
+    pim_catalog.compute_completeness_of_products_family.job_name: 'compute_completeness_of_products_family'
+    pim_catalog.compute_completeness_of_products_family.tasklet_name: 'compute_completeness_of_products_family'
+    pim_catalog.compute_completeness_of_products_family.connector_name: 'compute completeness of products family'
 
 services:
     pim_catalog.tasklet.compute_product_models_descendants:
@@ -14,6 +20,15 @@ services:
             - '@pim_catalog.saver.product_model_descendants'
         public: false
 
+    pim_catalog.tasklet.compute_completeness_of_products_family:
+        class: '%pim_catalog.tasklet.compute_completeness_of_products_family.class%'
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.saver.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+        public: false
+
     pim_catalog.step.compute_product_models_descendants:
         class: '%pim_connector.step.tasklet.class%'
         arguments:
@@ -21,6 +36,15 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_catalog.tasklet.compute_product_models_descendants'
+        public: false
+
+    pim_catalog.step.compute_completeness_of_products_family:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - '%pim_catalog.compute_completeness_of_products_family.tasklet_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_catalog.tasklet.compute_completeness_of_products_family'
         public: false
 
     pim_catalog.job.compute_product_models_descendants:
@@ -37,3 +61,18 @@ services:
                 name: akeneo_batch.job
                 connector: '%pim_catalog.compute_descendants.connector_name%'
                 type: '%pim_catalog.compute_product_models_descendants.job_type%'
+
+    pim_catalog.job.compute_completeness_of_products_family:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_catalog.compute_completeness_of_products_family.job_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_catalog.step.compute_completeness_of_products_family'
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: '%pim_catalog.compute_completeness_of_products_family.connector_name%'
+                type: '%pim_catalog.compute_completeness_of_products_family.job_type%'
