@@ -488,7 +488,7 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-    public function testTOTO()
+    public function testCreateASubProductModelOfASubProductModelWithNoValuesAndInvalidFamilyVariant()
     {
         $this->createProductModel(
             [
