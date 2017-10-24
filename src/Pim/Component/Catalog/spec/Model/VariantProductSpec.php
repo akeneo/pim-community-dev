@@ -11,9 +11,11 @@ use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 
 class VariantProductSpec extends ObjectBehavior
 {
@@ -195,5 +197,10 @@ class VariantProductSpec extends ObjectBehavior
             'value-<all_channels>-<all_locales>' => $value,
             'otherValue-<all_channels>-<all_locales>' => $otherValue
         ]);
+    }
+
+    public function it_creates_a_variant_product_from_a_product(ProductInterface $product)
+    {
+        $this->fromProduct($product)->shouldReturnAnInstanceOf(VariantProductInterface::class);
     }
 }

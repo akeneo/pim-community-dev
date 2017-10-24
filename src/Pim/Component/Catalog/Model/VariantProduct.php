@@ -23,6 +23,21 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
     protected $familyVariant;
 
     /**
+     * @param ProductInterface $product
+     *
+     * @return VariantProductInterface
+     */
+    public static function fromProduct(ProductInterface $product)
+    {
+        $variantProduct = new self();
+
+        $variantProduct->setId($product->getId());
+
+
+        return $variantProduct;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getParent(): ?ProductModelInterface

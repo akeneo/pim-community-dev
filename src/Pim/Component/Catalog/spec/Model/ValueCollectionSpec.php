@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Model;
 
+use function foo\func;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -9,6 +10,7 @@ use Pim\Component\Catalog\Model\ValueCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Prophecy\Argument;
 
 class ValueCollectionSpec extends ObjectBehavior
 {
@@ -73,8 +75,11 @@ class ValueCollectionSpec extends ObjectBehavior
         $this->shouldHaveType(ValueCollection::class);
     }
 
-    function it_creates_a_collection_from_another(ValueCollectionInterface $collection, ValueInterface $value, AttributeInterface $attribute)
-    {
+    function it_creates_a_collection_from_another(
+        ValueCollectionInterface $collection,
+        ValueInterface $value,
+        AttributeInterface $attribute
+    ) {
         $attribute->getCode()->willReturn('weight');
         $attribute->isUnique()->willReturn(false);
 
@@ -90,14 +95,16 @@ class ValueCollectionSpec extends ObjectBehavior
 
     function it_convert_the_collection_to_an_array($value1, $value2, $value3, $value4, $value5, $value6)
     {
-        $this->toArray()->shouldReturn([
-            'length-<all_channels>-<all_locales>' => $value1,
-            'price-<all_channels>-<all_locales>' => $value2,
-            'description-ecommerce-en_US' => $value3,
-            'description-ecommerce-fr_FR' => $value4,
-            'description-print-en_US' => $value5,
-            'release_date-<all_channels>-<all_locales>' => $value6,
-        ]);
+        $this->toArray()->shouldReturn(
+            [
+                'length-<all_channels>-<all_locales>'       => $value1,
+                'price-<all_channels>-<all_locales>'        => $value2,
+                'description-ecommerce-en_US'               => $value3,
+                'description-ecommerce-fr_FR'               => $value4,
+                'description-print-en_US'                   => $value5,
+                'release_date-<all_channels>-<all_locales>' => $value6,
+            ]
+        );
     }
 
     function it_returns_the_first_value($value1)
@@ -125,64 +132,96 @@ class ValueCollectionSpec extends ObjectBehavior
         $this->current()->shouldReturn($value1);
     }
 
-    function it_removes_a_value_by_a_key_and_deletes_indexed_attribute($value1, $value2, $value3, $value4, $value5, $value6)
-    {
+    function it_removes_a_value_by_a_key_and_deletes_indexed_attribute(
+        $value1,
+        $value2,
+        $value3,
+        $value4,
+        $value5,
+        $value6
+    ) {
         $this->removeKey('length-<all_channels>-<all_locales>')->shouldReturn($value1);
 
-        $this->toArray()->shouldReturn([
-            'price-<all_channels>-<all_locales>' => $value2,
-            'description-ecommerce-en_US' => $value3,
-            'description-ecommerce-fr_FR' => $value4,
-            'description-print-en_US' => $value5,
-            'release_date-<all_channels>-<all_locales>' => $value6,
-        ]);
+        $this->toArray()->shouldReturn(
+            [
+                'price-<all_channels>-<all_locales>'        => $value2,
+                'description-ecommerce-en_US'               => $value3,
+                'description-ecommerce-fr_FR'               => $value4,
+                'description-print-en_US'                   => $value5,
+                'release_date-<all_channels>-<all_locales>' => $value6,
+            ]
+        );
 
         $this->getAttributesKeys()->shouldReturn(['price', 'description', 'release_date']);
         $this->getUniqueValues()->shouldReturn(['release_date-<all_channels>-<all_locales>' => $value6]);
     }
 
-    function it_removes_a_unique_value_by_a_key_and_deletes_indexed_attribute($value1, $value2, $value3, $value4, $value5, $value6)
-    {
+    function it_removes_a_unique_value_by_a_key_and_deletes_indexed_attribute(
+        $value1,
+        $value2,
+        $value3,
+        $value4,
+        $value5,
+        $value6
+    ) {
         $this->removeKey('release_date-<all_channels>-<all_locales>')->shouldReturn($value6);
 
-        $this->toArray()->shouldReturn([
-            'length-<all_channels>-<all_locales>' => $value1,
-            'price-<all_channels>-<all_locales>' => $value2,
-            'description-ecommerce-en_US' => $value3,
-            'description-ecommerce-fr_FR' => $value4,
-            'description-print-en_US' => $value5,
-        ]);
+        $this->toArray()->shouldReturn(
+            [
+                'length-<all_channels>-<all_locales>' => $value1,
+                'price-<all_channels>-<all_locales>'  => $value2,
+                'description-ecommerce-en_US'         => $value3,
+                'description-ecommerce-fr_FR'         => $value4,
+                'description-print-en_US'             => $value5,
+            ]
+        );
 
         $this->getAttributesKeys()->shouldReturn(['length', 'price', 'description']);
         $this->getUniqueValues()->shouldReturn([]);
     }
 
-    function it_removes_a_value_by_a_key_and_keeps_indexed_attribute($value1, $value2, $value3, $value4, $value5, $value6)
-    {
+    function it_removes_a_value_by_a_key_and_keeps_indexed_attribute(
+        $value1,
+        $value2,
+        $value3,
+        $value4,
+        $value5,
+        $value6
+    ) {
         $this->removeKey('description-ecommerce-en_US')->shouldReturn($value3);
 
-        $this->toArray()->shouldReturn([
-            'length-<all_channels>-<all_locales>' => $value1,
-            'price-<all_channels>-<all_locales>' => $value2,
-            'description-ecommerce-fr_FR' => $value4,
-            'description-print-en_US' => $value5,
-            'release_date-<all_channels>-<all_locales>' => $value6,
-        ]);
+        $this->toArray()->shouldReturn(
+            [
+                'length-<all_channels>-<all_locales>'       => $value1,
+                'price-<all_channels>-<all_locales>'        => $value2,
+                'description-ecommerce-fr_FR'               => $value4,
+                'description-print-en_US'                   => $value5,
+                'release_date-<all_channels>-<all_locales>' => $value6,
+            ]
+        );
 
         $this->getAttributesKeys()->shouldReturn(['length', 'price', 'description', 'release_date']);
     }
 
-    function it_removes_a_unique_value_by_a_key_and_keeps_indexed_attribute($value1, $value2, $value3, $value4, $value5, $value6)
-    {
+    function it_removes_a_unique_value_by_a_key_and_keeps_indexed_attribute(
+        $value1,
+        $value2,
+        $value3,
+        $value4,
+        $value5,
+        $value6
+    ) {
         $this->removeKey('release_date-<all_channels>-<all_locales>')->shouldReturn($value6);
 
-        $this->toArray()->shouldReturn([
-            'length-<all_channels>-<all_locales>' => $value1,
-            'price-<all_channels>-<all_locales>' => $value2,
-            'description-ecommerce-en_US' => $value3,
-            'description-ecommerce-fr_FR' => $value4,
-            'description-print-en_US' => $value5,
-        ]);
+        $this->toArray()->shouldReturn(
+            [
+                'length-<all_channels>-<all_locales>' => $value1,
+                'price-<all_channels>-<all_locales>'  => $value2,
+                'description-ecommerce-en_US'         => $value3,
+                'description-ecommerce-fr_FR'         => $value4,
+                'description-print-en_US'             => $value5,
+            ]
+        );
 
         $this->getAttributesKeys()->shouldReturn(['length', 'price', 'description']);
         $this->getUniqueValues()->shouldReturn([]);
@@ -192,14 +231,16 @@ class ValueCollectionSpec extends ObjectBehavior
     {
         $this->removeKey('foo')->shouldReturn(null);
 
-        $this->toArray()->shouldReturn([
-            'length-<all_channels>-<all_locales>' => $value1,
-            'price-<all_channels>-<all_locales>' => $value2,
-            'description-ecommerce-en_US' => $value3,
-            'description-ecommerce-fr_FR' => $value4,
-            'description-print-en_US' => $value5,
-            'release_date-<all_channels>-<all_locales>' => $value6,
-        ]);
+        $this->toArray()->shouldReturn(
+            [
+                'length-<all_channels>-<all_locales>'       => $value1,
+                'price-<all_channels>-<all_locales>'        => $value2,
+                'description-ecommerce-en_US'               => $value3,
+                'description-ecommerce-fr_FR'               => $value4,
+                'description-print-en_US'                   => $value5,
+                'release_date-<all_channels>-<all_locales>' => $value6,
+            ]
+        );
 
         $this->getAttributesKeys()->shouldReturn(['length', 'price', 'description', 'release_date']);
     }
@@ -208,28 +249,38 @@ class ValueCollectionSpec extends ObjectBehavior
     {
         $this->remove($value1)->shouldReturn(true);
 
-        $this->toArray()->shouldReturn([
-            'price-<all_channels>-<all_locales>' => $value2,
-            'description-ecommerce-en_US' => $value3,
-            'description-ecommerce-fr_FR' => $value4,
-            'description-print-en_US' => $value5,
-            'release_date-<all_channels>-<all_locales>' => $value6,
-        ]);
+        $this->toArray()->shouldReturn(
+            [
+                'price-<all_channels>-<all_locales>'        => $value2,
+                'description-ecommerce-en_US'               => $value3,
+                'description-ecommerce-fr_FR'               => $value4,
+                'description-print-en_US'                   => $value5,
+                'release_date-<all_channels>-<all_locales>' => $value6,
+            ]
+        );
 
         $this->getAttributesKeys()->shouldReturn(['price', 'description', 'release_date']);
     }
 
-    function it_removes_a_unique_value_and_deletes_indexed_attribute($value1, $value2, $value3, $value4, $value5, $value6)
-    {
+    function it_removes_a_unique_value_and_deletes_indexed_attribute(
+        $value1,
+        $value2,
+        $value3,
+        $value4,
+        $value5,
+        $value6
+    ) {
         $this->remove($value6)->shouldReturn(true);
 
-        $this->toArray()->shouldReturn([
-            'length-<all_channels>-<all_locales>' => $value1,
-            'price-<all_channels>-<all_locales>' => $value2,
-            'description-ecommerce-en_US' => $value3,
-            'description-ecommerce-fr_FR' => $value4,
-            'description-print-en_US' => $value5,
-        ]);
+        $this->toArray()->shouldReturn(
+            [
+                'length-<all_channels>-<all_locales>' => $value1,
+                'price-<all_channels>-<all_locales>'  => $value2,
+                'description-ecommerce-en_US'         => $value3,
+                'description-ecommerce-fr_FR'         => $value4,
+                'description-print-en_US'             => $value5,
+            ]
+        );
 
         $this->getAttributesKeys()->shouldReturn(['length', 'price', 'description']);
         $this->getUniqueValues()->shouldReturn([]);
@@ -239,29 +290,40 @@ class ValueCollectionSpec extends ObjectBehavior
     {
         $this->remove($value3)->shouldReturn(true);
 
-        $this->toArray()->shouldReturn([
-            'length-<all_channels>-<all_locales>' => $value1,
-            'price-<all_channels>-<all_locales>' => $value2,
-            'description-ecommerce-fr_FR' => $value4,
-            'description-print-en_US' => $value5,
-            'release_date-<all_channels>-<all_locales>' => $value6,
-        ]);
+        $this->toArray()->shouldReturn(
+            [
+                'length-<all_channels>-<all_locales>'       => $value1,
+                'price-<all_channels>-<all_locales>'        => $value2,
+                'description-ecommerce-fr_FR'               => $value4,
+                'description-print-en_US'                   => $value5,
+                'release_date-<all_channels>-<all_locales>' => $value6,
+            ]
+        );
 
         $this->getAttributesKeys()->shouldReturn(['length', 'price', 'description', 'release_date']);
     }
 
-    function it_does_not_removes_a_non_existing_value($value1, $value2, $value3, $value4, $value5, $value6, ValueInterface $anotherValue)
-    {
+    function it_does_not_removes_a_non_existing_value(
+        $value1,
+        $value2,
+        $value3,
+        $value4,
+        $value5,
+        $value6,
+        ValueInterface $anotherValue
+    ) {
         $this->remove($anotherValue)->shouldReturn(false);
 
-        $this->toArray()->shouldReturn([
-            'length-<all_channels>-<all_locales>' => $value1,
-            'price-<all_channels>-<all_locales>' => $value2,
-            'description-ecommerce-en_US' => $value3,
-            'description-ecommerce-fr_FR' => $value4,
-            'description-print-en_US' => $value5,
-            'release_date-<all_channels>-<all_locales>' => $value6,
-        ]);
+        $this->toArray()->shouldReturn(
+            [
+                'length-<all_channels>-<all_locales>'       => $value1,
+                'price-<all_channels>-<all_locales>'        => $value2,
+                'description-ecommerce-en_US'               => $value3,
+                'description-ecommerce-fr_FR'               => $value4,
+                'description-print-en_US'                   => $value5,
+                'release_date-<all_channels>-<all_locales>' => $value6,
+            ]
+        );
 
         $this->getAttributesKeys()->shouldReturn(['length', 'price', 'description', 'release_date']);
     }
@@ -276,13 +338,15 @@ class ValueCollectionSpec extends ObjectBehavior
     ) {
         $this->removeByAttribute($length)->shouldReturn(true);
 
-        $this->toArray()->shouldReturn([
-            'price-<all_channels>-<all_locales>' => $value2,
-            'description-ecommerce-en_US' => $value3,
-            'description-ecommerce-fr_FR' => $value4,
-            'description-print-en_US' => $value5,
-            'release_date-<all_channels>-<all_locales>' => $value6,
-        ]);
+        $this->toArray()->shouldReturn(
+            [
+                'price-<all_channels>-<all_locales>'        => $value2,
+                'description-ecommerce-en_US'               => $value3,
+                'description-ecommerce-fr_FR'               => $value4,
+                'description-print-en_US'                   => $value5,
+                'release_date-<all_channels>-<all_locales>' => $value6,
+            ]
+        );
 
         $this->getAttributesKeys()->shouldReturn(['price', 'description', 'release_date']);
     }
@@ -298,14 +362,16 @@ class ValueCollectionSpec extends ObjectBehavior
     ) {
         $this->removeByAttribute($anotherAttribute)->shouldReturn(false);
 
-        $this->toArray()->shouldReturn([
-            'length-<all_channels>-<all_locales>' => $value1,
-            'price-<all_channels>-<all_locales>' => $value2,
-            'description-ecommerce-en_US' => $value3,
-            'description-ecommerce-fr_FR' => $value4,
-            'description-print-en_US' => $value5,
-            'release_date-<all_channels>-<all_locales>' => $value6,
-        ]);
+        $this->toArray()->shouldReturn(
+            [
+                'length-<all_channels>-<all_locales>'       => $value1,
+                'price-<all_channels>-<all_locales>'        => $value2,
+                'description-ecommerce-en_US'               => $value3,
+                'description-ecommerce-fr_FR'               => $value4,
+                'description-print-en_US'                   => $value5,
+                'release_date-<all_channels>-<all_locales>' => $value6,
+            ]
+        );
 
         $this->getAttributesKeys()->shouldReturn(['length', 'price', 'description', 'release_date']);
     }
@@ -339,14 +405,16 @@ class ValueCollectionSpec extends ObjectBehavior
 
     function it_get_keys()
     {
-        $this->getKeys()->shouldReturn([
-            'length-<all_channels>-<all_locales>',
-            'price-<all_channels>-<all_locales>',
-            'description-ecommerce-en_US',
-            'description-ecommerce-fr_FR',
-            'description-print-en_US',
-            'release_date-<all_channels>-<all_locales>',
-        ]);
+        $this->getKeys()->shouldReturn(
+            [
+                'length-<all_channels>-<all_locales>',
+                'price-<all_channels>-<all_locales>',
+                'description-ecommerce-en_US',
+                'description-ecommerce-fr_FR',
+                'description-print-en_US',
+                'release_date-<all_channels>-<all_locales>',
+            ]
+        );
     }
 
     function it_get_values($value1, $value2, $value3, $value4, $value5, $value6)
@@ -378,15 +446,17 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $this->add($newValue)->shouldReturn(true);
 
-        $this->toArray()->shouldReturn([
-            'length-<all_channels>-<all_locales>' => $value1,
-            'price-<all_channels>-<all_locales>' => $value2,
-            'description-ecommerce-en_US' => $value3,
-            'description-ecommerce-fr_FR' => $value4,
-            'description-print-en_US' => $value5,
-            'release_date-<all_channels>-<all_locales>' => $value6,
-            'weight-<all_channels>-en_US' => $newValue
-        ]);
+        $this->toArray()->shouldReturn(
+            [
+                'length-<all_channels>-<all_locales>'       => $value1,
+                'price-<all_channels>-<all_locales>'        => $value2,
+                'description-ecommerce-en_US'               => $value3,
+                'description-ecommerce-fr_FR'               => $value4,
+                'description-print-en_US'                   => $value5,
+                'release_date-<all_channels>-<all_locales>' => $value6,
+                'weight-<all_channels>-en_US'               => $newValue
+            ]
+        );
 
         $this->getAttributesKeys()->shouldReturn(['length', 'price', 'description', 'release_date', 'weight']);
 
@@ -413,22 +483,26 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $this->add($newValue)->shouldReturn(true);
 
-        $this->toArray()->shouldReturn([
-            'length-<all_channels>-<all_locales>' => $value1,
-            'price-<all_channels>-<all_locales>' => $value2,
-            'description-ecommerce-en_US' => $value3,
-            'description-ecommerce-fr_FR' => $value4,
-            'description-print-en_US' => $value5,
-            'release_date-<all_channels>-<all_locales>' => $value6,
-            'weight-<all_channels>-en_US' => $newValue
-        ]);
+        $this->toArray()->shouldReturn(
+            [
+                'length-<all_channels>-<all_locales>'       => $value1,
+                'price-<all_channels>-<all_locales>'        => $value2,
+                'description-ecommerce-en_US'               => $value3,
+                'description-ecommerce-fr_FR'               => $value4,
+                'description-print-en_US'                   => $value5,
+                'release_date-<all_channels>-<all_locales>' => $value6,
+                'weight-<all_channels>-en_US'               => $newValue
+            ]
+        );
 
         $this->getAttributesKeys()->shouldReturn(['length', 'price', 'description', 'release_date', 'weight']);
 
-        $this->getUniqueValues()->shouldReturn([
-            'release_date-<all_channels>-<all_locales>' => $value6,
-            'weight-<all_channels>-en_US' => $newValue,
-        ]);
+        $this->getUniqueValues()->shouldReturn(
+            [
+                'release_date-<all_channels>-<all_locales>' => $value6,
+                'weight-<all_channels>-en_US'               => $newValue,
+            ]
+        );
     }
 
     function it_does_not_add_an_empty_value_to_unique_values(
@@ -451,15 +525,17 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $this->add($newValue)->shouldReturn(true);
 
-        $this->toArray()->shouldReturn([
-            'length-<all_channels>-<all_locales>' => $value1,
-            'price-<all_channels>-<all_locales>' => $value2,
-            'description-ecommerce-en_US' => $value3,
-            'description-ecommerce-fr_FR' => $value4,
-            'description-print-en_US' => $value5,
-            'release_date-<all_channels>-<all_locales>' => $value6,
-            'weight-<all_channels>-en_US' => $newValue
-        ]);
+        $this->toArray()->shouldReturn(
+            [
+                'length-<all_channels>-<all_locales>'       => $value1,
+                'price-<all_channels>-<all_locales>'        => $value2,
+                'description-ecommerce-en_US'               => $value3,
+                'description-ecommerce-fr_FR'               => $value4,
+                'description-print-en_US'                   => $value5,
+                'release_date-<all_channels>-<all_locales>' => $value6,
+                'weight-<all_channels>-en_US'               => $newValue
+            ]
+        );
 
         $this->getAttributesKeys()->shouldReturn(['length', 'price', 'description', 'release_date', 'weight']);
 
@@ -470,14 +546,16 @@ class ValueCollectionSpec extends ObjectBehavior
     {
         $this->add($value3)->shouldReturn(false);
 
-        $this->toArray()->shouldReturn([
-            'length-<all_channels>-<all_locales>' => $value1,
-            'price-<all_channels>-<all_locales>' => $value2,
-            'description-ecommerce-en_US' => $value3,
-            'description-ecommerce-fr_FR' => $value4,
-            'description-print-en_US' => $value5,
-            'release_date-<all_channels>-<all_locales>' => $value6,
-        ]);
+        $this->toArray()->shouldReturn(
+            [
+                'length-<all_channels>-<all_locales>'       => $value1,
+                'price-<all_channels>-<all_locales>'        => $value2,
+                'description-ecommerce-en_US'               => $value3,
+                'description-ecommerce-fr_FR'               => $value4,
+                'description-print-en_US'                   => $value5,
+                'release_date-<all_channels>-<all_locales>' => $value6,
+            ]
+        );
 
         $this->getAttributesKeys()->shouldReturn(['length', 'price', 'description', 'release_date']);
     }
@@ -510,5 +588,18 @@ class ValueCollectionSpec extends ObjectBehavior
     function it_gets_attributes($length, $price, $description, $releaseDate)
     {
         $this->getAttributes()->shouldReturn([$length, $price, $description, $releaseDate]);
+    }
+
+    function it_filters_values()
+    {
+        $filteredValues = $this->filter(
+            function (ValueInterface $value) {
+                return $value->getAttribute()->getCode() === 'length';
+            }
+        );
+
+        $filteredValues->shouldBeAnInstanceOf(ValueCollectionInterface::class);
+        $filteredValues->count()->shouldReturn(1);
+        $filteredValues->first()->getAttribute()->getCode()->shouldReturn('length');
     }
 }

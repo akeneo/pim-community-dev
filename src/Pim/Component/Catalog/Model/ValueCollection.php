@@ -302,6 +302,16 @@ class ValueCollection implements ValueCollectionInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function filter(\Closure $filterBy)
+    {
+        $filteredValues = array_filter($this->values, $filterBy);
+
+        return new self($filteredValues);
+    }
+
+    /**
      * Index an attribute
      *
      * @param AttributeInterface $attribute
@@ -330,4 +340,6 @@ class ValueCollection implements ValueCollectionInterface
             }
         }
     }
+
+
 }
