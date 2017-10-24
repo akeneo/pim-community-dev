@@ -1,5 +1,4 @@
 parameters:
-    pim_catalog.event_subscriber.product_template_attribute.class: Pim\Bundle\CatalogBundle\EventSubscriber\ProductTemplateAttributeSubscriber
     pim_catalog.event_subscriber.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventSubscriber\CreateAttributeRequirementSubscriber
     pim_catalog.event_subscriber.localizable.class: Pim\Bundle\CatalogBundle\EventSubscriber\LocalizableSubscriber
     pim_catalog.event_subscriber.scopable.class: Pim\Bundle\CatalogBundle\EventSubscriber\ScopableSubscriber
