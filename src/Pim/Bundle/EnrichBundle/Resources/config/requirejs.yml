@@ -903,6 +903,7 @@ config:
         pim/form/common/fields/simple-select-async:     pimenrich/js/form/common/fields/simple-select-async
         pim/form/common/fields/text:                    pimenrich/js/form/common/fields/text
         pim/form/common/fields/textarea:                pimenrich/js/form/common/fields/textarea
+        pim/form/common/fields/metric:                  pimenrich/js/form/common/fields/metric
 
         # PEF fields
         pim/field:                  pimenrich/js/product/field/field
@@ -1003,13 +1004,14 @@ config:
         pim/template/form/subsection:                             pimenrich/templates/form/subsection.html
         pim/template/form/main-image:                             pimenrich/templates/form/main-image.html
 
-        pim/template/form/common/fields/field:                      pimenrich/templates/form/common/fields/field.html
-        pim/template/form/common/fields/boolean:                    pimenrich/templates/form/common/fields/boolean.html
-        pim/template/form/common/fields/date:                       pimenrich/templates/form/common/fields/date.html
-        pim/template/form/common/fields/select:                     pimenrich/templates/form/common/fields/select.html
-        pim/template/form/common/fields/simple-select-async:        pimenrich/templates/form/common/fields/simple-select-async.html
-        pim/template/form/common/fields/text:                       pimenrich/templates/form/common/fields/text.html
-        pim/template/form/common/fields/textarea:                   pimenrich/templates/form/common/fields/textarea.html
+        pim/template/form/common/fields/field:                    pimenrich/templates/form/common/fields/field.html
+        pim/template/form/common/fields/boolean:                  pimenrich/templates/form/common/fields/boolean.html
+        pim/template/form/common/fields/date:                     pimenrich/templates/form/common/fields/date.html
+        pim/template/form/common/fields/select:                   pimenrich/templates/form/common/fields/select.html
+        pim/template/form/common/fields/simple-select-async:      pimenrich/templates/form/common/fields/simple-select-async.html
+        pim/template/form/common/fields/text:                     pimenrich/templates/form/common/fields/text.html
+        pim/template/form/common/fields/textarea:                 pimenrich/templates/form/common/fields/textarea.html
+        pim/template/form/common/fields/metric:                   pimenrich/templates/form/common/fields/metric.html
 
         # Attribute group
         pim/template/form/attribute-group/tab/attribute: pimenrich/templates/attribute-group/tab/attribute.html

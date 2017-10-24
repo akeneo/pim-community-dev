@@ -14,8 +14,7 @@ define([
     'pim/form',
     'pim/common/tab',
     'pim/template/form/common/fields/field'
-],
-function (
+], function (
     $,
     _,
     __,
@@ -71,7 +70,7 @@ function (
          * @returns {String}
          */
         getTabCode: function () {
-            var parent = this.getParent();
+            let parent = this.getParent();
             while (!(parent instanceof Tab)) {
                 parent = parent.getParent();
                 if (null === parent) {
@@ -116,7 +115,8 @@ function (
                     fieldId: this.getFieldId(),
                     errors: this.errors,
                     readOnly: this.isReadOnly(),
-                    required: this.config.required || false
+                    required: this.config.required || false,
+                    __: __
                 })
                 .promise();
         },
@@ -157,7 +157,7 @@ function (
          * @param {*} value
          */
         updateModel: function (value) {
-            var newData = {};
+            const newData = {};
             newData[this.fieldName] = value;
 
             this.setData(newData);

@@ -10,24 +10,25 @@ define([
     'underscore',
     'pim/form/common/fields/field',
     'oro/translator',
-    'pim/template/form/common/fields/select'
-],
-function (
+    'pim/fetcher-registry',
+    'pim/template/form/common/fields/metric'
+], function (
     $,
     _,
     BaseField,
     __,
+    FetcherRegistry,
     template
 ) {
     return BaseField.extend({
         events: {
-            'keyup input': (event) => {
+            'keyup input': function () {
                 this.errors = [];
-                this.updateModel(this.getAmountValue(event.target));
+                this.updateModel(this.getValue());
             },
-            'change select': (event) => {
+            'change select': function () {
                 this.errors = [];
-                this.updateModel(this.getUnitValue(event.target));
+                this.updateModel(this.getValue());
                 this.getRoot().render();
             }
         },
@@ -47,20 +48,39 @@ function (
         /**
          * {@inheritdoc}
          */
-        renderInput (templateContext) {
-            fetcherRegistry.getFetcher('measure').fetchAll()
-                .then((measures) => {
-                    return this.template(_.extend(templateContext, {
-                        value: this.getFormData()[this.fieldName],
-                        unitChoices: this.formatChoices(measures[this.metricFamily].units)
-                    }));
-                });
+        renderInput(templateContext) {
+            return this.template(_.extend(templateContext, {
+                value: {
+                    amount: undefined !== this.getFormData()[this.fieldName]
+                        ? this.getFormData()[this.fieldName].amount
+                        : null,
+                    unit: undefined !== this.getFormData()[this.fieldName]
+                        ? this.getFormData()[this.fieldName].unit
+                        : null
+                }
+            }));
         },
 
         /**
          * {@inheritdoc}
          */
-        postRender () {
+        getTemplateContext: function () {
+            return $.when(
+                BaseField.prototype.getTemplateContext.apply(this, arguments),
+                FetcherRegistry.getFetcher('measure').fetchAll()
+            ).then((parentContext, measures) => {
+                return Object.assign(
+                    {},
+                    parentContext,
+                    { unitChoices: this.formatChoices(measures[this.metricFamily].units) }
+                );
+            });
+        },
+
+        /**
+         * {@inheritdoc}
+         */
+        postRender() {
             this.$('select.select2').select2({allowClear: true});
         },
 
@@ -83,7 +103,7 @@ function (
          *
          * @param {Object} units
          */
-        formatChoices (units) {
+        formatChoices(units) {
             const unitCodes = _.keys(units);
 
             return _.object(
@@ -93,17 +113,13 @@ function (
         },
 
         /**
-         * {@inheritdoc}
+         * @return {Object}
          */
-        getAmountValue (field) {
-            return $(field).val();
-        },
-
-        /**
-         * {@inheritdoc}
-         */
-        getUnitValue (field) {
-            return $(field).val();
+        getValue() {
+            return {
+                amount: this.$('.amount').val(),
+                unit: this.$('.unit').val()
+            };
         }
     });
 });
