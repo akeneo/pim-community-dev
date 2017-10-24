@@ -164,17 +164,6 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     }
 
     /**
-     * Fetch product media on the local filesystem
-     *
-     * @param ProductInterface $product
-     * @param string           $directory
-     */
-    protected function fetchMedia(ProductInterface $product, string $directory): void
-    {
-
-    }
-
-    /**
      * @param JobParameters $parameters
      *
      * @throws \InvalidArgumentException
