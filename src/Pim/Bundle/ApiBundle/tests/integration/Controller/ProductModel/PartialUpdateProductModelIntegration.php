@@ -962,7 +962,6 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-
     public function testUpdateSubProductModelWithAParent()
     {
         $client = $this->createAuthenticatedClient();

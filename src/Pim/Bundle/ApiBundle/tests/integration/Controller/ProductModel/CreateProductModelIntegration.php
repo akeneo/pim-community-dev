@@ -179,7 +179,7 @@ JSON;
 <<<JSON
 {
   "code": 422,
-  "message": "Property \"family_variant\" cannot be modified, \"familyVariantA2\" given. Check the standard format documentation.",
+  "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the standard format documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#post_product_model"
@@ -473,7 +473,7 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "Property \"family_variant\" cannot be modified, \"familyVariantA2\" given. Check the standard format documentation.",
+  "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the standard format documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#post_product_model"

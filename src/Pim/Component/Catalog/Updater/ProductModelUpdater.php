@@ -189,9 +189,12 @@ class ProductModelUpdater implements ObjectUpdaterInterface
 
         $parent = $productModel->getParent();
         if (null !== $parent && $familyVariantCode !== $parent->getFamilyVariant()->getCode()) {
-            throw ImmutablePropertyException::immutableProperty(
-                'family_variant',
-                $familyVariantCode,
+            throw InvalidPropertyException::expected(
+                sprintf(
+                    'The parent is not a product model of the family variant "%s" but belongs to the family "%s".',
+                    $familyVariantCode,
+                    $parent->getFamilyVariant()->getCode()
+                ),
                 static::class
             );
         }
