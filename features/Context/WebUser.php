@@ -66,21 +66,17 @@ class WebUser extends PimContext
     /**
      * @param string $type
      *
-     * @return Then[]
-     *
      * @Given /^I create a product$/
      */
     public function iCreateAProduct()
     {
         $this->iCreateANew('Product');
 
-        return $this->getCurrentPage()->pressButton('Product');
+        $this->getCurrentPage()->pressButton('Product');
     }
 
     /**
      * @param string $type
-     *
-     * @return Then[]
      *
      * @Given /^I create a product model$/
      */
@@ -88,7 +84,7 @@ class WebUser extends PimContext
     {
         $this->iCreateANew('Product');
 
-        return $this->getCurrentPage()->pressButton('Product model');
+        $this->getCurrentPage()->pressButton('Product model');
     }
 
     /**

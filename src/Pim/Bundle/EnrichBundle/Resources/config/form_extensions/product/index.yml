@@ -69,7 +69,7 @@ extensions:
                 create-product-model:
                     form: pim-product-model-create-modal
                     title: Product model
-                    icon: bulk/icon-template
+                    icon: icon-model
                     aclResourceId: pim_enrich_product_model_create
 
     pim-product-index-locale-switcher:

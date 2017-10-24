@@ -66,7 +66,7 @@ class ProductModelController
     private $entityWithFamilyVariantNormalizer;
 
     /** @var SimpleFactoryInterface */
-    protected $productModelFactory;
+    private $productModelFactory;
 
     /**
      * @param ProductModelRepositoryInterface   $productModelRepository

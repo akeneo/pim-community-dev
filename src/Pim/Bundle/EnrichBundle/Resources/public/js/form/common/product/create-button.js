@@ -78,12 +78,14 @@ define(
              * @return {Backbone.BootstrapModal} The modal
              */
             openModal() {
-                if (this.modal) this.closeModal();
+                if (this.modal) {
+                    this.closeModal();
+                }
 
                 const { choices, modalTitle, subTitle } = this.config;
                 const allowedChoices = this.getAllowedChoices(choices);
 
-                if (allowedChoices.length === 1) {
+                if (1 === allowedChoices.length) {
                     const firstChoice = allowedChoices[0];
 
                     return this.openFormModal(null, firstChoice.form);
@@ -103,6 +105,17 @@ define(
                 this.modal.$el.on('click', '.product-choice', this.openFormModal.bind(this));
 
                 return this.modal;
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            shutdown: function () {
+                if (this.modal) {
+                    this.modal.$el.off();
+                }
+
+                BaseForm.prototype.shutdown.apply(this, arguments);
             },
 
             /**
@@ -130,7 +143,7 @@ define(
             render() {
                 const { choices, buttonTitle } = this.config;
 
-                if (this.getAllowedChoices(choices).length === 0) {
+                if (0 === this.getAllowedChoices(choices).length) {
                     this.$el.hide();
 
                     return;

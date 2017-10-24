@@ -49,7 +49,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
      *
      * @return array
      */
-    public function getWithVariants($search = null, array $options = [], int $limit): array
+    public function getWithVariants($search = null, array $options = [], int $limit = null): array
     {
         $qb = $this->createQueryBuilder('f')->where('f.familyVariants IS NOT EMPTY');
 
@@ -63,7 +63,9 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
             }
         }
 
-        $qb->setMaxResults((int) $limit);
+        if ($limit) {
+            $qb->setMaxResults((int) $limit);
+        }
 
         return $qb->getQuery()->getResult();
     }

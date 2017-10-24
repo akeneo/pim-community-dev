@@ -30,14 +30,9 @@ function (
     return BaseField.extend({
         events: {
             'change select': function (event) {
-                const formModel = this.getFormModel();
-                const family_variant = event.target.value;
-
-                if (_.isEmpty(family_variant)) {
-                    return formModel.unset('family_variant');
-                }
-
-                this.setData({ family_variant });
+                this.setData({
+                    family_variant: event.target.value
+                });
             }
         },
 
@@ -77,18 +72,18 @@ function (
         /**
          * Listen for changes on the 'family' key in the form data
          */
-        updateOnFamilyChange() {
-            const formModel = this.getFormModel();
-            const family = formModel.get('family');
+        updateOnFamilyChange(changed) {
+            const family = this.getFormData().family;
 
             if (_.isEmpty(family)) {
                 return this.resetSelectField();
             }
 
-            if (formModel.hasChanged('family')) {
+            if (changed.family) {
                 this.getFamilyIdFromCode(family)
-                    .then(this.renderVariantsForFamily.bind(this))
+                    .then(this.renderVariantsForFamily.bind(this));
             }
+
         },
 
         /**
@@ -98,7 +93,10 @@ function (
             this.choices = [];
             this.readOnly = true;
             this.$('select.select2').select2('val', '');
-            this.getFormModel().unset('family_variant');
+            this.setData(
+                { family_variant: null },
+                { unset: true, silent: true }
+            );
             this.render();
         },
 
@@ -121,7 +119,7 @@ function (
 
         /**
          * Get the code for a given family id
-         * @return {String}
+         * @return {Promise}
          */
         getFamilyIdFromCode(code) {
             return FetcherRegistry.getFetcher('family')
@@ -143,6 +141,8 @@ function (
                 'family-variant-grid[localeCode]': locale
             });
 
+            this.resetSelectField();
+
             return $.getJSON(variantLoadUrl).then((response) => {
                 const responseJSON = JSON.parse(response.data);
                 const variantData = responseJSON.data;
@@ -152,10 +152,13 @@ function (
 
                 if (variantData.length === 1) {
                     this.defaultValue = variantData[0].familyVariantCode;
+                    this.setData(
+                        { family_variant: this.defaultValue },
+                        { silent: true }
+                    );
                 }
 
                 this.render();
-                this.$('select.select2').trigger('change');
             });
         },
 
@@ -172,9 +175,10 @@ function (
         formatChoices(variants) {
             const choices = {};
 
-            _.each(variants, variant => {
-                choices[variant.familyVariantCode] = variant.label
-            })
+            for (const variant in variants) {
+                const code = variants[variant].familyVariantCode;
+                choices[code] = variants[variant].label;
+            }
 
             return choices;
         },

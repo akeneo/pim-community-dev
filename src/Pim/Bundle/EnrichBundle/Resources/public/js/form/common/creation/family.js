@@ -59,7 +59,7 @@ define([
          * @param  {Object} event jQuery event
          */
         updateModel(event) {
-            this.getParent().setData({ family: event.target.value });
+            this.setData({ family: event.target.value });
         },
 
         /**

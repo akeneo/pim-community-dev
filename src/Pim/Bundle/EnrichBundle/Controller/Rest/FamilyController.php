@@ -33,6 +33,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class FamilyController
 {
+    const FAMILY_VARIANTS_LIMIT = 20;
+
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
@@ -339,7 +341,7 @@ class FamilyController
         $search = $request->query->get('search');
         $options = $request->query->get('options');
 
-        $families = $this->familyRepository->getWithVariants($search, $options, 20);
+        $families = $this->familyRepository->getWithVariants($search, $options, self::FAMILY_VARIANTS_LIMIT);
 
         $normalizedFamilies = [];
         foreach ($families as $family) {

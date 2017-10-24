@@ -31,7 +31,6 @@ extensions:
             identifier: family
             required: true
             fieldLabel: pim_enrich.entity.product.meta.family.title
-            useId: true
             loadUrl: pim_enrich_family_index_get_variants
 
     pim-product-model-create-variant:

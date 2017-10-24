@@ -18,7 +18,6 @@ Feature: Create a product model
       | Choose a family  | Shoes         |
       | Choose a variant | Shoes by size |
     And I press the "Save" button
-    Then I should see the flash message "Product model successfully created"
     And I should be on the product model "shoes_variant" edit page
     And I should see the text "shoes_variant"
 
@@ -31,7 +30,6 @@ Feature: Create a product model
       | Choose a family  | Clothing                   |
       | Choose a variant | Clothing by color and size |
     And I press the "Save" button
-    Then I should see the flash message "Product model successfully created"
     And I should be on the product model "clothing_color_and_size" edit page
     And I should see the text "clothing_color_and_size"
 
@@ -54,7 +52,6 @@ Feature: Create a product model
     Then I should see the text "LED TVs"
     And I should see the text "LED TV"
     And I press the "Save" button
-    Then I should see the flash message "Product model successfully created"
     And I should be on the product model "tv_display_diagonal" edit page
     And I should see the text "tv_display_diagonal"
 
@@ -67,7 +64,6 @@ Feature: Create a product model
       | Choose a family  | Clothing               |
       | Choose a variant | Clothing by color/size |
     And I press the "Save" button
-    Then I should see the flash message "Product model successfully created"
     And I should be on the product model "clothing_color_size" edit page
     And I should see the text "clothing_color_size"
 
@@ -93,11 +89,10 @@ Feature: Create a product model
       | Choose a family  | Accessories      |
     Then I should see the text "Accessories by size"
     And I press the "Save" button
-    Then I should see the flash message "Product model successfully created"
     And I should be on the product model "accessories_size" edit page
     And I should see the text "accessories_size"
 
-  Scenario: Display validation error for duplicate code and missing family variant
+  Scenario: Display validation error for duplicate code
     When I create a product model
     And I should see the Code, Family and family_variant fields
     And the field family_variant should be disabled
@@ -105,6 +100,14 @@ Feature: Create a product model
       | Code | artemis |
     And I press the "Save" button
     Then I should see the text "The same code is already set on another product model."
+
+  Scenario: Display validation error for missing family variant
+    When I create a product model
+    And I should see the Code, Family and family_variant fields
+    And the field family_variant should be disabled
+    When I fill in the following information in the popin:
+      | Code | artemis |
+    And I press the "Save" button
     And I should see the text "The product model family variant must not be empty."
 
   Scenario: Disable create button if user does not have permission to create products and product models
