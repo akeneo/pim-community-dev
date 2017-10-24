@@ -72,10 +72,9 @@ class WebUser extends PimContext
      */
     public function iCreateAProduct()
     {
-        return [
-            new Step\Then('I create a new product'),
-            new Step\Then(sprintf('I press the "Product" button'))
-        ];
+        $this->iCreateANew('Product');
+
+        return $this->getCurrentPage()->pressButton('Product');
     }
 
     /**
@@ -87,10 +86,9 @@ class WebUser extends PimContext
      */
     public function iCreateAProductModel()
     {
-        return [
-            new Step\Then('I create a new product'),
-            new Step\Then(sprintf('I press the "Product model" button'))
-        ];
+        $this->iCreateANew('Product');
+
+        return $this->getCurrentPage()->pressButton('Product model');
     }
 
     /**
