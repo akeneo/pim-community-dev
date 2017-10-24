@@ -68,6 +68,9 @@ class ProductModelController
     /** @var SimpleFactoryInterface */
     private $productModelFactory;
 
+    /** @var NormalizerInterface */
+    private $violationNormalizer;
+
     /**
      * @param ProductModelRepositoryInterface   $productModelRepository
      * @param NormalizerInterface               $normalizer
@@ -82,6 +85,7 @@ class ProductModelController
      * @param NormalizerInterface               $constraintViolationNormalizer
      * @param EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer
      * @param SimpleFactoryInterface            $productModelFactory
+     * @param NormalizerInterface               $violationNormalizer
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
@@ -96,7 +100,8 @@ class ProductModelController
         SaverInterface $productModelSaver,
         NormalizerInterface $constraintViolationNormalizer,
         EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer,
-        SimpleFactoryInterface $productModelFactory
+        SimpleFactoryInterface $productModelFactory,
+        NormalizerInterface $violationNormalizer
     ) {
         $this->productModelRepository        = $productModelRepository;
         $this->normalizer                    = $normalizer;
@@ -111,6 +116,7 @@ class ProductModelController
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->entityWithFamilyVariantNormalizer = $entityWithFamilyVariantNormalizer;
         $this->productModelFactory           = $productModelFactory;
+        $this->violationNormalizer = $violationNormalizer;
     }
 
     /**
@@ -164,7 +170,7 @@ class ProductModelController
         if (count($violations) > 0) {
             $normalizedViolations = [];
             foreach ($violations as $violation) {
-                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $normalizedViolations[] = $this->violationNormalizer->normalize(
                     $violation,
                     'internal_api',
                     ['product_model' => $productModel]

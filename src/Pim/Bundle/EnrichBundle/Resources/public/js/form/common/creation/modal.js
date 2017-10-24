@@ -32,14 +32,12 @@ define(
         return BaseForm.extend({
             config: {},
             template: _.template(template),
-            validationErrors: [],
 
             /**
              * {@inheritdoc}
              */
             initialize(meta) {
                 this.config = meta.config;
-                this.validationErrors = [];
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -54,8 +52,6 @@ define(
                     contentLabel: __(this.config.labels.content),
                     picture: this.config.picture,
                     fields: null,
-                    errors: this.validationErrors,
-                    displayGlobalErrors: this.config.displayGlobalErrors
                 }));
 
                 this.renderExtensions();

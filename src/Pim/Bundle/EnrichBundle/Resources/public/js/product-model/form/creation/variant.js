@@ -44,6 +44,7 @@ function (
         readOnly: true,
         choices: [],
         defaultValue: null,
+        errors: [],
 
         /**
          * {@inheritdoc}
@@ -51,6 +52,7 @@ function (
         initialize(config) {
             this.config = config.config;
             this.choices = [];
+            this.errors = [];
             this.defaultValue = null;
 
             BaseForm.prototype.initialize.apply(this, arguments);
@@ -83,7 +85,6 @@ function (
                 this.getFamilyIdFromCode(family)
                     .then(this.renderVariantsForFamily.bind(this));
             }
-
         },
 
         /**
@@ -92,12 +93,20 @@ function (
         resetSelectField() {
             this.choices = [];
             this.readOnly = true;
+            this.errors = [];
             this.$('select.select2').select2('val', '');
             this.setData(
                 { family_variant: null },
                 { unset: true, silent: true }
             );
             this.render();
+        },
+
+        render() {
+            const errors = this.getRoot().validationErrors || [];
+            this.errors = errors.filter(error => error.path === this.fieldName)
+
+            return BaseField.prototype.render.apply(this, arguments);
         },
 
         /**

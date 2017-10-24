@@ -369,6 +369,7 @@ services:
             - '@pim_enrich.normalizer.product_violation'
             - '@pim_enrich.normalizer.entity_with_family_variant'
             - '@pim_catalog.factory.product_model'
+            - '@pim_enrich.normalizer.violation'
 
     pim_enrich.controller.rest.product_category:
         class: '%pim_enrich.controller.rest.product_category.class%'
