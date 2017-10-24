@@ -64,7 +64,7 @@ class SearchAfterSizeCursorSpec extends ObjectBehavior
     function it_is_countable()
     {
         $this->shouldImplement(\Countable::class);
-        $this->shouldHaveCount(4);
+        $this->count()->shouldReturn(4);
     }
 
     function it_is_iterable(
