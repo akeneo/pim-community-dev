@@ -14,7 +14,7 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
-        'pim/i18n',
+        'routing',
         'pim/user-context',
         'pim/fetcher-registry',
         'pim/form-builder',
@@ -25,7 +25,7 @@ define(
         $,
         _,
         __,
-        i18n,
+        Routing,
         UserContext,
         FetcherRegistry,
         FormBuilder,
@@ -119,6 +119,8 @@ define(
              * The meta under this key is then modified on-the-fly before instantiation using attribute
              * code to make the field unique.
              *
+             * This logic could be extracted to a factory later.
+             *
              * @param {Object} attribute
              *
              * @returns {Promise}
@@ -144,6 +146,15 @@ define(
                             field.setMetricFamily(attribute.metric_family);
                         }
 
+                        if ('pim_catalog_simpleselect' === attribute.type) {
+                            field.setChoiceUrl(
+                                Routing.generate('pim_enrich_attributeoption_get',{ identifier: attribute.code })
+                            );
+                        }
+
+                        return field;
+                    })
+                    .then((field) => {
                         return field.configure().then(() => field);
                     });
             },

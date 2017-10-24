@@ -23,7 +23,7 @@ extensions:
             codeFieldModule: pim-product-model-add-child-field-text
 
     pim-product-model-add-child-field-simple-select:
-        module: pim/form/common/fields/select
+        module: pim/form/common/fields/simple-select-async
         config:
             required: true
 
