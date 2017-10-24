@@ -7,14 +7,14 @@
 </select>
 
 <% if (!_.contains(['EMPTY', 'NOT EMPTY', 'BETWEEN', 'NOT BETWEEN'], operator)) { %>
-    <span class="start-date-wrapper">
+    <span class="AknFieldContainer-subContainer start-date-wrapper">
         <input name="filter-value-start" class="AknTextField AknTextField--noLeftRadius add-on value" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- startValue ? startValue : '' %>">
     </span>
 <% } else if (_.contains(['BETWEEN', 'NOT BETWEEN'], operator)) { %>
-    <span class="start-date-wrapper">
+    <span class="AknFieldContainer-subContainer start-date-wrapper">
         <input name="filter-value-start" class="AknTextField AknTextField--noLeftRadius add-on value" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- startValue ? startValue : '' %>">
     </span>
-    <span class="end-date-wrapper">
+    <span class="AknFieldContainer-subContainer end-date-wrapper">
         <input name="filter-value-end" class="AknTextField AknTextField--noLeftRadius add-on value" type="text" <%- isEditable ? '' : 'disabled' %> value="<%- endValue ? endValue : '' %>">
     </span>
 <% } %>

@@ -27,6 +27,7 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
             'type'                => AttributeTypes::METRIC,
             'localizable'         => true,
             'scopable'            => true,
+            'negative_allowed'    => true,
             'decimals_allowed'    => true,
             'metric_family'       => 'Power',
             'default_metric_unit' => 'WATT'

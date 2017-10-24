@@ -26,6 +26,7 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
             'localizable'         => false,
             'scopable'            => true,
             'decimals_allowed'    => true,
+            'negative_allowed'    => true,
             'metric_family'       => 'Length',
             'default_metric_unit' => 'METER'
         ]);

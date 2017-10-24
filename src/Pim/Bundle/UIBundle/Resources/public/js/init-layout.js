@@ -1,8 +1,8 @@
 'use strict';
 
 define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout',
-        'oro/delete-confirmation', 'oro/messenger', 'bootstrap', 'jquery-setup'
-], function ($, Backbone, _, __, app, mediator, layout, DeleteConfirmation, messenger) {
+        'pim/dialog', 'oro/messenger', 'bootstrap', 'jquery-setup'
+], function ($, Backbone, _, __, app, mediator, layout, Dialog, messenger) {
 
 
     /* ============================================================
@@ -102,15 +102,11 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
 
         /* global router */
         $(document).on('click', '.remove-button', function () {
-            var confirm;
             var el = $(this);
             var message = el.data('message');
+            const subTitle = el.data('subtitle');
 
-            confirm = new DeleteConfirmation({
-                content: message
-            });
-
-            confirm.on('ok', function () {
+            const doDelete = function () {
                 router.showLoadingMask();
 
                 $.ajax({
@@ -141,10 +137,16 @@ define(['jquery', 'backbone', 'underscore', 'oro/translator', 'oro/app', 'oro/me
                         );
                     }
                 });
-            });
-            confirm.open();
+            };
+
+            this.confirmModal = Dialog.confirmDelete(
+                message,
+                __('pim_enrich.confirmation.delete_item'),
+                doDelete,
+                subTitle
+            );
 
             return false;
         });
-    }
+    };
 });

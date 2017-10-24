@@ -1,0 +1,24 @@
+<div class="AknFullPage AknFullPage--modal ">
+    <div class="AknFullPage-content AknFormContainer--withPadding AknFormContainer--centered AknFormContainer--expanded">
+        <div class="AknFullPage-left">
+            <div class="AknFullPage-image AknFullPage-illustration AknFullPage-illustration--<%- illustrationClass %>"> </div>
+        </div>
+        <div class="AknFullPage-right">
+            <div class="AknFullPage-subTitle"><%- type %></div>
+            <div class="AknFullPage-title"><%- title %></div>
+            <div class="AknFullPage-description AknFullPage-description--bottom">
+                <%= content %>
+            </div>
+            <div class="AknButtonList">
+                <% if (allowCancel) { %>
+                    <button class="AknButtonList-item AknButton AknButton--grey cancel %>">
+                        <%- cancelText %>
+                    </button>
+                <% } %>
+                <button class="AknButtonList-item AknButton <%- buttonClass %> ok %>">
+                    <%- okText %>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

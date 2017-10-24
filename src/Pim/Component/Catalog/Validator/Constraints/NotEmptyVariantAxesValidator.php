@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -41,6 +42,16 @@ class NotEmptyVariantAxesValidator extends ConstraintValidator
 
         if (null === $entity->getFamilyVariant()) {
             return;
+        }
+
+        // This fix prevent the empty variant axes to return a wrong error message when we try to create a sub product
+        // model that extends another sub product model. Else the validator thinks it's a variant product (as it will
+        // be on the 3 level sub_product_model_2 -> sub_product_model_1 -> root_product_model) and will return the axes
+        // on the 3 level.
+        if ($entity instanceof ProductModelInterface && null !== $entity->getParent()) {
+            if (null !== $entity->getParent()->getParent() || 1 === (int) $entity->getParent()->getFamilyVariant()->getNumberOfLevel()) {
+                return;
+            }
         }
 
         $axes = $this->axesProvider->getAxes($entity);

@@ -6,6 +6,9 @@ use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group ce
+ */
 class RootEndpointIntegration extends ApiTestCase
 {
     public function testGetEndpoint()
@@ -239,6 +242,22 @@ class RootEndpointIntegration extends ApiTestCase
             "pim_api_product_model_list": {
                 "route": "/api/rest/v1/product-models",
                 "methods": ["GET"]
+            },
+            "pim_api_product_model_create": {
+                "route": "/api/rest/v1/product-models",
+                "methods": ["POST"]
+            },
+            "pim_api_family_variant_create": {
+                "route": "/api/rest/v1/families/{familyCode}/variants",
+                "methods": ["POST"]
+            },
+            "pim_api_product_model_partial_update": {
+                "route": "/api/rest/v1/product-models/{code}",
+                "methods": ["PATCH"]
+            },
+            "pim_api_product_model_partial_update_list": {
+                "route": "/api/rest/v1/product-models",
+                "methods": ["PATCH"]
             }
         }
     }
@@ -254,6 +273,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

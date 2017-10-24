@@ -5,6 +5,7 @@ parameters:
     akeneo_integration_tests.doctrine.connection.connection_closer.class: Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser
     akeneo_integration_tests.doctrine.job_execution.class: Akeneo\Test\IntegrationTestsBundle\Doctrine\JobExecution
     akeneo_integration_tests.security.system_user_authenticator.class: Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator
+    akeneo_integration_tests.configuration.catalog.class: Akeneo\Test\IntegrationTestsBundle\Configuration\Catalog
 
 services:
     akeneo_integration_tests.loader.reference_data_loader:
@@ -22,6 +23,7 @@ services:
             - '@kernel'
             - '@akeneo_integration_tests.loader.database_schema_handler'
             - '@akeneo_integration_tests.security.system_user_authenticator'
+            - '@akeneo_integration_tests.catalog.configuration'
 
     akeneo_integration_tests.loader.database_schema_handler:
         class: '%akeneo_integration_tests.loader.database_schema_handler.class%'
@@ -42,3 +44,9 @@ services:
         class: '%akeneo_integration_tests.security.system_user_authenticator.class%'
         arguments:
             - '@service_container'
+
+    akeneo_integration_tests.configuration.catalog:
+        class: '%akeneo_integration_tests.configuration.catalog.class%'
+
+    akeneo_integration_tests.catalog.configuration:
+        synthetic: true

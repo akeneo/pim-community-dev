@@ -13,7 +13,6 @@ use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Validator\Constraints\FamilyVariant;
 use Pim\Component\Catalog\Validator\Constraints\FamilyVariantValidator;
 use Prophecy\Argument;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -22,11 +21,6 @@ use Symfony\Component\Validator\Violation\ConstraintViolationBuilderInterface;
 
 class FamilyVariantValidatorSpec extends ObjectBehavior
 {
-    function let(TranslatorInterface $translator)
-    {
-        $this->beConstructedWith($translator);
-    }
-
     function it_is_initializable()
     {
         $this->shouldHaveType(FamilyVariantValidator::class);
@@ -105,8 +99,7 @@ class FamilyVariantValidatorSpec extends ObjectBehavior
         $this->validate($familyVariant, $constraint);
     }
 
-    function it_add_violations_when_axes_are_invalid(
-        $translator,
+    function it_adds_violations_when_axes_are_invalid(
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         FamilyVariant $constraint,
@@ -141,10 +134,11 @@ class FamilyVariantValidatorSpec extends ObjectBehavior
         $weatherCondition->isLocalizable()->willReturn(false);
         $weatherCondition->isScopable()->willReturn(false);
         $weatherCondition->isLocaleSpecific()->willReturn(true);
+        $weatherCondition->isUnique()->willReturn(false);
 
         $axes->getIterator()->willReturn($axisIterator);
-        $axisIterator->valid()->willReturn(true, true, true, false);
-        $axisIterator->current()->willReturn($color, $size, $weatherCondition);
+        $axisIterator->valid()->willReturn(true, true, true, true, false);
+        $axisIterator->current()->willReturn($color, $color, $size, $weatherCondition);
         $axisIterator->rewind()->shouldBeCalled();
         $axisIterator->next()->shouldBeCalled();
 
@@ -171,39 +165,32 @@ class FamilyVariantValidatorSpec extends ObjectBehavior
         $attributes->map(Argument::any())->willReturn($attributes);
         $attributes->toArray()->willreturn(['color', 'size', 'weather_conditions', 'weather_conditions']);
 
-        $translator->trans('pim_catalog.constraint.family_variant_axes_unique')
-            ->willReturn('family_variant_axes_unique');
-        $translator->trans('pim_catalog.constraint.family_variant_axes_type')
-            ->willReturn('family_variant_axes_type');
-        $translator->trans('pim_catalog.constraint.family_variant_axes_wrong_type')
-            ->willReturn('family_variant_axes_wrong_type');
-        $translator->trans('pim_catalog.constraint.family_variant_axes_attribute_type')
-            ->willReturn('family_variant_axes_attribute_type');
-        $translator->trans('pim_catalog.constraint.family_variant_attributes_unique')
-            ->willReturn('family_variant_attributes_unique');
-
-        $context->buildViolation('family_variant_axes_unique')
+        $context->buildViolation('pim_catalog.constraint.family_variant_axes_unique', ['%attributes%' => 'color'])
+            ->shouldBeCalled()
             ->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
-        $context->buildViolation('family_variant_axes_wrong_type', ['%axis%' => 'color'])
+        $context->buildViolation('pim_catalog.constraint.family_variant_axes_wrong_type', ['%axis%' => 'color'])
+            ->shouldBeCalled()
             ->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
-        $context->buildViolation('family_variant_axes_wrong_type', ['%axis%' => 'size'])
+        $context->buildViolation('pim_catalog.constraint.family_variant_axes_wrong_type', ['%axis%' => 'size'])
+            ->shouldBeCalled()
             ->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
-        $context->buildViolation('family_variant_axes_wrong_type', ['%axis%' => 'weather_conditions'])
+        $context->buildViolation(
+                'pim_catalog.constraint.family_variant_axes_wrong_type',
+                ['%axis%' => 'weather_conditions']
+            )
+            ->shouldBeCalled()
             ->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
-        $context->buildViolation('family_variant_axes_attribute_type', ['%axis%' => 'weather_conditions'])
+        $context->buildViolation(
+                'pim_catalog.constraint.family_variant_axes_attribute_type',
+                ['%axis%' => 'weather_conditions']
+            )
+            ->shouldBeCalled()
             ->willReturn($constraintViolationBuilder);
-        $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
-        $context->buildViolation('family_variant_attributes_unique', ['%attributes%' => 'weather_conditions'])
-            ->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($familyVariant, $constraint);

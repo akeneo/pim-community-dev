@@ -202,14 +202,10 @@ define(
                             AttributeGroupManager.getAttributeGroupsForObject(data),
                             toFillFieldProvider.getFields(this.getRoot(), data.values)
                         ).then((attributeGroups, fieldsToFill) => {
-
-                            // PIM-6773: Remove to activate fields to fill in product models.
-                            if (this.getFormData().meta.model_type === 'product_model') {
-                                fieldsToFill = [];
-                            }
-
                             const sections = _.values(
                                 fields.reduce(groupFieldsBySection(attributeGroups, fieldsToFill), {})
+                            ).sort((firstSection, secondSection) =>
+                                firstSection.attributeGroup.sort_order - secondSection.attributeGroup.sort_order
                             );
                             const fieldsView = document.createElement('div');
 

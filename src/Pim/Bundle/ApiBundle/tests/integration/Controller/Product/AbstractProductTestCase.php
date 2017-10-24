@@ -105,7 +105,7 @@ abstract class AbstractProductTestCase extends ApiTestCase
 
         if ($this->testKernel->getContainer()
             ->get('akeneo_integration_tests.doctrine.job_execution')
-            ->isRunning('compute_product_models_descendants', 2)
+            ->isRunning('compute_product_models_descendants', 8)
         ) {
             throw new \RuntimeException('There are still "compute_product_models_descendants" jobs running.');
         }

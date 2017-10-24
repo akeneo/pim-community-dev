@@ -170,12 +170,14 @@ define(
 
                 var code = event.currentTarget.dataset.attributeCode;
 
-                Dialog.confirm(
+                Dialog.confirmDelete(
                     __(this.config.confirmation.message, {attribute: code}),
                     __(this.config.confirmation.title),
                     function () {
                         this.removeAttribute(code);
-                    }.bind(this)
+                    }.bind(this),
+                    __(this.config.confirmation.subTitle),
+                    __(this.config.confirmation.buttonText)
                 );
             },
 

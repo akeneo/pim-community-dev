@@ -72,8 +72,6 @@ services:
     # Validators
     pim_catalog.validator.constraint.family_variant_axes:
         class: '%pim_catalog.validator.constraint.family_variant_axes.class%'
-        arguments:
-            - '@translator'
         tags:
             - { name: validator.constraint_validator, alias: pim_family_variant }
 

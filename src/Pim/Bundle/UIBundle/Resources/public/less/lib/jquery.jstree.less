@@ -181,6 +181,28 @@
       float: none;
     }
   }
+
+  .jstree-lockeditem {
+    height: 35px;
+    display: inline-block;
+    font-size: 14px;
+    padding: 0;
+    color: @AknDarkBlue !important;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: ~"calc(100% - 32px)";
+    overflow: hidden;
+    cursor: not-allowed;
+    font-weight: bold;
+  }
+
+  .jstree-lockedicon {
+    background: url("../../images/jstree/icon-folderfull.svg") no-repeat center 0;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin: 0 4px 0 8px;
+  }
 }
 
 .root-unselectable .jstree-root > a > .jstree-checkbox {

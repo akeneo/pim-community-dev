@@ -210,7 +210,7 @@ services:
         arguments:
             - '@pim_catalog.validator.helper.attribute'
             - ['pim_catalog_boolean']
-            - ['=', '!=']
+            - ['=', '!=', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
 

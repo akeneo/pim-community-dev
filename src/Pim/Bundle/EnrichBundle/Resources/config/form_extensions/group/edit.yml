@@ -50,6 +50,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.group
+                subTitle: pim_menu.item.group
                 content: pim_enrich.confirmation.delete_item
                 success: flash.group.removed
                 fail: error.removing.group

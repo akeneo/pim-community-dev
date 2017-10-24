@@ -73,9 +73,19 @@ class ValueCollectionSpec extends ObjectBehavior
         $this->shouldHaveType(ValueCollection::class);
     }
 
-    function it_creates_a_collection_from_another(ValueCollectionInterface $collection)
+    function it_creates_a_collection_from_another(ValueCollectionInterface $collection, ValueInterface $value, AttributeInterface $attribute)
     {
+        $attribute->getCode()->willReturn('weight');
+        $attribute->isUnique()->willReturn(false);
+
+        $value->getAttribute()->willReturn($attribute);
+        $value->getScope()->willReturn('ecommerce');
+        $value->getLocale()->willReturn('fr_FR');
+
+        $collection->toArray()->willReturn([$value]);
         $this->beConstructedThrough('fromCollection', [$collection]);
+        $this->count()->shouldReturn(1);
+        $this->containsKey('weight-ecommerce-fr_FR')->shouldReturn(true);
     }
 
     function it_convert_the_collection_to_an_array($value1, $value2, $value3, $value4, $value5, $value6)

@@ -10,8 +10,8 @@ confirmation:
         channel:          Are you sure you want to delete this channel?
         group:            Are you sure you want to delete this group?
         group_type:       Are you sure you want to delete this group type?
-        import profile:   Are you sure you want to delete this import profile?
-        export profile:   Are you sure you want to delete this export profile?
+        import_profile:   Are you sure you want to delete this import profile?
+        export_profile:   Are you sure you want to delete this export profile?
         user:             Are you sure you want to delete this user?
         role:             Are you sure you want to delete this role?
         job_instance:     Are you sure you want to delete this job instance?
@@ -25,7 +25,8 @@ pim_datagrid:
             label: Quick Export
     mass_action:
         delete:
-            confirm_content: Are you sure you want to delete selected products?
+            label: Delete
+            confirm_content: Are you sure you want to delete the selected products?
             success:         Selected products successfully deleted.
             error:           Error ocurred when trying to delete selected products, please try again.
     view_selector:
@@ -162,13 +163,13 @@ pim_enrich:
         product:
             navigation: Product navigation
             infos: Product infos
-            index_title: "] -Inf, 1] {{ count }} product|] 1, Inf [{{ count }} products"
+            index_title: "] -Inf, 1] {{ count }} result|] 1, Inf [{{ count }} results"
             title: product
             locale: Locale
             category: Category
             create: Create product
             filters: Filters
-            selected: selected products
+            selected: selected results
             common: Common
             btn:
                 enabled: Enabled
@@ -411,6 +412,8 @@ pim_enrich:
         leave:           Are you sure you want to leave this page?
         discard_changes: You will lose changes to the {{ entity }} if you leave the page.
         delete_item:     Confirm deletion
+        remove_item:     Confirm removal
+        remove:          Remove
         delete:
             attribute: Are you sure you want to delete this attribute from the product?
             attribute_group: Are you sure you want to remove the attribute {{ attribute }} from this attribute group?
@@ -1344,6 +1347,7 @@ pim_menu:
         group_type: Group types
         locale: Locales
         product: Products
+        published_product: Published Products
         export_history: Exports history
         export_profile: Export profiles
         import_history: Imports history

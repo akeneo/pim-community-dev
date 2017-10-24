@@ -4,6 +4,9 @@ namespace Pim\Bundle\ConnectorBundle\tests\integration\Export\ProductModel;
 
 use Pim\Bundle\ConnectorBundle\tests\integration\Export\AbstractExportTestCase;
 
+/**
+ * @group ce
+ */
 class ExportProductModelsIntegration extends AbstractExportTestCase
 {
     /**

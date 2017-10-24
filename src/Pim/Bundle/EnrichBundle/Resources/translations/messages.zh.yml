@@ -310,7 +310,7 @@ btn:
   download: 下载
 confirmation:
   confirm: 确认
-  delete: 删除确认
+  delete: 确定删除
   leave: 你确定你要离开此页面？
   discard changes: 如果你离开页面，你将丢失%entity%的更改。
   remove:

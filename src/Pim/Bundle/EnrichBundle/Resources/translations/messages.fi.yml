@@ -310,7 +310,7 @@ btn:
   download: lataa
 confirmation:
   confirm: Vahvistus
-  delete: Poista vahvistus
+  delete: Vahvista poisto
   leave: Oletko varma että haluat poistua sivulta?
   discard changes: Menetät muutokset kohteeseen %entity% jos poistut sivulta.
   remove:

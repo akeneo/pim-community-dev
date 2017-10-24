@@ -4,7 +4,7 @@ namespace Pim\Bundle\LocalizationBundle\Form\Type;
 
 use Akeneo\Component\Localization\Provider\LocaleProviderInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\LocaleType;
+use Symfony\Component\Form\Extension\Core\Type\LocaleType as SymfonyLocaleType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LocaleType extends AbstractType
@@ -34,7 +34,7 @@ class LocaleType extends AbstractType
      */
     public function getParent()
     {
-        return LocaleType::class;
+        return SymfonyLocaleType::class;
     }
 
     /**

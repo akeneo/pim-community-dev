@@ -134,6 +134,10 @@ define(
                 var $tree = $('#tree-' + treeId);
                 $tree.jstree(self.config);
 
+                $tree.bind('loaded.jstree', function () {
+                    mediator.trigger('jstree:loaded');
+                });
+
                 $tree.bind('check_node.jstree', function (e, d) {
                     if (d.inst.get_checked() && $(d.rslt.obj[0]).hasClass('jstree-root') === false) {
                         var selected = this.parseHiddenCategories();

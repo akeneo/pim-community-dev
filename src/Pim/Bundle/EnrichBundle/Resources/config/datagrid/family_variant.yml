@@ -23,12 +23,13 @@ datagrid:
             familyCode: ~
         actions:
             edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--view
                 type:         edit-in-modal
                 label:        Edit family variant
                 propertyCode: familyVariantCode
                 fetcher:      family-variant
                 form:         pim-family-variant-edit-form
-                icon:         eye-open
                 rowAction:    true
         filters:
             columns:

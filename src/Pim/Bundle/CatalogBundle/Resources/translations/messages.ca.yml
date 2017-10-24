@@ -1,25 +1,3 @@
 No products to remove: No hi ha productes per eliminar
 "dot (.)": punt (.)
 "comma (,)": coma (,)
-pim_catalog:
-  constraint:
-    product_identifier: Aquests identificadors "%s" no existeixen.
-    0: S'ha produït un error inesperat.
-    100: Valor inesperat
-    101: Aquest camp espera un valor booleà.
-    102: Aquest camp espera un valor float.
-    103: Aquest camp s'espera un nombre enter.
-    104: Aquest camp s'espera un nombre.
-    105: Aquest àmbit es preveu un valor de text.
-    106: Aquest camp preveu un valor de matriu.
-    107: Aquest camp preveu un valor de matriu de matrius.
-    200: S'ha produït un error intern
-    201: S'ha produït un error intern
-    202: Aquest camp s'espera un nombre.
-    203: Aquest àmbit es preveu un valor de text.
-    204: Aquest àmbit es preveu un valor de text.
-    205: S'ha produït un error intern
-    300: Aquest camp espera un codi d'entitat vàlid.
-    301: Aquest camp s'espera un àmbit i una configuració regional vàlids.
-    302: Aquest camp espera un àmbit vàlid.
-    303: Aquest camp espera un format vàlid d'associació.

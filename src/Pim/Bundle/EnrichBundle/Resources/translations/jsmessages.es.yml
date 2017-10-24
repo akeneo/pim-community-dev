@@ -8,8 +8,8 @@ confirmation:
     channel: '¿Está seguro que desea eliminar este canal?'
     group: '¿Está seguro que desea eliminar este grupo?'
     group_type: '¿Está seguro que desea eliminar este tipo de grupo?'
-    import profile: '¿Está seguro que desea eliminar este perfil de importación?'
-    export profile: '¿Está seguro que desea eliminar este perfil de exportación?'
+    import_profile: '¿Está seguro que desea eliminar este perfil de importación?'
+    export_profile: '¿Está seguro que desea eliminar este perfil de exportación?'
     user: '¿Seguro que desea eliminar este usuario?'
     role: '¿Está seguro que desea eliminar este rol?'
 pim_datagrid:
@@ -20,7 +20,7 @@ pim_datagrid:
       label: Exportación rápida
   mass_action:
     delete:
-      confirm_content: '¿Está seguro que desea eliminar los productos seleccionados?'
+      label: Eliminar
       success: Productos seleccionados eliminados exitosamente.
       error: Se ha producido un error al intentar eliminar los productos seleccionados, por favor inténtelo de nuevo.
   view_selector:
@@ -346,6 +346,7 @@ pim_enrich:
     leave: '¿Está seguro que desea salir de esta página?'
     discard_changes: Perderá los cambios realizados sobre {{ entity }} si abandona esta página.
     delete_item: Confirmar la eliminación
+    remove: Quitar
     delete:
       attribute: '¿Está usted seguro que desea eliminar el atributo de este producto?'
   info:
@@ -1093,6 +1094,7 @@ pim_menu:
     group_type: Tipos de grupo
     locale: Locales
     product: Productos
+    published_product: Productos publicados
     export_history: Histórico de exportaciones
     export_profile: Perfiles de exportación
     import_history: Histórico de importaciones

@@ -76,7 +76,7 @@ pim_datagrid:
     attribute_groups: Attributgruppen
   mass_action:
     delete:
-      confirm_title: Löschbestätigung
+      confirm_title: Löschen bestätigen
       confirm_ok: OK
       empty_selection: Kein Produkt ausgewählt
 pim.grid.mass_action.quick_export.title: Schnell-Export
@@ -100,7 +100,7 @@ grid.view_selector:
   choose_label: Wählen Sie eine Bezeichnung für die Ansicht
   confirmation:
     remove: Sind Sie sicher, dass Sie diese Ansicht löschen möchten?
-    delete: Löschbestätigung
-grid.view_selector.flash.updated: Tabellen-Ansicht erfolgreich aktualisiert
+    delete: Löschen bestätigen
+grid.view_selector.flash.updated: Listenansicht erfolgreich aktualisiert
 Client ID: Client-ID
 Secret: Secret

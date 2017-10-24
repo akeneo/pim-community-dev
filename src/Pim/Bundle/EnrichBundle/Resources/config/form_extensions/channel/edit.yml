@@ -50,6 +50,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.channel
+                subTitle: pim_menu.item.channel
                 content: pim_enrich.confirmation.delete_item
                 success: flash.channel.removed
                 fail: error.removing.channel

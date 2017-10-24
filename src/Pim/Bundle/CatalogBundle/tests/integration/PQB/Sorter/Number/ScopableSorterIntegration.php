@@ -28,6 +28,7 @@ class ScopableSorterIntegration extends AbstractProductQueryBuilderTestCase
             'localizable'      => false,
             'scopable'         => true,
             'negative_allowed' => true,
+            'decimals_allowed' => true,
         ]);
 
         $this->createProduct('product_one', [

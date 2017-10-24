@@ -8,8 +8,8 @@ confirmation:
     channel: Jeste li sigurni da želite izbrisati ovaj kanal?
     group: Jeste li sigurni da želite izbrisati ovu grupu?
     group_type: Jeste li sigurni da želite izbrisati ovaj tip grupe?
-    import profile: Jeste li sigurni da želite izbrisati ovaj profil uvoza?
-    export profile: Jeste li sigurni da želite izbrisati ovaj profil izvoza?
+    import_profile: Jeste li sigurni da želite izbrisati ovaj profil uvoza?
+    export_profile: Jeste li sigurni da želite izbrisati ovaj profil izvoza?
     user: Jeste li sigurni da želite izbrisati ovog korisnika?
     role: Jeste li sigurni da želite izbrisati ovu rolu?
 pim_datagrid:
@@ -20,7 +20,7 @@ pim_datagrid:
       label: Brzi izvoz
   mass_action:
     delete:
-      confirm_content: Jeste li sigurni da želite izbrisati odabrane proizvode?
+      label: Obriši
       success: Odabrani proizvodi su uspješno izbrisani.
       error: Dogodila se pogreška prilikom pokušaja brisanja odabranih proizvoda, molimo pokušajte ponovo.
   view_selector:
@@ -311,6 +311,7 @@ pim_enrich:
     leave: Jeste li sigurni da želite napustiti ovu stranicu?
     discard_changes: Promjene u {{ entity }} će se izgubiti ako napustite ovu stranicu.
     delete_item: Potvrdi brisanje
+    remove: Ukloni
     delete:
       attribute: Jeste li sigurni da želite izbrisati ovaj atribut proizvoda?
   info:

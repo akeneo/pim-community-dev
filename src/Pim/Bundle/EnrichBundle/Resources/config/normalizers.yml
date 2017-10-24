@@ -4,6 +4,7 @@ parameters:
     pim_enrich.normalizer.attribute_option_value.class:            Pim\Bundle\EnrichBundle\Normalizer\AttributeOptionValueNormalizer
     pim_enrich.normalizer.product.class:                           Pim\Bundle\EnrichBundle\Normalizer\ProductNormalizer
     pim_enrich.normalizer.product_model.class:                     Pim\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer
+    pim_enrich.normalizer.product_model_incomplete_values.class:   Pim\Bundle\EnrichBundle\Normalizer\ProductModelIncompleteValuesNormalizer
     pim_enrich.normalizer.completeness.class:                      Pim\Bundle\EnrichBundle\Normalizer\CompletenessNormalizer
     pim_enrich.normalizer.completeness_collection.class:           Pim\Bundle\EnrichBundle\Normalizer\CompletenessCollectionNormalizer
     pim_enrich.normalizer.version.class:                           Pim\Bundle\EnrichBundle\Normalizer\VersionNormalizer
@@ -70,6 +71,7 @@ services:
             - '@pim_catalog.values_filler.product'
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
             - '@pim_enrich.normalizer.variant_navigation'
+            - '@pim_enrich.doctrine.query.ascendant_categories'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -89,6 +91,17 @@ services:
             - '@pim_enrich.normalizer.variant_navigation'
             - '@pim_catalog.doctrine.query.find_variant_product_completeness'
             - '@pim_catalog.product_models.image_as_label'
+            - '@pim_enrich.doctrine.query.ascendant_categories'
+            - '@pim_enrich.normalizer.product_model_incomplete_values'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.product_model_incomplete_values:
+        class: '%pim_enrich.normalizer.product_model_incomplete_values.class%'
+        arguments:
+            - '@pim_serializer'
+            - '@pim_catalog.entity_with_family.required_value_collection_factory'
+            - '@pim_catalog.entity_with_family.incomplete_value_collection_factory'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

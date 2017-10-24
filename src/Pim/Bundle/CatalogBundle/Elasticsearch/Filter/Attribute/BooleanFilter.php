@@ -79,6 +79,16 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
                 $this->searchQueryBuilder->addFilter($filterClause);
                 break;
 
+            case Operators::IS_NOT_EMPTY:
+                $filterClause = [
+                    'exists' => [
+                        'field' => $attributePath,
+                    ],
+                ];
+
+                $this->searchQueryBuilder->addFilter($filterClause);
+                break;
+
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);
         }
@@ -94,7 +104,7 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
      */
     protected function checkValue(AttributeInterface $attribute, $value)
     {
-        if (!is_bool($value)) {
+        if (!(is_bool($value) || '' === $value)) {
             throw InvalidPropertyTypeException::booleanExpected($attribute->getCode(), static::class, $value);
         }
     }

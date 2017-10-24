@@ -25,6 +25,7 @@ class InvalidPropertyTypeException extends PropertyException
     const VALID_ARRAY_STRUCTURE_EXPECTED_CODE = 201;
     const ARRAY_OF_ARRAYS_EXPECTED_CODE = 202;
     const ARRAY_KEY_EXPECTED_CODE = 203;
+    const ARRAY_OF_OBJECTS_EXPECTED_CODE = 204;
 
     /** @var mixed */
     protected $propertyValue;
@@ -251,6 +252,28 @@ class InvalidPropertyTypeException extends PropertyException
             $className,
             sprintf($message, $propertyName),
             self::ARRAY_OF_ARRAYS_EXPECTED_CODE
+        );
+    }
+
+    /**
+     * Build an exception when the data are not an array of objects.
+     *
+     * @param string $propertyName
+     * @param string $className
+     * @param mixed  $propertyValue a value that is not an array or does not contain object
+     *
+     * @return InvalidPropertyTypeException
+     */
+    public static function arrayOfObjectsExpected($propertyName, $className, $propertyValue)
+    {
+        $message = 'Property "%s" expects an array of objects as data.';
+
+        return new static(
+            $propertyName,
+            $propertyValue,
+            $className,
+            sprintf($message, $propertyName),
+            self::ARRAY_OF_OBJECTS_EXPECTED_CODE
         );
     }
 

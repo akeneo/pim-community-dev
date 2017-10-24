@@ -8,8 +8,8 @@ confirmation:
     channel: Esteu segur que voleu suprimir aquest canal?
     group: Esteu segur que voleu suprimir aquest grup?
     group_type: Esteu segur que voleu suprimir aquest tipus de grup?
-    import profile: Esteu segur que voleu suprimir aquest perfil d'importació?
-    export profile: Esteu segur que voleu eliminar aquest perfil d'exportació?
+    import_profile: Esteu segur que voleu suprimir aquest perfil d'importació?
+    export_profile: Esteu segur que voleu eliminar aquest perfil d'exportació?
     user: Esteu segur que voleu eliminar aquest usuari?
     role: Estàs segur que vols suprimir aquest rol?
 pim_datagrid:
@@ -20,7 +20,7 @@ pim_datagrid:
       label: Exportació ràpida
   mass_action:
     delete:
-      confirm_content: Esteu segur que voleu suprimir els productes seleccionats?
+      label: Suprimir
       success: Els productes seleccionats s'han eliminat correctament.
       error: S'ha produït un error en intentar suprimir els productes seleccionats, intenteu-ho un altre cop.
   view_selector:
@@ -311,6 +311,7 @@ pim_enrich:
     leave: Esteu segur que voleu sortir d'aquesta pàgina?
     discard_changes: Perdreu els canvis a la {{ entity }} si sortiu de la pàgina.
     delete_item: Confirmar l'eliminació
+    remove: Eliminar
     delete:
       attribute: Esteu segur que voleu suprimir aquest atribut del producte?
   info:
@@ -1042,6 +1043,7 @@ pim_menu:
     group_type: Tipus de grup
     locale: Configuracions regionals
     product: Productes
+    published_product: Productes publicats
     export_history: Històric d'exportacions
     export_profile: Perfils d'exportació
     import_history: Històric d'importacions

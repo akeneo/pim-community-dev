@@ -16,6 +16,9 @@ pim_api:
         family:
             edit: Create and update families
             list: List families
+        family_variant:
+            edit: Create and update family variants
+            list: List family variants
         channel:
             edit: Create and update channels
             list: List channels
@@ -31,6 +34,7 @@ pim_api:
         attribute_group: Attribute groups
         category: Categories
         family: Families
+        family_variant: Family variants
         channel: Channels
         locale: Locales
         currency: Currencies

@@ -224,6 +224,30 @@ class InvalidPropertyTypeExceptionSpec extends ObjectBehavior
         $this->getCode()->shouldReturn($exception->getCode());
     }
 
+    function it_creates_a_not_array_of_objects_structure_exception()
+    {
+        $exception = InvalidPropertyTypeException::arrayOfObjectsExpected(
+            'attribute',
+            'Pim\Component\Catalog\Updater\Attribute',
+            ['string']
+        );
+
+        $this->beConstructedWith(
+            'attribute',
+            ['string'],
+            'Pim\Component\Catalog\Updater\Attribute',
+            'Property "attribute" expects an array of objects as data.',
+            InvalidPropertyTypeException::ARRAY_OF_OBJECTS_EXPECTED_CODE
+        );
+
+        $this->shouldBeAnInstanceOf(get_class($exception));
+        $this->getPropertyName()->shouldReturn($exception->getPropertyName());
+        $this->getPropertyValue()->shouldReturn($exception->getPropertyValue());
+        $this->getClassName()->shouldReturn($exception->getClassName());
+        $this->getMessage()->shouldReturn($exception->getMessage());
+        $this->getCode()->shouldReturn($exception->getCode());
+    }
+
     function it_creates_a_not_key_not_found_exception()
     {
         $exception = InvalidPropertyTypeException::arrayKeyExpected(

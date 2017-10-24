@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Doctrine\ORM\Repository;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
 
@@ -39,6 +40,10 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
      */
     public function findByGroupIds(array $groupIds)
     {
+        if (empty($groupIds)) {
+            return [];
+        }
+
         $qb = $this->createQueryBuilder('u');
         $qb->leftJoin('u.groups', 'g');
         $qb->where($qb->expr()->in('g.id', $groupIds));
