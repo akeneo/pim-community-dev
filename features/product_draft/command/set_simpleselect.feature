@@ -7,7 +7,7 @@ Feature: Create a draft with a simple select fields
     Given a "clothing" catalog configuration
     And the following product:
       | sku           | categories |
-      | akeneo_tshirt | tshirts    |
+      | akeneo_tshirt | tops       |
 
   Scenario: Successfully add a draft without add attribute in product
     Given I should get the following product drafts after apply the following updater to it:
