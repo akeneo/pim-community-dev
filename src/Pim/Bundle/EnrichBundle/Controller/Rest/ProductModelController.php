@@ -161,16 +161,16 @@ class ProductModelController
 
         $violations = $this->validator->validate($productModel);
 
-        $normalizedViolations = [];
-        foreach ($violations as $violation) {
-            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                $violation,
-                'internal_api',
-                ['product_model' => $productModel]
-            );
-        }
+        if (count($violations) > 0) {
+            $normalizedViolations = [];
+            foreach ($violations as $violation) {
+                $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                    $violation,
+                    'internal_api',
+                    ['product_model' => $productModel]
+                );
+            }
 
-        if (count($normalizedViolations) > 0) {
             return new JsonResponse(['values' => $normalizedViolations], 400);
         }
 

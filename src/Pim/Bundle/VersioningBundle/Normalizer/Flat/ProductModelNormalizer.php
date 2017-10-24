@@ -20,6 +20,12 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
     private const FIELD_CATEGORY = 'categories';
 
     /** @staticvar string */
+    private const FIELD_FAMILY_VARIANT = 'family_variant';
+
+    /** @staticvar string */
+    private const FIELD_CODE = 'code';
+
+    /** @staticvar string */
     private const ITEM_SEPARATOR = ',';
 
     /**
@@ -30,6 +36,9 @@ class ProductModelNormalizer extends SerializerAwareNormalizer implements Normal
         $context = $this->resolveContext($context);
 
         $results = [];
+        $familyVariant = $object->getFamilyVariant();
+        $results[self::FIELD_FAMILY_VARIANT] = null === $familyVariant ? null : $familyVariant->getCode();
+        $results[self::FIELD_CODE] = $object->getCode();
         $results[self::FIELD_CATEGORY] = implode(self::ITEM_SEPARATOR, $object->getCategoryCodes());
         $results = array_replace($results, $this->normalizeValues($object, $format, $context));
 
