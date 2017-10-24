@@ -355,7 +355,7 @@ stage("Test") {
                                     container: "php",
                                     junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                                     artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                                    script: "php ./bin/behat --strict -vv " + scenarioCE
+                                    script: "su docker -c 'php ./bin/behat --strict -vv " + scenarioCE+"'"
                                 ]
                             ])
                         }
