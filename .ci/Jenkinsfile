@@ -240,7 +240,7 @@ stage("Test") {
                 if (launchUnitTests.equals("yes")) {
                     withPhp({
                         try {
-                            sh "cd /home/jenkins/pim chown -R docker /home/jenkins/pim && su docker -c './bin/phpspec run --format=junit' > ${env.WORKSPACE}/junit_output.xml"
+                            sh "cd /home/jenkins/pim && chown -R docker /home/jenkins/pim && su docker -c './bin/phpspec run --format=junit' > ${env.WORKSPACE}/junit_output.xml"
                         } finally {
                             junit "junit_output.xml"
                         }
