@@ -4,6 +4,7 @@
     display: flex;
     padding: 0 0 0 @AknFullPagePadding;
     margin-top: 50px;
+    margin-bottom: @AknFullPagePadding;
 
     &-title {
         position: fixed;
@@ -26,7 +27,7 @@
         flex-grow: 1;
         margin-right: @AknFullPagePadding;
 
-        &:last-child {
+        &:nth-child(3) {
             margin-top: 65px;
         }
 
@@ -48,15 +49,15 @@
     }
 
     &-column--common {
-        max-height: ~"calc(100vh - 150px)";
+        max-height: ~"calc(100vh - 170px)";
     }
 
     &-column--level2 {
-        max-height: ~"calc(100vh - (150px + 2 * 65px))";
+        max-height: ~"calc(100vh - (170px + 2 * 65px))";
     }
 
     &-column--level1 {
-        max-height: ~"calc(100vh - (150px + 65px))";
+        max-height: ~"calc(100vh - (170px + 65px))";
     }
 
     &-columTitle {

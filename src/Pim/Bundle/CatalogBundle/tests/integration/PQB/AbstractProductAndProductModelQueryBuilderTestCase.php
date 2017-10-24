@@ -34,7 +34,7 @@ class AbstractProductAndProductModelQueryBuilderTestCase extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getFunctionalCatalogPath('catalog_modeling')]);
+        return $this->catalog->useFunctionalCatalog('catalog_modeling');
     }
 
     /**

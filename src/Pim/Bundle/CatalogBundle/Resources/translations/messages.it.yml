@@ -1,25 +1,3 @@
 No products to remove: Nessun prodotto da rimuovere
 "dot (.)": punto (.)
 "comma (,)": virgola (,)
-pim_catalog:
-  constraint:
-    product_identifier: Questi identificatori "%s" non esistono.
-    0: Si è verificato un errore imprevisto.
-    100: Valore non previsto
-    101: In questo campo è previsto un valore booleano.
-    102: In questo campo è previsto un valore di tipo float.
-    103: In questo campo è previsto un valore intero.
-    104: In questo campo è previsto un valore numerico.
-    105: In questo campo è previsto un valore di tipo stringa.
-    106: In questo campo è previsto un valore di tipo array.
-    107: In questo campo è previsto un valore di tipo array di array.
-    200: Errore interno
-    201: Errore interno
-    202: In questo campo è previsto un valore numerico.
-    203: In questo campo è previsto un valore di tipo stringa.
-    204: In questo campo è previsto un valore di tipo stringa.
-    205: Errore interno
-    300: In questo campo è previsto un codice di entità valido.
-    301: In questo campo sono previsti uno "scope" valido e una lingua.
-    302: In questo campo è previsto uno "scope" valido.
-    303: In questo campo è previsto un formato di associazione valido.

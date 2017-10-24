@@ -7,6 +7,9 @@ use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group ce
+ */
 class PartialUpdateListAttributeIntegration extends ApiTestCase
 {
     public function testCreateAndUpdateAListOfAttributes()
@@ -333,6 +336,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

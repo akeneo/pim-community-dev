@@ -170,6 +170,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
                 ]
             )
             ->willReturn($violation);
+        $violation->atPath('attribute')->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $uniqueAxesCombinationSet->addCombination($entity, Argument::any())->willReturn(true);
@@ -222,6 +223,7 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
                 ]
             )
             ->willReturn($violation);
+        $violation->atPath('attribute')->willReturn($violation);
         $violation->addViolation()->shouldBeCalled();
 
         $uniqueAxesCombinationSet->addCombination($entity, Argument::any())->willReturn(true);
@@ -270,6 +272,9 @@ class UniqueVariantAxisValidatorSpec extends ObjectBehavior
                 ]
             )
             ->willReturn($violation);
+
+        $violation->atPath('attribute')->willReturn($violation);
+        $violation->addViolation()->shouldBeCalled();
 
         $this->validate($entity1, $constraint);
         $this->validate($entity2, $constraint);

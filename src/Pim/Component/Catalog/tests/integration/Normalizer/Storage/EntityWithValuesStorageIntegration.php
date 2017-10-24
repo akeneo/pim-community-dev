@@ -17,9 +17,7 @@ class EntityWithValuesStorageIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()]
-        );
+        return $this->catalog->useTechnicalSqlCatalog();
     }
 
     public function testProductWithAllAttributes()

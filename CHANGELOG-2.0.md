@@ -2,12 +2,51 @@
 
 ## Bug fixes
 
+- GITHUB-7035: Change class alias for proper LocaleType form parent indication, cheers @mkilmanas!
+- PIM-6567: Fix attributes filter to not remove axes
+
+## Better manage products with variants!
+
+- PIM-6773: Add the missing required attributes filter in the product model edit form
+
+## BC breaks
+
+- Change the constructor of `Pim\Component\Catalog\Completeness\CompletenessCalculator`. Remove `Pim\Component\Catalog\Factory\ValueFactory` and both `Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface`. Add `Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory` and `Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory`. 
+- Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer` to add `Symfony\Component\Serializer\Normalizer\NormalizerInterface`.
+
+# 2.0.4 (2017-10-19)
+
+# 2.0.3 (2017-10-19)
+
+## Bug fixes
+
 - PIM-6898: Fixes some data can break ES index and crashes new products indexing
+- PIM-6918: Fix error when deleteing boolean attribute linked to a published product
+- PIM-5817: move datepicker above field instead of under
+- API-407: Fix too many error messages when trying to create a product model that extends a product model with a parent
+
+## Better manage products with variants!
+
+- API-381: Create family variant via API.
+- API-399: Create a product model via API.
+- PIM-6903: Adds compare/translate functionality for product models
+- API-404: Update partially a single product model via API
+- PIM-6892: Forbids users to unselect categories of parent product models
+- PIM-6896: Remove the button restore displayed on product models
+- PIM-6891: Keep the tab context between product and product model forms
+- API-405: Update partially a list of product models
 
 ## Better UI\UX!
 
 - PIM-6667: Update loading mask design
 - PIM-6504: Update action icons on datagrids
+- PIM-6848: Fix design on export builder fields
+- PIM-6868: CSS glitches compilation
+- PIM-6909: Replace 'products' by 'results' in products indexes
+
+## BC breaks
+
+- Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer` to add `Pim\Component\Enrich\Query\AscendantCategoriesInterface`
 
 # 2.0.2 (2017-10-12)
 
@@ -16,6 +55,7 @@
 - TIP-808: Add version strategy for js and css assets, no more need to ask final users to refresh their browser cache when applying a new patch!
 - PRE_SAVE and POST_SAVE events dispatched by instances of BaseSaver now include an "is_new" argument indicating if entities are being inserted or updated.
 - TIP-813: Move attribute form fields to make them generic
+- PIM-6589: Add new template for confirmation modals
 
 ## Bug Fixes
 
@@ -26,6 +66,7 @@
 - PIM-6872: Fix PQB sorters with Elasticsearch
 - PIM-6859: Fix missing attribute values in PDF
 - PIM-6894: Allow any special characters in password field
+- PIM-6821: Options "Edit attributes" and "classify the product" not working on the Product grid
 
 ## Better UI\UX!
 
@@ -56,14 +97,14 @@
 ## BC breaks
 
 - Throw exception when trying to create or update a product with the `variant_group` field through the API, now you have to use `parent` field [please see the link below](http://api.akeneo.com/documentation/products-with-variants.html)
-- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template 
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` to add `Oro\Bundle\SecurityBundle\SecurityFacade`, an acl and a template
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\AttributeGroupController` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\JobInstanceController` to add `Symfony\Component\EventDispatcher\EventDispatcherInterface` and `Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface`
 - Change the constructor of `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\EntityWithFamilyVariantRepository` to add `Pim\Component\Catalog\Repository\VariantProductRepositoryInterface`
 - Change the constructor of `Pim\Component\Catalog\ProductModel\Filter` to add `Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface`
-- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\AttributeFilterInterface` 
-- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductAttributeFilter` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\ProductAttributeFilter` 
-- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductModelAttributeFilter` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\ProductModelAttributeFilter` 
+- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\AttributeFilterInterface` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\AttributeFilterInterface`
+- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductAttributeFilter` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\ProductAttributeFilter`
+- Move `Pim\Component\Connector\Processor\Denormalization\AttributeFilter\ProductModelAttributeFilter` to `Pim\Component\Catalog\ProductModel\Filter\AttributeFilter\ProductModelAttributeFilter`
 - Rename `Pim\Component\Catalog\Validator\Constraints\SiblingUniqueVariantAxes` into `Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis`
 - Rename service `pim_catalog.validator.constraint.sibling_unique_variant_axes` into `pim_catalog.validator.constraint.unique_variant_axes`
 - Rename class parameter `pim_catalog.validator.constraint.sibling_unique_variant_axes.class` into `pim_catalog.validator.constraint.unique_variant_axes.class`

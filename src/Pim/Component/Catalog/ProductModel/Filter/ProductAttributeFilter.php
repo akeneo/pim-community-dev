@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Pim\Component\Catalog\ProductModel\Filter;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
@@ -68,7 +69,10 @@ class ProductAttributeFilter implements AttributeFilterInterface
             $attributeSet = $parentProductModel
                 ->getFamilyVariant()
                 ->getVariantAttributeSet($parentProductModel->getVariationLevel() + 1);
-            $attributes = $attributeSet->getAttributes();
+            $attributes = new ArrayCollection(array_merge(
+                $attributeSet->getAttributes()->toArray(),
+                $attributeSet->getAxes()->toArray()
+            ));
 
             return $this->keepOnlyAttributes($standardProduct, $attributes);
         }
@@ -92,14 +96,12 @@ class ProductAttributeFilter implements AttributeFilterInterface
      */
     private function keepOnlyAttributes(array $flatProduct, Collection $attributesToKeep): array
     {
-        foreach ($flatProduct['values'] as $attributeName => $value) {
-            $keepedAttributeCodes = $attributesToKeep->exists(
-                function ($key, AttributeInterface $attribute) use ($attributeName) {
-                    return $attribute->getCode() === (string)$attributeName;
-                }
-            );
+        $attributeCodesToKeep = $attributesToKeep->map(function (AttributeInterface $attribute) {
+            return $attribute->getCode();
+        })->toArray();
 
-            if (!$keepedAttributeCodes) {
+        foreach ($flatProduct['values'] as $attributeName => $value) {
+            if (!in_array($attributeName, $attributeCodesToKeep)) {
                 unset($flatProduct['values'][$attributeName]);
             }
         }

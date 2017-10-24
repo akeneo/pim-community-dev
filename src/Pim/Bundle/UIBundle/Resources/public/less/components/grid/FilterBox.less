@@ -7,15 +7,13 @@
   &-addFilterButton {
     background: url("../../../images/icon-plus.svg") no-repeat right center;
     background-size: 19px;
-    width: 100% !important; // Width is set by multiselect
+    width: ~"calc(100% + 10px)" !important; // Width is set by multiselect
     padding: 0 !important; // Padding is set by multiselect
     border: none;
-    height: 50px;
+    height: 30px;
     font-size: @AknFontSizeBig;
     color: @AknDarkBlue;
     transition: color 0.1s ease-in;
-    margin-top: 15px;
-    margin-bottom: -15px;
   }
 
   &--search:not(:empty) {

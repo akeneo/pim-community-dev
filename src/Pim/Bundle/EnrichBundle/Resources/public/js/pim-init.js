@@ -126,11 +126,14 @@ define(
 
                 // DELETE request for delete buttons
                 $(document).on('click', '[data-dialog]', function () {
-                    var $el      = $(this);
-                    var message  = $el.data('message');
-                    var title    = $el.data('title');
-                    var doAction = function () {
-                        var loadingMask = new LoadingMask();
+                    const $el      = $(this);
+                    const message  = $el.data('message');
+                    const title    = $el.data('title');
+                    const subTitle = $el.data('subtitle');
+                    const buttonLabel = $el.data('buttonlabel');
+
+                    const doAction = function () {
+                        const loadingMask = new LoadingMask();
                         loadingMask.render().$el.appendTo($(document.body)).css(
                             {
                                 'position': 'absolute',
@@ -149,7 +152,7 @@ define(
                             data: { _method: $el.data('method') },
                             success: function () {
                                 loadingMask.hide().$el.remove();
-                                var targetUrl = $el.attr('data-redirect-url');
+                                const targetUrl = $el.attr('data-redirect-url');
                                 router.redirect(targetUrl, {trigger: true});
                                 messenger.notify('success', $el.attr('data-success-message'));
                             },
@@ -164,10 +167,13 @@ define(
                         });
                     };
                     $el.off('click');
+
                     if ($el.data('dialog') === 'confirm') {
-                        Dialog.confirm(message, title, doAction);
+                        Dialog.confirm(message, title, doAction, subTitle, '', buttonLabel);
+                    } else if ($el.data('dialog') === 'delete') {
+                        Dialog.confirmDelete(message, title, doAction, subTitle);
                     } else {
-                        Dialog.alert(message, title);
+                        Dialog.alert(message, title, subTitle);
                     }
 
                     return false;

@@ -169,7 +169,7 @@ class ProductModelUpdaterSpec extends ObjectBehavior
         $parent->getFamilyVariant()->willReturn($familyVariant);
         $familyVariant->getCode()->willreturn('family_variant');
 
-        $this->shouldThrow(ImmutablePropertyException::class)->during('update', [$productModel, [
+        $this->shouldThrow(InvalidPropertyException::class)->during('update', [$productModel, [
             'family_variant' => 'new_family_variant'
         ]]);
     }

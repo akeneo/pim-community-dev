@@ -48,8 +48,12 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function () {
+            initialize: function (config) {
                 this.actions = {};
+
+                if (undefined !== config) {
+                    this.config = config.config;
+                }
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -59,7 +63,7 @@ define(
              */
             configure: function () {
                 this.trigger('tab:register', {
-                    code: this.code,
+                    code: (undefined === this.config.tabCode) ? this.code : this.config.tabCode,
                     label: __('pim_enrich.form.product.panel.history.title')
                 });
 
@@ -73,7 +77,12 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                if (!this.configured || this.code !== this.getParent().getCurrentTab()) {
+                if (!this.configured) {
+                    return this;
+                }
+
+                const tabCode = (undefined === this.config.tabCode) ? this.code : this.config.tabCode;
+                if (tabCode !== this.getParent().getCurrentTab()) {
                     return this;
                 }
 

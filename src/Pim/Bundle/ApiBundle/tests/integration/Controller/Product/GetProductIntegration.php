@@ -6,6 +6,9 @@ use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group ce
+ */
 class GetProductIntegration extends AbstractProductTestCase
 {
     public function testGetACompleteProduct()
@@ -239,7 +242,7 @@ class GetProductIntegration extends AbstractProductTestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
+        return $this->catalog->useTechnicalSqlCatalog();
     }
 
     /**

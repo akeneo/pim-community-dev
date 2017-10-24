@@ -72,7 +72,7 @@ pim_datagrid:
     attribute_groups: 属性组
   mass_action:
     delete:
-      confirm_title: 删除确认
+      confirm_title: 确定删除
       confirm_ok: 好的
       empty_selection: 没有选定的产品
 pim.grid.mass_action.quick_export.title: 快速导出
@@ -95,5 +95,5 @@ grid.view_selector:
   placeholder: 新视图的名称
   choose_label: 选择视图的标签
   confirmation:
-    delete: 删除确认
+    delete: 确定删除
 grid.view_selector.flash.updated: 数据视图已更新

@@ -8,8 +8,8 @@ confirmation:
     channel: Oletko varma, että haluat poistaa tämän kanavan?
     group: Oletko varma että haluat poistaa tämän ryhmän?
     group_type: Oletko varma, että haluat poistaa tämän ryhmätyypin?
-    import profile: Oletko varma, että haluat poistaa tämän tuontiprofiilin?
-    export profile: Oletko varma, että haluat poistaa tämän vientiprofiilin?
+    import_profile: Oletko varma, että haluat poistaa tämän tuontiprofiilin?
+    export_profile: Oletko varma, että haluat poistaa tämän vientiprofiilin?
     user: Haluatko varmasti poistaa tämän käyttäjän?
     role: Oletko varma, että haluat poistaa tämän roolin?
 pim_datagrid:
@@ -20,7 +20,7 @@ pim_datagrid:
       label: Nopea vienti
   mass_action:
     delete:
-      confirm_content: Oletko varma, että haluat poistaa valitut tuotteet?
+      label: Poista
       success: Valitut tuotteet poistettiin.
       error: Virhe yritettäessä poistaa valitut tuotteet, yritä uudelleen.
   view_selector:
@@ -306,6 +306,7 @@ pim_enrich:
     leave: Oletko varma että haluat poistua sivulta?
     discard_changes: Menetät muutokset tähän {{ entity }}, jos poistut sivulta.
     delete_item: Vahvista poisto
+    remove: Poista
     delete:
       attribute: Oletko varma, että haluat poistaa tämän määritteen tuotteesta?
   info:
@@ -982,6 +983,7 @@ pim_menu:
     group_type: Ryhmätyypit
     locale: Alueet
     product: Tuotteet
+    published_product: Julkaistut tuotteet
     export_history: Vientihistoria
     export_profile: Vientiprofiili
     import_history: Tuontihistoria

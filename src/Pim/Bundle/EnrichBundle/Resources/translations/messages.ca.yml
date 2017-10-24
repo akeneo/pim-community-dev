@@ -310,7 +310,7 @@ btn:
   download: descarregar
 confirmation:
   confirm: Confirmació
-  delete: Confirmació de l'eliminació
+  delete: Confirmar l'eliminació
   leave: Esteu segur que voleu sortir d'aquesta pàgina?
   discard changes: Si sortiu de la pàgina perdreu els canvis a %entity%.
   remove:

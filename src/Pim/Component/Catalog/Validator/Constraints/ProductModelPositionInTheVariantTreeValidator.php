@@ -48,7 +48,7 @@ class ProductModelPositionInTheVariantTreeValidator extends ConstraintValidator
                     '%product_model%' => $productModel->getCode(),
                     '%parent_product_model%' => $productModel->getParent()->getCode(),
                 ]
-            )->addViolation();
+            )->atPath('parent')->addViolation();
         }
 
         if (1 === $numberOfLevel && null !== $productModel->getParent()) {
@@ -57,7 +57,7 @@ class ProductModelPositionInTheVariantTreeValidator extends ConstraintValidator
                 [
                     '%product_model%' => $productModel->getCode(),
                 ]
-            )->addViolation();
+            )->atPath('parent')->addViolation();
         }
     }
 }

@@ -72,7 +72,7 @@ pim_datagrid:
     attribute_groups: Attribuutgroepen
   mass_action:
     delete:
-      confirm_title: Bevestig verwijderen
+      confirm_title: Verwijderen bevestigen
       confirm_ok: OK
       empty_selection: Geen product geselecteerd
 pim.grid.mass_action.quick_export.title: Snelle Export
@@ -95,5 +95,5 @@ grid.view_selector:
   placeholder: Naam van nieuwe weergave
   choose_label: Kies een label voor de weergave
   confirmation:
-    delete: Bevestig verwijderen
+    delete: Verwijderen bevestigen
 grid.view_selector.flash.updated: Datarasterweergave succesvol bijgewerkt

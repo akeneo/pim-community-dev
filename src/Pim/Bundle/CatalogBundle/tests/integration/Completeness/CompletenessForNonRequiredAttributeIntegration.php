@@ -105,6 +105,6 @@ class CompletenessForNonRequiredAttributeIntegration extends AbstractCompletenes
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getMinimalCatalogPath()]);
+        return $this->catalog->useMinimalCatalog();
     }
 }

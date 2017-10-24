@@ -83,11 +83,50 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
+    public function testAccessDeniedForCreatingAFamilyVariant()
+    {
+        $data = <<<JSON
+{
+    "code": "new_family_variant",
+    "variant_attribute_sets": [
+        {
+            "level": 1,
+            "axes": ["a_ref_data_simple_select"],
+            "attributes": ["a_ref_data_simple_select"]
+        },
+        {
+            "level": 2,
+            "axes": ["a_yes_no"],
+            "attributes": ["a_yes_no"]
+        }
+    ],
+    "labels": {
+        "en_US": "English label"
+    }
+}
+JSON;
+
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+
+        $client->request('POST', 'api/rest/v1/families/familyA/variants', [], [], [], $data);
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update family variants."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

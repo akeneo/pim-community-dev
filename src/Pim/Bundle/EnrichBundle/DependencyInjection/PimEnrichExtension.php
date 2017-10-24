@@ -55,6 +55,7 @@ class PimEnrichExtension extends Extension
         $loader->load('mass_actions.yml');
         $loader->load('normalizers.yml');
         $loader->load('providers.yml');
+        $loader->load('queries.yml');
         $loader->load('query_builder.yml');
         $loader->load('query_builders.yml');
         $loader->load('readers.yml');

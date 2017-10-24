@@ -27,7 +27,8 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
             'type'                => AttributeTypes::NUMBER,
             'localizable'         => true,
             'scopable'            => true,
-            'negative_allowed'    => true
+            'negative_allowed'    => true,
+            'decimals_allowed'    => true,
         ]);
 
         $this->createProduct('product_one', [

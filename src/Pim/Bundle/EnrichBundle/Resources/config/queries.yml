@@ -1,0 +1,8 @@
+parameters:
+    pim_enrich.doctrine.query.ascendant_categories.class: 'Pim\Bundle\EnrichBundle\Doctrine\ORM\Query\AscendantCategories'
+
+services:
+    pim_enrich.doctrine.query.ascendant_categories:
+        class: '%pim_enrich.doctrine.query.ascendant_categories.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'

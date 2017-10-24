@@ -246,7 +246,7 @@ JSON;
         $expectedContent =
 <<<JSON
 {"line":1,"identifier":"apollon_optionb_true","status_code":204}
-{"line":2,"identifier":"apollon_optionb_new","status_code":422,"message":"Validation failed.","errors":[{"property":"","message":"Cannot set value \"1\" for the attribute axis \"a_yes_no\", as another sibling entity already has this value"}]}
+{"line":2,"identifier":"apollon_optionb_new","status_code":422,"message":"Validation failed.","errors":[{"property":"attribute","message":"Cannot set value \"1\" for the attribute axis \"a_yes_no\", as another sibling entity already has this value"}]}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
@@ -303,6 +303,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

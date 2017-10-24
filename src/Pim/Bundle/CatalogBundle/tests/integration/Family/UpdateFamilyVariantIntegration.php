@@ -44,7 +44,7 @@ class UpdateFamilyVariantIntegration extends TestCase
         $this->get('pim_catalog.updater.family_variant')->update(
             $familyVariant,
             [
-                'label' => [
+                'labels' => [
                     'en_US' => 'My family variant',
                 ],
                 'variant_attribute_sets' => [
@@ -295,7 +295,7 @@ class UpdateFamilyVariantIntegration extends TestCase
      */
     protected function getConfiguration(): Configuration
     {
-        return new Configuration([Configuration::getFunctionalCatalogPath('catalog_modeling')]);
+        return $this->catalog->useFunctionalCatalog('catalog_modeling');
     }
 
     /**

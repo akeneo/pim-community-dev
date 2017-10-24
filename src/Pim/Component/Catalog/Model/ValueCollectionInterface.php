@@ -91,6 +91,16 @@ interface ValueCollectionInterface extends ProductUniqueValueCollectionInterface
     public function containsKey($key);
 
     /**
+     * Get the value with the same attribute, channel and locale than $value.
+     * Or null if such a value does not exist.
+     *
+     * @param ValueInterface $value
+     *
+     * @return ValueInterface|null
+     */
+    public function getSame(ValueInterface $value);
+
+    /**
      * Gets the value at the specified key/index.
      *
      * @param string $key The key/index of the value to retrieve.

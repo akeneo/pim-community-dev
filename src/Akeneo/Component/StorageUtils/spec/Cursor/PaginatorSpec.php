@@ -89,7 +89,7 @@ class PaginatorSpec extends ObjectBehavior
         $cursor->count()->shouldBeCalled()->willReturn(13);
 
         // page size is 10 : so 1 page of 10 elements and a second of 3
-        $this->shouldHaveCount(2);
+        $this->count()->shouldReturn(2);
     }
 }
 

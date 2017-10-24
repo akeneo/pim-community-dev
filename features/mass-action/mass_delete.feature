@@ -32,7 +32,7 @@ Feature: Delete many product at once
   Scenario: Successfully remove many products
     Given I select rows boots_S36 and boots_S37
     And I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete selected products?"
+    Then I should see the text "Are you sure you want to delete the selected products?"
     When I confirm the removal
     And I refresh current page
     Then I should not see products boots_S36 and boots_S37
@@ -41,7 +41,7 @@ Feature: Delete many product at once
   Scenario: Successfully "mass" delete one product
     Given I select row boots_S38
     And I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete selected products?"
+    Then I should see the text "Are you sure you want to delete the selected products?"
     When I confirm the removal
     And I refresh current page
     Then I should not see product boots_S38
@@ -52,7 +52,7 @@ Feature: Delete many product at once
     And I select rows boots_S36
     And I select all visible entities
     Then I press the "Delete" button
-    And I should see the text "Are you sure you want to delete selected products?"
+    And I should see the text "Are you sure you want to delete the selected products?"
     When I confirm the removal
     And I refresh current page
     Then the grid should contain 0 elements
@@ -61,7 +61,7 @@ Feature: Delete many product at once
     Given I select rows boots_S36
     And I select all entities
     Then I press the "Delete" button
-    And I should see the text "Are you sure you want to delete selected products?"
+    And I should see the text "Are you sure you want to delete the selected products?"
     When I confirm the removal
     And I refresh current page
     Then the grid should contain 0 elements
@@ -77,6 +77,6 @@ Feature: Delete many product at once
     And I filter by "completeness" with operator "equals" and value "yes"
     And I select rows boots_S42
     When I press the "Delete" button
-    Then I should see the text "Are you sure you want to delete selected products?"
+    Then I should see the text "Are you sure you want to delete the selected products?"
     When I confirm the removal
     Then the grid should contain 0 element

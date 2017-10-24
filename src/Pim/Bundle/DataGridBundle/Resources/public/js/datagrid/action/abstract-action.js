@@ -1,7 +1,7 @@
  /* global define */
 define(['jquery', 'underscore', 'backbone', 'routing', 'pim/router', 'oro/translator', 'oro/mediator',
-    'oro/messenger', 'oro/error', 'oro/modal', 'oro/datagrid/action-launcher', 'require-context'],
-function($, _, Backbone, routing, router, __, mediator, messenger, error, Modal, ActionLauncher, requireContext) {
+    'oro/messenger', 'oro/error', 'pim/dialog', 'oro/datagrid/action-launcher', 'require-context'],
+function($, _, Backbone, routing, router, __, mediator, messenger, error, Dialog, ActionLauncher, requireContext) {
     'use strict';
 
     /**
@@ -156,7 +156,7 @@ function($, _, Backbone, routing, router, __, mediator, messenger, error, Modal,
 
         _confirmationExecutor: function(callback) {
             if (this.confirmation) {
-                this.getConfirmDialog(callback).open();
+                this.getConfirmDialog(callback);
             } else {
                 callback();
             }
@@ -277,11 +277,53 @@ function($, _, Backbone, routing, router, __, mediator, messenger, error, Modal,
          * @return {oro.Modal}
          */
         getConfirmDialog: function(callback) {
-            return new Modal({
-                title: this.messages.confirm_title,
-                content: this.messages.confirm_content,
-                okText: this.messages.confirm_ok
-            }).on('ok', callback);
+            return Dialog.confirm(
+              this.messages.confirm_content,
+              this.messages.confirm_title,
+              callback,
+              this.getEntityHint(true)
+            );
+        },
+
+        /**
+         * Get the entity type from datagrid metadata
+         *
+         * @param {Boolean} plural Pluralize the entity code
+         */
+        getEntityHint: function(plural) {
+            const datagrid = this.datagrid || {};
+            const entityHint = datagrid.entityHint || 'item';
+
+            if (plural) {
+                return this.getEntityPlural(entityHint);
+            }
+
+            return entityHint;
+        },
+
+        /**
+         * Get the entity hint separated by dashes
+         */
+        getEntityCode: function() {
+            const entityHint = this.getEntityHint();
+            return entityHint.toLowerCase().split(' ').join('_');
+        },
+
+        /**
+         * Very basic pluralize method for entity types
+         *
+         * Example:
+         *      Product -> products
+         *      Family -> families
+         *
+         * @return {String}
+         */
+        getEntityPlural: function(entityHint) {
+            if (entityHint.endsWith('y')) {
+                return entityHint.replace(/y$/, 'ies');
+            }
+
+            return `${entityHint}s`;
         }
     });
 });

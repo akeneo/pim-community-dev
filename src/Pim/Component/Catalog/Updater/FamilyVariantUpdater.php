@@ -9,6 +9,7 @@ use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Component\StorageUtils\Exception\UnknownPropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -112,7 +113,7 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                 break;
             case 'variant_attribute_sets':
                 if (!is_array($value)) {
-                    throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
+                    throw InvalidPropertyTypeException::arrayOfObjectsExpected($field, static::class, $value);
                 }
 
                 if (null !== $familyVariant->getId() &&
@@ -126,20 +127,39 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                 }
 
                 foreach ($value as $attributeSetData) {
+                    if (!is_array($attributeSetData)) {
+                        throw InvalidPropertyTypeException::arrayOfObjectsExpected(
+                            $field,
+                            static::class,
+                            $attributeSetData
+                        );
+                    }
                     if (!isset($attributeSetData['level'])) {
                         continue;
                     }
 
                     if (isset($attributeSetData['axes']) && !is_array($attributeSetData['axes'])) {
-                        throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
+                        throw InvalidPropertyTypeException::arrayExpected(
+                            sprintf('%s" in the property "%s', 'axes', $field),
+                            static::class,
+                            $attributeSetData['axes']
+                        );
                     }
 
                     if (isset($attributeSetData['attributes']) && !is_array($attributeSetData['attributes'])) {
-                        throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
+                        throw InvalidPropertyTypeException::arrayExpected(
+                            sprintf('%s" in the property "%s', 'attributes', $field),
+                            static::class,
+                            $attributeSetData['attributes']
+                        );
                     }
 
-                    if (!is_numeric($attributeSetData['level'])) {
-                        throw InvalidPropertyTypeException::numericExpected($field, static::class, $value);
+                    if (!is_integer($attributeSetData['level'])) {
+                        throw InvalidPropertyTypeException::integerExpected(
+                            sprintf('%s" in the property "%s', 'level', $field),
+                            static::class,
+                            $attributeSetData['level']
+                        );
                     }
 
                     if (null === $attributeSet = $familyVariant->getVariantAttributeSet($attributeSetData['level'])) {
@@ -166,6 +186,8 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                     }
                 }
                 break;
+            default:
+                throw UnknownPropertyException::unknownProperty($field);
         }
     }
 
