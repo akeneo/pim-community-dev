@@ -61,6 +61,8 @@ stage("Build") {
                         sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ce"
                     }
                 })
+            } else {
+                echo "Skipping Community Edition matrix"
             }
         },
         "pim-ee": {
@@ -156,6 +158,8 @@ stage("Build") {
                         sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-ceodm"
                     }
                 })
+            } else {
+                echo "Skipping Community Edition ODM matrix"
             }
         },
          "pim-ee-odm": {
@@ -206,6 +210,8 @@ stage("Build") {
                         sh "gcloud docker -- push eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-eeodm"
                     }
                 })
+            } else {
+                echo "Skipping Enterprise Edition ODM matrix"
             }
          }
     )
