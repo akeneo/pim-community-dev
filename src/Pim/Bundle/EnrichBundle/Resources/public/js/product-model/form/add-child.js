@@ -15,33 +15,36 @@ define(
         'pim/form',
         'routing',
         'pim/template/product-model-edit-form/add-child-form'
-    ],
-    function (
+    ], (
         $,
         _,
         BaseForm,
         Routing,
         template
-    ) {
+    ) => {
         return BaseForm.extend({
             template: _.template(template),
 
             /**
              * {@inheritdoc}
              */
-            render: function () {
+            render() {
                 this.$el.html(this.template());
                 this.renderExtensions();
             },
 
             /**
              * Save the product model child in the backend.
+             *
+             * @param {String} route
+             *
+             * @return {Promise}
              */
-            saveProductModelChild() {
+            saveProductModelChild(route) {
                 this.trigger('pim_enrich:form:entity:pre_save');
 
                 return $.post(
-                    Routing.generate('pim_enrich_product_model_rest_create'),
+                    Routing.generate(route),
                     JSON.stringify(this.getFormData())
                 ).fail((xhr) => {
                     this.trigger('pim_enrich:form:entity:validation_error', xhr.responseJSON);

@@ -5,7 +5,8 @@
  */
 'use strict';
 
-define([
+define(
+    [
         'jquery',
         'underscore',
         'pim/form/common/fields/field',
@@ -58,7 +59,7 @@ define([
             /**
              * {@inheritdoc}
              */
-            postRender () {
+            postRender() {
                 const options = {
                     ajax: {
                         url: this.choiceUrl,
@@ -91,7 +92,7 @@ define([
                         if ('' !== id) {
                             $.get(this.choiceUrl, {options: {identifiers: [id]}})
                                 .then((response) => {
-                                    var selected = _.findWhere(response, {code: id});
+                                    let selected = _.findWhere(response, {code: id});
 
                                     if (!selected) {
                                         selected = _.findWhere(response.results, {id: id});
@@ -115,7 +116,7 @@ define([
              *
              * @returns {Object}
              */
-            convertBackendItem (item) {
+            convertBackendItem(item) {
                 return {
                     id: item.code,
                     text: i18n.getLabel(item.labels, UserContext.get('catalogLocale'), item.code)
@@ -127,7 +128,7 @@ define([
              *
              * @returns {String}
              */
-            getFieldValue (field) {
+            getFieldValue(field) {
                 return $(field).val();
             }
         });

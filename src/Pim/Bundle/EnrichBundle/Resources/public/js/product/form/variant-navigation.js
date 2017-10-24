@@ -207,7 +207,8 @@ define(
                     {
                         parent: parent,
                         family: this.getFormData().family,
-                        family_variant: this.getFormData().family_variant
+                        family_variant: this.getFormData().family_variant,
+                        values: {}
                     }
                 );
 
@@ -221,10 +222,10 @@ define(
              */
             submitForm: function (formModal) {
                 // TODO: Detect what we created: variant product or product model, and adapt the message
-                const message = __('pim_enrich.form.product_model.flash.product_model_added');
+                const message = __('pim_enrich.form.product_model.flash.variant_product_added');
 
                 return formModal
-                    .saveProductModelChild()
+                    .saveProductModelChild('pim_enrich_product_rest_create')
                     .done(() => messenger.notify('success', message));
             },
 

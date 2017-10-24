@@ -142,13 +142,33 @@ define(
                         return FormBuilder.buildForm(newFormMeta);
                     })
                     .then((field) => {
+                        if ('pim_reference_data_simpleselect' === attribute.type) {
+                            return FetcherRegistry.getFetcher('reference-data-configuration').fetchAll().then(
+                                (config) => {
+                                    field.setChoiceUrl(
+                                        Routing.generate(
+                                            'pim_ui_ajaxentity_list',
+                                            {
+                                                'class': config[attribute.reference_data_name].class,
+                                                'dataLocale': UserContext.locale,
+                                                'collectionId': attribute.id,
+                                                'options': {'type': 'code'}
+                                            }
+                                        )
+                                    );
+
+                                    return field;
+                                }
+                            );
+                        }
+
                         if ('pim_catalog_metric' === attribute.type) {
                             field.setMetricFamily(attribute.metric_family);
                         }
 
                         if ('pim_catalog_simpleselect' === attribute.type) {
                             field.setChoiceUrl(
-                                Routing.generate('pim_enrich_attributeoption_get',{ identifier: attribute.code })
+                                Routing.generate('pim_enrich_attributeoption_get', {identifier: attribute.code})
                             );
                         }
 

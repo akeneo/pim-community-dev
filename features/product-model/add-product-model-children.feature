@@ -6,6 +6,10 @@ Feature: Add children to product model
 
   Background:
     Given a "catalog_modeling" catalog configuration
+    And the following attributes:
+      | code            | label-en_US     | localizable | scopable | type                            | reference_data_name | group |
+      | reference_color | Reference color | 0           | 0        | pim_reference_data_simpleselect | color               | other |
+    And the following "reference_color" attribute reference data: Red, Blue and Green
     And I am logged in as "Julia"
 
   Scenario: Successfully add a sub product model with one axis to a root product model
@@ -26,26 +30,28 @@ Feature: Add children to product model
     And I am on the "clothing" family page
     And I visit the "Attributes" tab
     And I add available attributes Handmade
+    And I add available attributes Reference color
     And I save the family
     And I should not see the text "There are unsaved changes."
     And the following family variant:
-      | code                     | family   | label-en_US                | variant-axes_1                 | variant-axes_2 | variant-attributes_1              |
-      | four_axes_family_variant | clothing | Clothing by color and size | color,material,weight,handmade | size           | image,variation_image,composition |
+      | code                     | family   | label-en_US                | variant-axes_1                                 | variant-axes_2 | variant-attributes_1              |
+      | five_axes_family_variant | clothing | Clothing by color and size | color,material,weight,handmade,reference_color | size           | image,variation_image,composition |
     And the following root product model:
       | code       | parent | family_variant           |
-      | root_model |        | four_axes_family_variant |
+      | root_model |        | five_axes_family_variant |
     When I am on the "root_model" product model page
     And I open the variant navigation children selector for level 1
     And I press "Create new"
-    Then I should see the text "Add a Color, Handmade, Material, Weight"
-    When I fill in "code" with "model_with_four_axes"
+    Then I should see the text "Add a Handmade, Material, Reference color, Weight"
+    When I fill in "code" with "model_with_five_axes"
     And I fill in "color" with "black"
     And I fill in "handmade" with "yes"
     And I fill in "material" with "leather"
+    And I fill in "reference_color" with "Red"
     And I fill in "weight" with "800 GRAM"
     And I confirm the child creation
     Then I should see the text "Product model successfully added to the product model"
-    And I should be on the product model "model_with_four_axes" edit page
+    And I should be on the product model "model_with_five_axes" edit page
 
   Scenario: Successfully add a new sub product model when I already am on a sub product product model
     Given I am on the "apollon_blue" product model page
@@ -110,22 +116,23 @@ Feature: Add children to product model
     And I am on the "clothing" family page
     And I visit the "Attributes" tab
     And I add available attributes Handmade
+    And I add available attributes Reference color
     And I save the family
     And I should not see the text "There are unsaved changes."
     And the following family variant:
-      | code                     | family   | label-en_US                | variant-axes_1                      | variant-attributes_1                      |
-      | five_axes_family_variant | clothing | Clothing by color and size | color,size,material,weight,handmade | image,variation_image,composition,ean,sku |
+      | code                     | family   | label-en_US                          | variant-axes_1                                | variant-attributes_1                      |
+      | five_axes_family_variant | clothing | Clothing by reference color and size | reference_color,size,material,weight,handmade | image,variation_image,composition,ean,sku |
     And the following root product model:
       | code       | parent | family_variant           |
       | root_model |        | five_axes_family_variant |
     When I am on the "root_model" product model page
     And I open the variant navigation children selector for level 1
     And I press "Create new"
-    Then I should see the text "Add a Color, Handmade, Material, Size, Weight"
+    Then I should see the text "Add a Handmade, Material, Reference color, Size, Weight"
     When I fill in "code" with "tshirt_with_five_axes"
-    And I fill in "color" with "black"
     And I fill in "handmade" with "yes"
     And I fill in "material" with "leather"
+    And I fill in "reference_color" with "Red"
     And I fill in "size" with "xl"
     And I fill in "weight" with "800 GRAM"
     And I confirm the child creation

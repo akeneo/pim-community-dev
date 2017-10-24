@@ -14,21 +14,14 @@ extensions:
         config:
             fieldModules:
                 akeneo-simple-select-field: pim-product-model-add-child-field-simple-select
-                akeneo-multi-select-field: pim-product-model-add-child-field-multi-select
                 akeneo-metric-field: pim-product-model-add-child-field-metric
                 akeneo-switch-field: pim-product-model-add-child-field-switch
                 akeneo-simple-select-reference-data-field: pim-product-model-add-child-field-simple-select-reference-data
-                akeneo-multi-select-reference-data-field: pim-product-model-add-child-field-multi-select-reference-data
                 akeneo-text-field: pim-product-model-add-child-field-text
             codeFieldModule: pim-product-model-add-child-field-text
 
     pim-product-model-add-child-field-simple-select:
         module: pim/form/common/fields/simple-select-async
-        config:
-            required: true
-
-    pim-product-model-add-child-field-multi-select:
-        module: pim/form/common/fields/select
         config:
             required: true
 
@@ -43,12 +36,7 @@ extensions:
             required: true
 
     pim-product-model-add-child-field-simple-select-reference-data:
-        module: pim/form/common/fields/select
-        config:
-            required: true
-
-    pim-product-model-add-child-field-multi-select-reference-data:
-        module: pim/form/common/fields/select
+        module: pim/form/common/fields/simple-select-async
         config:
             required: true
 
