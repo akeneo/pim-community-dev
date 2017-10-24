@@ -51,7 +51,7 @@ define(
                     subTitleLabel: __(this.config.labels.subTitle),
                     contentLabel: __(this.config.labels.content),
                     picture: this.config.picture,
-                    fields: null,
+                    fields: null
                 }));
 
                 this.renderExtensions();
