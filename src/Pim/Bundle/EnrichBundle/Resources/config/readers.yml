@@ -1,4 +1,5 @@
 parameters:
+    pim_enrich.reader.database.filtered_product_and_product_model_reader.class: Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductAndProductModelReader
     pim_enrich.reader.database.filtered_product_reader.class: Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader
     pim_enrich.reader.database.filtered_product_model_reader.class: Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductModelReader
 
