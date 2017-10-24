@@ -4,7 +4,6 @@ Feature: Check menu items visibility
   As an administrator or a user
   I need to be able to check the visibility of menu items
 
-  @skip-nav
   Scenario: Check the System menu visibility
     Given a "default" catalog configuration
     And I am logged in as "Sandra"
@@ -15,5 +14,6 @@ Feature: Check menu items visibility
     And I revoke rights to group System
     And I save the role
     And I should not see the text "There are unsaved changes."
-    When I am on the dashboard page
+    And I should not see the text "Loading"
     Then I should not see the text "System"
+    And I should see the text "You have no current project"
