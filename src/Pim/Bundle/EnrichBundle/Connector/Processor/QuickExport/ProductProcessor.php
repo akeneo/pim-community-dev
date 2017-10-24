@@ -186,6 +186,7 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function fetchMediaProductModel(ProductModelInterface $productModel, $directory)
     {
+
         $identifier = $productModel->getCode();
         $this->mediaFetcher->fetchAll($productModel->getValues(), $directory, $identifier);
 
