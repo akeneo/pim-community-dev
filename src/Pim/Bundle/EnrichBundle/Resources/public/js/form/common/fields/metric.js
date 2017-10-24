@@ -32,11 +32,9 @@ function (
             }
         },
         template: _.template(template),
-        measures: {},
         metricFamily: null,
 
         initialize() {
-            this.measures = {};
             this.metricFamily = null;
 
             return BaseField.prototype.initialize.apply(this, arguments);
