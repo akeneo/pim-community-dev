@@ -5,15 +5,17 @@ namespace Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollecti
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Constraints for product and product model quick export
  *
- * @author    Pierre Allard <pierre.allard@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAndProductModelQuickExport implements ConstraintCollectionProviderInterface
+class ProductQuickExport implements ConstraintCollectionProviderInterface
 {
     /** @var ConstraintCollectionProviderInterface */
     protected $simpleConstraint;
@@ -38,10 +40,12 @@ class ProductAndProductModelQuickExport implements ConstraintCollectionProviderI
     {
         $baseConstraint = $this->simpleConstraint->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
-        $constraintFilePath = $constraintFields['filePath'];
-        $constraintFields['filePath'] = null;
-        $constraintFields['filePathProduct'] = $constraintFilePath;
-        $constraintFields['filePathProductModel'] = $constraintFilePath;
+        $constraintFields['filters'] = [];
+        $constraintFields['selected_properties'] = null;
+        $constraintFields['with_media'] = new Type('bool');
+        $constraintFields['locale'] = new NotBlank(['groups' => 'Execution']);
+        $constraintFields['scope'] = new NotBlank(['groups' => 'Execution']);
+        $constraintFields['ui_locale'] = new NotBlank(['groups' => 'Execution']);
 
         return new Collection(['fields' => $constraintFields]);
     }
