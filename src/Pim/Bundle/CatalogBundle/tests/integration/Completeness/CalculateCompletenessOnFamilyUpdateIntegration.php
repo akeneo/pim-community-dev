@@ -221,6 +221,7 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
      */
     private function assertJobWasExecutedTimes(string $jobName, int $times): void
     {
+        $this->get('doctrine.orm.default_entity_manager')->clear();
         $jobInstance = $this->get('pim_enrich.repository.job_instance')->findOneBy(['code' => $jobName]);
         $jobExecutionsCount = $jobInstance->getJobExecutions()->count();
         $this->assertEquals(
