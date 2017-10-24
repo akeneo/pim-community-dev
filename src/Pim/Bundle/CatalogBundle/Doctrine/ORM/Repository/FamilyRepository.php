@@ -41,6 +41,34 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     }
 
     /**
+     * Get families with family variants
+     *
+     * @param  string $search
+     * @param  array  $options
+     * @param  int    $limit
+     *
+     * @return array
+     */
+    public function getWithVariants($search = null, array $options = [], int $limit): array
+    {
+        $qb = $this->createQueryBuilder('f')->where('f.familyVariants IS NOT EMPTY');
+
+        if (null !== $search && '' !== $search) {
+            $qb->where('f.code like :search')->setParameter('search', '%' . $search . '%');
+            if (isset($options['locale'])) {
+                $qb->leftJoin('f.translations', 'ft');
+                $qb->orWhere('ft.label like :search AND ft.locale = :locale');
+                $qb->setParameter('search', '%' . $search . '%');
+                $qb->setParameter('locale', $options['locale']);
+            }
+        }
+
+        $qb->setMaxResults((int) $limit);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getFullFamilies(FamilyInterface $family = null, ChannelInterface $channel = null)

@@ -336,9 +336,10 @@ class FamilyController
      */
     public function getWithVariantsAction(Request $request): JsonResponse
     {
-        $options = $request->query->get('options', ['limit' => 20]);
+        $search = $request->query->get('search');
+        $options = $request->query->get('options');
 
-        $families = $this->familySearchableRepo->findFamiliesWithVariants($options);
+        $families = $this->familyRepository->getWithVariants($search, $options, 20);
 
         $normalizedFamilies = [];
         foreach ($families as $family) {

@@ -39,32 +39,6 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
      */
     public function findBySearch($search = null, array $options = [])
     {
-        $qb = $this->applySearchParameters($search, $options);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * @param array $options
-     *
-     * @return FamilyInterface[]
-     */
-    public function findFamiliesWithVariants(array $options = [])
-    {
-        $qb = $this->applySearchParameters(null, $options);
-        $qb->where('f.familyVariants IS NOT EMPTY');
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * @param string $search
-     * @param array $options
-     *
-     * @return QueryBuilder
-     */
-    private function applySearchParameters($search = null, array $options = []): QueryBuilder
-    {
         $qb = $this->entityManager->createQueryBuilder()->select('f')->from($this->entityName, 'f');
 
         if (null !== $search && '' !== $search) {
@@ -79,7 +53,7 @@ class FamilySearchableRepository implements SearchableRepositoryInterface
 
         $qb = $this->applyQueryOptions($qb, $options);
 
-        return $qb;
+        return $qb->getQuery()->getResult();
     }
 
     /**
