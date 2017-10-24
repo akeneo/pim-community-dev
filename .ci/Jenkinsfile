@@ -62,7 +62,7 @@ stage("Build") {
             if (editions.contains("ee")) {
                 withBuildNode({
                     checkout([$class: 'GitSCM',
-                      branches: [[name: 'master']],
+                      branches: [[name: '2.0']],
                       userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
                     ])
                     // Required to avoid permission error when "composer update"
@@ -72,7 +72,7 @@ stage("Build") {
                         sh "composer require --dev --no-update phpspec/phpspec:~3.4.2"
                         sh "composer require --dev --no-update phpunit/phpunit:~5.7.22"
                         sh "composer require --dev --no-update sebastian/exporter:~2.0.0"
-                        sh "composer require --dev --no-update liuggio/fastest:dev-master"
+                        sh "composer require --dev --no-update liuggio/fastest:~1.4.4"
                         sh "composer update --ansi --optimize-autoloader --no-interaction --no-progress --prefer-dist --no-scripts --ignore-platform-reqs --no-suggest"
 
                         // Required to avoid permission error when "deleteDir()"
