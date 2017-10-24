@@ -59,6 +59,9 @@ abstract class AbstractItemMediaWriter implements
     /** @var string Datetime format for the file path placeholder */
     protected $datetimeFormat = 'Y-m-d_H-i-s';
 
+    /** @var String */
+    protected $jobParamFilePath;
+
     /**
      * @param ArrayConverterInterface            $arrayConverter
      * @param BufferFactory                      $bufferFactory
@@ -66,6 +69,7 @@ abstract class AbstractItemMediaWriter implements
      * @param AttributeRepositoryInterface       $attributeRepository
      * @param FileExporterPathGeneratorInterface $fileExporterPath
      * @param array                              $mediaAttributeTypes
+     * @param String                             $jobParamFilePath
      */
     public function __construct(
         ArrayConverterInterface $arrayConverter,
@@ -73,7 +77,8 @@ abstract class AbstractItemMediaWriter implements
         FlatItemBufferFlusher $flusher,
         AttributeRepositoryInterface $attributeRepository,
         FileExporterPathGeneratorInterface $fileExporterPath,
-        array $mediaAttributeTypes
+        array $mediaAttributeTypes,
+        $jobParamFilePath = 'filePath'
     ) {
         $this->arrayConverter = $arrayConverter;
         $this->bufferFactory = $bufferFactory;
@@ -81,6 +86,7 @@ abstract class AbstractItemMediaWriter implements
         $this->attributeRepository = $attributeRepository;
         $this->mediaAttributeTypes = $mediaAttributeTypes;
         $this->fileExporterPath = $fileExporterPath;
+        $this->jobParamFilePath = $jobParamFilePath;
 
         $this->localFs = new Filesystem();
     }
@@ -157,7 +163,8 @@ abstract class AbstractItemMediaWriter implements
      */
     public function getPath(array $placeholders = [])
     {
-        $filePath = $this->getFilePath();
+        $parameters = $this->stepExecution->getJobParameters();
+        $filePath = $parameters->get($this->jobParamFilePath);
 
         if (false !== strpos($filePath, '%')) {
             $defaultPlaceholders = ['%datetime%' => date($this->datetimeFormat), '%job_label%' => ''];
@@ -342,17 +349,5 @@ abstract class AbstractItemMediaWriter implements
     protected function sanitize($value)
     {
         return preg_replace('#[^A-Za-z0-9\.]#', '_', $value);
-    }
-
-    /**
-     * Returns the file path to write
-     *
-     * @return string
-     */
-    protected function getFilePath()
-    {
-        $parameters = $this->stepExecution->getJobParameters();
-
-        return $parameters->get('filePath');
     }
 }

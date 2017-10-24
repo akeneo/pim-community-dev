@@ -228,6 +228,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - ['pim_catalog_file', 'pim_catalog_image']
+            - 'filePathProduct'
 
     pim_connector.writer.file.csv_product_model_quick_export:
         class: '%pim_connector.writer.file.csv_product_model.class%'
@@ -238,6 +239,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - ['pim_catalog_file', 'pim_catalog_image']
+            - 'filePathProductModel'
 
     pim_connector.writer.file.csv_category:
         class: '%pim_connector.writer.file.csv.class%'
@@ -360,6 +362,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - ['pim_catalog_file', 'pim_catalog_image']
+            - 'filePathProduct'
 
     pim_connector.writer.file.xlsx_product_model_quick_export:
         class: '%pim_connector.writer.file.xlsx_product_model.class%'
@@ -370,6 +373,7 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.writer.file.media_exporter_path_generator'
             - ['pim_catalog_file', 'pim_catalog_image']
+            - 'filePathProductModel'
 
     pim_connector.writer.file.xlsx_group:
         class: '%pim_connector.writer.file.xlsx.class%'

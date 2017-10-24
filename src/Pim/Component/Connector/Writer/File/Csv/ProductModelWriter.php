@@ -45,14 +45,4 @@ class ProductModelWriter extends AbstractItemMediaWriter implements
     {
         return $productModel['code'];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getFilePath()
-    {
-        $parameters = $this->stepExecution->getJobParameters();
-
-        return $parameters->get('filePathProductModel');
-    }
 }

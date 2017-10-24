@@ -1,6 +1,6 @@
 parameters:
     pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_mass_edit.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductMassEdit
-    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_and_product_model_quick_export.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductModelQuickExport
+    pim_enrich.connector.job.job_parameters.constraint_collection_provider.product_and_product_model_quick_export.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductAndProductModelQuickExport
     pim_enrich.connector.job.job_parameters.constraint_collection_provider.simple_mass_edit.class: Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\SimpleMassEdit
 
 services:

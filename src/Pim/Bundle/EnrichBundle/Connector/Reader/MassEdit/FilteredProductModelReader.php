@@ -79,7 +79,9 @@ class FilteredProductModelReader implements
 
         if (null !== $productModel) {
             $channel = $this->getConfiguredChannel();
-            $this->metricConverter->convert($productModel, $channel);
+            if (null !== $channel) {
+                $this->metricConverter->convert($productModel, $channel);
+            }
         }
 
         return $productModel;
@@ -98,11 +100,15 @@ class FilteredProductModelReader implements
      *
      * @throws ObjectNotFoundException
      *
-     * @return ChannelInterface
+     * @return ChannelInterface|null
      */
-    private function getConfiguredChannel(): ChannelInterface
+    private function getConfiguredChannel(): ?ChannelInterface
     {
         $parameters = $this->stepExecution->getJobParameters();
+        if (!isset($parameters->get('filters')['structure']['scope'])) {
+            return null;
+        }
+
         $channelCode = $parameters->get('filters')['structure']['scope'];
         $channel = $this->channelRepository->findOneByIdentifier($channelCode);
         if (null === $channel) {
@@ -173,6 +179,8 @@ class FilteredProductModelReader implements
             }
 
             $this->stepExecution->incrementSummaryInfo('read');
+
+            break;
         }
 
         return $entity;
