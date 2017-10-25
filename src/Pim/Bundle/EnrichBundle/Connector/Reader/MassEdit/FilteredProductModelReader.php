@@ -169,6 +169,8 @@ class FilteredProductModelReader implements
 
             $this->productsAndProductModels->next();
 
+            $this->stepExecution->incrementSummaryInfo('read');
+
             if (!$entity instanceof ProductModelInterface) {
                 if ($this->stepExecution) {
                     $this->stepExecution->incrementSummaryInfo('skip');
@@ -177,8 +179,6 @@ class FilteredProductModelReader implements
                 $entity = null;
                 continue;
             }
-
-            $this->stepExecution->incrementSummaryInfo('read');
 
             break;
         }

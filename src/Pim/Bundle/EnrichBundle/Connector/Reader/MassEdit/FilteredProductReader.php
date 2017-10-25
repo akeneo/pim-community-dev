@@ -21,7 +21,7 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 /**
  * Product reader that only returns product entities and skips product models.
  *
- * @author    Samir Boulil <samir.boulil@akeneo.com>
+ * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -188,6 +188,8 @@ class FilteredProductReader implements
 
             $this->productsAndProductModels->next();
 
+            $this->stepExecution->incrementSummaryInfo('read');
+
             if ($entity instanceof ProductModelInterface) {
                 if ($this->stepExecution) {
                     $this->stepExecution->incrementSummaryInfo('skip');
@@ -196,8 +198,6 @@ class FilteredProductReader implements
                 $entity = null;
                 continue;
             }
-
-            $this->stepExecution->incrementSummaryInfo('read');
 
             break;
         }

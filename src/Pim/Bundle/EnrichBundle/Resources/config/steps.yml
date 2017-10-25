@@ -17,7 +17,7 @@ services:
     pim_enrich.step.csv_product_model.quick_export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'quick_export'
+            - 'quick_export_product_model'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_enrich.reader.database.product_model'
@@ -40,7 +40,7 @@ services:
     pim_enrich.step.xlsx_product_model.quick_export:
         class: '%pim_connector.step.item_step.class%'
         arguments:
-            - 'quick_export'
+            - 'quick_export_product_model'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             - '@pim_enrich.reader.database.product_model'

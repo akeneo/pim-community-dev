@@ -25,23 +25,27 @@ class ExportProfilesContext extends ImportExportContext
      * @throws ExpectationException
      * @throws \Exception
      */
-    public function exportedFileOfShouldContain($number = null, $code, PyStringNode $csv)
+    public function exportedFileOfShouldContain($number = '', $code, PyStringNode $csv)
     {
-        if (null !== $number) {
+        if ('' !== $number) {
             $number = 'first ' === $number ? 1 : 2;
+        } else {
+            $number = null;
         }
-        $this->spin(function () use ($code, $csv, $number) {
+
+        $lines = $this->spin(function () use ($code, $csv, $number) {
             $path = $this->getExportedFile($code, $number);
 
             $config = $this->getCsvJobConfiguration($code);
 
-            $expectedLines = $this->getExpectedLines($csv, $config);
-            $actualLines = $this->getActualLines($path, 'csv', $config);
+            return [
+                'expectedLines' => $this->getExpectedLines($csv, $config),
+                'actualLines' => $this->getActualLines($path, 'csv', $config),
+                'path' => $path
+            ];
+        }, sprintf('Can not find lines of the file %s', $code));
 
-            $this->compareFile($expectedLines, $actualLines, $path);
-
-            return true;
-        }, sprintf('Cannot validate the file %s', $code));
+        $this->compareFile($lines['expectedLines'], $lines['actualLines'], $lines['path']);
     }
 
     /**

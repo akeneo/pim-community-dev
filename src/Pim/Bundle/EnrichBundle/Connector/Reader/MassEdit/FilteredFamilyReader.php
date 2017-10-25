@@ -25,9 +25,6 @@ class FilteredFamilyReader implements ItemReaderInterface, StepExecutionAwareInt
     /** @var ArrayCollection */
     protected $families;
 
-    /** @var JobConfigurationRepositoryInterface */
-    protected $jobConfigurationRepo;
-
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
