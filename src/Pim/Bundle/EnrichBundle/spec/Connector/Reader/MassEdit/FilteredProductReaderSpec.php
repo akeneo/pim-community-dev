@@ -107,7 +107,7 @@ class FilteredProductReaderSpec extends ObjectBehavior
         $cursor->current()->will(new ReturnPromise($products));
         $cursor->next()->shouldBeCalled();
 
-        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
+        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(6);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(3);
 

@@ -7,7 +7,6 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductModelReader;
-use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -28,7 +27,6 @@ class FilteredProductModelReaderSpec extends ObjectBehavior
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         StepExecution $stepExecution
     ) {
@@ -100,7 +98,7 @@ class FilteredProductModelReaderSpec extends ObjectBehavior
         $cursor->current()->will(new ReturnPromise($products));
         $cursor->next()->shouldBeCalled();
 
-        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
+        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(6);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(3);
 

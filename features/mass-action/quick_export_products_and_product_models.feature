@@ -30,7 +30,7 @@ Feature: Export products and product models
     And I select row amor
     And I press "CSV (Grid context)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish
-    When I go on the last executed job resume of "csv_product_grid_context_quick_export"
+    And I go on the last executed job resume of "csv_product_grid_context_quick_export"
     Then I should see the text "COMPLETED"
     And I should see "products_export_grid_context_en_US_ecommerce.csv" on the "Download generated files" dropdown button
     And I should see "product_models_export_grid_context_en_US_ecommerce.csv" on the "Download generated files" dropdown button
@@ -40,7 +40,7 @@ Feature: Export products and product models
     And I select row amor
     And I press "CSV (Grid context)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish
-    When I go on the last executed job resume of "csv_product_grid_context_quick_export"
+    And I go on the last executed job resume of "csv_product_grid_context_quick_export"
     Then I should see the text "COMPLETED"
     And first exported file of "csv_product_grid_context_quick_export" should contain:
       """
@@ -52,7 +52,7 @@ Feature: Export products and product models
     When I select row amor
     And I press "CSV (All attributes)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_quick_export" quick export to finish
-    When I go on the last executed job resume of "csv_product_quick_export"
+    And I go on the last executed job resume of "csv_product_quick_export"
     Then I should see the text "COMPLETED"
     And first exported file of "csv_product_quick_export" should contain:
       """

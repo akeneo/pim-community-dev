@@ -69,7 +69,7 @@ class FilteredProductReader implements
         $this->channelRepository = $channelRepository;
         $this->completenessManager = $completenessManager;
         $this->metricConverter = $metricConverter;
-        $this->generateCompleteness = (bool) $generateCompleteness;
+        $this->generateCompleteness = $generateCompleteness;
     }
 
     /**
@@ -156,8 +156,8 @@ class FilteredProductReader implements
     }
 
     /**
-     * @param array            $filters
-     * @param ChannelInterface $channel
+     * @param array                 $filters
+     * @param ChannelInterface|null $channel
      *
      * @return CursorInterface
      */

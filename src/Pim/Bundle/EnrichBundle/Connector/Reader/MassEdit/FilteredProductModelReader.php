@@ -138,8 +138,8 @@ class FilteredProductModelReader implements
     }
 
     /**
-     * @param array            $filters
-     * @param ChannelInterface $channel
+     * @param array                 $filters
+     * @param ChannelInterface|null $channel
      *
      * @return CursorInterface
      */

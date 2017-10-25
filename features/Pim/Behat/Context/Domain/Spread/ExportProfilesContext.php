@@ -25,7 +25,7 @@ class ExportProfilesContext extends ImportExportContext
      * @throws ExpectationException
      * @throws \Exception
      */
-    public function exportedFileOfShouldContain($number = '', $code, PyStringNode $csv)
+    public function exportedFileOfShouldContain($number, $code, PyStringNode $csv)
     {
         if ('' !== $number) {
             $number = 'first ' === $number ? 1 : 2;

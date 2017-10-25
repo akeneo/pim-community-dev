@@ -89,15 +89,15 @@ class ProductAndProductModelProcessor extends AbstractProcessor
     /**
      * {@inheritdoc}
      */
-    public function process($product)
+    public function process($entityWithValues)
     {
         $this->initSecurityContext($this->stepExecution);
 
-        $this->valuesFiller->fillMissingValues($product);
+        $this->valuesFiller->fillMissingValues($entityWithValues);
 
         $parameters = $this->stepExecution->getJobParameters();
         $normalizerContext = $this->getNormalizerContext($parameters);
-        $productStandard = $this->normalizer->normalize($product, 'standard', $normalizerContext);
+        $productStandard = $this->normalizer->normalize($entityWithValues, 'standard', $normalizerContext);
 
         if ($this->areAttributesToFilter($parameters)) {
             $selectedProperties = $parameters->get('selected_properties');
@@ -116,15 +116,17 @@ class ProductAndProductModelProcessor extends AbstractProcessor
             $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
                 ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
 
-            $identifier = ($product instanceof ProductInterface) ? $product->getIdentifier() : $product->getCode();
-            $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
+            $identifier = ($entityWithValues instanceof ProductInterface)
+                ? $entityWithValues->getIdentifier()
+                : $entityWithValues->getCode();
+            $this->mediaFetcher->fetchAll($entityWithValues->getValues(), $directory, $identifier);
 
             foreach ($this->mediaFetcher->getErrors() as $error) {
                 $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
             }
         }
 
-        $this->detacher->detach($product);
+        $this->detacher->detach($entityWithValues);
 
         return $productStandard;
     }
