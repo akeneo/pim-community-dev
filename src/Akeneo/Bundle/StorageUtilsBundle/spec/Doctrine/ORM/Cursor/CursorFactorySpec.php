@@ -28,7 +28,7 @@ class CursorFactorySpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface');
     }
 
-    function it_creates_a_cursor(QueryBuilder $queryBuilder, AbstractQuery $query, From $from)
+    function it_creates_a_cursor(QueryBuilder $queryBuilder, QueryWithCache $query, From $from)
     {
         $queryBuilder->getRootAliases()->willReturn(['a']);
         $queryBuilder->getDQLPart('from')->willReturn([$from]);
@@ -37,9 +37,15 @@ class CursorFactorySpec extends ObjectBehavior
         $queryBuilder->from(Argument::any(), Argument::any(), 'a.id')->willReturn($queryBuilder);
         $queryBuilder->groupBy('a.id')->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
+        $query->useQueryCache(false)->shouldBeCalled();
         $query->getArrayResult()->willReturn([]);
 
         $cursor = $this->createCursor($queryBuilder);
         $cursor->shouldBeAnInstanceOf('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
     }
+}
+
+abstract class QueryWithCache extends AbstractQuery
+{
+    public abstract function useQueryCache($bool);
 }
