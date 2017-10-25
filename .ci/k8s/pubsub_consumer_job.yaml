@@ -87,7 +87,7 @@ spec:
               wait $CHILD_PID
               if [[ -f "/tmp/pod/main-terminated" ]]; then exit 0; fi
           env:
-            - { name: BEHAT_TMPDIR, value: /home/jenkins/pim/app/cahe/tmp }    
+            - { name: BEHAT_TMPDIR, value: /home/jenkins/pim/app/cache/tmp }    
           workingDir: /home/jenkins/pim
           volumeMounts:
             - { name: pim, mountPath: /home/jenkins }
