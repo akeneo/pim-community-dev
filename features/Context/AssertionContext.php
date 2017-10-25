@@ -420,9 +420,6 @@ class AssertionContext extends RawMinkContext
                     sprintf('Expecting to see history row for version %s, not found', $data['version'])
                 );
             }
-            if (!$row->hasClass('expanded')) {
-                $row->find('css', '.version-expander')->click();
-            }
             if (isset($data['author'])) {
                 $author = $row->find('css', 'td.author')->getText();
                 assertEquals(
@@ -435,6 +432,9 @@ class AssertionContext extends RawMinkContext
                         $author
                     )
                 );
+            }
+            if (!$row->hasClass('expanded')) {
+                $row->find('css', '.version-expander')->click();
             }
 
             $changesetRows = $this->spin(function () use ($row) {
