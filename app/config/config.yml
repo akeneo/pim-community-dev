@@ -64,3 +64,19 @@ pim_reference_data:
     color:
         class: Acme\Bundle\AppBundle\Entity\Color
         type: simple
+
+tweede_golf_prometheus:
+    storage_adapter_service: TweedeGolf\PrometheusClient\Storage\InMemoryAdapter
+    collectors:
+        pim_channels_total:
+            gauge: ~
+        pim_products_total:
+            gauge: ~
+        pim_families_total:
+            gauge: ~
+        pim_locales_total:
+            gauge:
+                labels: [status]
+        pim_users_total:
+            gauge:
+                labels: [status]

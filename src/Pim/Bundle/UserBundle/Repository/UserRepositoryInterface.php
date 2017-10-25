@@ -23,6 +23,13 @@ interface UserRepositoryInterface extends IdentifiableObjectRepositoryInterface,
     public function countAll();
 
     /**
+     * Return the number of users by criteria
+     *
+     * @return int
+     */
+    public function countBy(array $criteria);
+
+    /**
      * Return users who are AT LEAST in one of the given $groupIds
      *
      * @param array $groupIds

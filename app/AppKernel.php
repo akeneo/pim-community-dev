@@ -116,6 +116,7 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new FOS\OAuthServerBundle\FOSOAuthServerBundle(),
             new Oneup\FlysystemBundle\OneupFlysystemBundle(),
+            new TweedeGolf\PrometheusBundle\TweedeGolfPrometheusBundle(),
         ];
     }
 
