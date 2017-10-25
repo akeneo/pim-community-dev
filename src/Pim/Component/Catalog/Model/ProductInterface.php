@@ -106,11 +106,11 @@ interface ProductInterface extends
     /**
      * Set types of associations
      *
-     * @param AssociationInterface[] $associations
+     * @param Collection $associations
      *
      * @return ProductInterface
      */
-    public function setAssociations(array $associations = []);
+    public function setAssociations(Collection $associations);
 
     /**
      * Add a type of an association

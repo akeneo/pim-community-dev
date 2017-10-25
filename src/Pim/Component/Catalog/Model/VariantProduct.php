@@ -5,6 +5,7 @@ namespace Pim\Component\Catalog\Model;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * Variant product. An entity that belongs to a family variant and that contains flexible values,
@@ -31,8 +32,23 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
     {
         $variantProduct = new self();
 
-        $variantProduct->setId($product->getId());
+        $valueIdentifier = $product->getValues()->filter(
+            function (ValueInterface $value) {
+                return AttributeTypes::IDENTIFIER === $value->getAttribute()->getType();
+            }
+        )->first();
 
+        $variantProduct->setId($product->getId());
+        $variantProduct->setIdentifier($valueIdentifier);
+        $variantProduct->setGroups($product->getGroups());
+        $variantProduct->setAssociations($product->getAssociations());
+        $variantProduct->setEnabled($product->isEnabled());
+        $variantProduct->setCompletenesses($product->getCompletenesses());
+        $variantProduct->setFamily($product->getFamily());
+        $variantProduct->setCategories($product->getCategories());
+        $variantProduct->setValues($product->getValues());
+        $variantProduct->setCreated($product->getCreated());
+        $variantProduct->setUpdated($product->getUpdated());
 
         return $variantProduct;
     }
@@ -115,6 +131,22 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
         }
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setGroups(Collection $groups)
+    {
+        $this->groups = $groups;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCategories(Collection $categories)
+    {
+        $this->categories = $categories;
     }
 
     /**

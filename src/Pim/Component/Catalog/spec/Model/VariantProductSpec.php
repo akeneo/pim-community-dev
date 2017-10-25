@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Catalog\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\Association;
@@ -16,6 +17,7 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
+use Prophecy\Argument;
 
 class VariantProductSpec extends ObjectBehavior
 {
@@ -58,12 +60,19 @@ class VariantProductSpec extends ObjectBehavior
         Association $assoc1,
         Association $assoc2,
         AssociationTypeInterface $assocType1,
-        AssociationTypeInterface $assocType2
+        AssociationTypeInterface $assocType2,
+        Collection $associations,
+        \Iterator $associationsIterator
     ) {
+        $associations->getIterator()->willReturn($associationsIterator);
+        $associationsIterator->current()->willReturn($assoc1, $assoc2);
+        $associationsIterator->rewind()->shouldBeCalled();
+        $associationsIterator->valid()->willReturn(true, true, false);
+
         $assoc1->getAssociationType()->willReturn($assocType1);
         $assoc2->getAssociationType()->willReturn($assocType2);
 
-        $this->setAssociations([$assoc1, $assoc2]);
+        $this->setAssociations($associations);
         $this->getAssociationForType($assocType1)->shouldReturn($assoc1);
     }
 
@@ -71,21 +80,33 @@ class VariantProductSpec extends ObjectBehavior
         Association $assoc1,
         Association $assoc2,
         AssociationTypeInterface $assocType1,
-        AssociationTypeInterface $assocType2
+        AssociationTypeInterface $assocType2,
+        Collection $associations,
+        \Iterator $associationsIterator
     ) {
+        $associations->getIterator()->willReturn($associationsIterator);
+        $associationsIterator->current()->willReturn($assoc1, $assoc2);
+        $associationsIterator->next()->shouldBeCalled();
+        $associationsIterator->rewind()->shouldBeCalled();
+        $associationsIterator->valid()->willReturn(true, true, false);
+
         $assocType1->getCode()->willReturn('ASSOC_TYPE_1');
         $assocType2->getCode()->willReturn('ASSOC_TYPE_2');
         $assoc1->getAssociationType()->willReturn($assocType1);
         $assoc2->getAssociationType()->willReturn($assocType2);
 
-        $this->setAssociations([$assoc1, $assoc2]);
+        $this->setAssociations($associations);
         $this->getAssociationForTypeCode('ASSOC_TYPE_2')->shouldReturn($assoc2);
     }
 
     function it_returns_null_when_i_try_to_get_an_association_with_an_empty_collection(
-        AssociationTypeInterface $assocType1
+        AssociationTypeInterface $assocType1,
+        Collection $associations,
+        \Iterator $associationsIterator
     ) {
-        $this->setAssociations([]);
+        $associations->getIterator()->willReturn($associationsIterator);
+
+        $this->setAssociations($associations);
         $this->getAssociationForType($assocType1)->shouldReturn(null);
     }
 
@@ -199,8 +220,66 @@ class VariantProductSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_creates_a_variant_product_from_a_product(ProductInterface $product)
-    {
-        $this->fromProduct($product)->shouldReturnAnInstanceOf(VariantProductInterface::class);
+    public function it_creates_a_variant_product_from_a_product(
+        ProductInterface $product,
+        Collection $groups,
+        Collection $associations,
+        Collection $completenesses,
+        Collection $categories,
+        FamilyInterface $family,
+        \Datetime $createdAt,
+        \Datetime $updatedAt,
+        ValueCollectionInterface $values,
+        ValueCollectionInterface $skuValues,
+        ValueInterface $valueDescription,
+        ValueInterface $valueSku,
+        AttributeInterface $description,
+        AttributeInterface $sku
+    ) {
+        $categories->toArray()->willReturn([]);
+        $values->toArray()->willReturn([]);
+
+        $description->getType()->willReturn(AttributeTypes::TEXTAREA);
+        $description->getCode()->willReturn('description');
+        $description->isUnique()->willReturn(false);
+        $sku->getType()->willReturn(AttributeTypes::IDENTIFIER);
+        $sku->getCode()->willReturn('sku');
+        $sku->isUnique()->willReturn(true);
+
+        $valueSku->getData()->willReturn('foo');
+        $valueSku->getAttribute()->willReturn($sku);
+        $valueSku->getScope()->willReturn(null);
+        $valueSku->getLocale()->willReturn(null);
+        $valueDescription->getAttribute()->willReturn($description);
+        $valueDescription->getScope()->willReturn(null);
+        $valueDescription->getLocale()->willReturn(null);
+
+        $values->filter(Argument::any())->willReturn($skuValues);
+        $skuValues->first()->willReturn($valueSku);
+
+        $product->getId()->willReturn(42);
+        $product->getGroups()->willReturn($groups);
+        $product->getAssociations()->willReturn($associations);
+        $product->isEnabled()->willReturn(true);
+        $product->getCompletenesses()->willReturn($completenesses);
+        $product->getFamily()->willReturn($family);
+        $product->getCategories()->willReturn($categories);
+        $product->getValues()->willReturn($values);
+        $product->getCreated()->willReturn($createdAt);
+        $product->getUpdated()->willReturn($updatedAt);
+
+        $result = $this::fromProduct($product);
+        $result->shouldReturnAnInstanceOf(VariantProductInterface::class);
+        $result->getId()->shouldReturn(42);
+        $result->getIdentifier()->shouldReturn('foo');
+        $result->getGroups()->shouldReturn($groups);
+        $result->getAssociations()->shouldReturn($associations);
+        $result->isEnabled()->shouldReturn(true);
+        $result->getCompletenesses()->shouldReturn($completenesses);
+        $result->getFamily()->shouldReturn($family);
+        $result->getCategories()->shouldReturnAnInstanceOf(Collection::class);
+        $result->getValues()->shouldReturnAnInstanceOf(ValueCollectionInterface::class);
+        $result->getCreated()->shouldReturn($createdAt);
+        $result->getUpdated()->shouldReturn($updatedAt);
     }
 }
