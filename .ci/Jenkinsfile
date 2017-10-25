@@ -337,13 +337,14 @@ stage("Test") {
 
                         for (scenarioCE in scenariosCE) {
                             messagesCE.add([
-                                [container: "php", script: "sudo cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
-                                [container: "php", script: "sudo rm -rf /tmp/behat/screenshots/*"],
-                                [container: "php", script: "sudo sed -i '2 a umask(0000);' bin/behat"],
+                                [container: "php", script: "cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
+                                [container: "php", script: "rm -rf /tmp/behat/screenshots/*"],
+                                [container: "php", script: "sed -i '2 a umask(0000);' bin/behat"],
                                 [container: "php", script: "mkdir -p app/cache/tmp app/logs app/archive /tmp/pim/file_storage app/file_storage app/uploads app/build/logs/behat/"],
                                 [container: "php", script: "chmod 777 -R app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads app/build/logs/behat/"],
                                 [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "],
-                                [container: "php", script: "sudo chown -R docker /home/jenkins/pim"],
+                                [container: "php", script: "chown -R docker /home/jenkins/pim"],
+                                [container: "php", script: "/usr/sbin/apache2ctl graceful"],
                                 [container: "php", script: "su docker -c './app/console -e=behat ca:c'"],
                                 [container: "php", script: "su docker -c './app/console --env=behat pim:install --force --clean'"],
                                 [container: "php", script: "su docker -c './app/console --env=behat oro:translation:dump en_US'"],
@@ -366,7 +367,7 @@ stage("Test") {
                     echo "Skipping behat test"
                 }
             },
-            "behat-ee": {
+            "behat-ee": {ps -
                 if (launchBehatTests.equals("yes") && editions.contains("ee")) {
                     queue({
                         def scenariosEE = []
@@ -386,6 +387,7 @@ stage("Test") {
                                 [container: "php", script: "chmod 777 -R app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads app/build/logs/behat/"],
                                 [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "],
                                 [container: "php", script: "sudo chown -R docker /home/jenkins/pim"],
+                                [container: "php", script: "/usr/sbin/apache2ctl graceful"],
                                 [container: "php", script: "su docker -c './app/console -e=behat ca:c'"],
                                 [container: "php", script: "su docker -c './app/console --env=behat pim:install --force --clean'"],
                                 [container: "php", script: "su docker -c './app/console --env=behat oro:translation:dump en_US'"],
@@ -426,6 +428,7 @@ stage("Test") {
                                 [container: "php", script: "chmod 777 -R app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads app/build/logs/behat/"],
                                 [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "],
                                 [container: "php", script: "sudo chown -R docker /home/jenkins/pim"],
+                                [container: "php", script: "/usr/sbin/apache2ctl graceful"],
                                 [container: "php", script: "./app/console -e=behat ca:c"],
                                 [container: "php", script: "./app/console --env=behat pim:install --force --clean "],
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump en_US"],
@@ -467,6 +470,7 @@ stage("Test") {
                                 [container: "php", script: "chmod 777 -R app/cache app/logs app/archive /tmp/pim app/file_storage app/uploads app/build/logs/behat/"],
                                 [container: "php", script: "mkdir -m 777 -p app/build/logs/behat app/build/logs/consumer "],
                                 [container: "php", script: "sudo chown -R docker /home/jenkins/pim"],
+                                [container: "php", script: "/usr/sbin/apache2ctl graceful"],
                                 [container: "php", script: "./app/console -e=behat ca:c"],
                                 [container: "php", script: "./app/console --env=behat pim:install --force --clean "],
                                 [container: "php", script: "./app/console --env=behat oro:translation:dump en_US"],
