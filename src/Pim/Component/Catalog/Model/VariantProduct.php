@@ -67,7 +67,23 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
      */
     public function getValuesForVariation(): ValueCollectionInterface
     {
-        return $this->values;
+        $attributeSet = $this->getFamilyVariant()->getVariantAttributeSet(
+            $this->getVariationLevel()
+        );
+
+        $allowedAttributes = array_merge(
+            $attributeSet->getAttributes()->toArray(),
+            $attributeSet->getAxes()->toArray()
+        );
+
+        $valuesForVariation = new ValueCollection();
+        foreach ($this->values as $value) {
+            if (in_array($value->getAttribute(), $allowedAttributes)) {
+                $valuesForVariation->add($value);
+            }
+        }
+
+        return $valuesForVariation;
     }
 
     /**

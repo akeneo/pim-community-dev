@@ -147,14 +147,6 @@ class VariantProductSpec extends ObjectBehavior
         $this->isAttributeRemovable($attribute)->shouldReturn(true);
     }
 
-    function it_has_the_values_of_the_variation(
-        ValueCollectionInterface $valueCollection
-    ) {
-        $this->setValues($valueCollection);
-
-        $this->getValuesForVariation()->shouldBeLike($valueCollection);
-    }
-
     function it_has_values(
         ValueCollectionInterface $valueCollection,
         ProductModelInterface $productModel,
