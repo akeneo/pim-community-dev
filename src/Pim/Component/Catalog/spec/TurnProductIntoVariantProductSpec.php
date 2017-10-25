@@ -2,12 +2,15 @@
 
 namespace spec\Pim\Component\Catalog;
 
+use Doctrine\Common\Collections\Collection;
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\TurnProductIntoVariantProduct;
 use PhpSpec\ObjectBehavior;
@@ -31,11 +34,6 @@ class TurnProductIntoVariantProductSpec extends ObjectBehavior
         $this->shouldHaveType(TurnProductIntoVariantProduct::class);
     }
 
-    function it_turns_a_product_into_a_variant_product(ProductInterface $product, ProductModelInterface $parent)
-    {
-        $this->turnInto($product, $parent)->shouldReturnAnInstanceOf(VariantProductInterface::class);
-    }
-
     function it_throws_an_exception_when_the_product_has_not_the_same_family_that_its_parent(
         ProductInterface $product,
         FamilyInterface $productFamily,
@@ -46,19 +44,59 @@ class TurnProductIntoVariantProductSpec extends ObjectBehavior
         $this->shouldThrow(\Exception::class)->during('turnInto', [$product, $parent]);
     }
 
-    function it_filters_product_values_to_remove_ancestry_values(
-        ProductInterface $product,
+    public function it_turns_a_product_into_a_variant_product(
         ProductModelInterface $parent,
-        ValueCollectionInterface $productValues,
         ValueCollectionInterface $parentValues,
-        ValueCollectionInterface $productFilteredValues
-     ) {
-        $product->getValues()->willReturn($productValues);
+        ProductInterface $product,
+        Collection $groups,
+        Collection $associations,
+        Collection $completenesses,
+        Collection $categories,
+        FamilyInterface $family,
+        \Datetime $createdAt,
+        \Datetime $updatedAt,
+        ValueCollectionInterface $values,
+        ValueInterface $valueSku,
+        AttributeInterface $sku
+    ) {
+        $product->getFamily()->willReturn($family);
+        $parent->getFamily()->willReturn($family);
         $parent->getValues()->willReturn($parentValues);
 
-        $productValues->filter(Argument::type(\Closure::class))->willReturn($productFilteredValues);
-        $product->setValues($productFilteredValues)->shouldBeCalled();
+        $categories->toArray()->willReturn([]);
+        $values->toArray()->willReturn([]);
+        $values->first()->willReturn($valueSku);
 
-        $this->filter($product, $parent)->shouldBeAnInstanceOf($product);
+        $valueSku->getData()->willReturn('foo');
+        $valueSku->getAttribute()->willReturn($sku);
+        $valueSku->getScope()->willReturn(null);
+        $valueSku->getLocale()->willReturn(null);
+
+        $values->filter(Argument::any())->willReturn($values);
+
+        $product->getId()->willReturn(42);
+        $product->getGroups()->willReturn($groups);
+        $product->getAssociations()->willReturn($associations);
+        $product->isEnabled()->willReturn(true);
+        $product->getCompletenesses()->willReturn($completenesses);
+        $product->getFamily()->willReturn($family);
+        $product->getCategories()->willReturn($categories);
+        $product->getValues()->willReturn($values);
+        $product->getCreated()->willReturn($createdAt);
+        $product->getUpdated()->willReturn($updatedAt);
+
+        $result = $this->turnInto($product, $parent);
+        $result->shouldReturnAnInstanceOf(VariantProductInterface::class);
+        $result->getId()->shouldReturn(42);
+        $result->getIdentifier()->shouldReturn('foo');
+        $result->isEnabled()->shouldReturn(true);
+        $result->getFamily()->shouldReturn($family);
+        $result->getCreated()->shouldReturn($createdAt);
+        $result->getUpdated()->shouldReturn($updatedAt);
+        $result->getGroups()->shouldReturnAnInstanceOf(Collection::class);
+        $result->getAssociations()->shouldReturnAnInstanceOf(Collection::class);
+        $result->getCompletenesses()->shouldReturnAnInstanceOf(Collection::class);
+        $result->getCategories()->shouldReturnAnInstanceOf(Collection::class);
+        $result->getValues()->shouldReturnAnInstanceOf(ValueCollectionInterface::class);
     }
 }

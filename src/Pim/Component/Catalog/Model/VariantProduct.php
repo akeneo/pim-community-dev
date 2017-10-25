@@ -24,36 +24,6 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
     protected $familyVariant;
 
     /**
-     * @param ProductInterface $product
-     *
-     * @return VariantProductInterface
-     */
-    public static function fromProduct(ProductInterface $product)
-    {
-        $variantProduct = new self();
-
-        $valueIdentifier = $product->getValues()->filter(
-            function (ValueInterface $value) {
-                return AttributeTypes::IDENTIFIER === $value->getAttribute()->getType();
-            }
-        )->first();
-
-        $variantProduct->setId($product->getId());
-        $variantProduct->setIdentifier($valueIdentifier);
-        $variantProduct->setGroups($product->getGroups());
-        $variantProduct->setAssociations($product->getAssociations());
-        $variantProduct->setEnabled($product->isEnabled());
-        $variantProduct->setCompletenesses($product->getCompletenesses());
-        $variantProduct->setFamily($product->getFamily());
-        $variantProduct->setCategories($product->getCategories());
-        $variantProduct->setValues($product->getValues());
-        $variantProduct->setCreated($product->getCreated());
-        $variantProduct->setUpdated($product->getUpdated());
-
-        return $variantProduct;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getParent(): ?ProductModelInterface
