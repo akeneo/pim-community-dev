@@ -10,6 +10,7 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\EnrichBundle\Connector\Processor\AbstractProcessor;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Normalizer\Standard\ProductModelNormalizer;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
@@ -103,6 +104,10 @@ class ProductAndProductModelProcessor extends AbstractProcessor
             if (in_array('identifier', $selectedProperties)) {
                 $identifer = $this->attributeRepository->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
                 $selectedProperties[] = $identifer->getCode();
+                $selectedProperties[] = 'code';
+            }
+            if (in_array('family', $selectedProperties)) {
+                $selectedProperties[] = 'family_variant';
             }
             $productStandard = $this->filterProperties($productStandard, $selectedProperties);
         }

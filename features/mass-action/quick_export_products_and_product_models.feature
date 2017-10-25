@@ -36,7 +36,7 @@ Feature: Export products and product models
     And I should see "product_models_export_grid_context_en_US_ecommerce.csv" on the "Download generated files" dropdown button
 
   Scenario: Successfully export the grid columns for quick export product models
-    When I display in the products grid the columns Label, Model description
+    When I display in the products grid the columns ID, Label, Model description
     And I select row amor
     And I press "CSV (Grid context)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish
@@ -44,8 +44,8 @@ Feature: Export products and product models
     Then I should see the text "COMPLETED"
     And first exported file of "csv_product_grid_context_quick_export" should contain:
       """
-      description-de_DE-ecommerce;description-de_DE-mobile;description-de_DE-print;description-en_US-ecommerce;description-en_US-mobile;description-en_US-print;description-fr_FR-ecommerce;description-fr_FR-mobile;description-fr_FR-print
-      Heritage jacket navy blue tweed suit with single breasted 2 button. 53% wool, 22% polyester, 18% acrylic, 5% nylon, 1% cotton, 1% viscose. Dry Cleaning uniquement.Le mannequin measuring 1m85 and wears UK size 40, size 50 FR;;;;;
+      code;description-de_DE-ecommerce;description-de_DE-mobile;description-de_DE-print;description-en_US-ecommerce;description-en_US-mobile;description-en_US-print;description-fr_FR-ecommerce;description-fr_FR-mobile;description-fr_FR-print
+      amor;Heritage jacket navy blue tweed suit with single breasted 2 button. 53% wool, 22% polyester, 18% acrylic, 5% nylon, 1% cotton, 1% viscose. Dry Cleaning uniquement.Le mannequin measuring 1m85 and wears UK size 40, size 50 FR;;;;;
       """
 
   Scenario: Successfully export all columns for quick export product models
