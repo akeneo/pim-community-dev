@@ -175,6 +175,30 @@ class ExportProfilesContext extends ImportExportContext
     }
 
     /**
+     * @param string $code
+     * @param string $paths
+     *
+     * @Then /^the names of the exported files of "([^"]+)" should be "([^"]+)"$/
+     *
+     * @throws ExpectationException
+     */
+    public function theNamesOfTheExportedFilesOfShouldBe($code, $paths)
+    {
+        $executionPaths = $this->getMainContext()->getSubcontext('job')->getJobInstanceFilenames($code);
+        $expectedPaths = explode(',', $paths);
+        sort($executionPaths);
+        sort($expectedPaths);
+
+        if ($executionPaths !== $expectedPaths) {
+            throw $this->getMainContext()->createExpectationException(sprintf(
+                'Expected file names "%s" got "%s"',
+                join(',', $expectedPaths),
+                join(',', $executionPaths)
+            ));
+        }
+    }
+
+    /**
      * @param string    $code
      * @param TableNode $table
      *

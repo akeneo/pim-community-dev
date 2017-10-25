@@ -63,7 +63,7 @@ class FilteredProductReader implements
         ChannelRepositoryInterface $channelRepository,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
-        $generateCompleteness
+        bool $generateCompleteness
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->channelRepository = $channelRepository;

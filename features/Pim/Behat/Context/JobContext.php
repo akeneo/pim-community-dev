@@ -207,14 +207,24 @@ class JobContext extends PimContext
     /**
      * @param string $code
      *
-     * @return string
+     * @return string[]
      */
-    public function getJobInstanceFilename($code)
+    public function getJobInstanceFilenames(string $code): array
     {
         $archives = $this->getJobInstanceArchives($code);
-        $filename = key($archives);
+        $filenames = array_keys($archives);
 
-        return $filename;
+        return $filenames;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return string
+     */
+    public function getJobInstanceFilename(string $code): string
+    {
+        return $this->getJobInstanceFilenames($code)[0];
     }
 
     /**

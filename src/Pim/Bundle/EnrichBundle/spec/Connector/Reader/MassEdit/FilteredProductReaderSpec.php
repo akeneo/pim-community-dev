@@ -39,7 +39,6 @@ class FilteredProductReaderSpec extends ObjectBehavior
             $channelRepository,
             $completenessManager,
             $metricConverter,
-            $objectDetacher,
             true
         );
 
