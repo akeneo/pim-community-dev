@@ -1,14 +1,14 @@
 confirmation:
   remove:
-    item: Êtes-vous certain(e) de vouloir supprimer cet élément ?
+    item: Êtes-vous sûr(e) de vouloir supprimer cet élément ?
     association type: Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?
-    attribute: Êtes-vous sûr(e) de que vouloir supprimer cet attribut ?
+    attribute: Êtes-vous sûr(e) de vouloir supprimer cet attribut ?
     family: Êtes-vous sûr(e) de que vouloir supprimer cette famille ?
     product: Êtes-vous sûr(e) de que vouloir supprimer ce produit ?
     channel: Êtes-vous sûr(e) de que vouloir supprimer ce canal ?
     group: Êtes-vous sûr(e) de vouloir supprimer ce groupe ?
     variant group: Êtes-vous sûr(e) de que vouloir supprimer ce groupe de variantes ?
-    group type: Êtes-vous sûr(e) de que vouloir supprimer ce type de groupe ?
+    group type: Êtes-vous sûr(e) de vouloir supprimer ce type de groupe ?
     import profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?
     export profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'export ?
     user: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
@@ -26,9 +26,9 @@ pim_datagrid:
       error: Une erreur s'est produite lors de la suppression des produits sélectionnés, merci d'essayer à nouveau.
 flash:
   item:
-    removed: Elément supprimé avec succès
+    removed: Élément supprimé avec succès
   association type:
-    removed: Le type d'association a bien été supprimé
+    removed: Le type d'association a été supprimé avec succès
   attribute:
     removed: L'attribut a bien été supprimé
   family:
@@ -99,8 +99,8 @@ pim:
         csv_grid_context: CSV (contexte de la grille)
         xlsx_all: Excel (tous les attributs)
         xlsx_grid_context: Excel (contexte de la grille)
-      delete: Supprimer des produits
-      mass_edit: Modifier les informations du produit
+      delete: Supprimer
+      mass_edit: Actions de masse
       category_edit: Déplacer des produits vers des catégories
       sequential_edit: Modifier les produits séquentiellement
 jstree.create: Créer
@@ -112,7 +112,7 @@ pim_enrich:
       delete.label: Supprimer
       delete.error: Erreur lors de la suppression de l'élément
     delete:
-      confirm.content: Êtes-vous sûr(e) de que vouloir supprimer {{ itemName }} ? Il n'est pas possible d'annuler cette action
+      confirm.content: Êtes-vous sûr(e) de vouloir supprimer {{ itemName }} ? Il est impossible d'annuler cette action
       confirm.title: Supprimer l'élément {{ itemName }}
   navigation:
     link:
@@ -131,7 +131,7 @@ pim_enrich:
         disable: Desactiver
         disabled: Désactivé
         download_pdf: PDF
-        compare_translate: Comparer / traduire
+        compare_translate: Comparer / Traduire
         delete: Supprimer
         save: Enregistrer
         save_and_back: Enregistrer et revenir sur la grille
@@ -190,7 +190,7 @@ pim_enrich:
       localizable:
         channel_locale_unavailable: Ce champ traduisible n'est pas disponible pour la locale '{{ locale }}' et le canal '{{ channel }}'
       media:
-        upload: Glisser et déposer pour télécharger ou cliquer ici
+        upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
       create_popin:
         title: Créer un nouveau produit
         labels:
@@ -223,9 +223,9 @@ pim_enrich:
   confirmation:
     leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
     discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
-    delete_item: Supprimer l'élément.
+    delete_item: Supprimer l'élément
     delete:
-      attribute: Êtes-vous sûr(e) de que vouloir supprimer cet attribut du produit ?
+      attribute: Êtes-vous sûr(e) de vouloir supprimer cet attribut du produit ?
   info:
     not_applicable: Inconnu
     entity:
@@ -341,7 +341,7 @@ pim_enrich:
           help: Le canal définit la portée des valeurs des produits, les locales utilisées pour sélectionner les données ainsi que l'arbre de catégories utilisé pour sélectionner les produits.
         locales:
           title: Locales
-          help: 'Les locales définissent les valeurs de produits traduisibles à exporter. Par ex : les informations produits en allemand.'
+          help: 'Les locales définissent les valeurs de produits traduisibles à exporter. Par ex.: les informations des produits en allemand.'
         attributes:
           title: Attributs
           edit: Modifier
@@ -365,8 +365,8 @@ pim_enrich:
           operators:
             IN: Dans la liste
             "NOT IN": Pas dans la liste
-            EMPTY: Produits qui n’ont pas de famille
-            "NOT EMPTY": Produits qui ont une famille
+            EMPTY: Produits ne possédant pas de famille
+            "NOT EMPTY": Produits possédant une famille
           empty_selection: Pas de condition sur les familles
         updated:
           title: Condition sur la date de mise à jour
