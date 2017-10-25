@@ -6,6 +6,7 @@ pim_import_export:
   status:
     - 就绪
   download_archive:
+    archive: 下载生成的文件 | 下载生成的文件
     output: 下载生成的文件 | 下载生成的文件
     input: 下载文件 | 下载文件
   notification:
