@@ -8,6 +8,9 @@
 - PIM-6933: Fix menu display in case of acl restriction
 - PIM-6922: fix sort order on attribute groups
 
+# Improvements
+ - TIP-819: 3x indexing performance on command by not waiting for index refresh (Product, ProductModel and PublishedProduct indexing commands)
+
 ## Better manage products with variants!
 
 - PIM-6773: Add the missing required attributes filter in the product model edit form
@@ -17,6 +20,7 @@
 
 ## BC breaks
 
+- `Refresh::disabled()` rename to `Refresh::disable()`, to make it homogeneous with `Refresh::enable()` and `Refresh::waitFor()`
 - Change the constructor of `Pim\Component\Catalog\Completeness\CompletenessCalculator`. Remove `Pim\Component\Catalog\Factory\ValueFactory` and both `Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface`. Add `Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory` and `Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory`.
 - Change the constructor of `Pim\Bundle\EnrichBundle\Normalizer\ProductModelNormalizer` to add `Symfony\Component\Serializer\Normalizer\NormalizerInterface`.
 - Move `Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CompletenessFilter` to `Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CompletenessFilter`

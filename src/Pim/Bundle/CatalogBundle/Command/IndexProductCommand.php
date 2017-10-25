@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
+use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
@@ -109,7 +110,7 @@ class IndexProductCommand extends ContainerAwareCommand
 
             $products = $this->productRepository->findAllWithOffsetAndSize($offset, self::BULK_SIZE);
 
-            $this->bulkProductIndexer->indexAll($products);
+            $this->bulkProductIndexer->indexAll($products, ['index_refresh' => Refresh::disable()]);
             $this->bulkProductDetacher->detachAll($products);
         }
 
@@ -153,7 +154,7 @@ class IndexProductCommand extends ContainerAwareCommand
             $i++;
 
             if (0 === $i % self::BULK_SIZE) {
-                $this->bulkProductIndexer->indexAll($productBulk);
+                $this->bulkProductIndexer->indexAll($productBulk, ['index_refresh' => Refresh::disable()]);
                 $this->bulkProductDetacher->detachAll($productBulk);
 
                 $productBulk = [];
@@ -169,7 +170,7 @@ class IndexProductCommand extends ContainerAwareCommand
         }
 
         if (!empty($productBulk)) {
-            $this->bulkProductIndexer->indexAll($productBulk);
+            $this->bulkProductIndexer->indexAll($productBulk, ['index_refresh' => Refresh::disable()]);
             $this->bulkProductDetacher->detachAll($productBulk);
 
             $totalProductsIndexed += count($productBulk);
