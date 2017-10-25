@@ -23,6 +23,10 @@
 - Move `Pim\Bundle\FilterBundle\Filter\Product\CompletenessFilter` to `Pim\Bundle\FilterBundle\Filter\CompletenessFilter`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController` to add `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface` and `Symfony\Component\Serializer\Normalizer\NormalizerInterface`
 
+## New jobs
+IMPORTANT: In order for your PIM to work properly, you will need to run the following commands to add the missing job instances.
+- Add the job instance `compute_completeness_of_products_family`: `bin/console akeneo:batch:create-job "internal" "compute_completeness_of_products_family" "compute_completeness_of_products_family" "compute_completeness_of_products_family" '{"family_code":"null"}' "compute completeness of products family" --env=prod`
+
 # 2.0.4 (2017-10-19)
 
 # 2.0.3 (2017-10-19)
