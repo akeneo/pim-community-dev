@@ -437,6 +437,7 @@ pim_enrich:
     form:
         required: (required)
         product_model:
+            choose_variant: Choose a variant
             complete_variant_product: variant product
             complete_variant_products: variant products
         product:

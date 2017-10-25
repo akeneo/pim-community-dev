@@ -10,6 +10,7 @@
 define([
     'jquery',
     'underscore',
+    'oro/translator',
     'pim/form/common/fields/field',
     'pim/form',
     'pim/fetcher-registry',
@@ -20,6 +21,7 @@ define([
 function (
     $,
     _,
+    __,
     BaseField,
     BaseForm,
     FetcherRegistry,
@@ -37,7 +39,7 @@ function (
         },
 
         template: _.template(template),
-        defaultLabel: 'Choose a variant',
+        defaultLabel: __('pim_enrich.form.product_model.choose_variant'),
         fieldLabel: 'family_variant',
         fieldId: 'family_variant',
         fieldName: 'family_variant',
