@@ -1,0 +1,6 @@
+parameters:
+    pim_catalog.entity_with_family_variant.keep_only_values_for_variation.class: Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation
+
+services:
+    pim_catalog.entity_with_family_variant.keep_only_values_for_variation:
+        class: '%pim_catalog.entity_with_family_variant.keep_only_values_for_variation.class%'

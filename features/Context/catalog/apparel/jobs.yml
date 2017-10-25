@@ -288,3 +288,8 @@ jobs:
         alias:     compute_completeness_of_products_family
         label:     compute completeness of products family
         type:      compute_completeness_of_products_family
+    compute_family_variant_structure_changes:
+        connector: internal
+        alias:     compute_family_variant_structure_changes
+        label:     Compute variant structure changes
+        type:      compute_family_variant_structure_changes

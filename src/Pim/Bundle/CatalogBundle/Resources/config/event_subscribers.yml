@@ -14,6 +14,8 @@ parameters:
     pim_catalog.event_subscriber.add_unique_attributes_to_variant_product_attribute_set.class: Pim\Bundle\CatalogBundle\EventSubscriber\AddUniqueAttributesToVariantProductAttributeSetSubscriber
     pim_catalog.event_subscriber.index_product_model_complete.class: Pim\Bundle\CatalogBundle\EventSubscriber\IndexProductModelCompleteDataSubscriber
     pim_catalog.event_subscriber.compute_completeness_on_family_update.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber
+    pim_catalog.event_subscriber.compute_product_models_descendants.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeProductModelDescendantsSubscriber
+    pim_catalog.event_subscriber.compute_family_variant_structure_changes.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeFamilyVariantStructureChangesSubscriber
 
 services:
     # Subscribers
@@ -105,6 +107,26 @@ services:
             - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
             - '%pim_catalog.compute_product_models_descendants.job_name%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.compute_product_models_descendants:
+        class: '%pim_catalog.event_subscriber.compute_product_models_descendants.class%'
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '%pim_catalog.compute_product_models_descendants.job_name%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.compute_family_variant_structure_changes:
+        class: '%pim_catalog.event_subscriber.compute_family_variant_structure_changes.class%'
+        arguments:
+            - '@security.token_storage'
+            - '@akeneo_batch_queue.launcher.simple_job_launcher'
+            - '@akeneo_batch.job.job_instance_repository'
+            - '%pim_catalog.compute_family_variant_structure_changes.job_name%'
         tags:
             - { name: kernel.event_subscriber }
 

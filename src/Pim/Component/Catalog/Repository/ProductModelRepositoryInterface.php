@@ -7,6 +7,7 @@ namespace Pim\Component\Catalog\Repository;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
@@ -78,4 +79,18 @@ interface ProductModelRepositoryInterface extends
      * The limit parameter defines the number of products to return.
      */
     public function searchRootProductModelsAfter(?ProductModelInterface $product, int $limit): array;
+
+    /**
+     * @param FamilyVariantInterface $familyVariant
+     *
+     * @return array
+     */
+    public function findSubProductModels(FamilyVariantInterface $familyVariant): array;
+
+    /**
+     * @param FamilyVariantInterface $familyVariant
+     *
+     * @return array
+     */
+    public function findRootProductModels(FamilyVariantInterface $familyVariant): array;
 }
