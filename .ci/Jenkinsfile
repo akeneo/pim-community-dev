@@ -351,7 +351,7 @@ stage("Test") {
                                 [container: "php", script: "su docker -c './app/console --env=behat oro:translation:dump en_GB'"],
                                 [container: "php", script: "su docker -c './app/console --env=behat oro:translation:dump fr_FR'"],
                                 [container: "php", script: "su docker -c './app/console --env=behat oro:translation:dump de_DE'"],
-                                [container: "php", script: "touch app/logs/behat.log"],
+                                [container: "php", script: "su docker -c 'touch app/logs/behat.log'"],
                                 [
                                     container: "php",
                                     junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
