@@ -8,6 +8,7 @@
 - PIM-6933: Fix menu display in case of acl restriction
 - PIM-6922: Fix sort order on attribute groups
 - PIM-6923: Fix search on all grids when returning on it
+- PIM-6878: Fix attribute creation popin not extensible
 
 ## Better manage products with variants!
 
