@@ -51,11 +51,11 @@ define([
         renderInput(templateContext) {
             return this.template(_.extend(templateContext, {
                 value: {
-                    amount: undefined !== this.getFormData()[this.fieldName]
-                        ? this.getFormData()[this.fieldName].amount
+                    amount: undefined !== this.getModelValue()
+                        ? this.getModelValue().amount
                         : null,
-                    unit: undefined !== this.getFormData()[this.fieldName]
-                        ? this.getFormData()[this.fieldName].unit
+                    unit: undefined !== this.getModelValue()
+                        ? this.getModelValue().unit
                         : null
                 }
             }));

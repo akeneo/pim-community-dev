@@ -33,7 +33,7 @@ define([
         /**
          * {@inheritdoc}
          */
-        initialize: function (meta) {
+        initialize(meta) {
             this.config = meta.config;
 
             if (undefined === this.config.fieldName) {
@@ -41,6 +41,7 @@ define([
             }
 
             this.fieldName = this.config.fieldName;
+            this.errors = [];
 
             BaseForm.prototype.initialize.apply(this, arguments);
         },
@@ -48,7 +49,7 @@ define([
         /**
          * {@inheritdoc}
          */
-        configure: function () {
+        configure() {
             this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onBadRequest.bind(this));
 
             return BaseForm.prototype.configure.apply(this, arguments);
@@ -57,7 +58,7 @@ define([
         /**
          * @param {Object} event
          */
-        onBadRequest: function (event) {
+        onBadRequest(event) {
             this.errors = _.where(event.response, {path: this.fieldName});
             this.render();
 
@@ -69,7 +70,7 @@ define([
          *
          * @returns {String}
          */
-        getTabCode: function () {
+        getTabCode() {
             let parent = this.getParent();
             while (!(parent instanceof Tab)) {
                 parent = parent.getParent();
@@ -84,7 +85,7 @@ define([
         /**
          * Renders the container template.
          */
-        render: function () {
+        render() {
             if (!this.isVisible()) {
                 this.$el.empty();
 
@@ -106,7 +107,7 @@ define([
          *
          * @returns {Promise}
          */
-        getTemplateContext: function () {
+        getTemplateContext() {
             return $.Deferred()
                 .resolve({
                     fieldLabel: __('pim_enrich.form.attribute.tab.properties.label.' + this.fieldName),
@@ -124,21 +125,21 @@ define([
         /**
          * Renders the input inside the field container.
          */
-        renderInput: function () {
+        renderInput() {
             throw new Error('Please implement the renderInput() method in your concrete field class.');
         },
 
         /**
          * Called after rendering the input.
          */
-        postRender: function () {},
+        postRender() {},
 
         /**
          * Should the field be displayed?
          *
          * @returns {Boolean}
          */
-        isVisible: function () {
+        isVisible() {
             return true;
         },
 
@@ -147,7 +148,7 @@ define([
          *
          * @returns {Boolean}
          */
-        isReadOnly: function () {
+        isReadOnly() {
             return this.config.readOnly || false;
         },
 
@@ -156,11 +157,17 @@ define([
          *
          * @param {*} value
          */
-        updateModel: function (value) {
-            const newData = {};
-            newData[this.fieldName] = value;
+        updateModel(value) {
+            this.setData({[this.fieldName]: value});
+        },
 
-            this.setData(newData);
+        /**
+         * Reads and returns the field value from the model.
+         *
+         * @returns {*}
+         */
+        getModelValue() {
+            return this.getFormData()[this.fieldName];
         },
 
         /**
@@ -168,7 +175,7 @@ define([
          *
          * @returns {String}
          */
-        getFieldId: function () {
+        getFieldId() {
             return Math.random().toString(10).substring(2);
         }
     });

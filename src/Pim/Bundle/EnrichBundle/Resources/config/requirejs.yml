@@ -905,6 +905,13 @@ config:
         pim/form/common/fields/textarea:                pimenrich/js/form/common/fields/textarea
         pim/form/common/fields/metric:                  pimenrich/js/form/common/fields/metric
 
+        # Values fields
+        pim/form/common/fields/values/boolean:              pimenrich/js/form/common/fields/values/boolean
+        pim/form/common/fields/values/simple-select-async:  pimenrich/js/form/common/fields/values/simple-select-async
+        pim/form/common/fields/values/text:                 pimenrich/js/form/common/fields/values/text
+        pim/form/common/fields/values/metric:               pimenrich/js/form/common/fields/values/metric
+        pim/form/common/fields/values/values-behavior:      pimenrich/js/form/common/fields/values/values-behavior
+
         # PEF fields
         pim/field:                  pimenrich/js/product/field/field
         pim/boolean-field:          pimenrich/js/product/field/boolean-field

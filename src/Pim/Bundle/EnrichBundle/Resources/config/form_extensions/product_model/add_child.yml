@@ -21,26 +21,26 @@ extensions:
             codeFieldModule: pim-product-model-add-child-field-text
 
     pim-product-model-add-child-field-simple-select:
-        module: pim/form/common/fields/simple-select-async
+        module: pim/form/common/fields/values/simple-select-async
         config:
             required: true
 
     pim-product-model-add-child-field-metric:
-        module: pim/form/common/fields/metric
+        module: pim/form/common/fields/values/metric
         config:
             required: true
 
     pim-product-model-add-child-field-switch:
-        module: pim/form/common/fields/boolean
+        module: pim/form/common/fields/values/boolean
         config:
             required: true
 
     pim-product-model-add-child-field-simple-select-reference-data:
-        module: pim/form/common/fields/simple-select-async
+        module: pim/form/common/fields/values/simple-select-async
         config:
             required: true
 
     pim-product-model-add-child-field-text:
-        module: pim/form/common/fields/text
+        module: pim/form/common/fields/values/text
         config:
             required: true
