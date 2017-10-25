@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Command;
 
+use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
@@ -59,7 +60,7 @@ class IndexProductCommandSpec extends ObjectBehavior
         $productRepository->countAll()->willReturn(2);
         $productRepository->findAllWithOffsetAndSize(0, 100)->willReturn([$product1, $product2]);
 
-        $productIndexer->indexAll([$product1, $product2])->shouldBeCalled();
+        $productIndexer->indexAll([$product1, $product2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
 
         $productDetacher->detachAll([$product1, $product2])->shouldBeCalled();
 
@@ -108,7 +109,7 @@ class IndexProductCommandSpec extends ObjectBehavior
 
         $productRepository->findBy(['identifier' => ['product_identifier_to_index']])->willReturn([$productToIndex]);
 
-        $productIndexer->indexAll([$productToIndex])->shouldBeCalled();
+        $productIndexer->indexAll([$productToIndex], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
         $productDetacher->detachAll([$productToIndex])->shouldBeCalled();
 
         $output->writeln('<info>1 products found for indexing</info>')->shouldBeCalled();
@@ -157,7 +158,7 @@ class IndexProductCommandSpec extends ObjectBehavior
 
         $productRepository->findBy(['identifier' => ['product_1', 'product_2']])->willReturn([$product1, $product2]);
 
-        $productIndexer->indexAll([$product1, $product2])->shouldBeCalled();
+        $productIndexer->indexAll([$product1, $product2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
         $productDetacher->detachAll([$product1, $product2])->shouldBeCalled();
 
         $output->writeln('<info>2 products found for indexing</info>')->shouldBeCalled();
@@ -207,7 +208,7 @@ class IndexProductCommandSpec extends ObjectBehavior
 
         $productToIndex->getIdentifier()->willReturn('product_1');
 
-        $productIndexer->indexAll([$productToIndex])->shouldBeCalled();
+        $productIndexer->indexAll([$productToIndex], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
         $productDetacher->detachAll([$productToIndex])->shouldBeCalled();
 
         $output->writeln('<error>Some products were not found for the given identifiers: wrong_product</error>')->shouldBeCalled();

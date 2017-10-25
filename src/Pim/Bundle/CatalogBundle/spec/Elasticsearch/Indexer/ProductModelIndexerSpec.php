@@ -148,4 +148,94 @@ class ProductModelIndexerSpec extends ObjectBehavior
 
         $this->removeAll([40, 33])->shouldReturn(null);
     }
+
+    function it_indexes_product_models_and_wait_for_index_refresh_by_default(
+        $normalizer,
+        $productModelClient,
+        $productAndProductModelClient,
+        ProductModelInterface $productModel1,
+        ProductModelInterface $productModel2
+    ) {
+        $normalizer->normalize($productModel1, ProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)
+            ->willReturn(['id' => 'foo', 'a key' => 'a value']);
+        $normalizer->normalize($productModel2, ProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)
+            ->willReturn(['id' => 'bar', 'a key' => 'another value']);
+
+        $productModelClient->bulkIndexes('an_index_type_for_test_purpose', [
+            ['id' => 'foo', 'a key' => 'a value'],
+            ['id' => 'bar', 'a key' => 'another value'],
+        ], 'id', Refresh::waitFor())->shouldBeCalled();
+
+        $normalizer->normalize($productModel1, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->willReturn(['id' => 'foo', 'a key' => 'a value']);
+        $normalizer->normalize($productModel2, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->willReturn(['id' => 'bar', 'a key' => 'another value']);
+
+        $productAndProductModelClient->bulkIndexes('an_index_type_for_test_purpose', [
+            ['id' => 'foo', 'a key' => 'a value'],
+            ['id' => 'bar', 'a key' => 'another value'],
+        ], 'id', Refresh::waitFor())->shouldBeCalled();
+
+        $this->indexAll([$productModel1, $productModel2]);
+    }
+
+    function it_indexes_product_models_and_disable_index_refresh(
+        $normalizer,
+        $productModelClient,
+        $productAndProductModelClient,
+        ProductModelInterface $productModel1,
+        ProductModelInterface $productModel2
+    ) {
+        $normalizer->normalize($productModel1, ProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)
+            ->willReturn(['id' => 'foo', 'a key' => 'a value']);
+        $normalizer->normalize($productModel2, ProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)
+            ->willReturn(['id' => 'bar', 'a key' => 'another value']);
+
+        $productModelClient->bulkIndexes('an_index_type_for_test_purpose', [
+            ['id' => 'foo', 'a key' => 'a value'],
+            ['id' => 'bar', 'a key' => 'another value'],
+        ], 'id', Refresh::disable())->shouldBeCalled();
+
+        $normalizer->normalize($productModel1, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->willReturn(['id' => 'foo', 'a key' => 'a value']);
+        $normalizer->normalize($productModel2, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->willReturn(['id' => 'bar', 'a key' => 'another value']);
+
+        $productAndProductModelClient->bulkIndexes('an_index_type_for_test_purpose', [
+            ['id' => 'foo', 'a key' => 'a value'],
+            ['id' => 'bar', 'a key' => 'another value'],
+        ], 'id', Refresh::disable())->shouldBeCalled();
+
+        $this->indexAll([$productModel1, $productModel2], ["index_refresh" => Refresh::disable()]);
+    }
+
+    function it_indexes_product_models_and_enable_index_refresh_without_waiting_for_it(
+        $normalizer,
+        $productModelClient,
+        $productAndProductModelClient,
+        ProductModelInterface $productModel1,
+        ProductModelInterface $productModel2
+    ) {
+        $normalizer->normalize($productModel1, ProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)
+            ->willReturn(['id' => 'foo', 'a key' => 'a value']);
+        $normalizer->normalize($productModel2, ProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_MODEL_INDEX)
+            ->willReturn(['id' => 'bar', 'a key' => 'another value']);
+
+        $productModelClient->bulkIndexes('an_index_type_for_test_purpose', [
+            ['id' => 'foo', 'a key' => 'a value'],
+            ['id' => 'bar', 'a key' => 'another value'],
+        ], 'id', Refresh::disable())->shouldBeCalled();
+
+        $normalizer->normalize($productModel1, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->willReturn(['id' => 'foo', 'a key' => 'a value']);
+        $normalizer->normalize($productModel2, ProductAndProductModel\ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
+            ->willReturn(['id' => 'bar', 'a key' => 'another value']);
+
+        $productAndProductModelClient->bulkIndexes('an_index_type_for_test_purpose', [
+            ['id' => 'foo', 'a key' => 'a value'],
+            ['id' => 'bar', 'a key' => 'another value'],
+        ], 'id', Refresh::disable())->shouldBeCalled();
+
+        $this->indexAll([$productModel1, $productModel2], ["index_refresh" => Refresh::disable()]);
+    }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
+use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
@@ -119,7 +120,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
                 self::BULK_SIZE
             );
 
-            $this->bulkProductModelIndexer->indexAll($rootProductModels);
+            $this->bulkProductModelIndexer->indexAll($rootProductModels, ['index_refresh' => Refresh::disable()]);
             $this->bulkProductModelDescendantsIndexer->indexAll($rootProductModels);
             $this->bulkProductModelDetacher->detachAll($rootProductModels);
         }
@@ -165,8 +166,8 @@ class IndexProductModelCommand extends ContainerAwareCommand
             $i++;
 
             if (0 === $i % self::BULK_SIZE) {
-                $this->bulkProductModelIndexer->indexAll($productModelBulk);
-                $this->bulkProductModelDescendantsIndexer->indexAll($productModelBulk);
+                $this->bulkProductModelIndexer->indexAll($productModelBulk, ['index_refresh' => Refresh::disable()]);
+                $this->bulkProductModelDescendantsIndexer->indexAll($productModelBulk, ['index_refresh' => Refresh::disable()]);
                 $this->bulkProductModelDetacher->detachAll($productModelBulk);
 
                 $productModelBulk = [];
@@ -182,8 +183,8 @@ class IndexProductModelCommand extends ContainerAwareCommand
         }
 
         if (!empty($productModelBulk)) {
-            $this->bulkProductModelIndexer->indexAll($productModelBulk);
-            $this->bulkProductModelDescendantsIndexer->indexAll($productModelBulk);
+            $this->bulkProductModelIndexer->indexAll($productModelBulk, ['index_refresh' => Refresh::disable()]);
+            $this->bulkProductModelDescendantsIndexer->indexAll($productModelBulk, ['index_refresh' => Refresh::disable()]);
             $this->bulkProductModelDetacher->detachAll($productModelBulk);
 
             $totalProductModelsIndexed += count($productModelBulk);
