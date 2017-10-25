@@ -12,7 +12,7 @@
       <div class="AknWidget-content AknWidget-content--withPadding">
           <div class="AknSquareList">
               <% _.each(attributeTypes, function(attributeType){ %>
-                  <span class="AknSquareList-item  AknButton--withIcon attribute-choice"
+                  <span class="AknSquareList-item attribute-choice"
                       data-route="<%- generateRoute('pim_enrich_attribute_create', { attribute_type: attributeType.code }) %>">
                       <i class="AknButton-squareIcon AknButton-squareIcon--<%- iconsMap[attributeType.code] %>"></i>
                       <div><%- attributeType.label %></div>
