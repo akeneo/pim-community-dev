@@ -91,7 +91,7 @@ class Edit extends Form
         $variationContainer = $this->findVariationContainer($channel);
 
         $generateButton = $this->spin(function () use ($variationContainer) {
-            return $variationContainer->find('css', '.file-uploader');
+            return $variationContainer->find('css', 'a:contains("Generate from reference")');
         }, 'Generate variation button not found.');
 
         $generateButton->click();
@@ -177,7 +177,7 @@ class Edit extends Form
     {
         $variationContainer = $this->findVariationContainer($channel);
 
-        $generateZone = $variationContainer->find('css', 'span:contains("Generate from reference")');
+        $generateZone = $variationContainer->find('css', 'a:contains("Generate from reference")');
 
         if (!$generateZone) {
             throw new ElementNotFoundException($this->getSession(), sprintf('variation %s generate zone', $channel));
