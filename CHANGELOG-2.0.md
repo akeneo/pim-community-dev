@@ -11,6 +11,7 @@
 
 - PIM-6773: Add the missing required attributes filter in the product model edit form
 - PIM-6806: Update product completenesses whenever the attribute requirements of a family are updated
+- PIM-6492: search products with variants according to the completeness
 - PIM-6337: Create a product model from the UI
 
 ## BC breaks
@@ -20,11 +21,6 @@
 - Move `Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CompletenessFilter` to `Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CompletenessFilter`
 - Move `Pim\Bundle\FilterBundle\Filter\Product\CompletenessFilter` to `Pim\Bundle\FilterBundle\Filter\CompletenessFilter`
 - Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductModelController` to add `Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface` and `Symfony\Component\Serializer\Normalizer\NormalizerInterface`
-
-## Better manage products with variants!
-
-- PIM-6492: search products with variants according to the completeness
-- PIM-6337: Create a product model from the UI
 
 # 2.0.4 (2017-10-19)
 
