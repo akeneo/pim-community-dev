@@ -367,7 +367,7 @@ stage("Test") {
                     echo "Skipping behat test"
                 }
             },
-            "behat-ee": {ps -
+            "behat-ee": {
                 if (launchBehatTests.equals("yes") && editions.contains("ee")) {
                     queue({
                         def scenariosEE = []
