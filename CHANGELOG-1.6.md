@@ -1,4 +1,4 @@
-# 1.6.x 
+# 1.6.20 (2017-10-25) 
 
 ## Bug fixes
 - GITHUB-6984: Fix wrong path when generating js routes, cheers @amansilla!
