@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Command;
 
+use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
@@ -64,7 +65,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
             ->findRootProductModelsWithOffsetAndSize(0, 100)
             ->willReturn([$productModel1, $productModel2]);
 
-        $productModelIndexer->indexAll([$productModel1, $productModel2])->shouldBeCalled();
+        $productModelIndexer->indexAll([$productModel1, $productModel2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
 
         $productModelDetacher->detachAll([$productModel1, $productModel2])->shouldBeCalled();
 
@@ -117,7 +118,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
 
         $productModelRepository->findBy(['code' => ['product_model_code_to_index']])->willReturn([$productModelToIndex]);
 
-        $productModelIndexer->indexAll([$productModelToIndex])->shouldBeCalled();
+        $productModelIndexer->indexAll([$productModelToIndex], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
         $productModelDetacher->detachAll([$productModelToIndex])->shouldBeCalled();
 
         $output->writeln('<info>1 product models found for indexing</info>')->shouldBeCalled();
@@ -174,7 +175,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $productModel1->getCode()->willReturn('product_model_1');
         $productModel2->getCode()->willReturn('product_model_2');
 
-        $productModelIndexer->indexAll([$productModel1, $productModel2])->shouldBeCalled();
+        $productModelIndexer->indexAll([$productModel1, $productModel2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
         $productModelDetacher->detachAll([$productModel1, $productModel2])->shouldBeCalled();
 
         $output->writeln('<info>2 product models found for indexing</info>')->shouldBeCalled();
@@ -231,7 +232,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $productModel1->getCode()->willReturn('product_model_1');
         $productModel2->getCode()->willReturn('product_model_2');
 
-        $productModelIndexer->indexAll([$productModel1, $productModel2])->shouldBeCalled();
+        $productModelIndexer->indexAll([$productModel1, $productModel2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
         $productModelDetacher->detachAll([$productModel1, $productModel2])->shouldBeCalled();
 
         $output->writeln('<error>Some product models were not found for the given codes: wrong_product_model</error>')->shouldBeCalled();

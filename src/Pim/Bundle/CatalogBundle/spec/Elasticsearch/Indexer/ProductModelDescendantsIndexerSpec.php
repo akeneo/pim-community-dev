@@ -54,7 +54,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productChildren->isEmpty()->willReturn(false);
         $productChildren->first()->willReturn($childProduct1);
         $productChildren->toArray()->willReturn([$childProduct1, $childProduct2]);
-        $productIndexer->indexAll([$childProduct1, $childProduct2])->shouldBeCalled();
+        $productIndexer->indexAll([$childProduct1, $childProduct2], [])->shouldBeCalled();
 
         $productModel->getProductModels()->willReturn($productModelChildren);
         $productModelChildren->isEmpty()->willReturn(true);
@@ -113,7 +113,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productVariantsChildren->first()->willReturn($childVariantProduct1);
         $productVariantsChildren->toArray()->willReturn([$childVariantProduct1, $childVariantProduct2]);
 
-        $productIndexer->indexAll([$childVariantProduct1, $childVariantProduct2])->shouldBeCalled();
+        $productIndexer->indexAll([$childVariantProduct1, $childVariantProduct2], [])->shouldBeCalled();
 
         $this->index($rootProductModel);
     }
@@ -147,7 +147,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productChildren1->isEmpty()->willReturn(false);
         $productChildren1->first()->willReturn($childProduct1);
         $productChildren1->toArray()->willReturn([$childProduct1, $childProduct2]);
-        $productIndexer->indexAll([$childProduct1, $childProduct2])->shouldBeCalled();
+        $productIndexer->indexAll([$childProduct1, $childProduct2], [])->shouldBeCalled();
 
         $productModel1->getProductModels()->willReturn($productModelChildren1);
         $productModelChildren1->isEmpty()->willReturn(true);
@@ -157,7 +157,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productChildren2->isEmpty()->willReturn(false);
         $productChildren2->first()->willReturn($childProduct3);
         $productChildren2->toArray()->willReturn([$childProduct3, $childProduct4]);
-        $productIndexer->indexAll([$childProduct3, $childProduct4])->shouldBeCalled();
+        $productIndexer->indexAll([$childProduct3, $childProduct4], [])->shouldBeCalled();
 
         $productModel2->getProductModels()->willReturn($productModelChildren2);
         $productModelChildren2->isEmpty()->willReturn(true);

@@ -77,6 +77,9 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
     /**
      * Indexes a product in both the product index and the product and product model index.
      *
+     * If the index_refresh is provided, it uses the refresh strategy defined.
+     * Otherwise the waitFor strategy is by default.
+     *
      * {@inheritdoc}
      */
     public function indexAll(array $objects, array $options = []) : void
@@ -84,6 +87,8 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
         if (empty($objects)) {
             return;
         }
+
+        $indexRefresh = $options["index_refresh"] ?? Refresh::waitFor();
 
         $normalizedProducts = [];
         $normalizedProductModels = [];
@@ -103,12 +108,12 @@ class ProductIndexer implements IndexerInterface, BulkIndexerInterface, RemoverI
             $normalizedProductModels[] = $normalizedProductModel;
         }
 
-        $this->productClient->bulkIndexes($this->indexType, $normalizedProducts, 'id', Refresh::waitFor());
+        $this->productClient->bulkIndexes($this->indexType, $normalizedProducts, 'id', $indexRefresh);
         $this->productAndProductModelClient->bulkIndexes(
             $this->indexType,
             $normalizedProductModels,
             'id',
-            Refresh::waitFor()
+            $indexRefresh
         );
     }
 

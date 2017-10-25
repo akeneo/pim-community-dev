@@ -39,7 +39,7 @@ final class Refresh
     /**
      * @return Refresh
      */
-    public static function disabled()
+    public static function disable()
     {
         return new self(Refresh::DISABLE);
     }
