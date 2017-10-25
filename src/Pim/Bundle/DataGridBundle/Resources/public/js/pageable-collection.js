@@ -170,6 +170,9 @@ function(_, Backbone, BackbonePageableCollection, app) {
                 prefix = this.inputName + '[_filter]'
             }
 
+            if (this.inputName && data[this.inputName]) {
+                data[this.inputName]._filter = {};
+            }
             if (state.filters) {
                 _.extend(
                     data,
