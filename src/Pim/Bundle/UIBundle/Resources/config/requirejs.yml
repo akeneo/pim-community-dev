@@ -44,7 +44,6 @@ config:
                 - jquery
 
     paths:
-        text:                          pimui/lib/text/text
         jquery-ui:                     pimui/lib/jquery-ui/jquery-ui-1.11.4.custom.min
         jquery.numeric:                pimui/lib/jquery-numeric/jquery.numeric
         jquery.select2:                pimui/lib/select2/select2
@@ -61,7 +60,6 @@ config:
         oro/messenger:                 pimui/js/messenger
         oro/modal:                     pimui/js/modal
         oro/delete-confirmation:       pimui/js/delete-confirmation
-        oro/revoke-confirmation:       pimui/js/revoke-confirmation
         oro/tools:                     pimui/js/tools
 
         oro/form/state:                pimui/js/form/state.js

@@ -15,7 +15,7 @@ services:
         class: '%pim_api.repository.product.class%'
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '%pim_catalog.entity.product.class%'
+            - '%pim_catalog.entity.abstract_product.class%'
             - '@pim_catalog.repository.product'
 
     pim_api.repository.attribute:
@@ -59,6 +59,13 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pim_catalog.entity.family.class%'
             - '@pim_catalog.repository.family'
+
+    pim_api.repository.family_variant:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.family_variant.class%'
+            - '@pim_catalog.repository.family_variant'
 
     pim_api.repository.locale:
         class: '%pim_api.repository.api_resource.class%'

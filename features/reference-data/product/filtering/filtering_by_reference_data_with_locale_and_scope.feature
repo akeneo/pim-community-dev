@@ -19,8 +19,9 @@ Feature: Filter products by reference data with locale and scope
       | postit  | lace_fabric | Cotton,Flax | tablet | en_US  |
       | postit  | lace_fabric | Straw       | mobile | en_US  |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
 
+  @skip @info To be unskipped in PIM-6574
   Scenario: Successfully filter products by reference data
     Given I should not see the filter cap_color
     And the grid should contain 2 elements
@@ -28,30 +29,31 @@ Feature: Filter products by reference data with locale and scope
       | filter      | operator     | value        | result |
       | cap_color   | in list      | Black        | postit |
       | cap_color   | in list      | Black,Orange | postit |
-      | cap_color   | is empty     |              | mug    |
+      | cap_color   | is empty     |              |        |
       | cap_color   | is not empty |              | postit |
       | cap_color   | in list      | Orange       |        |
       | lace_fabric | in list      | Cotton       | postit |
       | lace_fabric | in list      | Cotton,Straw | postit |
       | lace_fabric | in list      | Flax         | postit |
       | lace_fabric | in list      | Straw        |        |
-      | lace_fabric | is empty     |              | mug    |
+      | lace_fabric | is empty     |              |        |
       | lace_fabric | is not empty |              | postit |
-    When I filter by "scope" with operator "" and value "Mobile"
+    When I switch the scope to "Mobile"
     Then I should be able to use the following filters:
       | filter      | operator     | value         | result |
       | cap_color   | in list      | Purple        | postit |
       | cap_color   | in list      | Purple,Orange | postit |
-      | cap_color   | is empty     |               | mug    |
+      | cap_color   | is empty     |               |        |
       | cap_color   | is not empty |               | postit |
       | cap_color   | in list      | Orange        |        |
       | lace_fabric | in list      | Straw         | postit |
       | lace_fabric | in list      | Cotton,Straw  | postit |
       | lace_fabric | in list      | Flax          |        |
       | lace_fabric | in list      | Cotton        |        |
-      | lace_fabric | is empty     |               | mug    |
+      | lace_fabric | is empty     |               |        |
       | lace_fabric | is not empty |               | postit |
 
+  @skip @info To be unskipped in PIM-6574
   Scenario: Successfully filter product with multi reference data filters
     Given I show the filter "cap_color"
     And I filter by "cap_color" with operator "in list" and value "Black"
@@ -64,7 +66,7 @@ Feature: Filter products by reference data with locale and scope
       | lace_fabric | in list      | Straw        |        |
       | lace_fabric | is empty     |              |        |
       | lace_fabric | is not empty |              | postit |
-    When I filter by "scope" with operator "" and value "Mobile"
+    When I switch the scope to "Mobile"
     And I hide the filter "cap_color"
     And I show the filter "cap_color"
     And I filter by "cap_color" with operator "in list" and value "Purple"

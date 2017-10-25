@@ -1,15 +1,23 @@
 /* global define */
-define(['underscore', 'oro/datafilter/filters-manager'],
-function(_, FiltersManager) {
+
+/**
+ * View that represents all grid filters
+ *
+ * @export  oro/datafilter/collection-filters-manager
+ * @class   oro.datafilter.CollectionFiltersManager
+ * @extends oro.datafilter.FiltersManager
+ */
+
+define(
+    [
+        'underscore',
+        'oro/datafilter/filters-manager'
+    ], function(
+        _,
+        FiltersManager
+    ) {
     'use strict';
 
-    /**
-     * View that represents all grid filters
-     *
-     * @export  oro/datafilter/collection-filters-manager
-     * @class   oro.datafilter.CollectionFiltersManager
-     * @extends oro.datafilter.FiltersManager
-     */
     return FiltersManager.extend({
         /**
          * Initialize filter list options

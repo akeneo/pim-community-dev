@@ -50,7 +50,6 @@ class NavigationContext extends PimContext implements PageObjectAware
         'user groups'              => 'UserGroup index',
         'user groups creation'     => 'UserGroup creation',
         'user groups edit'         => 'UserGroup edit',
-        'variant groups'           => 'VariantGroup index',
         'attribute groups'         => 'AttributeGroup index',
         'attribute group creation' => 'AttributeGroup creation',
         'dashboard'                => 'Dashboard index',
@@ -66,7 +65,6 @@ class NavigationContext extends PimContext implements PageObjectAware
     ];
 
     protected $elements = [
-        'Dot menu'        => ['css' => '.pin-bar .pin-menus i.icon-ellipsis-horizontal'],
         'Loading message' => ['css' => '#progressbar h3'],
     ];
 
@@ -97,11 +95,12 @@ class NavigationContext extends PimContext implements PageObjectAware
     }
 
     /**
-     * @param string $username
+     * @param string      $username
+     * @param string|null $password
      *
-     * @Given /^I am logged in as "([^"]*)"$/
+     * @Given /^I am logged in as "([^"]*)"( with password (?P<password>[^"]*))?$/
      */
-    public function iAmLoggedInAs($username)
+    public function iAmLoggedInAs($username, ?string $password = null)
     {
         $this->getMainContext()->getSubcontext('fixtures')->setUsername($username);
 
@@ -111,14 +110,15 @@ class NavigationContext extends PimContext implements PageObjectAware
             return $this->getSession()->getPage()->find('css', '.AknLogin-title');
         }, 'Cannot open the login page');
 
+        $password = null !== $password ? $password : $username;
         $this->getSession()->getPage()->fillField('_username', $username);
-        $this->getSession()->getPage()->fillField('_password', $username);
+        $this->getSession()->getPage()->fillField('_password', $password);
 
         $this->getSession()->getPage()->find('css', '.form-signin button')->press();
 
         $this->spin(function () {
-            return $this->getSession()->getPage()->find('css', '.AknDashboardButtons');
-        }, sprintf('Can not reach Dashboard after login with %s', $username));
+            return $this->getSession()->getPage()->find('css', '.AknWidget');
+        }, sprintf('Cannot reach Dashboard after login with %s', $username));
     }
 
     /**
@@ -147,11 +147,34 @@ class NavigationContext extends PimContext implements PageObjectAware
             $expectedUrl = $this->sanitizeUrl($expectedFullUrl);
             $actualUrl = $this->sanitizeUrl($actualFullUrl);
 
-            $result = $expectedUrl === $actualUrl;
-            assertTrue($result, sprintf('Expecting to be on the page %s, not %s', $expectedUrl, $actualUrl));
-
-            return true;
+            return $expectedUrl === $actualUrl;
         }, sprintf('You are not on the %s page', $page));
+    }
+
+    /**
+     * @param array $options
+     *
+     * @Given /^I am on the ([^"]*) grid$/
+     * @Given /^I go to the ([^"]*) grid$/
+     */
+    public function iAmOnTheGrid($pageName, array $options = [])
+    {
+        $page = $this->getPageMapping()[$pageName];
+
+        $this->spin(function () use ($page, $options) {
+            $this->openPage($page, $options);
+            $expectedFullUrl = $this->getCurrentPage()->getUrl();
+            $actualFullUrl = $this->getSession()->getCurrentUrl();
+            $expectedUrl = $this->sanitizeUrl($expectedFullUrl);
+            $actualUrl = $this->sanitizeUrl($actualFullUrl);
+
+            $result = $expectedUrl === $actualUrl;
+            assertTrue($result, sprintf('Expecting to be on the grid %s, not %s', $expectedUrl, $actualUrl));
+
+            return $this->getCurrentPage()->find('css', '.AknGridContainer');
+        }, sprintf('You are not on the %s grid', $pageName));
+
+        $this->wait();
     }
 
     /**
@@ -164,7 +187,9 @@ class NavigationContext extends PimContext implements PageObjectAware
     public function iShouldNotBeAbleToAccessThePage($not, $page)
     {
         if (!$not) {
-            return $this->iAmOnThePage($page);
+            $this->iAmOnThePage($page);
+
+            return $this->getMainContext()->getSubcontext('assertions')->assertPageNotContainsText('Forbidden');
         }
 
         $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
@@ -238,9 +263,7 @@ class NavigationContext extends PimContext implements PageObjectAware
             $expectedUrl   = $this->sanitizeUrl($expectedFullUrl);
             $result        = $expectedUrl === $actualUrl;
 
-            assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expectedUrl, $actualUrl));
-
-            return true;
+            return true === $result;
         }, sprintf('Cannot got to the %s edit page', $page));
     }
 
@@ -336,44 +359,6 @@ class NavigationContext extends PimContext implements PageObjectAware
     {
         $this->getMainContext()->getSession()->reload();
         $this->wait();
-    }
-
-    /**
-     * @When /^I pin the current page$/
-     */
-    public function iPinTheCurrentPage()
-    {
-        $pinButton = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', '.minimize-button');
-        }, 'Cannot find ".minimize-button" to pin current page');
-
-        $pinButton->click();
-    }
-
-    /**
-     * @When /^I click on the pinned item "([^"]+)"$/
-     *
-     * @param string $label
-     */
-    public function iClickOnThePinnedItem($label)
-    {
-        $pinnedItem = $this->spin(function () use ($label) {
-            return $this->getCurrentPage()->find('css', sprintf('.pin-bar a[title="%s"]', $label));
-        }, sprintf('Cannot find "%s" pin item', $label));
-
-        $pinnedItem->click();
-    }
-
-    /**
-     * @When /^I click on the pin bar dot menu$/
-     */
-    public function iClickOnThePinBarDotMenu()
-    {
-        $pinDotMenu = $this->spin(function () {
-            return $this->getCurrentPage()->find('css', $this->elements['Dot menu']['css']);
-        }, 'Unable to click on the pin bar dot menu');
-
-        $pinDotMenu->click();
     }
 
     /**

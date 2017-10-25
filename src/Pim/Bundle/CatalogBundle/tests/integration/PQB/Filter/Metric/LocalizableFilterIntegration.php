@@ -24,6 +24,7 @@ class LocalizableFilterIntegration extends AbstractProductQueryBuilderTestCase
             'code'                => 'a_localizable_metric',
             'type'                => AttributeTypes::METRIC,
             'localizable'         => true,
+            'negative_allowed'    => true,
             'decimals_allowed'    => false,
             'metric_family'       => 'Length',
             'default_metric_unit' => 'METER',

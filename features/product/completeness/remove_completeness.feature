@@ -22,44 +22,6 @@ Feature: Display the completeness of a product
     And I am logged in as "Julia"
     And I launched the completeness calculator
 
-  Scenario: Remove completeness from grid when family requirements changed
-    Given I am on the "sneakers" family page
-    And I visit the "Attributes" tab
-    And I switch the attribute "rating" requirement in channel "mobile"
-    And I save the family
-    And I should not see the text "There are unsaved changes."
-    And I am on the products page
-    And I switch the locale to "en_US"
-    When I filter by "scope" with operator "equals" and value "Mobile"
-    Then the row "sneakers" should contain:
-     | column   | value |
-     | complete | -     |
-    And the row "sandals" should contain:
-     | column   | value |
-     | complete | 40%   |
-    When I filter by "scope" with operator "equals" and value "Tablet"
-    Then the row "sneakers" should contain:
-     | column   | value |
-     | complete | -     |
-    And the row "sandals" should contain:
-     | column   | value |
-     | complete | 25%   |
-    When I switch the locale to "fr_FR"
-    And I filter by "scope" with operator "equals" and value "Mobile"
-    Then the row "sneakers" should contain:
-     | column   | value |
-     | complete | -     |
-    And the row "sandals" should contain:
-     | column   | value |
-     | complete | 60%   |
-    When I filter by "scope" with operator "equals" and value "Tablet"
-    Then the row "sneakers" should contain:
-     | column   | value |
-     | complete | -     |
-    And the row "sandals" should contain:
-     | column   | value |
-     | complete | 50%   |
-
   Scenario: Remove completeness when locales of a channel are deleted
     Given I am on the "tablet" channel page
     When I change the "Locales" to "French (France)"
@@ -85,16 +47,16 @@ Feature: Display the completeness of a product
     When I change the "Locales" to "French (France)"
     And I press the "Save" button
     Then I should see the text "Channel successfully updated."
-    When I am on the products page
+    When I am on the products grid
     And I switch the locale to "en_US"
-    And I filter by "scope" with operator "equals" and value "Mobile"
+    And I switch the scope to "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
     And the row "sandals" should contain:
      | column   | value |
      | complete | 40%   |
-    When I filter by "scope" with operator "equals" and value "Tablet"
+    When I switch the scope to "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | -     |
@@ -102,14 +64,14 @@ Feature: Display the completeness of a product
      | column   | value |
      | complete | -     |
     When I switch the locale to "fr_FR"
-    And I filter by "scope" with operator "equals" and value "Mobile"
+    And I switch the scope to "Mobile"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 100%  |
     And the row "sandals" should contain:
      | column   | value |
      | complete | 60%   |
-    When I filter by "scope" with operator "equals" and value "Tablet"
+    When I switch the scope to "Tablet"
     Then the row "sneakers" should contain:
      | column   | value |
      | complete | 77%   |

@@ -3,7 +3,7 @@
 .AknTextField {
   height: @AknFormHeight;
   line-height: @AknFormHeight;
-  color: @AknDefaultFontColor;
+  color: @AknDarkBlue;
   border: 1px solid @AknBorderColor;
   width: 100%;
   border-radius: 2px;
@@ -36,9 +36,9 @@
   }
 
   &--noLeftRadius {
+    margin-left: -1px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
-    border-left: none;
   }
 
   &--noRadius {
@@ -76,7 +76,7 @@
     background: @AknDisabledInputColor;
     background-image: url("../../../images/icon-lock.svg");
     background-repeat: no-repeat;
-    background-position: ~"calc(100% - 10px)" 10px;
+    background-position: ~"calc(100% - 12px)" center;
     padding-right: @AknFormHeight - 4px;
     color: @AknLightFontColor;
     cursor: not-allowed;

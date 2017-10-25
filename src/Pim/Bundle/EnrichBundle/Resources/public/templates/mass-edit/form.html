@@ -1,73 +1,84 @@
-<div id="container" class="scrollable-container">
-        <header class="AknTitleContainer navigation">
-        <div class="AknTitleContainer-backContainer" data-drop-zone="back"></div>
-        <div class="AknTitleContainer-contentContainer">
-            <div class="AknTitleContainer-mainLine">
-                <div class="AknTitleContainer-titleContainer" data-drop-zone="title">
-                    <h2 class="AknTitleContainer-title"><%- title %></h2>
-                </div>
-                <div class="AknTitleContainer-rightButtons" data-drop-zone="buttons"></div>
-            </div>
-            <div class="AknTitleContainer-metaLine">
-                <div class="AknTitleContainer-meta"></div>
-                <div class="AknTitleContainer-state"></div>
+<div class="AknFullPage">
+    <div class="AknFullPage-buttons">
+        <div class="AknButtonList">
+            <span class="AknButtonList-item AknFullPage-cancel wizard-action" data-action-target="grid"></span>
+            <% if (currentStep === 'configure') { %>
+            <span class="<%- currentStep %> AknButton AknButtonList-item AknButton--grey wizard-action" data-action-target="choose">
+                    <%- previousLabel %>
+                </span>
+            <% } else if (currentStep !== 'choose') { %>
+            <span class="<%- currentStep %> AknButton AknButtonList-item AknButton--grey wizard-action" data-action-target="configure">
+                    <%- previousLabel %>
+                </span>
+            <% } %>
+        </div>
+        <div>
+            <% if (currentStep === 'configure') { %>
+            <span class="<%- currentStep %> AknButton AknButton--apply wizard-action" data-action-target="confirm">
+                    <%- nextLabel %>
+            </span>
+            <% } %>
+            <% if (currentStep === 'choose') { %>
+            <span class="AknButton AknButtonList-item AknButton--apply<% if (!currentOperation) { %> AknButton--disabled<% } %> wizard-action" data-action-target="configure">
+                <%- nextLabel %>
+            </span>
+            <% } %>
+        </div>
+    </div>
+
+    <% if (currentStep === 'choose') { %>
+    <div class="AknFullPage-content AknFullPage-content--column">
+        <div>
+            <div class="AknFullPage-subTitle"><%- title %></div>
+            <div class="AknFullPage-title"><%= labelCount %></div>
+        </div>
+        <div class="AknWidget-content AknWidget-content--withPadding">
+            <div class="step">
             </div>
         </div>
-    </header>
-    <div class="row wizard-header">
-        <ul class="wizard">
-            <li><%- selectLabel %><div class="progress-start" style="display: none;"></div><div class="progress-end active"></div></li><li><%- chooseLabel %><div class="progress-start <%- currentStepNumber >= 0 ? 'active' : '' %>"></div><div class="progress-end <%- currentStepNumber >= 1 ? 'active' : '' %>"></div><% if (currentStepNumber === 0) { %><div class="dot"><i class="icon-circle"></i></div><% } %></li><li><%- configureLabel %><div class="progress-start <%- currentStepNumber >= 1 ? 'active' : '' %>"></div><div class="progress-end <%- currentStepNumber >= 2 ? 'active' : '' %>"></div><% if (currentStepNumber === 1) { %><div class="dot"><i class="icon-circle"></i></div><% } %></li><li><%- confirmLabel %><div class="progress-start <%- currentStepNumber >= 2 ? 'active' : '' %>"></div><div class="progress-end" style="display: none;"></div><% if (currentStepNumber === 2) { %><div class="dot"><i class="icon-circle"></i></div><% } %></li>
-        </ul>
     </div>
-    <div>
-        <div class="AknWidget">
-            <div class="AknWidget-header">
-                <div>
-                    <%- label %>
-                </div>
-                <div></div>
-            </div>
+    <% } else { %>
+    <div class="AknFullPage-content">
+        <div class="AknFullPage-left">
+            <img src="bundles/pimui/images/illustration-attribute.svg" class="AknFullPage-image">
+        </div>
+        <div class="AknFullPage-right">
+            <div class="AknFullPage-subTitle"><%- title %></div>
+            <div class="AknFullPage-title"><%= labelCount %></div>
             <% if (description) { %>
-                <div class="AknWidget-subTitle">
-                    <%- description %>
-                </div>
-            <% } %>
-            <div class="AknWidget-content AknWidget-content--withPadding">
-                <div class="step">
-                </div>
-                <div class="AknButtonList AknButtonList--right <%- currentStep %>">
-                    <% if (currentStep === 'choose') { %>
-                        <span class="AknButton AknButtonList-item wizard-action AknButton--withIcon" data-action-target="grid">
-                            <i class="AknButton-icon icon-chevron-left"></i>
-                            <%- __('pim_enrich.mass_edit.cancel') %>
-                        </span>
-                        <% if (currentOperation) { %>
-                            <span class="AknButton AknButtonList-item AknButton--apply wizard-action AknButton--withIcon" data-action-target="configure">
-                                <i class="AknButton-icon icon-chevron-right"></i>
-                                <%- __('pim_enrich.mass_edit.next') %>
-                            </span>
-                        <% } %>
-                    <% } else if (currentStep === 'configure') { %>
-                        <span class="AknButton AknButtonList-item wizard-action AknButton--withIcon" data-action-target="choose">
-                            <i class="AknButton-icon icon-chevron-left"></i>
-                            <%- __('pim_enrich.mass_edit.previous') %>
-                        </span>
-                        <span class="AknButton AknButtonList-item AknButton--apply wizard-action AknButton--withIcon" data-action-target="confirm">
-                            <i class="AknButton-icon icon-chevron-right"></i>
-                            <%- __('pim_enrich.mass_edit.next') %>
-                        </span>
-                    <% } else { %>
-                        <span class="AknButton AknButtonList-item wizard-action AknButton--withIcon" data-action-target="configure">
-                            <i class="AknButton-icon icon-chevron-left"></i>
-                            <%- __('pim_enrich.mass_edit.previous') %>
-                        </span>
-                        <span class="AknButton AknButtonList-item AknButton--apply wizard-action AknButton--withIcon" data-action-target="validate">
-                            <i class="AknButton-icon icon-chevron-right"></i>
-                            <%- __('pim_enrich.mass_edit.confirm') %>
-                        </span>
-                    <% }%>
-                </div>
+            <div class="AknFullPage-description">
+                <%- description %>
             </div>
+            <% } %>
+            <% if (currentStep === 'confirm') { %>
+            <div class="AknMessageBox AknMessageBox--warning AknMessageBox--withIcon">
+                <%- confirm %>
+            </div>
+            <div class="AknButton AknButton--apply wizard-action" data-action-target="validate">
+                <%- confirmLabel %>
+            </div>
+            <% } %>
+            <div class="step"></div>
+        </div>
+    </div>
+    <% } %>
+
+    <div class="AknFullPage-bottom">
+        <div class="AknSteps">
+            <div class="AknSteps-step<% if (currentStepNumber > 0) { %> AknSteps-step--checked<% } %>">
+                Select action
+            </div>
+            <% if (currentStep === 'choose') { %>
+            <div class="AknSteps-step AknSteps-step--undefined"></div>
+            <div class="AknSteps-step AknSteps-step--undefined"></div>
+            <% } else { %>
+            <div class="AknSteps-step<% if (currentStepNumber > 1) { %> AknSteps-step--checked<% } %>">
+                <%- label %>
+            </div>
+            <div class="AknSteps-step<% if (currentStepNumber > 2) { %> AknSteps-step--checked<% } %>">
+                <%- confirmLabel %>
+            </div>
+            <% } %>
         </div>
     </div>
 </div>

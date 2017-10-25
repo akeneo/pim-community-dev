@@ -689,6 +689,22 @@
           // if mobile we we use a backdrop because click events don't delegate
           $('<div class="dropdown-backdrop"/>').insertBefore($(this)).on('click', clearMenus)
         }
+
+        // This little code block will set correct position for dropdown elements.
+        const gap = 30;
+        const outerWidth = $parent.find('.AknDropdown-menu').outerWidth();
+        const outerHeight = $parent.find('.AknDropdown-menuLink').length * 26 + 44;
+        if (outerHeight + $parent.offset().top + gap > $('body').height()) {
+            $parent.addClass('top');
+        } else {
+            $parent.removeClass('top');
+        }
+        if (outerWidth + $parent.offset().left + gap > $('body').width()) {
+            $parent.addClass('left');
+        } else {
+            $parent.removeClass('left');
+        }
+
         $parent.toggleClass('open')
       }
 

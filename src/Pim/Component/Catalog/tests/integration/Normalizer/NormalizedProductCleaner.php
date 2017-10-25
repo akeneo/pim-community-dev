@@ -2,7 +2,8 @@
 
 namespace Pim\Component\Catalog\tests\integration\Normalizer;
 
-use Akeneo\Test\Integration\DateSanitizer;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 
 /**
  * Cleans a normalized product (aka, an array of data) so that it can be compared with the expected result
@@ -22,6 +23,7 @@ class NormalizedProductCleaner
     public static function clean(array &$productNormalized)
     {
         self::sanitizeDateFields($productNormalized);
+        self::sanitizeMediaAttributeData($productNormalized);
         self::sortValues($productNormalized['values']);
     }
 
@@ -141,5 +143,38 @@ class NormalizedProductCleaner
         if (isset($data['updated'])) {
             $data['updated'] = DateSanitizer::sanitize($data['updated']);
         }
+    }
+
+    /**
+     * Replaces media attributes data in the $data array by self::MEDIA_ATTRIBUTE_DATA_COMPARISON.
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    private static function sanitizeMediaAttributeData(array &$data)
+    {
+        if (!isset($data['values'])) {
+            return $data;
+        }
+
+        foreach ($data['values'] as $attributeCode => $values) {
+            if (1 === preg_match('/.*(file|image).*/', $attributeCode)) {
+                foreach ($values as $index => $value) {
+                    if (isset($value['data'])) {
+                        $sanitizedData = ['data' => MediaSanitizer::sanitize($value['data'])];
+                        if (isset($value['_links']['download']['href'])) {
+                            $sanitizedData['_links']['download']['href'] = MediaSanitizer::sanitize(
+                                $value['_links']['download']['href']
+                            );
+                        }
+
+                        $data['values'][$attributeCode][$index] = array_replace($value, $sanitizedData);
+                    }
+                }
+            }
+        }
+
+        return $data;
     }
 }

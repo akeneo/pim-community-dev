@@ -8,6 +8,7 @@ extensions:
         targetZone: breadcrumbs
         config:
             tab: pim-menu-products
+            itemPath: identifier
 
     pim-product-edit-form-user-navigation:
         module: pim/menu/user-navigation
@@ -22,6 +23,11 @@ extensions:
         parent: pim-product-edit-form
         targetZone: main-image
 
+    pim-product-edit-form-variant-navigation:
+        module: pim/product-edit-form/variant-navigation
+        parent: pim-product-edit-form
+        targetZone: navigation
+
     pim-product-edit-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-product-edit-form
@@ -30,7 +36,7 @@ extensions:
     pim-product-edit-form-sequential-edit:
         module: pim/product-edit-form/sequential-edit
         parent: pim-product-edit-form
-        targetZone: sequential
+        targetZone: bottom-panel
         aclResourceId: pim_enrich_product_edit_attributes
         position: 100
 
@@ -91,6 +97,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.product
+                subTitle: pim_menu.item.product
                 content: pim_enrich.confirmation.delete_item
                 success: pim_enrich.entity.product.info.deletion_successful
                 fail: pim_enrich.entity.product.info.deletion_failed
@@ -102,6 +109,12 @@ extensions:
         targetZone: secondary-actions
         aclResourceId: pim_pdf_generator_product_download
         position: 50
+
+    pim-product-edit-form-start-copy:
+        module: pim/product-edit-form/start-copy
+        parent: pim-product-edit-form-secondary-actions
+        targetZone: secondary-actions
+        position: 80
 
     pim-product-edit-form-save-buttons:
         module: pim/form/common/save-buttons
@@ -128,6 +141,12 @@ extensions:
         parent: pim-product-edit-form-meta
         targetZone: meta
         position: 70
+
+    pim-product-edit-form-family-variant:
+        module: pim/product-edit-form/meta/family-variant
+        parent: pim-product-edit-form-meta
+        targetZone: meta
+        position: 75
 
     pim-product-edit-form-status-switcher:
         module: pim/product-edit-form/meta/status-switcher
@@ -185,6 +204,9 @@ extensions:
         targetZone: container
         aclResourceId: pim_enrich_product_categories_view
         position: 100
+        config:
+            itemCategoryListRoute: pim_enrich_product_listcategories
+            itemCategoryTreeRoute: pim_enrich_product_category_rest_list
 
     pim-product-edit-form-associations:
         module: pim/product-edit-form/associations
@@ -196,18 +218,24 @@ extensions:
     pim-product-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector
         parent: pim-product-edit-form-attributes
-        targetZone: attribute-group-selector
+        targetZone: other-actions
         position: 100
 
-    pim-product-edit-form-add-attribute:
-        module: pim/product/add-select/attribute
+    pim-product-edit-form-attribute-filter:
+        module: pim/product-edit-form/attribute-filter
         parent: pim-product-edit-form-attributes
         targetZone: other-actions
-        position: 90
-        config:
-            searchParameters:
-                options:
-                    exclude_unique: false
+        position: 110
+
+    pim-product-edit-form-attribute-filter-all:
+        module: pim/product-edit-form/attribute-filter-all
+        parent: pim-product-edit-form-attribute-filter
+        position: 100
+
+    pim-product-edit-form-attribute-filter-missing-required:
+        module: pim/product-edit-form/attribute-filter-missing-required
+        parent: pim-product-edit-form-attribute-filter
+        position: 110
 
     pim-product-edit-form-copy:
         module: pim/form/common/attributes/copy
@@ -237,11 +265,17 @@ extensions:
         targetZone: header
         position: 100
 
-    pim-product-edit-form-variant-group:
-        module: pim/product-edit-form/attributes/variant-group
+    pim-product-edit-form-read-only-parent-attributes:
+        module: pim/product-edit-form/attributes/read-only-parent-attributes
         parent: pim-product-edit-form-attributes
         targetZone: self
         position: 100
+
+    pim-product-edit-form-read-only-variant-axes:
+        module: pim/product-edit-form/attributes/variant-axes
+        parent: pim-product-edit-form-attributes
+        targetZone: self
+        position: 110
 
     pim-product-edit-form-locale-specific:
         module: pim/product-edit-form/attributes/locale-specific

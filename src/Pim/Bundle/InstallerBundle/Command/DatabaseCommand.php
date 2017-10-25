@@ -98,6 +98,9 @@ class DatabaseCommand extends ContainerAwareCommand
 
         $this->resetElasticsearchIndex($output);
 
+        $entityManager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
+        $entityManager->clear();
+
         $this->getEventDispatcher()->dispatch(InstallerEvents::POST_DB_CREATE);
 
         // TODO: Should be in an event subscriber
@@ -121,18 +124,11 @@ class DatabaseCommand extends ContainerAwareCommand
      */
     protected function resetElasticsearchIndex(OutputInterface $output)
     {
-        $output->writeln('<info>Reset elasticsearch index</info>');
+        $output->writeln('<info>Reset elasticsearch indexes</info>');
 
-        $esConfigurationLoader = $this->getContainer()->get('akeneo_elasticsearch.index_configuration.loader');
-        $esClient = $this->getContainer()->get('akeneo_elasticsearch.client');
-
-        $conf = $esConfigurationLoader->load();
-
-        if ($esClient->hasIndex()) {
-            $esClient->deleteIndex();
-        }
-
-        $esClient->createIndex($conf->buildAggregated());
+        $this->getContainer()->get('akeneo_elasticsearch.client.product')->resetIndex();
+        $this->getContainer()->get('akeneo_elasticsearch.client.product_model')->resetIndex();
+        $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->resetIndex();
     }
 
     /**

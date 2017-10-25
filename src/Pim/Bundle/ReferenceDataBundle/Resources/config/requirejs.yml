@@ -5,7 +5,6 @@ config:
                 reference-data-configuration:
                     module: pim/base-fetcher
                     options:
-                        warmup: false
                         urls:
                             list: pim_reference_data_configuration_rest_get
         pim/attribute-edit-form/type-specific-form-registry:

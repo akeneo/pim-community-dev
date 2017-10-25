@@ -1,6 +1,19 @@
 define(
-    ['jquery', 'underscore', 'oro/datafilter/number-filter', 'oro/app'],
-    function ($, _, NumberFilter, app) {
+    [
+        'jquery',
+        'underscore',
+        'oro/translator',
+        'oro/datafilter/number-filter',
+        'oro/app',
+        'pim/template/datagrid/filter/price-filter'
+    ], function (
+        $,
+        _,
+        __,
+        NumberFilter,
+        app,
+        popupCriteriaTemplate
+    ) {
         'use strict';
 
         /**
@@ -15,30 +28,62 @@ define(
          * @extends oro.datafilter.NumberFilter
          */
         return NumberFilter.extend({
+            popupCriteriaTemplate: _.template(popupCriteriaTemplate),
+            currencies: [],
+            criteriaValueSelectors: {
+                currency: 'input[name="currency_currency"]',
+                type:     'input[name="currency_type"]',
+                value:    'input[name="value"]'
+            },
+            events: {
+                'keyup input': '_onReadCriteriaInputKey',
+                'keydown [type="text"]': '_preventEnterProcessing',
+                'click .filter-update': '_onClickUpdateCriteria',
+                'click .filter-criteria-selector': '_onClickCriteriaSelector',
+                'click .operator .AknDropdown-menuLink': '_onSelectOperator',
+                'click .currency .AknDropdown-menuLink': '_onSelectCurrency',
+                'click .disable-filter': '_onClickDisableFilter'
+            },
+
             /**
              * @inheritDoc
              */
             initialize: function() {
                 NumberFilter.prototype.initialize.apply(this, arguments);
 
-                this.on('disable', this._onDisable, this);
+                this.emptyValue = {
+                    currency: _.first(_.keys(this.currencies)),
+                    type: _.findWhere(this.choices, { label: '=' }).data,
+                    value: ''
+                };
 
+                this.on('disable', this._onDisable, this);
             },
 
             _onDisable: function() {
-                this.$('.choicefilter button.dropdown-toggle').first().html(_.__('Action') + '<span class="AknActionButton-caret AknCaret"></span>');
-                this.$('.choicefilter button.dropdown-toggle').last().html(_.__('Currency') + '<span class="AknActionButton-caret AknCaret"></span>');
+                this.$('.choicefilter button.dropdown-toggle').first().html(__('Action') + '<span class="AknActionButton-caret AknCaret"></span>');
+                this.$('.choicefilter button.dropdown-toggle').last().html(__('Currency') + '<span class="AknActionButton-caret AknCaret"></span>');
             },
 
             /**
              * @inheritDoc
              */
-            _renderCriteria: function (el) {
-                $(el).append(this.popupCriteriaTemplate({
-                    name: this.name,
-                    choices: this.choices,
-                    currencies: this.currencies
-                }));
+            _renderCriteria: function(el) {
+                $(el).append(
+                    this.popupCriteriaTemplate({
+                        label: this.label,
+                        operatorChoices: this._getOperatorChoices(),
+                        selectedOperator: this._getDisplayValue().type,
+                        emptyChoice: this.emptyChoice,
+                        selectedOperatorLabel: this._getOperatorChoices()[this._getDisplayValue().type],
+                        operatorLabel: __('pim.grid.choice_filter.operator'),
+                        updateLabel: __('Update'),
+                        currencies: this.currencies,
+                        currencyLabel: __('pim.grid.price_filter.label'),
+                        selectedCurrency: this._getDisplayValue().currency,
+                        value: this._getDisplayValue().value
+                    })
+                );
 
                 return this;
             },
@@ -47,9 +92,12 @@ define(
              * @inheritDoc
              */
             _writeDOMValue: function (value) {
-                this._setInputValue(this.criteriaValueSelectors.value, value.value);
-                this._setInputValue(this.criteriaValueSelectors.type, value.type);
+                NumberFilter.prototype._writeDOMValue.apply(this, arguments);
+                if (typeof(value.value) === 'object') {
+                    this._setInputValue(this.criteriaValueSelectors.value, '');
+                }
                 this._setInputValue(this.criteriaValueSelectors.currency, value.currency);
+                this._highlightDropdown(value.currency, '.currency');
 
                 return this;
             },
@@ -58,11 +106,10 @@ define(
              * @inheritDoc
              */
             _readDOMValue: function () {
-                return {
-                    value: this._getInputValue(this.criteriaValueSelectors.value),
-                    type: this._getInputValue(this.criteriaValueSelectors.type),
-                    currency: this._getInputValue(this.criteriaValueSelectors.currency)
-                };
+                let value = NumberFilter.prototype._readDOMValue.apply(this, arguments);
+                value.currency = this._getInputValue(this.criteriaValueSelectors.currency);
+
+                return value;
             },
 
             /**
@@ -76,77 +123,10 @@ define(
                 if (!value.value) {
                     return this.placeholder;
                 } else {
-                    var option = this._getChoiceOption(value.type);
+                    const option = this._getChoiceOption(value.type);
+
                     return option.label + ' ' + value.value + ' ' + value.currency;
                 }
-            },
-
-            /**
-             * @inheritDoc
-             */
-            popupCriteriaTemplate: _.template(
-                '<div class="AknFilterChoice currencyfilter choicefilter">' +
-                    '<div class="AknFilterChoice-operator AknDropdown">' +
-                        '<button class="AknActionButton AknActionButton--big AknActionButton--noRightBorder dropdown-toggle" data-toggle="dropdown">' +
-                            '<%= _.__("Action") %>' +
-                            '<span class="AknActionButton-caret AknCaret"></span>' +
-                        '</button>' +
-                        '<ul class="dropdown-menu">' +
-                            '<% _.each(choices, function (option) { %>' +
-                                '<li><a class="choice_value" href="#" data-value="<%= option.value %>" data-input-toggle="true"><%= option.label %></a></li>' +
-                            '<% }); %>' +
-                        '</ul>' +
-                        '<input class="name_input" type="hidden" name="currency_type" value=""/>' +
-                    '</div>' +
-                    '<input class="AknTextField AknTextField--noRadius AknFilterChoice-field" type="text" name="value" value="">' +
-                    '<div class="AknDropdown">' +
-                        '<button class="AknActionButton AknActionButton--big AknActionButton--noRightBorder AknActionButton--noLeftBorder dropdown-toggle" data-toggle="dropdown">' +
-                            '<%= _.__("Currency") %>' +
-                            '<span class="AknActionButton-caret AknCaret"></span>' +
-                        '</button>' +
-                        '<ul class="dropdown-menu">' +
-                            '<% _.each(currencies, function (currency) { %>' +
-                                '<li><a class="choice_value" href="#" data-value="<%= currency %>"><%= currency %></a></li>' +
-                            '<% }); %>' +
-                        '</ul>' +
-                        '<input class="name_input" type="hidden" name="currency_currency" value=""/>' +
-                    '</div>' +
-                    '<button class="AknFilterChoice-button AknButton AknButton--apply AknButton--noLeftRadius filter-update" type="button"><%= _.__("Update") %></button>' +
-                '</div>'
-            ),
-
-            /**
-             * Selectors for filter criteria elements
-             *
-             * @property {Object}
-             */
-            criteriaValueSelectors: {
-                currency: 'input[name="currency_currency"]',
-                type:     'input[name="currency_type"]',
-                value:    'input[name="value"]'
-            },
-
-            /**
-             * Empty value object
-             *
-             * @property {Object}
-             */
-            emptyValue: {
-                currency: '',
-                type:     '',
-                value:    ''
-            },
-
-            /**
-             * Check if all properties of the value have been specified or all are empty (for reseting filter)
-             *
-             * @param value
-             * @return boolean
-             */
-            _isValueValid: function(value) {
-                return (value.currency && value.type && !_.isUndefined(value.value)) ||
-                       (!value.currency && !value.type && _.isUndefined(value.value)) ||
-                       (_.contains(['empty', 'not empty'], value.type) && value.currency);
             },
 
             /**
@@ -162,26 +142,11 @@ define(
              * @inheritDoc
              */
             _onValueUpdated: function(newValue, oldValue) {
-                var menu = this.$('.choicefilter .dropdown-menu');
-
-                menu.find('li a').each(function() {
-                    var item = $(this),
-                        value = item.data('value');
-
-                    if (item.parent().hasClass('active')) {
-                        if (value == newValue.type || value == newValue.currency) {
-                            item.parent().removeClass('active');
-                        } else {
-                        }
-                    } else if (value == newValue.type || value == newValue.currency) {
-                        item.parent().addClass('active');
-                        item.closest('.AknDropdown').find('AknActionButton').html(item.html() + '<span class="AknActionButton-caret AknCaret"></span>');
-                    }
-                });
+                this._highlightDropdown(newValue.currency, '.currency');
                 if (_.contains(['empty', 'not empty'], newValue.type)) {
-                    this.$(this.criteriaValueSelectors.value).hide();
+                    this._disableInput();
                 } else {
-                    this.$(this.criteriaValueSelectors.value).show();
+                    this._enableInput();
                 }
 
                 this._triggerUpdate(newValue, oldValue);
@@ -194,7 +159,7 @@ define(
             setValue: function(value) {
                 value = this._formatRawValue(value);
                 if (this._isNewValueUpdated(value)) {
-                    var oldValue = this.value;
+                    const oldValue = this.value;
                     this.value = app.deepClone(value);
                     this._updateDOMValue();
                     this._onValueUpdated(this.value, oldValue);
@@ -209,11 +174,10 @@ define(
             _onClickChoiceValue: function(e) {
                 NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
                 if ($(e.currentTarget).attr('data-input-toggle')) {
-                    var filterContainer = $(e.currentTarget).closest('.AknFilterChoice');
                     if (_.contains(['empty', 'not empty'], $(e.currentTarget).attr('data-value'))) {
-                        filterContainer.find(this.criteriaValueSelectors.value).hide();
+                        this._disableInput();
                     } else {
-                        filterContainer.find(this.criteriaValueSelectors.value).show();
+                        this._enableInput();
                     }
                 }
             },
@@ -226,6 +190,37 @@ define(
                 this.trigger('update');
 
                 return this;
+            },
+
+            /**
+             * Update the currency after clicking in the dropdown
+             *
+             * @param {Event} e
+             */
+            _onSelectCurrency: function(e) {
+                const value = $(e.currentTarget).find('.currency_choice').attr('data-value');
+                $(this.criteriaValueSelectors.currency).val(value);
+                this._highlightDropdown(value, '.currency');
+
+                e.preventDefault();
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            _disableInput() {
+                this.$el.find(this.criteriaValueSelectors.value).hide();
+                this.$el.find('.AknFilterChoice-currency')
+                    .addClass('AknFilterChoice-currency--centered');
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            _enableInput() {
+                this.$el.find(this.criteriaValueSelectors.value).show();
+                this.$el.find('.AknFilterChoice-currency')
+                    .removeClass('AknFilterChoice-currency--centered');
             }
         });
     }

@@ -10,6 +10,7 @@ datagrid:
         columns:
             label:
                 label: Label
+                frontend_type: label
             type:
                 label: Type
                 type: translateable
@@ -18,10 +19,10 @@ datagrid:
                 data_name: groupLabel
             scopable:
                 label:         Scopable
-                frontend_type: boolean
+                frontend_type: boolean-status
             localizable:
                 label:         Localizable
-                frontend_type: boolean
+                frontend_type: boolean-status
         properties:
             id: ~
             edit_link:
@@ -36,15 +37,17 @@ datagrid:
                     - code
         actions:
             edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:      navigate
                 label:     Edit
-                icon:      pencil
                 link:      edit_link
                 rowAction: true
             delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:  delete
                 label: Delete
-                icon:  trash
                 link:  delete_link
         sorters:
             columns:

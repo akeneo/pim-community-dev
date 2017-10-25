@@ -38,11 +38,11 @@ Feature: Validate editing common text attributes of multiple products
       | sneakers | master_family |
       | sandals  | master_family |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully mass edit a textarea attribute
     Given I select rows boots and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Info attribute
     And I change the "Info" to "Very useful information"
@@ -50,9 +50,9 @@ Feature: Validate editing common text attributes of multiple products
     And I wait for the "edit_common_attributes" job to finish
     Then attribute Info of "boots" should be "Very useful information"
     And attribute Info of "sneakers" should be "Very useful information"
-    When I am on the products page
+    When I am on the products grid
     And I select rows boots, sandals and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Info attribute
     And I confirm mass edit
@@ -60,9 +60,9 @@ Feature: Validate editing common text attributes of multiple products
     Then attribute Info of "boots" should be ""
     And attribute Info of "sandals" should be ""
     And attribute Info of "sneakers" should be ""
-    When I am on the products page
+    When I am on the products grid
     And I select rows boots, sandals and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Info attribute
     And I change the "Info" to "Extremely useful information"
@@ -74,7 +74,7 @@ Feature: Validate editing common text attributes of multiple products
 
   Scenario: Successfully mass edit a text attribute
     Given I select rows boots and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Comment attribute
     And I change the "Comment" to "Very nice comment"
@@ -82,9 +82,9 @@ Feature: Validate editing common text attributes of multiple products
     And I wait for the "edit_common_attributes" job to finish
     Then attribute Comment of "boots" should be "Very nice comment"
     And attribute Comment of "sneakers" should be "Very nice comment"
-    When I am on the products page
+    When I am on the products grid
     And I select rows boots, sandals and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Comment attribute
     And I confirm mass edit
@@ -92,9 +92,9 @@ Feature: Validate editing common text attributes of multiple products
     Then attribute Comment of "boots" should be ""
     And attribute Comment of "sandals" should be ""
     And attribute Comment of "sneakers" should be ""
-    When I am on the products page
+    When I am on the products grid
     And I select rows boots, sandals and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Comment attribute
     And I change the Comment to an invalid value

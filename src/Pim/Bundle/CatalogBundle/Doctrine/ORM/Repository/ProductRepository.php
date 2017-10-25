@@ -5,12 +5,9 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\QueryBuilder;
 use Pim\Component\Catalog\Model\GroupInterface;
-use Pim\Component\Catalog\Query\Filter\Operators;
+use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
-use Pim\Component\Catalog\Repository\GroupRepositoryInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 
@@ -32,72 +29,6 @@ class ProductRepository extends EntityRepository implements
     /** @var ConfigurationRegistryInterface */
     protected $referenceDataRegistry;
 
-    /** @var GroupRepositoryInterface */
-    protected $groupRepository;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProductQueryBuilderFactory(ProductQueryBuilderFactoryInterface $factory)
-    {
-        $this->queryBuilderFactory = $factory;
-    }
-
-    /**
-     * Set group repository
-     *
-     * @param GroupRepositoryInterface $groupRepository
-     *
-     * @return ProductRepository
-     */
-    public function setGroupRepository(GroupRepositoryInterface $groupRepository)
-    {
-        $this->groupRepository = $groupRepository;
-
-        return $this;
-    }
-
-    /**
-     * Set reference data registry
-     *
-     * @param ConfigurationRegistryInterface $registry
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setReferenceDataRegistry(ConfigurationRegistryInterface $registry = null)
-    {
-        $this->referenceDataRegistry = $registry;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @return QueryBuilder
-     */
-    protected function buildByScope($scope)
-    {
-        $productQb = $this->queryBuilderFactory->create();
-        $qb = $productQb->getQueryBuilder();
-        $this->addJoinToValueTables($qb);
-        $rootAlias = current($qb->getRootAliases());
-        $qb
-            ->andWhere(
-                $qb->expr()->eq($rootAlias.'.enabled', ':enabled')
-            )
-            ->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->eq('Value.scope', ':scope'),
-                    $qb->expr()->isNull('Value.scope')
-                )
-            )
-            ->setParameter('enabled', true)
-            ->setParameter('scope', $scope);
-
-        return $qb;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -113,37 +44,9 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
-    {
-        $qb = $this->findAllForVariantGroupQB($variantGroup, $criteria);
-
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getIdentifierProperties()
     {
         return ['identifier'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getEligibleProductsForVariantGroup($variantGroupId)
-    {
-        $variantGroup = $this->groupRepository->find($variantGroupId);
-        if (null === $variantGroup || !$variantGroup->getType()->isVariant()) {
-            return [];
-        }
-
-        $pqb = $this->queryBuilderFactory->create();
-        foreach ($variantGroup->getAxisAttributes() as $axisAttribute) {
-            $pqb->addFilter($axisAttribute->getCode(), Operators::IS_NOT_EMPTY, null);
-        }
-
-        return $pqb->execute();
     }
 
     /**
@@ -242,49 +145,6 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInVariantGroup($productId, $attributeCode)
-    {
-        $queryBuilder = $this->createQueryBuilder('p')
-            ->select('g.id')
-            ->leftJoin('p.groups', 'g')
-            ->where('p.id = :id')
-            ->setParameters([
-                'id' => $productId,
-            ]);
-
-        $groupIds = $queryBuilder->getQuery()->getScalarResult();
-
-        $groupIds = array_reduce($groupIds, function ($carry, $item) {
-            if (isset($item['id'])) {
-                $carry[] = $item['id'];
-            }
-
-            return $carry;
-        }, []);
-
-        if (0 === count($groupIds)) {
-            return false;
-        }
-
-        return $this->groupRepository->hasAttribute($groupIds, $attributeCode);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = [])
-    {
-        $queryBuilder = $this->findAllForVariantGroupQB($variantGroup, $criteria);
-
-        return $queryBuilder->execute();
-    }
-
-    /**
-     * @param int $offset
-     * @param int $size
-     *
-     * @return array
-     */
     public function findAllWithOffsetAndSize($offset = 0, $size = 100)
     {
         $queryBuilder = $this->createQueryBuilder('p')
@@ -295,31 +155,22 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * @param GroupInterface $variantGroup
-     * @param array          $criteria
-     *
-     * @return ProductQueryBuilderInterface
+     * {@inheritdoc}
      */
-    protected function findAllForVariantGroupQB(GroupInterface $variantGroup, array $criteria = [])
+    public function getAssociatedProductIds(ProductInterface $product)
     {
-        $queryBuilder = $this->queryBuilderFactory->create();
+        $qb = $this->createQueryBuilder('p')
+            ->select(
+                'a.id AS association_id',
+                't.code AS association_type_code',
+                'pa.id AS product_id',
+                'pa.identifier AS product_identifier'
+            )->innerJoin('p.associations', 'a')
+            ->innerJoin('a.associationType', 't')
+            ->innerJoin('a.products', 'pa')
+            ->where('p.id = :productId')
+            ->setParameter(':productId', $product->getId());
 
-        foreach ($criteria as $item) {
-            $value = null;
-
-            if (isset($item['option'])) {
-                $value = $item['option'];
-                $queryBuilder->addFilter($item['attribute']->getCode(), Operators::IN_LIST, [$value->getCode()]);
-            }
-
-            if (isset($item['referenceData'])) {
-                $value = $item['referenceData']['data'];
-                $queryBuilder->addFilter($item['attribute']->getCode(), Operators::IN_LIST, [$value->getCode()]);
-            }
-        }
-
-        $queryBuilder->addFilter('variant_group', Operators::IN_LIST, [$variantGroup->getCode()]);
-
-        return $queryBuilder;
+        return $qb->getQuery()->execute();
     }
 }

@@ -1,21 +1,23 @@
 @import '../../base/variables';
 
 .AknActionButton {
-  height: @AknLittleButtonSize;
-  min-width: @AknLittleButtonSize;
-  line-height: @AknLittleButtonSize;
+  height: @AknMicroButtonSize;
+  min-width: @AknMicroButtonSize;
+  line-height: @AknMicroButtonSize - 2;
   font-size: @AknDefaultFontSize;
   border: 1px solid @AknBorderColor;
   color: @AknDefaultFontColor;
   background-color: white;
-  border-radius: 2px;
+  border-radius: 100px;
   font-weight: normal;
-  padding: 0 10px;
+  padding: 0 15px;
   vertical-align: middle;
   display: inline-block;
   cursor: pointer;
   white-space: nowrap;
   outline: none;
+  text-transform: uppercase;
+  transition: background 0.1s ease-in;
 
   &-caret {
     display: inline-block;
@@ -74,9 +76,13 @@
   }
 
   &--disabled {
-    color: @AknLightFontColor;
-    background: @AknDisabledInputColor;
+    opacity: 0.5;
     cursor: not-allowed;
+  }
+
+  &--unclickable {
+    opacity: 0.5;
+    cursor: default;
   }
 
   &--input {
@@ -100,9 +106,21 @@
   &--withoutBorder {
     border: none;
     padding: 0;
+    background-color: transparent;
+    text-transform: none;
   }
 
   &-highlight {
     color: @AknLightPurple;
+  }
+
+  &--highlight {
+    color: @AknLightPurple;
+    border-color: @AknLightPurple;
+  }
+
+  &--important {
+    text-transform: uppercase;
+    font-size: @AknFontSizeBig;
   }
 }

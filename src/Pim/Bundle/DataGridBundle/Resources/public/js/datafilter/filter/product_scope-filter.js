@@ -1,20 +1,43 @@
+/**
+ * Scope filter
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @export  oro/datafilter/product_scope-filter
+ * @class   oro.datafilter.ScopeFilter
+ * @extends oro.datafilter.SelectFilter
+ */
+
 define(
-    ['jquery', 'underscore', 'oro/mediator', 'oro/datafilter/select-filter', 'pim/user-context', 'pim/datagrid/state'],
-    function ($, _, mediator, SelectFilter, UserContext, DatagridState) {
+    [
+        'jquery',
+        'underscore',
+        'oro/mediator',
+        'oro/datafilter/select-filter',
+        'pim/user-context',
+        'pim/datagrid/state',
+        'pim/template/datagrid/filter/scope-filter'
+    ],
+    function (
+        $,
+        _,
+        mediator,
+        SelectFilter,
+        UserContext,
+        DatagridState,
+        template
+    ) {
         'use strict';
 
-        /**
-         * Scope filter
-         *
-         * @author    Romain Monceau <romain@akeneo.com>
-         * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
-         * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
-         *
-         * @export  oro/datafilter/product_scope-filter
-         * @class   oro.datafilter.ScopeFilter
-         * @extends oro.datafilter.SelectFilter
-         */
         return SelectFilter.extend({
+            template: _.template(template),
+            className: 'AknDropdown AknFilterBox-filterContainer filter-select filter-criteria-selector scope-switcher',
+            events: {
+                'keydown select': '_preventEnterProcessing',
+                'click .AknDropdown-menuLink': '_onSelectChange'
+            },
             /**
              * @override
              * @property {Boolean}
@@ -41,18 +64,17 @@ define(
              * @param {Array} collection
              */
             moveFilter: function (collection) {
-                var $grid = $('#grid-' + collection.inputName);
+                this.$el.prependTo($('[data-drop-zone="column-context-switcher"]'));
+
+                let $grid = $('#grid-' + collection.inputName);
 
                 if (0 === $grid.length) {
                     $grid = $('[data-type="datagrid"]:first');
                 }
-                this.$el.addClass('AknFilterBox-filterContainer--inline').insertBefore($grid.find('.actions-panel'));
 
-                var $filterChoices = $grid.find('#add-filter-select');
+                let $filterChoices = $grid.find('#add-filter-select');
                 $filterChoices.find('option[value="scope"]').remove();
                 $filterChoices.multiselect('refresh');
-
-                this.selectWidget.multiselect('refresh');
             },
 
             /**
@@ -66,7 +88,19 @@ define(
 
                 this.setValue({value: scope});
                 UserContext.set('catalogScope', scope);
+
                 this.selectWidget.multiselect('refresh');
+
+                this.render();
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            render: function () {
+                SelectFilter.prototype.render.apply(this, arguments);
+
+                this.highlightScope(this.catalogScope);
             },
 
             /**
@@ -92,6 +126,7 @@ define(
                 }
 
                 UserContext.set('catalogScope', newValue.value);
+                this.catalogScope = newValue.value;
 
                 return SelectFilter.prototype._onValueUpdated.apply(this, arguments);
             },
@@ -104,30 +139,38 @@ define(
              * We don't put this logic in the setValue method because we want this behavior only when the value
              * comes from a change of the select element, not from a view/url for example.
              */
-            _onSelectChange: function() {
+            _onSelectChange: function(event) {
+                const value = $(event.target).closest('.AknDropdown-menuLink').attr('data-value');
+                this.highlightScope(value);
+
                 SelectFilter.prototype._onSelectChange.apply(this, arguments);
 
-                var value = this._formatRawValue(this._readDOMValue());
-                DatagridState.set('product-grid', 'scope', value.value);
+                DatagridState.set('product-grid', 'scope', value);
             },
 
             /**
-             * Filter template
-             *
-             * @override
-             * @property
-             * @see Oro.Filter.SelectFilter
+             * @inheritDoc
              */
-            template: _.template(
-                '<div class="AknFilterBox-filter filter-select filter-criteria-selector scope-filter">' +
-                    '<i class="icon-eye-open" title="<%= label %>"></i>' +
-                    '<select>' +
-                        '<% _.each(options, function (option) { %>' +
-                            '<option value="<%= option.value %>"><%= option.label %></option>' +
-                        '<% }); %>' +
-                    '</select>' +
-                '</div>'
-            )
+            _readDOMValue() {
+                const currentScope = this.$el.find('.AknDropdown-menuLink--active').attr('data-value');
+
+                return { value: currentScope };
+            },
+
+            /**
+             * Highlight the current scope
+             *
+             * @param scope
+             */
+            highlightScope(scope) {
+                const currentOption = _.findWhere(this.options.choices, {value: scope});
+                if (undefined !== currentOption) {
+                    this.$el.find('.value').html(currentOption.label);
+                    this.$el.find('.AknDropdown-menuLink').removeClass('AknDropdown-menuLink--active');
+                    this.$el.find('.AknDropdown-menuLink[data-value="' + scope + '"]')
+                        .addClass('AknDropdown-menuLink--active');
+                }
+            }
         });
     }
 );

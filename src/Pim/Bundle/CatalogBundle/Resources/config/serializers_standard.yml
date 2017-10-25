@@ -1,5 +1,6 @@
 parameters:
     pim_catalog.normalizer.standard.product.class: Pim\Component\Catalog\Normalizer\Standard\ProductNormalizer
+    pim_catalog.normalizer.standard.product_model.class: Pim\Component\Catalog\Normalizer\Standard\ProductModelNormalizer
     pim_catalog.normalizer.standard.product.properties.class: Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer
     pim_catalog.normalizer.standard.product.associations.class: Pim\Component\Catalog\Normalizer\Standard\Product\AssociationsNormalizer
     pim_catalog.normalizer.standard.product.product_values.class: Pim\Component\Catalog\Normalizer\Standard\Product\ProductValuesNormalizer
@@ -16,17 +17,24 @@ parameters:
     pim_catalog.normalizer.standard.channel.class: Pim\Component\Catalog\Normalizer\Standard\ChannelNormalizer
     pim_catalog.normalizer.standard.currency.class: Pim\Component\Catalog\Normalizer\Standard\CurrencyNormalizer
     pim_catalog.normalizer.standard.family.class: Pim\Component\Catalog\Normalizer\Standard\FamilyNormalizer
-    pim_catalog.normalizer.standard.proxy_group.class: Pim\Component\Catalog\Normalizer\Standard\ProxyGroupNormalizer
+    pim_catalog.normalizer.standard.family_variant.class: Pim\Component\Catalog\Normalizer\Standard\FamilyVariantNormalizer
     pim_catalog.normalizer.standard.group.class: Pim\Component\Catalog\Normalizer\Standard\GroupNormalizer
     pim_catalog.normalizer.standard.group_type.class: Pim\Component\Catalog\Normalizer\Standard\GroupTypeNormalizer
     pim_catalog.normalizer.standard.locale.class: Pim\Component\Catalog\Normalizer\Standard\LocaleNormalizer
     pim_catalog.normalizer.standard.translation.class: Pim\Component\Catalog\Normalizer\Standard\TranslationNormalizer
-    pim_catalog.normalizer.standard.variant_group.class: Pim\Component\Catalog\Normalizer\Standard\VariantGroupNormalizer
     pim_catalog.normalizer.standard.job_instance.class: Akeneo\Component\Batch\Normalizer\Standard\JobInstanceNormalizer
 
 services:
     pim_catalog.normalizer.standard.product:
         class: '%pim_catalog.normalizer.standard.product.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.product.properties'
+            - '@pim_catalog.normalizer.standard.product.associations'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_catalog.normalizer.standard.product_model:
+        class: '%pim_catalog.normalizer.standard.product_model.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.product.properties'
             - '@pim_catalog.normalizer.standard.product.associations'
@@ -132,11 +140,10 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pim_catalog.normalizer.standard.proxy_group:
-        class: '%pim_catalog.normalizer.standard.proxy_group.class%'
+    pim_catalog.normalizer.standard.family_variant:
+        class: '%pim_catalog.normalizer.standard.family_variant.class%'
         arguments:
-            - '@pim_catalog.normalizer.standard.group'
-            - '@pim_catalog.normalizer.standard.variant_group'
+            - '@pim_catalog.normalizer.standard.translation'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -144,6 +151,8 @@ services:
         class: '%pim_catalog.normalizer.standard.group.class%'
         arguments:
             - '@pim_catalog.normalizer.standard.translation'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
 
     pim_catalog.normalizer.standard.group_type:
         class: '%pim_catalog.normalizer.standard.group_type.class%'
@@ -161,12 +170,6 @@ services:
         class: '%pim_catalog.normalizer.standard.translation.class%'
         tags:
             - { name: pim_serializer.normalizer, priority: 80 }
-
-    pim_catalog.normalizer.standard.variant_group:
-        class: '%pim_catalog.normalizer.standard.variant_group.class%'
-        arguments:
-            - '@pim_catalog.normalizer.standard.translation'
-            - '@pim_catalog.normalizer.standard.product.product_values'
 
     pim_catalog.normalizer.standard.job_instance:
         class: '%pim_catalog.normalizer.standard.job_instance.class%'

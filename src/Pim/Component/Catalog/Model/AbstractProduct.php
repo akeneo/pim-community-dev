@@ -218,7 +218,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {
-        return $this->values->getByCodes($attributeCode, $scopeCode, $localeCode);
+        return $this->getValues()->getByCodes($attributeCode, $scopeCode, $localeCode);
     }
 
     /**
@@ -244,13 +244,13 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function hasAttribute(AttributeInterface $attribute)
     {
-        return in_array($attribute, $this->values->getAttributes(), true);
+        return in_array($attribute, $this->getValues()->getAttributes(), true);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFamily()
+    public function getFamily(): ?FamilyInterface
     {
         return $this->family;
     }
@@ -312,7 +312,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getAttributes()
     {
-        return $this->values->getAttributes();
+        return $this->getValues()->getAttributes();
     }
 
     /**
@@ -359,17 +359,17 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getImage()
     {
-        if ($this->family) {
-            $attributeAsImage = $this->family->getAttributeAsImage();
-            if (null !== $attributeAsImage) {
-                $value = $this->getValue($attributeAsImage->getCode());
-                if (null !== $value) {
-                    return $value;
-                }
-            }
+        if (null === $this->family) {
+            return null;
         }
 
-        return null;
+        $attributeAsImage = $this->family->getAttributeAsImage();
+
+        if (null === $attributeAsImage) {
+            return null;
+        }
+
+        return $this->getValue($attributeAsImage->getCode());
     }
 
     /**
@@ -377,21 +377,32 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getLabel($locale = null)
     {
-        if ($this->family) {
-            if ($attributeAsLabel = $this->family->getAttributeAsLabel()) {
-                if (!$attributeAsLabel->isLocalizable()) {
-                    $locale = null;
-                }
-                if ($value = $this->getValue($attributeAsLabel->getCode(), $locale)) {
-                    $data = $value->getData();
-                    if (!empty($data)) {
-                        return (string) $data;
-                    }
-                }
-            }
+        $identifier = (string) $this->getIdentifier();
+
+        if (null === $this->family) {
+            return $identifier;
         }
 
-        return (string) $this->getIdentifier();
+        $attributeAsLabel = $this->family->getAttributeAsLabel();
+
+        if (null === $attributeAsLabel) {
+            return $identifier;
+        }
+
+        $locale = $attributeAsLabel->isLocalizable() ? $locale : null;
+        $value = $this->getValue($attributeAsLabel->getCode(), $locale);
+
+        if (null === $value) {
+            return $identifier;
+        }
+
+        $data = $value->getData();
+
+        if (empty($data)) {
+            return $identifier;
+        }
+
+        return (string) $data;
     }
 
     /**
@@ -481,27 +492,6 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function hasAttributeInVariantGroup(AttributeInterface $attribute)
-    {
-        foreach ($this->groups as $group) {
-            if ($group->getType()->isVariant()) {
-                if ($group->getAxisAttributes()->contains($attribute)) {
-                    return true;
-                }
-
-                $template = $group->getProductTemplate();
-                if (null !== $template && $template->hasValueForAttribute($attribute)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function isAttributeRemovable(AttributeInterface $attribute)
     {
         if (AttributeTypes::IDENTIFIER === $attribute->getType()) {
@@ -509,10 +499,6 @@ abstract class AbstractProduct implements ProductInterface
         }
 
         if ($this->hasAttributeInFamily($attribute)) {
-            return false;
-        }
-
-        if ($this->hasAttributeInVariantGroup($attribute)) {
             return false;
         }
 
@@ -525,10 +511,6 @@ abstract class AbstractProduct implements ProductInterface
     public function isAttributeEditable(AttributeInterface $attribute)
     {
         if (!$this->hasAttributeInFamily($attribute)) {
-            return false;
-        }
-
-        if ($this->hasAttributeInVariantGroup($attribute)) {
             return false;
         }
 
@@ -564,23 +546,6 @@ abstract class AbstractProduct implements ProductInterface
         $this->groups->removeElement($group);
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getVariantGroup()
-    {
-        $groups = $this->getGroups();
-
-        /** @var GroupInterface $group */
-        foreach ($groups as $group) {
-            if ($group->getType()->isVariant()) {
-                return $group;
-            }
-        }
-
-        return null;
     }
 
     /**

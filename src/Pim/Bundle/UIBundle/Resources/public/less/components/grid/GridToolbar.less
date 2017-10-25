@@ -6,13 +6,6 @@
   justify-content: space-between;
   padding: 10px 0;
 
-  &-left {
-    order: 1;
-    display: flex;
-    flex-grow: 1;
-    align-items: center;
-  }
-
   &-center {
     order: 5;
     flex-grow: 1;
@@ -23,8 +16,6 @@
 
   &-right {
     order: 10;
-    display: flex;
-    flex-grow: 1;
     justify-content: flex-end;
     align-items: center;
   }
@@ -51,14 +42,5 @@
 
   &-left &-actionButton:first-child {
     margin-left: 0;
-  }
-}
-
-@media screen and (max-width: 1360px) {
-  .AknGridToolbar {
-    &-center {
-      order: 15;
-      flex-basis: 100%;
-    }
   }
 }

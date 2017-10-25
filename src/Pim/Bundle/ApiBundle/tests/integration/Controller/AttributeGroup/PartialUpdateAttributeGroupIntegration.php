@@ -6,6 +6,9 @@ use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group ce
+ */
 class PartialUpdateAttributeGroupIntegration extends ApiTestCase
 {
     public function testHttpHeadersInResponseWhenAnAttributeGroupIsUpdated()
@@ -149,6 +152,7 @@ JSON;
                 'sku',
                 'a_date',
                 'a_file',
+                'an_image',
                 'a_price',
                 'a_price_without_decimal',
                 'a_ref_data_multi_select',
@@ -195,6 +199,7 @@ JSON;
                 'sku',
                 'a_date',
                 'a_file',
+                'an_image',
                 'a_price',
                 'a_price_without_decimal',
                 'a_ref_data_multi_select',
@@ -367,6 +372,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

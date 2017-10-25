@@ -16,6 +16,13 @@ namespace Pim\Component\Catalog\Model;
 interface ValueCollectionInterface extends ProductUniqueValueCollectionInterface, \Countable, \IteratorAggregate
 {
     /**
+     * @param ValueCollectionInterface $collection
+     *
+     * @return ValueCollectionInterface
+     */
+    public static function fromCollection(ValueCollectionInterface $collection): ValueCollectionInterface;
+
+    /**
      * Adds a value at the end of the collection.
      *
      * @param ValueInterface $value The value to add.
@@ -82,6 +89,16 @@ interface ValueCollectionInterface extends ProductUniqueValueCollectionInterface
      *                 FALSE otherwise.
      */
     public function containsKey($key);
+
+    /**
+     * Get the value with the same attribute, channel and locale than $value.
+     * Or null if such a value does not exist.
+     *
+     * @param ValueInterface $value
+     *
+     * @return ValueInterface|null
+     */
+    public function getSame(ValueInterface $value);
 
     /**
      * Gets the value at the specified key/index.

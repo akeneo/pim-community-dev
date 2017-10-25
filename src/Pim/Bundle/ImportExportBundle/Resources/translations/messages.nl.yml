@@ -6,6 +6,7 @@ pim_import_export:
   status:
     - Gereed
   download_archive:
+    archive: download gegenereerd archief | download gegenereerde archieven
     output: download gegenereerd bestand | download gegenereerde bestanden
     input: download ingelezen bestand | download ingelezen bestanden
     invalid_xlsx: download ongeldige data
@@ -26,13 +27,9 @@ pim_import_export:
       history.title: Geschiedenis
       job_content.title: Inhoud
 pim_title.export_profile.index: Beheer van exportprofielen
-pim_title.export_profile.edit: Exportprofielen %job.label% | Bewerken
-pim_title.export_profile.show: Exportprofielen %job.label% | Tonen
 pim_title.export_execution.index: Exportverwerkingen geschiedenis
 pim_title.export_execution.show: Exportverwerkingen | Details
 pim_title.import_profile.index: Beheer van importprofielen
-pim_title.import_profile.edit: Importprofielen %job.label% | Bewerken
-pim_title.import_profile.show: Importprofielen %job.label% | Tonen
 pim_title.import_execution.index: Importverwerkingen geschiedenis
 pim_title.import_execution.show: Importverwerkingen | Details
 export profile:

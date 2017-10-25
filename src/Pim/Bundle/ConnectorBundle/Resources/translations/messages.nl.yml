@@ -9,10 +9,8 @@ pim_connector:
       invalid_item_columns_count: 'Er worden %totalColumnsCount% kolommen verwacht, in werkelijkheid %itemColumnsCount% in %filePath%:%lineno%'
     csv_product_reader.title: CSV product lezer
     csv_category_reader.title: CSV categorie lezer
-    csv_variant_group .title: CSV-variant groep lezer
     dummy_processor.title: Dummy verwerker
     product_processor.title: Product aanmaken
-    variant_group_processor.title: Variant groep creatie / update
     category_processor.title: Categorie aanmaken
     association_processor.title: Associatie aanmaken
     product_association_processor.title: Associatie aanmaken
@@ -26,7 +24,6 @@ pim_connector:
     file_writer.title: Uitvoer
     product_writer.title: Productopslag
     category_writer.title: Categorieopslag
-    variant_group_writer.title: Variant groep opslag
     writer.title: Entiteitopslag
     csv_writer.title: CSV-schrijver
 job_execution.summary:
@@ -63,14 +60,13 @@ batch_jobs:
   csv_group_export:
     label: Groepexport in CSV
     export.label: Groepexport
-  csv_variant_group_export:
-    label: Variant groep export in CSV
-    export.label: Variant groep export
   csv_product_import:
     label: Productimport in CSV
     validation.label: Bestandsvalidatie
     import.label: Productimport
     import_associations.label: Productassociatie import
+  csv_product_model_import:
+    validation.label: Bestandsvalidatie
   csv_category_import:
     label: Categorie-import in CSV
     validation.label: Bestandsvalidatie
@@ -89,14 +85,12 @@ batch_jobs:
     import.label: Associatietype-import
   csv_family_import:
     validation.label: Bestandsvalidatie
+  csv_family_variant_import:
+    validation.label: Bestandsvalidatie
   csv_group_import:
     label: Groep importeren in CSV
     validation.label: Bestandsvalidatie
     import.label: Groep importeren
-  csv_variant_group_import:
-    label: Variant groep import in CSV
-    validation.label: Bestandsvalidatie
-    import.label: Variant groep import
   csv_channel_export:
     label: Kanaal export in CSV
     export.label: Kanaal export
@@ -151,6 +145,8 @@ batch_jobs:
   xlsx_family_import:
     label: Familie import in XLSX
     validation.label: Bestandsvalidatie
+  xlsx_family_variant_import:
+    validation.label: Bestandsvalidatie
   xlsx_product_export:
     label: Product export in XLSX
     export.label: Productexport
@@ -159,20 +155,15 @@ batch_jobs:
     validation.label: Bestandsvalidatie
     import.label: Productimport
     import_associations.label: Productassociatie import
+  xlsx_product_model_import:
+    validation.label: Bestandsvalidatie
   xlsx_group_export:
     label: Groep export in XLSX
     export.label: Groepexport
-  xlsx_variant_group_export:
-    label: Variant groep export in XLSX
-    export.label: Variant groep export
   xlsx_group_import:
     label: Groep import in XLSX
     validation.label: Bestandsvalidatie
     import.label: Groep importeren
-  xlsx_variant_group_import:
-    label: Variant groep import in XLSX
-    validation.label: Bestandsvalidatie
-    import.label: Variant Groep import
   xlsx_family_export:
     label: Familie export in XLSX
   xlsx_category_export:

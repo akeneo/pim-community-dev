@@ -27,13 +27,9 @@ pim_import_export:
       history.title: Historia
       job_content.title: Sisältö
 pim_title.export_profile.index: Profiilien viennin hallinta
-pim_title.export_profile.edit: Vie profiilit %job.label% | Muokkaa
-pim_title.export_profile.show: Vie profiilit %job.label% | Näytä
 pim_title.export_execution.index: Vientien historia
 pim_title.export_execution.show: Vientisuoritukset | Yksityiskohdat
 pim_title.import_profile.index: Profiilien tuonnin hallinta
-pim_title.import_profile.edit: Vie profiilit %job.label% | Muokkaa
-pim_title.import_profile.show: Tuo profiilit %job.label% | Näytä
 pim_title.import_execution.index: Tuontihistoria
 pim_title.import_execution.show: Tuontisuoritukset | Yksityiskohdat
 export profile:
@@ -132,5 +128,4 @@ Status: Status
 Summary: Yhteenveto
 Start: Aloitus
 End: Loppu
-set_attribute_requirements: Aseta attribuuttivaatimukset
 warning.label: Varoitus

@@ -13,9 +13,9 @@ Feature: Edit common attributes with permissions
   @jira https://akeneo.atlassian.net/browse/PIM-5727
   Scenario: Successfully select attribute when user have no "add attributes" permission
     Given I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I select row boots
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     When I choose the "Edit common attributes" operation
     Then I should see the text "Select attributes"
     And I display the Name attribute

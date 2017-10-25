@@ -70,7 +70,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
             'groupedAttributes' => ['Design' => ['color' => $color]],
             'imagePaths'        => [],
             'customFont'        => null,
-            'filter'            => 'thumbnail',
+            'filter'            => 'pdf_thumbnail',
             'renderingDate'     => $renderingDate,
         ])->shouldBeCalled();
 
@@ -90,13 +90,16 @@ class ProductPdfRendererSpec extends ObjectBehavior
         FileInfoInterface $fileInfo,
         CacheManager $cacheManager
     ) {
+        $mainImage->isLocalizable()->willReturn(true);
+        $mainImage->isScopable()->willReturn(true);
+
         $blender->getAttributes()->willReturn([$mainImage]);
         $blender->getValue("main_image", "en_US", "ecommerce")->willReturn($value);
 
         $value->getData()->willReturn($fileInfo);
         $fileInfo->getKey()->willReturn('fookey');
 
-        $cacheManager->isStored('fookey', 'thumbnail')->willReturn(true);
+        $cacheManager->isStored('fookey', 'pdf_thumbnail')->willReturn(true);
 
         $mainImage->getGroup()->willReturn($media);
         $media->getLabel()->willReturn('Media');
@@ -115,7 +118,7 @@ class ProductPdfRendererSpec extends ObjectBehavior
                 'groupedAttributes' => ['Media' => ['main_image' => $mainImage]],
                 'imagePaths'        => ['fookey'],
                 'customFont'        => null,
-                'filter'            => 'thumbnail',
+                'filter'            => 'pdf_thumbnail',
                 'renderingDate'     => $renderingDate,
             ]
         )->shouldBeCalled();

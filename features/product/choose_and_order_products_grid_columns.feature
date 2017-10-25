@@ -7,14 +7,14 @@ Feature: Choose and order product grids columns
   Background:
     Given a "footwear" catalog configuration
     And the following products:
-      | sku     |
-      | sandals |
-      | basket  |
+      | sku     | family |
+      | sandals | heels  |
+      | basket  | heels  |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
 
   Scenario: Successfully display default columns
-    Then I should see the columns Sku, Image, Label, Family, Status, Complete, Created At, Updated At, Groups
+    Then I should see the columns ID, Image, Label, Family, Status, Complete, Created At, Updated At, Groups, Variant products
 
   @skip
   Scenario: Successfully hide some columns
@@ -29,8 +29,8 @@ Feature: Choose and order product grids columns
   Scenario: Successfully hide removed attribute column that was previously selected to be displayed
     Given I display the columns SKU, Family and Name
     When I've removed the "name" attribute
-    And I am on the products page
-    Then I should see the columns Sku and Family
+    And I am on the products grid
+    Then I should see the columns Family and SKU
 
   @jira https://akeneo.atlassian.net/browse/PIM-4861
   Scenario: Successfully display extra columns content like the name when filter on categories
@@ -38,9 +38,10 @@ Feature: Choose and order product grids columns
       | sku     | name-en_US | categories        |
       | sandal1 | sandal one | summer_collection |
       | sandal2 | sandal two | summer_collection |
-    And I display the columns SKU, Family and Name
-    And I am on the products page
-    Then I should see the columns SKU, Family and Name
-    And I should be able to use the following filters:
-      | filter   | operator | value             | result                 |
-      | category |          | summer_collection | sandal one, sandal two |
+    And I display the columns ID, Family and Name
+    And I am on the products grid
+    Then I should see the columns ID, Family and Name
+    And I open the category tree
+    When I filter by "category" with operator "" and value "summer_collection"
+    Then the grid should contain 2 elements
+    And I should see entities sandal one, sandal two

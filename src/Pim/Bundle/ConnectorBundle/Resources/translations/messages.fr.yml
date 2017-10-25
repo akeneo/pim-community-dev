@@ -9,10 +9,8 @@ pim_connector:
       invalid_item_columns_count: '%totalColumnsCount% colonnes attendues, %itemColumnsCount% trouvées dans %filePath%:%lineno%'
     csv_product_reader.title: Lecteur de produits en CSV
     csv_category_reader.title: Lecteur de catégories en CSV
-    csv_variant_group .title: Lecteur de groupes de variantes en CSV
     dummy_processor.title: Processeur factice
     product_processor.title: Création des produits
-    variant_group_processor.title: Création / Mise à jour des groupes de variantes
     category_processor.title: Création des catégories
     association_processor.title: Création d'association
     product_association_processor.title: Création d'association
@@ -26,7 +24,6 @@ pim_connector:
     file_writer.title: Sortie
     product_writer.title: Stockage des produits
     category_writer.title: Stockage des catégories
-    variant_group_writer.title: Stockage des groupes de variantes
     writer.title: Stockage des entités
     csv_writer.title: Ecriture des fichiers en CSV
 job_execution.summary:
@@ -44,11 +41,17 @@ job_execution.summary:
     skipped: ignoré(s), extension dans la liste blanche
   product_skipped_no_diff: produit(s) ignoré(s) (aucune différence)
   product_skipped_no_associations: produit(s) ignoré(s) (aucune association détectée)
+  product_model_skipped_no_diff: modèles de produit(s) ignoré(s) (aucune différence)
   item_position: lignes lues
+  skipped_in_root_product_model: modèles de produits avec parent ignorés
+  skipped_in_sub_product_model: modèles de produits sans parent ignorés
 batch_jobs:
   csv_product_export:
     label: Export produits en CSV
     export.label: Export des produits
+  csv_product_model_export:
+    label: Export de modèles de produit en CSV
+    export.label: Export de modèles de produit
   csv_category_export:
     label: Export des catégories en CSV
     export.label: Export des catégories
@@ -64,17 +67,23 @@ batch_jobs:
   csv_group_export:
     label: Export des groupes en CSV
     export.label: Export de groupes
-  csv_variant_group_export:
-    label: Export des groupes de variantes en CSV
-    export.label: Export des groupes de variantes
   csv_family_export:
     label: Export des familles en CSV
     export.label: Export des familles
+  csv_family_variant_export:
+    label: Export des variantes de famille en CSV
+    export.label: Export des variantes de famille
   csv_product_import:
     label: Import des produits en CSV
     validation.label: Validation du fichier
     import.label: Import des produits
     import_associations.label: Import des associations de produits
+  csv_product_model_import:
+    label: Import de modèles de produit en CSV
+    validation.label: Validation du fichier
+    import_root_product_model.label: Import modèle de produit racine
+    import_sub_product_model.label: Import sous-modèle de produit
+    import_product_model_descendants.label: Mise à jour des descendants des modèles de produit
   csv_category_import:
     label: Import des catégories en CSV
     validation.label: Validation du fichier
@@ -95,14 +104,14 @@ batch_jobs:
     label: Import des familles en CSV
     validation.label: Validation du fichier
     import.label: Import des familles
+  csv_family_variant_import:
+    label: Import des variantes de famille en CSV
+    validation.label: Validation du fichier
+    import.label: Import des variantes de famille
   csv_group_import:
     label: Import des groupes en CSV
     validation.label: Validation du fichier
     import.label: Import des groupes
-  csv_variant_group_import:
-    label: Import des groupes de variantes en CSV
-    validation.label: Validation du fichier
-    import.label: Import des groupes de variantes
   csv_channel_export:
     label: Export des canaux en CSV
     export.label: Export des canaux
@@ -116,8 +125,8 @@ batch_jobs:
     label: Export des devises en CSV
     export.label: Export des devises
   csv_group_type_export:
-    label: Export des types de groupes en CSV
-    export.label: Export des types de groupes
+    label: Export des types de groupe en CSV
+    export.label: Export des types de groupe
   csv_channel_import:
     label: Import des canaux en CSV
     validation.label: Validation du fichier
@@ -135,9 +144,9 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des devises
   csv_group_type_import:
-    label: Import des types de groupes en CSV
+    label: Import des types de groupe en CSV
     validation.label: Validation du fichier
-    import.label: Import des types de groupes
+    import.label: Import des types de groupe
   xlsx_category_import:
     label: Import des catégories en XLSX
     validation.label: Validation du fichier
@@ -158,31 +167,40 @@ batch_jobs:
     label: Import des familles en XLSX
     validation.label: Validation du fichier
     import.label: Import des familles
+  xlsx_family_variant_import:
+    label: Import des variantes de famille en XLSX
+    validation.label: Validation du fichier
+    import.label: Import des variantes de famille
   xlsx_product_export:
     label: Export des produits en XLSX
     export.label: Export des produits
+  xlsx_product_model_export:
+    label: Export de modèles de produit en XLSX
+    export.label: Export de modèles de produit
   xlsx_product_import:
     label: Import des produits en XLSX
     validation.label: Validation du fichier
     import.label: Import des produits
     import_associations.label: Import des associations de produits
+  xlsx_product_model_import:
+    label: Import de modèles de produit en XLSX
+    validation.label: Validation du fichier
+    import_root_product_model.label: Import modèle de produit racine
+    import_sub_product_model.label: Import sous-modèle de produit
+    import_product_model_descendants.label: Mise à jour des descendants des modèles de produit
   xlsx_group_export:
     label: Export des groupes en XLSX
     export.label: Export de groupes
-  xlsx_variant_group_export:
-    label: Export des groupes de variantes en XLSX
-    export.label: Export des groupes de variantes
   xlsx_group_import:
     label: Import des groupes en XLSX
     validation.label: Validation du fichier
     import.label: Import des groupes
-  xlsx_variant_group_import:
-    label: Import des groupes de variantes en XLSX
-    validation.label: Validation du fichier
-    import.label: Import des groupes de variantes
   xlsx_family_export:
     label: Export des familles en XLSX
     export.label: Export des familles
+  xlsx_family_variant_export:
+    label: Export des variantes de famille en XLSX
+    export.label: Export des variantes de famille
   xlsx_category_export:
     label: Export des catégories en XLSX
     export.label: Export des catégories
@@ -208,8 +226,8 @@ batch_jobs:
     label: Export des devises en XLSX
     export.label: Export des devises
   xlsx_group_type_export:
-    label: Export des types de groupes en XLSX
-    export.label: Export des types de groupes
+    label: Export des types de groupe en XLSX
+    export.label: Export des types de groupe
   xlsx_channel_import:
     label: Import des canaux en XLSX
     validation.label: Validation du fichier
@@ -227,6 +245,6 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des devises
   xlsx_group_type_import:
-    label: Import des types de groupes en XLSX
+    label: Import des types de groupe en XLSX
     validation.label: Validation du fichier
-    import.label: Import des types de groupes
+    import.label: Import des types de groupe

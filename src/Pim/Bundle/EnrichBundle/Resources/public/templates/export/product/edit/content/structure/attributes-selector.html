@@ -1,3 +1,9 @@
+<div class="AknColumnConfigurator-title AknFullPage-title">
+    <%- title %>
+</div>
+<div class="AknColumnConfigurator-subTitle AknFullPage-description">
+    <%- description %>
+</div>
 <div class="AknColumnConfigurator-column attribute-groups">
     <header class="AknColumnConfigurator-columnHeader"><%- __('pim_enrich.export.product.filter.attributes_selector.attribute_group') %></header>
     <div data-scroll-container="attribute-groups" class="AknColumnConfigurator-listContainer">
@@ -13,8 +19,7 @@
 </div>
 <div class="AknColumnConfigurator-column attributes">
     <header class="AknColumnConfigurator-columnHeader">
-        <i class="AknColumnConfigurator-searchIcon icon-search"></i>
-        <input class="AknTextField  AknColumnConfigurator-searchInput search-field" type="text" placeholder="<%- __('pim_enrich.export.product.filter.attributes_selector.attributes', {attributeCount: attributeCount}) %>"/>
+        <input class="AknTextField AknColumnConfigurator-searchInput search-field" type="text" placeholder="<%- __('pim_enrich.export.product.filter.attributes_selector.attributes', {itemsCount: attributeCount}, attributeCount) %>"/>
     </header>
     <div data-scroll-container="attributes" class="AknColumnConfigurator-listContainer">
         <ul class="AknVerticalList"></ul>
@@ -31,7 +36,6 @@
             --><% _.each(selectedAttributes, function (attribute) { %>
                 <li class="AknVerticalList-item AknVerticalList-item--movable <%- currentGroup === attribute.code ? 'selected' : '' %>" data-attribute-code="<%- attribute.code %>">
                     <div>
-                        <i class="icon-reorder"></i>
                         <span class="attribute-label"><%- i18n.getLabel(attribute.labels, userContext.get('uiLocale'), attribute.code) %></span>
                     </div>
                     <span class="AknIconButton AknIconButton--grey AknIconButton--small remove"><i class="icon-trash"></i></span>

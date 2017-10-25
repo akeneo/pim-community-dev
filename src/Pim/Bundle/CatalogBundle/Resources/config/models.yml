@@ -1,5 +1,6 @@
 parameters:
     pim_catalog.model.product.interface:                Pim\Component\Catalog\Model\ProductInterface
+    pim_catalog.model.product_model.interface:          Pim\Component\Catalog\Model\ProductModelInterface
     pim_catalog.model.value.interface:                  Pim\Component\Catalog\Model\ValueInterface
     pim_catalog.model.association.interface:            Pim\Component\Catalog\Model\AssociationInterface
     pim_catalog.model.completeness.interface:           Pim\Component\Catalog\Model\CompletenessInterface
@@ -13,12 +14,12 @@ parameters:
     pim_catalog.model.attribute_option_value.interface: Pim\Component\Catalog\Model\AttributeOptionValueInterface
     pim_catalog.model.attribute_requirement.interface:  Pim\Component\Catalog\Model\AttributeRequirementInterface
     pim_catalog.model.family.interface:                 Pim\Component\Catalog\Model\FamilyInterface
+    pim_catalog.model.family_variant.interface:         Pim\Component\Catalog\Model\FamilyVariantInterface
     pim_catalog.model.channel.interface:                Pim\Component\Catalog\Model\ChannelInterface
     pim_catalog.model.currency.interface:               Pim\Component\Catalog\Model\CurrencyInterface
     pim_catalog.model.locale.interface:                 Pim\Component\Catalog\Model\LocaleInterface
     pim_catalog.model.metric.interface:                 Pim\Component\Catalog\Model\MetricInterface
     pim_catalog.model.product_price.interface:          Pim\Component\Catalog\Model\ProductPriceInterface
-    pim_catalog.model.product_template.interface:       Pim\Component\Catalog\Model\ProductTemplateInterface
 
     pim_catalog.model.category_translation.interface:         Pim\Component\Catalog\Model\CategoryTranslationInterface
     pim_catalog.model.family_translation.interface:           Pim\Component\Catalog\Model\FamilyTranslationInterface

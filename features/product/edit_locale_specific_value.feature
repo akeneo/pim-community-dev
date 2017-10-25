@@ -6,9 +6,12 @@ Feature: Edit a locale specific value
 
   Background:
     Given the "apparel" catalog configuration
+    And the following family:
+      | code          | attributes                     |
+      | super_tshirts | customs_tax,under_european_law |
     And the following products:
-      | sku    | family  |
-      | tshirt | tshirts |
+      | sku    | family        |
+      | tshirt | super_tshirts |
     And I am logged in as "Mary"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3298
@@ -28,10 +31,8 @@ Feature: Edit a locale specific value
   Scenario: Handle the display of a locale specific field even if not localizable
     Given I am on the "tshirt" product page
     And I switch the locale to "en_US"
-    And I add available attributes Under European law
-    And I visit the "General" group
     Then I should see the text "This locale specific field is not available in this locale"
-    And I switch the locale to "fr_FR"
+    When I switch the locale to "fr_FR"
     Then I should see the text "Sous la loi Européenne"
-    And I switch the locale to "de_DE"
+    When I switch the locale to "de_DE"
     Then I should see the text "Nach europäischem Recht"

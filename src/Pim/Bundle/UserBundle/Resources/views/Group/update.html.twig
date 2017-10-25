@@ -24,31 +24,37 @@
 
 {% block navButtons %}
     {% if entityId and resource_granted('pim_user_group_remove') %}
-        {{ UI.deleteButton({
-            'dataUrl': path('oro_user_group_delete', {'id': entityId}),
-            'dataRedirect': path('oro_user_group_index'),
-            'aCss': 'no-hash remove-button AknButtonList-item',
-            'dataId': entityId,
-            'id': 'btn-remove-group',
-            'dataMessage': 'Are you sure you want to delete this group?'|trans,
-            'successMessage': 'Group removed'|trans,
-            'title': 'Delete group',
-            'label': 'Delete'
-        }) }}
+        <div class="AknSecondaryActions AknDropdown AknButtonList-item secondary-actions">
+          <div class="AknSecondaryActions-button dropdown-button" data-toggle="dropdown"></div>
+          <div class="AknDropdown-menu AknDropdown-menu--right">
+              <div class="AknDropdown-menuTitle">{{'other_actions'|trans}}</div>
+              {{ UI.deleteButton({
+                  'dataUrl': path('oro_user_group_delete', {'id': entityId}),
+                  'dataRedirect': path('oro_user_group_index'),
+                  'aCss': 'AknDropdown-menuLink remove-button no-hash',
+                  'dataId': entityId,
+                  'id': 'btn-remove-group',
+                  'dataMessage': 'Are you sure you want to delete this group?'|trans,
+                  'successMessage': 'Group removed'|trans,
+                  'title': 'Delete group',
+                  'label': 'Delete|trans',
+                  'subTitle': 'Groups'|trans
+              }) }}
+          </div>
+        </div>
     {% endif %}
+
     {{ UI.saveAndStayButton('pim_user_group_edit') }}
 {% endblock navButtons %}
 
 {% block content_data %}
     {% set id = 'group-profile' %}
 
-        <div class="AknTabContainer">
-            {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
+        {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
 
-            <div class="AknTabContainer-content tab-content">
-                {{ elements.form_errors(form) }}
-                {{ view_elements(form.vars.id ~ '.form_tab') }}
-            </div>
+        <div class="AknTabContainer-content tab-content">
+            {{ elements.form_errors(form) }}
+            {{ view_elements(form.vars.id ~ '.form_tab') }}
         </div>
 
     {{ form_end(form) }}
@@ -56,5 +62,40 @@
         require('pim/page-title').set({'group': '{{ form.vars.value.name }}'});
 
         window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+    </script>
+
+    <script>
+        require(
+            [
+                'pim/common/breadcrumbs',
+                'pim/fetcher-registry',
+                'pim/form-builder'
+            ],
+            function(
+                Breadcrumbs,
+                FetcherRegistry,
+                FormBuilder
+            ) {
+                $(function() {
+                    var breadcrumbs = new Breadcrumbs({
+                        config: {
+                            tab: 'pim-menu-system',
+                            item: 'pim-menu-system-user-group'
+                        }
+                    });
+                    breadcrumbs.configure().then(function () {
+                        breadcrumbs.render();
+                        $('*[data-drop-zone="breadcrumbs"]').append(breadcrumbs.$el);
+                    });
+
+                    FetcherRegistry.initialize().done(function () {
+                        FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+                            $('.user-menu').append(form.el);
+                            form.render();
+                        }.bind(this));
+                    });
+                });
+            }
+        );
     </script>
 {% endblock content_data %}

@@ -32,6 +32,7 @@ define(
         template
     ) {
         return BaseOperation.extend({
+            className: 'AknGridContainer--withoutNoDataPanel',
             template: _.template(template),
             errors: null,
             formPromise: null,
@@ -43,8 +44,9 @@ define(
              */
             configure: function () {
                 return $.when(
-                    FetcherRegistry.getFetcher('channel').fetch(UserContext.get('catalogScope')),
-                    FetcherRegistry.getFetcher('locale').fetchActivated()
+                    FetcherRegistry.getFetcher('channel')
+                        .fetch(UserContext.get('catalogScope'), {force_list_method: true}),
+                    FetcherRegistry.getFetcher('locale').search({ activated: true, cached: false })
                 ).then((channel, locales) => {
                     this.channel = channel;
                     this.locales = locales;
@@ -82,8 +84,13 @@ define(
                     form.setElement(this.$('.edit-common-attributes')).render();
                     form.trigger('pim_enrich:form:update_read_only', this.readOnly);
 
+                    // This method renders a complete PEF page, we need to remove useless elements manually.
+                    this.$el.find('.navigation').remove();
+                    this.$el.find('.AknDefault-thirdColumnContainer').remove();
+                    this.$el.find('.AknDefault-mainContent').addClass('AknDefault-mainContent--withoutPadding');
+
                     if (this.errors) {
-                        var event = {
+                        const event = {
                             sentData: product,
                             response: {values: this.errors}
                         };
@@ -156,7 +163,7 @@ define(
                     method: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(this.getValue()),
-                    url: Routing.generate('pim_enrich_product_template_rest_validate')
+                    url: Routing.generate('pim_enrich_value_rest_validate')
                 }).then(function (response) {
                     if (!_.isEmpty(response.values)) {
                         this.errors = response.values;

@@ -61,23 +61,23 @@ JSON;
         $data =
 <<<JSON
     {
-        "code": "categoryC",
+        "code": "categoryD",
         "parent": "master",
         "labels": {
-            "en_US": "Category C",
-            "fr_FR": "Catégorie C"
+            "en_US": "Category D",
+            "fr_FR": "Catégorie D"
         }
     }
 JSON;
         $client->request('POST', 'api/rest/v1/categories', [], [], [], $data);
 
-        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryC');
+        $category = $this->get('pim_catalog.repository.category')->findOneByIdentifier('categoryD');
         $categoryStandard = [
-            'code'   => 'categoryC',
+            'code'   => 'categoryD',
             'parent' => 'master',
             'labels' => [
-                'en_US' => 'Category C',
-                'fr_FR' => 'Catégorie C',
+                'en_US' => 'Category D',
+                'fr_FR' => 'Catégorie D',
             ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.category');
@@ -99,7 +99,7 @@ JSON;
         "labels": {
             "en_US": "US label",
             "fr_FR": null,
-            "de_DE": "" 
+            "de_DE": ""
         }
     }
 JSON;
@@ -338,6 +338,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

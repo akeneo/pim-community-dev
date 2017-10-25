@@ -6,8 +6,8 @@
     id="<%- fieldId %>"
     class="AknTextField<% if (attribute.localizable) { %> AknTextField--localizable <% } %>"
     type="text"
-    data-locale="<%- value.locale %>"
-    data-scope="<%- value.scope %>"
-    value="<%- value.data %>"
+    data-locale="<%- locale %>"
+    data-scope="<%- scope %>"
+    value="<%- value ? value.data : null %>"
     <%- editMode === 'view' ? 'disabled' : '' %>
 />

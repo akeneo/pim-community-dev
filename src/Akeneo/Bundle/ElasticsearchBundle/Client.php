@@ -2,7 +2,9 @@
 
 namespace Akeneo\Bundle\ElasticsearchBundle;
 
+use Akeneo\Bundle\ElasticsearchBundle\Exception\IndexationException;
 use Akeneo\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
+use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
 
@@ -19,6 +21,9 @@ class Client
     /** @var ClientBuilder */
     private $builder;
 
+    /** @var Loader */
+    private $configurationLoader;
+
     /** @var array */
     private $hosts;
 
@@ -33,12 +38,14 @@ class Client
      * To learn more, please see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_configuration.html}
      *
      * @param ClientBuilder $builder
+     * @param Loader        $configurationLoader
      * @param array         $hosts
      * @param string        $indexName
      */
-    public function __construct(ClientBuilder $builder, array $hosts, $indexName)
+    public function __construct(ClientBuilder $builder, Loader $configurationLoader, array $hosts, $indexName)
     {
         $this->builder = $builder;
+        $this->configurationLoader = $configurationLoader;
         $this->hosts = $hosts;
         $this->indexName = $indexName;
 
@@ -51,6 +58,8 @@ class Client
      * @param string       $id
      * @param array        $body
      * @param Refresh|null $refresh
+     *
+     * @throws IndexationException
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_index_a_document}
      */
@@ -67,7 +76,17 @@ class Client
             $params['refresh'] = $refresh->getType();
         }
 
-        return $this->client->index($params);
+        try {
+            $response = $this->client->index($params);
+        } catch (\Exception $e) {
+            throw new IndexationException($e->getMessage(), $e->getCode(), $e);
+        }
+
+        if (isset($response['errors']) && true === $response['errors']) {
+            $this->throwIndexationExceptionFromReponse($response);
+        }
+
+        return $response;
     }
 
     /**
@@ -77,6 +96,7 @@ class Client
      * @param Refresh|null $refresh
      *
      * @throws MissingIdentifierException
+     * @throws IndexationException
      *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_indexing_documents.html#_bulk_indexing}
      */
@@ -104,7 +124,17 @@ class Client
             }
         }
 
-        return $this->client->bulk($params);
+        try {
+            $response = $this->client->bulk($params);
+        } catch (\Exception $e) {
+            throw new IndexationException($e->getMessage(), $e->getCode(), $e);
+        }
+
+        if (isset($response['errors']) && true === $response['errors']) {
+            $this->throwIndexationExceptionFromReponse($response);
+        }
+
+        return $response;
     }
 
     /**
@@ -190,12 +220,13 @@ class Client
     }
 
     /**
-     * @param array $body
-     *
      * @return array see {@link https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/_quickstart.html#_create_an_index}
      */
-    public function createIndex(array $body)
+    public function createIndex()
     {
+        $configuration = $this->configurationLoader->load();
+        $body = $configuration->buildAggregated();
+
         $params = [
             'index' => $this->indexName,
             'body' => $body,
@@ -220,5 +251,39 @@ class Client
     public function refreshIndex()
     {
         return $this->client->indices()->refresh(['index' => $this->indexName]);
+    }
+
+    /**
+     * Deletes an index if it exists and recreates it with its associated configuration.
+     */
+    public function resetIndex()
+    {
+        if ($this->hasIndex()) {
+            $this->deleteIndex();
+        }
+
+        $this->createIndex();
+    }
+
+    /**
+     * @param array $response
+     *
+     * @throws IndexationException
+     */
+    private function throwIndexationExceptionFromReponse(array $response)
+    {
+        foreach ($response['items'] as $item) {
+            if (isset($item['index']['error'])) {
+                throw new IndexationException(json_encode($item['index']['error']));
+            }
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getIndexName(): string
+    {
+        return $this->indexName;
     }
 }

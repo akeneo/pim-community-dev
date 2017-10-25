@@ -16,8 +16,9 @@ Feature: Filter products by category
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products by category
-    Given I am on the products page
-    When I select the "2015 collection" tree
+    Given I am on the products grid
+    When I open the category tree
+    And I select the "2015 collection" tree
     Then I should see products purple-tshirt, green-tshirt and blue-jeans
     When I uncheck the "Include sub-categories" switch
     Then I should be able to use the following filters:
@@ -29,3 +30,15 @@ Feature: Filter products by category
     Then I should be able to use the following filters:
       | filter   | operator | value    | result     |
       | category |          | men_2015 | blue-jeans |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6832
+  Scenario: Successfully display category on column but don't display the subcategories
+    Given the following category:
+      | code | label-en_US | parent     |
+      | shoe | Shoe        | women_2013 |
+    And I am on the products grid
+    When I open the category tree
+    And I expand the "women_2013" category
+    And I click on the "women_2013" category
+    Then I should not see the text "2013 women's collection (0)  Shoe"
+    But I should see the text "2013 collection - 2013 women's collection"

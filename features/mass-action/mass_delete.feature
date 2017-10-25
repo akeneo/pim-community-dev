@@ -27,46 +27,41 @@ Feature: Delete many product at once
     And I am on the "csv_footwear_product_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_product_import" job to finish
-    And I am on the products page
-
-  Scenario: Display a message when try to delete none product
-    Given I press "Delete" on the "Bulk Actions" dropdown button
-    Then I should see the flash message "No product selected"
-    And I should be on the products page
+    And I am on the products grid
 
   Scenario: Successfully remove many products
-    Given I select rows boots_S36, boots_S37 and boots_S38
-    And I press "Delete" on the "Bulk Actions" dropdown button
-    Then I should see the text "Are you sure you want to delete selected products?"
+    Given I select rows boots_S36 and boots_S37
+    And I press the "Delete" button
+    Then I should see the text "Are you sure you want to delete the selected products?"
     When I confirm the removal
     And I refresh current page
-    Then I should not see products boots_S36, product boots_S37 and boots_S38
-    And the grid should contain 8 elements
+    Then I should not see products boots_S36 and boots_S37
+    And the grid should contain 9 elements
 
   Scenario: Successfully "mass" delete one product
     Given I select row boots_S38
-    And I press "Delete" on the "Bulk Actions" dropdown button
-    Then I should see the text "Are you sure you want to delete selected products?"
+    And I press the "Delete" button
+    Then I should see the text "Are you sure you want to delete the selected products?"
     When I confirm the removal
     And I refresh current page
     Then I should not see product boots_S38
     And the grid should contain 10 elements
 
   Scenario: Successfully mass delete visible products
-    Given I sort by "SKU" value ascending
-    And I change the page size to 10
+    Given I sort by "ID" value ascending
+    And I select rows boots_S36
     And I select all visible entities
-    Then I press "Delete" on the "Bulk Actions" dropdown button
-    And I should see the text "Are you sure you want to delete selected products?"
+    Then I press the "Delete" button
+    And I should see the text "Are you sure you want to delete the selected products?"
     When I confirm the removal
     And I refresh current page
-    Then the grid should contain 1 element
-    And I should see product sneakers_S43
+    Then the grid should contain 0 elements
 
   Scenario: Successfully mass delete all products
-    Given I select all entities
-    Then I press "Delete" on the "Bulk Actions" dropdown button
-    And I should see the text "Are you sure you want to delete selected products?"
+    Given I select rows boots_S36
+    And I select all entities
+    Then I press the "Delete" button
+    And I should see the text "Are you sure you want to delete the selected products?"
     When I confirm the removal
     And I refresh current page
     Then the grid should contain 0 elements
@@ -78,10 +73,10 @@ Feature: Delete many product at once
       | boots_S42 | boots  | winter_collection | Amazing boots | 20 EUR, 25 USD | 42   | red   | laces_black |
     And I launched the completeness calculator
     And I reload the page
-    And I filter by "scope" with operator "equals" and value "Mobile"
+    And I switch the scope to "Mobile"
     And I filter by "completeness" with operator "equals" and value "yes"
-    And I select all visible entities
-    When I press "Delete" on the "Bulk Actions" dropdown button
-    Then I should see the text "Are you sure you want to delete selected products?"
+    And I select rows boots_S42
+    When I press the "Delete" button
+    Then I should see the text "Are you sure you want to delete the selected products?"
     When I confirm the removal
     Then the grid should contain 0 element

@@ -6,6 +6,10 @@
   justify-content: space-between;
   align-items:center;
 
+  &-item {
+    list-style-type: none;
+  }
+
   &-list {
     display: flex;
   }
@@ -20,7 +24,7 @@
     line-height: @AknTabHeight;
     color: @AknDefaultFontColor;
     padding: 0 40px 0 0;
-    display: block;
+    display: inline-block;
     cursor: pointer;
     margin-bottom: -1px;
     transition: color 0.1s ease-in, border-width 0.1s ease-in;

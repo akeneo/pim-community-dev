@@ -6,6 +6,9 @@ use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group ce
+ */
 class ListAttributeIntegration extends ApiTestCase
 {
     public function testAttributes()
@@ -121,7 +124,7 @@ JSON;
 		}
 	},
 	"current_page": 2,
-	"items_count": 27,
+	"items_count": 29,
     "_embedded" : {
         "items" : [
             {$standardizedAttributes['a_metric']},
@@ -261,7 +264,7 @@ JSON;
     "group"                  : "attributeGroupA",
     "unique"                 : false,
     "useable_as_grid_filter" : false,
-    "allowed_extensions"     : ["pdf", "doc", "docx"],
+    "allowed_extensions"     : ["pdf", "doc", "docx", "txt"],
     "metric_family"          : null,
     "default_metric_unit"    : null,
     "reference_data_name"    : null,
@@ -517,7 +520,7 @@ JSON;
     },
     "code"                   : "a_metric_without_decimal_negative",
     "type"                   : "pim_catalog_metric",
-    "group"                  : "attributeGroupB",
+    "group"                  : "attributeGroupC",
     "unique"                 : false,
     "useable_as_grid_filter" : false,
     "allowed_extensions"     : [],
@@ -554,7 +557,7 @@ JSON;
     },
     "code"                   : "a_multi_select",
     "type"                   : "pim_catalog_multiselect",
-    "group"                  : "attributeGroupB",
+    "group"                  : "attributeGroupC",
     "unique"                 : false,
     "useable_as_grid_filter" : false,
     "allowed_extensions"     : [],
@@ -590,6 +593,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

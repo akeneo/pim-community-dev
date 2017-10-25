@@ -27,18 +27,22 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
             'categories' => ['master'],
         ]);
 
-        $this->createProduct('product_variant_group', [
-            'variant_group' => 'variantA',
-            'values'        => [
-                'a_simple_select'                    => [
-                    ['locale' => null, 'scope' => null, 'data' => 'optionB'],
-                ],
-            ],
-        ]);
+        // TODO PIM-6733: Variant group to be null or to be an alias for parent?
+        // $this->createProduct('product_variant_group', [
+        //     'variant_group' => 'variantA',
+        //     'values'        => [
+        //         'a_simple_select'                    => [
+        //             ['locale' => null, 'scope' => null, 'data' => 'optionB'],
+        //         ],
+        //     ],
+        // ]);
 
         $this->createProduct('product_associations', [
             'associations'  => [
-                'X_SELL' => ['groups'   => ['groupA'], 'products' => ['product_categories']],
+                'PACK'         => ['groups'   => [], 'products' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => []],
+                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories']],
             ],
         ]);
 
@@ -54,7 +58,6 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
         $this->createProduct('complete', [
             'family'        => 'familyA2',
             'groups'        => ['groupA'],
-            'variant_group' => 'variantA',
             'categories'    => ['master'],
             'values'        => [
                 'a_metric' => [
@@ -68,7 +71,10 @@ class PartialUpdateProductIntegration extends AbstractProductTestCase
                 ],
             ],
             'associations'  => [
-                'X_SELL' => ['groups'   => ['groupA'], 'products' => ['product_categories']],
+                'PACK'         => ['groups'   => [], 'products' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => []],
+                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories']],
             ],
         ]);
     }
@@ -86,8 +92,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_create_with_identifier',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -123,8 +129,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_create_without_identifier',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -188,8 +194,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
@@ -225,8 +231,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
@@ -267,8 +273,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'new_product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
@@ -345,8 +351,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_family',
             'family'        => 'familyA',
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -383,8 +389,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_family',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -421,8 +427,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_groups',
             'family'        => null,
+            'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -459,8 +465,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_groups',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -497,8 +504,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => ["categoryA", "categoryA1"],
             'enabled'       => true,
             'values'        => [
@@ -535,8 +543,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -556,6 +565,8 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'product_categories');
     }
 
+    /**
+     * TODO PIM-6733: Variant group to be null or to be an alias for parent?
     public function testProductPartialUpdateWithTheVariantGroupUpdated()
     {
         $client = $this->createAuthenticatedClient();
@@ -580,6 +591,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_variant_group',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => "variantB",
             'categories'    => [],
@@ -625,8 +637,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_variant_group',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -652,7 +665,11 @@ JSON;
         $this->assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_variant_group');
     }
+     */
 
+    /**
+     * @group ce
+     */
     public function testProductPartialUpdateWithTheAssociationsUpdated()
     {
         $client = $this->createAuthenticatedClient();
@@ -675,8 +692,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_associations',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -687,8 +705,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'PACK'   => ['groups'   => ['groupA'], 'products' => ['product_categories', 'product_family']],
-                'X_SELL' => ['groups'   => ['groupA'], 'products' => ['product_categories']],
+                'PACK'         => ['groups'   => ['groupA'], 'products' => ['product_categories', 'product_family']],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => []],
+                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories']],
             ],
         ];
 
@@ -720,8 +740,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_associations',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -732,8 +753,11 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'X_SELL' => ['groups'   => [], 'products' => ['product_categories']],
-            ],
+                'PACK'         => ['groups'   => [], 'products' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => []],
+                'X_SELL'       => ['groups'   => [], 'products' => ['product_categories']],
+           ],
         ];
 
         $response = $client->getResponse();
@@ -769,8 +793,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_associations',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -780,7 +805,12 @@ JSON;
             ],
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
-            'associations'  => [],
+            'associations'  => [
+                'PACK'         => ['groups'   => [], 'products' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => []],
+                'X_SELL'       => ['groups'   => [], 'products' => []],
+            ],
         ];
 
         $response = $client->getResponse();
@@ -807,8 +837,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => ['master'],
             'enabled'       => false,
             'values'        => [
@@ -853,8 +884,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'localizable',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -904,8 +936,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'localizable',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -952,8 +985,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'localizable',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -992,7 +1026,6 @@ JSON;
     {
         "identifier": "complete",
         "groups": ["groupA", "groupB"],
-        "variant_group": "variantB",
         "family": "familyA2",
         "categories": ["master", "categoryA"],
         "values": {
@@ -1005,22 +1038,24 @@ JSON;
                 "locale": null,
                 "scope": null,
                 "data": [{
-                    "amount": "45.00",
-                    "currency": "USD"
-                }, {
                     "amount": "56.53",
                     "currency": "EUR"
+                },
+                {
+                    "amount": "45.00",
+                    "currency": "USD"
                 }]
             }],
             "a_price_without_decimal": [{
                 "locale": null,
                 "scope": null,
                 "data": [{
-                    "amount": -45,
-                    "currency": "USD"
-                }, {
                     "amount": 56,
                     "currency": "EUR"
+                },
+                {
+                    "amount": -45,
+                    "currency": "USD"
                 }]
             }],
             "a_ref_data_multi_select": [{
@@ -1069,8 +1104,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'complete',
             'family'        => 'familyA2',
+            'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => 'variantB',
+
             'categories'    => ['categoryA', 'master'],
             'enabled'       => true,
             'values'        => [
@@ -1086,16 +1122,17 @@ JSON;
                 'a_simple_select'                    => [
                     ['locale' => null, 'scope' => null, 'data' => 'optionA'],
                 ],
-                'a_text'                             => [
-                    ['locale' => null, 'scope'  => null, 'data'   => 'Variant group B'],
-                ],
+                // TODO PIM-6733: This value was at the variant group level before.
+                // 'a_text'                             => [
+                //     ['locale' => null, 'scope'  => null, 'data'   => 'Variant group B'],
+                // ],
                 'a_price'                            => [
                     [
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
-                            ['amount' => '45.00', 'currency' => 'USD'],
                             ['amount' => '56.53', 'currency' => 'EUR'],
+                            ['amount' => '45.00', 'currency' => 'USD'],
                         ],
                     ],
                 ],
@@ -1104,8 +1141,8 @@ JSON;
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
-                            ['amount' => -45, 'currency' => 'USD'],
                             ['amount' => 56, 'currency' => 'EUR'],
+                            ['amount' => -45, 'currency' => 'USD'],
                         ],
                     ],
                 ],
@@ -1148,7 +1185,10 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
-                'X_SELL' => ['groups'   => ['groupA'], 'products' => ['product_categories']],
+                'PACK'         => ['groups'   => [], 'products' => []],
+                'SUBSTITUTION' => ['groups'   => [], 'products' => []],
+                'UPSELL'       => ['groups'   => [], 'products' => []],
+                'X_SELL'       => ['groups'   => ['groupA'], 'products' => ['product_categories']],
             ],
         ];
 
@@ -1175,8 +1215,9 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
+
             'categories'    => ['master'],
             'enabled'       => true,
             'values'        => [
@@ -1396,7 +1437,6 @@ JSON;
         "identifier": "product_family",
         "family": "familyA2",
         "groups": [],
-        "variant_group": null,
         "categories": [],
         "values": {
             "unknown_attribute":[{
@@ -1497,11 +1537,8 @@ JSON;
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
         $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
 
-        $standardizedProduct = static::sanitizeMediaAttributeData($standardizedProduct);
-        $expectedProduct = static::sanitizeMediaAttributeData($expectedProduct);
-
-        NormalizedProductCleaner::clean($standardizedProduct);
         NormalizedProductCleaner::clean($expectedProduct);
+        NormalizedProductCleaner::clean($standardizedProduct);
 
         $this->assertSame($expectedProduct, $standardizedProduct);
     }
@@ -1511,6 +1548,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

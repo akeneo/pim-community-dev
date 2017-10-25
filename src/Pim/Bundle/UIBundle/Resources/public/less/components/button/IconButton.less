@@ -1,13 +1,26 @@
 @import '../../base/variables';
 
 .AknIconButton {
+  .imageIcon(@url) {
+    background: url(@url) no-repeat center;
+    background-size: 20px;
+    opacity: 0.8;
+    transition: opacity 0.1s ease-in;
+    font-size: 0;
+
+    &:hover {
+      background-color: inherit;
+      opacity: 1;
+    }
+  }
+
   color: lighten(@AknGrey, 15%);
   width: @AknIconSize;
   height: @AknIconSize;
   line-height: @AknIconSize;
   font-size: @AknBigIconFontSize;
   border: none;
-  background: white;
+  background-color: white;
   display: inline-block;
   padding: 0;
   border-radius: 2px;
@@ -15,7 +28,7 @@
   transition: background 0.1s ease, color 0.1s ease;
 
   &:hover {
-    background: lighten(@AknGrey, 15%);
+    background-color: lighten(@AknGrey, 15%);
     color: white;
     cursor: pointer;
   }
@@ -39,7 +52,7 @@
     color: white;
 
     &:hover {
-      background: darken(@AknGrey, 10%);
+      background-color: darken(@AknGrey, 10%);
     }
   }
 
@@ -48,7 +61,7 @@
     color: white;
 
     &:hover {
-      background: darken(@AknRed, 10%);
+      background-color: darken(@AknRed, 10%);
     }
   }
 
@@ -56,12 +69,31 @@
     color: @AknOrange;
   }
 
+  &--remove, &--ok, &--edit {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 60%;
+  }
+
+  &--ok {
+    background-image: url("../../../images/icon-checkwhite.svg");
+  }
+
+  &--edit {
+    background-image: url("../../../images/icon-edit-white.svg");
+    background-size: 40%;
+  }
+
+  &--remove {
+    background-image: url("../../../images/icon-delete-white.svg");
+  }
+
   &--apply {
     background-color: @AknGreen;
     color: white;
 
     &:hover {
-      background: darken(@AknGreen, 10%);
+      background-color: darken(@AknGreen, 10%);
     }
   }
 
@@ -72,6 +104,10 @@
     line-height: @AknMicroButtonSize;
   }
 
+  &--round {
+    border-radius: 1000px;
+  }
+
   &--hide {
     display: none !important; // Font awesome adds !important
   }
@@ -80,5 +116,41 @@
     &:focus {
       outline: none;
     }
+  }
+
+  &--plus {
+    .imageIcon("../../../images/icon-plus.svg");
+  }
+
+  &--edit {
+    .imageIcon("../../../images/icon-edit.svg");
+  }
+
+  &--folder {
+    .imageIcon("../../../images/icon-folder.svg");
+  }
+
+  &--trash {
+    .imageIcon("../../../images/icon-trash.svg");
+  }
+
+  &--switch {
+    .imageIcon("../../../images/icon-switch.svg");
+  }
+
+  &--view {
+    .imageIcon("../../../images/icon-view.svg");
+  }
+
+  &--unpublish {
+    .imageIcon("../../../images/icon-unpublish.svg");
+  }
+
+  &--play {
+    .imageIcon("../../../images/icon-play.svg");
+  }
+
+  &--remove {
+    .imageIcon("../../../images/icon-remove.svg");
   }
 }

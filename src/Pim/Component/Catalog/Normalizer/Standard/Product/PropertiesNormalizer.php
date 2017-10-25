@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerAwareTrait;
@@ -23,10 +24,9 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     use SerializerAwareTrait;
 
     const FIELD_IDENTIFIER = 'identifier';
-    const FIELD_LABEL = 'label';
     const FIELD_FAMILY = 'family';
+    const FIELD_PARENT = 'parent';
     const FIELD_GROUPS = 'groups';
-    const FIELD_VARIANT_GROUP = 'variant_group';
     const FIELD_CATEGORIES = 'categories';
     const FIELD_ENABLED = 'enabled';
     const FIELD_VALUES = 'values';
@@ -58,8 +58,12 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
 
         $data[self::FIELD_IDENTIFIER] = $product->getIdentifier();
         $data[self::FIELD_FAMILY] = $product->getFamily() ? $product->getFamily()->getCode() : null;
-        $data[self::FIELD_GROUPS] = $this->normalizeGroups($product);
-        $data[self::FIELD_VARIANT_GROUP] = $product->getVariantGroup() ? $product->getVariantGroup()->getCode() : null;
+        if ($product instanceof VariantProductInterface && null !== $product->getParent()) {
+            $data[self::FIELD_PARENT] = $product->getParent()->getCode();
+        } else {
+            $data[self::FIELD_PARENT] = null;
+        }
+        $data[self::FIELD_GROUPS] = $product->getGroupCodes();
         $data[self::FIELD_CATEGORIES] = $product->getCategoryCodes();
         $data[self::FIELD_ENABLED] = (bool) $product->isEnabled();
         $data[self::FIELD_VALUES] = $this->normalizeValues($product->getValues(), $format, $context);
@@ -95,25 +99,5 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         $data = $this->serializer->normalize($values, $format, $context);
 
         return $data;
-    }
-
-    /**
-     * @param ProductInterface $product
-     *
-     * @return array
-     */
-    private function normalizeGroups(ProductInterface $product)
-    {
-        $groupCodes = [];
-
-        if (count($product->getGroupCodes()) > 0) {
-            $groupCodes = $product->getGroupCodes();
-            if (null !== $product->getVariantGroup()) {
-                $variantGroupCode = $product->getVariantGroup()->getCode();
-                $groupCodes = array_diff($groupCodes, [$variantGroupCode]);
-            }
-        }
-
-        return $groupCodes;
     }
 }

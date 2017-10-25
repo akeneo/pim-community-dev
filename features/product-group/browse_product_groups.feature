@@ -11,10 +11,6 @@ Feature: Browse product groups
       | multi | Multi       | pim_catalog_multiselect  | other |
       | color | Color       | pim_catalog_simpleselect | other |
       | size  | Size        | pim_catalog_simpleselect | other |
-    And the following variant groups:
-      | code          | label-en_US    | axis       | type    |
-      | tshirt_akeneo | Akeneo T-Shirt | size,color | VARIANT |
-      | mug_akeneo    | Akeneo Mug     | color      | VARIANT |
     And the following product groups:
       | code         | label-en_US | type   |
       | CROSS_SELL_1 | Cross Sell  | X_SELL |

@@ -9,21 +9,27 @@ define(
         'oro/datafilter/text-filter',
         'pim/formatter/choices/base',
         'pim/user-context',
-        'pim/template/datagrid/filter/select2-choice-filter',
         'pim/initselect2',
         'jquery.select2'
     ],
-    function($, _, __, Routing, TextFilter, ChoicesFormatter, UserContext, template, initSelect2) {
+    function(
+        $,
+        _,
+        __,
+        Routing,
+        TextFilter,
+        ChoicesFormatter,
+        UserContext,
+        initSelect2
+    ) {
         return TextFilter.extend({
             operatorChoices: [],
             choiceUrl: null,
             choiceUrlParams: {},
             emptyChoice: false,
             resultsPerPage: 20,
-            popupCriteriaTemplate: _.template(template),
-
             events: {
-                'click .operator_choice': '_onSelectOperator'
+                'click .AknDropdown-menuLink': '_onSelectOperator'
             },
 
             initialize: function(options) {
@@ -40,31 +46,25 @@ define(
                     };
                 }
 
+                this.operatorChoices = {
+                    'in': __('pim.grid.choice_filter.label_in_list'),
+                    'empty': __('pim.grid.choice_filter.label_empty'),
+                    'not empty': __('pim.grid.choice_filter.label_not_empty')
+                };
+
                 TextFilter.prototype.initialize.apply(this, arguments);
             },
 
             _onSelectOperator: function(e) {
-                $(e.currentTarget).parent().parent().find('li').removeClass('active');
-                $(e.currentTarget).parent().addClass('active');
-                var parentDiv = $(e.currentTarget).parent().parent().parent();
+                const value = $(e.currentTarget).find('.operator_choice').attr('data-value');
+                this._highlightDropdown(value, '.operator');
 
-                if (_.contains(['empty', 'not empty'], $(e.currentTarget).attr('data-value'))) {
+                if (_.contains(['empty', 'not empty'], value)) {
                     this._disableInput();
                 } else {
                     this._enableInput();
                 }
-                parentDiv.find('button').html($(e.currentTarget).html() + '<span class="caret"></span>');
                 e.preventDefault();
-            },
-
-            _enableInput: function() {
-                this.$(this.criteriaValueSelectors.value).select2(this._getSelect2Config());
-                this.$(this.criteriaValueSelectors.value).show();
-            },
-
-            _disableInput: function() {
-                this.$(this.criteriaValueSelectors.value).val('').select2('destroy');
-                this.$(this.criteriaValueSelectors.value).hide();
             },
 
             _getSelect2Config: function() {
@@ -101,19 +101,19 @@ define(
             },
 
             _writeDOMValue: function(value) {
-                this.$('li .operator_choice[data-value="' + value.type + '"]').trigger('click');
-                var operator = this.$('li.active .operator_choice').data('value');
-                if (_.contains(['empty', 'not empty'], operator)) {
+                if (_.contains(['empty', 'not empty'], value.type)) {
                     this._setInputValue(this.criteriaValueSelectors.value, []);
                 } else {
                     this._setInputValue(this.criteriaValueSelectors.value, value.value);
                 }
+                this._setInputValue(this.criteriaValueSelectors.type, value.type);
+                this._highlightDropdown(value.type, '.operator');
 
                 return this;
             },
 
             _readDOMValue: function() {
-                var operator = this.emptyChoice ? this.$('li.active .operator_choice').data('value') : 'in';
+                var operator = this.emptyChoice ? this.$('.active .operator_choice').data('value') : 'in';
 
                 return {
                     value: _.contains(['empty', 'not empty'], operator) ? {} : this._getInputValue(this.criteriaValueSelectors.value),
@@ -121,26 +121,13 @@ define(
                 };
             },
 
+            /**
+             * {@inheritdoc}
+             */
             _renderCriteria: function(el) {
-                const inKey = __('pim.grid.choice_filter.label_in_list');
-                const emptyKey = __('pim.grid.choice_filter.label_empty');
-                const notEmptyKey = __('pim.grid.choice_filter.label_not_empty');
+                TextFilter.prototype._renderCriteria.apply(this, arguments);
 
-                this.operatorChoices = {
-                    'in': inKey,
-                    'empty': emptyKey,
-                    'not empty': notEmptyKey
-                };
-
-                $(el).append(
-                    this.popupCriteriaTemplate({
-                        emptyChoice:           this.emptyChoice,
-                        selectedOperatorLabel: this.operatorChoices[this.emptyValue.type],
-                        operatorChoices:       this.operatorChoices,
-                        selectedOperator:      this.emptyValue.type
-                    })
-                );
-
+                this.$(this.criteriaValueSelectors.value).addClass('AknTextField--select2');
                 initSelect2.init(this.$(this.criteriaValueSelectors.value), this._getSelect2Config());
             },
 
@@ -152,22 +139,6 @@ define(
                     this.$(this.criteriaValueSelectors.value).select2('open');
                 } else {
                     this._hideCriteria();
-                }
-            },
-
-            _onClickCloseCriteria: function() {
-                TextFilter.prototype._onClickCloseCriteria.apply(this, arguments);
-
-                this.$(this.criteriaValueSelectors.value).select2('close');
-            },
-
-            _onClickOutsideCriteria: function(e) {
-                var elem = this.$(this.criteriaSelector);
-
-                if (e.target != $('body').get(0) && e.target !== elem.get(0) && !elem.has(e.target).length) {
-                    this._hideCriteria();
-                    this.setValue(this._formatRawValue(this._readDOMValue()));
-                    e.stopPropagation();
                 }
             },
 
@@ -228,7 +199,7 @@ define(
             },
 
             _getCriteriaHint: function() {
-                var operator = this.$('li.active .operator_choice').data('value');
+                var operator = this.$('.active .operator_choice').data('value');
                 if (_.contains(['empty', 'not empty'], operator)) {
                     return this.operatorChoices[operator];
                 }
@@ -236,6 +207,24 @@ define(
                 var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
 
                 return !_.isEmpty(value.value) ? '"' + value.value + '"': this.placeholder;
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            _enableInput: function() {
+                this.$(this.criteriaValueSelectors.value).select2(this._getSelect2Config());
+
+                TextFilter.prototype._enableInput.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            _disableInput: function() {
+                this.$(this.criteriaValueSelectors.value).val('').select2('destroy');
+
+                TextFilter.prototype._disableInput.apply(this, arguments);
             }
         });
     }

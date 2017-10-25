@@ -43,8 +43,12 @@ define(
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:validation_error', this.onValidationError);
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.onPostFetch);
-                this.listenTo(UserContext, 'change:catalogLocale', this.render);
-                this.listenTo(UserContext, 'change:catalogScope', this.render);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:to-fill:cleared', this.render);
+                this.listenTo(
+                    this.getRoot(),
+                    'pim_enrich:form:switch_attribute_group',
+                    this.setAttributeGroup.bind(this)
+                );
 
                 return GroupSelectorForm.prototype.configure.apply(this, arguments);
             },
@@ -98,7 +102,7 @@ define(
              */
             render: function () {
                 $.when(
-                    toFillFieldProvider.getFields(this.getRoot(), this.getFormData()),
+                    toFillFieldProvider.getFields(this.getRoot(), this.getFormData().values),
                     AttributeGroupManager.getAttributeGroupsForObject(this.getFormData())
                 ).then(function (attributes, attributeGroups) {
                     var toFillAttributeGroups = _.uniq(_.map(attributes, function (attribute) {
@@ -116,6 +120,7 @@ define(
                             badges: this.badges,
                             locale: UserContext.get('catalogLocale'),
                             toFillAttributeGroups: toFillAttributeGroups,
+                            allAttributeCode: this.all.code,
                             currentElement: _.findWhere(this.getElements(), {code: this.getCurrent()}),
                             i18n: i18n,
                             label: __('pim_enrich.form.product.tab.attributes.attribute_group_selector')
@@ -126,6 +131,15 @@ define(
                 }.bind(this));
 
                 return this;
+            },
+
+            /**
+             * Set current group from event
+             *
+             * @param {[type]} attributeGroupCode [description]
+             */
+            setAttributeGroup: function (attributeGroupCode) {
+                this.setCurrent(attributeGroupCode, {silent: true});
             }
         });
     }

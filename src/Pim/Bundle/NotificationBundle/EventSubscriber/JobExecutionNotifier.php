@@ -52,11 +52,16 @@ class JobExecutionNotifier implements EventSubscriberInterface
      *
      * @param JobExecutionEvent $event
      */
-    public function afterJobExecution(JobExecutionEvent $event)
+    public function afterJobExecution(JobExecutionEvent $event): void
     {
         $jobExecution = $event->getJobExecution();
-        $user = $jobExecution->getUser();
+        $jobParameters = $jobExecution->getJobParameters();
 
+        if (null === $jobParameters || !$jobParameters->has('user_to_notify')) {
+            return;
+        }
+
+        $user = $jobParameters->get('user_to_notify');
         if (null === $user) {
             return;
         }

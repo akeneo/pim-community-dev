@@ -14,12 +14,13 @@ Feature: Edit sequentially some products
       | boot         | boots    |
       | sneaker      | sneakers |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
+    And I switch the locale to "en_US"
 
   Scenario: Successfully sequentially edit some products
-    Given I sort by "SKU" value ascending
+    Given I sort by "ID" value ascending
     And I select rows white_sandal, boot and sneaker
-    When I press "Edit products sequentially" on the "Bulk Actions" dropdown button
+    When I press the "Sequential edit" button
     Then I should be on the product "boot" edit page
     Then I should see the text "Save and next"
     When I fill in the following information:
@@ -39,14 +40,14 @@ Feature: Edit sequentially some products
 
     @jira https://akeneo.atlassian.net/browse/PIM-4647
     Scenario: Successfully show product edit progression
-      Given I sort by "SKU" value ascending
+      Given I sort by "ID" value ascending
       And I select rows white_sandal, boot and sneaker
-      When I press "Edit products sequentially" on the "Bulk Actions" dropdown button
+      When I press the "Sequential edit" button
       Then I should be on the product "boot" edit page
       And I should see the text "1 / 3 products"
-      When I am on the products page
+      When I am on the products grid
       And I select rows white_sandal, blue_sandal, boot and sneaker
-      And I press "Edit products sequentially" on the "Bulk Actions" dropdown button
+      And I press the "Sequential edit" button
       Then I should be on the product "blue_sandal" edit page
       And I should see the text "1 / 4 products"
       When I fill in the following information:
@@ -59,5 +60,5 @@ Feature: Edit sequentially some products
     Scenario: Keep product grid sorting order in sequential edit
       Given I sort by "Family" value ascending
       And I select rows sneaker, white_sandal
-      When I press "Edit products sequentially" on the "Bulk Actions" dropdown button
+      When I press the "Sequential edit" button
       Then I should be on the product "white_sandal" edit page

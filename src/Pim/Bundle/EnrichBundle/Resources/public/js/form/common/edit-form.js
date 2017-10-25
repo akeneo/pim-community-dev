@@ -12,7 +12,7 @@ define(
         'underscore',
         'oro/translator',
         'backbone',
-        'pim/template/form/edit-form',
+        'pim/template/common/default-template',
         'pim/form',
         'oro/mediator',
         'pim/fetcher-registry',
@@ -67,10 +67,6 @@ define(
                 this.$el.html(this.template());
 
                 this.renderExtensions();
-
-                formBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
-                    form.setElement('.user-menu').render();
-                }.bind(this));
 
                 this.getRoot().trigger('pim_enrich:form:render:after');
             },

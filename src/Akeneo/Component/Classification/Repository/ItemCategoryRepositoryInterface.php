@@ -30,4 +30,13 @@ interface ItemCategoryRepositoryInterface
      * @return int
      */
     public function getItemsCountInCategory(array $categoryIds = []);
+
+    /**
+     * Return categories linked to an item
+     *
+     * @param mixed $item
+     *
+     * @return array
+     */
+    public function findCategoriesItem($item): array;
 }

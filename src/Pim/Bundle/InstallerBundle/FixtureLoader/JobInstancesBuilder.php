@@ -33,7 +33,7 @@ class JobInstancesBuilder
 
     /**
      * @param FileLocator            $locator
-     * @param Reader             $reader
+     * @param Reader                 $reader
      * @param ItemProcessorInterface $processor
      * @param array                  $jobsFilePaths
      */

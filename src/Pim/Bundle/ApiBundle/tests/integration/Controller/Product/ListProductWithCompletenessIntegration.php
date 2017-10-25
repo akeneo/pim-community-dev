@@ -5,6 +5,9 @@ namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 use Akeneo\Test\Integration\Configuration;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * @group ce
+ */
 class ListProductWithCompletenessIntegration extends AbstractProductTestCase
 {
     /** @var Collection */
@@ -73,11 +76,11 @@ class ListProductWithCompletenessIntegration extends AbstractProductTestCase
         $expected = <<<JSON
 {
     "_links": {
-        "self": {"href": "http://localhost/api/rest/v1/products?limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
-        "first": {"href": "http://localhost/api/rest/v1/products?limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
-        "next": {"href": "http://localhost/api/rest/v1/products?limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}&search_after=${encryptedId}"}
+        "self": {"href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
+        "first": {"href": "http://localhost/api/rest/v1/products?page=1&with_count=false&pagination_type=page&limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"},
+        "next": {"href": "http://localhost/api/rest/v1/products?page=2&with_count=false&pagination_type=page&limit=2&scope=ecommerce&locales=en_US&search=${searchEncoded}"}
     },
-    "current_page" : null,
+    "current_page" : 1,
     "_embedded"    : {
 		"items": [
 		    {
@@ -88,8 +91,8 @@ class ListProductWithCompletenessIntegration extends AbstractProductTestCase
 		        },
 		        "identifier": "product_complete",
 		        "family": "familyA2",
+		        "parent": null,
 		        "groups": [],
-		        "variant_group": null,
 		        "categories": ["categoryA","categoryB","master"],
 		        "enabled": true,
 		        "values": {
@@ -110,8 +113,8 @@ class ListProductWithCompletenessIntegration extends AbstractProductTestCase
 		        },
 		        "identifier": "product_complete_en_locale",
 		        "family": "familyA1",
+                "parent": null,
 		        "groups": [],
-		        "variant_group": null,
 		        "categories": ["categoryA","master","master_china"],
 		        "enabled": true,
 		        "values": {
@@ -160,7 +163,7 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 
 
@@ -169,8 +172,8 @@ JSON;
      */
     private function getEncryptedId($productIdentifier)
     {
-        $encrypter = $this->get('pim_api.security.primary_key_encrypter');
-        $productRepository = $this->get('pim_catalog.repository.product');
+        $encrypter = $this->getFromTestContainer('pim_api.security.primary_key_encrypter');
+        $productRepository = $this->getFromTestContainer('pim_catalog.repository.product');
 
         $product = $productRepository->findOneByIdentifier($productIdentifier);
 

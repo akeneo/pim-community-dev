@@ -84,12 +84,6 @@ class DataGridContext extends PimContext implements PageObjectAware
             return;
         }
 
-        $this->theGridToolbarCountShouldBe($count);
-
-        if ($count > 10) {
-            $this->getCurrentPage()->getCurrentGrid()->setPageSize(100);
-        }
-
         $this->spin(function () use ($count) {
             assertEquals(
                 $count,
@@ -101,25 +95,6 @@ class DataGridContext extends PimContext implements PageObjectAware
             'Expecting to see %d row(s) in the datagrid, actually saw %d.',
             $count,
             $this->getDatagrid()->countRows()
-        ));
-    }
-
-    /**
-     * @param int $count
-     *
-     * @throws TimeoutException
-     *
-     * @Then /^the grid toolbar count should be (\d+) elements?$/
-     */
-    public function theGridToolbarCountShouldBe($count)
-    {
-        $count = (int) $count;
-        $this->spin(function () use ($count) {
-            return $this->getDatagrid()->getToolbarCount() === $count;
-        }, sprintf(
-            'Expecting to see %d record(s) in the datagrid toolbar, actually saw %d',
-            $count,
-            $this->getDatagrid()->getToolbarCount()
         ));
     }
 
@@ -163,8 +138,7 @@ class DataGridContext extends PimContext implements PageObjectAware
     {
         $filterElement = $this->spin(function () use ($title) {
             $manageFilterElement = $this->getElementFromDatagrid('Manage filters');
-
-            return $manageFilterElement->find('css', sprintf('input[title="%s"]', $title));
+            return $manageFilterElement->find('css', sprintf('label:contains(%s)', $title));
         }, sprintf('Cannot find the filter "%s" in the filter list', $title));
 
         if ($filterElement == null || !$filterElement->isVisible()) {
@@ -449,10 +423,15 @@ class DataGridContext extends PimContext implements PageObjectAware
         $columnsToAdd = array_diff($expectedColumns, $currentColumns);
         $columnsToRemove = array_diff($currentColumns, $expectedColumns);
 
+        // Temporary solution waiting for Category tree moving (PIM-6574)
+        $this->getSession()->executeScript('$(".AknDefault-mainContent").scrollLeft(1000)');
+
         $this->getDatagrid()->openColumnsPopin();
         $this->getDatagrid()->addColumns($columnsToAdd);
         $this->getDatagrid()->removeColumns($columnsToRemove);
         $this->getDatagrid()->validateColumnsPopin();
+
+        $this->getSession()->executeScript('$(".AknDefault-mainContent").scrollLeft(0)');
     }
 
     /**
@@ -518,6 +497,9 @@ class DataGridContext extends PimContext implements PageObjectAware
      */
     public function iClickOnTheActionOfTheRowWhichContains($actionName, $element)
     {
+        // Temporary solution waiting for Category tree moving (PIM-6574)
+        $this->getSession()->executeScript('$(".AknDefault-mainContent").scrollLeft(1000)');
+
         $action = ucfirst(strtolower($actionName));
         $this->getDatagrid()->clickOnAction($element, $action);
         $this->wait();
@@ -668,6 +650,7 @@ class DataGridContext extends PimContext implements PageObjectAware
      *
      * @throws ExpectationException
      *
+     * @Then /^I should see the product models? (.*)$/
      * @Then /^I should see products? (.*)$/
      * @Then /^I should see attributes? (?!(?:.*)in group )(.*)$/
      * @Then /^I should see channels? (.*)$/
@@ -683,10 +666,6 @@ class DataGridContext extends PimContext implements PageObjectAware
     public function iShouldSeeEntities($elements)
     {
         $elements = $this->getMainContext()->listToArray($elements);
-
-        if (count($elements) > 10) {
-            $this->getCurrentPage()->getCurrentGrid()->setPageSize(100);
-        }
 
         foreach ($elements as $element) {
             if (!$this->getDatagrid()->getRow($element)) {
@@ -837,7 +816,7 @@ class DataGridContext extends PimContext implements PageObjectAware
             );
         }
 
-        $filter->open();
+        $filter->close();
     }
 
     /**
@@ -875,10 +854,10 @@ class DataGridContext extends PimContext implements PageObjectAware
 
                 if (null !== $checkbox) {
                     $checkbox->check();
-                }
 
-                if ($checkbox->isChecked()) {
-                    return true;
+                    if ($checkbox->isChecked()) {
+                        return true;
+                    }
                 }
 
                 return false;
@@ -960,18 +939,6 @@ class DataGridContext extends PimContext implements PageObjectAware
 
             return true;
         }, 'Cannot find the button "Refresh"');
-    }
-
-    /**
-     * @Then /^I click back to grid$/
-     */
-    public function iClickBackToGrid()
-    {
-        $backButton = $this->spin(function () {
-            return $this->getSession()->getPage()->find('css', '.back-link');
-        }, 'Cannot find the button "Back to grid"');
-
-        $backButton->click();
     }
 
     /**
@@ -1113,7 +1080,7 @@ class DataGridContext extends PimContext implements PageObjectAware
 
         return [
             new Step\Then('I fill in the following information in the popin:', $table),
-            new Step\Then('I press the "OK" button')
+            new Step\Then('I press the "Save" button')
         ];
     }
 

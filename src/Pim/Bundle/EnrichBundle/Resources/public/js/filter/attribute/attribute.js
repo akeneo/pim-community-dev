@@ -117,11 +117,12 @@ define([
          * @param {Object} attribute
          */
         addContextDropdowns: function (attribute) {
-            var container = $('<span class="AknFieldContainer-contextContainer filter-context">');
+            var container = $('<span class="AknFieldContainer-contextContainer AknButtonList filter-context">');
 
             if (attribute.scopable) {
                 var scopeSwitcher = new ScopeSwitcher();
-                scopeSwitcher.setDisplayInline(true);
+                scopeSwitcher.setDisplayInline(false);
+                scopeSwitcher.setDisplayLabel(false);
 
                 this.listenTo(scopeSwitcher, 'pim_enrich:form:scope_switcher:pre_render', this.initScope.bind(this));
 
@@ -141,7 +142,8 @@ define([
 
             if (attribute.localizable) {
                 var localeSwitcher = new LocaleSwitcher();
-                localeSwitcher.setDisplayInline(true);
+                localeSwitcher.setDisplayInline(false);
+                localeSwitcher.setDisplayLabel(false);
 
                 this.listenTo(localeSwitcher, 'pim_enrich:form:locale_switcher:pre_render', this.initLocale.bind(this));
 
@@ -160,7 +162,7 @@ define([
             }
 
             this.addElement(
-                'after-input',
+                'after-label',
                 'filter-context',
                 container
             );
@@ -208,7 +210,7 @@ define([
 
             $.when.apply($, promises)
                 .then(function () {
-                    var container = $('<span class="filter-context">');
+                    var container = $('<span class="AknButtonList filter-context">');
                     _.each(_.toArray(arguments), function (item) {
                         container.append(item);
                     });

@@ -28,7 +28,7 @@ class Select2ChoiceDecorator extends ElementDecorator
             $field->setValue($value);
         }
 
-        $operatorDropdown = $this->find('css', '.dropdown-toggle');
+        $operatorDropdown = $this->find('css', '*[data-toggle="dropdown"]');
         if (null !== $operatorDropdown) {
             $operatorDropdown = $this->decorate(
                 $operatorDropdown,
@@ -38,9 +38,12 @@ class Select2ChoiceDecorator extends ElementDecorator
         }
 
         $this->spin(function () {
+            if (!$this->find('css', '.filter-criteria')->isVisible()) {
+                return true;
+            }
             $this->find('css', '.filter-update')->click();
 
-            return true;
+            return false;
         }, 'Cannot update the filter');
     }
 

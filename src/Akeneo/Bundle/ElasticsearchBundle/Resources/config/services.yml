@@ -1,20 +1,10 @@
 parameters:
-    akeneo_elasticsearch.index_configuration.loader.class: 'Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader'
     akeneo_elasticsearch.client_builder.class: 'Elasticsearch\ClientBuilder'
-    akeneo_elasticsearch.client.class: 'Akeneo\Bundle\ElasticsearchBundle\Client'
+    akeneo_elasticsearch.registry.clients.class: Akeneo\Bundle\ElasticsearchBundle\ClientRegistry
 
 services:
-    akeneo_elasticsearch.index_configuration.loader:
-        class: '%akeneo_elasticsearch.index_configuration.loader.class%'
-        arguments:
-            - '%akeneo_elasticsearch.index_configuration.files%'
+    akeneo_elasticsearch.registry.clients:
+        class: '%akeneo_elasticsearch.registry.clients.class%'
 
     akeneo_elasticsearch.client_builder:
         class: '%akeneo_elasticsearch.client_builder.class%'
-
-    akeneo_elasticsearch.client:
-        class: '%akeneo_elasticsearch.client.class%'
-        arguments:
-            - '@akeneo_elasticsearch.client_builder'
-            - '%akeneo_elasticsearch.hosts%'
-            - '%akeneo_elasticsearch.index_name%'

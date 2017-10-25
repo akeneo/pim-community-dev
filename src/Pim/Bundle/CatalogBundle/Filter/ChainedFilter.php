@@ -30,7 +30,7 @@ class ChainedFilter implements CollectionFilterInterface, ObjectFilterInterface
             }
         }
 
-        if (is_array($collection)) {
+        if (is_array($collection) && !(array_key_exists('preserve_keys', $options) && $options['preserve_keys'])) {
             $collection = array_values($collection);
         }
 

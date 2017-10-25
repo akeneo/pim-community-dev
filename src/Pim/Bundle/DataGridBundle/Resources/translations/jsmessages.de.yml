@@ -27,11 +27,15 @@ Action performed.: Aktion ausgeführt.
 Action is not performed.: Aktion nicht ausgeführt.
 Please, select item to perform action.: Bitte Element zum Ausführen der Aktion wählen.
 View per page: Pro Seite
+Enabled: Aktiviert
+Disabled: Deaktiviert
+not_available: N/A
 "Yes": true
 "No": false
 oro.datagrid.entityHint: Entität
 oro.datagrid.noentities: Keine Einträge gefunden
-oro.datagrid.noresults: "Keine Ergebnisse gefunden. Versuchen Sie Ihre Suchparameter zu verändern."
+oro.datagrid.noresults: "Für Ihre Suche wurden leider keine passenden Treffer gefunden."
+oro.datagrid.noresults_subTitle: "Wiederholen Sie Ihre Suche mit anderen Suchkriterien."
 oro.datagrid.nocolumns: Es sind keine Spalten für diese Tabelle konfiguriert
 oro.datagrid.pagination.label: "Seite"
 oro.datagrid.pagination.totalPages: "von {{ totalPages }}"
@@ -41,19 +45,27 @@ oro.datagrid.action.refresh: "Aktualisieren"
 oro_datagrid.select.all: "Alle"
 oro_datagrid.select.visible: "Alle sichtbaren"
 oro_datagrid.select.none: "Keine"
+oro_datagrid.select.select: "Auswählen"
 pim.grid.ajax_choice_filter.label_empty: ist leer
 pim.grid.ajax_choice_filter.label_not_empty: ist nicht leer
-pim.grid.choice_filter:
-  label_empty: ist leer
-  label_not_empty: ist nicht leer
-  label_in_list: in Liste
+pim:
+  grid:
+    choice_filter:
+      label_empty: ist leer
+      label_not_empty: ist nicht leer
+      label_in_list: in Liste
+      operator: Operator
+    price_filter:
+      label: Währung
+    category_filter:
+      done: Fertig
 Available Columns: Verfügbare Spalten
 Displayed Columns: Ausgewählte Spalten
 datagrid_view.columns.min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
 pim_datagrid:
   column_configurator:
     label: Spalten
-    title: Spaltenauswahl
+    title: Spaltenauswahl anpassen
     all_groups: Alle Gruppen
     search: Suche
     clear: Zurücksetzen
@@ -61,9 +73,10 @@ pim_datagrid:
     apply: Anwenden
     cancel: Abbrechen
     remove_column: Entfernen
+    attribute_groups: Attributgruppen
   mass_action:
     delete:
-      confirm_title: Löschbestätigung
+      confirm_title: Löschen bestätigen
       confirm_ok: OK
       empty_selection: Kein Produkt ausgewählt
 pim.grid.mass_action.quick_export.title: Schnell-Export
@@ -86,6 +99,8 @@ grid.view_selector:
   placeholder: Name der neuen Ansicht
   choose_label: Wählen Sie eine Bezeichnung für die Ansicht
   confirmation:
-    remove: Sind Sie sicher, dass Sie diese Tabellen-Ansicht löschen möchten?
-    delete: Löschbestätigung
-grid.view_selector.flash.updated: Tabellen-Ansicht erfolgreich aktualisiert
+    remove: Sind Sie sicher, dass Sie diese Ansicht löschen möchten?
+    delete: Löschen bestätigen
+grid.view_selector.flash.updated: Listenansicht erfolgreich aktualisiert
+Client ID: Client-ID
+Secret: Secret

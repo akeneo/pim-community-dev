@@ -31,6 +31,7 @@ class ListAttributeGroupIntegration extends ApiTestCase
         "items" : [
             {$standardizedAttributeGroups['attributeGroupA']},
             {$standardizedAttributeGroups['attributeGroupB']},
+            {$standardizedAttributeGroups['attributeGroupC']},
             {$standardizedAttributeGroups['other']}
         ]
     }
@@ -68,7 +69,7 @@ JSON;
         }
     },
     "current_page": 2,
-    "items_count": 3,
+    "items_count": 4,
     "_embedded" : {
         "items" : [
             {$standardizedAttributeGroups['attributeGroupB']}
@@ -156,18 +157,19 @@ JSON;
     protected function getStandardizedAttributeGroups()
     {
         $standardizedAttributeGroups['attributeGroupA'] = <<<JSON
-{  
-    "_links":{  
-       "self":{  
+{
+    "_links":{
+       "self":{
           "href":"http://localhost/api/rest/v1/attribute-groups/attributeGroupA"
        }
     },
     "code":"attributeGroupA",
     "sort_order":1,
-    "attributes":[  
+    "attributes":[
        "sku",
        "a_date",
        "a_file",
+       "an_image",
        "a_price",
        "a_price_without_decimal",
        "a_ref_data_multi_select",
@@ -179,7 +181,7 @@ JSON;
        "a_scopable_price",
        "a_localized_and_scopable_text_area"
     ],
-    "labels":{  
+    "labels":{
        "en_US":"Attribute group A",
        "fr_FR":"Groupe d\u0027attribut A"
     }
@@ -187,21 +189,18 @@ JSON;
 JSON;
 
         $standardizedAttributeGroups['attributeGroupB'] = <<<JSON
-{  
-    "_links":{  
-       "self":{  
+{
+    "_links":{
+       "self":{
           "href":"http://localhost/api/rest/v1/attribute-groups/attributeGroupB"
        }
     },
     "code":"attributeGroupB",
     "sort_order":2,
-    "attributes":[  
-       "an_image",
+    "attributes":[
        "a_metric",
        "a_metric_without_decimal",
-       "a_metric_without_decimal_negative",
        "a_metric_negative",
-       "a_multi_select",
        "a_number_float",
        "a_number_float_negative",
        "a_number_integer",
@@ -209,26 +208,48 @@ JSON;
        "a_simple_select",
        "a_localizable_image",
        "a_scopable_image",
-       "a_localizable_scopable_image"
+       "a_localizable_scopable_image",
+       "a_simple_select_color",
+       "a_simple_select_size"
     ],
-    "labels":{  
+    "labels":{
        "en_US":"Attribute group B",
        "fr_FR":"Groupe d\u0027attribut B"
     }
 }
 JSON;
 
+    $standardizedAttributeGroups['attributeGroupC'] = <<<JSON
+{
+    "_links":{
+       "self":{
+          "href":"http://localhost/api/rest/v1/attribute-groups/attributeGroupC"
+       }
+    },
+    "code":"attributeGroupC",
+    "sort_order":3,
+    "attributes":[
+       "a_metric_without_decimal_negative",
+       "a_multi_select"
+    ],
+    "labels":{
+       "en_US":"Attribute group C",
+       "fr_FR":"Groupe d\u0027attribut C"
+    }
+}
+JSON;
+
         $standardizedAttributeGroups['other'] = <<<JSON
-{  
-    "_links":{  
-       "self":{  
+{
+    "_links":{
+       "self":{
           "href":"http://localhost/api/rest/v1/attribute-groups/other"
        }
     },
     "code":"other",
     "sort_order":100,
     "attributes":[],
-    "labels":{  
+    "labels":{
        "en_US":"Other",
        "fr_FR":"Autre"
     }
@@ -243,6 +264,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

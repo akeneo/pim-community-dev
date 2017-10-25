@@ -21,9 +21,6 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
     /** @var GroupRepositoryInterface */
     protected $groupRepository;
 
-    /** @param array */
-    protected $axisColumns;
-
     /** @var RequestStack */
     protected $requestStack;
 
@@ -56,7 +53,6 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
         $this->configuration = $configuration;
         $this->preparePropertiesColumns();
         $this->prepareAttributesColumns();
-        $this->prepareAxisColumns();
         $this->sortColumns();
         $this->addColumns();
     }
@@ -85,37 +81,6 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
     }
 
     /**
-     * {@inheritdoc}
-     */
-    protected function prepareAxisColumns()
-    {
-        $path = sprintf(self::SOURCE_PATH, self::USEABLE_ATTRIBUTES_KEY);
-        $attributes = $this->configuration->offsetGetByPath($path);
-        $axisCodes = array_map(
-            function ($attribute) {
-                return $attribute->getCode();
-            },
-            $this->getGroup()->getAxisAttributes()->toArray()
-        );
-        $this->axisColumns = [];
-
-        foreach ($attributes as $attributeCode => $attribute) {
-            $attributeType = $attribute['type'];
-            $attributeTypeConf = $this->registry->getConfiguration($attributeType);
-
-            if ($attributeTypeConf && $attributeTypeConf['column']) {
-                if (in_array($attributeCode, $axisCodes)) {
-                    $columnConfig = $attributeTypeConf['column'];
-                    $columnConfig = $columnConfig + [
-                        'label' => $attribute['label'],
-                    ];
-                    $this->axisColumns[$attributeCode] = $columnConfig;
-                }
-            }
-        }
-    }
-
-    /**
      * Sort the columns
      */
     protected function sortColumns()
@@ -127,6 +92,6 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
         }
 
         $this->displayedColumns = $this->editableColumns + $inGroupColumn + $this->primaryColumns
-            + $this->identifierColumn + $this->axisColumns + $this->propertiesColumns;
+            + $this->propertiesColumns;
     }
 }

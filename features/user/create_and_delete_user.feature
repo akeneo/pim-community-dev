@@ -8,6 +8,11 @@ Feature: Create a user
     Given the "default" catalog configuration
     And I am logged in as "Peter"
 
+  Scenario: Have English language as default language for new users
+    Given I am on the user creation page
+    And I visit the "Interfaces" tab
+    And I should see "English (United States)"
+
   Scenario: Successfully create a user
     Given I am on the user creation page
     And I fill in the following information:

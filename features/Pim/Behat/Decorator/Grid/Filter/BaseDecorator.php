@@ -30,7 +30,11 @@ class BaseDecorator extends ElementDecorator
      */
     public function remove()
     {
-        $this->find('css', '.disable-filter')->click();
+        $removeFilter = $this->spin(function () {
+            return $this->find('css', '.disable-filter');
+        }, 'Cannot find the remove button.');
+
+        $removeFilter->click();
     }
 
     /**

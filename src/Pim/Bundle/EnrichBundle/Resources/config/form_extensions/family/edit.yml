@@ -10,6 +10,14 @@ extensions:
             tab: pim-menu-settings
             item: pim-menu-settings-family
 
+    pim-family-edit-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-family-edit-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-family-edit-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-family-edit-form
@@ -42,6 +50,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.family
+                subTitle: pim_menu.item.family
                 content: pim_enrich.confirmation.delete_item
                 success: flash.family.removed
                 fail: error.removing.family
@@ -197,6 +206,30 @@ extensions:
         position: 190
         config:
             label: pim_enrich.form.family.tab.attributes.label_label
+
+    pim-family-edit-form-variant:
+        module: pim/family-edit-form/family-variant
+        parent: pim-family-edit-form-form-tabs
+        targetZone: container
+        position: 155
+        config:
+            title: 'pim_enrich.form.family.tab.variant.title'
+
+    pim-family-edit-form-variant-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pim-family-edit-form-variant
+        targetZone: filters
+
+    pim-family-edit-form-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-family-edit-form-variant
+        targetZone: filters
+
+    pim-family-edit-form-add-family-variant:
+        module: pim/family-edit-form/add-family-variant
+        parent: pim-family-edit-form-variant
+        targetZone: variant-toolbar
+        position: 100
 
     pim-family-edit-form-history:
         module: pim/common/tab/history

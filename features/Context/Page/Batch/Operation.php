@@ -16,16 +16,15 @@ use Context\Page\Base\Wizard;
 class Operation extends Wizard
 {
     protected $steps = array(
-        'Change status (enable / disable)' => 'Batch ChangeStatus',
+        'Change status'                    => 'Batch ChangeStatus',
         'Edit common attributes'           => 'Batch EditCommonAttributes',
         'Modifier les attributs communs'   => 'Batch EditCommonAttributes',
-        'Change the family of products'    => 'Batch ChangeFamily',
+        'Change family'                    => 'Batch ChangeFamily',
         'Add to groups'                    => 'Batch AddToGroups',
-        'Add to a variant group'           => 'Batch AddToVariantGroup',
-        'Set attribute requirements'       => 'Batch SetAttributeRequirements',
-        'Classify products in categories'  => 'Batch Classify',
-        'Move products to categories'      => 'Batch Classify',
-        'Remove products from categories'  => 'Batch Classify'
+        'Set attributes requirements'      => 'Batch SetAttributeRequirements',
+        'Add to categories'                => 'Batch Classify',
+        'Move between categories'          => 'Batch Classify',
+        'Remove from categories'           => 'Batch Classify'
     );
 
     /**
@@ -37,18 +36,18 @@ class Operation extends Wizard
      */
     public function chooseOperation($operation)
     {
-        $choice = $this->findField($operation);
+        $choice = $this->spin(function () use ($operation) {
+            $choices = $this->findAll('css', '.operation');
+            foreach ($choices as $choice) {
+                if (trim($choice->getText()) === $operation) {
+                    return $choice;
+                }
+            }
 
-        if (null === $choice) {
-            throw new ElementNotFoundException(
-                $this->getSession(),
-                'form field',
-                'id|name|label|value',
-                $operation
-            );
-        }
+            return null;
+        }, sprintf('Cannot find operation "%s"', $operation));
 
-        $this->getSession()->getDriver()->click($choice->getXpath());
+        $choice->click();
 
         $this->currentStep = $this->getStep($operation);
 
@@ -80,7 +79,7 @@ class Operation extends Wizard
         if (!array_key_exists($operation, $this->steps)) {
             throw new \InvalidArgumentException(
                 sprintf(
-                    'Unknown operation "%s" (available: "%s")',
+                    'Unknown operation "%s" (available: "%s"). Please add it to Context\Page\Batch\Operation.',
                     $operation,
                     implode('", "', array_keys($this->steps))
                 )

@@ -17,9 +17,22 @@
 
 .select2-container {
   width: 100%;
+  flex-grow: 50;
 
   .select2-choice {
     color: @AknDefaultFontColor;
+
+    .select2-arrow {
+      width: 25px;
+      background: url("../../images/icon-down.svg") no-repeat 10px 10px;
+      background-color: inherit;
+      background-size: 18px;
+      border-left: none;
+
+      b {
+        display: none;
+      }
+    }
   }
 
   &.select2-container-disabled .select2-choice {
@@ -46,9 +59,24 @@
 .select2-drop {
   border-radius: 0 0 2px 2px;
   color: @AknDefaultFontColor;
+  padding: 15px 20px;
 
   &.select2-drop-above.select2-drop-active {
     border-color: @AknBorderColor;
+  }
+
+  .select2-search {
+    border-bottom: 1px solid @AknLightPurple;
+
+    .select2-input {
+      height: 30px;
+      line-height: 30px;
+      background: url("../../images/icon-search-purple.svg") no-repeat 0 5px;
+      background-size: 20px;
+      border: none;
+      padding-left: 25px;
+      color: @AknLightPurple;
+    }
   }
 }
 
@@ -59,7 +87,7 @@
   }
 
   .select2-result-label {
-    line-height: 24px;
+    line-height: 40px;
     padding: 0 4px;
     min-height: 0;
   }
@@ -80,13 +108,6 @@
   padding-top: 4px;
 
   input {
-    line-height: @AknFormHeight;
-    color: @AknDefaultFontColor;
-    border: 1px solid @AknBorderColor;
-    border-radius: 2px;
-    padding: 0 8px;
-    background: none;
-
     &.select2-active {
       background: none;
     }
@@ -99,13 +120,12 @@
   border: 1px solid @AknBorderColor;
   color: @AknDarkFontColor;
   border-radius: 2px;
-  background: white;
+  background-color: white;
 
   .select2-arrow {
     width: @AknFormHeight;
     border-left-color: @AknBorderColor;
     border-radius: 0 2px 2px 0;
-    background: white;
 
     b {
       background-size: 96px 48px;
@@ -140,16 +160,19 @@
   .select2-choices {
     border-radius: 2px;
     border-color: @AknBorderColor;
+    padding-right: 5px;
+    padding-bottom: 5px;
 
     .select2-search-choice {
-      margin: 1px;
-      height: @AknFormHeight - 4px;
-      line-height: @AknFormHeight - 6px;
+      margin: 5px 0 0 5px;
+      height: @AknFormHeight - 12px;
+      line-height: @AknFormHeight - 12px;
       padding: 0 10px 0 20px;
+      font-size: @AknDefaultFontSize;
     }
 
     .select2-search-field {
-      height: @AknFormHeight - 2px;
+      height: @AknFormHeight - 7px;
 
       input {
         height: @AknFormHeight - 4px;
@@ -159,10 +182,23 @@
         }
       }
     }
-  }
 
-  .select2-search-choice-close {
-    top: (@AknFormHeight / 2) - (12px / 2) - 2 * 2px;
+    .select2-search-choice {
+      .select2-search-choice-close {
+        background-image: url("../../images/icon-remove.svg") !important;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 10px;
+        opacity: 0.7;
+        top: 7px;
+        transition: opacity 0.1s ease-in;
+
+        &:hover {
+          background-position: center;
+          opacity: 1;
+        }
+      }
+    }
   }
 
   &.select2-container-active .select2-choices {
@@ -198,8 +234,8 @@
     justify-content: space-between;;
 
     input[type="checkbox"] {
-      flex-basis: 14px;
-      margin-top: 4px;
+      flex-basis: 25px;
+      margin-top: 9px;
     }
 
     .attribute-label {
@@ -216,139 +252,172 @@
 /* Grid view selector custom */
 .grid-view-selector {
   .select2-container {
-    width: 200px;
-    font-size: @AknFontSizeBig;
-
-    &.stickedLeft .select2-choice {
-      border-top-left-radius: 0px;
-      border-bottom-left-radius: 0px;
-
-      border-top: 1px solid #848fa1;
-      border-right: 1px solid #848fa1;
-      border-bottom: 1px solid #848fa1;
-      border-left: none;
-    }
-
     .select2-choice {
-      background: lighten(@AknGrey, 25%);
-      font-style: @AknFontSizeBig;
+      background: none;
+      border: none;
+      color: @AknLightPurple;
+      font-size: @AknFontSizeBig;
+      padding: 0;
+      height: auto;
+      line-height: 20px;
+      display: inline-block;
+
+      & > .select2-chosen {
+        margin-right: 30px;
+
+        .current {
+          max-width: 110px;
+          text-overflow: ellipsis;
+          display: inline-block;
+          overflow: hidden;
+          line-height: 33px;
+          height: 30px;
+          margin-right: -30px;
+        }
+      }
 
       .select2-arrow {
-        background: lighten(@AknGrey, 15%);
+        width: 25px;
+        background: url("../../images/icon-down.svg") no-repeat 0 12px;
+        background-color: inherit;
+        background-size: 12px;
+        border-left: none;
+
+        b {
+          display: none;
+        }
       }
     }
   }
 
   &.select2-drop {
-    width: 400px !important; // The select2 lib sets the width with JS methods.
+    box-shadow: 1px 2px 8px rgba(0,0,0,0.15);
+    margin-top: -45px;
+    margin-left: -10px;
+    min-width: 340px;
+    border-top: 1px solid @AknBorderColor;
+    border-radius: 2px;
 
-    .select2-search {
-      background: @AknLightGray;
-      border-top: 1px solid @AknBorderColor;
-      border-bottom: 1px solid @AknBorderColor;
-      padding: 6px;
+    .select2-results {
+      li.select2-result {
+        font-size: @AknFontSizeBig;
 
-      .view-selector-type-dropdown {
-        position: absolute;
-        top: 6px;
-        right: 6px;
-
-        .view-type-item {
-          text-transform: uppercase;
+        &.select2-highlighted {
+          color: @AknLightPurple;
+          font-weight: bold;
         }
       }
 
-      .view-selector-type-switcher {
-        border: 1px solid @AknBorderColor;
-        text-transform: uppercase;
-        height: 38px;
-        border-radius: 0;
-        width: 107px;
-        font-weight: bold;
-      }
+      .select2-result-label-view {
+        .view-label {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 100%;
+          display: block;
 
-      .icon-search {
-        font-size: @AknLittleIconFontSize;
-        color: @AknGrey;
-        position: absolute;
-        top: 16px;
-        left: 12px;
-      }
+          &.view-label-current {
+            color: @AknLightPurple;
+            font-weight: bold;
+          }
+        }
 
-      .select2-input {
-        font-size: @AknFontSizeBig;
-        background: white !important;
-        height: 38px;
-        padding-left: 32px;
-        line-height: 38px;
+        .project-line {
+          display: flex;
+          justify-content: space-between;
+          line-height: 20px;
+          margin: 0 0 20px 0;
+          align-items: center;
 
-        &.with-dropdown {
-          width: 280px;
+          .project-main-infos {
+            font-size: @AknFontSizeBig;
+            color: @AknDarkBlue;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 180px;
+          }
+
+          .project-secondary-infos {
+            color: @AknSlateGrey;
+            font-size: @AknFontSizeSmall;
+          }
+
+          &.project-line-current .project-main-infos {
+            color: @AknLightPurple;
+            font-weight: bold;
+          }
         }
       }
     }
+  }
+}
+
+/* Variant navigation selector custom */
+.variant-navigation {
+  @circleSize: 18px;
+
+  &.select2-container {
+    display: inline-block;
+    width: auto;
+    line-height: 10px;
+    margin-left: 5px;
+    margin-right: -15px;
+    z-index: 5;
+
+    .select2-choice {
+      line-height: inherit;
+      border-radius: 100px;
+      height: @circleSize;
+      width: @circleSize;
+      display: inline-block;
+      padding: 0;
+
+      & > .select2-chosen {
+        margin-right: 0;
+        height: @circleSize;
+        width: @circleSize;
+      }
+
+      .select2-arrow {
+        background-position: 4px 3px;
+        width: @circleSize;
+        background-size: 12px;
+
+        b {
+          background: url("../../images/jstree/icon-down.svg") no-repeat center center;
+          background-size: 12px;
+        }
+      }
+    }
+  }
+
+  &.select2-drop {
+    box-shadow: 1px 2px 8px rgba(0,0,0,0.15);
+    margin-top: -45px;
+    margin-left: -10px;
+    min-width: 340px;
+    border-top: 1px solid @AknBorderColor;
+    border-radius: 2px;
 
     .select2-results {
       padding: 0;
-      margin: 8px 8px 8px 8px;
+      margin-top: 15px;
 
-      .select2-result {
-        border-left: 1px solid @AknBorderColor;
-        border-top: 1px solid @AknBorderColor;
-        border-right: 1px solid @AknBorderColor;
+      .select2-no-results {
+        padding: 15px;
+      }
 
-        &:last-child {
-          border-bottom: 1px solid @AknBorderColor;
-        }
+      li.select2-result {
+        font-size: @AknFontSizeBig;
 
         .select2-result-label {
-          font-size: @AknFontSizeBig;
-          position: relative;
-          padding: 15px;
-
-          .select2-result-label-view {
-            .view-label.view-label-current {
-              color: @AknPurple;
-              font-style: italic;
-              font-weight: bold;
-            }
-
-            .project-line.project-line-current {
-              .project-label {
-                color: @AknPurple;
-                font-style: italic;
-                font-weight: bold;
-              }
-            }
-          }
+          padding: 0;
         }
 
         &.select2-highlighted {
-          background: none;
-
-          .select2-result-label {
-            background-color: @AknDefaultHoverBackground;
-          }
+          color: @AknLightPurple;
         }
-      }
-
-      .select2-more-results,
-      .select2-no-results,
-      .select2-searching {
-        color: @AknGrey;
-        text-align: center;
-        padding: 15px;
-      }
-    }
-
-    .ui-multiselect-footer {
-      border-top: 1px solid @AknBorderColor;
-      padding: 3px;
-      height: 50px;
-
-      .buttons {
-        line-height: 30px;
-        margin: 5px;
       }
     }
   }
@@ -387,16 +456,6 @@
       margin-bottom: 5px;
     }
 
-    .select2-input, .select2-focused {
-      border: 1px solid @AknBorderColor !important;
-      background-color: @AknLightGray !important;
-      color: @AknDefaultFontColor;
-      padding-left: @AknDefaultButtonSize;
-      font-size: @AknFontSizeBig;
-      line-height: @AknLittleButtonSize;
-      box-shadow: none !important;
-    }
-
     .select2-highlighted {
       background-color: @AknLightGray;
     }
@@ -412,42 +471,88 @@
 
   .select2-choice {
     border: none;
+    padding: 0;
 
     & > .select2-chosen {
-      margin-right: 34px;
+      margin-right: 28px;
     }
 
     .select2-arrow {
+      width: 25px;
       border-left: none;
+      background-position: 6px 12px;
     }
   }
 }
 
-.select2-searchIcon {
-  font-size: @AknBigIconFontSize;
-  color: @AknBorderColor;
-  line-height: @AknFormHeight - 2px;
-  position: absolute;
-  left: 10px;
+// Stylize like AknButton
+.aknButtonLike {
+  &.select2-container {
+    .select2-choice.select2-default {
+      background: @AknBlue;
+      color: white !important;
+      border-radius: 100px;
+      height: @AknDefaultButtonSize;
+      line-height: @AknDefaultButtonSize;
+      border-color: @AknBlue;
+      padding: 0 0 0 @AknDefaultButtonSize / 2;
+      text-transform: uppercase;
+
+      & > .select2-chosen {
+        margin-right: 45px;
+      }
+
+      .select2-arrow {
+        background: url("../../images/icon-down-white.svg") no-repeat 3px center;
+        background-size: 50%;
+        border: none;
+
+        b {
+          display: none;
+        }
+      }
+    }
+  }
 }
 
 // Fix for Retina icons
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi)  {
   .select2-search-choice-close,
-  .select2-container .select2-choice abbr,
-  .select2-container .select2-choice .select2-arrow b {
-    background-size: 90px 48px !important
+  .select2.select2-container .select2-choice abbr,
+  .select2.select2-container .select2-choice .select2-arrow b {
+    background-image: url("../../images/icon-remove.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 10px !important;
   }
-  
+
   .select2-search input {
     background: none !important;
   }
 
   .select2-search-choice-close {
-    background-position: -75px 0 !important;
+    background-position: center !important;
   }
 
   .select2-search input {
     background-position: 100% 118% !important;
+  }
+}
+
+.select2.operator {
+  flex-basis: 170px;
+  flex-shrink: 0;
+}
+
+.select2.unit {
+  flex-basis: 90px;
+  flex-shrink: 0;
+}
+
+.select2.noLeftBorder {
+  .select2-choices {
+    margin-left: -1px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 }

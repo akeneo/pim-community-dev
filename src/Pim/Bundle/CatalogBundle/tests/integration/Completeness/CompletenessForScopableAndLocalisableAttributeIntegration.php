@@ -150,10 +150,7 @@ class CompletenessForScopableAndLocalisableAttributeIntegration extends Abstract
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getFunctionalCatalog('footwear')],
-            [Configuration::getFunctionalFixtures()]
-        );
+        return $this->catalog->useFunctionalCatalog('footwear');
     }
 
     /**

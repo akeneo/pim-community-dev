@@ -1,0 +1,22 @@
+extensions:
+    pim-family-variant-edit-form:
+        module: pim/family-variant-edit-form/edit
+
+    pim-family-variant-edit-form-cache-invalidator:
+        module: pim/cache-invalidator
+        parent: pim-family-variant-edit-form
+        position: 1000
+
+    pim-family-variant-edit-form-state:
+        module: pim/form/common/state
+        parent: pim-family-variant-edit-form
+        targetZone: state
+        position: 900
+        config:
+            entity: pim_enrich.entity.family_variant.title
+
+    pim-family-variant-edit-form-axes:
+        module: pim/family-variant-edit-form/axes
+        parent: pim-family-variant-edit-form
+        targetZone: content
+        position: 100

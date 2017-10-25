@@ -57,7 +57,9 @@ define(
                         title: 'confirmation.remove.item',
                         content: 'pim_enrich.confirmation.delete_item',
                         success: 'flash.item.removed',
-                        fail: 'error.removing.item'
+                        fail: 'error.removing.item',
+                        subTitle: '',
+                        buttonText: 'pim_datagrid.mass_action.delete.label'
                     },
                     redirect: 'oro_default'
                 }, meta.config);
@@ -77,10 +79,12 @@ define(
              * Open a dialog to ask the user to confirm the deletion
              */
             delete: function () {
-                Dialog.confirm(
+                return Dialog.confirmDelete(
                     __(this.config.trans.title),
                     __(this.config.trans.content),
-                    this.doDelete.bind(this)
+                    this.doDelete.bind(this),
+                    __(this.config.trans.subTitle),
+                    __(this.config.trans.buttonText)
                 );
             },
 

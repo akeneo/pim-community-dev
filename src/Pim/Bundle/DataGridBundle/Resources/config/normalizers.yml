@@ -1,5 +1,6 @@
 parameters:
     pim_datagrid.normalizer.product.class: Pim\Bundle\DataGridBundle\Normalizer\ProductNormalizer
+    pim_datagrid.normalizer.product_model.class: Pim\Bundle\DataGridBundle\Normalizer\ProductModelNormalizer
     pim_datagrid.normalizer.product_association.class: Pim\Bundle\DataGridBundle\Normalizer\ProductAssociationNormalizer
     pim_datagrid.normalizer.product.product_values.class: Pim\Bundle\DataGridBundle\Normalizer\Product\ProductValuesNormalizer
     pim_datagrid.normalizer.product.product_value.class: Pim\Bundle\DataGridBundle\Normalizer\Product\ValueNormalizer
@@ -8,12 +9,22 @@ parameters:
     pim_datagrid.normalizer.product.file.class: Pim\Bundle\DataGridBundle\Normalizer\Product\FileNormalizer
     pim_datagrid.normalizer.datetime.class: Pim\Bundle\DataGridBundle\Normalizer\DateTimeNormalizer
     pim_datagrid.normalizer.group_product.class: Pim\Bundle\DataGridBundle\Normalizer\GroupProductNormalizer
+    pim_datagrid.normalizer.family_variant.class: Pim\Bundle\DataGridBundle\Normalizer\FamilyVariantNormalizer
 
 services:
     pim_datagrid.normalizer.product:
         class: '%pim_datagrid.normalizer.product.class%'
         arguments:
             - '@pim_catalog.filter.chained'
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_datagrid.normalizer.product_model:
+        class: '%pim_datagrid.normalizer.product_model.class%'
+        arguments:
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.doctrine.query.find_variant_product_completeness'
+            - '@pim_catalog.product_models.image_as_label'
         tags:
             - { name: pim_serializer.normalizer }
 
@@ -67,3 +78,8 @@ services:
             - '@pim_catalog.filter.chained'
         tags:
             - { name: pim_serializer.normalizer }
+
+    pim_datagrid.normalizer.family_variant:
+        class: '%pim_datagrid.normalizer.family_variant.class%'
+        arguments:
+            - '@pim_catalog.normalizer.standard.translation'

@@ -3,7 +3,7 @@
 namespace Pim\Component\Catalog\Localization\Presenter;
 
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * The PresenterRegistry registers the presenters to display attribute values readable information. The matching
@@ -21,16 +21,16 @@ class PresenterRegistry implements PresenterRegistryInterface
 
     const TYPE_ATTRIBUTE_OPTION = 'attribute_option';
 
-    /** @var AttributeRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
     /** @var PresenterInterface[] */
     protected $presenters = [];
 
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
+     * @param IdentifiableObjectRepositoryInterface $attributeRepository
      */
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    public function __construct(IdentifiableObjectRepositoryInterface $attributeRepository)
     {
         $this->attributeRepository = $attributeRepository;
     }

@@ -66,18 +66,20 @@ define(
                         break;
                 }
 
+                const itemsCount = this.getFormData().itemsCount;
                 this.$el.html(this.template({
                     currentStep: this.currentStep,
                     currentStepNumber: currentStepNumber,
                     currentOperation: this.getCurrentOperation(),
                     label: step.getLabel(),
                     description: step.getDescription(),
-                    title: __(this.config.title, {itemsCount: this.getFormData().itemsCount}),
-                    __: __,
-                    selectLabel: __(this.config.selectLabel),
-                    chooseLabel: __(this.config.chooseLabel),
-                    configureLabel: __(this.config.configureLabel),
-                    confirmLabel: __(this.config.confirmLabel)
+                    title: step.getTitle(),
+                    labelCount: step.getLabelCount(),
+                    confirm: __(this.config.confirm, {itemsCount}, itemsCount),
+                    previousLabel: __('pim_enrich.mass_edit.previous'),
+                    nextLabel: __('pim_enrich.mass_edit.next'),
+                    confirmLabel: __('pim_enrich.mass_edit.confirm'),
+                    __: __
                 }));
 
                 this.$('.step').empty().append(step.render().$el);
@@ -97,7 +99,8 @@ define(
                     }).map(function (extension) {
                         return {
                             code: extension.getCode(),
-                            label: extension.getLabel()
+                            label: extension.getLabel(),
+                            icon: extension.getIcon()
                         };
                     }).value();
             },

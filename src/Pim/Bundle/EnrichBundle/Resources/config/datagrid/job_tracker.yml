@@ -8,11 +8,10 @@ datagrid:
             job:
                 label: Job
                 data_name: jobLabel
+                frontend_type: label
             type:
                 label: Type
                 type:  job_type
-            user:
-                label: User
             started_at:
                 label: job_tracker.filter.started_at
                 data_name: startTime
@@ -31,9 +30,10 @@ datagrid:
                 frontend_type: html
         actions:
             view:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--view
                 type:      navigate
                 label:     pim.grid.action.show.title
-                icon:      list-alt
                 link:      show_link
                 rowAction: true
         sorters:
@@ -42,8 +42,6 @@ datagrid:
                     data_name: jobLabel
                 type:
                     data_name: type
-                user:
-                    data_name: user
                 started_at:
                     data_name: startTime
                 status:
@@ -62,10 +60,6 @@ datagrid:
                     type:      string
                     label:     Type
                     data_name: j.type
-                user:
-                    type:      string
-                    label:     User
-                    data_name: e.user
                 status:
                     type:             choice
                     data_name:        status

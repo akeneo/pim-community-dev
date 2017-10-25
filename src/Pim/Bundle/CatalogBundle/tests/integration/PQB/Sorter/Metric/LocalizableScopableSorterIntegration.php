@@ -27,6 +27,7 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
             'type'                => AttributeTypes::METRIC,
             'localizable'         => true,
             'scopable'            => true,
+            'negative_allowed'    => true,
             'decimals_allowed'    => true,
             'metric_family'       => 'Power',
             'default_metric_unit' => 'WATT'
@@ -84,5 +85,17 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
     public function testErrorOperatorNotSupported()
     {
         $this->executeSorter([['a_localizable_scopable_metric', 'A_BAD_DIRECTION', ['locale' => 'fr_FR', 'scope' => 'tablet']]]);
+    }
+
+    /**
+     * @jira https://akeneo.atlassian.net/browse/PIM-6872
+     */
+    public function testSorterWithNoDataOnSorterField()
+    {
+        $result = $this->executeSorter([['a_localizable_scopable_metric', Directions::DESCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
+        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'product_four']);
+
+        $result = $this->executeSorter([['a_localizable_scopable_metric', Directions::ASCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
+        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'product_four']);
     }
 }

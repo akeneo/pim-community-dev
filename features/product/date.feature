@@ -22,7 +22,7 @@ Feature: Check that imported date is properly displayed
     And I wait for the "csv_default_product_import" job to finish
 
   Scenario: Successfully display a date in the grid (PIM-2971)
-    Given I am on the products page
+    Given I am on the products grid
     And I display the columns SKU, Family, Release, Complete, Created at and Updated at
     Then the row "postit" should contain:
      | column  | value      |
@@ -39,7 +39,7 @@ Feature: Check that imported date is properly displayed
     And I press the "Save" button
     When I visit the "History" column tab
     Then I should see history:
-      | version | property | before | after       |
+      | version | property | before | value       |
       | 2       | SKU      | postit | nice_postit |
       | 1       | SKU      |        | postit      |
       | 1       | release  |        | 05/01/2014  |

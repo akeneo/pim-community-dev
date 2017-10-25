@@ -1,0 +1,4 @@
+code;label-en_US;label-de_DE;label-fr_FR;conversion_units;currencies;locales;tree
+ecommerce;Ecommerce;Ecommerce;Ecommerce;;USD,EUR;de_DE,en_US,fr_FR;master
+mobile;Mobile;Mobile;Mobile;;USD,EUR;de_DE,en_US,fr_FR;master
+print;Print;Print;Print;;USD,EUR;de_DE,en_US,fr_FR;master

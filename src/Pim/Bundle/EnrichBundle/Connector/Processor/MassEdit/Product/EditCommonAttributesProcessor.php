@@ -150,10 +150,6 @@ class EditCommonAttributesProcessor extends AbstractProcessor
             return false;
         }
 
-        if ($this->productRepository->hasAttributeInVariantGroup($product->getId(), $attributeCode)) {
-            return false;
-        }
-
         return true;
     }
 

@@ -14,7 +14,8 @@ Feature: Define user rights
     And I visit the "Permissions" tab
     When I revoke rights to resources List products and List channels
     And I save the role
-    Then I should be on the "Administrator" role page
+    Then I should not see the text "There are unsaved changes."
+    And I should be on the "Administrator" role page
     And I should not be able to access the products page
     And I should not be able to access the channels page
     But I should be able to access the attributes page
@@ -33,7 +34,6 @@ Feature: Define user rights
       | Create an association type | association types | AssociationType creation |
       | Create a channel           | channels          | channel creation         |
       | Create a group             | product groups    | ProductGroup creation    |
-      | Create a variant group     | variant groups    | VariantGroup creation    |
       | Create a group type        | group types       | GroupType creation       |
       | Create an attribute        | attributes        | Attribute creation       |
 
@@ -53,7 +53,6 @@ Feature: Define user rights
       | Create a channel           | channels          | Create channel          |
       | Create a family            | families          | Create family           |
       | Create a group             | product groups    | Create group            |
-      | Create a variant group     | variant groups    | Create variant group    |
       | Create a group type        | group types       | Create group type       |
       | Create an attribute        | attributes        | Create attribute        |
 
@@ -74,7 +73,6 @@ Feature: Define user rights
       | Remove a category           | "sandals" category                           | Delete |
       | Remove a family             | "boots" family                               | Delete |
       | Remove a group              | "similar_boots" product group                | Delete |
-      | Remove a variant group      | "caterpillar_boots" variant group            | Delete |
       | Remove a group type         | "RELATED" group type                         | Delete |
       | Remove a product            | "boot" product                               | Delete |
       | Remove an attribute         | "color" attribute                            | Delete |
@@ -84,12 +82,24 @@ Feature: Define user rights
   @jira https://akeneo.atlassian.net/browse/PIM-3758
   Scenario: Successfully remove and add the List categories rights
     Given I am logged in as "Peter"
-    When I am on the products page
+    When I am on the products grid
+    And I open the category tree
     Then I should see the text "2014 Collection"
     When  I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I revoke rights to resource List categories
     And I save the role
     Then I should not see the text "There are unsaved changes."
-    When I am on the products page
+    When I am on the products grid
     Then I should not see the text "2014 Collection"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6865
+  Scenario: Successfully remove access on export profile page
+    Given I am logged in as "Peter"
+    And I am on the "Administrator" role page
+    And I visit the "Permissions" tab
+    When I revoke rights to resource View export profiles list
+    And I save the role
+    And I should not see the text "There are unsaved changes."
+    Then I should not be able to access the Export index page
+    But I should be able to access the Import index page

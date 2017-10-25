@@ -26,7 +26,7 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - '@event_dispatcher'
-            - '%pim_catalog.entity.product.class%'
+            - '%pim_catalog.model.product.interface%'
 
     pim_catalog.remover.association_type:
         class: '%pim_catalog.remover.base.class%'
@@ -82,7 +82,7 @@ services:
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.elasticsearch.product_indexer'
+            - '@pim_catalog.elasticsearch.indexer.product'
             - 'pim_catalog_completeness'
 
     pim_catalog.remover.base_options_resolver:

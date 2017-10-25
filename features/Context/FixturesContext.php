@@ -19,7 +19,6 @@ use League\Flysystem\MountManager;
 use OAuth2\OAuth2;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Behat\Context\FixturesContext as BaseFixturesContext;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -31,13 +30,17 @@ use Pim\Bundle\UserBundle\Entity\User;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Builder\EntityWithValuesBuilderInterface;
 use Pim\Component\Catalog\Model\Association;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
 use Pim\Component\Catalog\Value\OptionValueInterface;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductCsvImport;
+use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\ProductModelCsvImport;
 use Pim\Component\Connector\Job\JobParameters\DefaultValuesProvider\SimpleCsvExport;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
@@ -119,13 +122,13 @@ class FixturesContext extends BaseFixturesContext
         $this->getProductSaver()->save($product);
 
         // reset the unique value set to allow to update product values
-        $uniqueValueSet = $this->getContainer()->get('pim_catalog.validator.unique_value_set');
-        $uniqueValueSet->reset();
+        $this->getContainer()->get('pim_catalog.validator.unique_value_set')->reset();
+        $this->getContainer()->get('pim_catalog.validator.unique_axes_combination_set')->reset();
 
         $this->refresh($product);
         $this->buildProductHistory($product);
 
-        $this->getElasticsearchClient()->refreshIndex();
+        $this->getElasticsearchProductClient()->refreshIndex();
 
         return $product;
     }
@@ -186,6 +189,110 @@ class FixturesContext extends BaseFixturesContext
 
         foreach ($table->getHash() as $data) {
             $saver->save($processor->process($converter->convert($data)));
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following family variants?:$/
+     */
+    public function theFollowingFamilyVariants(TableNode $table)
+    {
+        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.family_variant');
+        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.family_variant');
+        $saver = $this->getContainer()->get('pim_catalog.saver.family_variant');
+
+        foreach ($table->getHash() as $data) {
+            $saver->save($processor->process($converter->convert($data)));
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following root product models?:$/
+     */
+    public function theFollowingRootProductModels(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->replacePlaceholders($value);
+            }
+
+            $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product_model');
+            $processor = $this->getContainer()->get('pim_connector.processor.denormalization.root_product_model');
+
+            $jobExecution = new JobExecution();
+            $provider = new ProductModelCsvImport(new SimpleCsvExport([]), []);
+            $params = $provider->getDefaultValues();
+            $params['enabledComparison'] = false;
+            $params['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
+            $params['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+            $jobParameters = new JobParameters($params);
+            $jobExecution->setJobParameters($jobParameters);
+            $stepExecution = new StepExecution('processor', $jobExecution);
+            $processor->setStepExecution($stepExecution);
+
+            $convertedData = $converter->convert($data);
+            $productModel = $processor->process($convertedData);
+
+            $errors = $this->getContainer()->get('pim_catalog.validator.product_model')->validate($productModel);
+            if (0 !== $errors->count()) {
+                throw new \LogicException('Product model could not be updated, invalid data provided.');
+            }
+
+            $this->getContainer()->get('pim_catalog.saver.product_model')->save($productModel);
+
+            $uniqueAxesCombinationSet = $this->getContainer()->get('pim_catalog.validator.unique_axes_combination_set');
+            $uniqueAxesCombinationSet->reset();
+
+            $this->refresh($productModel);
+            $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following sub product models?:$/
+     */
+    public function theFollowingSubProductModels(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            foreach ($data as $key => $value) {
+                $data[$key] = $this->replacePlaceholders($value);
+            }
+
+            $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product_model');
+            $processor = $this->getContainer()->get('pim_connector.processor.denormalization.sub_product_model');
+
+            $jobExecution = new JobExecution();
+            $provider = new ProductModelCsvImport(new SimpleCsvExport([]), []);
+            $params = $provider->getDefaultValues();
+            $params['enabledComparison'] = false;
+            $params['dateFormat'] = LocalizerInterface::DEFAULT_DATE_FORMAT;
+            $params['decimalSeparator'] = LocalizerInterface::DEFAULT_DECIMAL_SEPARATOR;
+            $jobParameters = new JobParameters($params);
+            $jobExecution->setJobParameters($jobParameters);
+            $stepExecution = new StepExecution('processor', $jobExecution);
+            $processor->setStepExecution($stepExecution);
+
+            $convertedData = $converter->convert($data);
+            $productModel = $processor->process($convertedData);
+
+            $errors = $this->getContainer()->get('pim_catalog.validator.product_model')->validate($productModel);
+            if (0 !== $errors->count()) {
+                throw new \LogicException('Product model could not be updated, invalid data provided.');
+            }
+
+            $this->getContainer()->get('pim_catalog.saver.product_model')->save($productModel);
+
+            $uniqueAxesCombinationSet = $this->getContainer()->get('pim_catalog.validator.unique_axes_combination_set');
+            $uniqueAxesCombinationSet->reset();
+
+            $this->refresh($productModel);
+            $this->getContainer()->get('akeneo_elasticsearch.client.product_and_product_model')->refreshIndex();
         }
     }
 
@@ -485,6 +592,59 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
+     * @Then /^there should be the following family variants:$/
+     */
+    public function thereShouldBeTheFollowingFamilyVariants(TableNode $table)
+    {
+        $this->getEntityManager()->clear();
+        foreach ($table->getHash() as $data) {
+            $familyVariant = $this->getFamilyVariant($data['code']);
+            unset($data['code']);
+
+            foreach ($data as $key => $value) {
+                $matches = null;
+                if ('family' === $key) {
+                    assertEquals($value, $familyVariant->getFamily()->getCode());
+                } elseif (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
+                    assertEquals($value, $familyVariant->getTranslation($matches['locale'])->getLabel());
+                } elseif (preg_match('/^variant-attributes_(?P<level>.*)$/', $key, $matches)) {
+                    $variantAttributeSet = $familyVariant->getVariantAttributeSet($matches['level']);
+
+                    if (null === $variantAttributeSet) {
+                        assertEmpty($value);
+                    } else {
+                        $variantAttributeCodes = $variantAttributeSet->getAttributes()->map(
+                            function (AttributeInterface $attribute) {
+                                return $attribute->getCode();
+                            }
+                        )->toArray();
+
+                        $this->assertArrayEquals(explode(',', $value), $variantAttributeCodes);
+                    }
+                } elseif (preg_match('/^variant-axes_(?P<level>.*)$/', $key, $matches)) {
+                    $variantAttributeSet = $familyVariant->getVariantAttributeSet($matches['level']);
+
+                    if (null === $variantAttributeSet) {
+                        assertEmpty($value);
+                    } else {
+                        $variantAxeCodes= $variantAttributeSet->getAxes()->map(
+                            function (AttributeInterface $attribute) {
+                                return $attribute->getCode();
+                            }
+                        )->toArray();
+
+                        $this->assertArrayEquals(explode(',', $value), $variantAxeCodes);
+                    }
+                } else {
+                    throw new \InvalidArgumentException(sprintf('Cannot check "%s" attribute of the family', $key));
+                }
+            }
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
      * @Then /^there should be the following currencies:$/
      */
     public function thereShouldBeTheFollowingCurrencies(TableNode $table)
@@ -565,9 +725,7 @@ class FixturesContext extends BaseFixturesContext
 
             foreach ($data as $key => $value) {
                 $matches = null;
-                if ('is_variant' === $key) {
-                    assertEquals($value, (int) $groupType->isVariant());
-                } elseif (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
+                if (preg_match('/^label-(?P<locale>.*)$/', $key, $matches)) {
                     assertEquals($value, $groupType->getTranslation($matches['locale'])->getLabel());
                 } else {
                     throw new \InvalidArgumentException(
@@ -683,16 +841,6 @@ class FixturesContext extends BaseFixturesContext
             assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
             assertEquals($data['label-fr_FR'], $group->getTranslation('fr_FR')->getLabel());
             assertEquals($data['type'], $group->getType()->getCode());
-
-            if ($group->getType()->isVariant()) {
-                $attributes = [];
-                foreach ($group->getAxisAttributes() as $attribute) {
-                    $attributes[] = $attribute->getCode();
-                }
-                asort($attributes);
-                $attributes = implode(',', $attributes);
-                assertEquals($data['axis'], $attributes);
-            }
         }
     }
 
@@ -772,22 +920,6 @@ class FixturesContext extends BaseFixturesContext
     {
         $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.group');
         $processor = $this->getContainer()->get('pim_connector.processor.denormalization.group');
-        $saver     = $this->getContainer()->get('pim_catalog.saver.group');
-
-        foreach ($table->getHash() as $data) {
-            $saver->save($processor->process($converter->convert($data)));
-        }
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @Given /^the following variant groups?:$/
-     */
-    public function theFollowingVariantGroups(TableNode $table)
-    {
-        $converter = $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.variant_group');
-        $processor = $this->getContainer()->get('pim_connector.processor.denormalization.variant_group');
         $saver     = $this->getContainer()->get('pim_catalog.saver.group');
 
         foreach ($table->getHash() as $data) {
@@ -1107,6 +1239,18 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param int $expectedTotal
      *
+     * @Then /^there should be (\d+) family variants?$/
+     */
+    public function thereShouldBeFamilyVariants($expectedTotal)
+    {
+        $total = count($this->getFamilyVariantRepository()->findAll());
+
+        assertEquals($expectedTotal, $total);
+    }
+
+    /**
+     * @param int $expectedTotal
+     *
      * @Then /^there should be (\d+) products?$/
      */
     public function thereShouldBeProducts($expectedTotal)
@@ -1150,8 +1294,6 @@ class FixturesContext extends BaseFixturesContext
     public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
     {
         $this->spin(function () use ($identifier, $table) {
-            $this->getMainContext()->getSubcontext('hook')->clearUOW();
-
             $product = $this->getProduct($identifier);
 
             foreach ($table->getRowsHash() as $rawCode => $value) {
@@ -1192,7 +1334,7 @@ class FixturesContext extends BaseFixturesContext
             }
 
             return true;
-        }, sprintf('Cannot get the product %s', $identifier));
+        }, sprintf('Cannot get the values of the product %s', $identifier));
     }
 
     /**
@@ -1346,6 +1488,24 @@ class FixturesContext extends BaseFixturesContext
         $this->refresh($product);
 
         return $product;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return ProductModelInterface
+     */
+    public function getProductModel($code)
+    {
+        $productModel = $this->spin(function () use ($code) {
+            return $this->getProductModelRepository()->findOneByIdentifier($code);
+        }, sprintf('Could not find a product model with code "%s"', $code));
+
+        $this->refresh($productModel);
+
+        return $productModel;
     }
 
     /**
@@ -1743,15 +1903,13 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @param string $code
      * @param string $label
-     * @param bool   $isVariant
      *
      * @return \Pim\Component\Catalog\Model\GroupTypeInterface
      */
-    protected function createGroupType($code, $label, $isVariant)
+    protected function createGroupType($code, $label)
     {
         $type = new GroupType();
         $type->setCode($code);
-        $type->setVariant($isVariant);
         $type->setLocale('en_US')->setLabel($label);
 
         $this->validate($type);
@@ -1972,11 +2130,27 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @return FamilyVariantRepositoryInterface
+     */
+    protected function getFamilyVariantRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.family_variant');
+    }
+
+    /**
      * @return \Pim\Component\Catalog\Repository\ProductRepositoryInterface
      */
     protected function getProductRepository()
     {
         return $this->getContainer()->get('pim_catalog.repository.product');
+    }
+
+    /**
+     * @return \Pim\Component\Catalog\Repository\ProductModelRepositoryInterface
+     */
+    protected function getProductModelRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.product_model');
     }
 
     /**
@@ -2012,7 +2186,7 @@ class FixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return ProductSaver
+     * @return SaverInterface
      */
     protected function getProductSaver()
     {
@@ -2048,7 +2222,9 @@ class FixturesContext extends BaseFixturesContext
      */
     protected function getFieldExtractor()
     {
-        return $this->getContainer()->get('pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor');
+        return $this
+            ->getContainer()
+            ->get('pim_connector.array_converter.flat_to_standard.product.attribute_column_info_extractor');
     }
 
     /**
@@ -2103,8 +2279,8 @@ class FixturesContext extends BaseFixturesContext
     /**
      * @return Client
      */
-    protected function getElasticsearchClient()
+    protected function getElasticsearchProductClient()
     {
-        return $this->getContainer()->get('akeneo_elasticsearch.client');
+        return $this->getContainer()->get('akeneo_elasticsearch.client.product');
     }
 }

@@ -2,10 +2,6 @@
 
 namespace Pim\Component\Api\Security;
 
-use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-
 /**
  * Primary key encrypter allows to encrypt or decrypt a primary key in order to not expose database identifier
  * to the client of the API.

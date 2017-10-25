@@ -54,13 +54,17 @@ class UserType extends AbstractType
     /** @var bool */
     protected $isMyProfilePage;
 
+    /** @var string */
+    protected $productGridFilterTypeClassName;
+
     /**
-     * @param TokenStorageInterface $tokenStorage
-     * @param RequestStack $requestStack
+     * @param TokenStorageInterface     $tokenStorage
+     * @param RequestStack              $requestStack
      * @param UserPreferencesSubscriber $subscriber
-     * @param RoleRepository $roleRepository
-     * @param GroupRepository $groupRepository
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param RoleRepository            $roleRepository
+     * @param GroupRepository           $groupRepository
+     * @param EventDispatcherInterface  $eventDispatcher
+     * @param string                    $productGridFilterTypeClassName
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
@@ -68,7 +72,8 @@ class UserType extends AbstractType
         UserPreferencesSubscriber $subscriber,
         RoleRepository $roleRepository,
         GroupRepository $groupRepository,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        string $productGridFilterTypeClassName
     ) {
         $this->tokenStorage = $tokenStorage;
         $this->isMyProfilePage = 'oro_user_profile_update' === $requestStack
@@ -79,6 +84,7 @@ class UserType extends AbstractType
         $this->roleRepository = $roleRepository;
         $this->groupRepository = $groupRepository;
         $this->eventDispatcher = $eventDispatcher;
+        $this->productGridFilterTypeClassName = $productGridFilterTypeClassName;
     }
 
     /**
@@ -149,7 +155,7 @@ class UserType extends AbstractType
                 'change_password',
                 ChangePasswordType::class
             )
-            ->add('productGridFilters', ProductGridFilterChoiceType::class, [
+            ->add('productGridFilters', $this->productGridFilterTypeClassName, [
                 'label'    => 'user.product_grid_filters',
                 'multiple' => true,
             ]);

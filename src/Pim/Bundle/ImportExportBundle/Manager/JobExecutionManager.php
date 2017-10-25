@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\ImportExportBundle\Manager;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Job execution manager
@@ -20,16 +23,24 @@ class JobExecutionManager
     /** @var SecurityFacade */
     protected $securityFacade;
 
+    /** @var TokenStorageInterface */
+    private $tokenStorage;
+
     /**
      * Constructor
      *
-     * @param JobExecutionRepository $repository
-     * @param SecurityFacade         $securityFacade
+     * @param JobExecutionRepository     $repository
+     * @param SecurityFacade             $securityFacade
+     * @param TokenStorageInterface|null $tokenStorage
      */
-    public function __construct(JobExecutionRepository $repository, SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        JobExecutionRepository $repository,
+        SecurityFacade $securityFacade,
+        TokenStorageInterface $tokenStorage = null
+    ) {
         $this->repository = $repository;
         $this->securityFacade = $securityFacade;
+        $this->tokenStorage = $tokenStorage;
     }
 
     /**
@@ -50,6 +61,9 @@ class JobExecutionManager
             }
         );
 
-        return $this->repository->getLastOperationsData($types);
+        $token = null !== $this->tokenStorage ? $this->tokenStorage->getToken() : null;
+        $username = null !== $token ? $token->getUsername() : null;
+
+        return $this->repository->getLastOperationsData($types, $username);
     }
 }

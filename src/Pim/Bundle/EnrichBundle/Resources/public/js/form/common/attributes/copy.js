@@ -44,7 +44,6 @@ define(
             scope: null,
             scopeLabel: null,
             events: {
-                'click .start-copying': 'startCopying',
                 'click .stop-copying': 'stopCopying',
                 'click .select-all': 'selectAll',
                 'click .select-all-visible': 'selectAllVisible',
@@ -77,6 +76,7 @@ define(
                         this.setLocale(eventLocale.localeCode);
                     }
                 }.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:start_copy', this.startCopying.bind(this));
 
                 return this.getScopeLabel(this.scope).then(function (scopeLabel) {
                     this.scopeLabel = scopeLabel;
@@ -158,7 +158,11 @@ define(
              * @returns {boolean}
              */
             canBeCopied: function (field) {
-                return field.attribute.localizable || field.attribute.scopable;
+                return (field.attribute.localizable || field.attribute.scopable) &&
+                    (
+                        !field.attribute.is_locale_specific ||
+                        _.contains(field.attribute.available_locales, this.getLocale())
+                    );
             },
 
             /**
@@ -175,7 +179,16 @@ define(
                             UserContext.get('catalogScope')
                         );
 
-                        oldValue.data = copyField.getCurrentValue().data;
+                        if (undefined === oldValue) {
+                            return;
+                        }
+
+                        var currentValue = copyField.getCurrentValue();
+                        if (undefined === currentValue) {
+                            return;
+                        }
+
+                        oldValue.data = currentValue.data;
                         this.getRoot().trigger('pim_enrich:form:entity:update_state');
                         copyField.setSelected(false);
                     }
@@ -196,6 +209,7 @@ define(
              * Close copy mode
              */
             stopCopying: function () {
+                this.getRoot().trigger('pim_enrich:form:stop_copy');
                 this.copying = false;
                 this.triggerContextChange();
             },

@@ -31,13 +31,14 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
             'Pim\Component\Catalog\Model\GroupTypeInterface'                 => 'pim_catalog.entity.group_type.class',
             'Pim\Component\Catalog\Model\CompletenessInterface'              => 'pim_catalog.entity.completeness.class',
             'Pim\Component\Catalog\Model\LocaleInterface'                    => 'pim_catalog.entity.locale.class',
-            'Pim\Component\Catalog\Model\ProductInterface'                   => 'pim_catalog.entity.product.class',
+            'Pim\Component\Catalog\Model\ProductInterface'                   => 'pim_catalog.entity.abstract_product.class',
+            'Pim\Component\Catalog\Model\VariantProductInterface'            => 'pim_catalog.entity.variant_product.class',
+            'Pim\Component\Catalog\Model\ProductModelInterface'              => 'pim_catalog.entity.product_model.class',
             'Pim\Component\Catalog\Model\ProductUniqueDataInterface'         => 'pim_catalog.entity.product_unique_data.class',
             'Pim\Component\Catalog\Model\CategoryInterface'                  => 'pim_catalog.entity.category.class',
             'Pim\Component\Catalog\Model\CurrencyInterface'                  => 'pim_catalog.entity.currency.class',
             'Pim\Component\Catalog\Model\FamilyInterface'                    => 'pim_catalog.entity.family.class',
             'Pim\Component\Catalog\Model\ChannelInterface'                   => 'pim_catalog.entity.channel.class',
-            'Pim\Component\Catalog\Model\ProductTemplateInterface'           => 'pim_catalog.entity.product_template.class',
             'Pim\Component\Catalog\Model\CategoryTranslationInterface'       => 'pim_catalog.entity.category_translation.class',
             'Pim\Component\Catalog\Model\FamilyTranslationInterface'         => 'pim_catalog.entity.family_translation.class',
             'Pim\Component\Catalog\Model\AttributeGroupTranslationInterface' => 'pim_catalog.entity.attribute_group_translation.class',
@@ -46,6 +47,9 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
             'Pim\Component\Catalog\Model\GroupTranslationInterface'          => 'pim_catalog.entity.group_translation.class',
             'Pim\Component\Catalog\Model\GroupTypeTranslationInterface'      => 'pim_catalog.entity.group_type_translation.class',
             'Pim\Component\Catalog\Model\ChannelTranslationInterface'        => 'pim_catalog.entity.channel_translation.class',
+            'Pim\Component\Catalog\Model\FamilyVariantInterface'             => 'pim_catalog.entity.family_variant.class',
+            'Pim\Component\Catalog\Model\FamilyVariantTranslationInterface'  => 'pim_catalog.entity.family_variant_translation.class',
+            'Pim\Component\Catalog\Model\VariantAttributeSetInterface'       => 'pim_catalog.entity.variant_attribute_set.class',
         ];
     }
 }

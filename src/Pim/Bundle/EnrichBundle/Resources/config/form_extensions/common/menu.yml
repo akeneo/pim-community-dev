@@ -11,34 +11,66 @@ extensions:
         position: 10
         targetZone: mainMenu
 
-    # Dashboard
-    pim-menu-dashboard:
+    # Activity
+    pim-menu-activity:
         module: pim/menu/tab
         parent: pim-menu
-        position: 80
+        position: 20
         targetZone: mainMenu
         config:
-            title: pim_menu.tab.dashboard
+            title: pim_menu.tab.activity
             iconModifier: iconCard
+
+    pim-menu-activity-column:
+        module: pim/menu/column
+        parent: pim-menu
+        position: 500
+        targetZone: column
+        config:
+            stateCode: pim-menu-activity
+            tab: pim-menu-activity
+            navigationTitle: pim_menu.navigation.activity
+
+    pim-menu-activity-navigation-block:
+        module: pim/menu/navigation-block
+        parent: pim-menu-activity-column
+        targetZone: navigation
+        config:
+            title: pim_menu.navigation.activity
+
+    pim-menu-activity-dashboard:
+        module: pim/menu/item
+        parent: pim-menu-activity-navigation-block
+        position: 100
+        config:
+            title: pim_menu.item.dashboard
             to: pim_dashboard_index
+
+    pim-menu-activity-job-tracker:
+        module: pim/menu/item
+        parent: pim-menu-activity-navigation-block
+        position: 110
+        config:
+            title: pim_menu.item.job_tracker
+            to: pim_enrich_job_tracker_index
 
     # Imports
     pim-menu-imports:
         module: pim/menu/tab
         parent: pim-menu
-        position: 100
+        position: 40
         targetZone: mainMenu
         aclResourceId: pim_importexport_import_profile_index
         config:
             title: pim_menu.tab.imports
-            iconModifier: iconUpload
+            iconModifier: iconDownload
             to: pim_importexport_import_profile_index
 
     # Products
     pim-menu-products:
         module: pim/menu/tab
         parent: pim-menu
-        position: 110
+        position: 30
         targetZone: mainMenu
         aclResourceId: pim_enrich_product_index
         config:
@@ -50,19 +82,19 @@ extensions:
     pim-menu-exports:
         module: pim/menu/tab
         parent: pim-menu
-        position: 120
+        position: 50
         targetZone: mainMenu
         aclResourceId: pim_importexport_export_profile_index
         config:
             title: pim_menu.tab.exports
-            iconModifier: iconDownload
+            iconModifier: iconUpload
             to: pim_importexport_export_profile_index
 
     # Settings
     pim-menu-settings:
         module: pim/menu/tab
         parent: pim-menu
-        position: 130
+        position: 60
         targetZone: mainMenu
         config:
             title: pim_menu.tab.settings
@@ -141,15 +173,6 @@ extensions:
             title: pim_menu.item.group
             to: pim_enrich_group_index
 
-    pim-menu-settings-variant-group:
-        module: pim/menu/item
-        parent: pim-menu-settings-navigation-block
-        aclResourceId: pim_enrich_variant_group_index
-        position: 160
-        config:
-            title: pim_menu.item.variant_group
-            to: pim_enrich_variant_group_index
-
     pim-menu-settings-association-type:
         module: pim/menu/item
         parent: pim-menu-settings-navigation-block
@@ -190,7 +213,7 @@ extensions:
     pim-menu-system:
         module: pim/menu/tab
         parent: pim-menu
-        position: 140
+        position: 70
         targetZone: mainMenu
         config:
             title: pim_menu.tab.system
@@ -231,14 +254,6 @@ extensions:
         config:
             title: pim_menu.item.info
             to: pim_analytics_system_info_index
-
-    pim-menu-system-job-tracker:
-        module: pim/menu/item
-        parent: pim-menu-system-navigation-block
-        position: 0
-        config:
-            title: pim_menu.item.job_tracker
-            to: pim_enrich_job_tracker_index
 
     pim-menu-system-api-connection:
         module: pim/menu/item

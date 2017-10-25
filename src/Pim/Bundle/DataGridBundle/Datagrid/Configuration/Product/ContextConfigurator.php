@@ -155,10 +155,7 @@ class ContextConfigurator implements ConfiguratorInterface
         // as now only attributes usable as grid filters are usable in the grid,
         // we need to add the variant group axes (even if they are not usable as grid filter)
         // as usable in the grid (to be displayed in the columns)
-        $attributeIds = array_merge(
-            $this->getAttributeIdsUseableInGrid($attributeCodes),
-            $this->getAttributeIdsFromProductGroupAxes()
-        );
+        $attributeIds = $this->getAttributeIdsUseableInGrid($attributeCodes);
 
         return $attributeIds;
     }
@@ -312,25 +309,6 @@ class ContextConfigurator implements ConfiguratorInterface
         }
 
         return $productGroupId;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getAttributeIdsFromProductGroupAxes()
-    {
-        $attributeIds = [];
-
-        if (null !== $productGroupId = $this->getProductGroupId()) {
-            $group = $this->productGroupRepository->find($productGroupId);
-            if ($group->getType()->isVariant()) {
-                foreach ($group->getAxisAttributes() as $axis) {
-                    $attributeIds[] = $axis->getId();
-                }
-            }
-        }
-
-        return $attributeIds;
     }
 
     /**

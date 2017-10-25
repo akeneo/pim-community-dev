@@ -4,6 +4,8 @@ extensions:
        config:
            labels:
                title: pim_enrich.entity.product.create_popin.title
+               subTitle: pim_menu.tab.products
+           picture: illustrations/Product.svg
            successMessage: pim_enrich.entity.product.message.created
            editRoute: pim_enrich_product_edit
            postUrl: pim_enrich_product_rest_create
@@ -11,6 +13,7 @@ extensions:
     pim-product-create-sku:
         module: pim/product-edit-form/creation/identifier
         parent: pim-product-create-modal
+        targetZone: fields
         position: 10
         config:
             identifier: identifier
@@ -18,6 +21,7 @@ extensions:
     pim-product-create-family:
         module: pim/form/common/creation/family
         parent: pim-product-create-modal
+        targetZone: fields
         position: 20
         config:
             identifier: family

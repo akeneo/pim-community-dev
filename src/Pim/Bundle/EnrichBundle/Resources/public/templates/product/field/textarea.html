@@ -5,7 +5,7 @@
 <textarea
     id="<%- fieldId %>"
     class="AknTextareaField<% if (attribute.localizable) { %> AknTextareaField--localizable <% } %>"
-    data-locale="<%- value.locale %>"
-    data-scope="<%- value.scope %>"
+    data-locale="<%- locale %>"
+    data-scope="<%- scope %>"
     <%- editMode === 'view' ? 'disabled' : '' %>
-><%- value.data %></textarea>
+><%- value ? value.data: null %></textarea>

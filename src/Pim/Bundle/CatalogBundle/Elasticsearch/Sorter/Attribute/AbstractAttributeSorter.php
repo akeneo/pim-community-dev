@@ -42,6 +42,8 @@ abstract class AbstractAttributeSorter implements AttributeSorterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * About "unmapped_type", see https://www.elastic.co/guide/en/elasticsearch/reference/5.x/search-request-sort.html#_ignoring_unmapped_fields
      */
     public function addAttributeSorter(AttributeInterface $attribute, $direction, $locale = null, $channel = null)
     {
@@ -64,6 +66,7 @@ abstract class AbstractAttributeSorter implements AttributeSorterInterface
                     $attributePath => [
                         'order'   => 'ASC',
                         'missing' => '_last',
+                        'unmapped_type' => 'long',
                     ],
                 ];
                 $this->searchQueryBuilder->addSort($sortClause);
@@ -74,6 +77,7 @@ abstract class AbstractAttributeSorter implements AttributeSorterInterface
                     $attributePath => [
                         'order'   => 'DESC',
                         'missing' => '_last',
+                        'unmapped_type' => 'long',
                     ],
                 ];
 

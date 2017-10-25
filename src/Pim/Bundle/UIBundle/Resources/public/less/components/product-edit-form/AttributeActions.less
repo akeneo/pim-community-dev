@@ -6,14 +6,12 @@
   align-items: center;
 
   &-editActions {
-    @verticalPadding: ((@AknTabHeight - @AknDefaultButtonSize - 1px) / 2); // To have the same size than tab
-
-    padding: @verticalPadding 10px @verticalPadding 0;
+    padding: 10.5px 0 10.5px 0;
     display: flex;
     justify-content: space-between;
     flex-grow: 1;
     align-items: center;
-    margin-right: 10px;
+    border-bottom: 1px solid @AknBorderColor;
   }
 
   &-copyActions {
@@ -21,6 +19,9 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    align-items: center;
+    border-bottom: 1px solid @AknBorderColor;
+    min-height: @AknTabHeight + 7px;
   }
 
   &-otherActions {
@@ -32,10 +33,15 @@
     display: flex;
   }
 
+  &--comparisonMode {
+    border-bottom: none;
+  }
+
   &--comparisonMode &-editActions {
-    border-right: 1px solid @AknBorderColor;
-    flex-basis: @AknMaxFormWidth + 20px;
+    flex-basis: @AknMaxFormWidth;
     flex-grow: 0;
+    flex-shrink: 0;
+    margin-right: 30px;
   }
 
   &--comparisonMode &-copyActions {
@@ -46,5 +52,19 @@
     color: @AknLightFontColor;
     padding: 0 10px;
     text-align: right;
+  }
+
+  &-close {
+    width: 20px;
+    height: 20px;
+    display: block;
+    background: url("../../../images/icon-delete-slategrey.svg") no-repeat 0 100%;
+    opacity: 0.5;
+    transition: opacity 0.1s ease-in;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 }

@@ -16,6 +16,7 @@ define(
         'pim/form',
         'pim/template/product/tab/categories',
         'pim/template/product/tab/catalog-switcher',
+        'pim/template/product/tab/jstree-locked-item',
         'pim/user-context',
         'routing',
         'pim/tree/associate',
@@ -29,6 +30,7 @@ define(
         BaseForm,
         formTemplate,
         switcherTemplate,
+        lockedTemplate,
         UserContext,
         Routing,
         TreeAssociate,
@@ -37,6 +39,7 @@ define(
         return BaseForm.extend({
             template: _.template(formTemplate),
             switcherTemplate: _.template(switcherTemplate),
+            lockedTemplate: _.template(lockedTemplate),
             className: 'tab-pane active',
             id: 'product-categories',
             treeLinkSelector: 'tree-link-',
@@ -48,6 +51,7 @@ define(
             treeAssociate: null,
             cache: {},
             trees: [],
+            onLoadedEvent: null,
 
             /**
              * Associates the tree code to the number of selected categories
@@ -58,10 +62,14 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function () {
+            initialize: function (config) {
                 this.state = new Backbone.Model();
 
                 this.state.set('selectedCategories', []);
+
+                if (undefined !== config) {
+                    this.config = config.config;
+                }
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -71,7 +79,7 @@ define(
              */
             configure: function () {
                 this.trigger('tab:register', {
-                    code: this.code,
+                    code: (undefined === this.config.tabCode) ? this.code : this.config.tabCode,
                     isVisible: this.isVisible.bind(this),
                     label: __('pim_enrich.form.product.tab.categories.title')
                 });
@@ -105,17 +113,42 @@ define(
                     );
 
                     this.treeAssociate = new TreeAssociate('#trees', '#hidden-tree-input', {
-                        list_categories: 'pim_enrich_product_listcategories',
+                        list_categories: this.config.itemCategoryListRoute,
                         children:        'pim_enrich_categorytree_children'
                     });
 
                     this.delegateEvents();
+
+                    this.onLoadedEvent = this.lockCategories.bind(this);
+                    mediator.on('jstree:loaded', this.onLoadedEvent);
 
                     this.initCategoryCount();
                     this.renderCategorySwitcher();
                 }.bind(this));
 
                 return this;
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            shutdown: function () {
+                mediator.off('jstree:loaded', this.onLoadedEvent);
+
+                BaseForm.prototype.shutdown.apply(this, arguments);
+            },
+
+            /**
+             * Locks a set of categories
+             */
+            lockCategories: function() {
+                const lockedCategoryIds = this.getFormData().meta.ascendant_category_ids;
+                lockedCategoryIds.forEach((categoryId) => {
+                    const node = $('#node_' + categoryId);
+                    node.find('> a').replaceWith(this.lockedTemplate({
+                        label: node.find('> a').text().trim()
+                    }));
+                });
             },
 
             /**
@@ -142,7 +175,7 @@ define(
              */
             loadTrees: function () {
                 return $.getJSON(
-                    Routing.generate('pim_enrich_product_category_rest_list', { id: this.getFormData().meta.id })
+                    Routing.generate(this.config.itemCategoryTreeRoute, { id: this.getFormData().meta.id })
                 ).then(function (data) {
                     _.each(data.categories, function (category) {
                         this.cache[category.id] = category;

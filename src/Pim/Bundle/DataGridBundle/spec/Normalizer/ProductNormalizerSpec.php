@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\DataGridBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Pim\Bundle\DataGridBundle\Normalizer\ProductNormalizer;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\Completeness;
 use Pim\Component\Catalog\Model\FamilyInterface;
@@ -15,22 +16,23 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Prophecy\Argument;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, CollectionFilterInterface $filter)
+    function let(NormalizerInterface $normalizer, CollectionFilterInterface $filter)
     {
         $this->beConstructedWith($filter);
 
-        $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
-        $this->setSerializer($serializer);
+        $normalizer->implement(NormalizerInterface::class);
+        $this->setNormalizer($normalizer);
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\DataGridBundle\Normalizer\ProductNormalizer');
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
+        $this->shouldHaveType(ProductNormalizer::class);
+        $this->shouldBeAnInstanceOf(NormalizerAwareInterface::class);
     }
 
     function it_is_a_normalizer()
@@ -47,7 +49,7 @@ class ProductNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_a_product_with_label(
-        $serializer,
+        $normalizer,
         $filter,
         ProductInterface $product,
         GroupInterface $promotion,
@@ -65,6 +67,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'locales' => ['en_US'], 'channels' => ['ecommerce']
         ];
 
+        $product->getId()->willReturn(78);
         $filter->filterCollection($values, 'pim.transform.product_value.structured', $context)
             ->willReturn($values);
 
@@ -81,7 +84,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn('purple_tshirt');
         $product->isEnabled()->willReturn(true);
         $product->getValues()->willReturn($values);
-        $serializer->normalize($values, 'datagrid', $context)->willReturn([
+        $normalizer->normalize($values, 'datagrid', $context)->willReturn([
             'text' => [
                 [
                     'locale' => null,
@@ -93,15 +96,15 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $created = new \DateTime('2017-01-01T01:03:34+01:00');
         $product->getCreated()->willReturn($created);
-        $serializer->normalize($created, 'datagrid', $context)->willReturn('2017-01-01T01:03:34+01:00');
+        $normalizer->normalize($created, 'datagrid', $context)->willReturn('2017-01-01T01:03:34+01:00');
 
         $updated = new \DateTime('2017-01-01T01:04:34+01:00');
         $product->getUpdated()->willReturn($updated);
-        $serializer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
+        $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US')->willReturn('Purple tshirt');
         $product->getCompletenesses()->willReturn([$completeness]);
         $product->getImage()->willReturn($image);
-        $serializer->normalize($image, Argument::any(), Argument::any())->willReturn([
+        $normalizer->normalize($image, Argument::any(), Argument::any())->willReturn([
             'data' => [
                 'filePath'         => '/p/i/m/4/all.png',
                 'originalFileName' => 'all.png',
@@ -135,14 +138,18 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'filePath'         => '/p/i/m/4/all.png',
                 'originalFileName' => 'all.png',
             ],
-            'completeness' => 76
+            'completeness' => 76,
+            'document_type' => 'product',
+            'technical_id' => 78,
+            'search_id' => 'product_78',
+            'complete_variant_product' => null,
         ];
 
         $this->normalize($product, 'datagrid', ['locales' => ['en_US'], 'channels' => ['ecommerce']])->shouldReturn($data);
     }
 
     function it_normalizes_a_product_without_label(
-        $serializer,
+        $normalizer,
         $filter,
         ProductInterface $product,
         GroupInterface $promotion,
@@ -160,6 +167,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'locales' => ['en_US'], 'channels' => ['ecommerce']
         ];
 
+        $product->getId()->willReturn(78);
         $filter->filterCollection($productValues, 'pim.transform.product_value.structured', $context)
             ->willReturn($productValues);
 
@@ -176,7 +184,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn('purple_tshirt');
         $product->isEnabled()->willReturn(true);
         $product->getValues()->willReturn($productValues);
-        $serializer->normalize($productValues, 'datagrid', $context)->willReturn([
+        $normalizer->normalize($productValues, 'datagrid', $context)->willReturn([
             'text' => [
                 [
                     'locale' => null,
@@ -188,15 +196,15 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $created = new \DateTime('2017-01-01T01:03:34+01:00');
         $product->getCreated()->willReturn($created);
-        $serializer->normalize($created, 'datagrid', $context)->willReturn('2017-01-01T01:03:34+01:00');
+        $normalizer->normalize($created, 'datagrid', $context)->willReturn('2017-01-01T01:03:34+01:00');
 
         $updated = new \DateTime('2017-01-01T01:04:34+01:00');
         $product->getUpdated()->willReturn($updated);
-        $serializer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
+        $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
         $product->getLabel('en_US')->willReturn('Purple tshirt');
         $product->getCompletenesses()->willReturn([$completeness]);
         $product->getImage()->willReturn($image);
-        $serializer->normalize($image, Argument::any(), Argument::any())->willReturn([
+        $normalizer->normalize($image, Argument::any(), Argument::any())->willReturn([
             'data' => [
                 'filePath'         => '/p/i/m/4/all.png',
                 'originalFileName' => 'all.png'
@@ -230,7 +238,11 @@ class ProductNormalizerSpec extends ObjectBehavior
                 'filePath'         => '/p/i/m/4/all.png',
                 'originalFileName' => 'all.png',
             ],
-            'completeness' => 76
+            'completeness' => 76,
+            'document_type' => 'product',
+            'technical_id' => 78,
+            'search_id' => 'product_78',
+            'complete_variant_product' => null,
         ];
 
         $this->normalize($product, 'datagrid', ['locales' => ['en_US'], 'channels' => ['ecommerce']])->shouldReturn($data);

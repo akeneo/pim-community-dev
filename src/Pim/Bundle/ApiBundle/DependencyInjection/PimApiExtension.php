@@ -27,6 +27,7 @@ class PimApiExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('controllers.yml');
+        $loader->load('checkers.yml');
         $loader->load('converters.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('hateoas.yml');
@@ -36,5 +37,6 @@ class PimApiExtension extends Extension
         $loader->load('security.yml');
         $loader->load('serializers.yml');
         $loader->load('stream.yml');
+        $loader->load('updaters.yml');
     }
 }

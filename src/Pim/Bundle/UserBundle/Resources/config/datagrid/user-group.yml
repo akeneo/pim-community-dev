@@ -18,6 +18,7 @@ datagrid:
         columns:
             name:
                 label: oro.user.grid.groups.columns.name
+                frontend_type: label
 
         properties:
             id: ~
@@ -35,17 +36,19 @@ datagrid:
 
         actions:
             update:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:          navigate
                 label:         Update
                 link:          update_link
-                icon:          pencil
                 acl_resource:  pim_user_group_edit
                 rowAction:     true
             delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:          delete
                 label:         Delete
                 link:          delete_link
-                icon:          trash
                 acl_resource:  pim_user_group_remove
 
         sorters:

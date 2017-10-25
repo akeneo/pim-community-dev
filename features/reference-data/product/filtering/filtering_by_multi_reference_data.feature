@@ -9,19 +9,20 @@ Feature: Filter products by reference data
     And the following "sole_color" attribute reference data: Red, Blue and Green
     And the following "sole_fabric" attribute reference data: Cashmerewool, Neoprene and Silk
     And the following products:
-      | sku    |
-      | postit |
-      | mug    |
+      | sku    | family |
+      | postit | heels  |
+      | mug    | heels  |
+      | book   | heels  |
     And the following product values:
       | product | attribute   | value             |
       | postit  | sole_color  | Red               |
       | postit  | sole_fabric | Cashmerewool,Silk |
+    And the "mug" product has the "sole_fabric" attributes
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
 
+  @skip @info To be unskipped in PIM-6574
   Scenario: Successfully filter product with multi reference data filters
-    # Given I show the filter "sole_color"
-    # And I filter by "sole_color" with operator "in list" and value "Red"
     And I should be able to use the following filters:
       | filter      | operator     | value                 | result |
       | sole_fabric | in list      | Cashmerewool          | postit |

@@ -3,30 +3,35 @@
 define(
     [
         'jquery',
+        'underscore',
+        'oro/translator',
         'backbone',
         'routing',
         'pim/form',
         'pim/form-builder',
         'pim/user-context',
-        'oro/translator',
         'oro/loading-mask',
         'pim/router',
-        'oro/messenger'
+        'oro/messenger',
+        'pim/template/form/creation/modal'
     ],
     function (
         $,
+        _,
+        __,
         Backbone,
         Routing,
         BaseForm,
         FormBuilder,
         UserContext,
-        __,
         LoadingMask,
         router,
-        messenger
+        messenger,
+        template
     ) {
         return BaseForm.extend({
             config: {},
+            template: _.template(template),
 
             /**
              * {@inheritdoc}
@@ -35,6 +40,22 @@ define(
                 this.config = meta.config;
 
                 BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            render() {
+                this.$el.html(this.template({
+                    titleLabel: __(this.config.labels.title),
+                    subTitleLabel: __(this.config.labels.subTitle),
+                    picture: this.config.picture,
+                    fields: null
+                }));
+
+                this.renderExtensions();
+
+                return this;
             },
 
             /**
@@ -56,6 +77,7 @@ define(
                 });
 
                 modal.open();
+                modal.$el.addClass('modal--fullPage');
 
                 const modalBody = modal.$('.modal-body');
                 modalBody.addClass('creation');

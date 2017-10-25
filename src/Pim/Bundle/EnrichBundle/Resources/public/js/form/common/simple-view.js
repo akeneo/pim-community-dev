@@ -32,6 +32,10 @@ define([
         initialize: function (meta) {
             this.config = meta.config;
 
+            if (_.has(meta, 'forwarded-events')) {
+                this.forwardMediatorEvents(meta['forwarded-events']);
+            }
+
             BaseForm.prototype.initialize.apply(this, arguments);
         },
 
@@ -47,6 +51,8 @@ define([
 
             this.template = requireContext(this.config.template);
 
+            this.listenTo(this.getRoot(), 'grid:third_column:toggle', this.toggleThirdColumn.bind(this));
+
             return BaseForm.prototype.configure.apply(this, arguments);
         },
 
@@ -54,7 +60,7 @@ define([
          * {@inheritdoc}
          */
         render: function () {
-            var templateParams = this.config.templateParams || {};
+            let templateParams = this.config.templateParams || {};
             templateParams = _.extend({}, {__: __}, templateParams);
 
             this.$el.html(
@@ -62,6 +68,16 @@ define([
             );
 
             this.renderExtensions();
+        },
+
+        /**
+         * Toggle the third column
+         */
+        toggleThirdColumn() {
+            const thirdColumn = this.$el.find('.AknDefault-thirdColumnContainer');
+            if (null !== thirdColumn) {
+                thirdColumn.toggleClass('AknDefault-thirdColumnContainer--open');
+            }
         }
     });
 });

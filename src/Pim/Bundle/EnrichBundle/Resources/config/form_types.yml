@@ -1,10 +1,8 @@
 parameters:
     pim_enrich.form.type.group.class:            Pim\Bundle\EnrichBundle\Form\Type\GroupType
-    pim_enrich.form.type.variant_group.class:    Pim\Bundle\EnrichBundle\Form\Type\VariantGroupType
     pim_enrich.form.type.family.class:           Pim\Bundle\EnrichBundle\Form\Type\FamilyType
     pim_enrich.form.type.category.class:         Pim\Bundle\EnrichBundle\Form\Type\CategoryType
     pim_enrich.form.type.group_type.class:       Pim\Bundle\EnrichBundle\Form\Type\GroupTypeType
-    pim_enrich.form.type.attribute_group.class:  Pim\Bundle\EnrichBundle\Form\Type\AttributeGroupType
     pim_enrich.form.type.association.class:      Pim\Bundle\EnrichBundle\Form\Type\AssociationType
     pim_enrich.form.type.association_type.class: Pim\Bundle\EnrichBundle\Form\Type\AssociationTypeType
     pim_enrich.form.type.media.class:            Pim\Bundle\EnrichBundle\Form\Type\MediaType
@@ -57,15 +55,6 @@ services:
         tags:
             - { name: form.type, alias: pim_attribute_option_create }
 
-    pim_enrich.form.type.attribute_group:
-        class: '%pim_enrich.form.type.attribute_group.class%'
-        arguments:
-            - '%pim_catalog.entity.attribute_group.class%'
-        tags:
-            - { name: form.type, alias: pim_enrich_attributegroup }
-        calls:
-            - [addEventSubscriber, ['@pim_enrich.form.subscriber.set_attribute_group_sort_order']]
-
     pim_enrich.form.type.family:
         class: '%pim_enrich.form.type.family.class%'
         arguments:
@@ -93,16 +82,6 @@ services:
             - '%pim_catalog.entity.group.class%'
         tags:
             - { name: form.type, alias: pim_enrich_group }
-
-    pim_enrich.form.type.variant_group:
-        class: '%pim_enrich.form.type.variant_group.class%'
-        arguments:
-            - '%pim_catalog.entity.attribute.class%'
-            - '%pim_catalog.entity.group.class%'
-        calls:
-            - [addEventSubscriber, ['@pim_enrich.form.subscriber.add_variant_group_axes']]
-        tags:
-            - { name: form.type, alias: pim_enrich_variant_group }
 
     pim_enrich.form.type.group_type:
         class: '%pim_enrich.form.type.group_type.class%'

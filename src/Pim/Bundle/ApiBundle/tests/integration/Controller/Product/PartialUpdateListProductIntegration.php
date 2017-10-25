@@ -35,7 +35,6 @@ JSON;
 {"line":2,"identifier":"my_identifier","status_code":201}
 JSON;
 
-
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
@@ -48,8 +47,8 @@ JSON;
             'product_family' => [
                 'identifier'    => 'product_family',
                 'family'        => 'familyA1',
+                'parent'        => null,
                 'groups'        => [],
-                'variant_group' => null,
                 'categories'    => [],
                 'enabled'       => true,
                 'values'        => [
@@ -64,8 +63,8 @@ JSON;
             'my_identifier'  => [
                 'identifier'    => 'my_identifier',
                 'family'        => 'familyA2',
+                'parent'        => null,
                 'groups'        => [],
-                'variant_group' => null,
                 'categories'    => [],
                 'enabled'       => true,
                 'values'        => [
@@ -235,12 +234,12 @@ JSON;
     {
         $data =
 <<<JSON
-    {"identifier": "foo", "variant_group":"bar"}
+    {"identifier": "foo", "group":"bar"}
 JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"identifier":"foo","status_code":422,"message":"Property \"variant_group\" expects a valid variant group code. The variant group does not exist, \"bar\" given. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"identifier":"foo","status_code":422,"message":"Property \"group\" does not exist. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);
@@ -313,11 +312,8 @@ JSON;
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
         $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
 
-        $standardizedProduct = static::sanitizeMediaAttributeData($standardizedProduct);
-        $expectedProduct = static::sanitizeMediaAttributeData($expectedProduct);
-
-        NormalizedProductCleaner::clean($standardizedProduct);
         NormalizedProductCleaner::clean($expectedProduct);
+        NormalizedProductCleaner::clean($standardizedProduct);
 
         $this->assertSame($expectedProduct, $standardizedProduct);
     }
@@ -327,6 +323,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

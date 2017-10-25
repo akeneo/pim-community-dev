@@ -3,30 +3,32 @@ confirmation:
     item: Möchten Sie dieses Element wirklich löschen?
     association_type: Möchten Sie diesen Verbindungstyp wirklich löschen?
     attribute: Möchten Sie dieses Attribut wirklich löschen?
+    attribute_group: Möchten Sie diese Attributgruppe wirklich löschen?
     family: Möchten Sie diese Produktfamilie wirklich löschen?
     product: Möchten Sie dieses Produkt wirklich löschen?
     channel: Möchten Sie diesen Ausgabekanal wirklich löschen?
     group: Möchten Sie diese Gruppe wirklich löschen?
-    variant group: Möchten Sie diese Variantengruppe wirklich löschen?
     group_type: Möchten Sie diesen Gruppentyp wirklich löschen?
-    import profile: Möchten Sie dieses Importprofil wirklich löschen?
-    export profile: Möchten Sie dieses Exportprofil wirklich löschen?
+    import_profile: Möchten Sie dieses Importprofil wirklich löschen?
+    export_profile: Möchten Sie dieses Exportprofil wirklich löschen?
     user: Möchten Sie diesen Benutzer wirklich löschen?
     role: Möchten Sie diese Rolle wirklich löschen?
+    job_instance: Möchten Sie diesen Auftrag wirklich löschen?
 pim_datagrid:
   mass_action_group:
     bulk_actions:
-      label: Stapelverarbeitung
+      label: Massenbearbeitung
     quick_export:
       label: Schnell-Export
   mass_action:
     delete:
-      confirm_content: Sind Sie sicher, dass Sie die ausgewählten Produkte löschen möchten?
+      label: Löschen
       success: Ausgewählte Produkte erfolgreich gelöscht.
       error: Es ist ein Fehler beim Löschen der ausgewählten Produkte aufgetreten, bitte versuchen Sie es erneut.
   view_selector:
     view: Ansichten
     create_view_modal:
+      create: Anlegen
       confirm: OK
       cancel: Abbrechen
 flash:
@@ -46,8 +48,6 @@ flash:
     removed: Ausgabekanal erfolgreich entfernt
   group:
     removed: Gruppe erfolgreich entfernt
-  variant group:
-    removed: Variantengruppe erfolgreich entfernt
   group_type:
     removed: Gruppentyp erfolgreich gelöscht
   import profile:
@@ -58,9 +58,12 @@ flash:
     removed: Benutzer erfolgreich gelöscht
   role:
     removed: Rolle erfolgreich entfernt
+  job_instance:
+    removed: Auftrag erfolgreich gelöscht
 error:
+  common: Es ist ein Fehler aufgetreten
   creating:
-    product: Es ist kein Attribut ist als Produktidentifikator konfiguriert oder Sie haben keine Rechte diesen zu bearbeiten.
+    product: Es ist kein Attribut als Kennung konfiguriert oder Sie haben keine Rechte die Kennung zu bearbeiten.
   removing:
     item: Dieses Element kann nicht gelöscht werden
     association_type: Dieser Verbindungstyp kann nicht gelöscht werden
@@ -69,7 +72,6 @@ error:
     product: Dieses Produkt kann nicht gelöscht werden
     channel: Dieser Ausgabekanal kann nicht gelöscht werden
     group: Diese Gruppe kann nicht gelöscht werden
-    variant group: Diese Variantengruppe kann nicht gelöscht werden
     group type: Dieser Gruppentyp kann nicht gelöscht werden
     import profile: Dieses Importprofil kann nicht gelöscht werden
     export profile: Dieses Exportprofil kann nicht gelöscht werden
@@ -108,11 +110,12 @@ pim:
         csv_grid_context: CSV (Kontextabhängig)
         xlsx_all: Excel (alle Attribute)
         xlsx_grid_context: Excel (Kontextabhängig)
-      delete: Produkte löschen
-      mass_edit: Produktinformationen ändern
+      delete: Löschen
+      mass_edit: Massenbearbeitung
       category_edit: Produkte in Kategorien verschieben
-      sequential_edit: Produkte se­quen­zi­ell bearbeiten
+      sequential_edit: Sequentielle Bearbeitung
 jstree.create: Anlegen
+jstree.done: Fertig
 switch_on: "Ja"
 switch_off: "Nein"
 pim_enrich:
@@ -125,7 +128,8 @@ pim_enrich:
       confirm.title: '{{ itemName }} löschen'
   navigation:
     link:
-      back_to_grid: Zurück zur Übersicht
+      back_to_grid: Zurück zur Listenansicht
+    other_actions: Weitere Aktionen
   entity:
     save:
       label: Speichern
@@ -139,7 +143,13 @@ pim_enrich:
         save: Speichern
         cancel: Abbrechen
     product:
+      navigation: Navigation Produkte
+      infos: Produktinformationen
       title: Produkt
+      locale: Gebietsschema
+      category: Kategorie
+      create: Produkt anlegen
+      filters: Filter
       btn:
         enabled: Aktiviert
         disabled: Deaktiviert
@@ -153,16 +163,15 @@ pim_enrich:
         logged_at: Angemeldet am
         from: Von
         modified: Bearbeitet
-        property: Eigenschaft
-        old_values: Alte Werte
-        new_values: Neue Werte
+        old_value: Alter Wert
+        new_value: Neuer Wert
         actions: Aktionen
       info:
         deletion_successful: Produkt erfolgreich gelöscht.
         deletion_failed: Das Produkt konnte nicht gelöscht werden.
         update_successful: Produkt erfolgreich aktualisiert.
         update_failed: Das Produkt konnte nicht aktualisiert werden.
-        field_not_ready: 'Das Produkt kann gerade nicht gespeichert. Folgende Felder sind nicht bereit: {{ fields }}'
+        field_not_ready: 'Das Produkt kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}'
         already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
       error:
         upload: Während des Hochladens der Datei ist ein Fehler aufgetreten
@@ -173,6 +182,9 @@ pim_enrich:
         updated: Letzte Aktualisierung
         family:
           title: Produktfamilie
+          none: Keine
+        family_variant:
+          title: Variante
           none: Keine
         groups:
           title: Gruppen
@@ -191,11 +203,6 @@ pim_enrich:
         all_visible: Alle sichtbaren
         none: Keine
         copy: Kopieren
-      variant_group:
-        updated_by: Aktualisiert durch eine Variantengruppe
-        switch:
-          "yes": "Ja"
-          "no": "Nein"
       optional_attribute:
         remove: Dieses Attribut löschen
       locale_specific_attribute:
@@ -205,7 +212,7 @@ pim_enrich:
       media:
         upload: Upload per Drag & Drop oder hier klicken
       create_popin:
-        title: Neues Produkt anlegen
+        title: Anlegen
         labels:
           family: Wählen Sie eine Produktfamilie
           save: Speichern
@@ -213,12 +220,23 @@ pim_enrich:
       message:
         created: Produkt erfolgreich erstellt
       completeness: Vollständig
+      sequential_edit:
+        empty: Ihre Auswahl ist leer, bitte ändern Sie Ihre Suchparameter
+    product_model:
+      info:
+        update_successful: Produktmodell erfolgreich aktualisiert. Die Vollständigkeit der Produktvarianten wird neu berechnet.
+        update_failed: Das Produktmodell konnte nicht aktualisiert werden.
+        field_not_ready: 'Das Produktmodel kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}'
+      read_only_parent_attribute_from_common: Dieses Attribut muss als gemeinsames Attribut bearbeitet werden.
+      read_only_parent_attribute_from_model: "Dieses Attribut muss als Attribut von {{ axes }} bearbeitet werden"
+      variant_axis: Variantenachse(n)
     association_type:
       info:
         deletion_successful: Verbindungstyp erfolgreich entfernt.
         deletion_failed: Verbindungstyp konnte nicht entfernt werden.
         update_successful: Verbindungstyp erfolgreich aktualisiert.
         update_failed: Verbindungstyp konnte nicht aktualisiert werden.
+        field_not_ready: 'Der Verbindungstyp kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}'
       meta:
         created: Erstellt
         created_by: Erstellt von
@@ -228,7 +246,7 @@ pim_enrich:
         save: Speichern
       title: Verbindungstyp
       create_popin:
-        title: Einen neuen Verbindungstyp anlegen
+        title: Anlegen
       message:
         created: Verbindungstyp erfolgreich erstellt
     group_type:
@@ -237,6 +255,7 @@ pim_enrich:
         deletion_failed: Gruppentyp konnte nicht gelöscht werden.
         update_successful: Gruppentyp erfolgreich aktualisiert.
         update_failed: Der Gruppentyp konnte nicht aktualisiert werden.
+        field_not_ready: 'Der Gruppentyp kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}'
       meta:
         created: Erstellt
         created_by: Erstellt von
@@ -246,7 +265,7 @@ pim_enrich:
         save: Speichern
       title: Gruppentyp
       create_popin:
-        title: Neuen Gruppentypen anlegen
+        title: Anlegen
       message:
         created: Gruppentyp erfolgreich erstellt
     channel:
@@ -258,6 +277,7 @@ pim_enrich:
         update_failed: Ausgabekanal konnte nicht aktualisiert werden.
         create_successful: Ausgabekanal erfolgreich angelegt.
         create_failed: Ausgabekanal konnte nicht angelegt werden.
+        field_not_ready: 'Der Channel kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}'
       meta:
         created: Erstellt
         created_by: Erstellt von
@@ -271,6 +291,8 @@ pim_enrich:
         update_successful: Produktfamilie erfolgreich aktualisiert.
         create_successful: Ausgabekanal erfolgreich angelegt.
         update_failed: Beim Aktualisieren der Produktfamilie ist ein Fehler aufgetreten.
+        cant_remove_attribute_as_label: Das Attribut kann nicht entfernt werden, da es als Label verwendet wird
+        cant_remove_attribute_as_image: Attribute kann nicht entfernt werden, da es als Hauptbild verwendet wird
         attribute_edit_permission_is_not_granted: Sie haben keine Berechtigungen um die Attribute der Produktfamilie zu bearbeiten
       meta:
         created: Erstellt
@@ -280,34 +302,19 @@ pim_enrich:
       btn:
         save: Speichern
       create_popin:
-        title: Neue Produktfamilie anlegen
+        title: Anlegen
       message:
         created: Produktfamilie erfolgreich angelegt
+      variant:
+        axis.label: Variantenachse(n)
+        create: Anlegen
+        cancel: Abbrechen
+        code: Code
+        label: Bezeichnung
     attribute_option:
       code: Code
       label: Bezeichnung
       actions: Aktionen
-    variant_group:
-      title: Variantengruppe
-      info:
-        deletion_successful: Variantengruppe erfolgreich gelöscht.
-        deletion_failed: Die Variantengruppe konnte nicht gelöscht werden.
-        update_successful: Variantengruppe erfolgreich aktualisiert.
-        update_failed: Die Variantengruppe konnte nicht aktualisiert werden.
-        already_in_upload: Es wird bereits eine Datei für dieses Attribut im Gebietsschema "{{ locale }}" und Gültigkeitsbereich "{{ scope }}" hochgeladen
-        no_attributes: Diese Variantengruppe hat noch keine Attribute
-      btn:
-        save: Speichern
-      meta:
-        product_count: Produkte
-        created: Erstellt
-        created_by: Erstellt von
-        updated: Aktualisiert
-        updated_by: Aktualisiert von
-      create_popin:
-        title: Neue Variantengruppe anlegen
-      message:
-        created: Variantengruppe erfolgreich erstellt
     group:
       title: Gruppe
       info:
@@ -315,6 +322,7 @@ pim_enrich:
         deletion_failed: Gruppe konnte nicht gelöscht werden.
         update_successful: Gruppe erfolgreich aktualisiert.
         update_failed: Die Gruppe konnte nicht aktualisiert werden.
+        field_not_ready: 'Die Gruppe kann gerade nicht gespeichert werden. Folgende Felder sind unvollständig: {{ fields }}'
       btn:
         save: Speichern
       meta:
@@ -324,7 +332,7 @@ pim_enrich:
         updated: Aktualisiert
         updated_by: Aktualisiert von
       create_popin:
-        title: Neue Gruppe anlegen
+        title: Anlegen
       message:
         created: Gruppe erfolgreich erstellt
     job_instance:
@@ -333,6 +341,13 @@ pim_enrich:
         update_failed: Das Job-Profil konnte nicht aktualisiert werden.
         update_successful: Das Job-Profil wurde erfolgreich aktualisiert.
     attribute:
+      info:
+        deletion_successful: Attribut erfolgreich gelöscht.
+        deletion_failed: Das Attribute konnte nicht gelöscht werden.
+        update_successful: Attribut erfolgreich aktualisiert.
+        update_failed: Das Attribut konnte nicht aktualisiert werden.
+        create_successful: Attribut erfolgreich erstellt.
+        create_failed: Das Attribut konnte nicht erstellt werden.
       scopable: Je Ausgabekanal individualisierbar
       type:
         pim_catalog_identifier: Kennung
@@ -355,13 +370,19 @@ pim_enrich:
         url: URL
     attribute_group:
       info:
+        update_failed: Die Attributgruppe konnte nicht aktualisiert werden
         update_successful: Attributgruppe erfolgreich aktualisiert
+    api_connection:
+      create_popin:
+        title: Anlegen
   confirmation:
     leave: Möchten Sie diese Seite wirklich verlassen?
     discard_changes: Änderungen an {{ entity }} gehen verloren, wenn Sie die Seite verlassen.
     delete_item: Löschen bestätigen
+    remove: Entfernen
     delete:
       attribute: Sind Sie sicher, dass Sie dieses Attribut vom Produkt löschen möchten?
+      attribute_group: Soll das Attribut {{ attribute }} wirklich aus dieser Attributgruppe entfernt werden?
   info:
     not_applicable: N/A
     entity:
@@ -373,6 +394,9 @@ pim_enrich:
     error_occured: Während des Ladens der Seite ist ein Fehler aufgetreten
   form:
     required: (erforderlich)
+    product_model:
+      complete_variant_product: Produktvariante
+      complete_variant_products: Produktvarianten
     product:
       tab:
         associations:
@@ -381,7 +405,8 @@ pim_enrich:
             none_exist: Es gibt keine Verbindungstypen.
             show_products: Produkte anzeigen
             show_groups: Gruppen anzeigen
-            number_of_associations: "{{ productCount }} Produkte und {{ groupCount }} Gruppen"
+          association_type_selector: Verbindungstyp
+          target: Ziel
         attributes:
           title: Attribute
           btn:
@@ -394,6 +419,11 @@ pim_enrich:
             no_match: Keine Treffer gefunden
             load_more: Weitere Ergebnisse werden geladen...
           attribute_group_selector: Attributgruppe
+          attribute_group_all: Alle
+          attribute_filter:
+            display: Anzeige
+            all: Alle Attribute
+            missing_required: Alle unvollständigen erforderlichen Attribute
         categories:
           title: Kategorien
       panel:
@@ -402,7 +432,7 @@ pim_enrich:
           info:
             no_family: Keine Produktfamilie zugewiesen. Bitte wählen Sie eine Produktfamilie, um die Vollständigkeit dieses Produkts zu berechnen.
             no_completeness: Sie haben gerade die Produktfamilie geändert. Bitte speichern Sie zuerst, um die Vollständigkeit für die neue Produktfamilie zu berechnen.
-          missing_values: Fehlende Werte
+          missing_values: "{1}1 fehlender Wert|] 1, Inf [{{ count }} fehlende Werte"
         history:
           title: Historie
       switch:
@@ -468,6 +498,7 @@ pim_enrich:
           general: Allgemein
           code: Code
           attribute_as_label: Attribut als Label verwendet
+          attribute_as_image: Attribut als Hauptbild in Verwendung
           empty_attribute_as_image: Nicht ausgewählt
           label_translations: Feldbezeichner-Übersetzungen
         attributes:
@@ -494,21 +525,6 @@ pim_enrich:
       switch:
         "no": "Nein"
         "yes": "Ja"
-    variant_group:
-      tab:
-        properties:
-          title: Eigenschaften
-          general: Allgemeine Eigenschaften
-          code: Code
-          type: Typ
-          axis: Achse
-          label_translations: Feldbezeichner-Übersetzungen
-        history:
-          title: Historie
-        products:
-          title: Produkte
-        attributes:
-          title: Attribute
     group:
       tab:
         properties:
@@ -533,7 +549,7 @@ pim_enrich:
           table:
             name: Name
             type: Typ
-            scope: Gültigkeitsbereich
+            scopable: Je Ausgabekanal individualisierbar
             localizable: Lokalisierbar
         history.title: Historie
     common:
@@ -577,14 +593,17 @@ pim_enrich:
         export.title: Jetzt exportieren
         import.launch: Jetzt importieren
         import.upload: Hochladen und jetzt importieren
+        import.upload_file: Datei hochladen
       meta:
         job: Auftrag
         connector: Konnektor
+      subsection:
+        last_executions: Zuletzt ausgeführt
       tab:
         content:
           title: Inhalt
         properties:
-          title: Allgemeine Eigenschaften
+          title: Eigenschaften
           code:
             title: Code
           label:
@@ -637,25 +656,32 @@ pim_enrich:
           real_time_versioning:
             title: Echtzeit Änderungsverfolgung
             help: Bedeutet, dass sich die Änderungsverfolgung von Produkten automatisch aktualisiert. Um die Systemleistung zu verbessern, kann diese Funktion ausgeschaltet werden
+          family_variant_column:
+            title: Produktfamilie Varianten Spalte
         history:
           title: Historie
       file_path: Dateipfad
     attribute:
       meta:
         created: Erstellt
+        created_by: von
         updated: Letzte Aktualisierung
+        updated_by: von
       tab:
         properties:
           title: Eigenschaften
           section:
             common: Allgemeine Parameter
+            type_specific: Spezifische Parameter
             validation: Validierungsparameter
           label:
             allowed_extensions: Zulässige Dateiendungen
+            auto_option_sorting: Automatische Sortierung der Optionen in alphabetischer Reihenfolge
             available_locales: Verfügbare Gebietsschemata
             code: Code
             date_max: Max. Datum
             date_min: Min. Datum
+            decimals_allowed: Dezimalwerte erlaubt
             default_metric_unit: Standard-Maßeinheit
             group: Attributgruppe
             is_locale_specific: Gebietsschema-spezifisch
@@ -663,14 +689,18 @@ pim_enrich:
             max_characters: Max. Zeichen
             max_file_size: Maximale Dateigröße (MB)
             metric_family: Metrische Gruppe
+            minimum_input_length: Mindestlänge für Auto-Vervollständigung
+            negative_allowed: Negativwerte erlaubt
             number_max: Max. Wert
             number_min: Min. Wert
+            reference_data_name: Referenzdatentyp
             scopable: Wert je Ausgabekanal
             type: Typ
             unique: Eindeutiger Wert
-            useable_as_grid_filter: Verwendbar im Raster
+            useable_as_grid_filter: Anwendbar in der Listenansicht
             validation_regexp: Regulärer Ausdruck
             validation_rule: Validierungsregel
+            wysiwyg_enabled: Rich-Text-Editor aktiviert
           default_label:
             default_metric_unit: Wählen Sie eine Einheit
             group: Wählen Sie die Attributgruppe
@@ -692,7 +722,7 @@ pim_enrich:
             add: Hinzufügen
             attributes_groups_selected: '{{ itemsCount }} Gruppe(n) ausgewählt'
   job:
-    upload: Drag & Drop einer Datei oder hier klicken
+    upload: Upload {{ type }}-Datei per Drag & Drop oder hier klicken
   export:
     product:
       data:
@@ -711,7 +741,6 @@ pim_enrich:
         attributes:
           title: Attribute
           edit: Bearbeiten
-          label: "{0} alle Attribute |{1} ein Attribut ausgewählt |] 1, Inf [{{ count }} Attribute ausgewählt"
           help: Wählen Sie die Produktinformationen die exportiert werden sollen. (z.B. alle technischen Attribute)
           empty: Alle Attribute werden exportiert
           modal:
@@ -725,6 +754,8 @@ pim_enrich:
           clear: Zurücksetzen
           all_group: Alle Gruppen
           empty_selection: Alle Attribute werden exportiert
+          title: Attribute
+          description: Wählen Sie die Produktinformationen die exportiert werden sollen
         family:
           title: Produktfamilie
           help: Wählen Sie die Produkte, die entsprechend Ihrer Produktfamilie exportiert werden sollen. (z.B. nur Schuhe und Anzüge).
@@ -762,6 +793,7 @@ pim_enrich:
           help: Verwenden Sie die Produktkategorien im Strukturbaum (definiert durch den Ausgabekanal oben) um die Produkte für den Export zu selektieren
         identifier:
           title: Kennung
+          help: Verwenden Sie die Kennung der Produkte um getrennt durch Kommas, Leerzeichen oder Zeilenumbrüche zu exportieren
         metric:
           operators:
             "=": Ist gleich
@@ -835,111 +867,101 @@ pim_enrich:
       description: Die ausgewählten Produktattribute werden für die folgenden Daten des Gebietsschemas <span class="bold-purple">{{ locale }}</span> und dem Ausgabekanal <span class="bold-purple">{{ channel }}</span>, welche in der Produktübersicht ausgewählt sind, bearbeitet.
   index:
     association_type:
-      title: Verbindungstypen-Übersicht
       create_btn: Verbindungstyp anlegen
     import_profiles:
-      title: Übersicht Importprofil
       create_btn: Importprofil anlegen
       list: Wählen Sie einen Auftrag
       create_popin:
-        title: Ein neues Importprofil anlegen
+        title: Anlegen
+      message:
+        created: Importprofil erfolgreich erstellt
     import_history:
       title: Importberichte
-    variant_group:
-      title: Übersicht Variantengruppe
-      create_btn: Variantengruppe anlegen
     group:
-      title: Übersicht Gruppe
       create_btn: Gruppe anlegen
     export_profiles:
-      title: Übersicht Exportprofil
       create_btn: Exportprofil anlegen
       create_popin:
-        title: Ein neues Exportprofil anlegen
+        title: Anlegen
+      message:
+        created: Exportprofil erfolgreich erstellt
     export_history:
       title: Exportberichte
     family:
-      title: Übersicht Produktfamilie
       create_btn: Produktfamilie anlegen
     grouptype:
-      title: Übersicht Gruppentyp
       create_btn: Gruppentyp anlegen
-    currency:
-      title: Übersicht Währung
-    locale:
-      title: Übersicht Gebietsschema
     user:
-      title: Benutzer
       create_btn: Benutzer anlegen
     user_role:
-      title: Rolle
       create_btn: Rolle anlegen
     user_group:
-      title: Gruppen
       create_btn: Gruppe anlegen
-    process_tracker:
-      title: Prozess-Tracker
     channel:
-      title: Übersicht Ausgabekanäle
       create_btn: Ausgabekanal anlegen
     attribute:
-      title: Attribute Übersicht
       create_btn: Attribut anlegen
       modal_title: Wählen Sie den Attributtyp aus
     attribute_group:
+      title: Attributgruppen
+      create_btn: Anlegen
+    api_connection:
       create_btn: Anlegen
   mass_edit:
     next: Vor
+    previous: Zurück
     cancel: Abbrechen
     confirm: Bestätigen
     product:
+      title: Massenbearbeitung Produkte
+      confirm: "{1}Sie sind dabei, ein Produkt mit den folgenden Informationen zu aktualisieren. Bitte bestätigen Sie den Vorgang.|] 1, Inf [Sie sind dabei {{ itemsCount }} Produkte mit den folgenden Informationen zu aktualisieren. Bitte bestätigen Sie den Vorgang."
       step:
         select:
           label: Produkte auswählen
         choose:
-          label: Aktion auswählen
+          title: Massenbearbeitung Produkte
         configure:
           label: Konfigurieren
         confirm:
           label: Bestätigen
+        launched:
+          label: Die Massenbearbeitung "{{ operation }}" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
       operation:
         change_status:
-          label: Status ändern (aktivieren / deaktivieren)
+          label: Status ändern
           description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
           field: Aktivieren
         edit_common:
           label: Gemeinsame Attribute bearbeiten
+          description: Die ausgewählten Produktattribute, werden mit den folgenden Daten für das Gebietsschema {{ locale }} und den Ausgabekanal {{ scope }} welche in der Produktliste ausgewählt wurden, bearbeitet.
         change_family:
-          label: Produktfamilie der Produkte ändern
           description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
           field: Produktfamilie
         add_to_group:
           label: Zu Gruppen hinzufügen
           description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
           field: Gruppen
-        add_to_variant_group:
-          label: Zu einer Variantengruppe hinzufügen
-          description: Bitte wählen Sie die Variantengruppe aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
-          field: Gruppe
         add_to_category:
-          label: Zuordnung von Produkten in Kategorien
-          description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
+          description: Die Produkte werden den folgenden Kategorien zugeordnet, bereits bestehende Zuordnungen bleiben erhalten.
         move_to_category:
-          label: Produkte in Kategorien verschieben
+          label: Zwischen Kategorien verschieben
           description: Die Produkte werden folgenden Kategorien zugeordnet, die bestehende Zuordnung wird verworfen.
         remove_from_category:
-          label: Produkte aus Kategorien entfernen
+          label: Aus Kategorien entfernen
           description: Die Produkte werden aus den folgenden Kategorien entfernt.
     family:
+      title: Massenbearbeitung Produktfamilien
       step:
         select:
           label: Produktfamilien auswählen
         choose:
-          label: Aktion auswählen
+          title: Massenbearbeitung Produktfamilien
         configure:
           label: Konfigurieren
         confirm:
           label: Bestätigen
+        launched:
+          label: Die Massenbearbeitung "{{ operation }}" wurde gestartet. Sie werden benachrichtigt, sobald diese erledigt ist.
       operation:
         set_requirements:
           label: Benötigte Attribute auswählen
@@ -952,35 +974,27 @@ page_title:
   oro_default: Dashboard
   pim_enrich_attributegroup_index: Attributgruppen
   pim_enrich_attributegroup_create: Attributgruppen | Anlegen
-  pim_enrich_attributegroup_edit: Attributgruppen {{ group.label }} | Bearbeiten
   pim_enrich_categorytree_index: Kategorie-Strukturbäume
   pim_enrich_categorytree_create: Kategorie-Strukturbäume | Anlegen
   pim_enrich_categorytree_create_tree: Kategorie-Strukturbäume | Anlegen
   pim_enrich_attribute_index: Attribute
   pim_enrich_attribute_create: Attribute | Anlegen
-  pim_enrich_attribute_edit: Attribute {{ attribute.label }} | Bearbeiten
   pim_enrich_product_index: Produkte
-  pim_enrich_product_edit: Produkte {{ product.sku }} | Bearbeiten
   pim_enrich_family_index: Produktfamilien
-  pim_enrich_family_edit: Produktfamilien {{ family.label }} | Bearbeiten
   pim_enrich_channel_index: Ausgabekanäle
   pim_enrich_channel_create: Ausgabekanäle | Anlegen
-  pim_enrich_channel_edit: Ausgabekanäle {{ channel.label }} | Bearbeiten
   pim_enrich_currency_index: Währungen
   pim_enrich_locale_index: Gebietsschemata
   pim_enrich_group_index: Gruppen
-  pim_enrich_group_edit: Gruppen {{ group.label }} | Bearbeiten
-  pim_enrich_variant_group_index: Variantengruppen
-  pim_enrich_variant_group_edit: Variantengruppen {{ group.label }} | Bearbeiten
   pim_enrich_associationtype_index: Verbindungstypen
-  pim_enrich_associationtype_edit: Verbindungstypen {{ association type.label }} | Bearbeiten
   pim_enrich_grouptype_index: Gruppentypen
-  pim_enrich_grouptype_edit: Gruppentypen {{ group type.label }} | Bearbeiten
   pim_enrich_mass_edit_action_choose: Massenbearbeitung | Auswählen
   pim_enrich_mass_edit_action_configure: Massenbearbeitung | Konfigurieren
   pim_enrich_mass_edit_action_perform: Massenbearbeitung | Durchführen
   pim_enrich_job_tracker_index: Prozess-Tracker
   pim_enrich_job_tracker_show: Prozess-Tracker | Job anzeigen
+  pim_enrich_api_connection_index: API-Verbindungen
+  pim_analytics_system_info_index: Systeminformationen
 batch_jobs:
   add_product_value:
     label: Produktwert hinzufügen
@@ -1016,12 +1030,11 @@ batch_jobs:
     quick_export.label: XLSX Produkt-Schnellexport kontextabhängig
     perform:
       label: XLSX Produkt-Schnellexport kontextabhängig
-  add_to_variant_group:
-    label: Zu einer Variantengruppe hinzufügen
-    perform:
-      label: Zu einer Variantengruppe hinzufügen
   csv_product_export:
     label: Produkt-Export als CSV-Datei
+    export.label: Produkt export
+  csv_product_model_export:
+    label: Produktmodell-Export als CSV-Datei
     export.label: Produkt export
   csv_category_export:
     label: Kategorie-Export als CSV-Datei
@@ -1038,9 +1051,6 @@ batch_jobs:
   csv_group_export:
     label: Gruppen-Export in CSV-Datei
     export.label: Gruppen-Export
-  csv_variant_group_export:
-    label: Variantengruppen-Export als CSV
-    export.label: Variantengruppen-Export
   csv_family_export:
     label: Exportiere Produktfamilie in CSV-Datei
     export.label: Exportiere Produktfamilie
@@ -1049,6 +1059,8 @@ batch_jobs:
     validation.label: Dateivalidierung
     import.label: Produkt import
     import_associations.label: Produktverbindungen-Import
+  csv_product_model_import:
+    label: Produktmodell-Import aus CSV-Datei
   csv_category_import:
     label: Kategorie-Import aus CSV-Datei
     validation.label: Dateivalidierung
@@ -1069,14 +1081,12 @@ batch_jobs:
     label: Produktfamilien-Import aus CSV-Datei
     validation.label: Dateivalidierung
     import.label: Produktfamilien-Import
+  csv_family_variant_import:
+    validation.label: Dateivalidierung
   csv_group_import:
     label: Gruppen-Import aus CSV-Datei
     validation.label: Dateivalidierung
     import.label: Gruppen-Import
-  csv_variant_group_import:
-    label: Variantengruppen-Import als CSV
-    validation.label: Dateivalidierung
-    import.label: Variantengruppen-Import
   csv_channel_export:
     label: Ausgabekanal-Export als CSV-Datei
     export.label: Ausgabekanal-Export
@@ -1132,28 +1142,28 @@ batch_jobs:
     label: Produktfamilien-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import.label: Produktfamilien-Import
+  xlsx_family_variant_import:
+    validation.label: Dateivalidierung
   xlsx_product_export:
     label: Produkt-Export als XLSX-Datei
     export.label: Produkt export
+  xlsx_product_model_export:
+    label: Produktmodell-Export als XLSX-Datei
+    export.label: Produktmodell-Export
   xlsx_product_import:
     label: Produkt-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import.label: Produkt import
     import_associations.label: Produktverbindungen-Import
+  xlsx_product_model_import:
+    label: Produktmodell-Import aus XLSX-Datei
   xlsx_group_export:
     label: Gruppen-Export als XSLX-Datei
     export.label: Gruppen-Export
-  xlsx_variant_group_export:
-    label: Variantengruppen-Export als XLSX-Datei
-    export.label: Variantengruppen-Export
   xlsx_group_import:
     label: Gruppen-Import aus XLSX-Datei
     validation.label: Dateivalidierung
     import.label: Gruppen-Import
-  xlsx_variant_group_import:
-    label: Variantengruppen-Import aus XLSX-Datei
-    validation.label: Dateivalidierung
-    import.label: Variantengruppen-Import
   xlsx_family_export:
     label: Produktfamilien-Eport als XLSX-Datei
     export.label: Exportiere Produktfamilie
@@ -1213,8 +1223,10 @@ job_tracker:
     invalid_csv: Ungültige Daten herunterladen
 pim_menu:
   tab:
-    dashboard: Dashboard
+    activity: Übersicht
+    imports: Importe
     products: Produkte
+    exports: Exporte
     settings: Einstellungen
     system: System
   item:
@@ -1224,12 +1236,13 @@ pim_menu:
     category: Kategorien
     channel: Ausgabekanäle
     currency: Währungen
+    dashboard: Dashboard
     family: Produktfamilien
     group: Gruppen
     group_type: Gruppentypen
     locale: Gebietsschemata
     product: Produkte
-    variant_group: Variantengruppen
+    published_product: Veröffentlichte Produkte
     export_history: Export-Historie
     export_profile: Export-Profile
     import_history: Import-Historie
@@ -1241,9 +1254,16 @@ pim_menu:
     user_role: Rollen
     info: Systeminformationen
     job_tracker: Prozess-Tracker
+    api_connection: API-Verbindungen
+  navigation:
+    activity: Navigation Übersicht
+    system: Navigation System
+    user: Navigation Benutzerverwaltung
+    settings: Navigation Einstellung
   user:
     logout: Abmelden
     user_account: Mein Konto
 pim_notification:
   mark_all_as_read: Alle als gelesen markieren
+  no_notifications: Keine Benachrichtigungen
   loading: Lädt...

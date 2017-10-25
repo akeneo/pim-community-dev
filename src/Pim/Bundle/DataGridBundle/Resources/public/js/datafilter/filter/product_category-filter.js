@@ -34,17 +34,23 @@ define(
             /**
              * @inheritDoc
              */
-            initialize: function(urlParams, gridName, categoryBaseRoute, container) {
+            initialize: function(urlParams, gridName, categoryBaseRoute, container, updateCallback) {
                 this.$el.remove();
                 this.$el = $(container);
 
                 this.value = $.extend(true, {}, this.emptyValue);
 
+                NumberFilter.prototype.initialize.apply(this, arguments);
+
                 if (urlParams && urlParams[gridName + '[_filter][category][value][treeId]']) {
-                    this.value.value.treeId = urlParams[gridName + '[_filter][category][value][treeId]'];
+                    this.value.value.treeId = parseInt(
+                        urlParams[gridName + '[_filter][category][value][treeId]']
+                    );
                 }
                 if (urlParams && urlParams[gridName + '[_filter][category][value][categoryId]']) {
-                    this.value.value.categoryId = urlParams[gridName + '[_filter][category][value][categoryId]'];
+                    this.value.value.categoryId = parseInt(
+                        urlParams[gridName + '[_filter][category][value][categoryId]']
+                    );
                 }
 
                 this.$el.on('tree.updated', _.bind(this._onTreeUpdated, this));
@@ -55,14 +61,16 @@ define(
                     this.listenTo(filtersManager, 'collection-filters:createState.post', function(filtersState) {
                         _.extend(filtersState, {category: this._getTreeState()});
                     });
-                    filtersManager.listenTo(this, "update", filtersManager._onFilterUpdated);
+                    filtersManager.listenTo(this, 'update', filtersManager._onFilterUpdated);
                 });
 
                 mediator.on('grid_action_execute:product-grid:delete', function() {
                     TreeView.refresh();
                 });
 
-                NumberFilter.prototype.initialize.apply(this, arguments);
+                if (undefined !== updateCallback) {
+                    updateCallback(this.value);
+                }
             },
 
             /**
@@ -118,13 +126,15 @@ define(
                     this._updateState();
                     this._triggerUpdate();
                 }
+
+                this.trigger('update_label', this.value);
             },
 
             /**
              * @inheritDoc
              */
             _triggerUpdate: function () {
-                this.trigger('update');
+                this.trigger('update', this.value);
             },
 
             /**

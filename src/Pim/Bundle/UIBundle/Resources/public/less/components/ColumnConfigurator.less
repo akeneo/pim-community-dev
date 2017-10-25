@@ -4,48 +4,84 @@
   @itemHeight: 50px;
 
   display: flex;
+  padding: 0 0 0 @AknFullPagePadding;
+  font-size: @AknFontSizeBig;
+
+  &-title {
+    position: fixed;
+    top: @AknFullPagePadding;
+    width: ~"calc(100% - 2 * 24px)";
+    text-align: center;
+  }
+
+  &-subTitle {
+    position: fixed;
+    top: @AknFullPagePadding + 60px;
+    width: ~"calc(100% - 2 * 24px)";
+    text-align: center;
+  }
 
   &-column {
-    flex-basis: 100% / 3;
+    flex-basis: 30%;
     flex-grow: 1;
-    border-left: 1px solid @AknBorderColor;
-    border-top: 1px solid @AknBorderColor;
-    border-bottom: 1px solid @AknBorderColor;
-
-    &:last-child {
-      border-right: 1px solid @AknBorderColor;
-    }
+    border: 1px solid @AknBorderColor;
+    margin-right: @AknFullPagePadding;
 
     &--large {
       flex-basis: 80%;
+    }
+
+    &--gray {
+      background: #F6F7FB; // TODO FIND COLOR
     }
   }
 
   &-columnHeader {
     height: @itemHeight;
-    padding: (@itemHeight - @AknFormHeight) / 2;
-    border-bottom: 1px solid @AknBorderColor;
+    border-bottom: 1px solid @AknLightPurple;
     font-size: @AknFontSizeBig;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    text-transform: uppercase;
+    margin: 5px 20px 0 20px;
   }
 
   &-listContainer {
-    max-height: ~"calc(100vh - 210px)";
+    max-height: ~"calc(100vh - 175px)";
     overflow-x: hidden;
     overflow-y: auto;
-    padding: 10px;
+    padding: 10px 20px;
     min-height: 100px;
+    color: @AknDarkBlue;
   }
 
   &-columnHeader ~ &-listContainer {
-    max-height: ~"calc(100vh - 260px)";
+    max-height: ~"calc(100vh - 230px)";
   }
 
   &-searchInput {
     font-size: @AknFontSizeBig;
     padding-left: 32px;
+    background: url("../../images/icon-search-purple.svg") no-repeat 0 9px;
+    background-size: 20px;
+    border: none;
+    color: @AknLightPurple;
+
+    &:focus {
+      outline: none !important;
+    }
+
+    &::-webkit-input-placeholder {
+      color: @AknLightPurple;
+      text-transform: uppercase;
+    }
+
+    &::-moz-placeholder {
+      color: @AknLightPurple;
+      opacity: 1;
+      text-transform: uppercase;
+    }
   }
 
   &-searchIcon {

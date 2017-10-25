@@ -92,26 +92,9 @@ function($, _, mediator) {
         },
 
         /**
-         * Fix dropdown design
-         *
-         * @protected
-         */
-        _setDropdownDesign: function() {
-            var widget = this.getWidget();
-            widget.addClass('dropdown-menu');
-            widget.addClass('AknDropdown-menu');
-            widget.removeClass('ui-widget-content');
-            widget.removeClass('ui-widget');
-            widget.find('.ui-widget-header').removeClass('ui-widget-header');
-            widget.find('.ui-multiselect-filter').removeClass('ui-multiselect-filter');
-            widget.find('ul li label').removeClass('ui-corner-all');
-        },
-
-        /**
          * Action performed on dropdown open
          */
         onOpenDropdown: function() {
-            this._setDropdownDesign();
             this.getWidget().find('input[type="search"]').focus();
             $('body').trigger('click');
         },
@@ -123,17 +106,13 @@ function($, _, mediator) {
          */
         getMinimumDropdownWidth: function() {
             if (_.isNull(this.minimumWidth)) {
-                var elements = this.getWidget().find('.ui-multiselect-checkboxes li');
-                var margin = 26;
+                const margin = 100;
+                const elements = this.getWidget().find('.ui-multiselect-checkboxes li');
+                const longest = _.max(_.map(elements, function (element) {
+                    return $(element).find('span:first').width();
+                }));
 
-                var longestElement = _.max(elements, function (element) {
-                    var htmlContent = $(element).find('span:first').html();
-                    var length = htmlContent ? htmlContent.length : 0;
-
-                    return length;
-                });
-
-                this.minimumWidth = $(longestElement).find('span:first').width() + margin;
+                this.minimumWidth = longest + margin;
             }
 
             return this.minimumWidth;
@@ -170,20 +149,6 @@ function($, _, mediator) {
          */
         multiselectfilter: function(functionName) {
             return this.element.multiselectfilter(functionName);
-        },
-
-        /**
-         *  Set dropdown position according to button element
-         *
-         * @param {Object} button
-         */
-        updateDropdownPosition: function(button) {
-            var position = button.offset();
-
-            this.getWidget().css({
-                top: position.top + button.outerHeight(),
-                right: position.right
-            });
         }
     };
 

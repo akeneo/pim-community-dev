@@ -35,6 +35,6 @@ class GroupReader extends AbstractReader implements
      */
     protected function getResults()
     {
-        return new \ArrayIterator($this->repository->getAllGroupsExceptVariant());
+        return new \ArrayIterator($this->repository->findAll());
     }
 }

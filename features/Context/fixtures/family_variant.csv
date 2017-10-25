@@ -1,0 +1,4 @@
+code;family;label-de_DE;label-en_US;label-fr_FR;variant-axes_1;variant-axes_2;variant-attributes_1;variant-attributes_2
+another_clothing_color_and_size;clothing;Kleidung nach Farbe und Größe;Clothing by color and size;Vêtements par couleur et taille;color;size;color,name,image,variation_image,composition;size,ean,sku,weight
+another_shoes_size;shoes;Schuhe nach Größe;Shoes by size;Chaussures par taille;eu_shoes_size;;weight;
+another_clothing_color_size;clothing;"Kleidung nach Farbe/Größe";"Clothing by color/size";"Vêtements par couleur/taille";color,size;;name,image,variation_image,composition;

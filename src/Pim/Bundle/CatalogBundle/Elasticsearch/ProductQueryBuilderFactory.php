@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\CatalogBundle\Elasticsearch;
 
 use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
@@ -47,7 +49,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
      * @param ProductQueryBuilderOptionsResolverInterface $optionsResolver
      */
     public function __construct(
-        $pqbClass,
+        string $pqbClass,
         AttributeRepositoryInterface $attributeRepository,
         FilterRegistryInterface $filterRegistry,
         SorterRegistryInterface $sorterRegistry,
@@ -65,7 +67,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(array $options = [])
+    public function create(array $options = []): ProductQueryBuilderInterface
     {
         $options = $this->resolveOptions($options);
 
@@ -105,7 +107,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
      *
      * @return ProductQueryBuilderInterface
      */
-    protected function createProductQueryBuilder(array $options)
+    protected function createProductQueryBuilder(array $options): ProductQueryBuilderInterface
     {
         $pqb = new $this->pqbClass(
             $this->attributeRepository,
@@ -124,7 +126,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
      *
      * @return array
      */
-    protected function resolveOptions(array $options)
+    protected function resolveOptions(array $options): array
     {
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
@@ -145,7 +147,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
     /**
      * @param OptionsResolver $resolver
      */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefined([
             'repository_method',
@@ -183,15 +185,17 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
     /**
      * @param OptionsResolver $resolver
      */
-    protected function configureFilterOptions(OptionsResolver $resolver)
+    protected function configureFilterOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setRequired(['field', 'operator', 'value'])
-            ->setDefined(['context'])
+            ->setDefined(['context', 'type'])
             ->setDefaults([
-                'context'  => [],
+                'context' => [],
+                'type' => '',
             ])
             ->setAllowedTypes('context', 'array')
+            ->setAllowedTypes('type', 'string')
         ;
     }
 }

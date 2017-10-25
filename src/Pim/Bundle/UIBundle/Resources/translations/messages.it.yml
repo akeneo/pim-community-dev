@@ -20,7 +20,7 @@ Change file: Modifica file
 Remove file: Rimuovi file
 Delete: Eliminare
 Save: Salva
-Cancel: Cancella
+Cancel: Annulla
 Get help: Chiedi aiuto
 My User: Il mio profilo
 oro.form.choose_value: Scegliere un valore...
@@ -45,4 +45,5 @@ pim_ui.system_config:
     loading_messages.label: Messaggi di caricamento disponibili
     loading_messages.tooltip: Tutti i messagi disponibili di caricamento separati da interruzioni di riga
   group:
-    loading_message.title: Caricamento dei messaggi in corso
+    loading_message.title: Messaggi per "caricamento in corso"
+other_actions: Altre azioni

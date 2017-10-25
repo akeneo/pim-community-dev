@@ -15,14 +15,25 @@
     justify-content: space-between;
     height: 100%;
     border-right: 1px solid @AknBorderColor;
+    z-index: 803;
+    background: white;
   }
 
   &-menuBlock {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-menuItemContainer {
+    flex-grow: 1;
+    flex-basis: 70px;
+    position: relative;
   }
 
   &-menuItem {
+    position: absolute;
+    height: 100%;
     display: flex;
-    height: @AknMainMenuWidth;
     width: @AknMainMenuWidth;
     border: 0 solid @AknLightPurple;
     flex-direction: column;
@@ -31,6 +42,8 @@
     font-size: 12px;
     cursor: pointer;
     padding-right: 0;
+    color: @AknDefaultFontColor;
+    text-align: center;
     transition:
       border-left-width @transitionDelay @transitionKeyframe,
       padding-right @transitionDelay @transitionKeyframe,
@@ -127,4 +140,3 @@
     }
   }
 }
-

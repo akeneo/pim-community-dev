@@ -16,13 +16,14 @@ parameters:
 
     pim_catalog.query.elasticsearch.filter.identifier.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\IdentifierFilter
     pim_catalog.query.elasticsearch.filter.id.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\IdFilter
-    pim_catalog.query.elasticsearch.filter.label_or_identifier.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\LabelOrIdentifierFilter
     pim_catalog.query.elasticsearch.filter.family.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\FamilyFilter
     pim_catalog.query.elasticsearch.filter.category.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CategoryFilter
     pim_catalog.query.elasticsearch.filter.group.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\GroupFilter
     pim_catalog.query.elasticsearch.filter.status.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\StatusFilter
     pim_catalog.query.elasticsearch.filter.datetime.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\DateTimeFilter
     pim_catalog.query.elasticsearch.filter.completeness.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CompletenessFilter
+    pim_catalog.query.elasticsearch.filter.with_attributes.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\WithAttributesFilter
+    pim_catalog.query.elasticsearch.filter.parent.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\ParentFilter
     pim_catalog.query.elasticsearch.filter.date.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\DateFilter
     pim_catalog.query.elasticsearch.filter.number.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\NumberFilter
     pim_catalog.query.elasticsearch.filter.text.class: Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Attribute\TextFilter
@@ -71,6 +72,36 @@ services:
             - '@pim_catalog.query.sorter.registry'
             - '@pim_catalog.factory.product_from_size_cursor'
             - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    pim_catalog.query.product_model_query_builder_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_model_cursor'
+            - '@pim_catalog.query.product_query_builder_resolver'
+
+    pim_catalog.query.product_model_query_builder_from_size_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_model_from_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_from_size_resolver'
+
+    pim_catalog.query.product_model_query_builder_search_after_size_factory:
+        class: '%pim_catalog.query.elasticsearch.product_query_builder_factory.class%'
+        arguments:
+            - '%pim_catalog.query.product_query_builder.class%'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.sorter.registry'
+            - '@pim_catalog.factory.product_model_search_after_size_cursor'
+            - '@pim_catalog.elasticsearch.product_query_builder_search_after_resolver'
 
     pim_catalog.query.product_query_builder_resolver:
         class: '%pim_catalog.query.product_query_builder_resolver.class%'
@@ -139,14 +170,6 @@ services:
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
 
-    pim_catalog.query.elasticsearch.filter.label_or_identifier:
-        class: '%pim_catalog.query.elasticsearch.filter.label_or_identifier.class%'
-        arguments:
-            - ['label_or_identifier']
-            - ['CONTAINS']
-        tags:
-            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
-
     pim_catalog.query.elasticsearch.filter.family:
         class: '%pim_catalog.query.elasticsearch.filter.family.class%'
         arguments:
@@ -160,7 +183,7 @@ services:
         class: '%pim_catalog.query.elasticsearch.filter.group.class%'
         arguments:
             - '@pim_catalog.repository.group'
-            - ['groups', 'variant_group']
+            - ['groups']
             - ['IN', 'NOT IN', 'EMPTY', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
@@ -187,7 +210,7 @@ services:
         arguments:
             - '@pim_catalog.validator.helper.attribute'
             - ['pim_catalog_boolean']
-            - ['=', '!=']
+            - ['=', '!=', 'NOT EMPTY']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
 
@@ -234,6 +257,24 @@ services:
                 - '<='
                 - '<'
                 - 'EMPTY'
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.with_attributes:
+        class: '%pim_catalog.query.elasticsearch.filter.with_attributes.class%'
+        arguments:
+            - '@pim_catalog.repository.attribute'
+            - ['attributes_for_this_level']
+            - ['IN', 'NOT IN']
+        tags:
+            - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
+
+    pim_catalog.query.elasticsearch.filter.parent:
+        class: '%pim_catalog.query.elasticsearch.filter.parent.class%'
+        arguments:
+            - '@pim_catalog.repository.product_model'
+            - ['parent']
+            - ['IN', 'EMPTY']
         tags:
             - { name: 'pim_catalog.elasticsearch.query.filter', priority: 30 }
 

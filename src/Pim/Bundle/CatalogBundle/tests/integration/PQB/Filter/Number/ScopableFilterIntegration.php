@@ -25,7 +25,8 @@ class ScopableFilterIntegration extends AbstractProductQueryBuilderTestCase
             'type'                => AttributeTypes::NUMBER,
             'localizable'         => false,
             'scopable'            => true,
-            'negative_allowed'    => true
+            'negative_allowed'    => true,
+            'decimals_allowed'    => true,
         ]);
 
         $this->createProduct('product_one', [

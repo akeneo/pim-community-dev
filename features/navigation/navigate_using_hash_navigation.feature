@@ -24,11 +24,8 @@ Feature: Navigate the application in hash navigation mode
       | pim_enrich_locale_index                 |
       | pim_enrich_product_index                |
       | pim_enrich_attribute_index              |
-      | pim_enrich_variant_group_index          |
       | pim_importexport_export_profile_index   |
-      | pim_importexport_export_execution_index |
       | pim_importexport_import_profile_index   |
-      | pim_importexport_import_execution_index |
       | oro_user_create                         |
       | oro_user_group_create                   |
       | oro_user_group_index                    |
@@ -48,9 +45,9 @@ Feature: Navigate the application in hash navigation mode
       | boots    | boots    |       |        |
       | sneakers | sneakers |       |        |
     And I am logged in as "Julia"
-    And I am on the products page
+    And I am on the products grid
     When I select rows boots and sneakers
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I display the Name attribute
     And I reload the page

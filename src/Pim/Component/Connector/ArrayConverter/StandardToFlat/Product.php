@@ -43,8 +43,12 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
             case 'family':
                 $convertedItem[$property] = (string) $data;
                 break;
+            case 'parent':
+                if (null !== $data && '' !== $data) {
+                    $convertedItem[$property] = (string) $data;
+                }
+                break;
             case 'groups':
-            case 'variant_group':
                 $convertedItem = $this->convertGroups($data, $convertedItem);
                 break;
             case 'values':
@@ -64,7 +68,7 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
     }
 
     /**
-     * Convert flat groups & variant_group to flat unified groups.
+     * Convert flat groups to flat unified groups.
      *
      * @param mixed $data
      * @param array $convertedItem
@@ -73,12 +77,17 @@ class Product extends AbstractSimpleArrayConverter implements ArrayConverterInte
      */
     protected function convertGroups($data, array $convertedItem)
     {
-        $groups = is_array($data) ? implode(',', $data) : (string) $data;
+        if (!array_key_exists('groups', $convertedItem)) {
+            $convertedItem['groups'] = '';
+        }
 
-        if (isset($convertedItem['groups']) && '' !== $convertedItem['groups']) {
-            $convertedItem['groups'] .= sprintf(',%s', $groups);
-        } else {
-            $convertedItem['groups'] = $groups;
+        $groups = is_array($data) ? implode(',', $data) : (string) $data;
+        if ('' !== $groups) {
+            if ('' !== $convertedItem['groups']) {
+                $convertedItem['groups'] .= sprintf(',%s', $groups);
+            } else {
+                $convertedItem['groups'] = $groups;
+            }
         }
 
         return $convertedItem;

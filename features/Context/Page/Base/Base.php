@@ -138,12 +138,18 @@ class Base extends Page
     public function toggleSwitch($locator, $on = true)
     {
         $field = $this->findField($locator);
-        if ($field->isChecked() != $on) {
-            $switch = $this->spin(function () use ($field) {
-                return $field->getParent()->find('css', 'label');
-            }, sprintf('Switch label "%s" not found.', $locator));
-            $switch->click();
-        }
+
+        $this->spin(function () use ($field, $on) {
+            if ($on !== $field->isChecked()) {
+                $switch = $this->getClosest($field, 'switch');
+                if (null === $switch) {
+                    return false;
+                }
+                $switch->click();
+            }
+
+            return $on === $field->isChecked();
+        }, sprintf('Switch label "%s" not found.', $locator));
     }
 
     /**
@@ -301,6 +307,12 @@ class Base extends Page
      */
     public function confirmDialog()
     {
+        $this->spin(function () {
+            $loading = $this->find('css', '.loading-mask');
+
+            return null === $loading || !$loading->isVisible();
+        }, 'Loading mask is still visible');
+
         $button = $this->spin(function () {
             return $this->getConfirmDialog()->find('css', '.ok');
         }, 'Could not find the confirmation button');
@@ -396,7 +408,9 @@ class Base extends Page
         $dropdownToggle = $this->spin(function () use ($button) {
             $toggle = $this->find('css', sprintf('*[data-toggle="dropdown"]:contains("%s")', $button));
             if (null !== $toggle) {
-                $toggle->click();
+                if (!$toggle->getParent()->hasClass('open')) {
+                    $toggle->click();
+                };
 
                 return $toggle;
             }
@@ -405,7 +419,7 @@ class Base extends Page
         $dropdownMenu = $dropdownToggle->getParent()->find('css', '.dropdown-menu, .AknDropdown-menu');
 
         return $this->spin(function () use ($dropdownMenu, $item) {
-            return $dropdownMenu->find('css', sprintf('li:contains("%s") a', $item));
+            return $dropdownMenu->find('css', sprintf('.AknDropdown-menuLink:contains("%s")', $item));
         }, sprintf('Item "%s" of dropdown button "%s" not found', $item, $button));
     }
 
@@ -463,7 +477,7 @@ class Base extends Page
         }, sprintf('Could not find a tab named "%s"', $tab));
 
         $this->spin(function () {
-            $loading = $this->find('css', '#loading-wrapper');
+            $loading = $this->find('css', '.loading-mask');
 
             return null === $loading || !$loading->isVisible();
         }, sprintf('Could not visit tab %s because of loading wrapper', $tab));

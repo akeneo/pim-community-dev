@@ -7,7 +7,6 @@ parameters:
     pim_catalog.factory.attribute.class:             Pim\Component\Catalog\Factory\AttributeFactory
     pim_catalog.factory.group_type.class:            Pim\Component\Catalog\Factory\GroupTypeFactory
     pim_catalog.factory.currency.class:              Pim\Component\Catalog\Factory\CurrencyFactory
-    pim_catalog.factory.product_template.class:      Pim\Component\Catalog\Factory\ProductTemplateFactory
     pim_catalog.factory.product_unique_data.class:   Pim\Component\Catalog\Factory\ProductUniqueDataFactory
 
     pim_catalog.factory.value_collection.class:       Pim\Component\Catalog\Factory\ValueCollectionFactory
@@ -29,10 +28,25 @@ services:
             - '@pim_catalog.repository.attribute'
             - '%pim_catalog.entity.family.class%'
 
+    pim_catalog.factory.family_variant:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.family_variant.class%'
+
+    pim_catalog.factory.variant_attribute_set:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.variant_attribute_set.class%'
+
     pim_catalog.factory.channel:
         class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
             - '%pim_catalog.entity.channel.class%'
+
+    pim_catalog.factory.product_model:
+        class: '%akeneo_storage_utils.factory.simple.class%'
+        arguments:
+            - '%pim_catalog.entity.product_model.class%'
 
     pim_catalog.factory.locale:
         class: '%akeneo_storage_utils.factory.simple.class%'
@@ -93,7 +107,6 @@ services:
         class: '%pim_catalog.factory.group.class%'
         arguments:
             - '@pim_catalog.repository.group_type'
-            - '@pim_catalog.factory.product_template'
             - '%pim_catalog.entity.group.class%'
 
     pim_catalog.factory.category:
@@ -105,11 +118,6 @@ services:
         class: '%akeneo_storage_utils.factory.simple.class%'
         arguments:
             - '%pim_catalog.entity.association_type.class%'
-
-    pim_catalog.factory.product_template:
-        class: '%pim_catalog.factory.product_template.class%'
-        arguments:
-            - '%pim_catalog.entity.product_template.class%'
 
     pim_catalog.factory.product_unique_data:
         class: '%pim_catalog.factory.product_unique_data.class%'

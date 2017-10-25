@@ -5,11 +5,11 @@ namespace spec\Pim\Component\Catalog\Localization\Presenter;
 use Akeneo\Component\Localization\Presenter\PresenterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 
 class PresenterRegistrySpec extends ObjectBehavior
 {
-    function let(AttributeRepositoryInterface $attributeRepository)
+    function let(IdentifiableObjectRepositoryInterface $attributeRepository)
     {
         $this->beConstructedWith($attributeRepository);
     }

@@ -1,25 +1,3 @@
 No products to remove: Nema proizvoda za uklanjanje
 "dot (.)": točka (.)
 "comma (,)": zarez (,)
-pim_catalog:
-  constraint:
-    product_identifier: Ovi identifikatori "%s" ne postoje.
-    0: Dogodila se neočekivana pogreška.
-    100: Neočekivana vrijednost
-    101: U ovom se polju očekuje boolean vrijednost.
-    102: U ovom se polju očekuje float vrijednost.
-    103: U ovom se polju očekuje cjelobrojna vrijednost.
-    104: U ovom se polju očekuje numerička vrijednost.
-    105: U ovom se polju očekuje alfanumerička vrijednost.
-    106: U ovom se polju očekuje vrijednost polja.
-    107: U ovom se polju očekuje niz polja kao vrijednost.
-    200: Dogodila se interna pogreška
-    201: Dogodila se interna pogreška
-    202: U ovom se polju očekuje numerička vrijednost.
-    203: U ovom se polju očekuje alfanumerička vrijednost.
-    204: U ovom se polju očekuje alfanumerička vrijednost.
-    205: Dogodila se interna pogreška
-    300: U ovom se polju očekuje valjani entitet.
-    301: U ovom se polju očekuje valjan opseg i lokacija.
-    302: U ovom se polju očekuje valjan opseg.
-    303: U ovom se polju očekuje valjan format pridruživanja.

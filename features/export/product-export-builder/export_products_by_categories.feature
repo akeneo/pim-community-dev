@@ -18,6 +18,7 @@ Feature: Export products from any given categories
       | shoes                  | Shoes                     | women                  |
       | jewelry                | Jewelry                   | women                  |
       | men                    | Men                       | clothing_shoes_jewelry |
+      | 1234                   | 1234                      | default                |
     And the following family:
       | code    | requirements_ecommerce |
       | default | sku                    |
@@ -35,6 +36,7 @@ Feature: Export products from any given categories
       | shoes                  | shoes                  | default |
       | jewelry                | jewelry                | default |
       | men                    | men                    | default |
+      | product_numbered       | 1234                   | default |
     And the following jobs:
       | connector            | type   | alias              | code               | label              |
       | Akeneo CSV Connector | export | csv_product_export | csv_product_export | CSV product export |
@@ -43,23 +45,7 @@ Feature: Export products from any given categories
       | filters  | {"structure":{"locales":["en_US"],"scope":"ecommerce"},"data":[]} |
     And I am logged in as "Julia"
 
-  # We should handle this case with validation
-  @skip
   Scenario: Export the products from a tree
-    Given the following job "csv_product_export" configuration:
-      | filters | {"structure": {"locales": ["en_US"], "scope": "ecommerce"}, "data": [{"field": "categories", "operator": "IN", "value": ["toys_games", "dolls", "women"]}, {"field": "completeness", "operator": ">=", "value": 100,"context":{"locales":["en_US"]}}]} |
-    When I am on the "csv_product_export" export job page
-    And I launch the export job
-    And I wait for the "csv_product_export" job to finish
-    Then exported file of "csv_product_export" should contain:
-      """
-      sku;categories;enabled;family;groups
-      toys_games;toys_games;1;default;
-      dolls;dolls;1;default;
-      women;women;1;default;
-      """
-
-  Scenario: Export the products from a tree using the UI
     When I am on the "csv_product_export" export job edit page
     And I visit the "Content" tab
     Then I should see the text "All products"
@@ -69,8 +55,9 @@ Feature: Export products from any given categories
     When I click on the "toys_games" category
     And I expand the "toys_games" category
     And I click on the "action_figures" category
+    And I click on the "1234" category
     And I press the "Confirm" button
-    Then I should see the text "2 categories selected"
+    Then I should see the text "3 categories selected"
     When I press the "Save" button
     Then I should not see the text "There are unsaved changes."
     And I am on the "csv_product_export" export job page
@@ -81,37 +68,10 @@ Feature: Export products from any given categories
       sku;categories;enabled;family;groups
       toys_games;toys_games;1;default;
       action_figures;action_figures;1;default;
+      product_numbered;1234;1;default;
       """
     When I am on the "csv_product_export" export job edit page
     And I visit the "Content" tab
     And I fill in the following information:
       | Channel | Mobile |
     Then I should see the text "All products"
-
-  @jira https://akeneo.atlassian.net/browse/PIM-6027
-  Scenario: Export the products from a tree using the UI with category code as integer
-    Given the following category:
-      | code | label_en_US | parent  |
-      | 1234 | 1234        | default |
-    And the following product:
-      | sku              | categories | family  |
-      | product_numbered | 1234       | default |
-    When I am on the "csv_product_export" export job edit page
-    And I visit the "Content" tab
-    Then I should see the text "All products"
-    When I press the "Select categories" button
-    Then I should see the text "Categories selection"
-    And I should see the text "Master catalog"
-    When I click on the "1234" category
-    And I press the "Confirm" button
-    Then I should see the text "one category selected"
-    When I press the "Save" button
-    Then I should not see the text "There are unsaved changes."
-    And I am on the "csv_product_export" export job page
-    And I launch the export job
-    And I wait for the "csv_product_export" job to finish
-    Then exported file of "csv_product_export" should contain:
-      """
-      sku;categories;enabled;family;groups
-      product_numbered;1234;1;default;
-      """

@@ -57,7 +57,7 @@ abstract class AbstractValue implements ValueInterface
      */
     public function isEqual(ValueInterface $value)
     {
-        return $this->getData() === $value->getData() &&
+        return $this->getData() == $value->getData() &&
             $this->scope === $value->getScope() &&
             $this->locale === $value->getLocale();
     }

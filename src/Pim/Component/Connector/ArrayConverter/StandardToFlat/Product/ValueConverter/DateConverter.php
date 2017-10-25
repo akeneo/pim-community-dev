@@ -17,7 +17,7 @@ class DateConverter extends AbstractValueConverter implements ValueConverterInte
      *     [
      *         'locale' => null,
      *         'scope'  => null,
-     *         'data'   => '2005-08-15'
+     *         'data'   => '2005-08-15',
      *     ],
      * ]
      *
@@ -38,8 +38,8 @@ class DateConverter extends AbstractValueConverter implements ValueConverterInte
             );
 
             // TODO: Check if we have a timezoned date as input
-            //            $date = \DateTime::createFromFormat(\DateTime::ATOM, $value['data']);
-            //            $convertedItem[$flatName] = $date->format('Y-m-d');
+            // $date = \DateTime::createFromFormat(\DateTime::ATOM, $value['data']);
+            // $convertedItem[$flatName] = $date->format('Y-m-d');
 
             $convertedItem[$flatName] = $value['data'];
         }

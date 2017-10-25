@@ -39,7 +39,7 @@ define(
             template: _.template(template),
             className: 'panel-pane history-panel',
             loading: false,
-            versions: [],
+            expandedVersions: [],
             actions: {},
             events: {
                 'click .expanded .AknGrid-bodyCell': 'toggleVersion'
@@ -48,13 +48,26 @@ define(
             /**
              * {@inheritdoc}
              */
+            initialize: function (config) {
+                this.actions = {};
+
+                if (undefined !== config) {
+                    this.config = config.config;
+                }
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.trigger('tab:register', {
-                    code: this.code,
+                    code: (undefined === this.config.tabCode) ? this.code : this.config.tabCode,
                     label: __('pim_enrich.form.product.panel.history.title')
                 });
 
-                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.update);
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.update);
                 this.onExtensions('action:register',  this.addAction.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -64,7 +77,12 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                if (!this.configured || this.code !== this.getParent().getCurrentTab()) {
+                if (!this.configured) {
+                    return this;
+                }
+
+                const tabCode = (undefined === this.config.tabCode) ? this.code : this.config.tabCode;
+                if (tabCode !== this.getParent().getCurrentTab()) {
                     return this;
                 }
 
@@ -74,6 +92,7 @@ define(
                             this.$el.html(
                                 this.template({
                                     versions: versions,
+                                    expandedVersions: this.expandedVersions,
                                     expanded: true,
                                     hasAction: this.actions
                                 })
@@ -100,8 +119,10 @@ define(
              * Update the history by fetching it from the backend
              */
             update: function () {
-                if (this.getFormData().meta) {
-                    FetcherRegistry.getFetcher('product-history').clear(this.getFormData().meta.id);
+                const entity = this.getFormData();
+
+                if (entity.meta) {
+                    this.getHistoryFetcher(entity).clear(entity.meta.id);
                 }
 
                 this.render();
@@ -113,10 +134,29 @@ define(
              * @return {Promise}
              */
             getVersions: function () {
-                return FetcherRegistry.getFetcher('product-history').fetch(
-                    this.getFormData().meta.id,
-                    { entityId: this.getFormData().meta.id }
+                const entity = this.getFormData();
+
+                return this.getHistoryFetcher(entity).fetch(
+                    entity.meta.id,
+                    { entityId: entity.meta.id }
                 ).then(this.addAttributesLabelToVersions.bind(this));
+            },
+
+            /**
+             * @param {Object} entity
+             *
+             * @returns Fetcher
+             */
+            getHistoryFetcher: function (entity) {
+                if ('product_model' === entity.meta.model_type) {
+                    return FetcherRegistry.getFetcher('product-model-history');
+                }
+
+                if (null !== entity.meta.family_variant) {
+                    return FetcherRegistry.getFetcher('variant-product-history');
+                }
+
+                return FetcherRegistry.getFetcher('product-history');
             },
 
             /**
@@ -179,7 +219,7 @@ define(
                     info += i18n.getFlag(key.shift());
                 }
                 if (attribute.scopable) {
-                    info = '<span>' + key.shift() + '</span>' + info;
+                    info = ' <span>' + key.shift() + '</span>' + info;
                 }
                 if (0 < key.length) {
                     info = key.join(' ') + info;
@@ -206,18 +246,15 @@ define(
              * @param {Event} event
              */
             toggleVersion: function (event) {
-                var $row = $(event.currentTarget).closest('.AknGrid-bodyRow');
-                var $body = $row.closest('.AknGrid');
+                const versionToToggle = event.currentTarget.parentNode.dataset.version;
 
-                $body.find('tr.changeset').addClass('hide');
-                $body.find('i.icon-chevron-down').toggleClass('icon-chevron-right icon-chevron-down');
-
-                if (!$row.hasClass('expanded')) {
-                    $row.next('tr.changeset').removeClass('hide');
-                    $row.find('i').toggleClass('icon-chevron-right icon-chevron-down');
+                if (this.expandedVersions.find(version => version === versionToToggle)) {
+                    this.expandedVersions = this.expandedVersions.filter(version => version !== versionToToggle);
+                } else {
+                    this.expandedVersions.push(versionToToggle);
                 }
-                $row.siblings().removeClass('expanded');
-                $row.toggleClass('expanded');
+
+                this.render();
             }
         });
     }

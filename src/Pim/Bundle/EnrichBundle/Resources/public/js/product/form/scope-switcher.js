@@ -33,6 +33,7 @@ define(
                 'click li a': 'changeScope'
             },
             displayInline: false,
+            displayLabel: true,
             config: {},
 
             /**
@@ -86,13 +87,13 @@ define(
                                 catalogLocale: UserContext.get('catalogLocale'),
                                 i18n: i18n,
                                 displayInline: this.displayInline,
+                                displayLabel: this.displayLabel,
                                 label: __('pim_enrich.entity.product.meta.scope')
                             })
                         );
 
                         this.delegateEvents();
-                    }.bind(this)
-                );
+                    }.bind(this));
 
                 return this;
             },
@@ -118,6 +119,15 @@ define(
              */
             setDisplayInline: function (value) {
                 this.displayInline = value;
+            },
+
+            /**
+             * Updates the display label value
+             *
+             * @param {Boolean} value
+             */
+            setDisplayLabel: function (value) {
+                this.displayLabel = value;
             }
         });
     }

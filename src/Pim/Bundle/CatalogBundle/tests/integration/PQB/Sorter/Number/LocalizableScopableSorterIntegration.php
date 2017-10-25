@@ -27,7 +27,8 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
             'type'                => AttributeTypes::NUMBER,
             'localizable'         => true,
             'scopable'            => true,
-            'negative_allowed'    => true
+            'negative_allowed'    => true,
+            'decimals_allowed'    => true,
         ]);
 
         $this->createProduct('product_one', [
@@ -82,5 +83,17 @@ class LocalizableScopableSorterIntegration extends AbstractProductQueryBuilderTe
     public function testErrorOperatorNotSupported()
     {
         $this->executeSorter([['a_localizable_scopable_number', 'A_BAD_DIRECTION', ['locale' => 'en_US', 'scope' => 'ecommerce']]]);
+    }
+
+    /**
+     * @jira https://akeneo.atlassian.net/browse/PIM-6872
+     */
+    public function testSorterWithNoDataOnSorterField()
+    {
+        $result = $this->executeSorter([['a_localizable_scopable_number', Directions::DESCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
+        $this->assertOrder($result, ['product_one', 'product_two', 'product_three']);
+
+        $result = $this->executeSorter([['a_localizable_scopable_number', Directions::ASCENDING, ['locale' => 'de_DE', 'scope' => 'ecommerce_china']]]);
+        $this->assertOrder($result, ['product_one', 'product_two', 'product_three']);
     }
 }

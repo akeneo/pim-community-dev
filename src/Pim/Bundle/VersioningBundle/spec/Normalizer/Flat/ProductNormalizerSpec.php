@@ -13,7 +13,9 @@ use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductPriceInterface;
+use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -43,12 +45,12 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(1, 'flat')->shouldBe(false);
     }
 
-    function it_normalizes_product(
+    function it_normalizes_variant_product(
         $filter,
-        ProductInterface $product,
+        VariantProductInterface $product,
         AttributeInterface $skuAttribute,
         ValueInterface $sku,
-        Collection $values,
+        ValueCollectionInterface $values,
         FamilyInterface $family,
         $serializer
     ) {
@@ -63,7 +65,46 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn($sku);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);
-        $product->getGroupCodes()->willReturn(['group1', 'group2', 'variant_group_1']);
+        $product->getGroupCodes()->willReturn(['group1', 'group2', 'group_3']);
+        $product->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
+        $product->getAssociations()->willReturn([]);
+        $product->getValuesForVariation()->willReturn($values);
+        $filter->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())->willReturn([$sku]);
+
+        $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
+
+        $this->normalize($product, 'flat', [])->shouldReturn(
+            [
+                'family'     => 'shoes',
+                'groups'     => 'group1,group2,group_3',
+                'categories' => 'nice shoes,converse',
+                'sku'        => 'sku-001',
+                'enabled'    => 1,
+            ]
+        );
+    }
+
+    function it_normalizes_product(
+        $filter,
+        ProductInterface $product,
+        AttributeInterface $skuAttribute,
+        ValueInterface $sku,
+        ValueCollectionInterface $values,
+        FamilyInterface $family,
+        $serializer
+    ) {
+        $family->getCode()->willReturn('shoes');
+        $skuAttribute->getCode()->willReturn('sku');
+        $skuAttribute->getType()->willReturn('pim_catalog_identifier');
+        $skuAttribute->isLocalizable()->willReturn(false);
+        $skuAttribute->isScopable()->willReturn(false);
+        $sku->getAttribute()->willReturn($skuAttribute);
+        $sku->getData()->willReturn('sku-001');
+
+        $product->getIdentifier()->willReturn($sku);
+        $product->getFamily()->willReturn($family);
+        $product->isEnabled()->willReturn(true);
+        $product->getGroupCodes()->willReturn(['group1', 'group2', 'group_3']);
         $product->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
         $product->getAssociations()->willReturn([]);
         $product->getValues()->willReturn($values);
@@ -74,7 +115,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
                 'family'     => 'shoes',
-                'groups'     => 'group1,group2,variant_group_1',
+                'groups'     => 'group1,group2,group_3',
                 'categories' => 'nice shoes,converse',
                 'sku'        => 'sku-001',
                 'enabled'    => 1,
@@ -97,7 +138,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ProductInterface $associatedProduct2,
         ValueInterface $skuAssocProduct1,
         ValueInterface $skuAssocProduct2,
-        Collection $values,
+        ValueCollectionInterface $values,
         FamilyInterface $family,
         $serializer
     ) {
@@ -129,7 +170,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn($sku);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);
-        $product->getGroupCodes()->willReturn(['group1,group2', 'variant_group_1']);
+        $product->getGroupCodes()->willReturn(['group1,group2', 'group_3']);
         $product->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
         $product->getAssociations()->willReturn([$myCrossSell, $myUpSell]);
         $product->getValues()->willReturn($values);
@@ -140,7 +181,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
                 'family'              => 'shoes',
-                'groups'              => 'group1,group2,variant_group_1',
+                'groups'              => 'group1,group2,group_3',
                 'categories'          => 'nice shoes,converse',
                 'cross_sell-groups'   => '',
                 'cross_sell-products' => '',
@@ -162,7 +203,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ValueInterface $colors,
         AttributeOptionInterface $red,
         AttributeOptionInterface $blue,
-        Collection $values,
+        ValueCollectionInterface $values,
         FamilyInterface $family
     ) {
         $family->getCode()->willReturn('shoes');
@@ -211,7 +252,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         AttributeInterface $priceAttribute,
         ValueInterface $price,
         Collection $prices,
-        Collection $values,
+        ValueCollectionInterface $values,
         ProductPriceInterface $productPrice,
         FamilyInterface $family,
         SerializerInterface $serializer
@@ -235,7 +276,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn($price);
         $product->getFamily()->willReturn($family);
         $product->isEnabled()->willReturn(true);
-        $product->getGroupCodes()->willReturn(['group1', 'group2', 'variant_group_1']);
+        $product->getGroupCodes()->willReturn(['group1', 'group2', 'group_3']);
         $product->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
         $product->getAssociations()->willReturn([]);
 
@@ -251,7 +292,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->normalize($product, 'flat', ['price-EUR' => ''])->shouldReturn(
             [
                 'family'     => 'shoes',
-                'groups'     => 'group1,group2,variant_group_1',
+                'groups'     => 'group1,group2,group_3',
                 'categories' => 'nice shoes,converse',
                 'price-EUR'  => '356.00',
                 'enabled'    => 1,

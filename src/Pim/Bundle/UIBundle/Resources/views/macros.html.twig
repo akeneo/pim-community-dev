@@ -72,7 +72,7 @@
         ]
 #}
 {% macro deleteButton(parameters) %}
-    <a href="javascript: void(0);" class="AknButton AknButton--important {{ parameters.aCss is defined? parameters.aCss : '' }}"
+    <a href="javascript: void(0);" class="{{ parameters.aCss is defined? parameters.aCss : '' }}"
         {% if (parameters.id is defined) %}
             id="{{ parameters.id }}"
         {% endif %}
@@ -94,6 +94,9 @@
         {% endif %}
         {% if (parameters.title is defined) %}
             title="{{ parameters.title|trans }}"
+        {% endif %}
+        {% if (parameters.subTitle is defined) %}
+            data-subtitle="{{ parameters.subTitle }}"
         {% endif %}
         >{{ parameters.label|trans -}}
     </a>

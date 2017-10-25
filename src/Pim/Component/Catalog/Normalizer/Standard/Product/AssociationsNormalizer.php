@@ -22,18 +22,15 @@ class AssociationsNormalizer implements NormalizerInterface
         $data = [];
 
         foreach ($product->getAssociations() as $association) {
-            if ($association->getGroups()->count() > 0 || $association->getProducts()->count() > 0) {
-                $code = $association->getAssociationType()->getCode();
+            $code = $association->getAssociationType()->getCode();
+            $data[$code]['groups'] = [];
+            foreach ($association->getGroups() as $group) {
+                $data[$code]['groups'][] = $group->getCode();
+            }
 
-                $data[$code]['groups'] = [];
-                foreach ($association->getGroups() as $group) {
-                    $data[$code]['groups'][] = $group->getCode();
-                }
-
-                $data[$code]['products'] = [];
-                foreach ($association->getProducts() as $product) {
-                    $data[$code]['products'][] = $product->getReference();
-                }
+            $data[$code]['products'] = [];
+            foreach ($association->getProducts() as $product) {
+                $data[$code]['products'][] = $product->getReference();
             }
         }
 

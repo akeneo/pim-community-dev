@@ -43,16 +43,8 @@ Feature: Order attributes
     And I change the attribute "Description" position to 2
     Then I save the attribute group
     When I am on the "boot-001" product page
-    And I refresh current page
     Then the attribute "SKU" should be in position 1
     And the attribute "Description" should be in position 2
     And the attribute "Manufacturer" should be in position 3
     And the attribute "Weather conditions" should be in position 4
     And the attribute "Length" should be in position 5
-    When I display the Name attribute
-    Then the attribute "SKU" should be in position 1
-    And the attribute "Description" should be in position 2
-    And the attribute "Name" should be in position 3
-    And the attribute "Manufacturer" should be in position 4
-    And the attribute "Weather conditions" should be in position 5
-    And the attribute "Length" should be in position 6

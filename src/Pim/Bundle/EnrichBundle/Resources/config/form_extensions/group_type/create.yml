@@ -4,6 +4,8 @@ extensions:
        config:
            labels:
                title: pim_enrich.entity.group_type.create_popin.title
+               subTitle: pim_menu.item.group_type
+           picture: illustrations/Groups.svg
            successMessage: pim_enrich.entity.group_type.message.created
            editRoute: pim_enrich_grouptype_edit
            postUrl: pim_enrich_grouptype_rest_create
@@ -12,6 +14,7 @@ extensions:
     pim-group-type-create-form:
        module: pim/form/common/creation/field
        parent: pim-group-type-create-modal
+       targetZone: fields
        config:
           identifier: code
           label: pim_enrich.entity.create_popin.code

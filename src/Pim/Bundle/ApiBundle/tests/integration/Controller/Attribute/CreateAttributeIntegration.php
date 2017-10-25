@@ -6,6 +6,9 @@ use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group ce
+ */
 class CreateAttributeIntegration extends ApiTestCase
 {
     public function testHttpHeadersInResponseWhenAnAttributeIsCreated()
@@ -323,13 +326,13 @@ JSON;
     {
         "code":"an_incomplete_text",
         "type":"pim_catalog_text",
-        "group":"attributeGroupC"
+        "group":"attributeGroupD"
     }
 JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "group" expects a valid code. The attribute group does not exist, "attributeGroupC" given. Check the standard format documentation.',
+            'message' => 'Property "group" expects a valid code. The attribute group does not exist, "attributeGroupD" given. Check the standard format documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
@@ -672,6 +675,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

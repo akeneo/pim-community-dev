@@ -24,11 +24,8 @@
 }
 
 .ui-multiselect-menu {
-  @minWidth: 150px;
-
   padding: 0;
   max-width: 235px;
-  min-width: @minWidth !important;
   border: 1px solid @AknBorderColor;
   background: white;
 
@@ -69,7 +66,7 @@
     border-radius: 2px;
     padding: 0 8px;
     margin: 0;
-    width: ~"calc(100% - 8px) !important";
+    width: ~"calc(100% - 22px) !important";
   }
 
   .ui-multiselect-checkboxes {
@@ -78,8 +75,7 @@
     background: white;
 
     label {
-      line-height: 25px;
-      padding: 0 10px !important;
+      line-height: 30px;
     }
 
     li {
@@ -104,27 +100,31 @@
 
   .ui-multiselect-checkboxes li.ui-multiselect-optgroup-label {
     border: none;
-    padding-top: 10px;
-    padding-left: 10px;
+    padding: 10px 0;
   }
 
   .ui-multiselect-checkboxes label input {
-    top: 1px;
-    margin-right: 5px;
+    top: -2px;
+    margin-right: 10px;
   }
 
   .ui-multiselect-checkboxes label {
-    padding: 3px 10px;
+    padding: 0;
     cursor: pointer;
     font-weight: normal;
+    color: @AknDefaultFontColor;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: ~"calc(100% - 16px)";
+    overflow: hidden;
+    display: inline-block;
 
     &:hover {
       background: @AknDefaultHoverBackground;
     }
 
     &.ui-state-active {
-      background: @AknPurple;
-      color: white;
+      color: darken(@AknSlateGrey, 30%);
     }
   }
 }
@@ -179,5 +179,107 @@
 
   &.ui-state-active .caret {
     background-color: @AknDefaultHoverBackground;
+  }
+}
+
+.AknFilterBox-filterCriteria.ui-multiselect-menu {
+  padding: 15px 20px 0;
+
+  .ui-multiselect-header {
+    border-bottom: 1px solid @AknLightPurple;
+
+    .ui-multiselect-filter input {
+      border: none;
+      color: @AknLightPurple;
+      height: 30px;
+      line-height: 30px;
+      background: url("../../images/icon-search-purple.svg") no-repeat 0 5px;
+      background-size: 20px;
+      padding-left: 25px;
+
+      &:focus {
+        outline: none !important;
+      }
+
+      &::-webkit-input-placeholder {
+        color: @AknLightPurple;
+        text-transform: uppercase;
+      }
+
+      &::-moz-placeholder {
+        color: @AknLightPurple;
+        opacity: 1;
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+.AknFilterBox-addFilterButton {
+  &.ui-multiselect.ui-state-active {
+    color: @AknLightPurple;
+  }
+
+  &.ui-multiselect-menu {
+    top: 0 !important;
+    width: @AknThirdColumnWidth !important;
+    min-width: @AknThirdColumnWidth !important;
+    height: 100vh !important;
+    border-right: 1px solid @AknBorderColor;
+    background: white;
+    padding: 15px 20px !important;
+    z-index: 750;
+    transition: left @AknColumnTiming @AknColumnTransition;
+
+    .ui-multiselect-filter {
+      border-bottom: 1px solid @AknLightPurple;
+      margin-right: 0;
+
+      input {
+        height: 34px;
+        border: none;
+        width: ~"calc(100% - 25px)" !important;
+        color: @AknLightPurple;
+        font-size: @AknFontSizeBig;
+        background: url("../../images/icon-search-purple.svg") no-repeat 0 9px;
+        background-size: 20px;
+        padding: 0 0 0 25px;
+
+        &:focus {
+          outline: none !important;
+        }
+
+        &::-webkit-input-placeholder {
+          color: @AknLightPurple;
+          text-transform: uppercase;
+        }
+
+        &::-moz-placeholder {
+          color: @AknLightPurple;
+          opacity: 1;
+          text-transform: uppercase;
+        }
+      }
+    }
+
+    &.select-filter-widget ul {
+      max-height: ~"calc(100% - 100px)";
+    }
+
+    .ui-multiselect-checkboxes {
+      li.ui-multiselect-optgroup-label {
+        border-bottom: 1px solid @AknBorderColor;
+        height: 30px;
+        margin-top: 10px;
+        font-weight: normal;
+        font-size: @AknFontSizeBig;
+        color: @AknDarkBlue !important;
+        padding-left: 0;
+      }
+
+      .ui-helper-reset li {
+        height: 30px;
+      }
+    }
   }
 }

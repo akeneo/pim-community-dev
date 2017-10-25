@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Security;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,7 +10,7 @@ class CategoryAuthorizationIntegration extends ApiTestCase
 {
     public function testOverallAccessDenied()
     {
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client = $this->createAuthenticatedClient([], [], null, null, 'kevin', 'kevin');
 
         $client->request('GET', '/api/rest/v1/categories');
 
@@ -200,6 +199,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

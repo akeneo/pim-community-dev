@@ -1,25 +1,3 @@
 No products to remove: Ei poistettavia tuotteita
 "dot (.)": piste (.)
 "comma (,)": pilkku (,)
-pim_catalog:
-  constraint:
-    product_identifier: Nämä tunnisteet "%s" eivät ole olemassa.
-    0: Odottamaton virhe tapahtui.
-    100: Odottamaton arvo
-    101: Tämä kenttä vaatii totuusarvon.
-    102: Tämä kenttä vaatii liukulukuarvon.
-    103: Tämä kenttä vaatii kokonaislukuarvon.
-    104: Tämä kenttä vaatii numeerisen arvon.
-    105: Tämä kenttä vaatii merkkijonoarvon.
-    106: Tämä kenttä vaatii taulukkoarvon.
-    107: Tämä kenttä vaatii arvon sisäkkäisinä taulukkoina.
-    200: Tapahtui sisäinen virhe
-    201: Tapahtui sisäinen virhe
-    202: Tämä kenttä vaatii numeerisen arvon.
-    203: Tämä kenttä vaatii merkkijonoarvon.
-    204: Tämä kenttä vaatii merkkijonoarvon.
-    205: Tapahtui sisäinen virhe
-    300: Tämä kenttä vaatii kelvollisen entiteettikoodin.
-    301: Tämä kenttä vaatii kelvollisen laajuuden ja lokaation.
-    302: Tämä kenttä vaatii kelvollisen laajuuden.
-    303: Tämä kenttä vaatii kelvollisen assosiaatiomuodon.

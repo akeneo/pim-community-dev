@@ -37,7 +37,6 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
 
         $data[self::FIELD_ID] = (string) $product->getId();
         $data[StandardPropertiesNormalizer::FIELD_IDENTIFIER] = $product->getIdentifier();
-        $data[StandardPropertiesNormalizer::FIELD_LABEL] = $product->getLabel();
         $data[StandardPropertiesNormalizer::FIELD_CREATED] = $this->serializer->normalize(
             $product->getCreated(),
             $format
@@ -55,18 +54,24 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
         $data[StandardPropertiesNormalizer::FIELD_CATEGORIES] = $product->getCategoryCodes();
 
         $data[StandardPropertiesNormalizer::FIELD_GROUPS] = $product->getGroupCodes();
-        $data[StandardPropertiesNormalizer::FIELD_VARIANT_GROUP] = null !== $product->getVariantGroup()
-            ? $product->getVariantGroup()->getCode() : null;
 
         foreach ($product->getGroupCodes() as $groupCode) {
             $data[self::FIELD_IN_GROUP][$groupCode] = true;
         }
 
         $data[self::FIELD_COMPLETENESS] = !$product->getCompletenesses()->isEmpty()
-            ? $this->serializer->normalize($product->getCompletenesses(), 'indexing', $context) : [];
+            ? $this->serializer->normalize(
+                $product->getCompletenesses(),
+                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
+                $context
+            ) : [];
 
         $data[StandardPropertiesNormalizer::FIELD_VALUES] = !$product->getValues()->isEmpty()
-            ? $this->serializer->normalize($product->getValues(), 'indexing', $context) : [];
+            ? $this->serializer->normalize(
+                $product->getValues(),
+                ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX,
+                $context
+            ) : [];
 
         return $data;
     }
@@ -76,6 +81,6 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductInterface && 'indexing' === $format;
+        return $data instanceof ProductInterface && ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX === $format;
     }
 }

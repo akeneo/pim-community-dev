@@ -6,6 +6,7 @@ pim_import_export:
   status:
     - 就绪
   download_archive:
+    archive: 下载生成的文件 | 下载生成的文件
     output: 下载生成的文件 | 下载生成的文件
     input: 下载文件 | 下载文件
   notification:
@@ -24,13 +25,9 @@ pim_import_export:
       history.title: 历史
       job_content.title: 内容
 pim_title.export_profile.index: 导出配置文件管理
-pim_title.export_profile.edit: 导出配置文件 %job.label% |编辑
-pim_title.export_profile.show: 导出配置文件 %job.label% |显示
 pim_title.export_execution.index: 导出处理记录
 pim_title.export_execution.show: 导出处理记录|详情
 pim_title.import_profile.index: 导入配置文件管理
-pim_title.import_profile.edit: 导入配置文件 %job.label% |编辑
-pim_title.import_profile.show: 导入配置文件 %job.label% |显示
 pim_title.import_execution.index: 导入处理记录
 pim_title.import_execution.show: 导入处理记录|详情
 export profile:
@@ -129,5 +126,4 @@ Status: 状态
 Summary: 总结
 Start: 开始
 End: 结束
-set_attribute_requirements: 设置属性要求
 warning.label: 警告

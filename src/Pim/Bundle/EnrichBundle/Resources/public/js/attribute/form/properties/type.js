@@ -8,8 +8,8 @@
 define([
     'underscore',
     'oro/translator',
-    'pim/attribute-edit-form/properties/field',
-    'pim/template/attribute/tab/properties/select'
+    'pim/form/common/fields/field',
+    'pim/template/form/common/fields/select'
 ],
 function (
     _,
@@ -18,6 +18,13 @@ function (
     template
 ) {
     return BaseField.extend({
+        events: {
+            'change select': function (event) {
+                this.errors = [];
+                this.updateModel(this.getFieldValue(event.target));
+                this.getRoot().render();
+            }
+        },
         template: _.template(template),
 
         /**

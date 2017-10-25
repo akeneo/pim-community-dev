@@ -24,7 +24,7 @@ Feature: Set the attribute used as label
       | Attribute used as label | Brand |
     And I save the family
     And I should not see the text "There are unsaved changes."
-    And I am on the families page
+    And I am on the families grid
     Then I should see the text "Brand"
 
   Scenario: Successfully display the chosen attribute as the title of the product

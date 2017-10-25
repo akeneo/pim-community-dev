@@ -44,7 +44,6 @@ abstract class AbstractProcessor implements StepExecutionAwareInterface, ItemPro
     {
         foreach ($violations as $violation) {
             // TODO re-format the message, property path doesn't exist for class constraint
-            // for instance cf VariantGroupAxis
             $invalidValue = $violation->getInvalidValue();
             if (is_object($invalidValue) && method_exists($invalidValue, '__toString')) {
                 $invalidValue = (string) $invalidValue;

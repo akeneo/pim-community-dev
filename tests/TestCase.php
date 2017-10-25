@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Test\Integration;
 
-use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
+use Akeneo\Test\IntegrationTestsBundle\Configuration\CatalogInterface;
+use Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @author    Marie Bochu <marie.bochu@akeneo.com>
@@ -13,11 +16,11 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
  */
 abstract class TestCase extends KernelTestCase
 {
-    /** @var Client */
-    protected $esClient;
+    /** @var KernelInterface */
+    protected $testKernel;
 
-    /** @var Loader */
-    protected $esConfigurationLoader;
+    /** @var CatalogInterface */
+    protected $catalog;
 
     /**
      * @return Configuration
@@ -30,17 +33,17 @@ abstract class TestCase extends KernelTestCase
     protected function setUp()
     {
         static::bootKernel(['debug' => false]);
+        $authenticator = new SystemUserAuthenticator(static::$kernel->getContainer());
+        $authenticator->createSystemUser();
 
-        $configuration = $this->getConfiguration();
+        $this->testKernel = new \AppKernelTest('test', false);
+        $this->testKernel->boot();
 
-        $this->esClient = $this->get('akeneo_elasticsearch.client');
-        $this->esConfigurationLoader = $this->get('akeneo_elasticsearch.index_configuration.loader');
-        $databaseSchemaHandler = $this->getDatabaseSchemaHandler();
+        $this->catalog = $this->testKernel->getContainer()->get('akeneo_integration_tests.configuration.catalog');
+        $this->testKernel->getContainer()->set('akeneo_integration_tests.catalog.configuration', $this->getConfiguration());
 
-        $fixturesLoader = $this->getFixturesLoader($configuration, $databaseSchemaHandler);
+        $fixturesLoader = $this->testKernel->getContainer()->get('akeneo_integration_tests.loader.fixtures_loader');
         $fixturesLoader->load();
-
-        $this->resetIndex();
     }
 
     /**
@@ -48,7 +51,7 @@ abstract class TestCase extends KernelTestCase
      *
      * @return mixed
      */
-    protected function get($service)
+    protected function get(string $service)
     {
         return static::$kernel->getContainer()->get($service);
     }
@@ -58,9 +61,19 @@ abstract class TestCase extends KernelTestCase
      *
      * @return mixed
      */
-    protected function getParameter($service)
+    protected function getFromTestContainer(string $service)
     {
-        return static::$kernel->getContainer()->getParameter($service);
+        return $this->testKernel->getContainer()->get($service);
+    }
+
+    /**
+     * @param string $parameter
+     *
+     * @return mixed
+     */
+    protected function getParameter(string $parameter)
+    {
+        return static::$kernel->getContainer()->getParameter($parameter);
     }
 
     /**
@@ -68,37 +81,10 @@ abstract class TestCase extends KernelTestCase
      */
     protected function tearDown()
     {
-        $connectionCloser = $this->getConnectionCloser();
+        $connectionCloser = $this->testKernel->getContainer()->get('akeneo_integration_tests.doctrine.connection.connection_closer');
         $connectionCloser->closeConnections();
 
         parent::tearDown();
-    }
-
-    /**
-     * @return DatabaseSchemaHandler
-     */
-    protected function getDatabaseSchemaHandler()
-    {
-        return new DatabaseSchemaHandler(static::$kernel);
-    }
-
-    /**
-     * @param Configuration         $configuration
-     * @param DatabaseSchemaHandler $databaseSchemaHandler
-     *
-     * @return FixturesLoader
-     */
-    protected function getFixturesLoader(Configuration $configuration, DatabaseSchemaHandler $databaseSchemaHandler)
-    {
-        return new FixturesLoader(static::$kernel, $configuration, $databaseSchemaHandler);
-    }
-
-    /**
-     * @return ConnectionCloser
-     */
-    protected function getConnectionCloser()
-    {
-        return new ConnectionCloser(static::$kernel->getContainer());
     }
 
     /**
@@ -111,33 +97,16 @@ abstract class TestCase extends KernelTestCase
      *
      * @return string
      */
-    protected function getFixturePath($name)
+    protected function getFixturePath(string $name): string
     {
         $configuration = $this->getConfiguration();
         foreach ($configuration->getFixtureDirectories() as $fixtureDirectory) {
-            $path = $fixtureDirectory . $name;
+            $path = $fixtureDirectory . DIRECTORY_SEPARATOR . $name;
             if (is_file($path) && false !== realpath($path)) {
                 return realpath($path);
             }
         }
 
         throw new \Exception(sprintf('The fixture "%s" does not exist.', $name));
-    }
-
-    /**
-     * Resets the index used for the integration tests
-     */
-    private function resetIndex()
-    {
-        $conf = $this->esConfigurationLoader->load();
-
-        if ($this->esClient->hasIndex()) {
-            $this->esClient->deleteIndex();
-        }
-
-        $this->esClient->createIndex($conf->buildAggregated());
-
-        $products = $this->get('pim_catalog.repository.product')->findAll();
-        $this->get('pim_catalog.elasticsearch.product_indexer')->indexAll($products);
     }
 }

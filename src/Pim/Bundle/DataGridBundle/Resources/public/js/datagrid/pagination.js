@@ -1,6 +1,6 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone'],
-function($, _, Backbone) {
+define(['jquery', 'underscore', 'backbone', 'pim/form'],
+function($, _, Backbone, BaseForm) {
     'use strict';
 
     /**
@@ -8,9 +8,9 @@ function($, _, Backbone) {
      *
      * @export  oro/datagrid/pagination
      * @class   oro.datagrid.Pagination
-     * @extends Backbone.View
+     * @extends BaseForm
      */
-    return Backbone.View.extend({
+    return BaseForm.extend({
         /** @property */
         tagName: 'div',
 
@@ -86,7 +86,7 @@ function($, _, Backbone) {
 
             this.hidden = options.hide == true;
 
-            Backbone.View.prototype.initialize.call(this, options);
+            BaseForm.prototype.initialize.call(this, options);
         },
 
         /**
@@ -124,14 +124,14 @@ function($, _, Backbone) {
                 return;
             }
 
-            var label = $(e.target).text();
-            var ffConfig = this.fastForwardHandleConfig;
+            const label = $(e.target).text();
+            const ffConfig = this.fastForwardHandleConfig;
 
-            var collection = this.collection;
+            const collection = this.collection;
 
             if (ffConfig) {
-                var prevLabel = _.has(ffConfig.prev, 'label') ? ffConfig.prev.label : undefined;
-                var nextLabel = _.has(ffConfig.next, 'label') ? ffConfig.next.label : undefined;
+                const prevLabel = _.has(ffConfig.prev, 'label') ? ffConfig.prev.label : undefined;
+                const nextLabel = _.has(ffConfig.next, 'label') ? ffConfig.next.label : undefined;
                 switch (label) {
                     case prevLabel:
                         if (collection.hasPrevious()) collection.getPreviousPage();
@@ -142,7 +142,8 @@ function($, _, Backbone) {
                 }
             }
 
-            var pageIndex = $(e.target).text() * 1 - state.firstPage;
+            const state = collection.state;
+            const pageIndex = label * 1 - state.firstPage;
             collection.getPage(state.firstPage === 0 ? pageIndex : pageIndex + 1);
         },
 
@@ -176,7 +177,7 @@ function($, _, Backbone) {
                 }
             }
 
-            var ffConfig = this.fastForwardHandleConfig;
+            var ffConfig = this.fastForwardHandleConfig || {};
 
             if (ffConfig.prev) {
                 handles.unshift({
@@ -202,7 +203,7 @@ function($, _, Backbone) {
          *
          * @return {*}
          */
-        render: function() {
+        renderPagination: function() {
             this.$el.empty();
 
             var state = this.collection.state;

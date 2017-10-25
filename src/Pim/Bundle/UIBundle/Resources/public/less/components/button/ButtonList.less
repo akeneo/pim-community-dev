@@ -1,10 +1,11 @@
 @import '../../base/variables';
 
 .AknButtonList {
-  @marginSpace: 6px;
+  @marginSpace: 10px;
 
   display: flex;
   align-items: center;
+  margin-right: -@marginSpace;
 
   &-item {
     margin-right: @marginSpace;
@@ -23,6 +24,8 @@
 
   &--right {
     justify-content: flex-end;
+    margin-right: 0;
+    margin-left: -@marginSpace;
   }
 
   &--right &-item {

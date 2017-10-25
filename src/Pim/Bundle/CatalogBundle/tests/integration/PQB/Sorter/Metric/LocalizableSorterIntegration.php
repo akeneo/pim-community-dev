@@ -27,6 +27,7 @@ class LocalizableSorterIntegration extends AbstractProductQueryBuilderTestCase
             'type'                => AttributeTypes::METRIC,
             'localizable'         => true,
             'scopable'            => false,
+            'negative_allowed'    => true,
             'decimals_allowed'    => true,
             'metric_family'       => 'Power',
             'default_metric_unit' => 'WATT'
@@ -78,5 +79,17 @@ class LocalizableSorterIntegration extends AbstractProductQueryBuilderTestCase
     public function testErrorOperatorNotSupported()
     {
         $this->executeSorter([['a_localizable_metric', 'A_BAD_DIRECTION', ['locale' => 'fr_FR']]]);
+    }
+
+    /**
+     * @jira https://akeneo.atlassian.net/browse/PIM-6872
+     */
+    public function testSorterWithNoDataOnSorterField()
+    {
+        $result = $this->executeSorter([['a_localizable_metric', Directions::DESCENDING, ['locale' => 'de_DE']]]);
+        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'empty_product']);
+
+        $result = $this->executeSorter([['a_localizable_metric', Directions::ASCENDING, ['locale' => 'de_DE']]]);
+        $this->assertOrder($result, ['product_one', 'product_two', 'product_three', 'empty_product']);
     }
 }

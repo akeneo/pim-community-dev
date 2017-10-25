@@ -10,6 +10,14 @@ extensions:
             tab: pim-menu-settings
             item: pim-menu-settings-association-type
 
+    pim-association-type-edit-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-association-type-edit-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-association-type-edit-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-association-type-edit-form
@@ -42,6 +50,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.association_type
+                subTitle: pim_menu.item.association_type
                 content: pim_enrich.confirmation.delete_item
                 success: flash.association_type.removed
                 fail: error.removing.association_type

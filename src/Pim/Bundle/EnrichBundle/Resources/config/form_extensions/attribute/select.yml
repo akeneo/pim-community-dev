@@ -16,7 +16,7 @@ extensions:
                 dropZone: content
 
     pim-attribute-form-select-type-specific-params-minimum-input-length:
-        module: pim/attribute-edit-form/properties/text
+        module: pim/form/common/fields/text
         parent: pim-attribute-form-select-type-specific-params
         targetZone: content
         position: 100

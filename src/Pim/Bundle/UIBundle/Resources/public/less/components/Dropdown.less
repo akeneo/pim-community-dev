@@ -22,6 +22,8 @@
     animation-name: fadeOut;
     transition-timing-function: @transitionTimingFunction;
     animation-duration: @animationDuration;
+    max-height: 70vh;
+    overflow: auto;
 
     &--alignLeft { }
 
@@ -32,6 +34,10 @@
 
     &--spaceless {
       padding: 0;
+    }
+
+    &-expanded {
+      min-width: 400px;
     }
   }
 
@@ -51,7 +57,7 @@
     background: none;
     display: block;
     text-align: left;
-    font-size: 12px;
+    font-size: @AknDefaultFontSize;
     width: 100%;
     line-height: 1px;
     transition: line-height @animationDuration @transitionTimingFunction;
@@ -62,6 +68,7 @@
     border: none;
     cursor: pointer;
     padding: 0;
+    text-transform: none;
 
     &:hover {
       background: @AknDefaultHoverBackground;
@@ -69,6 +76,10 @@
 
     &--active {
       color: darken(@AknSlateGrey, 30%);
+    }
+
+    &--hidden {
+      display: none;
     }
   }
 }

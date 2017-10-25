@@ -27,11 +27,13 @@ Action performed.: Toiminto suoritettu.
 Action is not performed.: Toimintoa ei suoritettu.
 Please, select item to perform action.: Valitse kohde toiminnon suorittamiseen.
 View per page: Sivunäkymä
+Enabled: Käytössä
+Disabled: Poistettu käytöstä
+not_available: Ei mitään
 "Yes": true
 "No": false
 oro.datagrid.entityHint: Entiteetti
 oro.datagrid.noentities: Tuloksia ei löytynyt
-oro.datagrid.noresults: "Tuloksia ei löytynyt. Yritä muuttaa hakuehtoja."
 oro.datagrid.nocolumns: Sarakkeita ei määritetty tähän ruudukkoon
 oro.datagrid.pagination.label: "Sivu"
 oro.datagrid.pagination.totalPages: "koskien {{ totalPages }}"
@@ -41,17 +43,23 @@ oro.datagrid.action.refresh: "Päivitä"
 oro_datagrid.select.all: "Kaikki"
 oro_datagrid.select.visible: "Kaikki näkyvillä olevat"
 oro_datagrid.select.none: "Ei yhtään"
+oro_datagrid.select.select: "Valitse"
 pim.grid.ajax_choice_filter.label_empty: on tyhjä
-pim.grid.choice_filter:
-  label_empty: on tyhjä
-  label_in_list: '-luettelosta'
+pim:
+  grid:
+    choice_filter:
+      label_empty: on tyhjä
+      label_in_list: '-luettelosta'
+    price_filter:
+      label: Valuutta
+    category_filter:
+      done: Valmis
 Available Columns: Käytettävissä olevat sarakkeet
 Displayed Columns: Valitut sarakkeet
 datagrid_view.columns.min_message: Valitse vähintään yksi näytettävä datagrid-sarake
 pim_datagrid:
   column_configurator:
     label: Sarakkeet
-    title: Sarakkeen valitseminen
     all_groups: Kaikki ryhmät
     search: Etsi
     clear: Tyhjennä
@@ -59,9 +67,10 @@ pim_datagrid:
     apply: Valitse
     cancel: Peruuta
     remove_column: Poista
+    attribute_groups: Attribuuttiryhmät
   mass_action:
     delete:
-      confirm_title: Poista vahvistus
+      confirm_title: Vahvista poisto
       confirm_ok: OK
       empty_selection: Ei valittuja tuotteita
 pim.grid.mass_action.quick_export.title: Nopea vienti
@@ -84,6 +93,5 @@ grid.view_selector:
   placeholder: Uuden näkymän nimi
   choose_label: Valitse näkymälle nimike
   confirmation:
-    remove: Oletko varma, että haluat poistaa tämän datagrid-näkymän?
-    delete: Poista vahvistus
+    delete: Vahvista poisto
 grid.view_selector.flash.updated: Datagrid-näkymä päivitetty

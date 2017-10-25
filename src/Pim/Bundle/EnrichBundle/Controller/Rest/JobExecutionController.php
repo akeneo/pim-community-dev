@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
-use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
+use Akeneo\Bundle\BatchQueueBundle\Manager\JobExecutionManager;
 use Pim\Bundle\ConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Repository\JobExecutionRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -79,9 +79,7 @@ class JobExecutionController
             ];
         }
 
-        if (!$this->jobExecutionManager->checkRunningStatus($jobExecution)) {
-            $this->jobExecutionManager->markAsFailed($jobExecution);
-        }
+        $jobExecution = $this->jobExecutionManager->resolveJobExecutionStatus($jobExecution);
 
         $context = ['limit_warnings' => 100];
 

@@ -266,16 +266,16 @@
       offset.top = offset.top + this.height;
 
       var $window = $(window);
-      
+
       if ( this.options.width != undefined ) {
         this.widget.width( this.options.width );
       }
-      
+
       if ( this.options.orientation == 'left' ) {
         this.widget.addClass( 'left-oriented' );
         offset.left   = offset.left - this.widget.width() + 20;
       }
-      
+
       if (this._isInFixed()) {
         position = 'fixed';
         offset.top -= $window.scrollTop();
@@ -293,7 +293,8 @@
 
       this.widget.css({
         position: position,
-        top: offset.top,
+        top: offset.top - this.widget.outerHeight() -
+          (this.component ? this.component.outerHeight() : this.$element.outerHeight()),
         left: offset.left,
         right: offset.right
       });
@@ -851,7 +852,7 @@
           else return 'AM';
 	} else if (property === 'UTCYear') {
           rv = d.getUTCFullYear();
-          rv = rv.toString().substr(2);   
+          rv = rv.toString().substr(2);
         } else {
           methodName = 'get' + property;
           rv = d[methodName]();

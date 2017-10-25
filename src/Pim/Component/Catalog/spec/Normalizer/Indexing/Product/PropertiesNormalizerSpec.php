@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
+use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\PropertiesNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -28,15 +29,15 @@ class PropertiesNormalizerSpec extends ObjectBehavior
     function it_support_products(ProductInterface $product)
     {
         $this->supportsNormalization(new \stdClass(), 'whatever')->shouldReturn(false);
-        $this->supportsNormalization(new \stdClass(), 'indexing')->shouldReturn(false);
+        $this->supportsNormalization(new \stdClass(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(false);
         $this->supportsNormalization($product, 'whatever')->shouldReturn(false);
-        $this->supportsNormalization($product, 'indexing')->shouldReturn(true);
+        $this->supportsNormalization($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(true);
     }
 
     function it_normalizes_product_properties_with_empty_fields_and_values(
         $serializer,
         ProductInterface $product,
-        ValueCollectionInterface $productValueCollection,
+        ValueCollectionInterface $valueCollection,
         Collection $completenesses
     ) {
         $product->getId()->willReturn(67);
@@ -45,41 +46,37 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $product->getIdentifier()->willReturn('sku-001');
-        $product->getLabel()->willReturn('sku-001');
         $product->getCreated()->willReturn($now);
         $serializer
-            ->normalize($family, 'indexing')
+            ->normalize($family, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn(null);
         $serializer
-            ->normalize($product->getWrappedObject()->getCreated(), 'indexing')
+            ->normalize($product->getWrappedObject()->getCreated(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn($now->format('c'));
         $product->getUpdated()->willReturn($now);
         $serializer
-            ->normalize($product->getWrappedObject()->getUpdated(), 'indexing')
+            ->normalize($product->getWrappedObject()->getUpdated(), ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn($now->format('c'));
         $product->isEnabled()->willReturn(false);
-        $product->getValues()->willReturn($productValueCollection);
+        $product->getValues()->willReturn($valueCollection);
         $product->getFamily()->willReturn(null);
         $product->getGroupCodes()->willReturn([]);
-        $product->getVariantGroup()->willReturn(null);
         $product->getCategoryCodes()->willReturn([]);
-        $productValueCollection->isEmpty()->willReturn(true);
+        $valueCollection->isEmpty()->willReturn(true);
 
         $product->getCompletenesses()->willReturn($completenesses);
         $completenesses->isEmpty()->willReturn(true);
 
-        $this->normalize($product, 'indexing')->shouldReturn(
+        $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'id'            => '67',
                 'identifier'    => 'sku-001',
-                'label'         => 'sku-001',
                 'created'       => $now->format('c'),
                 'updated'       => $now->format('c'),
                 'family'        => null,
                 'enabled'       => false,
                 'categories'    => [],
                 'groups'        => [],
-                'variant_group' => null,
                 'completeness'  => [],
                 'values'        => [],
             ]
@@ -89,7 +86,7 @@ class PropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_product_with_completenesses(
         $serializer,
         ProductInterface $product,
-        ValueCollectionInterface $productValueCollection,
+        ValueCollectionInterface $valueCollection,
         Collection $completenesses
     ) {
         $product->getId()->willReturn(67);
@@ -97,48 +94,44 @@ class PropertiesNormalizerSpec extends ObjectBehavior
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $product->getIdentifier()->willReturn('sku-001');
-        $product->getLabel()->willReturn('sku-001');
 
         $product->getFamily()->willReturn($family);
-        $serializer->normalize($family, 'indexing')->willReturn($family);
+        $serializer->normalize($family, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->willReturn($family);
 
         $product->getCreated()->willReturn($now);
         $serializer->normalize(
             $product->getWrappedObject()->getCreated(),
-            'indexing'
+            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
         )->willReturn($now->format('c'));
 
         $product->getUpdated()->willReturn($now);
         $serializer->normalize(
             $product->getWrappedObject()->getUpdated(),
-            'indexing'
+            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
         )->willReturn($now->format('c'));
 
         $product->isEnabled()->willReturn(false);
-        $product->getValues()->willReturn($productValueCollection);
+        $product->getValues()->willReturn($valueCollection);
         $product->getFamily()->willReturn(null);
         $product->getGroupCodes()->willReturn([]);
-        $product->getVariantGroup()->willReturn(null);
         $product->getCategoryCodes()->willReturn([]);
-        $productValueCollection->isEmpty()->willReturn(true);
+        $valueCollection->isEmpty()->willReturn(true);
 
         $product->getCompletenesses()->willReturn($completenesses);
         $completenesses->isEmpty()->willReturn(false);
 
-        $serializer->normalize($completenesses, 'indexing', [])->willReturn(['the completenesses']);
+        $serializer->normalize($completenesses, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(['the completenesses']);
 
-        $this->normalize($product, 'indexing')->shouldReturn(
+        $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'id'            => '67',
                 'identifier'    => 'sku-001',
-                'label'         => 'sku-001',
                 'created'       => $now->format('c'),
                 'updated'       => $now->format('c'),
                 'family'        => null,
                 'enabled'       => false,
                 'categories'    => [],
                 'groups'        => [],
-                'variant_group' => null,
                 'completeness'  => ['the completenesses'],
                 'values'        => [],
             ]
@@ -148,32 +141,30 @@ class PropertiesNormalizerSpec extends ObjectBehavior
     function it_normalizes_product_fields_and_values(
         $serializer,
         ProductInterface $product,
-        ValueCollectionInterface $productValueCollection,
+        ValueCollectionInterface $valueCollection,
         FamilyInterface $family,
-        Collection $completenessCollection,
-        Group $variantGroup
+        Collection $completenesses
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $product->getId()->willReturn(67);
         $product->getIdentifier()->willReturn('sku-001');
-        $product->getLabel()->willReturn('sku-001');
 
         $product->getCreated()->willReturn($now);
         $serializer->normalize(
             $product->getWrappedObject()->getCreated(),
-            'indexing'
+            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
         )->willReturn($now->format('c'));
 
         $product->getUpdated()->willReturn($now);
         $serializer->normalize(
             $product->getWrappedObject()->getUpdated(),
-            'indexing'
+            ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX
         )->willReturn($now->format('c'));
 
         $product->getFamily()->willReturn($family);
         $serializer
-            ->normalize($family, 'indexing')
+            ->normalize($family, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)
             ->willReturn([
                 'code'   => 'family',
                 'labels' => [
@@ -181,11 +172,8 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                     'en_US' => 'A family',
                 ],
             ]);
-        $family->getCode()->willReturn('a_family');
         $product->isEnabled()->willReturn(true);
-        $product->getGroupCodes()->willReturn(['first_group', 'second_group', 'a_variant_group']);
-        $product->getVariantGroup()->willReturn($variantGroup);
-        $variantGroup->getCode()->willReturn('a_variant_group');
+        $product->getGroupCodes()->willReturn(['first_group', 'second_group']);
         $product->getCategoryCodes()->willReturn(
             [
                 'first_category',
@@ -193,9 +181,9 @@ class PropertiesNormalizerSpec extends ObjectBehavior
             ]
         );
 
-        $completenessCollection->isEmpty()->willReturn(false);
-        $product->getCompletenesses()->willReturn($completenessCollection);
-        $serializer->normalize($completenessCollection, 'indexing', [])->willReturn(
+        $completenesses->isEmpty()->willReturn(false);
+        $product->getCompletenesses()->willReturn($completenesses);
+        $serializer->normalize($completenesses, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])->willReturn(
             [
                 'ecommerce' => [
                     'en_US' => [
@@ -207,10 +195,10 @@ class PropertiesNormalizerSpec extends ObjectBehavior
 
         $product->getValues()
             ->shouldBeCalledTimes(2)
-            ->willReturn($productValueCollection);
-        $productValueCollection->isEmpty()->willReturn(false);
+            ->willReturn($valueCollection);
+        $valueCollection->isEmpty()->willReturn(false);
 
-        $serializer->normalize($productValueCollection, 'indexing', [])
+        $serializer->normalize($valueCollection, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX, [])
             ->willReturn(
                 [
                     'a_size-decimal' => [
@@ -221,11 +209,10 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 ]
             );
 
-        $this->normalize($product, 'indexing')->shouldReturn(
+        $this->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX)->shouldReturn(
             [
                 'id'            => '67',
                 'identifier'    => 'sku-001',
-                'label'         => 'sku-001',
                 'created'       => $now->format('c'),
                 'updated'       => $now->format('c'),
                 'family' => [
@@ -237,12 +224,10 @@ class PropertiesNormalizerSpec extends ObjectBehavior
                 ],
                 'enabled'       => true,
                 'categories'    => ['first_category', 'second_category'],
-                'groups'        => ['first_group', 'second_group', 'a_variant_group'],
-                'variant_group' => 'a_variant_group',
+                'groups'        => ['first_group', 'second_group'],
                 'in_group' => [
                     'first_group'     => true,
                     'second_group'    => true,
-                    'a_variant_group' => true,
                 ],
                 'completeness'  => [
                     'ecommerce' => [

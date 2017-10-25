@@ -1,6 +1,28 @@
 extensions:
     pim-group-index:
-        module: pim/form/common/index/index
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    pim-group-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-group-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pim-group-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-group-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-group-index-grid-title:
+        module: pim/common/grid-title
+        parent: pim-group-index
+        targetZone: title
         config:
             title: pim_enrich.index.group.title
 
@@ -12,11 +34,25 @@ extensions:
             tab: pim-menu-settings
             item: pim-menu-settings-group
 
+    pim-group-index-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pim-group-index-grid-container
+        targetZone: filters
+
+    pim-group-index-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-group-index-grid-container
+        targetZone: filters
+
+    pim-group-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-group-index-grid-container
+        targetZone: toolbar
+
     pim-group-index-grid:
         module: pim/form/common/index/grid
-        parent: pim-group-index
+        parent: pim-group-index-grid-container
         position: 1000
-        targetZone: content
         config:
             alias: group-grid
 

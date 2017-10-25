@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\ArrayConverter\FlatToStandard\Product;
 
 use Pim\Component\Catalog\AttributeTypes;
-use Pim\Component\Catalog\Manager\AttributeValuesResolver;
+use Pim\Component\Catalog\Manager\AttributeValuesResolverInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Repository\CurrencyRepositoryInterface;
 
@@ -22,7 +22,7 @@ class AttributeColumnsResolver
     /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
 
-    /** @var AttributeValuesResolver */
+    /** @var AttributeValuesResolverInterface */
     protected $valuesResolver;
 
     /** @var array */
@@ -32,14 +32,14 @@ class AttributeColumnsResolver
     protected $identifierField;
 
     /**
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param CurrencyRepositoryInterface  $currencyRepository
-     * @param AttributeValuesResolver      $valuesResolver
+     * @param AttributeRepositoryInterface     $attributeRepository
+     * @param CurrencyRepositoryInterface      $currencyRepository
+     * @param AttributeValuesResolverInterface $valuesResolver
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         CurrencyRepositoryInterface $currencyRepository,
-        AttributeValuesResolver $valuesResolver
+        AttributeValuesResolverInterface $valuesResolver
     ) {
         $this->currencyRepository = $currencyRepository;
         $this->attributeRepository = $attributeRepository;

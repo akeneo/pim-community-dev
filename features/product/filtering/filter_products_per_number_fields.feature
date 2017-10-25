@@ -20,25 +20,25 @@ Feature: Filter products by number field
       | mug    |       |      |
     And the "book" product has the "count" attribute
     And the "mug" product has the "rate" attribute
-    And I am on the products page
+    And I am on the products grid
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | operator     | value | result         |
-      | count  | is empty     |       | book and mug   |
-      | count  | is not empty |       | postit         |
-      | count  | >            | 200   |                |
-      | count  | <            | 200   |                |
-      | count  | >            | 199   | postit         |
-      | count  | <            | 201   | postit         |
-      | count  | >=           | 200   | postit         |
-      | count  | <=           | 200   | postit         |
-      | count  | =            | 200   | postit         |
-      | count  | =            | 0     |                |
-      | count  | >            | 0     | postit         |
-      | rate   | is empty     |       | mug and postit |
-      | rate   | is not empty |       | book           |
-      | rate   | >            | 9.5   |                |
-      | rate   | <=           | 9.5   | book           |
-      | rate   | =            | 0     |                |
-      | rate   | >            | 0     | book           |
+      | filter | operator     | value | result |
+      | count  | is empty     |       | book   |
+      | count  | is not empty |       | postit |
+      | count  | >            | 200   |        |
+      | count  | <            | 200   |        |
+      | count  | >            | 199   | postit |
+      | count  | <            | 201   | postit |
+      | count  | >=           | 200   | postit |
+      | count  | <=           | 200   | postit |
+      | count  | =            | 200   | postit |
+      | count  | =            | 0     |        |
+      | count  | >            | 0     | postit |
+      | rate   | is empty     |       | mug    |
+      | rate   | is not empty |       | book   |
+      | rate   | >            | 9.5   |        |
+      | rate   | <=           | 9.5   | book   |
+      | rate   | =            | 0     |        |
+      | rate   | >            | 0     | book   |

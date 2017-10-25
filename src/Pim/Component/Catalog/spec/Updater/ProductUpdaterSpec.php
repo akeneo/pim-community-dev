@@ -8,32 +8,30 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Updater\ProductTemplateUpdaterInterface;
+use Pim\Component\Catalog\Updater\ProductUpdater;
 
 class ProductUpdaterSpec extends ObjectBehavior
 {
     function let(
         PropertySetterInterface $propertySetter,
-        ProductTemplateUpdaterInterface $templateUpdater,
         ObjectUpdaterInterface $valuesUpdater
     ) {
         $this->beConstructedWith(
             $propertySetter,
-            $templateUpdater,
             $valuesUpdater,
-            ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations'],
+            ['enabled', 'family', 'categories', 'groups', 'associations'],
             ['identifier', 'created', 'updated']
         );
     }
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Component\Catalog\Updater\ProductUpdater');
+        $this->shouldHaveType(ProductUpdater::class);
     }
 
     function it_is_a_updater()
     {
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface');
+        $this->shouldImplement(ObjectUpdaterInterface::class);
     }
 
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_product()

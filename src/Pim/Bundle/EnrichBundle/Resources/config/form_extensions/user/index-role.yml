@@ -1,6 +1,28 @@
 extensions:
     pim-user-role-index:
-        module: pim/form/common/index/index
+        module: pim/common/simple-view
+        config:
+            template: pim/template/common/default-template
+
+    pim-user-role-index-grid-container:
+        module: pim/common/simple-view
+        parent: pim-user-role-index
+        targetZone: content
+        config:
+            template: pim/template/form/index/index
+
+    pim-user-role-index-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-user-role-index
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-user-role-title:
+        module: pim/common/grid-title
+        parent: pim-user-role-index
+        targetZone: title
         config:
             title: pim_enrich.index.user_role.title
 
@@ -12,11 +34,25 @@ extensions:
             tab: pim-menu-system
             item: pim-menu-system-user-role
 
+    pim-user-role-index-filters-list:
+        module: oro/datafilter/filters-list
+        parent:  pim-user-role-index-grid-container
+        targetZone: filters
+
+    pim-user-role-index-filters-manage:
+        module: oro/datafilter/filters-button
+        parent:  pim-user-role-index-grid-container
+        targetZone: filters
+
+    pim-user-role-index-pagination:
+        module: oro/datagrid/pagination-input
+        parent: pim-user-role-index-grid-container
+        targetZone: toolbar
+
     pim-user-role-index-grid:
         module: pim/form/common/index/grid
-        parent: pim-user-role-index
+        parent: pim-user-role-index-grid-container
         position: 1000
-        targetZone: content
         config:
             alias: pim-role-grid
 
@@ -29,4 +65,4 @@ extensions:
         config:
             label: pim_enrich.index.user_role.create_btn
             route: oro_user_role_create
-            buttonClass: AknButton--apply
+            buttonClass: AknButton AknButton--apply

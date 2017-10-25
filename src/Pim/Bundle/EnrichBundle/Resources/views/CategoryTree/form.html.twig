@@ -25,39 +25,51 @@
 
     {% set buttons %}
         {% if form.vars.value.id %}
-            {% if exceeds_products_limit_for_removal(form.vars.value, true, related_entity) %}
-                {{ elements.link(
-                    'btn.delete',
-                    null,
-                    {
-                        'icon':  'trash',
-                        'title': 'btn.delete',
-                        'class': 'AknButton--important AknButtonList-item',
-                        'attr': {
-                            'data-title':   'confirmation.delete'|trans,
-                            'data-dialog':  'alert',
-                            'data-message': 'info.category.products limit exceeded'|trans({ '%limit%': get_products_limit_for_removal()|default('0') })
-                        }
-                    }
-                ) }}
-            {% else %}
-                {{ elements.deleteLink(
-                    path(route ~ '_categorytree_remove', { id: form.vars.value.id }),
-                    'pim_enrich_product_category_remove',
-                    form.vars.value.parent ? path(route ~ '_categorytree_edit', { id: form.vars.value.parent.id }) : path(route ~ '_categorytree_create'),
-                    'confirmation.remove.category'|trans({ '%name%': form.vars.value.label }) ~ '<br />'
-                        ~ 'info.category.remove children'|trans ~ '<br />'
-                        ~ 'info.category.keep products'|trans,
-                    (form.vars.value.parent ? 'flash.category.removed' : 'flash.tree.removed')|trans,
-                    '',
-                    'AknButtonList-item'
-                ) }}
-            {% endif %}
+            <div class="AknSecondaryActions AknDropdown AknButtonList-item secondary-actions">
+              <div class="AknSecondaryActions-button dropdown-button" data-toggle="dropdown"></div>
+              <div class="AknDropdown-menu AknDropdown-menu--right">
+                  <div class="AknDropdown-menuTitle">{{'other_actions'|trans}}</div>
+                      {% if exceeds_products_limit_for_removal(form.vars.value, true, related_entity) %}
+                          {{ elements.link(
+                              'btn.delete',
+                              null,
+                              {
+                                  'icon':  'trash',
+                                  'title': 'btn.delete',
+                                  'class': 'AknDropdown-menuLink delete',
+                                  'attr': {
+                                      'data-title':   'confirmation.delete'|trans,
+                                      'data-dialog':  'alert',
+                                      'data-message': 'info.category.products limit exceeded'|trans({ '%limit%': get_products_limit_for_removal()|default('0') })
+                                  }
+                              }
+                          ) }}
+                      {% else %}
+                          {{ elements.deleteLink(
+                              path(route ~ '_categorytree_remove', { id: form.vars.value.id }),
+                              'pim_enrich_product_category_remove',
+                              form.vars.value.parent ? path(route ~ '_categorytree_edit', { id: form.vars.value.parent.id }) : path(route ~ '_categorytree_create'),
+                              'confirmation.remove.category'|trans({ '%name%': form.vars.value.label }) ~ '<br />'
+                                  ~ 'info.category.remove children'|trans ~ '<br />'
+                                  ~ 'info.category.keep products'|trans,
+                              (form.vars.value.parent ? 'flash.category.removed' : 'flash.tree.removed')|trans,
+                              '',
+                              'AknDropdown-menuLink delete'
+                          ) }}
+                      {% endif %}
+                  </div>
+            </div>
         {% endif %}
         {{ elements.submitBtn('', 'ok', 'AknButtonList-item') }}
     {% endset %}
 
-    {{ elements.page_header(title, buttons, null, null, null, null, elements.updated(form.vars.id)) }}
+    {{ elements.page_header(
+        {
+            title: title,
+            buttons: buttons,
+            state: elements.updated(form.vars.id)
+        }
+    ) }}
 
     {# This style is temporary and will be dropped on PEFization of this screen #}
     <div id="category-tree-container" style="display:flex; height:100%">
@@ -73,9 +85,6 @@
     </div>
 
 {{ form_end(form) }}
-<script type="text/javascript">
-    document.title = '{{ "pim_title.category.edit"|trans({ "%category.label%": form.vars.value.label }) }}';
-</script>
 
 <script type="text/javascript">
     window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');

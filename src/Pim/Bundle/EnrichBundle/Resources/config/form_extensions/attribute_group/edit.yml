@@ -10,6 +10,14 @@ extensions:
             tab: pim-menu-settings
             item: pim-menu-settings-attribute-group
 
+    pim-attribute-group-edit-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-attribute-group-edit-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-attribute-group-edit-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-attribute-group-edit-form
@@ -42,6 +50,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.attribute_group
+                subTitle: pim_menu.item.attribute_group
                 content: pim_enrich.confirmation.delete_item
                 success: flash.attribute_group.removed
                 fail: error.removing.attribute_group
@@ -144,8 +153,10 @@ extensions:
             title: pim_enrich.form.attribute_group.tab.attribute.title
             otherGroup: other
             confirmation:
-                title: pim_enrich.confirmation.delete_item
+                title: pim_enrich.confirmation.remove_item
+                subTitle: pim_menu.item.attribute_group
                 message: pim_enrich.confirmation.delete.attribute_group
+                buttonText: pim_enrich.confirmation.remove
             removeAttributeACL: pim_enrich_attributegroup_remove_attribute
             addAttributeACL: pim_enrich_attributegroup_add_attribute
 

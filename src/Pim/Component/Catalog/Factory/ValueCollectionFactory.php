@@ -16,7 +16,7 @@ use Psr\Log\LoggerInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValueCollectionFactory
+class ValueCollectionFactory implements ValueCollectionFactoryInterface
 {
     /** @var ValueFactory */
     private $valueFactory;
@@ -43,7 +43,8 @@ class ValueCollectionFactory
     }
 
     /**
-     * Create product values from raw values described in the storage format.
+     * {@inheritdoc}
+     *
      * Raw values that correspond to an non existing attribute (that was deleted
      * for instance) are NOT loaded.
      *

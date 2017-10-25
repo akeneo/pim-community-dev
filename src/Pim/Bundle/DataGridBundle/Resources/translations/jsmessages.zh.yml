@@ -27,11 +27,13 @@ Action performed.: 执行完成。
 Action is not performed.: 执行未完成。
 Please, select item to perform action.: 请选择条目，以进行处理。
 View per page: 查看每页
+Enabled: 已启用
+Disabled: 已禁用
+not_available: 不适用
 "Yes": true
 "No": false
 oro.datagrid.entityHint: 实体
 oro.datagrid.noentities: 没有找到记录
-oro.datagrid.noresults: "未找到任何结果。请试着改变您的搜索条件。"
 oro.datagrid.nocolumns: 没有配置此网格的列
 oro.datagrid.pagination.label: "页"
 oro.datagrid.pagination.totalPages: "{{ totalPages }}"
@@ -41,19 +43,25 @@ oro.datagrid.action.refresh: "刷新"
 oro_datagrid.select.all: "所有"
 oro_datagrid.select.visible: "所有可见的"
 oro_datagrid.select.none: "无"
+oro_datagrid.select.select: "选择"
 pim.grid.ajax_choice_filter.label_empty: 为空
 pim.grid.ajax_choice_filter.label_not_empty: 不为空
-pim.grid.choice_filter:
-  label_empty: 为空
-  label_not_empty: 不为空
-  label_in_list: 在列表中
+pim:
+  grid:
+    choice_filter:
+      label_empty: 为空
+      label_not_empty: 不为空
+      label_in_list: 在列表中
+    price_filter:
+      label: 货币
+    category_filter:
+      done: 已完成
 Available Columns: 可用的列
 Displayed Columns: 选定的列
 datagrid_view.columns.min_message: 您必须选择至少一个要显示的 datagrid 列
 pim_datagrid:
   column_configurator:
     label: 列
-    title: 列项选择
     all_groups: 所有群组
     search: 搜索
     clear: 清除
@@ -61,9 +69,10 @@ pim_datagrid:
     apply: 应用
     cancel: 取消
     remove_column: 删除
+    attribute_groups: 属性组
   mass_action:
     delete:
-      confirm_title: 删除确认
+      confirm_title: 确定删除
       confirm_ok: 好的
       empty_selection: 没有选定的产品
 pim.grid.mass_action.quick_export.title: 快速导出
@@ -86,6 +95,5 @@ grid.view_selector:
   placeholder: 新视图的名称
   choose_label: 选择视图的标签
   confirmation:
-    remove: 您是否确定要删除此数据视图?
-    delete: 删除确认
+    delete: 确定删除
 grid.view_selector.flash.updated: 数据视图已更新

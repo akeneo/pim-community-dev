@@ -1,7 +1,7 @@
 parameters:
     pim_datagrid.product.attribute_type.pim_catalog_identifier:
         column:
-            type:        field
+            type:        product_value_field
         filter:
             type:        product_value_string
             ftype:       string

@@ -10,6 +10,9 @@ use Pim\Component\Catalog\Model\AssociationTypeInterface;
 use Pim\Component\Catalog\Model\AttributeGroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\Product;
+use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModel;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
  * Context for navigating the website
@@ -322,11 +325,11 @@ class NavigationContext extends BaseNavigationContext
     }
 
     /**
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @Given /^I should be on the (product "([^"]*)") edit page$/
      */
-    public function iShouldBeOnTheProductEditPage(Product $product)
+    public function iShouldBeOnTheProductEditPage(ProductInterface $product)
     {
         $this->spin(function () use ($product) {
             $expectedAddress = $this->getPage('Product edit')->getUrl(['id' => $product->getId()]);
@@ -338,6 +341,29 @@ class NavigationContext extends BaseNavigationContext
         $this->getMainContext()->spin(function () {
             return $this->getCurrentPage()->find('css', '.AknTitleContainer-title');
         }, 'Can not find any product label');
+
+        $this->currentPage = 'Product edit';
+    }
+
+    /**
+     * @param ProductModel $productModel
+     *
+     * @Given /^I should be on the (product model "([^"]*)") edit page$/
+     */
+    public function iShouldBeOnTheProductModelEditPage(ProductModel $productModel)
+    {
+        $this->spin(function () use ($productModel) {
+            $expectedAddress = $this->getPage('ProductModel edit')->getUrl(['id' => $productModel->getId()]);
+            $this->assertAddress($expectedAddress);
+
+            return true;
+        }, sprintf('Cannot find product model "%s"', $productModel->getId()));
+
+        $this->getMainContext()->spin(function () {
+            return $this->getCurrentPage()->find('css', '.AknTitleContainer-title');
+        }, 'Can not find any product model label');
+
+        $this->currentPage = 'ProductModel edit';
     }
 
     /**

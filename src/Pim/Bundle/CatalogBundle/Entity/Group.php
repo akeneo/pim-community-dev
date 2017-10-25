@@ -4,11 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Akeneo\Component\Localization\Model\TranslationInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\GroupTypeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -34,9 +32,6 @@ class Group implements GroupInterface
     /**  @var ArrayCollection */
     protected $products;
 
-    /**  @var ArrayCollection */
-    protected $axisAttributes;
-
     /**
      * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
@@ -48,9 +43,6 @@ class Group implements GroupInterface
     /**  @var ArrayCollection $translations */
     protected $translations;
 
-    /**  @var ProductTemplateInterface */
-    protected $productTemplate;
-
     /**
      * Constructor
      */
@@ -58,7 +50,6 @@ class Group implements GroupInterface
     {
         $this->products = new ArrayCollection();
         $this->translations = new ArrayCollection();
-        $this->axisAttributes = new ArrayCollection();
     }
 
     /**
@@ -240,53 +231,6 @@ class Group implements GroupInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function addAxisAttribute(AttributeInterface $axisAttribute)
-    {
-        if (!$this->axisAttributes->contains($axisAttribute)) {
-            $this->axisAttributes[] = $axisAttribute;
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeAxisAttribute(AttributeInterface $axisAttribute)
-    {
-        $this->axisAttributes->removeElement($axisAttribute);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAxisAttributes()
-    {
-        return $this->axisAttributes;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setAxisAttributes(array $newAxisAttributes = [])
-    {
-        foreach ($this->axisAttributes as $axisAttribute) {
-            if (!in_array($axisAttribute, $newAxisAttributes)) {
-                $this->removeAxisAttribute($axisAttribute);
-            }
-        }
-        foreach ($newAxisAttributes as $newAxisAttribute) {
-            $this->addAxisAttribute($newAxisAttribute);
-        }
-
-        return $this;
-    }
-
-    /**
      * Return the identifier-based validation group for validation of properties
      *
      * @return string[]
@@ -312,23 +256,5 @@ class Group implements GroupInterface
     public function getReference()
     {
         return $this->code;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProductTemplate()
-    {
-        return $this->productTemplate;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setProductTemplate(ProductTemplateInterface $productTemplate)
-    {
-        $this->productTemplate = $productTemplate;
-
-        return $this;
     }
 }

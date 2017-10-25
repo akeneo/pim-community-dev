@@ -1,33 +1,38 @@
 extensions:
     pim-export-profile-create-modal:
-       module: pim/form/common/creation/modal
-       config:
-           labels:
-               title: pim_enrich.index.export_profiles.create_popin.title
-           successMessage: pim_enrich.index.export_profiles.message.created
-           editRoute: pim_importexport_export_profile_edit
-           postUrl: pim_enrich_job_instance_rest_export_create
-           routerKey: code
+        module: pim/form/common/creation/modal
+        config:
+            labels:
+                title: pim_enrich.index.export_profiles.create_popin.title
+                subTitle: pim_menu.item.export_profile
+            picture: illustration-attribute.svg
+            successMessage: pim_enrich.index.export_profiles.message.created
+            editRoute: pim_importexport_export_profile_edit
+            postUrl: pim_enrich_job_instance_rest_export_create
+            routerKey: code
 
     pim-export-profile-create-code:
-       module: pim/form/common/creation/field
-       parent: pim-export-profile-create-modal
-       position: 10
-       config:
-          identifier: code
-          label: pim_enrich.entity.create_popin.code
+        module: pim/form/common/creation/field
+        parent: pim-export-profile-create-modal
+        targetZone: fields
+        position: 10
+        config:
+            identifier: code
+            label: pim_enrich.entity.create_popin.code
 
     pim-export-profile-create-label:
-       module: pim/form/common/creation/field
-       parent: pim-export-profile-create-modal
-       position: 20
-       config:
-          identifier: label
-          label: pim_enrich.entity.create_popin.label
+        module: pim/form/common/creation/field
+        parent: pim-export-profile-create-modal
+        targetZone: fields
+        position: 20
+        config:
+            identifier: label
+            label: pim_enrich.entity.create_popin.label
 
     pim-export-profile-create-job:
         module: pim/form/common/creation/job
         parent: pim-export-profile-create-modal
+        targetZone: fields
         position: 30
         config:
           type: export

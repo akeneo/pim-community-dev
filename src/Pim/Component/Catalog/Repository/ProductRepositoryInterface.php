@@ -2,10 +2,7 @@
 
 namespace Pim\Component\Catalog\Repository;
 
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\ORM\NonUniqueResultException;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
@@ -19,23 +16,6 @@ use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
  */
 interface ProductRepositoryInterface extends ObjectRepository
 {
-    /**
-     * Find all products in a variant group (by variant axis attribute values)
-     *
-     * @param GroupInterface $variantGroup the variant group
-     * @param array          $criteria     the criteria
-     *
-     * @return array
-     */
-    public function findAllForVariantGroup(GroupInterface $variantGroup, array $criteria = []);
-
-    /**
-     * @param ProductQueryBuilderFactoryInterface $factory
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setProductQueryBuilderFactory(ProductQueryBuilderFactoryInterface $factory);
-
     /**
      * Get available attribute ids from a product ids list
      *
@@ -51,13 +31,6 @@ interface ProductRepositoryInterface extends ObjectRepository
      * @return ProductInterface|null
      */
     public function findOneByIdentifier($identifier);
-
-    /**
-     * @param int $variantGroupId
-     *
-     * @return CursorInterface
-     */
-    public function getEligibleProductsForVariantGroup($variantGroupId);
 
     /**
      * @param GroupInterface $group
@@ -92,20 +65,19 @@ interface ProductRepositoryInterface extends ObjectRepository
     public function hasAttributeInFamily($productId, $attributeCode);
 
     /**
-     * Checks if the group has the specified attribute
-     *
-     * @param mixed  $productId
-     * @param string $attributeCode
-     *
-     * @return bool
-     */
-    public function hasAttributeInVariantGroup($productId, $attributeCode);
-
-    /**
-     * @param GroupInterface $variantGroup
-     * @param array          $criteria
+     * @param int $offset
+     * @param int $size
      *
      * @return array
      */
-    public function findProductIdsForVariantGroup(GroupInterface $variantGroup, array $criteria = []);
+    public function findAllWithOffsetAndSize($offset = 0, $size = 100);
+
+    /**
+     * Get all associated products ids
+     *
+     * @param ProductInterface $product
+     *
+     * @return string[]
+     */
+    public function getAssociatedProductIds(ProductInterface $product);
 }

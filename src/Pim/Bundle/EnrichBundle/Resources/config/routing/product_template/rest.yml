@@ -1,4 +1,0 @@
-pim_enrich_product_template_rest_validate:
-    path: '/validate'
-    defaults: { _controller: pim_enrich.controller.rest.product_template:validateAction }
-    methods: [POST]

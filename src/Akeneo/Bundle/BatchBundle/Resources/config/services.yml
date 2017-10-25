@@ -3,11 +3,13 @@ parameters:
     akeneo_batch.logger_subscriber.class:                     Akeneo\Bundle\BatchBundle\EventListener\LoggerSubscriber
     akeneo_batch.notification_subscriber.class:               Akeneo\Bundle\BatchBundle\EventListener\NotificationSubscriber
     akeneo_batch.lock_subscriber.class:                       Akeneo\Bundle\BatchBundle\EventListener\LockSubscriber
+    akeneo_batch.load_job_parameters_listener.class:          Akeneo\Bundle\BatchBundle\EventListener\LoadJobParametersListener
     akeneo_batch.logger.batch_log_handler.class:              Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler
     akeneo_batch.mail_notifier.class:                         Akeneo\Bundle\BatchBundle\Notification\MailNotifier
     akeneo_batch.set_job_execution_log_file_subscriber.class: Akeneo\Bundle\BatchBundle\EventListener\SetJobExecutionLogFileSubscriber
     akeneo_batch.manager.job_execution.class:                 Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager
     akeneo_batch.launcher.simple_job_launcher.class:          Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher
+    akeneo_batch.entity_manager.persisted_connection_entity_manager.class: Akeneo\Bundle\BatchBundle\EntityManager\PersistedConnectionEntityManager
     akeneo_batch.connectors_config:                           ~
     akeneo_batch.jobs_config:                                 ~
 
@@ -26,15 +28,17 @@ services:
             - { name: kernel.event_subscriber }
             - { name: monolog.logger, channel: batch }
 
-    akeneo_batch.lock_subscriber:
-        class: '%akeneo_batch.lock_subscriber.class%'
-        tags:
-            - { name: kernel.event_subscriber }
-
     akeneo_batch.notification_subscriber:
         class: '%akeneo_batch.notification_subscriber.class%'
         tags:
             - { name: kernel.event_subscriber }
+
+    akeneo_batch.load_job_parameters_listener:
+        class: '%akeneo_batch.load_job_parameters_listener.class%'
+        arguments:
+            - '@akeneo_batch.job_parameters_factory'
+        tags:
+            - { name: doctrine.orm.entity_listener, lazy: true }
 
     akeneo_batch.mail_notifier:
         class: '%akeneo_batch.mail_notifier.class%'
@@ -72,6 +76,12 @@ services:
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.job_parameters_factory'
             - '@akeneo_batch.job.job_registry'
+            - '@akeneo_batch.job.job_parameters_validator'
             - '%kernel.root_dir%'
             - '%kernel.environment%'
             - '%logs_dir%'
+
+    akeneo_batch.entity_manager.persisted_connection_entity_manager:
+        class: '%akeneo_batch.entity_manager.persisted_connection_entity_manager.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'

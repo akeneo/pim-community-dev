@@ -9,16 +9,19 @@ use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datagrid\Configuration\Product\FiltersConfigurator;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class FilterExtensionSpec extends ObjectBehavior
 {
     function let(
         ContainerInterface $container,
         FiltersConfigurator $configurator,
+        TranslatorInterface $translator,
         Manager $manager
     ) {
         $container->get('oro_datagrid.datagrid.manager')->willReturn($manager);
         $container->get('pim_datagrid.datagrid.configuration.product.filters_configurator')->willReturn($configurator);
+        $container->get('translator')->willReturn($translator);
         $this->beConstructedWith($container);
     }
 
@@ -48,6 +51,7 @@ class FilterExtensionSpec extends ObjectBehavior
     function it_gives_the_label_of_a_filter(
         $manager,
         $configurator,
+        $translator,
         DatagridInterface $datagrid,
         Acceptor $acceptor,
         DatagridConfiguration $configuration
@@ -57,6 +61,7 @@ class FilterExtensionSpec extends ObjectBehavior
         $manager->getDatagrid('product-grid')->willReturn($datagrid);
         $configurator->configure($configuration)->shouldBeCalled();
         $configuration->offsetGetByPath('[filters][columns][foo][label]')->willReturn('Foo');
+        $translator->trans('Foo')->willReturn('Foo');
 
         $this->filterLabel('foo')->shouldReturn('Foo');
     }

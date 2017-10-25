@@ -23,52 +23,92 @@ define(
         template
     ) {
         return BaseForm.extend({
+            className: 'AknDropdown',
             template: _.template(template),
+            events: {
+                'click .missing-attribute': 'showAttribute'
+            },
 
             /**
              * {@inheritdoc}
              */
             configure: function () {
-                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', this.render.bind(this));
-                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', this.render.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:scope_switcher:change', function (scopeEvent) {
+                    if ('base_product' === scopeEvent.context) {
+                        this.render({ scope: scopeEvent.scopeCode });
+                    }
+                }.bind(this));
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
+                    if ('base_product' === localeEvent.context) {
+                        this.render({ locale: localeEvent.localeCode});
+                    }
+                }.bind(this));
+
+                this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_fetch', this.render.bind(this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
              * {@inheritDoc}
+             *
+             * @param options Object
+             * @param options.locale String
+             * @param options.scope  String
              */
             render: function () {
+                const options = {
+                    locale: UserContext.get('catalogLocale'),
+                    scope: UserContext.get('catalogScope')
+                };
                 this.$el.empty();
 
-                var ratio = this.getRatio();
+                const ratio = this.getCurrentRatio(options);
                 if (null !== ratio) {
                     this.$el.append(this.template({
+                        __: __,
                         label: __('pim_enrich.entity.product.completeness'),
-                        completeness: ratio,
-                        badgeClass: this.getBadgeClass()
+                        ratio: ratio,
+                        completenesses: this.getCurrentCompletenesses(options.scope),
+                        badgeClass: this.getBadgeClass(options),
+                        currentLocale: options.locale,
+                        missingValues: 'pim_enrich.form.product.panel.completeness.missing_values'
                     }));
+                } else {
+                    // We drop the element for design issues, to avoid blank spaces.
+                    this.$el.remove();
                 }
 
                 return this;
             },
 
             /**
-             * Returns the ratio of the current locale and current scope
+             * Returns the completeness of the current scope
+             *
+             * @param scope String
+             *
+             * @return Object
+             */
+            getCurrentCompletenesses: function (scope) {
+                return _.findWhere(this.getFormData().meta.completenesses, {channel: scope});
+            },
+
+            /**
+             * Returns the ratio of the current scope and current locale
+             *
+             * @param options Object
+             * @param options.locale String
+             * @param options.scope  String
              *
              * @returns number|null
              */
-            getRatio: function () {
-                var completeness = _.findWhere(
-                    this.getFormData().meta.completenesses,
-                    { channel: UserContext.get('catalogScope') }
-                );
-
-                if (undefined === completeness) {
+            getCurrentRatio: function (options) {
+                const completenesses = this.getCurrentCompletenesses(options.scope);
+                if (undefined === completenesses) {
                     return null;
                 }
 
-                completeness = completeness.locales[UserContext.get('catalogLocale')];
+                const completeness = completenesses.locales[options.locale];
                 if (undefined === completeness) {
                     return null;
                 }
@@ -79,11 +119,14 @@ define(
             /**
              * Returns the HTML class for the badge from the completeness ratio
              *
+             * @param options Object
+             * @param options.locale String
+             * @param options.scope  String
+             *
              * @returns string
              */
-            getBadgeClass: function() {
-                var ratio = this.getRatio();
-
+            getBadgeClass: function(options) {
+                const ratio = this.getCurrentRatio(options);
                 if (ratio <= 0) {
                     return 'AknBadge--important';
                 }
@@ -93,6 +136,30 @@ define(
                 }
 
                 return 'AknBadge--warning';
+            },
+
+            /**
+             * Set focus to the attribute given by the event
+             *
+             * @param event Event
+             */
+            showAttribute: function (event) {
+                this.getRoot().trigger(
+                    'pim_enrich:form:locale_switcher:change',
+                    {
+                        localeCode: event.currentTarget.dataset.locale,
+                        context: 'base_product'
+                    }
+                );
+                this.getRoot().trigger(
+                    'pim_enrich:form:show_attribute',
+                    {
+                        attribute: event.currentTarget.dataset.attribute,
+                        locale: event.currentTarget.dataset.locale,
+                        scope: UserContext.get('catalogScope')
+                    }
+                );
+                this.render();
             }
         });
     }

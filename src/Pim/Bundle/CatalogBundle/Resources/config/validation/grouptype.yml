@@ -4,7 +4,6 @@ Pim\Bundle\CatalogBundle\Entity\GroupType:
         - Pim\Component\Catalog\Validator\Constraints\Immutable:
             properties:
                 - code
-        - Pim\Component\Catalog\Validator\Constraints\UniqueVariantGroupType: ~
     properties:
         code:
             - NotBlank: ~

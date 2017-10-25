@@ -3,6 +3,8 @@ Akeneo\Component\Batch\Model\JobExecution:
     table: akeneo_batch_job_execution
     # TODO: should be like other entities
     #changeTrackingPolicy: DEFERRED_EXPLICIT
+    entityListeners:
+        \Akeneo\Bundle\BatchBundle\EventListener\LoadJobParametersListener: ~
     fields:
         id:
             type: integer
@@ -36,6 +38,10 @@ Akeneo\Component\Batch\Model\JobExecution:
             type: datetime
             column: updated_time
             nullable: true
+        healthCheckTime:
+            type: datetime
+            column: health_check_time
+            nullable: true
         exitCode:
             type: string
             length: 255
@@ -54,6 +60,9 @@ Akeneo\Component\Batch\Model\JobExecution:
             length: 255
             column: log_file
             nullable: true
+        rawParameters:
+            type: json_array
+            column: raw_parameters
     oneToMany:
         stepExecutions:
             targetEntity: Akeneo\Component\Batch\Model\StepExecution

@@ -2,12 +2,20 @@ extensions:
     pim-job-instance-xlsx-product-import-show:
         module: pim/form/common/edit-form
 
-    pim-job-instance-xlsx-product-import-show-mainImage:
+    pim-job-instance-xlsx-product-import-show-main-image:
         module: pim/form/common/main-image
         parent: pim-job-instance-xlsx-product-import-show
         targetZone: main-image
         config:
             path: bundles/pimui/images/illustration-import-xlsx.svg
+
+    pim-job-instance-xlsx-product-import-show-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-job-instance-xlsx-product-import-show
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
 
     pim-job-instance-xlsx-product-import-show-breadcrumbs:
         module: pim/common/breadcrumbs
@@ -30,7 +38,7 @@ extensions:
         position: 40
         config:
             label: pim_enrich.form.job_instance.button.import.launch
-            
+
     pim-job-instance-xlsx-product-import-show-file-path:
         module: pim/job/common/file-path
         parent: pim-job-instance-xlsx-product-import-show-launch-switcher-item
@@ -59,6 +67,8 @@ extensions:
     pim-job-instance-xlsx-product-import-show-upload:
         module: pim/job/common/edit/upload
         parent: pim-job-instance-xlsx-product-import-show-upload-switcher-item
+        config:
+            type: xlsx
 
     pim-job-instance-xlsx-product-import-show-upload-button:
         module: pim/job/common/edit/upload-launch
@@ -70,7 +80,7 @@ extensions:
             identifier:
                 path: code
                 name: code
-                
+
     pim-job-instance-xlsx-product-import-show-subsection:
         module: pim/form/common/subsection
         parent: pim-job-instance-xlsx-product-import-show
@@ -102,6 +112,7 @@ extensions:
         config:
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_import_profile_edit
+            buttonClass: AknButton AknButton--action
             identifier:
                 path: code
                 name: code

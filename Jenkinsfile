@@ -40,7 +40,7 @@ stage("Checkout") {
 
         if (editions.contains('ee') && ('yes' == launchBehatTests || 'yes' == launchIntegrationTests)) {
             checkout([$class: 'GitSCM',
-              branches: [[name: 'master']],
+              branches: [[name: '2.0']],
               userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/akeneo/pim-enterprise-dev.git']]
             ])
 
@@ -62,11 +62,13 @@ stage("Checkout") {
                 stash "pim_community_dev_full"
             }
 
-            docker.image('node:8').inside {
+            sh "mkdir -p /home/akeneo/.yarn-cache"
+
+            docker.image('node:8').inside("-v /home/akeneo/.yarn-cache:/home/node/.yarn-cache -e YARN_CACHE_FOLDER=/home/node/.yarn-cache") {
                 unstash "pim_community_dev_full"
 
-                sh "npm install"
-                sh "npm run webpack"
+                sh "yarn install"
+                sh "yarn run webpack"
 
                 stash "pim_community_dev_full"
             }
@@ -75,7 +77,7 @@ stage("Checkout") {
 
             def output = sh (
                 returnStdout: true,
-                script: 'find src -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"'
+                script: 'find src tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"'
             )
             def files = output.tokenize('\n')
             for (file in files) {
@@ -107,11 +109,13 @@ stage("Checkout") {
                     stash "pim_enterprise_dev_full"
                 }
 
-                docker.image('node:8').inside {
+                sh "mkdir -p /home/akeneo/.yarn-cache"
+
+                docker.image('node:8').inside("-v /home/akeneo/.yarn-cache:/home/node/.yarn-cache -e YARN_CACHE_FOLDER=/home/node/.yarn-cache") {
                     unstash "pim_enterprise_dev_full"
 
-                    sh "npm install"
-                    sh "npm run webpack"
+                    sh "yarn install"
+                    sh "yarn run webpack"
 
                     stash "pim_enterprise_dev_full"
                 }
@@ -154,7 +158,7 @@ if ('yes' == launchUnitTests) {
     }
 }
 
-if ('yes' == launchIntegrationTests) {
+if (launchIntegrationTests.equals("yes")) {
     if (editions.contains('ce')) {
         stage("Integration tests CE") {
             def tasks = buildIntegrationTestTasks('7.1', 'ce', nbAvailableNode, testFilesCE)
@@ -187,8 +191,7 @@ def runGruntTest() {
         try {
             docker.image('node:8').inside("") {
                 unstash "pim_community_dev_full"
-                sh "npm run lint"
-                sh "npm run webpack-jasmine"
+                sh "yarn run lint"
             }
         } finally {
             sh "docker stop \$(docker ps -a -q) || true"
@@ -204,7 +207,7 @@ def runPhpUnitTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("akeneo/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
+            docker.image("akeneo/php:${phpVersion}").inside("") {
                 unstash "pim_community_dev_full"
 
                 sh "mkdir -p app/build/logs/"
@@ -259,12 +262,12 @@ void runIntegrationTest(String phpVersion, String edition, def testFiles) {
     node('docker') {
         deleteDir()
         sh "docker stop \$(docker ps -a -q) || true"
-        sh "docker rm \$(docker ps -a -q) || true"
+        sh "docker rm -f \$(docker ps -a -q) || true"
 
         try {
-            docker.image("elasticsearch:5.5").withRun("--name elasticsearch -e ES_JAVA_OPTS=\"-Xms256m -Xmx256m\"") {
-                docker.image("mysql:5.7").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim --tmpfs=/var/lib/mysql/:rw,noexec,nosuid,size=250m --tmpfs=/tmp/:rw,noexec,nosuid,size=100m") {
-                    docker.image("akeneo/php:${phpVersion}").inside("--link mysql:mysql --link elasticsearch:elasticsearch -v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
+            docker.image("elasticsearch:5.5").withRun("--name elasticsearch -e ES_JAVA_OPTS=\"-Xms512m -Xmx512m\"") {
+                docker.image("mysql:5.7").withRun("--name mysql -e MYSQL_ROOT_PASSWORD=root -e MYSQL_USER=akeneo_pim -e MYSQL_PASSWORD=akeneo_pim -e MYSQL_DATABASE=akeneo_pim --tmpfs=/var/lib/mysql/:rw,noexec,nosuid,size=1000m --tmpfs=/tmp/:rw,noexec,nosuid,size=300m") {
+                    docker.image("akeneo/php:${phpVersion}").inside("--link mysql:mysql --link elasticsearch:elasticsearch") {
                         if ('ce' == edition) {
                             unstash "pim_community_dev_full"
                         } else {
@@ -309,7 +312,7 @@ def runPhpSpecTest(phpVersion) {
     node('docker') {
         deleteDir()
         try {
-            docker.image("akeneo/php:${phpVersion}").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
+            docker.image("akeneo/php:${phpVersion}").inside("") {
                 unstash "pim_community_dev_full"
 
                 sh "mkdir -p app/build/logs/"
@@ -333,7 +336,7 @@ def runPhpCsFixerTest() {
     node('docker') {
         deleteDir()
         try {
-            docker.image("akeneo/php:7.1").inside("-v /home/akeneo/.composer:/home/docker/.composer -e COMPOSER_HOME=/home/docker/.composer") {
+            docker.image("akeneo/php:7.1").inside("") {
                 unstash "pim_community_dev_full"
 
                 sh "mkdir -p app/build/logs/"

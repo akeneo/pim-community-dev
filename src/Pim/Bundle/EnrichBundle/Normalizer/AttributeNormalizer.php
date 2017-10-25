@@ -6,8 +6,6 @@ use Akeneo\Component\Localization\Localizer\LocalizerInterface;
 use Pim\Bundle\EnrichBundle\Provider\EmptyValue\EmptyValueProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\Filter\FilterProviderInterface;
-use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -35,15 +33,6 @@ class AttributeNormalizer implements NormalizerInterface
     /** @var FilterProviderInterface */
     protected $filterProvider;
 
-    /** @var VersionManager */
-    protected $versionManager;
-
-    /** @var NormalizerInterface */
-    protected $versionNormalizer;
-
-    /** @var StructureVersionProviderInterface */
-    protected $structureVersionProvider;
-
     /** @var LocalizerInterface */
     protected $numberLocalizer;
 
@@ -52,9 +41,6 @@ class AttributeNormalizer implements NormalizerInterface
      * @param FieldProviderInterface            $fieldProvider
      * @param EmptyValueProviderInterface       $emptyValueProvider
      * @param FilterProviderInterface           $filterProvider
-     * @param VersionManager                    $versionManager
-     * @param NormalizerInterface               $versionNormalizer
-     * @param StructureVersionProviderInterface $structureVersionProvider
      * @param LocalizerInterface                $numberLocalizer
      */
     public function __construct(
@@ -62,18 +48,12 @@ class AttributeNormalizer implements NormalizerInterface
         FieldProviderInterface $fieldProvider,
         EmptyValueProviderInterface $emptyValueProvider,
         FilterProviderInterface $filterProvider,
-        VersionManager $versionManager,
-        NormalizerInterface $versionNormalizer,
-        StructureVersionProviderInterface $structureVersionProvider,
         LocalizerInterface $numberLocalizer
     ) {
         $this->normalizer = $normalizer;
         $this->fieldProvider = $fieldProvider;
         $this->emptyValueProvider = $emptyValueProvider;
         $this->filterProvider = $filterProvider;
-        $this->versionManager = $versionManager;
-        $this->versionNormalizer = $versionNormalizer;
-        $this->structureVersionProvider = $structureVersionProvider;
         $this->numberLocalizer = $numberLocalizer;
     }
 
@@ -109,23 +89,7 @@ class AttributeNormalizer implements NormalizerInterface
             );
         }
 
-        $firstVersion = $this->versionManager->getOldestLogEntry($attribute);
-        $lastVersion = $this->versionManager->getNewestLogEntry($attribute);
-
-        $firstVersion = null !== $firstVersion ?
-            $this->versionNormalizer->normalize($firstVersion, 'internal_api') :
-            null;
-        $lastVersion = null !== $lastVersion ?
-            $this->versionNormalizer->normalize($lastVersion, 'internal_api') :
-            null;
-
-        $normalizedAttribute['meta'] = [
-            'id'                => $attribute->getId(),
-            'created'           => $firstVersion,
-            'updated'           => $lastVersion,
-            'structure_version' => $this->structureVersionProvider->getStructureVersion(),
-            'model_type'        => 'attribute',
-        ];
+        $normalizedAttribute['meta']['id'] = $attribute->getId();
 
         return $normalizedAttribute;
     }

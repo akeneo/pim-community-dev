@@ -2,15 +2,15 @@
 
 namespace Pim\Component\Api\tests\integration\Normalizer;
 
-use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\DateSanitizer;
-use Akeneo\Test\Integration\MediaSanitizer;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
 /**
  * Integration tests to verify data from database are well formatted in the external api format
+ *
+ * @group ce
  */
 class ProductNormalizerIntegration extends TestCase
 {
@@ -19,7 +19,7 @@ class ProductNormalizerIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
+        return $this->catalog->useTechnicalSqlCatalog();
     }
 
     public function testEmptyDisabledProduct()
@@ -27,8 +27,8 @@ class ProductNormalizerIntegration extends TestCase
         $expected = [
             'identifier'    => 'bar',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => false,
             'values'        => new \StdClass(),
@@ -45,8 +45,8 @@ class ProductNormalizerIntegration extends TestCase
         $expected = [
             'identifier'    => 'baz',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => new \StdClass(),
@@ -63,8 +63,8 @@ class ProductNormalizerIntegration extends TestCase
         $expected = [
             'identifier'    => 'foo',
             'family'        => 'familyA',
+            'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => 'variantA',
             'categories'    => ['categoryA1', 'categoryB'],
             'enabled'       => true,
             'values'        => [
@@ -143,8 +143,8 @@ class ProductNormalizerIntegration extends TestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
+                            ['amount' => '56.53', 'currency' => 'EUR'],
                             ['amount' => '45.00', 'currency' => 'USD'],
-                            ['amount' => '56.53', 'currency' => 'EUR']
                         ],
                     ],
                 ],
@@ -153,8 +153,8 @@ class ProductNormalizerIntegration extends TestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
+                            ['amount' => 56, 'currency' => 'EUR'],
                             ['amount' => -45, 'currency' => 'USD'],
-                            ['amount' => 56, 'currency' => 'EUR']
                         ],
                     ],
                 ],
@@ -266,8 +266,8 @@ class ProductNormalizerIntegration extends TestCase
         $expected = [
             'identifier'    => 'foo',
             'family'        => 'familyA',
+            'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => 'variantA',
             'categories'    => ['categoryA1', 'categoryB'],
             'enabled'       => true,
             'values'        => [

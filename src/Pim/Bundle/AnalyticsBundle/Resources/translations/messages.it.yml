@@ -1,5 +1,5 @@
 pim_analytics:
-  new_patch_available: Nuovo patch disponibile
+  new_patch_available: Nuova patch disponibile
   system_config:
     group:
       notification.title: Notifiche
@@ -8,7 +8,7 @@ pim_analytics:
       version_update.label: Notifiche di nuove versioni
       version_update.tooltip: Invia la richiesta a un server remoto per recuperare informazioni sul rilascio di nuove patches
   system_info:
-    title: Informazioni sistema
+    title: Informazioni di sistema
     download: TXT
   info_type:
     pim_edition: Edizione
@@ -20,6 +20,9 @@ pim_analytics:
     nb_channels: Numero di canali
     nb_products: Numero di prodotti
     nb_attributes: Numero di attributi
+    nb_scopable_attributes: Numero di attributi customizzabili per canale
+    nb_localizable_attributes: Numero di attributi localizzabili
+    nb_scopable_localizable_attributes: Numero di attributi localizzabili e customizzabili per canale
     nb_locales: Numero di localizzazioni
     nb_families: Numero di famiglie
     nb_users: Numero di utenti
@@ -33,7 +36,7 @@ pim_analytics:
     php_extensions: Estensioni PHP
   acl:
     system_info:
-      index: Informazioni sistema
+      index: Informazioni di sistema
 pim_menu:
   item:
-    system_info: Informazioni sistema
+    system_info: Informazioni di sistema

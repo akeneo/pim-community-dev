@@ -15,7 +15,7 @@ edit: modifica
 copy: copia
 remove: rimuovi
 Status: Stato
-All: Tutto
+All: Tutti
 Per page: Per pagina
 Mass Action Confirmation: Conferma azione di massa
 Mass action performed.: Azione di massa eseguita.
@@ -27,41 +27,54 @@ Action performed.: Azione eseguita.
 Action is not performed.: Azione non eseguita.
 Please, select item to perform action.: Per favore, seleziona l'articolo per eseguire l'azione.
 View per page: Mostra per pagina
-Enabled: Abilitato
+Enabled: Attivato
+Disabled: Disabilitato
+not_available: N/A
 "Yes": true
 "No": false
 oro.datagrid.entityHint: Entità
 oro.datagrid.noentities: Nessun record trovato
-oro.datagrid.noresults: "Nessun risultato trovato. Prova a cambiare i criteri di ricerca."
+oro.datagrid.noresults: "Non ci sono risultati per la tua ricerca."
+oro.datagrid.noresults_subTitle: "Riprova con nuovi criteri di ricerca."
 oro.datagrid.nocolumns: Nessuna colonna configurata per questa griglia
 oro.datagrid.pagination.label: "Pagina"
 oro.datagrid.pagination.totalPages: "di {{ totalPages }}"
 oro.datagrid.pagination.totalRecords: "{{ totalRecords }} record"
 oro.datagrid.action.reset: "Azzera"
 oro.datagrid.action.refresh: "Aggiorna"
-oro_datagrid.select.all: "Tutto"
+oro_datagrid.select.all: "Tutti"
 oro_datagrid.select.visible: "Tutti visibili"
 oro_datagrid.select.none: "Nessun"
+oro_datagrid.select.select: "Selezionare"
 pim.grid.ajax_choice_filter.label_empty: è vuoto
 pim.grid.ajax_choice_filter.label_not_empty: non è vuoto
-pim.grid.choice_filter:
-  label_empty: è vuoto
-  label_not_empty: non è vuoto
-  label_in_list: nell'elenco
+pim:
+  grid:
+    choice_filter:
+      label_empty: è vuoto
+      label_not_empty: non è vuoto
+      label_in_list: nell'elenco
+      operator: Operatore
+    price_filter:
+      label: Valuta
+    category_filter:
+      done: Completato
 Available Columns: Colonne disponibili
 Displayed Columns: Colonne Selezionate
 datagrid_view.columns.min_message: È necessario selezionare almeno una colonna della griglia di dati da visualizzare
 pim_datagrid:
   column_configurator:
     label: Colonne
-    title: Selezione Colonna
+    title: Configurare le colonne
     all_groups: Tutti i gruppi
     search: Ricerca
     clear: Ripulisci
     displayed_columns: Colonne Selezionate
     apply: Applica
-    cancel: Cancella
+    cancel: Annulla
     remove_column: Rimuovere
+    description: Seleziona le informazioni da visualizzare come colonne
+    attribute_groups: Gruppi di attributi
   mass_action:
     delete:
       confirm_title: Conferma cancellazione
@@ -87,6 +100,8 @@ grid.view_selector:
   placeholder: Nome della nuova visualizzazione
   choose_label: Scegliere un'etichetta per la visualizzazione
   confirmation:
-    remove: Sei sicuro di voler eliminare questa visualizzazione della griglia di dati?
+    remove: Sei sicuro di voler cancellare questa visualizzazione?
     delete: Conferma cancellazione
 grid.view_selector.flash.updated: La griglia di dati è stata aggiornata con successo
+Client ID: ID cliente
+Secret: Segreto

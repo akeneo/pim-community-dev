@@ -27,3 +27,52 @@ file.extensions.message: 'L''extension du fichier n''est pas autorisée (les ext
 "The attribute \"%attributeCode%\" is not a metric attribute.": L’attribut %attributeCode% n’est pas un attribut métrique.
 "The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": L’unité %unitCode% n’existe pas ou n’appartient pas à la famille de métriques par défaut de l’attribut %attributeCode%.
 "The currency \"%currency%\" has to be activated.": La devise %currency% doit être activée.
+product_model.code.not_blank.message: Le code du modèle de produit ne doit pas être vide.
+product_model.code.unique.message: Le même code est déjà défini sur un autre modèle de produit.
+product_model.family_variant.not_blank.message: La variante de famille du modèle de produit ne doit pas être vide.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'L''attribut "%attribute%" ne peut pas être vide, car il a été défini comme axe pour cette entité'
+    can_have_family_variant_duplicate_axis_value: 'La valeur "%values%" ne peut être mise sur l''axe "%attributes%", car une autre entité enfant a déjà cette valeur'
+    can_have_family_variant_unexpected_attribute: 'Impossible de modifier la propriété "%attribute%" de cette entité car elle n''est pas dans la liste des attributs'
+    cannot_have_product_model_as_parent: 'Le modèle de produit "%product_model%" ne peut pas avoir le modèle de produit "%parent_product_model%" comme parent'
+    cannot_have_parent: 'Le modèle de produit "%product_model%" ne peut pas avoir de parent'
+    attribute_does_not_belong_to_family: 'L''attribut "%attribute%" n''appartient pas à la famille "%family%"'
+    variant_product_invalid_family: 'La famille du produit variant doit être la même que son parent'
+    not_null_family: La famille ne peut pas être vide car votre produit avec l'identifiant "%sku%" est un produit variant.
+    variant_product_has_parent: 'Le produit variant "%variant_product%" doit avoir un parent'
+    invalid_variant_product_parent: 'Le produit variant "%variant_product%" ne peut pas avoir le modèle de produit "%product_model%" comme parent, (ce modèle de produit ne peut avoir que d''autres modèles de produit comme enfants)'
+    modified_variant_axis_value: 'L''axe de variante "%variant_axis%" ne peut pas être modifié, "%provided_value%" donné'
+    family_variant_attributes_unique: Les attributs doivent être uniques, "%attributes%" sont utilisés plusieurs fois dans des ensembles d'attributs de variantes
+    family_variant_axes_unique: Les axes de variantes doivent être uniques, "%attributes%" sont utilisés plusieurs fois dans des ensembles d'attributs de variantes
+    family_variant_axes_attribute_type_unique: Les axes de variantes "%axis%" ne doivent pas être unique ou un identifiant
+    family_variant_axes_attribute_type: Les axes de variantes "%axis%" doivent être un booléen, une liste à choix unique, une liste à choix unique de données référentielles ou une métrique
+    family_variant_axes_wrong_type: L'axe de variante "%axis%" ne peut pas être traduisible, décliné par canal ou spécifique à une locale
+    family_variant_axes_number_of_axes: 'Un ensemble d’attributs de variante ne peut pas avoir plus de %max_axes_number% axes'
+    family_variant_no_axis: Au moins un attribut doit être défini comme axe pour le niveau "%level%"
+    family_variant_axis_level: L'attribut "%axis%" doit être défini comme attribut dans le même ensemble d'attributs de variantes que son axe
+    family_variant_has_family_attribute: 'L''attribut "%attribute%" ne peut pas être ajouté à la variante de famille "%family_variant%", car ce n''est pas un attribut de la famille "%family%"'
+    family_variant_level_do_not_exist: Il n'y a aucun attribut variant pour le niveau "%level%"
+    family_variant_no_level: Il doit y avoir au moins un niveau défini dans la variante de famille
+    family_variant_maximum_number_of_level: La variante de famille ne peut pas avoir plus de "%level%" niveaux
+    family_variant_unique_attributes_in_last_level: L’attribut unique "%attribute%" doit être défini au niveau du produit
+    product_identifier: Ces identifiants "%s" n’existent pas.
+    0: Une erreur inattendue s'est produite.
+    100: Valeur non prévue
+    101: Ce champ attend une valeur booléenne.
+    102: Ce champ attend une valeur décimale.
+    103: Ce champ attend un nombre entier.
+    104: Ce champ attend une valeur numérique.
+    105: Ce champ attend une chaîne de caractères.
+    106: Ce champ attend un tableau de valeurs.
+    107: Ce champ attend un tableau de tableaux.
+    200: Une erreur interne est survenue
+    201: Une erreur interne est survenue
+    202: Ce champ attend une valeur numérique.
+    203: Ce champ attend une chaîne de caractères.
+    204: Ce champ attend une chaîne de caractères.
+    205: Une erreur interne est survenue
+    300: Ce champ attend un code d'entité valide.
+    301: Ce champ attend une portée et une locale valides.
+    302: Ce champ attend une portée valide.
+    303: Ce champ attend un format d'association valide.

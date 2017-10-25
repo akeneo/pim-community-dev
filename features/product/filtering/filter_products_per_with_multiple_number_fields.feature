@@ -6,14 +6,14 @@ Feature: Filter products with multiples number fields filters
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code      |
-      | furniture |
-      | library   |
     And the following attributes:
       | code      | label-en_US | type               | useable_as_grid_filter | group | decimals_allowed | negative_allowed |
       | component | Component   | pim_catalog_number | 1                      | other | 0                | 0                |
       | supplier  | Supplier    | pim_catalog_number | 1                      | other | 0                | 0                |
+    And the following family:
+      | code      | attributes         |
+      | furniture | component,supplier |
+      | library   | component,supplier |
     And the following products:
       | sku    | family    | supplier | component |
       | BOOK   | library   |          |           |
@@ -26,7 +26,7 @@ Feature: Filter products with multiples number fields filters
       | POST-2 | furniture | 03       |           |
       | POST-3 | furniture | 01       |           |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
     And I show the filter "supplier"
     And I show the filter "component"
 

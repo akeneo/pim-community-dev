@@ -18,7 +18,7 @@ Feature: Quick export products
     And I am logged in as "Julia"
 
   Scenario: Go to the job execution page for a "quick export" (by clicking on the notifications) and then check buttons status on the header
-    Given I am on the products page
+    Given I am on the products grid
     And I select rows boots, sneakers, pump
     When I press "CSV (Grid context)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_grid_context_quick_export" quick export to finish
@@ -27,8 +27,4 @@ Feature: Quick export products
     Then I should see the text "COMPLETED"
     And I should see the text "csv_product_grid_context_quick_export"
     And I should see the text "csv product grid context quick export"
-    And I should see the secondary action "Download log"
-    And I should not see the secondary action "Download read files"
-    And I should see the secondary action "Download generated files"
-    And I should not see the secondary action "Download generated archive"
-    And I should not see the secondary action "Show profile"
+    And I should see the text "Download generated files"

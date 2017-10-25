@@ -1,7 +1,0 @@
-services:
-    pim_enrich.remover.sequential_edit:
-        class:  '%pim_catalog.remover.base.class%'
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@event_dispatcher'
-            - '%pim_enrich.entity.sequential_edit.class%'

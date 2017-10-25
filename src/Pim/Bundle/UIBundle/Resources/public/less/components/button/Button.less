@@ -4,8 +4,7 @@
   @darken: 10%;
   @lighten: 20%;
 
-  // Default button color is light gray
-  background: @AknLightGray;
+  background-color: white;
   color: @AknDefaultFontColor;
   height: @AknDefaultButtonSize;
   line-height: @AknDefaultButtonSize - 2px;
@@ -14,7 +13,7 @@
   display: inline-block;
   padding: 0 @AknDefaultButtonSize/2;
   border-radius: 100px;
-  border: 1px solid @AknLightGray;
+  border: 1px solid @AknBorderColor;
   cursor: pointer;
   text-align: left;
   white-space: nowrap;
@@ -27,12 +26,12 @@
 
   &:hover,
   &--active {
-    background: darken(@AknLightGray, @darken);
+    background-color: darken(white, @darken);
     color: darken(@AknDefaultFontColor, @darken);
   }
 
   &-icon {
-    display: none !important; // Used for preemption of .icon class
+    margin: -4px -4px -7px 0;
   }
 
   // Apply color
@@ -44,13 +43,13 @@
 
   &--apply:hover,
   &--apply&--active {
-    background: darken(@AknGreen, @darken);
+    background-color: darken(@AknGreen, @darken);
     border-color: darken(@AknGreen, @darken);
     color: white;
   }
 
   &--apply&--disabled {
-    background: lighten(@AknGreen, @lighten);
+    background-color: lighten(@AknGreen, @lighten);
     border-color: lighten(@AknGreen, @lighten);
     cursor: not-allowed;
   }
@@ -64,13 +63,13 @@
 
   &--grey:hover,
   &--grey&--active {
-    background: darken(@AknGrey, @darken);
+    background-color: darken(@AknGrey, @darken);
     border-color: darken(@AknGrey, @darken);
     color: white;
   }
 
   &--grey&--disabled {
-    background: lighten(@AknGrey, @lighten);
+    background-color: lighten(@AknGrey, @lighten);
     border-color: lighten(@AknGrey, @lighten);
     cursor: not-allowed;
   }
@@ -105,33 +104,33 @@
 
   &--important:hover,
   &--important&--active {
-    background: darken(@AknRed, @darken);
+    background-color: darken(@AknRed, @darken);
     border-color: darken(@AknRed, @darken);
     color: white;
   }
 
   &--important&--disabled {
-    background: lighten(@AknRed, @lighten);
+    background-color: lighten(@AknRed, @lighten);
     border-color: lighten(@AknRed, @lighten);
     cursor: not-allowed;
   }
 
   // Action color
   &--action {
-    background: @AknBlue;
+    background-color: @AknBlue;
     border-color: @AknBlue;
     color: white;
   }
 
   &--action:hover,
   &--action&--active {
-    background: darken(@AknBlue, @darken);
+    background-color: darken(@AknBlue, @darken);
     border-color: darken(@AknBlue, @darken);
     color: white;
   }
 
   &--action&--disabled {
-    background: lighten(@AknBlue, @lighten);
+    background-color: lighten(@AknBlue, @lighten);
     border-color: lighten(@AknBlue, @lighten);
     cursor: not-allowed;
   }
@@ -191,5 +190,20 @@
   &--centered {
     display: block;
     margin: auto;
+  }
+
+  &--round {
+    width: @AknDefaultButtonSize;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+  }
+
+  &--dropdown {
+    background-image: url("../../../images/icon-down-white.svg");
+    background-repeat: no-repeat;
+    background-position: 92% center;
+    background-size: 20px;
+    padding-right: 34px;
   }
 }

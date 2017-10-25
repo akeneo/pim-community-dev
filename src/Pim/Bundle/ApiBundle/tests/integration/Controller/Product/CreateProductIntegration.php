@@ -59,8 +59,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_creation_family',
             'family'        => 'familyA',
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -97,8 +97,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_creation_groups',
             'family'        => null,
+            'parent'        => null,
             'groups'        => ["groupA", "groupB"],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -118,6 +118,8 @@ JSON;
         $this->assertSameProducts($expectedProduct, 'product_creation_groups');
     }
 
+    /**
+     * TODO PIM-6733: Variant group to be null or to be an alias for parent?
     public function testProductCreationWithVariantGroup()
     {
         $client = $this->createAuthenticatedClient();
@@ -142,6 +144,7 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_creation_variant_group',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
             'variant_group' => "variantA",
             'categories'    => [],
@@ -170,6 +173,7 @@ JSON;
         $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertSameProducts($expectedProduct, 'product_creation_variant_group');
     }
+     */
 
     public function testProductCreationWithCategories()
     {
@@ -188,8 +192,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_creation_categories',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => ["categoryA", "master"],
             'enabled'       => true,
             'values'        => [
@@ -231,8 +235,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_creation_associations',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -243,6 +247,18 @@ JSON;
             'created'       => '2016-06-14T13:12:50+02:00',
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
+                "PACK"         => [
+                    "groups"   => [],
+                    "products" => [],
+                ],
+                "SUBSTITUTION" => [
+                    "groups"   => [],
+                    "products" => [],
+                ],
+                "UPSELL"       => [
+                    "groups"   => [],
+                    "products" => [],
+                ],
                 "X_SELL"       => [
                     "groups"   => ["groupA"],
                     "products" => ["simple"],
@@ -272,7 +288,6 @@ JSON;
     {
         "identifier": "product_creation_product_values",
         "groups": ["groupA", "groupB"],
-        "variant_group": "variantA",
         "family": "familyA",
         "categories": ["master", "categoryA"],
         "values": {
@@ -352,22 +367,24 @@ JSON;
                 "locale": null,
                 "scope": null,
                 "data": [{
-                    "amount": "45.00",
-                    "currency": "USD"
-                }, {
                     "amount": "56.53",
                     "currency": "EUR"
+                },
+                {
+                    "amount": "45.00",
+                    "currency": "USD"
                 }]
             }],
             "a_price_without_decimal": [{
                 "locale": null,
                 "scope": null,
                 "data": [{
-                    "amount": -45,
-                    "currency": "USD"
-                }, {
                     "amount": 56,
                     "currency": "EUR"
+                },
+                {
+                    "amount": -45,
+                    "currency": "USD"
                 }]
             }],
             "a_ref_data_multi_select": [{
@@ -388,7 +405,7 @@ JSON;
             "a_text": [{
                 "locale": null,
                 "scope": null,
-                "data": "this is a text"
+                "data": "A name"
             }],
             "a_text_area": [{
                 "locale": null,
@@ -452,8 +469,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'product_creation_product_values',
             'family'        => 'familyA',
+            'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => 'variantA',
             'categories'    => ['categoryA', 'master'],
             'enabled'       => true,
             'values'        => [
@@ -525,8 +542,8 @@ JSON;
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
+                            ['amount' => '56.53', 'currency' => 'EUR'],
                             ['amount' => '45.00', 'currency' => 'USD'],
-                            ['amount' => '56.53', 'currency' => 'EUR']
                         ],
                     ],
                 ],
@@ -535,8 +552,8 @@ JSON;
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
+                            ['amount' => 56, 'currency' => 'EUR'],
                             ['amount' => -45, 'currency' => 'USD'],
-                            ['amount' => 56, 'currency' => 'EUR']
                         ],
                     ],
                 ],
@@ -642,8 +659,8 @@ JSON;
         $expectedProduct = [
             'identifier'    => 'foo',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -795,73 +812,6 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
-    public function testResponseWhenAttributeValidationFailed()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-<<<JSON
-    {
-        "identifier": "wrong_amount",
-        "variant_group": "variantB",
-        "values": {
-            "a_scopable_price": [{
-                "locale": null,
-                "scope": "ecommerce",
-                "data": [
-                    { "amount": "string", "currency": "EUR" },
-                    { "amount": 12, "currency": "USD" }
-                ]
-            }],
-            "a_number_float_negative":[{
-                "locale": null,
-                "scope": null,
-                "data": -300
-            }]
-        }
-    }
-JSON;
-
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
-
-        $expectedContent = <<<JSON
-{
-    "code": 422,
-    "message": "Validation failed.",
-    "errors": [
-        {
-            "property": "variant_group",
-            "message": "The product \"wrong_amount\" is in the variant group \"variantB\" but it misses the following axes: a_simple_select."
-        },
-        {
-            "property": "variant_group",
-            "message": "Product \"wrong_amount\" should have value for axis \"a_simple_select\" of variant group \"Variant B\""
-        },
-        {
-            "property": "values",
-            "message": "This value should be a valid number.",
-            "attribute": "a_scopable_price",
-            "locale": null,
-            "scope": "ecommerce",
-            "currency": "EUR"
-        },
-        {
-            "property": "values",
-            "message": "This value should be -250 or more.",
-            "attribute": "a_number_float_negative",
-            "locale": null,
-            "scope": null
-        }
-    ]
-}
-JSON;
-
-        $response = $client->getResponse();
-
-        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-    }
-
     public function testResponseWhenProductAlreadyExists()
     {
         $client = $this->createAuthenticatedClient();
@@ -929,7 +879,6 @@ JSON;
         "identifier": "foo",
         "family": null,
         "groups": ["groupA"],
-        "variant_group": null,
         "categories": ["master"],
         "values": {
             "unknown_attribute":[{
@@ -959,6 +908,80 @@ JSON;
         $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
     }
 
+    public function testProductCreationWithVariantGroupAttribute()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "identifier": "foo",
+        "family": null,
+        "variant_group": "group_variant",
+        "groups": ["groupA"],
+        "categories": ["master"],
+        "associations": {
+        }
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
+        $message = addslashes('Property "variant_group" does not exist anymore. Check the link below to understand why.');
+        $link = addslashes('http://api.akeneo.com/documentation/products-with-variants.html');
+
+        $expected = <<<JSON
+{
+    "code":422,
+    "message":"${message}",
+    "_links":{
+        "documentation":{
+            "href": "${link}"
+        }
+    }
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertJsonStringEqualsJsonString($expected, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    /**
+     * @jira https://akeneo.atlassian.net/browse/PIM-6876
+     */
+    public function testSuccessfullyToCreateProductWithControlCaracter()
+    {
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+<<<JSON
+    {
+        "identifier": "foo",
+        "values": {
+            "a_text":[
+                {"locale": null, "scope": null, "data": "15\u001fm"}
+            ]
+        }
+    }
+JSON;
+
+        $client->request('POST', '/api/rest/v1/products', [], [], [], $data);
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertEmpty($response->getContent());
+
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+
+        $client->request('GET', '/api/rest/v1/products/foo');
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+
+        $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier('foo');
+
+        $this->assertSame('15'. chr(31) . 'm', $product->getValue('a_text')->getData());
+        $this->assertSame('15'. chr(31) . 'm', $product->getRawValues()['a_text']['<all_channels>']['<all_locales>']);
+    }
+
     /**
      * @param array  $expectedProduct normalized data of the product that should be created
      * @param string $identifier identifier of the product that should be created
@@ -967,9 +990,6 @@ JSON;
     {
         $product = $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
         $standardizedProduct = $this->get('pim_serializer')->normalize($product, 'standard');
-
-        $standardizedProduct = static::sanitizeMediaAttributeData($standardizedProduct);
-        $expectedProduct = static::sanitizeMediaAttributeData($expectedProduct);
 
         NormalizedProductCleaner::clean($standardizedProduct);
         NormalizedProductCleaner::clean($expectedProduct);
@@ -982,6 +1002,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

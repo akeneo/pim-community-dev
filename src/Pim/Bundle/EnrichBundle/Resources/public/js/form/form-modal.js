@@ -92,14 +92,21 @@ define(
             },
 
             /**
+             * Initial form data of the modal
+             */
+            initialFormData: {},
+
+            /**
              * @param {string}   formName
              * @param {function} submitCallback
              * @param {Object}   modalParameters
+             * @param {Object}   initialFormData
              */
-            initialize: function (formName, submitCallback, modalParameters) {
+            initialize: function (formName, submitCallback, modalParameters, initialFormData = {}) {
                 this.formName        = formName;
                 this.submitCallback  = submitCallback;
                 this.modalParameters = _.extend(this.modalParameters, modalParameters);
+                this.initialFormData = initialFormData;
             },
 
             /**
@@ -117,6 +124,7 @@ define(
                         this.modal = new Backbone.BootstrapModal(this.modalParameters);
                         this.modal.open();
 
+                        form.setData(this.initialFormData, {silent: true});
                         form.setElement(this.modal.$('.modal-body')).render();
 
                         mediator.on('pim_enrich:form:modal:ok_button:disable', function () {

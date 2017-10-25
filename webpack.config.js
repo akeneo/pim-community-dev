@@ -1,73 +1,73 @@
 /* eslint-env es6 */
-const process = require('process')
-const rootDir = process.cwd()
-const webpack = require('webpack')
-const { resolve } = require('path')
-const { values, mapKeys } = require('lodash')
-const { getModulePaths } = require('./frontend/requirejs-utils')
-const { aliases, context, config, paths } = getModulePaths(rootDir, __dirname)
-const isProd = process.argv && process.argv.indexOf('--env=prod') > -1
+const fs = require('fs');
+const process = require('process');
+const rootDir = process.cwd();
+const webpack = require('webpack');
+const path = require('path');
+const _ = require('lodash');
 
-const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin')
-const WebpackCleanupPlugin = require('webpack-cleanup-plugin')
-const AddToContextPlugin = require('./frontend/add-context-plugin')
-const LiveReloadPlugin = require('webpack-livereload-plugin')
+const WebpackCleanupPlugin = require('webpack-cleanup-plugin');
+const LiveReloadPlugin = require('webpack-livereload-plugin');
 
-const babelPresets = ['es2015', 'es2016', 'es2017']
-if (isProd) babelPresets.push('babili')
+const isProd = process.argv && process.argv.indexOf('--env=prod') > -1;
+const sourcePath = path.join(rootDir, 'web/js/require-paths.js');
 
-console.log('Starting webpack from', rootDir, 'in environment', isProd ? 'prod' : 'dev')
+if (!fs.existsSync(sourcePath)) {
+    throw new Error(`The web/js/require-paths.js module does not exist - You need to run
+    "bin/console pim:install" or "bin/console pim:installer:dump-require-paths" before
+    running webpack \n`);
+}
+
+const { getModulePaths, createModuleRegistry } = require('./webpack/requirejs-utils');
+const { aliases, config } = getModulePaths(rootDir, __dirname, sourcePath);
+
+createModuleRegistry(Object.keys(aliases), rootDir);
+
+const babelPresets = [['babel-preset-env', {
+    targets: {
+        browsers: ['firefox >= 45']
+    }
+}]];
+
+if (isProd) {
+    babelPresets.push('babel-preset-minify');
+}
+
+console.log('Starting webpack from', rootDir, 'in', isProd ? 'prod' : 'dev', 'mode');
 
 module.exports = {
+    stats: {
+        hash: false,
+        maxModules: 5,
+        modules: false,
+        timings: true,
+        version: true
+    },
     target: 'web',
-    entry: [resolve(rootDir, './web/bundles/pimenrich/js/index.js')],
+    entry: [
+        'babel-polyfill',
+        path.resolve(rootDir, './web/bundles/pimenrich/js/index.js')
+    ],
     output: {
-        path: resolve('./web/dist/'),
+        path: path.resolve('./web/dist/'),
         publicPath: '/dist/',
         filename: '[name].min.js',
         chunkFilename: '[name].bundle.js'
     },
-    devtool: 'cheap-source-map',
+    devtool: 'source-map',
     resolve: {
         symlinks: false,
-        alias: mapKeys(aliases, (path, key) => `${key}$`)
+        alias: _.mapKeys(aliases, (path, key) => `${key}$`)
     },
     module: {
         rules: [
-
-            // Inject a regex that contains a list of the allowed paths to grab modules from
-            {
-                test: resolve(__dirname, 'frontend/require-context'),
-                loader: 'regexp-replace-loader',
-                options: {
-                    match: {
-                        pattern: /__contextPlaceholder/,
-                        flags: 'g'
-                    },
-                    replaceWith: context
-                }
-            },
-
-            // Inject the hash of absolute module paths mapped to module name
-            {
-                test: resolve(__dirname, 'frontend/require-context'),
-                loader: 'regexp-replace-loader',
-                options: {
-                    match: {
-                        pattern: /__contextPaths/,
-                        flags: 'g'
-                    },
-                    replaceWith: JSON.stringify(paths)
-                }
-            },
-
             // Inject the module config (to replace module.config() from requirejs)
             {
                 test: /\.js$/,
                 exclude: /\/node_modules\/|\/spec\//,
                 use: [
                     {
-                        loader: resolve(__dirname, 'frontend/config-loader'),
+                        loader: path.resolve(__dirname, 'webpack/config-loader'),
                         options: {
                             configMap: config
                         }
@@ -106,7 +106,19 @@ module.exports = {
                     }
                 ]
             },
-
+            {
+                test: /node_modules\/summernote\/dist\/summernote.js/,
+                use: [
+                    {
+                        loader: 'imports-loader',
+                        options: 'require=>function(){}'
+                    },
+                    {
+                        loader: 'imports-loader',
+                        options: 'require.specified=>function(){}'
+                    }
+                ]
+            },
             // Expose jQuery to window
             {
                 test: /node_modules\/jquery\/dist\/jquery.js/,
@@ -123,7 +135,7 @@ module.exports = {
 
             // Expose the require-polyfill to window
             {
-                test: resolve(__dirname, './frontend/require-polyfill.js'),
+                test: path.resolve(__dirname, './webpack/require-polyfill.js'),
                 use: [
                     {
                         loader: 'expose-loader',
@@ -133,16 +145,15 @@ module.exports = {
             },
 
 
-            // Process the pim frontend files with babel
+            // Process the pim webpack files with babel
             {
                 test: /\.js$/,
-                include: /(web\/bundles|frontend|spec)/,
+                include: /(web\/bundles|webpack|spec)/,
                 exclude: /lib|node_modules/,
                 use: {
                     loader: 'babel-loader',
                     options: {
                         presets: babelPresets,
-                        // Cache speeds up the incremental builds
                         cacheDirectory: 'web/cache'
                     }
                 }
@@ -158,6 +169,7 @@ module.exports = {
     resolveLoader: {
         moduleExtensions: ['-loader']
     },
+
     plugins: [
         // Clean up the dist folder and source maps before rebuild
         new WebpackCleanupPlugin(),
@@ -165,21 +177,12 @@ module.exports = {
         // Map modules to variables for global use
         new webpack.ProvidePlugin({'_': 'underscore', 'Backbone': 'backbone', '$': 'jquery', 'jQuery': 'jquery'}),
 
-        // This is for the summernote lib (until it's updated to the latest version)
-        new webpack.DefinePlugin({'require.specified': 'require.resolve'}),
-
-        // When we dynamically require modules, replace the context with the root directory
-        new ContextReplacementPlugin(/.\/dynamic/, resolve('./')),
-
-        // A custom plugin to use absolute paths for webpack context map
-        new AddToContextPlugin(values(paths), rootDir),
-
         // Ignore these directories when webpack watches for changes
         new webpack.WatchIgnorePlugin([
-            resolve(rootDir, './node_modules'),
-            resolve(rootDir, './app'),
-            resolve(rootDir, './app/cache'),
-            resolve(rootDir, './vendor')
+            path.resolve(rootDir, './node_modules'),
+            path.resolve(rootDir, './app'),
+            path.resolve(rootDir, './app/cache'),
+            path.resolve(rootDir, './vendor')
         ]),
 
         // Inject live reload to auto refresh the page (hmr not compatible with our app)
@@ -196,4 +199,4 @@ module.exports = {
         }),
         new webpack.optimize.CommonsChunkPlugin({name: 'manifest'})
     ]
-}
+};

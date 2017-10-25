@@ -88,8 +88,9 @@ define(
 
                 this.getRoot().trigger('pim_menu:register_item', {
                     target: this.getTab(),
-                    route: navigationItem.code,
-                    position: navigationItem.position
+                    route: navigationItem.route,
+                    position: navigationItem.position,
+                    routeParams: navigationItem.routeParams
                 });
             }
         });

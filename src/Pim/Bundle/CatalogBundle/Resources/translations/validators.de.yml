@@ -1,7 +1,7 @@
 An identifier attribute already exists.: Ein identifizierendes Attribut existiert bereits.
 Attribute code may contain only letters, numbers and underscore: Ein Attributcode darf sich nur aus Buchstaben, Nummern und Unterstrichen zusammensetzen
 Attribute code may contain only letters (at least one), numbers and underscores: Der Attributcode kann nur Buchstaben (mind. 1), Zahlen und Unterstriche enthalten.
-This attribute type can't be used as a grid filter: Dieser Attributtyp kann nicht als Tabellenfilter verwendet werden
+This attribute type can't be used as a grid filter: Dieser Attributtyp kann nicht als Filter in der Listenansicht verwendet werden
 This code is not available: Dieser Code ist nicht verfügbar
 This attribute type must be required: Dieser Attributtyp muss ein Pflichtfeld sein
 This attribute type can't be required: Dieser Attributtyp kann kein Pflichtfeld sein
@@ -14,6 +14,7 @@ Option code may contain only letters (at least one), numbers and underscores: De
 This value should not be a decimal.: Dieser Wert darf keine Dezimalzahl sein.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Die Dateierweiterung ist nicht zulässig (Erlaubte Dateierweiterungen: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": Der Wert %value% ist bereits bei einem anderen Produkt für das eindeutige Attribut %attribute% gesetzt
+The same identifier is already set on another product: Diese Kennung ist bereits für ein anderes Produkt in Verwendung
 regex.comma_or_semicolon.message: Dieses Feld sollte keine Komma oder Semikolon enthalten.
 file.extensions.message: 'Die Dateierweiterung ist nicht zulässig (Erlaubte Dateierweiterungen: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Dieser Wertetyp erwartet die Benutzung von {{ decimal_separator }} als Dezimaltrennzeichen.
@@ -21,3 +22,37 @@ file.extensions.message: 'Die Dateierweiterung ist nicht zulässig (Erlaubte Dat
 "This type of value expects the use of comma (,) to separate decimals.": Dieser Wertetyp erwartet die Verwendung eines Kommas (,) als Dezimaltrennzeichen.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Dieser Wertetyp erwartet die Benutzung von arabischen (٫) Dezimaltrennzeichen.
 "This type of value expects the use of the format {{ date_format }} for dates.": Dieser Wertetyp erwartet die Benutzung von {{ date_format }} als Datumsformat.
+"The category \"%category%\" has to be a root category.": Die Kategorie "%category%" muss eine Hauptkategorie sein.
+"The attribute \"%attributeCode%\" does not exist.": Das Attribute "%attributeCode%" existiert nicht.
+"The attribute \"%attributeCode%\" is not a metric attribute.": Das Attribut "%attributeCode%" ist kein metrisches Attribut.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": Die Einheit "%unitCode%" ist nicht vorhanden oder gehört nicht zu der metrischen Standardfamilie des angegebenen Attributs "%attributeCode%".
+"The currency \"%currency%\" has to be activated.": Die Währung "%currency%" muss erst aktiviert werden.
+product_model.code.not_blank.message: Der Codes des Produktmodells darf nicht leer sein.
+product_model.code.unique.message: Diese Kennung ist bereits für ein anderes Produktmodell in Verwendung.
+product_model.family_variant.not_blank.message: Die Produktfamilie des Produktmodells darf nicht leer sein.
+pim_catalog:
+  constraint:
+    cannot_have_product_model_as_parent: 'Das Produktmodell "%product_model%" kann nicht dem Produktmodell "%parent_product_model%" untergeordnet werden'
+    cannot_have_parent: 'Das Produktmodell "%product_model%" kann keine übergeordnete Ebene haben'
+    attribute_does_not_belong_to_family: 'Attribut "%attribute%" gehört nicht zu der Familie "%family%"'
+    invalid_variant_product_parent: 'Die Produktvariante "%variant_product%" kann nicht dem Produktmodell "%product_model%" untergeordnet werden (dem Produktmodell können nur andere Produktmodelle untergeordnet werden)'
+    product_identifier: Diese Kennungen "%s" sind nicht vorhanden.
+    0: Es ist ein unerwarteter Fehler aufgetreten.
+    100: Unerwarteter Wert
+    101: Dieses Feld erwartet Werte vom Typ Boolean.
+    102: Dieses Feld erwartet Werte vom Typ Float.
+    103: Dieses Feld erwartet Werte vom Typ Integer.
+    104: Dieses Feld erwartet Werte vom Typ Numeric.
+    105: Dieses Feld erwartet Werte vom Typ String.
+    106: Dieses Feld erwartet Werte vom Typ Array.
+    107: Dieses Feld erwartet Werte vom Typ Array von Arrays.
+    200: Ein interner Fehler ist aufgetreten
+    201: Ein interner Fehler ist aufgetreten
+    202: Dieses Feld erwartet Werte vom Typ Numeric.
+    203: Dieses Feld erwartet Werte vom Typ String.
+    204: Dieses Feld erwartet Werte vom Typ String.
+    205: Ein interner Fehler ist aufgetreten
+    300: Dieses Feld erwartet einen validen Entitätscode.
+    301: Dieses Feld erwartet einen validen Gültigkeitsbereich und Gebietsschema.
+    302: Dieses Feld erwartet einen validen Gültigkeitsbereich.
+    303: Dieses Feld erwartet ein valides Format für Verbindungen.

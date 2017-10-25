@@ -9,7 +9,7 @@ define([
     'jquery',
     'underscore',
     'oro/translator',
-    'pim/attribute-edit-form/properties/field',
+    'pim/form/common/fields/field',
     'pim/fetcher-registry',
     'pim/user-context',
     'pim/i18n',
@@ -26,6 +26,13 @@ function (
     template
 ) {
     return BaseField.extend({
+        events: {
+            'change select': function (event) {
+                this.errors = [];
+                this.updateModel(this.getFieldValue(event.target));
+                this.getRoot().render();
+            }
+        },
         template: _.template(template),
         attributeGroups: {},
 

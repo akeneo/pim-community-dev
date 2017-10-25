@@ -5,6 +5,7 @@ parameters:
     pim_catalog.saver.group.class:                         Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver
     pim_catalog.saver.family.class:                        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\FamilySaver
     pim_catalog.saver.attribute.class:                     Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\AttributeSaver
+    pim_catalog.saver.product_model_descendants.class:     Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductModelDescendantsSaver
     pim_catalog.synchronizer.product_unique_data.class:    Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer
 
 services:
@@ -23,6 +24,13 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.synchronizer.product_unique_data'
 
+    pim_catalog.saver.product_model:
+        class: '%pim_catalog.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.product_model.interface%'
+
     pim_catalog.synchronizer.product_unique_data:
         class: '%pim_catalog.synchronizer.product_unique_data.class%'
         arguments:
@@ -33,8 +41,6 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.saver.product'
-            - '@pim_catalog.manager.product_template_media'
-            - '@pim_catalog.applier.product_template'
             - '@pim_versioning.context.version'
             - '@pim_catalog.saver.group_options_resolver'
             - '@event_dispatcher'
@@ -48,6 +54,13 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.manager.completeness'
             - '@event_dispatcher'
+
+    pim_catalog.saver.family_variant:
+        class: '%pim_catalog.saver.base.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '%pim_catalog.model.family_variant.interface%'
 
     pim_catalog.saver.association_type:
         class: '%pim_catalog.saver.base.class%'
@@ -106,3 +119,13 @@ services:
 
     pim_catalog.saver.group_options_resolver:
         class: '%pim_catalog.saver.group_options_resolver.class%'
+
+    pim_catalog.saver.product_model_descendants:
+        class: '%pim_catalog.saver.product_model_descendants.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_catalog.elasticsearch.indexer.product_model'

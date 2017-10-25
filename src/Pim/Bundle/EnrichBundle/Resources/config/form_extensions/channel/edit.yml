@@ -10,6 +10,14 @@ extensions:
             tab: pim-menu-settings
             item: pim-menu-settings-channel
 
+    pim-channel-edit-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-channel-edit-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-channel-edit-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-channel-edit-form
@@ -42,6 +50,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.channel
+                subTitle: pim_menu.item.channel
                 content: pim_enrich.confirmation.delete_item
                 success: flash.channel.removed
                 fail: error.removing.channel

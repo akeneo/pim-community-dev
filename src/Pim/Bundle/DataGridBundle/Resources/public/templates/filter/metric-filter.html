@@ -1,30 +1,42 @@
-<div class="AknFilterChoice metricfilter choicefilter">
-    <div class="AknFilterChoice-operator AknDropdown btn-group">
-        <button class="AknActionButton AknActionButton--big AknActionButton--noRightBorder dropdown-toggle" data-toggle="dropdown">
-            <%= _.__('Action') %>
-            <span class="AknCaret caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <% _.each(choices, function (choice) { %>
-            <li><a class="choice_value" href="#" data-value="<%= choice.value %>"><%= choice.label %></a></li>
-            <% }); %>
-            </ul>
-        <input class="name_input" type="hidden" name="metric_type" value=""/>
+<div class="AknFilterChoice unitfilter choicefilter">
+    <div class="AknFilterChoice-header">
+        <div class="AknFilterChoice-title"><%- label %></div>
+        <div class="AknDropdown operator">
+            <div class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
+                <span class="AknActionButton-highlight"><%- selectedOperatorLabel %></span>
+                <span class="AknActionButton-caret"></span>
+            </div>
+            <div class="AknDropdown-menu">
+                <div class="AknDropdown-menuTitle"><%- operatorLabel %></div>
+                <% _.each(operatorChoices, function (label, operator) { %>
+                <div class="AknDropdown-menuLink<% if (selectedOperator == operator) { %> AknDropdown-menuLink--active active<% } %>">
+                    <span class="label operator_choice" data-value="<%= operator %>"><%- label %></span>
+                </div>
+                <% }); %>
+            </div>
         </div>
-
-    <input class="AknTextField AknTextField--noRadius AknFilterChoice-field" type="text" name="value" value="">
-
-    <div class="AknFilterChoice-operator AknDropdown">
-        <button class="AknActionButton AknActionButton--big AknActionButton--noRightBorder AknActionButton--noLeftBorder dropdown-toggle" data-toggle="dropdown">
-            <%= _.__('Unit') %>
-            <span class="AknCaret caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <% _.each(units, function (symbol, code) { %>
-                <li><a class="choice_value" href="#" data-value="<%= code %>"><%= _.__(code) %></a></li>
-            <% }); %>
-            </ul>
-        <input class="name_input" type="hidden" name="metric_unit" value=""/>
+    </div>
+    <div>
+        <input type="text" name="value" class="AknTextField select-field" value="<%- value %>"/>
+        <div class="AknFilterChoice-unit">
+            <div class="AknDropdown unit">
+                <div class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown">
+                    <span class="AknActionButton-highlight"><%- selectedUnit %></span>
+                    <span class="AknActionButton-caret"></span>
+                </div>
+                <div class="AknDropdown-menu unit">
+                    <div class="AknDropdown-menuTitle"><%- unitLabel %></div>
+                    <% _.each(units, function (symbol, code) { %>
+                    <div class="AknDropdown-menuLink<% if (selectedUnit == code) { %> AknDropdown-menuLink--active active<% } %>">
+                        <span class="label unit_choice" data-value="<%= code %>"><%- __(code) %></span>
+                    </div>
+                    <% }); %>
+                </div>
+            </div>
         </div>
-    <button class="AknButton AknButton--apply AknFilterChoice-button AknButton--noLeftRadius filter-update" type="button"><%= _.__("Update") %></button>
+        <input class="name_input" type="hidden" name="metric_unit" value="<%- selectedUnit %>"/>
+    </div>
+    <div class="AknFilterChoice-button">
+        <button type="button" class="AknButton AknButton--apply filter-update"><%- updateLabel %></button>
+    </div>
 </div>

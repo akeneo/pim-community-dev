@@ -11,7 +11,7 @@ class AttributeGroupAuthorizationIntegration extends ApiTestCase
 {
     public function testOverallAccessDenied()
     {
-        $client = $this->createAuthenticatedClient([], [], null, null, 'mary', 'mary');
+        $client = $this->createAuthenticatedClient([], [], null, null, 'kevin', 'kevin');
 
         $client->request('GET', '/api/rest/v1/attribute-groups');
 
@@ -206,6 +206,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

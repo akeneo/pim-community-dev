@@ -12,12 +12,20 @@ datagrid:
             entity:            '%pim_catalog.entity.product.class%'
             user_config_alias: product-grid
         columns:
+            identifier:
+                label:     ID
+                data_name: identifier
+                type:      field
             is_checked:
                 frontend_type: boolean
                 editable:      true
             is_associated:
                 label:         Is associated
                 frontend_type: boolean-label
+            image:
+                label:         Image
+                data_name:     image
+                frontend_type: image
             label:
                 label:         Label
                 type:          field
@@ -40,6 +48,9 @@ datagrid:
             id: ~
         sorters:
             columns:
+                identifier:
+                    data_name: identifier
+                    sorter: product_field
                 is_associated:
                     data_name: is_associated
                     sorter:    product_is_associated
@@ -90,16 +101,6 @@ datagrid:
                     type:      product_completeness
                     label:     Complete
                     data_name: ratio
-                created:
-                    type:      product_date
-                    ftype:     date
-                    data_name: created
-                    label:     Created At
-                updated:
-                    type:      product_date
-                    ftype:     date
-                    data_name: updated
-                    label:     Updated At
                 scope:
                     type:      product_scope
                     label:     Scope

@@ -9,10 +9,8 @@ pim_connector:
       invalid_item_columns_count: '期望获得 %totalColumnsCount% 列，实际获得 %itemColumnsCount% 列。路径：%filePath%:%lineno%'
     csv_product_reader.title: CSV产品阅读器
     csv_category_reader.title: CSV分类阅读器
-    csv_variant_group .title: CSV多样组读
     dummy_processor.title: 虚拟处理器
     product_processor.title: 创建产品
-    variant_group_processor.title: 多样组创建/更新
     category_processor.title: 创建分类
     association_processor.title: 创建相关性
     product_association_processor.title: 创建相关性
@@ -26,7 +24,6 @@ pim_connector:
     file_writer.title: 输出
     product_writer.title: 产品存储
     category_writer.title: 分类存储
-    variant_group_writer.title: 多种组存储
     writer.title: 实体存储
     csv_writer.title: CSV写入器
 job_execution.summary:
@@ -40,7 +37,7 @@ job_execution.summary:
   skip_products: 跳过的产品
   displayed: 已显示第一次警告
   charset_validator:
-    title: 文件编码：
+    title: '文件编码：'
     skipped: 跳过，在白名单中扩展
   product_skipped_no_diff: 跳过的产品 （无差异）
   item_position: 读行
@@ -68,6 +65,8 @@ batch_jobs:
     validation.label: 文件验证
     import.label: 产品导入
     import_associations.label: 相关导入
+  csv_product_model_import:
+    validation.label: 文件验证
   csv_category_import:
     label: 从CSV导入分类
     validation.label: 文件验证
@@ -86,12 +85,12 @@ batch_jobs:
     import.label: 相关类型导入
   csv_family_import:
     validation.label: 文件验证
+  csv_family_variant_import:
+    validation.label: 文件验证
   csv_group_import:
     label: 从CSV导入分组
     validation.label: 文件验证
     import.label: 分组导入
-  csv_variant_group_import:
-    validation.label: 文件验证
   csv_channel_import:
     validation.label: 文件验证
   csv_locale_import:
@@ -121,6 +120,8 @@ batch_jobs:
   xlsx_family_import:
     label: 在XLSX导入品类
     validation.label: 文件验证
+  xlsx_family_variant_import:
+    validation.label: 文件验证
   xlsx_product_export:
     label: 产品导出到 XLSX
     export.label: 产品导出
@@ -129,19 +130,15 @@ batch_jobs:
     validation.label: 文件验证
     import.label: 产品导入
     import_associations.label: 相关导入
+  xlsx_product_model_import:
+    validation.label: 文件验证
   xlsx_group_export:
     label: 分组导出到 XLSX
     export.label: 分组导出
-  xlsx_variant_group_export:
-    label: 款式组导出到XLSX
   xlsx_group_import:
     label: 从XLSX导入分组
     validation.label: 文件验证
     import.label: 分组导入
-  xlsx_variant_group_import:
-    label: 在 XLSX 中导入款式组
-    validation.label: 文件验证
-    import.label: 导入款式组
   xlsx_family_export:
     label: 在XLSX导入品类
   xlsx_category_export:

@@ -6,6 +6,10 @@ use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Doctrine\DBAL\Statement;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModel;
+use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProduct;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
 /**
@@ -20,7 +24,7 @@ class ProductSaverIntegration extends TestCase
         $this->updateProduct($product, $standardValues);
         $this->saveProduct($product);
 
-        $stmt = $this->createStatement('SELECT raw_values FROM pim_catalog_product ORDER BY id DESC LIMIT 1');
+        $stmt = $this->createStatement('SELECT raw_values FROM pim_catalog_product WHERE identifier = "just-a-product-with-all-possible-values"');
         $jsonRawValues = $stmt->fetchColumn();
         $rawValues = json_decode($jsonRawValues, true);
         NormalizedProductCleaner::cleanOnlyValues($rawValues);
@@ -31,12 +35,34 @@ class ProductSaverIntegration extends TestCase
         $this->assertSame($expectedRawValues, $rawValues);
     }
 
+    public function testRawValuesForVariantProduct()
+    {
+        $productModel = $this->createProductModel('just-a-product-model');
+        $this->updateProductModel($productModel, $this->getStandardValuesWithDifferentFewAttributes());
+        $this->saveProductModel($productModel);
+
+        $product = $this->createVariantProduct($productModel, 'just-a-variant-product-with-a-few-values', 'familyVariantA1');
+        $standardValues = $this->getStandardValuesWithFewAttributes();
+        $this->updateProduct($product, $standardValues);
+        $this->saveProduct($product);
+
+        $stmt = $this->createStatement('SELECT raw_values FROM pim_catalog_product WHERE identifier = "just-a-variant-product-with-a-few-values"');
+        $jsonRawValues = $stmt->fetchColumn();
+        $rawValues = json_decode($jsonRawValues, true);
+        NormalizedProductCleaner::cleanOnlyValues($rawValues);
+
+        $expectedRawValues = $this->getStorageValuesWithFewAttributes();
+        NormalizedProductCleaner::cleanOnlyValues($expectedRawValues);
+
+        $this->assertSame($expectedRawValues, $rawValues);
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
+        return $this->catalog->useTechnicalSqlCatalog();
     }
 
     /**
@@ -45,7 +71,7 @@ class ProductSaverIntegration extends TestCase
      *
      * @return ProductInterface
      */
-    private function createProduct($productIdentifier, $familyCode)
+    private function createProduct(string $productIdentifier, string $familyCode): ProductInterface
     {
         return $this->get('pim_catalog.builder.product')->createProduct($productIdentifier, $familyCode);
     }
@@ -68,11 +94,65 @@ class ProductSaverIntegration extends TestCase
     }
 
     /**
+     * @param string $identifier
+     *
+     * @return ProductModelInterface
+     */
+    private function createProductModel(string $identifier): ProductModelInterface
+    {
+        $model = new ProductModel();
+        $model->setCode($identifier);
+
+        return $model;
+    }
+
+    /**
+     * TODO: should be replaced by a proper object (builder, factory, whatever)
+     *
+     * @param ProductModelInterface $productModel
+     * @param string                $productIdentifier
+     * @param string                $familyVariantCode
+     *
+     * @return VariantProductInterface
+     */
+    private function createVariantProduct(ProductModelInterface $productModel, string $productIdentifier, string $familyVariantCode): VariantProductInterface
+    {
+        $product = new VariantProduct();
+        $product->setParent($productModel);
+
+        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier($familyVariantCode);
+        $product->setFamilyVariant($familyVariant);
+        $product->setFamily($familyVariant->getFamily());
+
+        $identifierAttribute = $this->get('pim_catalog.repository.attribute')->getIdentifier();
+        $this->get('pim_catalog.builder.product')->addOrReplaceValue($product, $identifierAttribute, null, null, $productIdentifier);
+
+        return $product;
+    }
+
+    /**
+     * @param ProductModelInterface $productModel
+     * @param array                 $data
+     */
+    private function updateProductModel(ProductModelInterface $productModel, array $data)
+    {
+        $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
+    }
+
+    /**
+     * @param ProductModelInterface $productModel
+     */
+    private function saveProductModel(ProductModelInterface $productModel)
+    {
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
+    }
+
+    /**
      * @param string $sql
      *
      * @return Statement
      */
-    private function createStatement($sql)
+    private function createStatement(string $sql)
     {
         return $this->get('doctrine.orm.entity_manager')->getConnection()->query($sql);
     }
@@ -80,7 +160,7 @@ class ProductSaverIntegration extends TestCase
     /**
      * @return array
      */
-    private function getStandardValuesWithAllAttributes()
+    private function getStandardValuesWithAllAttributes(): array
     {
         return [
             'values' => [
@@ -149,8 +229,8 @@ class ProductSaverIntegration extends TestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
+                            ['amount' => '56.53', 'currency' => 'EUR'],
                             ['amount' => '45.00', 'currency' => 'USD'],
-                            ['amount' => '56.53', 'currency' => 'EUR']
                         ],
                     ],
                 ],
@@ -159,8 +239,8 @@ class ProductSaverIntegration extends TestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
+                            ['amount' => 56, 'currency' => 'EUR'],
                             ['amount' => -45, 'currency' => 'USD'],
-                            ['amount' => 56, 'currency' => 'EUR']
                         ],
                     ],
                 ],
@@ -251,7 +331,7 @@ class ProductSaverIntegration extends TestCase
     /**
      * @return array
      */
-    private function getStorageValuesWithAllAttributes()
+    private function getStorageValuesWithAllAttributes(): array
     {
         return [
             'a_file' => [
@@ -341,16 +421,16 @@ class ProductSaverIntegration extends TestCase
             'a_price' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
+                        ['amount' => '56.53', 'currency' => 'EUR'],
                         ['amount' => '45.00', 'currency' => 'USD'],
-                        ['amount' => '56.53', 'currency' => 'EUR']
                     ],
                 ],
             ],
             'a_price_without_decimal' => [
                 '<all_channels>' => [
                     '<all_locales>' => [
+                        ['amount' => 56, 'currency' => 'EUR'],
                         ['amount' => -45, 'currency' => 'USD'],
-                        ['amount' => 56, 'currency' => 'EUR']
                     ],
                 ],
             ],
@@ -422,6 +502,104 @@ class ProductSaverIntegration extends TestCase
             'sku' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'just-a-product-with-all-possible-values',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getStandardValuesWithFewAttributes()
+    {
+        return [
+            'values' => [
+                'a_number_integer' => [
+                    ['locale' => null, 'scope' => null, 'data' => 42]
+                ],
+                'a_price' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => [
+                            ['amount' => '56.53', 'currency' => 'EUR'],
+                            ['amount' => '45.00', 'currency' => 'USD'],
+                        ],
+                    ],
+                ],
+                'a_text' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => 'this is a beautiful text',
+                    ],
+                ],
+            ]
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getStandardValuesWithDifferentFewAttributes(): array
+    {
+        return [
+            'values' => [
+                'a_file' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => '8/b/5/c/8b5cf9bfd2e7e4725fd581e03251133ada1b2c99_fileA.txt',
+                    ],
+                ],
+                'an_image' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => '3/b/5/5/3b5548f9764c0535db2ac92f047fa448cb7cea76_imageA.jpg',
+                    ],
+                ],
+                'a_date' => [
+                    ['locale' => null, 'scope' => null, 'data' => '2016-06-13T00:00:00+02:00'],
+                ],
+                'a_metric' => [
+                    [
+                        'locale' => null,
+                        'scope'  => null,
+                        'data'   => ['amount' => '987654321987.1234', 'unit' => 'KILOWATT'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    private function getStorageValuesWithFewAttributes()
+    {
+        return [
+            'a_number_integer' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 42,
+                ],
+            ],
+            'a_price' => [
+                '<all_channels>' => [
+                    '<all_locales>' => [
+                        ['amount' => '56.53', 'currency' => 'EUR'],
+                        ['amount' => '45.00', 'currency' => 'USD'],
+                    ],
+                ],
+            ],
+            'a_text' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'this is a beautiful text',
+                ],
+            ],
+            'sku' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'just-a-variant-product-with-a-few-values',
                 ],
             ],
         ];

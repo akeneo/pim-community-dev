@@ -7,3 +7,4 @@ services:
         arguments:
             - '@pim_enrich.repository.job_execution'
             - '@oro_security.security_facade'
+            - '@security.token_storage'

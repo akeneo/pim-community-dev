@@ -45,6 +45,16 @@ class ValueCollection implements ValueCollectionInterface
     }
 
     /**
+     * @param ValueCollectionInterface $collection
+     *
+     * @return ValueCollectionInterface
+     */
+    public static function fromCollection(ValueCollectionInterface $collection): ValueCollectionInterface
+    {
+        return new static($collection->toArray());
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function toArray()
@@ -159,6 +169,17 @@ class ValueCollection implements ValueCollectionInterface
     public function contains(ValueInterface $value)
     {
         return in_array($value, $this->values, true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSame(ValueInterface $value)
+    {
+        $channelCode = null !== $value->getScope() ? $value->getScope() : '<all_channels>';
+        $localeCode = null !== $value->getLocale() ? $value->getLocale() : '<all_locales>';
+
+        return $this->getByCodes($value->getAttribute()->getCode(), $channelCode, $localeCode);
     }
 
     /**

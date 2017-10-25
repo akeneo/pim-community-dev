@@ -2,12 +2,20 @@ extensions:
     pim-job-instance-yml-base-export-show:
         module: pim/form/common/edit-form
 
-    pim-job-instance-yml-base-export-show-mainImage:
+    pim-job-instance-yml-base-export-show-main-image:
         module: pim/form/common/main-image
         parent: pim-job-instance-yml-base-export-show
         targetZone: main-image
         config:
             path: bundles/pimui/images/illustration-export-yml.svg
+
+    pim-job-instance-yml-base-export-show-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-job-instance-yml-base-export-show
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
 
     pim-job-instance-yml-base-export-show-breadcrumbs:
         module: pim/common/breadcrumbs
@@ -42,6 +50,7 @@ extensions:
         config:
             label: pim_enrich.form.job_instance.button.edit.title
             route: pim_importexport_export_profile_edit
+            buttonClass: AknButton AknButton--action
             identifier:
                 path: code
                 name: code

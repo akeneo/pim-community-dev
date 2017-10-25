@@ -1,6 +1,7 @@
 parameters:
     pim_api.controller.category.class: Pim\Bundle\ApiBundle\Controller\CategoryController
     pim_api.controller.family.class: Pim\Bundle\ApiBundle\Controller\FamilyController
+    pim_api.controller.family_variant.class: Pim\Bundle\ApiBundle\Controller\FamilyVariantController
     pim_api.controller.attribute.class: Pim\Bundle\ApiBundle\Controller\AttributeController
     pim_api.controller.attribute_option.class: Pim\Bundle\ApiBundle\Controller\AttributeOptionController
     pim_api.controller.attribute_group.class: Pim\Bundle\ApiBundle\Controller\AttributeGroupController
@@ -8,6 +9,7 @@ parameters:
     pim_api.controller.locale.class: Pim\Bundle\ApiBundle\Controller\LocaleController
     pim_api.controller.token.class: Pim\Bundle\ApiBundle\Controller\TokenController
     pim_api.controller.product.class: Pim\Bundle\ApiBundle\Controller\ProductController
+    pim_api.controller.product_model.class: Pim\Bundle\ApiBundle\Controller\ProductModelController
     pim_api.controller.root_endpoint.class: Pim\Bundle\ApiBundle\Controller\RootEndpointController
     pim_api.controller.media_file.class: Pim\Bundle\ApiBundle\Controller\MediaFileController
     pim_api.controller.currency.class: Pim\Bundle\ApiBundle\Controller\CurrencyController
@@ -43,6 +45,21 @@ services:
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_api.stream.family_partial_update_stream'
+            - '%pim_api.configuration%'
+
+    pim_api.controller.family_variant:
+        class: '%pim_api.controller.family_variant.class%'
+        arguments:
+            - '@pim_api.repository.family'
+            - '@pim_api.repository.family_variant'
+            - '@pim_serializer'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.parameter_validator'
+            - '@validator'
+            - '@pim_catalog.factory.family_variant'
+            - '@pim_api.updater.family_variant'
+            - '@pim_catalog.saver.family_variant'
+            - '@router'
             - '%pim_api.configuration%'
 
     pim_api.controller.attribute:
@@ -113,6 +130,7 @@ services:
             - '@pim_serializer'
             - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.checker.query_parameters'
             - '%pim_api.configuration%'
 
     pim_api.controller.token:
@@ -126,9 +144,10 @@ services:
             - '@pim_catalog.query.product_query_builder_search_after_size_factory'
             - '@pim_serializer'
             - '@pim_api.repository.channel'
-            - '@pim_catalog.repository.locale'
+            - '@pim_api.checker.query_parameters'
             - '@pim_api.repository.attribute'
             - '@pim_api.repository.product'
+            - '@pim_api.pagination.offset_hal_paginator'
             - '@pim_api.pagination.search_after_hal_paginator'
             - '@pim_api.pagination.parameter_validator'
             - '@pim_catalog.validator.product'
@@ -140,6 +159,30 @@ services:
             - '@pim_catalog.comparator.filter.product'
             - '@pim_api.stream.product_partial_update_stream'
             - '@pim_api.security.primary_key_encrypter'
+            - '@pim_catalog.query.product_query_builder_from_size_factory'
+            - '@pim_catalog.builder.variant_product'
+            - '@pim_connector.processor.attribute_filter.product'
+            - '%pim_api.configuration%'
+
+    pim_api.controller.product_model:
+        class: '%pim_api.controller.product_model.class%'
+        arguments:
+            - '@pim_catalog.query.product_model_query_builder_factory'
+            - '@pim_catalog.query.product_model_query_builder_from_size_factory'
+            - '@pim_catalog.query.product_model_query_builder_search_after_size_factory'
+            - '@pim_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '@pim_api.pagination.search_after_hal_paginator'
+            - '@pim_api.security.primary_key_encrypter'
+            - '@pim_api.updater.product_model'
+            - '@pim_catalog.factory.product_model'
+            - '@pim_catalog.saver.product_model'
+            - '@router'
+            - '@validator'
+            - '@pim_connector.processor.attribute_filter.product_model'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_api.stream.product_model_partial_update_stream'
             - '%pim_api.configuration%'
 
     pim_api.controller.root_endpoint:

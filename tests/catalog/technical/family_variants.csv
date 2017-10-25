@@ -1,0 +1,3 @@
+code;family;variant-axes_1;variant-axes_2;variant-attributes_1;variant-attributes_2
+familyVariantA1;familyA;a_simple_select;a_yes_no;a_simple_select,a_text;a_yes_no,sku,a_text_area
+familyVariantA2;familyA;a_simple_select,a_yes_no;;a_simple_select,a_text,a_yes_no,sku;

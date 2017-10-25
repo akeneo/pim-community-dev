@@ -1,3 +1,7 @@
+/**
+ * @deprecated
+ * @TODO - Will be removed in TIP-733-2
+ */
 'use strict';
 
 define([
@@ -26,7 +30,6 @@ define([
     ) {
         return Backbone.View.extend({
             template: _.template(template),
-            className: 'AknTabContainer-content--fullWidth',
             urlParams: {},
 
             /**
@@ -93,7 +96,6 @@ define([
 
                 //TODO Manage columns for product form (when refactoring product form index)
                 //TODO Manage category filter (when refactoring category index)
-
                 $.get(Routing.generate('pim_datagrid_load', this.urlParams)).then(function (response) {
 
                     this.$el.find('.grid-drop').data({
@@ -197,7 +199,7 @@ define([
                 }
 
                 if (undefined !== filters.pageSize) {
-                    this.urlParams[alias + '[_pager][_per_page]'] = filters.pageSize;
+                    this.urlParams[alias + '[_pager][_per_page]'] = 25;
                 }
 
                 if (undefined !== filters.currentPage) {

@@ -165,7 +165,7 @@ class PriceFilterIntegration extends AbstractProductQueryBuilderTestCase
 
     /**
      * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "a_price" expects an array with the key "amount" as data.
+     * @expectedExceptionMessage Property "a_price" expects an array with the key "amount".
      */
     public function testErrorAmountIsMissing()
     {
@@ -174,7 +174,7 @@ class PriceFilterIntegration extends AbstractProductQueryBuilderTestCase
 
     /**
      * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "a_price" expects an array with the key "currency" as data.
+     * @expectedExceptionMessage Property "a_price" expects an array with the key "currency".
      */
     public function testErrorCurrencyIsMissing()
     {

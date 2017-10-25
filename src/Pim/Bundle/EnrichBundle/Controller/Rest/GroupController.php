@@ -105,7 +105,7 @@ class GroupController
      */
     public function indexAction()
     {
-        $groups = $this->groupRepository->getAllGroupsExceptVariant();
+        $groups = $this->groupRepository->findAll();
 
         return new JsonResponse($this->normalizer->normalize($groups, 'internal_api', $this->userContext->toArray()));
     }
@@ -186,7 +186,7 @@ class GroupController
     }
 
     /**
-     * Remove a variant group
+     * Remove a group
      *
      * @param string $code
      *

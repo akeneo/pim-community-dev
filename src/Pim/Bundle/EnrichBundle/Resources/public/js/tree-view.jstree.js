@@ -194,6 +194,8 @@ define(
             if ($node.attr('rel') === 'folder' && !$('#node_' + unclassified).length) {
                 createNode(unclassified, $node.attr('id'), 'jstree.' + relatedEntity + '.unclassified');
             }
+
+            triggerUpdate();
         };
 
         var onSelectNode = function (e, data) {

@@ -8,12 +8,14 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'oro/translator',
         'pim/form',
         'pim/template/mass-edit/choose'
     ],
     function (
+        $,
         _,
         __,
         BaseForm,
@@ -21,9 +23,9 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'AknChoicesField',
+            className: 'AknSquareList',
             events: {
-                'change .operation': 'updateOperation'
+                'click .operation': 'updateOperation'
             },
 
             /**
@@ -56,17 +58,37 @@ define(
              * @param {Event} event
              */
             updateOperation: function (event) {
-                this.getParent().setCurrentOperation(event.target.value)
+                this.getParent().setCurrentOperation($(event.target).closest('.operation').data('code'));
+                this.render();
             },
 
             /**
              * {@inheritdoc}
              */
             getLabel: function () {
-                return __(
-                    this.config.title,
-                    {itemsCount: this.getFormData().itemsCount}
-                );
+                const itemsCount = this.getFormData().itemsCount;
+
+                return __(this.config.title, {itemsCount}, itemsCount);
+            },
+
+            /**
+             * Returns the title of the operation
+             *
+             * @returns {string}
+             */
+            getTitle() {
+                return __(this.config.title);
+            },
+
+            /**
+             * Returns the label with the count of impacted elements
+             *
+             * @returns {String}
+             */
+            getLabelCount: function () {
+                const itemsCount = this.getFormData().itemsCount;
+
+                return __(this.config.labelCount, {itemsCount}, itemsCount);
             },
 
             /**

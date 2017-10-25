@@ -6,6 +6,8 @@ namespace Pim\Component\Api\tests\integration\Normalizer;
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @group ce
  */
 class AttributeIntegration extends AbstractNormalizerTestCase
 {
@@ -89,7 +91,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
             'group'                  => 'attributeGroupA',
             'unique'                 => false,
             'useable_as_grid_filter' => false,
-            'allowed_extensions'     => ['pdf', 'doc', 'docx'],
+            'allowed_extensions'     => ['pdf', 'doc', 'docx', 'txt'],
             'metric_family'          => null,
             'default_metric_unit'    => null,
             'reference_data_name'    => null,
@@ -121,7 +123,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
         $expected = [
             'code'                   => 'an_image',
             'type'                   => 'pim_catalog_image',
-            'group'                  => 'attributeGroupB',
+            'group'                  => 'attributeGroupA',
             'unique'                 => false,
             'useable_as_grid_filter' => false,
             'allowed_extensions'     => ['jpg', 'gif', 'png'],
@@ -226,7 +228,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
         $expected = [
             'code'                   => 'a_metric_without_decimal_negative',
             'type'                   => 'pim_catalog_metric',
-            'group'                  => 'attributeGroupB',
+            'group'                  => 'attributeGroupC',
             'unique'                 => false,
             'useable_as_grid_filter' => false,
             'allowed_extensions'     => [],
@@ -296,7 +298,7 @@ class AttributeIntegration extends AbstractNormalizerTestCase
         $expected = [
             'code'                   => 'a_multi_select',
             'type'                   => 'pim_catalog_multiselect',
-            'group'                  => 'attributeGroupB',
+            'group'                  => 'attributeGroupC',
             'unique'                 => false,
             'useable_as_grid_filter' => false,
             'allowed_extensions'     => [],

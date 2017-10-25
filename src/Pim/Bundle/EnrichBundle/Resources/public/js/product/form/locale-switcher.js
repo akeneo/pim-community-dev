@@ -31,6 +31,7 @@ define(
                 'click li a': 'changeLocale'
             },
             displayInline: false,
+            displayLabel: true,
             config: {},
 
             /**
@@ -42,6 +43,17 @@ define(
                 }
 
                 BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:locale_switcher:change', function (localeEvent) {
+                    if ('base_product' === localeEvent.context) {
+                        this.render();
+                    }
+                }.bind(this));
             },
 
             /**
@@ -62,6 +74,7 @@ define(
                                 currentLocale: _.findWhere(locales, {code: params.localeCode}),
                                 i18n: i18n,
                                 displayInline: this.displayInline,
+                                displayLabel: this.displayLabel,
                                 label: __('pim_enrich.entity.product.meta.locale')
                             })
                         );
@@ -101,6 +114,15 @@ define(
              */
             setDisplayInline: function (value) {
                 this.displayInline = value;
+            },
+
+            /**
+             * Updates the display label value
+             *
+             * @param {Boolean} value
+             */
+            setDisplayLabel: function (value) {
+                this.displayLabel = value;
             }
         });
     }

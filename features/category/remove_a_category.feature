@@ -14,7 +14,7 @@ Feature: Remove a category
 
   Scenario: Remove a simple category
     Given I am on the "sandals" category page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should be on the category "summer_collection" edit page
     And I should see the flash message "Category successfully removed"
@@ -23,7 +23,7 @@ Feature: Remove a category
   @skip
   Scenario: Remove a category with sub-categories
     Given I am on the "winter_collection" category page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should be on the category "2014_collection" edit page
     And I should see the flash message "Category successfully removed"
@@ -32,7 +32,7 @@ Feature: Remove a category
   @unstable
   Scenario: Remove a category with products linked
     Given I am on the "winter_boots" category page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should be on the category "winter_collection" edit page
     And I should see the flash message "Category successfully removed"
@@ -48,7 +48,7 @@ Feature: Remove a category
   @skip
   Scenario: Remove a category with sub-categories and products linked
     Given I am on the "winter_collection" category page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should be on the category "2014_collection" edit page
     And I should see the flash message "Category successfully removed"
@@ -61,14 +61,14 @@ Feature: Remove a category
       | 2013_collection |        | 2013 collection |
     And I am on the "2013_collection" category page
     And I should see the text "Edit tree - 2013 collection"
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I confirm the deletion
     Then I should be redirected on the category tree creation page
     And I should see the flash message "Tree successfully removed"
 
   Scenario: Cancel the removal of a category
     Given I am on the "sandals" category page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     And I cancel the deletion
     Then I should see the "sandals" category under the "summer_collection" category
 
@@ -98,7 +98,7 @@ Feature: Remove a category
       | caterpillar_20 | winter_collection |
       | caterpillar_21 | winter_collection |
     And I am on the "winter_collection" category page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     Then I should see a confirm dialog with the following content:
       | title   | Delete confirmation                                                                        |
       | content | This category contains more products than allowed for this operation (20 products maximum) |
@@ -128,7 +128,7 @@ Feature: Remove a category
       | caterpillar_20 | winter_boots |
       | caterpillar_21 | winter_boots |
     And I am on the "winter_collection" category page
-    When I press the "Delete" button and wait for modal
+    When I press the secondary action "Delete"
     Then I should see a confirm dialog with the following content:
       | title   | Delete confirmation                                                                        |
       | content | This category contains more products than allowed for this operation (20 products maximum) |

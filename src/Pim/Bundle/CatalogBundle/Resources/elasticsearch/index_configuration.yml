@@ -13,8 +13,6 @@ mappings:
                 type: 'boolean'
             groups:
                 type: 'keyword'
-            variant_group:
-                type: 'keyword'
             created:
                 type: 'date'
             updated:
@@ -22,22 +20,28 @@ mappings:
             identifier:
                 type: 'keyword'
                 normalizer: 'identifier_normalizer'
-            label:
-                type: 'text'
-                analyzer: 'label_analyzer'
-
+            document_type:
+                type: 'keyword'
+            attributes_for_this_level:
+                type: 'keyword'
+            parent:
+                type: 'keyword'
         dynamic_templates:
             -
                 family:
                     path_match: 'family.labels.*'
-                    match_mapping_type: 'string'
                     mapping:
                         type: 'keyword'
                         normalizer: 'family_normalizer'
             -
+                textarea_scopable_localizable_structure:
+                    path_match: 'values.*-textarea.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
                 textarea:
                     path_match: 'values.*-textarea.*'
-                    match_mapping_type: 'string'
                     mapping:
                         fields:
                             preprocessed:
@@ -46,136 +50,180 @@ mappings:
                         type: 'text'
                         analyzer: 'textarea_analyzer'
             -
+                text_scopable_localizable_structure:
+                    path_match: 'values.*-text.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
                 text:
                     path_match: 'values.*-text.*'
-                    match_mapping_type: 'string'
                     mapping:
                         type: 'keyword'
                         normalizer: 'text_normalizer'
             -
+                completeness_scopable_localizable_structure:
+                    path_match: 'completeness.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                         type: 'object'
+            -
                 completeness:
-                     path_match: 'completeness.*'
-                     match_mapping_type: 'long'
-                     mapping:
+                    path_match: 'completeness.*'
+                    mapping:
                          type: 'integer'
+            -
+                decimal_scopable_localizable_structure:
+                    path_match: 'values.*-decimal.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
             -
                 decimal:
                     path_match: 'values.*-decimal.*'
-                    match_mapping_type: 'string'
                     mapping:
                         type: 'double'
             -
+                boolean_scopable_localizable_structure:
+                    path_match: 'values.*-boolean.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
+                boolean:
+                    path_match: 'values.*-boolean.*'
+                    mapping:
+                        type: 'boolean'
+            -
+                date_scopable_localizable_structure:
+                    path_match: 'values.*-date.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
+                date:
+                    path_match: 'values.*-date.*'
+                    mapping:
+                        type: 'date'
+            -
+                option_scopable_localizable_structure:
+                    path_match: 'values.*-option.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
                 option:
                     path_match: 'values.*-option.*'
-                    match_mapping_type: 'string'
                     mapping:
                         type: 'keyword'
+            -
+                options_scopable_localizable_structure:
+                    path_match: 'values.*-options.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
             -
                 options:
                     path_match: 'values.*-options.*'
-                    match_mapping_type: 'string'
                     mapping:
                         type: 'keyword'
+            -
+                reference_data_option_scopable_localizable_structure:
+                    path_match: 'values.*-reference_data_option.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
             -
                 reference_data_option:
                     path_match: 'values.*-reference_data_option.*'
-                    match_mapping_type: 'string'
                     mapping:
                         type: 'keyword'
+            -
+                reference_data_options_scopable_localizable_structure:
+                    path_match: 'values.*-reference_data_options.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
             -
                 reference_data_options:
                     path_match: 'values.*-reference_data_options.*'
-                    match_mapping_type: 'string'
                     mapping:
                         type: 'keyword'
             -
+                prices_data_options_scopable_localizable_structure:
+                    path_match: 'values.*-prices.*'
+                    match_mapping_type: 'object'
+                    mapping:
+                        type: 'object'
+            -
                 prices:
                     path_match: 'values.*-prices.*'
-                    match_mapping_type: 'string'
                     mapping:
                         type: 'double'
             -
                 metric_data:
-                    match_mapping_type: 'string'
+                    path_match: 'values.*-metric.*.data'
                     mapping:
                         index: 'no'
-                    path_match: 'values.*-metric.*.data'
             -
                 metric_base_data:
                     path_match: 'values.*-metric.*.base_data'
-                    match_mapping_type: 'string'
                     mapping:
                         type: 'double'
             -
                 metric_unit:
                     path_match: 'values.*-metric.*.unit'
-                    match_mapping_type: 'string'
                     mapping:
                         index: 'no'
             -
                 metric_base_unit:
                     path_match: 'values.*-metric.*.base_unit'
-                    match_mapping_type: 'string'
                     mapping:
                         index: 'no'
             -
                 media_extension:
                     path_match: 'values.*-media.*.extension'
-                    match_mapping_type: 'string'
                     mapping:
                         index: 'no'
             -
                 media_key:
                     path_match: 'values.*-media.*.key'
-                    match_mapping_type: 'string'
                     mapping:
                         index: 'no'
             -
                 media_hash:
                     path_match: 'values.*-media.*.hash'
-                    match_mapping_type: 'string'
                     mapping:
                         index: 'no'
             -
                 media_mime_type:
                     path_match: 'values.*-media.*.mime_type'
-                    match_mapping_type: 'string'
                     mapping:
                         index: 'no'
             -
                 media_original_filename:
                     path_match: 'values.*-media.*.original_filename'
-                    match_mapping_type: 'string'
                     mapping:
                         type: 'keyword'
             -
                 media_size:
                     path_match: 'values.*-media.*.size'
-                    match_mapping_type: 'string'
                     mapping:
                         index: 'no'
             -
                 media_storage:
                     path_match: 'values.*-media.*.storage'
-                    match_mapping_type: 'string'
                     mapping:
                         index: 'no'
             -
-                boolean:
-                    path_match: 'values.*-boolean.*'
-                    match_mapping_type: 'boolean'
+                in_group_structure:
+                    path_match: 'in_group.*'
+                    match_mapping_type: 'object'
                     mapping:
-                        type: 'boolean'
-            -
-                date:
-                    path_match: 'values.*-date.*'
-                    match_mapping_type: 'date'
-                    mapping:
-                        type: 'date'
+                        type: 'object'
             -
                 in_group:
                     path_match: 'in_group.*'
-                    match_mapping_type: 'boolean'
                     mapping:
                         type: 'boolean'
 settings:
@@ -206,12 +254,8 @@ settings:
                 char_filter: ['html_strip', 'newline_pattern']
                 type: 'custom'
                 tokenizer: 'standard'
-            label_analyzer:
-                filter: ['lowercase']
-                type: 'standard'
-                tokenizer: 'standard'
     mapping:
         # ES default value is 1000. This value can be too low for big catalogs.
         # For more information see https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html#mapping-limit-settings
         total_fields:
-            limit: 3000
+            limit: 10000

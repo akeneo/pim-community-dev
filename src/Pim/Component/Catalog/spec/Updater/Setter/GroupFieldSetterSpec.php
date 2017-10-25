@@ -67,14 +67,9 @@ class GroupFieldSetterSpec extends ObjectBehavior
         $product->getGroups()->willReturn([$up]);
 
         $up->getType()->willReturn($nonVariantType);
-        $nonVariantType->isVariant()->willReturn(false);
         $product->removeGroup($up)->shouldBeCalled();
-
         $pack->getType()->willReturn($nonVariantType);
-        $nonVariantType->isVariant()->willReturn(false);
-
         $cross->getType()->willReturn($nonVariantType);
-        $nonVariantType->isVariant()->willReturn(false);
 
         $product->addGroup($pack)->shouldBeCalled();
         $product->addGroup($cross)->shouldBeCalled();
@@ -90,7 +85,6 @@ class GroupFieldSetterSpec extends ObjectBehavior
     ) {
         $groupRepository->findOneByIdentifier('pack')->willReturn($pack);
         $pack->getType()->willReturn($nonVariantType);
-        $nonVariantType->isVariant()->willReturn(false);
         $groupRepository->findOneByIdentifier('not valid code')->willReturn(null);
 
         $this->shouldThrow(

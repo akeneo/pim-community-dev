@@ -1,0 +1,12 @@
+parameters:
+    pim_catalog.entity_with_family.required_value_collection_factory.class: Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory
+    pim_catalog.entity_with_family.incomplete_value_collection_factory.class: Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory
+
+services:
+    pim_catalog.entity_with_family.required_value_collection_factory:
+        class: '%pim_catalog.entity_with_family.required_value_collection_factory.class%'
+
+    pim_catalog.entity_with_family.incomplete_value_collection_factory:
+        class: '%pim_catalog.entity_with_family.incomplete_value_collection_factory.class%'
+        arguments:
+            - '@pim_catalog.completeness.checker'

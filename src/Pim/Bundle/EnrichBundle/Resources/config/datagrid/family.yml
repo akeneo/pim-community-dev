@@ -10,6 +10,7 @@ datagrid:
         columns:
             label:
                 label: Label
+                frontend_type: label
             attributeAsLabel:
                 label: Attribute as label
         properties:
@@ -26,15 +27,17 @@ datagrid:
                     - code
         actions:
             edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:      navigate
                 label:     Edit
-                icon:      pencil
                 link:      edit_link
                 rowAction: true
             delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:  delete
                 label: Delete
-                icon:  trash
                 link:  delete_link
         sorters:
             columns:
@@ -66,5 +69,4 @@ datagrid:
                 route_parameters:
                     actionName: family-edit
                 acl_resource: pim_enrich_family_edit_attributes
-                icon: pencil
-                className: AknActionButton
+                className: 'AknButton AknButton--action AknButtonList-item'

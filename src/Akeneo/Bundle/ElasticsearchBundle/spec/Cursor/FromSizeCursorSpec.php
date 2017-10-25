@@ -3,7 +3,6 @@
 namespace spec\Akeneo\Bundle\ElasticsearchBundle\Cursor;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Bundle\ElasticsearchBundle\Cursor\Cursor;
 use Akeneo\Bundle\ElasticsearchBundle\Cursor\FromSizeCursor;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Repository\CursorableRepositoryInterface;
@@ -64,7 +63,7 @@ class FromSizeCursorSpec extends ObjectBehavior
     function it_is_countable()
     {
         $this->shouldImplement(\Countable::class);
-        $this->shouldHaveCount(4);
+        $this->count()->shouldReturn(4);
     }
 
     function it_is_iterable(

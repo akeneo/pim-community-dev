@@ -249,7 +249,7 @@ class UpdateProductCommand extends ContainerAwareCommand
      */
     protected function getProductPropertySetter()
     {
-        return $this->getContainer()->get('pim_catalog.updater.product_property_setter');
+        return $this->getContainer()->get('pim_catalog.updater.property_setter');
     }
 
     /**

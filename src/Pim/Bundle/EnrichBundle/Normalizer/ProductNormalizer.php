@@ -8,14 +8,20 @@ use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Component\Catalog\Builder\ProductBuilderInterface;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
+use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Localization\Localizer\AttributeConverterInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
+use Pim\Component\Catalog\ValuesFiller\EntityWithFamilyValuesFillerInterface;
 use Pim\Component\Enrich\Converter\ConverterInterface;
+use Pim\Component\Enrich\Query\AscendantCategoriesInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -31,7 +37,7 @@ class ProductNormalizer implements NormalizerInterface
     protected $supportedFormat = ['internal_api'];
 
     /** @var NormalizerInterface */
-    protected $productNormalizer;
+    protected $normalizer;
 
     /** @var NormalizerInterface */
     protected $versionNormalizer;
@@ -78,26 +84,45 @@ class ProductNormalizer implements NormalizerInterface
     /** @var FileNormalizer */
     protected $fileNormalizer;
 
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
+    /** @var EntityWithFamilyValuesFillerInterface */
+    protected $productValuesFiller;
+
+    /** @var EntityWithFamilyVariantAttributesProvider */
+    protected $attributesProvider;
+
+    /** @var VariantNavigationNormalizer */
+    protected $navigationNormalizer;
+
+    /** @var AscendantCategoriesInterface */
+    protected $ascendantCategoriesQuery;
+
     /**
-     * @param NormalizerInterface               $productNormalizer
-     * @param NormalizerInterface               $versionNormalizer
-     * @param VersionManager                    $versionManager
-     * @param LocaleRepositoryInterface         $localeRepository
-     * @param StructureVersionProviderInterface $structureVersionProvider
-     * @param FormProviderInterface             $formProvider
-     * @param AttributeConverterInterface       $localizedConverter
-     * @param ConverterInterface                $productValueConverter
-     * @param ObjectManager                     $productManager
-     * @param CompletenessManager               $completenessManager
-     * @param ChannelRepositoryInterface        $channelRepository
-     * @param CollectionFilterInterface         $collectionFilter
-     * @param NormalizerInterface               $completenessCollectionNormalizer
-     * @param UserContext                       $userContext
-     * @param CompletenessCalculatorInterface   $completenessCalculator
-     * @param FileNormalizer                    $fileNormalizer
+     * @param NormalizerInterface                       $normalizer
+     * @param NormalizerInterface                       $versionNormalizer
+     * @param VersionManager                            $versionManager
+     * @param LocaleRepositoryInterface                 $localeRepository
+     * @param StructureVersionProviderInterface         $structureVersionProvider
+     * @param FormProviderInterface                     $formProvider
+     * @param AttributeConverterInterface               $localizedConverter
+     * @param ConverterInterface                        $productValueConverter
+     * @param ObjectManager                             $productManager
+     * @param CompletenessManager                       $completenessManager
+     * @param ChannelRepositoryInterface                $channelRepository
+     * @param CollectionFilterInterface                 $collectionFilter
+     * @param NormalizerInterface                       $completenessCollectionNormalizer
+     * @param UserContext                               $userContext
+     * @param CompletenessCalculatorInterface           $completenessCalculator
+     * @param FileNormalizer                            $fileNormalizer
+     * @param ProductBuilderInterface                   $productBuilder
+     * @param EntityWithFamilyValuesFillerInterface     $productValuesFiller
+     * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
+     * @param VariantNavigationNormalizer               $navigationNormalizer
      */
     public function __construct(
-        NormalizerInterface $productNormalizer,
+        NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
         VersionManager $versionManager,
         LocaleRepositoryInterface $localeRepository,
@@ -112,9 +137,14 @@ class ProductNormalizer implements NormalizerInterface
         NormalizerInterface $completenessCollectionNormalizer,
         UserContext $userContext,
         CompletenessCalculatorInterface $completenessCalculator,
-        FileNormalizer $fileNormalizer
+        FileNormalizer $fileNormalizer,
+        ProductBuilderInterface $productBuilder,
+        EntityWithFamilyValuesFillerInterface $productValuesFiller,
+        EntityWithFamilyVariantAttributesProvider $attributesProvider,
+        VariantNavigationNormalizer $navigationNormalizer,
+        AscendantCategoriesInterface $ascendantCategoriesQuery = null
     ) {
-        $this->productNormalizer                = $productNormalizer;
+        $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
         $this->versionManager                   = $versionManager;
         $this->localeRepository                 = $localeRepository;
@@ -130,6 +160,11 @@ class ProductNormalizer implements NormalizerInterface
         $this->userContext                      = $userContext;
         $this->completenessCalculator           = $completenessCalculator;
         $this->fileNormalizer                   = $fileNormalizer;
+        $this->productBuilder                   = $productBuilder;
+        $this->productValuesFiller              = $productValuesFiller;
+        $this->attributesProvider               = $attributesProvider;
+        $this->navigationNormalizer             = $navigationNormalizer;
+        $this->ascendantCategoriesQuery         = $ascendantCategoriesQuery;
     }
 
     /**
@@ -137,7 +172,9 @@ class ProductNormalizer implements NormalizerInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        $normalizedProduct = $this->productNormalizer->normalize($product, 'standard', $context);
+        $this->productBuilder->addMissingAssociations($product);
+        $this->productValuesFiller->fillMissingValues($product);
+        $normalizedProduct = $this->normalizer->normalize($product, 'standard', $context);
         $normalizedProduct['values'] = $this->localizedConverter->convertToLocalizedFormats(
             $normalizedProduct['values'],
             $context
@@ -161,6 +198,14 @@ class ProductNormalizer implements NormalizerInterface
             'completenesses'    => $this->getNormalizedCompletenesses($product),
             'image'             => $this->normalizeImage($product->getImage(), $format, $context),
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
+
+        // TODO Refactor this condition in 2.1 to remove default null parameter.
+        $normalizedProduct['meta']['ascendant_category_ids'] =
+            (null !== $this->ascendantCategoriesQuery) && ($product instanceof EntityWithFamilyVariantInterface)
+            ? $this->ascendantCategoriesQuery->getCategoryIds($product)
+            : [];
+
+        $normalizedProduct['meta'] += $this->getMetaForVariantProduct($product, $format, $context);
 
         return $normalizedProduct;
     }
@@ -240,10 +285,56 @@ class ProductNormalizer implements NormalizerInterface
      */
     protected function normalizeImage(?ValueInterface $data, $format, $context = [])
     {
-        if (null === $data) {
+        if (null === $data || null === $data->getData()) {
             return null;
         }
 
         return $this->fileNormalizer->normalize($data->getData(), $format, $context);
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param string           $format
+     * @param array            $context
+     *
+     * @return array
+     */
+    protected function getMetaForVariantProduct(
+        ProductInterface $product,
+        string $format,
+        $context = []
+    ): array {
+        $meta = [
+            'variant_navigation'        => [],
+            'attributes_for_this_level' => [],
+            'attributes_axes'           => [],
+            'parent_attributes'         => [],
+            'family_variant'            => null
+        ];
+
+        if (!$product instanceof VariantProductInterface) {
+            return $meta;
+        }
+
+        $meta['variant_navigation'] = $this->navigationNormalizer->normalize($product, $format, $context);
+        $meta['family_variant'] = $this->normalizer->normalize($product->getFamilyVariant(), 'standard');
+
+        foreach ($this->attributesProvider->getAttributes($product) as $attribute) {
+            $meta['attributes_for_this_level'][] = $attribute->getCode();
+        }
+
+        foreach ($this->attributesProvider->getAxes($product) as $attribute) {
+            $meta['attributes_axes'][] = $attribute->getCode();
+        }
+
+        foreach ($this->attributesProvider->getAxes($product->getParent()) as $attribute) {
+            $meta['attributes_axes'][] = $attribute->getCode();
+        }
+
+        foreach ($this->attributesProvider->getAttributes($product->getParent()) as $attribute) {
+            $meta['parent_attributes'][] = $attribute->getCode();
+        }
+
+        return $meta;
     }
 }

@@ -6,16 +6,29 @@ Feature: Quick export many products with localized attributes from datagrid
 
   Background:
     Given a "footwear" catalog configuration
+    And I am logged in as "Julien"
+    And I am on the "boots" family page
+    And I visit the "Attributs" tab
+    And I add available attribute Date de déstockage and Taux de vente and Poids
+    And I save the family
+    And I am on the "sneakers" family page
+    And I visit the "Attributs" tab
+    And I add available attribute Date de déstockage and Taux de vente and Poids
+    And I save the family
+    And I am on the "sandals" family page
+    And I visit the "Attributs" tab
+    And I add available attribute Date de déstockage and Taux de vente and Poids
+    And I save the family
     And the following products:
       | sku      | family   | categories        | name-en_US    | price                | size | color | weight      | rate_sale | destocking_date |
       | boots    | boots    | winter_collection | Amazing boots | 20.80 EUR, 25.35 USD | 40   | black | 250 GRAM    | 75.5      | 1999-12-28      |
       | sneakers | sneakers | summer_collection | Sneakers      | 50.00 EUR, 60.00 USD | 42   | white | 125.50 GRAM | 75.00     |                 |
       | sandals  | sandals  | summer_collection | Sandals       | 5 EUR, 5 USD         | 40   | red   | 0.5 GRAM    | 75        |                 |
       | pump     |          | summer_collection | Pump          | 15 EUR, 20 USD       | 41   | blue  |             |           |                 |
-    And I am logged in as "Julien"
 
   Scenario: Successfully quick export CSV products with localized attributes
-    Given I am on the products page
+    Given I am on the products grid
+    And I switch the locale to "en_US"
     When I select rows boots, sneakers, sandals and pump
     And I press "CSV (tous les attributs)" on the "Export rapide" dropdown button
     And I wait for the "csv_product_quick_export" quick export to finish
@@ -37,7 +50,8 @@ Feature: Quick export many products with localized attributes from datagrid
     """
 
   Scenario: Successfully quick export XLSX products with localized attributes
-    Given I am on the products page
+    Given I am on the products grid
+    And I switch the locale to "en_US"
     When I select rows boots, sneakers, sandals and pump
     And I press "Excel (tous les attributs)" on the "Export rapide" dropdown button
     And I wait for the "xlsx_product_quick_export" quick export to finish

@@ -19,11 +19,6 @@ jobs:
         alias:     edit_common_attributes
         label:     Mass edit common product attributes
         type:      mass_edit
-    add_to_variant_group:
-        connector: Akeneo Mass Edit Connector
-        alias:     add_to_variant_group
-        label:     Mass add products to variant group
-        type:      mass_edit
     set_attribute_requirements:
         connector: Akeneo Mass Edit Connector
         alias:     set_attribute_requirements
@@ -72,3 +67,13 @@ jobs:
         alias:     csv_product_import
         label:     CSV default product import
         type:      import
+    compute_product_models_descendants:
+        connector: internal
+        alias:     compute_product_models_descendants
+        label:     Compute product models descendants
+        type:      compute_product_models_descendants
+    compute_completeness_of_products_family:
+        connector: internal
+        alias:     compute_completeness_of_products_family
+        label:     compute completeness of products family
+        type:      compute_completeness_of_products_family

@@ -6,14 +6,14 @@ Feature: Filter products
 
   Background:
     Given the "default" catalog configuration
-    And the following family:
-      | code      |
-      | furniture |
-      | library   |
     And the following attributes:
       | code     | label-en_US | type             | useable_as_grid_filter | group |
       | delivery | Delivery    | pim_catalog_date | 1                      | other |
       | supply   | Supply      | pim_catalog_date | 1                      | other |
+    And the following family:
+      | code      | attributes      |
+      | furniture | delivery,supply |
+      | library   | delivery,supply |
     And the following products:
       | sku    | family    | supply     | delivery   |
       | BOOK   | library   |            |            |
@@ -28,7 +28,7 @@ Feature: Filter products
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products with the sames attributes
-    Given I am on the products page
+    Given I am on the products grid
     And I show the filter "supply"
     And I filter by "supply" with operator "between" and value "08/01/2014 and 08/01/2014"
     And I show the filter "delivery"
@@ -39,7 +39,7 @@ Feature: Filter products
     And I hide the filter "delivery"
 
   Scenario: Successfully filter product without commons attributes
-    Given I am on the products page
+    Given I am on the products grid
     And I show the filter "supply"
     And I filter by "supply" with operator "between" and value "09/01/2014 and 10/01/2014"
     And I show the filter "delivery"
@@ -49,7 +49,7 @@ Feature: Filter products
     And I hide the filter "delivery"
 
   Scenario: Successfully filter only one product
-    Given I am on the products page
+    Given I am on the products grid
     And I show the filter "supply"
     And I filter by "supply" with operator "less than" and value "02/01/2014"
     And I show the filter "delivery"

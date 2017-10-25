@@ -7,14 +7,19 @@ use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Akeneo\Component\Batch\Job\JobParametersFactory;
 use Akeneo\Component\Batch\Job\JobParametersValidator;
 use Akeneo\Component\Batch\Job\JobRegistry;
+use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
+use Pim\Bundle\EnrichBundle\Event\JobInstanceEvents;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -63,7 +68,7 @@ class JobInstanceController
     protected $jobParamsFactory;
 
     /** @var JobLauncherInterface */
-    protected $simpleJobLauncher;
+    protected $jobLauncher;
 
     /** @var TokenStorageInterface */
     protected $tokenStorage;
@@ -83,6 +88,12 @@ class JobInstanceController
     /** @var JobInstanceFactory */
     protected $jobInstanceFactory;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
+    /** @var CollectionFilterInterface */
+    protected $inputFilter;
+
     /** @var string */
     protected $uploadTmpDir;
 
@@ -96,13 +107,15 @@ class JobInstanceController
      * @param ValidatorInterface                    $validator
      * @param JobParametersValidator                $jobParameterValidator
      * @param JobParametersFactory                  $jobParamsFactory
-     * @param JobLauncherInterface                  $simpleJobLauncher
+     * @param JobLauncherInterface                  $jobLauncher
      * @param TokenStorageInterface                 $tokenStorage
      * @param RouterInterface                       $router
      * @param FormProviderInterface                 $formProvider
      * @param ObjectFilterInterface                 $objectFilter
      * @param NormalizerInterface                   $constraintViolationNormalizer
      * @param JobInstanceFactory                    $jobInstanceFactory
+     * @param EventDispatcherInterface              $eventDispatcher
+     * @param CollectionFilterInterface             $inputFilter
      * @param string                                $uploadTmpDir
      */
     public function __construct(
@@ -115,13 +128,15 @@ class JobInstanceController
         ValidatorInterface $validator,
         JobParametersValidator $jobParameterValidator,
         JobParametersFactory $jobParamsFactory,
-        JobLauncherInterface $simpleJobLauncher,
+        JobLauncherInterface $jobLauncher,
         TokenStorageInterface $tokenStorage,
         RouterInterface $router,
         FormProviderInterface $formProvider,
         ObjectFilterInterface $objectFilter,
         NormalizerInterface $constraintViolationNormalizer,
         JobInstanceFactory $jobInstanceFactory,
+        EventDispatcherInterface $eventDispatcher,
+        CollectionFilterInterface $inputFilter,
         string $uploadTmpDir
     ) {
         $this->repository            = $repository;
@@ -133,13 +148,15 @@ class JobInstanceController
         $this->validator             = $validator;
         $this->jobParameterValidator = $jobParameterValidator;
         $this->jobParamsFactory      = $jobParamsFactory;
-        $this->simpleJobLauncher     = $simpleJobLauncher;
+        $this->jobLauncher           = $jobLauncher;
         $this->tokenStorage          = $tokenStorage;
         $this->router                = $router;
         $this->formProvider          = $formProvider;
         $this->objectFilter          = $objectFilter;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->jobInstanceFactory    = $jobInstanceFactory;
+        $this->eventDispatcher       = $eventDispatcher;
+        $this->inputFilter           = $inputFilter;
         $this->uploadTmpDir          = $uploadTmpDir;
     }
 
@@ -292,7 +309,12 @@ class JobInstanceController
         }
 
         $data = json_decode($request->getContent(), true);
-        $this->updater->update($jobInstance, $data);
+        $filteredData = $this->inputFilter->filterCollection(
+            $data,
+            'pim.internal_api.job_instance.edit',
+            ['preserve_keys' => true]
+        );
+        $this->updater->update($jobInstance, $filteredData);
 
         $errors = $this->getValidationErrors($jobInstance);
         if (count($errors) > 0) {
@@ -300,6 +322,11 @@ class JobInstanceController
         }
 
         $this->saver->save($jobInstance);
+
+        $this->eventDispatcher->dispatch(
+            JobInstanceEvents::POST_SAVE,
+            new GenericEvent($jobInstance, ['data' => $data])
+        );
 
         return new JsonResponse($this->normalizeJobInstance($jobInstance));
     }
@@ -341,7 +368,7 @@ class JobInstanceController
         }
 
         $file = $request->files->get('file');
-        if ($file) {
+        if (null !== $file) {
             $violations = $this->validator->validate($file);
 
             if (count($violations) > 0) {
@@ -362,7 +389,8 @@ class JobInstanceController
             $jobInstance->setRawParameters($rawParameters);
         }
 
-        $errors = $this->getValidationErrors($jobInstance);
+        $validationGroups = null !== $file ? ['Default', 'Execution', 'UploadExecution'] : ['Default', 'Execution'];
+        $errors = $this->getValidationErrors($jobInstance, $validationGroups);
         if (count($errors) > 0) {
             return new JsonResponse($errors, 400);
         }
@@ -381,13 +409,12 @@ class JobInstanceController
      * Get a job instance
      *
      * @param string $code
-     * @param bool   $checkStatus
      *
      * @throws NotFoundHttpException
      *
      * @return JobInstance
      */
-    protected function getJobInstance($code, $checkStatus = true)
+    protected function getJobInstance($code)
     {
         $jobInstance = $this->repository->findOneByIdentifier($code);
         if (null === $jobInstance) {
@@ -436,17 +463,18 @@ class JobInstanceController
      * Aggregate validation errors
      *
      * @param JobInstance $jobInstance
+     * @param array|null  $groups
      *
      * @return array
      */
-    protected function getValidationErrors(JobInstance $jobInstance)
+    protected function getValidationErrors(JobInstance $jobInstance, $groups = null)
     {
         $rawParameters = $jobInstance->getRawParameters();
         $parametersViolations = [];
         if (!empty($rawParameters)) {
             $job = $this->jobRegistry->get($jobInstance->getJobName());
             $parameters = $this->jobParamsFactory->create($job, $rawParameters);
-            $parametersViolations = $this->jobParameterValidator->validate($job, $parameters);
+            $parametersViolations = $this->jobParameterValidator->validate($job, $parameters, $groups);
         }
 
         $errors = [];
@@ -491,15 +519,17 @@ class JobInstanceController
      *
      * @param JobInstance $jobInstance
      *
-     * @return JobInstance
+     * @return JobExecution
      */
-    protected function launchJob(JobInstance $jobInstance)
+    protected function launchJob(JobInstance $jobInstance) : JobExecution
     {
+        $user = $this->tokenStorage->getToken()->getUser();
+
         $configuration = $jobInstance->getRawParameters();
         $configuration['send_email'] = true;
+        $configuration['user_to_notify'] = $user->getUsername();
 
-        return $this->simpleJobLauncher
-            ->launch($jobInstance, $this->tokenStorage->getToken()->getUser(), $configuration);
+        return $this->jobLauncher->launch($jobInstance, $user, $configuration);
     }
 
     /**
@@ -558,6 +588,11 @@ class JobInstanceController
         $jobParameters = $this->jobParamsFactory->create($job);
         $jobInstance->setRawParameters($jobParameters->all());
         $this->saver->save($jobInstance);
+
+        $this->eventDispatcher->dispatch(
+            JobInstanceEvents::POST_SAVE,
+            new GenericEvent($jobInstance, ['data' => $data])
+        );
 
         return new JsonResponse($this->normalizeJobInstance($jobInstance));
     }

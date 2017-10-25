@@ -4,10 +4,11 @@ namespace tests\integration\Pim\Component\Catalog\Normalizer\Indexing;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
+use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 
 /**
- * Integration tests to verify data from database are well formatted in the indexing format
+ * Integration tests to verify data from database are well formatted in the "indexing_product" format
  */
 class ProductIndexingIntegration extends TestCase
 {
@@ -16,9 +17,7 @@ class ProductIndexingIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration(
-            [Configuration::getTechnicalSqlCatalogPath()]
-        );
+        return $this->catalog->useTechnicalSqlCatalog();
     }
 
     public function testEmptyDisabledProduct()
@@ -32,14 +31,12 @@ class ProductIndexingIntegration extends TestCase
         $expected = [
             'id'            => '47',
             'identifier'    => 'bar',
-            'label'         => 'bar',
             'created'       => $date->format('c'),
             'updated'       => $date->format('c'),
             'family'        => null,
             'enabled'       => false,
             'categories'    => [],
             'groups'        => [],
-            'variant_group' => null,
             'completeness'  => [],
             'values'        => [],
         ];
@@ -58,14 +55,12 @@ class ProductIndexingIntegration extends TestCase
         $expected = [
             'id'            => '48',
             'identifier'    => 'baz',
-            'label'         => 'baz',
             'created'       => $date->format('c'),
             'updated'       => $date->format('c'),
             'family'        => null,
             'enabled'       => true,
             'categories'    => [],
             'groups'        => [],
-            'variant_group' => null,
             'completeness'  => [],
             'values'        => [],
         ];
@@ -84,7 +79,6 @@ class ProductIndexingIntegration extends TestCase
         $expected = [
             'id'            => '49',
             'identifier'    => 'foo',
-            'label'         => 'foo',
             'created'       => $date->format('c'),
             'updated'       => $date->format('c'),
             'family'        => [
@@ -97,12 +91,10 @@ class ProductIndexingIntegration extends TestCase
             ],
             'enabled'       => true,
             'categories'    => ['categoryA1', 'categoryB'],
-            'groups'        => ['groupA', 'groupB', 'variantA'],
-            'variant_group' => 'variantA',
+            'groups'        => ['groupA', 'groupB'],
             'in_group'      => [
                 'groupA'   => true,
                 'groupB'   => true,
-                'variantA' => true,
             ],
             'completeness'  => [
                 'ecommerce' => ['en_US' => 100],
@@ -322,7 +314,7 @@ class ProductIndexingIntegration extends TestCase
         $product = $repository->findOneByIdentifier($identifier);
 
         $serializer = $this->get('pim_serializer');
-        $actual = $serializer->normalize($product, 'indexing');
+        $actual = $serializer->normalize($product, ProductNormalizer::INDEXING_FORMAT_PRODUCT_INDEX);
 
         NormalizedProductCleaner::clean($actual);
         NormalizedProductCleaner::clean($expected);

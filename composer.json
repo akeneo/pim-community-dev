@@ -16,9 +16,10 @@
         },
         "psr-4": {
             "Pim\\Upgrade\\": "upgrades/",
+            "Akeneo\\Test\\IntegrationTestsBundle\\": "tests/IntegrationTestsBundle/",
             "Akeneo\\Test\\Integration\\": "tests/"
         },
-        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
+        "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/AppKernelTest.php" ]
     },
     "autoload-dev": {
         "files": [
@@ -53,11 +54,12 @@
         "leafo/lessphp": "0.5.0",
         "league/flysystem": "1.0.40",
         "league/flysystem-ziparchive": "1.0.3",
-        "liip/imagine-bundle": "1.8.0",
-        "imagine/imagine": "0.6.3",
+        "liip/imagine-bundle": "1.9.1",
+        "imagine/imagine": "0.7.1",
         "monolog/monolog": "1.23.0",
         "ocramius/proxy-manager": "2.1.1",
         "oneup/flysystem-bundle": "1.14.0",
+        "ramsey/uuid": "3.7.0",
         "sensio/distribution-bundle": "5.0.20",
         "sensio/framework-extra-bundle": "3.0.26",
         "sensio/generator-bundle": "3.1.6",
@@ -84,10 +86,12 @@
         "kriswallsmith/buzz": "^0.15",
         "pdepend/pdepend": "2.1.*",
         "phpmd/phpmd": "1.*",
-        "phpspec/phpspec": "3.0.*",
-        "phpunit/phpunit": "5.4.*",
+        "phpspec/phpspec": "~3.4.2",
+        "phpunit/phpunit": "~5.7.22",
+        "sebastian/exporter": "~2.0.0",
         "sensiolabs/behat-page-object-extension": "2.1.0",
-        "squizlabs/php_codesniffer": "2.*"
+        "squizlabs/php_codesniffer": "2.*",
+        "liuggio/fastest": "1.4.4"
     },
     "suggest": {
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"
@@ -145,7 +149,8 @@
             }
         },
         "branch-alias": {
-            "dev-master": "1.8.x-dev",
+            "dev-master": "2.1.x-dev",
+            "dev-2.0": "2.0.x-dev",
             "dev-1.7": "1.7.x-dev",
             "dev-1.6": "1.6.x-dev",
             "dev-1.5": "1.5.x-dev",

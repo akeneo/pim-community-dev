@@ -3,7 +3,7 @@
 {% block content %}
 <div class="AknDefault-mainContent">
     {% set title = ('category.overview')|trans %}
-    {{ elements.page_header(title) }}
+    {{ elements.page_header({ title: title }) }}
 
     <div id="category-tree-container" style="display:flex; height:100%">
         <div id="tree" {% if resource_granted(acl ~ '_category_edit') %} data-editable="true"{% endif %}{% if resource_granted(acl ~ '_category_create') %} data-creatable="true"{% endif %}></div>
@@ -29,7 +29,7 @@
 </div>
 {% endblock %}
 
-<script type="text/javascript">
+<script>
     window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
 </script>
 
@@ -59,7 +59,8 @@
 
                 FetcherRegistry.initialize().done(function () {
                     FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
-                        form.setElement('.user-menu').render();
+                        $('.user-menu').append(form.el);
+                        form.render();
                     }.bind(this));
                 });
             });

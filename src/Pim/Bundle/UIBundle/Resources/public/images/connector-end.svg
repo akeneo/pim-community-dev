@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60px" height="60px" viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch Beta 47 (45396) - http://www.bohemiancoding.com/sketch -->
+    <title>connector-end</title>
+    <desc>Created with Sketch Beta.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="connector-end">
+            <g id="Group-7" transform="translate(0.000000, 15.000000)">
+                <g id="Group-6">
+                    <path d="M0,-4.4408921e-16 L32.7963342,8.12541426e-14 L32.7963342,1.37667655e-14 C43.8420292,4.1169348e-14 52.7963342,8.954305 52.7963342,20 L52.7963342,39" id="Path-2" stroke="#5992C7"></path>
+                    <polygon id="Triangle" fill="#5992C7" points="52.9795918 45 46 36 59.9591837 36"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -3,8 +3,8 @@
 namespace tests\integration\Pim\Component\Catalog\Normalizer\Standard;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\DateSanitizer;
-use Akeneo\Test\Integration\MediaSanitizer;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\DateSanitizer;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
@@ -19,7 +19,7 @@ class ProductStandardIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
+        return $this->catalog->useTechnicalSqlCatalog();
     }
 
     public function testEmptyDisabledProduct()
@@ -27,8 +27,8 @@ class ProductStandardIntegration extends TestCase
         $expected = [
             'identifier'    => 'bar',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => false,
             'values'        => [
@@ -53,8 +53,8 @@ class ProductStandardIntegration extends TestCase
         $expected = [
             'identifier'    => 'baz',
             'family'        => null,
+            'parent'        => null,
             'groups'        => [],
-            'variant_group' => null,
             'categories'    => [],
             'enabled'       => true,
             'values'        => [
@@ -80,8 +80,8 @@ class ProductStandardIntegration extends TestCase
             [
                 'identifier'    => 'foo',
                 'family'        => 'familyA',
+                'parent'        => null,
                 'groups'        => ['groupA', 'groupB'],
-                'variant_group' => 'variantA',
                 'categories'    => ['categoryA1', 'categoryB'],
                 'enabled'       => true,
                 'values'        => [
@@ -153,8 +153,8 @@ class ProductStandardIntegration extends TestCase
                             'locale' => null,
                             'scope'  => null,
                             'data'   => [
+                                ['amount' => '56.53', 'currency' => 'EUR'],
                                 ['amount' => '45.00', 'currency' => 'USD'],
-                                ['amount' => '56.53', 'currency' => 'EUR']
                             ],
                         ],
                     ],
@@ -163,8 +163,8 @@ class ProductStandardIntegration extends TestCase
                             'locale' => null,
                             'scope'  => null,
                             'data'   => [
+                                ['amount' => 56, 'currency' => 'EUR'],
                                 ['amount' => -45, 'currency' => 'USD'],
-                                ['amount' => 56, 'currency' => 'EUR']
                             ],
                         ],
                     ],

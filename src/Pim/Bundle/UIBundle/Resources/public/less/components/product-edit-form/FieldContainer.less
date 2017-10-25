@@ -11,7 +11,7 @@
   }
 
   &-label {
-    color: @AknDarkBlue;
+    color: @AknSlateGrey;
     flex-grow: 1;
     font-size: @AknFontSizeBig;
   }
@@ -33,13 +33,14 @@
 
   &-subContainer {
     position: relative;
-    flex-grow: 1;
+    flex-grow: 10000;
   }
 
   &-iconsContainer {
-    margin-left: 5px;
     min-width: @AknIconSize + 4px;
     padding-top: 4px;
+    position: absolute;
+    right: -40px;
   }
 
   &-contextContainer {
@@ -61,5 +62,9 @@
 
   &--withoutMargin {
     margin-bottom: 0;
+  }
+
+  &--hidden {
+    display: none;
   }
 }

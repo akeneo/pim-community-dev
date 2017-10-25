@@ -5,18 +5,17 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
-        'pim/controller/base',
+        'pim/controller/front',
         'pim/form-builder',
         'pim/page-title',
-        'pim/error',
         'routing'
     ],
-    function ($, _, __, BaseController, FormBuilder, PageTitle, Error, Routing) {
+    function ($, _, __, BaseController, FormBuilder, PageTitle, Routing) {
         return BaseController.extend({
             /**
              * {@inheritdoc}
              */
-            renderRoute: function (route, path) {
+            renderForm: function (route, path) {
                 var query = path.replace(route.route.tokens[0][1], '');
                 var parameters = _.chain(query.split('&'))
                     .map(function (parameter) {
@@ -37,8 +36,8 @@ define(
 
                 return $.ajax({
                     url: Routing.generate('pim_enrich_mass_edit_rest_get_filter') + query
-                }).then(function (filters) {
-                    return FormBuilder.build('pim-mass-' + actionName).then(function (form) {
+                }).then((filters) => {
+                    return FormBuilder.build('pim-mass-' + actionName).then((form) => {
                         form.setData({
                             filters: filters,
                             jobInstanceCode: null,
@@ -47,8 +46,10 @@ define(
                         });
 
                         form.setElement(this.$el).render();
-                    }.bind(this));
-                }.bind(this));
+
+                        return form;
+                    });
+                });
             }
         });
     }

@@ -1,5 +1,5 @@
 "oro_datagrid.no_data_hint %entityHint%": Nessun %entityHint% esistente.
-oro_datagrid.not_found_hint: Nessun risultato trovato. Prova a cambiare i criteri di ricerca.
+oro_datagrid.not_found_hint: Non ci sono risultati per la tua ricerca.
 oro_datagrid.label_add_filter: Gestione filtri
 oro_datagrid.label_loading_mask: Caricamento in corso . . .
 oro.grid.mass_action.selected_rows: Righe selezionate
@@ -11,7 +11,7 @@ oro.grid.mass_action.error_content: Non è possibile eseguire l'azione di massa
 oro.grid.mass_action.delete.label: Eliminare
 oro.grid.mass_action.delete.confirm_title: Conferma azione eliminazione di massa
 oro.grid.mass_action.delete.confirm_content: Sei sicuro di voler rimuovere gli articoli selezionati?
-oro.grid.datagrid.page_size.all: Tutto
+oro.grid.datagrid.page_size.all: Tutti
 oro.grid.mass_action.delete.success_message: "{0} nessuna entità rimossa|{1} una entità rimossa|]1, Inf[%count% entità sono state rimosse"
 datagrid_view:
   columns:

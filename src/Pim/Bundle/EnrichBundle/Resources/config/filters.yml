@@ -1,7 +1,6 @@
 parameters:
     pim_enrich.filter.product_edit_data.class: Pim\Bundle\EnrichBundle\Filter\ProductEditDataFilter
     pim_enrich.filter.product_values_edit_data.class: Pim\Bundle\EnrichBundle\Filter\ProductValuesEditDataFilter
-    pim_enrich.filter.variant_group_edit_data.class: Pim\Bundle\EnrichBundle\Filter\VariantGroupEditDataFilter
 
 services:
     pim_enrich.filter.product_edit_data:
@@ -17,9 +16,3 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.channel'
-
-    pim_enrich.filter.variant_group_edit_data:
-        class: '%pim_enrich.filter.variant_group_edit_data.class%'
-        arguments:
-            - '@oro_security.security_facade'
-            - '@pim_enrich.filter.product_values_edit_data'

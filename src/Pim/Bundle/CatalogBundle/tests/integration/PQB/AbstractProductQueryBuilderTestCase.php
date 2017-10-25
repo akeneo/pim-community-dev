@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\PQB;
 
+use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
@@ -14,12 +15,25 @@ use Pim\Component\Catalog\Model\ProductInterface;
  */
 abstract class AbstractProductQueryBuilderTestCase extends TestCase
 {
+    /** @var Client */
+    protected $esProductClient;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->esProductClient = $this->get('akeneo_elasticsearch.client.product');
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 
     /**
@@ -47,7 +61,7 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
         $this->get('pim_catalog.updater.product')->update($product, $data);
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->esClient->refreshIndex();
+        $this->esProductClient->refreshIndex();
     }
 
     /**
@@ -55,19 +69,13 @@ abstract class AbstractProductQueryBuilderTestCase extends TestCase
      */
     protected function createAttribute(array $data)
     {
+        $data['group'] = $data['group'] ?? 'other';
+
         $attribute = $this->get('pim_catalog.factory.attribute')->create();
         $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
+        $constraints = $this->get('validator')->validate($attribute);
+        $this->assertCount(0, $constraints);
         $this->get('pim_catalog.saver.attribute')->save($attribute);
-    }
-
-    /**
-     * @param array $data
-     */
-    protected function createFamily(array $data)
-    {
-        $family = $this->get('pim_catalog.factory.family')->create();
-        $this->get('pim_catalog.updater.family')->update($family, $data);
-        $this->get('pim_catalog.saver.family')->save($family);
     }
 
     /**

@@ -13,10 +13,9 @@ Feature: Export group types
     And I launch the export job
     And I wait for the "xlsx_footwear_group_type_export" job to finish
     Then exported xlsx file of "xlsx_footwear_group_type_export" should contain:
-     | code    | label-en_US | is_variant |
-     | VARIANT | [VARIANT]   | 1          |
-     | RELATED | [RELATED]   | 0          |
-     | XSELL   | [XSELL]     | 0          |
+     | code    | label-en_US |
+     | RELATED | [RELATED]   |
+     | XSELL   | [XSELL]     |
 
   Scenario: Successfully export group types in xlsx without headers:
     Given an "footwear" catalog configuration
@@ -28,6 +27,5 @@ Feature: Export group types
     And I launch the export job
     And I wait for the "xlsx_footwear_group_type_export" job to finish
     Then exported xlsx file of "xlsx_footwear_group_type_export" should contain:
-      | VARIANT | [VARIANT] | 1 |
-      | RELATED | [RELATED] | 0 |
-      | XSELL   | [XSELL]   | 0 |
+      | RELATED | [RELATED] |
+      | XSELL   | [XSELL]   |

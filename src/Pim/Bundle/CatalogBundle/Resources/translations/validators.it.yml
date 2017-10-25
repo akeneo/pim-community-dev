@@ -14,6 +14,7 @@ Option code may contain only letters (at least one), numbers and underscores: Il
 This value should not be a decimal.: Questo valore non può essere un decimale.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Questa estensione del file non è consentita (estensioni consentite: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": Il valore %value% è già impostato su un altro prodotto per l'attributo univoco "%attribute%"
+The same identifier is already set on another product: Lo stesso identificatore è già impostato su un altro prodotto
 regex.comma_or_semicolon.message: Questo campo non deve contenere virgola o punto e virgola.
 file.extensions.message: 'Questa estensione del file non è consentita (estensioni consentite: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Questo tipo di valore prevede l'uso di {{ decimal_separator }} per separare i decimali.
@@ -21,3 +22,44 @@ file.extensions.message: 'Questa estensione del file non è consentita (estensio
 "This type of value expects the use of comma (,) to separate decimals.": Questo tipo di valore prevede l'uso della virgola (,) per separare i decimali.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Questo tipo di valore prevede l'uso del separatore decimale arabo (,) per separare i decimali.
 "This type of value expects the use of the format {{ date_format }} for dates.": Questo tipo di valore prevede l'uso del formato {{ date_format }} per le date.
+"The category \"%category%\" has to be a root category.": La categoria "%category%" deve essere una categoria principale.
+"The attribute \"%attributeCode%\" does not exist.": L'attributo "%attributeCode%" non esiste.
+"The attribute \"%attributeCode%\" is not a metric attribute.": L'attributo "%attributeCode%" non è un attributo di metrica.
+"The unit \"%unitCode%\" does not exist or does not belong to the default metric family of the given attribute \"%attributeCode%\".": L'unità "%unitCode%" non esiste o non appartiene alla famiglia metrica predefinita per l'attributo specificato "%attributeCode%".
+"The currency \"%currency%\" has to be activated.": La valuta "%currency%" deve essere attivata.
+product_model.code.not_blank.message: Il modello di prodotto non deve essere vuoto.
+product_model.code.unique.message: Lo stesso codice è già usato in un altro modello di prodotto.
+product_model.family_variant.not_blank.message: La famiglia variante del modello di prodotto non può essere vuoto.
+pim_catalog:
+  constraint:
+    can_have_family_variant_empty_axis_value: 'L''attributo "%attribute%" non può essere vuoto, in quanto è definito come asse per questa entità'
+    can_have_family_variant_duplicate_axis_value: 'Non è possibile impostare il valore "%values%" per l''attributo asse "%attributes%", dal momento che un''altra entità sorella ha già questo valore'
+    can_have_family_variant_unexpected_attribute: 'Non è possibile importare la proprietà "%attribute%" per questa entità dal momento che non è nel set di attributi'
+    cannot_have_product_model_as_parent: 'Il modello di prodotto "%product_model%" non può avere come genitore il modello di prodotto "%parent_product_model%"'
+    cannot_have_parent: 'Il modello di prodotto "%product_model%" non può avere un genitore'
+    attribute_does_not_belong_to_family: 'L''attributo "%attribute%" non appartiene alla famiglia "%family%"'
+    variant_product_invalid_family: 'La famiglia variante del prodotto deve essere la stessa del proprio genitore'
+    not_null_family: La famiglia non può essere "null" perché il prodotto con identificativo "%sku%" è un prodotto variante.
+    variant_product_has_parent: 'Il prodotto variante "%variant_product%" deve avere un genitore'
+    invalid_variant_product_parent: 'Il prodotto variante "%variant_product%" non può avere come genitore il modello di prodotto "%product_model%", (questo modello di prodotto può avere solo altri modelli di prodotto come figli)'
+    modified_variant_axis_value: 'L''asse variante "%variant_axis%" non può essere modificato, dato "%provided_value%"'
+    product_identifier: Questi identificatori "%s" non esistono.
+    0: Si è verificato un errore imprevisto.
+    100: Valore non previsto
+    101: In questo campo è previsto un valore booleano.
+    102: In questo campo è previsto un valore di tipo float.
+    103: In questo campo è previsto un valore intero.
+    104: In questo campo è previsto un valore numerico.
+    105: In questo campo è previsto un valore di tipo stringa.
+    106: In questo campo è previsto un valore di tipo array.
+    107: In questo campo è previsto un valore di tipo array di array.
+    200: Errore interno
+    201: Errore interno
+    202: In questo campo è previsto un valore numerico.
+    203: In questo campo è previsto un valore di tipo stringa.
+    204: In questo campo è previsto un valore di tipo stringa.
+    205: Errore interno
+    300: In questo campo è previsto un codice di entità valido.
+    301: In questo campo sono previsti uno "scope" valido e una lingua.
+    302: In questo campo è previsto uno "scope" valido.
+    303: In questo campo è previsto un formato di associazione valido.

@@ -1,0 +1,10 @@
+parameters:
+    pim_catalog.family_variant.provider.entity_with_family_variant_attributes.class: Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider
+    pim_catalog.family_variant.add_unique_attributes.class: Pim\Component\Catalog\FamilyVariant\AddUniqueAttributes
+
+services:
+    pim_catalog.family_variant.provider.entity_with_family_variant_attributes:
+        class: '%pim_catalog.family_variant.provider.entity_with_family_variant_attributes.class%'
+
+    pim_catalog.family_variant.add_unique_attributes:
+        class: '%pim_catalog.family_variant.add_unique_attributes.class%'

@@ -100,21 +100,27 @@ class CategoryFilter extends AbstractFieldFilter implements FieldFilterInterface
                 break;
 
             case Operators::IN_LIST_OR_UNCLASSIFIED:
-                $shouldClauseInList = [
-                    'terms' => [
-                        'categories' => $value
-                    ],
-                ];
-                $shouldClauseUnclassified = [
+                $clause = [
                     'bool' => [
-                        'must_not' => [
-                            'exists' => ['field' => 'categories']
-                        ]
+                        'should' => [
+                            [
+                                'terms' => [
+                                    'categories' => $value
+                                ]
+                            ],
+                            [
+                                'bool' => [
+                                    'must_not' => [
+                                        'exists' => ['field' => 'categories']
+                                    ]
+                                ]
+                            ]
+                        ],
+                        'minimum_should_match' => 1,
                     ]
                 ];
 
-                $this->searchQueryBuilder->addShould($shouldClauseInList);
-                $this->searchQueryBuilder->addShould($shouldClauseUnclassified);
+                $this->searchQueryBuilder->addFilter($clause);
                 break;
             default:
                 throw InvalidOperatorException::notSupported($operator, static::class);
@@ -137,11 +143,15 @@ class CategoryFilter extends AbstractFieldFilter implements FieldFilterInterface
 
         foreach ($values as $value) {
             FieldFilterHelper::checkIdentifier($field, $value, static::class);
-            if (null === $this->categoryRepository->findOneByIdentifier($value)) {
-                throw new ObjectNotFoundException(
-                    sprintf('Object "category" with code "%s" does not exist', $value)
-                );
-            }
+        }
+
+        $categoryCodes = $this->categoryRepository->getCodesIfExist($values);
+        if (count($categoryCodes) !== count($values)) {
+            $diff = array_diff($values, $categoryCodes);
+            $message = count($diff) > 1 ? 'Objects "category" with codes "%s" do not exist' : 'Object "category" with code "%s" does not exist';
+            throw new ObjectNotFoundException(
+                sprintf($message, implode(', ', $diff))
+            );
         }
     }
 

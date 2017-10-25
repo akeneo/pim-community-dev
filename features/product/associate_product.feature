@@ -6,6 +6,9 @@ Feature: Associate a product
 
   Background:
     Given a "footwear" catalog configuration
+    And the following product groups:
+      | code              | label-en_US      | type    |
+      | caterpillar_boots | Caterpillar boots| RELATED |
     And the following products:
       | sku            | categories        |
       | charcoal-boots | Summer_collection |
@@ -22,7 +25,7 @@ Feature: Associate a product
     When I visit the "Associations" column tab
     And I check the row "shoelaces"
     And I save the product
-    Then I should see the text "1 products and 0 groups"
+    Then I should see the text "1 product(s) and 0 group(s)"
     Then the row "shoelaces" should be checked
 
   @jira https://akeneo.atlassian.net/browse/PIM-4788
@@ -30,13 +33,13 @@ Feature: Associate a product
     Given I edit the "charcoal-boots" product
     When I visit the "Associations" column tab
     And I visit the "Upsell" association type
-    And I press the "Show groups" button
+    And I visit the "Display groups" target
     And I check the row "caterpillar_boots"
     And I save the product
     And I edit the "charcoal-boots" product
     And I visit the "Associations" column tab
     And I visit the "Upsell" association type
-    Then I should see the text "0 products and 1 groups"
+    Then I should see the text "0 product(s) and 1 group(s)"
     And the row "caterpillar_boots" should be checked
 
   @jira https://akeneo.atlassian.net/browse/PIM-4788
@@ -46,34 +49,34 @@ Feature: Associate a product
     And I visit the "Substitution" association type
     And I check the row "charcoal-boots"
     And I visit the "Upsell" association type
-    And I check the row "glossy-boots"
-    And I press the "Show groups" button
+    And I check the row "charcoal-boots"
+    And I visit the "Display groups" target
     And I check the row "caterpillar_boots"
     And I visit the "Cross sell" association type
     And I check the row "similar_boots"
-    And I press the "Show products" button
+    And I visit the "Display products" target
     And I check the rows "shoelaces, gray-boots, brown-boots and green-boots"
     When I save the product
     Then I should not see the text "There are unsaved changes."
-    And I should see the text "4 products and 1 groups"
+    And I should see the text "4 product(s) and 1 group(s)"
     And I visit the "Upsell" association type
-    Then I should see the text "1 products and 1 groups"
+    Then I should see the text "1 product(s) and 1 group(s)"
     And I visit the "Substitution" association type
-    Then I should see the text "1 products and 0 groups"
+    Then I should see the text "1 product(s) and 0 group(s)"
     And I visit the "Pack" association type
-    Then I should see the text "0 products and 0 groups"
+    Then I should see the text "0 product(s) and 0 group(s)"
 
   Scenario: Sort associated products
     Given I edit the "charcoal-boots" product
     And I visit the "Associations" column tab
-    And I check the row "shoelaces"
     And I check the row "black-boots"
+    And I check the row "shoelaces"
     When I save the product
     Then I should not see the text "There are unsaved changes."
     And the row "shoelaces" should be checked
     And the row "black-boots" should be checked
     And I should be able to sort the rows by Is associated
-    And I should be able to sort the rows by SKU
+    And I should be able to sort the rows by ID
 
   @jira https://akeneo.atlassian.net/browse/PIM-4670
   Scenario: Keep association selection between tabs
@@ -82,33 +85,33 @@ Feature: Associate a product
     And I check the row "gray-boots"
     And I check the row "black-boots"
     And I visit the "Pack" association type
-    And I check the row "glossy-boots"
+    And I check the row "brown-boots"
     And I visit the "Substitution" association type
-    And I press the "Show groups" button
+    And I visit the "Display groups" target
     And I check the row "similar_boots"
     And I visit the "Attributes" column tab
     And I visit the "Associations" column tab
     And I visit the "Cross sell" association type
-    And I press the "Show products" button
+    And I visit the "Display products" target
     Then the row "gray-boots" should be checked
     And the row "black-boots" should be checked
     When I visit the "Pack" association type
-    Then the row "glossy-boots" should be checked
+    Then the row "brown-boots" should be checked
     When I visit the "Substitution" association type
-    And I press the "Show groups" button
+    And I visit the "Display groups" target
     Then the row "similar_boots" should be checked
     When I save the product
     And I visit the "Cross sell" association type
-    And I press the "Show products" button
+    And I visit the "Display products" target
     And I uncheck the rows "black-boots"
     And I visit the "Upsell" association type
-    And I check the rows "shoelaces"
     And I check the rows "black-boots"
-    And I press the "Show groups" button
+    And I check the rows "shoelaces"
+    And I visit the "Display groups" target
     And I check the rows "caterpillar_boots"
     And I visit the "Cross sell" association type
     Then the row "caterpillar_boots" should not be checked
-    And I press the "Show products" button
+    And I visit the "Display products" target
     Then the row "black-boots" should not be checked
 
   @jira https://akeneo.atlassian.net/browse/PIM-4668
@@ -169,8 +172,9 @@ Feature: Associate a product
 
   @jira https://akeneo.atlassian.net/browse/PIM-5295
   Scenario: Association product grid is not filtered by the category selected in the product grid
-    Given I am on the products page
-    When I filter by "category" with operator "" and value "summer_collection"
+    Given I am on the products grid
+    When I open the category tree
+    And I filter by "category" with operator "" and value "summer_collection"
     Then I should see product charcoal-boots
     And I should not see product black-boots
     When I am on the "charcoal-boots" product page
@@ -186,13 +190,13 @@ Feature: Associate a product
     And I visit the "Substitution" association type
     Then the grid should contain 6 elements
     When I filter by "sku" with operator "Contains" and value "gr"
-    And I press the "Show groups" button
+    And I visit the "Display groups" target
     And I filter by "type" with operator "equals" and value "[RELATED]"
     When I edit the "gray-boots" product
-    Then I should see the text "Association type: Substitution"
-    And I should see the text "Show products"
+    Then I should see the text "SUBSTITUTION"
+    And I should see the text "Display groups"
     And the criteria of "type" filter should be "[RELATED]"
-    When I press the "Show products" button
+    When I visit the "Display products" target
     Then the criteria of "sku" filter should be "contains "gr""
 
   @jira https://akeneo.atlassian.net/browse/PIM-6110
@@ -202,7 +206,8 @@ Feature: Associate a product
     And I check the row "gray-boots"
     And I save the product
     And I visit the "Attributes" column tab
-    And I add available attributes Name
+    Then I change the family of the product to "Boots"
+    And I should see the text "Name"
     And I fill in "Name" with "test"
     And I save the product
     And I visit the "Associations" column tab
@@ -213,10 +218,10 @@ Feature: Associate a product
     Given I edit the "charcoal-boots" product
     And I visit the "Associations" column tab
     And I visit the "Upsell" association type
-    And I press the "Show groups" button
+    And I visit the "Display groups" target
     And I check the row "caterpillar_boots"
     And I save the product
     And I should not see the text "There are unsaved changes."
     When I visit the "Substitution" association type
-    Then I should see the text "0 products and 0 groups"
+    Then I should see the text "0 product(s) and 0 group(s)"
     And the row "caterpillar_boots" should not be checked

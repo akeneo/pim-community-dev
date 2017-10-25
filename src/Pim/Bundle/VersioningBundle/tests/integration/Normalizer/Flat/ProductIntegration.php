@@ -3,7 +3,7 @@
 namespace tests\integration\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\MediaSanitizer;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use Akeneo\Test\Integration\TestCase;
 
 /**
@@ -15,7 +15,7 @@ class ProductIntegration extends TestCase
 {
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
+        return $this->catalog->useTechnicalSqlCatalog();
     }
 
     public function testProduct()
@@ -27,7 +27,7 @@ class ProductIntegration extends TestCase
 
         $expected = [
             'family'                                             => 'familyA',
-            'groups'                                             => 'groupA,groupB,variantA',
+            'groups'                                             => 'groupA,groupB',
             'categories'                                         => 'categoryA1,categoryB',
             'X_SELL-groups'                                      => 'groupB',
             'X_SELL-products'                                    => 'bar',

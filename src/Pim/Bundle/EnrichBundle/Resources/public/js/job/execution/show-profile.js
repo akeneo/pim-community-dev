@@ -48,9 +48,8 @@ define(
             isVisible: function () {
                 var type = this.getFormData().jobInstance.type;
 
-                return $.Deferred().resolve(type === 'export' || type === 'import').promise();
+                return $.Deferred().resolve(['export', 'import', 'quick_export'].includes(type)).promise();
             }
-
         });
     }
 );

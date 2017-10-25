@@ -2,9 +2,12 @@
 
 namespace Akeneo\Bundle\ElasticsearchBundle\DependencyInjection;
 
+use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -21,15 +24,46 @@ class AkeneoElasticsearchExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('cursors.yml');
+        $loader->load('services.yml');
+
+        $this->registerEsClientsFromConfiguration($configs, $container);
+    }
+
+    /**
+     * Dynamicaly instanciates Elasticsearch clients for each configuration made in parameter
+     * `akeneo_elasticsearch.indexes`.
+     *
+     * Also registers those clients in the elasticsearch client registry `akeneo_elasticsearch.registry.clients`.
+     *
+     * @param array            $configs
+     * @param ContainerBuilder $container
+     */
+    private function registerEsClientsFromConfiguration(array $configs, ContainerBuilder $container): void
+    {
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('akeneo_elasticsearch.index_configuration.files', $config['configuration_files']);
-        $container->setParameter('akeneo_elasticsearch.index_name', $config['index_name']);
-        $container->setParameter('akeneo_elasticsearch.hosts', $config['hosts']);
+        $esClientRegistryDefinition = $container->getDefinition('akeneo_elasticsearch.registry.clients');
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('cursors.yml');
-        $loader->load('services.yml');
+        foreach ($config['indexes'] as $index) {
+            $configurationLoaderServiceName = sprintf(
+                'akeneo_elasticsearch.index_configuration.%s.files',
+                $index['index_name']
+            );
+            $container->register($configurationLoaderServiceName, Loader::class)
+                ->setArguments([$index['configuration_files']]);
+
+            $container->register($index['service_name'], Client::class)
+                ->setArguments([
+                    new Reference('akeneo_elasticsearch.client_builder'),
+                    new Reference($configurationLoaderServiceName),
+                    $config['hosts'],
+                    $index['index_name'],
+                ]);
+
+            $esClientRegistryDefinition->addMethodCall('register', [new Reference($index['service_name'])]);
+        }
     }
 }

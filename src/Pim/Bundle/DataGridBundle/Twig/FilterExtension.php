@@ -51,6 +51,8 @@ class FilterExtension extends Twig_Extension
             throw new \LogicException(sprintf('Attribute "%s" does not exists', $code));
         }
 
+        $label = $this->container->get('translator')->trans($label);
+
         return $label;
     }
 

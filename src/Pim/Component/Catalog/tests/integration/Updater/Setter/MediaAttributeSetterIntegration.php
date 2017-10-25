@@ -1,9 +1,9 @@
 <?php
 
-namespace tests\integration\Pim\Component\Catalog\Updater\Setter;
+namespace Pim\Component\Catalog\tests\integration\Updater\Setter;
 
 use Akeneo\Test\Integration\Configuration;
-use Akeneo\Test\Integration\MediaSanitizer;
+use Akeneo\Test\IntegrationTestsBundle\Sanitizer\MediaSanitizer;
 use Akeneo\Test\Integration\TestCase;
 
 /**
@@ -18,7 +18,7 @@ class MediaAttributeSetterIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 
     public function testLocalizableMedia()

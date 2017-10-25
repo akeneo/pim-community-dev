@@ -49,20 +49,6 @@ pim_enrich:
       product.title: Produkter
       property.title: Egenskaber
       history.title: Historik
-  variant_group:
-    type:
-      VARIANT: Variant
-      X_SELL: Krydssalg
-      ADDITIONAL: Yderligere
-      RELATED: Relateret
-    tab:
-      product.title: Produkter
-      property.title: Egenskaber
-      history.title: Historik
-      attribute.title: Egenskaber
-    info:
-      no_attributes: Denne variant gruppe har ingen attributter endnu
-      no_attributes_in_selected_locale: Denne variant gruppe har ingen attributter i denne landestandard
   completeness:
     progress_bar.title: '%ratio%% komplet (1 værdi kræves) |%ratio%% komplet (%count% krævede værdier)'
     subtitle: '{0} komplet|{1} 1 værdi mangler|]1, Inf] %count% manglende værdier'
@@ -94,7 +80,7 @@ pim_enrich:
         third: Konfigurér
         fourth: Bekræft
     change-status:
-      label: Ændre status (aktiver / deaktiver)
+      label: Skift status
       description: De valgte produkter vil blive aktiveret eller deaktiveret.
       success_flash: Produkt(er) status er blevet ændret
       launched_flash: Bulk-handlingen "Skift status" er blevet iværksat. Du får besked, når det er afsluttet.
@@ -109,22 +95,22 @@ pim_enrich:
         invalid_attribute: Attribut med koden "attribute_code" er ikke fælles for de valgte produkter, attributten springes over.
         no_valid_attribute: Ingen af de valgte attributter kan anvendes på dette produkt.
     classify-add:
-      label: Klassificere produkter i kategorier
+      label: Tilføje til kategorier
       description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering bibeholdes.
       success_flash: Produkt(er), der er blevet klassificeret i udvalgte kategorier
       launched_flash: Handlingen bulk "Føj til kategorier" er blevet lanceret. Du får besked, når det er afsluttet.
     classify-move:
-      label: Flyt produkter til kategorier
+      label: Flyt mellem kategorier
       description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering er bibeholdt.
       success_flash: Produkt(er), der er blevet flyttet til udvalgte kategorier
       launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
     classify-remove:
-      label: Fjern produkter fra kategorier
+      label: Fjern fra kategorier
       description: Produkterne vil blive fjernet fra følgende kategorier.
       success_flash: Produkt(er), der er blevet fjernet fra de valgte kategorier
       launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
     change-family:
-      label: Ændre familie af produkter
+      label: Ændre familie
       description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
       success_flash: Familien af valgte produkt(er) er blevet ændret
       launched_flash: Bulk-handlingen "Skift status" er blevet igangsat. Du får besked, når den er afsluttet.
@@ -134,15 +120,6 @@ pim_enrich:
       success_flash: Produkter blev tilføjet til de valgte grupper
       launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
       no_group: Ingen gruppe for nu. Start med at oprette en gruppe.
-    add-to-variant-group:
-      label: Tilføj en variant gruppe
-      description: Vælg variantgruppen hvor de valgte produkter skal tilføjes
-      success_flash: Produkter blev føjet til den valgte variant gruppe
-      already_in_variant_group_or_not_valid: Du kan ikke gruppere følgende produkt, fordi det er allerede i en variant gruppe eller ikke har den gruppe akse.
-      no_variant_group: Ingen variant gruppe for nu. Start med at oprette en variant gruppe.
-      no_valid_variant_group: Ingen variant gruppe deler attributter med udvalgte produkter.
-      some_variant_groups_are_skipped: 'De følgende variant grupper er sprunget, fordi den ikke deler attributter med udvalgte produkter: %groups%'
-      launched_flash: Handlingen bulk "Føj til kategorier" er blevet igangsat. Du får besked, når den er afsluttet.
     set-attribute-requirements:
       label: Indstil attribut krav
       description: Følgende attribut krav vil blive anvendt til de valgte familier
@@ -173,11 +150,12 @@ pim_enrich:
       change_family: Ændre produktfamilie
       change_state: Ændre tilstand af produktet
       add_to_groups: Tilføj produkt til grupper
-      add_to_variant_group: Føj produktet til en variant gruppe
       mass_edit: Handlinger for masse redigering af produkter
       comment: Kommenter produkter
       download: Download produktet som PDF
       history: Se produkt historik
+    product_model:
+      edit_attributes: Rediger attributterne for en produktmodel
     category:
       list: Kategoriliste
       create: Opret en kategori
@@ -222,15 +200,6 @@ pim_enrich:
       edit: Redigere en gruppe
       remove: Fjern en gruppe
       history: Se gruppe historik
-    variant_group:
-      index: List variant grupper
-      create: Opret en variant gruppe
-      edit: Redigere en variant gruppe
-      remove: Fjern en variant gruppe
-      history: Se gruppe variant historik
-      edit_attributes: Rediger attributterne for variant grupper
-      add_attributes: Føje attributter til variant grupper
-      remove_attribute: Fjern attributter fra variant grupper
     group_type:
       index: List gruppetyper
       create: Opret en gruppetype
@@ -244,6 +213,8 @@ pim_enrich:
       history: Se sammenhængs type historik
     job_tracker:
       index: Se process overvågning
+    api_connection:
+      manage: Administrere API-forbindelser
   acl_group:
     association_type: Sammenhængstyper
     attribute: Egenskaber
@@ -253,15 +224,10 @@ pim_enrich:
     currency: Valutaer
     family: Familier
     group: Grupper
-    variant_group: Variantgrupper
     group_type: Gruppetyper
     locale: Landestandarder
     product: Produkter
-  product_value:
-    tooltip:
-      from_variant:
-        title: Opdateret af en variant gruppe
-        content: Dette felt opdateres af følgende variant gruppe
+    product_model: Produktmodeller
   reference_data:
     empty_value:
       reference_data_type:
@@ -280,7 +246,7 @@ attribute group:
   create new: Opret en ny attributgruppe
 category:
   title: kategori
-  overview: kategori oversigt
+  overview: Kategorier
   create: opret kategori
   edit: redigere kategori
   suggest selection: Vælg venligst en kategori til venstre
@@ -317,9 +283,6 @@ group:
 group type:
   title: gruppetype
   edit: redigere gruppetype
-variant group:
-  title: variant gruppe
-  edit: redigere variantgruppe
 association type:
   title: sammenhængstype
   create: opret sammenhængstype
@@ -337,7 +300,6 @@ btn:
     locale: opret landestandard
     product: opret produkt
     group: opret gruppe
-    variant group: opret variantgruppe
     association type: opret sammenhængstype
     group type: opret gruppetype
     drag_or_upload: Træk og slip for at indlæse eller klik her
@@ -369,7 +331,6 @@ confirmation:
     family: Er du sikker på du vil slette denne familie %name%?
     product: Er du sikker på du vil slette produktet %name%?
     group: Er du sikker på du vil slette produktet %name%?
-    variant group: Er du sikker på du vil slette variantgruppen %name%?
     group type: Er du sikker på du vil slette produktet %name%?
     user: Er du sikker på du vil slette brugeren %name%?
   attribute group:
@@ -378,8 +339,6 @@ confirmation:
     remove attribute: Vil du fjerne attributten %name% fra denne familie?
   product:
     remove attribute: Vil du fjerne attributten %name% fra denne familie?
-  variant_group:
-    remove_attribute: Vil du fjerne attributten %name% fra denne attributgruppe?
 flash:
   entity:
     removed: Elementet blev slettet
@@ -388,7 +347,6 @@ flash:
     updated: Attributten opdateret
     removed: Attributten blev slettet
     identifier not removable: Id attribut kan ikke fjernes
-    used by groups: Denne attribut kan ikke fjernes, fordi den bruges af %count% variantgrupper
   attribute group:
     created: Attributgruppe oprettet
     updated: Attributgruppe opdateret
@@ -431,17 +389,10 @@ flash:
   group:
     updated: Gruppe opdateret
     removed: Gruppen blev slettet
-  variant group:
-    created: Variantgruppe oprettet
-    updated: Variantgruppe opdateret
-    removed: Variantgruppen blev slettet
-    attributes_added: Attributter føjet til variant gruppe
-    attribute_removed: Attribut blev fjernet fra variant gruppe
   group type:
     created: Gruppetypen oprettet
     updated: Gruppetypen opdateret
     removed: Gruppetypen fjernet
-    cant remove variant: Gruppentype variant kan ikke fjernes
     cant remove used: Gruppetypen bruges af nogle grupper og kan ikke fjernes
   association type:
     created: Sammenhængstype oprettet
@@ -497,7 +448,7 @@ Manage groups: Administrér grupper
 Code: Kode
 Name: Navn
 Type: Type
-Scope: Omfang
+Scope: Kanal
 Required: Påkrævet
 Unique: Unik
 Not required: Ikke påkrævet
@@ -555,6 +506,7 @@ No matches found: Ingen fundet
 Category tree: Kategoritræstrukturen
 Completeness: Fuldstændighed
 Attribute used as label: Attributten anvendes som etiket
+Credentials: Legitimationsoplysninger
 Global: Global
 Channel: Kanal
 Expand all channels: Udvid alle kanaler
@@ -602,7 +554,6 @@ pim_title.attribute:
   edit: "Attributter %attribute.label% | Rediger"
 pim_title.product:
   index: "Produkter"
-  edit: "Produkter %product.sku% | Rediger"
 pim_title.family:
   index: "Familier"
   edit: "Familier %family.label% | Rediger"
@@ -617,9 +568,6 @@ pim_title.locale:
 pim_title.group:
   index: "Grupper"
   edit: "Grupper %group.label% | Rediger"
-pim_title.variant_group:
-  index: "Variantgrupper"
-  edit: "Variantgrupper %group.label% | Rediger"
 pim_title.association_type:
   index: "Sammenhængstyper"
   edit: "Sammenhængstyper %association type.label% | Rediger"
@@ -681,7 +629,7 @@ pim_enrich.mass_edit_action:
       third: Konfigurér
       fourth: Bekræft
   change-status:
-    label: Ændre status (aktiver / deaktiver)
+    label: Skift status
     description: De valgte produkter vil blive aktiveret eller deaktiveret.
     success_flash: Produkt(er) status er blevet ændret
   edit-common-attributes:
@@ -691,13 +639,12 @@ pim_enrich.mass_edit_action:
     success_flash: Produkt(er) attribut(ter) er blevet opdateret
     message.warning: Der er ingen fælles egenskaber for de valgte produkter. Ændre venligst dit valg.
     no_attribute.warning: Der er ingen fælles egenskaber for de valgte produkter. Ændre venligst dit valg.
-    truncated_by_variant_attribute.warning: 'Nogle almindelige attributter fra udvalgte produkter kommer fra en variant gruppe. De er ikke tilgængelige for masse-redigering: %attributes%.'
   classify:
-    label: Klassificere produkter i kategorier
+    label: Tilføje til kategorier
     description: Produkterne vil blive placeret i følgende kategorier, den nuværende placering bibeholdes.
     success_flash: Produkt(er), der er blevet klassificeret i udvalgte kategorier
   change-family:
-    label: Ændre familie af produkter
+    label: Ændre familie
     description: Familie på de udvalgte produkter vil blive ændret til den valgte familie
     success_flash: Familien af valgte produkt(er) er blevet ændret
     no_family: Ingen familie
@@ -734,7 +681,6 @@ popin.create:
   association_type.title: Oprette en ny sammenhæng
   group.title: Opret en ny gruppe
   product.title: Opret et nyt produkt
-  variant_group.title: Opret en ny variantgruppe
   option.title: Opret et nyt tilvalg
 In group: I gruppen
 Attribute as label: Attribut som etiket
@@ -810,11 +756,6 @@ pim_mass_edit_execution_show: Masse redigere udførsler | Detaljer
 edit_common_attributes.steps.edit_common_attributes_processor.title: Rediger fælles attributter
 update_product_value.steps.update_product_value_processor.title: Opdatere produktets værdi
 remove_product_value.steps.update_product_value_processor.title: Fjern produktværdi
-add_to_variant_group_clean.steps.excluded.title: Udelukkede produkt
-add_to_variant_group_clean.steps.duplicated.title: Duplikeret akse
-add_to_variant_group.steps.excluded.title: Udelukkede produkt
-add_to_variant_group.steps.duplicated.title: Duplikeret akse
-add_to_variant_group.steps.cleaner.warning.description: 'Produktet må ikke være angivet i den valgte variant gruppe: dublere variation akseværdierne med et andet produkt i udvalg'
 edit_common_attributes: Rediger fælles attributter
 edit_common_attributes_clean: Rens filer til fælles attributter
 perform.steps.duplicated.title: Duplikeret akse
@@ -854,10 +795,6 @@ batch_jobs:
     quick_export.label: Xlsx-produkt gitter sammenhæng hurtig eksport
     perform:
       label: Xlsx-produkt gitter sammenhæng hurtig eksport
-  add_to_variant_group:
-    label: Tilføj til variant gruppe
-    perform:
-      label: Tilføj til variant gruppe
 mass_edit report:
   overview: Masse redigere rapporter
 job_tracker:

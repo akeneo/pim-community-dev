@@ -16,16 +16,15 @@ Feature: Create an import
       | Code  | PRODUCT_IMPORT        |
       | Label | Products import       |
       | Job   | Product import in CSV |
-    And I press the "Save" button
+    And I press the "Save" button in the popin
     And I should not see the text "There are unsaved changes"
     And I am on the imports page
     And the grid should contain 2 element
     And I should see import profile Products import
 
-  @skip
   Scenario: Fail to create a job import
     Given I create a new import
-    When I fill in the following information in the popin:
+    When I fill in the following information:
       | Code  | PRODUCT_IMPORT  |
       | Label | Products import |
     And I press the "Save" button

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -22,7 +22,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getMinimalCatalogPath()]);
+        return $this->catalog->useMinimalCatalog();
     }
 
     /**
@@ -79,6 +79,8 @@ abstract class AbstractCompletenessTestCase extends TestCase
         $scopable = false,
         array $localesSpecific = []
     ) {
+        $group = $this->get('pim_api.repository.attribute_group')->findOneByIdentifier('other');
+
         $attributeFactory = $this->get('pim_catalog.factory.attribute');
         $attributeSaver = $this->get('pim_catalog.saver.attribute');
 
@@ -86,6 +88,7 @@ abstract class AbstractCompletenessTestCase extends TestCase
         $attribute->setCode($code);
         $attribute->setLocalizable($localisable);
         $attribute->setScopable($scopable);
+        $attribute->setGroup($group);
         foreach ($localesSpecific as $locale) {
             $attribute->addAvailableLocale($locale);
         }
@@ -112,12 +115,12 @@ abstract class AbstractCompletenessTestCase extends TestCase
     }
 
     /**
-     * @param string $familyCode
-     * @param string $channelCode
-     * @param string $attributeCode
-     * @param string $attributeType
-     * @param bool $localisable
-     * @param bool $scopable
+     * @param string            $familyCode
+     * @param string            $channelCode
+     * @param string            $attributeCode
+     * @param string            $attributeType
+     * @param bool              $localisable
+     * @param bool              $scopable
      * @param LocaleInterface[] $localesSpecific
      *
      * @return FamilyInterface
@@ -168,6 +171,14 @@ abstract class AbstractCompletenessTestCase extends TestCase
         return $family;
     }
 
+    protected function removeFamilyRequirement($familyCode, $channelCode, $attributeCode): void
+    {
+        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier($familyCode);
+        $attributeRequirementToRemove = $this->getAttributeRequirement($family, $channelCode, $attributeCode);
+        $family->removeAttributeRequirement($attributeRequirementToRemove);
+        $this->get('pim_catalog.saver.family')->save($family);
+    }
+
     /**
      * @param string $code
      *
@@ -182,5 +193,32 @@ abstract class AbstractCompletenessTestCase extends TestCase
         }
 
         return $family;
+    }
+
+    /**
+     * @param FamilyInterface $family
+     * @param string          $channelCode
+     * @param string          $attributeCode
+     *
+     * @return null|AttributeRequirementInterface
+     */
+    private function getAttributeRequirement(
+        FamilyInterface $family,
+        string $channelCode,
+        string $attributeCode
+    ): ?AttributeRequirementInterface {
+        $attributeRequirementToRemove = null;
+
+        $attributeRequirements = $family->getAttributeRequirements();
+        foreach ($attributeRequirements as $attributeRequirement) {
+            if ($channelCode === $attributeRequirement->getChannelCode() &&
+                $attributeCode === $attributeRequirement->getAttributeCode()
+            ) {
+                $attributeRequirementToRemove = $attributeRequirement;
+                break;
+            }
+        }
+
+        return $attributeRequirementToRemove;
     }
 }

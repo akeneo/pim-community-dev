@@ -39,6 +39,8 @@ class Form extends Base
                 'Group selector'                  => ['css' => '.group-selector'],
                 'Association type selector'       => ['css' => '.association-type-selector'],
                 'Tree selector'                   => ['css' => '.tree-selector'],
+                'Target selector'                 => ['css' => '.target-selector'],
+                'Attribute filter selector'       => ['css' => '.attribute-filter'],
                 'Validation errors'               => ['css' => '.validation-tooltip'],
                 'Available attributes form'       => ['css' => '#pim_available_attributes'],
                 'Available attributes button'     => ['css' => 'button:contains("Add attributes")'],
@@ -131,17 +133,61 @@ class Form extends Base
     public function visitGroup($groupName, $type = 'Group')
     {
         $this->spin(function () use ($groupName, $type) {
-            $loadingMasks = $this->findAll('css', '.loading-wrapper');
+            $loadingMasks = $this->findAll('css', '.loading-mask');
+            if (0 < count(array_filter($loadingMasks, function ($loadingMask) {
+                return $loadingMask->isVisible();
+            }))) {
+                return false;
+            }
+            $this->getGroup($groupName, $type)->click();
+            $this->getGroup($groupName, $type)->click();
+
+            return true;
+        }, sprintf('Cannot visit group "%s"', $groupName));
+    }
+
+    /**
+     * @param $filter
+     */
+    public function filterAttributes($filter)
+    {
+        $this->spin(function () use ($filter) {
+            $loadingMasks = $this->findAll('css', '.loading-mask');
             if (0 < count(array_filter($loadingMasks, function ($loadingMask) {
                 return $loadingMask->isVisible();
             }))) {
                 return false;
             }
 
-            $this->getGroup($groupName, $type)->click();
+            $this->getGroup($filter, 'Attribute filter')->click();
 
             return true;
-        }, sprintf('Can not visit group "%s"', $groupName));
+        }, sprintf('Cannot filter attributes with "%s"', $filter));
+    }
+
+    /**
+     * @param $attributeGroup
+     */
+    public function clickOnAttributeGroupHeader($attributeGroup)
+    {
+        $this->spin(function () use ($attributeGroup) {
+            $loadingMasks = $this->findAll('css', '.loading-mask');
+            if (0 < count(array_filter($loadingMasks, function ($loadingMask) {
+                return $loadingMask->isVisible();
+            }))) {
+                return false;
+            }
+
+            $groupHeader = $this->find('css', sprintf('.required-attribute-indicator[data-group="%s"]', $attributeGroup));
+
+            if (null === $groupHeader) {
+                return false;
+            }
+
+            $groupHeader->click();
+
+            return true;
+        }, sprintf('Cannot click on attribute group "%s" header', $attributeGroup));
     }
 
     /**
@@ -149,6 +195,8 @@ class Form extends Base
      * @param string $type
      *
      * @return NodeElement
+     *
+     * //TODO: make it more generic, no logic is specific to groups here, it's just naming.
      */
     public function getGroup($groupName, $type = 'Group')
     {
@@ -157,7 +205,7 @@ class Form extends Base
 
             $groupLabels = $groupSelector->findAll('css', '.label');
             foreach ($groupLabels as $groupLabel) {
-                if (trim($groupLabel->getText()) === $groupName && $groupLabel->isVisible()) {
+                if (strtolower(trim($groupLabel->getText())) === strtolower($groupName) && $groupLabel->isVisible()) {
                     return $this->getClosest($groupLabel, 'AknDropdown-menuLink');
                 }
             }
@@ -404,7 +452,7 @@ class Form extends Base
     public function getHistoryRows()
     {
         return $this->spin(function () {
-            return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
+            return $this->getElement('Updates grid')->findAll('css', 'tbody tr.entity-version');
         }, 'Cannot find the history rows.');
     }
 
@@ -489,7 +537,7 @@ class Form extends Base
                 return false;
             }
 
-            return $container->find('css', '.select2, .select2-default');
+            return $container->find('css', '.select2-container');
         }, 'Impossible to find the select');
         $select2 = $this->decorate($select2, [Select2Decorator::class]);
         $selectChoices = $select2->getAvailableValues();
@@ -841,7 +889,7 @@ class Form extends Base
         $field = $this->findPriceField($label->labelContent, $label->subLabelContent);
         $field->setValue($value);
     }
-    
+
     /**
      * @param string $type
      *
@@ -850,9 +898,14 @@ class Form extends Base
     public function openGroupSelector($type = 'Group')
     {
         $groupSelector = $this->spin(function () use ($type) {
-            $result = $this->find('css', $this->elements[sprintf('%s selector', $type)]['css']);
+            $groupSelectors = $this->findAll('css', $this->elements[sprintf('%s selector', $type)]['css']);
+            foreach ($groupSelectors as $groupSelector) {
+                if ($groupSelector->isVisible()) {
+                    return $groupSelector;
+                }
+            }
 
-            return null !== $result && $result->isVisible() ? $result : null;
+            return null;
         }, sprintf('Can not find the "%s" selector', $type));
 
         if (!$groupSelector->hasClass('open')) {

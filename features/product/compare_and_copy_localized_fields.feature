@@ -36,6 +36,7 @@ Feature: Compare and copy localized fields
 
   Scenario: Successfully copy current tab compared product localized values
     Given I am on the "tshirt" product page
+    And I visit the "General" group
     And I collapse the column
     When I open the comparison panel
     And I switch the comparison locale to "fr_FR"

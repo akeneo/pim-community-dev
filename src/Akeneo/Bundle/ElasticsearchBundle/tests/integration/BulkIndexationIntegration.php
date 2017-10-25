@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\ElasticsearchBundle\tests\integration;
 
+use Akeneo\Bundle\ElasticsearchBundle\Client;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 
@@ -14,6 +15,9 @@ class BulkIndexationIntegration extends TestCase
 {
     const DOCUMENT_TYPE = 'pim_catalog_product';
 
+    /** @var Client */
+    private $esProductClient;
+
     public function testIndexationOnABulk()
     {
         $count = 5;
@@ -22,7 +26,7 @@ class BulkIndexationIntegration extends TestCase
             $products[] = ['identifier' => 'product_' . $i];
         }
 
-        $indexedProducts = $this->esClient->bulkIndexes(self::DOCUMENT_TYPE, $products, 'identifier');
+        $indexedProducts = $this->esProductClient->bulkIndexes(self::DOCUMENT_TYPE, $products, 'identifier');
         $this->assertFalse($indexedProducts['errors']);
         $this->assertCount($count, $indexedProducts['items']);
 
@@ -41,7 +45,7 @@ class BulkIndexationIntegration extends TestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getMinimalCatalogPath()]);
+        return $this->catalog->useMinimalCatalog();
     }
 
     /**
@@ -51,6 +55,7 @@ class BulkIndexationIntegration extends TestCase
     {
         parent::setUp();
 
+        $this->esProductClient = $this->get('akeneo_elasticsearch.client.product');
         $products = [
             [
                 'identifier'           => 'product_1',
@@ -58,7 +63,7 @@ class BulkIndexationIntegration extends TestCase
             ]
         ];
 
-        $this->indexProducts($products);
+        $this->indexProductDocuments($products);
     }
 
     /**
@@ -66,12 +71,12 @@ class BulkIndexationIntegration extends TestCase
      *
      * @param array $products
      */
-    private function indexProducts(array $products)
+    private function indexProductDocuments(array $products)
     {
         foreach ($products as $product) {
-            $this->esClient->index(self::DOCUMENT_TYPE, $product['identifier'], $product);
+            $this->esProductClient->index(self::DOCUMENT_TYPE, $product['identifier'], $product);
         }
 
-        $this->esClient->refreshIndex();
+        $this->esProductClient->refreshIndex();
     }
 }

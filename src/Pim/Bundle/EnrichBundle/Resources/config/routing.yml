@@ -10,9 +10,13 @@ mass_edit_rest:
     resource: '@PimEnrichBundle/Resources/config/routing/mass_edit/rest.yml'
     prefix: /rest/mass_edit
 
-product_template_rest:
-    resource: '@PimEnrichBundle/Resources/config/routing/product_template/rest.yml'
-    prefix: /rest/product_template
+sequential_edit_rest:
+    resource: '@PimEnrichBundle/Resources/config/routing/sequential_edit/rest.yml'
+    prefix: /rest/sequential_edit
+
+value_rest:
+    resource: '@PimEnrichBundle/Resources/config/routing/value/rest.yml'
+    prefix: /rest/value
 
 channel:
     resource: '@PimEnrichBundle/Resources/config/routing/channel.yml'
@@ -25,6 +29,10 @@ currency:
 family:
     resource: '@PimEnrichBundle/Resources/config/routing/family.yml'
     prefix: /configuration/family
+
+family_variant:
+    resource: '@PimEnrichBundle/Resources/config/routing/family_variant.yml'
+    prefix: /configuration/family-variant
 
 locale:
     resource: '@PimEnrichBundle/Resources/config/routing/locale.yml'
@@ -58,13 +66,13 @@ product:
     resource: '@PimEnrichBundle/Resources/config/routing/product.yml'
     prefix: /enrich/product
 
+product_model:
+    resource: '@PimEnrichBundle/Resources/config/routing/product_model.yml'
+    prefix: /enrich/product-model
+
 mass_edit_action:
     resource: '@PimEnrichBundle/Resources/config/routing/mass_edit_action.yml'
     prefix: /enrich/mass-edit-action
-
-variant_group:
-    resource: '@PimEnrichBundle/Resources/config/routing/variant_group.yml'
-    prefix: /enrich/variant-group
 
 group:
     resource: '@PimEnrichBundle/Resources/config/routing/group.yml'
@@ -81,10 +89,6 @@ media:
 grouptype:
     resource: '@PimEnrichBundle/Resources/config/routing/grouptype.yml'
     prefix: /configuration/group-type
-
-sequential_edit:
-    resource: '@PimEnrichBundle/Resources/config/routing/sequential_edit.yml'
-    prefix: /enrich/sequential-edit
 
 job_tracker:
     resource: '@PimEnrichBundle/Resources/config/routing/job_tracker.yml'

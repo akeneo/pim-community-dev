@@ -24,11 +24,6 @@ jobs:
         alias:     set_attribute_requirements
         label:     Set family attribute requirements
         type:      mass_edit
-    add_to_variant_group:
-        connector: Akeneo Mass Edit Connector
-        alias:     add_to_variant_group
-        label:     Mass add products to variant group
-        type:      mass_edit
     csv_product_quick_export:
         connector: Akeneo CSV Connector
         alias: csv_product_quick_export
@@ -71,3 +66,13 @@ jobs:
             filePath:     /tmp/products_export_grid_context_%locale%_%scope%_%datetime%.xlsx
             linesPerFile: 10000
             with_media:   true
+    compute_product_models_descendants:
+        connector: internal
+        alias:     compute_product_models_descendants
+        label:     Compute product models descendants
+        type:      compute_product_models_descendants
+    compute_completeness_of_products_family:
+        connector: internal
+        alias:     compute_completeness_of_products_family
+        label:     compute completeness of products family
+        type:      compute_completeness_of_products_family

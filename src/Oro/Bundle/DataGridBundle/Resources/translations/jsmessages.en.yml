@@ -32,9 +32,6 @@
 "oro.datagrid.entityHint": "Entity"
 "oro.datagrid.noentities": "No {{ entityHint }} exists"
 "oro.datagrid.noresults": "No {{ entityHint }} was found to match your search. Try modifying your search criteria..."
-"oro.datagrid.pagination.label": "Page"
-"oro.datagrid.pagination.totalPages": "of {{ totalPages }}"
-"oro.datagrid.pagination.totalRecords": "{{ totalRecords }} records"
 "oro.datagrid.action.reset": "Reset"
 "oro.datagrid.action.refresh": "Refresh"
 oro_datagrid.select:

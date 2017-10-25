@@ -39,6 +39,7 @@ define(
              */
             render: function () {
                 this.isVisible().then(function (isVisible) {
+                    this.$el.empty();
                     if (!isVisible) {
                         return this;
                     }

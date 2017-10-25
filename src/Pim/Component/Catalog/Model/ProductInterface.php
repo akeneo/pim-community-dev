@@ -3,7 +3,6 @@
 namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Classification\CategoryAwareInterface;
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\Localization\Model\LocalizableInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -25,7 +24,7 @@ interface ProductInterface extends
     CommentSubjectInterface,
     ReferableInterface,
     CategoryAwareInterface,
-    EntityWithValuesInterface
+    EntityWithFamilyInterface
 {
     /**
      * Get the ID of the product
@@ -89,13 +88,6 @@ interface ProductInterface extends
      * @return array
      */
     public function getOrderedGroups();
-
-    /**
-     * Get the variant group of the product
-     *
-     * @return GroupInterface|null
-     */
-    public function getVariantGroup();
 
     /**
      * Get groups code
@@ -198,13 +190,6 @@ interface ProductInterface extends
     public function hasAttributeInFamily(AttributeInterface $attribute);
 
     /**
-     * @param AttributeInterface $attribute
-     *
-     * @return bool
-     */
-    public function hasAttributeInVariantGroup(AttributeInterface $attribute);
-
-    /**
      * Check if an attribute can be removed from the product
      *
      * @param AttributeInterface $attribute
@@ -246,13 +231,6 @@ interface ProductInterface extends
      * @return ProductInterface
      */
     public function setFamily(FamilyInterface $family = null);
-
-    /**
-     * Get family
-     *
-     * @return FamilyInterface
-     */
-    public function getFamily();
 
     /**
      * Get family id

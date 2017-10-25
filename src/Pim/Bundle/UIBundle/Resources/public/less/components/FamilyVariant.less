@@ -1,0 +1,113 @@
+@import '../base/variables';
+
+.AknFamilyVariant {
+    display: flex;
+    padding: 0 0 0 @AknFullPagePadding;
+    margin-top: 50px;
+    margin-bottom: @AknFullPagePadding;
+
+    &-title {
+        position: fixed;
+        top: @AknFullPagePadding;
+        width: ~"calc(100% - 2 * 24px - 100px)";
+        text-align: center;
+        left: 50px;
+    }
+
+    &-subTitle {
+        position: fixed;
+        top: @AknFullPagePadding + 60px;
+        width: ~"calc(100% - 2 * 24px - 100px)";
+        text-align: center;
+        left: 50px;
+    }
+
+    &-level {
+        flex-basis: 30%;
+        flex-grow: 1;
+        margin-right: @AknFullPagePadding;
+
+        &:nth-child(3) {
+            margin-top: 65px;
+        }
+
+        &:first-child {
+            background-color: @AknLightGray;
+        }
+    }
+
+    &-column {
+        border: 1px solid @AknBorderColor;
+        padding: 5px 20px;
+        overflow-y: auto;
+    }
+
+    &-axes {
+        color: @AknLightPurple;
+        background-color: @AknLightGray;
+        font-size: @AknFontSizeBig;
+    }
+
+    &-column--common {
+        max-height: ~"calc(100vh - 170px)";
+    }
+
+    &-column--level2 {
+        max-height: ~"calc(100vh - (170px + 2 * 65px))";
+    }
+
+    &-column--level1 {
+        max-height: ~"calc(100vh - (170px + 65px))";
+    }
+
+    &-columTitle {
+        text-transform: uppercase;
+        border-bottom: 1px solid @AknMediumGrey;
+        font-size: @AknFontSizeBig;
+        color: @AknGrey;
+    }
+
+    &-columnList {
+        font-size: @AknDefaultFontSize;
+        margin-bottom: 20px;
+    }
+
+    &-levelPathLabel {
+        background-color: darken(@AknBlue, 10%);
+        border-color: darken(@AknBlue, 20%);
+        color: white;
+        height: @AknDefaultButtonSize;
+        line-height: @AknDefaultButtonSize - 2px;
+        font-size: @AknFontSizeBig;
+        min-width: @AknDefaultButtonSize;
+        display: inline-block;
+        padding: 0 @AknDefaultButtonSize/2;
+        border-radius: 100px;
+        white-space: nowrap;
+        position: relative;
+        text-transform: uppercase;
+    }
+
+    &-levelPath {
+        display: flex;
+        position: relative;
+        left: -32px;
+        margin: 5px 0 0 0;
+
+        &:before {
+            content: '';
+            width: 60px;
+            height: 32px;
+            background-image: url("../../images/connector-start.svg");
+            display: inline-block;
+        }
+
+        &:after {
+            content: '';
+            width: 60px;
+            height: 60px;
+            background-image: url("../../images/connector-end.svg");
+            display: inline-block;
+        }
+    }
+}

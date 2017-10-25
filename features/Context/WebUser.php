@@ -15,8 +15,7 @@ use Context\Spin\SpinException;
 use Context\Spin\TimeoutException;
 use Context\Traits\ClosestTrait;
 use Pim\Behat\Context\PimContext;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
-use Pim\Component\Catalog\Model\Product;
+use Pim\Component\Catalog\Model\ProductInterface;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
@@ -51,12 +50,15 @@ class WebUser extends PimContext
     public function iCreateANew($entity)
     {
         $entity = implode('', array_map('ucfirst', explode(' ', $entity)));
-
         $this->spin(function () use ($entity) {
+            if (null !== $this->getCurrentPage()->find('css', '.modal, .ui-dialog')) {
+                return true;
+            }
+
             $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
 
-            return true;
-        }, sprintf('Cannot create a new %s', $entity));
+            return false;
+        }, sprintf('Cannot create a new %s: cannot click on the creation link', $entity));
 
         $this->getNavigationContext()->currentPage = sprintf('%s creation', $entity);
     }
@@ -133,6 +135,8 @@ class WebUser extends PimContext
      */
     public function iVisitTheTab($tab)
     {
+        $this->scrollContainerTo(-1000);
+
         return $this->getCurrentPage()->visitTab($tab);
     }
 
@@ -229,7 +233,7 @@ class WebUser extends PimContext
     public function iShouldSeeVersionsInTheHistory($expectedCount)
     {
         $this->spin(function () use ($expectedCount) {
-            $actualVersions = $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.product-version');
+            $actualVersions = $this->getSession()->getPage()->findAll('css', '.history-panel tbody tr.entity-version');
 
             return ((int) $expectedCount) === count($actualVersions);
         }, sprintf(
@@ -242,10 +246,12 @@ class WebUser extends PimContext
      * @param string      $group
      * @param string|null $type
      *
-     * @Given /^I visit the "([^"]*)" (group|association type|tree)$/
+     * @Given /^I visit the "([^"]*)" (group|association type|tree|target)$/
      */
     public function iVisitTheGroup($group, $type)
     {
+        $this->scrollContainerTo(-1000);
+
         $this->getCurrentPage()->visitGroup($group, ucfirst($type));
     }
 
@@ -270,15 +276,15 @@ class WebUser extends PimContext
     }
 
     /**
-     * @Given /^there should be (\d+) errors? in the "([^"]*)" tab$/
+     * @Then /^there should be (\d+) errors? in the "([^"]*)" tab$/
      *
      * @param $expectedErrorsCount
      * @param $tabName
-     *
-     * @throws TimeoutException
      */
     public function thereShouldBeErrorsInTheTab($expectedErrorsCount, $tabName)
     {
+        $this->scrollContainerTo(-1000);
+
         $tab = $this->getCurrentPage()->getTab($tabName);
 
         $this->spin(function () use ($tab, $expectedErrorsCount) {
@@ -289,6 +295,26 @@ class WebUser extends PimContext
             $tabName,
             $this->getTabErrorsCount($tab)
         ));
+    }
+
+    /**
+     * @When /^I click on the "([^"]*)" required attribute indicator$/
+     *
+     * @param $attributeGroup
+     */
+    public function iClickOnAttributeGroupHeader($attributeGroup)
+    {
+        $this->getCurrentPage()->clickOnAttributeGroupHeader($attributeGroup);
+    }
+
+    /**
+     * @When /^I filter attributes with "(.+)"$/
+     *
+     * @param $filter
+     */
+    public function iFilterAttributes($filter)
+    {
+        $this->getCurrentPage()->filterAttributes($filter);
     }
 
     /* -------------------- Other methods -------------------- */
@@ -346,7 +372,7 @@ class WebUser extends PimContext
     {
         $element = $this->getElementOnCurrentPage('Main context selector');
 
-        $element->switchScope($scope);
+        $element->switchScope(strtolower($scope));
         $this->wait();
     }
 
@@ -392,6 +418,33 @@ class WebUser extends PimContext
                 )
             );
         }
+    }
+
+    /**
+     * @param string $action open|close
+     *
+     * @When /^I (open|close) the category tree$/
+     */
+    public function iToggleTheCategoryTree($action)
+    {
+        $this->spin(function () use ($action) {
+            $thirdColumn = $this->getCurrentPage()->find('css', '.AknDefault-thirdColumnContainer');
+            if (null !== $thirdColumn) {
+                if (
+                    ('open' === $action && $thirdColumn->hasClass('AknDefault-thirdColumnContainer--open')) ||
+                    ('close' === $action && !$thirdColumn->hasClass('AknDefault-thirdColumnContainer--open'))
+                ) {
+                    return true;
+                }
+            }
+
+            $categorySwitcher = $this->getCurrentPage()->find('css', '.category-switcher');
+            if (null !== $categorySwitcher) {
+                $categorySwitcher->click();
+            }
+
+            return false;
+        }, 'Cannot find the category switcher');
     }
 
     /**
@@ -662,8 +715,6 @@ class WebUser extends PimContext
      *
      * @Then /^the product ([^"]*) should be empty$/
      * @Then /^the product ([^"]*) should be "([^"]*)"$/
-     * @Then /^the variant group ([^"]*) should be empty$/
-     * @Then /^the variant group ([^"]*) should be "([^"]*)"$/
      *
      * @throws \LogicException
      * @throws ExpectationException
@@ -1062,6 +1113,15 @@ class WebUser extends PimContext
     }
 
     /**
+     * @Given /^I open the family variant creation form$/
+     */
+    public function iOpenFamilyVariantCreationForm()
+    {
+        $this->getCurrentPage()->openFamilyVariantCreationForm();
+        $this->wait();
+    }
+
+    /**
      * @param string $families
      *
      * @Then /^I should see the families (.*)$/
@@ -1172,18 +1232,22 @@ class WebUser extends PimContext
      */
     public function iRemoveTheAttribute($field)
     {
-        $removeLink = $this->getCurrentPage()->getRemoveLinkFor($field);
+        $this->spin(function () use ($field) {
+            $removeLink = $this->getCurrentPage()->getRemoveLinkFor($field);
 
-        if (null === $removeLink) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Remove link on field "%s" should be displayed.',
-                    $field
-                )
-            );
-        }
+            if (null === $removeLink) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Remove link on field "%s" should be displayed.',
+                        $field
+                    )
+                );
+            }
 
-        $removeLink->click();
+            $removeLink->click();
+
+            return true;
+        }, 'Cannot click on the remove attribute button');
     }
 
     /**
@@ -1272,6 +1336,16 @@ class WebUser extends PimContext
 
             return $count <= 0;
         }, 'Expected not to see reorder handles.');
+    }
+
+    /**
+     * @Then /^the attribute options order should be (.+)$/
+     */
+    public function theAttributeOptionsOrderShouldBe($optionCodes)
+    {
+        $expected = $this->listToArray($optionCodes);
+
+        $this->getCurrentPage()->checkOptionsOrder($expected);
     }
 
     /**
@@ -1543,6 +1617,30 @@ class WebUser extends PimContext
     }
 
     /**
+     * @param string $buttonLabel
+     *
+     * @When /^I press the "([^"]*)" bottom button$/
+     */
+    public function iPressTheBottomButton($buttonLabel)
+    {
+        $this->spin(function () use ($buttonLabel) {
+            $buttons = $this->getCurrentPage()->findAll('css', '.mass-actions-panel a');
+            foreach ($buttons as $button) {
+                if ((strtolower(trim($button->getText())) === $buttonLabel ||
+                        $button->getAttribute('title') === $buttonLabel
+                    ) && $button->isVisible()
+                ) {
+                    $button->click();
+
+                    return true;
+                }
+            }
+
+            return false;
+        }, sprintf('Can not find any bottom button "%s"', $buttonLabel));
+    }
+
+    /**
      * @param string $locator
      *
      * @When /^I hover over the element "([^"]*)"$/
@@ -1639,7 +1737,7 @@ class WebUser extends PimContext
         $buttonElement = $this->spin(function () use ($buttonLabel) {
             return $this
                 ->getCurrentPage()
-                ->find('css', sprintf('.ui-dialog button:contains("%1$s"), .modal a:contains("%1$s")', $buttonLabel));
+                ->find('css', sprintf('.ui-dialog button:contains("%1$s"), .modal a:contains("%1$s"), .modal button:contains("%1$s")', $buttonLabel));
         }, sprintf('Cannot find "%s" button label in modal', $buttonLabel));
 
         $buttonElement->press();
@@ -1662,9 +1760,24 @@ class WebUser extends PimContext
                 ->click();
 
             return true;
-        }, sprintf('Cannot click on item %s ', $item));
+        }, sprintf('Cannot click on item "%s" on the dropdown "%s"', $item, $button));
 
         $this->wait();
+    }
+
+    /**
+     * @param string $item
+     * @param string $button
+     *
+     * @Given /^I should see "([^"]*)" on the "([^"]*)" dropdown button$/
+     */
+    public function iShouldSeeOnTheDropdownButton($item, $button)
+    {
+        $this->spin(function () use ($item, $button) {
+            return null !== $this->getCurrentPage()->getDropdownButtonItem($item, $button);
+        }, sprintf('Cannot find item "%s" on the dropdown "%s"', $item, $button));
+
+        $this->getCurrentPage()->find('css', 'body')->click();
     }
 
     /**
@@ -1710,7 +1823,6 @@ class WebUser extends PimContext
     public function iCheckTheSwitch($status, $locator)
     {
         $this->getCurrentPage()->toggleSwitch($locator, $status === '');
-        $this->wait();
     }
 
     /**
@@ -1720,25 +1832,25 @@ class WebUser extends PimContext
      */
     public function iSwitchTheSubCategoriesInclusion($status)
     {
-        $switch = $this->spin(function () {
-            return $this->getCurrentPage()->findById('nested_switch_input');
-        }, 'Cannot find the switch button to include sub categories');
+        $this->spin(function () use ($status) {
+            $switch = $this->getCurrentPage()->findById('nested_switch_input');
 
-        $on = 'en' === $status;
-        if ($switch->isChecked() !== $on) {
-            $switch->getParent()->find('css', 'label')->click();
-        }
-        $this->wait();
+            if (('en' === $status) !== $switch->isChecked()) {
+                $switch->getParent()->find('css', 'label')->click();
+            }
+
+            return true;
+        }, sprintf('Cannot %sable the inclusion of sub-categories', $status));
     }
 
     /**
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @Given /^(product "([^"]*)") should be disabled$/
      *
      * @throws ExpectationException
      */
-    public function productShouldBeDisabled(Product $product)
+    public function productShouldBeDisabled(ProductInterface $product)
     {
         $this->spin(function () use ($product) {
             $this->getMainContext()->getEntityManager()->refresh($product);
@@ -1748,13 +1860,13 @@ class WebUser extends PimContext
     }
 
     /**
-     * @param Product $product
+     * @param ProductInterface $product
      *
      * @Given /^(product "([^"]*)") should be enabled$/
      *
      * @throws ExpectationException
      */
-    public function productShouldBeEnabled(Product $product)
+    public function productShouldBeEnabled(ProductInterface $product)
     {
         $this->spin(function () use ($product) {
             $this->getMainContext()->getEntityManager()->refresh($product);
@@ -1773,7 +1885,6 @@ class WebUser extends PimContext
     public function theFamilyOfProductShouldBe($sku, $expectedFamily = '')
     {
         $this->spin(function () use ($sku, $expectedFamily) {
-            $this->clearUOW();
             $product      = $this->getFixturesContext()->getProduct($sku);
             $actualFamily = $product->getFamily() ? $product->getFamily()->getCode() : '';
 
@@ -1782,27 +1893,79 @@ class WebUser extends PimContext
     }
 
     /**
+     * @param string      $code
+     * @param string|null $expectedFamily
+     *
+     * @Then /^the product model "([^"]*)" should have no family$/
+     * @Then /^the family of (?:the )?product model "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theFamilyOfProductModelShouldBe($code, $expectedFamily = '')
+    {
+        $this->spin(function () use ($code, $expectedFamily) {
+            $productModel = $this->getFixturesContext()->getProductModel($code);
+            $actualFamily = $productModel->getFamily() ? $productModel->getFamily()->getCode() : '';
+
+            return $expectedFamily === $actualFamily;
+        }, sprintf('Expecting the family of "%s" to be "%s".', $code, $expectedFamily));
+    }
+
+    /**
      * @param string $sku
      * @param string $categoryCode
      *
-     * @Then /^the category of (?:the )?product "([^"]*)" should be "([^"]*)"$/
+     * @Then /^the categor(?:y|ies) of (?:the )?product "([^"]*)" should be "([^"]*)"$/
      */
-    public function theCategoryOfProductShouldBe($sku, $categoryCode)
+    public function theCategoryOfProductShouldBe($sku, $expectedCategoryCodes)
     {
-        $this->clearUOW();
         $product = $this->getFixturesContext()->getProduct($sku);
+        $actualCategoryCodes = $product->getCategoryCodes();
 
-        $categoryCodes = $product->getCategoryCodes();
-        assertEquals(
-            [$categoryCode],
-            $categoryCodes,
-            sprintf(
-                'Expecting the category of "%s" to be "%s", not "%s".',
-                $sku,
-                $categoryCode,
-                implode(', ', $categoryCodes)
-            )
-        );
+        foreach ($this->listToArray($expectedCategoryCodes) as $expectedCategoryCode) {
+            assertContains(
+                $expectedCategoryCode,
+                $actualCategoryCodes,
+                sprintf(
+                    'Product "%s" should contain "%s" as category.',
+                    $sku,
+                    $expectedCategoryCode
+                )
+            );
+        }
+    }
+
+    /**
+     * @param string $code
+     * @param string $expectedCategoryCodes
+     *
+     * @Then /^the categor(?:y|ies) of (?:the )?product model "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theCategoryOfProductModelShouldBe($code, $expectedCategoryCodes)
+    {
+        $productModel = $this->getFixturesContext()->getProductModel($code);
+        $actualCategoryCodes = $productModel->getCategoryCodes();
+
+        foreach ($this->listToArray($expectedCategoryCodes) as $expectedCategoryCode) {
+            assertContains(
+                $expectedCategoryCode,
+                $actualCategoryCodes,
+                sprintf(
+                    'Product model "%s" should contain "%s" as category.',
+                    $code,
+                    $expectedCategoryCode
+                )
+            );
+        }
+    }
+
+    /**
+     * @param string $sku
+     *
+     * @Then /^the product "([^"]*)" should not have any category$/
+     */
+    public function theProductShouldNotHaveAnyCategory($sku)
+    {
+        $product = $this->getFixturesContext()->getProduct($sku);
+        assertEmpty($product->getCategoryCodes());
     }
 
     /**
@@ -1875,19 +2038,20 @@ class WebUser extends PimContext
      */
     public function iWaitForTheJobToFinish($code)
     {
-        $jobExecution = $this->spin(function () use ($code) {
+        $this->wait();
+
+        $this->spin(function () use ($code) {
             $jobInstance = $this->getFixturesContext()->getJobInstance($code);
             // Force to retrieve its job executions
             $jobInstance->getJobExecutions()->setInitialized(false);
 
             $this->getFixturesContext()->refresh($jobInstance);
+
             $jobExecution = $jobInstance->getJobExecutions()->last();
             $this->getFixturesContext()->refresh($jobExecution);
 
             return $jobExecution && !$jobExecution->isRunning();
         }, sprintf('The job execution of "%s" was too long', $code));
-
-        $this->wait();
 
         $this->getMainContext()->getContainer()->get('pim_connector.doctrine.cache_clearer')->clear();
 
@@ -2123,7 +2287,6 @@ class WebUser extends PimContext
      */
     public function iCancelTheMassEdit()
     {
-        $this->scrollContainerTo(900);
         $this->getCurrentPage()->cancel();
     }
 
@@ -2249,7 +2412,9 @@ class WebUser extends PimContext
      */
     public function scrollContainerTo($y = 400)
     {
-        $this->getSession()->executeScript(sprintf('$(".scrollable-container").scrollTop(%d);', $y));
+        $this->getSession()->executeScript(
+            sprintf('$(".scrollable-container, .AknDefault-mainContent").scrollTop(%d);', $y)
+        );
     }
 
     /**
@@ -2601,6 +2766,24 @@ class WebUser extends PimContext
 
             return null !== $this->getCurrentPage()->find('css', '.AknColumn--collapsed');
         }, 'Could not collapse the column');
+    }
+
+    /**
+     * @When /^I uncollapse the column$/
+     */
+    public function iUncollapseTheColumn()
+    {
+        $this->spin(function () {
+            $collapseButtons = $this->getCurrentPage()->findAll('css', '.AknColumn-collapseButton');
+
+            foreach ($collapseButtons as $collapseButton) {
+                if ($collapseButton->isVisible()) {
+                    $collapseButton->click();
+                }
+            }
+
+            return null === $this->getCurrentPage()->find('css', '.AknColumn--collapsed');
+        }, 'Could not uncollapse the column');
     }
 
     /**

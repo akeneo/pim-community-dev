@@ -6,9 +6,10 @@
 'use strict';
 
 define([
-    'pim/attribute-edit-form/properties/boolean'
+    'underscore',
+    'pim/form/common/fields/boolean'
 ],
-function (BaseField) {
+function (_, BaseField) {
     return BaseField.extend({
         /**
          * {@inheritdoc}
@@ -38,7 +39,11 @@ function (BaseField) {
          */
         isReadOnly: function () {
             return BaseField.prototype.isReadOnly.apply(this, arguments) ||
-                (undefined !== this.getFormData().unique && true === this.getFormData().unique);
+                (undefined !== this.getFormData().unique && true === this.getFormData().unique) ||
+                (
+                    _.has(this.config, 'readOnlyForTypes') &&
+                    _.contains(this.config.readOnlyForTypes, this.getRoot().getType())
+                );
         }
     });
 });

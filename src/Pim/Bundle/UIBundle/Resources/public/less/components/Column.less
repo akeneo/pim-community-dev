@@ -1,89 +1,162 @@
 @import '../base/variables';
 
 .AknColumn {
-  @timing: 0.3s;
-  @width: 280px;
-  @iconSize: 24px;
-  @padding: 20px;
+  @verticalPadding: @AknPaddingLeftColumn - 10px;
+  @iconSize: @AknBottomPanelHeight - @verticalPadding * 2;
   @littleWidth: 40px;
-  @transition: ease-in-out;
   @scrollbarWidth: 16px;
-  @paddingBetweenBlocks: 36px;
 
-  flex-basis: @width;
-  width: @width;
+  flex-basis: @AknSecondColumnWidth;
+  width: @AknSecondColumnWidth;
   position: relative;
-  overflow: hidden;
   transition:
-    flex-basis @timing @transition,
-    width @timing @transition;
-  order: -1;
+    flex-basis @AknColumnTiming @AknColumnTransition,
+    width @AknColumnTiming @AknColumnTransition;
+  order: -10;
   background: @AknLightGray;
   border-right: 1px solid @AknBorderColor;
   flex-shrink: 0;
   height: 100%;
+  z-index: 802;
+  overflow: hidden;
 
   &:empty {
     display: none;
   }
 
   &-inner {
-    width: @width;
-    height: ~"calc(100% - 20px - 24px - 20px)";
+    width: @AknSecondColumnWidth;
+    height: ~"calc(100% - 20px - 20px - 20px)";
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    font-size: 11px;
+    font-size: @AknFontSizeSmall;
     position: absolute;
     right: 0;
     overflow-x: auto;
-    transition: right @timing @transition;
+    transition: right @AknColumnTiming @AknColumnTransition;
   }
 
   &-innerTop:not(:empty),
   &-innerBottom:not(:empty) {
-    padding: 0 @padding @padding @padding;
+    padding: 0 @AknPaddingLeftColumn @AknPaddingLeftColumn @AknPaddingLeftColumn;
     line-height: 14px;
     transition:
-      margin-right @timing @transition,
-      margin-left @timing @transition;
+      margin-right @AknColumnTiming @AknColumnTransition,
+      margin-left @AknColumnTiming @AknColumnTransition;
   }
 
   &-innerTop {
     flex-grow: 1;
+
+    &:not(:empty) {
+      padding-bottom: 0;
+    }
   }
 
   &-innerBottom:not(:empty) {
     border-top: 1px solid @AknBorderColor;
-    padding-top: @padding;
+    padding-top: @AknPaddingLeftColumn;
   }
 
-  &-block:not(:empty) {
-    display: flex;
-    flex-direction: column;
-    margin: (@paddingBetweenBlocks - @padding) 0 @padding 0;
+  &-block {
+    &:not(:empty) {
+      display: flex;
+      flex-direction: column;
+      margin: @AknPaddingLeftColumn 0 0 0;
+    }
+
+    &--inline:not(:empty) {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin-top: 15px;
+      margin-bottom: -55px;
+    }
+  }
+
+  &-block--inline &-subtitle {
+    line-height: 38px;
+    white-space: nowrap;
+  }
+
+  &-block--inline &-value {
+    flex-grow: 1;
+    margin-top: 2px;
+    margin-bottom: -2px;
+  }
+
+  &-blockDropdown {
+    flex-shrink: 0;
+    flex-grow: 0;
+    margin-top: 4px;
+    margin-right: -16px;
+  }
+
+  &-blockDown {
+    background: url("../../images/icon-down.svg") no-repeat center;
+    display: inline-block;
+    height: 8px;
+    width: 18px;
+    background-size: 18px;
+    margin-left: 5px;
+    opacity: 0.7;
+    transition: opacity 0.1s ease-in;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 
   &-title,
   &-subtitle {
     color: @AknGrey;
     text-transform: uppercase;
-    font-size: 11px;
+    font-size: @AknFontSizeSmall;
+    line-height: 20px;
   }
 
   &-title {
-    margin-bottom: 20px;
+    margin-bottom: @AknPaddingLeftColumn;
   }
 
   &-value {
     color: @AknDarkBlue;
-    font-size: 12px;
+    font-size: @AknDefaultFontSize;
+
+    &--highlited {
+      color: @AknLightPurple;
+    }
+  }
+
+  &-part {
+    &:not(:empty) {
+      border-bottom: 1px solid @AknBorderColor;
+      margin-top: 0;
+      margin-left: -@AknPaddingLeftColumn;
+      margin-right: -@AknPaddingLeftColumn;
+      padding-left: @AknPaddingLeftColumn;
+      padding-right: @AknPaddingLeftColumn;
+      padding-bottom: 30px;
+      min-height: 47px;
+    }
+
+    &--small:not(:empty) {
+      padding-bottom: 17px;
+      margin-top: -5px;
+    }
+
+    &--filter:not(:empty) {
+      margin-top: 14px;
+      padding-bottom: 16px;
+    }
   }
 
   &-navigationLink {
     display: block;
-    font-size: 14px;
-    margin: 0 0 16px 0;
+    font-size: @AknFontSizeBig;
+    margin: 0 0 20px 0;
     color: @AknDarkBlue;
     cursor: pointer;
     opacity: 0.85;
@@ -103,25 +176,31 @@
     margin-top: 10px;
     left: @AknMainMenuWidth + (@littleWidth - @AknDefaultButtonSize) / 2;
     opacity: 0;
-    transition: opacity @timing @transition;
+    transition: opacity @AknColumnTiming @AknColumnTransition;
     z-index: 850;
   }
 
+  &-resume {
+    margin-top: 50px;
+    margin-bottom: 10px;
+    font-size: @AknDefaultFontSize;
+  }
+
   &-collapseButton {
-    height: @iconSize + @padding;
-    width: @width;
-    background: url("../../images/icon-panelClose.svg") no-repeat 20px 100%;
+    height: @AknBottomPanelHeight;
+    width: @AknSecondColumnWidth;
+    background: url("../../images/icon-panelClose.svg") no-repeat 20px center;
     background-size: @iconSize;
     cursor: pointer;
     opacity: 0.8;
     position: absolute;
-    bottom: @padding;
+    bottom:0;
     right: 0;
     border-top: 1px solid @AknBorderColor;
     transition:
-      opacity 0.2s @transition,
-      width @timing @transition,
-      background-position @timing @transition;
+      opacity 0.2s @AknColumnTransition,
+      width @AknColumnTiming @AknColumnTransition,
+      background-position @AknColumnTiming @AknColumnTransition;
 
     &:hover {
       opacity: 1;
@@ -149,7 +228,13 @@
 
   &--collapsed &-collapseButton {
     width: @littleWidth;
-    background-position: ((@littleWidth - @iconSize) / 2) 100%;
+    background-position: ((@littleWidth - @iconSize) / 2) center;
     background-image: url("../../images/icon-panelOpen.svg");
+  }
+
+  &-bottomButtonContainer {
+    border-top: 1px solid @AknBorderColor;
+    padding: 20px;
+    text-align: center;
   }
 }

@@ -1,12 +1,5 @@
 services:
     # Form
-    pim_enrich.form.attribute_group:
-        class: 'Symfony\Component\Form\Form'
-        factory: 'form.factory:createNamed'
-        arguments:
-            - 'pim_enrich_attributegroup_form'
-            - '%pim_enrich.form.type.attribute_group.class%'
-
     pim_enrich.form.family:
         class: 'Symfony\Component\Form\Form'
         factory: 'form.factory:createNamed'
@@ -27,13 +20,6 @@ services:
         arguments:
             - 'pim_enrich_group_form'
             - '%pim_enrich.form.type.group.class%'
-
-    pim_enrich.form.variant_group:
-        class: 'Symfony\Component\Form\Form'
-        factory: 'form.factory:createNamed'
-        arguments:
-            - 'pim_enrich_variant_group_form'
-            - '%pim_enrich.form.type.variant_group.class%'
 
     pim_enrich.form.group_type:
         class: 'Symfony\Component\Form\Form'

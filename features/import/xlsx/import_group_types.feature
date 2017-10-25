@@ -9,8 +9,8 @@ Feature: Import group types
     And I am logged in as "Julia"
     And the following XLSX file to import:
       """
-      code;label-en_US;is_variant
-      cross_sell;Cross sell;0
+      code;label-en_US
+      cross_sell;Cross sell
       """
     And the following job "xlsx_footwear_group_type_import" configuration:
       | filePath | %file to import% |
@@ -18,5 +18,5 @@ Feature: Import group types
     And I launch the import job
     And I wait for the "xlsx_footwear_group_type_import" job to finish
     Then there should be the following group types:
-      | code       | label-en_US | is_variant |
-      | cross_sell | Cross sell  | 0          |
+      | code       | label-en_US |
+      | cross_sell | Cross sell  |

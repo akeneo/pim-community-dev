@@ -15,9 +15,10 @@ Feature: Apply a mass action on all entities
     And I am logged in as "Julia"
 
   Scenario: Edit common attributes of all products
-    When I am on the products page
+    When I am on the products grid
+    And I select rows super_boots
     And I select all entities
-    And I press "Change product information" on the "Bulk Actions" dropdown button
+    And I press the "Bulk actions" button
     And I choose the "Edit common attributes" operation
     And I move on to the choose step
     And I choose the "Edit common attributes" operation
@@ -34,15 +35,18 @@ Feature: Apply a mass action on all entities
 
   Scenario: Edit family of all products, filtered by category and completeness
     Given I launched the completeness calculator
-    When I am on the products page
+    When I am on the products grid
     And I hide the filter "family"
+    And I open the category tree
     And I filter by "category" with operator "" and value "2014_collection"
     And I filter by "category" with operator "" and value "winter_collection"
-    And I filter by "scope" with operator "" and value "Mobile"
+    And I close the category tree
+    And I switch the scope to "Mobile"
     And I filter by "completeness" with operator "" and value "yes"
+    And I select rows mega_boots
     When I select all entities
-    And I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Change the family of products" operation
+    And I press the "Bulk actions" button
+    And I choose the "Change family" operation
     And I change the Family to "Sandals"
     And I confirm mass edit
     And I wait for the "update_product_value" job to finish
@@ -56,11 +60,13 @@ Feature: Apply a mass action on all entities
       | 4_blocks   | Lego 4 blocks   |
       | 2_blocks   | Lego 2 blocks   |
       | characters | Lego characters |
-    When I am on the families page
+    When I am on the families grid
     And I search "blocks"
+    Then the grid should contain 2 elements
+    And I select rows Lego 2 blocks
     And I select all entities
-    And I press the "Change product information" button
-    And I choose the "Set attribute requirements" operation
+    And I press the "Bulk actions" button
+    And I choose the "Set attributes requirements" operation
     And I display the Length attribute
     And I switch the attribute "length" requirement in channel "mobile"
     And I confirm mass edit
@@ -70,13 +76,14 @@ Feature: Apply a mass action on all entities
 
   @jira https://akeneo.atlassian.net/browse/PIM-5000
   Scenario: Not applying a mass edit operation on unchecked products after "all" was selected
-    Given I am on the products page
+    Given I am on the products grid
+    And I select rows super_boots
     And I select all entities
     And I unselect row mega_boots
-    When I press "Change product information" on the "Bulk Actions" dropdown button
-    And I choose the "Change status (enable / disable)" operation
+    When I press the "Bulk actions" button
+    And I choose the "Change status" operation
     And I move on to the choose step
-    And I choose the "Change status (enable / disable)" operation
+    And I choose the "Change status" operation
     And I disable the products
     And I wait for the "update_product_value" job to finish
     Then product "super_boots" should be disabled

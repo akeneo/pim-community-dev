@@ -37,7 +37,9 @@ class SchemaHelper
             'product_media'    => 'pim_catalog.entity.product_media.class',
             'product_value'    => 'pim_catalog.entity.product_value.class',
             'product_template' => 'pim_catalog.entity.product_template.class',
-            'version'          => 'pim_versioning.entity.version.class'
+            'version'          => 'pim_versioning.entity.version.class',
+            'client'           => 'fos_oauth_server.model.client.class',
+            'job_instance'     => 'akeneo_batch.entity.job_instance.class',
         ];
         $this->productResources = [
             'product',

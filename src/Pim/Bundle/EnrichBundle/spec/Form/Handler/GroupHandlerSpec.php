@@ -44,40 +44,11 @@ class GroupHandlerSpec extends ObjectBehavior
         $request->isMethod('POST')->willReturn(true);
         $group->getProducts()->willReturn([$product]);
         $group->getType()->willReturn($groupType);
-        $groupType->isVariant()->willReturn(false);
 
         $form->handleRequest($request)->shouldBeCalled();
         $form->isValid()->willReturn(true);
 
         $saver->save($group, ['copy_values_to_products' => true])->shouldBeCalled();
-
-        $this->process($group)->shouldReturn(true);
-    }
-
-    function it_saves_a_variant_group_and_update_products_values_when_form_is_valid(
-        $form,
-        $requestStack,
-        $saver,
-        Request $request,
-        GroupInterface $group,
-        GroupTypeInterface $groupType,
-        ProductInterface $product
-    ) {
-        $requestStack->getCurrentRequest()->willReturn($request);
-        $form->setData($group)->shouldBeCalled();
-        $request->isMethod('POST')->willReturn(true);
-        $group->getProducts()->willReturn([$product]);
-        $group->getType()->willReturn($groupType);
-        $group->getProductTemplate()->willReturn(null);
-        $groupType->isVariant()->willReturn(true);
-
-        $form->handleRequest($request)->shouldBeCalled();
-        $form->isValid()->willReturn(true);
-
-        $saver->save(
-            $group,
-            ['copy_values_to_products' => true]
-        )->shouldBeCalled();
 
         $this->process($group)->shouldReturn(true);
     }
@@ -99,7 +70,6 @@ class GroupHandlerSpec extends ObjectBehavior
         $form->handleRequest($request)->shouldBeCalled();
 
         $form->isValid()->willReturn(false);
-        $groupType->isVariant()->willReturn(false);
 
         $group->getType()->willReturn($groupType);
         $saver->save($group)->shouldNotBeCalled();

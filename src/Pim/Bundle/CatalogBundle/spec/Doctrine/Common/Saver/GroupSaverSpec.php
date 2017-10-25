@@ -11,11 +11,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
-use Pim\Component\Catalog\Manager\ProductTemplateApplierInterface;
-use Pim\Component\Catalog\Manager\ProductTemplateMediaManager;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\ProductTemplateInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Component\Catalog\Query\ProductQueryBuilderInterface;
 use Prophecy\Argument;
@@ -26,8 +23,6 @@ class GroupSaverSpec extends ObjectBehavior
     function let(
         ObjectManager $objectManager,
         BulkSaverInterface $productSaver,
-        ProductTemplateMediaManager $templateMediaManager,
-        ProductTemplateApplierInterface $templateApplier,
         SavingOptionsResolverInterface $optionsResolver,
         VersionContext $versionContext,
         EventDispatcherInterface $eventDispatcher,
@@ -37,8 +32,6 @@ class GroupSaverSpec extends ObjectBehavior
         $this->beConstructedWith(
             $objectManager,
             $productSaver,
-            $templateMediaManager,
-            $templateApplier,
             $versionContext,
             $optionsResolver,
             $eventDispatcher,
@@ -151,73 +144,6 @@ class GroupSaverSpec extends ObjectBehavior
         $this->save($group, ['remove_products' => [$removedProduct]]);
     }
 
-    function it_handles_media_values_of_variant_group_product_templates(
-        $optionsResolver,
-        $templateMediaManager,
-        $eventDispatcher,
-        GroupInterface $group,
-        GroupType $type,
-        ProductTemplateInterface $template
-    ) {
-        $optionsResolver->resolveSaveOptions(Argument::any())
-            ->willReturn(['flush' => true, 'copy_values_to_products' => false]);
-
-        $group->getProducts()->willReturn(new ArrayCollection([]));
-        $group->getType()->willReturn($type);
-        $group->getCode()->willReturn('my_code');
-        $group->getId()->willReturn(null);
-        $group->getProductTemplate()->willReturn($template);
-
-        $type->isVariant()->willReturn(true);
-
-        $templateMediaManager->handleProductTemplateMedia($template)->shouldBeCalled();
-
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
-
-        $this->save($group);
-    }
-
-    function it_saves_a_variant_group_and_copies_values_to_products(
-        $optionsResolver,
-        $objectManager,
-        $templateApplier,
-        $eventDispatcher,
-        $detacher,
-        GroupInterface $group,
-        GroupType $type,
-        ProductInterface $product,
-        ProductTemplateInterface $template
-    ) {
-        $optionsResolver->resolveSaveOptions(['copy_values_to_products' => true])->willReturn(
-            [
-                'flush'                   => true,
-                'copy_values_to_products' => true,
-            ]
-        );
-
-        $group->getId()->willReturn(null);
-        $group->getType()->willReturn($type);
-        $group->getCode()->willReturn('my_code');
-
-        $objectManager->persist($group)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
-
-        $type->isVariant()->willReturn(true);
-        $group->getProductTemplate()->willReturn($template);
-        $group->getProducts()->willReturn(new ArrayCollection([$product]));
-
-        $templateApplier
-            ->apply($template, [$product])
-            ->shouldBeCalled();
-
-        $detacher->detachAll([$product])->shouldBeCalled();
-
-        $eventDispatcher->dispatch(StorageEvents::PRE_SAVE, Argument::cetera())->shouldBeCalled();
-        $eventDispatcher->dispatch(StorageEvents::POST_SAVE, Argument::cetera())->shouldBeCalled();
-
-        $this->save($group, ['copy_values_to_products' => true]);
-    }
 
     function it_throws_exception_when_save_anything_else_than_a_group()
     {

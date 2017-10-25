@@ -38,8 +38,7 @@ class JobExecutionManager
     public function checkRunningStatus(JobExecution $jobExecution)
     {
         if (BatchStatus::STARTING !== $jobExecution->getStatus()->getValue() &&
-            (ExitStatus::UNKNOWN === $jobExecution->getExitStatus()->getExitCode() ||
-            ExitStatus::EXECUTING === $jobExecution->getExitStatus()->getExitCode())
+            $jobExecution->getExitStatus()->isRunning()
         ) {
             return $this->processIsRunning($jobExecution);
         }
@@ -75,7 +74,7 @@ class JobExecutionManager
         $jobExecution->setStatus(new BatchStatus(BatchStatus::FAILED));
         $jobExecution->setExitStatus(new ExitStatus(ExitStatus::FAILED));
         $jobExecution->setEndTime(new \DateTime('now'));
-        $jobExecution->addFailureException(new \Exception('An exception occured during the job execution'));
+        $jobExecution->addFailureException(new \Exception('An exception occurred during the job execution'));
 
         $this->entityManager->persist($jobExecution);
         $this->entityManager->flush();

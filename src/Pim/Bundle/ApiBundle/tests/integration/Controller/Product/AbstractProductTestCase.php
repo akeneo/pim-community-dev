@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\ApiBundle\tests\integration\Controller\Product;
 
-use Akeneo\Test\Integration\DateSanitizer;
-use Akeneo\Test\Integration\MediaSanitizer;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
+use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -20,66 +21,98 @@ abstract class AbstractProductTestCase extends ApiTestCase
      * @param array  $data
      *
      * @return ProductInterface
+     * @throws \Exception
      */
     protected function createProduct($identifier, array $data = [])
     {
         $product = $this->get('pim_catalog.builder.product')->createProduct($identifier);
         $this->get('pim_catalog.updater.product')->update($product, $data);
+
+        $errors = $this->get('pim_catalog.validator.product')->validate($product);
+        if (0 !== $errors->count()) {
+            throw new \Exception(sprintf(
+                'Impossible to setup test in %s: %s',
+                static::class,
+                $errors->get(0)->getMessage()
+            ));
+        }
+
         $this->get('pim_catalog.saver.product')->save($product);
 
-        $this->get('akeneo_elasticsearch.client')->refreshIndex();
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
 
         return $product;
     }
 
     /**
-     * Replaces dates fields (created/updated) in the $data array by self::DATE_FIELD_COMPARISON.
+     * @param string $identifier
+     * @param array  $data
      *
-     * @param array $data
-     *
-     * @return array
+     * @return VariantProductInterface
+     * @throws \Exception
      */
-    protected function sanitizeDateFields(array $data)
+    protected function createVariantProduct($identifier, array $data = []) : VariantProductInterface
     {
-        if (isset($data['created'])) {
-            $data['created'] = DateSanitizer::sanitize($data['created']);
-        }
-        if (isset($data['updated'])) {
-            $data['updated'] = DateSanitizer::sanitize($data['updated']);
+        $product = $this->get('pim_catalog.builder.variant_product')->createProduct($identifier);
+        $this->get('pim_catalog.updater.product')->update($product, $data);
+
+        $errors = $this->get('pim_catalog.validator.product')->validate($product);
+        if (0 !== $errors->count()) {
+            throw new \Exception(sprintf(
+                'Impossible to setup test in %s: %s',
+                static::class,
+                $errors->get(0)->getMessage()
+            ));
         }
 
-        return $data;
+        $this->get('pim_catalog.saver.product')->save($product);
+
+        $this->get('akeneo_elasticsearch.client.product')->refreshIndex();
+
+        return $product;
     }
 
     /**
-     * Replaces media attributes data in the $data array by self::MEDIA_ATTRIBUTE_DATA_COMPARISON.
+     * Each time we create a product model, a batch job is ran to calculate the
+     * completeness of its descendants.
+     *
+     * This is done by a batch job, and if several product models are created one
+     * after the other, we can end up with a MySQL error because several jobs run
+     * at the same time.
+     *
+     * Here, we use `akeneo_integration_tests.doctrine.job_execution` to be sure
+     * the batch jobs are done running before continuing the test.
      *
      * @param array $data
      *
-     * @return array
+     * @return ProductModelInterface
+     * @throws \Exception
      */
-    protected function sanitizeMediaAttributeData(array $data)
+    protected function createProductModel(array $data = []) : ProductModelInterface
     {
-        if (!isset($data['values'])) {
-            return $data;
+        $productModel = $this->get('pim_catalog.factory.product_model')->create();
+        $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
+
+        $errors = $this->get('pim_catalog.validator.product')->validate($productModel);
+        if (0 !== $errors->count()) {
+            throw new \Exception(sprintf(
+                'Impossible to setup test in %s: %s',
+                static::class,
+                $errors->get(0)->getMessage()
+            ));
+        }
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
+
+        if ($this->testKernel->getContainer()
+            ->get('akeneo_integration_tests.doctrine.job_execution')
+            ->isRunning('compute_product_models_descendants', 8)
+        ) {
+            throw new \RuntimeException('There are still "compute_product_models_descendants" jobs running.');
         }
 
-        foreach ($data['values'] as $attributeCode => $values) {
-            if (1 === preg_match('/.*(file|image).*/', $attributeCode)) {
-                foreach ($values as $index => $value) {
-                    $sanitizedData = ['data' => MediaSanitizer::sanitize($value['data'])];
-                    if (isset($value['_links']['download']['href'])) {
-                        $sanitizedData['_links']['download']['href'] = MediaSanitizer::sanitize(
-                            $value['_links']['download']['href']
-                        );
-                    }
+        $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
 
-                    $data['values'][$attributeCode][$index] = array_replace($value, $sanitizedData);
-                }
-            }
-        }
-
-        return $data;
+        return $productModel;
     }
 
     /**
@@ -91,13 +124,15 @@ abstract class AbstractProductTestCase extends ApiTestCase
         $result = json_decode($response->getContent(), true);
         $expected = json_decode($expected, true);
 
+        if (!isset($result['_embedded'])) {
+            \PHPUnit_Framework_Assert::fail($response->getContent());
+        }
+
         foreach ($result['_embedded']['items'] as $index => $product) {
-            $product = $this->sanitizeDateFields($product);
-            $result['_embedded']['items'][$index] = $this->sanitizeMediaAttributeData($product);
+            NormalizedProductCleaner::clean($result['_embedded']['items'][$index]);
 
             if (isset($expected['_embedded']['items'][$index])) {
-                $expected['_embedded']['items'][$index] = $this->sanitizeDateFields($expected['_embedded']['items'][$index]);
-                $expected['_embedded']['items'][$index] = $this->sanitizeMediaAttributeData($expected['_embedded']['items'][$index]);
+                NormalizedProductCleaner::clean($expected['_embedded']['items'][$index]);
             }
         }
 

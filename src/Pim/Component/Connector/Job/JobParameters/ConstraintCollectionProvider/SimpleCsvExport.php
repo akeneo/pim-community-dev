@@ -75,6 +75,8 @@ class SimpleCsvExport implements ConstraintCollectionProviderInterface
                             'groups' => ['Default', 'FileConfiguration'],
                         ]
                     ),
+                    'user_to_notify' => new Type('string'),
+                    'is_user_authenticated' => new Type('bool'),
                 ],
             ]
         );

@@ -40,6 +40,6 @@ class GroupNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof GroupInterface && !$data->getType()->isVariant() && 'standard' === $format;
+        return $data instanceof GroupInterface && 'standard' === $format;
     }
 }

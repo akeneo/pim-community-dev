@@ -1,0 +1,223 @@
+extensions:
+    pim-job-instance-csv-product-model-export-edit:
+        module: pim/form/common/edit-form
+
+    pim-job-instance-csv-product-model-export-edit-main-image:
+        module: pim/form/common/main-image
+        parent: pim-job-instance-csv-product-model-export-edit
+        targetZone: main-image
+        config:
+            path: bundles/pimui/images/illustration-export-csv.svg
+
+    pim-job-instance-csv-product-model-export-edit-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-job-instance-csv-product-model-export-edit
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-job-instance-csv-product-model-export-edit-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-job-instance-csv-product-model-export-edit
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-exports
+
+    pim-job-instance-csv-product-model-export-edit-cache-invalidator:
+        module: pim/cache-invalidator
+        parent: pim-job-instance-csv-product-model-export-edit
+        position: 1000
+
+    pim-job-instance-csv-product-model-export-edit-tabs:
+        module: pim/form/common/form-tabs
+        parent: pim-job-instance-csv-product-model-export-edit
+        targetZone: content
+        position: 100
+
+    pim-job-instance-csv-product-model-export-edit-properties:
+        module: pim/job/common/edit/properties
+        parent: pim-job-instance-csv-product-model-export-edit-tabs
+        aclResourceId: pim_importexport_export_profile_property_edit
+        targetZone: container
+        position: 100
+        config:
+            tabTitle: pim_enrich.form.job_instance.tab.properties.title
+            tabCode: pim-job-instance-properties
+
+    pim-job-instance-csv-product-model-export-edit-global:
+        module: pim/job/common/edit/properties
+        parent: pim-job-instance-csv-product-model-export-edit-tabs
+        aclResourceId: pim_importexport_export_profile_property_edit
+        targetZone: container
+        position: 120
+        config:
+            tabTitle: pim_enrich.export.product.global_settings.title
+            tabCode: pim-job-instance-global
+
+    pim-job-instance-csv-product-model-export-edit-history:
+        module: pim/common/tab/history
+        parent: pim-job-instance-csv-product-model-export-edit-tabs
+        targetZone: container
+        aclResourceId: pim_importexport_export_profile_history
+        position: 130
+        config:
+            class: Akeneo\Component\Batch\Model\JobInstance
+            title: pim_enrich.form.job_instance.tab.history.title
+            tabCode: pim-job-instance-history
+
+    pim-job-instance-csv-product-model-export-edit-properties-code:
+        module: pim/job/common/edit/field/text
+        parent: pim-job-instance-csv-product-model-export-edit-properties
+        position: 100
+        targetZone: properties
+        config:
+            fieldCode: code
+            label: pim_enrich.form.job_instance.tab.properties.code.title
+            readOnly: true
+
+    pim-job-instance-csv-product-model-export-edit-properties-label:
+        module: pim/job/common/edit/field/text
+        parent: pim-job-instance-csv-product-model-export-edit-properties
+        position: 110
+        targetZone: properties
+        config:
+            fieldCode: label
+            label: pim_enrich.form.job_instance.tab.properties.label.title
+            readOnly: false
+
+    pim-job-instance-csv-product-model-export-edit-properties-file-path:
+        module: pim/job/common/edit/field/text
+        parent: pim-job-instance-csv-product-model-export-edit-global
+        position: 120
+        targetZone: properties
+        config:
+            fieldCode: configuration.filePath
+            readOnly: false
+            label: pim_enrich.form.job_instance.tab.properties.file_path.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.file_path.help
+
+    pim-job-instance-csv-product-model-export-edit-properties-decimal-separator:
+        module: pim/job/common/edit/field/decimal-separator
+        parent: pim-job-instance-csv-product-model-export-edit-global
+        position: 130
+        targetZone: properties
+        config:
+            fieldCode: configuration.decimalSeparator
+            readOnly: false
+            label: pim_enrich.form.job_instance.tab.properties.decimal_separator.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.decimal_separator.help
+
+    pim-job-instance-csv-product-model-export-edit-properties-date-format:
+        module: pim/job/product/edit/field/date-format
+        parent: pim-job-instance-csv-product-model-export-edit-global
+        position: 140
+        targetZone: properties
+        config:
+            fieldCode: configuration.dateFormat
+            readOnly: false
+            label: pim_enrich.form.job_instance.tab.properties.date_format.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.date_format.help
+
+    pim-job-instance-csv-product-model-export-edit-properties-delimiter:
+        module: pim/job/common/edit/field/text
+        parent: pim-job-instance-csv-product-model-export-edit-global
+        position: 150
+        targetZone: properties
+        config:
+            fieldCode: configuration.delimiter
+            readOnly: false
+            label: pim_enrich.form.job_instance.tab.properties.delimiter.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.delimiter.help
+
+    pim-job-instance-csv-product-model-export-edit-properties-enclosure:
+        module: pim/job/common/edit/field/text
+        parent: pim-job-instance-csv-product-model-export-edit-global
+        position: 160
+        targetZone: properties
+        config:
+            fieldCode: configuration.enclosure
+            readOnly: false
+            label: pim_enrich.form.job_instance.tab.properties.enclosure.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.enclosure.help
+
+    pim-job-instance-csv-product-model-export-edit-properties-with-header:
+        module: pim/job/common/edit/field/switch
+        parent: pim-job-instance-csv-product-model-export-edit-global
+        position: 170
+        targetZone: properties
+        config:
+            fieldCode: configuration.withHeader
+            readOnly: false
+            label: pim_enrich.form.job_instance.tab.properties.with_header.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.with_header.help
+
+    pim-job-instance-csv-product-model-export-edit-properties-with-media:
+        module: pim/job/common/edit/field/switch
+        parent: pim-job-instance-csv-product-model-export-edit-global
+        position: 180
+        targetZone: properties
+        config:
+            fieldCode: configuration.with_media
+            readOnly: false
+            label: pim_enrich.form.job_instance.tab.properties.with_media.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.with_media.help
+
+    pim-job-instance-csv-product-model-export-edit-label:
+        module: pim/job/common/edit/label
+        parent: pim-job-instance-csv-product-model-export-edit
+        targetZone: title
+        position: 100
+
+    pim-job-instance-csv-product-model-export-edit-meta:
+        module: pim/job/common/edit/meta
+        parent: pim-job-instance-csv-product-model-export-edit
+        targetZone: meta
+        position: 100
+
+    pim-job-instance-csv-product-model-export-edit-secondary-actions:
+        module: pim/form/common/secondary-actions
+        parent: pim-job-instance-csv-product-model-export-edit
+        targetZone: buttons
+        position: 50
+
+    pim-job-instance-csv-product-model-export-edit-delete:
+        module: pim/job/export/edit/delete
+        parent: pim-job-instance-csv-product-model-export-edit-secondary-actions
+        targetZone: secondary-actions
+        aclResourceId: pim_importexport_export_profile_remove
+        position: 100
+        config:
+            trans:
+                title: confirmation.remove.export_profile
+                subTitle: pim_menu.item.export_profile
+                content: pim_enrich.confirmation.delete_item
+                success: flash.job_instance.removed
+                failed: error.removing.job_instance
+            redirect: pim_importexport_export_profile_index
+
+    pim-job-instance-csv-product-model-export-edit-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: pim-job-instance-csv-product-model-export-edit
+        targetZone: buttons
+        position: 120
+
+    pim-job-instance-csv-product-model-export-edit-save:
+        module: pim/job-instance-export-edit-form/save
+        parent: pim-job-instance-csv-product-model-export-edit
+        targetZone: buttons
+        position: 0
+        config:
+            redirectPath: pim_importexport_export_profile_show
+
+    pim-job-instance-csv-product-model-export-edit-state:
+        module: pim/form/common/state
+        parent: pim-job-instance-csv-product-model-export-edit
+        targetZone: state
+        position: 900
+        config:
+            entity: pim_enrich.entity.job_instance.title
+
+    pim-job-instance-csv-product-model-export-edit-validation:
+        module: pim/job/common/edit/validation
+        parent: pim-job-instance-csv-product-model-export-edit

@@ -6,8 +6,11 @@ pim_import_export:
   status:
     - Spreman
   download_archive:
+    archive: preuzimanje generirane arhive|preuzimanje generiranih arhiva
     output: preuzimanje generirane datoteke|preuzimanje generiranih datoteka
     input: preuzimanje datoteke za čitanje | preuzimanje datoteka za čitanje
+    invalid_xlsx: preuzmite podatke koji nisu valjani
+    invalid_csv: preuzmite podatke koji nisu valjani
   notification:
     export:
       error: Izvoz <strong>%label%</strong> nije uspio
@@ -24,13 +27,9 @@ pim_import_export:
       history.title: Povijest
       job_content.title: Sadržaj
 pim_title.export_profile.index: Upravljanje profilima izvoza
-pim_title.export_profile.edit: Izvoz profila %job.label% | Uredi
-pim_title.export_profile.show: Izvoz profila %job.label% | Prikaži
 pim_title.export_execution.index: Povijest izvođenja izvoza
 pim_title.export_execution.show: Izvoz izvođenja | Detalji
 pim_title.import_profile.index: Upravljanje profilima uvoza
-pim_title.import_profile.edit: Uvoz profila %job.label% | Uredi
-pim_title.import_profile.show: Uvoz profila %job.label% | Prikaži
 pim_title.import_execution.index: Povijest izvođenja uvoza
 pim_title.import_execution.show: Uvoz izvođenja | Detalji
 export profile:
@@ -129,5 +128,4 @@ Status: Status
 Summary: Sažetak
 Start: Početak
 End: Kraj
-set_attribute_requirements: Postavi zahtjeve za atribute
 warning.label: Upozorenje

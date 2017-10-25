@@ -1,12 +1,12 @@
 @import '../base/variables';
 
 .AknProgress {
-  height: @AknMicroButtonSize;
+  height: 20px;
   overflow: hidden;
   background-color: @AknMediumGrey;
   border-radius: 200px;
   width: 100%;
-  min-width: 50px;
+  min-width: 90px;
 
   &-bar {
     font-size: @AknDefaultFontSize;
@@ -17,6 +17,7 @@
     color: white;
     text-align: center;
     transition: width 0.6s ease;
+    border-radius: 100px;
   }
 
   &--apply &-bar {
@@ -25,6 +26,10 @@
 
   &--warning &-bar {
     background: @AknOrange;
+  }
+
+  &--info &-bar {
+    background: @AknBlue;
   }
 
   &--small {

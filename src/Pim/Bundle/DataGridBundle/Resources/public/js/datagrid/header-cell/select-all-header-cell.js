@@ -1,23 +1,34 @@
 /* global define */
-define(['jquery', 'underscore', 'backgrid', 'oro/datagrid/select-row-cell'],
-function ($, _, Backgrid, SelectRowCell) {
+
+/**
+ * Contains mass-selection logic
+ *  - watches models selection, keeps reference to selected
+ *  - provides mass-selection actions
+ *  - listening to models collection events,
+ *      fills in 'obj' with proper data for
+ *      `backgrid:isSelected` and `backgrid:getSelected`
+ *
+ * @export  oro/datagrid/select-all-header-cell
+ * @class   oro.datagrid.SelectAllHeaderCell
+ * @extends oro.datagrid.SelectRowCell
+ */
+define(
+    [
+        'jquery',
+        'underscore',
+        'backgrid',
+        'oro/datagrid/select-row-cell'
+    ], function (
+        $,
+        _,
+        Backgrid,
+        SelectRowCell
+    ) {
     "use strict";
 
-    /**
-     * Contains mass-selection logic
-     *  - watches models selection, keeps reference to selected
-     *  - provides mass-selection actions
-     *  - listening to models collection events,
-     *      fills in 'obj' with proper data for
-     *      `backgrid:isSelected` and `backgrid:getSelected`
-     *
-     * @export  oro/datagrid/select-all-header-cell
-     * @class   oro.datagrid.SelectAllHeaderCell
-     * @extends oro.datagrid.SelectRowCell
-     */
     return SelectRowCell.extend({
         /** @property */
-        className: "AknGrid-headerCell select-all-header-cell",
+        className: "AknGrid-headerCell AknGrid-headerCell--checkbox select-all-header-cell",
 
         /** @property */
         tagName: "th",

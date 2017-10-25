@@ -30,6 +30,7 @@ Feature: Edit a product
   Scenario: Successfully create, edit and save a product
     Given I am logged in as "Mary"
     And I am on the "sandal" product page
+    And I visit the "All" group
     And I fill in the following information:
       | Name | My Sandal |
     When I press the "Save" button
@@ -74,7 +75,7 @@ Feature: Edit a product
     And I am on the "sandal" product page
     And I switch the scope to "mobile"
     Then the product Description should be "My awesome description for mobile"
-    When I am on the products page
+    When I am on the products grid
     And I switch the scope to "E-commerce"
     When I am on the "sandal" product page
     Then the product Description should be "My awesome description for ecommerce"

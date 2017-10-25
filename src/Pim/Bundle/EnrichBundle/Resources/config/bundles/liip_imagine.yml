@@ -23,5 +23,11 @@ liip_imagine:
             quality:          95
             format:           png
             filters:
-                thumbnail:    { size: [120, 120], mode: inset }
+                thumbnail:    { size: [140, 140], mode: outbound }
+                strip:        ~
+        pdf_thumbnail:
+            quality:          95
+            format:           png
+            filters:
+                downscale: { max: [320, 240] }
                 strip:        ~

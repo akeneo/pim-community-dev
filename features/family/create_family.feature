@@ -7,7 +7,7 @@ Feature: Family creation
   Background:
     Given a "default" catalog configuration
     And I am logged in as "Peter"
-    And I am on the families page
+    And I am on the families grid
     And I create a new family
 
   Scenario: Successfully create a family

@@ -133,9 +133,6 @@ class Grid extends Index
         'akeneo-attribute-media-filter' => [
             'Pim\Behat\Decorator\Export\Filter\BaseDecorator',
             'Pim\Behat\Decorator\Export\Filter\MediaDecorator',
-        ],
-        'label_or_identifier' => [
-            'Pim\Behat\Decorator\Grid\Filter\SearchDecorator',
         ]
     ];
 
@@ -154,7 +151,7 @@ class Grid extends Index
                 'Filters'               => ['css' => '.filter-box, .filter-wrapper'],
                 'Grid toolbar'          => ['css' => '.AknGridToolbar'],
                 'Manage filters'        => ['css' => 'div.filter-list'],
-                'Configure columns'     => ['css' => '#configure-columns'],
+                'Configure columns'     => ['css' => '.configure-columns'],
                 'View selector'         => ['css' => '.grid-view-selector'],
                 'Views list'            => ['css' => '.ui-multiselect-menu.highlight-hover'],
                 'Select2 results'       => ['css' => '#select2-drop .select2-results'],
@@ -426,7 +423,6 @@ class Grid extends Index
     {
         return $this->spin(function () {
             $pagination = $this
-                ->getElement('Grid toolbar')
                 ->find('css', '.AknGridToolbar-label:contains("record")');
 
             if (null === $pagination) {
@@ -649,7 +645,10 @@ class Grid extends Index
             return $this->getElement('Body')->find('css', $this->elements['Filters']['css']);
         }, 'The filter box is not loaded');
 
-        $filter = $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
+        $filter = $this->spin(function () use ($filterName) {
+            return $this->getElement('Body')->find('css', sprintf('.filter-item[data-name="%s"]', $filterName));
+        }, sprintf('Could not find filter item %s', $filterName));
+
         if (null === $filter || !$filter->isVisible()) {
             $this->clickOnFilterToManage($filterName);
         }
@@ -684,6 +683,9 @@ class Grid extends Index
      */
     public function clickOnResetButton()
     {
+        // Temporary solution waiting for Category tree moving (PIM-6574)
+        $this->getSession()->executeScript('$(".AknDefault-mainContent").scrollLeft(1000)');
+
         $resetBtn = $this->spin(function () {
             return $this
                 ->getElement('Grid toolbar')
@@ -728,6 +730,7 @@ class Grid extends Index
 
             if (null !== $filterElement && $filterElement->isVisible()) {
                 $filterElement->click();
+                $manageFilters->find('css', '.close')->click();
 
                 return true;
             }
@@ -738,6 +741,7 @@ class Grid extends Index
 
             if (null !== $filterElement && $filterElement->isVisible()) {
                 $filterElement->click();
+                $manageFilters->find('css', '.close')->click();
 
                 return true;
             }
@@ -766,13 +770,12 @@ class Grid extends Index
 
         $this->spin(function () {
             $filterList = $this
-                ->getElement('Filters')
-                ->find('css', '#add-filter-button');
+                ->getElement('Body')
+                ->find('css', '.AknFilterBox-addFilterButton');
 
             if (null === $filterList) {
                 return false;
             }
-
             $filterList->click();
 
             return true;
@@ -816,7 +819,7 @@ class Grid extends Index
 
             $checkbox = $row->find('css', 'input[type="checkbox"]');
 
-            if (null === $checkbox || !$checkbox->isVisible()) {
+            if (null === $checkbox) {
                 return false;
             }
 
@@ -1013,9 +1016,18 @@ class Grid extends Index
      */
     public function selectAll()
     {
-        $selector = $this->getDropdownSelector();
-        $this->spin(function () use ($selector) {
-            $selector->find('css', '.AknSeveralActionsButton-mainAction')->click();
+        $button = $this->spin(function () {
+            return $this->find('css', '.AknSelectButton');
+        }, 'Can not find main select button');
+
+        if (!$button->hasClass('AknSelectButton--selected')) {
+            $this->spin(function () use ($button) {
+                return $button->isVisible();
+            }, 'Can not show select all button');
+            $button->click();
+        }
+
+        $this->spin(function () {
             foreach ($this->findAll('css', '.select-row-cell input') as $input) {
                 if (!$input->isChecked()) {
                     return false;
@@ -1050,7 +1062,7 @@ class Grid extends Index
     protected function getDropdownSelector()
     {
         return $this->spin(function () {
-            return $this->getElement('Grid')->find('css', '.AknSeveralActionsButton');
+            return $this->find('css', '.mass-actions .select-dropdown');
         }, 'Grid dropdown row selector not found');
     }
 
@@ -1068,14 +1080,14 @@ class Grid extends Index
                 return false;
             }
 
-            $dropdown = $selector->find('css', 'button.dropdown-toggle');
+            $dropdown = $selector->find('css', '.AknMassActions-dropdown');
             if (null === $dropdown) {
                 return false;
             }
 
             $dropdown->click();
 
-            $listItem = $dropdown->getParent()->find('css', sprintf('li:contains("%s") a', $item));
+            $listItem = $dropdown->getParent()->find('css', sprintf('.AknDropdown-menuLink:contains("%s")', $item));
             if (null === $listItem) {
                 return false;
             }
@@ -1117,7 +1129,7 @@ class Grid extends Index
      */
     protected function isLoadingMaskVisible()
     {
-        $loadingWrapper = $this->getElement('Grid container')->find('css', '#loading-wrapper');
+        $loadingWrapper = $this->getElement('Grid container')->find('css', '.loading-mask');
 
         return (null !== $loadingWrapper && $loadingWrapper->isVisible());
     }

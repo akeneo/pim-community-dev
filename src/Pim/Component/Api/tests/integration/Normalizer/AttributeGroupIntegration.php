@@ -18,6 +18,7 @@ class AttributeGroupIntegration extends AbstractNormalizerTestCase
                 'sku',
                 'a_date',
                 'a_file',
+                'an_image',
                 'a_price',
                 'a_price_without_decimal',
                 'a_ref_data_multi_select',

@@ -3,7 +3,10 @@
 namespace spec\Akeneo\Bundle\ElasticsearchBundle;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
+use Akeneo\Bundle\ElasticsearchBundle\Exception\IndexationException;
 use Akeneo\Bundle\ElasticsearchBundle\Exception\MissingIdentifierException;
+use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\IndexConfiguration;
+use Akeneo\Bundle\ElasticsearchBundle\IndexConfiguration\Loader;
 use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Elasticsearch\Client as NativeClient;
 use Elasticsearch\ClientBuilder;
@@ -18,9 +21,9 @@ class ClientSpec extends ObjectBehavior
         $this->shouldHaveType(Client::class);
     }
 
-    function let(NativeClient $client, ClientBuilder $clientBuilder)
+    function let(NativeClient $client, ClientBuilder $clientBuilder, Loader $indexConfigurationLoader)
     {
-        $this->beConstructedWith($clientBuilder, ['localhost:9200'], 'an_index_name');
+        $this->beConstructedWith($clientBuilder, $indexConfigurationLoader, ['localhost:9200'], 'an_index_name');
         $clientBuilder->setHosts(Argument::any())->willReturn($clientBuilder);
         $clientBuilder->build()->willReturn($client);
     }
@@ -35,9 +38,36 @@ class ClientSpec extends ObjectBehavior
                 'body'  => ['a key' => 'a value'],
                 'refresh' => 'wait_for',
             ]
-        )->shouldBeCalled();
+        )->willReturn(['errors' => false]);
 
         $this->index('an_index_type', 'identifier', ['a key' => 'a value'], Refresh::waitFor());
+    }
+
+    public function it_triggers_an_exception_during_the_indexation_of_a_document($client)
+    {
+        $client->index(Argument::any())->willThrow(\Exception::class);
+
+        $this->shouldThrow(IndexationException::class)->during(
+            'index',
+            ['an_index_type', 'identifier', ['a key' => 'a value'], Refresh::waitFor()]
+        );
+    }
+
+    public function it_triggers_an_exception_if_the_indexation_of_a_document_has_failed($client)
+    {
+        $client->index(['a document'])->willReturn(
+            [
+                'errors' => true,
+                'items' => [
+                    ['index' => ['error' => 'foo']]
+                ]
+            ]
+        );
+
+        $this->shouldThrow(IndexationException::class)->during(
+            'index',
+            ['an_index_type', 'identifier', ['a document'], Refresh::waitFor()]
+        );
     }
 
     public function it_gets_a_document($client)
@@ -53,7 +83,7 @@ class ClientSpec extends ObjectBehavior
         $this->get('an_index_type', 'identifier');
     }
 
-    public function it_indexes_documents($client)
+    public function it_searches_documents($client)
     {
         $client->search(
             [
@@ -113,17 +143,24 @@ class ClientSpec extends ObjectBehavior
         $this->deleteIndex();
     }
 
-    public function it_creates_an_index($client, IndicesNamespace $indices)
-    {
+    public function it_creates_an_index(
+        $client,
+        $indexConfigurationLoader,
+        IndexConfiguration $indexConfiguration,
+        IndicesNamespace $indices
+    ) {
+        $indexConfigurationLoader->load()->willReturn($indexConfiguration);
+        $indexConfiguration->buildAggregated()->willReturn(['index configuration']);
+
         $client->indices()->willReturn($indices);
         $indices->create(
             [
                 'index' => 'an_index_name',
-                'body' => ['index configuration']
+                'body'  => ['index configuration'],
             ]
         )->shouldBeCalled();
 
-        $this->createIndex(['index configuration']);
+        $this->createIndex();
     }
 
     function it_checks_if_an_index_exists($client, IndicesNamespace $indices)
@@ -162,7 +199,7 @@ class ClientSpec extends ObjectBehavior
                 ],
                 'refresh' => 'wait_for'
             ]
-        )->shouldBeCalled();
+        )->willReturn(['errors' => false]);;
 
         $documents = [
             ['identifier' => 'foo', 'name' => 'a name'],
@@ -170,6 +207,43 @@ class ClientSpec extends ObjectBehavior
         ];
 
         $this->bulkIndexes('an_index_type', $documents, 'identifier', Refresh::waitFor());
+    }
+
+    public function it_throws_an_exception_during_the_indexation_of_several_documents($client)
+    {
+        $client->bulk(Argument::any())->willThrow(\Exception::class);
+
+        $documents = [
+            ['identifier' => 'foo', 'name' => 'a name'],
+            ['identifier' => 'bar', 'name' => 'a name']
+        ];
+
+        $this->shouldThrow(IndexationException::class)->during(
+            'bulkIndexes',
+            ['an_index_type', $documents, 'identifier', Refresh::waitFor()]
+        );
+    }
+
+    public function it_triggers_an_exception_if_the_indexation_of_one_document_among_several_has_failed($client)
+    {
+        $client->bulk(Argument::any())->willReturn(
+            [
+                'errors' => true,
+                'items' => [
+                    ['index' => []],
+                    ['index' => ['error' => 'foo']]                ]
+            ]
+        );
+
+        $documents = [
+            ['identifier' => 'foo', 'name' => 'a name'],
+            ['identifier' => 'bar', 'name' => 'a name']
+        ];
+
+        $this->shouldThrow(IndexationException::class)->during(
+            'bulkIndexes',
+            ['an_index_type', $documents, 'identifier', Refresh::waitFor()]
+        );
     }
 
     function it_throws_an_exception_if_identifier_key_is_missing($client)

@@ -1,25 +1,16 @@
 @import '../base/variables';
 
 .AknAcl {
-  display: flex;
+  display: inline-flex;
   align-items: center;
 
   &-icon {
-    color: lighten(@AknGrey, 20%);
-    cursor: pointer;
-    width: 15px;
-    text-align: center;
-    transition: font-size 0.1s ease;
+    margin-right: 10px;
+  }
 
-    &--granted {
-      font-size: 125%; // Granted icon is smaller than circle
-      color: @AknGreen;
-    }
-
-    &--nonGranted {
-      font-size: 125%; // Non granted icon is smaller than circle
-      color: @AknRed;
-    }
+  &-item {
+    display: flex;
+    line-height: @AknTabHeight;
   }
 
   &--hide {

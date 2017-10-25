@@ -22,6 +22,7 @@ class GetAttributeGroupIntegration extends ApiTestCase
         "sku",
         "a_date",
         "a_file",
+        "an_image",
         "a_price",
         "a_price_without_decimal",
         "a_ref_data_multi_select",
@@ -70,6 +71,6 @@ JSON;
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalCatalogPath()]);
+        return $this->catalog->useTechnicalCatalog();
     }
 }

@@ -401,7 +401,7 @@ class CompletenessFilterIntegration extends AbstractProductQueryBuilderTestCase
 
     /**
      * @expectedException \Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException
-     * @expectedExceptionMessage Property "completeness" expects an array with the key "locales" as data.
+     * @expectedExceptionMessage Property "completeness" expects an array with the key "locales".
      */
     public function testErrorLocalesIsMissing()
     {

@@ -10,6 +10,14 @@ extensions:
             tab: pim-menu-settings
             item: pim-menu-settings-attribute
 
+    pim-attribute-edit-form-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-attribute-edit-form
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
     pim-attribute-edit-form-cache-invalidator:
         module: pim/cache-invalidator
         parent: pim-attribute-edit-form
@@ -36,6 +44,7 @@ extensions:
         config:
             trans:
                 title: confirmation.remove.attribute
+                subTitle: pim_menu.item.attribute
                 content: pim_enrich.confirmation.delete_item
                 success: flash.attribute.removed
                 fail: error.removing.attribute
@@ -120,7 +129,7 @@ extensions:
                 dropZone: content
 
     pim-attribute-edit-form-properties-common-code:
-        module: pim/attribute-edit-form/properties/text
+        module: pim/form/common/fields/text
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
         position: 90
@@ -192,7 +201,7 @@ extensions:
             fieldName: available_locales
 
     pim-attribute-edit-form-properties-common-usable-as-grid-filter:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/form/common/fields/boolean
         parent: pim-attribute-edit-form-properties-common
         targetZone: content
         position: 170
@@ -217,7 +226,7 @@ extensions:
             activeForTypes: [pim_catalog_multiselect, pim_catalog_simpleselect]
 
     pim-attribute-edit-form-choices-auto-sorting:
-        module: pim/attribute-edit-form/properties/boolean
+        module: pim/form/common/fields/boolean
         parent: pim-attribute-edit-form-choices
         targetZone: form-container
         position: 100

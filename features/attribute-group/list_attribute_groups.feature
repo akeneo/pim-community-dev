@@ -77,7 +77,7 @@ Feature: List attribute groups
     And I am on the "csv_footwear_attribute_group_import" import job page
     And I launch the import job
     And I wait for the "csv_footwear_attribute_group_import" job to finish
-    And I am on the families page
+    And I am on the families grid
     And I create a new family
     And I fill in the following information in the popin:
       | Code | big_family |
@@ -93,7 +93,7 @@ Feature: List attribute groups
     And I should see the text "There are unsaved changes"
     And I save the family
     And I should not see the text "There are unsaved changes"
-    And I am on the products page
+    And I am on the products grid
     And I create a new product
     And I fill in the following information in the popin:
       | SKU    | a_boot       |

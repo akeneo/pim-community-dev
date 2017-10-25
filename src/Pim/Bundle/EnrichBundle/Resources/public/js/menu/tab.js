@@ -14,6 +14,7 @@ define(
         'oro/translator',
         'pim/form',
         'pim/router',
+        'routing',
         'pim/template/menu/tab',
         'oro/mediator'
     ],
@@ -22,6 +23,7 @@ define(
         __,
         BaseForm,
         router,
+        Routing,
         template,
         mediator
     ) {
@@ -32,6 +34,7 @@ define(
             },
             active: false,
             items: [],
+            className: 'AknHeader-menuItemContainer',
 
             /**
              * {@inheritdoc}
@@ -60,9 +63,16 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.empty().append(this.template({
+                this.$el.empty();
+
+                if (!this.config.to && !this.hasChildren()) {
+                    return this;
+                }
+
+                this.$el.append(this.template({
                     active: this.active,
                     title: this.getLabel(),
+                    url: Routing.generateHash(this.getRoute(), this.getRouteParams()),
                     iconModifier: this.config.iconModifier
                 }));
 
@@ -75,8 +85,14 @@ define(
              * @param {Event} event
              */
             redirect: function (event) {
-                if ((!_.has(event, 'extension') || event.extension === this.code) && undefined !== this.getRoute()) {
-                    router.redirectToRoute(this.getRoute());
+                if (!_.has(event, 'extension')) {
+                    event.stopPropagation();
+                }
+
+                if (!(event.metaKey || event.ctrlKey) &&
+                    ((!_.has(event, 'extension') || event.extension === this.code) && undefined !== this.getRoute())
+                ) {
+                    router.redirectToRoute(this.getRoute(), this.getRouteParams());
                 }
             },
 
@@ -96,6 +112,19 @@ define(
                     return this.config.to;
                 } else {
                     return _.first(_.sortBy(this.items, 'position')).route;
+                }
+            },
+
+            /**
+             * Returns the route parameters.
+             *
+             * @returns {json}
+             */
+            getRouteParams: function () {
+                if (undefined !== this.config.to) {
+                    return this.config.routeParams !== 'undefined' ? this.config.routeParams : {};
+                } else {
+                    return _.first(_.sortBy(this.items, 'position')).routeParams;
                 }
             },
 
@@ -131,6 +160,15 @@ define(
                 if (event.target === this.code) {
                     this.items.push(event);
                 }
+            },
+
+            /**
+             * Does this tab have children elements
+             *
+             * @return {Boolean}
+             */
+            hasChildren: function () {
+                return 0 < this.items.length;
             }
         });
     });

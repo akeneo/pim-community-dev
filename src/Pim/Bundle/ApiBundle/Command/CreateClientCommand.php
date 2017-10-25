@@ -4,6 +4,7 @@ namespace Pim\Bundle\ApiBundle\Command;
 
 use OAuth2\OAuth2;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -40,10 +41,9 @@ class CreateClientCommand extends ContainerAwareCommand
                 'Sets allowed grant type for client.',
                 [OAuth2::GRANT_TYPE_USER_CREDENTIALS, OAuth2::GRANT_TYPE_REFRESH_TOKEN]
             )
-            ->addOption(
+            ->addArgument(
                 'label',
-                null,
-                InputOption::VALUE_REQUIRED,
+                InputArgument::REQUIRED,
                 'Sets a label to ease the administration of client ids.'
             )
         ;
@@ -59,10 +59,7 @@ class CreateClientCommand extends ContainerAwareCommand
 
         $client->setRedirectUris($input->getOption('redirect_uri'));
         $client->setAllowedGrantTypes($input->getOption('grant_type'));
-
-        if ($input->hasOption('label')) {
-            $client->setLabel($input->getOption('label'));
-        }
+        $client->setLabel($input->getArgument('label'));
 
         $clientManager->updateClient($client);
 

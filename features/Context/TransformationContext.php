@@ -3,6 +3,8 @@
 namespace Context;
 
 use Pim\Behat\Context\PimContext;
+use Pim\Component\Catalog\Model\GroupInterface;
+use Pim\Component\Catalog\Model\ProductModel;
 
 /**
  * Context for data transformations
@@ -23,6 +25,18 @@ class TransformationContext extends PimContext
     public function castProductSkuToProduct($sku)
     {
         return $this->getFixturesContext()->getProduct($sku);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @Transform /^product model "([^"]*)"$/
+     *
+     * @return ProductModel
+     */
+    public function castProductModelCodeToProductModel($code)
+    {
+        return $this->getFixturesContext()->getProductModel($code);
     }
 
     /**
@@ -77,7 +91,6 @@ class TransformationContext extends PimContext
      * @param string $code
      *
      * @Transform /^"([^"]*)" product group$/
-     * @Transform /^"([^"]*)" variant group$/
      *
      * @return GroupInterface
      */

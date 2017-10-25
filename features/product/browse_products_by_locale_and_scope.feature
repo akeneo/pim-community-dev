@@ -18,7 +18,7 @@ Feature: Browse products by locale and scope
       | sku    | family    | name-en_US | name-fr_FR | description-en_US-ecommerce | description-fr_FR-ecommerce | description-fr_FR-mobile | image-ecommerce | image-mobile |
       | postit | furniture | Post it    | Etiquette  | My ecommerce description    | Ma description ecommerce    | Ma description mobile    | large.jpeg      | small.jpeg   |
     And I am logged in as "Mary"
-    And I am on the products page
+    And I am on the products grid
 
   @skip
   Scenario: Successfully display english data on products page
@@ -63,16 +63,19 @@ Feature: Browse products by locale and scope
       | family        | [furniture]           |
 
   Scenario: Keep working local context through navigation
-    Given I should see the text "Master catalog"
+    Given I open the category tree
+    Then I should see the text "Master catalog"
     When I switch the locale to "fr_FR"
     And I am on the dashboard page
-    And I am on the products page
+    And I am on the products grid
+    And I open the category tree
     Then I should see the text "Catalog principal"
 
   Scenario: Keep working scope context through navigation
-    Given I filter by "scope" with operator "equals" and value "Mobile"
+    Given I open the category tree
+    And I switch the scope to "Mobile"
     And I am on the dashboard page
-    When I am on the products page
+    When I am on the products grid
     Then I should see the text "Mobile"
     When I refresh current page
     Then I should see the text "Mobile"

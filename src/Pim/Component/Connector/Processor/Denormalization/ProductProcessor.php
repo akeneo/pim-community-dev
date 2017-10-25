@@ -9,8 +9,11 @@ use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
-use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
+use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -29,7 +32,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ProductProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     /** @var ProductBuilderInterface */
-    protected $builder;
+    protected $productBuilder;
+
+    /** @var ProductBuilderInterface */
+    private $variantProductBuilder;
 
     /** @var ObjectUpdaterInterface */
     protected $updater;
@@ -40,32 +46,41 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /** @var ObjectDetacherInterface */
     protected $detacher;
 
-    /** @var ProductFilterInterface */
+    /** @var FilterInterface */
     protected $productFilter;
 
+    /** @var AttributeFilterInterface */
+    private $productAttributeFilter;
+
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository    product repository
-     * @param ProductBuilderInterface               $builder       product builder
-     * @param ObjectUpdaterInterface                $updater       product updater
-     * @param ValidatorInterface                    $validator     product validator
-     * @param ObjectDetacherInterface               $detacher      detacher to remove it from UOW when skip
-     * @param ProductFilterInterface                $productFilter product filter
+     * @param IdentifiableObjectRepositoryInterface $repository
+     * @param ProductBuilderInterface               $productBuilder
+     * @param ProductBuilderInterface               $variantProductBuilder
+     * @param ObjectUpdaterInterface                $updater
+     * @param ValidatorInterface                    $validator
+     * @param ObjectDetacherInterface               $detacher
+     * @param FilterInterface                       $productFilter
+     * @param AttributeFilterInterface              $productAttributeFilter
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        ProductBuilderInterface $builder,
+        ProductBuilderInterface $productBuilder,
+        ProductBuilderInterface $variantProductBuilder,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
-        ProductFilterInterface $productFilter
+        FilterInterface $productFilter,
+        AttributeFilterInterface $productAttributeFilter
     ) {
         parent::__construct($repository);
 
-        $this->builder = $builder;
+        $this->productBuilder = $productBuilder;
+        $this->variantProductBuilder = $variantProductBuilder;
         $this->updater = $updater;
         $this->validator = $validator;
         $this->detacher = $detacher;
         $this->productFilter = $productFilter;
+        $this->productAttributeFilter = $productAttributeFilter;
     }
 
     /**
@@ -84,10 +99,18 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             $this->skipItemWithMessage($item, 'The identifier must be filled');
         }
 
-        $familyCode = $this->getFamilyCode($item);
-        $filteredItem = $this->filterItemData($item);
+        $parent = $item['parent'] ?? '';
 
-        $product = $this->findOrCreateProduct($identifier, $familyCode);
+        try {
+            $item = $this->productAttributeFilter->filter($item);
+
+            $familyCode = $this->getFamilyCode($item);
+            $filteredItem = $this->filterItemData($item);
+
+            $product = $this->findOrCreateProduct($identifier, $familyCode, $parent);
+        } catch (AccessDeniedException $e) {
+            $this->skipItemWithMessage($item, $e->getMessage(), $e);
+        }
 
         if (false === $itemHasStatus && null !== $product->getId()) {
             unset($filteredItem['enabled']);
@@ -112,6 +135,9 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             $this->detachProduct($product);
             $message = sprintf('%s: %s', $exception->getPropertyName(), $exception->getMessage());
             $this->skipItemWithMessage($item, $message, $exception);
+        } catch (InvalidArgumentException | AccessDeniedException $exception) {
+            $this->detachProduct($product);
+            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
         $violations = $this->validateProduct($product);
@@ -148,11 +174,11 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /**
      * @param array $item
      *
-     * @return string|null
+     * @return string
      */
     protected function getFamilyCode(array $item)
     {
-        return isset($item['family']) ? $item['family'] : null;
+        return isset($item['family']) ? $item['family'] : '';
     }
 
     /**
@@ -177,14 +203,23 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     /**
      * @param string      $identifier
      * @param string|null $familyCode
+     * @param string      $parentCode
      *
      * @return ProductInterface
+     * @throws AccessDeniedException
      */
-    protected function findOrCreateProduct($identifier, $familyCode)
-    {
+    protected function findOrCreateProduct(
+        string $identifier,
+        ?string $familyCode,
+        string $parentCode
+    ): ProductInterface {
         $product = $this->repository->findOneByIdentifier($identifier);
-        if (!$product) {
-            $product = $this->builder->createProduct($identifier, $familyCode);
+        if (null === $product && '' !== $parentCode) {
+            $product = $this->variantProductBuilder->createProduct($identifier, $familyCode);
+        }
+
+        if (null === $product) {
+            $product = $this->productBuilder->createProduct($identifier, $familyCode);
         }
 
         return $product;

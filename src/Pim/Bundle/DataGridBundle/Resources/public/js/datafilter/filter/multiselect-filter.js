@@ -35,7 +35,7 @@ function(_, __, SelectFilter) {
                     '<% }); %>' +
                 '</select>' +
             '</div>' +
-            '<% if (canDisable) { %><a href="<%= nullLink %>" class="AknFilterBox-disableFilter disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>'
+            '<% if (canDisable) { %><a href="<%= nullLink %>" class="AknFilterBox-disableFilter AknIconButton AknIconButton--small AknIconButton--remove disable-filter"></a><% } %>'
         ),
 
         /**
@@ -65,9 +65,8 @@ function(_, __, SelectFilter) {
             this.setValue(this._formatRawValue(data));
 
             // update dropdown
-            var widget = this.$(this.containerSelector);
-            this.selectWidget.updateDropdownPosition(widget);
             this._setDropdownWidth();
+            this._updateCriteriaSelectorPosition();
         }
     });
 });

@@ -6,10 +6,16 @@ use Akeneo\Test\Integration\Configuration;
 use Pim\Component\Catalog\tests\integration\Normalizer\NormalizedProductCleaner;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @group ce
+ */
 class GetProductIntegration extends AbstractProductTestCase
 {
     public function testGetACompleteProduct()
     {
+        $products = $this->get('pim_catalog.repository.product')->findAll();
+        $this->get('pim_catalog.elasticsearch.indexer.product')->indexAll($products);
+
         $client = $this->createAuthenticatedClient();
 
         $client->request('GET', 'api/rest/v1/products/foo');
@@ -17,8 +23,8 @@ class GetProductIntegration extends AbstractProductTestCase
         $standardProduct = [
             'identifier'    => 'foo',
             'family'        => 'familyA',
+            'parent'        => null,
             'groups'        => ['groupA', 'groupB'],
-            'variant_group' => 'variantA',
             'categories'    => ['categoryA1', 'categoryB'],
             'enabled'       => true,
             'values'        => [
@@ -97,8 +103,8 @@ class GetProductIntegration extends AbstractProductTestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
+                            ['amount' => '56.53', 'currency' => 'EUR'],
                             ['amount' => '45.00', 'currency' => 'USD'],
-                            ['amount' => '56.53', 'currency' => 'EUR']
                         ],
                     ],
                 ],
@@ -107,8 +113,8 @@ class GetProductIntegration extends AbstractProductTestCase
                         'locale' => null,
                         'scope'  => null,
                         'data'   => [
+                            ['amount' => 56, 'currency' => 'EUR'],
                             ['amount' => -45, 'currency' => 'USD'],
-                            ['amount' => 56, 'currency' => 'EUR']
                         ],
                     ],
                 ],
@@ -236,7 +242,7 @@ class GetProductIntegration extends AbstractProductTestCase
      */
     protected function getConfiguration()
     {
-        return new Configuration([Configuration::getTechnicalSqlCatalogPath()]);
+        return $this->catalog->useTechnicalSqlCatalog();
     }
 
     /**
@@ -246,10 +252,6 @@ class GetProductIntegration extends AbstractProductTestCase
     private function assertResponse(Response $response, array $expected)
     {
         $result = json_decode($response->getContent(), true);
-
-        $result = $this->sanitizeMediaAttributeData($result);
-
-        $expected = $this->sanitizeMediaAttributeData($expected);
 
         NormalizedProductCleaner::clean($expected);
         NormalizedProductCleaner::clean($result);

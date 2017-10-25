@@ -1,5 +1,4 @@
 "oro_datagrid.no_data_hint %entityHint%": 没有 %entityHint% 存在。
-oro_datagrid.not_found_hint: 未找到任何结果。请试着改变您的搜索条件。
 oro_datagrid.label_add_filter: 管理过滤器
 oro_datagrid.label_loading_mask: 正在加载
 oro.grid.mass_action.selected_rows: 选定的行

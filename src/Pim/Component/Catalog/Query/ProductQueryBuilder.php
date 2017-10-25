@@ -127,8 +127,10 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         }
 
         if (null !== $attribute) {
+            $filterType = 'attribute';
             $filter = $this->filterRegistry->getAttributeFilter($attribute, $operator);
         } else {
+            $filterType = 'field';
             $filter = $this->filterRegistry->getFieldFilter($field, $operator);
         }
 
@@ -151,7 +153,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             'field'    => $field,
             'operator' => $operator,
             'value'    => $value,
-            'context'  => $context
+            'context'  => $context,
+            'type'     => $filterType
         ];
 
         return $this;
@@ -275,7 +278,11 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         array $context
     ) {
         $sorter->setQueryBuilder($this->getQueryBuilder());
-        $sorter->addAttributeSorter($attribute, $direction, $context['locale'], $context['scope']);
+
+        $localeCode = !$attribute->isLocalizable() && !$attribute->isLocaleSpecific() ? null : $context['locale'];
+        $scopeCode = !$attribute->isScopable() ? null : $context['scope'];
+
+        $sorter->addAttributeSorter($attribute, $direction, $localeCode, $scopeCode);
 
         return $this;
     }

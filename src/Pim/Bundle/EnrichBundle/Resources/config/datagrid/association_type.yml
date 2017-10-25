@@ -10,6 +10,7 @@ datagrid:
         columns:
             label:
                 label: Label
+                frontend_type: label
         properties:
             id: ~
             edit_link:
@@ -24,15 +25,17 @@ datagrid:
                     - code
         actions:
             edit:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:      navigate
                 label:     Edit
-                icon:      edit
                 link:      edit_link
                 rowAction: true
             delete:
+                launcherOptions:
+                    className: AknIconButton AknIconButton--small AknIconButton--trash
                 type:  delete
                 label: Delete
-                icon:  trash
                 link:  delete_link
         sorters:
             columns:

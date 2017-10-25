@@ -8,8 +8,10 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
+use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -34,7 +36,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
     /** @var ObjectDetacherInterface */
     protected $detacher;
 
-    /** @var ProductFilterInterface */
+    /** @var FilterInterface */
     protected $productAssocFilter;
 
     /** @var bool */
@@ -44,14 +46,14 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
      * @param IdentifiableObjectRepositoryInterface $repository         product repository
      * @param ObjectUpdaterInterface                $updater            product updater
      * @param ValidatorInterface                    $validator          validator of the object
-     * @param ProductFilterInterface                $productAssocFilter product association filter
+     * @param FilterInterface                       $productAssocFilter product association filter
      * @param ObjectDetacherInterface               $detacher           detacher to remove it from UOW when skip
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
-        ProductFilterInterface $productAssocFilter,
+        FilterInterface $productAssocFilter,
         ObjectDetacherInterface $detacher
     ) {
         parent::__construct($repository);
@@ -77,9 +79,8 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
             $this->skipItemWithMessage($item, 'The identifier must be filled');
         }
 
-        $product = $this->findProduct($item['identifier']);
-
-        if (!$product) {
+        $product = $this->findProduct($item['identifier'], $item);
+        if (null === $product) {
             $this->skipItemWithMessage($item, sprintf('No product with identifier "%s" has been found', $item['identifier']));
         }
 
@@ -103,7 +104,7 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
 
         try {
             $this->updateProduct($product, $item);
-        } catch (PropertyException $exception) {
+        } catch (PropertyException | InvalidArgumentException | AccessDeniedException $exception) {
             $this->detachProduct($product);
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
@@ -141,12 +142,17 @@ class ProductAssociationProcessor extends AbstractProcessor implements ItemProce
 
     /**
      * @param string $identifier
+     * @param array  $item
      *
-     * @return ProductInterface|null
+     * @return null|ProductInterface
      */
-    public function findProduct($identifier)
+    public function findProduct(string $identifier, array $item): ?ProductInterface
     {
-        return $this->repository->findOneByIdentifier($identifier);
+        try {
+            return $this->repository->findOneByIdentifier($identifier);
+        } catch (AccessDeniedException $e) {
+            $this->skipItemWithMessage($item, $e->getMessage(), $e);
+        }
     }
 
     /**

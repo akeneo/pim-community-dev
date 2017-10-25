@@ -1,0 +1,116 @@
+extensions:
+    pim-job-instance-xlsx-product-model-import-show:
+        module: pim/form/common/edit-form
+
+    pim-job-instance-xlsx-product-model-import-show-mainImage:
+        module: pim/form/common/main-image
+        parent: pim-job-instance-xlsx-product-model-import-show
+        targetZone: main-image
+        config:
+            path: bundles/pimui/images/illustration-import-xlsx.svg
+
+    pim-job-instance-xlsx-product-model-import-show-user-navigation:
+        module: pim/menu/user-navigation
+        parent: pim-job-instance-xlsx-product-model-import-show
+        targetZone: user-menu
+        config:
+            userAccount: pim_menu.user.user_account
+            logout: pim_menu.user.logout
+
+    pim-job-instance-xlsx-product-model-import-show-breadcrumbs:
+        module: pim/common/breadcrumbs
+        parent: pim-job-instance-xlsx-product-model-import-show
+        targetZone: breadcrumbs
+        config:
+            tab: pim-menu-imports
+
+    pim-job-instance-xlsx-product-model-import-show-switcher:
+        module: pim/job-instance/import/switcher
+        parent: pim-job-instance-xlsx-product-model-import-show
+        position: 0
+        targetZone: meta
+
+    pim-job-instance-xlsx-product-model-import-show-launch-switcher-item:
+        module: pim/job-instance/import/switcher-item
+        parent: pim-job-instance-xlsx-product-model-import-show
+        targetZone: content
+        aclResourceId: pim_importexport_import_profile_launch
+        position: 40
+        config:
+            label: pim_enrich.form.job_instance.button.import.launch
+
+    pim-job-instance-xlsx-product-model-import-show-file-path:
+        module: pim/job/common/file-path
+        parent: pim-job-instance-xlsx-product-model-import-show-launch-switcher-item
+        config:
+            label: pim_enrich.form.job_instance.file_path
+
+    pim-job-instance-xlsx-product-model-import-show-import-button:
+        module: pim/job/common/edit/launch
+        parent: pim-job-instance-xlsx-product-model-import-show-file-path
+        config:
+            label: pim_enrich.form.job_instance.button.import.launch
+            route: pim_enrich_job_instance_rest_import_launch
+            identifier:
+                path: code
+                name: code
+
+    pim-job-instance-xlsx-product-model-import-show-upload-switcher-item:
+        module: pim/job-instance/import/switcher-item
+        parent: pim-job-instance-xlsx-product-model-import-show
+        targetZone: content
+        aclResourceId: pim_importexport_import_profile_launch
+        position: 50
+        config:
+            label: pim_enrich.form.job_instance.button.import.upload_file
+
+    pim-job-instance-xlsx-product-model-import-show-upload:
+        module: pim/job/common/edit/upload
+        parent: pim-job-instance-xlsx-product-model-import-show-upload-switcher-item
+
+    pim-job-instance-xlsx-product-model-import-show-upload-button:
+        module: pim/job/common/edit/upload-launch
+        parent: pim-job-instance-xlsx-product-model-import-show-upload-switcher-item
+        position: 60
+        config:
+            label: pim_enrich.form.job_instance.button.import.upload
+            route: pim_enrich_job_instance_rest_import_launch
+            identifier:
+                path: code
+                name: code
+
+    pim-job-instance-xlsx-product-model-import-show-subsection:
+        module: pim/form/common/subsection
+        parent: pim-job-instance-xlsx-product-model-import-show
+        targetZone: content
+        config:
+            title: pim_enrich.form.job_instance.subsection.last_executions
+
+    pim-job-instance-xlsx-product-model-import-show-grid:
+        module: pim/job/common/grid
+        parent: pim-job-instance-xlsx-product-model-import-show-subsection
+        position: 1000
+        targetZone: content
+        config:
+            alias: last-import-executions-grid
+            metadata:
+                jobType: import
+
+    pim-job-instance-xlsx-product-model-import-show-label:
+        module: pim/job/common/edit/label
+        parent: pim-job-instance-xlsx-product-model-import-show
+        targetZone: title
+        position: 100
+
+    pim-job-instance-xlsx-product-model-import-show-edit:
+        module: pim/common/redirect
+        parent: pim-job-instance-xlsx-product-model-import-show
+        targetZone: buttons
+        position: 100
+        config:
+            label: pim_enrich.form.job_instance.button.edit.title
+            route: pim_importexport_import_profile_edit
+            buttonClass: AknButton AknButton--action
+            identifier:
+                path: code
+                name: code

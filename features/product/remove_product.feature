@@ -22,10 +22,10 @@ Feature: Remove a product
     And I am logged in as "Julia"
 
   Scenario: Successfully delete a product from the grid
-    Given I am on the products page
+    Given I am on the products grid
     Then I should see product boots
     When I click on the "Delete the product" action of the row which contains "boots"
-    Then I should see the text "Delete confirmation"
+    Then I should see the text "Confirm deletion"
     When I confirm the removal
     Then I should not see product boots
 

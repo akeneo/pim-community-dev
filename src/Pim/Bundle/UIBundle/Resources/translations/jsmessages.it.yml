@@ -7,10 +7,12 @@ Selected Rows: Righe selezionate
 "Yes, do it": "Sì, prosegui"
 "No": "No"
 "Ok, got it.": "Ok, capito."
-"Cancel": "Cancella"
+"Cancel": "Annulla"
 "Delete Confirmation": "Conferma cancellazione"
 "Edit": "Modifica"
 "Unexpected error occured. Please contact system administrator.": "Si è verificato un errore imprevisto. Contattare l'amministratore di sistema."
+"Yes, revoke": "Si, revoca"
+"Revoke Confirmation": "Revoca conferma"
 Now: Ora
 Prev: Precedente
 Next: Successivo
@@ -111,7 +113,7 @@ oro_config:
           title: Notifiche
           system_notification: Notifiche di nuove versioni
         loading_message:
-          title: Caricamento dei messaggi in corso
+          title: Messaggi per "caricamento in corso"
           label: Abilita i messaggi di caricamento
         loading_messages:
           label: Messaggi di caricamento disponibili
