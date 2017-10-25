@@ -5,6 +5,10 @@
 - PIM-6870: Fix asset creation.
 - PIM-6935: Fix proposal link to product on proposal grid
 
+## New jobs
+IMPORTANT: In order for your PIM to work properly, you will need to run the following commands to add the missing job profile accesses.
+- Add the permissions for the job instance `compute_completeness_of_products_family` (`bin/console pim:installer:grant-backend-processes-accesses --env=prod`)
+
 # 2.0.4 (2017-10-19)
 
 # 2.0.3 (2017-10-19)

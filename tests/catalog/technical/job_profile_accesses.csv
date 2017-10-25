@@ -24,3 +24,4 @@ add_tags_to_assets;IT support,Manager,Redactor
 csv_product_import;IT support,Manager,Redactor
 csv_product_export;IT support,Manager,Redactor
 compute_product_models_descendants;IT support,Manager,Redactor
+compute_completeness_of_products_family;IT support,Manager,Redactor

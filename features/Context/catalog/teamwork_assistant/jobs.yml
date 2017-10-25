@@ -163,3 +163,8 @@ jobs:
         alias:     compute_product_models_descendants
         label:     Compute product models descendants
         type:      compute_product_models_descendants
+    compute_completeness_of_products_family:
+        connector: internal
+        alias:     compute_completeness_of_products_family
+        label:     compute completeness of products family
+        type:      compute_completeness_of_products_family
