@@ -11,6 +11,7 @@
 
 - PIM-6773: Add the missing required attributes filter in the product model edit form
 - PIM-6806: Update product completenesses whenever the attribute requirements of a family are updated
+- PIM-6337: Create a product model from the UI
 
 ## BC breaks
 

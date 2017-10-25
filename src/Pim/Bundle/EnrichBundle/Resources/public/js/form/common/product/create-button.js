@@ -65,7 +65,9 @@ define(
              * @return {Object} choices
              */
             getAllowedChoices(choices) {
-                return _.filter(choices, choice => {
+                return Object.values(choices).filter(choice => {
+                    choice.title = __(choice.title);
+
                     return SecurityContext.isGranted(choice.aclResourceId);
                 });
             },

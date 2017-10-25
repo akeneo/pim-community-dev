@@ -235,6 +235,7 @@ pim_enrich:
             media:
                 upload: Drag and drop to upload or click here
             create_popin:
+                type: Product
                 title: Create
                 labels:
                     family: Choose a family
@@ -248,6 +249,7 @@ pim_enrich:
                 empty: Your selection is empty, please change your search criteria
         product_model:
             create_popin:
+                type: Product model
                 title: Create a product model
                 content: A product model gathers variant products and eases the enrichment of their common properties.
             info:
