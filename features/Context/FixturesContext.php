@@ -99,6 +99,12 @@ class FixturesContext extends BaseFixturesContext
             $data['enabled'] = ($data['enabled'] === 'yes');
         }
 
+        if (isset($data['parent'])) {
+            if (empty($data['parent'])) {
+                unset($data['parent']);
+            }
+        }
+
         foreach ($data as $key => $value) {
             $data[$key] = $this->replacePlaceholders($value);
         }

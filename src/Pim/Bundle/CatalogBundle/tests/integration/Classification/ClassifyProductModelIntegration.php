@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\tests\integration\Classification;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Bundle\CatalogBundle\tests\helper\EntityBuilder;
+use Pim\Bundle\CatalogBundle\tests\fixture\EntityBuilder;
 
 class ClassifyProductModelIntegration extends TestCase
 {
