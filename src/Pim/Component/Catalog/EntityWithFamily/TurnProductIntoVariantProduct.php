@@ -1,15 +1,26 @@
 <?php
 
-namespace Pim\Component\Catalog;
+namespace Pim\Component\Catalog\EntityWithFamily;
 
+use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Model\VariantProduct;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 
 class TurnProductIntoVariantProduct
 {
+    /** @var string */
+    private $variantProductClassName;
+
+    /**
+     * @param string $variantProductClassName
+     */
+    public function __construct(string $variantProductClassName)
+    {
+        $this->variantProductClassName = $variantProductClassName;
+    }
+
     /**
      * @param ProductInterface      $product
      * @param ProductModelInterface $parent
@@ -28,10 +39,15 @@ class TurnProductIntoVariantProduct
         $parentValues = $parent->getValues();
         $filteredValues = $product->getValues()->filter(
             function (ValueInterface $value) use ($parentValues) {
-                return !$parentValues->contains($value);
+                return !$parentValues->getByCodes(
+                    $value->getAttribute()->getCode(),
+                    $value->getScope(),
+                    $value->getLocale()
+                );
             }
         );
 
+        $variantProduct->setParent($parent);
         $variantProduct->setValues($filteredValues);
 
         return $variantProduct;
@@ -42,10 +58,10 @@ class TurnProductIntoVariantProduct
      *
      * @return VariantProductInterface
      */
-    private function createVariantProduct(ProductInterface $product)
+    private function createVariantProduct(ProductInterface $product): VariantProductInterface
     {
-        //TODO: inject the class
-        $variantProduct = new VariantProduct();
+        /** @var VariantProductInterface $variantProduct */
+        $variantProduct = new $this->variantProductClassName();
 
         $valueIdentifier = $product->getValues()->filter(
             function (ValueInterface $value) {

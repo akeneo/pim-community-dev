@@ -3,7 +3,8 @@
 namespace spec\Pim\Component\Catalog;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\AttributeTypes;
+use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\FamilyVariant\TurnProductIntoVariantProduct;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
@@ -11,9 +12,8 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantProduct;
 use Pim\Component\Catalog\Model\VariantProductInterface;
-use Pim\Component\Catalog\TurnProductIntoVariantProduct;
-use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class TurnProductIntoVariantProductSpec extends ObjectBehavior
@@ -27,6 +27,8 @@ class TurnProductIntoVariantProductSpec extends ObjectBehavior
         $familyVariant->getFamily()->willReturn($family);
         $familyVariant->getCommonAttributes()->willReturn([$description]);
         $familyVariant->getAxes()->willReturn([$color]);
+
+        $this->beConstructedWith(VariantProduct::class);
     }
 
     function it_is_initializable()

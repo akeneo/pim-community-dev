@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Component\Catalog\Model;
 
-use function foo\func;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
