@@ -23,8 +23,8 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_enrich.step.csv_product_model.quick_export'
                 - '@pim_enrich.step.csv_product.quick_export'
+                - '@pim_enrich.step.csv_product_model.quick_export'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_enrich.job.quick_export_type%' }
 
@@ -35,8 +35,8 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_enrich.step.csv_product_model.quick_export'
                 - '@pim_enrich.step.csv_product.quick_export'
+                - '@pim_enrich.step.csv_product_model.quick_export'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.csv%', type: '%pim_enrich.job.quick_export_type%' }
 
@@ -48,8 +48,8 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_enrich.step.xlsx_product_model.quick_export'
                 - '@pim_enrich.step.xlsx_product.quick_export'
+                - '@pim_enrich.step.xlsx_product_model.quick_export'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_enrich.job.quick_export_type%' }
 
@@ -60,8 +60,8 @@ services:
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
             -
-                - '@pim_enrich.step.xlsx_product_model.quick_export'
                 - '@pim_enrich.step.xlsx_product.quick_export'
+                - '@pim_enrich.step.xlsx_product_model.quick_export'
         tags:
             - { name: akeneo_batch.job, connector: '%pim_connector.connector_name.xlsx%', type: '%pim_enrich.job.quick_export_type%' }
 

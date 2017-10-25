@@ -28,7 +28,7 @@ Feature: Quick export products according to the product grid context
     When I go on the last executed job resume of "csv_product_grid_context_quick_export"
     Then I should see the text "COMPLETED"
     And the name of the exported file of "csv_product_grid_context_quick_export" should be "products_export_grid_context_en_US_tablet.csv"
-    And exported file of "csv_product_grid_context_quick_export" should contain:
+    And second exported file of "csv_product_grid_context_quick_export" should contain:
     """
     sku;color;description-en_US-tablet;family;groups;name-en_US;price-EUR;price-USD;size
     boots;black;Mob;boots;;Amazing boots;20;25;40
@@ -50,7 +50,7 @@ Feature: Quick export products according to the product grid context
     When I go on the last executed job resume of "xlsx_product_grid_context_quick_export"
     Then I should see the text "COMPLETED"
     And the name of the exported file of "xlsx_product_grid_context_quick_export" should be "products_export_grid_context_en_US_tablet.xlsx"
-    And exported xlsx file of "xlsx_product_grid_context_quick_export" should contain:
+    And exported xlsx file 2 of "xlsx_product_grid_context_quick_export" should contain:
       | sku      | color | description-en_US-tablet | family   | groups | name-en_US    | price-EUR | price-USD | size |
       | boots    | black | Mob                      | boots    |        | Amazing boots | 20        | 25        | 40   |
       | sneakers | white | ylette                   | sneakers |        | Sneakers      | 50        | 60        | 42   |
