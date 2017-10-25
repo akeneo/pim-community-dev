@@ -372,7 +372,7 @@ stage("Test") {
                     queue({
                         def scenariosEE = []
                         for (feature in features) {
-                            scenariosEE = (scenariosEE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then path=\$(dirname $feature) ;php ./bin/behat $feature --list-scenarios | echo \"\$path\$(cat -)\"; fi").tokenize('\n'))
+                            scenariosEE = (scenariosEE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
                         }
                         scenariosEE = scenariosEE.unique()   
                         def messagesEE = new net.sf.json.JSONArray()
@@ -414,13 +414,14 @@ stage("Test") {
                     queue({
                         def scenariosCE = []
                         for (feature in features) {
-                            scenariosCE = (scenariosCE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then path=\$(dirname $feature) ;php ./bin/behat $feature --list-scenarios | echo \"\$path\$(cat -)\"; fi").tokenize('\n'))
+                            scenariosCE = (scenariosCE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
                         }
                         scenariosCE = scenariosCE.unique()            
                         def messagesCE = new net.sf.json.JSONArray()
                         for (scenarioCE in scenariosCE) {
 
                             messagesCE.add([
+                                [container: "php", script: "cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sed -i '2 a umask(0000);' bin/behat"],
                                 [container: "php", script: "mkdir -p app/cache/tmp app/logs app/archive /tmp/pim/file_storage app/file_storage app/uploads app/build/logs/behat/"],
@@ -455,12 +456,13 @@ stage("Test") {
                     queue({
                         def scenariosEE = []
                         for (feature in features) {
-                            scenariosEE = (scenariosEE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then path=\$(dirname $feature) ;php ./bin/behat $feature --list-scenarios | echo \"\$path\$(cat -)\"; fi").tokenize('\n'))
+                            scenariosEE = (scenariosEE + sh (returnStdout: true, script: "cd /home/jenkins/pim && if [ -e $feature ]; then php ./bin/behat $feature --list-scenarios; fi").tokenize('\n'))
                         }
                         scenariosEE = scenariosEE.unique()   
                         def messagesEE = new net.sf.json.JSONArray()
                         for (scenarioEE in scenariosEE) {
                             messagesEE.add([
+                                [container: "php", script: "cp .ci/akeneo-behat.conf /etc/apache2/sites-available/000-default.conf"],
                                 [container: "php", script: "rm -rf /tmp/behat/screenshots/*"],
                                 [container: "php", script: "sed -i '2 a umask(0000);' bin/behat"],
                                 [container: "php", script: "mkdir -p app/cache/tmp app/logs app/archive /tmp/pim/file_storage app/file_storage app/uploads app/build/logs/behat/"],
