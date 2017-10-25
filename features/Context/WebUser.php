@@ -66,6 +66,30 @@ class WebUser extends PimContext
     /**
      * @param string $type
      *
+     * @Given /^I create a product$/
+     */
+    public function iCreateAProduct()
+    {
+        $this->iCreateANew('Product');
+
+        $this->getCurrentPage()->pressButton('Product');
+    }
+
+    /**
+     * @param string $type
+     *
+     * @Given /^I create a product model$/
+     */
+    public function iCreateAProductModel()
+    {
+        $this->iCreateANew('Product');
+
+        $this->getCurrentPage()->pressButton('Product model');
+    }
+
+    /**
+     * @param string $type
+     *
      * @return Then[]
      *
      * @Given /^I create a(?:n)? "([^"]*)" attribute$/
@@ -2549,6 +2573,18 @@ class WebUser extends PimContext
 
             return true;
         }, sprintf('Cannot change the product family to %s', $family));
+    }
+
+    /**
+     * @Then /^I clear the family of the product model$/
+     */
+    public function iClearTheFamilyOfTheProductModel()
+    {
+        $this->spin(function () {
+            $this->getCurrentPage()->clearFamily();
+
+            return true;
+        }, sprintf('Cannot clear the product model family'));
     }
 
     /**

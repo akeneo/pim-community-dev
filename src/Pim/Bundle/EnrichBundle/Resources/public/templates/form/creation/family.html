@@ -1,4 +1,11 @@
 <div class="AknFieldContainer" data-code="family">
+    <% if (fieldLabel) { %>
+        <div class="AknFieldContainer-header">
+            <label class="AknFieldContainer-label control-label required">
+                <%- fieldLabel %> <% if (required) { %><em><%- requiredLabel %></em><% } %>
+            </label>
+        </div>
+    <% } %>
     <div class="AknFieldContainer-inputContainer">
         <input type="hidden" class="select-field" value="<%- code %>" data-placeholder="<%- label %>" />
     </div>

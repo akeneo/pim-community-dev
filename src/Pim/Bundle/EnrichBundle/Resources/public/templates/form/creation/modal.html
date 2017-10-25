@@ -6,9 +6,14 @@
         <div class="AknFullPage-right">
             <div class="AknFullPage-subTitle"><%- subTitleLabel %></div>
             <div class="AknFullPage-title"><%- titleLabel %></div>
+            <% if (typeof contentLabel !== 'undefined') { %>
+                <div class="AknFullPage-description">
+                    <%- contentLabel %>
+                </div>
+            <% } %>
             <div data-drop-zone="fields">
                 <% if (null !== fields) { %>
-                <%= fields %>
+                    <%= fields %>
                 <% } %>
             </div>
         </div>

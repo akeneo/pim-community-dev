@@ -49,6 +49,7 @@ define(
                 this.$el.html(this.template({
                     titleLabel: __(this.config.labels.title),
                     subTitleLabel: __(this.config.labels.subTitle),
+                    contentLabel: __(this.config.labels.content),
                     picture: this.config.picture,
                     fields: null
                 }));
@@ -152,8 +153,12 @@ define(
                 const loadingMask = new LoadingMask();
                 this.$el.empty().append(loadingMask.render().$el.show());
 
-                const data = $.extend(this.getFormData(),
+                let data = $.extend(this.getFormData(),
                 this.config.defaultValues || {});
+
+                if (this.config.excludedProperties) {
+                    data = _.omit(data, this.config.excludedProperties)
+                }
 
                 return $.ajax({
                     url: Routing.generate(this.config.postUrl),

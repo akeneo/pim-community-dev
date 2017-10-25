@@ -708,6 +708,7 @@ config:
         pim/product-model-edit-form/save: pimenrich/js/product-model/form/save
         pim/product-model-edit-form/complete-variant-product: pimenrich/js/product-model/form/complete-variant-product
         pim/product-model-edit-form/history: pimenrich/js/product/form/history
+        pim/product-model/form/creation/variant: pimenrich/js/product-model/form/creation/variant
 
         oro/datagrid/navigate-product-and-product-model-action: pimenrich/js/datagrid/action/navigate-product-and-product-model-action
         oro/datagrid/edit-in-modal-action:                      pimenrich/js/datagrid/action/edit-in-modal-action
@@ -876,6 +877,7 @@ config:
         pim/form/common/creation/modal/client:               pimenrich/js/form/common/creation/modal/client
         pim/form/common/creation/type:                       pimenrich/js/form/common/creation/type
         pim/form/common/creation/job:                        pimenrich/js/form/common/creation/job
+        pim/form/common/product/create-button:               pimenrich/js/form/common/product/create-button
 
         pim/menu/menu:                                       pimenrich/js/menu/menu
         pim/menu/tab:                                        pimenrich/js/menu/tab
@@ -1063,6 +1065,8 @@ config:
         pim/template/product/field/text:                     pimenrich/templates/product/field/text.html
         pim/template/product/field/textarea:                 pimenrich/templates/product/field/textarea.html
         pim/template/product-create-error:                   pimenrich/templates/product/create-error.html
+        pim/template/product/create-button:                  pimenrich/templates/product/create-button.html
+        pim/template/product/create-modal-content:           pimenrich/templates/product/create-modal-content.html
         pim/template/product/add-select/attribute/line:      pimenrich/templates/product/form/add-select/attribute/line.html
         pim/template/product/form/product-completeness:      pimenrich/templates/product/form/product-completeness.html
         pim/template/product/form/variant-navigation/navigation: pimenrich/templates/product/form/variant-navigation/navigation.html
