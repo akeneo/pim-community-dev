@@ -93,7 +93,7 @@ class ProductModelDescendantsIndexer implements
         }
 
         foreach ($objects as $object) {
-            $this->index($object);
+            $this->index($object, $options);
         }
     }
 
@@ -142,24 +142,25 @@ class ProductModelDescendantsIndexer implements
      * (products or product models).
      *
      * @param Collection $productModelChildren
+     * @param array      $options
      */
-    private function indexProductModelChildren(Collection $productModelChildren) : void
+    private function indexProductModelChildren(Collection $productModelChildren, array $options = []) : void
     {
         if ($productModelChildren->isEmpty()) {
             return;
         }
 
         if ($productModelChildren->first() instanceof VariantProductInterface) {
-            $this->productIndexer->indexAll($productModelChildren->toArray());
+            $this->productIndexer->indexAll($productModelChildren->toArray(), $options);
 
             return;
         }
 
-        $this->productModelIndexer->indexAll($productModelChildren->toArray());
+        $this->productModelIndexer->indexAll($productModelChildren->toArray(), $options);
 
         foreach ($productModelChildren as $productModelChild) {
-            $this->indexProductModelChildren($productModelChild->getProductModels());
-            $this->indexProductModelChildren($productModelChild->getProducts());
+            $this->indexProductModelChildren($productModelChild->getProductModels(), $options);
+            $this->indexProductModelChildren($productModelChild->getProducts(), $options);
         }
     }
 

@@ -41,6 +41,16 @@ final class Refresh
      */
     public static function disabled()
     {
+        @trigger_error('The '.__FUNCTION__.' function is deprecated and will be removed in a future version.', E_USER_DEPRECATED);
+
+        return self::disable();
+    }
+
+    /**
+     * @return Refresh
+     */
+    public static function disable()
+    {
         return new self(Refresh::DISABLE);
     }
 
