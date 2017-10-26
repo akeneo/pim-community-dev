@@ -14,6 +14,7 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
+        'pim/i18n',
         'routing',
         'pim/user-context',
         'pim/fetcher-registry',
@@ -25,6 +26,7 @@ define(
         $,
         _,
         __,
+        i18n,
         Routing,
         UserContext,
         FetcherRegistry,
@@ -138,6 +140,11 @@ define(
                         const newFormMeta = Object.assign({}, formMeta);
                         newFormMeta.code += '-' + attribute.code;
                         newFormMeta.config.fieldName = attribute.code;
+                        newFormMeta.config.label = i18n.getLabel(
+                            attribute.labels,
+                            UserContext.get('uiLocale'),
+                            attribute.code
+                        );
 
                         return FormBuilder.buildForm(newFormMeta);
                     })
