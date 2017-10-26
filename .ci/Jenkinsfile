@@ -390,6 +390,7 @@ stage("Test") {
                                 [container: "php", script: "/usr/sbin/apache2ctl graceful"],
                                 [container: "php", script: "su docker -c './app/console -e=behat ca:c'"],
                                 [container: "php", script: "su docker -c './app/console --env=behat pim:install --force --clean'"],
+                                [container: "php", script: "su docker -c './app/console --env=behat oro:translation:dump en_GB'"],
                                 [container: "php", script: "su docker -c 'touch app/logs/behat.log'"],
                                 [
                                     container: "php",
@@ -468,10 +469,7 @@ stage("Test") {
                                 [container: "php", script: "/usr/sbin/apache2ctl graceful"],
                                 [container: "php", script: "su docker -c './app/console -e=behat ca:c'"],
                                 [container: "php", script: "su docker -c './app/console --env=behat pim:install --force --clean'"],
-                                [container: "php", script: "su docker -c './app/console --env=behat oro:translation:dump en_US'"],
                                 [container: "php", script: "su docker -c './app/console --env=behat oro:translation:dump en_GB'"],
-                                [container: "php", script: "su docker -c './app/console --env=behat oro:translation:dump fr_FR'"],
-                                [container: "php", script: "su docker -c './app/console --env=behat oro:translation:dump de_DE'"],
                                 [container: "php", script: "su docker -c 'touch app/logs/behat.log'"],
                                 [
                                     container: "php",
