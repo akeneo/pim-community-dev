@@ -9,3 +9,7 @@ pim_analytics_system_info_index:
 pim_analytics_system_info_download:
     path: /system_info/download
     defaults: { _controller: 'pim_analytics.controller.system_info:indexAction', _format: txt }
+
+pim_analytics_prometheus:
+    path: /analytics/prometheus
+    defaults: { _controller: PimAnalyticsBundle:Prometheus:index }

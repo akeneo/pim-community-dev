@@ -9,6 +9,10 @@
 
 - PIM-6773: Add the missing required attributes filter in the product model edit form
 
+## Tech improvements
+
+- GITHUB-7075: Add a prometheus exporter to the Analytics bundle
+
 ## BC breaks
 
 - Change the constructor of `Pim\Component\Catalog\Completeness\CompletenessCalculator`. Remove `Pim\Component\Catalog\Factory\ValueFactory` and both `Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface`. Add `Pim\Component\Catalog\EntityWithFamily\IncompleteValueCollectionFactory` and `Pim\Component\Catalog\EntityWithFamily\RequiredValueCollectionFactory`. 

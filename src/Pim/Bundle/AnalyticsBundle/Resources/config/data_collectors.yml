@@ -10,6 +10,8 @@ parameters:
     pim_analytics.data_collector.attribute.class:        Pim\Bundle\AnalyticsBundle\DataCollector\AttributeDataCollector
 
 services:
+    TweedeGolf\PrometheusClient\Storage\InMemoryAdapter: ~
+
     pim_analytics.data_collector.chained:
         class: '%pim_analytics.data_collector.chained.class%'
 

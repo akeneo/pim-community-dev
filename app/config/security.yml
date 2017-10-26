@@ -21,6 +21,10 @@ security:
             pattern:                        ^/(_(profiler|wdt)|css|images|js)/
             security:                       false
 
+        prometheus:
+            pattern:                        ^/analytics/prometheus$
+            anonymous:                      true
+
         install:
             pattern:                        ^/installer
             security:                       false
