@@ -173,7 +173,10 @@ class MassActionDispatcher
         }
 
         $repository = $datasource->getMassActionRepository();
-        $repository->applyMassActionParameters($qb, $inset, $values);
+        if (!empty($values) && !$inset) {
+            // Prevent adding a useless filter 'id NOT IN []'
+            $repository->applyMassActionParameters($qb, $inset, $values);
+        }
 
         return [
             'datagrid'   => $datagrid,
