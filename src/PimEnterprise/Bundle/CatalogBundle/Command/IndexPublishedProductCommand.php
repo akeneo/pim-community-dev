@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Bundle\CatalogBundle\Command;
 
+use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -69,7 +70,7 @@ class IndexPublishedProductCommand extends ContainerAwareCommand
                 )
             );
 
-            $publishedProductIndexer->indexAll($publishedProductRepository->findAllWithOffsetAndSize($offset, $pageSize));
+            $publishedProductIndexer->indexAll($publishedProductRepository->findAllWithOffsetAndSize($offset, $pageSize), ['index_refresh' => Refresh::disable()]);
         }
 
         $message = sprintf('<info>%d published products indexed</info>', $totalElements);
