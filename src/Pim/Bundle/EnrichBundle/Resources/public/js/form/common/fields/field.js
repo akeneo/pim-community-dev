@@ -110,7 +110,7 @@ define([
         getTemplateContext() {
             return $.Deferred()
                 .resolve({
-                    fieldLabel: __('pim_enrich.form.attribute.tab.properties.label.' + this.fieldName),
+                    fieldLabel: this.getLabel(),
                     requiredLabel: __('pim_enrich.form.required'),
                     fieldName: this.fieldName,
                     fieldId: this.getFieldId(),
@@ -133,6 +133,12 @@ define([
          * Called after rendering the input.
          */
         postRender() {},
+
+        getLabel() {
+            return undefined === this.config.label
+                ? '[' + this.fieldName + ']'
+                : __(this.config.label);
+        },
 
         /**
          * Should the field be displayed?

@@ -266,6 +266,8 @@ pim_enrich:
                 cancel: Cancel
                 confirm: Confirm
                 create_label: "Add a {{ axes }}"
+                fields:
+                    code: Code
         association_type:
             info:
                 deletion_successful: Association type successfully deleted.

@@ -143,8 +143,9 @@ define(
                     })
                     .then((field) => {
                         if ('pim_reference_data_simpleselect' === attribute.type) {
-                            return FetcherRegistry.getFetcher('reference-data-configuration').fetchAll().then(
-                                (config) => {
+                            return FetcherRegistry.getFetcher('reference-data-configuration')
+                                .fetchAll()
+                                .then((config) => {
                                     field.setChoiceUrl(
                                         Routing.generate(
                                             'pim_ui_ajaxentity_list',
@@ -158,8 +159,7 @@ define(
                                     );
 
                                     return field;
-                                }
-                            );
+                                });
                         }
 
                         if ('pim_catalog_metric' === attribute.type) {
