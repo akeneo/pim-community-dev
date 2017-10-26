@@ -5,6 +5,7 @@
 - GITHUB-7035: Change class alias for proper LocaleType form parent indication, cheers @mkilmanas!
 - PIM-6567: Fix attributes filter to not remove axes
 - API-411: Fix error 500 when product model has no values
+- API-408: Fix too many error messages
 - PIM-6933: Fix menu display in case of acl restriction
 - PIM-6922: Fix sort order on attribute groups
 - PIM-6923: Fix search on all grids when returning on it
