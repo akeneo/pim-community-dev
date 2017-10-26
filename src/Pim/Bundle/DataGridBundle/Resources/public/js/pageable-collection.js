@@ -170,8 +170,19 @@ function(_, Backbone, BackbonePageableCollection, app) {
                 prefix = this.inputName + '[_filter]'
             }
 
-            if (this.inputName && data[this.inputName]) {
+            if (this.inputName &&
+                !_.isUndefined(data[this.inputName]) &&
+                !_.isUndefined(data[this.inputName]._filter)
+            ) {
+                const scope = !_.isUndefined(data[this.inputName]._filter.scope) ?
+                    data[this.inputName]._filter.scope :
+                    null;
+
                 data[this.inputName]._filter = {};
+
+                if (null !== scope) {
+                    data[this.inputName]._filter.scope = scope
+                }
             }
             if (state.filters) {
                 _.extend(

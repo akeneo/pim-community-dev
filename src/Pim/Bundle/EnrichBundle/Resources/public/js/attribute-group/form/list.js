@@ -100,6 +100,8 @@ define([
                 }).then(function (attributeGroups) {
                     this.attributeGroups = attributeGroups;
 
+                    FetcherRegistry.getFetcher('attribute-group').clear();
+
                     this.render();
                 }.bind(this));
             },

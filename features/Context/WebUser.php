@@ -1106,6 +1106,17 @@ class WebUser extends PimContext
     }
 
     /**
+     * @param string $groups
+     *
+     * @Then /^the order of groups should be "([^"]*)"$/
+     */
+    public function orderOfGroupsShouldBe($groups)
+    {
+        $actualGroups = $this->getCurrentPage()->getGroups();
+        assertEquals($groups, implode($actualGroups, ', '));
+    }
+
+    /**
      * @param string $group
      *
      * @Then /^I should see available group "([^"]*)"$/
