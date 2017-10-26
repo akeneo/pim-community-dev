@@ -396,7 +396,7 @@ stage("Test") {
                                     container: "php",
                                     junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                                     artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                                    script: "su docker -c 'php ./bin/behat --strict -vv " + scenarioEE + "'"
+                                    script: "su docker -c 'php ./bin/behat --tags=\"~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce\"  --strict -vv " + scenarioEE + "'"
                                 ]
                             ])
                         }
@@ -437,7 +437,7 @@ stage("Test") {
                                     container: "php",
                                     junit: [in: "/home/jenkins/pim/app/build/logs/behat/", name: "*.xml"],
                                     artifacts: [in: "/tmp/behat/screenshots", name: "*.png"],
-                                    script: "php ./bin/behat --strict -vv " + scenarioCE
+                                    script: "php ./bin/behat --tags=\"~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce\"  --strict -vv " + scenarioCE
                                 ]
                             ])
                         }
