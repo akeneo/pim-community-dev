@@ -96,12 +96,6 @@ abstract class AbstractProductTestCase extends ApiTestCase
         }
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        $launcher = $this->getFromTestContainer('akeneo_integration_tests.launcher.job_launcher');
-
-        while ($launcher->hasJobInQueue()) {
-            $launcher->launchConsumerOnce();
-        }
-
         $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
 
         return $productModel;
