@@ -26,6 +26,8 @@ abstract class AbstractItemMediaWriter implements
     FlushableInterface,
     StepExecutionAwareInterface
 {
+    private const DEFAULT_FILE_PATH = 'filePath';
+
     /** @var ArrayConverterInterface */
     protected $arrayConverter;
 
@@ -78,7 +80,7 @@ abstract class AbstractItemMediaWriter implements
         AttributeRepositoryInterface $attributeRepository,
         FileExporterPathGeneratorInterface $fileExporterPath,
         array $mediaAttributeTypes,
-        $jobParamFilePath = 'filePath'
+        string $jobParamFilePath = self::DEFAULT_FILE_PATH
     ) {
         $this->arrayConverter = $arrayConverter;
         $this->bufferFactory = $bufferFactory;

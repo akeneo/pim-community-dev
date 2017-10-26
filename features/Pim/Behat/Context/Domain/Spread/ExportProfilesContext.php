@@ -2,7 +2,6 @@
 
 namespace Pim\Behat\Context\Domain\Spread;
 
-use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
@@ -27,14 +26,13 @@ class ExportProfilesContext extends ImportExportContext
      */
     public function exportedFileOfShouldContain($number, $code, PyStringNode $csv)
     {
+        $intNumber = null;
         if ('' !== $number) {
-            $number = 'first ' === $number ? 1 : 2;
-        } else {
-            $number = null;
+            $intNumber = 'first ' === $number ? 1 : 2;
         }
 
-        $lines = $this->spin(function () use ($code, $csv, $number) {
-            $path = $this->getExportedFile($code, $number);
+        $lines = $this->spin(function () use ($code, $csv, $intNumber) {
+            $path = $this->getExportedFile($code, $intNumber);
 
             $config = $this->getCsvJobConfiguration($code);
 

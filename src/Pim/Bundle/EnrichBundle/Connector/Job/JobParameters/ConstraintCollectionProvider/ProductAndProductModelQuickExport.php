@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
 use Akeneo\Component\Batch\Job\JobInterface;
@@ -23,7 +25,7 @@ class ProductAndProductModelQuickExport implements ConstraintCollectionProviderI
 
     /**
      * @param ConstraintCollectionProviderInterface $simple
-     * @param array                $supportedJobNames
+     * @param array                                 $supportedJobNames
      */
     public function __construct(ConstraintCollectionProviderInterface $simple, array $supportedJobNames)
     {

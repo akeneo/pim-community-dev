@@ -39,6 +39,12 @@ class FilteredProductModelReaderSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
     }
 
+    function it_set_step_execution(
+        $stepExecution
+    ) {
+        $this->setStepExecution($stepExecution)->shouldReturn(null);
+    }
+
     function it_reads_products_only_and_not_product_models(
         $pqbFactory,
         $channelRepository,
