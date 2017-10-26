@@ -137,7 +137,7 @@ define(
                 return FormBuilder
                     .getFormMeta(fieldModuleName)
                     .then((formMeta) => {
-                        const newFormMeta = Object.assign({}, formMeta);
+                        const newFormMeta = $.extend(true, {}, formMeta);
                         newFormMeta.code += '-' + attribute.code;
                         newFormMeta.config.fieldName = attribute.code;
                         newFormMeta.config.label = i18n.getLabel(
@@ -195,7 +195,7 @@ define(
                 return FormBuilder
                     .getFormMeta(this.config.codeFieldModule)
                     .then((formMeta) => {
-                        const newFormMeta = Object.assign({}, formMeta);
+                        const newFormMeta = $.extend(true, {}, formMeta);
                         newFormMeta.config.fieldName = 'code';
 
                         return FormBuilder.buildForm(newFormMeta);
