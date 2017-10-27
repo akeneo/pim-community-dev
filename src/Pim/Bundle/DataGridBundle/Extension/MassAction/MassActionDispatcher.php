@@ -173,8 +173,8 @@ class MassActionDispatcher
         }
 
         $repository = $datasource->getMassActionRepository();
-        if (!empty($values) && !$inset) {
-            // Prevent adding a useless filter 'id NOT IN []'
+        if (!empty($values)) {
+            // Prevent adding a useless filter 'id NOT IN []'. 'id IN []' is raised with LogicException above.
             $repository->applyMassActionParameters($qb, $inset, $values);
         }
 

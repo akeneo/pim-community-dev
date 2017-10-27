@@ -49,7 +49,7 @@ Feature: Quick export products according to the product grid context
       | success | Quick export XLSX product quick export grid context finished |
     When I go on the last executed job resume of "xlsx_product_grid_context_quick_export"
     Then I should see the text "COMPLETED"
-    And the names of the exported files of "xlsx_product_grid_context_quick_export" should be "products_export_grid_context_en_US_tablet.xlsx,product_models_export_grid_context_en_US_tablet.xlsx"
+    And the names of the exported files of "xlsx_product_grid_context_quick_export" should be "1_products_export_grid_context_en_US_tablet.xlsx,2_product_models_export_grid_context_en_US_tablet.xlsx"
     And exported xlsx file 1 of "xlsx_product_grid_context_quick_export" should contain:
       | sku      | color | description-en_US-tablet | family   | groups | name-en_US    | price-EUR | price-USD | size |
       | boots    | black | Mob                      | boots    |        | Amazing boots | 20        | 25        | 40   |
