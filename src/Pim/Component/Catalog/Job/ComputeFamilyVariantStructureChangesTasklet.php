@@ -11,9 +11,8 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
 use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
-use Pim\Component\Catalog\Model\FamilyVariantInterface;
+use Pim\Component\Catalog\Model\ProductModel;
 use Pim\Component\Catalog\Model\ProductModelInterface;
-use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Connector\Step\TaskletInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -23,7 +22,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ComputeVariantStructureChangesTasklet implements TaskletInterface
+class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
 {
     /** @var StepExecution */
     private $stepExecution;
@@ -100,55 +99,29 @@ class ComputeVariantStructureChangesTasklet implements TaskletInterface
         $familyVariants = $this->familyVariantRepository->findBy(['code' => $familyVariantCodes]);
 
         foreach ($familyVariants as $familyVariant) {
-            $attributeSets = $this->getSortedAttributeSetsByLevel($familyVariant);
+            $levelNumber = $familyVariant->getNumberOfLevel();
 
-            foreach ($attributeSets as $attributeSet) {
-                if ($attributeSet->getLevel() === $familyVariant->getNumberOfLevel()) {
-                    $entities = $this->variantProductRepository->findBy(['familyVariant' => $familyVariant]);
+            while ($levelNumber >= ProductModel::ROOT_VARIATION_LEVEL) {
+                if (ProductModel::ROOT_VARIATION_LEVEL === $levelNumber) {
+                    $entitiesWithFamilyVariant = $this->productModelRepository->findRootProductModels($familyVariant);
+                } else if ($levelNumber === $familyVariant->getNumberOfLevel()) {
+                    $entitiesWithFamilyVariant = $this->variantProductRepository->findBy([
+                        'familyVariant' => $familyVariant
+                    ]);
                 } else {
-                    $entities = $this->productModelRepository->findSubProductModels($familyVariant);
+                    $entitiesWithFamilyVariant = $this->productModelRepository->findSubProductModels($familyVariant);
                 }
 
-                $this->updateValues($entities);
+                $this->updateValuesOfEntities($entitiesWithFamilyVariant);
+                $levelNumber--;
             }
-
-            $entities = $this->productModelRepository->findRootProductModels($familyVariant);
-            $this->updateValues($entities);
         }
-    }
-
-    /**
-     * Get sorted attribute sets by level.
-     * It returns the attribute sets from low level to top level, so, level 2 first, then level 1...
-     *
-     * We need to sort to fetch variant product first, then sub product models, then root, in that order.
-     *
-     * @param FamilyVariantInterface $familyVariant
-     *
-     * @return array
-     */
-    private function getSortedAttributeSetsByLevel(FamilyVariantInterface $familyVariant): array
-    {
-        $attributeSets = $familyVariant->getVariantAttributeSets()->toArray();
-
-        usort($attributeSets, function (
-            VariantAttributeSetInterface $a,
-            VariantAttributeSetInterface $b
-        ) {
-            if ($a->getLevel() === $b->getLevel()) {
-                return 0;
-            }
-
-            return ($a->getLevel() > $b->getLevel()) ? -1 : 1;
-        });
-
-        return $attributeSets;
     }
 
     /**
      * @param EntityWithFamilyVariantInterface[] $entities
      */
-    private function updateValues(array $entities): void
+    private function updateValuesOfEntities(array $entities): void
     {
         $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant($entities);
 
