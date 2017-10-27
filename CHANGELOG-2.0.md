@@ -6,6 +6,7 @@
 - PIM-6567: Fix attributes filter to not remove axes
 - API-411: Fix error 500 when product model has no values
 - API-408: Fix too many error messages
+- API-407: Fix too many error messages when trying to create a product model that extends a product model with a parent
 - PIM-6933: Fix menu display in case of acl restriction
 - PIM-6922: Fix sort order on attribute groups
 - PIM-6923: Fix search on all grids when returning on it
@@ -20,6 +21,7 @@
 - PIM-6806: Update product completenesses whenever the attribute requirements of a family are updated
 - PIM-6492: search products with variants according to the completeness
 - PIM-6337: Create a product model from the UI
+- API-405: Update partially a list of product models
 
 ## BC breaks
 
@@ -43,7 +45,6 @@ IMPORTANT: In order for your PIM to work properly, you will need to run the foll
 - PIM-6898: Fixes some data can break ES index and crashes new products indexing
 - PIM-6918: Fix error when deleteing boolean attribute linked to a published product
 - PIM-5817: move datepicker above field instead of under
-- API-407: Fix too many error messages when trying to create a product model that extends a product model with a parent
 
 ## Better manage products with variants!
 
@@ -54,7 +55,6 @@ IMPORTANT: In order for your PIM to work properly, you will need to run the foll
 - PIM-6892: Forbids users to unselect categories of parent product models
 - PIM-6896: Remove the button restore displayed on product models
 - PIM-6891: Keep the tab context between product and product model forms
-- API-405: Update partially a list of product models
 
 ## Better UI\UX!
 
