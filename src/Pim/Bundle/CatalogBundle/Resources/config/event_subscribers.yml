@@ -124,7 +124,7 @@ services:
         class: '%pim_catalog.event_subscriber.compute_family_variant_structure_changes.class%'
         arguments:
             - '@security.token_storage'
-            - '@akeneo_batch_queue.launcher.simple_job_launcher'
+            - '@akeneo_batch_queue.launcher.queue_job_launcher'
             - '@akeneo_batch.job.job_instance_repository'
             - '%pim_catalog.compute_family_variant_structure_changes.job_name%'
         tags:
