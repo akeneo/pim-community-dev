@@ -13,7 +13,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
- * When a family variant is saved, when need to update all product models and variant products that belong
+ * When a family variant is saved, we need to update all product models and variant products that belong
  * to this family variant because the structure of the family variant could have changed.
  *
  * So we may need to remove values or move values from some level to another.

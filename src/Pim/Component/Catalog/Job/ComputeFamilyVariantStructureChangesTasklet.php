@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Catalog\Job;
 
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -8,7 +10,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\Catalog\EntityWithFamilyVariant\KeepOnlyValuesForVariation;
-use Pim\Component\Catalog\FamilyVariant\ApplyChangeFamilyVariantStructureOnDescendants;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
@@ -143,11 +145,14 @@ class ComputeVariantStructureChangesTasklet implements TaskletInterface
         return $attributeSets;
     }
 
+    /**
+     * @param EntityWithFamilyVariantInterface[] $entities
+     */
     private function updateValues(array $entities): void
     {
-        $updatedEntities = $this->keepOnlyValuesForVariation->updateValues($entities);
+        $this->keepOnlyValuesForVariation->updateEntitiesWithFamilyVariant($entities);
 
-        foreach ($updatedEntities as $entity) {
+        foreach ($entities as $entity) {
             $violations = $this->validator->validate($entity);
 
             if ($violations->count() === 0) {
@@ -155,6 +160,22 @@ class ComputeVariantStructureChangesTasklet implements TaskletInterface
                     $this->productModelSaver->save($entity);
                 } else {
                     $this->productSaver->save($entity);
+                }
+            } else {
+                if ($entity instanceof ProductModelInterface) {
+                    throw new \LogicException(
+                        sprintf(
+                            'Validation error for ProductModel with code "%s" during family variant structure change',
+                            $entity->getCode()
+                        )
+                    );
+                } else {
+                    throw new \LogicException(
+                        sprintf(
+                            'Validation error for Product with identifier "%s" during family variant structure change',
+                            $entity->getIdentifier()
+                        )
+                    );
                 }
             }
         }

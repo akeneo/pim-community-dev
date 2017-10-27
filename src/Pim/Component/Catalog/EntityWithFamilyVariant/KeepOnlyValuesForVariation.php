@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Catalog\EntityWithFamilyVariant;
 
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModel;
-use Pim\Component\Catalog\Model\ProductModelInterface;
 
 /**
+ * This service updates a collection of EntityWithFamilyVariantInterface to ensure their values
+ * are matching the family variant structure, meaning only the value they should have depending on their level.
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -13,13 +18,13 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 class KeepOnlyValuesForVariation
 {
     /**
-     * @param array $entities
+     * Update every EntityWithFamilyVariant values to only keep and set values allowed for their level.
      *
-     * @return array
+     * @param EntityWithFamilyVariantInterface[] $entitiesWithFamilyVariant
      */
-    public function updateValues(array $entities): array
+    public function updateEntitiesWithFamilyVariant(array $entitiesWithFamilyVariant): void
     {
-        foreach ($entities as $entity) {
+        foreach ($entitiesWithFamilyVariant as $entity) {
             $variationLevel = $entity->getVariationLevel();
 
             if (ProductModel::ROOT_VARIATION_LEVEL === $variationLevel) {
@@ -43,7 +48,5 @@ class KeepOnlyValuesForVariation
 
             $entity->setValues($entityValues);
         }
-
-        return $entities;
     }
 }

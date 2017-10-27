@@ -60,3 +60,8 @@ services:
 
     akeneo_integration_tests.catalog.configuration:
         synthetic: true
+
+    akeneo_integration_tests.launcher.job_launcher:
+        class: '%akeneo_integration_tests.launcher.job_launcher.class%'
+        arguments:
+            - '@kernel'
