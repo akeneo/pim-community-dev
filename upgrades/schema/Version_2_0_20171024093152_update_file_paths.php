@@ -51,7 +51,7 @@ class Version_2_0_20171024093152_update_file_paths extends AbstractMigration imp
         $migratedJobInstances = [];
         foreach ($jobInstances as $jobInstance) {
             $parameters = unserialize($jobInstance['raw_parameters']);
-            $parameters['filePathProduct'] = $parameters['filePath'];
+            $parameters['filePathProduct'] = $this->generateProductPath($parameters['filePath']);
             $parameters['filePathProductModel'] = $this->generateProductModelPath($parameters['filePath']);
             unset($parameters['filePath']);
             $jobInstance['raw_parameters'] = serialize($parameters);
@@ -91,23 +91,51 @@ class Version_2_0_20171024093152_update_file_paths extends AbstractMigration imp
      * If not, returns the name of the file with _product_models at the end of the file name.
      *
      * Ex:
-     * export_products.csv => export_product_models.csv
-     * custom_export.csv => custom_export_product_models.csv
+     * "/tmp/export_products.csv" => "/tmp/2_export_product_models.csv"
+     * "/tmp/custom_export.csv"   => "/tmp/2_custom_export_product_models.csv"
      *
-     * @param $filePath
+     * @param string $filePath
      *
      * @return string
      */
     private function generateProductModelPath($filePath)
     {
-        if (strpos($filePath, 'products') !== false) {
-            return preg_replace('/products/', 'product_models', $filePath, 1);
+        $fileParts = pathinfo($filePath);
+
+        if (strpos($fileParts['filename'], 'products') !== false) {
+            return sprintf(
+                '%s%s2_%s.%s',
+                $fileParts['dirname'],
+                DIRECTORY_SEPARATOR,
+                preg_replace('/products/', 'product_models', $fileParts['filename'], 1),
+                $fileParts['extension']
+            );
         }
 
+        return sprintf(
+            '%s%s2_%s_product_models.%s',
+            $fileParts['dirname'],
+            DIRECTORY_SEPARATOR,
+            $fileParts['filename'],
+            $fileParts['extension']
+        );
+    }
+
+    /**
+     * Returns the current filePath, preempted with '1_' in the filename.
+     *
+     * Ex: "/tmp/export_products.csv" => "/tmp/1_export_products.csv"
+     *
+     * @param string $filePath
+     *
+     * @return string
+     */
+    private function generateProductPath($filePath)
+    {
         $fileParts = pathinfo($filePath);
 
         return sprintf(
-            '%s%s%s_product_models.%s',
+            '%s%s1_%s.%s',
             $fileParts['dirname'],
             DIRECTORY_SEPARATOR,
             $fileParts['filename'],

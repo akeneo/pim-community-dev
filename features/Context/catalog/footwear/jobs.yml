@@ -311,8 +311,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePathProduct:      /tmp/products_export_%locale%_%scope%.csv
-            filePathProductModel: /tmp/product_models_export_%locale%_%scope%.csv
+            filePathProduct:      /tmp/1_products_export_%locale%_%scope%.csv
+            filePathProductModel: /tmp/2_product_models_export_%locale%_%scope%.csv
     xlsx_footwear_product_import_fr:
         connector: Akeneo XLSX Connector
         alias:     xlsx_product_import
@@ -420,8 +420,8 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePathProduct:      /tmp/products_export_%locale%_%scope%.xlsx
-            filePathProductModel: /tmp/product_models_export_%locale%_%scope%.xlsx
+            filePathProduct:      /tmp/1_products_export_%locale%_%scope%.xlsx
+            filePathProductModel: /tmp/2_product_models_export_%locale%_%scope%.xlsx
     xlsx_footwear_family_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_family_export
@@ -521,8 +521,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePathProduct:      /tmp/products_export_grid_context_%locale%_%scope%.csv
-            filePathProductModel: /tmp/product_models_export_grid_context_%locale%_%scope%.csv
+            filePathProduct:      /tmp/1_products_export_grid_context_%locale%_%scope%.csv
+            filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%.csv
     xlsx_product_grid_context_quick_export:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_grid_context_quick_export
@@ -531,8 +531,8 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePathProduct:      /tmp/products_export_grid_context_%locale%_%scope%.xlsx
-            filePathProductModel: /tmp/product_models_export_grid_context_%locale%_%scope%.xlsx
+            filePathProduct:      /tmp/1_products_export_grid_context_%locale%_%scope%.xlsx
+            filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%.xlsx
     compute_product_models_descendants:
         connector: internal
         alias:     compute_product_models_descendants
