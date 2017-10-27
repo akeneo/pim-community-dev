@@ -15,9 +15,9 @@ class ParentFilterIntegration extends AbstractProductAndProductModelQueryBuilder
 {
     public function testQueryParentInList()
     {
-        $entityBuilder = new EntityBuilder(static::$kernel->getContainer());
+        $entityBuilder = new EntityBuilder($this->testKernel->getContainer());
 
-        $bikerJacket = $this->get('pim_catalog.repository.product_model')->findOneByIdentifier('model-biker-jacket');
+        $bikerJacket = $this->getFromTestContainer('pim_catalog.repository.product_model')->findOneByIdentifier('model-biker-jacket');
         $entityBuilder->createVariantProduct(
             'product-biker-jacket',
             'clothing',
