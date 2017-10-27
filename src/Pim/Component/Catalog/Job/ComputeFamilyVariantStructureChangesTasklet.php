@@ -98,7 +98,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
             while ($levelNumber >= ProductModel::ROOT_VARIATION_LEVEL) {
                 if (ProductModel::ROOT_VARIATION_LEVEL === $levelNumber) {
                     $entitiesWithFamilyVariant = $this->productModelRepository->findRootProductModels($familyVariant);
-                } else if ($levelNumber === $familyVariant->getNumberOfLevel()) {
+                } elseif ($levelNumber === $familyVariant->getNumberOfLevel()) {
                     $entitiesWithFamilyVariant = $this->variantProductRepository->findBy([
                         'familyVariant' => $familyVariant
                     ]);
