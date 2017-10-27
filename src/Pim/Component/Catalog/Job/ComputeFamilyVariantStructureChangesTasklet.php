@@ -48,9 +48,6 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
     /** @var ValidatorInterface */
     private $validator;
 
-    /** @var ObjectDetacherInterface */
-    private $objectDetacher;
-
     /**
      * @param EntityRepository                               $familyVariantRepository
      * @param ObjectRepository                               $variantProductRepository
@@ -59,7 +56,6 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
      * @param SaverInterface                                 $productModelSaver
      * @param KeepOnlyValuesForVariation                     $keepOnlyValuesForVariation
      * @param ValidatorInterface                             $validator
-     * @param ObjectDetacherInterface                        $objectDetacher
      */
     public function __construct(
         EntityRepository $familyVariantRepository,
@@ -68,8 +64,7 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
         SaverInterface $productSaver,
         SaverInterface $productModelSaver,
         KeepOnlyValuesForVariation $keepOnlyValuesForVariation,
-        ValidatorInterface $validator,
-        ObjectDetacherInterface $objectDetacher
+        ValidatorInterface $validator
     ) {
         $this->familyVariantRepository = $familyVariantRepository;
         $this->variantProductRepository = $variantProductRepository;
@@ -78,7 +73,6 @@ class ComputeFamilyVariantStructureChangesTasklet implements TaskletInterface
         $this->productModelSaver = $productModelSaver;
         $this->keepOnlyValuesForVariation = $keepOnlyValuesForVariation;
         $this->validator = $validator;
-        $this->objectDetacher = $objectDetacher;
     }
 
     /**

@@ -93,7 +93,6 @@ services:
             - '@pim_catalog.saver.product_model'
             - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
             - '@validator'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
         public: false
 
     pim_catalog.step.compute_family_variant_structure_changes:
