@@ -50,7 +50,7 @@ batch_jobs:
     label: Esportazione prodotti in CSV
     export.label: Esportazione Prodotti
   csv_product_model_export:
-    label: Esportazione modello di prodotto in CSV
+    label: Esportazione modelli di prodotto in CSV
     export.label: Esportazione modello di prodotto
   csv_category_export:
     label: Esportazione categorie in CSV
@@ -71,15 +71,15 @@ batch_jobs:
     label: Esportazione famiglie in CSV
     export.label: Esportazione famiglie
   csv_family_variant_export:
-    label: Esportazione famiglia variante in CSV
-    export.label: Esportazione famiglia variante
+    label: Esportazione famiglie varianti in CSV
+    export.label: Esportazione famiglie varianti
   csv_product_import:
     label: Importazione prodotti in CSV
     validation.label: Validazione file
     import.label: Importazione prodotti
     import_associations.label: Importazione associazioni
   csv_product_model_import:
-    label: Importazione modello di prodotto in CSV
+    label: Importazione modelli di prodotto in CSV
     validation.label: Validazione file
     import_root_product_model.label: Importazione modello di prodotto radice
     import_sub_product_model.label: Importazione sotto-modelli di prodotto
@@ -200,7 +200,7 @@ batch_jobs:
     export.label: Esportazione famiglie
   xlsx_family_variant_export:
     label: Esportazione famiglia variante in XLSX
-    export.label: Esportazione famiglia variante
+    export.label: Esportazione famiglie varianti
   xlsx_category_export:
     label: Esportazione categorie in XLSX
     export.label: Esportazione categorie
