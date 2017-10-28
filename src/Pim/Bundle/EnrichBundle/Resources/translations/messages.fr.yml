@@ -155,6 +155,7 @@ pim_enrich:
       download: Télécharger le produit en PDF
       history: Afficher l'historique du produit
     product_model:
+      create: Créer un modèle de produit
       edit_attributes: Modifier les attributs du modèle de produit
       categories_view: Afficher les catégories d'un modèle de produit
       history: Afficher l'historique d'un modèle de produit

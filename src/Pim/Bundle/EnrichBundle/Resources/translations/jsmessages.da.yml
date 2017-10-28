@@ -151,7 +151,7 @@ pim_enrich:
       title: produkt
       locale: Landestandard
       category: Kategori
-      create: Opret produkt
+      create: Opret
       filters: Filtre
       common: Almindelig
       btn:
@@ -216,6 +216,7 @@ pim_enrich:
       media:
         upload: Træk og slip for at indlæse eller klik her
       create_popin:
+        type: Produkt
         title: Opret
         labels:
           family: Vælg familie
@@ -711,6 +712,7 @@ pim_enrich:
             validation_regexp: Regulære udtryk
             validation_rule: Valideringsregel
             wysiwyg_enabled: RTF-editoren aktiveret
+            family_variant: Variant
           default_label:
             default_metric_unit: Vælg enhed
             group: Vælg attributgruppe

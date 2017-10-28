@@ -136,6 +136,7 @@ pim_enrich:
       title: producte
       locale: Configuració Regional
       category: Categoria
+      create: Crear
       filters: Filtres
       btn:
         enabled: Habilitat
@@ -196,6 +197,7 @@ pim_enrich:
       media:
         upload: Arrossegueu-lo aquí per carregar o feu-hi clic
       create_popin:
+        type: Producte
         title: Crear
         labels:
           family: Trieu una família
@@ -589,6 +591,7 @@ pim_enrich:
             useable_as_grid_filter: Utilitzable en quadrícula
             validation_regexp: Expressió regular
             validation_rule: Regla de validació
+            family_variant: Variant
           default_label:
             default_metric_unit: Trieu una unitat
             group: Trieu el grup de l'atribut

@@ -148,7 +148,7 @@ pim_enrich:
       title: Produkt
       locale: Gebietsschema
       category: Kategorie
-      create: Produkt anlegen
+      create: Anlegen
       filters: Filter
       btn:
         enabled: Aktiviert
@@ -212,6 +212,7 @@ pim_enrich:
       media:
         upload: Upload per Drag & Drop oder hier klicken
       create_popin:
+        type: Produkt
         title: Anlegen
         labels:
           family: Wählen Sie eine Produktfamilie
@@ -701,6 +702,7 @@ pim_enrich:
             validation_regexp: Regulärer Ausdruck
             validation_rule: Validierungsregel
             wysiwyg_enabled: Rich-Text-Editor aktiviert
+            family_variant: Variante
           default_label:
             default_metric_unit: Wählen Sie eine Einheit
             group: Wählen Sie die Attributgruppe

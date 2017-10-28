@@ -136,6 +136,7 @@ pim_enrich:
       title: proizvod
       locale: Postavke jezika i regije
       category: Kategorija
+      create: Kreiraj
       filters: Filteri
       btn:
         enabled: Omogućeno
@@ -196,6 +197,7 @@ pim_enrich:
       media:
         upload: Povucite i ispustite za upload ili kliknite ovdje
       create_popin:
+        type: Proizvod
         title: Kreiraj
         labels:
           family: Odaberi obitelj
@@ -589,6 +591,7 @@ pim_enrich:
             useable_as_grid_filter: Može se koristiti u prikazu
             validation_regexp: Regularni izraz
             validation_rule: Pravilo provjere valjanosti
+            family_variant: Varijanta
           default_label:
             default_metric_unit: Odaberi jedinicu
             group: Odaberi grupu atributa

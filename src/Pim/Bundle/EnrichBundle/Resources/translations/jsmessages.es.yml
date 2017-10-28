@@ -144,7 +144,7 @@ pim_enrich:
       title: producto
       locale: Local
       category: Categoría
-      create: Crear un producto
+      create: Crear
       filters: Filtros
       common: Común
       btn:
@@ -208,6 +208,7 @@ pim_enrich:
       media:
         upload: Arrastrar y soltar para cargar o haga clic aquí
       create_popin:
+        type: Producto
         title: Crear
         labels:
           family: Elija una familia
@@ -640,6 +641,7 @@ pim_enrich:
             useable_as_grid_filter: Se puede usar en la grilla
             validation_regexp: Expresión regular
             validation_rule: Regla de validación
+            family_variant: Variante
           default_label:
             default_metric_unit: Elegir una unidad
             group: Elija el grupo de atributos

@@ -153,7 +153,8 @@ pim_enrich:
       title: produit
       locale: Locale
       category: Catégorie
-      create: Créer un produit
+      create: Créer
+      modalTitle: Sélectionnez une action
       filters: Filtres
       selected: résultats sélectionnés
       common: Commun
@@ -219,6 +220,7 @@ pim_enrich:
       media:
         upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
       create_popin:
+        type: Produit
         title: Créer
         labels:
           family: Choisir une famille
@@ -231,7 +233,12 @@ pim_enrich:
         item_limit: Seuls les 1000 premiers sont affichés dans cette modification séquentielle ({{ count }} sélectionnés)
         empty: Votre sélection est vide, veuillez modifier vos critères de recherche
     product_model:
+      create_popin:
+        type: Modèle de produit
+        title: Créer un modèle de produit
+        content: Un modèle de produit rassemble des variantes de produits pour faciliter l'enrichissement de leurs propriétés communes.
       info:
+        create_successful: Le modèle de produit a bien été créé
         update_successful: Le modèle de produit a été mis à jour. La complétude de ses produits variants va être recalculée.
         update_failed: Le modèle de produit n'a pas pu être mis à jour.
         field_not_ready: 'Le modèle de produit ne peut être sauvé dès maintenant. Les champs suivants ne sont pas prêts : {{ fields }}'
@@ -415,6 +422,7 @@ pim_enrich:
   form:
     required: (obligatoire)
     product_model:
+      choose_variant: Choisissez une variante
       complete_variant_product: produit variant
       complete_variant_products: produits variants
     product:
@@ -727,6 +735,7 @@ pim_enrich:
             validation_regexp: Expression régulière
             validation_rule: Règle de validation
             wysiwyg_enabled: Éditeur de texte enrichi activé
+            family_variant: Variante
           default_label:
             default_metric_unit: Choisir une unité
             group: Choisir le groupe d'attributs

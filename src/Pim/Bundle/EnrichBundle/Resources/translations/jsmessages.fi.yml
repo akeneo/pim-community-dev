@@ -136,6 +136,7 @@ pim_enrich:
       title: tuote
       locale: Lokaatio
       category: Kategoria
+      create: Luo
       filters: Suodattimet
       btn:
         enabled: Käytössä
@@ -196,6 +197,7 @@ pim_enrich:
       media:
         upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
       create_popin:
+        type: Tuote
         title: Luo
         labels:
           family: Valitse perhe
@@ -584,6 +586,7 @@ pim_enrich:
             useable_as_grid_filter: Käytettävissä ruudukossa
             validation_regexp: Tavallinen virke
             validation_rule: Kelpoisuussääntö
+            family_variant: Tuotevariaatio
           default_label:
             default_metric_unit: Valitse yksikkö
             group: Valitse attribuuttiryhmä
