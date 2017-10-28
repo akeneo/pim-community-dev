@@ -151,7 +151,7 @@ pim_enrich:
       title: prodotto
       locale: Impostazioni locali
       category: Categoria
-      create: Crea prodotto
+      create: Crea
       filters: Filtri
       common: In comune
       btn:
@@ -216,6 +216,7 @@ pim_enrich:
       media:
         upload: Rilascia i file qui dentro per caricarli oppure clicca qui
       create_popin:
+        type: Prodotto
         title: Crea
         labels:
           family: Scegli una famiglia
@@ -723,6 +724,7 @@ pim_enrich:
             validation_regexp: Espressione regolare
             validation_rule: Regola di convalida
             wysiwyg_enabled: Editor di testo RTF abilitato
+            family_variant: Variante
           default_label:
             default_metric_unit: Scegli un'unità
             group: Scegliere il gruppo attributi
