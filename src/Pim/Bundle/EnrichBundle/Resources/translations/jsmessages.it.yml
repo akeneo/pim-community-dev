@@ -148,7 +148,6 @@ pim_enrich:
     product:
       navigation: Navigazione prodotti
       infos: Info prodotto
-      index_title: "] -Inf, 1] {{ count }} prodotto|] 1, Inf [{{ count }} prodotti"
       title: prodotto
       locale: Impostazioni locali
       category: Categoria

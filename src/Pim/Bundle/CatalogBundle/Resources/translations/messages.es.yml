@@ -1,25 +1,3 @@
 No products to remove: No hay productos para eliminar
 "dot (.)": punto (.)
 "comma (,)": coma (,)
-pim_catalog:
-  constraint:
-    product_identifier: Estos identificadores "%s" no existen.
-    0: Se ha producido un error inesperado.
-    100: Valor no previsto
-    101: Este campo debe contener un valor booleano.
-    102: Este campo debe contener un valor de coma flotante.
-    103: Este campo debe contener un número entero.
-    104: Este campo debe contener un valor numérico.
-    105: Este campo debe contener un valor string.
-    106: Este campo debe contener un valor array.
-    107: Este campo debe contener un valor array de arrays.
-    200: Se ha producido un error interno
-    201: Se ha producido un error interno
-    202: Este campo debe contener un valor numérico.
-    203: Este campo debe contener un valor string.
-    204: Este campo debe contener un valor string.
-    205: Se ha producido un error interno
-    300: Este campo debe contener un código de entidad válido.
-    301: Este campo debe contener un objetivo y local válidos.
-    302: Este campo debe contener un objetivo válido.
-    303: Este campo debe contener un formato de asociación válido.
