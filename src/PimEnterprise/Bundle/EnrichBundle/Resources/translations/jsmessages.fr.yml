@@ -178,8 +178,8 @@ pimee_enrich:
         unpublish:
           label: Dépublier
           label_count: "{1}Dépublier <span class=\"AknFullPage-title--highlight\">1 produit</span>|] 1, Inf [Dépublier <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} produits</span>"
-          description: Les produits seront non publiés
-          warning: Les {{ itemsCount }} produits sélectionnés vont être non publiés.
+          description: Les produits seront dépubliés
+          warning: Les {{ itemsCount }} produits sélectionnés vont être dépubliés.
     asset:
       title: Ressources / Edition de masse ({{ itemsCount }} ressources)
       step:
