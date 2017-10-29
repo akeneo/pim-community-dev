@@ -4,7 +4,6 @@ namespace spec\Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\CategoryInterface;
@@ -14,10 +13,8 @@ use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModel;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\TimestampableInterface;
-use Pim\Component\Catalog\Model\ValueCollection;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Connector\ArrayConverter\FlatToStandard\Value;
 
 class ProductModelSpec extends ObjectBehavior
 {
@@ -260,12 +257,6 @@ class ProductModelSpec extends ObjectBehavior
         $this->setValues($values);
 
         $this->getImage()->shouldReturn(null);
-    }
-
-    function it_has_the_values_of_the_variation(ValueCollectionInterface $valueCollection)
-    {
-        $this->setValues($valueCollection);
-        $this->getValuesForVariation()->shouldReturn($valueCollection);
     }
 
     function it_has_values(

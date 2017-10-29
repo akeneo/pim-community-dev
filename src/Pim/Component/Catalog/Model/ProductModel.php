@@ -130,7 +130,26 @@ class ProductModel implements ProductModelInterface
      */
     public function getValuesForVariation(): ValueCollectionInterface
     {
-        return $this->values;
+        $variationLevel = $this->getVariationLevel();
+
+        if (ProductModel::ROOT_VARIATION_LEVEL === $variationLevel) {
+            $allowedAttributes = $this->getFamilyVariant()->getCommonAttributes()->toArray();
+        } else {
+            $attributeSet = $this->getFamilyVariant()->getVariantAttributeSet($variationLevel);
+            $allowedAttributes = array_merge(
+                $attributeSet->getAttributes()->toArray(),
+                $attributeSet->getAxes()->toArray()
+            );
+        }
+
+        $valuesForVariation = new ValueCollection();
+        foreach ($this->values as $value) {
+            if (in_array($value->getAttribute(), $allowedAttributes)) {
+                $valuesForVariation->add($value);
+            }
+        }
+
+        return $valuesForVariation;
     }
 
     /**
