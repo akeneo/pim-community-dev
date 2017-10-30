@@ -57,7 +57,7 @@ jobs:
             linesPerFile: 10000
             with_media: true
             filePathProduct:      /tmp/1_products_export_%locale%_%scope%_%datetime%.xlsx
-            filePathProductModel: /tmp/2_products_export_%locale%_%scope%_%datetime%.xlsx
+            filePathProductModel: /tmp/2_product_models_export_%locale%_%scope%_%datetime%.xlsx
     xlsx_product_grid_context_quick_export:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_grid_context_quick_export

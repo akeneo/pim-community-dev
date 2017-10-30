@@ -57,7 +57,7 @@ jobs:
             withHeader: true
             with_media: true
             filePathProduct:      /tmp/1_products_export_grid_context_%locale%_%scope%_%datetime%.csv
-            filePathProductModel: /tmp/2_product_modes_export_grid_context_%locale%_%scope%_%datetime%.csv
+            filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%_%datetime%.csv
     csv_published_product_quick_export:
         connector: Akeneo CSV Connector
         alias: csv_published_product_quick_export
