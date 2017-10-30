@@ -14,6 +14,10 @@
 
 IMPORTANT: In order to use the new quick exports, please execute `bin/console doctrine:migrations:migrate` to migrate your configurations.
 
+## Bug fixes
+
+- PIM-6914: Default UI locale for a new user is en_US but fix display of saved UI locale for user
+
 # 2.0.5 (2017-10-26)
 
 ## Bug fixes
