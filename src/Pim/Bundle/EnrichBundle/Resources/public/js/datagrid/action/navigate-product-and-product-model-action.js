@@ -12,17 +12,31 @@ define(
             /**
              * {@inheritdoc}
              */
-            getLink: function() {
-                return null;
+            initialize() {
+                this.useDirectLauncherLink = (null !== this.tab);
+
+                return NavigateAction.prototype.initialize.apply(this, arguments);
             },
 
             /**
              * {@inheritdoc}
              */
-            execute: function() {
-                var productType = this.model.get('document_type');
+            getLink() {
+                const productType = this.model.get('document_type');
+                const id = this.model.get('technical_id');
 
-                Router.redirectToRoute('pim_enrich_' + productType + '_edit', {id: this.model.get('technical_id')});
+                return Routing.generate('pim_enrich_' + productType + '_edit', { id });
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            run() {
+                if (null !== this.tab) {
+                    sessionStorage.setItem('redirectTab', `#${this.tab}`);
+                }
+
+                return NavigateAction.prototype.run.apply(this, arguments);
             }
         });
     }

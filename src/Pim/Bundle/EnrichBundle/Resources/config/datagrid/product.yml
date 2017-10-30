@@ -51,12 +51,6 @@ datagrid:
                 data_name:     search_id
             document_type: ~
             technical_id: ~
-            edit_link:
-                type: url
-                route: pim_enrich_product_edit
-                params:
-                    - id
-                    - dataLocale
             delete_link:
                 type: url
                 route: pim_enrich_product_rest_remove
@@ -76,21 +70,19 @@ datagrid:
             edit_attributes:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--edit
-                type:      tab-redirect
+                type:      navigate-product-and-product-model
                 label:     Edit attributes of the product
                 tab:       pim-product-edit-form-attributes
-                link:      edit_link
             edit_categories:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--folder
-                type:  tab-redirect
+                type:  navigate-product-and-product-model
                 label: Classify the product
                 tab:   pim-product-edit-form-categories
-                link:  edit_link
             delete:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
-                type:  delete
+                type:  delete-product
                 label: Delete the product
                 link:  delete_link
                 acl_resource: pim_enrich_product_remove
