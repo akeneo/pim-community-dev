@@ -80,6 +80,9 @@ class ProductController
     /** @var NormalizerInterface */
     protected $constraintViolationNormalizer;
 
+    /** @var ProductBuilderInterface */
+    protected $variantProductBuilder;
+
     /**
      * @param ProductRepositoryInterface   $productRepository
      * @param AttributeRepositoryInterface $attributeRepository
@@ -96,6 +99,7 @@ class ProductController
      * @param FilterInterface              $emptyValuesFilter
      * @param ConverterInterface           $productValueConverter
      * @param NormalizerInterface          $constraintViolationNormalizer
+     * @param ProductBuilderInterface      $variantProductBuilder
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -112,7 +116,8 @@ class ProductController
         AttributeConverterInterface $localizedConverter,
         FilterInterface $emptyValuesFilter,
         ConverterInterface $productValueConverter,
-        NormalizerInterface $constraintViolationNormalizer
+        NormalizerInterface $constraintViolationNormalizer,
+        ProductBuilderInterface $variantProductBuilder
     ) {
         $this->productRepository = $productRepository;
         $this->attributeRepository = $attributeRepository;
@@ -129,6 +134,7 @@ class ProductController
         $this->emptyValuesFilter = $emptyValuesFilter;
         $this->productValueConverter = $productValueConverter;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
+        $this->variantProductBuilder = $variantProductBuilder;
     }
 
     /**
@@ -165,10 +171,20 @@ class ProductController
     {
         $data = json_decode($request->getContent(), true);
 
-        $product = $this->productBuilder->createProduct(
-            $data['identifier'] ?? null,
-            $data['family'] ?? null
-        );
+        if (isset($data['parent'])) {
+            $product = $this->variantProductBuilder->createProduct(
+                $data['identifier'] ?? null,
+                $data['family'] ?? null
+
+            );
+        } else {
+            $product = $this->productBuilder->createProduct(
+                $data['identifier'] ?? null,
+                $data['family'] ?? null
+            );
+        }
+
+        $this->updateProduct($product, $data);
 
         $violations = $this->validator->validate($product);
 

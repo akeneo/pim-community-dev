@@ -207,7 +207,6 @@ define(
                     {
                         parent: parent,
                         family: this.getFormData().family,
-                        family_variant: this.getFormData().family_variant,
                         values: {}
                     }
                 );

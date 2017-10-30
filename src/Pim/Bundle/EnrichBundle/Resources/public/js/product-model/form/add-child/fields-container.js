@@ -49,50 +49,60 @@ define(
              * {@inheritdoc}
              */
             render() {
-                const familyVariantCode = this.getFormData().family_variant;
                 const parentCode = this.getFormData().parent;
 
                 this.$el.html(this.template());
 
-                $.when(
-                    FetcherRegistry.getFetcher('family-variant').fetch(familyVariantCode),
-                    FetcherRegistry.getFetcher('product-model-by-code').fetch(parentCode),
-                    FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
-                ).then((familyVariant, parent, identifier) => {
-                    const currentLevel = parent.meta.level + 1;
-                    const numberOfLevels = familyVariant.variant_attribute_sets.length;
+                FetcherRegistry
+                    .getFetcher('product-model-by-code')
+                    .fetch(parentCode)
+                    .then((parent) => {
+                        FetcherRegistry
+                            .getFetcher('family-variant')
+                            .fetch(parent.family_variant)
+                            .then((familyVariant) => {
+                                const currentLevel = parent.meta.level + 1;
+                                const isVariantProduct = currentLevel === familyVariant.variant_attribute_sets.length;
 
-                    this.getAxesAttributes(familyVariant, currentLevel)
-                        .then((axesAttributes) => {
-                            return $.when.apply($, axesAttributes.map(
-                                (attribute) => this.createAttributeField(attribute)
-                            ));
-                        })
-                        .then((...fields) => {
-                            if (currentLevel === numberOfLevels) {
-                                return this.createAttributeField(identifier).then(
-                                    (identifierField) => fields.concat(identifierField)
-                                );
-                            }
+                                this.getAxesAttributes(familyVariant, currentLevel)
+                                    .then((axesAttributes) => {
+                                        return $.when.apply($, axesAttributes.map(
+                                            (attribute) => this.createAttributeField(attribute)
+                                        ));
+                                    })
+                                    .then((...fields) => {
+                                        if (isVariantProduct) {
+                                            return FetcherRegistry
+                                                .getFetcher('attribute')
+                                                .getIdentifierAttribute()
+                                                .then((identifier) => {
+                                                    return this.createAttributeField(identifier).then(
+                                                        (identifierField) => fields.concat(identifierField)
+                                                    );
+                                                });
+                                        }
 
-                            return this.createProductModelCodeField().then(
-                                (codeField) => fields.concat(codeField)
-                            );
-                        })
-                        .then((fields) => {
-                            let position = 100;
-                            fields.forEach((field) => {
-                                this.addExtension(
-                                    field.code,
-                                    field,
-                                    'content',
-                                    position++
-                                );
+                                        this.setData({family_variant: familyVariant.code});
+
+                                        return this.createProductModelCodeField().then(
+                                            (codeField) => fields.concat(codeField)
+                                        );
+                                    })
+                                    .then((fields) => {
+                                        let position = 100;
+                                        fields.forEach((field) => {
+                                            this.addExtension(
+                                                field.code,
+                                                field,
+                                                'content',
+                                                position++
+                                            );
+                                        });
+
+                                        this.renderExtensions();
+                                    });
                             });
-
-                            this.renderExtensions();
                         });
-                });
             },
 
             /**
