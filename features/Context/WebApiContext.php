@@ -2,10 +2,14 @@
 
 namespace Context;
 
+use Behat\Behat\Context\BehatContext;
 use Behat\Behat\Context\Step;
-use Behat\CommonContexts\WebApiContext as BehatWebApiContext;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Buzz\Browser;
 use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
+
+require_once 'vendor/phpunit/phpunit/src/Framework/Assert/Functions.php';
 
 /**
  * Provides custom web API methods
@@ -14,17 +18,38 @@ use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WebApiContext extends BehatWebApiContext
+class WebApiContext extends BehatContext
 {
+    /** @var array */
+    private $placeHolders = [];
+
+    /** @var Browser */
+    private $browser;
+
+    /** @var string */
+    private $baseUrl;
+
+    /** @var array */
+    private $headers = [];
+
+    /** @var string */
     protected $url;
 
     /**
-     * {@inheritdoc}
+     * @param string  $baseUrl
+     * @param Browser $browser
      */
     public function __construct($baseUrl, Browser $browser = null)
     {
-        parent::__construct($baseUrl, $browser);
         $this->url = rtrim($baseUrl, '/');
+
+        $this->baseUrl = rtrim($baseUrl, '/');
+
+        if (null === $browser) {
+            $this->browser = new Browser();
+        } else {
+            $this->browser = $browser;
+        }
     }
 
     /**
@@ -82,6 +107,97 @@ class WebApiContext extends BehatWebApiContext
     }
 
     /**
+     * Checks that response has specific status code.
+     *
+     * @param string $code status code
+     *
+     * @Then /^(?:the )?response code should be (\d+)$/
+     */
+    public function theResponseCodeShouldBe($code)
+    {
+        \PHPUnit_Framework_Assert::assertSame(intval($code), $this->browser->getLastResponse()->getStatusCode());
+    }
+
+    /**
+     * Sends HTTP request to specific relative URL.
+     *
+     * @param string $method request method
+     * @param string $url    relative url
+     *
+     * @When /^(?:I )?send a ([A-Z]+) request to "([^"]+)"$/
+     */
+    public function iSendARequest($method, $url)
+    {
+        $url = $this->baseUrl.'/'.ltrim($this->replacePlaceHolder($url), '/');
+
+        $this->browser->call($url, $method, $this->getHeaders());
+    }
+
+    /**
+     * Checks that response body contains JSON from PyString.
+     *
+     * @param PyStringNode $jsonString
+     *
+     * @Then /^(?:the )?response should contain json:$/
+     */
+    public function theResponseShouldContainJson(PyStringNode $jsonString)
+    {
+        $etalon = json_decode($this->replacePlaceHolder($jsonString->getRaw()), true);
+        $actual = json_decode($this->browser->getLastResponse()->getContent(), true);
+
+        if (null === $etalon) {
+            throw new \RuntimeException(
+                "Can not convert etalon to json:\n".$this->replacePlaceHolder($jsonString->getRaw())
+            );
+        }
+
+        assertCount(count($etalon), $actual);
+        foreach ($actual as $key => $needle) {
+            assertArrayHasKey($key, $etalon);
+            assertEquals($etalon[$key], $actual[$key]);
+        }
+    }
+
+    /**
+     * Sets place holder for replacement.
+     *
+     * you can specify placeholders, which will
+     * be replaced in URL, request or response body.
+     *
+     * @param string $key   token name
+     * @param string $value replace value
+     */
+    public function setPlaceHolder($key, $value)
+    {
+        $this->placeHolders[$key] = $value;
+    }
+
+    /**
+     * Replaces placeholders in provided text.
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    public function replacePlaceHolder($string)
+    {
+        foreach ($this->placeHolders as $key => $val) {
+            $string = str_replace($key, $val, $string);
+        }
+        return $string;
+    }
+
+    /**
+     * Returns browser instance.
+     *
+     * @return Browser
+     */
+    public function getBrowser()
+    {
+        return $this->browser;
+    }
+
+    /**
      * Adds WSSE authentication header to next request.
      *
      * @param string $username
@@ -116,5 +232,25 @@ class WebApiContext extends BehatWebApiContext
     protected function getFixturesContext()
     {
         return $this->getMainContext()->getSubcontext('fixtures');
+    }
+
+    /**
+     * Returns headers, that will be used to send requests.
+     *
+     * @return array
+     */
+    protected function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    /**
+     * Adds header
+     *
+     * @param string $header
+     */
+    protected function addHeader($header)
+    {
+        $this->headers[] = $header;
     }
 }
