@@ -4,11 +4,16 @@
 
 - PIM-6354: Adds product models during quick exports
 
+## Bug fixes
+- PIM-6948: Use search after method for products and product models indexing instead of offset limit
+
 ## BC breaks
 
 - Rename `Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductQuickExport` to `ProductAndProductModelQuickExport`
 - Rename `Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductProcessor` to `ProductAndProductModelProcessor`
 - Updates quick export configurations to remove `filePath` and add `filePathProduct` and `filePathProductModel`.
+- Adds `Pim\Component\Catalog\Repository\ProductRepositoryInterface.php::searchAfter()` and `Pim\Component\Catalog\Repository\ProductModelRepositoryInterface::searchAfter()` methods
+- Deletes `Pim\Component\Catalog\Repository\ProductRepositoryInterface.php::findAllWithOffsetAndSize()` and `Pim\Component\Catalog\Repository\ProductModelRepositoryInterface::findRootProductModelsWithOffsetAndSize()` methods.
 
 ## Update jobs
 

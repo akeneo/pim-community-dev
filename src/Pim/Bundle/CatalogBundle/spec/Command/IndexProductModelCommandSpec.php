@@ -52,7 +52,10 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         HelperSet $helperSet,
         InputDefinition $definition,
         ProductModelInterface $productModel1,
-        ProductModelInterface $productModel2
+        ProductModelInterface $productModel2,
+        ProductModelInterface $productModel3,
+        ProductModelInterface $productModel4,
+        ProductModelInterface $productModel5
     ) {
         $container->get('pim_catalog.repository.product_model')->willReturn($productModelRepository);
         $container->get('akeneo_storage_utils.doctrine.object_detacher')->willReturn($productModelDetacher);
@@ -60,18 +63,25 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $container->get('pim_catalog.elasticsearch.indexer.product_model_descendance')
             ->willReturn($productModelDescendantsIndexer);
 
-        $productModelRepository->countRootProductModels()->willReturn(2);
-        $productModelRepository
-            ->findRootProductModelsWithOffsetAndSize(0, 100)
-            ->willReturn([$productModel1, $productModel2]);
+        $productModelRepository->countRootProductModels()->willReturn(5);
+        $productModelRepository->searchRootProductModelsAfter(null, 100)->willReturn([$productModel1, $productModel2]);
+        $productModelRepository->searchRootProductModelsAfter($productModel2, 100)->willReturn([$productModel3, $productModel4]);
+        $productModelRepository->searchRootProductModelsAfter($productModel4, 100)->willReturn([$productModel5]);
+        $productModelRepository->searchRootProductModelsAfter($productModel5, 100)->willReturn([]);
 
         $productModelIndexer->indexAll([$productModel1, $productModel2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $productModelIndexer->indexAll([$productModel3, $productModel4], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $productModelIndexer->indexAll([$productModel5], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
 
         $productModelDetacher->detachAll([$productModel1, $productModel2])->shouldBeCalled();
+        $productModelDetacher->detachAll([$productModel3, $productModel4])->shouldBeCalled();
+        $productModelDetacher->detachAll([$productModel5])->shouldBeCalled();
 
-        $output->writeln('<info>2 product models to index</info>')->shouldBeCalled();
+        $output->writeln('<info>5 product models to index</info>')->shouldBeCalled();
         $output->writeln('Indexing product models 1 to 2')->shouldBeCalled();
-        $output->writeln('<info>2 product models indexed</info>')->shouldBeCalled();
+        $output->writeln('Indexing product models 3 to 4')->shouldBeCalled();
+        $output->writeln('Indexing product models 5 to 5')->shouldBeCalled();
+        $output->writeln('<info>5 product models indexed</info>')->shouldBeCalled();
 
         $commandInput = new ArrayInput([
             'command'    => 'pim:product-model:index',

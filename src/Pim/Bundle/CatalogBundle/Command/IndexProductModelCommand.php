@@ -103,26 +103,27 @@ class IndexProductModelCommand extends ContainerAwareCommand
     private function indexAll(OutputInterface $output): int
     {
         $totalElements = $this->productModelRepository->countRootProductModels();
-        $numberOfPage = ceil($totalElements / self::BULK_SIZE);
 
         $output->writeln(sprintf('<info>%s product models to index</info>', $totalElements));
 
-        for ($currentPage = 1; $currentPage <= $numberOfPage; $currentPage++) {
-            $offset = self::BULK_SIZE * ($currentPage - 1);
+        $lastRootProductModel = null;
+        $progress = 0;
+
+        while (!empty($rootProductModels =
+            $this->productModelRepository->searchRootProductModelsAfter($lastRootProductModel, self::BULK_SIZE))) {
             $output->writeln(sprintf(
                 'Indexing product models %d to %d',
-                $offset + 1,
-                ($offset + self::BULK_SIZE) < $totalElements ? ($offset + self::BULK_SIZE) : $totalElements
+                $progress + 1,
+                $progress + count($rootProductModels)
             ));
 
-            $rootProductModels = $this->productModelRepository->findRootProductModelsWithOffsetAndSize(
-                $offset,
-                self::BULK_SIZE
-            );
-
             $this->bulkProductModelIndexer->indexAll($rootProductModels, ['index_refresh' => Refresh::disable()]);
-            $this->bulkProductModelDescendantsIndexer->indexAll($rootProductModels);
+            $this->bulkProductModelDescendantsIndexer->indexAll($rootProductModels, ['index_refresh' => Refresh::disable()]);
             $this->bulkProductModelDetacher->detachAll($rootProductModels);
+
+            $lastRootProductModel = end($rootProductModels);
+
+            $progress += count($rootProductModels);
         }
 
         return $totalElements;
