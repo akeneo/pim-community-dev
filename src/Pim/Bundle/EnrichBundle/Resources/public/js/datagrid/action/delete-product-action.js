@@ -14,7 +14,7 @@ define(['oro/datagrid/delete-action'],
              * {@inheritdoc}
              */
             isEnabled() {
-                return false === (this.model.get('document_type') === 'product_model');
+                return this.model.get('document_type') !== 'product_model';
             }
         });
     }

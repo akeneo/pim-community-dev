@@ -72,13 +72,17 @@ datagrid:
                     className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:      navigate-product-and-product-model
                 label:     Edit attributes of the product
-                tab:       pim-product-edit-form-attributes
+                tabRedirects:
+                    product: pim-product-edit-form-attributes
+                    product_model: pim-product-model-edit-form-attributes
             edit_categories:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--folder
                 type:  navigate-product-and-product-model
                 label: Classify the product
-                tab:   pim-product-edit-form-categories
+                tabRedirects:
+                    product: pim-product-edit-form-categories
+                    product_model: pim-product-model-edit-form-categories
             delete:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
@@ -89,7 +93,7 @@ datagrid:
             toggle_status:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--switch
-                type:  ajax
+                type:  toggle-product
                 label: Toggle status
                 link:  toggle_status_link
                 acl_resource: pim_enrich_product_change_state

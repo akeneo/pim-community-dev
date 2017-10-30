@@ -720,7 +720,8 @@ config:
 
         oro/datagrid/navigate-product-and-product-model-action: pimenrich/js/datagrid/action/navigate-product-and-product-model-action
         oro/datagrid/edit-in-modal-action:                      pimenrich/js/datagrid/action/edit-in-modal-action
-        oro/datagrid/delete-product-action:                      pimenrich/js/datagrid/action/delete-product-action
+        oro/datagrid/delete-product-action:                     pimenrich/js/datagrid/action/delete-product-action
+        oro/datagrid/toggle-product-action:                     pimenrich/js/datagrid/action/toggle-product-action
 
         # Attribute group
         pim/attribute-group-form/tab/attribute: pimenrich/js/attribute-group/form/tab/attribute

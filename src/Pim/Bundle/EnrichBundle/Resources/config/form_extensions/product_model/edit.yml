@@ -158,7 +158,7 @@ extensions:
         aclResourceId: pim_enrich_product_categories_view #TODO
         position: 100
         config:
-            tabCode: pim-product-edit-form-categories
+            tabCode: pim-product-model-edit-form-categories
             itemCategoryListRoute: pim_enrich_product_model_listcategories
             itemCategoryTreeRoute: pim_enrich_product_model_category_rest_list
 

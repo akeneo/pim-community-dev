@@ -9,11 +9,15 @@ define(
     ],
     function(_, __, NavigateAction, Router) {
         return NavigateAction.extend({
+            tabRedirects: {},
+
             /**
              * {@inheritdoc}
              */
             initialize() {
-                this.useDirectLauncherLink = (null !== this.tab);
+                if (null !== this.tabRedirects) {
+                    this.useDirectLauncherLink = false;
+                }
 
                 return NavigateAction.prototype.initialize.apply(this, arguments);
             },
@@ -25,15 +29,18 @@ define(
                 const productType = this.model.get('document_type');
                 const id = this.model.get('technical_id');
 
-                return Routing.generate('pim_enrich_' + productType + '_edit', { id });
+                return Router.generate('pim_enrich_' + productType + '_edit', { id });
             },
 
             /**
              * {@inheritdoc}
              */
             run() {
-                if (null !== this.tab) {
-                    sessionStorage.setItem('redirectTab', `#${this.tab}`);
+                if (null !== this.tabRedirects) {
+                    const productType = this.model.get('document_type');
+                    const tab = this.tabRedirects[productType];
+                    sessionStorage.setItem('redirectTab', `#${tab}`);
+                    sessionStorage.setItem('current_column_tab', tab);
                 }
 
                 return NavigateAction.prototype.run.apply(this, arguments);

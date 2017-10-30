@@ -79,7 +79,6 @@ define(
                     if (_.isUndefined(launcherClass) || ('' === launcherClass) || ('no-hash' === launcherClass)) {
                         launcherClass = 'AknIconButton AknIconButton--small AknIconButton--grey';
                     }
-
                     return action.createLauncher({
                         className: launcherClass + ' AknButtonList-item'
                     });
