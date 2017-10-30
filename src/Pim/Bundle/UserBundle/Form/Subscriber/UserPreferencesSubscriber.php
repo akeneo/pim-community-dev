@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository;
 use Pim\Bundle\EnrichBundle\Form\Type\LightEntityType;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Enrich\Provider\TranslatedLabelsProviderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -75,7 +76,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
         $this->updateCatalogLocale($form);
         $this->updateCatalogScope($form);
         $this->updateDefaultTree($form);
-        $this->updateUiLocale($form);
+        $this->updateUiLocale($form, $user);
     }
 
     /**
@@ -130,9 +131,15 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
 
     /**
      * @param FormInterface $form
+     * @param UserInterface $user
      */
-    protected function updateUiLocale(FormInterface $form)
+    protected function updateUiLocale(FormInterface $form, UserInterface $user)
     {
+        $uiLocale = $user->getUiLocale();
+        if (null === $uiLocale) {
+            $uiLocale = $this->localeRepository->findOneByIdentifier('en_US');
+        }
+
         $localeProvider = $this->localeProvider;
         $form->add(
             'uiLocale',
@@ -141,14 +148,14 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
                 'class'         => 'PimCatalogBundle:Locale',
                 'choice_label'  => 'getName',
                 'select2'       => true,
-                'data' => $this->localeRepository->findOneByIdentifier('en_US'),
+                'data'          => $uiLocale,
                 'query_builder' => function (LocaleRepository $repository) use ($localeProvider) {
                     $locales = $localeProvider->getLocales();
 
                     return $repository->createQueryBuilder('l')
                         ->where('l.code IN (:locales)')
                         ->setParameter('locales', array_keys($locales));
-                }
+                },
             ]
         );
     }
