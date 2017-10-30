@@ -33,7 +33,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/products-quick-export.csv
+            filePathProduct:      /tmp/1_products-quick-export.csv
+            filePathProductModel: /tmp/2_product-models-quick-export.csv
     csv_product_grid_context_quick_export:
         connector: Akeneo CSV Connector
         alias: csv_product_grid_context_quick_export
@@ -43,7 +44,8 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
-            filePath:   /tmp/products_export_grid_context_%locale%_%scope%.csv
+            filePathProduct:      /tmp/1_products_export_grid_context_%locale%_%scope%.csv
+            filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%.csv
     xlsx_product_quick_export:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_quick_export
@@ -52,7 +54,8 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePath:   /tmp/products_export_%locale%_%scope%.xlsx
+            filePathProduct:      /tmp/1_products_export_%locale%_%scope%.xlsx
+            filePathProductModel: /tmp/2_product_models_export_%locale%_%scope%.xlsx
     xlsx_product_grid_context_quick_export:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_grid_context_quick_export
@@ -61,8 +64,8 @@ jobs:
         configuration:
             withHeader: true
             linesPerFile: 10000
-            filePath:   /tmp/products_export_grid_context_%locale%_%scope%.xlsx
-
+            filePathProduct:      /tmp/1_products_export_grid_context_%locale%_%scope%.xlsx
+            filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%.xlsx
     csv_catalog_modeling_product_import:
         connector: Akeneo CSV Connector
         alias:     csv_product_import

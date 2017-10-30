@@ -5,10 +5,8 @@ namespace spec\Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 use Akeneo\Component\Batch\Job\JobParameters;
 use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductAndProductModelReader;
-use Pim\Component\Catalog\Manager\CompletenessManager;
+use Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductModelReader;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -19,28 +17,23 @@ use Pim\Component\Catalog\Converter\MetricConverter;
 use Prophecy\Argument;
 use Prophecy\Promise\ReturnPromise;
 
-class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
+class FilteredProductModelReaderSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(FilteredProductAndProductModelReader::class);
+        $this->shouldHaveType(FilteredProductModelReader::class);
     }
 
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ChannelRepositoryInterface $channelRepository,
-        CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
-        ObjectDetacherInterface $objectDetacher,
         StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $pqbFactory,
             $channelRepository,
-            $completenessManager,
-            $metricConverter,
-            $objectDetacher,
-            true
+            $metricConverter
         );
 
         $this->setStepExecution($stepExecution);
@@ -57,7 +50,6 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
         $channelRepository,
         $metricConverter,
         $stepExecution,
-        $completenessManager,
         ChannelInterface $channel,
         ProductQueryBuilderInterface $pqb,
         CursorInterface $cursor,
@@ -102,8 +94,7 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($cursor);
 
-        $completenessManager->generateMissingForChannel($channel)->shouldBeCalled();
-        $products = [$productModel1, $product1, $productModel2, $product2, $product3, $productModel3];
+        $products = [$product1, $productModel1, $product2, $productModel2, $productModel3, $product3];
         $productsCount = count($products);
         $cursor->valid()->will(
             function () use (&$productsCount) {
@@ -113,20 +104,14 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
         $cursor->current()->will(new ReturnPromise($products));
         $cursor->next()->shouldBeCalled();
 
-        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
+        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(6);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
-
-        $productModel1->getCode()->willReturn('product_model_1');
-        $productModel2->getCode()->willReturn('product_model_2');
-        $productModel3->getCode()->willReturn('product_model_3');
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(3);
-        $stepExecution->addWarning('Bulk actions do not support Product models entities yet.', Argument::cetera())
-            ->shouldBeCalledTimes(3);
 
         $this->initialize();
-        $this->read()->shouldReturn($product1);
-        $this->read()->shouldReturn($product2);
-        $this->read()->shouldReturn($product3);
+        $this->read()->shouldReturn($productModel1);
+        $this->read()->shouldReturn($productModel2);
+        $this->read()->shouldReturn($productModel3);
         $this->read()->shouldReturn(null);
     }
 }

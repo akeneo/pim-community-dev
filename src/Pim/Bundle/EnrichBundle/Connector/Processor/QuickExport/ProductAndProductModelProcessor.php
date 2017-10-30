@@ -20,7 +20,8 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Product processor to process and normalize entities to the standard format
+ * Product and Product Model processor to process and normalize entities to the standard format.
+ * This class is only used for Quick Export feature.
  *
  * This processor doesn't use the channel in configuration field but from job configuration
  *
@@ -28,7 +29,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductProcessor extends AbstractProcessor
+class ProductAndProductModelProcessor extends AbstractProcessor
 {
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -87,21 +88,25 @@ class ProductProcessor extends AbstractProcessor
     /**
      * {@inheritdoc}
      */
-    public function process($product)
+    public function process($entityWithValues)
     {
         $this->initSecurityContext($this->stepExecution);
 
-        $this->valuesFiller->fillMissingValues($product);
+        $this->valuesFiller->fillMissingValues($entityWithValues);
 
         $parameters = $this->stepExecution->getJobParameters();
         $normalizerContext = $this->getNormalizerContext($parameters);
-        $productStandard = $this->normalizer->normalize($product, 'standard', $normalizerContext);
+        $productStandard = $this->normalizer->normalize($entityWithValues, 'standard', $normalizerContext);
 
         if ($this->areAttributesToFilter($parameters)) {
             $selectedProperties = $parameters->get('selected_properties');
             if (in_array('identifier', $selectedProperties)) {
-                $identifer = $this->attributeRepository->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
-                $selectedProperties[] = $identifer->getCode();
+                $identifier = $this->attributeRepository->findOneBy(['type' => AttributeTypes::IDENTIFIER]);
+                $selectedProperties[] = $identifier->getCode();
+                $selectedProperties[] = 'code';
+            }
+            if (in_array('family', $selectedProperties)) {
+                $selectedProperties[] = 'family_variant';
             }
             $productStandard = $this->filterProperties($productStandard, $selectedProperties);
         }
@@ -110,10 +115,17 @@ class ProductProcessor extends AbstractProcessor
             $directory = $this->stepExecution->getJobExecution()->getExecutionContext()
                 ->get(JobInterface::WORKING_DIRECTORY_PARAMETER);
 
-            $this->fetchMedia($product, $directory);
+            $identifier = ($entityWithValues instanceof ProductInterface)
+                ? $entityWithValues->getIdentifier()
+                : $entityWithValues->getCode();
+            $this->mediaFetcher->fetchAll($entityWithValues->getValues(), $directory, $identifier);
+
+            foreach ($this->mediaFetcher->getErrors() as $error) {
+                $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
+            }
         }
 
-        $this->detacher->detach($product);
+        $this->detacher->detach($entityWithValues);
 
         return $productStandard;
     }
@@ -155,22 +167,6 @@ class ProductProcessor extends AbstractProcessor
     protected function areAttributesToFilter(JobParameters $parameters)
     {
         return null !== $parameters->get('selected_properties');
-    }
-
-    /**
-     * Fetch medias on the local filesystem
-     *
-     * @param ProductInterface $product
-     * @param string           $directory
-     */
-    protected function fetchMedia(ProductInterface $product, $directory)
-    {
-        $identifier = $product->getIdentifier();
-        $this->mediaFetcher->fetchAll($product->getValues(), $directory, $identifier);
-
-        foreach ($this->mediaFetcher->getErrors() as $error) {
-            $this->stepExecution->addWarning($error['message'], [], new DataInvalidItem($error['media']));
-        }
     }
 
     /**

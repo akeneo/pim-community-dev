@@ -168,7 +168,7 @@ pim_enrich:
             locale: Locale
             category: Category
             create: Create
-            subTitle: Create products
+            subTitle: Create product
             modalTitle: Select your action
             filters: Filters
             selected: selected results
@@ -1118,18 +1118,22 @@ batch_jobs:
             label: Set attributes requirements
     csv_product_quick_export:
         quick_export.label: CSV product quick export
+        quick_export_product_model.label: CSV product model quick export
         perform:
             label: CSV product quick export
     csv_product_grid_context_quick_export:
         quick_export.label: CSV product grid context quick export
+        quick_export_product_model.label: CSV product model grid context quick export
         perform:
             label: CSV product grid context quick export
     xlsx_product_quick_export:
         quick_export.label: XSLX product quick export
+        quick_export_product_model.label: XSLX product model quick export
         perform:
             label: XSLX product quick export
     xlsx_product_grid_context_quick_export:
         quick_export.label: XSLX product grid context quick export
+        quick_export_product_model.label: XSLX product model grid context quick export
         perform:
             label: XSLX product grid context quick export
     csv_product_export:

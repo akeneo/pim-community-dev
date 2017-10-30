@@ -7,7 +7,7 @@ use Akeneo\Component\Batch\Model\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductAndProductModelReader;
+use Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit\FilteredProductReader;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -19,11 +19,11 @@ use Pim\Component\Catalog\Converter\MetricConverter;
 use Prophecy\Argument;
 use Prophecy\Promise\ReturnPromise;
 
-class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
+class FilteredProductReaderSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(FilteredProductAndProductModelReader::class);
+        $this->shouldHaveType(FilteredProductReader::class);
     }
 
     function let(
@@ -39,17 +39,10 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
             $channelRepository,
             $completenessManager,
             $metricConverter,
-            $objectDetacher,
             true
         );
 
         $this->setStepExecution($stepExecution);
-    }
-
-    function it_set_step_execution(
-        $stepExecution
-    ) {
-        $this->setStepExecution($stepExecution)->shouldReturn(null);
     }
 
     function it_reads_products_only_and_not_product_models(
@@ -113,15 +106,9 @@ class FilteredProductAndProductModelReaderSpec extends ObjectBehavior
         $cursor->current()->will(new ReturnPromise($products));
         $cursor->next()->shouldBeCalled();
 
-        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(3);
+        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(6);
         $metricConverter->convert(Argument::any(), $channel)->shouldBeCalledTimes(3);
-
-        $productModel1->getCode()->willReturn('product_model_1');
-        $productModel2->getCode()->willReturn('product_model_2');
-        $productModel3->getCode()->willReturn('product_model_3');
         $stepExecution->incrementSummaryInfo('skip')->shouldBeCalledTimes(3);
-        $stepExecution->addWarning('Bulk actions do not support Product models entities yet.', Argument::cetera())
-            ->shouldBeCalledTimes(3);
 
         $this->initialize();
         $this->read()->shouldReturn($product1);

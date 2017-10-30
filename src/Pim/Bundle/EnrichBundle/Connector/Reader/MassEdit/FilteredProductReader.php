@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\EnrichBundle\Connector\Reader\MassEdit;
 
-use Akeneo\Component\Batch\Item\DataInvalidItem;
 use Akeneo\Component\Batch\Item\InitializableInterface;
 use Akeneo\Component\Batch\Item\ItemReaderInterface;
 use Akeneo\Component\Batch\Model\StepExecution;
@@ -22,14 +21,11 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 /**
  * Product reader that only returns product entities and skips product models.
  *
- * TODO: This class is unused for now (replaced by both FilteredProductReader and FilteredProductModelReader).
- * This class has to be used for mass actions PIM-6357 after removing the skip part.
- *
- * @author    Samir Boulil <samir.boulil@akeneo.com>
+ * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilteredProductAndProductModelReader implements
+class FilteredProductReader implements
     ItemReaderInterface,
     InitializableInterface,
     StepExecutionAwareInterface
@@ -67,13 +63,13 @@ class FilteredProductAndProductModelReader implements
         ChannelRepositoryInterface $channelRepository,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
-        $generateCompleteness
+        bool $generateCompleteness
     ) {
         $this->pqbFactory = $pqbFactory;
         $this->channelRepository = $channelRepository;
         $this->completenessManager = $completenessManager;
         $this->metricConverter = $metricConverter;
-        $this->generateCompleteness = (bool) $generateCompleteness;
+        $this->generateCompleteness = $generateCompleteness;
     }
 
     /**
@@ -160,8 +156,8 @@ class FilteredProductAndProductModelReader implements
     }
 
     /**
-     * @param array            $filters
-     * @param ChannelInterface $channel
+     * @param array                 $filters
+     * @param ChannelInterface|null $channel
      *
      * @return CursorInterface
      */
@@ -192,23 +188,16 @@ class FilteredProductAndProductModelReader implements
 
             $this->productsAndProductModels->next();
 
+            $this->stepExecution->incrementSummaryInfo('read');
+
             if ($entity instanceof ProductModelInterface) {
                 if ($this->stepExecution) {
                     $this->stepExecution->incrementSummaryInfo('skip');
-
-                    $warning = 'Bulk actions do not support Product models entities yet.';
-                    $this->stepExecution->addWarning(
-                        $warning,
-                        [],
-                        new DataInvalidItem(['code' => $entity->getCode()])
-                    );
                 }
 
                 $entity = null;
                 continue;
             }
-
-            $this->stepExecution->incrementSummaryInfo('read');
 
             break;
         }

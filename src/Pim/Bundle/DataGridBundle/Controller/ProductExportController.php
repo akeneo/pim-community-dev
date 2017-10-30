@@ -25,6 +25,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class ProductExportController
 {
     const DATETIME_FORMAT = 'Y-m-d_H:i:s';
+    private const FILE_PATH_KEYS = ['filePath', 'filePathProduct', 'filePathProductModel'];
 
     /** @var RequestStack */
     protected $requestStack;
@@ -101,8 +102,13 @@ class ProductExportController
         $filters = $this->gridFilterAdapter->adapt($parameters);
         $rawParameters = $jobInstance->getRawParameters();
         $contextParameters = $this->getContextParameters($request);
-        $rawParameters['filePath'] = $this->buildFilePath($rawParameters['filePath'], $contextParameters);
         $dynamicConfiguration = $contextParameters + ['filters' => $filters];
+
+        foreach (self::FILE_PATH_KEYS as $filePathKey) {
+            if (isset($rawParameters[$filePathKey])) {
+                $rawParameters[$filePathKey] = $this->buildFilePath($rawParameters[$filePathKey], $contextParameters);
+            }
+        }
 
         if ($displayedColumnsOnly) {
             $gridName = $request->get('gridName') ?? 'product_grid';

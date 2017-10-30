@@ -1,21 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider;
 
 use Akeneo\Component\Batch\Job\JobInterface;
 use Akeneo\Component\Batch\Job\JobParameters\ConstraintCollectionProviderInterface;
 use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Type;
 
 /**
  * Constraints for product and product model quick export
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2016 Akeneo SAS (http://www.akeneo.com)
+ * @author    Pierre Allard <pierre.allard@akeneo.com>
+ * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductQuickExport implements ConstraintCollectionProviderInterface
+class ProductAndProductModelQuickExport implements ConstraintCollectionProviderInterface
 {
     /** @var ConstraintCollectionProviderInterface */
     protected $simpleConstraint;
@@ -25,7 +25,7 @@ class ProductQuickExport implements ConstraintCollectionProviderInterface
 
     /**
      * @param ConstraintCollectionProviderInterface $simple
-     * @param array                $supportedJobNames
+     * @param array                                 $supportedJobNames
      */
     public function __construct(ConstraintCollectionProviderInterface $simple, array $supportedJobNames)
     {
@@ -40,12 +40,10 @@ class ProductQuickExport implements ConstraintCollectionProviderInterface
     {
         $baseConstraint = $this->simpleConstraint->getConstraintCollection();
         $constraintFields = $baseConstraint->fields;
-        $constraintFields['filters'] = [];
-        $constraintFields['selected_properties'] = null;
-        $constraintFields['with_media'] = new Type('bool');
-        $constraintFields['locale'] = new NotBlank(['groups' => 'Execution']);
-        $constraintFields['scope'] = new NotBlank(['groups' => 'Execution']);
-        $constraintFields['ui_locale'] = new NotBlank(['groups' => 'Execution']);
+        $constraintFilePath = $constraintFields['filePath'];
+        $constraintFields['filePath'] = null;
+        $constraintFields['filePathProduct'] = $constraintFilePath;
+        $constraintFields['filePathProductModel'] = $constraintFilePath;
 
         return new Collection(['fields' => $constraintFields]);
     }
