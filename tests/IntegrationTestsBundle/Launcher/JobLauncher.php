@@ -406,11 +406,4 @@ class JobLauncher
 
         self::launchSubProcessImport($jobCode, $content, $username, $fixturePaths, $config);
     }
-
-    public function hasJobInQueue(): bool
-    {
-        $jobExecutionMessage = $this->kernel->getContainer()->get('akeneo_batch_queue.queue.job_execution_message_repository')->getAvailableJobExecutionMessage();
-
-        return null !== $jobExecutionMessage;
-    }
 }

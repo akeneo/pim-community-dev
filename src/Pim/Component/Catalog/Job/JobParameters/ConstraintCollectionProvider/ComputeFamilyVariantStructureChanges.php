@@ -35,8 +35,8 @@ class ComputeFamilyVariantStructureChanges implements ConstraintCollectionProvid
         return new Collection(
             [
                 'fields' => [
-                    'family_variant_codes' => new NotBlank()
-                ]
+                    'family_variant_codes' => new Collection(['fields' => [new NotBlank()]]),
+                ],
             ]
         );
     }

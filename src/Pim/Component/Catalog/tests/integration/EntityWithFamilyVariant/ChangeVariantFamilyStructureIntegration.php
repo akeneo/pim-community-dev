@@ -17,22 +17,6 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
     /** @var JobLauncher */
     private $jobLauncher;
 
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->purgeJobExecutions('compute_family_variant_structure_changes');
-        $this->jobLauncher = $this->getFromTestContainer('akeneo_integration_tests.launcher.job_launcher');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getConfiguration()
-    {
-        return $this->catalog->useFunctionalCatalog('catalog_modeling');
-    }
-
     public function testMoveAttributeUpRemovesValuesOnOneLevel()
     {
         $product = $this->get('pim_catalog.repository.variant_product')
@@ -254,6 +238,22 @@ class ChangeVariantFamilyStructureIntegration extends TestCase
         $this->assertInstanceOf(ValueInterface::class, $value);
         $this->assertInstanceOf(AttributeOptionInterface::class, $value->getData());
         $this->assertSame('[leather]', $value->getData()->__toString());
+    }
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->purgeJobExecutions('compute_family_variant_structure_changes');
+        $this->jobLauncher = $this->getFromTestContainer('akeneo_integration_tests.launcher.job_launcher');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getConfiguration()
+    {
+        return $this->catalog->useFunctionalCatalog('catalog_modeling');
     }
 
     /**
