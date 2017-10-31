@@ -7,6 +7,9 @@
 ## Bug fixes
 - PIM-6948: Use search after method for products and product models indexing instead of offset limit
 
+## Improvements
+- TIP-824: Increase CLI products indexing performance by 20%
+
 ## BC breaks
 
 - Rename `Pim\Bundle\EnrichBundle\Connector\Job\JobParameters\ConstraintCollectionProvider\ProductQuickExport` to `ProductAndProductModelQuickExport`

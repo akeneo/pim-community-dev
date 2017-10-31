@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\CatalogBundle\Command;
 
 use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
@@ -45,7 +45,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         ProductModelRepositoryInterface $productModelRepository,
         BulkIndexerInterface $productModelIndexer,
         BulkIndexerInterface $productModelDescendantsIndexer,
-        BulkObjectDetacherInterface $productModelDetacher,
+        ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
         Application $application,
@@ -58,10 +58,10 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         ProductModelInterface $productModel5
     ) {
         $container->get('pim_catalog.repository.product_model')->willReturn($productModelRepository);
-        $container->get('akeneo_storage_utils.doctrine.object_detacher')->willReturn($productModelDetacher);
         $container->get('pim_catalog.elasticsearch.indexer.product_model')->willReturn($productModelIndexer);
         $container->get('pim_catalog.elasticsearch.indexer.product_model_descendance')
             ->willReturn($productModelDescendantsIndexer);
+        $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
 
         $productModelRepository->countRootProductModels()->willReturn(5);
         $productModelRepository->searchRootProductModelsAfter(null, 100)->willReturn([$productModel1, $productModel2]);
@@ -73,9 +73,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $productModelIndexer->indexAll([$productModel3, $productModel4], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
         $productModelIndexer->indexAll([$productModel5], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
 
-        $productModelDetacher->detachAll([$productModel1, $productModel2])->shouldBeCalled();
-        $productModelDetacher->detachAll([$productModel3, $productModel4])->shouldBeCalled();
-        $productModelDetacher->detachAll([$productModel5])->shouldBeCalled();
+        $objectManager->clear()->shouldBeCalledTimes(3);
 
         $output->writeln('<info>5 product models to index</info>')->shouldBeCalled();
         $output->writeln('Indexing product models 1 to 2')->shouldBeCalled();
@@ -112,7 +110,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         ProductModelRepositoryInterface $productModelRepository,
         BulkIndexerInterface $productModelIndexer,
         BulkIndexerInterface $productModelDescendantsIndexer,
-        BulkObjectDetacherInterface $productModelDetacher,
+        ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
         Application $application,
@@ -121,15 +119,15 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         ProductModelInterface $productModelToIndex
     ) {
         $container->get('pim_catalog.repository.product_model')->willReturn($productModelRepository);
-        $container->get('akeneo_storage_utils.doctrine.object_detacher')->willReturn($productModelDetacher);
         $container->get('pim_catalog.elasticsearch.indexer.product_model')->willReturn($productModelIndexer);
         $container->get('pim_catalog.elasticsearch.indexer.product_model_descendance')
             ->willReturn($productModelDescendantsIndexer);
+        $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
 
         $productModelRepository->findBy(['code' => ['product_model_code_to_index']])->willReturn([$productModelToIndex]);
 
         $productModelIndexer->indexAll([$productModelToIndex], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
-        $productModelDetacher->detachAll([$productModelToIndex])->shouldBeCalled();
+        $objectManager->clear()->shouldBeCalled();
 
         $output->writeln('<info>1 product models found for indexing</info>')->shouldBeCalled();
         $output->writeln('<info>1 product models indexed</info>')->shouldBeCalled();
@@ -164,7 +162,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         ProductModelRepositoryInterface $productModelRepository,
         BulkIndexerInterface $productModelIndexer,
         BulkIndexerInterface $productModelDescendantsIndexer,
-        BulkObjectDetacherInterface $productModelDetacher,
+        ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
         Application $application,
@@ -174,10 +172,10 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         ProductModelInterface $productModel2
     ) {
         $container->get('pim_catalog.repository.product_model')->willReturn($productModelRepository);
-        $container->get('akeneo_storage_utils.doctrine.object_detacher')->willReturn($productModelDetacher);
         $container->get('pim_catalog.elasticsearch.indexer.product_model')->willReturn($productModelIndexer);
         $container->get('pim_catalog.elasticsearch.indexer.product_model_descendance')
             ->willReturn($productModelDescendantsIndexer);
+        $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
 
         $productModelRepository->findBy(['code' => ['product_model_1', 'product_model_2']])
             ->willReturn([$productModel1, $productModel2]);
@@ -186,7 +184,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $productModel2->getCode()->willReturn('product_model_2');
 
         $productModelIndexer->indexAll([$productModel1, $productModel2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
-        $productModelDetacher->detachAll([$productModel1, $productModel2])->shouldBeCalled();
+        $objectManager->clear()->shouldBeCalled();
 
         $output->writeln('<info>2 product models found for indexing</info>')->shouldBeCalled();
         $output->writeln('<info>2 product models indexed</info>')->shouldBeCalled();
@@ -221,7 +219,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         ProductModelRepositoryInterface $productModelRepository,
         BulkIndexerInterface $productModelIndexer,
         BulkIndexerInterface $productModelDescendantsIndexer,
-        BulkObjectDetacherInterface $productModelDetacher,
+        ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
         Application $application,
@@ -231,10 +229,10 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         ProductModelInterface $productModel2
     ) {
         $container->get('pim_catalog.repository.product_model')->willReturn($productModelRepository);
-        $container->get('akeneo_storage_utils.doctrine.object_detacher')->willReturn($productModelDetacher);
         $container->get('pim_catalog.elasticsearch.indexer.product_model')->willReturn($productModelIndexer);
         $container->get('pim_catalog.elasticsearch.indexer.product_model_descendance')
             ->willReturn($productModelDescendantsIndexer);
+        $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
 
         $productModelRepository->findBy(['code' => ['product_model_1', 'product_model_2', 'wrong_product_model']])
             ->willReturn([$productModel1, $productModel2]);
@@ -243,7 +241,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         $productModel2->getCode()->willReturn('product_model_2');
 
         $productModelIndexer->indexAll([$productModel1, $productModel2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
-        $productModelDetacher->detachAll([$productModel1, $productModel2])->shouldBeCalled();
+        $objectManager->clear()->shouldBeCalled();
 
         $output->writeln('<error>Some product models were not found for the given codes: wrong_product_model</error>')->shouldBeCalled();
         $output->writeln('<info>2 product models found for indexing</info>')->shouldBeCalled();
@@ -279,7 +277,7 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         ProductModelRepositoryInterface $productModelRepository,
         BulkIndexerInterface $productModelIndexer,
         BulkIndexerInterface $productModelDescendantsIndexer,
-        BulkObjectDetacherInterface $productModelDetacher,
+        ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
         Application $application,
@@ -287,10 +285,10 @@ class IndexProductModelCommandSpec extends ObjectBehavior
         InputDefinition $definition
     ) {
         $container->get('pim_catalog.repository.product_model')->willReturn($productModelRepository);
-        $container->get('akeneo_storage_utils.doctrine.object_detacher')->willReturn($productModelDetacher);
         $container->get('pim_catalog.elasticsearch.indexer.product_model')->willReturn($productModelIndexer);
         $container->get('pim_catalog.elasticsearch.indexer.product_model_descendance')
             ->willReturn($productModelDescendantsIndexer);
+        $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
 
         $output->writeln('<error>Please specify a list of product model codes to index or use the flag --all to index all product models</error>')
             ->shouldBeCalled();
