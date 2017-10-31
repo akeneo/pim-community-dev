@@ -159,7 +159,7 @@ define(
             },
 
             /**
-             * Get the parent code for the new product model child.
+             * Get the parent code for the new product model / variant product child.
              *
              * @param {Number} targetLevel
              *
@@ -189,9 +189,9 @@ define(
             /**
              * Opens the modal containing the form to create a new family variant.
              *
-             * @param {String} parent
+             * @param {String} parentCode
              */
-            openModal: function (parent) {
+            openModal: function (parentCode) {
                 const modalParameters = {
                     className: 'modal modal--fullPage add-product-model-child',
                     content: '',
@@ -200,32 +200,72 @@ define(
                     okCloses: false
                 };
 
-                const formModal = new FormModal(
-                    'pim-product-model-add-child-form',
-                    this.submitForm.bind(this),
-                    modalParameters,
-                    {
-                        parent: parent,
-                        family: this.getFormData().family,
-                        values: {}
-                    }
-                );
+                this.isVariantProduct(parentCode)
+                    .then((isVariantProduct) => {
+                        const initialModalState = {
+                            parent: parentCode,
+                            values: {}
+                        };
 
-                formModal.open();
+                        if (isVariantProduct) {
+                            initialModalState.family = this.getFormData().family;
+                        } else {
+                            initialModalState.family_variant = this.getFormData().family_variant;
+                        }
+
+                        const formModal = new FormModal(
+                            'pim-product-model-add-child-form',
+                            this.submitForm.bind(this, isVariantProduct),
+                            modalParameters,
+                            initialModalState
+                        );
+
+                        formModal.open();
+                    });
             },
 
             /**
              * Action made when user submit the modal.
              *
+             * @param {boolean} isVariantProduct
              * @param {Object} formModal
              */
-            submitForm: function (formModal) {
-                // TODO: Detect what we created: variant product or product model, and adapt the message
-                const message = __('pim_enrich.form.product_model.flash.variant_product_added');
+            submitForm: function (isVariantProduct, formModal) {
+                const message = isVariantProduct
+                    ? __('pim_enrich.form.product_model.flash.variant_product_added')
+                    : __('pim_enrich.form.product_model.flash.product_model_added');
+
+                const route = isVariantProduct
+                    ? 'pim_enrich_product_rest_create'
+                    : 'pim_enrich_product_model_rest_create';
 
                 return formModal
-                    .saveProductModelChild('pim_enrich_product_rest_create')
+                    .saveProductModelChild(route)
                     .done(() => messenger.notify('success', message));
+            },
+
+            /**
+             * Returns whether the new entity will be a variant product or a product model
+             * using the parent code.
+             *
+             * @param {string} parentCode
+             *
+             * @returns {Promise}
+             */
+            isVariantProduct: function(parentCode) {
+                return FetcherRegistry
+                    .getFetcher('product-model-by-code')
+                    .fetch(parentCode)
+                    .then((parent) => {
+                        return FetcherRegistry
+                            .getFetcher('family-variant')
+                            .fetch(parent.family_variant)
+                            .then((familyVariant) => {
+                                const currentLevel = parent.meta.level + 1;
+
+                                return currentLevel === familyVariant.variant_attribute_sets.length;
+                            })
+                    });
             },
 
             /**

@@ -82,8 +82,6 @@ define(
                                                 });
                                         }
 
-                                        this.setData({family_variant: familyVariant.code});
-
                                         return this.createProductModelCodeField().then(
                                             (codeField) => fields.concat(codeField)
                                         );
