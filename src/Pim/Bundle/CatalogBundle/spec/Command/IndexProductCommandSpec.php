@@ -51,22 +51,34 @@ class IndexProductCommandSpec extends ObjectBehavior
         HelperSet $helperSet,
         InputDefinition $definition,
         ProductInterface $product1,
-        ProductInterface $product2
+        ProductInterface $product2,
+        ProductInterface $product3,
+        ProductInterface $product4,
+        ProductInterface $product5
     ) {
         $container->get('pim_catalog.repository.product')->willReturn($productRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
         $container->get('akeneo_storage_utils.doctrine.object_detacher')->willReturn($productDetacher);
 
-        $productRepository->countAll()->willReturn(2);
-        $productRepository->findAllWithOffsetAndSize(0, 100)->willReturn([$product1, $product2]);
+        $productRepository->countAll()->willReturn(5);
+        $productRepository->searchAfter(null, 100)->willReturn([$product1, $product2]);
+        $productRepository->searchAfter($product2, 100)->willReturn([$product3, $product4]);
+        $productRepository->searchAfter($product4, 100)->willReturn([$product5]);
+        $productRepository->searchAfter($product5, 100)->willReturn([]);
 
         $productIndexer->indexAll([$product1, $product2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $productIndexer->indexAll([$product3, $product4], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $productIndexer->indexAll([$product5], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
 
         $productDetacher->detachAll([$product1, $product2])->shouldBeCalled();
+        $productDetacher->detachAll([$product3, $product4])->shouldBeCalled();
+        $productDetacher->detachAll([$product5])->shouldBeCalled();
 
-        $output->writeln('<info>2 products to index</info>')->shouldBeCalled();
+        $output->writeln('<info>5 products to index</info>')->shouldBeCalled();
         $output->writeln('Indexing products 1 to 2')->shouldBeCalled();
-        $output->writeln('<info>2 products indexed</info>')->shouldBeCalled();
+        $output->writeln('Indexing products 3 to 4')->shouldBeCalled();
+        $output->writeln('Indexing products 5 to 5')->shouldBeCalled();
+        $output->writeln('<info>5 products indexed</info>')->shouldBeCalled();
 
         $commandInput = new ArrayInput([
             'command'    => 'pim:product:index',

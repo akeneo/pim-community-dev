@@ -79,19 +79,6 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
     /**
      * {@inheritdoc}
      */
-    public function findRootProductModelsWithOffsetAndSize($offset = 0, $size = 100): array
-    {
-        $queryBuilder = $this->createQueryBuilder('pm')
-            ->andWhere('pm.parent IS NULL')
-            ->setFirstResult($offset)
-            ->setMaxResults($size);
-
-        return $queryBuilder->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findChildrenProductModels(ProductModelInterface $productModel): array
     {
         $qb = $this
@@ -140,6 +127,25 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
             ->from(VariantProduct::class, 'p')
             ->where('p.parent = :parent')
             ->setParameter('parent', $productModel);
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function searchRootProductModelsAfter(?ProductModelInterface $productModel, int $limit): array
+    {
+        $qb = $this->createQueryBuilder('pm')
+            ->andWhere('pm.parent IS NULL')
+            ->orderBy('pm.id', 'ASC')
+            ->setMaxResults($limit);
+        ;
+
+        if (null !== $productModel) {
+            $qb->andWhere('pm.id > :productModelId')
+                ->setParameter(':productModelId', $productModel->getId());
+        }
 
         return $qb->getQuery()->execute();
     }

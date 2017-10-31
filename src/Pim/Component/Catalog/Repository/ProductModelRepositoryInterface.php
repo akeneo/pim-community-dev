@@ -36,14 +36,6 @@ interface ProductModelRepositoryInterface extends
     public function countRootProductModels(): int;
 
     /**
-     * @param int $offset
-     * @param int $size
-     *
-     * @return array
-     */
-    public function findRootProductModelsWithOffsetAndSize($offset = 0, $size = 100): array;
-
-    /**
      * Find product models which are the direct children of the given $productModel
      *
      * @param ProductModelInterface $productModel
@@ -78,4 +70,12 @@ interface ProductModelRepositoryInterface extends
      * @return array
      */
     public function findChildrenProducts(ProductModelInterface $productModel): array;
+
+    /**
+     * Get root products models after the one provided. Mainly used to iterate
+     * through a large collecion.
+     *
+     * The limit parameter defines the number of products to return.
+     */
+    public function searchRootProductModelsAfter(?ProductModelInterface $product, int $limit): array;
 }

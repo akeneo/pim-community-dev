@@ -25,6 +25,7 @@ class IndexProductCommand extends ContainerAwareCommand
 {
     public const NAME = 'pim:product:index';
     private const BULK_SIZE = 100;
+    private const ERROR_CODE_USAGE = 1;
 
     /** @var ProductRepositoryInterface */
     private $productRepository;
@@ -78,7 +79,7 @@ class IndexProductCommand extends ContainerAwareCommand
         } else {
             $output->writeln('<error>Please specify a list of product identifiers to index or use the flag --all to index all products</error>');
 
-            return;
+            return self::ERROR_CODE_USAGE;
         }
 
         $message = sprintf('<info>%d products indexed</info>', $totalIndexedProducts);
@@ -96,22 +97,24 @@ class IndexProductCommand extends ContainerAwareCommand
     private function indexAll(OutputInterface $output): int
     {
         $totalElements = (int) $this->productRepository->countAll();
-        $numberOfPage = ceil($totalElements / self::BULK_SIZE);
 
         $output->writeln(sprintf('<info>%s products to index</info>', $totalElements));
 
-        for ($currentPage = 1; $currentPage <= $numberOfPage; $currentPage++) {
-            $offset = self::BULK_SIZE * ($currentPage - 1);
+        $lastProduct = null;
+        $progress = 0;
+
+        while (!empty($products = $this->productRepository->searchAfter($lastProduct, self::BULK_SIZE))) {
             $output->writeln(sprintf(
                 'Indexing products %d to %d',
-                $offset + 1,
-                ($offset + self::BULK_SIZE) < $totalElements ? ($offset + self::BULK_SIZE) : $totalElements
+                $progress + 1,
+                $progress + count($products)
             ));
-
-            $products = $this->productRepository->findAllWithOffsetAndSize($offset, self::BULK_SIZE);
 
             $this->bulkProductIndexer->indexAll($products, ['index_refresh' => Refresh::disable()]);
             $this->bulkProductDetacher->detachAll($products);
+
+            $lastProduct = end($products);
+            $progress += count($products);
         }
 
         return $totalElements;

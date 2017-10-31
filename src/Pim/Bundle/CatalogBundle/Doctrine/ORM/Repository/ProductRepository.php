@@ -145,18 +145,6 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllWithOffsetAndSize($offset = 0, $size = 100)
-    {
-        $queryBuilder = $this->createQueryBuilder('p')
-            ->setFirstResult($offset)
-            ->setMaxResults($size);
-
-        return $queryBuilder->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getAssociatedProductIds(ProductInterface $product)
     {
         $qb = $this->createQueryBuilder('p')
@@ -170,6 +158,24 @@ class ProductRepository extends EntityRepository implements
             ->innerJoin('a.products', 'pa')
             ->where('p.id = :productId')
             ->setParameter(':productId', $product->getId());
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function searchAfter(?ProductInterface $product, int $limit): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->orderBy('p.id', 'ASC')
+            ->setMaxResults($limit);
+        ;
+
+        if (null !== $product) {
+            $qb->where('p.id > :productId')
+                ->setParameter(':productId', $product->getId());
+        }
 
         return $qb->getQuery()->execute();
     }
