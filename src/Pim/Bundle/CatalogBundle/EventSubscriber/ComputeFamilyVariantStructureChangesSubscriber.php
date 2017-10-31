@@ -18,6 +18,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  *
  * So we may need to remove values or move values from some level to another.
  *
+ * We make sure we do not run this job for new family variants.
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
@@ -26,7 +28,6 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
 {
     /** @var TokenStorageInterface */
     private $tokenStorage;
-
     /** @var JobLauncherInterface */
     private $jobLauncher;
 
@@ -35,6 +36,9 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
 
     /** @var string */
     private $jobName;
+
+    /** @var bool */
+    private $isFamilyVariantNew;
 
     /**
      * @param TokenStorageInterface                 $tokenStorage
@@ -52,6 +56,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
         $this->jobLauncher = $jobLauncher;
         $this->jobInstanceRepository = $jobInstanceRepository;
         $this->jobName = $jobName;
+        $this->isFamilyVariantNew = true;
     }
 
     /**
@@ -60,8 +65,25 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
     public static function getSubscribedEvents()
     {
         return [
+            StorageEvents::PRE_SAVE => 'checkIsFamilyVariantNew',
             StorageEvents::POST_SAVE => 'computeVariantStructureChanges',
         ];
+    }
+
+    /**
+     * Method that checks if the given family variant is new. This information is then used in the
+     * `computeVariantStructureChanges` function to determine wether a job should be launched or not.
+     *
+     * @param GenericEvent $event
+     */
+    public function checkIsFamilyVariantNew(GenericEvent $event)
+    {
+        $subject = $event->getSubject();
+        if (!$subject instanceof FamilyVariantInterface) {
+            return;
+        }
+
+        $this->isFamilyVariantNew = $this->isFamilyVariantNew($subject);
     }
 
     /**
@@ -74,11 +96,27 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
             return;
         }
 
+        if ($this->isFamilyVariantNew) {
+            return;
+        }
+
         $user = $this->tokenStorage->getToken()->getUser();
         $jobInstance = $this->jobInstanceRepository->findOneByIdentifier($this->jobName);
 
         $this->jobLauncher->launch($jobInstance, $user, [
             'family_variant_codes' => [$familyVariant->getCode()]
         ]);
+    }
+
+    /**
+     * Checks if the given family variant is new.
+     *
+     * @param FamilyVariantInterface $familyVariant
+     *
+     * @return bool
+     */
+    private function isFamilyVariantNew(FamilyVariantInterface $familyVariant): bool
+    {
+        return null === $familyVariant->getId();
     }
 }

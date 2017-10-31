@@ -33,6 +33,7 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_events()
     {
         $this->getSubscribedEvents()->shouldReturn([
+            StorageEvents::PRE_SAVE => 'checkIsFamilyVariantNew',
             StorageEvents::POST_SAVE => 'computeVariantStructureChanges',
         ]);
     }
@@ -48,6 +49,7 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
         JobInstance $jobInstance
     ) {
         $event->getSubject()->willReturn($familyVariant);
+        $familyVariant->getId()->willReturn(12);
 
         $tokenStorage->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
@@ -60,6 +62,21 @@ class ComputeFamilyVariantStructureChangesSubscriberSpec extends ObjectBehavior
             'family_variant_codes' => ['family_variant_one']
         ])->shouldBeCalled();
 
+        $this->checkIsFamilyVariantNew($event);
+        $this->computeVariantStructureChanges($event);
+    }
+
+    function it_does_not_launch_a_job_if_it_is_a_new_family_variant(
+        FamilyVariantInterface $familyVariant,
+        GenericEvent $event,
+        $jobLauncher
+    ) {
+        $event->getSubject()->willReturn($familyVariant);
+        $familyVariant->getId()->willReturn(null);
+
+        $jobLauncher->launch(Argument::any())->shouldNotBeCalled();
+
+        $this->checkIsFamilyVariantNew($event);
         $this->computeVariantStructureChanges($event);
     }
 
