@@ -59,7 +59,9 @@ define([
          * @param {Object} event
          */
         onBadRequest(event) {
-            this.errors = _.where(event.response, {path: this.fieldName});
+            this.errors = event.response.filter((error) => {
+                return this.fieldName === error.path || this.fieldName === error.attribute;
+            });
             this.render();
 
             this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.getTabCode());

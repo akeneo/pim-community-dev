@@ -1,4 +1,7 @@
 Pim\Component\Catalog\Model\VariantProduct:
+    group_sequence:
+        - VariantProduct
+        - UniqueAxis
     constraints:
         - Pim\Component\Catalog\Validator\Constraints\VariantProductParent: ~
         - Pim\Component\Catalog\Validator\Constraints\NotEmptyFamily:
@@ -6,7 +9,8 @@ Pim\Component\Catalog\Model\VariantProduct:
               - api
         - Pim\Component\Catalog\Validator\Constraints\SameFamilyThanParent: ~
         - Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxes: ~
-        - Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis: ~
+        - Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis:
+            groups: [UniqueAxis]
         - Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues: ~
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields: [identifier]

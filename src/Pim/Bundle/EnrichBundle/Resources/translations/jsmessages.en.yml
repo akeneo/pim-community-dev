@@ -448,6 +448,7 @@ pim_enrich:
             choose_variant: Choose a variant
             complete_variant_product: variant product
             complete_variant_products: variant products
+            family_variant: Variant
         product:
             tab:
                 associations:
@@ -763,7 +764,6 @@ pim_enrich:
                         validation_regexp: Regular expression
                         validation_rule: Validation rule
                         wysiwyg_enabled: Rich text editor enabled
-                        family_variant: Variant
                     default_label:
                         default_metric_unit: Choose a unit
                         group: Choose the attribute group

@@ -47,7 +47,11 @@ define(
                     Routing.generate(route),
                     JSON.stringify(this.getFormData())
                 ).fail((xhr) => {
-                    this.trigger('pim_enrich:form:entity:validation_error', xhr.responseJSON);
+                    this.trigger('pim_enrich:form:entity:validation_error', xhr.responseJSON.values);
+                    this.trigger(
+                        'pim_enrich:form:entity:bad_request',
+                        {sentData: this.getFormData(), response: xhr.responseJSON.values}
+                    );
                 });
             }
         });

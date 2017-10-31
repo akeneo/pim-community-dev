@@ -35,14 +35,32 @@ define(
     ) => {
         return BaseForm.extend({
             template: _.template(template),
+            globalErrors: [],
 
             /**
              * {@inheritdoc}
              */
             initialize(meta) {
                 this.config = _.defaults(meta.config, {fieldModules: {}, codeFieldModule: null});
+                this.globalErrors = [];
 
                 BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            configure() {
+                this.listenTo(
+                    this.getRoot(),
+                    'pim_enrich:form:entity:validation_error',
+                    (errors) => {
+                        this.globalErrors = errors.filter((error) => undefined === error.attribute);
+                        this.render();
+                    }
+                );
+
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
 
             /**
@@ -51,7 +69,9 @@ define(
             render() {
                 const parentCode = this.getFormData().parent;
 
-                this.$el.html(this.template());
+                this.$el.html(this.template({
+                    errors: this.globalErrors
+                }));
 
                 FetcherRegistry
                     .getFetcher('product-model-by-code')
@@ -97,7 +117,11 @@ define(
                                             );
                                         });
 
-                                        this.renderExtensions();
+                                        $.when.apply(this, fields.map((field) => {
+                                            return field.configure();
+                                        })).then(() => {
+                                            this.renderExtensions();
+                                        });
                                     });
                             });
                         });
@@ -188,9 +212,6 @@ define(
                         }
 
                         return field;
-                    })
-                    .then((field) => {
-                        return field.configure().then(() => field);
                     });
             },
 

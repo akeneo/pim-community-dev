@@ -39,5 +39,6 @@ extensions:
         position: 30
         config:
             fieldName: family_variant
+            label: pim_enrich.form.product_model.family_variant
             required: true
             loadUrl: pim_datagrid_load

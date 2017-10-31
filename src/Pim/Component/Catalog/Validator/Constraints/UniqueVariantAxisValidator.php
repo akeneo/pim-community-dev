@@ -77,7 +77,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             $this->context->buildViolation(
                 UniqueVariantAxis::DUPLICATE_VALUE_IN_SIBLING,
                 ['%values%' => $duplicateCombination, '%attributes%' => $axesCodes]
-            )->atPath('attribute')->addViolation();
+            )->addViolation();
         }
     }
 
