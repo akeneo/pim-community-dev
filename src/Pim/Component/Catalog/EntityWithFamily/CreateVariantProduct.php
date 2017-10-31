@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Catalog\EntityWithFamily;
 
 use Pim\Component\Catalog\AttributeTypes;
@@ -8,7 +10,7 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 
-class TurnProductIntoVariantProduct
+class CreateVariantProduct
 {
     /** @var string */
     private $variantProductClassName;
@@ -28,7 +30,7 @@ class TurnProductIntoVariantProduct
      * @return VariantProductInterface
      * @throws \Exception
      */
-    public function turnInto(ProductInterface $product, ProductModelInterface $parent)
+    public function from(ProductInterface $product, ProductModelInterface $parent)
     {
         if ($product->getFamily() !== $parent->getFamily()) {
             throw new \Exception('Product and product model families should be the same.');

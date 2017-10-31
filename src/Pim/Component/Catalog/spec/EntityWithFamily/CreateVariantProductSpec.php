@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Catalog;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\FamilyVariant\TurnProductIntoVariantProduct;
+use Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
@@ -16,7 +16,7 @@ use Pim\Component\Catalog\Model\VariantProduct;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Prophecy\Argument;
 
-class TurnProductIntoVariantProductSpec extends ObjectBehavior
+class CreateVariantProductSpec extends ObjectBehavior
 {
     function let(
         FamilyVariantInterface $familyVariant,
@@ -33,7 +33,7 @@ class TurnProductIntoVariantProductSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(TurnProductIntoVariantProduct::class);
+        $this->shouldHaveType(CreateVariantProduct::class);
     }
 
     function it_throws_an_exception_when_the_product_has_not_the_same_family_that_its_parent(
@@ -43,7 +43,7 @@ class TurnProductIntoVariantProductSpec extends ObjectBehavior
     ) {
         $product->getFamily()->willReturn($productFamily);
 
-        $this->shouldThrow(\Exception::class)->during('turnInto', [$product, $parent]);
+        $this->shouldThrow(\Exception::class)->during('from', [$product, $parent]);
     }
 
     public function it_turns_a_product_into_a_variant_product(
@@ -87,7 +87,7 @@ class TurnProductIntoVariantProductSpec extends ObjectBehavior
         $product->getCreated()->willReturn($createdAt);
         $product->getUpdated()->willReturn($updatedAt);
 
-        $result = $this->turnInto($product, $parent);
+        $result = $this->from($product, $parent);
         $result->shouldReturnAnInstanceOf(VariantProductInterface::class);
         $result->getId()->shouldReturn(42);
         $result->getIdentifier()->shouldReturn('foo');

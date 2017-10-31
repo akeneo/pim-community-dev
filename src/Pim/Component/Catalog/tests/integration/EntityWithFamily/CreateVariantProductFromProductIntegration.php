@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Akeneo\Test\IntegrationTestsBundle\Assertion;
 
-class TurnProductIntoVariantProductIntegration extends TestCase
+class CreateVariantProductFromProductIntegration extends TestCase
 {
     /** @var ProductInterface */
     private $product;
@@ -62,8 +62,8 @@ class TurnProductIntoVariantProductIntegration extends TestCase
     public function test that the variant product have the same properties than the product()
     {
         /** @var VariantProductInterface $variantProduct */
-        $variantProduct = $this->get('pim_catalog.entity_with_family.turn_product_into_variant_product')
-            ->turnInto($this->product, $this->productModel);
+        $variantProduct = $this->get('pim_catalog.entity_with_family.create_variant_product_from_product')
+            ->from($this->product, $this->productModel);
 
         $this->assertSame($this->productModel, $variantProduct->getParent());
         $this->assertSame($this->product->getGroups(), $variantProduct->getGroups());
@@ -81,8 +81,8 @@ class TurnProductIntoVariantProductIntegration extends TestCase
     public function test that the variant product have product values without product model values()
     {
         /** @var VariantProductInterface $variantProduct */
-        $variantProduct = $this->get('pim_catalog.entity_with_family.turn_product_into_variant_product')
-            ->turnInto($this->product, $this->productModel);
+        $variantProduct = $this->get('pim_catalog.entity_with_family.create_variant_product_from_product')
+            ->from($this->product, $this->productModel);
 
         $assertValues = new Assertion\ValuesCollection(['size', 'ean', 'sku'], $variantProduct->getValuesForVariation());
         $assertValues->hasSameValues();

@@ -1,6 +1,7 @@
 parameters:
     pim_catalog.doctrine.query.find_variant_product_completeness.class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\VariantProductRatio'
     pim_catalog.doctrine.query.complete_filter.class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\CompleteFilter'
+    pim_catalog.doctrine.query.turn_product_into_variant_product.class: 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\TurnProduct'
 
 services:
     pim_catalog.doctrine.query.find_variant_product_completeness:
@@ -12,3 +13,9 @@ services:
         class: '%pim_catalog.doctrine.query.complete_filter.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    pim_catalog.doctrine.query.turn_product_into_variant_product:
+        class: '%pim_catalog.doctrine.query.turn_product_into_variant_product.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_serializer'
