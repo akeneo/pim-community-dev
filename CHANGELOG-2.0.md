@@ -3,6 +3,8 @@
 ## Better manage products with variants!
 
 - PIM-6354: Adds product models during quick exports
+- PIM-6922: Fix sort order on attribute groups
+- PIM-6880: Remove the old variation asset icon
 
 ## Bug fixes
 - PIM-6948: Use search after method for products and product models indexing instead of offset limit
@@ -33,7 +35,6 @@ IMPORTANT: In order to use the new quick exports, please execute `bin/console do
 - API-408: Fix too many error messages
 - API-407: Fix too many error messages when trying to create a product model that extends a product model with a parent
 - PIM-6933: Fix menu display in case of acl restriction
-- PIM-6922: Fix sort order on attribute groups
 - PIM-6923: Fix search on all grids when returning on it
 - PIM-6878: Fix attribute creation popin not extensible
 
