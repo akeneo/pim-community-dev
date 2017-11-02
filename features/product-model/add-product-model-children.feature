@@ -42,14 +42,14 @@ Feature: Add children to product model
     When I am on the "root_model" product model page
     And I open the variant navigation children selector for level 1
     And I press the "Create new" button and wait for modal
-    Then I should see the text "Add a Handmade, Material, Reference color, Weight"
-    And I fill in the following information in the popin:
-      | SKU             | tshirt_with_five_axes |
-      | Material        | leather               |
-      | Reference color | Red                   |
-      | Size            | XL                    |
-      | Weight          | 800 GRAM              |
-      | Handmade        | Yes                   |
+    Then I should see the text "Add a Color, Handmade, Material, Reference color, Weight"
+    And I fill in the following child values:
+      | Code            | model_with_five_axes |
+      | Color           | Blue                 |
+      | Material        | leather              |
+      | Reference color | Red                  |
+      | Weight          | 800 GRAM             |
+      | Handmade        | Yes                  |
     And I confirm the child creation
     Then I should see the text "Product model successfully added to the product model"
     And I should be on the product model "model_with_five_axes" edit page
@@ -130,7 +130,7 @@ Feature: Add children to product model
     And I open the variant navigation children selector for level 1
     And I press the "Create new" button and wait for modal
     Then I should see the text "Add a Handmade, Material, Reference color, Size, Weight"
-    And I fill in the following information in the popin:
+    And I fill in the following child values:
       | SKU             | tshirt_with_five_axes |
       | Material        | leather               |
       | Reference color | Red                   |
