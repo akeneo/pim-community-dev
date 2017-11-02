@@ -91,6 +91,8 @@ define(
                                         ));
                                     })
                                     .then((...fields) => {
+                                        fields.sort((fieldA, fieldB) => fieldA.getLabel() > fieldB.getLabel() ? 1 : -1);
+
                                         if (isVariantProduct) {
                                             return FetcherRegistry
                                                 .getFetcher('attribute')
