@@ -179,7 +179,7 @@ JSON;
 <<<JSON
 {
   "code": 422,
-  "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the standard format documentation.",
+  "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#post_product_model"
@@ -221,7 +221,7 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "Property \"family_variant\" does not expect an empty value. Check the standard format documentation.",
+  "message": "Property \"family_variant\" does not expect an empty value. Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#post_product_model"
@@ -264,7 +264,7 @@ JSON;
 <<<JSON
 {
   "code": 422,
-  "message": "Property \"family_variant\" does not expect an empty value. Check the standard format documentation.",
+  "message": "Property \"family_variant\" does not expect an empty value. Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#post_product_model"
@@ -473,7 +473,7 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the standard format documentation.",
+  "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#post_product_model"
@@ -524,7 +524,7 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the standard format documentation.",
+  "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#post_product_model"
@@ -654,7 +654,7 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "Property \"a_simple_select\" expects an array with the key \"scope\". Check the standard format documentation.",
+  "message": "Property \"a_simple_select\" expects an array with the key \"scope\". Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#post_product_model"

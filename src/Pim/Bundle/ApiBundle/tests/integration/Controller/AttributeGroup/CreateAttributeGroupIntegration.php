@@ -318,7 +318,7 @@ JSON;
 <<<JSON
 {
 	"code": 422,
-	"message": "Property \"code\" expects a scalar as data, \"array\" given. Check the standard format documentation.",
+	"message": "Property \"code\" expects a scalar as data, \"array\" given. Check the expected format on the API documentation.",
 	"_links": {
 	    "documentation": {
 	        "href": "http://api.akeneo.com/api-reference.html#post_attribute_groups"
@@ -350,7 +350,7 @@ JSON;
 <<<JSON
 {
 	"code": 422,
-	"message": "Property \"extra_property\" does not exist. Check the standard format documentation.",
+	"message": "Property \"extra_property\" does not exist. Check the expected format on the API documentation.",
 	"_links": {
 	    "documentation": {
 	        "href": "http://api.akeneo.com/api-reference.html#post_attribute_groups"
@@ -383,7 +383,7 @@ JSON;
 <<<JSON
 {
 	"code": 422,
-	"message": "Property \"labels\" expects an array with valid data, one of the \"labels\" values is not a scalar. Check the standard format documentation.",
+	"message": "Property \"labels\" expects an array with valid data, one of the \"labels\" values is not a scalar. Check the expected format on the API documentation.",
 	"_links": {
 	    "documentation": {
 	        "href": "http://api.akeneo.com/api-reference.html#post_attribute_groups"
@@ -417,7 +417,7 @@ JSON;
 <<<JSON
 {
 	"code": 422,
-	"message": "Property \"labels\" expects an array as data, \"NULL\" given. Check the standard format documentation.",
+	"message": "Property \"labels\" expects an array as data, \"NULL\" given. Check the expected format on the API documentation.",
 	"_links": {
 	    "documentation": {
 	        "href": "http://api.akeneo.com/api-reference.html#post_attribute_groups"
@@ -448,7 +448,7 @@ JSON;
 <<<JSON
 {
 	"code": 422,
-	"message": "Property \"attributes\" expects an array as data, \"NULL\" given. Check the standard format documentation.",
+	"message": "Property \"attributes\" expects an array as data, \"NULL\" given. Check the expected format on the API documentation.",
 	"_links": {
 	    "documentation": {
 	        "href": "http://api.akeneo.com/api-reference.html#post_attribute_groups"

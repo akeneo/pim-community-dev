@@ -222,6 +222,43 @@ class FamilyVariantController
     }
 
     /**
+     * @param Request $request
+     * @param string  $familyCode
+     * @param string  $familyVariantCode
+     *
+     * @throws BadRequestHttpException
+     * @throws UnprocessableEntityHttpException
+     *
+     * @return Response
+     *
+     * @AclAncestor("pim_api_family_variant_edit")
+     */
+    public function partialUpdateAction(Request $request, string $familyCode, string $familyVariantCode): Response
+    {
+        $data = $this->getDecodedContent($request->getContent());
+
+        $isCreation = false;
+        $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariantCode);
+
+        if (null === $familyVariant) {
+            $isCreation = true;
+            $this->validateCodeConsistency($familyVariantCode, $data);
+            $data['code'] = $familyVariantCode;
+            $familyVariant = $this->factory->create();
+        }
+
+        $this->updateFamilyVariant($familyVariant, $data, $familyCode, 'patch_families__family_code__variants__code__');
+        $this->validateFamilyVariant($familyVariant);
+
+        $this->saver->save($familyVariant);
+
+        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $response = $this->getResponse($familyVariant, $status);
+
+        return $response;
+    }
+
+    /**
      * Get a response with a location header to the created or updated resource.
      *
      * @param FamilyVariantInterface $familyVariant
@@ -255,15 +292,15 @@ class FamilyVariantController
     protected function updateFamilyVariant(
         FamilyVariantInterface $familyVariant,
         array $data,
-        $familyCode,
-        $anchor
+        string $familyCode,
+        string $anchor
     ): void {
         try {
             $this->updater->update($familyVariant, $data, ['familyCode' => $familyCode]);
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . $anchor,
-                sprintf('%s Check the standard format documentation.', $exception->getMessage()),
+                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         }
@@ -303,5 +340,29 @@ class FamilyVariantController
         }
 
         return $decodedContent;
+    }
+
+    /**
+     * Throw an exception if the code provided in the url and the code provided in the request body
+     * are not equals when creating a family with a PATCH method.
+     *
+     * The code in the request body is optional when we create a resource with PATCH.
+     *
+     * @param string $familyVariantCode code provided in the url
+     * @param array  $data              body of the request already decoded
+     *
+     * @throws UnprocessableEntityHttpException
+     */
+    protected function validateCodeConsistency($familyVariantCode, array $data)
+    {
+        if (array_key_exists('code', $data) && $familyVariantCode !== $data['code']) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'The code "%s" provided in the request body must match the code "%s" provided in the url.',
+                    $data['code'],
+                    $familyVariantCode
+                )
+            );
+        }
     }
 }

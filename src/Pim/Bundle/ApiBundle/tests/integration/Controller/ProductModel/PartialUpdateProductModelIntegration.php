@@ -306,7 +306,7 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "Property \"family_variant\" cannot be modified, \"familyVariantA2\" given. Check the standard format documentation.",
+  "message": "Property \"family_variant\" cannot be modified, \"familyVariantA2\" given. Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
@@ -348,7 +348,7 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "Property \"parent\" cannot be modified, \"shoes\" given. Check the standard format documentation.",
+  "message": "Property \"parent\" cannot be modified, \"shoes\" given. Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
@@ -630,7 +630,7 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "Property \"parent\" cannot be modified, \"NULL\" given. Check the standard format documentation.",
+  "message": "Property \"parent\" cannot be modified, \"NULL\" given. Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
@@ -947,7 +947,7 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "Property \"parent\" cannot be modified, \"hat\" given. Check the standard format documentation.",
+  "message": "Property \"parent\" cannot be modified, \"hat\" given. Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
@@ -989,7 +989,7 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "Property \"parent\" cannot be modified, \"hat\" given. Check the standard format documentation.",
+  "message": "Property \"parent\" cannot be modified, \"hat\" given. Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
@@ -1084,7 +1084,7 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "Property \"family_variant\" cannot be modified, \"familyVariantA2\" given. Check the standard format documentation.",
+  "message": "Property \"family_variant\" cannot be modified, \"familyVariantA2\" given. Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
@@ -1126,7 +1126,7 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "Property \"a_simple_select\" expects an array with the key \"scope\". Check the standard format documentation.",
+  "message": "Property \"a_simple_select\" expects an array with the key \"scope\". Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"
@@ -1167,7 +1167,7 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "Property \"a_number_float\" expects an array with the key \"scope\". Check the standard format documentation.",
+  "message": "Property \"a_number_float\" expects an array with the key \"scope\". Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#patch_product_models__code_"

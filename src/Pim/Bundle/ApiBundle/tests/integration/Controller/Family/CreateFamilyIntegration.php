@@ -230,7 +230,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
+            'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_families'
@@ -258,7 +258,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "labels" expects an array as data, "NULL" given. Check the standard format documentation.',
+            'message' => 'Property "labels" expects an array as data, "NULL" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_families'
@@ -353,7 +353,7 @@ JSON;
         $expectedContent = <<<JSON
 {
     "code": 422,
-    "message": "Property \"attribute_requirements\" expects a valid code. The channel does not exist, \"ecommerce2\" given. Check the standard format documentation.",
+    "message": "Property \"attribute_requirements\" expects a valid code. The channel does not exist, \"ecommerce2\" given. Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
             "href": "http://api.akeneo.com/api-reference.html#post_families"

@@ -320,7 +320,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "parent" expects a valid parent code. The parent product model does not exist, "invalid" given. Check the standard format documentation.',
+            'message' => 'Property "parent" expects a valid parent code. The parent product model does not exist, "invalid" given. Check the expected format on the API documentation.',
             '_links'  => ["documentation" => ["href" => "http://api.akeneo.com/api-reference.html#post_products"]]
         ];
 

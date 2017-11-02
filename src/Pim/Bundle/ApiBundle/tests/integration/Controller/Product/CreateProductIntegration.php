@@ -856,7 +856,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
+            'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_products'
@@ -895,7 +895,7 @@ JSON;
         $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "unknown_attribute" does not exist. Check the standard format documentation.',
+            'message' => 'Property "unknown_attribute" does not exist. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_products'
