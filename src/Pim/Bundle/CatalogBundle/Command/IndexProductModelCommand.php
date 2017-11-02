@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogBundle\Command;
 
 use Akeneo\Bundle\ElasticsearchBundle\Refresh;
-use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -29,14 +29,14 @@ class IndexProductModelCommand extends ContainerAwareCommand
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
 
-    /** @var BulkObjectDetacherInterface */
-    private $bulkProductModelDetacher;
-
     /** @var BulkIndexerInterface */
     private $bulkProductModelIndexer;
 
     /** @var BulkIndexerInterface */
     private $bulkProductModelDescendantsIndexer;
+
+    /** @var ObjectManager */
+    private $objectManager;
 
     /**
      * {@inheritdoc}
@@ -70,10 +70,10 @@ class IndexProductModelCommand extends ContainerAwareCommand
         $this->checkIndexesExist();
 
         $this->productModelRepository = $this->getContainer()->get('pim_catalog.repository.product_model');
-        $this->bulkProductModelDetacher = $this->getContainer()->get('akeneo_storage_utils.doctrine.object_detacher');
         $this->bulkProductModelIndexer = $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product_model');
         $this->bulkProductModelDescendantsIndexer = $this->getContainer()
             ->get('pim_catalog.elasticsearch.indexer.product_model_descendance');
+        $this->objectManager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 
         $isIndexAll = $input->getOption('all');
         $productModelCodes = $input->getArgument('codes');
@@ -119,7 +119,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
 
             $this->bulkProductModelIndexer->indexAll($rootProductModels, ['index_refresh' => Refresh::disable()]);
             $this->bulkProductModelDescendantsIndexer->indexAll($rootProductModels, ['index_refresh' => Refresh::disable()]);
-            $this->bulkProductModelDetacher->detachAll($rootProductModels);
+            $this->objectManager->clear();
 
             $lastRootProductModel = end($rootProductModels);
 
@@ -169,7 +169,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
             if (0 === $i % self::BULK_SIZE) {
                 $this->bulkProductModelIndexer->indexAll($productModelBulk, ['index_refresh' => Refresh::disable()]);
                 $this->bulkProductModelDescendantsIndexer->indexAll($productModelBulk, ['index_refresh' => Refresh::disable()]);
-                $this->bulkProductModelDetacher->detachAll($productModelBulk);
+                $this->objectManager->clear();
 
                 $productModelBulk = [];
 
@@ -186,7 +186,7 @@ class IndexProductModelCommand extends ContainerAwareCommand
         if (!empty($productModelBulk)) {
             $this->bulkProductModelIndexer->indexAll($productModelBulk, ['index_refresh' => Refresh::disable()]);
             $this->bulkProductModelDescendantsIndexer->indexAll($productModelBulk, ['index_refresh' => Refresh::disable()]);
-            $this->bulkProductModelDetacher->detachAll($productModelBulk);
+            $this->objectManager->clear();
 
             $totalProductModelsIndexed += count($productModelBulk);
         }
