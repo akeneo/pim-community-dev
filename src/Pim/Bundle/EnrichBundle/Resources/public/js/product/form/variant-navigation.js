@@ -16,6 +16,7 @@ define(
         'pim/i18n',
         'pim/user-context',
         'pim/form',
+        'pim/security-context',
         'pim/initselect2',
         'pim/fetcher-registry',
         'pim/media-url-generator',
@@ -34,6 +35,7 @@ define(
         i18n,
         UserContext,
         BaseForm,
+        SecurityContext,
         initSelect2,
         FetcherRegistry,
         MediaUrlGenerator,
@@ -133,29 +135,59 @@ define(
 
                     const dropDown = initSelect2.init($select, options);
 
-                    dropDown.on('select2-selecting', (event) => {
-                        this.redirectToEntity(event.object);
-                    }).on('select2-open', () => {
-                        const footer = this.templateAddChild({
-                            label: __('pim_enrich.entity.product_model.add_child.create')
+                    dropDown
+                        .on('select2-selecting', (event) => {
+                            this.redirectToEntity(event.object);
+                        })
+                        .on('select2-open', () => {
+                            this.addSelect2Footer(dropDown)
                         });
-                        const targetLevel = dropDown[0].dataset.level;
-
-                        $('#select2-drop .select2-drop-footer').remove();
-                        $('#select2-drop')
-                            .append(footer)
-                            .find('.select2-drop-footer').on('click', '.add-child', () => {
-                                dropDown.select2('close');
-
-                                this.getEntityParentCode(targetLevel).then((parentCode) => {
-                                    this.openModal(parentCode);
-                                });
-                            })
-                        ;
-                    });
 
                     this.dropdowns[index] = dropDown;
                 });
+            },
+
+            /**
+             * Adds the footer containing the creation button to the select2 dropdown.
+             *
+             * @param {Element} dropDown
+             */
+            addSelect2Footer: function(dropDown) {
+                $('#select2-drop .select2-drop-footer').remove();
+
+                const targetLevel = dropDown[0].dataset.level;
+                this.getEntityParentCode(targetLevel)
+                    .then((parentCode) => {
+                        this.isVariantProduct(parentCode)
+                            .then((isVariantProduct) => {
+                                if (!this.isCreationGranted(isVariantProduct)) {
+                                    return;
+                                }
+
+                                const footer = this.templateAddChild({
+                                    label: __('pim_enrich.entity.product_model.add_child.create')
+                                });
+
+                                $('#select2-drop')
+                                    .append(footer)
+                                    .find('.select2-drop-footer').on('click', '.add-child', () => {
+                                        dropDown.select2('close');
+                                        this.openModal(parentCode);
+                                    });
+                            });
+                    })
+            },
+
+            /**
+             * Tests the creation ACL depending on the entity type the user wants to create.
+             *
+             * @param {boolean} isVariantProduct
+             *
+             * @returns {boolean}
+             */
+            isCreationGranted: function(isVariantProduct) {
+                return (isVariantProduct && SecurityContext.isGranted('pim_enrich_product_create'))
+                    || (!isVariantProduct && SecurityContext.isGranted('pim_enrich_product_model_create'));
             },
 
             /**
