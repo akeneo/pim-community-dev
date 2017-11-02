@@ -3,6 +3,7 @@
 ## Bug Fixes
 
 - PIM-6904: Product Grid - Horizontal scrollbar should be at the bottom of the screen instead to be at the end of the grid
+- PIM-6960: fix association type deletion when it's the first item of the list
 
 # 1.7.12 (2017-10-25)
 
