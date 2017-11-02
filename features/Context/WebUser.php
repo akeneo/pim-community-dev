@@ -1434,15 +1434,19 @@ class WebUser extends PimContext
         $element = null;
         if ($popin) {
             $element = $this->spin(function () {
-                return $this->getCurrentPage()->find('css', '.modal, .ui-dialog');
+                return $this->getCurrentPage()->find('css', '.modal:not([class^=note-]), .ui-dialog');
             }, 'Modal not found.');
         }
 
         foreach ($table->getRowsHash() as $field => $value) {
-            $this->spin(function () use ($field, $value, $element) {
-                $currentPage = $this->getCurrentPage();
+            $this->spin(function () use ($field, $value, $element, $popin) {
+                if ($popin) {
+                    $page = $this->getPage('Base form');
+                } else {
+                    $page = $this->getCurrentPage();
+                }
 
-                $currentPage->fillField($field, $value, $element);
+                $page->fillField($field, $value, $element);
 
                 return true;
             }, sprintf('Cannot fill the field %s', $field));

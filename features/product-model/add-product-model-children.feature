@@ -15,7 +15,7 @@ Feature: Add children to product model
   Scenario: Successfully add a sub product model with one axis to a root product model
     Given I am on the "apollon" product model page
     When I open the variant navigation children selector for level 1
-    And I press "Create new"
+    And I press the "Create new" button and wait for modal
     Then I should see the text "Add a Color"
     When I fill in "code" with "apollon_black"
     And I fill in "color" with "black"
@@ -41,14 +41,15 @@ Feature: Add children to product model
       | root_model |        | five_axes_family_variant |
     When I am on the "root_model" product model page
     And I open the variant navigation children selector for level 1
-    And I press "Create new"
+    And I press the "Create new" button and wait for modal
     Then I should see the text "Add a Handmade, Material, Reference color, Weight"
-    When I fill in "code" with "model_with_five_axes"
-    And I fill in "color" with "black"
-    And I fill in "handmade" with "yes"
-    And I fill in "material" with "leather"
-    And I fill in "reference_color" with "Red"
-    And I fill in "weight" with "800 GRAM"
+    And I fill in the following information in the popin:
+      | SKU             | tshirt_with_five_axes |
+      | Material        | leather               |
+      | Reference color | Red                   |
+      | Size            | XL                    |
+      | Weight          | 800 GRAM              |
+      | Handmade        | Yes                   |
     And I confirm the child creation
     Then I should see the text "Product model successfully added to the product model"
     And I should be on the product model "model_with_five_axes" edit page
@@ -56,7 +57,7 @@ Feature: Add children to product model
   Scenario: Successfully add a new sub product model when I already am on a sub product product model
     Given I am on the "apollon_blue" product model page
     When I open the variant navigation children selector for level 1
-    And I press "Create new"
+    And I press the "Create new" button and wait for modal
     Then I should see the text "Add a Color"
     When I fill in "code" with "apollon_black"
     And I fill in "color" with "black"
@@ -67,7 +68,7 @@ Feature: Add children to product model
   Scenario: Successfully add a sub product model when I am on a variant product
     Given I am on the "1111111121" product page
     When I open the variant navigation children selector for level 1
-    And I press "Create new"
+    And I press the "Create new" button and wait for modal
     Then I should see the text "Add a Color"
     When I fill in "code" with "apollon_black"
     And I fill in "color" with "black"
@@ -78,7 +79,7 @@ Feature: Add children to product model
   Scenario: Successfully add a variant product to a root product model
     Given I am on the "amor" product model page
     When I open the variant navigation children selector for level 1
-    And I press "Create new"
+    And I press the "Create new" button and wait for modal
     Then I should see the text "Add a Color, Size"
     When I fill in "code" with "amor_black_xl"
     And I fill in "color" with "black"
@@ -90,7 +91,7 @@ Feature: Add children to product model
   Scenario: Successfully add a variant product to a sub product model
     Given I am on the "apollon_blue" product model page
     When I open the variant navigation children selector for level 2
-    And I press "Create new"
+    And I press the "Create new" button and wait for modal
     Then I should see the text "Add a Size"
     When I fill in "code" with "apollon_blue_xl"
     And I fill in "size" with "xl"
@@ -101,7 +102,7 @@ Feature: Add children to product model
   Scenario: Successfully add a new variant product when I already am on a variant product
     When I am on the "1111111121" product model page
     And I open the variant navigation children selector for level 2
-    And I press "Create new"
+    And I press the "Create new" button and wait for modal
     Then I should see the text "Add a Size"
     When I fill in "code" with "apollon_blue_xl"
     And I fill in "size" with "xl"
@@ -127,14 +128,15 @@ Feature: Add children to product model
       | root_model |        | five_axes_family_variant |
     When I am on the "root_model" product model page
     And I open the variant navigation children selector for level 1
-    And I press "Create new"
+    And I press the "Create new" button and wait for modal
     Then I should see the text "Add a Handmade, Material, Reference color, Size, Weight"
-    When I fill in "code" with "tshirt_with_five_axes"
-    And I fill in "handmade" with "yes"
-    And I fill in "material" with "leather"
-    And I fill in "reference_color" with "Red"
-    And I fill in "size" with "xl"
-    And I fill in "weight" with "800 GRAM"
+    And I fill in the following information in the popin:
+      | SKU             | tshirt_with_five_axes |
+      | Material        | leather               |
+      | Reference color | Red                   |
+      | Size            | XL                    |
+      | Weight          | 800 GRAM              |
+      | Handmade        | Yes                   |
     And I confirm the child creation
     Then I should see the text "Variant product successfully added to the product model"
     And I should be on the product "tshirt_with_five_axes" edit page
@@ -142,7 +144,7 @@ Feature: Add children to product model
   Scenario: I cannot add a sub product model without code
     Given I am on the "apollon" product model page
     When I open the variant navigation children selector for level 1
-    And I press "Create new"
+    And I press the "Create new" button and wait for modal
     Then I should see the text "Add a Color"
     And I fill in "color" with "black"
     And I confirm the child creation
@@ -151,7 +153,7 @@ Feature: Add children to product model
   Scenario: I cannot add a variant product without code
     Given I am on the "apollon_blue" product model page
     When I open the variant navigation children selector for level 2
-    And I press "Create new"
+    And I press the "Create new" button and wait for modal
     Then I should see the text "Add a size"
     And I fill in "size" with "xl"
     And I confirm the child creation
@@ -160,7 +162,7 @@ Feature: Add children to product model
   Scenario: I cannot add a sub product model without axis value
     Given I am on the "apollon" product model page
     When I open the variant navigation children selector for level 1
-    And I press "Create new"
+    And I press the "Create new" button and wait for modal
     Then I should see the text "Add a color"
     When I fill in "code" with "apollon_black"
     And I confirm the child creation
@@ -169,7 +171,7 @@ Feature: Add children to product model
   Scenario: I cannot add a variant product without axis value
     Given I am on the "apollon_blue" product model page
     When I open the variant navigation children selector for level 2
-    And I press "Create new"
+    And I press the "Create new" button and wait for modal
     Then I should see the text "Add a size"
     When I fill in "code" with "apollon_black_xl"
     And I confirm the child creation
@@ -178,7 +180,7 @@ Feature: Add children to product model
   Scenario: I cannot add a sub product model with an already existing axis value combination
     Given I am on the "apollon" product model page
     When I open the variant navigation children selector for level 1
-    And I press "Create new"
+    And I press the "Create new" button and wait for modal
     Then I should see the text "Add a color"
     When I fill in "code" with "apollon_new_blue"
     And I fill in "color" with "blue"
@@ -188,7 +190,7 @@ Feature: Add children to product model
   Scenario: I cannot add a variant product with an already existing axis value combination
     Given I am on the "amor" product model page
     When I open the variant navigation children selector for level 1
-    And I press "Create new"
+    And I press the "Create new" button and wait for modal
     Then I should see the text "Add a Color, Size"
     And I fill in "color" with "blue"
     And I fill in "size" with "xl"

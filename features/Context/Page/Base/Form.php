@@ -418,12 +418,22 @@ class Form extends Base
     {
         $label     = $this->extractLabelElement($field, $element);
         $fieldType = $this->getFieldType($label);
+
+        $message = sprintf("%s -> %s\n", $label->getText(), $fieldType);
+        error_log($message, 3, '/tmp/field_types.log');
+
         switch ($fieldType) {
             case 'multiSelect2':
                 $this->fillMultiSelect2Field($label, $value);
                 break;
             case 'simpleSelect2':
                 $this->fillSelect2Field($label, $value);
+                break;
+            case 'metric':
+                $this->fillMetricField($label, $value);
+                break;
+            case 'switch':
+                $this->fillSwitchField($field, $value);
                 break;
             case 'datepicker':
                 $this->fillDateField($label, $value);
@@ -725,6 +735,14 @@ class Form extends Base
                 return 'select';
             }
 
+            if ($this->getClosest($label, 'AknFieldContainer')->find('css', '.metric-container')) {
+                return 'metric';
+            }
+
+            if ($this->getClosest($label, 'AknFieldContainer')->find('css', '.switch')) {
+                return 'switch';
+            }
+
             if (null !== $this->find('css', sprintf('#date_selector_%s', $for))) {
                 return 'datepicker';
             }
@@ -787,6 +805,62 @@ class Form extends Base
         $field->setValue($value);
 
         return;
+    }
+
+    /**
+     * Fills a metric element with $value, identified by its $label.
+     *
+     * @param NodeElement $label
+     * @param string      $value
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function fillMetricField(NodeElement $label, $value)
+    {
+        if (false !== strpos($value, ' ')) {
+            list($text, $select) = explode(' ', $value);
+        } else {
+            $text   = $value;
+            $select = null;
+        }
+
+        $fieldContainer = $this->getClosest($label, 'AknFieldContainer');
+        $textField = $fieldContainer->find('css', 'input.amount');
+        $textField->setValue($text);
+
+        if (null !== $select) {
+            $selectField = $fieldContainer->find('css', 'select.unit');
+            $selectField->selectOption($select);
+        }
+    }
+
+    /**
+     * Fills a switch element with $value, identified by its $label.
+     *
+     * @param string $field
+     * @param string $value
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return bool
+     */
+    protected function fillSwitchField($field, $value)
+    {
+        // $fieldContainer = $this->getClosest($label, 'AknFieldContainer');
+        //$checkbox = $fieldContainer->find('css', 'input[type="checkbox"]');
+
+        if ('Yes' === $value) {
+            return $this->toggleSwitch($field, true);
+        }
+
+        if ('No' === $value) {
+            return $this->toggleSwitch($field, false);
+        }
+
+        throw new \InvalidArgumentException(sprintf(
+            'Switch fields accept only "Yes" or "No" value, %s provided.',
+            $value
+        ));
     }
 
     /**
