@@ -100,3 +100,4 @@ project_calculation;All;IT support,Manager
 refresh_project_completeness_calculation;All;IT support,Manager
 compute_product_models_descendants;All;IT support,Manager
 compute_completeness_of_products_family;All;IT support,Manager
+compute_family_variant_structure_changes;All;IT support,Manager

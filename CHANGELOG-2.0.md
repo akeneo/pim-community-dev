@@ -4,6 +4,10 @@
 
 - PIM-6948: Command `pim:published-products:index` command has been removed, please use `pimee:published-products:index` command instead.
 
+# New jobs
+IMPORTANT: In order for your PIM to work properly, you will need to run the following commands to add the missing job profile accesses.
+- Add the permissions for the job instance `compute_family_variant_structure_changes` with `bin/console pim:installer:grant-backend-processes-accesses --env=prod`
+
 # 2.0.5 (2017-10-26)
 
 ## Bug Fixes
