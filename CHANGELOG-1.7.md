@@ -6,6 +6,10 @@
 - PIM-6960: fix association type deletion when it's the first item of the list
 - API-216: add application/x-www-form-urlencoded as allowed Content-Type when getting a token with the API
 
+## Improvements
+
+- PIM-6973: Manage removed association types with `pim:mongodb:clean` command
+
 # 1.7.12 (2017-10-25)
 
 ## Bug Fixes
