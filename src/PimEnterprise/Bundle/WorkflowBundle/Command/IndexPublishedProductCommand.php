@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Command;
 
+use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -25,7 +26,7 @@ class IndexPublishedProductCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:published-product:index')
+            ->setName('pimee:published-product:index')
             ->addOption(
                 'page-size',
                 false,
@@ -44,25 +45,26 @@ class IndexPublishedProductCommand extends ContainerAwareCommand
         $publishedProductRepository = $this->getContainer()->get('pimee_workflow.repository.published_product');
         $publishedProductIndexer = $this->getContainer()->get('pim_catalog.elasticsearch.published_product_indexer');
 
-        $pageSize = $input->getOption('page-size');
+        $bulkSize = $input->getOption('page-size') ?? self::DEFAULT_PAGE_SIZE;
+
         $totalElements = $publishedProductRepository->countAll();
-        $numberOfPage = ceil($totalElements / $pageSize);
 
         $output->writeln(sprintf('<info>%s published products to index</info>', $totalElements));
 
-        for ($currentPage = 1; $currentPage <= $numberOfPage; $currentPage++) {
-            $offset = $pageSize * ($currentPage - 1);
-            $output->writeln(
-                sprintf(
-                    'Indexing published products %d to %d',
-                    $offset + 1,
-                    ($offset + $pageSize) < $totalElements ? ($offset + $pageSize) : $totalElements
-                )
-            );
+        $lastProduct = null;
+        $progress = 0;
 
-            $publishedProductIndexer->indexAll(
-                $publishedProductRepository->findAllWithOffsetAndSize($offset, $pageSize)
-            );
+        while (!empty($publishedProducts = $publishedProductRepository->searchAfter($lastProduct, $bulkSize))) {
+            $output->writeln(sprintf(
+                'Indexing published products %d to %d',
+                $progress + 1,
+                $progress + count($publishedProducts)
+            ));
+
+            $publishedProductIndexer->indexAll($publishedProducts, ['index_refresh' => Refresh::disable()]);
+
+            $lastProduct = end($publishedProducts);
+            $progress += count($publishedProducts);
         }
 
         $message = sprintf('<info>%d published products indexed</info>', $totalElements);

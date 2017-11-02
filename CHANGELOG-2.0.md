@@ -1,3 +1,9 @@
+# 2.0.X
+
+## Bug fixes
+
+- PIM-6948: Command `pim:published-products:index` command has been removed, please use `pimee:published-products:index` command instead.
+
 # 2.0.5 (2017-10-26)
 
 ## Bug Fixes
