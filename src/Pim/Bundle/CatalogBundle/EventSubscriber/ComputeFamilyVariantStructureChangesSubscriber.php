@@ -28,6 +28,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
 {
     /** @var TokenStorageInterface */
     private $tokenStorage;
+
     /** @var JobLauncherInterface */
     private $jobLauncher;
 
@@ -62,7 +63,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             StorageEvents::PRE_SAVE => 'checkIsFamilyVariantNew',
@@ -76,7 +77,7 @@ class ComputeFamilyVariantStructureChangesSubscriber implements EventSubscriberI
      *
      * @param GenericEvent $event
      */
-    public function checkIsFamilyVariantNew(GenericEvent $event)
+    public function checkIsFamilyVariantNew(GenericEvent $event): void
     {
         $subject = $event->getSubject();
         if (!$subject instanceof FamilyVariantInterface) {
