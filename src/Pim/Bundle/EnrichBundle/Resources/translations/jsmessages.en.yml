@@ -449,6 +449,9 @@ pim_enrich:
             complete_variant_product: variant product
             complete_variant_products: variant products
             family_variant: Variant
+            flash:
+                product_model_added: Product model successfully added to the product model
+                variant_product_added: Variant product successfully added to the product model
         product:
             tab:
                 associations:
@@ -512,10 +515,6 @@ pim_enrich:
             mass_edit:
                 select_attributes: Select attributes
                 select: Select
-        product_model:
-            flash:
-                product_model_added: Product model successfully added to the product model
-                variant_product_added: Variant product successfully added to the product model
         association_type:
             tab:
                 properties:
