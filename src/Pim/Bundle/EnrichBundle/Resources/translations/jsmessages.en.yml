@@ -262,10 +262,10 @@ pim_enrich:
             variant_axis: Variant axis
             title: products
             add_child:
-                create: Create new
+                create: Add new
                 cancel: Cancel
                 confirm: Confirm
-                create_label: "Add a {{ axes }}"
+                create_label: "Add a new {{ axes }}"
                 fields:
                     code: Code
         association_type:
