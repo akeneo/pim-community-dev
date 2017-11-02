@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\AST\Join;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProduct;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
@@ -146,6 +146,36 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
             $qb->andWhere('pm.id > :productModelId')
                 ->setParameter(':productModelId', $productModel->getId());
         }
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findSubProductModels(FamilyVariantInterface $familyVariant): array
+    {
+        $qb = $this
+            ->createQueryBuilder('pm')
+            ->where('pm.parent IS NOT NULL')
+            ->andWhere('pm.familyVariant = :familyVariant')
+            ->setParameter('familyVariant', $familyVariant->getId())
+        ;
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findRootProductModels(FamilyVariantInterface $familyVariant): array
+    {
+        $qb = $this
+            ->createQueryBuilder('pm')
+            ->where('pm.parent IS NULL')
+            ->andWhere('pm.familyVariant = :familyVariant')
+            ->setParameter('familyVariant', $familyVariant->getId())
+        ;
 
         return $qb->getQuery()->execute();
     }

@@ -1,6 +1,7 @@
 parameters:
     pim_catalog.tasklet.compute_product_models_descendants.class: Pim\Component\Catalog\Job\ComputeProductModelsDescendantsTasklet
     pim_catalog.tasklet.compute_completeness_of_products_family.class: Pim\Component\Catalog\Job\ComputeCompletenessOfProductsFamilyTasklet
+    pim_catalog.tasklet.compute_family_variant_structure_changes.class: Pim\Component\Catalog\Job\ComputeFamilyVariantStructureChangesTasklet
 
     pim_catalog.compute_product_models_descendants.job_type: 'compute_product_models_descendants'
     pim_catalog.compute_product_models_descendants.job_name: 'compute_product_models_descendants'
@@ -11,6 +12,11 @@ parameters:
     pim_catalog.compute_completeness_of_products_family.job_name: 'compute_completeness_of_products_family'
     pim_catalog.compute_completeness_of_products_family.tasklet_name: 'compute_completeness_of_products_family'
     pim_catalog.compute_completeness_of_products_family.connector_name: 'compute completeness of products family'
+
+    pim_catalog.compute_family_variant_structure_changes.job_type: 'compute_family_variant_structure_changes'
+    pim_catalog.compute_family_variant_structure_changes.job_name: 'compute_family_variant_structure_changes'
+    pim_catalog.compute_family_variant_structure_changes.tasklet_name: 'compute_family_variant_structure_changes'
+    pim_catalog.compute_family_variant_structure_changes.connector_name: 'compute_family_variant_structure_changes'
 
 services:
     pim_catalog.tasklet.compute_product_models_descendants:
@@ -76,3 +82,39 @@ services:
                 name: akeneo_batch.job
                 connector: '%pim_catalog.compute_completeness_of_products_family.connector_name%'
                 type: '%pim_catalog.compute_completeness_of_products_family.job_type%'
+
+    pim_catalog.tasklet.compute_family_variant_structure_changes:
+        class: '%pim_catalog.tasklet.compute_family_variant_structure_changes.class%'
+        arguments:
+            - '@pim_catalog.repository.family_variant'
+            - '@pim_catalog.repository.variant_product'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.saver.product_model'
+            - '@pim_catalog.entity_with_family_variant.keep_only_values_for_variation'
+            - '@validator'
+        public: false
+
+    pim_catalog.step.compute_family_variant_structure_changes:
+        class: '%pim_connector.step.tasklet.class%'
+        arguments:
+            - '%pim_catalog.compute_family_variant_structure_changes.tasklet_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_catalog.tasklet.compute_family_variant_structure_changes'
+        public: false
+
+    pim_catalog.job.compute_family_variant_structure_changes:
+        class: '%pim_connector.job.simple_job.class%'
+        arguments:
+            - '%pim_catalog.compute_family_variant_structure_changes.job_name%'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            -
+                - '@pim_catalog.step.compute_family_variant_structure_changes'
+        public: false
+        tags:
+            -
+                name: akeneo_batch.job
+                connector: '%pim_catalog.compute_family_variant_structure_changes.connector_name%'
+                type: '%pim_catalog.compute_family_variant_structure_changes.job_type%'

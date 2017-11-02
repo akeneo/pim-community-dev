@@ -38,7 +38,6 @@ class UpdateFamilyVariantIntegration extends TestCase
             'variation_name',
         ];
 
-
         $familyVariant = $this->getFamilyVariant('shoes_size');
 
         $this->get('pim_catalog.updater.family_variant')->update(
@@ -59,6 +58,7 @@ class UpdateFamilyVariantIntegration extends TestCase
                             'erp_name',
                             'image',
                             'weight',
+                            'size',
                         ],
                         'level' => 1,
                     ],
@@ -92,7 +92,6 @@ class UpdateFamilyVariantIntegration extends TestCase
                 'description',
                 'ean',
                 'erp_name',
-                'eu_shoes_size',
                 'image',
                 'size',
                 'sku',
@@ -207,17 +206,19 @@ class UpdateFamilyVariantIntegration extends TestCase
     {
         $familyVariant = $this->getFamilyVariant('clothing_color_size');
 
+        // Move "brand" from common to attribute set level 2
+        // Move Collection from from common to attribute set level 1
         $this->get('pim_catalog.updater.family_variant')->update(
             $familyVariant,
             [
                 'variant_attribute_sets' => [
                     [
-                        'attributes' => ['brand'],
-                        'level' => 2,
+                        'attributes' => ['collection', 'color', 'composition', 'material', 'variation_image', 'variation_name'],
+                        'level' => 1,
                     ],
                     [
-                        'attributes' => ['collection'],
-                        'level' => 1,
+                        'attributes' => ['brand', 'ean', 'sku', 'weight', 'size'],
+                        'level' => 2,
                     ],
                 ],
             ]
