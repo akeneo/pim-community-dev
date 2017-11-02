@@ -35,8 +35,8 @@ Feature: Create variants of family through CSV import
     And I launch the import job
     And I wait for the "csv_catalog_modeling_family_variant_import" job to finish
     Then there should be the following family variants:
-      | code               | family | label-de_DE       | label-en_US   | label-fr_FR           | variant-axes_1 | variant-attributes_1         |
-      | another_shoes_size | shoes  | Schuhe nach Größe | Shoes by size | Chaussures par taille | eu_shoes_size  | sku,eu_shoes_size,weight,ean |
+      | code               | family | label-de_DE       | label-en_US   | label-fr_FR           | variant-axes_1 | variant-attributes_1 |
+      | another_shoes_size | shoes  | Schuhe nach Größe | Shoes by size | Chaussures par taille | eu_shoes_size  | sku,weight,ean       |
 
   Scenario: I successfully import a variant by color and size with one level of variation for the family clothing
     Given the following CSV file to import:
@@ -50,8 +50,8 @@ Feature: Create variants of family through CSV import
     And I launch the import job
     And I wait for the "csv_catalog_modeling_family_variant_import" job to finish
     Then there should be the following family variants:
-      | code                        | family   | label-de_DE                   | label-en_US                | label-fr_FR                     | variant-axes_1 | variant-attributes_1                                      |
-      | another_clothing_color_size | clothing | Kleidung nach Farbe und Größe | Clothing by color and size | Vêtements par couleur et taille | color,size     | color,composition,ean,image,name,size,sku,variation_image |
+      | code                        | family   | label-de_DE                   | label-en_US                | label-fr_FR                     | variant-axes_1 | variant-attributes_1                           |
+      | another_clothing_color_size | clothing | Kleidung nach Farbe und Größe | Clothing by color and size | Vêtements par couleur et taille | color,size     | composition,ean,image,name,sku,variation_image |
 
   Scenario: I successfully import a variant by color and size with one level of variation for the family clothing with minimal data
     Given the following CSV file to import:
