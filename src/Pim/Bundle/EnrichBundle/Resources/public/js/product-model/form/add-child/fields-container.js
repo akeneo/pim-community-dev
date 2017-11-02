@@ -87,7 +87,7 @@ define(
                                 this.getAxesAttributes(familyVariant, currentLevel)
                                     .then((axesAttributes) => {
                                         return $.when.apply($, axesAttributes.map(
-                                            (attribute) => this.createAttributeField(attribute)
+                                            (attribute) => this.createAttributeField(attribute, true)
                                         ));
                                     })
                                     .then((...fields) => {
@@ -98,7 +98,7 @@ define(
                                                 .getFetcher('attribute')
                                                 .getIdentifierAttribute()
                                                 .then((identifier) => {
-                                                    return this.createAttributeField(identifier).then(
+                                                    return this.createAttributeField(identifier, false).then(
                                                         (identifierField) => fields.concat(identifierField)
                                                     );
                                                 });
@@ -157,11 +157,12 @@ define(
              *
              * This logic could be extracted to a factory later.
              *
-             * @param {Object} attribute
+             * @param {Object}  attribute
+             * @param {boolean} isAxis
              *
              * @returns {Promise}
              */
-            createAttributeField(attribute) {
+            createAttributeField(attribute, isAxis) {
                 const fieldModuleName = this.config.fieldModules[attribute.field_type];
 
                 if (undefined === fieldModuleName) {
@@ -179,6 +180,12 @@ define(
                             UserContext.get('uiLocale'),
                             attribute.code
                         );
+
+                        if (isAxis) {
+                            newFormMeta
+                                .config
+                                .requiredLabel = 'pim_enrich.entity.product_model.add_child.fields.required_label';
+                        }
 
                         return FormBuilder.buildForm(newFormMeta);
                     })

@@ -267,6 +267,7 @@ pim_enrich:
                 confirm: Confirm
                 create_label: "Add a new {{ axes }}"
                 fields:
+                    required_label: (variant axis)
                     code: Code
         association_type:
             info:

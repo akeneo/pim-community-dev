@@ -113,7 +113,7 @@ define([
             return $.Deferred()
                 .resolve({
                     fieldLabel: this.getLabel(),
-                    requiredLabel: __('pim_enrich.form.required'),
+                    requiredLabel: this.getRequiredLabel(),
                     fieldName: this.fieldName,
                     fieldId: this.getFieldId(),
                     errors: this.errors,
@@ -136,10 +136,22 @@ define([
          */
         postRender() {},
 
+        /**
+         * @returns {string}
+         */
         getLabel() {
             return undefined === this.config.label
                 ? '[' + this.fieldName + ']'
                 : __(this.config.label);
+        },
+
+        /**
+         * @returns {string}
+         */
+        getRequiredLabel() {
+            return undefined === this.config.requiredLabel
+                ? __('pim_enrich.form.required')
+                : __(this.config.requiredLabel);
         },
 
         /**
