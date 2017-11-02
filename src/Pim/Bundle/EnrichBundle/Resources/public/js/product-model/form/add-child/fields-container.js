@@ -203,6 +203,7 @@ define(
 
                         if ('pim_catalog_metric' === attribute.type) {
                             field.setMetricFamily(attribute.metric_family);
+                            field.setDefaultMetricUnit(attribute.default_metric_unit);
                         }
 
                         if ('pim_catalog_simpleselect' === attribute.type) {

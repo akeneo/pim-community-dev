@@ -34,15 +34,21 @@ define([
         },
         template: _.template(template),
         metricFamily: null,
+        defaultMetricUnit: null,
 
         initialize() {
             this.metricFamily = null;
+            this.defaultMetricUnit = null;
 
             return BaseField.prototype.initialize.apply(this, arguments);
         },
 
         setMetricFamily(metricFamily) {
             this.metricFamily = metricFamily;
+        },
+
+        setDefaultMetricUnit(defaultMetricUnit) {
+            this.defaultMetricUnit = defaultMetricUnit;
         },
 
         /**
@@ -72,7 +78,10 @@ define([
                 return Object.assign(
                     {},
                     parentContext,
-                    { unitChoices: this.formatChoices(measures[this.metricFamily].units) }
+                    {
+                        unitChoices: this.formatChoices(measures[this.metricFamily].units),
+                        defaultUnit: this.defaultMetricUnit
+                    }
                 );
             });
         },

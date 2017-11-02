@@ -10,7 +10,7 @@
     >
         <% _.each(_.keys(unitChoices), function(unit) { %>
             <option value="<%- unit %>"
-                    <% if (value.unit === unit) { %> selected<% } %>
+                    <% if ((null === value.unit && defaultUnit === unit) || value.unit === unit) { %> selected<% } %>
             >
                     <%- __(unit) %>
             </option>
