@@ -37,6 +37,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
         $record->getValue('identifier')->willReturn('foo');
         $record->getValue('dataLocale')->willReturn('en_US');
+        $record->getValue('document_type')->willReturn('product');
         $localeRepository->findOneBy(['code' => 'en_US'])->willReturn($locale);
         $productRepository->findOneByIdentifier('foo')->willReturn($product);
 
@@ -129,6 +130,28 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
                 'show' => false,
                 'edit' => true,
                 'edit_categories' => false,
+                'delete' => false,
+                'toggle_status' => false
+            ]
+        );
+    }
+
+    function it_shows_the_edit_categories_for_product_models (
+        $record,
+        $product,
+        $authorizationChecker
+    ) {
+        $record->getValue('document_type')->willReturn('product_model');
+
+        $authorizationChecker->isGranted(Attributes::EDIT, $product)->willReturn(true);
+        $authorizationChecker->isGranted(Attributes::OWN, $product)->willReturn(false);
+
+        $closure = $this->getActionConfigurationClosure();
+        $closure($record)->shouldReturn(
+            [
+                'show' => false,
+                'edit' => true,
+                'edit_categories' => true,
                 'delete' => false,
                 'toggle_status' => false
             ]
