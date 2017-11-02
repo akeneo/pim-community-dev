@@ -241,7 +241,10 @@ define(
 
                 return formModal
                     .saveProductModelChild(route)
-                    .done(() => messenger.notify('success', message));
+                    .done((entity) => {
+                        this.redirectToEntity(entity.meta);
+                        messenger.notify('success', message);
+                    });
             },
 
             /**
@@ -379,7 +382,7 @@ define(
             /**
              * Redirect the user to the given entity edit page
              *
-             * @param entity
+             * @param {Object} entity
              */
             redirectToEntity: function (entity) {
                 if (!entity) {
