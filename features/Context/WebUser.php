@@ -1279,7 +1279,9 @@ class WebUser extends RawMinkContext
         }
 
         foreach ($table->getRowsHash() as $field => $value) {
-            $this->getCurrentPage()->fillField($field, $value, $element);
+            $element = $this->spin(function () {
+                return $this->getCurrentPage()->fillField($field, $value, $element);
+            }, 'Field not found.');
         }
     }
 

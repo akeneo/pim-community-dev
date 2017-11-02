@@ -1,6 +1,8 @@
 default:
     paths:
         features: features
+    filters:
+        tags: "~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app"
     context:
         class: Context\FeatureContext
         parameters:
@@ -21,7 +23,9 @@ default:
                 env: behat
                 debug: false
         SensioLabs\Behat\PageObjectExtension\Extension: ~
+        Liuggio\Fastest\Behat2\ListFeaturesExtension\Extension: ~
     formatter:
         name: Context\SummaryFormatter, Pim\Behat\Formatter\JUnitFormatter
         parameters:
             output_path: null,app/build/logs/behat/
+
