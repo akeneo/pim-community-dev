@@ -90,6 +90,9 @@ abstract class ApiTestCase extends WebTestCase
         $client = static::createClient($options, $server);
         $client->setServerParameter('HTTP_AUTHORIZATION', 'Bearer '.$accessToken);
 
+        $aclManager = $this->get('oro_security.acl.manager');
+        $aclManager->clearCache();
+
         if (!isset($server['CONTENT_TYPE'])) {
             $client->setServerParameter('CONTENT_TYPE', 'application/json');
         }
