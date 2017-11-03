@@ -1452,9 +1452,9 @@ class WebUser extends PimContext
     /**
      * @param TableNode $table
      *
-     * @Given /^I fill in the following child values:$/
+     * @Given /^I fill in the following child information:$/
      */
-    public function iFillInTheFollowingChildValues(TableNode $table)
+    public function iFillInTheFollowingChildInformation(TableNode $table)
     {
         $element = $this->spin(function () {
             return $this->getCurrentPage()->find('css', '.modal:not([class^=note-]), .ui-dialog');

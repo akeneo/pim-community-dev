@@ -419,9 +419,6 @@ class Form extends Base
         $label     = $this->extractLabelElement($field, $element);
         $fieldType = $this->getFieldType($label);
 
-        $message = sprintf("%s -> %s\n", $label->getText(), $fieldType);
-        error_log($message, 3, '/tmp/field_types.log');
-
         switch ($fieldType) {
             case 'multiSelect2':
                 $this->fillMultiSelect2Field($label, $value);
