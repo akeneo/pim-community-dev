@@ -51,7 +51,11 @@ class VariantAttributeSet implements VariantAttributeSetInterface
      */
     public function hasAttribute(AttributeInterface $attribute): bool
     {
-        return $this->attributes->contains($attribute);
+        $attributeCodes = $this->attributes->map(function (AttributeInterface $attribute) {
+            return $attribute->getCode();
+        })->toArray();
+
+        return in_array($attribute->getCode(), $attributeCodes, true);
     }
 
     /**
@@ -69,14 +73,14 @@ class VariantAttributeSet implements VariantAttributeSetInterface
      */
     public function setAttributes(array $attributes): void
     {
-        $attributesWithoutAxis = [];
+        $attributesWithoutAxes = [];
         foreach ($attributes as $attribute) {
-            if (!$this->axes->contains($attributes)) {
-                $attributesWithoutAxis[] = $attribute;
+            if (!$this->isAxis($attribute)) {
+                $attributesWithoutAxes[] = $attribute;
             }
         }
 
-        $this->attributes = new ArrayCollection($attributesWithoutAxis);
+        $this->attributes = new ArrayCollection($attributesWithoutAxes);
     }
 
     /**
@@ -93,10 +97,10 @@ class VariantAttributeSet implements VariantAttributeSetInterface
     public function setAxes(array $axes): void
     {
         foreach ($axes as $axis) {
-            if (!$this->axes->contains($axis)) {
+            if (!$this->isAxis($axis)) {
                 $this->axes->add($axis);
             }
-            if ($this->attributes->contains($axis)) {
+            if ($this->hasAttribute($axis)) {
                 $this->attributes->removeElement($axis);
             }
         }
@@ -131,5 +135,21 @@ class VariantAttributeSet implements VariantAttributeSetInterface
         }
 
         return $labels;
+    }
+
+    /**
+     * Checks whether an attribute is defined as Axis
+     *
+     * @param AttributeInterface $attribute
+     *
+     * @return bool
+     */
+    private function isAxis(AttributeInterface $attribute): bool
+    {
+        $axesCodes = $this->axes->map(function (AttributeInterface $attribute) {
+            return $attribute->getCode();
+        })->toArray();
+
+        return in_array($attribute->getCode(), $axesCodes, true);
     }
 }
