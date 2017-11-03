@@ -39,7 +39,7 @@
                 PageTitle.set({ 'category.label': '{{ form.vars.value.label }}' });
 
                 FetcherRegistry.initialize().done(function () {
-                    FormBuilder.buildForm('pim-menu-user-navigation').then(function (form) {
+                    FormBuilder.build('pim-menu-user-navigation').then(function (form) {
                         $('.user-menu').append(form.el);
                         form.render();
                     }.bind(this));
