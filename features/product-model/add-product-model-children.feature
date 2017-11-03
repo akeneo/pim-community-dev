@@ -21,8 +21,7 @@ Feature: Add children to product model
       | Code (required)      | apollon_black |
       | Color (variant axis) | Black         |
     And I confirm the child creation
-    Then I should see the text "Product model successfully added to the product model"
-    And I should be on the product model "apollon_black" edit page
+    Then I should be on the product model "apollon_black" edit page
 
   Scenario: Successfully add a sub product model with many axes to a root product model
     Given the following attribute:
@@ -52,8 +51,7 @@ Feature: Add children to product model
       | Weight (variant axis)          | 800 GRAM             |
       | Handmade (variant axis)        | Yes                  |
     And I confirm the child creation
-    Then I should see the text "Product model successfully added to the product model"
-    And I should be on the product model "model_with_five_axes" edit page
+    Then I should be on the product model "model_with_five_axes" edit page
 
   Scenario: Successfully add a new sub product model when I already am on a sub product product model
     Given I am on the "apollon_blue" product model page
@@ -64,8 +62,7 @@ Feature: Add children to product model
       | Code (required)      | apollon_black |
       | Color (variant axis) | Black         |
     And I confirm the child creation
-    Then I should see the text "Product model successfully added to the product model"
-    And I should be on the product model "apollon_black" edit page
+    Then I should be on the product model "apollon_black" edit page
 
   Scenario: Successfully add a sub product model when I am on a variant product
     Given I am on the "1111111121" product page
@@ -76,8 +73,7 @@ Feature: Add children to product model
       | Code (required)      | apollon_black |
       | Color (variant axis) | Black         |
     And I confirm the child creation
-    Then I should see the text "Product model successfully added to the product model"
-    And I should be on the product model "apollon_black" edit page
+    Then I should be on the product model "apollon_black" edit page
 
   Scenario: Successfully add a variant product to a root product model
     Given I am on the "amor" product model page
@@ -89,8 +85,7 @@ Feature: Add children to product model
       | Color (variant axis) | Black         |
       | Size (variant axis)  | XL            |
     And I confirm the child creation
-    Then I should see the text "Variant product successfully added to the product model"
-    And I should be on the product "amor_black_xl" edit page
+    Then I should be on the product "amor_black_xl" edit page
 
   Scenario: Successfully add a variant product to a sub product model
     Given I am on the "apollon_blue" product model page
@@ -101,8 +96,7 @@ Feature: Add children to product model
       | SKU (required)      | apollon_blue_xl |
       | Size (variant axis) | XL              |
     And I confirm the child creation
-    Then I should see the text "Variant product successfully added to the product model"
-    And I should be on the product "apollon_blue_xl" edit page
+    Then I should be on the product "apollon_blue_xl" edit page
 
   Scenario: Successfully add a new variant product when I already am on a variant product
     When I am on the "1111111121" product page
@@ -113,8 +107,7 @@ Feature: Add children to product model
       | SKU (required)      | apollon_blue_xl |
       | Size (variant axis) | XL              |
     And I confirm the child creation
-    Then I should see the text "Variant product successfully added to the product model"
-    And I should be on the product "apollon_blue_xl" edit page
+    Then I should be on the product "apollon_blue_xl" edit page
 
   Scenario: Successfully add a variant product with many axes to a root product model
     Given the following attribute:
@@ -144,8 +137,7 @@ Feature: Add children to product model
       | Weight (variant axis)          | 800 GRAM              |
       | Handmade (variant axis)        | Yes                   |
     And I confirm the child creation
-    Then I should see the text "Variant product successfully added to the product model"
-    And I should be on the product "tshirt_with_five_axes" edit page
+    Then I should be on the product "tshirt_with_five_axes" edit page
 
   Scenario: I cannot add a sub product model without code
     Given I am on the "apollon" product model page
