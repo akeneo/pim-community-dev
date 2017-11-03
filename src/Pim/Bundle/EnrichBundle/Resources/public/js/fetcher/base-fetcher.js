@@ -45,7 +45,7 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
                 if (!_.has(this.options.urls, 'list')) {
                     return $.Deferred().reject().promise();
                 } else {
-                    url = this.options.urls.list
+                    url = this.options.urls.list;
                 }
             } else {
                 url = this.options.urls.search;
@@ -114,18 +114,18 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
             }
 
             return $.when(
-                    this.getJSON(
-                        this.options.urls.list,
-                        _.extend({ identifiers: uncachedIdentifiers.join(',') }, options)
-                    ).then(_.identity),
-                    this.getIdentifierField()
-                ).then(function (entities, identifierCode) {
-                    _.each(entities, function (entity) {
-                        this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity).promise();
-                    }.bind(this));
-
-                    return this.getObjects(_.pick(this.entityPromises, identifiers));
+                this.getJSON(
+                    this.options.urls.list,
+                    _.extend({ identifiers: uncachedIdentifiers.join(',') }, options)
+                ).then(_.identity),
+                this.getIdentifierField()
+            ).then(function (entities, identifierCode) {
+                _.each(entities, function (entity) {
+                    this.entityPromises[entity[identifierCode]] = $.Deferred().resolve(entity).promise();
                 }.bind(this));
+
+                return this.getObjects(_.pick(this.entityPromises, identifiers));
+            }.bind(this));
         },
 
         /**

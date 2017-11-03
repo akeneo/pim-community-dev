@@ -2,14 +2,18 @@
 
 ## Better manage products with variants!
 
-- PIM-6354: Adds product models during quick exports
+- PIM-6354: Adds product models during quick exports.
+- PIM-6449: Adds a sub product model to a product model.
+- PIM-6450: Adds a variant product to a product model.
 
 ## Bug fixes
+
 - PIM-6948: Use search after method for products and product models indexing instead of offset limit
 - PIM-6922: Fix sort order on attribute groups
 - PIM-6880: Remove the old variation asset icon
 
 ## Improvements
+
 - TIP-824: Increase CLI products indexing performance by 20%
 
 ## BC breaks
@@ -19,6 +23,7 @@
 - Updates quick export configurations to remove `filePath` and add `filePathProduct` and `filePathProductModel`.
 - Adds `Pim\Component\Catalog\Repository\ProductRepositoryInterface.php::searchAfter()` and `Pim\Component\Catalog\Repository\ProductModelRepositoryInterface::searchAfter()` methods
 - Deletes `Pim\Component\Catalog\Repository\ProductRepositoryInterface.php::findAllWithOffsetAndSize()` and `Pim\Component\Catalog\Repository\ProductModelRepositoryInterface::findRootProductModelsWithOffsetAndSize()` methods.
+- Change the constructor of `Pim\Bundle\EnrichBundle\Controller\Rest\ProductController` to add `Pim\Component\Catalog\Builder\ProductBuilderInterface`.
 
 ## Update jobs
 

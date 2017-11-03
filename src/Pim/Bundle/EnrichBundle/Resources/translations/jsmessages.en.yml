@@ -260,6 +260,15 @@ pim_enrich:
             read_only_parent_attribute_from_common: This attribute can be updated on the common attributes.
             read_only_parent_attribute_from_model: "This attribute can be updated on the attributes by {{ axes }}"
             variant_axis: Variant axis
+            title: products
+            add_child:
+                create: Add new
+                cancel: Cancel
+                confirm: Confirm
+                create_label: "Add a new {{ axes }}"
+                fields:
+                    required_label: (variant axis)
+                    code: Code
         association_type:
             info:
                 deletion_successful: Association type successfully deleted.
@@ -440,6 +449,10 @@ pim_enrich:
             choose_variant: Choose a variant
             complete_variant_product: variant product
             complete_variant_products: variant products
+            family_variant: Variant
+            flash:
+                product_model_added: Product model successfully added to the product model
+                variant_product_added: Variant product successfully added to the product model
         product:
             tab:
                 associations:
@@ -751,7 +764,6 @@ pim_enrich:
                         validation_regexp: Regular expression
                         validation_rule: Validation rule
                         wysiwyg_enabled: Rich text editor enabled
-                        family_variant: Variant
                     default_label:
                         default_metric_unit: Choose a unit
                         group: Choose the attribute group

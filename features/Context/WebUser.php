@@ -1452,6 +1452,28 @@ class WebUser extends PimContext
     /**
      * @param TableNode $table
      *
+     * @Given /^I fill in the following child information:$/
+     */
+    public function iFillInTheFollowingChildInformation(TableNode $table)
+    {
+        $element = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.modal:not([class^=note-]), .ui-dialog');
+        }, 'Modal not found.');
+
+        foreach ($table->getRowsHash() as $field => $value) {
+            $this->spin(function () use ($field, $value, $element) {
+                $page = $this->getPage('Base form');
+
+                $page->fillField($field, $value, $element);
+
+                return true;
+            }, sprintf('Cannot fill the field %s', $field));
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
      * @Then /^removing the following permissions? should hide the following buttons?:$/
      *
      * @return Then[]

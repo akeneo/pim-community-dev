@@ -137,16 +137,30 @@ class ProductModelController
             );
         }
 
-        $normalizationContext = $this->userContext->toArray() + [
-            'filter_types'               => ['pim.internal_api.product_value.view'],
-            'disable_grouping_separator' => true
-        ];
+        $normalizedProductModel = $this->normalizeProductModel($productModel);
 
-        $normalizedProductModel = $this->normalizer->normalize(
-            $productModel,
-            'internal_api',
-            $normalizationContext
-        );
+        return new JsonResponse($normalizedProductModel);
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @throws NotFoundHttpException If product model is not found or the user cannot see it
+     *
+     * @return JsonResponse
+     */
+    public function getByCodeAction(string $identifier): JsonResponse
+    {
+        $productModel = $this->productModelRepository->findOneByIdentifier($identifier);
+        $cantView = $this->objectFilter->filterObject($productModel, 'pim.internal_api.product.view');
+
+        if (null === $productModel || true === $cantView) {
+            throw new NotFoundHttpException(
+                sprintf('Product model with identifier "%s" could not be found.', $identifier)
+            );
+        }
+
+        $normalizedProductModel = $this->normalizeProductModel($productModel);
 
         return new JsonResponse($normalizedProductModel);
     }
@@ -270,6 +284,25 @@ class ProductModelController
         }
 
         return new JsonResponse($normalizedChildren);
+    }
+
+    /**
+     * @param ProductModelInterface $productModel
+     *
+     * @return array
+     */
+    private function normalizeProductModel(ProductModelInterface $productModel): array
+    {
+        $normalizationContext = $this->userContext->toArray() + [
+                'filter_types'               => ['pim.internal_api.product_value.view'],
+                'disable_grouping_separator' => true
+            ];
+
+        return $this->normalizer->normalize(
+            $productModel,
+            'internal_api',
+            $normalizationContext
+        );
     }
 
     /**

@@ -14,6 +14,11 @@ pim_enrich_product_model_rest_create:
     defaults: { _controller: pim_enrich.controller.rest.product_model:createAction }
     methods: [POST]
 
+pim_enrich_product_model_rest_get_by_code:
+    path: /rest-code/{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.product_model:getByCodeAction }
+    methods: [GET]
+
 pim_enrich_product_model_rest_post:
     path: /rest/{id}
     defaults: { _controller: pim_enrich.controller.rest.product_model:postAction }

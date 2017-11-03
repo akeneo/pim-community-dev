@@ -135,7 +135,7 @@ define(
              * @param {Object} options If silent is set to true, don't fire events
              *                         pim_enrich:form:entity:pre_update and pim_enrich:form:entity:post_update
              */
-            setData: function (data, options) {
+            setData: function (data, options = {}) {
                 options = options || {};
 
                 if (!options.silent) {
