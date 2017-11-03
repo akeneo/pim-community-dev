@@ -184,6 +184,8 @@ class ProductController
             );
         }
 
+        $this->updateProduct($product, $data);
+
         $violations = $this->validator->validate($product);
 
         if (0 === $violations->count()) {

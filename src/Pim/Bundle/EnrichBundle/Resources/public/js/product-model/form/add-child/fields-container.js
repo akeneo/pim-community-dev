@@ -173,7 +173,7 @@ define(
                     .getFormMeta(fieldModuleName)
                     .then((formMeta) => {
                         const newFormMeta = $.extend(true, {}, formMeta);
-                        newFormMeta.code += '-' + attribute.code;
+                        newFormMeta.code += `-${attribute.code}`;
                         newFormMeta.config.fieldName = attribute.code;
                         newFormMeta.config.label = i18n.getLabel(
                             attribute.labels,

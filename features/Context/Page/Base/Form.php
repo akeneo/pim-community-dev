@@ -843,9 +843,6 @@ class Form extends Base
      */
     protected function fillSwitchField($field, $value)
     {
-        // $fieldContainer = $this->getClosest($label, 'AknFieldContainer');
-        //$checkbox = $fieldContainer->find('css', 'input[type="checkbox"]');
-
         if ('Yes' === $value) {
             return $this->toggleSwitch($field, true);
         }

@@ -37,12 +37,20 @@ define(
             template: _.template(template),
             choiceUrl: null,
 
+            /**
+             * {@inheritdoc}
+             */
             initialize() {
                 this.choiceUrl = null;
 
                 return BaseField.prototype.initialize.apply(this, arguments);
             },
 
+            /**
+             * Sets the URL that will be used by select2 to fetch choices from the backend.
+             *
+             * @param {String} choiceUrl
+             */
             setChoiceUrl(choiceUrl) {
                 this.choiceUrl = choiceUrl;
             },
@@ -64,49 +72,76 @@ define(
                     ajax: {
                         url: this.choiceUrl,
                         cache: true,
-                        data: (term, page) => {
-                            return {
-                                search: term,
-                                options: {
-                                    limit: 20,
-                                    page: page,
-                                    catalogLocale: UserContext.get('catalogLocale')
-                                }
-                            };
-                        },
-                        results: (response) => {
-                            if (response.results) {
-                                response.more = 20 === Object.keys(response.results).length;
-
-                                return response;
-                            }
-
-                            return {
-                                more: 20 === Object.keys(response).length,
-                                results: response.map((item) => this.convertBackendItem(item))
-                            };
-                        }
+                        data: this.select2Data.bind(this),
+                        results: this.select2Results.bind(this)
                     },
-                    initSelection: (element, callback) => {
-                        const id = $(element).val();
-                        if ('' !== id) {
-                            $.get(this.choiceUrl, {options: {identifiers: [id]}})
-                                .then((response) => {
-                                    let selected = _.findWhere(response, {code: id});
-
-                                    if (!selected) {
-                                        selected = _.findWhere(response.results, {id: id});
-                                    } else {
-                                        selected = this.convertBackendItem(selected);
-                                    }
-                                    callback(selected);
-                                });
-                        }
-                    },
+                    initSelection: this.select2InitSelection.bind(this),
                     placeholder: ' '
                 };
 
                 initSelect2.init(this.$('.select2'), options);
+            },
+
+            /**
+             * Formatting callback for select2 choices.
+             *
+             * @param {String} term
+             * @param {Number} page
+             *
+             * @returns {Object}
+             */
+            select2Data(term, page) {
+                return {
+                    search: term,
+                    options: {
+                        limit: 20,
+                        page: page,
+                        catalogLocale: UserContext.get('catalogLocale')
+                    }
+                };
+            },
+
+            /**
+             * Select2 customization for pagination.
+             *
+             * @param response
+             *
+             * @returns {Object}
+             */
+            select2Results(response) {
+                if (response.results) {
+                    response.more = 20 === Object.keys(response.results).length;
+
+                    return response;
+                }
+
+                return {
+                    more: 20 === Object.keys(response).length,
+                    results: response.map((item) => this.convertBackendItem(item))
+                };
+            },
+
+            /**
+             * Select2 callback to fetch the initial value and display it properly.
+             *
+             * @param {Element} element
+             * @param {Function} callback
+             */
+            select2InitSelection(element, callback) {
+                const id = $(element).val();
+                if ('' !== id) {
+                    $.get(this.choiceUrl, {options: {identifiers: [id]}})
+                        .then((response) => {
+                            let selected = _.findWhere(response, {code: id});
+
+                            if (!selected) {
+                                selected = _.findWhere(response.results, {id: id});
+                            } else {
+                                selected = this.convertBackendItem(selected);
+                            }
+                            callback(selected);
+                        });
+                }
             },
 
             /**

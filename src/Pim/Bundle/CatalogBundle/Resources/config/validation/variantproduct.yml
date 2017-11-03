@@ -2,6 +2,7 @@ Pim\Component\Catalog\Model\VariantProduct:
     group_sequence:
         - VariantProduct
         - UniqueAxis
+        - api
     constraints:
         - Pim\Component\Catalog\Validator\Constraints\VariantProductParent: ~
         - Pim\Component\Catalog\Validator\Constraints\NotEmptyFamily:

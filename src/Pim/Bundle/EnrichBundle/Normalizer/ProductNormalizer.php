@@ -310,7 +310,6 @@ class ProductNormalizer implements NormalizerInterface
             'attributes_for_this_level' => [],
             'attributes_axes'           => [],
             'parent_attributes'         => [],
-            'parent_id'                 => null,
             'family_variant'            => null,
             'level'                     => null,
         ];
@@ -321,7 +320,6 @@ class ProductNormalizer implements NormalizerInterface
 
         $meta['variant_navigation'] = $this->navigationNormalizer->normalize($product, $format, $context);
         $meta['family_variant'] = $this->normalizer->normalize($product->getFamilyVariant(), 'standard');
-        $meta['parent_id'] = $product->getParent()->getId();
         $meta['level'] = $product->getVariationLevel();
 
         foreach ($this->attributesProvider->getAttributes($product) as $attribute) {

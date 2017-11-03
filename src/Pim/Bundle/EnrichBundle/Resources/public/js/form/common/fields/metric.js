@@ -36,6 +36,9 @@ define([
         metricFamily: null,
         defaultMetricUnit: null,
 
+        /**
+         * {@inheritdoc}
+         */
         initialize() {
             this.metricFamily = null;
             this.defaultMetricUnit = null;
@@ -43,10 +46,16 @@ define([
             return BaseField.prototype.initialize.apply(this, arguments);
         },
 
+        /**
+         * @param {String} metricFamily
+         */
         setMetricFamily(metricFamily) {
             this.metricFamily = metricFamily;
         },
 
+        /**
+         * @param {String} defaultMetricUnit
+         */
         setDefaultMetricUnit(defaultMetricUnit) {
             this.defaultMetricUnit = defaultMetricUnit;
         },
@@ -57,14 +66,21 @@ define([
         renderInput(templateContext) {
             return this.template(_.extend(templateContext, {
                 value: {
-                    amount: undefined !== this.getModelValue()
-                        ? this.getModelValue().amount
-                        : null,
-                    unit: undefined !== this.getModelValue()
-                        ? this.getModelValue().unit
-                        : null
+                    amount: this.getModelValuePart('amount'),
+                    unit: this.getModelValuePart('unit')
                 }
             }));
+        },
+
+        /**
+         * @param {String} name
+         *
+         * @returns {*|null}
+         */
+        getModelValuePart(name) {
+            return undefined !== this.getModelValue()
+                ? this.getModelValue()[name]
+                : null;
         },
 
         /**
@@ -113,11 +129,11 @@ define([
          * @param {Object} units
          */
         formatChoices(units) {
-            const unitCodes = _.keys(units);
+            const unitCodes = Object.keys(units);
 
             return _.object(
                 unitCodes,
-                _.map(unitCodes, __)
+                unitCodes.map(unitCode => __(unitCode))
             );
         },
 

@@ -176,7 +176,6 @@ class ProductModelNormalizer implements NormalizerInterface
                 'variant_navigation'        => $this->navigationNormalizer->normalize($productModel, $format, $context),
                 'ascendant_category_ids'    => $this->ascendantCategoriesQuery->getCategoryIds($productModel),
                 'completenesses'            => $this->incompleteValuesNormalizer->normalize($productModel, $format, $context),
-                'parent_id'                 => $this->getParentId($productModel),
                 'level'                     => $productModel->getVariationLevel(),
             ] + $this->getLabels($productModel);
 
@@ -189,20 +188,6 @@ class ProductModelNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductModelInterface && in_array($format, $this->supportedFormat);
-    }
-
-    /**
-     * @param ProductModelInterface $productModel
-     *
-     * @return int|null
-     */
-    private function getParentId(ProductModelInterface $productModel): ?int
-    {
-        if (null === $productModel->getParent()) {
-            return null;
-        }
-
-        return $productModel->getParent()->getId();
     }
 
     /**
