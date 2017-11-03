@@ -37,3 +37,8 @@ pim_api_family_variant_create:
     path: /families/{familyCode}/variants
     defaults: { _controller: pim_api.controller.family_variant:createAction, _format: json }
     methods: [POST]
+
+pim_api_family_variant_partial_update:
+    path: /families/{familyCode}/variants/{familyVariantCode}
+    defaults: { _controller: pim_api.controller.family_variant:partialUpdateAction, _format: json }
+    methods: [PATCH]
