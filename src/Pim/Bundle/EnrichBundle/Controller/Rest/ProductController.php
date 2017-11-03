@@ -175,16 +175,17 @@ class ProductController
             $product = $this->variantProductBuilder->createProduct(
                 $data['identifier'] ?? null,
                 $data['family'] ?? null
-
             );
+
+            if (isset($data['values'])) {
+                $this->updateProduct($product, $data);
+            }
         } else {
             $product = $this->productBuilder->createProduct(
                 $data['identifier'] ?? null,
                 $data['family'] ?? null
             );
         }
-
-        $this->updateProduct($product, $data);
 
         $violations = $this->validator->validate($product);
 
