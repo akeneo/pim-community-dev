@@ -8,6 +8,9 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Akeneo\Test\IntegrationTestsBundle\Assertion;
 
+/**
+ * Test the query function: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\TurnProduct
+ */
 class TurnProductIntoVariantProductIntegration extends TestCase
 {
     /** @var ProductInterface */
@@ -59,10 +62,8 @@ class TurnProductIntoVariantProductIntegration extends TestCase
 
     /**
      * To update product into a variant product in database we need to check that:
-     *   - the parent product model is well set
-     *   - the raw value are well updated
-     *   - product type are well changed (data managed by doctrine)
-     *   - variant product keeps the product id
+     *   - the product type is well changed (data managed by doctrine)
+     *   - the variant product keeps the product id
      *   - the repository returns the right object type (variant product instead of product)
      */
     public function test query that turn product into variant product in database()
@@ -78,13 +79,6 @@ class TurnProductIntoVariantProductIntegration extends TestCase
 
         $this->assertInstanceOf(VariantProductInterface::class, $variantProduct);
         $this->assertSame($inMemoryVariantProduct->getId(), $variantProduct->getId());
-        $this->assertSame($inMemoryVariantProduct->getParent()->getId(), $variantProduct->getParent()->getId());
-
-        $assertValueCollection = new Assertion\ValuesCollection(
-            ['sku', 'size', 'ean'],
-            $variantProduct->getValuesForVariation()
-        );
-        $assertValueCollection->hasSameValues();
     }
 
     /**

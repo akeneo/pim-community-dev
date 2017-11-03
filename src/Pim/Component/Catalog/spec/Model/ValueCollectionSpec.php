@@ -2,14 +2,13 @@
 
 namespace spec\Pim\Component\Catalog\Model;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ChannelInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Model\ValueCollection;
-use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Prophecy\Argument;
 
 class ValueCollectionSpec extends ObjectBehavior
 {
@@ -96,11 +95,11 @@ class ValueCollectionSpec extends ObjectBehavior
     {
         $this->toArray()->shouldReturn(
             [
-                'length-<all_channels>-<all_locales>'       => $value1,
-                'price-<all_channels>-<all_locales>'        => $value2,
-                'description-ecommerce-en_US'               => $value3,
-                'description-ecommerce-fr_FR'               => $value4,
-                'description-print-en_US'                   => $value5,
+                'length-<all_channels>-<all_locales>' => $value1,
+                'price-<all_channels>-<all_locales>' => $value2,
+                'description-ecommerce-en_US' => $value3,
+                'description-ecommerce-fr_FR' => $value4,
+                'description-print-en_US' => $value5,
                 'release_date-<all_channels>-<all_locales>' => $value6,
             ]
         );
@@ -143,10 +142,10 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $this->toArray()->shouldReturn(
             [
-                'price-<all_channels>-<all_locales>'        => $value2,
-                'description-ecommerce-en_US'               => $value3,
-                'description-ecommerce-fr_FR'               => $value4,
-                'description-print-en_US'                   => $value5,
+                'price-<all_channels>-<all_locales>' => $value2,
+                'description-ecommerce-en_US' => $value3,
+                'description-ecommerce-fr_FR' => $value4,
+                'description-print-en_US' => $value5,
                 'release_date-<all_channels>-<all_locales>' => $value6,
             ]
         );
@@ -168,10 +167,10 @@ class ValueCollectionSpec extends ObjectBehavior
         $this->toArray()->shouldReturn(
             [
                 'length-<all_channels>-<all_locales>' => $value1,
-                'price-<all_channels>-<all_locales>'  => $value2,
-                'description-ecommerce-en_US'         => $value3,
-                'description-ecommerce-fr_FR'         => $value4,
-                'description-print-en_US'             => $value5,
+                'price-<all_channels>-<all_locales>' => $value2,
+                'description-ecommerce-en_US' => $value3,
+                'description-ecommerce-fr_FR' => $value4,
+                'description-print-en_US' => $value5,
             ]
         );
 
@@ -191,10 +190,10 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $this->toArray()->shouldReturn(
             [
-                'length-<all_channels>-<all_locales>'       => $value1,
-                'price-<all_channels>-<all_locales>'        => $value2,
-                'description-ecommerce-fr_FR'               => $value4,
-                'description-print-en_US'                   => $value5,
+                'length-<all_channels>-<all_locales>' => $value1,
+                'price-<all_channels>-<all_locales>' => $value2,
+                'description-ecommerce-fr_FR' => $value4,
+                'description-print-en_US' => $value5,
                 'release_date-<all_channels>-<all_locales>' => $value6,
             ]
         );
@@ -215,10 +214,10 @@ class ValueCollectionSpec extends ObjectBehavior
         $this->toArray()->shouldReturn(
             [
                 'length-<all_channels>-<all_locales>' => $value1,
-                'price-<all_channels>-<all_locales>'  => $value2,
-                'description-ecommerce-en_US'         => $value3,
-                'description-ecommerce-fr_FR'         => $value4,
-                'description-print-en_US'             => $value5,
+                'price-<all_channels>-<all_locales>' => $value2,
+                'description-ecommerce-en_US' => $value3,
+                'description-ecommerce-fr_FR' => $value4,
+                'description-print-en_US' => $value5,
             ]
         );
 
@@ -232,11 +231,11 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $this->toArray()->shouldReturn(
             [
-                'length-<all_channels>-<all_locales>'       => $value1,
-                'price-<all_channels>-<all_locales>'        => $value2,
-                'description-ecommerce-en_US'               => $value3,
-                'description-ecommerce-fr_FR'               => $value4,
-                'description-print-en_US'                   => $value5,
+                'length-<all_channels>-<all_locales>' => $value1,
+                'price-<all_channels>-<all_locales>' => $value2,
+                'description-ecommerce-en_US' => $value3,
+                'description-ecommerce-fr_FR' => $value4,
+                'description-print-en_US' => $value5,
                 'release_date-<all_channels>-<all_locales>' => $value6,
             ]
         );
@@ -250,10 +249,10 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $this->toArray()->shouldReturn(
             [
-                'price-<all_channels>-<all_locales>'        => $value2,
-                'description-ecommerce-en_US'               => $value3,
-                'description-ecommerce-fr_FR'               => $value4,
-                'description-print-en_US'                   => $value5,
+                'price-<all_channels>-<all_locales>' => $value2,
+                'description-ecommerce-en_US' => $value3,
+                'description-ecommerce-fr_FR' => $value4,
+                'description-print-en_US' => $value5,
                 'release_date-<all_channels>-<all_locales>' => $value6,
             ]
         );
@@ -274,10 +273,10 @@ class ValueCollectionSpec extends ObjectBehavior
         $this->toArray()->shouldReturn(
             [
                 'length-<all_channels>-<all_locales>' => $value1,
-                'price-<all_channels>-<all_locales>'  => $value2,
-                'description-ecommerce-en_US'         => $value3,
-                'description-ecommerce-fr_FR'         => $value4,
-                'description-print-en_US'             => $value5,
+                'price-<all_channels>-<all_locales>' => $value2,
+                'description-ecommerce-en_US' => $value3,
+                'description-ecommerce-fr_FR' => $value4,
+                'description-print-en_US' => $value5,
             ]
         );
 
@@ -291,10 +290,10 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $this->toArray()->shouldReturn(
             [
-                'length-<all_channels>-<all_locales>'       => $value1,
-                'price-<all_channels>-<all_locales>'        => $value2,
-                'description-ecommerce-fr_FR'               => $value4,
-                'description-print-en_US'                   => $value5,
+                'length-<all_channels>-<all_locales>' => $value1,
+                'price-<all_channels>-<all_locales>' => $value2,
+                'description-ecommerce-fr_FR' => $value4,
+                'description-print-en_US' => $value5,
                 'release_date-<all_channels>-<all_locales>' => $value6,
             ]
         );
@@ -315,11 +314,11 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $this->toArray()->shouldReturn(
             [
-                'length-<all_channels>-<all_locales>'       => $value1,
-                'price-<all_channels>-<all_locales>'        => $value2,
-                'description-ecommerce-en_US'               => $value3,
-                'description-ecommerce-fr_FR'               => $value4,
-                'description-print-en_US'                   => $value5,
+                'length-<all_channels>-<all_locales>' => $value1,
+                'price-<all_channels>-<all_locales>' => $value2,
+                'description-ecommerce-en_US' => $value3,
+                'description-ecommerce-fr_FR' => $value4,
+                'description-print-en_US' => $value5,
                 'release_date-<all_channels>-<all_locales>' => $value6,
             ]
         );
@@ -339,10 +338,10 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $this->toArray()->shouldReturn(
             [
-                'price-<all_channels>-<all_locales>'        => $value2,
-                'description-ecommerce-en_US'               => $value3,
-                'description-ecommerce-fr_FR'               => $value4,
-                'description-print-en_US'                   => $value5,
+                'price-<all_channels>-<all_locales>' => $value2,
+                'description-ecommerce-en_US' => $value3,
+                'description-ecommerce-fr_FR' => $value4,
+                'description-print-en_US' => $value5,
                 'release_date-<all_channels>-<all_locales>' => $value6,
             ]
         );
@@ -363,11 +362,11 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $this->toArray()->shouldReturn(
             [
-                'length-<all_channels>-<all_locales>'       => $value1,
-                'price-<all_channels>-<all_locales>'        => $value2,
-                'description-ecommerce-en_US'               => $value3,
-                'description-ecommerce-fr_FR'               => $value4,
-                'description-print-en_US'                   => $value5,
+                'length-<all_channels>-<all_locales>' => $value1,
+                'price-<all_channels>-<all_locales>' => $value2,
+                'description-ecommerce-en_US' => $value3,
+                'description-ecommerce-fr_FR' => $value4,
+                'description-print-en_US' => $value5,
                 'release_date-<all_channels>-<all_locales>' => $value6,
             ]
         );
@@ -447,13 +446,13 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $this->toArray()->shouldReturn(
             [
-                'length-<all_channels>-<all_locales>'       => $value1,
-                'price-<all_channels>-<all_locales>'        => $value2,
-                'description-ecommerce-en_US'               => $value3,
-                'description-ecommerce-fr_FR'               => $value4,
-                'description-print-en_US'                   => $value5,
+                'length-<all_channels>-<all_locales>' => $value1,
+                'price-<all_channels>-<all_locales>' => $value2,
+                'description-ecommerce-en_US' => $value3,
+                'description-ecommerce-fr_FR' => $value4,
+                'description-print-en_US' => $value5,
                 'release_date-<all_channels>-<all_locales>' => $value6,
-                'weight-<all_channels>-en_US'               => $newValue
+                'weight-<all_channels>-en_US' => $newValue,
             ]
         );
 
@@ -484,13 +483,13 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $this->toArray()->shouldReturn(
             [
-                'length-<all_channels>-<all_locales>'       => $value1,
-                'price-<all_channels>-<all_locales>'        => $value2,
-                'description-ecommerce-en_US'               => $value3,
-                'description-ecommerce-fr_FR'               => $value4,
-                'description-print-en_US'                   => $value5,
+                'length-<all_channels>-<all_locales>' => $value1,
+                'price-<all_channels>-<all_locales>' => $value2,
+                'description-ecommerce-en_US' => $value3,
+                'description-ecommerce-fr_FR' => $value4,
+                'description-print-en_US' => $value5,
                 'release_date-<all_channels>-<all_locales>' => $value6,
-                'weight-<all_channels>-en_US'               => $newValue
+                'weight-<all_channels>-en_US' => $newValue,
             ]
         );
 
@@ -499,7 +498,7 @@ class ValueCollectionSpec extends ObjectBehavior
         $this->getUniqueValues()->shouldReturn(
             [
                 'release_date-<all_channels>-<all_locales>' => $value6,
-                'weight-<all_channels>-en_US'               => $newValue,
+                'weight-<all_channels>-en_US' => $newValue,
             ]
         );
     }
@@ -526,13 +525,13 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $this->toArray()->shouldReturn(
             [
-                'length-<all_channels>-<all_locales>'       => $value1,
-                'price-<all_channels>-<all_locales>'        => $value2,
-                'description-ecommerce-en_US'               => $value3,
-                'description-ecommerce-fr_FR'               => $value4,
-                'description-print-en_US'                   => $value5,
+                'length-<all_channels>-<all_locales>' => $value1,
+                'price-<all_channels>-<all_locales>' => $value2,
+                'description-ecommerce-en_US' => $value3,
+                'description-ecommerce-fr_FR' => $value4,
+                'description-print-en_US' => $value5,
                 'release_date-<all_channels>-<all_locales>' => $value6,
-                'weight-<all_channels>-en_US'               => $newValue
+                'weight-<all_channels>-en_US' => $newValue,
             ]
         );
 
@@ -547,11 +546,11 @@ class ValueCollectionSpec extends ObjectBehavior
 
         $this->toArray()->shouldReturn(
             [
-                'length-<all_channels>-<all_locales>'       => $value1,
-                'price-<all_channels>-<all_locales>'        => $value2,
-                'description-ecommerce-en_US'               => $value3,
-                'description-ecommerce-fr_FR'               => $value4,
-                'description-print-en_US'                   => $value5,
+                'length-<all_channels>-<all_locales>' => $value1,
+                'price-<all_channels>-<all_locales>' => $value2,
+                'description-ecommerce-en_US' => $value3,
+                'description-ecommerce-fr_FR' => $value4,
+                'description-print-en_US' => $value5,
                 'release_date-<all_channels>-<all_locales>' => $value6,
             ]
         );

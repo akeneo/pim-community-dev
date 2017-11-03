@@ -7,7 +7,7 @@ namespace Akeneo\Test\IntegrationTestsBundle\Assertion;
 use Doctrine\Common\Collections\Collection as DoctrineCollection;
 
 /**
- * Compare collection
+ * Compare two collections
  */
 final class Collection
 {

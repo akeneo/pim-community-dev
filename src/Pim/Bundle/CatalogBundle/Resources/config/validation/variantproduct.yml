@@ -13,9 +13,6 @@ Pim\Component\Catalog\Model\VariantProduct:
         - Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis:
             groups: [UniqueAxis]
         - Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues: ~
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
-            fields: [identifier]
-            message: The same identifier is already set on another product
     properties:
         identifier:
             - NotBlank: ~

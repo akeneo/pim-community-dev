@@ -23,4 +23,9 @@ interface VariantProductInterface extends ProductInterface, EntityWithFamilyVari
      * @param Collection $categories
      */
     public function setCategories(Collection $categories);
+
+    /**
+     * @param $data Collection
+     */
+    public function setUniqueData(Collection $data);
 }

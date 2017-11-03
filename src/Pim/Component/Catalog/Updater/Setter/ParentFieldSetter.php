@@ -8,7 +8,6 @@ use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
@@ -37,23 +36,10 @@ class ParentFieldSetter extends AbstractFieldSetter
      */
     public function setFieldData($product, $field, $data, array $options = []): void
     {
-        // TODO: To test against "VariantProductInterface" instead of "ProductInterface" in PIM-6791.
-        if (!$product instanceof ProductInterface) {
+        if (!$product instanceof VariantProductInterface) {
             throw InvalidObjectException::objectExpected(
                 ClassUtils::getClass($product),
                 VariantProductInterface::class
-            );
-        }
-
-        // TODO: This is to be removed in PIM-6791.
-        if (!$product instanceof VariantProductInterface) {
-            if (null === $data) {
-                return;
-            }
-
-            throw InvalidPropertyException::expected(
-                sprintf('Product "%s" cannot have a parent as it is not a variant product.', $product->getIdentifier()),
-                static::class
             );
         }
 

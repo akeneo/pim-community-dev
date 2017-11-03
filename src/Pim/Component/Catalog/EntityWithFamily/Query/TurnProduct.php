@@ -7,7 +7,7 @@ namespace Pim\Component\Catalog\EntityWithFamily\Query;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
- * Query that turns a product into a variant product
+ * Query function that turns a product into a variant product
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -16,10 +16,8 @@ use Pim\Component\Catalog\Model\VariantProductInterface;
 interface TurnProduct
 {
     /**
-     * To update product into a variant product in database we need to:
-     *   - set the parent product model
-     *   - update the raw value
-     *   - change product type (data managed by doctrine)
+     * To update product into a variant product in database we need to change product type (data managed by doctrine)
+     * and to update doctrine's unit of work, we need to replace the product by the variant product.
      *
      * @param VariantProductInterface $variantProduct
      */

@@ -112,7 +112,7 @@ class ParentFieldSetterSpec extends ObjectBehavior
 
     function it_throws_exception_if_a_parent_is_set_to_a_regular_product(ProductInterface $product)
     {
-        $this->shouldThrow(InvalidPropertyException::class)->during(
+        $this->shouldThrow(InvalidObjectException::class)->during(
             'setFieldData',
             [$product, 'parent', Argument::any()]
         );

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Test\IntegrationTestsBundle\Fixture\Saver;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -7,7 +9,7 @@ use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class EntityWithValue
+final class EntityWithValue
 {
     /** @var EntityManagerInterface */
     private $entityManager;

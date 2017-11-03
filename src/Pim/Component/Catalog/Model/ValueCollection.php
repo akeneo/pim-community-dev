@@ -340,6 +340,4 @@ class ValueCollection implements ValueCollectionInterface
             }
         }
     }
-
-
 }

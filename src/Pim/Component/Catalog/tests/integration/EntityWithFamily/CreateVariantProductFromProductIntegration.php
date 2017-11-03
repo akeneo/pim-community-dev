@@ -8,6 +8,9 @@ use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Akeneo\Test\IntegrationTestsBundle\Assertion;
 
+/**
+ * Test the variant product creation Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct
+ */
 class CreateVariantProductFromProductIntegration extends TestCase
 {
     /** @var ProductInterface */
@@ -32,6 +35,8 @@ class CreateVariantProductFromProductIntegration extends TestCase
                 'color' => [['data' => 'red', 'locale' => null, 'scope' => null]],
                 'description' => [['data' => 'description', 'locale' => 'en_US', 'scope' => 'ecommerce']],
                 'name' => [['data' => 'name', 'locale' => 'en_US', 'scope' => null]],
+                'meta_description' => [['data' => 'name', 'locale' => 'en_US', 'scope' => null]],
+                'meta_title' => [['data' => 'name', 'locale' => 'en_US', 'scope' => null]],
                 // The variant product must only have the following values.
                 'size' => [['data' => 'l', 'locale' => null, 'scope' => null]],
                 'ean' => [['data' => 'ean', 'locale' => null, 'scope' => null]],
@@ -73,6 +78,7 @@ class CreateVariantProductFromProductIntegration extends TestCase
         $this->assertSame($this->product->getUpdated(), $variantProduct->getUpdated());
         $this->assertSame($this->product->isEnabled(), $variantProduct->isEnabled());
         $this->assertSame($this->product->getIdentifier(), $variantProduct->getIdentifier());
+        $this->assertSame($this->productModel->getFamilyVariant(), $variantProduct->getFamilyVariant());
 
         $assertCollection = new Assertion\Collection($this->product->getCategories(), $variantProduct->getCategories());
         $assertCollection->hasFollowingEntities();

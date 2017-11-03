@@ -68,6 +68,13 @@ class ImmutableVariantAxesValuesValidator extends ConstraintValidator
         }, $this->attributesProvider->getAxes($entity));
 
         $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($entity);
+        /**
+         * If you turn a product into a variant product. The variant product will have an id but the unit of work
+         * won't know its original raw because they don't exist;
+         */
+        if (!isset($originalData['rawValues'])) {
+            return; // don't need
+        }
         $originalValues = $this->valueCollectionFactory->createFromStorageFormat($originalData['rawValues']);
 
         foreach ($axisCodes as $code) {

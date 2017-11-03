@@ -18,4 +18,3 @@ services:
         class: '%pim_catalog.doctrine.query.turn_product_into_variant_product.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_serializer'

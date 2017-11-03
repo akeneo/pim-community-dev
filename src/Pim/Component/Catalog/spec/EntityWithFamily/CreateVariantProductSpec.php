@@ -1,7 +1,8 @@
 <?php
 
-namespace spec\Pim\Component\Catalog;
+namespace spec\Pim\Component\Catalog\EntityWithFamily;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct;
@@ -31,22 +32,22 @@ class CreateVariantProductSpec extends ObjectBehavior
         $this->beConstructedWith(VariantProduct::class);
     }
 
-    function it_is_initializable()
+    function it is initializable()
     {
         $this->shouldHaveType(CreateVariantProduct::class);
     }
 
-    function it_throws_an_exception_when_the_product_has_not_the_same_family_that_its_parent(
+    function it throws an exception when the product has not the same family that its parent(
         ProductInterface $product,
         FamilyInterface $productFamily,
         ProductModelInterface $parent
     ) {
         $product->getFamily()->willReturn($productFamily);
 
-        $this->shouldThrow(\Exception::class)->during('from', [$product, $parent]);
+        $this->shouldThrow(\InvalidArgumentException::class)->during('from', [$product, $parent]);
     }
 
-    public function it_turns_a_product_into_a_variant_product(
+    public function it creates a variant product from a product(
         ProductModelInterface $parent,
         ValueCollectionInterface $parentValues,
         ProductInterface $product,
@@ -54,16 +55,28 @@ class CreateVariantProductSpec extends ObjectBehavior
         Collection $associations,
         Collection $completenesses,
         Collection $categories,
+        Collection $productModelCategories,
+        ValueCollectionInterface $productModelValues,
         FamilyInterface $family,
         \Datetime $createdAt,
         \Datetime $updatedAt,
         ValueCollectionInterface $values,
         ValueInterface $valueSku,
-        AttributeInterface $sku
+        AttributeInterface $sku,
+        FamilyVariantInterface $familyVariant,
+        \Iterator $iterator,
+        ArrayCollection $uniqueValues,
+        ArrayCollection $attributes
     ) {
-        $product->getFamily()->willReturn($family);
         $parent->getFamily()->willReturn($family);
         $parent->getValues()->willReturn($parentValues);
+        $parent->getValuesForVariation()->willReturn($productModelValues);
+        $productModelValues->getIterator()->willReturn($iterator);
+        $parent->getFamilyVariant()->willreturn($familyVariant);
+        $familyVariant->getAttributes()->willReturn($attributes);
+        $parent->getParent()->willreturn(null);
+        $parent->getCategories()->willreturn($productModelCategories);
+        $productModelCategories->getIterator()->willReturn($iterator);
 
         $categories->toArray()->willReturn([]);
         $values->toArray()->willReturn([]);
@@ -77,6 +90,7 @@ class CreateVariantProductSpec extends ObjectBehavior
         $values->filter(Argument::any())->willReturn($values);
 
         $product->getId()->willReturn(42);
+        $product->getFamily()->willReturn($family);
         $product->getGroups()->willReturn($groups);
         $product->getAssociations()->willReturn($associations);
         $product->isEnabled()->willReturn(true);
@@ -86,6 +100,7 @@ class CreateVariantProductSpec extends ObjectBehavior
         $product->getValues()->willReturn($values);
         $product->getCreated()->willReturn($createdAt);
         $product->getUpdated()->willReturn($updatedAt);
+        $product->getUniqueData()->willReturn($uniqueValues);
 
         $result = $this->from($product, $parent);
         $result->shouldReturnAnInstanceOf(VariantProductInterface::class);
@@ -100,5 +115,7 @@ class CreateVariantProductSpec extends ObjectBehavior
         $result->getCompletenesses()->shouldReturnAnInstanceOf(Collection::class);
         $result->getCategories()->shouldReturnAnInstanceOf(Collection::class);
         $result->getValues()->shouldReturnAnInstanceOf(ValueCollectionInterface::class);
+        $result->getFamilyVariant()->shouldReturnAnInstanceOf($familyVariant);
+        $result->getUniqueData()->shouldReturnAnInstanceOf($uniqueValues);
     }
 }

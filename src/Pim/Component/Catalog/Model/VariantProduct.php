@@ -5,7 +5,6 @@ namespace Pim\Component\Catalog\Model;
 use Akeneo\Component\Classification\Model\CategoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Component\Catalog\AttributeTypes;
 
 /**
  * Variant product. An entity that belongs to a family variant and that contains flexible values,
@@ -117,6 +116,14 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
     public function setCategories(Collection $categories)
     {
         $this->categories = $categories;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUniqueData(Collection $data)
+    {
+        $this->uniqueData = $data;
     }
 
     /**

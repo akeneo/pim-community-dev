@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Akeneo\Test\IntegrationTestsBundle\Fixture\Factory;
 
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;

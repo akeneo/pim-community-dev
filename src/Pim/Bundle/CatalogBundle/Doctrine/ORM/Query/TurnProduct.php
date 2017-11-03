@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Pim\Component\Catalog\EntityWithFamily\Query;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Component\Catalog\EntityWithFamily\Query;
 
 /**
  * Query that turns  a product into a variant product
@@ -23,17 +23,12 @@ class TurnProduct implements Query\TurnProduct
     /** @var EntityManagerInterface */
     private $entityManager;
 
-    /** @var NormalizerInterface */
-    private $normalizer;
-
     /**
      * @param EntityManagerInterface $entityManager
-     * @param NormalizerInterface $normalizer
      */
-    public function __construct(EntityManagerInterface $entityManager, NormalizerInterface $normalizer)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->normalizer = $normalizer;
     }
 
     /**
@@ -41,22 +36,35 @@ class TurnProduct implements Query\TurnProduct
      */
     public function into(VariantProductInterface $variantProduct): void
     {
-        $values = $this->normalizer->normalize($variantProduct->getValuesForVariation(), 'storage');
-
         $sql = <<<SQL
 UPDATE pim_catalog_product AS variant_product
-SET 
-    variant_product.product_model_id = :product_model_id, 
-    variant_product.raw_values = :raw_values, 
-    variant_product.product_type = :product_type
+SET variant_product.product_type = :product_type
 WHERE (id = :id)
 SQL;
 
         $this->entityManager->getConnection()->executeQuery($sql, [
-            'product_model_id' => $variantProduct->getParent()->getId(),
-            'raw_values' => json_encode($values),
             'product_type' => self::PRODUCT_VARIANT_TYPE,
             'id' => $variantProduct->getId()
         ]);
+
+        $this->entityManager->getUnitOfWork()->registerManaged(
+            $variantProduct,
+            ['id' => $variantProduct->getId()],
+            [
+                'id' => $variantProduct->getId(),
+                'parent' => null,
+                'identifier' => $variantProduct->getIdentifier(),
+                'groups' => $variantProduct->getGroups(),
+                'associations' => $variantProduct->getAssociations(),
+                'enabled' => $variantProduct->isEnabled(),
+                'completenesses' => $variantProduct->getCompletenesses(),
+                'family' => $variantProduct->getFamily(),
+                'categories' => $variantProduct->getCategories(),
+                'created' => $variantProduct->getCreated(),
+                'updated' => $variantProduct->getUpdated(),
+                'rawValues' => [],
+                'uniqueData' => $variantProduct->getUniqueData(),
+            ]
+        );
     }
 }
