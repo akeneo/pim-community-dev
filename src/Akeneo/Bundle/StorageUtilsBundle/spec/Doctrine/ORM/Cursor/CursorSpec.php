@@ -50,7 +50,7 @@ class CursorSpec extends ObjectBehavior
         $repository->findByIds(Argument::any())->willReturn(Argument::any());
 
         $this->shouldImplement('\Countable');
-        $this->shouldHaveCount(13);
+        $this->count()->shouldReturn(13);
     }
 
     function it_is_iterable(
