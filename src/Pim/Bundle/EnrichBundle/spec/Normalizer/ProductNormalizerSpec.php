@@ -223,7 +223,6 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'attributes_for_this_level' => [],
                     'attributes_axes'           => [],
                     'parent_attributes'         => [],
-                    'parent_id'                 => null,
                     'family_variant'            => null,
                     'level'                     => null,
                 ]
@@ -394,7 +393,6 @@ class ProductNormalizerSpec extends ObjectBehavior
                     'attributes_for_this_level' => ['size'],
                     'attributes_axes'           => ['size'],
                     'parent_attributes'         => ['color', 'description'],
-                    'parent_id'                 => 42,
                     'family_variant'            => ['NORMALIZED FAMILY'],
                     'level'                     => 1,
                 ]

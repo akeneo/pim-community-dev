@@ -184,7 +184,6 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             ->willReturn(['kind of completenesses data normalized here']);
 
         $productModel->getVariationLevel()->willReturn(0);
-        $productModel->getParent()->willReturn(null);
 
         $this->normalize($productModel, 'internal_api', $options)->shouldReturn(
             [
@@ -210,7 +209,6 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'variant_navigation' => ['NAVIGATION NORMALIZED'],
                     'ascendant_category_ids' => [42],
                     'completenesses' => ['kind of completenesses data normalized here'],
-                    'parent_id'      => null,
                     'level'          => 0,
                     'label'          => [
                         'en_US' => 'Tshirt blue',
@@ -325,7 +323,6 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             ->willReturn(['kind of completenesses data normalized here']);
 
         $productModel->getVariationLevel()->willReturn(0);
-        $productModel->getParent()->willReturn(null);
 
         $this->normalize($productModel, 'internal_api', $options)->shouldReturn(
             [
@@ -351,7 +348,6 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'variant_navigation' => ['NAVIGATION NORMALIZED'],
                     'ascendant_category_ids' => [42],
                     'completenesses' => ['kind of completenesses data normalized here'],
-                    'parent_id'      => null,
                     'level'          => 0,
                     'label'          => [
                         'en_US' => 'Tshirt blue',
@@ -480,7 +476,6 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             ->willReturn(['kind of completenesses data normalized here']);
 
         $productModel->getVariationLevel()->willReturn(0);
-        $productModel->getParent()->willReturn(null);
 
         $this->normalize($productModel, 'internal_api', $options)->shouldReturn(
             [
@@ -506,7 +501,6 @@ class ProductModelNormalizerSpec extends ObjectBehavior
                     'variant_navigation' => ['NAVIGATION NORMALIZED'],
                     'ascendant_category_ids' => [42],
                     'completenesses' => ['kind of completenesses data normalized here'],
-                    'parent_id'      => null,
                     'level'          => 0,
                     'label'          => [
                         'en_US' => 'Tshirt blue',
