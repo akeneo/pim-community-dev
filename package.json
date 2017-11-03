@@ -3,14 +3,19 @@
   "version": "2.0.0",
   "description": "Akeneo PIM Application",
   "homepage": "http://www.akeneo.com",
+  "config": {
+    "less_main": "./src/Pim/Bundle/UIBundle/Resources/public/less/main.less",
+    "less_output": "web/css",
+    "less_watch": "./src/Pim/Bundle/UIBundle/Resources/public"
+  },
   "scripts": {
-    "webpack": "webpack --config webpack.config.js --env=prod",
-    "webpack-dev": "webpack --config webpack.config.js",
+    "webpack": "yarn run styles && webpack --config webpack.config.js --env=prod",
+    "webpack-dev": "yarn run styles && webpack --config webpack.config.js",
     "webpack-watch": "webpack --progress --config webpack.config.js --watch",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
     "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix",
-    "styles": "echo 'Compile less' && node ./node_modules/.bin/lessc src/Pim/Bundle/UIBundle/Resources/public/less/main.less web/css/pim.css --include-path=. --source-map=web/css/pim.map --source-map-rootpath=/ --source-map-basepath=/",
-    "styles-watch": "echo 'Watch and compile less' && node ./node_modules/.bin/sane 'yarn run styles' ./src/Pim/Bundle/UIBundle/Resources/public --glob='**/*.{less,css}'"
+    "styles": "node ./node_modules/.bin/lessc $npm_package_config_less_main $npm_package_config_less_output/pim.css --include-path=. --source-map=$npm_package_config_less_output/pim.map --source-map-rootpath=/ --source-map-basepath=/",
+    "styles-watch": "node ./node_modules/.bin/sane 'yarn run styles' $npm_package_config_less_watch --glob='**/*.{less,css}'"
   },
   "repository": {
     "type": "git",
