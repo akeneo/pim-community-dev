@@ -4,9 +4,14 @@
 
 - PIM-6948: Command `pim:published-products:index` command has been removed, please use `pimee:published-products:index` command instead.
 
-# New jobs
-IMPORTANT: In order for your PIM to work properly, you will need to run the following commands to add the missing job profile accesses.
+## New jobs
+
+**IMPORTANT: In order for your PIM to work properly, you will need to run the following commands to add the missing job profile accesses.**
 - Add the permissions for the job instance `compute_family_variant_structure_changes` with `bin/console pim:installer:grant-backend-processes-accesses --env=prod`
+
+## BC breaks
+
+- PÏM-6450: Add service `pim_catalog.builder.variant_product` as new argument to `pim_enrich.controller.rest.product`.
 
 # 2.0.5 (2017-10-26)
 
@@ -16,7 +21,8 @@ IMPORTANT: In order for your PIM to work properly, you will need to run the foll
 - PIM-6935: Fix proposal link to product on proposal grid
 
 ## New jobs
-IMPORTANT: In order for your PIM to work properly, you will need to run the following commands to add the missing job profile accesses.
+
+**IMPORTANT: In order for your PIM to work properly, you will need to run the following commands to add the missing job profile accesses.**
 - Add the permissions for the job instance `compute_completeness_of_products_family` (`bin/console pim:installer:grant-backend-processes-accesses --env=prod`)
 
 # 2.0.4 (2017-10-19)
