@@ -20,8 +20,11 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\Catalog\Security\Applier\ApplierInterface;
+use PimEnterprise\Component\Catalog\Security\Factory\ApplyDataOnProduct;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
+use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -63,6 +66,9 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     /** @var ProductUniqueDataSynchronizer */
     private $uniqueDataSynchronizer;
 
+    /** @var ApplierInterface */
+    private $applyDataOnProduct;
+
     /**
      * @param ObjectManager                   $objectManager
      * @param CompletenessManager             $completenessManager
@@ -72,6 +78,8 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
      * @param TokenStorageInterface           $tokenStorage
      * @param ProductDraftRepositoryInterface $productDraftRepo
      * @param RemoverInterface                $productDraftRemover
+     * @param ProductUniqueDataSynchronizer   $uniqueDataSynchronizer
+     * @param ApplierInterface                $applyDataOnProduct
      */
     public function __construct(
         ObjectManager $objectManager,
@@ -82,7 +90,8 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         TokenStorageInterface $tokenStorage,
         ProductDraftRepositoryInterface $productDraftRepo,
         RemoverInterface $productDraftRemover,
-        ProductUniqueDataSynchronizer $uniqueDataSynchronizer
+        ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
+        ApplierInterface $applyDataOnProduct
     ) {
         $this->objectManager = $objectManager;
         $this->completenessManager = $completenessManager;
@@ -93,6 +102,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         $this->productDraftRepo = $productDraftRepo;
         $this->productDraftRemover = $productDraftRemover;
         $this->uniqueDataSynchronizer = $uniqueDataSynchronizer;
+        $this->applyDataOnProduct = $applyDataOnProduct;
     }
 
     /**
@@ -100,35 +110,40 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
      *
      * @throws AuthenticationCredentialsNotFoundException if not authenticated
      */
-    public function save($product, array $options = [])
+    public function save($filteredProduct, array $options = [])
     {
-        $this->validateObject($product, 'Pim\Component\Catalog\Model\ProductInterface');
+        $this->validateObject($filteredProduct, ProductInterface::class);
 
-        if ($this->isOwner($product) || null === $product->getId()) {
-            $this->saveProduct($product, $options);
-        } elseif ($this->canEdit($product)) {
-            $this->saveProductDraft($product, $options);
+        $fullProduct = $this->applyDataOnProduct->apply($filteredProduct);
+
+        if ($this->isOwner($fullProduct) || null === $fullProduct->getId()) {
+            $this->saveProduct($fullProduct, $options);
+        } elseif ($this->canEdit($fullProduct)) {
+            $this->saveProductDraft($fullProduct, $options);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function saveAll(array $products, array $options = [])
+    public function saveAll(array $filteredProducts, array $options = [])
     {
-        if (empty($products)) {
+        if (empty($filteredProducts)) {
             return;
         }
 
         $productsToCompute = [];
+        $fullProducts = [];
+        foreach ($filteredProducts as $filteredProduct) {
+            $this->validateObject($filteredProduct, ProductInterface::class);
+            $fullProduct = $this->applyDataOnProduct->apply($filteredProduct);
+            $fullProducts[] = $fullProduct;
 
-        foreach ($products as $product) {
-            $this->validateObject($product, 'Pim\Component\Catalog\Model\ProductInterface');
-            if ($this->isOwner($product) || null === $product->getId()) {
-                $productsToCompute[] = $product;
-                $this->saveProduct($product, $options, false);
-            } elseif ($this->canEdit($product)) {
-                $this->saveProductDraft($product, $options, false);
+            if ($this->isOwner($fullProduct) || null === $fullProduct->getId()) {
+                $productsToCompute[] = $fullProduct;
+                $this->saveProduct($fullProduct, $options, false);
+            } elseif ($this->canEdit($fullProduct)) {
+                $this->saveProductDraft($fullProduct, $options, false);
             }
         }
 
@@ -138,7 +153,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
             $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
         }
 
-        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($products, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE_ALL, new GenericEvent($fullProducts, $options));
     }
 
     /**
@@ -195,37 +210,37 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * @param ProductInterface $product
+     * @param ProductInterface $fullProduct
      * @param array            $options
      * @param bool|true        $withFlush
      */
-    protected function saveProduct(ProductInterface $product, array $options, $withFlush = true)
+    protected function saveProduct(ProductInterface $fullProduct, array $options, $withFlush = true)
     {
         $options['unitary'] = true;
-        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($product, $options));
+        $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($fullProduct, $options));
 
-        $this->completenessManager->schedule($product);
-        $this->completenessManager->generateMissingForProduct($product);
-        $this->uniqueDataSynchronizer->synchronize($product);
+        $this->completenessManager->schedule($fullProduct);
+        $this->completenessManager->generateMissingForProduct($fullProduct);
+        $this->uniqueDataSynchronizer->synchronize($fullProduct);
 
-        $this->objectManager->persist($product);
+        $this->objectManager->persist($fullProduct);
         if ($withFlush) {
             $this->objectManager->flush();
-            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($product, $options));
+            $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($fullProduct, $options));
         }
     }
 
     /**
-     * @param ProductInterface $product
+     * @param ProductInterface $fullProduct
      * @param array            $options
      * @param bool|true        $withFlush
      */
-    protected function saveProductDraft(ProductInterface $product, array $options, $withFlush = true)
+    protected function saveProductDraft(ProductInterface $fullProduct, array $options, $withFlush = true)
     {
-        $productDraft = $this->productDraftBuilder->build($product, $this->getUsername());
+        $productDraft = $this->productDraftBuilder->build($fullProduct, $this->getUsername());
 
         if (null !== $productDraft) {
-            $this->validateObject($productDraft, 'PimEnterprise\Component\Workflow\Model\ProductDraftInterface');
+            $this->validateObject($productDraft, ProductDraftInterface::class);
             $options['unitary'] = true;
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($productDraft, $options));
             $this->objectManager->persist($productDraft);
@@ -233,9 +248,9 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
             if ($withFlush) {
                 $this->objectManager->flush();
                 $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($productDraft, $options));
-                $this->objectManager->refresh($product);
+                $this->objectManager->refresh($fullProduct);
             }
-        } elseif (null !== $draft = $this->productDraftRepo->findUserProductDraft($product, $this->getUsername())) {
+        } elseif (null !== $draft = $this->productDraftRepo->findUserProductDraft($fullProduct, $this->getUsername())) {
             $this->productDraftRemover->remove($draft);
         }
     }

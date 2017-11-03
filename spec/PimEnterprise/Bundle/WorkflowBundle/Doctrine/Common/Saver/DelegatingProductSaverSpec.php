@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer
 use Pim\Bundle\UserBundle\Entity\UserInterface;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
+use PimEnterprise\Component\Catalog\Security\Applier\ApplierInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
@@ -32,7 +33,8 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         TokenStorageInterface $tokenStorage,
         ProductDraftRepositoryInterface $productDraftRepo,
         RemoverInterface $productDraftRemover,
-        ProductUniqueDataSynchronizer $uniqueDataSynchronizer
+        ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
+        ApplierInterface $applyDataOnProduct
     ) {
         $this->beConstructedWith(
             $objectManager,
@@ -43,7 +45,8 @@ class DelegatingProductSaverSpec extends ObjectBehavior
             $tokenStorage,
             $productDraftRepo,
             $productDraftRemover,
-            $uniqueDataSynchronizer
+            $uniqueDataSynchronizer,
+            $applyDataOnProduct
         );
     }
 
@@ -64,8 +67,11 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $authorizationChecker,
         $tokenStorage,
         $uniqueDataSynchronizer,
+        $applyDataOnProduct,
         ProductInterface $product
     ) {
+        $applyDataOnProduct->apply($product)->willReturn($product);
+
         $product->getId()->willReturn(42);
         $authorizationChecker->isGranted(Attributes::OWN, $product)
             ->willReturn(true);
@@ -90,10 +96,12 @@ class DelegatingProductSaverSpec extends ObjectBehavior
     function it_does_not_save_neither_product_nor_draft_if_the_user_has_only_the_view_permission_on_product(
         $authorizationChecker,
         $tokenStorage,
+        $applyDataOnProduct,
         $objectManager,
         ProductInterface $product,
         TokenInterface $token
     ) {
+        $applyDataOnProduct->apply($product)->willReturn($product);
         $tokenStorage->getToken()->willReturn($token);
         $product->getId()->willReturn(42);
         $authorizationChecker->isGranted(Attributes::OWN, $product)
@@ -115,8 +123,10 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $objectManager,
         $completenessManager,
         $eventDispatcher,
+        $applyDataOnProduct,
         ProductInterface $product
     ) {
+        $applyDataOnProduct->apply($product)->willReturn($product);
         $product->getId()->willReturn(null);
 
         $objectManager->persist($product)->shouldBeCalled();
@@ -135,6 +145,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $authorizationChecker,
         $productDraftBuilder,
         $tokenStorage,
+        $applyDataOnProduct,
         $productDraftRepo,
         $productDraftRemover,
         ProductInterface $product,
@@ -142,6 +153,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         UsernamePasswordToken $token,
         UserInterface $user
     ) {
+        $applyDataOnProduct->apply($product)->willReturn($product);
         $product->getId()->willReturn(42);
         $product->getIdentifier()->willReturn('sku');
         $authorizationChecker->isGranted(Attributes::OWN, $product)
@@ -171,6 +183,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $authorizationChecker,
         $productDraftBuilder,
         $tokenStorage,
+        $applyDataOnProduct,
         $productDraftRepo,
         $productDraftRemover,
         ProductInterface $product,
@@ -178,6 +191,7 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         UsernamePasswordToken $token,
         UserInterface $user
     ) {
+        $applyDataOnProduct->apply($product)->willReturn($product);
         $product->getId()->willReturn(42);
         $product->getIdentifier()->willReturn('sku');
         $authorizationChecker->isGranted(Attributes::OWN, $product)
@@ -207,12 +221,14 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $authorizationChecker,
         $productDraftBuilder,
         $tokenStorage,
+        $applyDataOnProduct,
         $productDraftRepo,
         $productDraftRemover,
         ProductInterface $product,
         UsernamePasswordToken $token,
         UserInterface $user
     ) {
+        $applyDataOnProduct->apply($product)->willReturn($product);
         $product->getId()->willReturn(42);
         $authorizationChecker->isGranted(Attributes::OWN, $product)
             ->willReturn(false);
@@ -242,11 +258,13 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $authorizationChecker,
         $productDraftBuilder,
         $tokenStorage,
+        $applyDataOnProduct,
         ProductInterface $product,
         ProductDraftInterface $productDraft,
         UsernamePasswordToken $token,
         UserInterface $user
     ) {
+        $applyDataOnProduct->apply($product)->willReturn($product);
         $product->getId()->willReturn(42);
         $authorizationChecker->isGranted(Attributes::OWN, $product)
             ->willReturn(false);
@@ -279,12 +297,16 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $authorizationChecker,
         $productDraftBuilder,
         $tokenStorage,
+        $applyDataOnProduct,
         ProductInterface $ownedProduct,
         ProductInterface $notOwnedProduct,
         ProductDraftInterface $productDraft,
         UsernamePasswordToken $token,
         UserInterface $user
     ) {
+        $applyDataOnProduct->apply($ownedProduct)->willReturn($ownedProduct);
+        $applyDataOnProduct->apply($notOwnedProduct)->willReturn($notOwnedProduct);
+
         $ownedProduct->getId()->willReturn(42);
         $completenessManager->generateMissingForProduct($ownedProduct)->shouldBeCalled();
         $authorizationChecker->isGranted(Attributes::OWN, $ownedProduct)

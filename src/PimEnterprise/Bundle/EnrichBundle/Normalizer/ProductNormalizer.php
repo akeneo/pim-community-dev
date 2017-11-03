@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Component\Security\Attributes;
@@ -56,6 +57,9 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @var SerializerInterface */
     protected $serializer;
 
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
+
     /**
      * @param NormalizerInterface             $normalizer
      * @param PublishedProductManager         $publishedManager
@@ -64,6 +68,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      * @param CategoryAccessRepository        $categoryAccessRepo
      * @param TokenStorageInterface           $tokenStorage
      * @param AuthorizationCheckerInterface   $authorizationChecker
+     * @param ProductRepositoryInterface      $productRepository
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -72,7 +77,8 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         ProductDraftApplierInterface $draftApplier,
         CategoryAccessRepository $categoryAccessRepo,
         TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker
+        AuthorizationCheckerInterface $authorizationChecker,
+        ProductRepositoryInterface $productRepository
     ) {
         $this->normalizer = $normalizer;
         $this->publishedManager = $publishedManager;
@@ -81,6 +87,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         $this->categoryAccessRepo = $categoryAccessRepo;
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -88,7 +95,9 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        $workingCopy = $this->normalizer->normalize($product, 'standard', $context);
+        $id = $product instanceof PublishedProductInterface ? $product->getOriginalProduct()->getId() : $product->getId();
+        $workingCopy = $this->productRepository->find($id);
+        $normalizedWorkingCopy = $this->normalizer->normalize($workingCopy, 'standard', $context);
         $draftStatus = null;
 
         $isOwner = $this->authorizationChecker->isGranted(Attributes::OWN, $product);
@@ -115,7 +124,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
                     null,
                 'owner_groups' => $this->serializer->normalize($ownerGroups, 'internal_api', $context),
                 'is_owner'     => $this->authorizationChecker->isGranted(Attributes::OWN, $product),
-                'working_copy' => $workingCopy,
+                'working_copy' => $normalizedWorkingCopy,
                 'draft_status' => $draftStatus
             ]
         );

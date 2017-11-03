@@ -40,3 +40,4 @@ services:
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.remover.product_draft'
             - '@pim_catalog.synchronizer.product_unique_data'
+            - '@pimee_catalog.security.applier.apply_data_on_product'
