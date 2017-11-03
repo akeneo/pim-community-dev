@@ -2,21 +2,21 @@
 
 ## Bug Fixes
 
-- PIM-6904: Product Grid - Horizontal scrollbar should be at the bottom of the screen instead to be at the end of the grid
-- PIM-6960: fix association type deletion when it's the first item of the list
+- PIM-6904: Add an horizontal scrollbar to improve navigation on product grid
+- PIM-6960: Fix association type deletion
 
 # 1.7.12 (2017-10-25)
 
 ## Bug Fixes
 
-PIM-6939: fix sort order on export
-SDS-1772: Removes query cache use on PQB to avoid memory leak
+- PIM-6939: fix sort order on export
+- SDS-1772: Removes query cache use on PQB to avoid memory leak
 
 # 1.7.11 (2017-10-16)
 
 ## Bug Fixes
 
-PIM-6901: Fix ACL with a new role when we want to edit users
+- PIM-6901: Fix ACL with a new role when we want to edit users
 
 # 1.7.10 (2017-10-10)
 
