@@ -203,8 +203,8 @@ define(
 
                 if (targetLevel < entityLevel) {
                     return FetcherRegistry
-                        .getFetcher('product-model')
-                        .fetch(entity.meta.parent_id)
+                        .getFetcher('product-model-by-code')
+                        .fetch(entity.parent)
                         .then((parent) => {
                             return parent.parent;
                         })
