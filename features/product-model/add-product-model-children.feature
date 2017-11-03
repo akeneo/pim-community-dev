@@ -34,8 +34,8 @@ Feature: Add children to product model
     And I save the family
     And I should not see the text "There are unsaved changes."
     And the following family variant:
-      | code                     | family   | label-en_US                | variant-axes_1                                 | variant-axes_2 | variant-attributes_1              |
-      | five_axes_family_variant | clothing | Clothing by color and size | color,material,weight,handmade,reference_color | size           | image,variation_image,composition |
+      | code                     | family   | label-en_US                | variant-axes_1                                 | variant-axes_2 | variant-attributes_1                                                             |
+      | five_axes_family_variant | clothing | Clothing by color and size | color,material,weight,handmade,reference_color | size           | color,material,weight,handmade,reference_color,image,variation_image,composition |
     And the following root product model:
       | code       | parent | family_variant           |
       | root_model |        | five_axes_family_variant |
@@ -120,8 +120,8 @@ Feature: Add children to product model
     And I save the family
     And I should not see the text "There are unsaved changes."
     And the following family variant:
-      | code                     | family   | label-en_US                          | variant-axes_1                                | variant-attributes_1                      |
-      | five_axes_family_variant | clothing | Clothing by reference color and size | reference_color,size,material,weight,handmade | image,variation_image,composition,ean,sku |
+      | code                     | family   | label-en_US                          | variant-axes_1                                | variant-attributes_1                                                                    |
+      | five_axes_family_variant | clothing | Clothing by reference color and size | reference_color,size,material,weight,handmade | reference_color,size,material,weight,handmade,image,variation_image,composition,ean,sku |
     And the following root product model:
       | code       | parent | family_variant           |
       | root_model |        | five_axes_family_variant |
