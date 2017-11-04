@@ -152,6 +152,7 @@ pim_enrich:
       locale: Impostazioni locali
       category: Categoria
       create: Crea
+      subTitle: Crea prodotto
       filters: Filtri
       common: In comune
       btn:

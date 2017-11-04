@@ -154,6 +154,7 @@ pim_enrich:
       locale: Locale
       category: Catégorie
       create: Créer
+      subTitle: Créer un produit
       modalTitle: Sélectionnez une action
       filters: Filtres
       selected: résultats sélectionnés

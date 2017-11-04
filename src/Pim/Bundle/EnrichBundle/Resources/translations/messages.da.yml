@@ -155,7 +155,10 @@ pim_enrich:
       download: Download produktet som PDF
       history: Se produkt historik
     product_model:
+      create: Oprette en produktmodel
       edit_attributes: Rediger attributterne for en produktmodel
+      categories_view: Konsultere kategorierne af en produktmodel
+      history: Se produkt model historik
     category:
       list: Kategoriliste
       create: Opret en kategori
@@ -554,6 +557,7 @@ pim_title.attribute:
   edit: "Attributter %attribute.label% | Rediger"
 pim_title.product:
   index: "Produkter"
+  edit: "Produkter %product.label% | Rediger"
 pim_title.family:
   index: "Familier"
   edit: "Familier %family.label% | Rediger"

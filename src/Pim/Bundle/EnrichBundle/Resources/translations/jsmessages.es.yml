@@ -145,6 +145,7 @@ pim_enrich:
       locale: Local
       category: Categoría
       create: Crear
+      subTitle: Crear un producto
       filters: Filtros
       common: Común
       btn:
@@ -686,6 +687,7 @@ pim_enrich:
             title: Selección de atributo
         attributes_selector:
           attribute_group: Grupos de atributos
+          attributes: "Buscar en {{ itemsCount }} atributos"
           selected: "Atributos seleccionados"
           clear: Restablecer
           all_group: Todos los grupos
