@@ -116,8 +116,8 @@ batch_jobs:
     label: Export des devises en CSV
     export.label: Export des devises
   csv_group_type_export:
-    label: Export des types de groupes en CSV
-    export.label: Export des types de groupes
+    label: Export des types de groupe en CSV
+    export.label: Export des types de groupe
   csv_channel_import:
     label: Import des canaux en CSV
     validation.label: Validation du fichier
@@ -135,9 +135,9 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des devises
   csv_group_type_import:
-    label: Import des types de groupes en CSV
+    label: Import des types de groupe en CSV
     validation.label: Validation du fichier
-    import.label: Import des types de groupes
+    import.label: Import des types de groupe
   xlsx_category_import:
     label: Import des catégories en XLSX
     validation.label: Validation du fichier
@@ -208,8 +208,8 @@ batch_jobs:
     label: Export des devises en XLSX
     export.label: Export des devises
   xlsx_group_type_export:
-    label: Export des types de groupes en XLSX
-    export.label: Export des types de groupes
+    label: Export des types de groupe en XLSX
+    export.label: Export des types de groupe
   xlsx_channel_import:
     label: Import des canaux en XLSX
     validation.label: Validation du fichier
@@ -227,6 +227,6 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des devises
   xlsx_group_type_import:
-    label: Import des types de groupes en XLSX
+    label: Import des types de groupe en XLSX
     validation.label: Validation du fichier
-    import.label: Import des types de groupes
+    import.label: Import des types de groupe
