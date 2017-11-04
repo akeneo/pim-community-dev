@@ -170,7 +170,6 @@ Feature: Products datagrid projects
     And I create the view:
       | new-view-label | My posters |
     Then I should be on the products page
-    And I should see the flash message "Datagrid view successfully created"
     When I am on the User profile show page
     And I press the "Edit" button
     Then I should see the text "Edit user - Julia Stark"
