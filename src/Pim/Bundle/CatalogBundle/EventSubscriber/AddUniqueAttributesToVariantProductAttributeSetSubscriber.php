@@ -12,9 +12,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
- * This subscriber automatically sets those attributes in the variant
- * attribute set corresponding to the variant product. This is done on
- * two occasions:
+ * This subscriber automatically sets those attributes in the variant attribute set corresponding to the variant
+ * product. This is done on two occasions:
  * - when creating a family variant (automatically handles the non assigned attributes),
  * - when adding a unique attribute to a family that already have family variants.
  *
