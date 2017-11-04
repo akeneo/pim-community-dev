@@ -13,7 +13,7 @@ pim_import_export:
     7: ABANDONAT
     8: DESCONEGUT
   download_archive:
-    archive: descarregar l'arxiu generat | descarregar els arxius generats
+    archive: descarregar l' arxiu generat | descarregar arxius generats
     output: descarregar fitxer generat|descarregar fitxers generats
     input: descarregar fitxer llegit|descarregar fitxers llegits
     invalid: descarregar dades no vàlides

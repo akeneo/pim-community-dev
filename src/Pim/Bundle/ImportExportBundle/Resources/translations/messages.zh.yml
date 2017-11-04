@@ -13,6 +13,7 @@ pim_import_export:
     7: 被遗弃
     8: 未知的
   download_archive:
+    archive: 下载生成的文件 | 下载生成的文件
     output: 下载生成的文件 | 下载生成的文件
     input: 下载文件 | 下载文件
   notification:
