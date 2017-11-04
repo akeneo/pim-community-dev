@@ -684,6 +684,7 @@ pim_enrich:
             title: Selección de atributo
         attributes_selector:
           attribute_group: Grupos de atributos
+          attributes: "Buscar en {{ itemsCount }} atributos"
           selected: "Atributos seleccionados"
           clear: Restablecer
           all_group: Todos los grupos

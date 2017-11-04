@@ -20,6 +20,9 @@ pim_analytics:
     nb_channels: Número de canales
     nb_products: Número de productos
     nb_attributes: Número de atributos
+    nb_scopable_attributes: Número de atributos scopable
+    nb_localizable_attributes: Número de atributos localizables
+    nb_scopable_localizable_attributes: Número de atributos localizables y scopable
     nb_locales: Número de locales
     nb_families: Número de familias
     nb_users: Número de usuarios

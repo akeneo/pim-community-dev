@@ -18,8 +18,12 @@ pim_connector:
         not_blank: En landestandard skal være valgt, skal du vælge en landestandard til eksport.
 page_title:
   pim_importexport_export_profile_index: Eksporter profil håndtering
+  pim_importexport_export_profile_edit: Eksportere profiler {{ job.label }} | Rediger
+  pim_importexport_export_profile_show: Eksportere profiler {{ job.label }} | Vis
   pim_importexport_export_execution_index: Eksporter aktivitets historik
   pim_importexport_export_execution_show: Eksporter aktiviteter | Detaljer
   pim_importexport_import_profile_index: Importer profiler håndtering
+  pim_importexport_import_profile_edit: Importere profil {{ job.label }} | Rediger
+  pim_importexport_import_profile_show: Importere profil {{ job.label }} | Vis
   pim_importexport_import_execution_index: Importer aktivitets historik
   pim_importexport_import_execution_show: Importer aktiviter | Detaljer
