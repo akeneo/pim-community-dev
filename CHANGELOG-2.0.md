@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Improvements
+
+- IM-825: allow concurrent AJAX requests by closing the session in a listener
+
 # 2.0.6 (2017-11-03)
 
 ## Better manage products with variants!

@@ -1174,17 +1174,28 @@ class FixturesContext extends BaseFixturesContext
      */
     public function theFileOfShouldBe($attribute, $products, $filename)
     {
-        foreach ($this->listToArray($products) as $identifier) {
-            $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            $media        = $productValue->getData();
-            if ('' === trim($filename)) {
-                if ($media) {
-                    assertNull($media->getOriginalFilename());
+        $this->getMainContext()->getSubcontext('hook')->clearUOW();
+
+        $this->spin(function () use ($attribute, $products, $filename) {
+            foreach ($this->listToArray($products) as $identifier) {
+                $productValue = $this->getProductValue($identifier, strtolower($attribute));
+                $media = $productValue->getData();
+                if ('' === trim($filename)) {
+                    if ($media) {
+                        assertNull($media->getOriginalFilename());
+                    }
+                } else {
+                    assertEquals($filename, $media->getOriginalFilename());
                 }
-            } else {
-                assertEquals($filename, $media->getOriginalFilename());
             }
-        }
+
+            return true;
+        }, sprintf(
+            'Cannot assert that the value for the attribute "%s" is "%s" for the products "%s"',
+            $attribute,
+            $filename,
+            implode(',', $this->listToArray($products))
+        ));
     }
 
     /**
