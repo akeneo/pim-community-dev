@@ -353,6 +353,7 @@ pim_enrich:
                 add_variant: Add variant
                 create_label: Create a new family variant
                 create_description: In a family variant, you can define a structure for products with variants. Choose the number of managed variant levels, the attributes used as variant axes for each level, and then define how the attributes are distributed.
+                update_description: You can distribute the attributes of the family between the common attributes and specific attributes for a variant level. To distribute the attributes, you can search in the common attributes and you can drag & drop an attribute or an attribute group in the variant attributes of a level.
                 create: Create
                 cancel: Cancel
                 code: Code

@@ -56,6 +56,7 @@ define([
 
         return BaseForm.extend({
             className: 'family-variant-levels AknFamilyVariant',
+            events: {'click .AknIconButton--delete': 'removeAttributeFromVariantAttributeSet'},
             template: _.template(template),
 
             /**
@@ -216,6 +217,23 @@ define([
                 });
 
                 this.setData(data);
+            },
+
+            removeAttributeFromVariantAttributeSet(event) {
+                event.preventDefault();
+                const $attributeToRemove = $(event.currentTarget.parentElement);
+                const attributeCodeToRemove = $attributeToRemove.data('attribute-code');
+                const variantAttributeSetLevel = $attributeToRemove.closest('[data-level]').data('level');
+
+                var data = this.getFormData();
+                data.variant_attribute_sets.map((attributeSet) => {
+                    if (attributeSet.level === variantAttributeSetLevel) {
+                        attributeSet.attributes = attributeSet.attributes.filter(item => item !== attributeCodeToRemove);
+                    }
+                });
+
+                this.setData(data);
+                this.render();
             }
         });
     }

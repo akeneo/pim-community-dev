@@ -37,8 +37,9 @@ define([
 
                 this.$el.html(this.template({
                     familyVariant: this.getFormData(),
+                    __: __,
                     i18n,
-                    userContext
+                    userContext,
                 }));
 
                 this.renderExtensions();
