@@ -3,6 +3,7 @@
 ## Improvements
 
 - IM-825: allow concurrent AJAX requests by closing the session in a listener
+- PIM-6838: Display completeness panel after Attributes in the PEF
 
 # 2.0.6 (2017-11-03)
 
