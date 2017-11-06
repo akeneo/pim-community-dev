@@ -45,6 +45,11 @@ define(
              * {@inheritdoc}
              */
             render() {
+                $('.AknDefault-thirdColumn').addClass('AknDefault-thirdColumn--resizable').resizable({
+                    maxWidth: 500,
+                    minWidth: 300
+                });
+
                 this.$el.html(this.template({
                     label: __('pim_enrich.entity.product.category'),
                     isOpen: this.isOpen,
@@ -53,6 +58,12 @@ define(
                 }));
 
                 this.renderExtensions();
+            },
+
+            shutdown() {
+                $('.AknDefault-thirdColumn').removeClass('AknDefault-thirdColumn--resizable').resizable('destroy');
+
+                return BaseForm.prototype.shutdown.apply(this, arguments);
             },
 
             /**

@@ -85,6 +85,21 @@
     z-index: 801;
     border-right: 1px solid @AknBorderColor;
     padding: 20px;
+
+    .ui-resizable-e{
+      &:hover {
+        cursor: e-resize;
+      }
+
+      z-index: 90;
+      position: absolute;
+      width: 14px;
+      border-left: 1px @AknBorderColor solid;
+      height: 100%;
+      top: 0;
+      display: block;
+      right: -6px;
+    }
   }
 
   &-thirdColumnButton {
