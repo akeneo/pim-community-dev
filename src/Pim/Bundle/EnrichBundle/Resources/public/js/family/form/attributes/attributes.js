@@ -275,7 +275,7 @@ define([
                 } else if (_.contains(attributesUsedAsAxis, attributeToRemove)) {
                     Messenger.notify(
                         'error',
-                        __('pim_enrich.entity.family.info.cant_remove_attribute_as_used_as_axis')
+                        __('pim_enrich.entity.family.info.cant_remove_attribute_used_as_axis')
                     );
 
                     return false;
