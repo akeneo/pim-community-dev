@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Component\CatalogRule\tests\integration\Validator;
 
+use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\AttributeTypes;
 use Pim\Component\Connector\Exception\InvalidItemFromViolationsException;
@@ -25,10 +26,10 @@ class PropertyActionValidatorIntegration extends TestCase
      */
     public function testValidationOnARuleRegexConstraintOnSku()
     {
-        $skuAttribute = $this->getFromTestContainer('pim_api.repository.attribute')->findOneByIdentifier('sku');
+        $skuAttribute = $this->get('pim_api.repository.attribute')->findOneByIdentifier('sku');
         $skuAttribute->setValidationRule('regexp');
         $skuAttribute->setValidationRegexp('/^foo$/');
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($skuAttribute);
+        $this->get('pim_catalog.saver.attribute')->save($skuAttribute);
 
         $item  = [
             'actions' => [
@@ -59,7 +60,12 @@ class PropertyActionValidatorIntegration extends TestCase
 
     protected function getConfiguration()
     {
-        return $this->catalog->useTechnicalCatalog();
+        $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
+
+        return new Configuration(            [
+            Configuration::getTechnicalCatalogPath(),
+            $rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'technical'
+        ]);
     }
 
     /**
@@ -67,12 +73,12 @@ class PropertyActionValidatorIntegration extends TestCase
      */
     private function createAttribute(array $data)
     {
-        $data['group'] = $data['group'] ?? 'other';
+        $data['group'] = isset($data['group']) ? $data['group'] : 'other';
 
-        $attribute = $this->getFromTestContainer('pim_catalog.factory.attribute')->create();
-        $this->getFromTestContainer('pim_catalog.updater.attribute')->update($attribute, $data);
-        $constraints = $this->getFromTestContainer('validator')->validate($attribute);
+        $attribute = $this->get('pim_catalog.factory.attribute')->create();
+        $this->get('pim_catalog.updater.attribute')->update($attribute, $data);
+        $constraints = $this->get('validator')->validate($attribute);
         $this->assertCount(0, $constraints);
-        $this->getFromTestContainer('pim_catalog.saver.attribute')->save($attribute);
+        $this->get('pim_catalog.saver.attribute')->save($attribute);
     }
 }

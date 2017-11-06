@@ -110,12 +110,15 @@ class PropertyActionValidator extends ConstraintValidator
      *
      * @return ConstraintViolationListInterface
      */
-    protected function removeIdentifierViolations(ConstraintViolationListInterface $violations): ConstraintViolationListInterface
+    protected function removeIdentifierViolations(ConstraintViolationListInterface $violations)
     {
-        $identifierPath = sprintf('values[%s-<all_channels>-<all_locales>]', $this->attributeRepository->getIdentifierCode());
-        foreach ($violations as $offset => $violation) {
-            if (0 === strpos($violation->getPropertyPath(), $identifierPath)) {
-                $violations->remove($offset);
+        #TODO: Remove this 'if' on master
+        if (null !== $this->attributeRepository) {
+            $identifierPath = sprintf('values[%s-<all_channels>-<all_locales>]', $this->attributeRepository->getIdentifierCode());
+            foreach ($violations as $offset => $violation) {
+                if (0 === strpos($violation->getPropertyPath(), $identifierPath)) {
+                    $violations->remove($offset);
+                }
             }
         }
 
