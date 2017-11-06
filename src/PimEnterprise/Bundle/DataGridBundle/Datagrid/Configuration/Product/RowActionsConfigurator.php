@@ -27,6 +27,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class RowActionsConfigurator implements ConfiguratorInterface
 {
+    public const PRODUCT_MODEL_TYPE = 'product_model';
+
     /** @var DatagridConfiguration */
     protected $configuration;
 
@@ -79,14 +81,16 @@ class RowActionsConfigurator implements ConfiguratorInterface
     {
         return function (ResultRecordInterface $record) {
             $product = $this->productRepository->findOneByIdentifier($record->getValue('identifier'));
+            $productType = $record->getValue('document_type');
 
             $editGranted = $this->authorizationChecker->isGranted(Attributes::EDIT, $product);
             $ownershipGranted = $editGranted && $this->authorizationChecker->isGranted(Attributes::OWN, $product);
+            $canEditCategories = (self::PRODUCT_MODEL_TYPE === $productType) ? true : $ownershipGranted;
 
             return [
                 'show'            => !$editGranted,
                 'edit'            => $editGranted,
-                'edit_categories' => $ownershipGranted,
+                'edit_categories' => $canEditCategories,
                 'delete'          => $ownershipGranted,
                 'toggle_status'   => $ownershipGranted
             ];
