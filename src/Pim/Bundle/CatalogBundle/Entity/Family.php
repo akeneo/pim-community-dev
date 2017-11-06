@@ -166,6 +166,8 @@ class Family implements FamilyInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException
      */
     public function removeAttribute(AttributeInterface $attribute)
     {

@@ -1803,6 +1803,24 @@ class WebUser extends PimContext
     }
 
     /**
+     * @param string $buttonLabel
+     *
+     * @Given /^I press the cancel button in the popin$/
+     */
+    public function iPressTheCancelButtonInThePopin()
+    {
+        $buttonElement = $this->spin(function () {
+            return $this
+                ->getCurrentPage()
+                ->find('css', '.modal-full-body .AknButtonList > .AknFullPage-cancel');
+        }, 'Cannot find cancel button label in modal');
+
+        $buttonElement->click();
+
+        $this->wait();
+    }
+
+    /**
      * @param string $item
      * @param string $button
      *
