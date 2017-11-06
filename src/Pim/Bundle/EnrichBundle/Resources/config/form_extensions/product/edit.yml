@@ -198,12 +198,18 @@ extensions:
             tabTitle: pim_enrich.form.product.tab.attributes.title
             deletionFailed: pim_enrich.form.product.flash.attribute_deletion_error
 
+    pim-product-edit-form-completeness:
+        module: pim/product-edit-form/completeness
+        parent: pim-product-edit-form-column-tabs
+        targetZone: container
+        position: 100
+
     pim-product-edit-form-categories:
         module: pim/product-edit-form/categories
         parent: pim-product-edit-form-column-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_categories_view
-        position: 100
+        position: 120
         config:
             itemCategoryListRoute: pim_enrich_product_listcategories
             itemCategoryTreeRoute: pim_enrich_product_category_rest_list
@@ -213,7 +219,7 @@ extensions:
         parent: pim-product-edit-form-column-tabs
         targetZone: container
         aclResourceId: pim_enrich_associations_view
-        position: 110
+        position: 130
 
     pim-product-edit-form-attribute-group-selector:
         module: pim/form/common/attributes/attribute-group-selector
@@ -295,25 +301,19 @@ extensions:
         targetZone: self
         position: 90
 
-    pim-product-edit-form-completeness:
-        module: pim/product-edit-form/completeness
-        parent: pim-product-edit-form-column-tabs
-        targetZone: container
-        position: 120
-
     pim-product-edit-form-comments:
         module: pim/product-edit-form/comments
         parent: pim-product-edit-form-column-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_comment
-        position: 130
+        position: 140
 
     pim-product-edit-form-history:
         module: pim/product-edit-form/history
         parent: pim-product-edit-form-column-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_history
-        position: 140
+        position: 150
 
     pim-product-edit-form-copy-scope-switcher:
         module: pim/product-edit-form/scope-switcher
