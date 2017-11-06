@@ -206,6 +206,11 @@ extensions:
         position: 190
         config:
             label: pim_enrich.form.family.tab.attributes.label_label
+            confirmation:
+                title: pim_enrich.confirmation.remove_item
+                subTitle: pim_menu.item.attribute
+                message: pim_enrich.confirmation.delete.attribute_from_family
+                buttonText: pim_enrich.confirmation.remove
 
     pim-family-edit-form-variant:
         module: pim/family-edit-form/family-variant
