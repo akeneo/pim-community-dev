@@ -82,7 +82,7 @@ datagrid:
                 label: Classify the product
                 tabRedirects:
                     product: pim-product-edit-form-categories
-                    product_model: pim-product-model-edit-form-categories
+                    product_model: pim-product-edit-form-categories
             delete:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash

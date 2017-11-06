@@ -39,8 +39,11 @@ define(
                 if (null !== this.tabRedirects) {
                     const productType = this.model.get('document_type');
                     const tab = this.tabRedirects[productType];
-                    sessionStorage.setItem('redirectTab', `#${tab}`);
-                    sessionStorage.setItem('current_column_tab', tab);
+
+                    if (tab) {
+                        sessionStorage.setItem('redirectTab', `#${tab}`);
+                        sessionStorage.setItem('current_column_tab', tab);
+                    }
                 }
 
                 return NavigateAction.prototype.run.apply(this, arguments);
