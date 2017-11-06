@@ -21,6 +21,7 @@
 ## Improvements
 
 - TIP-824: Increase CLI products indexing performance by 20%
+- IMP-6932: Fix product model actions on products grid
 
 ## BC breaks
 
