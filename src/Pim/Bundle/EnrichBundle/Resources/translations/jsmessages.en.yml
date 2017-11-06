@@ -334,6 +334,7 @@ pim_enrich:
                 cant_remove_attribute_as_label: Cannot remove attribute used as label
                 cant_remove_attribute_as_image: Cannot remove attribute used as the main picture
                 attribute_edit_permission_is_not_granted: You have no rights to edit family's attributes
+                cant_remove_attribute_used_as_axis: Cannot remove this attribute used as a variant axis in a family variant
             meta:
                 created: Created
                 created_by: Created by
