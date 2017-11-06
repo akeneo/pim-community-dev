@@ -11,14 +11,16 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'pim/template/product/grid/category-switcher'
+        'pim/template/product/grid/category-switcher',
+        'pim/menu/resizable'
     ],
     function(
         $,
         _,
         __,
         BaseForm,
-        template
+        template,
+        Resizable
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -45,11 +47,6 @@ define(
              * {@inheritdoc}
              */
             render() {
-                $('.AknDefault-thirdColumn').addClass('AknDefault-thirdColumn--resizable').resizable({
-                    maxWidth: 500,
-                    minWidth: 300
-                });
-
                 this.$el.html(this.template({
                     label: __('pim_enrich.entity.product.category'),
                     isOpen: this.isOpen,
@@ -60,8 +57,11 @@ define(
                 this.renderExtensions();
             },
 
+            /**
+             * {@inheritdoc}
+             */
             shutdown() {
-                $('.AknDefault-thirdColumn').removeClass('AknDefault-thirdColumn--resizable').resizable('destroy');
+                Resizable.destroy();
 
                 return BaseForm.prototype.shutdown.apply(this, arguments);
             },
@@ -70,14 +70,21 @@ define(
              * Toggle the thrid column
              */
             toggleThirdColumn() {
+                Resizable.set({
+                    maxWidth: 500,
+                    minWidth: 300,
+                    container: '.AknDefault-thirdColumn',
+                    storageKey: 'category-switcher'
+                });
+
                 this.getRoot().trigger('grid:third_column:toggle');
 
                 if (!this.isOpen) {
                     this.outsideEventListener = this.outsideClickListener.bind(this);
                     document.addEventListener('mousedown', this.outsideEventListener);
                 }
-                this.isOpen = !this.isOpen;
 
+                this.isOpen = !this.isOpen;
                 this.render();
             },
 
@@ -88,6 +95,7 @@ define(
              */
             outsideClickListener(event) {
                 if (this.isOpen && !$(event.target).closest('.AknDefault-thirdColumn').length) {
+                    Resizable.destroy();
                     this.toggleThirdColumn();
                     document.removeEventListener('mousedown', this.outsideEventListener);
                 }

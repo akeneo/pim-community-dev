@@ -34,6 +34,18 @@
     &--gray {
       background: #F6F7FB; // TODO FIND COLOR
     }
+
+    &--resizable {
+      position: relative;
+
+      .ui-resizable-e {
+        height: ~"calc(100% + 2px)";
+        top: -1px;
+        right: -8px;
+        border: 1px @AknBorderColor solid;
+        border-left: 0;
+      }
+    }
   }
 
   &-columnHeader {

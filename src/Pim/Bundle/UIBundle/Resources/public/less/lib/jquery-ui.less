@@ -17,3 +17,32 @@
   color: @AknLightPurple;
   border-bottom: 3px solid @AknLightPurple;
 }
+
+.ui-resizable-e {
+  &:hover {
+    cursor: ew-resize;
+  }
+
+  position: absolute;
+  width: 7px;
+  border-left: 1px @AknBorderColor solid;
+  height: 100%;
+  top: 0;
+  display: block;
+  right: 0;
+
+  &:after {
+    display: block;
+    content: '...';
+    width: 100%;
+    font-size: 17px;
+    top: 50%;
+    position: absolute;
+    word-break: break-word;
+    line-height: 5px;
+    color: @AknGrey;
+    height: 24px;
+    margin-top: -24px;
+    text-align: center;
+  }
+}

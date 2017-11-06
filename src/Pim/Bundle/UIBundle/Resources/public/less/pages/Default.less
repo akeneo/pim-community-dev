@@ -71,9 +71,11 @@
     margin-right: @AknThirdColumnWidth;
     transition: margin 0.3s ease-in-out;
 
+    // !important is added because these values are
+    // set with jQuery (to support dynamic panel widths)
     &--open {
-      margin-left: 0;
-      margin-right: 0;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
     }
   }
 
@@ -85,21 +87,6 @@
     z-index: 801;
     border-right: 1px solid @AknBorderColor;
     padding: 20px;
-
-    .ui-resizable-e{
-      &:hover {
-        cursor: e-resize;
-      }
-
-      z-index: 90;
-      position: absolute;
-      width: 14px;
-      border-left: 1px @AknBorderColor solid;
-      height: 100%;
-      top: 0;
-      display: block;
-      right: -6px;
-    }
   }
 
   &-thirdColumnButton {
