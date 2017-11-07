@@ -23,6 +23,9 @@ class CleanMongoDBCommand extends ContainerAwareCommand
     /** @var array $familyIds */
     protected $familyIds;
 
+    /** @var array $associationTypeIds */
+    protected $associationTypeIds;
+
     /** @var array $categoryIds */
     protected $categoryIds;
 
@@ -127,6 +130,7 @@ class CleanMongoDBCommand extends ContainerAwareCommand
             $product = $this->checkFamily($product);
             $product = $this->checkCategories($product);
             $product = $this->checkValues($product);
+            $product = $this->checkAssociations($product);
 
             if (!$dryRun) {
                 $productCollection->update(
@@ -489,6 +493,44 @@ class CleanMongoDBCommand extends ContainerAwareCommand
         unset($product['normalizedData']['family']);
         unset($product['normalizedData']['completenesses']);
         unset($product['completenesses']);
+
+        return $product;
+    }
+
+    /**
+     * Checks if the association type ID exists and removes it from the product associations otherwise.
+     *
+     * @param array $product
+     *
+     * @return array
+     */
+    protected function checkAssociations(array $product)
+    {
+        if (!isset($product['associations']) || empty($product['associations'])) {
+            return $product;
+        }
+
+        if (null === $this->associationTypeIds) {
+            $qb = $this->getContainer()->get('pim_catalog.repository.association_type')->createQueryBuilder('at')
+                ->select('at.id');
+            $results = $qb->getQuery()->getArrayResult();
+
+            $this->associationTypeIds = array_column($results, 'id');
+        }
+
+        $associations = [];
+        foreach ($product['associations'] as $association) {
+            if (!in_array($association['associationType'], $this->associationTypeIds)) {
+                $this->addMissingEntity(
+                    $this->getContainer()->getParameter('pim_catalog.entity.association_type.class'),
+                    $association['associationType']
+                );
+            } else {
+                $associations[] = $association;
+            }
+        }
+
+        $product['associations'] = $associations;
 
         return $product;
     }
