@@ -78,3 +78,4 @@ pim_catalog:
         301: This field expects a valid scope and locale.
         302: This field expects a valid scope.
         303: This field expects a valid association format.
+        pim_immutable_product_validator: This product already exists.

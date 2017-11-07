@@ -2,16 +2,16 @@
 
 namespace spec\Pim\Component\Catalog\Validator\Constraints;
 
-use Composer\Semver\Constraint\Constraint;
-use Pim\Component\Catalog\Validator\ConstraintsProduct;
+use Pim\Component\Catalog\Validator\Constraints\UniqueEntity;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\Validator\Constraint;
 
-class UniqueProductSpec extends ObjectBehavior
+class UniqueEntitySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(ConstraintsProduct::class);
+        $this->shouldHaveType(UniqueEntity::class);
     }
 
     function it is a constraint()
@@ -21,7 +21,7 @@ class UniqueProductSpec extends ObjectBehavior
 
     function it is validated by a specific validator()
     {
-        $this->validatedBy()->shouldReturn('pim_immutable_product_validator');
+        $this->validatedBy()->shouldReturn('pim_unique_product_validator');
     }
 
     function it validates a class()

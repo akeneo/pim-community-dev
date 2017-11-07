@@ -9,9 +9,9 @@ Pim\Component\Catalog\Model\ProductModel:
             groups: [UniqueAxis]
         - Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues: ~
         - Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxes: ~
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
-            fields: ['code']
-            message: 'product_model.code.unique.message'
+        - Pim\Component\Catalog\Validator\Constraints\UniqueEntity:
+            identifier: code
+            entityClass: Pim\Component\Catalog\Model\ProductModel
     properties:
         code:
             - NotBlank:
