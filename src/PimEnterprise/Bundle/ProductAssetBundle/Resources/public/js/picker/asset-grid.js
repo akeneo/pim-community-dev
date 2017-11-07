@@ -15,7 +15,8 @@ define(
         'pim/fetcher-registry',
         'pim/user-context',
         'oro/datafilter/product_category-filter',
-        'require-context'
+        'require-context',
+        'pim/menu/resizable'
     ],
     function (
         $,
@@ -31,7 +32,8 @@ define(
         FetcherRegistry,
         UserContext,
         CategoryFilter,
-        requireContext
+        requireContext,
+        Resizable
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -88,9 +90,36 @@ define(
                     description: __('pimee_product_asset.form.product.asset.description'),
                     locale: this.getLocale()
                 }));
+
                 this.renderGrid(this.datagrid);
+                this.setupResizableColumn();
 
                 return this.renderExtensions();
+            },
+
+            /**
+             * Make the categories tree resizable. Because of flexbox we get the
+             * rendered width of the column and use that as the minimum.
+             */
+            setupResizableColumn() {
+                const resizableColumn = this.$('.AknColumnConfigurator-listContainer--resizable');
+                const originalColumnWidth = resizableColumn.outerWidth();
+
+                Resizable.set({
+                    minWidth: originalColumnWidth,
+                    maxWidth: 500,
+                    container: this.$('.AknColumnConfigurator-listContainer--resizable'),
+                    storageKey: 'asset-grid'
+                });
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            shutdown() {
+                Resizable.destroy();
+
+                return BaseForm.prototype.shutdown.apply(this, arguments);
             },
 
             /**
