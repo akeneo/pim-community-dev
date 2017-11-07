@@ -176,10 +176,6 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                     }
 
                     if (isset($attributeSetData['attributes'])) {
-                        if (null !== $familyVariant->getId()) {
-                            $this->removeAttributeFromPreviousLevel($familyVariant, $attributeSetData);
-                        }
-
                         $attributeSet->setAttributes(
                             $this->getAttributes($attributeSetData['attributes'], $attributeSetData['level'])
                         );
@@ -206,45 +202,6 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
         }
 
         return $numberOfLevel;
-    }
-
-    /**
-     * We consider that if an attribute added in a given attribute set is also
-     * present in an upper one: for instance in level 2 and level 1, then it
-     * means this attribute has been moved from level 1 to level 2, and need to
-     * be removed from level 1.
-     *
-     * We loop over all attribute sets preceding the current one (considering the
-     * common attributes as a "level 0" attribute set), then we remove from them
-     * all attributes that are already present in the current one.
-     *
-     * @param FamilyVariantInterface $familyVariant
-     * @param array                  $attributeSetData
-     */
-    private function removeAttributeFromPreviousLevel(
-        FamilyVariantInterface $familyVariant,
-        array $attributeSetData
-    ): void {
-        $currentLevel = $attributeSetData['level'];
-        $previousAttributeSetAttributes = [];
-
-        while (1 < $currentLevel) {
-            $attributeSet = $familyVariant->getVariantAttributeSet($attributeSetData['level'] - 1);
-            if ($attributeSet instanceof VariantAttributeSetInterface) {
-                $previousAttributeSetAttributes[] = $attributeSet->getAttributes();
-            }
-            $currentLevel--;
-        }
-
-        $previousAttributeSetAttributes[] = $familyVariant->getCommonAttributes();
-
-        foreach ($previousAttributeSetAttributes as $previousAttributes) {
-            foreach ($previousAttributes as $previousAttribute) {
-                if (in_array($previousAttribute->getCode(), $attributeSetData['attributes'])) {
-                    $previousAttributes->removeElement($previousAttribute);
-                }
-            }
-        }
     }
 
     /**
