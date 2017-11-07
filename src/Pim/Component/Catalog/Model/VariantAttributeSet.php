@@ -70,6 +70,12 @@ class VariantAttributeSet implements VariantAttributeSetInterface
     public function setAttributes(array $attributes): void
     {
         $this->attributes = new ArrayCollection($attributes);
+
+        foreach ($this->axes as $axis) {
+            if (!$this->attributes->contains($axis)) {
+                $this->attributes->add($axis);
+            }
+        }
     }
 
     /**

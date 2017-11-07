@@ -92,6 +92,7 @@ class UpdateFamilyVariantIntegration extends TestCase
                 'description',
                 'ean',
                 'erp_name',
+                'eu_shoes_size',
                 'image',
                 'size',
                 'sku',
@@ -168,6 +169,7 @@ class UpdateFamilyVariantIntegration extends TestCase
         $errors = $this->validateFamilyVariant($familyVariant);
         $this->assertEquals(1, $errors->count());
         $this->assertEquals('This property cannot be changed.', $errors->get(0)->getMessage());
+        $this->assertEquals('variantAttributeSets[0].axes', $errors->get(0)->getPropertyPath());
     }
 
     /**
