@@ -17,6 +17,7 @@ parameters:
     pim_catalog.event_subscriber.compute_product_models_descendants.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeProductModelDescendantsSubscriber
     pim_catalog.event_subscriber.compute_family_variant_structure_changes.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeFamilyVariantStructureChangesSubscriber
     pim_catalog.event_subscriber.remove_attribute_from_family_variants_on_family_update.class: Pim\Bundle\CatalogBundle\EventSubscriber\RemoveAttributeFromFamilyVariantsOnFamilyUpdateSubscriber
+    pim_catalog.event_subscriber.save_family_variants_on_family_update.class: Pim\Bundle\CatalogBundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber
 
 services:
     # Subscribers
@@ -137,6 +138,7 @@ services:
             - '@pim_catalog.family_variant.add_unique_attributes'
         tags:
             - { name: kernel.event_subscriber }
+
     pim_catalog.event_subscriber.index_product_model_completedata:
         class: '%pim_catalog.event_subscriber.index_product_model_complete.class%'
         arguments:
@@ -157,8 +159,13 @@ services:
 
     pim_catalog.event_subscriber.remove_attribute_from_family_variants_on_family_update:
         class: '%pim_catalog.event_subscriber.remove_attribute_from_family_variants_on_family_update.class%'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_catalog.event_subscriber.save_family_variants_on_family_update:
+        class: '%pim_catalog.event_subscriber.save_family_variants_on_family_update.class%'
         arguments:
-            - '@pim_catalog.updater.family_variant'
             - '@validator'
+            - '@pim_catalog.saver.family_variant'
         tags:
             - { name: kernel.event_subscriber }
