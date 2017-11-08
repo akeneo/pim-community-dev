@@ -1,10 +1,11 @@
 parameters:
-    pim_enrich.connector.processor.mass_edit.product.update_value.class:           Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor
-    pim_enrich.connector.processor.mass_edit.product.add_value.class:              Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor
-    pim_enrich.connector.processor.mass_edit.product.remove_value.class:           Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\RemoveProductValueProcessor
-    pim_enrich.connector.processor.mass_edit.product.edit_common_attributes.class: Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor
-    pim_enrich.connector.processor.mass_edit.family.set_requirements.class:        Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements
-    pim_enrich.connector.processor.quick_export.product_and_product_model.class:   Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductAndProductModelProcessor
+    pim_enrich.connector.processor.mass_edit.product.update_value.class:                       Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\UpdateProductValueProcessor
+    pim_enrich.connector.processor.mass_edit.product.add_value.class:                          Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddProductValueProcessor
+    pim_enrich.connector.processor.mass_edit.product.remove_value.class:                       Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\RemoveProductValueProcessor
+    pim_enrich.connector.processor.mass_edit.product.edit_common_attributes.class:             Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\EditCommonAttributesProcessor
+    pim_enrich.connector.processor.mass_edit.product.add_to_existing_product_model.class:      Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Product\AddToExistingProductModelProcessor
+    pim_enrich.connector.processor.mass_edit.family.set_requirements.class:                    Pim\Bundle\EnrichBundle\Connector\Processor\MassEdit\Family\SetAttributeRequirements
+    pim_enrich.connector.processor.quick_export.product_and_product_model.class:               Pim\Bundle\EnrichBundle\Connector\Processor\QuickExport\ProductAndProductModelProcessor
 
 services:
     pim_enrich.connector.processor.mass_edit.product.update_value:
@@ -32,6 +33,9 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.updater.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
+
+    pim_enrich.connector.processor.mass_edit.product.add_to_existing_product_model:
+        class: '%pim_enrich.connector.processor.mass_edit.product.add_to_existing_product_model.class%'
 
     pim_enrich.connector.processor.mass_edit.family.set_requirements:
         class: '%pim_enrich.connector.processor.mass_edit.family.set_requirements.class%'

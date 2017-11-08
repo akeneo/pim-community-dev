@@ -1,5 +1,7 @@
 # 2.0.x
 
+bin/console akeneo:batch:create-job internal add_to_existing_product_model mass_edit add_to_existing_product_model '{}' 'Add products to an existing product model' --env=prod
+
 ## Bug fixes
 
 - PIM-6958: fix loading a product with a reference data that is not available (simpleselect or multiselect)

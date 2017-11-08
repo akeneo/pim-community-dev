@@ -1057,6 +1057,10 @@ pim_enrich:
                     label: Remove from categories
                     label_count: "{1}Remove <span class=\"AknFullPage-title--highlight\">1 product</span> from categories|] 1, Inf [Remove <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> from categories"
                     description: The products will be removed from the following categories.
+                add_to_existing_product_model:
+                    label: Add to an existing product model
+                    label_count: "{1}Add <span class=\"AknFullPage-title--highlight\">1 product</span> to an existing product model|] 1, Inf [Add <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} products</span> to an existing product model"
+                    description: The products will be added to the following product model.
         family:
             title: Families bulk action
             confirm: "{1}You are about to update a family with the following information, please confirm.|] 1, Inf [You are about to update {{ itemsCount }} families with the following information, please confirm."
@@ -1137,6 +1141,10 @@ batch_jobs:
             label: Edit common attributes
         cleaner:
             label: Clean files for common attributes
+    add_to_existing_product_model:
+        label: Add to an existing product model
+        perform:
+            label: Add to an existing product model
     set_attribute_requirements:
         label: Set attributes requirements
         perform:

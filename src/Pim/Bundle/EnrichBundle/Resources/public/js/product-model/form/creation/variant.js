@@ -104,6 +104,9 @@ function (
             this.render();
         },
 
+        /**
+         * {@inheritdoc}
+         */
         render() {
             const errors = this.getRoot().validationErrors || [];
             this.errors = errors.filter(error => error.path === this.fieldName)
