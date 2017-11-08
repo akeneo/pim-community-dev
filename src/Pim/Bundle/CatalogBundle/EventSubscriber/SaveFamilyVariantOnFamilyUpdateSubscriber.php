@@ -50,8 +50,10 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
      * Validates and saves the family variants belonging to a family whenever it is updated.
      *
      * @param GenericEvent $event
+     *
+     * @throws \LogicException
      */
-    public function validateAndSaveFamilyVariants(GenericEvent $event)
+    public function validateAndSaveFamilyVariants(GenericEvent $event): void
     {
         $subject = $event->getSubject();
         if (!$subject instanceof FamilyInterface) {

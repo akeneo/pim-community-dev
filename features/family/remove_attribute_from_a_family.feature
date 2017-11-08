@@ -18,7 +18,7 @@ Feature: Remove attribute from a family
     When I am on the "1111111292" product page
     Then I should not see the text "Material"
 
-  Scenario: Successfully remove an attribute from a family and it does not appear in the variant product edit page
+  Scenario: Successfully remove an attribute from a family and it does not appear in the variant product product model edit pages
     Given I am on the "accessories" family page
     And I visit the "Attributes" tab
     When I remove the "material" attribute
@@ -26,7 +26,10 @@ Feature: Remove attribute from a family
     And I should not see the text "There are unsaved changes."
     Then I should see the flash message "Attribute successfully removed from the family"
     When I am on the "model-braided-hat" product model page
-    Then I should not see the text "Material"
+    And I should see the text "Supplier"
+    And I should not see the text "Material"
+    And I am on the "braided-hat-m" product page
+    And I should not see the text "Material"
 
   Scenario: Impossible to remove some attributes from a family (used as label, used as image, used as axis)
     Given I am on the "shoes" family page
@@ -40,7 +43,7 @@ Feature: Remove attribute from a family
     Then I should see the flash message "Cannot remove this attribute used as a variant axis in a family variant"
     And I should see the text "size"
 
-  Scenario: Sucessfully remove an attribute from a family removes it from the family variants.
+  Scenario: Successfully remove an attribute from a family removes it from the family variants.
     Given I am on the "shoes" family page
     And I visit the "Variants" tab
     When I click on the "Shoes by size and color" row
@@ -59,43 +62,3 @@ Feature: Remove attribute from a family
     And I should not see the text "Weight"
     And I should see the text "Variation picture"
     And I should not see the text "Model picture"
-
-  @skip
-  Scenario: Successfully update product completeness when removing a required attribute from a family
-    Given I am on the "Bags" family page
-    And I visit the "Attributes" tab
-    And I switch the attribute "manufacturer" requirement in channel "ecommerce"
-    And I switch the attribute "manufacturer" requirement in channel "mobile"
-    And I save the family
-    Then I should not see the text "There are unsaved changes."
-    When I launched the completeness calculator
-    And I am on the "bag-noname" product page
-    And I visit the "Completeness" column tab
-    Then I should see the completeness:
-      | channel    | locale                  | state    | message         | ratio |
-      | e-commerce | English (United States) | warning  | 1 missing value | 50%   |
-      | e-commerce | French (France)         | warning  | 1 missing value | 50%   |
-      | mobile     | English (United States) | disabled | none            | none  |
-      | mobile     | French (France)         | warning  | 1 missing value | 50%   |
-    When I am on the "Bags" family page
-    And I visit the "Attributes" tab
-    And I remove the "manufacturer" attribute
-    And I save the family
-    Then I should not see the text "There are unsaved changes."
-    When I am on the "bag-noname" product page
-    And I visit the "Completeness" column tab
-    Then I should see the completeness:
-      | channel    | locale                  | state    | message            | ratio |
-      | e-commerce | English (United States) |          | Not yet calculated |       |
-      | e-commerce | French (France)         |          | Not yet calculated |       |
-      | mobile     | English (United States) | disabled | none               | none  |
-      | mobile     | French (France)         |          | Not yet calculated |       |
-    When I launched the completeness calculator
-    And I am on the "bag-noname" product page
-    And I visit the "Completeness" column tab
-    Then I should see the completeness:
-      | channel    | locale                  | state    | message  | ratio |
-      | e-commerce | English (United States) | success  | Complete | 100%  |
-      | e-commerce | French (France)         | success  | Complete | 100%  |
-      | mobile     | English (United States) | disabled | none     | none  |
-      | mobile     | French (France)         | success  | Complete | 100%  |
