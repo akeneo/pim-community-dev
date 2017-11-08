@@ -6,6 +6,7 @@ use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierInterface;
 use Akeneo\Component\RuleEngine\ActionApplier\ActionApplierRegistryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Builder\ProductBuilderInterface;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraint\PropertyAction;
@@ -59,18 +60,21 @@ class PropertyActionValidatorSpec extends ObjectBehavior
         ProductCopyAction $productAction,
         PropertyAction $constraint,
         ProductInterface $fakeProduct,
-        ActionApplierInterface $actionApplierInterface
+        ActionApplierInterface $actionApplierInterface,
+        AttributeInterface $identifierAttribute
     ) {
         $productBuilder->createProduct(Argument::cetera())->willReturn($fakeProduct);
 
         $applierRegistry->getActionApplier($productAction)->willReturn($actionApplierInterface);
         $actionApplierInterface->applyAction($productAction, [$fakeProduct])->shouldBeCalled();
 
-        $violation = new ConstraintViolation('Error', 'foo', [], 'bar', 'values[sku-<all_channels>-<all_locales>]', 'mycode');
+        $violation = new ConstraintViolation('Error', 'foo', [], 'bar', 'values[sku].varchar', 'mycode');
         $violations = new ConstraintViolationList([$violation]);
         $validator->validate($fakeProduct)->willReturn($violations);
 
-        $attributeRepository->getIdentifierCode()->willReturn('sku');
+        $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
+        $identifierAttribute->getCode()->willReturn('sku');
+        $identifierAttribute->getBackendType()->willReturn('varchar');
 
         $context->buildViolation(
             Argument::any(),
@@ -90,7 +94,8 @@ class PropertyActionValidatorSpec extends ObjectBehavior
         PropertyAction $constraint,
         ProductInterface $fakeProduct,
         ActionApplierInterface $actionApplierInterface,
-        ConstraintViolationBuilderInterface $violationBuilder
+        ConstraintViolationBuilderInterface $violationBuilder,
+        AttributeInterface $identifierAttribute
     ) {
         $constraint->message = 'foo';
         $productBuilder->createProduct(Argument::cetera())->willReturn($fakeProduct);
@@ -98,12 +103,14 @@ class PropertyActionValidatorSpec extends ObjectBehavior
         $applierRegistry->getActionApplier($productAction)->willReturn($actionApplierInterface);
         $actionApplierInterface->applyAction($productAction, [$fakeProduct])->shouldBeCalled();
 
-        $violationOne = new ConstraintViolation('ErrorOne', 'fooOne', [], 'barOne', 'values[sku-<all_channels>-<all_locales>]', 'mycodeOne');
-        $violationTwo = new ConstraintViolation('ErrorTwo', 'fooTwo', [], 'barTwo', 'values[foo-<all_channels>-<all_locales>]', 'mycodeTwo');
+        $violationOne = new ConstraintViolation('ErrorOne', 'fooOne', [], 'barOne', 'values[sku].varchar', 'mycodeOne');
+        $violationTwo = new ConstraintViolation('ErrorTwo', 'fooTwo', [], 'barTwo', 'values[foo].varchar', 'mycodeTwo');
         $violations = new ConstraintViolationList([$violationOne, $violationTwo]);
         $validator->validate($fakeProduct)->willReturn($violations);
 
-        $attributeRepository->getIdentifierCode()->willReturn('sku');
+        $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
+        $identifierAttribute->getCode()->willReturn('sku');
+        $identifierAttribute->getBackendType()->willReturn('varchar');
 
         $context->buildViolation(
             'foo',
