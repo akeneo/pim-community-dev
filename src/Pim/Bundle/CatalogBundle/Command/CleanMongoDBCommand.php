@@ -133,6 +133,12 @@ class CleanMongoDBCommand extends ContainerAwareCommand
             $product = $this->checkAssociations($product);
 
             if (!$dryRun) {
+                $values = [];
+                foreach ($product['values'] as $value) {
+                    $values[] = $value;
+                }
+                $product['values'] = $values;
+
                 $productCollection->update(
                     ['_id' => new \MongoId($product['_id'])],
                     $product
