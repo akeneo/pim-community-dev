@@ -5,6 +5,7 @@
 - PIM-6904: Product Grid - Horizontal scrollbar should be at the bottom of the screen instead to be at the end of the grid
 - PIM-6960: fix association type deletion when it's the first item of the list
 - API-216: add application/x-www-form-urlencoded as allowed Content-Type when getting a token with the API
+- GITHUB-6414: fix the deletion of a newly created import/export profile, cheers @latenzio!
 
 ## Improvements
 
