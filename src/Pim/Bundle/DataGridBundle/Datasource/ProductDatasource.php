@@ -56,12 +56,13 @@ class ProductDatasource extends Datasource
             'association_type_id' => $this->getConfiguration('association_type_id', false),
             'current_group_id'    => $this->getConfiguration('current_group_id', false),
         ];
-        $rows = ['totalRecords' => $entitiesWithValues->count(), 'data' => []];
+        $rows = ['data' => []];
 
         foreach ($entitiesWithValues as $entityWithValue) {
             $normalizedItem = $this->normalizeEntityWithValues($entityWithValue, $context);
             $rows['data'][] = new ResultRecord($normalizedItem);
         }
+        $rows['totalRecords'] = $entitiesWithValues->count();
 
         return $rows;
     }
