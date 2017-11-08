@@ -102,13 +102,13 @@ define(
              * rendered width of the column and use that as the minimum.
              */
             setupResizableColumn() {
-                const resizableColumn = this.$('.AknColumnConfigurator-listContainer--resizable');
+                const resizableColumn = this.$('.ui-resizable-container--column');
                 const originalColumnWidth = resizableColumn.outerWidth();
 
                 Resizable.set({
                     minWidth: originalColumnWidth,
                     maxWidth: 500,
-                    container: this.$('.AknColumnConfigurator-listContainer--resizable'),
+                    container: this.$('.ui-resizable-container--column-child'),
                     storageKey: 'asset-grid'
                 });
             },
