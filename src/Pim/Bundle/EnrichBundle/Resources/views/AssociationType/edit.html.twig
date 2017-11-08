@@ -33,7 +33,7 @@
                                                 FormBuilder.build(associationType.meta.form)
                                                     .then(function (form) {
                                                         form.setData(associationType);
-                                                        mediator.trigger('pim_enrich:form:entity:post_fetch', associationType);
+                                                        form.trigger('pim_enrich:form:entity:post_fetch', associationType);
                                                         form.setElement('#association-type-edit-form').render();
                                                     });
                                             }).fail(function(response, textStatus, errorThrown) {

@@ -45,7 +45,8 @@ class GroupTypeNormalizer implements NormalizerInterface
 
         $result['meta'] = [
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
-            'id'                => $object->getId()
+            'id'                => $object->getId(),
+            'model_type'        => 'group_type',
         ];
 
         return $result;
