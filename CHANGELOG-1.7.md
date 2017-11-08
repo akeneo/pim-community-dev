@@ -1,3 +1,9 @@
+# 1.7.x
+
+## Bug fixes
+
+- PIM-6961: Do not apply validation on the faked identifier when importing rules (backport of PIM-6930)
+
 # 1.7.12 (2017-10-25)
 
 # 1.7.11 (2017-10-16)
