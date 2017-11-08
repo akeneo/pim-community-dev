@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace tests\integration\Pim\Bundle\ApiBundle\Controller\FamilyVariant;
 
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;

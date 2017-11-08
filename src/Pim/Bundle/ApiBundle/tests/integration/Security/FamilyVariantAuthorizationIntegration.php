@@ -193,6 +193,46 @@ JSON;
         $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
     }
 
+    public function testAccessGrantedForPartialUpdatingAListOfFamilyVariant()
+    {
+        $client = $this->createAuthenticatedClient();
+        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
+
+        $data = <<<JSON
+{"code": "a_family_variant"}
+JSON;
+
+        ob_start(function() { return ''; });
+        $client->request('PATCH', '/api/rest/v1/families/familyA/variants', [], [], [], $data);
+        ob_end_flush();
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+    }
+
+    public function testAccessDeniedForPartialUpdatingAListOfFamilyVariant()
+    {
+        $client = $this->createAuthenticatedClient([], [], null, null, 'julia', 'julia');
+        $client->setServerParameter('CONTENT_TYPE', StreamResourceResponse::CONTENT_TYPE);
+
+        $data = <<<JSON
+{"code": "a_family_variant"}
+JSON;
+
+        $client->request('PATCH', '/api/rest/v1/families/familyA/variants', [], [], [], $data);
+
+        $expectedResponse = <<<JSON
+{
+    "code": 403,
+    "message": "Access forbidden. You are not allowed to create or update families variants."
+}
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedResponse, $response->getContent());
+    }
+
     /**
      * {@inheritdoc}
      */
