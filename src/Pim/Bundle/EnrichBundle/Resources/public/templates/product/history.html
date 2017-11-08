@@ -16,7 +16,7 @@
                     <td class="AknGrid-bodyCell">
                         <div class="version-expander AknGrid-expand <%- expandedVersions.find(item => item == version.version) ? 'AknGrid-expand--expanded' : '' %>"></div>
                     </td>
-                    <td class="AknGrid-bodyCell version" data-column="version"><span class="AknButton AknButton--grey AknButton--round"><%- version.version %></span></td>
+                    <td class="AknGrid-bodyCell version" data-column="version"><span class="AknButton AknButton--grey"><%- version.version %></span></td>
                     <td class="AknGrid-bodyCell AknGrid-bodyCell--noWrap AknGrid-bodyCell--highlight author" data-column="author"><%- version.author %><%- version.context ? ' (' + version.context + ')' : '' %></td>
                     <td class="AknGrid-bodyCell AknGrid-bodyCell--noWrap logged-at" data-column="logged-at"><%- version.logged_at %></td>
                     <td class="AknGrid-bodyCell AknGrid-bodyCell--truncatable changes" data-column="changes"><div class="AknGrid-truncatable" title="<%- _.keys(version.changeset).join(', ') %>"><%- _.keys(version.changeset).join(', ') %></div></td>

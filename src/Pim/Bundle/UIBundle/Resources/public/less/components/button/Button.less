@@ -34,6 +34,12 @@
     margin: -4px -4px -7px 0;
   }
 
+  &--disabled {
+    color: lighten(@AknDefaultFontColor, @lighten);
+    border-color: lighten(@AknBorderColor, @lighten);
+    cursor: not-allowed;
+  }
+
   // Apply color
   &--apply {
     background-color: @AknGreen;
@@ -166,10 +172,6 @@
     display: none;
   }
 
-  &--uppercase {
-    text-transform: uppercase;
-  }
-
   &--disabled:focus {
     outline: -webkit-focus-ring-color auto 0;
   }
@@ -190,13 +192,6 @@
   &--centered {
     display: block;
     margin: auto;
-  }
-
-  &--round {
-    width: @AknDefaultButtonSize;
-    padding-left: 0;
-    padding-right: 0;
-    text-align: center;
   }
 
   &--dropdown {
