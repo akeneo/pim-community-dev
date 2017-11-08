@@ -31,6 +31,10 @@
   display: block;
   right: 0;
 
+  // Firefox
+  word-break: break-all;
+  word-break: break-word;
+
   &:after {
     display: block;
     content: '...';
@@ -38,7 +42,6 @@
     font-size: 17px;
     top: 50%;
     position: absolute;
-    word-break: break-word;
     line-height: 5px;
     color: @AknGrey;
     height: 24px;
@@ -46,3 +49,26 @@
     text-align: center;
   }
 }
+
+.ui-resizable-container {
+    position: relative;
+
+    .ui-resizable-e {
+        border-left: 0;
+        border-right: 1px @AknBorderColor solid;
+        right: -10px;
+    }
+
+    &--column {
+        position: relative;
+
+        .ui-resizable-e {
+            height: ~"calc(100% + 2px)";
+            top: -1px;
+            right: -8px;
+            border: 1px @AknBorderColor solid;
+            border-left: 0;
+        }
+    }
+}
+

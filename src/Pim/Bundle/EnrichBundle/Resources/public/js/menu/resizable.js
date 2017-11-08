@@ -7,7 +7,13 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(['jquery'], function($) {
-    const Resizable = {
+    return {
+        /**
+         * @property {Number} maxWidth The maximum width of the panel in pixels
+         * @property {Number} minWidth The minimum width of the panel in pixels
+         * @property {String|HTMLElement} container A selector or element that will be resizable
+         * @property {String} storageKey The name of the localStorage key to store the width
+         */
         options: {
             maxWidth: null,
             minWidth: null,
@@ -27,7 +33,7 @@ define(['jquery'], function($) {
             const { maxWidth, minWidth, container } = this.options;
 
             if (null === container) {
-                throw new Error('You must specify the container');
+                throw new Error('You must specify the container as an element or CSS selector');
             }
 
             $(container).resizable({
@@ -43,13 +49,18 @@ define(['jquery'], function($) {
          * Destroy the resizable and handler events
          */
         destroy() {
-            $(this.options.container).resizable('destroy');
+            const container = $(this.options.container);
+            const resizableInstance = container.resizable('instance');
+
+            if (undefined !== resizableInstance) {
+                container.resizable('destroy');
+            }
         },
 
         /**
          * Store the last resized width of the element in localStorage
          * @param  {jQuery.Event} event The jQuery event when the resize dragging stops
-         * @param  {Object} ui The object containing the data for the div
+         * @param  {Object} ui The data for the resizable element
          */
         storeWidth(event, ui) {
             const { minWidth, storageKey } = this.options;
@@ -67,6 +78,4 @@ define(['jquery'], function($) {
             $(container).outerWidth(width || minWidth);
         }
     };
-
-    return Resizable;
 });
