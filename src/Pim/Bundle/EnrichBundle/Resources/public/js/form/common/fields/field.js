@@ -12,6 +12,7 @@ define([
     'underscore',
     'oro/translator',
     'pim/form',
+    'pim/common/property',
     'pim/common/tab',
     'pim/template/form/common/fields/field'
 ], function (
@@ -19,6 +20,7 @@ define([
     _,
     __,
     BaseForm,
+    propertyAccessor,
     Tab,
     template
 ) {
@@ -59,12 +61,26 @@ define([
          * @param {Object} event
          */
         onBadRequest(event) {
-            this.errors = event.response.filter((error) => {
-                return this.fieldName === error.path || this.fieldName === error.attribute;
-            });
+            this.errors = this.getFieldErrors(event.response);
             this.render();
 
             this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.getTabCode());
+        },
+
+        /**
+         * Filter errors to return only the ones related to this field.
+         *
+         * @param {Array} errors
+         *
+         * @returns {Array}
+         */
+        getFieldErrors(errors) {
+            return errors.filter((error) => {
+                const fieldNameParts = this.fieldName.split('.');
+                const lastPart = fieldNameParts[fieldNameParts.length - 1];
+
+                return lastPart === error.path || lastPart === error.attribute;
+            });
         },
 
         /**
@@ -178,7 +194,10 @@ define([
          * @param {*} value
          */
         updateModel(value) {
-            this.setData({[this.fieldName]: value});
+            const data = this.getFormData();
+            propertyAccessor.updateProperty(data, this.fieldName, value);
+
+            this.setData(data);
         },
 
         /**
@@ -187,7 +206,12 @@ define([
          * @returns {*}
          */
         getModelValue() {
-            return this.getFormData()[this.fieldName];
+            const value = propertyAccessor.accessProperty(
+                this.getFormData(),
+                this.fieldName
+            );
+
+            return null === value ? undefined : value;
         },
 
         /**

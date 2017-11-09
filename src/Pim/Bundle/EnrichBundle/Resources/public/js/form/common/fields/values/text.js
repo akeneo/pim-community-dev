@@ -15,14 +15,14 @@ define([
          * {@inheritdoc}
          */
         updateModel(value) {
-            ValuesBehavior.writeValue.call(this, value);
+            ValuesBehavior.writeValue.call(this, BaseField, value);
         },
 
         /**
          * {@inheritdoc}
          */
         getModelValue() {
-            return ValuesBehavior.readValue.call(this);
+            return ValuesBehavior.readValue.call(this, BaseField);
         }
     });
 });

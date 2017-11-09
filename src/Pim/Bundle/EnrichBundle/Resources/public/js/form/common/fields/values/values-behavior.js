@@ -13,21 +13,26 @@
 define([], () => {
     return {
         /**
-         * {@inheritdoc}
+         * Formats the value according to the standard format then store it by calling the original field's method.
+         *
+         * @param {Object} BaseField
+         * @param {*} value
          */
-        writeValue(value) {
-            const values = this.getFormData().values;
-            values[this.fieldName] = [{scope: null, locale: null, data: value}];
-            this.setData({values: values});
+        writeValue(BaseField, value) {
+            BaseField.prototype.updateModel.call(this, [{scope: null, locale: null, data: value}]);
         },
 
         /**
-         * {@inheritdoc}
+         * Read a standard formatted value and returns its data.
+         *
+         * @param {Object} BaseField
+         *
+         * @returns {*}
          */
-        readValue() {
-            const standardValues = this.getFormData().values[this.fieldName];
+        readValue(BaseField) {
+            const standardValues = BaseField.prototype.getModelValue.call(this);
 
-            return undefined === standardValues ? standardValues : standardValues[0].data;
+            return undefined === standardValues ? undefined : standardValues[0].data;
         }
     };
 });
