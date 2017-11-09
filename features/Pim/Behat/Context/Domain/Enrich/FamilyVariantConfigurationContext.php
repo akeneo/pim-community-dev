@@ -23,7 +23,7 @@ class FamilyVariantConfigurationContext extends PimContext
      */
     public function iRemoveTheAttributeFromTheLevel(string $attributeLabel, int $level): void
     {
-        if (0 >= $level) {
+        if (0 === $level) {
             throw new \invalidArgumentException('Impossible to remove attributes from the common attribute list');
         }
 
@@ -48,25 +48,25 @@ class FamilyVariantConfigurationContext extends PimContext
     }
 
     /**
-     * @Then /^the attribute "([^"]*)" should be on the common attributes level$/
+     * @Then /^the attribute "([^"]*)" should be on the attributes level (\d+)$/
      */
-    public function theAttributeShouldBeOnTheCommonAttributesLevel(string $attributeLabel): void
+    public function theAttributeShouldBeOnTheAttributesLevel(string $attributeLabel, int $level): void
     {
         $attributeSetConfigurator = $this->getElementOnCurrentPage('edit family variant attribute sets');
 
         $attributeSet = $this->spin(function () use ($attributeSetConfigurator) {
             return $attributeSetConfigurator->find(
                 'css',
-                sprintf('.attribute-list[data-level=0]')
+                sprintf('.attribute-list[data-level=%s]', $level)
             );
-        }, sprintf('Unable to find the attribute list for level "0"'));
+        }, sprintf('Unable to find the attribute list for level "%s"', $level));
 
         $attribute = $this->spin(function () use ($attributeSet, $attributeLabel) {
             return $attributeSet->find(
                 'css',
                 sprintf('.AknFamilyVariant-attribute:contains("%s")', $attributeLabel)
             );
-        }, sprintf('Cannot find attribute for label "%s" and level "0"', $attributeLabel));
+        }, sprintf('Cannot find attribute for label "%s" and level "%s"', $attributeLabel, $level));
 
         assertNotNull($attribute);
     }

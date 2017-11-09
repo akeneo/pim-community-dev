@@ -20,3 +20,15 @@ extensions:
         parent: pim-family-variant-edit-form
         targetZone: content
         position: 100
+
+    pim-family-variant-edit-form-save-buttons:
+        module: pim/form/common/save-buttons
+        parent: pim-family-variant-edit-form
+        targetZone: buttons
+        position: 110
+
+    pim-family-variant-edit-form-save:
+        module: pim/family-variant-edit-form/save
+        parent: pim-family-variant-edit-form
+        targetZone: buttons
+        position: 0

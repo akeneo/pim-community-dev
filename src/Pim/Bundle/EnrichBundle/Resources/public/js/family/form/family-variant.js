@@ -3,6 +3,7 @@
 define([
         'underscore',
         'pim/form',
+        'oro/mediator',
         'pim/common/grid',
         'oro/translator',
         'pim/user-context',
@@ -11,6 +12,7 @@ define([
     function (
         _,
         BaseForm,
+        mediator,
         Grid,
         __,
         UserContext,
@@ -40,6 +42,10 @@ define([
                     label: __(this.config.title)
                 });
 
+                this.listenTo(this.getRoot(), 'pim_enrich.entity.family.family_variant.post_create', () => {
+                    mediator.trigger('datagrid:doRefresh:' + this.config.gridName);
+                })
+
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
 
@@ -49,7 +55,7 @@ define([
             render: function () {
                 if (!this.variantGrid) {
                     this.variantGrid = new Grid(
-                        'family-variant-grid',
+                        this.config.gridName,
                         {
                             family_id: this.getFormData().meta.id,
                             localeCode: UserContext.get('uiLocale')

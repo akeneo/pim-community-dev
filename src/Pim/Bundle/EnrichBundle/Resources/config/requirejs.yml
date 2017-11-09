@@ -57,6 +57,8 @@ config:
             putUrl: pim_enrich_channel_rest_put
         pim/saver/family:
             putUrl: pim_enrich_family_rest_put
+        pim/saver/family-variant:
+            putUrl: pim_enrich_family_variant_rest_put
         pim/saver/product:
             url: pim_enrich_product_rest_post
         pim/saver/product-model:
@@ -600,6 +602,7 @@ config:
         pim/saver/entity-saver:        pimenrich/js/saver/entity-saver
         pim/saver/channel:             pimenrich/js/saver/channel
         pim/saver/family:              pimenrich/js/saver/family
+        pim/saver/family-variant:      pimenrich/js/saver/family-variant
         pim/saver/product:             pimenrich/js/saver/product-saver
         pim/saver/product-model:       pimenrich/js/saver/product-model-saver
         pim/saver/group:               pimenrich/js/saver/group-saver
@@ -1047,6 +1050,7 @@ config:
 
         pim/template/family-variant/edit:                    pimenrich/templates/family-variant/edit.html
         pim/template/family-variant/axes:                    pimenrich/templates/family-variant/axes.html
+        pim/template/family-variant/attribute-group:         pimenrich/templates/family-variant/attribute-group.html
 
         # Grid
         pim/template/product/grid/locale-switcher:           pimenrich/templates/product/grid/locale-switcher.html

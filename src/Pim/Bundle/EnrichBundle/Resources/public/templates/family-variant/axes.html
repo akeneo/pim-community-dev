@@ -1,20 +1,20 @@
 <div class="AknFamilyVariant-level">
     <div class="common-attribute AknFamilyVariant-column AknFamilyVariant-column--common" style="display:flex,">
-        <div data-level="0" id="common-attribute-groups-column" class="attribute-list connected-group-sortable">
-        <% groupAttributes(commonAttributes).forEach(section => { %>
-            <div data-attribute-group-code="<%- section.attributeGroup.code %>" class="AknFamilyVariant-attributeGroup AknFamilyVariant-attributeGroup--common">
-                <span class="AknFamilyVariant-columTitle AknVerticalList-item">
+        <div data-level="0" id="attribute-groups-column-level-0" class="attribute-list connected-group-sortable">
+        <% groupAttributes(commonAttributes, lockedAttributes).forEach(section => { %>
+            <div data-attribute-group-code="<%- section.attributeGroup.code %>" class="AknFamilyVariant-attributeGroup AknFamilyVariant-attributeGroup--common <%- !section.attributeGroup.locked ? 'movable-group' : '' %>">
+                <span class="AknFamilyVariant-columTitle AknVerticalList-item <%- !section.attributeGroup.locked ? 'AknFamilyVariant-columTitle--movable' : '' %>">
                     <%- i18n.getLabel(section.attributeGroup.labels, UserContext.get('catalogLocale'), section.attributeGroup.code) %>
                 </span>
-                <ul data-level="0" id="common-attributes-column" class="AknFamilyVariant-columnList connected-sortable">
-                    <% section.attributes.forEach(function (attribute) { %>
-                        <li data-attribute-code="<%- attribute.code %>" class="AknVerticalList-item AknVerticalList-item--movable AknFamilyVariant-attribute AknFamilyVariant-attribute--common">
-                            <%- i18n.getLabel(attribute.labels, UserContext.get('catalogLocale'), attribute.code) %>
-                        </li>
-                    <% }) %>
-                </ul>
+
+                <%= renderSection(0, section.attributes) %>
             </div>
         <% }) %>
+        <% if (commonAttributes.length === 0) { %>
+            <div class="AknFamilyVariant-attributeGroup AknFamilyVariant-attributeGroup--common AknFamilyVariant-attributeGroup--empty">
+                <%- __('pim_enrich.entity.family.variant.empty_common') %>
+            </div>
+        <% } %>
         </div>
     </div>
 </div>
@@ -32,30 +32,19 @@
             }, []).join(', ') %>
             (<%- __('pim_enrich.entity.family.variant.axis.label') %>)
         </div>
-
         <div data-level="<%- level.level %>" id="attribute-groups-column-level-<%- level.level %>" class="attribute-list connected-group-sortable">
-        <% groupAttributes(level.attributes).forEach(section => { %>
-            <div data-attribute-group-code="<%- section.attributeGroup.code %>" class="AknFamilyVariant-attributeGroup">
-                <span class="AknFamilyVariant-columTitle AknVerticalList-item">
+        <% groupAttributes(level.attributes, lockedAttributes).forEach(section => { %>
+            <div data-attribute-group-code="<%- section.attributeGroup.code %>" class="AknFamilyVariant-attributeGroup <%- !section.attributeGroup.locked ? 'movable-group' : '' %> attribute-group-section">
+                <span class="AknFamilyVariant-columTitle AknVerticalList-item <%- !section.attributeGroup.locked ? 'AknFamilyVariant-columTitle--movable' : '' %>">
                     <%- i18n.getLabel(section.attributeGroup.labels, UserContext.get('catalogLocale'), section.attributeGroup.code) %>
+                    <% if (!section.attributeGroup.locked) { %>
+                    <span
+                        class="AknIconButton AknIconButton--small AknIconButton--delete AknButtonList-item delete-attribute-group"
+                        title="<%- __('pim_enrich.entity.family.variant.attribute_group_remove') %>"
+                    ></span>
+                    <% } %>
                 </span>
-                <ul data-level="<%- level.level %>" id="attributes-column-level-<%- level.level %>" class="AknFamilyVariant-columnList connected-sortable">
-                    <% section.attributes.forEach(function (attribute) { %>
-                        <li data-attribute-code="<%- attribute.code %>" class="AknVerticalList-item AknVerticalList-item--movable AknFamilyVariant-columnListItem AknFamilyVariant-attribute">
-                            <%- i18n.getLabel(attribute.labels, UserContext.get('catalogLocale'), attribute.code) %>
-
-                            <% if (axisAttributes.includes(attribute.code)) { %>
-                            (<%- __('pim_enrich.entity.family.variant.axis.label') %>)
-                            <% } %>
-
-                            <% if (!lockedAttributes.includes(attribute.code)) { %>
-                            <a href="javascript:void(0);" class="AknIconButton AknIconButton--small AknIconButton--delete AknButtonList-item" title="Supprimer le produit">
-                                Supprimer le produit
-                            </a>
-                            <% } %>
-                        </li>
-                    <% }) %>
-                </ul>
+                <%= renderSection(level.level, section.attributes) %>
             </div>
         <% }) %>
         </div>

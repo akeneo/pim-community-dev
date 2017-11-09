@@ -32,6 +32,9 @@ define(
                             this.listenTo(form, 'cancel', () => {
                                 this.modal.trigger('cancel');
                             });
+                            this.listenTo(form, 'pim_enrich:form:entity:post_save', () => {
+                                this.modal.trigger('cancel');
+                            });
 
                             this.modal = new Backbone.BootstrapModal({
                                 className: 'modal modal--fullPage edit-family-variant-modal',

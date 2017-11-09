@@ -219,6 +219,7 @@ extensions:
         position: 155
         config:
             title: 'pim_enrich.form.family.tab.variant.title'
+            gridName: 'family-variant-grid'
 
     pim-family-edit-form-variant-filters-list:
         module: oro/datafilter/filters-list

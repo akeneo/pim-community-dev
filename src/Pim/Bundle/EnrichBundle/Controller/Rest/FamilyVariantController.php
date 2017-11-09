@@ -124,6 +124,43 @@ class FamilyVariantController
     }
 
     /**
+     * @param Request $request
+     * @param string  $identifier
+     *
+     * @return JsonResponse
+     */
+    public function putAction(Request $request, string $identifier): JsonResponse
+    {
+        $familyVariant = $this->getFamilyVariant($identifier);
+        $content = json_decode($request->getContent(), true);
+
+        $this->updater->update($familyVariant, $content);
+        $violations = $this->validator->validate($familyVariant);
+
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['family_variant' => $familyVariant]
+            );
+        }
+
+        if (count($normalizedViolations) > 0) {
+            return new JsonResponse($normalizedViolations, 400);
+        }
+
+        $this->saver->save($familyVariant);
+
+        return new JsonResponse(
+            $this->normalizer->normalize(
+                $familyVariant,
+                'internal_api'
+            )
+        );
+    }
+
+    /**
      * Gets familyVariant
      *
      * @param string $code

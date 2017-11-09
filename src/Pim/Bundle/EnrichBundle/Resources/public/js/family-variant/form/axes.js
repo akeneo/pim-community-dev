@@ -15,7 +15,8 @@ define([
         'pim/i18n',
         'pim/user-context',
         'pim/fetcher-registry',
-        'pim/template/family-variant/axes'
+        'pim/template/family-variant/axes',
+        'pim/template/family-variant/attribute-group'
     ],
     function (
         $,
@@ -25,24 +26,31 @@ define([
         i18n,
         UserContext,
         fetcherRegistry,
-        template
+        template,
+        attributeGroupTemplate
     ) {
         const sortOrdered = (first, second) => first.sort_order - second.sort_order;
 
         /**
          * Group attributes by attribute group
          */
-        const groupAttributes = (attributes, attributeGroups) => (attributeCodes) => {
+        const groupAttributes = (attributes, attributeGroups) => (attributeCodes, lockedAttributes) => {
             return Object.values(attributeGroups)
                 .sort(sortOrdered)
                 .map(attributeGroup => {
+                    const groupAttributes = attributes.filter(
+                        attribute =>
+                            attribute.group === attributeGroup.code &&
+                            attributeCodes.indexOf(attribute.code) !== -1
+                    ).sort(sortOrdered);
+
+                    const locked = groupAttributes.filter(
+                        attribute => !lockedAttributes.includes(attribute.code)
+                    ).length === 0;
+
                     return {
-                        attributeGroup,
-                        attributes: attributes.filter(
-                            attribute =>
-                                attribute.group === attributeGroup.code &&
-                                attributeCodes.indexOf(attribute.code) !== -1
-                        ).sort(sortOrdered)
+                        attributeGroup: Object.assign({}, attributeGroup, {locked}),
+                        attributes: groupAttributes
                     };
                 })
                 .filter(section => section.attributes.length !== 0);
@@ -56,8 +64,12 @@ define([
 
         return BaseForm.extend({
             className: 'family-variant-levels AknFamilyVariant',
-            events: {'click .AknIconButton--delete': 'removeAttributeFromVariantAttributeSet'},
+            events: {
+                'click .delete-attribute': 'removeAttributeFromVariantAttributeSet',
+                'click .delete-attribute-group': 'removeAttributeGroupFromVariantAttributeSet'
+            },
             template: _.template(template),
+            attributeGroupTemplate: _.template(attributeGroupTemplate),
 
             /**
              * {@inheritdoc}
@@ -117,11 +129,14 @@ define([
                             i18n,
                             __,
                             groupAttributes: groupAttributes(attributes, attributeGroups),
-                            getAttribute: getAttribute(attributes)
+                            getAttribute: getAttribute(attributes),
+                            renderSection: (level, attributes) => {
+                                return this.attributeGroupTemplate({lockedAttributes, level, attributes, i18n, UserContext, __, axisAttributes});
+                            }
                         }));
 
                         this.$(
-                            '#common-attributes-column,' +
+                            '#attributes-column-level-0,' +
                             '#attributes-column-level-1,' +
                             '#attributes-column-level-2'
                         )
@@ -131,23 +146,12 @@ define([
                             tolerance: 'pointer',
                             cursor: 'move',
                             cancel: 'div.alert',
-                            receive: (event, ui) => {
-                                const originLevel = parseInt(ui.sender[0].dataset.level);
-                                const destinationLevel = parseInt(ui.item[0].parentNode.dataset.level);
-                                const movedAttributeCode = ui.item[0].dataset.attributeCode;
-
-                                this.handleAttributeDrop(
-                                    originLevel,
-                                    destinationLevel,
-                                    movedAttributeCode
-                                );
-
-                                this.render();
-                            }
+                            items: '.movable',
+                            receive: this.moveAttribute(lockedAttributes)
                         }).disableSelection();
 
                         this.$(
-                            '#common-attribute-groups-column,' +
+                            '#attribute-groups-column-level-0,' +
                             '#attribute-groups-column-level-1,' +
                             '#attribute-groups-column-level-2'
                         )
@@ -157,21 +161,8 @@ define([
                             tolerance: 'pointer',
                             cursor: 'move',
                             cancel: 'div.alert',
-                            receive: (event, ui) => {
-                                const destinationLevel = parseInt(ui.item[0].parentNode.dataset.level);
-                                const originLevel = parseInt(ui.sender[0].dataset.level);
-                                const movedAttributes = Object.values(ui.item[0].querySelectorAll('li')).map(
-                                    domElement => domElement.dataset.attributeCode
-                                );
-
-                                this.handleAttributeGroupDrop(
-                                    originLevel,
-                                    destinationLevel,
-                                    movedAttributes
-                                );
-
-                                this.render();
-                            }
+                            items: '.movable-group',
+                            receive: this.moveAttributes(lockedAttributes)
                         }).disableSelection();
 
                         this.renderExtensions();
@@ -181,26 +172,60 @@ define([
                 return this;
             },
 
-            handleAttributeDrop(originLevel, destinationLevel, movedAttributeCode) {
-                const data = this.getFormData();
-                data.variant_attribute_sets.map((attributeSet) => {
-                    if (attributeSet.level === originLevel) {
-                        attributeSet.attributes = attributeSet.attributes.filter(
-                            attributeCode => attributeCode !== movedAttributeCode
-                        );
-                    }
+            moveAttribute(lockedAttributes) {
+                return (event, ui) => {
+                    const originLevel = parseInt(ui.sender[0].dataset.level);
+                    const destinationLevel = parseInt(ui.item[0].parentNode.dataset.level);
+                    const movedAttributes = [ui.item[0].dataset.attributeCode];
 
-                    if (attributeSet.level === destinationLevel) {
-                        attributeSet.attributes.push(movedAttributeCode);
-                    }
-
-                    return attributeSet;
-                });
-
-                this.setData(data);
+                    this.handleAttributesDrop(
+                        originLevel,
+                        destinationLevel,
+                        movedAttributes
+                    );
+                }
             },
 
-            handleAttributeGroupDrop(originLevel, destinationLevel, movedAttributes) {
+            moveAttributes(lockedAttributes) {
+                return (event, ui) => {
+                    const destinationLevel = parseInt(ui.item[0].parentNode.dataset.level);
+                    const originLevel = parseInt(ui.sender[0].dataset.level);
+                    const movedAttributes = Object.values(ui.item[0].querySelectorAll('li')).map(
+                        domElement => domElement.dataset.attributeCode
+                    ).filter(movedAttribute => !lockedAttributes.includes(movedAttribute));
+
+                    this.handleAttributesDrop(
+                        originLevel,
+                        destinationLevel,
+                        movedAttributes
+                    );
+                }
+            },
+
+            removeAttributeFromVariantAttributeSet(event) {
+                const $attributeToRemove = $(event.currentTarget.parentElement);
+                const variantAttributeSetLevel = $attributeToRemove.closest('[data-level]').data('level');
+                const removedAttributes = [$attributeToRemove.data('attribute-code')];
+
+                this.handleAttributesRemoval(variantAttributeSetLevel, removedAttributes);
+            },
+
+            removeAttributeGroupFromVariantAttributeSet(event) {
+                const $attributeGroupToRemove = $(event.currentTarget).parents('.attribute-group-section');
+                const variantAttributeSetLevel = $attributeGroupToRemove.parent().data('level');
+                const removedAttributes = $attributeGroupToRemove.find('.attribute.movable').toArray()
+                    .map(element => element.dataset.attributeCode);
+
+                this.handleAttributesRemoval(variantAttributeSetLevel, removedAttributes);
+            },
+
+            handleAttributesDrop(originLevel, destinationLevel, movedAttributes) {
+                if (originLevel >= destinationLevel) {
+                    this.render();
+
+                    return;
+                }
+
                 const data = this.getFormData();
                 data.variant_attribute_sets.map((attributeSet) => {
                     if (attributeSet.level === originLevel) {
@@ -217,18 +242,15 @@ define([
                 });
 
                 this.setData(data);
+
+                this.render();
             },
 
-            removeAttributeFromVariantAttributeSet(event) {
-                event.preventDefault();
-                const $attributeToRemove = $(event.currentTarget.parentElement);
-                const attributeCodeToRemove = $attributeToRemove.data('attribute-code');
-                const variantAttributeSetLevel = $attributeToRemove.closest('[data-level]').data('level');
-
+            handleAttributesRemoval(level, removedAttributes) {
                 var data = this.getFormData();
                 data.variant_attribute_sets.map((attributeSet) => {
-                    if (attributeSet.level === variantAttributeSetLevel) {
-                        attributeSet.attributes = attributeSet.attributes.filter(item => item !== attributeCodeToRemove);
+                    if (attributeSet.level === level) {
+                        attributeSet.attributes = attributeSet.attributes.filter(item => -1 === removedAttributes.indexOf(item));
                     }
                 });
 
