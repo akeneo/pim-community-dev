@@ -459,10 +459,12 @@ pim_enrich:
     form:
         required: (required)
         product_model:
+            choose_product_model: Choose a product model
             choose_variant: Choose a variant
             complete_variant_product: variant product
             complete_variant_products: variant products
             family_variant: Variant
+            product_model: Product model
             flash:
                 product_model_added: Product model successfully added to the product model
                 variant_product_added: Variant product successfully added to the product model

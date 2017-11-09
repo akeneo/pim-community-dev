@@ -128,7 +128,7 @@ define([
 
             this.delegateEvents();
 
-            var options = {
+            const options = {
                 allowClear: true,
                 initSelection: this.fetchFamilies.bind(this),
                 ajax: {

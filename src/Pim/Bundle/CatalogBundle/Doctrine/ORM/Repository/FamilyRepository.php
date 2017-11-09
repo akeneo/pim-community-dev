@@ -53,6 +53,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     {
         $qb = $this->createQueryBuilder('f')->where('f.familyVariants IS NOT EMPTY');
 
+        // TODO FIX THIS
         if (null !== $search && '' !== $search) {
             $qb->where('f.code like :search')->setParameter('search', '%' . $search . '%');
             if (isset($options['locale'])) {

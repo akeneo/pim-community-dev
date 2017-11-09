@@ -179,4 +179,26 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
 
         return $qb->getQuery()->execute();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFamilyLeafProductModels(
+        FamilyVariantInterface $familyVariant,
+        String $search,
+        int $limit
+    ): array {
+        $qb = $this
+            ->createQueryBuilder('pm')
+            ->where("pm.code like :search")
+            ->setParameter('search', sprintf("%%%s%%", $search))
+            ->setParameter('familyVariant', $familyVariant->getId())
+            ->setMaxResults($limit);
+
+        $qb = ($familyVariant->getNumberOfLevel() <= 1) ?
+            $qb->andWhere('pm.parent IS NULL')->andWhere('pm.familyVariant = :familyVariant') :
+            $qb->innerJoin('pm.parent', 'ppm')->andWhere('ppm.familyVariant = :familyVariant');
+
+        return $qb->getQuery()->execute();
+    }
 }

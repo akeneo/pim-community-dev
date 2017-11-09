@@ -47,6 +47,7 @@ function (
         choices: [],
         defaultValue: null,
         errors: [],
+        family: null,
 
         /**
          * {@inheritdoc}
@@ -77,15 +78,20 @@ function (
          * Listen for changes on the 'family' key in the form data
          */
         updateOnFamilyChange(changed) {
+            const previousFamily = this.family;
             const family = this.getFormData().family;
 
-            if (_.isEmpty(family)) {
-                return this.resetSelectField();
-            }
+            if (family !== previousFamily) {
+                this.family = family;
 
-            if (changed.family) {
-                this.getFamilyIdFromCode(family)
-                    .then(this.renderVariantsForFamily.bind(this));
+                if (_.isEmpty(family)) {
+                    return this.resetSelectField();
+                }
+
+                if (changed.family) {
+                    this.getFamilyIdFromCode(family)
+                        .then(this.renderVariantsForFamily.bind(this));
+                }
             }
         },
 
@@ -99,7 +105,7 @@ function (
             this.$('select.select2').select2('val', '');
             this.setData(
                 { family_variant: null },
-                { unset: true, silent: true }
+                { unset: true }
             );
             this.render();
         },
@@ -167,8 +173,7 @@ function (
                 if (variantData.length === 1) {
                     this.defaultValue = variantData[0].familyVariantCode;
                     this.setData(
-                        { family_variant: this.defaultValue },
-                        { silent: true }
+                        { family_variant: this.defaultValue }
                     );
                 }
 
