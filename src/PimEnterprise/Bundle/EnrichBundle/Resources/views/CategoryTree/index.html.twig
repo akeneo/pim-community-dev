@@ -6,7 +6,9 @@
         {{ elements.page_header({ title: title }) }}
 
         <div id="category-tree-container" style="display:flex; height:100%">
-            <div id="tree" {% if resource_granted(acl ~ '_category_edit') %} data-editable="true"{% endif %}{% if resource_granted(acl ~ '_category_create') %} data-creatable="true"{% endif %}></div>
+            <div class="ui-resizable-container">
+                <div id="tree" {% if resource_granted(acl ~ '_category_edit') %} data-editable="true"{% endif %}{% if resource_granted(acl ~ '_category_create') %} data-creatable="true"{% endif %}></div>
+            </div>
 
             <div id="category-form" style="flex-grow:1" class="AknDefault-mainContent">
                 <div class="AknInfoBlock">
@@ -31,19 +33,19 @@
 
 <script>
     window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
-</script>
 
-<script>
     require(
         [
             'pim/common/breadcrumbs',
             'pim/fetcher-registry',
-            'pim/form-builder'
+            'pim/form-builder',
+            'pim/menu/resizable'
         ],
         function(
             Breadcrumbs,
             FetcherRegistry,
-            FormBuilder
+            FormBuilder,
+            Resizable
         ) {
             $(function() {
                 var breadcrumbs = new Breadcrumbs({
@@ -63,6 +65,13 @@
                         form.render();
                     }.bind(this));
                 });
+
+                Resizable.set({
+                    minWidth: 300,
+                    maxWidth: 500,
+                    container: '.ui-resizable-container',
+                    storageKey: 'category-tree-edit'
+                })
             });
         }
     );
