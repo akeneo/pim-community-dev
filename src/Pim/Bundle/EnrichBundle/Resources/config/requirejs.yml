@@ -893,6 +893,7 @@ config:
         pim/menu/tab:                                        pimenrich/js/menu/tab
         pim/menu/item:                                       pimenrich/js/menu/item
         pim/menu/navigation-block:                           pimenrich/js/menu/navigation-block
+        pim/menu/resizable:                                  pimenrich/js/menu/resizable
         pim/menu/user-navigation:                            pimenrich/js/menu/user-navigation
         pim/menu/logo:                                       pimenrich/js/menu/logo
         pim/menu/column:                                     pimenrich/js/menu/column
