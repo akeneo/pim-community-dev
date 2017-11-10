@@ -83,6 +83,7 @@
         "akeneo/php-coupling-detector": "dev-master",
         "liuggio/fastest": "~1.4.4"
     },
+    "include-path": ["lib/"],
     "suggest": {
         "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo",
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"

@@ -2,7 +2,7 @@ default:
     paths:
         features: features
     filters:
-        tags: "~skip&&~skip-pef&&~skip-nav&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app&&~ce"
+        tags: "~skip&&~skip-pef&&~doc&&~unstable&&~unstable-app&&~deprecated&&~@unstable-app@~ce"
     context:
         class: Context\EnterpriseFeatureContext
         parameters:
