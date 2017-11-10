@@ -39,15 +39,6 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function (meta) {
-                this.config = _.extend({}, meta.config);
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             render: function () {
                 var step = this.currentStep === 'choose' ?
                     this.getChooseExtension() :

@@ -39,13 +39,6 @@ define([
             /**
              * {@inheritdoc}
              */
-            initialize: function (config) {
-                this.config = config.config;
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             configure: function () {
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

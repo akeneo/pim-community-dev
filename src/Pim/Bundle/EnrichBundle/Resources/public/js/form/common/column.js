@@ -32,15 +32,9 @@ define(
             navigationItems: [],
 
             /**
-             * @param {string} meta.config.navigationTitle Title of the navigation dropdown
-             * @param {string} meta.config.stateCode       This is a key to identify each module using column, to
-             *                 store if the column is collapsed or not. If you want to use the different collapsed
-             *                 states, use different "stateCode" value.
-             *
              * {@inheritdoc}
              */
-            initialize: function (meta) {
-                this.config = meta.config;
+            initialize: function () {
                 this.navigationItems = [];
 
                 return BaseForm.prototype.initialize.apply(this, arguments);

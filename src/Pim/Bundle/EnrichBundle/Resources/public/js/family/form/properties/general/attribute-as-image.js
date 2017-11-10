@@ -39,13 +39,6 @@ define([
             /**
              * {@inheritdoc}
              */
-            initialize: function (config) {
-                this.config = config.config;
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             render: function () {
                 if (!this.configured) {
                     return this;

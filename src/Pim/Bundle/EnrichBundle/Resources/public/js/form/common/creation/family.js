@@ -49,13 +49,11 @@ define([
          * {@inheritdoc}
          */
         initialize: function (config) {
-            this.config = Object.assign(this.config, config.config || {});
+            BaseForm.prototype.initialize.apply(this, arguments);
 
             if (!this.config.identifier || !this.config.loadUrl) {
                 throw new Error('You must define the identifier and loadUrl for this field');
             }
-
-            BaseForm.prototype.initialize.apply(this, arguments);
         },
 
         /**

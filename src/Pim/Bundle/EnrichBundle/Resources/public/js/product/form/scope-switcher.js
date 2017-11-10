@@ -34,18 +34,6 @@ define(
             },
             displayInline: false,
             displayLabel: true,
-            config: {},
-
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                if (undefined !== config) {
-                    this.config = config.config;
-                }
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
 
             /**
              * {@inheritdoc}

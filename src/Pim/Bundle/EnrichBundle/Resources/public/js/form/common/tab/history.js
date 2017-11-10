@@ -17,13 +17,12 @@ define([
             historyGrid: null,
 
             /**
-             * @param {Object} meta
+             * {@inheritdoc}
              */
-            initialize: function (meta) {
-                this.config = _.extend({}, meta.config);
-                this.config.modelDependent = false;
+            initialize: function () {
+                BaseForm.prototype.initialize.call(this, arguments);
 
-                return BaseForm.prototype.initialize.call(this, arguments);
+                this.config.modelDependent = false;
             },
 
             /**

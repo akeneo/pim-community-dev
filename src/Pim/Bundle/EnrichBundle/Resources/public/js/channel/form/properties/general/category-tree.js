@@ -34,17 +34,6 @@ define([
             catalogLocale: UserContext.get('catalogLocale'),
 
             /**
-             * Initializes configuration.
-             *
-             * @param {Object} config
-             */
-            initialize: function (config) {
-                this.config = config.config;
-
-                return BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
              * {@inheritdoc}
              */
             render: function () {

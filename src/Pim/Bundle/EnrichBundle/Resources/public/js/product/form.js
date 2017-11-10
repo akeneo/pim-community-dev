@@ -25,15 +25,17 @@ define(
             parent: null,
             preUpdateEventName: 'pim_enrich:form:entity:pre_update',
             postUpdateEventName: 'pim_enrich:form:entity:post_update',
+            config: {},
 
             /**
              * {@inheritdoc}
              */
-            initialize: function () {
+            initialize: function (meta) {
                 this.extensions = {};
                 this.zones      = {};
                 this.targetZone = '';
                 this.configured = false;
+                this.config     = Object.assign(this.config, meta.config || {});
             },
 
             /**

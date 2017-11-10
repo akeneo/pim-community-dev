@@ -18,13 +18,6 @@ define([
         /**
          * {@inheritdoc}
          */
-        initialize: function (config) {
-            this.config = config.config;
-        },
-
-        /**
-         * {@inheritdoc}
-         */
         configure: function () {
             this.on('locales:update:after', this.updateState.bind(this));
             this.listenTo(this.getRoot(), 'pim_enrich:form:entity:pre_update', function (data) {

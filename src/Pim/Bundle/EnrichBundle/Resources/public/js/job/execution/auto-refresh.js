@@ -33,11 +33,10 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function (config) {
-                this.config = config.config;
-                this.setStatus('isLoading');
-
+            initialize: function () {
                 BaseForm.prototype.initialize.apply(this, arguments);
+
+                this.setStatus('isLoading');
             },
 
             /**

@@ -30,15 +30,6 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function (meta) {
-                this.config = meta.config;
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             configure: function () {
                 this.listenTo(this.getRoot(), 'pim_enrich:form:entity:post_update', this.render);
 

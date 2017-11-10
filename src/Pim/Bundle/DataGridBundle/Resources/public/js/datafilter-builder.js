@@ -32,8 +32,6 @@ define(
              * {@inheritdoc}
              */
             initialize(options = {}) {
-                this.config = Object.assign(this.config, options.config || {});
-
                 mediator.once('datagrid_collection_set_after', this.initHandler.bind(this));
                 mediator.once('hash_navigation_request:start', function() {
                     if (!this.initialized) {

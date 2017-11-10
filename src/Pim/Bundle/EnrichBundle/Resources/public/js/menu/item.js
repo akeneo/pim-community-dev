@@ -36,9 +36,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function (config) {
-                this.config = config.config;
-
+            initialize: function () {
                 mediator.on('pim_menu:highlight:item', this.highlight, this);
                 mediator.on('pim_menu:redirect:item', this.redirect, this);
 

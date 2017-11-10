@@ -26,15 +26,6 @@ define(
             errors: {},
 
             /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
              * {@inherit}
              */
             configure: function () {

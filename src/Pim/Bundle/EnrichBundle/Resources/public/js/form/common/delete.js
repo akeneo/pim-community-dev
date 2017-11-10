@@ -38,6 +38,18 @@ define(
                 'click': 'delete'
             },
 
+            config: {
+                trans: {
+                    title: 'confirmation.remove.item',
+                    content: 'pim_enrich.confirmation.delete_item',
+                    success: 'flash.item.removed',
+                    fail: 'error.removing.item',
+                    subTitle: '',
+                    buttonText: 'pim_datagrid.mass_action.delete.label'
+                },
+                redirect: 'oro_default'
+            },
+
             /**
              * The remover should be injected / overridden by the concrete implementation
              * It is an object that define a remove function
@@ -46,23 +58,6 @@ define(
                 remove: function () {
                     throw 'Remove function should be implemented in remover';
                 }
-            },
-
-            /**
-             * @param {Object} meta
-             */
-            initialize: function (meta) {
-                this.config = _.extend({}, {
-                    trans: {
-                        title: 'confirmation.remove.item',
-                        content: 'pim_enrich.confirmation.delete_item',
-                        success: 'flash.item.removed',
-                        fail: 'error.removing.item',
-                        subTitle: '',
-                        buttonText: 'pim_datagrid.mass_action.delete.label'
-                    },
-                    redirect: 'oro_default'
-                }, meta.config);
             },
 
             /**

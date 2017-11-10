@@ -26,15 +26,6 @@ define(
             template: _.template(template),
 
             /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
              * Proxy for 'pim_menu:column:register_navigation_item' event
              *
              * {@inheritdoc}

@@ -24,13 +24,11 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function (meta) {
-                this.config = meta.config;
+            initialize: function () {
+                BaseForm.prototype.initialize.apply(this, arguments);
 
                 this.label   = __(this.config.label);
                 this.labelBy = __(this.config.labelBy);
-
-                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**

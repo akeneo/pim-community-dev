@@ -51,8 +51,7 @@ function (
         /**
          * {@inheritdoc}
          */
-        initialize(config) {
-            this.config = config.config;
+        initialize() {
             this.choices = [];
             this.errors = [];
             this.defaultValue = null;

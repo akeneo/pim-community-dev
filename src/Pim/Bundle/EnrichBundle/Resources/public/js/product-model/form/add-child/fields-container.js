@@ -36,12 +36,15 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             globalErrors: [],
+            config: {
+                fieldModules: {},
+                codeFieldModule: null
+            },
 
             /**
              * {@inheritdoc}
              */
-            initialize(meta) {
-                this.config = _.defaults(meta.config, {fieldModules: {}, codeFieldModule: null});
+            initialize() {
                 this.globalErrors = [];
 
                 BaseForm.prototype.initialize.apply(this, arguments);

@@ -14,15 +14,6 @@ function (__, BaseForm) {
         /**
          * {@inheritdoc}
          */
-        initialize: function (config) {
-            this.config = config.config;
-
-            BaseForm.prototype.initialize.apply(this, arguments);
-        },
-
-        /**
-         * {@inheritdoc}
-         */
         configure: function () {
             this.trigger('tab:register', {
                 code: this.code,

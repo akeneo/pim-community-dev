@@ -31,15 +31,6 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function (config) {
-                this.config = config.config;
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             configure: function () {
                 this.trigger('save-buttons:register-button', {
                     className: 'save',

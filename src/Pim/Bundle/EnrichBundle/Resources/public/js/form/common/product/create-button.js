@@ -43,8 +43,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize(config) {
-                this.config = config.config;
+            initialize() {
                 this.modal = null;
 
                 BaseForm.prototype.initialize.apply(this, arguments);

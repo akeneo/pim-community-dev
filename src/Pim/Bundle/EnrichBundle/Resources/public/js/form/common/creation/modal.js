@@ -30,17 +30,7 @@ define(
         template
     ) {
         return BaseForm.extend({
-            config: {},
             template: _.template(template),
-
-            /**
-             * {@inheritdoc}
-             */
-            initialize(meta) {
-                this.config = meta.config;
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
 
             /**
              * {@inheritdoc}

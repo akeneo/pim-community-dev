@@ -34,11 +34,10 @@ define(
             /**
              * @inheritdoc
              */
-            initialize(options) {
-                this.config = options.config;
+            initialize() {
                 this.loadingMask = new LoadingMask();
 
-                return BaseForm.prototype.initialize.apply(this, arguments);
+                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**

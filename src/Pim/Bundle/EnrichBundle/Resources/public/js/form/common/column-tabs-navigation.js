@@ -36,17 +36,6 @@ define(
             currentKey: 'current_column_tab',
 
             /**
-             * @param {string} meta.config.title Translation key of the block title
-             *
-             * {@inheritdoc}
-             */
-            initialize: function (meta) {
-                this.config = meta.config;
-
-                return BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
              * {@inheritdoc}
              */
             configure: function () {

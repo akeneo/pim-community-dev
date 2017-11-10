@@ -22,9 +22,7 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize(config) {
-                this.config = config.config;
-
+            initialize() {
                 mediator.once('grid_load:start', this.setupCount.bind(this));
                 mediator.on('grid_load:complete', this.setupCount.bind(this));
             },

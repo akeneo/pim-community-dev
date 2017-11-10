@@ -32,16 +32,6 @@ define([
             className: 'tabsection',
             template: _.template(template),
             catalogLocale: UserContext.get('catalogLocale'),
-            config: null,
-
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
 
             /**
              * {@inheritdoc}

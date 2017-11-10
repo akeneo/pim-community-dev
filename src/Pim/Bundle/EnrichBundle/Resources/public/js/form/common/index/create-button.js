@@ -35,15 +35,6 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function (config) {
-                this.config = config.config;
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             render: function () {
                 this.$el.html(this.template({
                     title: __(this.config.title),

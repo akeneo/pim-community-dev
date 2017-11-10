@@ -33,8 +33,8 @@ define([
         /**
          * {@inheritdoc}
          */
-        initialize(meta) {
-            this.config = meta.config;
+        initialize() {
+            BaseForm.prototype.initialize.apply(this, arguments);
 
             if (undefined === this.config.fieldName) {
                 throw new Error('This view must be configured with a field name.');
@@ -42,8 +42,6 @@ define([
 
             this.fieldName = this.config.fieldName;
             this.errors = [];
-
-            BaseForm.prototype.initialize.apply(this, arguments);
         },
 
         /**

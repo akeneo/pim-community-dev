@@ -41,15 +41,6 @@ define(
 
             /**
              * {@inheritdoc}
-             */
-            initialize(config) {
-                this.config = config.config;
-
-                return BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
             */
             configure() {
                 return $.when(

@@ -31,22 +31,21 @@ define(
             template: _.template(template),
             state: null,
             linkSelector: 'a[href^="/"]:not(".no-hash")',
+            config: {
+                confirmationMessage: 'pim_enrich.confirmation.discard_changes',
+                confirmationTitle: 'pim_enrich.confirmation.leave',
+                message: 'pim_enrich.info.entity.updated'
+            },
 
             /**
              * {@inheritdoc}
              */
-            initialize: function (meta) {
-                this.config = _.extend({}, {
-                    confirmationMessage: 'pim_enrich.confirmation.discard_changes',
-                    confirmationTitle: 'pim_enrich.confirmation.leave',
-                    message: 'pim_enrich.info.entity.updated'
-                }, meta.config);
+            initialize: function () {
+                BaseForm.prototype.initialize.apply(this, arguments);
 
                 this.confirmationMessage = __(this.config.confirmationMessage, {entity: __(this.config.entity)});
                 this.confirmationTitle   = __(this.config.confirmationTitle);
                 this.message             = __(this.config.message);
-
-                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**

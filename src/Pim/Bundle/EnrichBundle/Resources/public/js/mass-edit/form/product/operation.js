@@ -23,15 +23,6 @@ define(
             readOnly: false,
 
             /**
-             * {@inheritdoc}
-             */
-            initialize: function (meta) {
-                this.config = _.extend({}, meta.config);
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
              * Called to reset the operation module
              */
             reset: function () {},

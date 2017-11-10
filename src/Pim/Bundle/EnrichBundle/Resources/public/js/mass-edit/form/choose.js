@@ -31,15 +31,6 @@ define(
             /**
              * {@inheritdoc}
              */
-            initialize: function (meta) {
-                this.config = _.extend({}, meta.config);
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
-
-            /**
-             * {@inheritdoc}
-             */
             render: function () {
                 this.$el.html(this.template({
                     operations: this.getParent().getOperations(),

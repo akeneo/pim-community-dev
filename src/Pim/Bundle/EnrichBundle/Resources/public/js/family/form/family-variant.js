@@ -22,11 +22,10 @@ define([
             variantGrid: null,
 
             /**
-             * @param {Object} meta
+             * {@inheritdoc}
              */
-            initialize: function (meta) {
-                this.config = _.extend({}, meta.config);
-                this.config.modelDependent = false;
+            initialize: function () {
+                this.config = { modelDependent: false };
 
                 return BaseForm.prototype.initialize.apply(this, arguments);
             },
