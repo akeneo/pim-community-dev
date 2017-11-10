@@ -9,6 +9,7 @@ use Pim\Behat\Context\AttributeValidationContext;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
 use Pim\Behat\Context\Domain\Enrich\CompletenessContext;
+use Pim\Behat\Context\Domain\Enrich\FamilyVariantConfigurationContext;
 use Pim\Behat\Context\Domain\Enrich\GridPaginationContext;
 use Pim\Behat\Context\Domain\Enrich\ProductGroupContext;
 use Pim\Behat\Context\Domain\SecondaryActionsContext;
@@ -42,6 +43,7 @@ class EnterpriseFeatureContext extends FeatureContext
 
         $this->contexts['fixtures'] = $environment->getContext(EnterpriseFixturesContext::class);
         $this->contexts['catalogConfiguration'] = $environment->getContext(EnterpriseCatalogConfigurationContext::class);
+        $this->contexts['domain-family-variants'] = $environment->getContext(FamilyVariantConfigurationContext::class);
         $this->contexts['webUser'] = $environment->getContext(EnterpriseWebUser::class);
         $this->contexts['datagrid'] = $environment->getContext(EnterpriseDataGridContext::class);
         $this->contexts['command'] = $environment->getContext(EnterpriseCommandContext::class);
