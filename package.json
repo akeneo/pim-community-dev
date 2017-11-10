@@ -14,7 +14,7 @@
     "webpack-watch": "webpack --progress --config webpack.config.js --watch",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
     "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix",
-    "styles": "node ./node_modules/.bin/lessc $npm_package_config_less_main $npm_package_config_less_output/pim.css --include-path=. --source-map=$npm_package_config_less_output/pim.map --source-map-rootpath=/ --source-map-basepath=/",
+    "styles": "node ./node_modules/.bin/lessc $npm_package_config_less_main $npm_package_config_less_output/pim.css --rootpath=bundles/ --include-path=. --source-map=$npm_package_config_less_output/pim.map --source-map-rootpath=/ --source-map-basepath=/",
     "styles-watch": "node ./node_modules/.bin/sane 'yarn run styles' $npm_package_config_less_watch --glob='**/*.{less,css}'"
   },
   "repository": {
