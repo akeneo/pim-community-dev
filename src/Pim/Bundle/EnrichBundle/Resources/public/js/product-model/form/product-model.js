@@ -106,7 +106,7 @@ define(
              * {@inheritdoc}
              */
             postRender() {
-                const options = {
+                let options = {
                     allowClear: true,
                     placeholder: __('pim_enrich.form.product_model.choose_product_model'),
                     ajax: {
@@ -125,9 +125,17 @@ define(
                     }
                 };
 
-                this.$('input')
-                    .attr('disabled', this.isReadOnly() ? 'disabled' : null)
-                    .select2(options);
+                this.$('input').attr('disabled', this.isReadOnly() ? 'disabled' : null);
+
+                if (this.getFormData().product_model) {
+                    options.choices = [{id: this.getFormData().product_model, text: 'toto'}];
+                }
+
+                this.$('input').select2(options);
+
+                if (this.getFormData().product_model) {
+                    // this.$('input').select2('val', this.getFormData().product_model);
+                }
             },
 
             /**
