@@ -79,19 +79,18 @@ define(
                 FetcherRegistry.getFetcher('attribute')
                     .fetchByIdentifiers(this.getFormData().attributes, {rights: 0})
                     .then(function (attributes) {
-                        var attributes = _.map(attributes, function (attribute) {
-                            //This update the sort order if the attribute is new on the collection
-                            var sortOrder = this.getFormData().attributes_sort_order[attribute.code] ?
-                                this.getFormData().attributes_sort_order[attribute.code] :
-                                _.keys(this.getFormData().attributes_sort_order) + 1;
+                        attributes = attributes.map((attribute) => {
+                            let sortOrder = this.getFormData().attributes_sort_order[attribute.code];
 
-                            return _.extend(
-                                {},
-                                attribute,
-                                {sort_order: sortOrder}
-                            );
-                        }.bind(this));
-                        var attributes = _.sortBy(attributes, 'sort_order');
+                            //This updates the sort order if the attribute is new on the collection
+                            if (undefined === sortOrder) {
+                                sortOrder = Object.keys(this.getFormData().attributes_sort_order).length + 1;
+                            }
+
+                            return Object.assign({}, attribute, { sort_order: sortOrder });
+                        });
+
+                        attributes.sort((first, second) => first.sort_order - second.sort_order);
 
                         this.$el.empty().append(this.template({
                             attributes: attributes,

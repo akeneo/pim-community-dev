@@ -1,5 +1,9 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-6489: fix the sort of attributes in attribute groups
+
 ## Improvements
 
 - IM-825: allow concurrent AJAX requests by closing the session in a listener
