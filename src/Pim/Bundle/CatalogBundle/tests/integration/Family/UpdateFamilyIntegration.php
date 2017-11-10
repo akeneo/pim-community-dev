@@ -37,6 +37,7 @@ class UpdateFamilyIntegration extends TestCase
             'Property "attribute_as_label" must belong to the family',
             $violation->getMessage()
         );
+        $this->assertEquals('attribute_as_label', $violation->getPropertyPath());
     }
 
     public function testRemovingAxisAttributeOfAFamilyVariantFromFamilyIsNotAllowed()
@@ -49,6 +50,7 @@ class UpdateFamilyIntegration extends TestCase
             'Attribute "size" is an axis in "shoes_size_color" family variant. It must belong to the family.',
             $violation->getMessage()
         );
+        $this->assertEquals('attributes', $violation->getPropertyPath());
     }
 
     public function testRemovingAttributeFromAFamilyAlsoRemovesItFromTheFamilyVariants()

@@ -19,7 +19,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RemoveAttributeFromFamilyVariantsOnFamilyUpdateSubscriber implements EventSubscriberInterface
+class RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber implements EventSubscriberInterface
 {
     /**
      * {@inheritdoc}
@@ -27,7 +27,7 @@ class RemoveAttributeFromFamilyVariantsOnFamilyUpdateSubscriber implements Event
     public static function getSubscribedEvents(): array
     {
         return [
-            StorageEvents::PRE_SAVE => 'removeDeletedAttributeFromFamilyVariants',
+            StorageEvents::PRE_SAVE => 'removeDeletedAttributesFromFamilyVariants',
         ];
     }
 
@@ -36,7 +36,7 @@ class RemoveAttributeFromFamilyVariantsOnFamilyUpdateSubscriber implements Event
      *
      * @param GenericEvent $event
      */
-    public function removeDeletedAttributeFromFamilyVariants(GenericEvent $event): void
+    public function removeDeletedAttributesFromFamilyVariants(GenericEvent $event): void
     {
         $subject = $event->getSubject();
 
