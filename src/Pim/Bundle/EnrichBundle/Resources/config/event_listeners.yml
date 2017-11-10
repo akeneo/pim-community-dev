@@ -1,4 +1,5 @@
 parameters:
+    pim_enrich.event_listener.close_session.class:              Pim\Bundle\EnrichBundle\EventListener\CloseSessionListener
     pim_enrich.event_listener.user_context.class:               Pim\Bundle\EnrichBundle\EventListener\UserContextListener
     pim_enrich.event_listener.request.class:                    Pim\Bundle\EnrichBundle\EventListener\RequestListener
     pim_enrich.event_subscriber.translate_flash_messages.class: Pim\Bundle\EnrichBundle\EventListener\TranslateFlashMessagesSubscriber
@@ -8,6 +9,11 @@ parameters:
     security.exception_listener.class: Pim\Bundle\EnrichBundle\Security\Firewall\ExceptionListener
 
 services:
+    pim_enrich.event_listener.close_session:
+        class: %pim_enrich.event_listener.close_session.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
     # User context listener
     stof_doctrine_extensions.event_listener.locale:
         class: '%pim_enrich.event_listener.user_context.class%'

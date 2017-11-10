@@ -55,6 +55,5 @@ services:
         arguments:
             - '@pim_catalog.command_launcher'
             - '@request_stack'
-            - '%assetic.write_to%'
         tags:
             - { name: twig.extension }

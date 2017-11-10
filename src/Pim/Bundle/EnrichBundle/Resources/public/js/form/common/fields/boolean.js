@@ -39,7 +39,7 @@ function (
             }
 
             return this.template(_.extend(templateContext, {
-                value: this.getFormData()[this.fieldName],
+                value: this.getModelValue(),
                 labels: {
                     on: __('switch_on'),
                     off: __('switch_off')

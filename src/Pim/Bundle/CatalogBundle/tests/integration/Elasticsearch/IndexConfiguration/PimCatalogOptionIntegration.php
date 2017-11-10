@@ -28,7 +28,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_3', 'product_6']);
+        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_3', 'product_6']);
     }
 
     public function testIsEmptyOperatorWithOptionValue()
@@ -47,7 +47,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_7']);
+        $this->assertDocument($productsFound, ['product_7']);
     }
 
     public function testIsNotEmptyOperatorWithOptionValue()
@@ -66,7 +66,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_1', 'product_2', 'product_3', 'product_4', 'product_5', 'product_6']);
+        $this->assertDocument($productsFound, ['product_1', 'product_2', 'product_3', 'product_4', 'product_5', 'product_6']);
     }
 
     public function testNotInListOperatorWithOptionValue()
@@ -90,7 +90,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_2', 'product_6']);
+        $this->assertDocument($productsFound, ['product_2', 'product_6']);
     }
 
     public function testSortAscending()
@@ -144,7 +144,7 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
     /**
      * {@inheritdoc}
      */
-    protected function addProducts()
+    protected function addDocuments()
     {
         $products = [
             [
@@ -213,6 +213,6 @@ class PimCatalogOptionIntegration extends AbstractPimCatalogTestCase
             ],
         ];
 
-        $this->indexProductDocuments($products);
+        $this->indexDocuments($products);
     }
 }

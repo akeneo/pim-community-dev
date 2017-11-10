@@ -93,6 +93,43 @@ class ListFamilyIntegration extends ApiTestCase
                     "tablet": ["a_number_float", "sku"]
                 },
                 "labels": {}
+            },
+            {
+            "_links":{
+               "self":{
+                  "href":"http:\/\/localhost\/api\/rest\/v1\/families\/familyA3"
+               }
+            },
+            "code":"familyA3",
+            "attributes":[
+               "a_localized_and_scopable_text_area",
+               "a_simple_select",
+               "a_text",
+               "a_yes_no",
+               "sku"
+            ],
+            "attribute_as_label":"sku",
+            "attribute_as_image":null,
+            "attribute_requirements":{
+               "ecommerce":[
+                  "a_localized_and_scopable_text_area",
+                  "a_simple_select",
+                  "a_yes_no",
+                  "sku"
+               ],
+               "ecommerce_china":[
+                  "sku"
+               ],
+               "tablet":[
+                  "a_localized_and_scopable_text_area",
+                  "a_simple_select",
+                  "a_yes_no",
+                  "sku"
+               ]
+            },
+            "labels":{
+            
+            }
             }
         ]
     }
@@ -118,7 +155,7 @@ JSON;
         "previous": {"href": "http://localhost/api/rest/v1/families?page=1&limit=10&with_count=true"}
     },
     "current_page": 2,
-    "items_count": 3,
+    "items_count": 4,
     "_embedded": {
         "items": []
     }

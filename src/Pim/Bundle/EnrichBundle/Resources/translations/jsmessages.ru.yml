@@ -136,6 +136,7 @@ pim_enrich:
       title: продукт
       locale: Локаль
       category: Категория
+      create: Создать
       filters: Фильтры
       btn:
         enabled: Включено
@@ -196,6 +197,7 @@ pim_enrich:
       media:
         upload: Перетащите чтобы загрузить, или нажмите здесь
       create_popin:
+        type: Продукт
         title: Создать
         labels:
           family: Выберите семейство
@@ -584,6 +586,7 @@ pim_enrich:
             useable_as_grid_filter: Используется в сетке
             validation_regexp: Регулярное выражение
             validation_rule: Правило проверки
+            family_variant: Вариант
           default_label:
             default_metric_unit: Выберите единицу измерения
             group: Выберите группу атрибутов

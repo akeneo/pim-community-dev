@@ -71,8 +71,6 @@ class AssetsCommand extends ContainerAwareCommand
         $this->commandExecutor
             ->runCommand('fos:js-routing:dump', ['--target' => 'web/js/routes.js'])
             ->runCommand('assets:install')
-            ->runCommand('assetic:dump')
-            ->runCommand('oro:assetic:dump')
             ->runCommand('pim:installer:dump-require-paths');
         $defaultLocales = ['en', 'fr', 'nl', 'de', 'ru', 'ja', 'pt', 'it'];
         $this->commandExecutor->runCommand('oro:translation:dump', ['locale' => implode(', ', $defaultLocales)]);

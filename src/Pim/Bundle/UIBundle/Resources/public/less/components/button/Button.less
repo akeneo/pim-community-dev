@@ -34,6 +34,12 @@
     margin: -4px -4px -7px 0;
   }
 
+  &--disabled {
+    color: lighten(@AknDefaultFontColor, @lighten);
+    border-color: lighten(@AknBorderColor, @lighten);
+    cursor: not-allowed;
+  }
+
   // Apply color
   &--apply {
     background-color: @AknGreen;
@@ -166,10 +172,6 @@
     display: none;
   }
 
-  &--uppercase {
-    text-transform: uppercase;
-  }
-
   &--disabled:focus {
     outline: -webkit-focus-ring-color auto 0;
   }
@@ -192,18 +194,71 @@
     margin: auto;
   }
 
-  &--round {
-    width: @AknDefaultButtonSize;
-    padding-left: 0;
-    padding-right: 0;
-    text-align: center;
-  }
-
   &--dropdown {
-    background-image: url("../../../images/icon-down-white.svg");
+    background-image: url("@{AknAssetUrl}/icon-down-white.svg");
     background-repeat: no-repeat;
     background-position: 92% center;
     background-size: 20px;
     padding-right: 34px;
+  }
+
+  &-squareIcon {
+    width: 54px;
+    height: 54px;
+    display: flex;
+    background-size: 100%;
+    margin: 5px auto 10px;
+
+    &--id {
+      background-image: url("../../../images/attribute/icon-id.svg");
+    }
+
+    &--text {
+      background-image: url("../../../images/attribute/icon-text.svg");
+    }
+
+    &--textarea {
+      background-image: url("../../../images/attribute/icon-textarea.svg");
+    }
+
+    &--number {
+      background-image: url("../../../images/attribute/icon-number.svg");
+    }
+
+    &--price {
+      background-image: url("../../../images/attribute/icon-price.svg");
+    }
+
+    &--multiselect {
+      background-image: url("../../../images/attribute/icon-multiselect.svg");
+    }
+
+    &--select {
+      background-image: url("../../../images/attribute/icon-select.svg");
+    }
+
+    &--file {
+      background-image: url("../../../images/attribute/icon-file.svg");
+    }
+
+    &--asset {
+      background-image: url("../../../images/attribute/icon-asset.svg");
+    }
+
+    &--switch {
+      background-image: url("../../../images/attribute/icon-switch.svg");
+    }
+
+    &--date {
+      background-image: url("../../../images/attribute/icon-date.svg");
+    }
+
+    &--metric {
+      background-image: url("../../../images/attribute/icon-metric.svg");
+    }
+
+    &--assetCollection {
+      background-image: url("../../../images/attribute/icon-assetCollection.svg");
+    }
   }
 }

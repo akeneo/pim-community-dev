@@ -248,7 +248,7 @@ define(
              *
              * @return {Promise}
              */
-            createField: function (object, attributeCode, values) {
+            createAttributeField: function (object, attributeCode, values) {
                 return FieldManager.getField(attributeCode).then(function (field) {
                     return $.when(
                         (new $.Deferred().resolve(field)),
@@ -498,7 +498,7 @@ define(
                     .fetchByIdentifiers(Object.keys(values))
                     .then((attributes) => {
                         return $.when.apply($, attributes.map((attribute) => {
-                            return this.createField(data, attribute.code, values[attribute.code]);
+                            return this.createAttributeField(data, attribute.code, values[attribute.code]);
                         }));
                     }).then(function () {
                         return _.values(arguments);

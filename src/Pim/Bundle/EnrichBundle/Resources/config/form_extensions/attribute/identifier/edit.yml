@@ -112,6 +112,7 @@ extensions:
         position: 90
         config:
             fieldName: code
+            label: pim_enrich.form.attribute.tab.properties.label.code
             required: true
             readOnly: true
 
@@ -122,6 +123,7 @@ extensions:
         position: 100
         config:
             fieldName: type
+            label: pim_enrich.form.attribute.tab.properties.label.type
             readOnly: true
 
     pim-attribute-identifier-edit-form-properties-common-group:
@@ -132,6 +134,7 @@ extensions:
         aclResourceId: pim_enrich_attributegroup_add_attribute
         config:
             fieldName: group
+            label: pim_enrich.form.attribute.tab.properties.label.group
             required: true
 
     pim-attribute-identifier-edit-form-properties-common-unique:
@@ -141,6 +144,7 @@ extensions:
         position: 120
         config:
             fieldName: unique
+            label: pim_enrich.form.attribute.tab.properties.label.unique
             readOnly: true
 
     pim-attribute-identifier-edit-form-properties-common-scopable:
@@ -150,6 +154,7 @@ extensions:
         position: 130
         config:
             fieldName: scopable
+            label: pim_enrich.form.attribute.tab.properties.label.scopable
             readOnly: true
 
     pim-attribute-identifier-edit-form-properties-common-localizable:
@@ -159,6 +164,7 @@ extensions:
         position: 140
         config:
             fieldName: localizable
+            label: pim_enrich.form.attribute.tab.properties.label.localizable
             readOnly: true
 
     pim-attribute-identifier-edit-form-properties-common-is-locale-specific:
@@ -168,6 +174,7 @@ extensions:
         position: 150
         config:
             fieldName: is_locale_specific
+            label: pim_enrich.form.attribute.tab.properties.label.is_locale_specific
             readOnly: true
 
     pim-attribute-identifier-edit-form-properties-common-usable-as-grid-filter:
@@ -177,6 +184,7 @@ extensions:
         position: 170
         config:
             fieldName: useable_as_grid_filter
+            label: pim_enrich.form.attribute.tab.properties.label.useable_as_grid_filter
             readOnly: true
             defaultValue: true
 
@@ -232,6 +240,7 @@ extensions:
         position: 100
         config:
             fieldName: max_characters
+            label: pim_enrich.form.attribute.tab.properties.label.max_characters
 
     pim-attribute-identifier-edit-form-validation-params-validation-rule:
         module: pim/form/common/fields/select
@@ -240,6 +249,7 @@ extensions:
         position: 110
         config:
             fieldName: validation_rule
+            label: pim_enrich.form.attribute.tab.properties.label.validation_rule
             choices:
                 regexp: pim_enrich.entity.attribute.validation_rule.regexp
 
@@ -250,3 +260,4 @@ extensions:
         position: 120
         config:
             fieldName: validation_regexp
+            label: pim_enrich.form.attribute.tab.properties.label.validation_regexp

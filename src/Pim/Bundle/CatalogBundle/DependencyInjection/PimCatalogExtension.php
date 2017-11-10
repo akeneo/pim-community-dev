@@ -39,6 +39,7 @@ class PimCatalogExtension extends Extension
         $loader->load('elasticsearch.yml');
         $loader->load('entities.yml');
         $loader->load('entity_with_family.yml');
+        $loader->load('entity_with_family_variant.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('factories.yml');
         $loader->load('family_variant.yml');

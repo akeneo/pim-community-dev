@@ -136,6 +136,7 @@ pim_enrich:
       title: product
       locale: Lokalisatie
       category: Categorie
+      create: Aanmaken
       filters: Filters
       btn:
         enabled: Ingeschakeld
@@ -194,6 +195,7 @@ pim_enrich:
       localizable:
         channel_locale_unavailable: Dit lokaliseerbaar veld is niet beschikbaar voor locale '{{ locale }}' en kanaal '{{ channel }}'
       create_popin:
+        type: Product
         title: Aanmaken
         labels:
           family: Kies een familie
@@ -592,6 +594,7 @@ pim_enrich:
             unique: Unieke waarde
             validation_regexp: Reguliere expressie
             validation_rule: Validatieregel
+            family_variant: Variant
           default_label:
             default_metric_unit: Kies een eenheid
             group: Kies een attribuutgroep

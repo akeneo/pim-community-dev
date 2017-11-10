@@ -14,8 +14,7 @@ define([
     'pim/form',
     'pim/common/tab',
     'pim/template/form/common/fields/field'
-],
-function (
+], function (
     $,
     _,
     __,
@@ -34,7 +33,7 @@ function (
         /**
          * {@inheritdoc}
          */
-        initialize: function (meta) {
+        initialize(meta) {
             this.config = meta.config;
 
             if (undefined === this.config.fieldName) {
@@ -42,6 +41,7 @@ function (
             }
 
             this.fieldName = this.config.fieldName;
+            this.errors = [];
 
             BaseForm.prototype.initialize.apply(this, arguments);
         },
@@ -49,7 +49,7 @@ function (
         /**
          * {@inheritdoc}
          */
-        configure: function () {
+        configure() {
             this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onBadRequest.bind(this));
 
             return BaseForm.prototype.configure.apply(this, arguments);
@@ -58,8 +58,10 @@ function (
         /**
          * @param {Object} event
          */
-        onBadRequest: function (event) {
-            this.errors = _.where(event.response, {path: this.fieldName});
+        onBadRequest(event) {
+            this.errors = event.response.filter((error) => {
+                return this.fieldName === error.path || this.fieldName === error.attribute;
+            });
             this.render();
 
             this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.getTabCode());
@@ -70,8 +72,8 @@ function (
          *
          * @returns {String}
          */
-        getTabCode: function () {
-            var parent = this.getParent();
+        getTabCode() {
+            let parent = this.getParent();
             while (!(parent instanceof Tab)) {
                 parent = parent.getParent();
                 if (null === parent) {
@@ -85,7 +87,7 @@ function (
         /**
          * Renders the container template.
          */
-        render: function () {
+        render() {
             if (!this.isVisible()) {
                 this.$el.empty();
 
@@ -107,16 +109,17 @@ function (
          *
          * @returns {Promise}
          */
-        getTemplateContext: function () {
+        getTemplateContext() {
             return $.Deferred()
                 .resolve({
-                    fieldLabel: __('pim_enrich.form.attribute.tab.properties.label.' + this.fieldName),
-                    requiredLabel: __('pim_enrich.form.required'),
+                    fieldLabel: this.getLabel(),
+                    requiredLabel: this.getRequiredLabel(),
                     fieldName: this.fieldName,
                     fieldId: this.getFieldId(),
                     errors: this.errors,
                     readOnly: this.isReadOnly(),
-                    required: this.config.required || false
+                    required: this.config.required || false,
+                    __: __
                 })
                 .promise();
         },
@@ -124,21 +127,39 @@ function (
         /**
          * Renders the input inside the field container.
          */
-        renderInput: function () {
+        renderInput() {
             throw new Error('Please implement the renderInput() method in your concrete field class.');
         },
 
         /**
          * Called after rendering the input.
          */
-        postRender: function () {},
+        postRender() {},
+
+        /**
+         * @returns {string}
+         */
+        getLabel() {
+            return undefined === this.config.label
+                ? '[' + this.fieldName + ']'
+                : __(this.config.label);
+        },
+
+        /**
+         * @returns {string}
+         */
+        getRequiredLabel() {
+            return undefined === this.config.requiredLabel
+                ? __('pim_enrich.form.required')
+                : __(this.config.requiredLabel);
+        },
 
         /**
          * Should the field be displayed?
          *
          * @returns {Boolean}
          */
-        isVisible: function () {
+        isVisible() {
             return true;
         },
 
@@ -147,7 +168,7 @@ function (
          *
          * @returns {Boolean}
          */
-        isReadOnly: function () {
+        isReadOnly() {
             return this.config.readOnly || false;
         },
 
@@ -156,19 +177,17 @@ function (
          *
          * @param {*} value
          */
-        updateModel: function (value) {
-            var newData = {};
-            newData[this.fieldName] = value;
-
-            this.setData(newData);
+        updateModel(value) {
+            this.setData({[this.fieldName]: value});
         },
 
         /**
-         * Method responsible for reading the current value from the  DOM.
-         * Must be implemented in concrete classes.
+         * Reads and returns the field value from the model.
+         *
+         * @returns {*}
          */
-        getFieldValue: function () {
-            throw new Error('Please implement the getFieldValue() method in your concrete field class.');
+        getModelValue() {
+            return this.getFormData()[this.fieldName];
         },
 
         /**
@@ -176,7 +195,7 @@ function (
          *
          * @returns {String}
          */
-        getFieldId: function () {
+        getFieldId() {
             return Math.random().toString(10).substring(2);
         }
     });

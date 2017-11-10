@@ -38,7 +38,7 @@ function (
             }
 
             return this.template(_.extend(templateContext, {
-                value: this.getFormData()[this.fieldName],
+                value: this.getModelValue(),
                 choices: this.formatChoices(this.config.choices || []),
                 multiple: this.config.isMultiple,
                 labels: {

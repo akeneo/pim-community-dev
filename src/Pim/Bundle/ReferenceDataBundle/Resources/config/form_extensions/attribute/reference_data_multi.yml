@@ -22,4 +22,5 @@ extensions:
         position: 100
         config:
             fieldName: reference_data_name
+            label: pim_enrich.form.attribute.tab.properties.label.reference_data_name
             refDataType: multi

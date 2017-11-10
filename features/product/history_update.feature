@@ -8,7 +8,7 @@ Feature: Update the product history
     Given a "apparel" catalog configuration
     And I am logged in as "Julia"
     And I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | tshirt   |
       | family | T-shirts |

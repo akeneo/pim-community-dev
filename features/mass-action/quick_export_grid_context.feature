@@ -27,8 +27,8 @@ Feature: Quick export products according to the product grid context
       | success | Quick export CSV product quick export grid context finished |
     When I go on the last executed job resume of "csv_product_grid_context_quick_export"
     Then I should see the text "COMPLETED"
-    And the name of the exported file of "csv_product_grid_context_quick_export" should be "products_export_grid_context_en_US_tablet.csv"
-    And exported file of "csv_product_grid_context_quick_export" should contain:
+    And the names of the exported files of "csv_product_grid_context_quick_export" should be "1_products_export_grid_context_en_US_tablet.csv,2_product_models_export_grid_context_en_US_tablet.csv"
+    And first exported file of "csv_product_grid_context_quick_export" should contain:
     """
     sku;color;description-en_US-tablet;family;groups;name-en_US;price-EUR;price-USD;size
     boots;black;Mob;boots;;Amazing boots;20;25;40
@@ -49,8 +49,8 @@ Feature: Quick export products according to the product grid context
       | success | Quick export XLSX product quick export grid context finished |
     When I go on the last executed job resume of "xlsx_product_grid_context_quick_export"
     Then I should see the text "COMPLETED"
-    And the name of the exported file of "xlsx_product_grid_context_quick_export" should be "products_export_grid_context_en_US_tablet.xlsx"
-    And exported xlsx file of "xlsx_product_grid_context_quick_export" should contain:
+    And the names of the exported files of "xlsx_product_grid_context_quick_export" should be "1_products_export_grid_context_en_US_tablet.xlsx,2_product_models_export_grid_context_en_US_tablet.xlsx"
+    And exported xlsx file 1 of "xlsx_product_grid_context_quick_export" should contain:
       | sku      | color | description-en_US-tablet | family   | groups | name-en_US    | price-EUR | price-USD | size |
       | boots    | black | Mob                      | boots    |        | Amazing boots | 20        | 25        | 40   |
       | sneakers | white | ylette                   | sneakers |        | Sneakers      | 50        | 60        | 42   |

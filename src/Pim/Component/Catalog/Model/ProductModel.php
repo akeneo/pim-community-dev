@@ -391,7 +391,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function setParent(EntityWithFamilyVariantInterface $parent = null): void
+    public function setParent(ProductModelInterface $parent = null): void
     {
         $this->parent = $parent;
     }
@@ -399,7 +399,7 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
-    public function getParent(): ?EntityWithFamilyVariantInterface
+    public function getParent(): ?ProductModelInterface
     {
         return $this->parent;
     }

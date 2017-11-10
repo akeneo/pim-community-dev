@@ -136,6 +136,7 @@ pim_enrich:
       title: 产品
       locale: 本地化语言
       category: 分类
+      create: 创建
       filters: 过滤器
       btn:
         enabled: 已启用
@@ -196,6 +197,7 @@ pim_enrich:
       media:
         upload: 拖放式操作可上传或点击这里
       create_popin:
+        type: 产品
         title: 创建
         labels:
           family: 选择一个品类
@@ -567,6 +569,7 @@ pim_enrich:
             useable_as_grid_filter: 在表格中可用
             validation_regexp: 正则表达式
             validation_rule: 验证规则
+            family_variant: 变量
           default_label:
             default_metric_unit: 选择一个单位
             group: 选择属性组

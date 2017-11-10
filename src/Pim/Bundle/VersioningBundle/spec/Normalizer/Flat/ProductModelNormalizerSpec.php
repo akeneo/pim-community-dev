@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\VersioningBundle\Normalizer\Flat;
 
 use Pim\Bundle\VersioningBundle\Normalizer\Flat\ProductModelNormalizer;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
@@ -44,11 +45,14 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         ProductModelInterface $productModel,
         ValueInterface $sku,
         ValueCollectionInterface $values,
-        \Iterator $iterator
+        \Iterator $iterator,
+        FamilyVariantInterface $familyVariant
     ) {
         $this->setSerializer($serializer);
 
-        $productModel->getCode()->willReturn($sku);
+        $familyVariant->getCode()->willReturn('family_variant_2');
+        $productModel->getCode()->willReturn('product_model_1');
+        $productModel->getFamilyVariant()->willReturn($familyVariant);
         $productModel->getCategoryCodes()->willReturn(['nice shoes', 'converse']);
         $productModel->getValuesForVariation()->willReturn($values);
 
@@ -62,6 +66,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
 
         $this->normalize($productModel, 'flat', [])->shouldReturn(
             [
+                'family_variant' => 'family_variant_2',
+                'code' => 'product_model_1',
                 'categories' => 'nice shoes,converse',
                 'sku'        => 'sku-001',
             ]

@@ -9,8 +9,8 @@ confirmation:
     channel: Sei sicuro di voler eliminare questo canale?
     group: Sei sicuro di voler eliminare questo gruppo?
     group_type: Sei sicuro di voler eliminare questo tipo di gruppo?
-    import_profile: Sei sicuro di voler eliminare questo profilo di importazione?
-    export_profile: Sei sicuro di voler eliminare questo profilo di esportazione?
+    import profile: Sei sicuro di voler eliminare questo profilo di importazione?
+    export profile: Sei sicuro di voler eliminare questo profilo di esportazione?
     user: Sei sicuro di voler eliminare questo utente?
     role: Sei sicuro di voler eliminare questo ruolo?
     job_instance: È sicuro di che volere cancellare questa istanza di lavoro?
@@ -23,7 +23,7 @@ pim_datagrid:
       label: Esportazione rapida
   mass_action:
     delete:
-      label: Eliminare
+      confirm_content: Sei sicuro di che voler eliminare i prodotti selezionati?
       success: I prodotti selezionati sono stati eliminati con successo.
       error: Si è verificato un errore cancellando i prodotti selezionati, per favore riprova.
   view_selector:
@@ -153,6 +153,7 @@ pim_enrich:
       category: Categoria
       create: Crea prodotto
       filters: Filtri
+      selected: prodotti selezionati
       common: In comune
       btn:
         enabled: Attivato
@@ -395,7 +396,6 @@ pim_enrich:
     leave: Sei sicuro di voler lasciare questa pagina?
     discard_changes: Perderai le modifiche a {{ entity }} se lasci la pagina.
     delete_item: Conferma cancellazione
-    remove: Rimuovere
     delete:
       attribute: Sei sicuro di voler rimuovere questo attributo dal prodotto?
       attribute_group: Sei sicuro di che voler rimuovere l'attributo {{ attribute }} da questo gruppo di attributi?
@@ -1319,7 +1319,6 @@ pim_menu:
     group_type: Tipi di gruppo
     locale: Impostazioni locali
     product: Articoli
-    published_product: Prodotti Pubblicati
     export_history: Cronologia esportazioni
     export_profile: Profili di esportazione
     import_history: Cronologia importazioni

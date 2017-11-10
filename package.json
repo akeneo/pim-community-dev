@@ -3,12 +3,19 @@
   "version": "2.0.0",
   "description": "Akeneo PIM Application",
   "homepage": "http://www.akeneo.com",
+  "config": {
+    "less_main": "./src/Pim/Bundle/UIBundle/Resources/public/less/main.less",
+    "less_output": "web/css",
+    "less_watch": "./src/Pim/Bundle/UIBundle/Resources/public"
+  },
   "scripts": {
-    "webpack": "webpack --config webpack.config.js --env=prod",
-    "webpack-dev": "webpack --config webpack.config.js",
+    "webpack": "yarn run styles && webpack --config webpack.config.js --env=prod",
+    "webpack-dev": "yarn run styles && webpack --config webpack.config.js",
     "webpack-watch": "webpack --progress --config webpack.config.js --watch",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
-    "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix"
+    "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix",
+    "styles": "node ./node_modules/.bin/lessc $npm_package_config_less_main $npm_package_config_less_output/pim.css --include-path=. --source-map=$npm_package_config_less_output/pim.map --source-map-rootpath=/ --source-map-basepath=/",
+    "styles-watch": "node ./node_modules/.bin/sane 'yarn run styles' $npm_package_config_less_watch --glob='**/*.{less,css}'"
   },
   "repository": {
     "type": "git",
@@ -41,11 +48,13 @@
     "html-loader": "0.5.1",
     "imports-loader": "0.7.1",
     "jquery": "1.11.0",
+    "less": "^2.7.2",
     "loader-utils": "1.1.0",
     "lodash": "4.17.4",
     "merge-objects": "1.0.5",
     "raw-loader": "0.5.1",
     "regexp-replace-loader": "1.0.0",
+    "sane": "^2.2.0",
     "summernote": "0.6.5",
     "text-loader": "0.0.1",
     "underscore": "1.8.3",

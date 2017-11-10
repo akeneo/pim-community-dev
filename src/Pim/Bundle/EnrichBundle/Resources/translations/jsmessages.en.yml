@@ -167,7 +167,9 @@ pim_enrich:
             title: product
             locale: Locale
             category: Category
-            create: Create product
+            create: Create
+            subTitle: Create product
+            modalTitle: Select your action
             filters: Filters
             selected: selected results
             common: Common
@@ -233,6 +235,7 @@ pim_enrich:
             media:
                 upload: Drag and drop to upload or click here
             create_popin:
+                type: Product
                 title: Create
                 labels:
                     family: Choose a family
@@ -245,13 +248,27 @@ pim_enrich:
                 item_limit: Only first 1000 items shown in this sequential edit ({{ count }} selected)
                 empty: Your selection is empty, please change your search criteria
         product_model:
+            create_popin:
+                type: Product model
+                title: Create a product model
+                content: A product model gathers variant products and eases the enrichment of their common properties.
             info:
+                create_successful: Product model successfully created
                 update_successful: Product model successfully updated. The completeness of its variant products will be recalculated.
                 update_failed: The product model could not be updated.
                 field_not_ready: "The product model cannot be saved right now. The following fields are not ready: {{ fields }}"
             read_only_parent_attribute_from_common: This attribute can be updated on the common attributes.
             read_only_parent_attribute_from_model: "This attribute can be updated on the attributes by {{ axes }}"
             variant_axis: Variant axis
+            title: products
+            add_child:
+                create: Add new
+                cancel: Cancel
+                confirm: Confirm
+                create_label: "Add a new {{ axes }}"
+                fields:
+                    required_label: (variant axis)
+                    code: Code
         association_type:
             info:
                 deletion_successful: Association type successfully deleted.
@@ -429,8 +446,13 @@ pim_enrich:
     form:
         required: (required)
         product_model:
+            choose_variant: Choose a variant
             complete_variant_product: variant product
             complete_variant_products: variant products
+            family_variant: Variant
+            flash:
+                product_model_added: Product model successfully added to the product model
+                variant_product_added: Variant product successfully added to the product model
         product:
             tab:
                 associations:
@@ -1108,18 +1130,22 @@ batch_jobs:
             label: Set attributes requirements
     csv_product_quick_export:
         quick_export.label: CSV product quick export
+        quick_export_product_model.label: CSV product model quick export
         perform:
             label: CSV product quick export
     csv_product_grid_context_quick_export:
         quick_export.label: CSV product grid context quick export
+        quick_export_product_model.label: CSV product model grid context quick export
         perform:
             label: CSV product grid context quick export
     xlsx_product_quick_export:
         quick_export.label: XSLX product quick export
+        quick_export_product_model.label: XSLX product model quick export
         perform:
             label: XSLX product quick export
     xlsx_product_grid_context_quick_export:
         quick_export.label: XSLX product grid context quick export
+        quick_export_product_model.label: XSLX product model grid context quick export
         perform:
             label: XSLX product grid context quick export
     csv_product_export:

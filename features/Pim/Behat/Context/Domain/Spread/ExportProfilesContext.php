@@ -2,7 +2,6 @@
 
 namespace Pim\Behat\Context\Domain\Spread;
 
-use Akeneo\Component\Batch\Model\JobInstance;
 use Behat\ChainedStepsExtension\Step\Then;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
@@ -16,27 +15,35 @@ class ExportProfilesContext extends ImportExportContext
     use SpinCapableTrait;
 
     /**
+     * @param string       $number
      * @param string       $code
      * @param PyStringNode $csv
      *
-     * @Then /^exported file of "([^"]*)" should contain:$/
+     * @Then /^(first |second )?exported file of "([^"]*)" should contain:$/
      *
      * @throws ExpectationException
      * @throws \Exception
      */
-    public function exportedFileOfShouldContain($code, PyStringNode $csv)
+    public function exportedFileOfShouldContain($number, $code, PyStringNode $csv)
     {
-        $this->spin(function () use ($code, $csv) {
-            $path = $this->getExportedFile($code);
+        $intNumber = null;
+        if ('' !== $number) {
+            $intNumber = 'first ' === $number ? 1 : 2;
+        }
+
+        $lines = $this->spin(function () use ($code, $csv, $intNumber) {
+            $path = $this->getExportedFile($code, $intNumber);
+
             $config = $this->getCsvJobConfiguration($code);
 
-            $expectedLines = $this->getExpectedLines($csv, $config);
-            $actualLines = $this->getActualLines($path, 'csv', $config);
+            return [
+                'expectedLines' => $this->getExpectedLines($csv, $config),
+                'actualLines' => $this->getActualLines($path, 'csv', $config),
+                'path' => $path
+            ];
+        }, sprintf('Can not find lines of the file %s', $code));
 
-            $this->compareFile($expectedLines, $actualLines, $path);
-
-            return true;
-        }, sprintf('Cannot validate the file %s', $code));
+        $this->compareFile($lines['expectedLines'], $lines['actualLines'], $lines['path']);
     }
 
     /**
@@ -151,6 +158,8 @@ class ExportProfilesContext extends ImportExportContext
      * @param string $path
      *
      * @Then /^the name of the exported file of "([^"]+)" should be "([^"]+)"$/
+     *
+     * @throws ExpectationException
      */
     public function theNameOfTheExportedFileOfShouldBe($code, $path)
     {
@@ -160,6 +169,30 @@ class ExportProfilesContext extends ImportExportContext
             throw $this->getMainContext()->createExpectationException(
                 sprintf('Expected file name "%s" got "%s"', $path, $executionPath)
             );
+        }
+    }
+
+    /**
+     * @param string $code
+     * @param string $paths
+     *
+     * @Then /^the names of the exported files of "([^"]+)" should be "([^"]+)"$/
+     *
+     * @throws ExpectationException
+     */
+    public function theNamesOfTheExportedFilesOfShouldBe($code, $paths)
+    {
+        $executionPaths = $this->getMainContext()->getSubcontext('job')->getJobInstanceFilenames($code);
+        $expectedPaths = explode(',', $paths);
+        sort($executionPaths);
+        sort($expectedPaths);
+
+        if ($executionPaths !== $expectedPaths) {
+            throw $this->getMainContext()->createExpectationException(sprintf(
+                'Expected file names "%s" got "%s"',
+                join(',', $expectedPaths),
+                join(',', $executionPaths)
+            ));
         }
     }
 
@@ -217,6 +250,8 @@ class ExportProfilesContext extends ImportExportContext
      * @param bool      $shouldBeInDirectory true if the files should be in the directory, false otherwise
      * @param TableNode $table               Files to check
      * @param string    $path                Path of item on filesystem
+     *
+     * @throws ExpectationException
      */
     protected function checkExportDirectoryFiles($shouldBeInDirectory, TableNode $table, $path)
     {
@@ -244,15 +279,16 @@ class ExportProfilesContext extends ImportExportContext
     }
 
     /**
-     * @param string $code
+     * @param string       $code
+     * @param integer|null $number
      *
      * @throws ExpectationException
      * @return string
      *
      */
-    protected function getExportedFile($code)
+    protected function getExportedFile($code, $number = null)
     {
-        $filePath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code);
+        $filePath = $this->getMainContext()->getSubcontext('job')->getJobInstancePath($code, $number);
         if (!is_file($filePath)) {
             throw $this->getMainContext()->createExpectationException(
                 sprintf('File "%s" doesn\'t exist', $filePath)

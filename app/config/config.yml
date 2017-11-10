@@ -40,13 +40,6 @@ twig:
     globals:
         uservoice_key: "%uservoice_key%"
 
-# Assetic Configuration
-assetic:
-    debug:          "%kernel.debug%"
-    use_controller: false
-    filters:
-        cssrewrite: ~
-
 # Swiftmailer Configuration
 swiftmailer:
     transport:                "%mailer_transport%"
