@@ -11,7 +11,9 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- *  Family attribute_used_as_axis constraint
+ * Family attribute_used_as_axis constraint.
+ *
+ * Checks that all attributes used as axis are also attributes of the family.
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -22,7 +24,7 @@ class FamilyAttributeUsedAsAxisValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($family, Constraint $constraint)
+    public function validate($family, Constraint $constraint): void
     {
         if (!$family instanceof FamilyInterface) {
             return;
@@ -79,6 +81,7 @@ class FamilyAttributeUsedAsAxisValidator extends ConstraintValidator
                     '%attribute%'      => $missingAttributeUsedAsAxis,
                     '%family_variant%' => $familyVariant->getCode(),
                 ])
+                ->atPath($constraint->propertyPath)
                 ->addViolation();
         }
     }

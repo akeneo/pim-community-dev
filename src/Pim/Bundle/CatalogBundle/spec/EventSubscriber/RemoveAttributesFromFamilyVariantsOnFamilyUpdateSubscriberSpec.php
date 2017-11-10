@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 use Akeneo\Component\StorageUtils\StorageEvents;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\EventSubscriber\RemoveAttributeFromFamilyVariantsOnFamilyUpdateSubscriber;
+use Pim\Bundle\CatalogBundle\EventSubscriber\RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
@@ -14,11 +14,11 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
-class RemoveAttributeFromFamilyVariantsOnFamilyUpdateSubscriberSpec extends ObjectBehavior
+class RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriberSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(RemoveAttributeFromFamilyVariantsOnFamilyUpdateSubscriber::class);
+        $this->shouldHaveType(RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber::class);
     }
 
     function it_is_an_event_subscriber()
@@ -29,14 +29,14 @@ class RemoveAttributeFromFamilyVariantsOnFamilyUpdateSubscriberSpec extends Obje
     function it_subscribes_to_events()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            StorageEvents::PRE_SAVE => 'removeDeletedAttributeFromFamilyVariants',
+            StorageEvents::PRE_SAVE => 'removeDeletedAttributesFromFamilyVariants',
         ]);
     }
 
     function it_does_not_process_non_family_objects(GenericEvent $event, \StdClass $notFamilyObject)
     {
         $event->getSubject()->willReturn($notFamilyObject);
-        $this->removeDeletedAttributeFromFamilyVariants($event);
+        $this->removeDeletedAttributesFromFamilyVariants($event);
     }
 
     function it_removes_attributes_from_a_family_variant_when_it_has_been_removed_from_the_family(
@@ -130,6 +130,6 @@ class RemoveAttributeFromFamilyVariantsOnFamilyUpdateSubscriberSpec extends Obje
         $variantAttributeSet1->setAttributes([$attribute1, $attribute2, $axis1])->shouldBeCalled();
         $variantAttributeSet2->setAttributes([$attribute3, $attribute4, $axis2])->shouldBeCalled();
 
-        $this->removeDeletedAttributeFromFamilyVariants($event);
+        $this->removeDeletedAttributesFromFamilyVariants($event);
     }
 }

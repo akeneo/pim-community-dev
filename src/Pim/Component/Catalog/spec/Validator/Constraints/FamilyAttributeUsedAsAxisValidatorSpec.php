@@ -81,6 +81,7 @@ class FamilyAttributeUsedAsAxisValidatorSpec extends ObjectBehavior
                 '%family_variant%' => 'my_family_variant',
             ]
         )->willReturn($violationBuilder);
+        $violationBuilder->atPath('attributes')->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($family, $familyAttributesUsedAsAxisConstraint);
@@ -131,6 +132,7 @@ class FamilyAttributeUsedAsAxisValidatorSpec extends ObjectBehavior
                 '%family_variant%' => 'my_family_variant_2',
             ]
         )->willReturn($violationBuilder);
+        $violationBuilder->atPath('attributes')->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($family, $familyAttributesUsedAsAxisConstraint);
@@ -176,6 +178,7 @@ class FamilyAttributeUsedAsAxisValidatorSpec extends ObjectBehavior
                 '%family_variant%' => 'my_family_variant',
             ]
         )->willReturn($violationBuilder);
+        $violationBuilder->atPath('attributes')->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($family, $familyAttributesUsedAsAxisConstraint);
@@ -226,8 +229,6 @@ class FamilyAttributeUsedAsAxisValidatorSpec extends ObjectBehavior
                 '%family_variant%' => 'my_family_variant_1',
             ]
         )->willReturn($violationBuilder);
-        $violationBuilder->addViolation()->shouldBeCalled();
-
         $context->buildViolation(
             $familyAttributesUsedAsAxisConstraint->messageAttribute,
             [
@@ -242,6 +243,7 @@ class FamilyAttributeUsedAsAxisValidatorSpec extends ObjectBehavior
                 '%family_variant%' => 'my_family_variant_2',
             ]
         )->willReturn($violationBuilder);
+        $violationBuilder->atPath('attributes')->willReturn($violationBuilder);
         $violationBuilder->addViolation()->shouldBeCalled();
 
         $this->validate($family, $familyAttributesUsedAsAxisConstraint);

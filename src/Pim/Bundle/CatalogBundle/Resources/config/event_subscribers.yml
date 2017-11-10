@@ -16,7 +16,7 @@ parameters:
     pim_catalog.event_subscriber.compute_completeness_on_family_update.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber
     pim_catalog.event_subscriber.compute_product_models_descendants.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeProductModelDescendantsSubscriber
     pim_catalog.event_subscriber.compute_family_variant_structure_changes.class: Pim\Bundle\CatalogBundle\EventSubscriber\ComputeFamilyVariantStructureChangesSubscriber
-    pim_catalog.event_subscriber.remove_attribute_from_family_variants_on_family_update.class: Pim\Bundle\CatalogBundle\EventSubscriber\RemoveAttributeFromFamilyVariantsOnFamilyUpdateSubscriber
+    pim_catalog.event_subscriber.remove_attributes_from_family_variants_on_family_update.class: Pim\Bundle\CatalogBundle\EventSubscriber\RemoveAttributesFromFamilyVariantsOnFamilyUpdateSubscriber
     pim_catalog.event_subscriber.save_family_variants_on_family_update.class: Pim\Bundle\CatalogBundle\EventSubscriber\SaveFamilyVariantOnFamilyUpdateSubscriber
 
 services:
@@ -157,8 +157,8 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_catalog.event_subscriber.remove_attribute_from_family_variants_on_family_update:
-        class: '%pim_catalog.event_subscriber.remove_attribute_from_family_variants_on_family_update.class%'
+    pim_catalog.event_subscriber.remove_attributes_from_family_variants_on_family_update:
+        class: '%pim_catalog.event_subscriber.remove_attributes_from_family_variants_on_family_update.class%'
         tags:
             - { name: kernel.event_subscriber }
 

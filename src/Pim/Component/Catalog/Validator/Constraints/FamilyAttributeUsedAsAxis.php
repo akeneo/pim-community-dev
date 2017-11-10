@@ -7,6 +7,7 @@ namespace Pim\Component\Catalog\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
+ * Family attribute_used_as_axis constraint
  *
  * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -17,10 +18,13 @@ class FamilyAttributeUsedAsAxis extends Constraint
     /** @var string */
     public $messageAttribute = 'Attribute "%attribute%" is an axis in "%family_variant%" family variant. It must belong to the family.';
 
+    /** @var string */
+    public $propertyPath = 'attributes';
+
     /**
      * {@inheritdoc}
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return 'pim_family_attribute_used_as_axis';
     }
@@ -28,7 +32,7 @@ class FamilyAttributeUsedAsAxis extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

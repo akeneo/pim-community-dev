@@ -10,6 +10,7 @@
 - PIM-6838: Display completeness panel after Attributes in the PEF
 - PIM-6891: On the grid, execute the ES query only once, not twice
 - PIM-6967: Allow category panels to be resized
+- PIM-6460: Preventing from deleting attributes used as axis from the family and remove the deleted attributes from the family variants.
 
 # 2.0.6 (2017-11-03)
 
