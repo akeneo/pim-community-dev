@@ -65,32 +65,6 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
     }
 
     /**
-     * Test update two families.
-     */
-    public function testComputeCompletenessesOfTwoSubsquentDifferentFamiliesUpdates()
-    {
-        $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 0);
-        $this->assertCompleteness('watch', 'ecommerce', 'fr_FR', 20);
-        $this->assertCompleteness('tshirt-unique-size-navy-blue', 'ecommerce', 'fr_FR', 54);
-        $this->addFamilyRequirement('accessories', 'ecommerce', 'composition');
-        $this->addFamilyRequirement('clothing', 'ecommerce', 'price');
-        $this->LaunchTimesAndWaitForJobExecutionsToEnd(2, 'compute_completeness_of_products_family');
-        $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 2);
-        $this->assertJobWasExecutedWithStatusAndJobParameters(
-            'compute_completeness_of_products_family',
-            BatchStatus::COMPLETED,
-            ['family_code' => 'accessories']
-        );
-        $this->assertJobWasExecutedWithStatusAndJobParameters(
-            'compute_completeness_of_products_family',
-            BatchStatus::COMPLETED,
-            ['family_code' => 'clothing']
-        );
-        $this->assertCompleteness('watch', 'ecommerce', 'fr_FR', 16);
-        $this->assertCompleteness('tshirt-unique-size-navy-blue', 'ecommerce', 'fr_FR', 50);
-    }
-
-    /**
      * Test update two families only updates the one needed.
      */
     public function testComputeCompletenessesOnceForTwoSubsquentDifferentFamiliesUpdates()
@@ -100,7 +74,7 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
         $this->assertCompleteness('tshirt-unique-size-navy-blue', 'ecommerce', 'fr_FR', 54);
         $this->addFamilyRequirement('accessories', 'ecommerce', 'composition');
         $this->updateFamilyPropertiesNotTriggeringCompletenessRecomputation('clothing');
-        $this->LaunchTimesAndWaitForJobExecutionsToEnd(1,'compute_completeness_of_products_family');
+        $this->LaunchTimesAndWaitForJobExecutionsToEnd(1, 'compute_completeness_of_products_family');
         $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 1);
         $this->assertJobWasExecutedWithStatusAndJobParameters(
             'compute_completeness_of_products_family',

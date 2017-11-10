@@ -60,20 +60,20 @@ class SaveFamilyVariantOnFamilyUpdateSubscriber implements EventSubscriberInterf
             return;
         }
 
-        $validfamilyVariants = [];
+        $validFamilyVariants = [];
         $allViolations = [];
 
         foreach ($subject->getFamilyVariants() as $familyVariant) {
             $violations = $this->validator->validate($familyVariant);
 
             if (0 === $violations->count()) {
-                $validfamilyVariants[] = $familyVariant;
+                $validFamilyVariants[] = $familyVariant;
             } else {
                 $allViolations[$familyVariant->getCode()] = $violations;
             }
         }
 
-        $this->familyVariantSaver->saveAll($validfamilyVariants);
+        $this->familyVariantSaver->saveAll($validFamilyVariants);
 
         if (!empty($allViolations)) {
             $errorMessage = $this->getErrorMessage($allViolations);

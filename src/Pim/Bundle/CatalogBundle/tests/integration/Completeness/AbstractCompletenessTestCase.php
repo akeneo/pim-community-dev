@@ -159,12 +159,13 @@ abstract class AbstractCompletenessTestCase extends TestCase
     {
         $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($channelCode);
         $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($attributeCode);
-
         $requirement = $this->get('pim_catalog.factory.attribute_requirement')
             ->createAttributeRequirement($attribute, $channel, true);
 
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier($familyCode);
-        $family->addAttribute($attribute);
+        if (!$family->hasAttributeCode($attributeCode)) {
+            $family->addAttribute($attribute);
+        }
         $family->addAttributeRequirement($requirement);
         $this->get('pim_catalog.saver.family')->save($family);
 
