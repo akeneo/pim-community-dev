@@ -13,6 +13,7 @@ pim_import_export:
     7: ABANDONADO
     8: DESCONHECIDO
   download_archive:
+    archive: transferir ficheiro gerado | transferir ficheiros gerados
     output: baixar arquivo gerado | baixar arquivos gerados
     input: baixar arquivo de leitura|baixar arquivos de leitura
     invalid: baixar dados inválidos
