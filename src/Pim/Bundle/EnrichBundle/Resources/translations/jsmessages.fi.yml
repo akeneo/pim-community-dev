@@ -1,7 +1,6 @@
 confirmation:
   remove:
     item: Oletko varma että haluat poistaa tämän kohteen?
-    association_type: Oletko varma, että haluat poistaa tämän liitostyypin?
     attribute: Oletko varma, että haluat poistaa tämän määritteen?
     family: Oletko varma, että haluat poistaa tämän ryhmän?
     product: Oletko varma, että haluat poistaa tämän tuotteen?
@@ -32,8 +31,6 @@ pim_datagrid:
 flash:
   item:
     removed: Kohde poistettu
-  association_type:
-    removed: Sidostyyppi poistettu onnistuneesti
   attribute:
     removed: Attribuutin poistaminen onnistui
   attribute_group:
@@ -59,7 +56,6 @@ flash:
 error:
   removing:
     item: Kohdetta ei voi poistaa
-    association_type: Liitostyyppiä ei voi poistaa
     attribute: Attribuuttia ei voi poistaa
     family: Ryhmää ei voi poistaa
     product: Tuotetta ei voi poistaa
@@ -169,7 +165,6 @@ pim_enrich:
           title: Perhe
           none: Ei yhtään
         family_variant:
-          title: Tuotevariaatio
           none: Ei yhtään
         groups:
           title: Ryhmät
@@ -206,6 +201,13 @@ pim_enrich:
       message:
         created: Tuote luotu
       completeness: Valmis
+    product_model:
+      title: tuotteet
+      add_child:
+        cancel: Peruuta
+        confirm: Vahvista
+        fields:
+          code: Koodi
     association_type:
       meta:
         created: Luotu
@@ -214,11 +216,8 @@ pim_enrich:
         updated_by: Päivittäjä
       btn:
         save: Tallenna
-      title: sidoksen tyyppi
       create_popin:
         title: Luo
-      message:
-        created: Sidostyyppi luotu onnistuneesti
     group_type:
       meta:
         created: Luotu
@@ -323,10 +322,6 @@ pim_enrich:
     required: (vaadittu)
     product:
       tab:
-        associations:
-          title: Määritteet
-          info:
-            none_exist: Sidostyyppiä ei ole olemassa.
         attributes:
           title: Attribuutit
           btn:
@@ -378,7 +373,6 @@ pim_enrich:
           title: Ominaisuudet
           general: Yleiset ominaisuudet
           code: Koodi
-          label_translations: Nimikkeiden käännökset
         history:
           title: Historia
     group_type:
@@ -586,7 +580,6 @@ pim_enrich:
             useable_as_grid_filter: Käytettävissä ruudukossa
             validation_regexp: Tavallinen virke
             validation_rule: Kelpoisuussääntö
-            family_variant: Tuotevariaatio
           default_label:
             default_metric_unit: Valitse yksikkö
             group: Valitse attribuuttiryhmä
@@ -824,7 +817,6 @@ page_title:
   pim_enrich_currency_index: Valuutat
   pim_enrich_locale_index: Alueet
   pim_enrich_group_index: Ryhmät
-  pim_enrich_associationtype_index: Määritetyypit
   pim_enrich_grouptype_index: Ryhmätyypit
   pim_enrich_mass_edit_action_choose: Massaedit | Valitse
   pim_enrich_mass_edit_action_configure: Massaedit | Määritä
@@ -856,9 +848,6 @@ batch_jobs:
   csv_attribute_option_export:
     label: Attribuuttien määritteiden vienti CSV-muodossa
     export.label: Attribuuttien määritteiden vienti
-  csv_association_type_export:
-    label: Liitännäistyyppien vienti CSV-muodossa
-    export.label: Liitännäistyyppien vienti
   csv_group_export:
     label: Ryhmän vienti CSV-muodossa
     export.label: Ryhmän vienti
@@ -869,7 +858,6 @@ batch_jobs:
     label: Tuotteiden tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
-    import_associations.label: Liitännäisten tuonti
   csv_category_import:
     label: Kategorioiden tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -883,9 +871,7 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Attribuuttien määritteiden tuonti
   csv_association_type_import:
-    label: Liitännäistyyppien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
-    import.label: Liitännäistyyppien tuonti
   csv_family_import:
     label: Ryhmän tuonti CSV-tiedostona
     validation.label: Tiedostojen tarkistaminen
@@ -911,9 +897,7 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Kategorioiden tuonti
   xlsx_association_type_import:
-    label: Liitännäistyyppien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
-    import.label: Liitännäistyyppien tuonti
   xlsx_attribute_import:
     label: Attribuuttien tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -935,7 +919,6 @@ batch_jobs:
     label: Tuotteiden tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
-    import_associations.label: Liitännäisten tuonti
   xlsx_group_export:
     label: Ryhmävienti XLSX-muodossa
     export.label: Ryhmän vienti
@@ -955,9 +938,6 @@ batch_jobs:
   xlsx_attribute_option_export:
     label: Attribuuttien määritteiden vienti XLSX-muodossa
     export.label: Attribuuttien määritteiden vienti XLSX-muodossa
-  xlsx_association_type_export:
-    label: Liitännäistyyppien vienti XLSX-muodossa
-    export.label: Liitännäistyyppien vienti XLSX-muodossa
   xlsx_channel_import:
     validation.label: Tiedostojen tarkistaminen
   xlsx_locale_import:
@@ -974,7 +954,6 @@ pim_menu:
     settings: Asetukset
     system: Järjestelmä
   item:
-    association_type: Määritetyypit
     attribute: Attribuutit
     attribute_group: Attribuuttiryhmät
     category: Kategoriat

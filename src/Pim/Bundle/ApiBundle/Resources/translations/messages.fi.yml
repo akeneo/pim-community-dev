@@ -12,8 +12,6 @@ pim_api:
       list: Listaa kanavat
     locale.list: Lista lokaatioista
     currency.list: Lista valuutoista
-    association_type:
-      list: Listaa määritetyypit
   acl_group:
     attribute: Attribuutit
     attribute_group: Attribuuttiryhmät
@@ -22,4 +20,3 @@ pim_api:
     channel: Kanavat
     locale: Alueet
     currency: Valuutat
-    association_type: Määritetyypit

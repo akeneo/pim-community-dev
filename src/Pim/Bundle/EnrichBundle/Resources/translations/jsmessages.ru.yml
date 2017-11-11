@@ -206,6 +206,13 @@ pim_enrich:
       message:
         created: Продукт успешно создан
       completeness: Завершено
+    product_model:
+      title: продукты
+      add_child:
+        cancel: Отмена
+        confirm: Подтверждение
+        fields:
+          code: Код
     association_type:
       meta:
         created: Создано
@@ -321,6 +328,8 @@ pim_enrich:
     error_occured: Произошла ошибка во время загрузки страницы
   form:
     required: (требуется)
+    product_model:
+      family_variant: Вариант
     product:
       tab:
         associations:
@@ -586,7 +595,6 @@ pim_enrich:
             useable_as_grid_filter: Используется в сетке
             validation_regexp: Регулярное выражение
             validation_rule: Правило проверки
-            family_variant: Вариант
           default_label:
             default_metric_unit: Выберите единицу измерения
             group: Выберите группу атрибутов

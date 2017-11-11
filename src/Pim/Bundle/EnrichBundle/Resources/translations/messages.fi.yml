@@ -3,7 +3,6 @@ pim_enrich:
     tab:
       attribute.title: Attribuutit
       category.title: Kategoriat
-      association.title: Määritteet
       completeness.title: Valmistumisaste
       history.title: Historia
     no_comparison_locale_available: Muuta lokaatiota ei ole käytettävissä vertailuun
@@ -41,7 +40,6 @@ pim_enrich:
   group:
     axis.help: 'Keskiviiva määrittää määritteet, joiden yli ryhmän tuotteiden tulee vaihdella. Keskiviivat ovat määritteitä joissa on vaihtoehtoja. Niitä ei voi lokalisoida tai scoped. Niitä ei voi muuttaa tuotevariaatioryhmän perustamisen jälkeen.'
     type:
-      VARIANT: Tuotevariaatio
       X_SELL: X-Sell
       ADDITIONAL: Lisää
       RELATED: Liittyvät
@@ -141,7 +139,6 @@ pim_enrich:
       add_attribute: Lisää määrite tuotteeseen
       remove_attribute: Poista määrite tuotteesta
       categories_view: Katso tuotteen kategorioita
-      associations_view: Tarkastele tuotteen määritetyyppejä
       change_family: Vaihda tuoteryhmää
       change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin
@@ -198,16 +195,9 @@ pim_enrich:
       create: Luo ryhmätyyppi
       edit: Editoi ryhmätyyppiä
       remove: Poista ryhmätyyppi
-    association_type:
-      index: Listaa määritetyypit
-      create: Luo määritetyyppi
-      edit: Muokkaa määritetyyppiä
-      remove: Poista määritetyyppi
-      history: Näytä määritetyypin historia
     job_tracker:
       index: Näytä prosessien seuraaja
   acl_group:
-    association_type: Määritetyypit
     attribute: Attribuutit
     attribute_group: Attribuuttiryhmät
     category: Kategoriat
@@ -273,10 +263,6 @@ group:
 group type:
   title: ryhmän tyyppi
   edit: muokkaa ryhmätyyppiä
-association type:
-  title: sidoksen tyyppi
-  create: luo sidostyyppi
-  edit: muokkaa sidostyyppiä
 products: tuotteet
 btn:
   create:
@@ -290,7 +276,6 @@ btn:
     locale: luo lokaatio
     product: luo tuote
     group: luo ryhmä
-    association type: luo sidostyyppi
     group type: luo ryhmätyyppi
     drag_or_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
   edit: muokkaa
@@ -384,10 +369,6 @@ flash:
     updated: Ryhmätyyppi päivitetty onnistuneesti
     removed: Ryhmätyyppi poistettu onnistuneesti
     cant remove used: Ryhmätyyppi on käytössä ja sitä ei voida poistaa
-  association type:
-    created: Sidostyyppi luotu onnistuneesti
-    updated: Sidostyyppi päivitetty onnistuneesti
-    removed: Sidostyyppi poistettu onnistuneesti
   user:
     removed: Käyttäjä poistettu onnistuneesti
   error ocurred: Toiminto epäonnistui. Yritä uudelleen.
@@ -418,8 +399,6 @@ info:
   association type:
     show products: Näytä tuotteet
     show groups: Näytä ryhmät
-    remove from products: Sidostyypin poistaminen poistaa sen myös %count% tuotteelta.
-    none exist: Sidostyyppiä ei ole olemassa.
     create one: Klikkaa tästä luodaksesi sellainen
   attribute:
     auto option sorting: Jos käytössä, vaihtoehdot lajitellaan automaattisesti riippuen niiden alueellisesta otsikosta
@@ -448,7 +427,6 @@ Localizable: Lokalisoitavissa
 Unique value: Yksilöllinen arvo
 Attribute group: Attribuuttiryhmä
 Other: Muu
-Variants behavior when edited: Tuotevariaatioiden käytös kun niitä muokataan
 Edit: Muokkaa
 Remove: Poista
 Delete: Poista
@@ -463,7 +441,6 @@ Default value: Oletusarvo
 Attributetype: Attribuuttityyppi
 Attribute type: Attribuuttityyppi
 Defaultvalue: Oletusarvo
-Variant: Tuotevariaatio
 Smart: Älykäs
 Useable as grid column: Käytettävissä ruudukko-sarakkeena
 Useable as grid filter: Käytettävissä ruudukossa
@@ -557,9 +534,6 @@ pim_title.locale:
 pim_title.group:
   index: "Ryhmät"
   edit: "Ryhmien %group.label% | Muokkaa"
-pim_title.association_type:
-  index: "Määritetyypit"
-  edit: "Määritetyypit %association type.label% | Muokkaa"
 pim_title.group_type:
   index: "Ryhmätyypit"
   edit: "Ryhmätyypit %group type.label% | Muokkaa"
@@ -664,7 +638,6 @@ pane.accordion:
   options: Vaihtoehdot
   group_values: Ryhmän arvot
 popin.create:
-  association_type.title: Luo uusi määritetyyppi
   group.title: Luo uusi ryhmä
   product.title: Luo uusi tuote
   option.title: Luo uusi vaihtoehto

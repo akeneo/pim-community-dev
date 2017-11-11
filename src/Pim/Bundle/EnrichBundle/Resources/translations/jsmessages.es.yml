@@ -145,6 +145,7 @@ pim_enrich:
       locale: Local
       category: Categoría
       create: Crear
+      subTitle: Crear un producto
       filters: Filtros
       common: Común
       btn:
@@ -217,6 +218,13 @@ pim_enrich:
       message:
         created: Producto creado éxitosamente
       completeness: Completo
+    product_model:
+      title: productos
+      add_child:
+        cancel: Cancelar
+        confirm: Confirmar
+        fields:
+          code: Código
     association_type:
       info:
         deletion_successful: Tipo de asociación eliminado correctamente.
@@ -360,6 +368,8 @@ pim_enrich:
     error_occured: Un error ha ocurrido durante la carga de esta página
   form:
     required: (obligatorio)
+    product_model:
+      family_variant: Variante
     product:
       tab:
         associations:
@@ -641,7 +651,6 @@ pim_enrich:
             useable_as_grid_filter: Se puede usar en la grilla
             validation_regexp: Expresión regular
             validation_rule: Regla de validación
-            family_variant: Variante
           default_label:
             default_metric_unit: Elegir una unidad
             group: Elija el grupo de atributos
@@ -686,6 +695,7 @@ pim_enrich:
             title: Selección de atributo
         attributes_selector:
           attribute_group: Grupos de atributos
+          attributes: "Buscar en {{ itemsCount }} atributos"
           selected: "Atributos seleccionados"
           clear: Restablecer
           all_group: Todos los grupos

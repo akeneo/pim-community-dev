@@ -13,6 +13,7 @@ pim_dashboard:
         export: Export
         mass_edit: Edition en masse
         quick_export: Export rapide
+        compute_product_models_descendants: Mise à jour des descendants des modèles de produit
     completeness:
       load_more: 'Voir plus...'
     header:

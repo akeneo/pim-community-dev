@@ -206,6 +206,13 @@ pim_enrich:
       message:
         created: Proizvod je uspješno kreiran
       completeness: Kompletan
+    product_model:
+      title: proizvodi
+      add_child:
+        cancel: Poništi
+        confirm: Potvrdi
+        fields:
+          code: Kod
     association_type:
       meta:
         created: Kreirano
@@ -326,6 +333,8 @@ pim_enrich:
     error_occured: Došlo je do pogreške tijekom učitavanja stranice
   form:
     required: (obavezno)
+    product_model:
+      family_variant: Varijanta
     product:
       tab:
         associations:
@@ -591,7 +600,6 @@ pim_enrich:
             useable_as_grid_filter: Može se koristiti u prikazu
             validation_regexp: Regularni izraz
             validation_rule: Pravilo provjere valjanosti
-            family_variant: Varijanta
           default_label:
             default_metric_unit: Odaberi jedinicu
             group: Odaberi grupu atributa
