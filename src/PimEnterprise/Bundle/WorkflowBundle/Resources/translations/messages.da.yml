@@ -109,6 +109,10 @@ pim_menu:
 pim_title:
   published_product:
     index: Offentliggjorte produkter
+    view: Offentliggjort produkt %product.label% | Se
+  product:
+    dispatch: "Produkt %product.label%"
+    show: "Produkt %product.label% | Vis"
   proposal:
     index: Forslag
 btn.editworkingcopy: Rediger arbejdskopi
