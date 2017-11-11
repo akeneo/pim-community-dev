@@ -39,7 +39,6 @@ pim_enrich:
       property.title: Ominaisuudet
       permission.title: Käyttöoikeudet
   group:
-    axis.help: 'Keskiviiva määrittää määritteet, joiden yli ryhmän tuotteiden tulee vaihdella. Keskiviivat ovat määritteitä joissa on vaihtoehtoja. Niitä ei voi lokalisoida tai scoped. Niitä ei voi muuttaa tuotevariaatioryhmän perustamisen jälkeen.'
     type:
       VARIANT: Tuotevariaatio
       X_SELL: X-Sell
@@ -100,7 +99,6 @@ pim_enrich:
       launched_flash: Massatoiminto "Muuta tilaa" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     edit-common-attributes:
       label: Muokkaa attribuutteja
-      description: Valitun tuotteen attribuutit muokataan seuraavalla valitun lokaation datalla.
       empty: Ole hyvä ja valitse attribuutit joita haluat muokata
       success_flash: Työ "Tuotteiden tilan päivitys" on tällä hetkellä käynnissä
       launched_flash: Massatoiminto "Muokkaa yleisiä attribuutteja" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
@@ -141,8 +139,6 @@ pim_enrich:
       already_in_variant_group_or_not_valid: Et voi ryhmitellä tuotetta koska se on jo jossain tuotevariaatioryhmässä tai sillä ei ole ryhmäakselia
       no_variant_group: Ei tuotevariaatioryhmää toistaiseksi, aloita luomalla varianttiryhmä.
       no_valid_variant_group: Mikään tuotevariaatioryhmä ei jaa attribuutteja valittujen tuotteiden kanssa.
-      some_variant_groups_are_skipped:
-        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
       launched_flash: Massatoiminto "Lisää tuotevariaatioryhmään" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     set-attribute-requirements:
       label: Aseta attribuuttivaatimukset
@@ -175,7 +171,6 @@ pim_enrich:
       change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin
       add_to_variant_group: Lisää tuote tuotevariaatioryhmään
-      mass_edit: Tuotteen massaedit-toiminnot
       comment: Kommentoi tuotteita
       download: 'Lataa tuote PDF:nä'
       history: Näytä tuotehistoria
@@ -448,8 +443,6 @@ flash:
     updated: Ryhmä päivitetty onnistuneesti
     removed: Ryhmän poistaminen onnistui
   variant group:
-    created: Tuotevariaatioryhmä poistettu onnistuneesti
-    updated: Tuotevariaatioryhmä poistettu onnistuneesti
     removed: Tuotevariaatioryhmä poistettiin onnistuneesti
     attributes_added: Attribuuttien lisääminen onnistui tuotevariaatioryhmään
     attribute_removed: Attribuutti poistettiin onnistuneesti tuotevariaatioryhmästä
@@ -518,7 +511,6 @@ Required: Vaadittu
 Unique: Ainutlaatuinen
 Not required: Ei vaadittu
 Translatable: Käännettävissä
-Scopable: Scopable
 Localizable: Lokalisoitavissa
 Unique value: Yksilöllinen arvo
 Attribute group: Attribuuttiryhmä
@@ -546,7 +538,6 @@ Family: Perhe
 Available locales: Saatavilla olevat alueet
 Locale specific: Aluespesifi
 default: Oletusarvo
-Axis: Akseli
 Add attributes: Lisää attribuutteja
 Translate from: Käännä kielestä
 switch_on: "Kyllä"
@@ -570,7 +561,6 @@ Choose a unit: Valitse yksikkö
 No matches found: Vastaavuuksia ei löydy
 Category tree: Kategoriahierarkia
 Completeness: Valmistumisaste
-Attribute used as label: Attribuutti käytössä otsikkona
 Global: Globaali
 Channel: Kanava
 Expand all channels: Laajenna kaikki kanavat
@@ -600,7 +590,6 @@ None: Ei yhtään
 E-mail: Sähköposti
 URL: URL-osoite
 Regular expression: Tavallinen virke
-Minimum input length: Input vähimmäispituus
 Default: Oletusarvo
 Attributes: Attribuutit
 Title: Nimike
@@ -642,12 +631,6 @@ pim_title.association_type:
 pim_title.group_type:
   index: "Ryhmätyypit"
   edit: "Ryhmätyypit %group type.label% | Muokkaa"
-pim_title.mass_edit_product_action:
-  choose: "Massaedit | Valitse"
-  configure: "Massaedit | Määritä"
-pim_title.mass_edit_family_action:
-  choose: "Massaedit | Valitse"
-  configure: "Massaedit | Määritä"
 pim_title.job_tracker:
   index: Prosessiseurain
   show: "Prosessin tracker | Näytä työ"
@@ -829,10 +812,6 @@ oro.locale:
 Selected products successfully deleted: Valitut tuotteet poistettiin
 pim_mass_edit:
   notification:
-    mass_edit:
-      error: <strong>%label%</strong> massaeditointi päättyi
-      warning: <strong>%label%</strong>n massaeditointi päättyi, joitakin varoituksia
-      success: <strong>%label%</strong> massaeditointi päättyi
     quick_export:
       error: <strong>%label%</strong>n pikavienti epäonnistui
       warning: <strong>%label%</strong>n pikavienti päättyi, joitakin varoituksia

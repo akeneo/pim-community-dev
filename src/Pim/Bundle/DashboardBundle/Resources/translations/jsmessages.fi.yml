@@ -10,7 +10,6 @@ pim_dashboard:
       job_type:
         import: Tuonti
         export: Vienti
-        mass_edit: Massaeditori
         quick_export: Nopea vienti
     completeness:
       load_more: 'Lataa lisää...'

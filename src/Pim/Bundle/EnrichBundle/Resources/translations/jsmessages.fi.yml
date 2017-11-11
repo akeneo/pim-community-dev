@@ -1,7 +1,6 @@
 confirmation:
   remove:
     item: Oletko varma että haluat poistaa tämän kohteen?
-    association_type: Oletko varma, että haluat poistaa tämän liitostyypin?
     attribute: Oletko varma, että haluat poistaa tämän määritteen?
     family: Oletko varma, että haluat poistaa tämän ryhmän?
     product: Oletko varma, että haluat poistaa tämän tuotteen?
@@ -32,8 +31,6 @@ pim_datagrid:
 flash:
   item:
     removed: Kohde poistettu
-  association_type:
-    removed: Sidostyyppi poistettu onnistuneesti
   attribute:
     removed: Attribuutin poistaminen onnistui
   family:
@@ -59,7 +56,6 @@ flash:
 error:
   removing:
     item: Kohdetta ei voi poistaa
-    association_type: Liitostyyppiä ei voi poistaa
     attribute: Attribuuttia ei voi poistaa
     family: Ryhmää ei voi poistaa
     product: Tuotetta ei voi poistaa
@@ -143,7 +139,6 @@ pim_enrich:
       history:
         version: Versio
         author: Tekijä
-        logged_at: Kirjautunut
         more: Lisää
         less: Vähemmän
         from: Lähettäjä
@@ -293,9 +288,7 @@ pim_enrich:
     product:
       tab:
         associations:
-          title: Määritteet
           info:
-            none_exist: Sidostyyppiä ei ole olemassa.
             show_products: Näytä tuotteet
             show_groups: Näytä ryhmät
             number_of_associations: "{{ productCount }} ja {{ groupCount }} ryhmistä"
@@ -483,7 +476,6 @@ pim_enrich:
             help: Kategoriasarakkeen nimi
           escape:
             title: Koodinvaihto
-            help: Yhtä merkkiä käytetään kentän "poistu" määrittämiseen
           family_column:
             title: Perhesarake
             help: Perhesarakkeen nimi
