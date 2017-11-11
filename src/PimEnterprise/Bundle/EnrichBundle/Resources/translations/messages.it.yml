@@ -38,7 +38,7 @@ pim_enrich:
     product:
       not_editable: Non hai il permesso di modificare i prodotti "%identifiers%".
       page_title: Articoli
-      page_subtitle: Modifica di massa (1 articolo) | Modifica di massa (%count% articoli)
+      page_subtitle: Modifica di massa (1 prodotto) | Modifica di massa (%count% prodotti)
       title: Scegli l'operazione
       subtitle: Scegliere l'operazione che si desidera eseguire sull'articolo selezionato|Scegliere l'operazione che si desidera eseguire sui %count% articoli selezionati
       confirm: Stai per aggiornare un articolo con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% articoli con le seguenti informazioni, si prega di confermare.
