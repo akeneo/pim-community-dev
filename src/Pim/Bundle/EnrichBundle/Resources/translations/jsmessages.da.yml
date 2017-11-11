@@ -24,6 +24,7 @@ pim_datagrid:
   mass_action:
     delete:
       label: Slet
+      confirm_content: Er du sikker på du vil slette de valgte produkter?
       success: Udvalgte produkter blev slettet.
       error: Der opstod en fejl under forsøget på at slette de valgte produkter, prøv venligst igen.
   view_selector:
@@ -148,11 +149,15 @@ pim_enrich:
     product:
       navigation: Produkt navigation
       infos: Produkt info
+      index_title: "[] -Inf, 1] {{ count }} resultat |] 1, Inf [{{ count }} resultater"
       title: produkt
       locale: Landestandard
       category: Kategori
       create: Opret
+      subTitle: Opret produkt
+      modalTitle: Vælg en handling
       filters: Filtre
+      selected: udvalgte resultater
       common: Almindelig
       btn:
         enabled: Aktiveret
@@ -229,7 +234,12 @@ pim_enrich:
         item_limit: Kun de første 1000 poster vist i dette sekventiel redigere ({{ count }} udvalgte)
         empty: Dit valg er tom, skal du ændre dine søgekriterier
     product_model:
+      create_popin:
+        type: Produktmodel
+        title: Oprette en produktmodel
+        content: En produktmodel samler variant produkter og letter berigelse af deres fælles egenskaber.
       info:
+        create_successful: Produktmodellen opdateret.
         update_successful: Produktmodellen opdateret. Fuldstændigheden af dens variant produkter vil blive genberegnet.
         update_failed: Produktmodellen kunne ikke opdateres.
         field_not_ready: 'Produktmodellen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
@@ -314,10 +324,18 @@ pim_enrich:
         created: Familien blev oprettet
       variant:
         axis.label: Variant akse
+        level_1.label: Variant attributter niveau 1
+        level_2.label: Variant attributter niveau to
+        add_variant: Tilføje variant
+        create_label: Opret en ny familie variant
+        create_description: I en familie variant, kan du definere en struktur for produkter med varianter. Vælge antallet af administrerede variant niveauer, de attributter, der bruges som variant akser for hvert niveau, og derefter definere hvordan attributterne er fordelt.
         create: Opret
         cancel: Annuller
         code: Kode
         label: Etiket
+        levels: Variant niveauer
+        axis_level: Variant akse niveau
+        required: Påkrævet
     attribute_option:
       code: Kode
       label: Etiket
@@ -388,6 +406,7 @@ pim_enrich:
     leave: Er du sikker på du vil forlade denne side?
     discard_changes: Du vil miste ændringer til {{ entity }}, hvis du forlader siden.
     delete_item: Bekræft sletning
+    remove_item: Bekræft fjernelse af
     remove: Fjern
     delete:
       attribute: Er du sikker på du vil slette denne attribut fra produktet?
@@ -404,6 +423,7 @@ pim_enrich:
   form:
     required: (Påkrævet)
     product_model:
+      choose_variant: Vælg en variant
       complete_variant_product: variant produkt
       complete_variant_products: variant produkter
     product:
@@ -522,6 +542,10 @@ pim_enrich:
             attributes_groups_selected: '{{ itemsCount }} gruppe(r) valgt'
           not_required_label: Ikke påkrævet
           required_label: Påkrævet
+        variant:
+          title: Varianter
+          flash:
+            family_variant_created: Familie variant blev oprettet
         history:
           title: Historik
     attribute_option:
@@ -1020,26 +1044,37 @@ page_title:
   oro_default: Kontrolpanel
   pim_enrich_attributegroup_index: Attributgrupper
   pim_enrich_attributegroup_create: Attribut grupper | Oprette
+  pim_enrich_attributegroup_edit: Attribut grupper {{ group.label }} | Rediger
   pim_enrich_categorytree_index: Kategoritræstrukturen
   pim_enrich_categorytree_create: Kategori træer | Oprette
+  pim_enrich_categorytree_edit: Kategori træ {{ category.label }} | Rediger
   pim_enrich_categorytree_create_tree: Kategori træer | Oprette
   pim_enrich_attribute_index: Egenskaber
   pim_enrich_attribute_create: Attributter | Oprette
+  pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Rediger
   pim_enrich_product_index: Produkter
+  pim_enrich_product_edit: Produkt {{ product.label }} | Rediger
+  pim_enrich_product_model_edit: Produkt model {{ product.label }} | Rediger
   pim_enrich_family_index: Familier
+  pim_enrich_family_edit: Familie {{ family.label }} | Rediger
   pim_enrich_channel_index: Kanaler
   pim_enrich_channel_create: Kanaler | Oprette
+  pim_enrich_channel_edit: Kanal {{ channel.label }} | Rediger
   pim_enrich_currency_index: Valutaer
   pim_enrich_locale_index: Landestandarder
   pim_enrich_group_index: Grupper
+  pim_enrich_group_edit: Gruppe {{ group.label }} | Rediger
   pim_enrich_associationtype_index: Sammenhængstyper
+  pim_enrich_associationtype_edit: Sammenhængstype {{ association type.label }} | Rediger
   pim_enrich_grouptype_index: Gruppetyper
+  pim_enrich_grouptype_edit: Gruppe type {{ group type.label }} | Rediger
   pim_enrich_mass_edit_action_choose: Masse Rediger | Vælg
   pim_enrich_mass_edit_action_configure: Masse Rediger | Konfigurere
   pim_enrich_mass_edit_action_perform: Masse Rediger | Udføre
   pim_enrich_job_tracker_index: Process overvågning
   pim_enrich_job_tracker_show: Process overvågning | Vis job
   pim_enrich_api_connection_index: API-forbindelser
+  pim_enrich_api_connection_create: API forbindelser | Oprette
   pim_analytics_system_info_index: Systemoplysninger
 batch_jobs:
   add_product_value:

@@ -16,6 +16,9 @@ pim_api:
     family:
       edit: Opret og Opdater familier
       list: Liste over familier
+    family_variant:
+      edit: Opret og Opdater familie varianter
+      list: Vis familie varianter
     channel:
       edit: Opret og Opdater familier
       list: Liste over kanaler
@@ -31,6 +34,7 @@ pim_api:
     attribute_group: Attributgrupper
     category: Kategorier
     family: Familier
+    family_variant: Familie varianter
     channel: Kanaler
     locale: Landestandarder
     currency: Valutaer

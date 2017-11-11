@@ -149,6 +149,7 @@ pim_enrich:
       locale: Gebietsschema
       category: Kategorie
       create: Anlegen
+      subTitle: Produkt anlegen
       filters: Filter
       btn:
         enabled: Aktiviert
