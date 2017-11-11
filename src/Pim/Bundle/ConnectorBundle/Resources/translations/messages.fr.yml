@@ -88,12 +88,12 @@ pim_connector:
         help: Nom de la colonne qui contient la famille du produit
       groupsColumn:
         label: Colonne des groupes
-        help: Nom de la colonne qui contient les groupes du produit
+        help: Intitulé de la colonne contenant les groupes de produits
       filePath:
         label: Fichier
         help: Le fichier CSV à importer
       uploadAllowed:
-        label: Autoriser l'envoi de fichier sur le serveur
+        label: Autoriser l'envoi de fichiers sur le serveur
         help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
       delimiter:
         label: Délimiteur
@@ -134,12 +134,12 @@ pim_connector:
         help: Nom de la colonne qui contient la famille du produit
       groupsColumn:
         label: Colonne des groupes
-        help: Nom de la colonne qui contient les groupes du produit
+        help: Intitulé de la colonne contenant les groupes de produits
       filePath:
         label: Fichier
         help: Le fichier XLSX à importer
       uploadAllowed:
-        label: Autoriser l'envoi de fichier sur le serveur
+        label: Autoriser l'envoi de fichiers sur le serveur
         help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
       circularRefsChecked:
         label: Vérifiez les références circulaires
@@ -164,7 +164,7 @@ pim_connector:
         label: Fichier
         help: Le fichier YAML à importer
       uploadAllowed:
-        label: Autoriser l'envoi de fichier sur le serveur
+        label: Autoriser l'envoi de fichiers sur le serveur
         help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
 job_execution.summary:
   read: lu(s)
@@ -253,8 +253,8 @@ batch_jobs:
     label: Export des devises en CSV
     export.label: Export des devises
   csv_group_type_export:
-    label: Export des types de groupes en CSV
-    export.label: Export des types de groupes
+    label: Export des types de groupe en CSV
+    export.label: Export des types de groupe
   csv_channel_import:
     label: Import des canaux en CSV
     validation.label: Validation du fichier
@@ -272,9 +272,9 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des devises
   csv_group_type_import:
-    label: Import des types de groupes en CSV
+    label: Import des types de groupe en CSV
     validation.label: Validation du fichier
-    import.label: Import des types de groupes
+    import.label: Import des types de groupe
   xlsx_category_import:
     label: Import des catégories en XLSX
     validation.label: Validation du fichier
@@ -345,8 +345,8 @@ batch_jobs:
     label: Export des devises en XLSX
     export.label: Export des devises
   xlsx_group_type_export:
-    label: Export des types de groupes en XLSX
-    export.label: Export des types de groupes
+    label: Export des types de groupe en XLSX
+    export.label: Export des types de groupe
   xlsx_channel_import:
     label: Import des canaux en XLSX
     validation.label: Validation du fichier
@@ -364,6 +364,6 @@ batch_jobs:
     validation.label: Validation du fichier
     import.label: Import des devises
   xlsx_group_type_import:
-    label: Import des types de groupes en XLSX
+    label: Import des types de groupe en XLSX
     validation.label: Validation du fichier
-    import.label: Import des types de groupes
+    import.label: Import des types de groupe
