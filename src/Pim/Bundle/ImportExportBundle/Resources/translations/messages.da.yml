@@ -36,9 +36,13 @@ pim_import_export:
       history.title: Historik
       job_content.title: Indhold
 pim_title.export_profile.index: Eksporter profil håndtering
+pim_title.export_profile.edit: Eksporter profiler %job.label% | Rediger
+pim_title.export_profile.show: Eksporter profiler %job.label% | Vis
 pim_title.export_execution.index: Eksporter aktivitets historik
 pim_title.export_execution.show: Eksporter aktiviteter | Detaljer
 pim_title.import_profile.index: Importer profiler håndtering
+pim_title.import_profile.edit: Importer profiler %job.label% | Rediger
+pim_title.import_profile.show: Import profiler %job.label% | Vis
 pim_title.import_execution.index: Importer aktivitets historik
 pim_title.import_execution.show: Importer aktiviter | Detaljer
 export profile:

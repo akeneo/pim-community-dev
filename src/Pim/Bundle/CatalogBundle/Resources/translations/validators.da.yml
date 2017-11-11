@@ -39,9 +39,23 @@ pim_catalog:
     cannot_have_parent: 'Produkt model "%product_model%" kan ikke have et overordnet produkt'
     attribute_does_not_belong_to_family: 'Attributten "%attribute%" tilhører ikke familien "%family%"'
     variant_product_invalid_family: 'Produktfamilien variant skal være den samme end dens overordnede'
+    not_null_family: Familien kan ikke være "null", fordi produktet med id "%sku%" er et variant produkt.
     variant_product_has_parent: 'Produkt varianten "%variant_product%" skal have en forælder'
     invalid_variant_product_parent: 'Produkt varianten "%variant_product%" kan ikke have produkt model "%product_model%" som forælder, (denne produktmodel kan kun have andre produktmodeller som børn)'
     modified_variant_axis_value: 'Variant akse "%variant_axis%" kan ikke ændres, "%provided_value%" givet'
+    family_variant_attributes_unique: Attributter skal være entydige, "%attributes%" benyttes flere gange i variant attribut sæt
+    family_variant_axes_unique: Variant akser skal være entydige, "%attributes%" benyttes flere gange i variant attribut sæt
+    family_variant_axes_attribute_type_unique: Variant akser "%axis%" kan ikke være entydigt eller et id
+    family_variant_axes_attribute_type: Variant akser "%axis%" skal være en boolesk værdi, en simpel select, en simpel referencedata eller en metrisk
+    family_variant_axes_wrong_type: Variant akser "%axis%" kan ikke være oversættelige, ikke scopable og ikke landestandard specifikke
+    family_variant_axes_number_of_axes: 'En variant attributtet kan ikke have mere end %max_axes_number% attributter'
+    family_variant_no_axis: Der bør være mindst én attribut defineret som aksen for attributten indstillet til niveau "%level%"
+    family_variant_axis_level: Attributten "%axis%" skal være angivet som attribut i det samme variant attribut sæt der var sat som akse
+    family_variant_has_family_attribute: '"%attribute%" attribut kan ikke føjes til "%family_variant%" familie variant, da det ikke er en attribut af familien "%family%"'
+    family_variant_level_do_not_exist: Der er ingen variant attribut angivet til niveau "%level%"
+    family_variant_no_level: Der bør være mindst ét niveau der er defineret i den familie variant
+    family_variant_maximum_number_of_level: Familie variant kan ikke have mere end "%level%"
+    family_variant_unique_attributes_in_last_level: Unikke attributten "%attribute%" skal angives på niveauet product
     product_identifier: Disse identifikatorer "%s" findes ikke.
     0: Der opstod en uventet fejl!
     100: Ikke-forventet værdi
