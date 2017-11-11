@@ -25,6 +25,7 @@ pimee_product_asset:
       download: Hent
       generate_from_reference: Generere via reference
       reset_variations: Nulstil variationerne
+    confirmation.remove: Er du sikker at du ønsker at fjerne aktivet "%asset%"?
     confirmation.subTitle: Aktiver
     grid:
       edit: Redigere egenskaberne for aktiverne
