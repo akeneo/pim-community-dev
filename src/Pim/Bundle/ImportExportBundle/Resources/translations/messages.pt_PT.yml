@@ -6,6 +6,7 @@ pim_import_export:
   status:
     - Pronto
   download_archive:
+    archive: transferir ficheiro gerado | transferir ficheiros gerados
     output: transferir ficheiro gerado | transferir ficheiros gerados
     input: transferir ficheiro lido| transferir ficheiros lidos
     invalid_xlsx: transferir dados inválidos
