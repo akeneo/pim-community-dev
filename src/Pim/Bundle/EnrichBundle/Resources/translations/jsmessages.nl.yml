@@ -204,6 +204,12 @@ pim_enrich:
       message:
         created: Product succesvol aangemaakt
       completeness: Voltooien
+    product_model:
+      title: producten
+      add_child:
+        cancel: Annuleren
+        fields:
+          code: Code
     association_type:
       info:
         deletion_successful: Associatietype succesvol verwijderd.
@@ -337,6 +343,8 @@ pim_enrich:
     error_occured: Er deed zich een four voor tijdens het laden van de pagina
   form:
     required: (vereist)
+    product_model:
+      family_variant: Variant
     product:
       tab:
         associations:
@@ -594,7 +602,6 @@ pim_enrich:
             unique: Unieke waarde
             validation_regexp: Reguliere expressie
             validation_rule: Validatieregel
-            family_variant: Variant
           default_label:
             default_metric_unit: Kies een eenheid
             group: Kies een attribuutgroep

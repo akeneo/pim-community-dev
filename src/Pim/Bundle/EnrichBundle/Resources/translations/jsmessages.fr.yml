@@ -154,6 +154,7 @@ pim_enrich:
       locale: Locale
       category: Catégorie
       create: Créer
+      subTitle: Créer un produit
       modalTitle: Sélectionnez une action
       filters: Filtres
       selected: résultats sélectionnés
@@ -245,6 +246,15 @@ pim_enrich:
       read_only_parent_attribute_from_common: Cet attribut peut être mis à jour sur les attributs communs.
       read_only_parent_attribute_from_model: "Cet attribut peut être mis à jour sur les attributs par {{ axes }}"
       variant_axis: Axe de variante
+      title: Produits
+      add_child:
+        create: Créer
+        cancel: Annuler
+        confirm: Confirmer
+        create_label: "Créer un nouvel axe avec {{ axes }}"
+        fields:
+          required_label: (axe de variante)
+          code: Code
     association_type:
       info:
         deletion_successful: Le type d'association a été créé avec succès.
@@ -425,6 +435,10 @@ pim_enrich:
       choose_variant: Choisissez une variante
       complete_variant_product: produit variant
       complete_variant_products: produits variants
+      family_variant: Variante
+      flash:
+        product_model_added: Le modèle de produit a été correctement ajouté au modèle de produit
+        variant_product_added: Le produit variant a été correctement ajouté au modèle de produit
     product:
       tab:
         associations:
@@ -735,7 +749,6 @@ pim_enrich:
             validation_regexp: Expression régulière
             validation_rule: Règle de validation
             wysiwyg_enabled: Éditeur de texte enrichi activé
-            family_variant: Variante
           default_label:
             default_metric_unit: Choisir une unité
             group: Choisir le groupe d'attributs
@@ -1096,18 +1109,22 @@ batch_jobs:
       label: Configurer les exigences d'attributs
   csv_product_quick_export:
     quick_export.label: Export rapide de produits en CSV
+    quick_export_product_model.label: Export rapide de modèles de produit en CSV
     perform:
       label: Export rapide de produits en CSV
   csv_product_grid_context_quick_export:
     quick_export.label: Export rapide de la grille de produits en CSV
+    quick_export_product_model.label: Export rapide de la grille de modèles de produit en CSV
     perform:
       label: Export rapide de la grille de produits en CSV
   xlsx_product_quick_export:
     quick_export.label: Export rapide de produits en XLSX
+    quick_export_product_model.label: Export rapide de modèles de produit en XLSX
     perform:
       label: Export rapide de produits en XLSX
   xlsx_product_grid_context_quick_export:
     quick_export.label: Export rapide de la grille de produits en XLSX
+    quick_export_product_model.label: Export rapide de la grille de modèles de produit en XLSX
     perform:
       label: Export rapide de la grille de produits en XLSX
   csv_product_export:

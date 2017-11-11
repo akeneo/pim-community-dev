@@ -206,6 +206,13 @@ pim_enrich:
       message:
         created: Producte creat correctament
       completeness: Complet
+    product_model:
+      title: productes
+      add_child:
+        cancel: Cancelar
+        confirm: Confirmar
+        fields:
+          code: Codi
     association_type:
       meta:
         created: Creat
@@ -326,6 +333,8 @@ pim_enrich:
     error_occured: S'ha produït un error durant la càrrega de la pàgina
   form:
     required: (obligatori)
+    product_model:
+      family_variant: Variant
     product:
       tab:
         associations:
@@ -591,7 +600,6 @@ pim_enrich:
             useable_as_grid_filter: Utilitzable en quadrícula
             validation_regexp: Expressió regular
             validation_rule: Regla de validació
-            family_variant: Variant
           default_label:
             default_metric_unit: Trieu una unitat
             group: Trieu el grup de l'atribut
