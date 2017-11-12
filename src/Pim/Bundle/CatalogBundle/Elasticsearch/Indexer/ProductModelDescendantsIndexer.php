@@ -76,8 +76,8 @@ class ProductModelDescendantsIndexer implements
             );
         }
 
-        $this->indexProductModelChildren($object->getProductModels());
-        $this->indexProductModelChildren($object->getProducts());
+        $this->indexProductModelChildren($object->getProductModels(), $options);
+        $this->indexProductModelChildren($object->getProducts(), $options);
     }
 
     /**
