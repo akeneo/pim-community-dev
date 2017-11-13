@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - PIM-6489: fix the sort of attributes in attribute groups
+- PIM-6997: fixes product model indexing CLI command slowness
 
 ## Improvements
 

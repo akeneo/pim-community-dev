@@ -90,7 +90,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $rootProductModelChildren->first()->willReturn($childProductModel);
 
         $rootProductModelChildren->toArray()->willReturn([$childProductModel]);
-        $productModelIndexer->indexAll([$childProductModel]);
+        $productModelIndexer->indexAll([$childProductModel], [])->shouldBeCalled();
 
         $rootProductModelChildren->getIterator()->willReturn($rootProductModelChildrenIterator);
         $rootProductModelChildrenIterator->rewind()->shouldBeCalled();
@@ -164,6 +164,46 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productModelIndexer->indexAll(Argument::cetera())->shouldNotBeCalled();
 
         $this->indexAll([$productModel1, $productModel2]);
+    }
+
+    function it_indexes_a_product_model_and_its_descendants_products_with_options(
+        $productIndexer,
+        ProductModelInterface $productModel,
+        VariantProductInterface $productChild,
+        ArrayCollection $children,
+        \ArrayIterator $childrenIterator
+    ) {
+        $children->isEmpty()->willReturn(false);
+        $children->first()->willReturn($productChild);
+        $children->toArray()->willReturn([$productChild]);
+        $children->getIterator()->willReturn($childrenIterator);
+
+        $productModel->getProductModels()->willReturn(new ArrayCollection());
+        $productModel->getProducts()->willReturn($children);
+
+        $productIndexer->indexAll([$productChild], ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2'])->shouldBeCalled();
+
+        $this->index($productModel, ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2']);
+    }
+
+    function it_indexes_a_product_model_and_its_descendants_product_models_with_options(
+        $productModelIndexer,
+        ProductModelInterface $productModel,
+        ProductModelInterface $productModelChild,
+        ArrayCollection $children,
+        \ArrayIterator $childrenIterator
+    ) {
+        $children->isEmpty()->willReturn(false);
+        $children->first()->willReturn($productModelChild);
+        $children->toArray()->willReturn([$productModelChild]);
+        $children->getIterator()->willReturn($childrenIterator);
+
+        $productModel->getProductModels()->willReturn($children);
+        $productModel->getProducts()->willReturn(new ArrayCollection());
+
+        $productModelIndexer->indexAll([$productModelChild], ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2'])->shouldBeCalled();
+
+        $this->index($productModel, ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2']);
     }
 
     function it_does_not_bulk_index_non_product_model_objects(
