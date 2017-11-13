@@ -4,7 +4,7 @@ namespace Context\Page\Batch;
 
 use Behat\Mink\Session;
 use Context\Page\Base\ProductEditForm;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactoryInterface;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Factory;
 
 /**
  * Edit common attributes page
@@ -18,9 +18,9 @@ class EditCommonAttributes extends ProductEditForm
     protected $currentStep;
 
     /**
-     * @param Session              $session
-     * @param PageFactoryInterface $pageFactory
-     * @param array                $parameters
+     * @param Session $session
+     * @param Factory $pageFactory
+     * @param array   $parameters
      */
     public function __construct($session, $pageFactory, $parameters = [])
     {
