@@ -14,6 +14,7 @@
 - PIM-6460: Preventing from deleting attributes used as axis from the family and remove the deleted attributes from the family variants.
 - PIM-6585: Add help center link in menu
 - PIM-6833: Aligns technical requirements with documentation
+- PIM-6992: Keep category panel open
 
 # 2.0.6 (2017-11-03)
 

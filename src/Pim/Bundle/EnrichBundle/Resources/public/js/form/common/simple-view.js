@@ -79,7 +79,7 @@ define([
             const width = thirdColumnContent.outerWidth() || 300;
 
             if (null !== thirdColumn) {
-                thirdColumn.css({marginLeft: -width, marginRight: width });
+                thirdColumn.css({marginLeft: -width});
                 thirdColumn.toggleClass('AknDefault-thirdColumnContainer--open');
             }
         }
