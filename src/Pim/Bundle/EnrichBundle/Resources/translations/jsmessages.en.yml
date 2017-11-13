@@ -1360,7 +1360,9 @@ pim_menu:
         exports: Exports
         settings: Settings
         system: System
-
+        help:
+            title: Help
+            helper: Akeneo Help center
     item:
         association_type: Association types
         attribute: Attributes

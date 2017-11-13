@@ -892,6 +892,7 @@ config:
         pim/menu/menu:                                       pimenrich/js/menu/menu
         pim/menu/tab:                                        pimenrich/js/menu/tab
         pim/menu/item:                                       pimenrich/js/menu/item
+        pim/menu/help:                                       pimenrich/js/menu/help
         pim/menu/navigation-block:                           pimenrich/js/menu/navigation-block
         pim/menu/resizable:                                  pimenrich/js/menu/resizable
         pim/menu/user-navigation:                            pimenrich/js/menu/user-navigation
@@ -1115,6 +1116,7 @@ config:
         pim/template/mass-edit/family/set-requirements:        pimenrich/templates/mass-edit/family/set-requirements.html
 
         pim/template/menu/tab:                               pimenrich/templates/menu/tab.html
+        pim/template/menu/help:                              pimenrich/templates/menu/help.html
         pim/template/menu/menu:                              pimenrich/templates/menu/menu.html
         pim/template/menu/item:                              pimenrich/templates/menu/item.html
         pim/template/menu/user-navigation:                   pimenrich/templates/menu/user-navigation.html
