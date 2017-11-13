@@ -27,10 +27,10 @@ extensions:
         targetZone: fields
         position: 20
         config:
-            identifier: family
+            fieldName: family
             required: true
-            fieldLabel: pim_enrich.entity.product.meta.family.title
-            loadUrl: pim_enrich_family_index_get_variants
+            label: pim_enrich.entity.product.meta.family.title
+            choiceUrl: pim_enrich_family_index_get_variants
 
     pim-product-model-create-variant:
         module: pim/product-model/form/creation/variant

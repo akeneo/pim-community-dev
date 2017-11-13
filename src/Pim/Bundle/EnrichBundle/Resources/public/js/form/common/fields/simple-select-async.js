@@ -43,7 +43,7 @@ define(
             initialize() {
                 this.choiceUrl = null;
 
-                return BaseField.prototype.initialize.apply(this, arguments);
+                BaseField.prototype.initialize.apply(this, arguments);
             },
 
             /**
@@ -109,15 +109,28 @@ define(
              * @returns {Object}
              */
             select2Results(response) {
+                const more = 20 === Object.keys(response).length;
+
+                // The result is already formatted for select2
                 if (response.results) {
-                    response.more = 20 === Object.keys(response.results).length;
+                    response.more = more;
 
                     return response;
                 }
 
+
+                // The result is an array
+                if (response.isArray) {
+                    return {
+                        more: more,
+                        results: response.map(item => this.convertBackendItem(item))
+                    };
+                }
+
+                // The result is an object
                 return {
-                    more: 20 === Object.keys(response).length,
-                    results: response.map((item) => this.convertBackendItem(item))
+                    more: more,
+                    results: Object.values(response).map(item => this.convertBackendItem(item))
                 };
             },
 

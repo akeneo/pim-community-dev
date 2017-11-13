@@ -1010,7 +1010,6 @@ config:
         pim/template/form/creation/modal:                         pimenrich/templates/form/creation/modal.html
 
         pim/template/form/creation/field:                         pimenrich/templates/form/creation/field.html
-        pim/template/form/creation/family:                        pimenrich/templates/form/creation/family.html
         pim/template/form/creation/type:                          pimenrich/templates/form/creation/type.html
         pim/template/form/creation/job:                           pimenrich/templates/form/creation/job.html
         pim/template/form/column:                                 pimenrich/templates/form/column.html

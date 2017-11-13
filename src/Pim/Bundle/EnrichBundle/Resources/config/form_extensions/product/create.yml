@@ -24,5 +24,6 @@ extensions:
         targetZone: fields
         position: 20
         config:
-            identifier: family
-            loadUrl: pim_enrich_family_rest_index
+            fieldName: family
+            label: pim_enrich.entity.product.meta.family.title
+            choiceUrl: pim_enrich_family_rest_index
