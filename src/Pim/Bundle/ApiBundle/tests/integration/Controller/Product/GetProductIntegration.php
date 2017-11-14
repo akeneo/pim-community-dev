@@ -213,6 +213,7 @@ class GetProductIntegration extends AbstractProductTestCase
             'updated'       => '2016-06-14T13:12:50+02:00',
             'associations'  => [
                 'PACK'   => ['groups' => [], 'products' => ['bar', 'baz']],
+                'SUBSTITUTION' => ['groups' => [], 'products' => []],
                 'UPSELL' => ['groups' => ['groupA'], 'products' => []],
                 'X_SELL' => ['groups' => ['groupB'], 'products' => ['bar']],
             ]
