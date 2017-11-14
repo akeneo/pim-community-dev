@@ -1,5 +1,5 @@
 /**
- * TODO
+ * This module displays a product model select2
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -12,38 +12,22 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
-        'pim/form/common/fields/field',
+        'pim/form/common/fields/simple-select-async',
         'pim/router',
-        'pim/user-context'
+        'pim/user-context',
+        'pim/fetcher-registry'
     ],
     function (
         $,
         _,
         __,
-        BaseField,
+        SimpleSelectAsync,
         Routing,
-        UserContext
+        UserContext,
+        FetcherRegistry
     ) {
-        return BaseField.extend({
-            familyVariant: null,
-            events: {
-                'change input': function (event) {
-                    this.setData({
-                        product_model: event.target.value,
-                    }, {
-                        silent: true
-                    });
-                }
-            },
-
-            /**
-             * {@inheritdoc}
-             */
-            initialize: function (config) {
-                this.config = config.config;
-
-                BaseField.prototype.initialize.apply(this, arguments);
-            },
+        return SimpleSelectAsync.extend({
+            previousFamilyVariant: null,
 
             /**
              * {@inheritdoc}
@@ -55,96 +39,61 @@ define(
                     this.updateOnFamilyVariantChange.bind(this)
                 );
 
-                return BaseField.prototype.configure.apply(this, arguments);
+                return SimpleSelectAsync.prototype.configure.apply(this, arguments);
             },
 
             /**
-             * Method called on family variant update
+             * Updates the choice URL when the model change
              */
             updateOnFamilyVariantChange() {
-                const previousFamilyVariant = this.familyVariant;
-                this.familyVariant = this.getFormData().family_variant || null;
+                if (this.getFormData().family_variant !== this.previousFamilyVariant) {
+                    this.previousFamilyVariant = this.getFormData().family_variant;
+                    this.setData({[this.fieldName]: null});
 
-                if (previousFamilyVariant !== this.familyVariant) {
-                    this.$('.field-input').replaceWith(this.renderInput({}));
-                    this.postRender();
+                    this.render();
                 }
-            },
-
-            /**
-             * Returns the results to be usable in select2
-             * @param results
-             * @returns {Object}
-             */
-            parseResults(results) {
-                const data = {
-                    more: false,
-                    results: []
-                };
-                _.each(results, function (value, key) {
-                    data.results.push({
-                        id: key,
-                        text: value.meta.label[UserContext.get('uiLocale')]
-                    });
-                });
-
-                return data;
             },
 
             /**
              * {@inheritdoc}
              */
-            renderInput(templateContext) {
-                const template = _.template('<input>');
+            select2Data() {
+                let result = SimpleSelectAsync.prototype.select2Data.apply(this, arguments);
+                result.options.family_variant = this.getFormData().family_variant;
 
-                return template({
-                    readOnly: templateContext.readOnly
-                });
+                return result;
             },
 
             /**
              * {@inheritdoc}
              */
-            postRender() {
-                let options = {
-                    allowClear: true,
-                    placeholder: __('pim_enrich.form.product_model.choose_product_model'),
-                    ajax: {
-                        url: Routing.generate(this.config.loadUrl),
-                        results: this.parseResults.bind(this),
-                        quietMillis: 250,
-                        cache: true,
-                        data: (term) => {
-                            return {
-                                search: term,
-                                options: {
-                                    family_variant: this.familyVariant
-                                }
-                            };
-                        }
-                    }
+            convertBackendItem(item) {
+                return {
+                    id: item.code,
+                    text: item.meta.label[UserContext.get('uiLocale')]
                 };
-
-                this.$('input').attr('disabled', this.isReadOnly() ? 'disabled' : null);
-
-                if (this.getFormData().product_model) {
-                    options.choices = [{id: this.getFormData().product_model, text: 'toto'}];
-                }
-
-                this.$('input').select2(options);
-
-                if (this.getFormData().product_model) {
-                    // this.$('input').select2('val', this.getFormData().product_model);
-                }
             },
 
             /**
-             * Should the field be in readonly mode?
-             *
-             * @returns {Boolean}
+             * {@inheritdoc}
              */
             isReadOnly() {
-                return this.familyVariant === null;
+                return !this.getFormData().family_variant;
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            select2InitSelection(element, callback) {
+                const id = $(element).val();
+                if ('' !== id) {
+                    FetcherRegistry
+                        .getFetcher('product-model-by-code')
+                        .fetch(id)
+                        .then((productModel) => {
+                            callback(this.convertBackendItem(productModel));
+                        });
+                }
             }
         });
     }

@@ -55,7 +55,7 @@ function (
                         'family-variant-grid[localeCode]': UserContext.get('catalogLocale')
                     }));
 
-                    this.setData({[this.fieldName]: null}, {silent: true});
+                    this.setData({[this.fieldName]: null});
 
                     this.render();
                 });
@@ -139,11 +139,10 @@ function (
                     const results = this.select2Results(response).results;
 
                     if (results.length === 1) {
-                        this.setData({[this.fieldName]: results[0].id}, {silent: true});
+                        this.setData({[this.fieldName]: results[0].id});
                         this.$('.select2').select2('val', results[0].id);
                     } else {
-                        console.log('post render 2');
-                        this.setData({[this.fieldName]: null}, {silent: true});
+                        this.setData({[this.fieldName]: null});
                         this.$('.select2').select2('val', '');
                     }
                 });
