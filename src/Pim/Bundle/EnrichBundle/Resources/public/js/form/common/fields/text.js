@@ -34,7 +34,7 @@ function (
          */
         renderInput: function (templateContext) {
             return this.template(_.extend(templateContext, {
-                value: this.getFormData()[this.fieldName]
+                value: this.getModelValue()
             }));
         },
 

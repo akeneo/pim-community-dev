@@ -22,3 +22,4 @@ extensions:
         position: 100
         config:
             fieldName: minimum_input_length
+            label: pim_enrich.form.attribute.tab.properties.label.minimum_input_length

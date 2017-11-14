@@ -1,0 +1,25 @@
+<div class="AknFullPage AknFullPage--modal">
+    <div class="AknFullPage-buttons">
+        <div class="AknButtonList">
+            <span class="AknButtonList-item AknFullPage-cancel"></span>
+        </div>
+    </div>
+    <div class="AknFullPage-content AknFullPage-content--column">
+        <div>
+            <div class="AknFullPage-subTitle"><%- subTitle %></div>
+            <div class="AknFullPage-title"><%- modalTitle %></div>
+
+            <div class="AknWidget-content AknWidget-content--withPadding">
+                <div class="AknSquareList AknSquareList--centered">
+                <% _.each(choices, function(choice, key) { %>
+                    <a class="AknSquareList-item product-choice" title="<%- choice.title %>" data-form="<%- choice.form %>">
+                        <img src="/bundles/pimui/images/<%- choice.icon %>.svg" class="AknSquareList-icon">
+                        <img src="/bundles/pimui/images/<%- choice.icon %>.svg" class="AknSquareList-icon AknSquareList-icon--selected">
+                        <div><%- choice.title %></div>
+                    </a>
+                <% }); %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

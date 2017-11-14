@@ -25,6 +25,21 @@ class PimRequirements extends SymfonyRequirements
     const LOWEST_REQUIRED_MYSQL_VERSION = '5.7.0';
     const GREATEST_REQUIRED_MYSQL_VERSION = '5.8.0';
 
+    const REQUIRED_EXTENSIONS = [
+        'apcu',
+        'bcmath',
+        'curl',
+        'gd',
+        'intl',
+        'mcrypt',
+        'pdo_mysql',
+        'soap',
+        'xml',
+        'zip',
+        'exif',
+        'imagick'
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -46,6 +61,14 @@ class PimRequirements extends SymfonyRequirements
             sprintf('Install PHP %s or newer (installed version is %s)', self::REQUIRED_PHP_VERSION, $phpVersion)
         );
 
+        foreach (self::REQUIRED_EXTENSIONS as $requiredExtension) {
+            $this->addPimRequirement(
+                extension_loaded($requiredExtension),
+                sprintf('%s extension should be available', $requiredExtension),
+                sprintf('Install and enable the <strong>%s</strong> extension.', $requiredExtension)
+            );
+        }
+
         $this->addPimRequirement(
             null !== $gdVersion && version_compare($gdVersion, self::REQUIRED_GD_VERSION, '>='),
             'GD extension must be at least ' . self::REQUIRED_GD_VERSION,
@@ -53,21 +76,9 @@ class PimRequirements extends SymfonyRequirements
         );
 
         $this->addPimRequirement(
-            class_exists('Locale'),
-            'intl extension should be available',
-            'Install and enable the <strong>intl</strong> extension.'
-        );
-
-        $this->addPimRequirement(
             null !== $icuVersion && version_compare($icuVersion, self::REQUIRED_ICU_VERSION, '>='),
             'icu library must be at least ' . self::REQUIRED_ICU_VERSION,
             'Install and enable the <strong>icu</strong> library at least ' . self::REQUIRED_ICU_VERSION . ' version'
-        );
-
-        $this->addRecommendation(
-            class_exists('SoapClient'),
-            'SOAP extension should be installed (API calls)',
-            'Install and enable the <strong>SOAP</strong> extension.'
         );
 
         $this->addRecommendation(
@@ -139,36 +150,11 @@ class PimRequirements extends SymfonyRequirements
             'Make sure the <strong>exec()</strong> function is not disabled in php.ini'
         );
 
-        $this->addPimRequirement(
-            function_exists('apcu_store'),
-            'Extension APCu should be installed',
-            'Install and enable <strong>APCu</strong> extension'
+        $this->addRecommendation(
+            ini_get('apc.enable_cli'),
+            'APCu should be enabled in CLI to get better performances',
+            'Set <strong>apc.enable_cli</strong> to <strong>1</strong>'
         );
-
-        $this->addPimRequirement(
-            function_exists('bcmul'),
-            'Extension bcmath should be installed',
-            'Install and enable <strong>bcmath</strong> extension'
-        );
-        
-        $this->addPimRequirement(
-            (extension_loaded('gd') && function_exists('gd_info')),
-            'Extension gd should be installed',
-            'Install and enable <strong>gd</strong> extension'
-        );
-
-        $this->addPimRequirement(
-            (extension_loaded('soap') && class_exists('SoapClient')),
-            'Extension soap should be installed',
-            'Install and enable <strong>soap</strong> extension'
-        );
-
-        $this->addPimRequirement(
-            class_exists("Imagick"),
-            'Extension imagick should be installed',
-            'Install and enable <strong>imagick</strong> extension'
-        );
-
 
         // Check directories
         foreach ($directoriesToCheck as $directoryToCheck) {

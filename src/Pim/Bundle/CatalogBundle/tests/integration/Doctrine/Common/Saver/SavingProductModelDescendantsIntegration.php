@@ -3,9 +3,9 @@
 namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
-use Pim\Bundle\CatalogBundle\tests\helper\EntityBuilder;
+use Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher;
+use Pim\Bundle\CatalogBundle\tests\fixture\EntityBuilder;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
@@ -18,6 +18,9 @@ class SavingProductModelDescendantsIntegration extends TestCase
     /** @var Client */
     private $esProductAndProductModelClient;
 
+    /** @var JobLauncher */
+    private $launcher;
+
     /**
      * {@inheritdoc}
      */
@@ -27,6 +30,8 @@ class SavingProductModelDescendantsIntegration extends TestCase
         $this->esProductAndProductModelClient = $this->get('akeneo_elasticsearch.client.product_and_product_model');
 
         $this->authenticateUserAdmin();
+
+        $this->launcher = new JobLauncher(static::$kernel);
     }
 
     public function testIndexingProductModelDescendantsOnUnitarySave()
@@ -48,7 +53,9 @@ class SavingProductModelDescendantsIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->save($rootProductModel);
 
-        sleep(10);
+        while ($this->launcher->hasJobInQueue()) {
+            $this->launcher->launchConsumerOnce();
+        }
 
         $this->assertDocumentIdsForSearch(
             [
@@ -96,7 +103,9 @@ class SavingProductModelDescendantsIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->save($rootProductModel);
 
-        sleep(10);
+        while ($this->launcher->hasJobInQueue()) {
+            $this->launcher->launchConsumerOnce();
+        }
 
         $this->assertCompletenessForChannel('seed_variant_product_2', 'ecommerce', 10);
     }
@@ -139,21 +148,17 @@ class SavingProductModelDescendantsIntegration extends TestCase
      */
     private function createProductsAndProductModelsTree(string $seed)
     {
-        $entityBuilder = new EntityBuilder(static::$kernel->getContainer());
+        $entityBuilder = new EntityBuilder($this->testKernel->getContainer());
 
         $rootProductModel = $entityBuilder->createProductModel($seed . '_root_product_model', 'familyVariantA1', null, []);
-
         $subProductModel1 = $entityBuilder->createProductModel($seed . '_sub_product_model_1', 'familyVariantA1', $rootProductModel, []);
         $subProductModel2 = $entityBuilder->createProductModel($seed . '_sub_product_model_2', 'familyVariantA1', $rootProductModel, []);
-
-        sleep(10);
 
         $entityBuilder->createVariantProduct($seed . '_variant_product_1', 'familyA', 'familyVariantA1', $subProductModel1, []);
         $entityBuilder->createVariantProduct($seed . '_variant_product_2', 'familyA', 'familyVariantA1', $subProductModel1, []);
         $entityBuilder->createVariantProduct($seed . '_variant_product_3', 'familyA', 'familyVariantA1', $subProductModel2, []);
         $entityBuilder->createVariantProduct($seed . '_variant_product_4', 'familyA', 'familyVariantA1', $subProductModel2, []);
 
-        sleep(10);
     }
 
     /**

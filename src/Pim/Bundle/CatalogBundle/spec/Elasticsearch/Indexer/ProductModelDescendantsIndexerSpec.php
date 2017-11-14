@@ -54,7 +54,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productChildren->isEmpty()->willReturn(false);
         $productChildren->first()->willReturn($childProduct1);
         $productChildren->toArray()->willReturn([$childProduct1, $childProduct2]);
-        $productIndexer->indexAll([$childProduct1, $childProduct2])->shouldBeCalled();
+        $productIndexer->indexAll([$childProduct1, $childProduct2], [])->shouldBeCalled();
 
         $productModel->getProductModels()->willReturn($productModelChildren);
         $productModelChildren->isEmpty()->willReturn(true);
@@ -90,7 +90,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $rootProductModelChildren->first()->willReturn($childProductModel);
 
         $rootProductModelChildren->toArray()->willReturn([$childProductModel]);
-        $productModelIndexer->indexAll([$childProductModel]);
+        $productModelIndexer->indexAll([$childProductModel], [])->shouldBeCalled();
 
         $rootProductModelChildren->getIterator()->willReturn($rootProductModelChildrenIterator);
         $rootProductModelChildrenIterator->rewind()->shouldBeCalled();
@@ -113,7 +113,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productVariantsChildren->first()->willReturn($childVariantProduct1);
         $productVariantsChildren->toArray()->willReturn([$childVariantProduct1, $childVariantProduct2]);
 
-        $productIndexer->indexAll([$childVariantProduct1, $childVariantProduct2])->shouldBeCalled();
+        $productIndexer->indexAll([$childVariantProduct1, $childVariantProduct2], [])->shouldBeCalled();
 
         $this->index($rootProductModel);
     }
@@ -147,7 +147,7 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productChildren1->isEmpty()->willReturn(false);
         $productChildren1->first()->willReturn($childProduct1);
         $productChildren1->toArray()->willReturn([$childProduct1, $childProduct2]);
-        $productIndexer->indexAll([$childProduct1, $childProduct2])->shouldBeCalled();
+        $productIndexer->indexAll([$childProduct1, $childProduct2], [])->shouldBeCalled();
 
         $productModel1->getProductModels()->willReturn($productModelChildren1);
         $productModelChildren1->isEmpty()->willReturn(true);
@@ -157,13 +157,53 @@ class ProductModelDescendantsIndexerSpec extends ObjectBehavior
         $productChildren2->isEmpty()->willReturn(false);
         $productChildren2->first()->willReturn($childProduct3);
         $productChildren2->toArray()->willReturn([$childProduct3, $childProduct4]);
-        $productIndexer->indexAll([$childProduct3, $childProduct4])->shouldBeCalled();
+        $productIndexer->indexAll([$childProduct3, $childProduct4], [])->shouldBeCalled();
 
         $productModel2->getProductModels()->willReturn($productModelChildren2);
         $productModelChildren2->isEmpty()->willReturn(true);
         $productModelIndexer->indexAll(Argument::cetera())->shouldNotBeCalled();
 
         $this->indexAll([$productModel1, $productModel2]);
+    }
+
+    function it_indexes_a_product_model_and_its_descendants_products_with_options(
+        $productIndexer,
+        ProductModelInterface $productModel,
+        VariantProductInterface $productChild,
+        ArrayCollection $children,
+        \ArrayIterator $childrenIterator
+    ) {
+        $children->isEmpty()->willReturn(false);
+        $children->first()->willReturn($productChild);
+        $children->toArray()->willReturn([$productChild]);
+        $children->getIterator()->willReturn($childrenIterator);
+
+        $productModel->getProductModels()->willReturn(new ArrayCollection());
+        $productModel->getProducts()->willReturn($children);
+
+        $productIndexer->indexAll([$productChild], ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2'])->shouldBeCalled();
+
+        $this->index($productModel, ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2']);
+    }
+
+    function it_indexes_a_product_model_and_its_descendants_product_models_with_options(
+        $productModelIndexer,
+        ProductModelInterface $productModel,
+        ProductModelInterface $productModelChild,
+        ArrayCollection $children,
+        \ArrayIterator $childrenIterator
+    ) {
+        $children->isEmpty()->willReturn(false);
+        $children->first()->willReturn($productModelChild);
+        $children->toArray()->willReturn([$productModelChild]);
+        $children->getIterator()->willReturn($childrenIterator);
+
+        $productModel->getProductModels()->willReturn($children);
+        $productModel->getProducts()->willReturn(new ArrayCollection());
+
+        $productModelIndexer->indexAll([$productModelChild], ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2'])->shouldBeCalled();
+
+        $this->index($productModel, ['my_option_key' => 'my_option_value', 'my_option_key2' => 'my_option_value2']);
     }
 
     function it_does_not_bulk_index_non_product_model_objects(

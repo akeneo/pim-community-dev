@@ -12,14 +12,15 @@ define([
     'underscore',
     'oro/translator',
     'pim/form',
+    'pim/common/property',
     'pim/common/tab',
     'pim/template/form/common/fields/field'
-],
-function (
+], function (
     $,
     _,
     __,
     BaseForm,
+    propertyAccessor,
     Tab,
     template
 ) {
@@ -34,7 +35,7 @@ function (
         /**
          * {@inheritdoc}
          */
-        initialize: function (meta) {
+        initialize(meta) {
             this.config = meta.config;
 
             if (undefined === this.config.fieldName) {
@@ -42,6 +43,7 @@ function (
             }
 
             this.fieldName = this.config.fieldName;
+            this.errors = [];
 
             BaseForm.prototype.initialize.apply(this, arguments);
         },
@@ -49,7 +51,7 @@ function (
         /**
          * {@inheritdoc}
          */
-        configure: function () {
+        configure() {
             this.listenTo(this.getRoot(), 'pim_enrich:form:entity:bad_request', this.onBadRequest.bind(this));
 
             return BaseForm.prototype.configure.apply(this, arguments);
@@ -58,11 +60,27 @@ function (
         /**
          * @param {Object} event
          */
-        onBadRequest: function (event) {
-            this.errors = _.where(event.response, {path: this.fieldName});
+        onBadRequest(event) {
+            this.errors = this.getFieldErrors(event.response);
             this.render();
 
             this.getRoot().trigger('pim_enrich:form:form-tabs:change', this.getTabCode());
+        },
+
+        /**
+         * Filter errors to return only the ones related to this field.
+         *
+         * @param {Array} errors
+         *
+         * @returns {Array}
+         */
+        getFieldErrors(errors) {
+            return errors.filter((error) => {
+                const fieldNameParts = this.fieldName.split('.');
+                const lastPart = fieldNameParts[fieldNameParts.length - 1];
+
+                return lastPart === error.path || lastPart === error.attribute;
+            });
         },
 
         /**
@@ -70,8 +88,8 @@ function (
          *
          * @returns {String}
          */
-        getTabCode: function () {
-            var parent = this.getParent();
+        getTabCode() {
+            let parent = this.getParent();
             while (!(parent instanceof Tab)) {
                 parent = parent.getParent();
                 if (null === parent) {
@@ -85,7 +103,7 @@ function (
         /**
          * Renders the container template.
          */
-        render: function () {
+        render() {
             if (!this.isVisible()) {
                 this.$el.empty();
 
@@ -107,16 +125,17 @@ function (
          *
          * @returns {Promise}
          */
-        getTemplateContext: function () {
+        getTemplateContext() {
             return $.Deferred()
                 .resolve({
-                    fieldLabel: __('pim_enrich.form.attribute.tab.properties.label.' + this.fieldName),
-                    requiredLabel: __('pim_enrich.form.required'),
+                    fieldLabel: this.getLabel(),
+                    requiredLabel: this.getRequiredLabel(),
                     fieldName: this.fieldName,
                     fieldId: this.getFieldId(),
                     errors: this.errors,
                     readOnly: this.isReadOnly(),
-                    required: this.config.required || false
+                    required: this.config.required || false,
+                    __: __
                 })
                 .promise();
         },
@@ -124,21 +143,39 @@ function (
         /**
          * Renders the input inside the field container.
          */
-        renderInput: function () {
+        renderInput() {
             throw new Error('Please implement the renderInput() method in your concrete field class.');
         },
 
         /**
          * Called after rendering the input.
          */
-        postRender: function () {},
+        postRender() {},
+
+        /**
+         * @returns {string}
+         */
+        getLabel() {
+            return undefined === this.config.label
+                ? '[' + this.fieldName + ']'
+                : __(this.config.label);
+        },
+
+        /**
+         * @returns {string}
+         */
+        getRequiredLabel() {
+            return undefined === this.config.requiredLabel
+                ? __('pim_enrich.form.required')
+                : __(this.config.requiredLabel);
+        },
 
         /**
          * Should the field be displayed?
          *
          * @returns {Boolean}
          */
-        isVisible: function () {
+        isVisible() {
             return true;
         },
 
@@ -147,7 +184,7 @@ function (
          *
          * @returns {Boolean}
          */
-        isReadOnly: function () {
+        isReadOnly() {
             return this.config.readOnly || false;
         },
 
@@ -156,19 +193,25 @@ function (
          *
          * @param {*} value
          */
-        updateModel: function (value) {
-            var newData = {};
-            newData[this.fieldName] = value;
+        updateModel(value) {
+            const data = this.getFormData();
+            propertyAccessor.updateProperty(data, this.fieldName, value);
 
-            this.setData(newData);
+            this.setData(data);
         },
 
         /**
-         * Method responsible for reading the current value from the  DOM.
-         * Must be implemented in concrete classes.
+         * Reads and returns the field value from the model.
+         *
+         * @returns {*}
          */
-        getFieldValue: function () {
-            throw new Error('Please implement the getFieldValue() method in your concrete field class.');
+        getModelValue() {
+            const value = propertyAccessor.accessProperty(
+                this.getFormData(),
+                this.fieldName
+            );
+
+            return null === value ? undefined : value;
         },
 
         /**
@@ -176,7 +219,7 @@ function (
          *
          * @returns {String}
          */
-        getFieldId: function () {
+        getFieldId() {
             return Math.random().toString(10).substring(2);
         }
     });

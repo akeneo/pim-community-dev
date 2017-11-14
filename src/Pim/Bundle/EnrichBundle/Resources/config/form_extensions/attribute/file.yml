@@ -22,6 +22,7 @@ extensions:
         position: 100
         config:
             fieldName: max_file_size
+            label: pim_enrich.form.attribute.tab.properties.label.max_file_size
 
     pim-attribute-form-file-validation-params-allowed-extensions:
         module: pim/form/common/fields/select
@@ -30,6 +31,7 @@ extensions:
         position: 110
         config:
             fieldName: allowed_extensions
+            label: pim_enrich.form.attribute.tab.properties.label.allowed_extensions
             choices: '%pim_catalog_file_allowed_extensions%'
             isMultiple: true
             defaultValue: []

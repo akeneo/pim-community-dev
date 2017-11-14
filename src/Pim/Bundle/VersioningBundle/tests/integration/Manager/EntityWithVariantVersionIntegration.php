@@ -139,11 +139,10 @@ class EntityWithVariantVersionIntegration extends TestCase
 
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
-        if ($this->testKernel->getContainer()
-            ->get('akeneo_integration_tests.doctrine.job_execution')
-            ->isRunning('compute_product_models_descendants', 10)
-        ) {
-            throw new \RuntimeException('There are still "compute_product_models_descendants" jobs running.');
+        $launcher = $this->getFromTestContainer('akeneo_integration_tests.launcher.job_launcher');
+
+        while ($launcher->hasJobInQueue()) {
+            $launcher->launchConsumerOnce();
         }
     }
 

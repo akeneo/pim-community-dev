@@ -22,6 +22,7 @@ extensions:
         position: 100
         config:
             fieldName: wysiwyg_enabled
+            label: pim_enrich.form.attribute.tab.properties.label.wysiwyg_enabled
 
     pim-attribute-form-textarea-validation-params:
         module: pim/common/simple-view
@@ -41,3 +42,4 @@ extensions:
         position: 100
         config:
             fieldName: max_characters
+            label: pim_enrich.form.attribute.tab.properties.label.max_characters

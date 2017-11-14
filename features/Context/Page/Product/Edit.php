@@ -206,6 +206,23 @@ class Edit extends ProductEditForm
     }
 
     /**
+     * @throws ElementNotFoundException
+     * @throws TimeoutException
+     *
+     * @return array
+     */
+    public function getGroups()
+    {
+        $this->spin(function () {
+            return $this->find('css', '.group-label');
+        }, 'Cannot find any group label');
+
+        return array_map(function ($element) {
+            return $element->getHtml();
+        }, $this->findAll('css', '.group-label'));
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function extractLabelElement($field, ElementInterface $element = null)

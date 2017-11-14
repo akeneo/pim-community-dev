@@ -71,9 +71,11 @@
     margin-right: @AknThirdColumnWidth;
     transition: margin 0.3s ease-in-out;
 
+    // Added !important to fix the animation
+    // since the margin values are set with jQuery
     &--open {
-      margin-left: 0;
-      margin-right: 0;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
     }
   }
 

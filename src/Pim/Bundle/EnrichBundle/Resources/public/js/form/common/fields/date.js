@@ -39,7 +39,7 @@ function (
          */
         renderInput: function (templateContext) {
             var value = DateFormatter.format(
-                this.getFormData()[this.fieldName],
+                this.getModelValue(),
                 this.modelDateFormat,
                 DateContext.get('date').format
             );

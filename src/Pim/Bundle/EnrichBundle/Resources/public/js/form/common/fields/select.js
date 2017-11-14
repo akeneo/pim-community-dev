@@ -33,12 +33,12 @@ function (
          * {@inheritdoc}
          */
         renderInput: function (templateContext) {
-            if (!_.has(this.getFormData(), this.fieldName) && _.has(this.config, 'defaultValue')) {
+            if (undefined === this.getModelValue() && _.has(this.config, 'defaultValue')) {
                 this.updateModel(this.config.defaultValue);
             }
 
             return this.template(_.extend(templateContext, {
-                value: this.getFormData()[this.fieldName],
+                value: this.getModelValue(),
                 choices: this.formatChoices(this.config.choices || []),
                 multiple: this.config.isMultiple,
                 labels: {

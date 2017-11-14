@@ -11,14 +11,16 @@ define(
         'underscore',
         'oro/translator',
         'pim/form',
-        'pim/template/product/grid/category-switcher'
+        'pim/template/product/grid/category-switcher',
+        'pim/menu/resizable'
     ],
     function(
         $,
         _,
         __,
         BaseForm,
-        template
+        template,
+        Resizable
     ) {
         return BaseForm.extend({
             template: _.template(template),
@@ -56,17 +58,33 @@ define(
             },
 
             /**
+             * {@inheritdoc}
+             */
+            shutdown() {
+                Resizable.destroy();
+
+                return BaseForm.prototype.shutdown.apply(this, arguments);
+            },
+
+            /**
              * Toggle the thrid column
              */
             toggleThirdColumn() {
+                Resizable.set({
+                    maxWidth: 500,
+                    minWidth: 300,
+                    container: '.AknDefault-thirdColumn',
+                    storageKey: 'category-switcher'
+                });
+
                 this.getRoot().trigger('grid:third_column:toggle');
 
                 if (!this.isOpen) {
                     this.outsideEventListener = this.outsideClickListener.bind(this);
                     document.addEventListener('mousedown', this.outsideEventListener);
                 }
-                this.isOpen = !this.isOpen;
 
+                this.isOpen = !this.isOpen;
                 this.render();
             },
 
@@ -77,6 +95,7 @@ define(
              */
             outsideClickListener(event) {
                 if (this.isOpen && !$(event.target).closest('.AknDefault-thirdColumn').length) {
+                    Resizable.destroy();
                     this.toggleThirdColumn();
                     document.removeEventListener('mousedown', this.outsideEventListener);
                 }

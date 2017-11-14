@@ -15,7 +15,7 @@ class RefreshSpec extends ObjectBehavior
 
     function it_creates_a_disable_refresh_param()
     {
-        $this->beConstructedThrough('disabled');
+        $this->beConstructedThrough('disable');
         $this->getType()->shouldReturn(Refresh::DISABLE);
     }
 

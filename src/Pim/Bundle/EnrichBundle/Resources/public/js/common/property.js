@@ -14,9 +14,9 @@ define([], function () {
          *
          * @param {object} data
          * @param {string} path
-         * @param {mixed}  defaultValue
+         * @param {*}  defaultValue
          *
-         * @return {mixed}
+         * @return {*}
          */
         accessProperty: function (data, path, defaultValue) {
             defaultValue = defaultValue || null;
@@ -36,9 +36,9 @@ define([], function () {
          *
          * @param {object} data
          * @param {string} path
-         * @param {mixed}  value
+         * @param {*}  value
          *
-         * @return {mixed}
+         * @return {*}
          */
         updateProperty: function (data, path, value) {
             var pathPart = path.split('.');

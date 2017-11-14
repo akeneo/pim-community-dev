@@ -37,7 +37,10 @@ define([
     return BaseForm.extend({
         template: _.template(template),
         validationErrors: {},
-        defaultIdentifier: 'family',
+        config: {
+            fieldLabel: '',
+            required: false
+        },
         events: {
             'change input': 'updateModel'
         },
@@ -46,8 +49,11 @@ define([
          * {@inheritdoc}
          */
         initialize: function (config) {
-            this.config = config.config;
-            this.identifier = this.config.identifier || this.defaultIdentifier;
+            this.config = Object.assign(this.config, config.config || {});
+
+            if (!this.config.identifier || !this.config.loadUrl) {
+                throw new Error('You must define the identifier and loadUrl for this field');
+            }
 
             BaseForm.prototype.initialize.apply(this, arguments);
         },
@@ -57,7 +63,7 @@ define([
          * @param  {Object} event jQuery event
          */
         updateModel(event) {
-            this.getFormModel().set('family', event.target.value);
+            this.setData({ family: event.target.value });
         },
 
         /**
@@ -114,7 +120,10 @@ define([
             this.$el.html(this.template({
                 label: __('pim_enrich.form.product.change_family.modal.empty_selection'),
                 code: this.getFormData().family,
-                errors: errors.filter(error => error.path === this.identifier)
+                errors: errors.filter(error => error.path === this.identifier),
+                fieldLabel: __(this.config.fieldLabel),
+                required: this.config.required,
+                requiredLabel: __('pim_enrich.form.required')
             }));
 
             this.delegateEvents();
@@ -123,7 +132,7 @@ define([
                 allowClear: true,
                 initSelection: this.fetchFamilies.bind(this),
                 ajax: {
-                    url: Routing.generate('pim_enrich_family_rest_index'),
+                    url: Routing.generate(this.config.loadUrl),
                     results: this.parseResults.bind(this),
                     quietMillis: 250,
                     cache: true,

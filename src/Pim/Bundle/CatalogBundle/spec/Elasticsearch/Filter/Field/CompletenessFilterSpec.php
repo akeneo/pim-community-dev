@@ -3,41 +3,23 @@
 namespace spec\Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
-use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\Filter\Field\CompletenessFilter;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Elasticsearch\SearchQueryBuilder;
-use Pim\Component\Catalog\Exception\ObjectNotFoundException;
-use Pim\Component\Catalog\Model\ChannelInterface;
+use Pim\Component\Catalog\Exception\InvalidOperatorException;
 use Pim\Component\Catalog\Query\Filter\FieldFilterInterface;
 use Pim\Component\Catalog\Query\Filter\Operators;
+use Prophecy\Argument;
 
 class CompletenessFilterSpec extends ObjectBehavior
 {
-    function let(CachedObjectRepositoryInterface $channelRepository, SearchQueryBuilder $sqb)
+    function let(SearchQueryBuilder $sqb)
     {
-        $operators = [
-            'IS_EMPTY',
-            'NOT EQUALS ON AT LEAST ONE LOCALE',
-            'EQUALS ON AT LEAST ONE LOCALE',
-            'GREATER THAN ON AT LEAST ONE LOCALE',
-            'GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE',
-            'LOWER OR EQUALS THAN ON AT LEAST ONE LOCALE',
-            'LOWER THAN ON AT LEAST ONE LOCALE',
-            'GREATER THAN ON ALL LOCALES',
-            'GREATER OR EQUALS THAN ON ALL LOCALES',
-            'LOWER OR EQUALS THAN ON ALL LOCALES',
-            'LOWER THAN ON ALL LOCALES',
-            '!=',
-            '=',
-            '>',
-            '>=',
-            '<=',
-            '<'
-        ];
+        $this->beConstructedWith(['completeness'], [
+            'AT_LEAST_COMPLETE',
+            'AT_LEAST_INCOMPLETE',
+        ]);
 
-        $this->beConstructedWith($channelRepository, ['completeness'], $operators);
         $this->setQueryBuilder($sqb);
     }
 
@@ -51,459 +33,70 @@ class CompletenessFilterSpec extends ObjectBehavior
         $this->shouldImplement(FieldFilterInterface::class);
     }
 
-    function it_supports_operators()
+    function it_has_operators()
     {
         $this->getOperators()->shouldReturn(
             [
-                'IS_EMPTY',
-                'NOT EQUALS ON AT LEAST ONE LOCALE',
-                'EQUALS ON AT LEAST ONE LOCALE',
-                'GREATER THAN ON AT LEAST ONE LOCALE',
-                'GREATER OR EQUALS THAN ON AT LEAST ONE LOCALE',
-                'LOWER OR EQUALS THAN ON AT LEAST ONE LOCALE',
-                'LOWER THAN ON AT LEAST ONE LOCALE',
-                'GREATER THAN ON ALL LOCALES',
-                'GREATER OR EQUALS THAN ON ALL LOCALES',
-                'LOWER OR EQUALS THAN ON ALL LOCALES',
-                'LOWER THAN ON ALL LOCALES',
-                '!=',
-                '=',
-                '>',
-                '>=',
-                '<=',
-                '<'
+                'AT_LEAST_COMPLETE',
+                'AT_LEAST_INCOMPLETE',
             ]
         );
-        $this->supportsOperator('NOT EQUALS ON AT LEAST ONE LOCALE')->shouldReturn(true);
+    }
+
+    function it_supports_operators()
+    {
+        $this->supportsOperator('AT_LEAST_COMPLETE')->shouldReturn(true);
+        $this->supportsOperator('AT_LEAST_INCOMPLETE')->shouldReturn(true);
         $this->supportsOperator('FAKE')->shouldReturn(false);
     }
 
-    function it_throws_an_exception_with_all_locales_filters_when_there_is_no_provided_locales(
-        $channelRepository,
-        ChannelInterface $ecommerce
-    ) {
-        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
+    function it_adds_a_complete_filter($sqb)
+    {
+        $sqb->addShould(
+            [
+                ['term' => ['completeness.ecommerce.en_US' => 100]],
+                ['term' => ['at_least_complete.ecommerce.en_US' => 1]],
+            ]
+        )->shouldBeCalled();
 
-        $this->shouldThrow(InvalidPropertyTypeException::class)->during(
-            'addFieldFilter',
-            ['completeness', Operators::LOWER_THAN_ON_ALL_LOCALES, 100, null, 'ecommerce', []]
-        );
+        $this->addFieldFilter('completeness', Operators::AT_LEAST_COMPLETE, null, 'en_US', 'ecommerce', [])
+            ->shouldReturn($this);
     }
 
-    function it_throws_an_exception_with_all_locales_filters_when_provided_locales_is_not_an_array(
-        $channelRepository,
-        ChannelInterface $ecommerce
-    ) {
-        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
+    function it_adds_a_incomplete_filter($sqb)
+    {
+        $sqb->addShould(
+            [
+                ['range' => ['completeness.ecommerce.fr_FR' => ['lt' => 100]]],
+                ['term' => ['at_least_incomplete.ecommerce.fr_FR' => 1]],
+            ]
+        )->shouldBeCalled();
 
-        $this->shouldThrow(InvalidPropertyTypeException::class)->during(
-            'addFieldFilter',
-            ['completeness', Operators::LOWER_THAN_ON_ALL_LOCALES, 100, null, 'ecommerce', ['locales' => 'WRONG']]
-        );
+        $this->addFieldFilter('completeness', Operators::AT_LEAST_INCOMPLETE, null, 'fr_FR', 'ecommerce', [])
+            ->shouldReturn($this);
     }
 
-    function it_throws_an_exception_when_there_is_no_channel()
+    function it_filters_with_a_non_empty_locale()
     {
         $this->shouldThrow(InvalidPropertyException::class)->during(
             'addFieldFilter',
-            ['completeness', Operators::LOWER_THAN_ON_ALL_LOCALES, 100, null, null, ['locales' => ['fr_FR']]]
+            ['completeness', Operators::AT_LEAST_COMPLETE, null, '', 'ecommerce']
         );
     }
 
-    function it_throws_an_exception_when_the_channel_is_unknown_and_when_there_is_no_locale($channelRepository)
+    function it_filters_with_a_non_empty_channel()
     {
-        $channelRepository->findOneByIdentifier('UNKNOWN')->willReturn(null);
-
-        $this->shouldThrow(ObjectNotFoundException::class)->during(
+        $this->shouldThrow(InvalidPropertyException::class)->during(
             'addFieldFilter',
-            [
-                'completeness',
-                Operators::LOWER_THAN_ON_AT_LEAST_ONE_LOCALE,
-                100,
-                null,
-                'UNKNOWN',
-                ['locales' => ['fr_FR']]
-            ]
+            ['completeness', Operators::AT_LEAST_COMPLETE, null, 'en_US', '']
         );
     }
 
-    function it_throws_an_exception_when_the_data_is_wrong($channelRepository, ChannelInterface $ecommerce)
+    function it_throws_an_exception_if_operator_is_not_supported()
     {
-        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
-
-        $this->shouldThrow(InvalidPropertyTypeException::class)->during(
+        $this->shouldThrow(InvalidOperatorException::class)->during(
             'addFieldFilter',
-            [
-                'completeness',
-                Operators::LOWER_THAN_ON_ALL_LOCALES,
-                ['WRONG DATA'],
-                null,
-                'ecommerce',
-                ['locales' => ['fr_FR']]
-            ]
+            ['completeness', 'WrongOperator', null, 'ecommerce', 'en_US']
         );
-    }
-
-    function it_adds_a_filter_on_one_locale_with_a_regular_filter($sqb)
-    {
-        $sqb->addFilter(
-            [
-                'bool' => [
-                    'should' => [
-                        ['term' => ['completeness.ecommerce.en_US' => 56]]
-                    ]
-                ]
-            ]
-        )->shouldBeCalled();
-
-        $this->addFieldFilter('completeness', Operators::EQUALS, 56, 'en_US', 'ecommerce', []);
-    }
-
-    function it_adds_a_filter_on_all_locales_of_a_channel_with_a_regular_filter(
-        $sqb,
-        $channelRepository,
-        ChannelInterface $ecommerce
-    ) {
-        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
-        $ecommerce->getLocaleCodes()->willReturn(['en_US', 'fr_FR']);
-
-        $sqb->addFilter(
-            [
-                'bool' => [
-                    'should' => [
-                        ['term' => ['completeness.ecommerce.en_US' => 56]],
-                        ['term' => ['completeness.ecommerce.fr_FR' => 56]]
-                    ]
-                ]
-            ]
-        );
-
-        $this->addFieldFilter('completeness', Operators::EQUALS, 56, null, 'ecommerce', []);
-    }
-
-    function it_adds_a_filter_on_one_locale_with_an_ALL_LOCALES_filter($sqb)
-    {
-        $sqb->addFilter(
-            [
-                'range' => [
-                    'completeness.ecommerce.fr_FR' => [
-                        'gt' => 56
-                    ],
-                ],
-            ]
-        )->shouldBeCalled();
-
-        $this->addFieldFilter(
-            'completeness',
-            Operators::GREATER_THAN_ON_ALL_LOCALES,
-            56,
-            null,
-            'ecommerce',
-            ['locales' => ['fr_FR']]
-        );
-    }
-
-    function it_adds_a_filter_on_several_locales_with_an_ALL_LOCALES_filter($sqb)
-    {
-        $sqb->addFilter(
-            [
-                'range' => [
-                    'completeness.ecommerce.fr_FR' => [
-                        'gt' => 56
-                    ],
-                ],
-            ]
-        )->shouldBeCalled();
-
-        $sqb->addFilter(
-            [
-                'range' => [
-                    'completeness.ecommerce.it_IT' => [
-                        'gt' => 56
-                    ],
-                ],
-            ]
-        )->shouldBeCalled();
-
-        $this->addFieldFilter(
-            'completeness',
-            Operators::GREATER_THAN_ON_ALL_LOCALES,
-            56,
-            null,
-            'ecommerce',
-            ['locales' => ['fr_FR', 'it_IT']]
-        );
-    }
-
-    function it_adds_a_filter_on_EQUALS_ON_AT_LEAST_ONE_LOCALE_operator($sqb)
-    {
-        $sqb->addFilter(
-            [
-                'bool' => [
-                    'should' => [
-                        ['term' => ['completeness.ecommerce.en_US' => 56]]
-                    ]
-                ]
-            ]
-        )->shouldBeCalled();
-
-        $this->addFieldFilter('completeness', Operators::EQUALS_ON_AT_LEAST_ONE_LOCALE, 56, 'en_US', 'ecommerce', []);
-        $this->addFieldFilter('completeness', Operators::EQUALS, 56, 'en_US', 'ecommerce', []);
-    }
-
-    function it_adds_a_filter_on_NOT_EQUALS_ON_AT_LEAST_ONE_LOCALE_operator_on_one_locale($sqb)
-    {
-        $sqb->addFilter(
-            [
-                'exists' => [
-                    'field' => 'completeness.ecommerce.en_US',
-                ],
-            ]
-        )->shouldBeCalled();
-
-        $sqb->addMustNot(
-            [
-                'bool' => [
-                    'filter' => [
-                        ['term' => ['completeness.ecommerce.en_US' => 56]],
-                    ],
-                ],
-            ]
-        )->shouldBeCalled();
-
-        $this->addFieldFilter(
-            'completeness',
-            Operators::NOT_EQUALS_ON_AT_LEAST_ONE_LOCALE,
-            56,
-            'en_US',
-            'ecommerce',
-            []
-        );
-        $this->addFieldFilter('completeness', Operators::NOT_EQUAL, 56, 'en_US', 'ecommerce', []);
-    }
-
-    function it_adds_a_filter_on_NOT_EQUALS_ON_AT_LEAST_ONE_LOCALE_operator_on_several_locales(
-        $sqb,
-        $channelRepository,
-        ChannelInterface $ecommerce
-    ) {
-        $channelRepository->findOneByIdentifier('ecommerce')->willReturn($ecommerce);
-        $ecommerce->getLocaleCodes()->willReturn(['en_US', 'fr_FR']);
-
-        $sqb->addFilter(
-            [
-                'exists' => [
-                    'field' => 'completeness.ecommerce.en_US',
-                ],
-            ]
-        )->shouldBeCalled();
-
-        $sqb->addFilter(
-            [
-                'exists' => [
-                    'field' => 'completeness.ecommerce.fr_FR',
-                ],
-            ]
-        )->shouldBeCalled();
-
-        $sqb->addMustNot(
-            [
-                'bool' => [
-                    'filter' => [
-                        ['term' => ['completeness.ecommerce.en_US' => 56]],
-                        ['term' => ['completeness.ecommerce.fr_FR' => 56]],
-                    ],
-                ],
-            ]
-        )->shouldBeCalled();
-
-        $this->addFieldFilter('completeness', Operators::NOT_EQUALS_ON_AT_LEAST_ONE_LOCALE, 56, null, 'ecommerce', []);
-        $this->addFieldFilter('completeness', Operators::NOT_EQUAL, 56, null, 'ecommerce', []);
-    }
-
-    function it_adds_a_filter_on_LOWER_THAN_ON_AT_LEAST_ONE_LOCALE_operator($sqb)
-    {
-        $sqb->addFilter(
-            [
-                'bool' => [
-                    'should' => [
-                        ['range' => ['completeness.ecommerce.en_US' => ['lt' => 56]]]
-                    ]
-                ]
-            ]
-        )->shouldBeCalled();
-
-        $this->addFieldFilter(
-            'completeness',
-            Operators::LOWER_THAN_ON_AT_LEAST_ONE_LOCALE,
-            56,
-            'en_US',
-            'ecommerce',
-            []
-        );
-        $this->addFieldFilter('completeness', Operators::LOWER_THAN, 56, 'en_US', 'ecommerce', []);
-    }
-
-    function it_adds_a_filter_on_LOWER_THAN_ON_ALL_LOCALES_operator($sqb)
-    {
-        $sqb->addFilter(
-            [
-                'range' => [
-                    'completeness.ecommerce.en_US' => ['lt' => 56],
-                ],
-            ]
-        )->shouldBeCalled();
-
-        $this->addFieldFilter(
-            'completeness',
-            Operators::LOWER_THAN_ON_ALL_LOCALES,
-            56,
-            null,
-            'ecommerce',
-            ['locales' => ['en_US']]
-        );
-    }
-
-    function it_adds_a_filter_on_GREATER_THAN_ON_AT_LEAST_ONE_LOCALE_operator($sqb)
-    {
-        $sqb->addFilter(
-            [
-                'bool' => [
-                    'should' => [
-                        ['range' => ['completeness.ecommerce.en_US' => ['gt' => 56]]]
-                    ]
-                ]
-            ]
-        )->shouldBeCalled();
-
-        $this->addFieldFilter(
-            'completeness',
-            Operators::GREATER_THAN_ON_AT_LEAST_ONE_LOCALE,
-            56,
-            'en_US',
-            'ecommerce',
-            []
-        );
-        $this->addFieldFilter('completeness', Operators::GREATER_THAN, 56, 'en_US', 'ecommerce', []);
-    }
-
-    function it_adds_a_filter_on_GREATER_THAN_ON_ALL_LOCALES_operator($sqb)
-    {
-        $sqb->addFilter(
-            [
-                'range' => [
-                    'completeness.ecommerce.en_US' => ['gt' => 56],
-                ],
-            ]
-        )->shouldBeCalled();
-
-        $this->addFieldFilter(
-            'completeness',
-            Operators::GREATER_THAN_ON_ALL_LOCALES,
-            56,
-            null,
-            'ecommerce',
-            ['locales' => ['en_US']]
-        );
-    }
-
-    function it_adds_a_filter_on_LOWER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE_operator($sqb)
-    {
-        $sqb->addFilter(
-            [
-                'bool' => [
-                    'should' => [
-                        ['range' => ['completeness.ecommerce.en_US' => ['lte' => 56]]]
-                    ]
-                ]
-            ]
-        )->shouldBeCalled();
-
-        $this->addFieldFilter(
-            'completeness',
-            Operators::LOWER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE,
-            56,
-            'en_US',
-            'ecommerce',
-            []
-        );
-    }
-
-    function it_adds_a_filter_on_LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES_operator($sqb)
-    {
-        $sqb->addFilter(
-            [
-                'range' => [
-                    'completeness.ecommerce.en_US' => ['lte' => 56],
-                ],
-            ]
-        )->shouldBeCalled();
-
-        $this->addFieldFilter(
-            'completeness',
-            Operators::LOWER_OR_EQUALS_THAN_ON_ALL_LOCALES,
-            56,
-            null,
-            'ecommerce',
-            ['locales' => ['en_US']]
-        );
-    }
-
-    function it_adds_a_filter_on_GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE_operator($sqb)
-    {
-        $sqb->addFilter(
-            [
-                'bool' => [
-                    'should' => [
-                        ['range' => ['completeness.ecommerce.en_US' => ['gte' => 56]]]
-                    ]
-                ]
-            ]
-        )->shouldBeCalled();
-
-        $this->addFieldFilter(
-            'completeness',
-            Operators::GREATER_OR_EQUALS_THAN_ON_AT_LEAST_ONE_LOCALE,
-            56,
-            'en_US',
-            'ecommerce',
-            []
-        );
-    }
-
-    function it_adds_a_filter_on_GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES_operator($sqb)
-    {
-        $sqb->addFilter(
-            [
-                'range' => [
-                    'completeness.ecommerce.en_US' => ['gte' => 56],
-                ],
-            ]
-        )->shouldBeCalled();
-
-        $this->addFieldFilter(
-            'completeness',
-            Operators::GREATER_OR_EQUALS_THAN_ON_ALL_LOCALES,
-            56,
-            null,
-            'ecommerce',
-            ['locales' => ['en_US']]
-        );
-    }
-
-    function it_adds_a_filter_on_IS_EMPTY_operator($sqb)
-    {
-        $sqb->addMustNot(
-            [
-                'exists' => [
-                    'field' => 'completeness',
-                ],
-            ]
-        )->shouldBeCalled();
-
-        $this->addFieldFilter('completeness', Operators::IS_EMPTY, null, null, null, []);
-        $this->addFieldFilter('completeness', Operators::IS_EMPTY, 'IGNORED', null, null, []);
-        $this->addFieldFilter('completeness', Operators::IS_EMPTY, null, 'en_US', null, []);
-        $this->addFieldFilter('completeness', Operators::IS_EMPTY, null, null, 'ecommerce', []);
     }
 }

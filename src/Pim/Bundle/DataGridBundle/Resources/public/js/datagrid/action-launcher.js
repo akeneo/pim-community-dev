@@ -118,6 +118,10 @@ define([
                 this.onClickReturnValue = options.onClickReturnValue;
             }
 
+            if (_.has(options, 'enabled')) {
+                this.enabled = options.enabled;
+            }
+
             this.action = options.action;
             Backbone.View.prototype.initialize.apply(this, arguments);
         },

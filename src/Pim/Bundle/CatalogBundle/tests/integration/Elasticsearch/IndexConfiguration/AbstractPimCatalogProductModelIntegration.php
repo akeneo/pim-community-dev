@@ -97,7 +97,7 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
     /**
      * {@inheritdoc}
      */
-    protected function addProducts()
+    protected function addDocuments()
     {
         $rootProductModels = [
             // simple tshirt
@@ -1951,6 +1951,6 @@ abstract class AbstractPimCatalogProductModelIntegration extends AbstractPimCata
             ],
         ];
 
-        $this->indexProductDocuments(array_merge($rootProductModels, $subProductModels, $variantProducts));
+        $this->indexDocuments(array_merge($rootProductModels, $subProductModels, $variantProducts));
     }
 }

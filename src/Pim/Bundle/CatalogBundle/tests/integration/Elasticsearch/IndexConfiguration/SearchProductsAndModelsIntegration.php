@@ -52,7 +52,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
             ]
         );
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             [
                 'model-tshirt',
@@ -88,7 +88,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             [
                 'model-tshirt',
@@ -126,7 +126,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             [
                 'model-tshirt-red',
@@ -158,7 +158,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['model-tshirt-grey', 'model-hat']);
+        $this->assertDocument($productsFound, ['model-tshirt-grey', 'model-hat']);
     }
 
     public function testSearchColorBlue()
@@ -180,7 +180,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             [
                 'model-tshirt-blue',
@@ -212,7 +212,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             [
                 'tshirt-grey-s',
@@ -245,7 +245,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             [
                 'tshirt-grey-m',
@@ -297,7 +297,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['tshirt-grey-s']);
+        $this->assertDocument($productsFound, ['tshirt-grey-s']);
     }
 
     public function testSearchColorGreyAndSizeM()
@@ -322,7 +322,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['tshirt-grey-m', 'hat-m']);
+        $this->assertDocument($productsFound, ['tshirt-grey-m', 'hat-m']);
     }
 
     public function testSearchColorGreyAndDescriptionTshirt()
@@ -350,7 +350,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['model-tshirt-grey']);
+        $this->assertDocument($productsFound, ['model-tshirt-grey']);
     }
 
     public function testSearchMaterialCotton()
@@ -372,7 +372,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             [
                 'model-tshirt-grey',
@@ -402,7 +402,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             [
                 'model-running-shoes',
@@ -433,7 +433,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound,
+        $this->assertDocument($productsFound,
             ['running-shoes-m-white', 'biker-jacket-polyester-m', 'biker-jacket-leather-m']);
     }
 
@@ -461,7 +461,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             [
                 'model-tshirt-blue',
@@ -507,7 +507,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             [
                 'model-tshirt-red',
@@ -544,7 +544,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             [
                 'tshirt-blue-s',
@@ -589,7 +589,7 @@ class SearchProductsAndModelsIntegration extends AbstractPimCatalogProductModelI
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             [
                 'tshirt-blue-m',

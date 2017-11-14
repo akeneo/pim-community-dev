@@ -8,7 +8,7 @@ Feature: Update product history when mass editing products
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     And I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | boots |
       | family | Boots |
@@ -16,7 +16,7 @@ Feature: Update product history when mass editing products
     And I wait to be on the "boots" product page
     And I save the product
     And I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | sneakers |
       | family | Sneakers |
@@ -24,7 +24,7 @@ Feature: Update product history when mass editing products
     And I wait to be on the "sneakers" product page
     And I save the product
     And I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | sandals |
       | family | Sandals |

@@ -16,6 +16,11 @@ pim_enrich_family_rest_index:
     defaults: { _controller: pim_enrich.controller.rest.family:indexAction }
     methods: [GET]
 
+pim_enrich_family_index_get_variants:
+    path: /rest/variants
+    defaults: { _controller: pim_enrich.controller.rest.family:getWithVariantsAction }
+    methods: [GET]
+
 pim_enrich_family_rest_get:
     path: /rest/{identifier}
     defaults: { _controller: pim_enrich.controller.rest.family:getAction }

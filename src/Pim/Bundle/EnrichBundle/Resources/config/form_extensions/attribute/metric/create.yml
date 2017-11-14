@@ -22,6 +22,7 @@ extensions:
         position: 100
         config:
             fieldName: metric_family
+            label: pim_enrich.form.attribute.tab.properties.label.metric_family
             required: true
 
     pim-attribute-form-metric-create-type-specific-params-default-metric-unit:
@@ -31,6 +32,7 @@ extensions:
         position: 110
         config:
             fieldName: default_metric_unit
+            label: pim_enrich.form.attribute.tab.properties.label.default_metric_unit
             required: true
 
     pim-attribute-form-metric-create-validation-params:
@@ -51,6 +53,7 @@ extensions:
         position: 100
         config:
             fieldName: negative_allowed
+            label: pim_enrich.form.attribute.tab.properties.label.negative_allowed
             defaultValue: true
 
     pim-attribute-form-metric-create-validation-params-decimals-allowed:
@@ -60,6 +63,7 @@ extensions:
         position: 110
         config:
             fieldName: decimals_allowed
+            label: pim_enrich.form.attribute.tab.properties.label.decimals_allowed
             defaultValue: true
 
     pim-attribute-form-metric-create-validation-params-number-min:
@@ -69,6 +73,7 @@ extensions:
         position: 120
         config:
             fieldName: number_min
+            label: pim_enrich.form.attribute.tab.properties.label.number_min
 
     pim-attribute-form-metric-create-validation-params-number-max:
         module: pim/form/common/fields/text
@@ -77,3 +82,4 @@ extensions:
         position: 130
         config:
             fieldName: number_max
+            label: pim_enrich.form.attribute.tab.properties.label.number_max

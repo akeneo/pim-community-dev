@@ -53,13 +53,24 @@ extensions:
         targetZone: column-context-switcher
 
     pim-product-index-create-button:
-        module: pim/form/common/index/create-button
+        module: pim/form/common/product/create-button
         parent: pim-product-index
         targetZone: buttons
-        aclResourceId: pim_enrich_product_create
         config:
-           title:     pim_enrich.entity.product.create
-           modalForm: pim-product-create-modal
+            buttonTitle: pim_enrich.entity.product.create
+            modalTitle: pim_enrich.entity.product.modalTitle
+            subTitle: pim_enrich.entity.product.subTitle
+            choices:
+                create-product:
+                    form: pim-product-create-modal
+                    title: pim_enrich.entity.product.create_popin.type
+                    icon: icon-product
+                    aclResourceId: pim_enrich_product_create
+                create-product-model:
+                    form: pim-product-model-create-modal
+                    title: pim_enrich.entity.product_model.create_popin.type
+                    icon: icon-model
+                    aclResourceId: pim_enrich_product_model_create
 
     pim-product-index-locale-switcher:
         module: pim/grid/locale-switcher
