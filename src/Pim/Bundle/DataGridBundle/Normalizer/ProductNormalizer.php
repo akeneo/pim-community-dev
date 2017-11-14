@@ -45,6 +45,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $context = array_merge(['filter_types' => ['pim.transform.product_value.structured']], $context);
         $data = [];
         $locale = current($context['locales']);
+        $scope = current($context['channels']);
 
         $data['identifier'] = $product->getIdentifier();
         $data['family'] = $this->getFamilyLabel($product, $locale);
@@ -53,7 +54,7 @@ class ProductNormalizer implements NormalizerInterface, NormalizerAwareInterface
         $data['values'] = $this->normalizeValues($product->getValues(), $format, $context);
         $data['created'] = $this->normalizer->normalize($product->getCreated(), $format, $context);
         $data['updated'] = $this->normalizer->normalize($product->getUpdated(), $format, $context);
-        $data['label'] = $product->getLabel($locale);
+        $data['label'] = $product->getLabel($locale, $scope);
         $data['image'] = $this->normalizeImage($product->getImage(), $format, $context);
         $data['completeness'] = $this->getCompleteness($product, $context);
         $data['document_type'] = IdEncoder::PRODUCT_TYPE;

@@ -220,7 +220,8 @@ class UserContextSpec extends ObjectBehavior
         $this->toArray()->shouldReturn([
             'locales'  => ['en_US', 'fr_FR'],
             'channels' => ['mobile', 'ecommerce'],
-            'locale'   => 'fr_FR'
+            'locale'   => 'fr_FR',
+            'channel'  => 'mobile',
         ]);
     }
 }

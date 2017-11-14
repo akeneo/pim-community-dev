@@ -90,7 +90,7 @@ class ProductModelSpec extends ObjectBehavior
         $this->getCategoryCodes()->shouldReturn(['foobar']);
     }
 
-    function it_gets_the_label_of_the_product_model(
+    function it_gets_the_label_regardless_of_the_specified_scope_if_the_attribute_as_label_is_not_scopable(
         FamilyVariantInterface $familyVariant,
         FamilyInterface $family,
         AttributeInterface $attributeAsLabel,
@@ -102,6 +102,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isUnique()->willReturn(false);
+        $attributeAsLabel->isScopable()->willReturn(false);
 
         $values->toArray()->willreturn(['name-<all_channels>-fr_FR' => $nameValue]);
 
@@ -114,7 +115,44 @@ class ProductModelSpec extends ObjectBehavior
         $this->setValues($values);
         $this->setCode('shovel');
 
-        $this->getLabel('fr_FR')->shouldReturn('Petit outil agricole authentique');
+        $this->getLabel('fr_FR', 'mobile')->shouldReturn('Petit outil agricole authentique');
+    }
+
+    function it_gets_the_label_if_the_scope_is_specified_and_the_attribute_as_label_is_scopable(
+        FamilyVariantInterface $familyVariant,
+        FamilyInterface $family,
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values,
+        ValueInterface $mobileNameValue,
+        ValueInterface $ecommerceNameValue
+    ) {
+        $familyVariant->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
+        $attributeAsLabel->getCode()->willReturn('name');
+        $attributeAsLabel->isLocalizable()->willReturn(true);
+        $attributeAsLabel->isUnique()->willReturn(false);
+        $attributeAsLabel->isScopable()->willReturn(true);
+
+        $values->toArray()->willreturn([
+            'name-ecommerce-fr_FR' => $ecommerceNameValue,
+            'name-mobile-fr_FR' => $mobileNameValue,
+        ]);
+
+        $mobileNameValue->getAttribute()->willReturn($attributeAsLabel);
+        $mobileNameValue->getScope()->willReturn('mobile');
+        $mobileNameValue->getLocale()->willReturn('fr_FR');
+        $mobileNameValue->getData()->willReturn('Petite pelle');
+
+        $ecommerceNameValue->getAttribute()->willReturn($attributeAsLabel);
+        $ecommerceNameValue->getScope()->willReturn('ecommerce');
+        $ecommerceNameValue->getLocale()->willReturn('fr_FR');
+        $ecommerceNameValue->getData()->willReturn('Petit outil agricole authentique');
+
+        $this->setFamilyVariant($familyVariant);
+        $this->setValues($values);
+        $this->setCode('shovel');
+
+        $this->getLabel('fr_FR', 'mobile')->shouldReturn('Petite pelle');
     }
 
     function it_gets_the_code_as_label_if_there_is_no_attribute_as_label(
@@ -142,6 +180,7 @@ class ProductModelSpec extends ObjectBehavior
         $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
+        $attributeAsLabel->isScopable()->willReturn(false);
 
         $values->toArray()->willreturn([]);
 
@@ -164,6 +203,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(true);
         $attributeAsLabel->isUnique()->willReturn(false);
+        $attributeAsLabel->isScopable()->willReturn(false);
 
         $values->toArray()->willreturn(['name-<all_channels>-fr_FR' => $nameValue]);
 
@@ -171,6 +211,43 @@ class ProductModelSpec extends ObjectBehavior
         $nameValue->getScope()->willReturn(null);
         $nameValue->getLocale()->willReturn('fr_FR');
         $nameValue->getData()->willReturn(null);
+
+        $this->setFamilyVariant($familyVariant);
+        $this->setValues($values);
+        $this->setCode('shovel');
+
+        $this->getLabel('fr_FR')->shouldReturn('shovel');
+    }
+
+    function it_gets_the_code_as_label_if_no_scope_is_specified_but_the_attribute_as_label_is_scopable(
+        FamilyVariantInterface $familyVariant,
+        FamilyInterface $family,
+        AttributeInterface $attributeAsLabel,
+        ValueCollectionInterface $values,
+        ValueInterface $mobileNameValue,
+        ValueInterface $ecommerceNameValue
+    ) {
+        $familyVariant->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($attributeAsLabel);
+        $attributeAsLabel->getCode()->willReturn('name');
+        $attributeAsLabel->isLocalizable()->willReturn(true);
+        $attributeAsLabel->isUnique()->willReturn(false);
+        $attributeAsLabel->isScopable()->willReturn(true);
+
+        $values->toArray()->willreturn([
+            'name-ecommerce-fr_FR' => $ecommerceNameValue,
+            'name-mobile-fr_FR' => $mobileNameValue,
+        ]);
+
+        $mobileNameValue->getAttribute()->willReturn($attributeAsLabel);
+        $mobileNameValue->getScope()->willReturn('mobile');
+        $mobileNameValue->getLocale()->willReturn('fr_FR');
+        $mobileNameValue->getData()->willReturn('Petite pelle');
+
+        $ecommerceNameValue->getAttribute()->willReturn($attributeAsLabel);
+        $ecommerceNameValue->getScope()->willReturn('ecommerce');
+        $ecommerceNameValue->getLocale()->willReturn('fr_FR');
+        $ecommerceNameValue->getData()->willReturn('Petit outil agricole authentique');
 
         $this->setFamilyVariant($familyVariant);
         $this->setValues($values);
@@ -191,6 +268,7 @@ class ProductModelSpec extends ObjectBehavior
         $attributeAsLabel->getCode()->willReturn('name');
         $attributeAsLabel->isLocalizable()->willReturn(false);
         $attributeAsLabel->isUnique()->willReturn(false);
+        $attributeAsLabel->isScopable()->willReturn(false);
 
         $values->toArray()->willreturn(['name-<all_channels>-fr_FR' => $nameValue]);
 
