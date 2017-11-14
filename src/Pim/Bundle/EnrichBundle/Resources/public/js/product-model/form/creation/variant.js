@@ -27,6 +27,7 @@ function (
 ) {
     return SimpleSelectAsync.extend({
         previousFamily: null,
+        readOnly: false,
 
         /**
          * {@inheritdoc}
@@ -36,6 +37,12 @@ function (
                 this.getRoot(),
                 'pim_enrich:form:entity:post_update',
                 this.updateOnFamilyChange.bind(this)
+            );
+
+            this.listenTo(
+                this,
+                'mass-edit:update-read-only',
+                this.setReadOnly.bind(this)
             );
 
             return SimpleSelectAsync.prototype.configure.apply(this, arguments);
@@ -153,7 +160,16 @@ function (
          * {@inheritdoc}
          */
         isReadOnly() {
-            return !this.getFormData().family;
+            return this.readOnly || !this.getFormData().family;
+        },
+
+        /**
+         * Updates the readOnly parameter to avoid edition of the field
+         *
+         * @param {Boolean} readOnly
+         */
+        setReadOnly(readOnly) {
+            this.readOnly = readOnly;
         }
     });
 });

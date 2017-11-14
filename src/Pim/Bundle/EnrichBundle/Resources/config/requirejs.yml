@@ -719,6 +719,7 @@ config:
         pim/product-model-edit-form/history: pimenrich/js/product/form/history
         pim/product-model/form/creation/variant: pimenrich/js/product-model/form/creation/variant
         pim/product-model/form/product-model: pimenrich/js/product-model/form/product-model
+        pim/product-model/form/family: pimenrich/js/product-model/form/family
         pim/product-model-edit-form/add-child-form: pimenrich/js/product-model/form/add-child
         pim/product-model-edit-form/add-child-form-header: pimenrich/js/product-model/form/add-child/header
         pim/product-model-edit-form/add-child-form-fields-container: pimenrich/js/product-model/form/add-child/fields-container

@@ -108,6 +108,8 @@ define(
              */
             setReadOnly: function (readOnly) {
                 this.readOnly = readOnly;
+
+                this.triggerExtensions('mass-edit:update-read-only', this.readOnly);
             },
 
             /**

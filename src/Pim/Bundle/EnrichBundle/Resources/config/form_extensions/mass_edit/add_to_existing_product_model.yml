@@ -1,6 +1,6 @@
 extensions:
     pim-mass-product-edit-configure-add-to-existing-product-model-family:
-        module: pim/form/common/fields/simple-select-async
+        module: pim/product-model/form/family
         parent: pim-mass-product-edit-configure-add-to-existing-product-model
         targetZone: fields
         position: 20

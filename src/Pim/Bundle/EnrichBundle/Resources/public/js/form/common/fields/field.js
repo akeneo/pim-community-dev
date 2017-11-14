@@ -31,6 +31,7 @@ define([
         elements: {},
         fieldName: null,
         errors: [],
+        readOnly: false,
 
         /**
          * {@inheritdoc}
@@ -43,6 +44,7 @@ define([
             }
 
             this.fieldName = this.config.fieldName;
+            this.readOnly = this.config.readOnly || false;
             this.errors = [];
 
             BaseForm.prototype.initialize.apply(this, arguments);
@@ -185,7 +187,16 @@ define([
          * @returns {Boolean}
          */
         isReadOnly() {
-            return this.config.readOnly || false;
+            return this.readOnly;
+        },
+
+        /**
+         * Sets the param readOnly of the field
+         *
+         * @param {Boolean} readOnly
+         */
+        setReadOnly(readOnly) {
+            this.readOnly = readOnly;
         },
 
         /**
