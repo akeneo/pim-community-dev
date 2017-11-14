@@ -10,3 +10,13 @@ services:
             - '@pim_catalog.saver.product_without_permission'
             - '@pim_catalog.saver.product_without_permission'
             - '@pimee_catalog.security.applier.apply_data_on_product'
+
+    pim_catalog.saver.product_model_descendants:
+        class: '%pim_catalog.saver.product_model_descendants.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.query.product_query_builder_factory_without_permission'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.elasticsearch.indexer.product'
+            - '@pim_catalog.elasticsearch.indexer.product_model'

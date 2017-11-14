@@ -37,7 +37,7 @@ services:
     pimee_teamwork_assistant.repository.product:
         class: '%pimee_teamwork_assistant.repository.product.class%'
         arguments:
-            - '@pim_catalog.query.product_query_builder_factory.without_permission'
+            - '@pim_catalog.query.product_query_builder_factory_without_permission'
             - '@pimee_security.repository.category_access'
 
     pimee_teamwork_assistant.repository.family_requirement:
