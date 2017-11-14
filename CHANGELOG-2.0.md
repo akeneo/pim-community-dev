@@ -15,6 +15,7 @@
 - PIM-6585: Add help center link in menu
 - PIM-6833: Aligns technical requirements with documentation
 - PIM-6992: Keep category panel open
+- PIM-6986: Change the image in add variant modal
 
 # 2.0.6 (2017-11-03)
 
