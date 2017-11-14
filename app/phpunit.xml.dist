@@ -28,48 +28,7 @@
 
         <!-- Complete suite for PIM integration tests -->
         <testsuite name="PIM_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Component/*/tests/integration</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/*Bundle/tests/integration</directory>
-        </testsuite>
-
-        <!-- Set of small suites for PIM integration tests -->
-        <testsuite name="PIM_Api_Base_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Component/Api/tests/integration</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/EventSubscriber</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Security</directory>
-            <file>../src/Pim/Bundle/ApiBundle/tests/integration/Controller/RootEndpointIntegration.php</file>
-        </testsuite>
-
-        <testsuite name="PIM_Api_Bundle_Controllers_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Channel</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Locale</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Media</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Token</directory>
-        </testsuite>
-
-        <testsuite name="PIM_Api_Bundle_Controllers_Catalog_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Attribute</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/AttributeOption</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Category</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Family</directory>
-        </testsuite>
-
-        <testsuite name="PIM_Api_Bundle_Controller_Product_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Bundle/ApiBundle/tests/integration/Controller/Product</directory>
-        </testsuite>
-
-        <testsuite name="PIM_Catalog_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/Validation</directory>
-            <directory suffix="Integration.php">../src/Pim/Component/Catalog/tests/integration</directory>
-            <directory suffix="Integration.php">../src/Pim/Bundle/VersioningBundle/tests/integration</directory>
-        </testsuite>
-
-        <testsuite name="PIM_Catalog_Completeness_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/Completeness</directory>
-        </testsuite>
-
-        <testsuite name="PIM_Catalog_PQB_Integration_Test">
-            <directory suffix="Integration.php">../src/Pim/Bundle/CatalogBundle/tests/integration/PQB</directory>
+            <file></file>
         </testsuite>
 
     </testsuites>

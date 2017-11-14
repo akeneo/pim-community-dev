@@ -35,7 +35,7 @@ class CursorSpec extends ObjectBehavior
         $cursor->count()->willReturn(13);
         $cursor->getNext()->willReturn(null);
 
-        $this->shouldHaveCount(13);
+        $this->count()->shouldReturn(13);
     }
 
     function it_is_iterable($cursor)

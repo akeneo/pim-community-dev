@@ -62,7 +62,7 @@
         "box/spout": "2.5.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "5.4.*",
+        "phpunit/phpunit": "~5.7.22",
         "squizlabs/php_codesniffer": "2.*",
         "pdepend/pdepend": "2.1.*",
         "phpmd/phpmd": "1.*",
@@ -77,10 +77,13 @@
         "behat/transliterator":"1.0.1",
         "doctrine/mongodb-odm-bundle": "3.2.0",
         "sensiolabs/behat-page-object-extension": "1.0.1",
-        "phpspec/phpspec": "3.0.*",
+        "phpspec/phpspec": "~3.4.2",
+        "sebastian/exporter": "~2.0.0",
         "akeneo/phpspec-skip-example-extension": "2.0.*",
-        "akeneo/php-coupling-detector": "dev-master"
+        "akeneo/php-coupling-detector": "dev-master",
+        "liuggio/fastest": "~1.4.4"
     },
+    "include-path": ["lib/"],
     "suggest": {
         "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo",
         "akeneo/catalogs": "In order to install one of the Akeneo catalogs"

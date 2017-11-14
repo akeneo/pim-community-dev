@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class GetAccessTokenIntegration extends ApiTestCase
 {
-    public function testGetAccessToken()
+    public function testGetAccessTokenWithJsonContentType()
     {
         $client = static::createClient();
         list($clientId, $secret) = $this->createOAuthClient();
@@ -36,6 +36,67 @@ class GetAccessTokenIntegration extends ApiTestCase
         $this->assertArrayHasKey('token_type', $responseBody);
         $this->assertArrayHasKey('scope', $responseBody);
         $this->assertArrayHasKey('refresh_token', $responseBody);
+    }
+
+    public function testGetAccessTokenWithFormUrlEncodedContentType()
+    {
+        $client = static::createClient();
+        list($clientId, $secret) = $this->createOAuthClient();
+
+        $client->request('POST', 'api/oauth/v1/token',
+            [
+                'username'   => static::USERNAME,
+                'password'   => static::PASSWORD,
+                'grant_type' => 'password',
+            ],
+            [],
+            [
+                'PHP_AUTH_USER' => $clientId,
+                'PHP_AUTH_PW'   => $secret,
+                'CONTENT_TYPE'  => 'application/x-www-form-urlencoded',
+            ]
+        );
+
+        $response = $client->getResponse();
+        $responseBody = json_decode($response->getContent(), true);
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertArrayHasKey('access_token', $responseBody);
+        $this->assertArrayHasKey('expires_in', $responseBody);
+        $this->assertArrayHasKey('token_type', $responseBody);
+        $this->assertArrayHasKey('scope', $responseBody);
+        $this->assertArrayHasKey('refresh_token', $responseBody);
+    }
+
+    public function testGetAccessTokenWithBadContentType()
+    {
+        $client = static::createClient();
+        list($clientId, $secret) = $this->createOAuthClient();
+
+        $client->request('POST', 'api/oauth/v1/token',
+            [
+                'username'   => static::USERNAME,
+                'password'   => static::PASSWORD,
+                'grant_type' => 'password',
+            ],
+            [],
+            [
+                'PHP_AUTH_USER' => $clientId,
+                'PHP_AUTH_PW'   => $secret,
+                'CONTENT_TYPE'  => 'application/xml',
+            ]
+        );
+
+        $expectedContent = <<<JSON
+    {
+        "code": 415,
+        "message": "\"application\/xml\" in \"Content-Type\" header is not valid. Only \"application\/json\" or \"application\/x-www-form-urlencoded\" are allowed."
+    }
+JSON;
+
+        $response = $client->getResponse();
+        $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode());
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
     public function testMissingGrantType()
