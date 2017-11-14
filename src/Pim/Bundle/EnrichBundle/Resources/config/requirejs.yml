@@ -888,7 +888,6 @@ config:
         pim/form/common/secondary-actions:                   pimenrich/js/form/common/secondary-actions
         pim/form/common/index/confirm-button:                pimenrich/js/form/common/index/confirm-button
         pim/form/common/creation/field:                      pimenrich/js/form/common/creation/field
-        pim/form/common/creation/family:                     pimenrich/js/form/common/creation/family
         pim/form/common/creation/modal:                      pimenrich/js/form/common/creation/modal
         pim/form/common/creation/modal/client:               pimenrich/js/form/common/creation/modal/client
         pim/form/common/creation/type:                       pimenrich/js/form/common/creation/type

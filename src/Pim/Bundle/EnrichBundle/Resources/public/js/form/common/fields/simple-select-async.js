@@ -14,7 +14,8 @@ define(
         'pim/i18n',
         'pim/initselect2',
         'pim/user-context',
-        'pim/template/form/common/fields/simple-select-async'
+        'pim/template/form/common/fields/simple-select-async',
+        'routing'
     ],
     function (
         $,
@@ -24,7 +25,8 @@ define(
         i18n,
         initSelect2,
         UserContext,
-        template
+        template,
+        Routing
     ) {
         return BaseField.extend({
             events: {
@@ -44,6 +46,10 @@ define(
                 this.choiceUrl = null;
 
                 BaseField.prototype.initialize.apply(this, arguments);
+
+                if (this.config.choiceRoute) {
+                    this.setChoiceUrl(Routing.generate(this.config.choiceRoute));
+                }
             },
 
             /**
@@ -76,7 +82,7 @@ define(
                         results: this.select2Results.bind(this)
                     },
                     initSelection: this.select2InitSelection.bind(this),
-                    placeholder: ' '
+                    placeholder: this.config.placeholder ? __(this.config.placeholder) : ' '
                 };
 
                 initSelect2.init(this.$('.select2'), options);
@@ -117,7 +123,6 @@ define(
 
                     return response;
                 }
-
 
                 // The result is an array
                 if (response.isArray) {

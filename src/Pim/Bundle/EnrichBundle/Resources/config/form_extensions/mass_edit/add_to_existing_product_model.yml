@@ -1,6 +1,6 @@
 extensions:
     pim-mass-product-edit-configure-add-to-existing-product-model-family:
-        module: pim/form/common/creation/family
+        module: pim/form/common/fields/simple-select-async
         parent: pim-mass-product-edit-configure-add-to-existing-product-model
         targetZone: fields
         position: 20
@@ -8,7 +8,7 @@ extensions:
             fieldName: family
             required: true
             label: pim_enrich.entity.product.meta.family.title
-            choiceUrl: pim_enrich_family_index_get_variants
+            choiceRoute: pim_enrich_family_index_get_variants
 
     pim-mass-product-edit-configure-add-to-existing-product-model-variant:
         module: pim/product-model/form/creation/variant

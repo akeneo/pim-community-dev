@@ -22,7 +22,7 @@ extensions:
             label: pim_enrich.entity.create_popin.code
 
     pim-product-model-create-family:
-        module: pim/form/common/creation/family
+        module: pim/form/common/fields/simple-select-async
         parent: pim-product-model-create-modal
         targetZone: fields
         position: 20
@@ -30,7 +30,8 @@ extensions:
             fieldName: family
             required: true
             label: pim_enrich.entity.product.meta.family.title
-            choiceUrl: pim_enrich_family_index_get_variants
+            choiceRoute: pim_enrich_family_index_get_variants
+            placeholder: pim_enrich.entity.product.create_popin.labels.family
 
     pim-product-model-create-variant:
         module: pim/product-model/form/creation/variant
@@ -42,3 +43,4 @@ extensions:
             label: pim_enrich.form.product_model.family_variant
             required: true
             loadUrl: pim_datagrid_load
+            placeholder: pim_enrich.entity.product.create_popin.labels.family_variant

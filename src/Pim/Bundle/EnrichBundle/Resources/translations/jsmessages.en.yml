@@ -239,6 +239,7 @@ pim_enrich:
                 title: Create
                 labels:
                     family: Choose a family
+                    family_variant: Choose a family variant
                     save: Save
                     cancel: Cancel
             message:
