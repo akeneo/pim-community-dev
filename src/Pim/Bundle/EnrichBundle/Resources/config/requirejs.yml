@@ -565,6 +565,7 @@ config:
         oro/translator:                     pimenrich/js/translator
         pim/common/property:                pimenrich/js/common/property
         pim/common/select2/family:          pimenrich/js/common/select2/family
+        pim/common/form-modal-creator:      pimenrich/js/common/form-modal-creator
 
         # Security
         pim/security-context: pimenrich/js/security-context
@@ -659,7 +660,7 @@ config:
         pim/family-edit-form/add-family-variant-fields-container:           pimenrich/js/family/form/variants/add-family-variant-fields-container
 
         pim/family-variant-edit-form/edit:                                  pimenrich/js/family-variant/form/edit
-        pim/family-variant-edit-form/axes:                                  pimenrich/js/family-variant/form/axes
+        pim/family-variant-edit-form/attribute-set:                         pimenrich/js/family-variant/form/attribute-set
         pim/family-variant-edit-form/save:                                  pimenrich/js/family-variant/form/save
 
         # Exports
@@ -1049,7 +1050,7 @@ config:
         pim/template/family-variant/add-variant-form-fields-container: pimenrich/templates/family/tab/variants/add-variant-form-fields-container.html
 
         pim/template/family-variant/edit:                    pimenrich/templates/family-variant/edit.html
-        pim/template/family-variant/axes:                    pimenrich/templates/family-variant/axes.html
+        pim/template/family-variant/attribute-set:           pimenrich/templates/family-variant/attribute-set.html
         pim/template/family-variant/attribute-group:         pimenrich/templates/family-variant/attribute-group.html
 
         # Grid

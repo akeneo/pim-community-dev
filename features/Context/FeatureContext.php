@@ -87,6 +87,7 @@ class FeatureContext extends PimContext implements KernelAwareContext
         $environment = $scope->getEnvironment();
         $this->contexts['fixtures'] = $environment->getContext(FixturesContext::class);
         $this->contexts['catalogConfiguration'] = $environment->getContext(CatalogConfigurationContext::class);
+        $this->contexts['domain-family-variants'] = $environment->getContext(FamilyVariantConfigurationContext::class);
         $this->contexts['webUser'] = $environment->getContext(WebUser::class);
         $this->contexts['datagrid'] = $environment->getContext(DataGridContext::class);
         $this->contexts['command'] = $environment->getContext(CommandContext::class);
@@ -102,7 +103,6 @@ class FeatureContext extends PimContext implements KernelAwareContext
         $this->contexts['domain-tree'] = $environment->getContext(TreeContext::class);
         $this->contexts['domain-secondary-actions'] = $environment->getContext(SecondaryActionsContext::class);
         $this->contexts['domain-group'] = $environment->getContext(ProductGroupContext::class);
-        $this->contexts['domain-family-variants'] = $environment->getContext(FamilyVariantConfigurationContext::class);
         $this->contexts['hook'] = $environment->getContext(HookContext::class);
         $this->contexts['job'] = $environment->getContext(JobContext::class);
         $this->contexts['viewSelector'] = $environment->getContext(ViewSelectorContext::class);

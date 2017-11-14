@@ -87,16 +87,16 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         $attributeSetFactory->create()->willReturn($attributeSet1, $attributeSet2, $commonAttributeSet);
 
         $familyVariant->addVariantAttributeSet($attributeSet1)->shouldBeCalled();
-        $attributeSet1->setAxes([$color])->shouldBeCalled();
         $attributeSet1->setAttributes([$description])->shouldBeCalled();
+        $attributeSet1->setAxes([$color])->shouldBeCalled();
         $attributeSet1->setLevel(1)->shouldBeCalled();
         $attributeSet1->getAxes()->willReturn($axes1);
         $axes1->isEmpty()->willReturn(true);
         $axes1->map(Argument::any())->shouldNotBeCalled();
 
         $familyVariant->addVariantAttributeSet($attributeSet2)->shouldBeCalled();
-        $attributeSet2->setAxes([$size, $other])->shouldBeCalled();
         $attributeSet2->setAttributes([$size, $sku])->shouldBeCalled();
+        $attributeSet2->setAxes([$size, $other])->shouldBeCalled();
         $attributeSet2->setLevel(2)->shouldBeCalled();
         $attributeSet2->getAxes()->willReturn($axes2);
         $axes2->isEmpty()->willReturn(true);
@@ -173,8 +173,8 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         $axes1->map(Argument::any())->willReturn($axisCodes1);
         $axisCodes1->toArray()->willReturn(['color']);
 
-        $attributeSet1->setAxes([$color])->shouldBeCalled();
         $attributeSet1->setAttributes([$description])->shouldBeCalled();
+        $attributeSet1->setAxes([$color])->shouldBeCalled();
         $attributeSet1->setLevel(Argument::any())->shouldNotBeCalled();
         $attributeSet1->getAxes()->willReturn($axes1);
         $attributeSet1->getAttributes()->willReturn($attributes1);
@@ -183,8 +183,8 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         $axes2->isEmpty()->willReturn(false);
         $axes2->map(Argument::any())->willReturn($axisCodes2);
         $axisCodes2->toArray()->willReturn(['size', 'other']);
-
         $attributeSet2->setAxes([$size, $other])->shouldBeCalled();
+
         $attributeSet2->setAttributes([$size, $sku])->shouldBeCalled();
         $attributeSet2->setLevel(Argument::any())->shouldNotBeCalled();
         $familyVariant->addVariantAttributeSet(Argument::any())->shouldNotBeCalled();

@@ -15,8 +15,8 @@ extensions:
         config:
             entity: pim_enrich.entity.family_variant.title
 
-    pim-family-variant-edit-form-axes:
-        module: pim/family-variant-edit-form/axes
+    pim-family-variant-edit-form-attribute-set:
+        module: pim/family-variant-edit-form/attribute-set
         parent: pim-family-variant-edit-form
         targetZone: content
         position: 100

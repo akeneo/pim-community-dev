@@ -183,17 +183,13 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                         $familyVariant->addVariantAttributeSet($attributeSet);
                     }
 
-                    if (isset($attributeSetData['axes']) && $isNew) {
+                    if (isset($attributeSetData['axes'])) {
                         $attributeSet->setAxes(
                             $this->getAttributes($attributeSetData['axes'], $attributeSetData['level'])
                         );
                     }
 
                     if (isset($attributeSetData['attributes'])) {
-                        if (!$isNew) {
-                            $this->removeAttributeFromPreviousLevel($familyVariant, $attributeSetData);
-                        }
-
                         $attributeSet->setAttributes(
                             $this->getAttributes($attributeSetData['attributes'], $attributeSetData['level'])
                         );

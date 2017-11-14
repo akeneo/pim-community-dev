@@ -102,25 +102,7 @@ class FamilyVariantController
         $familyVariant = $this->familyVariantFactory->create();
         $content = json_decode($request->getContent(), true);
 
-        $this->updater->update($familyVariant, $content);
-        $violations = $this->validator->validate($familyVariant);
-
-        $normalizedViolations = [];
-        foreach ($violations as $violation) {
-            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                $violation,
-                'internal_api',
-                ['family_variant' => $familyVariant]
-            );
-        }
-
-        if (count($normalizedViolations) > 0) {
-            return new JsonResponse($normalizedViolations, 400);
-        }
-
-        $this->saver->save($familyVariant);
-
-        return new JsonResponse();
+        return $this->saveFamilyVariant($familyVariant, $content);
     }
 
     /**
@@ -134,30 +116,7 @@ class FamilyVariantController
         $familyVariant = $this->getFamilyVariant($identifier);
         $content = json_decode($request->getContent(), true);
 
-        $this->updater->update($familyVariant, $content);
-        $violations = $this->validator->validate($familyVariant);
-
-        $normalizedViolations = [];
-        foreach ($violations as $violation) {
-            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
-                $violation,
-                'internal_api',
-                ['family_variant' => $familyVariant]
-            );
-        }
-
-        if (count($normalizedViolations) > 0) {
-            return new JsonResponse($normalizedViolations, 400);
-        }
-
-        $this->saver->save($familyVariant);
-
-        return new JsonResponse(
-            $this->normalizer->normalize(
-                $familyVariant,
-                'internal_api'
-            )
-        );
+        return $this->saveFamilyVariant($familyVariant, $content);
     }
 
     /**
@@ -180,5 +139,41 @@ class FamilyVariantController
         }
 
         return $familyVariant;
+    }
+
+    /**
+     * Handle the save action for the family variant entity
+     *
+     * @param FamilyVariantInterface $familyVariant
+     * @param array                  $content
+     *
+     * @return JsonResponse
+     */
+    protected function saveFamilyVariant(FamilyVariantInterface $familyVariant, array $content): JsonResponse
+    {
+        $this->updater->update($familyVariant, $content);
+        $violations = $this->validator->validate($familyVariant);
+
+        $normalizedViolations = [];
+        foreach ($violations as $violation) {
+            $normalizedViolations[] = $this->constraintViolationNormalizer->normalize(
+                $violation,
+                'internal_api',
+                ['family_variant' => $familyVariant]
+            );
+        }
+
+        if (count($violations) > 0) {
+            return new JsonResponse($normalizedViolations, 400);
+        }
+
+        $this->saver->save($familyVariant);
+
+        return new JsonResponse(
+            $this->normalizer->normalize(
+                $familyVariant,
+                'internal_api'
+            )
+        );
     }
 }

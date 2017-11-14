@@ -347,13 +347,16 @@ pim_enrich:
             message:
                 created: Family successfully created
             variant:
+                common:
+                    title: Common attributes
+                    empty: There is no common attributes
                 axis.label: Variant axis
                 level_1.label: Variant attributes level one
                 level_2.label: Variant attributes level two
                 add_variant: Add variant
                 create_label: Create a new family variant
                 create_description: In a family variant, you can define a structure for products with variants. Choose the number of managed variant levels, the attributes used as variant axes for each level, and then define how the attributes are distributed.
-                update_description: You can distribute the attributes of the family between the common attributes and specific attributes for a variant level. To distribute the attributes, you can search in the common attributes and you can drag & drop an attribute or an attribute group in the variant attributes of a level.
+                update_description: Drag & drop attributes to the selected variant level to have these attributes managed at the variant level.
                 create: Create
                 cancel: Cancel
                 code: Code
@@ -361,6 +364,12 @@ pim_enrich:
                 levels: Variant levels
                 axis_level: Variant axis level
                 required: required
+                confirm_attribute_removal:
+                    title: Confirm remove of attributes
+                    message: By removing these attributes you will put them back in the common attributes of the family variant and remove the values from the variant products
+        family_variant:
+            info:
+                update_successful: Family variant successfully updated. The products with variants will be updated with your changes.
         attribute_option:
             code: Code
             label: Label

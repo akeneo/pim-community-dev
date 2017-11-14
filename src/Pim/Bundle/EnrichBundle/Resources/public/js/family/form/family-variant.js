@@ -7,6 +7,7 @@ define([
         'pim/common/grid',
         'oro/translator',
         'pim/user-context',
+        'pim/common/form-modal-creator',
         'pim/template/family/tab/family-variant'
     ],
     function (
@@ -16,6 +17,7 @@ define([
         Grid,
         __,
         UserContext,
+        formModalCreator,
         template
     ) {
         return BaseForm.extend({
@@ -42,9 +44,15 @@ define([
                     label: __(this.config.title)
                 });
 
-                this.listenTo(this.getRoot(), 'pim_enrich.entity.family.family_variant.post_create', () => {
-                    mediator.trigger('datagrid:doRefresh:' + this.config.gridName);
-                })
+                this.listenTo(
+                    this.getRoot(),
+                    'pim_enrich.entity.family.family_variant.post_create',
+                    (familyVariant) => {
+                        mediator.trigger(`datagrid:doRefresh:${this.config.gridName}`);
+
+                        formModalCreator.createModal(familyVariant.code, 'family-variant');
+                    }
+                );
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

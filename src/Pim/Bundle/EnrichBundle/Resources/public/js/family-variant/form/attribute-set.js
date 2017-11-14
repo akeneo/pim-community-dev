@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Family variant axes form
+ * Family variant attribute set form
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -15,7 +15,8 @@ define([
         'pim/i18n',
         'pim/user-context',
         'pim/fetcher-registry',
-        'pim/template/family-variant/axes',
+        'pim/dialog',
+        'pim/template/family-variant/attribute-set',
         'pim/template/family-variant/attribute-group'
     ],
     function (
@@ -26,6 +27,7 @@ define([
         i18n,
         UserContext,
         fetcherRegistry,
+        Dialog,
         template,
         attributeGroupTemplate
     ) {
@@ -90,7 +92,7 @@ define([
                             );
                         const attributeCodes = axesAttributeCodes.concat(
                             family.attributes.map(attribute => attribute.code)
-                        );
+                        ).filter((code, index, codes) => codes.indexOf(code) === index);
 
                         return $.when(
                             fetcherRegistry.getFetcher('attribute-group').fetchAll(),
@@ -104,7 +106,7 @@ define([
                             .map(attribute => attribute.code)
                             .filter(attributeCode => axesAttributeCodes.indexOf(attributeCode) === -1);
 
-                        const axisAttributes = familyVariant
+                        const axesAttributes = familyVariant
                             .variant_attribute_sets
                             .map(set => set.axes)
                             .reduce((allAxes, axes) => allAxes.concat(axes));
@@ -112,7 +114,7 @@ define([
                         const lockedAttributes = family.attributes
                             .filter(attribute => {
                                 const isUnique = attribute.unique;
-                                const isAxis = axisAttributes.includes(attribute.code);
+                                const isAxis = axesAttributes.includes(attribute.code);
 
                                 return isAxis || isUnique;
                             })
@@ -120,7 +122,7 @@ define([
 
                         this.$el.empty().append(this.template({
                             lockedAttributes,
-                            axisAttributes,
+                            axesAttributes,
                             familyVariant,
                             attributeGroups,
                             family,
@@ -130,15 +132,24 @@ define([
                             __,
                             groupAttributes: groupAttributes(attributes, attributeGroups),
                             getAttribute: getAttribute(attributes),
-                            renderSection: (level, attributes) => {
-                                return this.attributeGroupTemplate({lockedAttributes, level, attributes, i18n, UserContext, __, axisAttributes});
+                            renderSection: (level, attributes, movable) => {
+                                return this.attributeGroupTemplate({
+                                    lockedAttributes,
+                                    level,
+                                    movable,
+                                    attributes,
+                                    i18n,
+                                    UserContext,
+                                    __,
+                                    axesAttributes
+                                });
                             }
                         }));
 
                         this.$(
-                            '#attributes-column-level-0,' +
-                            '#attributes-column-level-1,' +
-                            '#attributes-column-level-2'
+                            `#attributes-column-level-0,
+                            #attributes-column-level-1,
+                            #attributes-column-level-2`
                         )
                         .sortable({
                             connectWith: '.connected-sortable',
@@ -151,9 +162,9 @@ define([
                         }).disableSelection();
 
                         this.$(
-                            '#attribute-groups-column-level-0,' +
-                            '#attribute-groups-column-level-1,' +
-                            '#attribute-groups-column-level-2'
+                            `#attribute-groups-column-level-0,
+                            #attribute-groups-column-level-1,
+                            #attribute-groups-column-level-2`
                         )
                         .sortable({
                             connectWith: '.connected-group-sortable',
@@ -172,13 +183,21 @@ define([
                 return this;
             },
 
+            /**
+             * Handle single attribute drop on a landing zone
+             *
+             * @param {Array} lockedAttributes
+             *
+             * @return {Function}
+             */
             moveAttribute(lockedAttributes) {
                 return (event, ui) => {
                     const originLevel = parseInt(ui.sender[0].dataset.level);
                     const destinationLevel = parseInt(ui.item[0].parentNode.dataset.level);
-                    const movedAttributes = [ui.item[0].dataset.attributeCode];
+                    const movedAttributes = [ui.item[0].dataset.attributeCode]
+                        .filter(movedAttribute => !lockedAttributes.includes(movedAttribute));
 
-                    this.handleAttributesDrop(
+                    this.handleAttributesMove(
                         originLevel,
                         destinationLevel,
                         movedAttributes
@@ -186,6 +205,13 @@ define([
                 }
             },
 
+            /**
+             * Handle multiple attributes drop on a landing zone
+             *
+             * @param {Array} lockedAttributes
+             *
+             * @return {Function}
+             */
             moveAttributes(lockedAttributes) {
                 return (event, ui) => {
                     const destinationLevel = parseInt(ui.item[0].parentNode.dataset.level);
@@ -194,7 +220,7 @@ define([
                         domElement => domElement.dataset.attributeCode
                     ).filter(movedAttribute => !lockedAttributes.includes(movedAttribute));
 
-                    this.handleAttributesDrop(
+                    this.handleAttributesMove(
                         originLevel,
                         destinationLevel,
                         movedAttributes
@@ -202,6 +228,11 @@ define([
                 }
             },
 
+            /**
+             * Handle click on single attribute removal
+             *
+             * @param {Event} event
+             */
             removeAttributeFromVariantAttributeSet(event) {
                 const $attributeToRemove = $(event.currentTarget.parentElement);
                 const variantAttributeSetLevel = $attributeToRemove.closest('[data-level]').data('level');
@@ -210,16 +241,28 @@ define([
                 this.handleAttributesRemoval(variantAttributeSetLevel, removedAttributes);
             },
 
+            /**
+             * Handle click on attribute group removal
+             *
+             * @param {Event} event
+             */
             removeAttributeGroupFromVariantAttributeSet(event) {
                 const $attributeGroupToRemove = $(event.currentTarget).parents('.attribute-group-section');
                 const variantAttributeSetLevel = $attributeGroupToRemove.parent().data('level');
-                const removedAttributes = $attributeGroupToRemove.find('.attribute.movable').toArray()
+                const removedAttributes = $attributeGroupToRemove.find('.attribute.deletable').toArray()
                     .map(element => element.dataset.attributeCode);
 
                 this.handleAttributesRemoval(variantAttributeSetLevel, removedAttributes);
             },
 
-            handleAttributesDrop(originLevel, destinationLevel, movedAttributes) {
+            /**
+             * Handle multiple attribute move
+             *
+             * @param {Number} originLevel
+             * @param {Number} destinationLevel
+             * @param {Array} movedAttributes
+             */
+            handleAttributesMove(originLevel, destinationLevel, movedAttributes) {
                 if (originLevel >= destinationLevel) {
                     this.render();
 
@@ -227,7 +270,7 @@ define([
                 }
 
                 const data = this.getFormData();
-                data.variant_attribute_sets.map((attributeSet) => {
+                data.variant_attribute_sets.forEach((attributeSet) => {
                     if (attributeSet.level === originLevel) {
                         attributeSet.attributes = attributeSet.attributes.filter(
                             attributeCode => movedAttributes.indexOf(attributeCode) === -1
@@ -246,16 +289,33 @@ define([
                 this.render();
             },
 
+            /**
+             * Handle multiple attribute remove
+             *
+             * @param {Number} level
+             * @param {Array} removedAttributes
+             */
             handleAttributesRemoval(level, removedAttributes) {
-                var data = this.getFormData();
-                data.variant_attribute_sets.map((attributeSet) => {
-                    if (attributeSet.level === level) {
-                        attributeSet.attributes = attributeSet.attributes.filter(item => -1 === removedAttributes.indexOf(item));
-                    }
-                });
+                Dialog.confirm(
+                    __('pim_enrich.entity.family.variant.confirm_attribute_removal.message'),
+                    __('pim_enrich.entity.family.variant.confirm_attribute_removal.title'),
+                    () => {
+                        var data = this.getFormData();
+                        data.variant_attribute_sets.forEach((attributeSet) => {
+                            if (attributeSet.level === level) {
+                                attributeSet.attributes = attributeSet.attributes.filter(
+                                    item => -1 === removedAttributes.indexOf(item)
+                                );
+                            }
+                        });
 
-                this.setData(data);
-                this.render();
+                        this.setData(data);
+                        this.render();
+                    },
+                    null,
+                    null,
+                    null,
+                    'families');
             }
         });
     }

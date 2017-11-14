@@ -68,12 +68,12 @@ define(
              */
             submitForm(formModal) {
                 return formModal.saveFamilyVariant()
-                    .then(() => {
+                    .then((familyVariant) => {
                         messenger.notify(
                             'success',
                             _.__('pim_enrich.form.family.tab.variant.flash.family_variant_created')
                         );
-                        this.getRoot().trigger('pim_enrich.entity.family.family_variant.post_create');
+                        this.getRoot().trigger('pim_enrich.entity.family.family_variant.post_create', familyVariant);
                     });
             }
         });

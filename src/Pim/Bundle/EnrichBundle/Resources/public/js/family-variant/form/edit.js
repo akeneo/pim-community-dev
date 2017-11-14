@@ -44,7 +44,7 @@ define([
                     familyVariant: this.getFormData(),
                     __: __,
                     i18n,
-                    userContext,
+                    userContext
                 }));
 
                 this.renderExtensions();
