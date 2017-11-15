@@ -28,6 +28,7 @@
 - PIM-6948: Use search after method for products and product models indexing instead of offset limit
 - PIM-6922: Fix sort order on attribute groups
 - PIM-6880: Remove the old variation asset icon
+- PIM-6914: Default UI locale for a new user is en_US but fix display of saved UI locale for user
 
 ## Improvements
 
@@ -46,10 +47,6 @@
 ## Update jobs
 
 IMPORTANT: In order to use the new quick exports, please execute `bin/console doctrine:migrations:migrate` to migrate your configurations.
-
-## Bug fixes
-
-- PIM-6914: Default UI locale for a new user is en_US but fix display of saved UI locale for user
 
 # 2.0.5 (2017-10-26)
 
