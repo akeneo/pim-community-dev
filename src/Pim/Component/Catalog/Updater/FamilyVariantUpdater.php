@@ -96,6 +96,17 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                     throw InvalidPropertyTypeException::arrayExpected($field, static::class, $value);
                 }
 
+                foreach ($value as $label) {
+                    if (null !== $label && !is_scalar($label)) {
+                        throw InvalidPropertyTypeException::validArrayStructureExpected(
+                            $field,
+                            sprintf('one of the %s is not a scalar', $field),
+                            static::class,
+                            $label
+                        );
+                    }
+                }
+
                 $this->translationUpdater->update($familyVariant, $value);
                 break;
             case 'family':
@@ -119,10 +130,11 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                 if (null !== $familyVariant->getId() &&
                     $familyVariant->getNumberOfLevel() < $this->getNumberOfLevel($value)
                 ) {
-                    throw ImmutablePropertyException::immutableProperty(
-                        'number of attribute sets',
-                        sprintf('%d attribute sets', count($value)),
-                        static::class
+                    throw new ImmutablePropertyException(
+                        'variant_attribute_sets',
+                        $this->getNumberOfLevel($value),
+                        static::class,
+                        'The number of variant attribute sets cannot be changed.'
                     );
                 }
 

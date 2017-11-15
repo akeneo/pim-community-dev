@@ -46,10 +46,11 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
             $this->validateVariantAttributeSets($data['variant_attribute_sets']);
 
             if (null !== $familyVariant->getId() && $familyVariant->getNumberOfLevel() !== count($data['variant_attribute_sets'])) {
-                throw ImmutablePropertyException::immutableProperty(
-                    'number of attribute sets',
-                    sprintf('%d attribute sets', count($data['variant_attribute_sets'])),
-                    static::class
+                throw new ImmutablePropertyException(
+                    'variant_attribute_sets',
+                    count($data['variant_attribute_sets']),
+                    static::class,
+                    'The number of variant attribute sets cannot be changed.'
                 );
             }
         }

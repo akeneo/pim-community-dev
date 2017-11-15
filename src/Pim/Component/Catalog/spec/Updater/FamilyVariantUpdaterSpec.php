@@ -271,6 +271,16 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         ]);
     }
 
+    function it_throws_an_exception_if_labels_are_not_an_array_of_array(FamilyVariantInterface $familyVariant)
+    {
+        $this->shouldThrow(InvalidPropertyTypeException::class)->during('update', [
+            $familyVariant,
+            [
+                'labels' => ['fr_FR' => []],
+            ],
+        ]);
+    }
+
     function it_throws_an_exception_if_variant_attribute_sets_are_not_an_array(FamilyVariantInterface $familyVariant)
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)->during('update', [
