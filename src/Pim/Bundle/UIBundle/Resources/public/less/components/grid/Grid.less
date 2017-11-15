@@ -247,4 +247,45 @@
       margin-right: 4px;
     }
   }
+
+  &-bodyRow--thumbnail {
+    border: 1px @AknBorderColor solid;
+    height: 280px;
+    overflow: hidden;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+
+    td {
+      border-color: white;
+    }
+
+    .AknGrid-image {
+      order: -1;
+      background-size: 100%;
+    }
+
+    .AknBadge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+
+    .AknGrid-bodyCell--checkbox {
+      align-self: start;
+      background: none;
+    }
+  }
+
+  &--thumbnailView > tbody {
+    margin-left: 40px;
+    margin-top: 20px;
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr) ) ;
+  }
 }

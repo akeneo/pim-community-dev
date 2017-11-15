@@ -48,7 +48,6 @@ define(
          * @extends BaseForm
          */
         var ConfigureColumnsAction = BaseForm.extend({
-
             locale: null,
 
             label: __('pim_datagrid.column_configurator.label'),
@@ -71,7 +70,7 @@ define(
             initialize: function () {
                 mediator.once('grid_load:start', this.setupOptions.bind(this));
 
-                 BaseForm.prototype.initialize.apply(this, arguments);
+                BaseForm.prototype.initialize.apply(this, arguments);
             },
 
             /**

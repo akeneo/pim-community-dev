@@ -85,6 +85,8 @@ define(
                     );
                 }
 
+                // resp.metadata = this.applyDisplayType(resp.metadata, 'thumbnail');
+
                 $(`#grid-${gridName}`).data({
                     metadata: resp.metadata,
                     data: JSON.parse(resp.data)
@@ -98,6 +100,35 @@ define(
 
                 this.loadingMask.hide();
             },
+
+            /**
+             * Gets the allowed display types from the datagrid config and applies them
+             * The allowed options are:
+             * rowTemplate: The module to display a row
+             * enabledColumns: The columns to display for this view
+             * gridModifier: A CSS class modifier for the grid table
+             * displayHeader: An option to hide or show the column header
+             *
+             * @param  {Object} gridMetadata
+             * @param  {Object} selectedType
+             * @return {Object}
+             */
+            // applyDisplayType(gridMetadata, selectedType) {
+            //     const metadata = _.clone(gridMetadata);
+            //     const displayTypes = metadata.options.displayTypes;
+            //     const displayType = displayTypes[selectedType];
+            //     if (!displayType) return metadata;
+
+            //     metadata.columns = metadata.columns.filter(column => {
+            //         return displayType.enabledColumns.includes(column.name);
+            //     });
+
+            //     metadata.options.rowView = displayType.rowTemplate;
+            //     metadata.options.gridModifier = displayType.gridModifier;
+            //     metadata.options.displayHeader = displayType.displayHeader;
+
+            //     return metadata;
+            // },
 
             /**
              * Get the initial grid params with locale

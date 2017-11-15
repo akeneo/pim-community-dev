@@ -142,6 +142,11 @@ extensions:
         parent: pim-product-index-grid-container
         targetZone: toolbar
 
+    pim-product-index-display-selector:
+        module: pim/datagrid/display-selector
+        parent: pim-product-index-grid-container
+        targetZone: toolbar
+
     pim-product-index-grid:
         module: pim/grid/table
         parent: pim-product-index-grid-container

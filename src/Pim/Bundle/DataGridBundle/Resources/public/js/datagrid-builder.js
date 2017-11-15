@@ -155,7 +155,7 @@ define([
 
                 // columns
                 columns = _.map(metadata.columns, function (cell) {
-                    var cellOptionKeys = ['name', 'label', 'renderable', 'editable', 'sortable'],
+                    var cellOptionKeys = ['name', 'label', 'renderable', 'editable', 'sortable', 'display_thumbnail'],
                         cellOptions = _.extend({}, defaultOptions, _.pick.apply(null, [cell].concat(cellOptionKeys))),
                         extendOptions = _.omit.apply(null, [cell].concat(cellOptionKeys.concat('type'))),
                         cellType = modules[helpers.cellType(cell.type)];
@@ -187,7 +187,9 @@ define([
                     toolbarOptions: metadata.options.toolbarOptions || {},
                     multipleSorting: metadata.options.multipleSorting || false,
                     entityHint: metadata.options.entityHint,
-                    row: metadata.options.rowView ? requireContext(metadata.options.rowView) : null
+                    row: metadata.options.rowView ? requireContext(metadata.options.rowView) : null,
+                    gridModifier: metadata.options.gridModifier,
+                    displayHeader: metadata.options.displayHeader
                 };
             },
 
