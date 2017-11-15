@@ -15,7 +15,9 @@ define(
         'pim/form/common/fields/simple-select-async',
         'pim/router',
         'pim/user-context',
-        'pim/fetcher-registry'
+        'pim/fetcher-registry',
+        'pim/media-url-generator',
+        'pim/template/product/form/variant-navigation/product-model-item'
     ],
     function (
         $,
@@ -24,11 +26,14 @@ define(
         SimpleSelectAsync,
         Routing,
         UserContext,
-        FetcherRegistry
+        FetcherRegistry,
+        MediaUrlGenerator,
+        templateProductModel
     ) {
         return SimpleSelectAsync.extend({
             previousFamilyVariant: null,
             readOnly: false,
+            templateProductModel: _.template(templateProductModel),
 
             /**
              * {@inheritdoc}
@@ -64,6 +69,28 @@ define(
             /**
              * {@inheritdoc}
              */
+            getSelect2Options() {
+                let options = SimpleSelectAsync.prototype.getSelect2Options.apply(this, arguments);
+
+                options.dropdownCssClass = 'variant-navigation';
+                options.formatResult = (item, $container) => {
+                    const filePath = (null !== item.image) ? item.image.filePath : null;
+                    const entity = {
+                        label: item.text,
+                        image: MediaUrlGenerator.getMediaShowUrl(filePath, 'thumbnail_small')
+                    };
+
+                    $container.append(
+                        this.templateProductModel({entity: entity, getClass: this.getCompletenessBadgeClass})
+                    );
+                };
+
+                return options;
+            },
+
+            /**
+             * {@inheritdoc}
+             */
             select2Data() {
                 let result = SimpleSelectAsync.prototype.select2Data.apply(this, arguments);
                 result.options.family_variant = this.getFormData().family_variant;
@@ -77,7 +104,8 @@ define(
             convertBackendItem(item) {
                 return {
                     id: item.code,
-                    text: item.meta.label[UserContext.get('uiLocale')]
+                    text: item.code + ' - ' + item.meta.label[UserContext.get('uiLocale')],
+                    image: item.meta.image || null
                 };
             },
 

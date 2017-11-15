@@ -74,7 +74,16 @@ define(
              * {@inheritdoc}
              */
             postRender() {
-                const options = {
+                initSelect2.init(this.$('.select2'), this.getSelect2Options());
+            },
+
+            /**
+             * Returns the options for Select2 library
+             *
+             * @returns {Object}
+             */
+            getSelect2Options() {
+                return {
                     ajax: {
                         url: this.choiceUrl,
                         cache: true,
@@ -84,8 +93,6 @@ define(
                     initSelection: this.select2InitSelection.bind(this),
                     placeholder: this.config.placeholder ? __(this.config.placeholder) : ' '
                 };
-
-                initSelect2.init(this.$('.select2'), options);
             },
 
             /**
