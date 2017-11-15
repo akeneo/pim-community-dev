@@ -68,7 +68,7 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
     private function validateVariantAttributeSets(array $variantAttributeSets): void
     {
         foreach ($variantAttributeSets as $variantAttributeSet) {
-            if (!array_key_exists('level', $variantAttributeSet)) {
+            if (is_array($variantAttributeSet) && !array_key_exists('level', $variantAttributeSet)) {
                 throw MandatoryPropertyException::mandatoryProperty('level', static::class);
             }
         }

@@ -291,6 +291,17 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         ]);
     }
 
+    function it_throws_an_exception_if_variant_attribute_sets_are_not_an_array_of_array(
+        FamilyVariantInterface $familyVariant
+    ) {
+        $this->shouldThrow(InvalidPropertyTypeException::class)->during('update', [
+            $familyVariant,
+            [
+                'variant_attribute_sets' => ['foo'],
+            ],
+        ]);
+    }
+
     function it_throws_an_exception_if_the_given_object_is_not_a_family_variant(ChannelInterface $channel)
     {
         $this->shouldThrow(InvalidObjectException::class)->during('update', [$channel, []]);

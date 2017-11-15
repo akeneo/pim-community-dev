@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Api\Updater;
 
 use Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Exception\MandatoryPropertyException;
 use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -147,5 +148,18 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         $this
             ->shouldThrow(PropertyException::class)
             ->during('update', [$familyVariant, $data, $options]);
+    }
+
+    function it_does_not_throw_exception_if_attribute_sets_is_not_an_array_of_array(
+        FamilyVariantInterface $familyVariant
+    ) {
+
+        $data = [
+            'variant_attribute_sets' => ['foo'],
+        ];
+
+        $this
+            ->shouldNotThrow(\Exception::class)
+            ->during('update', [$familyVariant, $data]);
     }
 }
