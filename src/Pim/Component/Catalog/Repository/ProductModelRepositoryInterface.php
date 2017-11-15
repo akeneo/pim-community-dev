@@ -98,12 +98,14 @@ interface ProductModelRepositoryInterface extends
      * @param FamilyVariantInterface $familyVariant
      * @param String                 $search
      * @param int                    $limit
+     * @param int                    $page
      *
      * @return array
      */
     public function getFamilyLeafProductModels(
         FamilyVariantInterface $familyVariant,
         String $search,
-        int $limit
+        int $limit,
+        int $page = 0
     ): array;
 }

@@ -307,6 +307,7 @@ class ProductModelController
         $search = $request->query->get('search');
         $options = $request->query->get('options');
         $familyVariantCode = $options['family_variant'];
+        $page = intval($options['page']) - 1;
         $familyVariant = $this->familyVariantRepository->findOneByIdentifier($familyVariantCode);
         if (null === $familyVariant) {
             throw new \InvalidArgumentException(sprintf('Unknown family variant code "%s"', $familyVariantCode));
@@ -315,7 +316,8 @@ class ProductModelController
         $productModels = $this->productModelRepository->getFamilyLeafProductModels(
             $familyVariant,
             $search,
-            self::PRODUCT_MODELS_LIMIT
+            self::PRODUCT_MODELS_LIMIT,
+            $page
         );
 
         $normalizedProductModels = [];
