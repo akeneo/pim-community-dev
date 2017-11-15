@@ -147,9 +147,9 @@ class UpdateFamilyVariantIntegration extends TestCase
     }
 
     /**
-     * Validation: Family variant axes cannot be updated
+     * Validation: Family variant axes cannot be updated when adding attributes
      */
-    public function testTheFamilyVariantAxesImmutability()
+    public function testTheFamilyVariantAxesImmutabilityByAddingAxes()
     {
         $familyVariant = $this->getFamilyVariant('shoes_size');
 
@@ -168,7 +168,32 @@ class UpdateFamilyVariantIntegration extends TestCase
 
         $errors = $this->validateFamilyVariant($familyVariant);
         $this->assertEquals(1, $errors->count());
-        $this->assertEquals('This property cannot be changed.', $errors->get(0)->getMessage());
+        $this->assertEquals('Variant axes cannot be modified for the level "1"', $errors->get(0)->getMessage());
+        $this->assertEquals('variantAttributeSets[0].axes', $errors->get(0)->getPropertyPath());
+    }
+
+    /**
+     * Validation: Family variant axes cannot be updated when deleting one of the attribute in the axes
+     */
+    public function testTheFamilyVariantAxesImmutabilityByDeletingAxes()
+    {
+        $familyVariant = $this->getFamilyVariant('clothing_colorsize');
+
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'variant_attribute_sets' => [
+                    [
+                        'axes' => ['color'],
+                        'level' => 1,
+                    ],
+                ],
+            ]
+        );
+
+        $errors = $this->validateFamilyVariant($familyVariant);
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals('Variant axes cannot be modified for the level "1"', $errors->get(0)->getMessage());
         $this->assertEquals('variantAttributeSets[0].axes', $errors->get(0)->getPropertyPath());
     }
 

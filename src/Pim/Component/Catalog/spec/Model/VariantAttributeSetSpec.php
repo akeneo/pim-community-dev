@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\VariantAttributeSet;
@@ -60,6 +61,34 @@ class VariantAttributeSetSpec extends ObjectBehavior
         $this->setAttributes([$attribute1, $attribute2]);
         $this->setAxes([$axis1, $axis2]);
         $this->getAttributes()->toArray()->shouldReturn([$attribute1, $attribute2, $axis1, $axis2]);
+    }
+
+    function it_removes_axes_in_attributes_when_updating_axes(
+        AttributeInterface $attribute1,
+        AttributeInterface $attribute2,
+        AttributeInterface $axis1,
+        AttributeInterface $axis2,
+        AttributeInterface $axis3,
+        AttributeInterface $axis4
+    ) {
+        $attribute1->getCode()->willReturn('attribute_1');
+        $attribute2->getCode()->willReturn('attribute_2');
+        $axis1->getCode()->willReturn('axis_1');
+        $axis2->getCode()->willReturn('axis_2');
+        $axis3->getCode()->willReturn('axis_3');
+        $axis4->getCode()->willReturn('axis_4');
+
+        $this->setAttributes([$attribute1, $attribute2]);
+        $this->setAxes([$axis1, $axis2]);
+        $this->getAttributes()->toArray()->shouldReturn([$attribute1, $attribute2, $axis1, $axis2]);
+
+        $this->setAxes([$axis3, $axis4]);
+
+        $this->getAttributes()->toArray()->shouldHaveCount(4);
+        $this->getAttributes()->toArray()->shouldContain($attribute1);
+        $this->getAttributes()->toArray()->shouldContain($attribute2);
+        $this->getAttributes()->toArray()->shouldContain($axis3);
+        $this->getAttributes()->toArray()->shouldContain($axis4);
     }
 
     function it_does_not_add_attribute_when_adding_axis_with_same_code(
