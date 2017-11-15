@@ -79,6 +79,7 @@ define(
                     previousLabel: __('pim_enrich.mass_edit.previous'),
                     nextLabel: __('pim_enrich.mass_edit.next'),
                     confirmLabel: __('pim_enrich.mass_edit.confirm'),
+                    illustrationClass: step.getIllustrationClass(),
                     __: __
                 }));
 

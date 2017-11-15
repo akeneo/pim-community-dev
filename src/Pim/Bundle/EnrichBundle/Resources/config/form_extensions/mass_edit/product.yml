@@ -29,6 +29,7 @@ extensions:
             code: edit_common
             jobInstanceCode: edit_common_attributes
             icon: icon-edit
+            illustration: attributes
 
     pim-mass-product-edit-configure-change-family:
         module: pim/mass-edit-form/product/change-family
@@ -43,6 +44,7 @@ extensions:
             code: change_family
             jobInstanceCode: update_product_value
             icon: icon-template
+            illustration: families
 
     pim-mass-product-edit-configure-change-status:
         module: pim/mass-edit-form/product/change-status
@@ -71,6 +73,7 @@ extensions:
             code: add_to_group
             jobInstanceCode: add_product_value
             icon: icon-groups
+            illustration: group
 
     pim-mass-product-edit-configure-add-to-category:
         module: pim/mass-edit-form/product/category
@@ -87,6 +90,7 @@ extensions:
             listRoute: pim_enrich_product_listcategories
             childrenRoute: pim_enrich_categorytree_children
             icon: icon-folder_in
+            illustration: categories
 
     pim-mass-product-edit-configure-move-to-category:
         module: pim/mass-edit-form/product/category
@@ -103,6 +107,7 @@ extensions:
             listRoute: pim_enrich_product_listcategorieslue
             childrenRoute: pim_enrich_categorytree_children
             icon: icon-folder_move
+            illustration: categories
 
     pim-mass-product-edit-configure-remove-from-category:
         module: pim/mass-edit-form/product/category
@@ -119,6 +124,7 @@ extensions:
             listRoute: pim_enrich_product_listcategorieslue
             childrenRoute: pim_enrich_categorytree_children
             icon: icon-folder_out
+            illustration: categories
 
     pim-mass-product-edit-configure-add-to-existing-product-model:
         module: pim/mass-edit-form/product/add-to-existing-product-model
@@ -133,3 +139,4 @@ extensions:
             code: add_to_existing_product_model
             jobInstanceCode: add_to_existing_product_model
             icon: icon-model
+            illustration: product-models

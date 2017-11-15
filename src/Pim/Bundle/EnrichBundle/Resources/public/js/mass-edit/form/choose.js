@@ -95,6 +95,13 @@ define(
              */
             getDescription: function () {
                 return '';
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            getIllustrationClass: function () {
+                return '';
             }
         });
     }
