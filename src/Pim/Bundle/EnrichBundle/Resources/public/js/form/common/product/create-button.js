@@ -66,8 +66,6 @@ define(
              */
             getAllowedChoices(choices) {
                 return Object.values(choices).filter(choice => {
-                    choice.title = __(choice.title);
-
                     return SecurityContext.isGranted(choice.aclResourceId);
                 });
             },
@@ -97,7 +95,8 @@ define(
                     content: this.templateModal({
                         choices: allowedChoices,
                         modalTitle: __(modalTitle),
-                        subTitle: __(subTitle)
+                        subTitle: __(subTitle),
+                        __: __
                     })
                 }).open();
 

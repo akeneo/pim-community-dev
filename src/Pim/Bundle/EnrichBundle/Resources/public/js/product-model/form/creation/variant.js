@@ -55,17 +55,23 @@ function (
             if (this.getFormData().family !== this.previousFamily) {
                 this.previousFamily = this.getFormData().family;
 
-                this.getFamilyIdFromCode(this.getFormData().family).then((familyId) => {
-                    this.setChoiceUrl(Routing.generate(this.config.loadUrl, {
-                        alias: 'family-variant-grid',
-                        'family-variant-grid[family_id]': familyId,
-                        'family-variant-grid[localeCode]': UserContext.get('catalogLocale')
-                    }));
+                if (this.getFormData().family) {
+                    this.getFamilyIdFromCode(this.getFormData().family).then((familyId) => {
+                        this.setChoiceUrl(Routing.generate(this.config.loadUrl, {
+                            alias: 'family-variant-grid',
+                            'family-variant-grid[family_id]': familyId,
+                            'family-variant-grid[localeCode]': UserContext.get('catalogLocale')
+                        }));
 
+                        this.setData({[this.fieldName]: null});
+
+                        this.render();
+                    });
+                } else {
                     this.setData({[this.fieldName]: null});
 
                     this.render();
-                });
+                }
             }
         },
 
@@ -141,7 +147,7 @@ function (
         postRender() {
             SimpleSelectAsync.prototype.postRender.apply(this, arguments);
 
-            if (!this.getFormData()[this.fieldName]) {
+            if (!this.getFormData()[this.fieldName] && this.choiceUrl) {
                 $.getJSON(this.choiceUrl, this.select2Data.bind(this)).then((response) => {
                     const results = this.select2Results(response).results;
 

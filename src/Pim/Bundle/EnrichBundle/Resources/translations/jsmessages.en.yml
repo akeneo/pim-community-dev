@@ -1126,6 +1126,7 @@ page_title:
     pim_enrich_job_tracker_show:           Process tracker | Show job
     pim_enrich_api_connection_index:       API connections
     pim_enrich_api_connection_create:      API connections | Create
+    pim_enrich_mass_edit_action:           Mass Edit
     pim_analytics_system_info_index:       System information
 
 # Batch job labels
