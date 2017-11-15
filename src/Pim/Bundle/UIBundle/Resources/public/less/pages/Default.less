@@ -65,35 +65,32 @@
   }
 
   &-thirdColumnContainer {
-    width: 0;
     order: -5;
     margin-left: -@AknThirdColumnWidth;
-    margin-right: @AknThirdColumnWidth;
+    position: relative;
     transition: margin 0.3s ease-in-out;
 
     // Added !important to fix the animation
     // since the margin values are set with jQuery
     &--open {
       margin-left: 0 !important;
-      margin-right: 0 !important;
     }
   }
 
   &-thirdColumn {
-    width: @AknThirdColumnWidth;
-    position: fixed;
     height: 100vh;
     background: white;
     z-index: 801;
     border-right: 1px solid @AknBorderColor;
     padding: 20px;
+    margin: 0;
+    width: 300px;
   }
 
   &-thirdColumnButton {
     border-top: 1px solid @AknBorderColor;
-    position: absolute;
     bottom: 100px;
-    width: ~"calc(100% - 40px)";
+    width: 100%;
     text-align: center;
     padding: 20px 0;
   }

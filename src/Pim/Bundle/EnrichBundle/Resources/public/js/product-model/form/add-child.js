@@ -29,8 +29,21 @@ define(
              * {@inheritdoc}
              */
             render() {
-                this.$el.html(this.template());
+                const illustrationClass = this.getIllustrationClass();
+                this.$el.html(this.template({ illustrationClass }));
                 this.renderExtensions();
+            },
+
+            /**
+             * Get the correct illustration class for products or product models
+             *
+             * @return {String}
+             */
+            getIllustrationClass() {
+                const formData = this.getFormData();
+                const hasFamilyVariant = formData.hasOwnProperty('family_variant');
+
+                return hasFamilyVariant ? 'product-model' : 'products';
             },
 
             /**

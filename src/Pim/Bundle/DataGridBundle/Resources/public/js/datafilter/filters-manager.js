@@ -410,10 +410,19 @@ define(
          * like the other columns.
          */
         _updateDropdownPosition: function () {
-            const mainPanelLeft = $('.AknDefault-mainContent').position().left;
-
             this.selectWidget.getWidget().css({ left: this._getLeftStartPosition() + 'px' });
             this.selectWidget.getWidget().css({ left: this._getLeftEndPosition() + 'px' });
+        },
+
+        /**
+         * Get the width of the main column and the header
+         * @return {number}
+         */
+        _getOffsetWidth() {
+            const headerWidth = $('.AknHeader').width();
+            const mainColumnWidth = $('.AknDefault-contentWithColumn .AknColumn').width();
+
+            return headerWidth + mainColumnWidth;
         },
 
         /**
@@ -422,7 +431,7 @@ define(
          * @returns {number}
          */
         _getLeftStartPosition() {
-            return $('.AknDefault-mainContent').position().left - 300;
+            return this._getOffsetWidth() - 300;
         },
 
         /**
@@ -431,7 +440,7 @@ define(
          * @returns {number}
          */
         _getLeftEndPosition() {
-            return $('.AknDefault-mainContent').position().left;
+            return this._getOffsetWidth();
         }
 
     });
