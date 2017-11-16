@@ -11,8 +11,7 @@ define(
         'pim/user-context',
         'pim/fetcher-registry',
         'pim/datagrid/state-listener',
-        'oro/loading-mask',
-        'oro/mediator'
+        'oro/loading-mask'
     ],
     function(
         _,
@@ -26,8 +25,7 @@ define(
         UserContext,
         FetcherRegistry,
         StateListener,
-        LoadingMask,
-        mediator
+        LoadingMask
     ) {
         return BaseForm.extend({
             config: {},
@@ -45,18 +43,12 @@ define(
             },
 
             configure() {
-                this.listenTo(this.getRoot(), 'grid:display-selector:change', this.setDisplayType.bind(this));
-
-                this.listenTo(this.getRoot(), 'grid:display-selector:reset', () => {
-
+                this.listenTo(this.getRoot(), 'grid:display-selector:change', type => {
+                    this.displayType = type;
+                    // this.render();
                 });
 
                 return BaseForm.prototype.configure.apply(this, arguments);
-            },
-
-            setDisplayType(type) {
-                this.displayType = type;
-                this.render();
             },
 
             /**
@@ -103,7 +95,9 @@ define(
                     );
                 }
 
-                // resp.metadata = this.applyDisplayType(resp.metadata, 'thumbnail');
+                if (null !== this.displayType) {
+                    resp.metadata = this.applyDisplayType(resp.metadata);
+                }
 
                 $(`#grid-${gridName}`).data({
                     metadata: resp.metadata,
@@ -131,22 +125,22 @@ define(
              * @param  {Object} selectedType
              * @return {Object}
              */
-            // applyDisplayType(gridMetadata, selectedType) {
-            //     const metadata = _.clone(gridMetadata);
-            //     const displayTypes = metadata.options.displayTypes;
-            //     const displayType = displayTypes[selectedType];
-            //     if (!displayType) return metadata;
+            applyDisplayType(gridMetadata) {
+                const selectedType = this.displayType;
+                const metadata = _.clone(gridMetadata);
+                const displayTypes = metadata.options.displayTypes;
+                const displayType = displayTypes[selectedType];
 
-            //     metadata.columns = metadata.columns.filter(column => {
-            //         return displayType.enabledColumns.includes(column.name);
-            //     });
+                metadata.columns = metadata.columns.filter(column => {
+                    return displayType.enabledColumns.includes(column.name);
+                });
 
-            //     metadata.options.rowView = displayType.rowTemplate;
-            //     metadata.options.gridModifier = displayType.gridModifier;
-            //     metadata.options.displayHeader = displayType.displayHeader;
+                metadata.options.rowView = displayType.rowTemplate;
+                metadata.options.gridModifier = displayType.gridModifier;
+                metadata.options.displayHeader = displayType.displayHeader;
 
-            //     return metadata;
-            // },
+                return metadata;
+            },
 
             /**
              * Get the initial grid params with locale

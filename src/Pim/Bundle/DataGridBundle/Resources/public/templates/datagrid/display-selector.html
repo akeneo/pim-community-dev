@@ -1,5 +1,12 @@
-<ul>
+<a class="AknActionButton AknActionButton--withoutBorder" data-toggle="dropdown" href="#">
+    <%- types[selectedType].label %>
+    <span class="AknActionButton-caret"></span>
+</a>
+<ul class="AknDropdown-menu">
+    <div class="AknDropdown-menuTitle"><% types[selectedType].label %></div>
     <% _.each(types, (type, key) => { %>
-        <li data-type="<%- key %>"><%- type.label %></li>
+        <li data-type="<%- key %>">
+            <a class="AknDropdown-menuLink<% if (type === selectedType) { %> AknDropdown-menuLink--active<% } %>" data-type="<%- key %>"><%- type.label %></a>
+        </li>
     <% }) %>
 </ul>
