@@ -15,8 +15,6 @@ class CreateVariantProductIntegration extends AbstractProductTestCase
     {
         parent::setUp();
 
-        $this->createProduct('simple', []);
-
         $this->createProductModel(
             [
                 'code' => 'test',
@@ -43,6 +41,15 @@ class CreateVariantProductIntegration extends AbstractProductTestCase
                 ],
             ]
         );
+
+        $this->createVariantProduct('simple', [
+            'parent' => 'amor',
+            'values'  => [
+                'a_yes_no' => [
+                    ['locale' => null, 'scope' => null, 'data' => false],
+                ],
+            ],
+        ]);
     }
 
     public function testProductVariantCreationWithFamily()
@@ -1065,46 +1072,6 @@ JSON;
                 [
                     'property' => 'identifier',
                     'message'  => 'The same identifier is already set on another product',
-                ],
-            ],
-        ];
-
-        $response = $client->getResponse();
-
-        $this->assertSame($expectedContent, json_decode($response->getContent(), true));
-        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
-    }
-
-    public function testResponseWhenProductVariantAlreadyExists()
-    {
-        $client = $this->createAuthenticatedClient();
-
-        $data =
-<<<JSON
-    {
-        "identifier": "simple",
-        "parent": "amor",
-        "values": {
-          "a_yes_no": [
-            {
-              "locale": null,
-              "scope": null,
-              "data": true
-            }
-          ]
-        }
-    }
-JSON;
-
-        $client->request('POST', 'api/rest/v1/products', [], [], [], $data);
-
-        $expectedContent = [
-            'code'    => 422,
-            'message' => 'Validation failed.',
-            'errors'  => [
-                [
-                    'property' => 'identifier',
-                    'message'  => 'The value simple is already set on another product for the unique attribute sku',
                 ],
             ],
         ];

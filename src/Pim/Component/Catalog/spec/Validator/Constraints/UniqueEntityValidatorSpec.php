@@ -27,7 +27,7 @@ class UniqueEntityValidatorSpec extends ObjectBehavior
         $this->initialize($context);
     }
 
-    function it_is_initializable()
+    function it is initializable()
     {
         $this->shouldHaveType(UniqueEntityValidator::class);
     }
@@ -51,7 +51,7 @@ class UniqueEntityValidatorSpec extends ObjectBehavior
         $productInDatabase->getId()->willReturn(40);
         $product->getId()->willReturn(64);
 
-        $context->buildViolation('pim_catalog.constraint.pim_immutable_product_validator')
+        $context->buildViolation('The same identifier is already set on another product')
             ->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->atPath('identifier')->willReturn($constraintViolationBuilder);
         $constraintViolationBuilder->addViolation()->ShouldBeCalled();
@@ -73,7 +73,7 @@ class UniqueEntityValidatorSpec extends ObjectBehavior
         $product->getIdentifier()->willReturn('identifier');
         $productRepository->findOneBy(['identifier' => 'identifier'])->willReturn(null);
 
-        $context->buildViolation('pim_catalog.constraint.pim_immutable_product_validator')->shouldNotBeCalled();
+        $context->buildViolation('The same identifier is already set on another product')->shouldNotBeCalled();
 
         $this->validate($product, $constraint)->shouldReturn(null);
     }

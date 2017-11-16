@@ -13,6 +13,7 @@ use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
+use Pim\Component\Catalog\Model\VariantAttributeSetInterface;
 use Pim\Component\Catalog\Model\VariantProduct;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Prophecy\Argument;
@@ -66,14 +67,17 @@ class CreateVariantProductSpec extends ObjectBehavior
         FamilyVariantInterface $familyVariant,
         \Iterator $iterator,
         ArrayCollection $uniqueValues,
-        ArrayCollection $attributes
+        ArrayCollection $attributes,
+        VariantAttributeSetInterface $variantAttributeSet
     ) {
         $parent->getFamily()->willReturn($family);
         $parent->getValues()->willReturn($parentValues);
         $parent->getValuesForVariation()->willReturn($productModelValues);
         $productModelValues->getIterator()->willReturn($iterator);
         $parent->getFamilyVariant()->willreturn($familyVariant);
-        $familyVariant->getAttributes()->willReturn($attributes);
+        $familyVariant->getNumberOfLevel()->willReturn(2);
+        $familyVariant->getVariantAttributeSet(2)->willReturn($variantAttributeSet);
+        $variantAttributeSet->getAttributes()->willReturn($attributes);
         $parent->getParent()->willreturn(null);
         $parent->getCategories()->willreturn($productModelCategories);
         $productModelCategories->getIterator()->willReturn($iterator);

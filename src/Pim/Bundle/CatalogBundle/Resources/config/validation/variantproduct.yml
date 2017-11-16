@@ -14,7 +14,7 @@ Pim\Component\Catalog\Model\VariantProduct:
             groups: [UniqueAxis]
         - Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues: ~
         - Pim\Component\Catalog\Validator\Constraints\UniqueEntity:
-            entityClass: Pim\Component\Catalog\Model\AbstractProduct
+            entityClass: Pim\Component\Catalog\Model\VariantProductInterface
     properties:
         identifier:
             - NotBlank: ~

@@ -12,19 +12,19 @@ use Pim\Component\Catalog\Model\ValueInterface;
  */
 final class ValuesCollection
 {
-    /** @var Collection */
-    private $expectedEntities;
+    /** @var string[] */
+    private $expectedEntityCodes;
 
     /** @var Collection */
     private $actualValueCollection;
 
     /**
-     * @param string[]                 $expectedEntities
+     * @param string[]                 $expectedEntityCodes
      * @param ValueCollectionInterface $valuesCollection
      */
-    public function __construct(array $expectedEntities, ValueCollectionInterface $valuesCollection)
+    public function __construct(array $expectedEntityCodes, ValueCollectionInterface $valuesCollection)
     {
-        $this->expectedEntities = $expectedEntities;
+        $this->expectedEntityCodes = $expectedEntityCodes;
         $this->actualValueCollection = $valuesCollection;
     }
 
@@ -36,7 +36,7 @@ final class ValuesCollection
      */
     public function hasSameValues(): void
     {
-        $expectedIdentityIdentifiers = $this->expectedEntities;
+        $expectedIdentityIdentifiers = $this->expectedEntityCodes;
         $actualIdentityIdentifiers = array_map(function(ValueInterface $value) {
             return $value->getAttribute()->getCode();
         }, $this->actualValueCollection->toArray());

@@ -11,7 +11,7 @@ use Akeneo\Test\IntegrationTestsBundle\Assertion;
 /**
  * Test the query function: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\TurnProduct
  */
-class TurnProductIntoVariantProductIntegration extends TestCase
+final class TurnProductIntoVariantProductIntegration extends TestCase
 {
     /** @var ProductInterface */
     private $product;
@@ -19,6 +19,9 @@ class TurnProductIntoVariantProductIntegration extends TestCase
     /** @var ProductModelInterface */
     private $productModel;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         parent::setUp();

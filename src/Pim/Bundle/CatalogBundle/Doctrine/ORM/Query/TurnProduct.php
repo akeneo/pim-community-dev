@@ -10,7 +10,7 @@ use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Query that turns  a product into a variant product
+ * Query that turns a product into a variant product
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -53,6 +53,7 @@ SQL;
             [
                 'id' => $variantProduct->getId(),
                 'parent' => null,
+                'familyVariant' => null,
                 'identifier' => $variantProduct->getIdentifier(),
                 'groups' => $variantProduct->getGroups(),
                 'associations' => $variantProduct->getAssociations(),

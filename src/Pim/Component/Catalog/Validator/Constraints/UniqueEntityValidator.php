@@ -49,7 +49,6 @@ class UniqueEntityValidator extends ConstraintValidator
         $repository = $this->objectManager->getRepository($constraint->entityClass);
         $getter = sprintf('get%s', ucfirst($constraint->identifier));
 
-        // here this is a creation
         if (null === $productInDatabase = $repository->findOneBy([$constraint->identifier => $product->$getter()])) {
             return;
         }

@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueEntity extends Constraint
 {
-    public $message = 'pim_catalog.constraint.pim_immutable_product_validator';
+    public $message = 'The same identifier is already set on another product';
     public $entityClass = null;
     public $identifier = 'identifier';
 

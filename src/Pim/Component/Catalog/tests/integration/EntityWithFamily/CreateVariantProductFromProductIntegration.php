@@ -11,7 +11,7 @@ use Akeneo\Test\IntegrationTestsBundle\Assertion;
 /**
  * Test the variant product creation Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct
  */
-class CreateVariantProductFromProductIntegration extends TestCase
+final class CreateVariantProductFromProductIntegration extends TestCase
 {
     /** @var ProductInterface */
     private $product;
@@ -23,6 +23,8 @@ class CreateVariantProductFromProductIntegration extends TestCase
      * Caution: here we need a valid product and product model. We need to save them in the database because our models
      * are coupled to the database (id, updated, created). We don't use our saver here because we don't want to
      * dispatch event, we just want to save data in the database. So no more problem with indexation.
+     *
+     * {@inheritdoc}
      */
     protected function setUp()
     {
@@ -30,13 +32,16 @@ class CreateVariantProductFromProductIntegration extends TestCase
 
         $this->product = $this->getFromTestContainer('akeneo_integration_tests.catalog.factory.product')->create(
             'my-product',
-            'accessories',
+            'clothing',
             [
-                'color' => [['data' => 'red', 'locale' => null, 'scope' => null]],
+                // Root product model
                 'description' => [['data' => 'description', 'locale' => 'en_US', 'scope' => 'ecommerce']],
                 'name' => [['data' => 'name', 'locale' => 'en_US', 'scope' => null]],
                 'meta_description' => [['data' => 'name', 'locale' => 'en_US', 'scope' => null]],
                 'meta_title' => [['data' => 'name', 'locale' => 'en_US', 'scope' => null]],
+                // Sub product model
+                'color' => [['data' => 'red', 'locale' => null, 'scope' => null]],
+                'composition' => [['data' => 'name', 'locale' => null, 'scope' => null]],
                 // The variant product must only have the following values.
                 'size' => [['data' => 'l', 'locale' => null, 'scope' => null]],
                 'ean' => [['data' => 'ean', 'locale' => null, 'scope' => null]],
@@ -44,20 +49,32 @@ class CreateVariantProductFromProductIntegration extends TestCase
             ],
             ['master_accessories_belts'],
             ['related'],
-            ['X_SELL' => ['products' => ['1111111171']]]
+            ['X_SELL' => ['products' => ['1111111113']]]
         );
 
         $this->getFromTestContainer('akeneo_integration_tests.fixture.saver.entity_with_value')->save($this->product);
 
-        $this->productModel = $this->getFromTestContainer('akeneo_integration_tests.catalog.factory.product_model')->create(
+        $rootProductModel = $this->getFromTestContainer('akeneo_integration_tests.catalog.factory.product_model')->create(
             'my-product-model',
-            'accessories_size',
+            'clothing_color_size',
             [
-                'color' => [['data' => 'red', 'locale' => null, 'scope' => null]],
                 'description' => [['data' => 'description', 'locale' => 'en_US', 'scope' => 'ecommerce']],
                 'name' => [['data' => 'name', 'locale' => 'en_US', 'scope' => null]],
             ],
             '',
+            ['master_accessories']
+        );
+
+        $this->getFromTestContainer('akeneo_integration_tests.fixture.saver.entity_with_value')->save($rootProductModel);
+
+        $this->productModel = $this->getFromTestContainer('akeneo_integration_tests.catalog.factory.product_model')->create(
+            'my-sub-product-model',
+            'clothing_color_size',
+            [
+                'color' => [['data' => 'red', 'locale' => null, 'scope' => null]],
+                'composition' => [['data' => 'name', 'locale' => null, 'scope' => null]],
+            ],
+            $rootProductModel->getCode(),
             ['master_accessories']
         );
 
@@ -71,6 +88,7 @@ class CreateVariantProductFromProductIntegration extends TestCase
             ->from($this->product, $this->productModel);
 
         $this->assertSame($this->productModel, $variantProduct->getParent());
+        $this->assertSame('clothing_color_size', $variantProduct->getFamilyVariant()->getCode());
         $this->assertSame($this->product->getGroups(), $variantProduct->getGroups());
         $this->assertSame($this->product->getCompletenesses(), $variantProduct->getCompletenesses());
         $this->assertSame($this->product->getAssociations(), $variantProduct->getAssociations());

@@ -87,4 +87,4 @@ Feature: Import variant products that were previously products
     And I launch the import job
     And I wait for the "csv_catalog_modeling_product_import" job to finish
     Then the product "col-white-m" should have the following values:
-      | weight                      | 150.0000 GRAM                    |
+      | weight | 150.0000 GRAM |

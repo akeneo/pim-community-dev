@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraint;
 
 class UniqueEntitySpec extends ObjectBehavior
 {
-    function it_is_initializable()
+    function it is initializable()
     {
         $this->shouldHaveType(UniqueEntity::class);
     }

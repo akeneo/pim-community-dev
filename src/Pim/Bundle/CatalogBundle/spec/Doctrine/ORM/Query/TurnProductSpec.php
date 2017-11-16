@@ -22,17 +22,17 @@ class TurnProductSpec extends ObjectBehavior
         $this->beConstructedWith($entityManager);
     }
 
-    function it_is_initializable()
+    function it is initializable()
     {
         $this->shouldHaveType(TurnProduct::class);
     }
 
-    function it_is_a_query()
+    function it is a query()
     {
         $this->shouldImplement(Query\TurnProduct::class);
     }
 
-    function it transform a product into variant product in database(
+    function it transforms a product into variant product in database(
         $entityManager,
         VariantProductInterface $variantProduct,
         Connection $connection,
@@ -77,6 +77,7 @@ class TurnProductSpec extends ObjectBehavior
             [
                 'id' => 64,
                 'parent' => null,
+                'familyVariant' => null,
                 'identifier' => 'identifier',
                 'groups' => $groups,
                 'associations' => $association,

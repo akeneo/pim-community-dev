@@ -1,7 +1,7 @@
 Pim\Component\Catalog\Model\Product:
     constraints:
         - Pim\Component\Catalog\Validator\Constraints\UniqueEntity:
-            entityClass: Pim\Component\Catalog\Model\AbstractProduct
+            entityClass: Pim\Component\Catalog\Model\ProductInterface
     properties:
         identifier:
             - NotBlank: ~
