@@ -11,7 +11,8 @@ define(
         'pim/user-context',
         'pim/fetcher-registry',
         'pim/datagrid/state-listener',
-        'oro/loading-mask'
+        'oro/loading-mask',
+        'oro/mediator'
     ],
     function(
         _,
@@ -25,11 +26,13 @@ define(
         UserContext,
         FetcherRegistry,
         StateListener,
-        LoadingMask
+        LoadingMask,
+        mediator
     ) {
         return BaseForm.extend({
             config: {},
             loadingMask: null,
+            displayType: null,
 
             /**
              * @inheritdoc
@@ -39,6 +42,21 @@ define(
                 this.loadingMask = new LoadingMask();
 
                 return BaseForm.prototype.initialize.apply(this, arguments);
+            },
+
+            configure() {
+                this.listenTo(this.getRoot(), 'grid:display-selector:change', this.setDisplayType.bind(this));
+
+                this.listenTo(this.getRoot(), 'grid:display-selector:reset', () => {
+
+                });
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
+
+            setDisplayType(type) {
+                this.displayType = type;
+                this.render();
             },
 
             /**

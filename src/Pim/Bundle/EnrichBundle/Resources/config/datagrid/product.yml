@@ -3,10 +3,12 @@ datagrid:
         options:
             entityHint: product
             filtersAsColumn: true
-            displaySelectorOptions:
+            displayTypes:
+                default:
+                    label: Table
                 thumbnail:
                     label: Grid
-                    displayHeader: false
+                    # displayHeader: false
                     rowTemplate: oro/datagrid/product-row
                     gridModifier: AknGrid--thumbnailView
                     enabledColumns: [ identifier, image, label, completeness, complete_variant_products]

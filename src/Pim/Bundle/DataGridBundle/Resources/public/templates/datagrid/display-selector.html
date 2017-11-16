@@ -1,1 +1,5 @@
-Grid / table
+<ul>
+    <% _.each(types, (type, key) => { %>
+        <li data-type="<%- key %>"><%- type.label %></li>
+    <% }) %>
+</ul>
