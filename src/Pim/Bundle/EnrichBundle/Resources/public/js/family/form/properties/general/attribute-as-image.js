@@ -76,8 +76,8 @@ define([
              * @param event
              */
             updateState: function (event) {
-                var data = this.getFormData();
-                var value = event.currentTarget.value;
+                let data = this.getFormData();
+                const value = event.currentTarget.value;
                 data.attribute_as_image = ('no_attribute_as_image' === value) ? null : event.currentTarget.value;
                 this.setData(data);
             },
@@ -85,18 +85,20 @@ define([
             /**
              * Returns the list of available attributes for this extension:
              * - Should belong to the family
-             * - Should be pim_catalog_image
+             * - Should be a valid attribute type
              * - Should not be neither localizable nor scopable
              *
              * @returns {Promise}
              */
             getAvailableAttributes: function () {
-                var imageAttributes = _.where(
+                const imageAttributes = _.filter(
                     this.getFormData().attributes,
-                    { type: 'pim_catalog_image' }
+                    (attribute) => {
+                        return _.contains(this.config.validAttributeTypes, attribute.type);
+                    }
                 );
 
-                var imageAttributeCodes = _.pluck(imageAttributes, 'code');
+                const imageAttributeCodes = _.pluck(imageAttributes, 'code');
 
                 return FetcherRegistry.getFetcher('attribute')
                     .fetchByIdentifiers(imageAttributeCodes)
