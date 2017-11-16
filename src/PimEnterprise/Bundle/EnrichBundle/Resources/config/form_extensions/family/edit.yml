@@ -1,0 +1,11 @@
+extensions:
+    pim-family-edit-form-properties-general-attribute-as-image:
+        module: pim/family-edit-form/properties/general/attribute-as-image
+        parent: pim-family-edit-form-properties-general
+        targetZone: properties-general
+        position: 135
+        config:
+            label: 'pim_enrich.form.family.tab.properties.attribute_as_image'
+            emptyLabel: 'pim_enrich.form.family.tab.properties.empty_attribute_as_image'
+            fieldBaseId: 'pim_enrich_family_form_label_'
+            validAttributeTypes: [ 'pim_catalog_image', 'pim_assets_collection' ]
