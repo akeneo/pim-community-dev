@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Validator\Constraints;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\Factory\ValueCollectionFactoryInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -22,9 +21,6 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
  */
 class ImmutableVariantAxesValuesValidator extends ConstraintValidator
 {
-    /** @var EntityManagerInterface */
-    private $entityManager;
-
     /** @var EntityWithFamilyVariantAttributesProvider */
     private $attributesProvider;
 
@@ -32,16 +28,13 @@ class ImmutableVariantAxesValuesValidator extends ConstraintValidator
     private $valueCollectionFactory;
 
     /**
-     * @param EntityManagerInterface                    $entityManager
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      * @param ValueCollectionFactoryInterface           $valueCollectionFactory
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         ValueCollectionFactoryInterface $valueCollectionFactory
     ) {
-        $this->entityManager = $entityManager;
         $this->attributesProvider = $attributesProvider;
         $this->valueCollectionFactory = $valueCollectionFactory;
     }
@@ -67,10 +60,11 @@ class ImmutableVariantAxesValuesValidator extends ConstraintValidator
             return $axis->getCode();
         }, $this->attributesProvider->getAxes($entity));
 
-        $originalData = $this->entityManager->getUnitOfWork()->getOriginalEntityData($entity);
+        if (null === $entity->getRawValues()) {
+            return;
+        }
 
-        $originalValues = $this->valueCollectionFactory->createFromStorageFormat($originalData['rawValues']);
-
+        $originalValues = $this->valueCollectionFactory->createFromStorageFormat($entity->getRawValues());
         foreach ($axisCodes as $code) {
             $originalValue = $originalValues->getByCodes($code);
             $newValue = $entity->getValue($code);
