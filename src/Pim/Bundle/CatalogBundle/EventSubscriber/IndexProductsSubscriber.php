@@ -57,7 +57,7 @@ class IndexProductsSubscriber implements EventSubscriberInterface
         return [
             StorageEvents::POST_SAVE     => ['indexProduct', 300],
             StorageEvents::POST_SAVE_ALL => ['bulkIndexProducts', 300],
-            StorageEvents::POST_REMOVE   => ['deleteProduct', 300],
+            StorageEvents::PRE_REMOVE    => ['deleteProduct', 300],
         ];
     }
 

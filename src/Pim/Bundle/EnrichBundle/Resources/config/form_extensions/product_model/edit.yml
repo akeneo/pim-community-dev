@@ -89,6 +89,21 @@ extensions:
         targetZone: secondary-actions
         position: 80
 
+    pim-product-model-edit-form-delete:
+        module: pim/product-model-edit-form/delete
+        parent: pim-product-model-edit-form-secondary-actions
+        targetZone: secondary-actions
+        aclResourceId: pim_enrich_product_model_remove
+        position: 100
+        config:
+            trans:
+                title: confirmation.remove.product_model
+                subTitle: pim_menu.item.product_model
+                content: pim_enrich.confirmation.delete.product_model
+                success: pim_enrich.entity.product_model.info.deletion_successful
+                fail: pim_enrich.entity.product_model.info.deletion_failed
+            redirect: pim_enrich_product_index
+
     pim-product-model-edit-form-save-buttons:
         module: pim/form/common/save-buttons
         parent: pim-product-model-edit-form

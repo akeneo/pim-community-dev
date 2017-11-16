@@ -6,7 +6,7 @@ Pim\Component\Catalog\Model\VariantProduct:
             joinColumns:
                 product_model_id:
                     referencedColumnName: id
-                    onDelete: 'SET NULL'
+                    onDelete: CASCADE
         familyVariant:
             targetEntity: Pim\Component\Catalog\Model\FamilyVariantInterface
             joinColumn:

@@ -36,6 +36,13 @@ pim_enrich_product_model_family_variant_leaf:
     defaults: { _controller: pim_enrich.controller.rest.product_model:searchLastLevelProductModelByCode }
     methods: [GET]
 
+pim_enrich_product_model_rest_remove:
+    path: /rest/{id}
+    defaults: { _controller: pim_enrich.controller.rest.product_model:removeAction, _format: json }
+    requirements:
+        id: '\d+'
+    methods: [DELETE]
+
 pim_enrich_product_model_category_rest_list:
     path: /rest/{id}/categories
     defaults: { _controller: pim_enrich.controller.rest.product_model_category:listAction }
