@@ -236,7 +236,7 @@ JSON;
 <<<JSON
 {
 	"code": 422,
-	"message": "Property \"extra_property\" does not exist. Check the standard format documentation.",
+	"message": "Property \"extra_property\" does not exist. Check the expected format on the API documentation.",
 	"_links": {
 	    "documentation": {
 	        "href": "http://api.akeneo.com/api-reference.html#post_channels"

@@ -199,7 +199,7 @@ JSON;
 <<<JSON
 {
 	"code": 422,
-	"message": "Property \"code\" expects a scalar as data, \"array\" given. Check the standard format documentation.",
+	"message": "Property \"code\" expects a scalar as data, \"array\" given. Check the expected format on the API documentation.",
 	"_links": {
 	    "documentation": {
 	        "href": "http://api.akeneo.com/api-reference.html#post_association_types"

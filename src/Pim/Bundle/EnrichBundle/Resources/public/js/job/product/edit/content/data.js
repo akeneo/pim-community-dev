@@ -112,20 +112,22 @@ define(
              * @return {Promise}
              */
             buildFilterView: function (filterConfig) {
-                return formBuilder.buildForm(filterConfig.view).then(function (filterView) {
-                    filterView.setRemovable(filterConfig.isRemovable);
-                    filterView.setType(filterConfig.view);
-                    filterView.setParentForm(this);
-                    filterView.setCode(filterConfig.field);
+                return formBuilder.getFormMeta(filterConfig.view)
+                    .then(formBuilder.buildForm)
+                    .then(function (filterView) {
+                        filterView.setRemovable(filterConfig.isRemovable);
+                        filterView.setType(filterConfig.view);
+                        filterView.setParentForm(this);
+                        filterView.setCode(filterConfig.field);
 
-                    return filterView.configure().then(function () {
-                        var data = {};
-                        filterView.trigger('pim_enrich:form:entity:pre_update', data);
-                        filterView.setData(data, {silent: true});
+                        return filterView.configure().then(function () {
+                            var data = {};
+                            filterView.trigger('pim_enrich:form:entity:pre_update', data);
+                            filterView.setData(data, {silent: true});
 
-                        return filterView;
-                    });
-                }.bind(this));
+                            return filterView;
+                        });
+                    }.bind(this));
             },
 
             /**

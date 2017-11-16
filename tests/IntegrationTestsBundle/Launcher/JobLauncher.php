@@ -270,6 +270,18 @@ class JobLauncher
     }
 
     /**
+     * Indicates whether the queue has a job still not consumed in the queue.
+     *
+     * @return bool
+     */
+    public function hasJobInQueue(): bool
+    {
+        $jobExecutionMessage = $this->kernel->getContainer()->get('akeneo_batch_queue.queue.job_execution_message_repository')->getAvailableJobExecutionMessage();
+
+        return null !== $jobExecutionMessage;
+    }
+
+    /**
      * Launch the daemon command to consume and launch one job execution.
      *
      * @return BufferedOutput

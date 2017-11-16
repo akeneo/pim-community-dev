@@ -73,8 +73,9 @@
 
     {# This style is temporary and will be dropped on PEFization of this screen #}
     <div id="category-tree-container" style="display:flex; height:100%">
-        <div id="tree" {% if form.vars.value.id %} data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %} data-node-id="{{ form.vars.value.parent.id }}"{% endif %}{% if resource_granted(acl ~ '_category_edit') %} data-editable="true"{% endif %}{% if resource_granted(acl ~ '_category_create') %} data-creatable="true"{% endif %}></div>
-
+        <div class="ui-resizable-container">
+          <div id="tree" {% if form.vars.value.id %} data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %} data-node-id="{{ form.vars.value.parent.id }}"{% endif %}{% if resource_granted(acl ~ '_category_edit') %} data-editable="true"{% endif %}{% if resource_granted(acl ~ '_category_create') %} data-creatable="true"{% endif %}></div>
+        </div>
         <div class="AknTabContainer" style="flex-grow:1; padding: 0 0 0 20px;">
             {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
             <div class="AknTabContainer-content tab-content">
@@ -88,4 +89,15 @@
 
 <script type="text/javascript">
     window.flashMessages = JSON.parse('{{ app.session.flashbag.all|json_encode()|raw }}');
+
+    require(['pim/menu/resizable'], function(Resizable) {
+        $(function() {
+            Resizable.set({
+                minWidth: 300,
+                maxWidth: 500,
+                container: '.ui-resizable-container',
+                storageKey: 'category-tree-edit'
+            })
+        });
+    });
 </script>

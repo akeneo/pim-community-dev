@@ -1,8 +1,12 @@
 Pim\Component\Catalog\Model\ProductModel:
+    group_sequence:
+        - ProductModel
+        - UniqueAxis
     constraints:
         - Pim\Component\Catalog\Validator\Constraints\ProductModelPositionInTheVariantTree: ~
         - Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributes: ~
-        - Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis: ~
+        - Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxis:
+            groups: [UniqueAxis]
         - Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValues: ~
         - Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxes: ~
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:

@@ -150,15 +150,17 @@ define(
                      * Format current selection method of select2.
                      */
                     formatSelection: function (item, $container) {
-                        FormBuilder.buildForm('pim-grid-view-selector-current').then(function (form) {
-                            form.setParent(this);
-                            form.setView(item);
+                        FormBuilder.getFormMeta('pim-grid-view-selector-current')
+                            .then(FormBuilder.buildForm)
+                            .then(function (form) {
+                                form.setParent(this);
+                                form.setView(item);
 
-                            return form.configure().then(function () {
-                                $container.append(form.render().$el);
-                                this.onGridStateChange();
+                                return form.configure().then(function () {
+                                    $container.append(form.render().$el);
+                                    this.onGridStateChange();
+                                }.bind(this));
                             }.bind(this));
-                        }.bind(this));
                     }.bind(this),
 
                     query: function (options) {

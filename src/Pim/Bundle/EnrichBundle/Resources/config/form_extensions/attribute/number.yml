@@ -22,6 +22,7 @@ extensions:
         position: 100
         config:
             fieldName: negative_allowed
+            label: pim_enrich.form.attribute.tab.properties.label.negative_allowed
             defaultValue: true
 
     pim-attribute-form-number-validation-params-decimals-allowed:
@@ -31,6 +32,7 @@ extensions:
         position: 110
         config:
             fieldName: decimals_allowed
+            label: pim_enrich.form.attribute.tab.properties.label.decimals_allowed
             defaultValue: true
 
     pim-attribute-form-number-validation-params-number-min:
@@ -40,6 +42,7 @@ extensions:
         position: 120
         config:
             fieldName: number_min
+            label: pim_enrich.form.attribute.tab.properties.label.number_min
 
     pim-attribute-form-number-validation-params-number-max:
         module: pim/form/common/fields/text
@@ -48,3 +51,4 @@ extensions:
         position: 130
         config:
             fieldName: number_max
+            label: pim_enrich.form.attribute.tab.properties.label.number_max

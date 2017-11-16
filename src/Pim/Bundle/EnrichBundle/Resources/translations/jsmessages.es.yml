@@ -144,7 +144,8 @@ pim_enrich:
       title: producto
       locale: Local
       category: Categoría
-      create: Crear un producto
+      create: Crear
+      subTitle: Crear un producto
       filters: Filtros
       common: Común
       btn:
@@ -208,6 +209,7 @@ pim_enrich:
       media:
         upload: Arrastrar y soltar para cargar o haga clic aquí
       create_popin:
+        type: Producto
         title: Crear
         labels:
           family: Elija una familia
@@ -216,6 +218,13 @@ pim_enrich:
       message:
         created: Producto creado éxitosamente
       completeness: Completo
+    product_model:
+      title: productos
+      add_child:
+        cancel: Cancelar
+        confirm: Confirmar
+        fields:
+          code: Código
     association_type:
       info:
         deletion_successful: Tipo de asociación eliminado correctamente.
@@ -359,6 +368,8 @@ pim_enrich:
     error_occured: Un error ha ocurrido durante la carga de esta página
   form:
     required: (obligatorio)
+    product_model:
+      family_variant: Variante
     product:
       tab:
         associations:

@@ -3,6 +3,7 @@
 namespace Pim\Component\Catalog\Normalizer\Indexing;
 
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\LocaleInterface;
 use Pim\Component\Catalog\Normalizer\Indexing\Product\ProductNormalizer;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 use Pim\Component\Catalog\Normalizer\Indexing\ProductModel;
@@ -24,6 +25,9 @@ class FamilyNormalizer implements NormalizerInterface
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
+    /** @var LocaleInterface[] */
+    protected $activatedLocales;
+
     /**
      * @param NormalizerInterface       $translationNormalizer
      * @param LocaleRepositoryInterface $localeRepository
@@ -41,8 +45,12 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
+        if (null === $this->activatedLocales) {
+            $this->activatedLocales = $this->localeRepository->getActivatedLocaleCodes();
+        }
+
         $context = array_merge($context, [
-            'locales' => $this->localeRepository->getActivatedLocaleCodes(),
+            'locales' => $this->activatedLocales,
         ]);
 
         return [

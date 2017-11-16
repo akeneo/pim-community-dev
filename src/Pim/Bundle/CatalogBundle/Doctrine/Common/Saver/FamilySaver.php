@@ -32,7 +32,8 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
 
     /**
      * @param ObjectManager                  $objectManager
-     * @param CompletenessManager            $completenessManager
+     * @param CompletenessManager            $completenessManager (@deprecated will be removed in 2.1
+     *                                                            {@see \Pim\Bundle\CatalogBundle\EventSubscriber\ComputeCompletenessOnFamilyUpdateSubscriber})
      * @param EventDispatcherInterface       $eventDispatcher
      */
     public function __construct(
@@ -58,8 +59,6 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
 
         $this->objectManager->persist($family);
 
-        $this->completenessManager->scheduleForFamily($family);
-
         $this->objectManager->flush();
 
         $this->eventDispatcher->dispatch(StorageEvents::POST_SAVE, new GenericEvent($family, $options));
@@ -84,8 +83,6 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
             $this->eventDispatcher->dispatch(StorageEvents::PRE_SAVE, new GenericEvent($family, $options));
 
             $this->objectManager->persist($family);
-
-            $this->completenessManager->scheduleForFamily($family);
         }
 
         $this->objectManager->flush();

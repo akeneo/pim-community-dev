@@ -39,3 +39,20 @@ Feature: Change my profile
     When I logout
     And I am logged in as "Peter" with password Peter{}()/\@:
     Then I am on the dashboard page
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6914
+  Scenario: Successfully display the UI locale of the user
+    Given I edit the "Peter" user
+    When I visit the "Interfaces" tab
+    And I fill in the following information:
+      | UI locale (required) | French (France) |
+    And I save the user
+    Then I should not see the text "There are unsaved changes"
+    And I should see the text "français (France)"
+    Given I edit the "Mary" user
+    When I visit the "Interfaces" tab
+    And I fill in the following information:
+      | Langue de l'interface (obligatoire) | français (France) |
+    And I save the user
+    Then I should not see the text "There are unsaved changes"
+    And I should see the text "français (France)"

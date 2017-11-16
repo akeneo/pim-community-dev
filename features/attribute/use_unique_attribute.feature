@@ -21,7 +21,7 @@ Feature: Use an unique attribute
   @jira https://akeneo.atlassian.net/browse/PIM-6428
   Scenario: Successfully hide unique attributes on product mass edit
     Given I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | a_boot |
       | family | Boots  |

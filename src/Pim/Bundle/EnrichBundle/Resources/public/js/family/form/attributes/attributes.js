@@ -41,7 +41,7 @@ define([
             attributeNotRequiredIconClass: 'AknAcl-icon icon-circle non-required',
             requiredLabel: __('pim_enrich.form.family.tab.attributes.required_label'),
             notRequiredLabel: __('pim_enrich.form.family.tab.attributes.not_required_label'),
-            identifierAttribute: 'pim_catalog_identifier',
+            identifierAttributeType: 'pim_catalog_identifier',
             template: _.template(template),
             errors: [],
             catalogLocale: UserContext.get('catalogLocale'),
@@ -69,11 +69,11 @@ define([
                     'pim_enrich:form:entity:post_fetch',
                     this.render
                 );
-                this.listenTo(this.getRoot(), 'pim_enrich:form:update_read_only', function (readOnly) {
+                this.listenTo(this.getRoot(), 'pim_enrich:form:update_read_only', (readOnly) => {
                     this.readOnly = readOnly;
 
                     this.render();
-                }.bind(this));
+                });
 
                 this.listenTo(
                     this.getRoot(),
@@ -110,13 +110,13 @@ define([
                             'apply_filters': false
                         }
                     )
-                ).then(function (channels, attributeGroups) {
+                ).then((channels, attributeGroups) => {
                     this.channels = channels;
                     var groupedAttributes = _.groupBy(data.attributes, 'group');
 
-                    _.sortBy(groupedAttributes, function (attributes, group) {
+                    _.sortBy(groupedAttributes, (attributes, group) => {
                         return _.findWhere(attributeGroups, {code: group}).sort_order;
-                    }.bind(this));
+                    });
 
                     _.each(groupedAttributes, function (attributes, group) {
                         attributes = _.sortBy(attributes, function (attribute) {
@@ -136,7 +136,7 @@ define([
                         attributeGroups: attributeGroups,
                         colspan: (this.channels.length + 2),
                         i18n: i18n,
-                        identifierAttribute: this.identifierAttribute,
+                        identifierAttributeType: this.identifierAttributeType,
                         catalogLocale: this.catalogLocale,
                         readOnly: this.readOnly
                     }));
@@ -145,7 +145,7 @@ define([
 
                     this.delegateEvents();
                     this.renderExtensions();
-                }.bind(this));
+                });
             },
 
             /**
@@ -202,7 +202,7 @@ define([
              * @returns {boolean}
              */
             isAttributeEditable: function (type) {
-                return this.identifierAttribute !== type;
+                return this.identifierAttributeType !== type;
             },
 
             /**
@@ -236,23 +236,26 @@ define([
             },
 
             /**
-             * Removes attribute from family
+             * Removes attribute from family upon user confirmation
              *
              * Checks if user has rights to remove attributes
              * Checks if attribute is not used as label
+             * Checks if attribute is not used as image
+             * Checks if attribute is not used as axis in a family variant
              *
              * @param {Object} event
              */
             onRemoveAttribute: function (event) {
                 event.preventDefault();
-                var attributeAsLabel = this.getFormData().attribute_as_label;
-                var attributeAsImage = this.getFormData().attribute_as_image;
+                const attributeAsLabel = this.getFormData().attribute_as_label;
+                const attributeAsImage = this.getFormData().attribute_as_image;
+                const attributesUsedAsAxis = this.getFormData().meta.attributes_used_as_axis;
 
                 if (!SecurityContext.isGranted('pim_enrich_family_edit_attributes')) {
                     return false;
                 }
 
-                var attributeToRemove = event.currentTarget.dataset.attribute;
+                const attributeToRemove = event.currentTarget.dataset.attribute;
 
                 if (attributeAsLabel === attributeToRemove) {
                     Messenger.notify(
@@ -261,6 +264,7 @@ define([
                     );
 
                     return false;
+
                 } else if (attributeAsImage === attributeToRemove) {
                     Messenger.notify(
                         'error',
@@ -268,9 +272,16 @@ define([
                     );
 
                     return false;
+                } else if (_.contains(attributesUsedAsAxis, attributeToRemove)) {
+                    Messenger.notify(
+                        'error',
+                        __('pim_enrich.entity.family.info.cant_remove_attribute_used_as_axis')
+                    );
+
+                    return false;
                 }
 
-                return this.removeAttribute(attributeToRemove);
+                this.removeAttribute(attributeToRemove);
             },
 
             /**
@@ -291,13 +302,13 @@ define([
                 $.when(
                     FetcherRegistry.getFetcher('attribute')
                         .search(options)
-                ).then(function (attributes) {
-                    _.each(attributes, function (attribute) {
+                ).then((attributes) => {
+                    _.each(attributes, (attribute) => {
                         this.addAttribute(attribute);
-                    }.bind(this));
+                    });
 
                     this.render();
-                }.bind(this)).always(function () {
+                }).always(function () {
                     loadingMask.hide().$el.remove();
                 });
             },
@@ -320,7 +331,7 @@ define([
                             }
                         }),
                     FetcherRegistry.getFetcher('attribute').getIdentifierAttribute()
-                ).then(function (attributeGroups, identifier) {
+                ).then((attributeGroups, identifier) => {
                     var existingAttributes = _.pluck(this.getFormData().attributes, 'code');
                     var groupsAttributes = [].concat.apply(
                         [],
@@ -338,13 +349,13 @@ define([
                                 limit: attributesToAdd.length
                             }
                         });
-                }.bind(this)).then(function (attributes) {
-                    _.each(attributes, function (attribute) {
+                }).then((attributes) => {
+                    _.each(attributes, (attribute) => {
                         this.addAttribute(attribute);
-                    }.bind(this));
+                    });
 
                     this.render();
-                }.bind(this)).always(function () {
+                }).always(function () {
                     loadingMask.hide().$el.remove();
                 });
             },

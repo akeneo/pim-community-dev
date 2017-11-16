@@ -31,7 +31,8 @@ function (_, BaseController, FormBuilder, fetcherRegistry) {
                 'pim-attribute-identifier-create-form' :
                 'pim-attribute-create-form';
 
-            return FormBuilder.buildForm(formName)
+            return FormBuilder.getFormMeta(formName)
+                .then(FormBuilder.buildForm)
                 .then((form) => {
                     form.setType(type);
 

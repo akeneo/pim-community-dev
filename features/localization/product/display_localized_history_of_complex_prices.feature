@@ -16,7 +16,7 @@ Feature: Display the localized product history for complex prices
       | super_sandals | localized_price,scoped_price,complex_price |
     And I am logged in as "admin"
     And I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | sandal          |
       | family | [super_sandals] |

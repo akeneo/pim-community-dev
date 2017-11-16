@@ -8,7 +8,7 @@ Feature: Edit product and filter attributes
     Given the "footwear" catalog configuration
     And I am logged in as "Mary"
     And I am on the products page
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU             | boots |
       | Choose a family | Boots |

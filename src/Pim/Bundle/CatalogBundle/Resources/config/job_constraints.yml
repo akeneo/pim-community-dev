@@ -1,10 +1,24 @@
 parameters:
     pim_catalog.job.job_parameters.constraint_collection_provider.compute_product_models_descendants.class: Pim\Component\Catalog\Job\JobParameters\ConstraintCollectionProvider\ComputeProductModelsDescendants
+    pim_catalog.job.job_parameters.constraint_collection_provider.compute_completeness_of_products_family.class: Pim\Component\Catalog\Job\JobParameters\ConstraintCollectionProvider\ComputeCompletenessOfProductsFamily
+    pim_catalog.job.job_parameters.constraint_collection_provider.compute_family_variant_structure_changes.class: Pim\Component\Catalog\Job\JobParameters\ConstraintCollectionProvider\ComputeFamilyVariantStructureChanges
 
 services:
     pim_catalog.job.job_parameters.constraint_collection_provider.compute_product_models_descendants:
         class: '%pim_catalog.job.job_parameters.constraint_collection_provider.compute_product_models_descendants.class%'
         arguments:
             - ['compute_product_models_descendants']
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_catalog.job.job_parameters.constraint_collection_provider.compute_completeness_of_products_family:
+        class: '%pim_catalog.job.job_parameters.constraint_collection_provider.compute_completeness_of_products_family.class%'
+        tags:
+            - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }
+
+    pim_catalog.job.job_parameters.constraint_collection_provider.compute_family_variant_structure_changes:
+        class: '%pim_catalog.job.job_parameters.constraint_collection_provider.compute_family_variant_structure_changes.class%'
+        arguments:
+            - ['compute_family_variant_structure_changes']
         tags:
             - { name: akeneo_batch.job.job_parameters.constraint_collection_provider }

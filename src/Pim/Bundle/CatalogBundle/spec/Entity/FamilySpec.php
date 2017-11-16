@@ -3,10 +3,16 @@
 namespace spec\Pim\Bundle\CatalogBundle\Entity;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Component\Catalog\Model\AttributeInterface;
 
 class FamilySpec extends ObjectBehavior
 {
+    function it_is_initializable()
+    {
+        $this->shouldHaveType(Family::class);
+    }
+
     function it_contains_attributes(AttributeInterface $sku, AttributeInterface $name)
     {
         $this->addAttribute($sku)->shouldReturn($this);

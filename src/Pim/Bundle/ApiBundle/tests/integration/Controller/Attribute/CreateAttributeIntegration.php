@@ -302,7 +302,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "code" expects a scalar as data, "array" given. Check the standard format documentation.',
+            'message' => 'Property "code" expects a scalar as data, "array" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
@@ -332,7 +332,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "group" expects a valid code. The attribute group does not exist, "attributeGroupD" given. Check the standard format documentation.',
+            'message' => 'Property "group" expects a valid code. The attribute group does not exist, "attributeGroupD" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
@@ -359,7 +359,7 @@ JSON;
 JSON;
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "type" does not expect an empty value. Check the standard format documentation.',
+            'message' => 'Property "type" does not expect an empty value. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
@@ -388,7 +388,7 @@ JSON;
 JSON;
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "type" expects a valid attribute type. The attribute type does not exist, "pim_catalog_matrix" given. Check the standard format documentation.',
+            'message' => 'Property "type" expects a valid attribute type. The attribute type does not exist, "pim_catalog_matrix" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
@@ -418,7 +418,7 @@ JSON;
 JSON;
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
+            'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
@@ -447,7 +447,7 @@ JSON;
 JSON;
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "date_min" expects a string with the format "yyyy-mm-dd" as data, "a date" given. Check the standard format documentation.',
+            'message' => 'Property "date_min" expects a string with the format "yyyy-mm-dd" as data, "a date" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
@@ -474,7 +474,7 @@ JSON;
 JSON;
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "available_locales" expects a valid locale code. The locale does not exist, "akeneo_PIM" given. Check the standard format documentation.',
+            'message' => 'Property "available_locales" expects a valid locale code. The locale does not exist, "akeneo_PIM" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
@@ -503,7 +503,7 @@ JSON;
 JSON;
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "available_locales" expects an array with valid data, one of the "available_locales" values is not a scalar. Check the standard format documentation.',
+            'message' => 'Property "available_locales" expects an array with valid data, one of the "available_locales" values is not a scalar. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
@@ -534,7 +534,7 @@ JSON;
         $response = $client->getResponse();
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "allowed_extensions" expects an array as data, "NULL" given. Check the standard format documentation.',
+            'message' => 'Property "allowed_extensions" expects an array as data, "NULL" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
@@ -562,7 +562,7 @@ JSON;
         $response = $client->getResponse();
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "labels" expects an array as data, "NULL" given. Check the standard format documentation.',
+            'message' => 'Property "labels" expects an array as data, "NULL" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',
@@ -590,7 +590,7 @@ JSON;
         $response = $client->getResponse();
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "available_locales" expects an array as data, "NULL" given. Check the standard format documentation.',
+            'message' => 'Property "available_locales" expects an array as data, "NULL" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#post_attributes',

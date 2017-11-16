@@ -75,7 +75,11 @@ define([
          */
         toggleThirdColumn() {
             const thirdColumn = this.$el.find('.AknDefault-thirdColumnContainer');
+            const thirdColumnContent = this.$el.find('.AknDefault-thirdColumn');
+            const width = thirdColumnContent.outerWidth() || 300;
+
             if (null !== thirdColumn) {
+                thirdColumn.css({marginLeft: -width});
                 thirdColumn.toggleClass('AknDefault-thirdColumnContainer--open');
             }
         }

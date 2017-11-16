@@ -3,9 +3,9 @@ parameters:
     akeneo_integration_tests.loader.fixtures_loader.class: Akeneo\Test\IntegrationTestsBundle\Loader\FixturesLoader
     akeneo_integration_tests.loader.database_schema_handler.class: Akeneo\Test\IntegrationTestsBundle\Loader\DatabaseSchemaHandler
     akeneo_integration_tests.doctrine.connection.connection_closer.class: Akeneo\Test\IntegrationTestsBundle\Doctrine\Connection\ConnectionCloser
-    akeneo_integration_tests.doctrine.job_execution.class: Akeneo\Test\IntegrationTestsBundle\Doctrine\JobExecution
     akeneo_integration_tests.security.system_user_authenticator.class: Akeneo\Test\IntegrationTestsBundle\Security\SystemUserAuthenticator
     akeneo_integration_tests.configuration.catalog.class: Akeneo\Test\IntegrationTestsBundle\Configuration\Catalog
+    akeneo_integration_tests.launcher.job_launcher.class: Akeneo\Test\IntegrationTestsBundle\Launcher\JobLauncher
 
 services:
     akeneo_integration_tests.loader.reference_data_loader:
@@ -35,18 +35,33 @@ services:
         arguments:
             - '@doctrine'
 
-    akeneo_integration_tests.doctrine.job_execution:
-        class: '%akeneo_integration_tests.doctrine.job_execution.class%'
-        arguments:
-            - '@doctrine.orm.default_entity_manager'
-
     akeneo_integration_tests.security.system_user_authenticator:
         class: '%akeneo_integration_tests.security.system_user_authenticator.class%'
         arguments:
             - '@service_container'
+
+    akeneo_integration_tests.catalog.fixture.build_entity:
+        class: 'Pim\Bundle\CatalogBundle\tests\fixture\EntityBuilder'
+        arguments:
+            - '@service_container'
+
+    akeneo_integration_tests.catalog.fixture.completeness_filter:
+        class: 'Pim\Bundle\CatalogBundle\tests\fixture\CompletenessFilter'
+        arguments:
+            - '@akeneo_integration_tests.catalog.fixture.build_entity'
+
+    akeneo_integration_tests.launcher.job_launcher:
+        class: '%akeneo_integration_tests.launcher.job_launcher.class%'
+        arguments:
+            - '@kernel'
 
     akeneo_integration_tests.configuration.catalog:
         class: '%akeneo_integration_tests.configuration.catalog.class%'
 
     akeneo_integration_tests.catalog.configuration:
         synthetic: true
+
+    akeneo_integration_tests.launcher.job_launcher:
+        class: '%akeneo_integration_tests.launcher.job_launcher.class%'
+        arguments:
+            - '@kernel'

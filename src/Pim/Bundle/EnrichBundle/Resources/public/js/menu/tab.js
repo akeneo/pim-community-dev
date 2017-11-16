@@ -63,7 +63,13 @@ define(
              * {@inheritdoc}
              */
             render: function () {
-                this.$el.empty().append(this.template({
+                this.$el.empty();
+
+                if (!this.config.to && !this.hasChildren()) {
+                    return this;
+                }
+
+                this.$el.append(this.template({
                     active: this.active,
                     title: this.getLabel(),
                     url: Routing.generateHash(this.getRoute(), this.getRouteParams()),
@@ -154,6 +160,15 @@ define(
                 if (event.target === this.code) {
                     this.items.push(event);
                 }
+            },
+
+            /**
+             * Does this tab have children elements
+             *
+             * @return {Boolean}
+             */
+            hasChildren: function () {
+                return 0 < this.items.length;
             }
         });
     });

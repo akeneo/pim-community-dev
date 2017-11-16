@@ -51,12 +51,6 @@ datagrid:
                 data_name:     search_id
             document_type: ~
             technical_id: ~
-            edit_link:
-                type: url
-                route: pim_enrich_product_edit
-                params:
-                    - id
-                    - dataLocale
             delete_link:
                 type: url
                 route: pim_enrich_product_rest_remove
@@ -76,28 +70,30 @@ datagrid:
             edit_attributes:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--edit
-                type:      tab-redirect
+                type:      navigate-product-and-product-model
                 label:     Edit attributes of the product
-                tab:       pim-product-edit-form-attributes
-                link:      edit_link
+                tabRedirects:
+                    product: pim-product-edit-form-attributes
+                    product_model: pim-product-model-edit-form-attributes
             edit_categories:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--folder
-                type:  tab-redirect
+                type:  navigate-product-and-product-model
                 label: Classify the product
-                tab:   pim-product-edit-form-categories
-                link:  edit_link
+                tabRedirects:
+                    product: pim-product-edit-form-categories
+                    product_model: pim-product-edit-form-categories
             delete:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--trash
-                type:  delete
+                type:  delete-product
                 label: Delete the product
                 link:  delete_link
                 acl_resource: pim_enrich_product_remove
             toggle_status:
                 launcherOptions:
                     className: AknIconButton AknIconButton--small AknIconButton--switch
-                type:  ajax
+                type:  toggle-product
                 label: Toggle status
                 link:  toggle_status_link
                 acl_resource: pim_enrich_product_change_state

@@ -22,6 +22,7 @@ extensions:
         position: 100
         config:
             fieldName: max_characters
+            label: pim_enrich.form.attribute.tab.properties.label.max_characters
 
     pim-attribute-form-text-validation-params-validation-rule:
         module: pim/form/common/fields/select
@@ -30,6 +31,7 @@ extensions:
         position: 110
         config:
             fieldName: validation_rule
+            label: pim_enrich.form.attribute.tab.properties.label.validation_rule
             choices:
                 email: pim_enrich.entity.attribute.validation_rule.email
                 regexp: pim_enrich.entity.attribute.validation_rule.regexp
@@ -42,3 +44,4 @@ extensions:
         position: 120
         config:
             fieldName: validation_regexp
+            label: pim_enrich.form.attribute.tab.properties.label.validation_regexp

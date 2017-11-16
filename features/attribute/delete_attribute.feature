@@ -11,7 +11,7 @@ Feature: Delete an attribute
   @jira https://akeneo.atlassian.net/browse/PIM-5347
   Scenario: Successfully delete and recreate a text attribute used in a product and filter on it
     Given I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | caterpillar_1 |
       | family | Boots         |

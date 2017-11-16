@@ -239,7 +239,7 @@ JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"identifier":"foo","status_code":422,"message":"Property \"group\" does not exist. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"identifier":"foo","status_code":422,"message":"Property \"group\" does not exist. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/products', [], [], [], $data);

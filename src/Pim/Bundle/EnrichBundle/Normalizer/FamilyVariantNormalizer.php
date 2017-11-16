@@ -46,7 +46,8 @@ class FamilyVariantNormalizer implements NormalizerInterface
         $result['meta'] = [
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'form'              => 'pim-family-variant-edit-form',
-            'id'                => $object->getId()
+            'id'                => $object->getId(),
+            'model_type'        => 'family_variant',
         ];
 
         return $result;

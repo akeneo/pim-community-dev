@@ -34,18 +34,13 @@
     background: @AknDefaultHoverBackground;
   }
 
-  &--noRightBorder {
-    border-right: none;
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-
   &--noLeftBorder {
     border-left: none;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
 
+  // Use Button instead
   &--big {
     height: @AknDefaultButtonSize;
     line-height: @AknDefaultButtonSize;
@@ -57,24 +52,6 @@
     padding: 0 !important;
   }
 
-  &--glued {
-    border-radius: 0;
-
-    &:first-child {
-      border-top-left-radius: 2px;
-      border-bottom-left-radius: 2px;
-    }
-
-    &:last-child {
-      border-top-right-radius: 2px;
-      border-bottom-right-radius: 2px;
-    }
-
-    & + & {
-      border-left: none;
-    }
-  }
-
   &--disabled {
     opacity: 0.5;
     cursor: not-allowed;
@@ -83,24 +60,6 @@
   &--unclickable {
     opacity: 0.5;
     cursor: default;
-  }
-
-  &--input {
-    cursor: inherit;
-    padding-left: 3px;
-    padding-right: 3px;
-    text-align: center;
-    
-    &:hover {
-      background: white;
-    }
-  }
-
-  &--square {
-    min-width: @AknLittleButtonSize;
-    padding-left: 0;
-    padding-right: 0;
-    text-align: center;
   }
 
   &--withoutBorder {

@@ -260,7 +260,7 @@ class AttributeOptionController
 
         $data['attribute'] = array_key_exists('attribute', $data) ? $data['attribute'] : $attributeCode;
         $data['code'] = array_key_exists('code', $data) ? $data['code'] : $optionCode;
-        $this->updateAttributeOption($attributeOption, $data, 'post_attributes__attribute_code__options');
+        $this->updateAttributeOption($attributeOption, $data, 'patch_attributes__attribute_code__options__code_');
         $this->validateAttributeOption($attributeOption);
 
         $this->saver->save($attributeOption);
@@ -347,7 +347,7 @@ class AttributeOptionController
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . $anchor,
-                sprintf('%s Check the standard format documentation.', $exception->getMessage()),
+                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         }

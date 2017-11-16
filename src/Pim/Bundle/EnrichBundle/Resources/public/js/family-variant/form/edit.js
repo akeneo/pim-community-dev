@@ -25,11 +25,6 @@ define([
     ) {
         return BaseEdit.extend({
             template: _.template(template),
-            events: {
-                'click .cancel': () => {
-                    this.trigger('cancel');
-                }
-            },
 
             /**
              * {@inheritdoc}

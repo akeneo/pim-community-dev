@@ -385,11 +385,11 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/families/familyA', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/families/familyA1', [], [], [], $data);
 
-        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('familyA');
+        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier('familyA1');
         $familyStandard = [
-            'code'                   => 'familyA',
+            'code'                   => 'familyA1',
             'attributes'             => [ 'sku' ],
             'attribute_as_label'     => 'sku',
             'attribute_as_image'     => null,
@@ -399,8 +399,7 @@ JSON;
                 'tablet'             => [ 'sku' ],
             ],
             'labels'                 => [
-                'fr_FR' => 'Une famille A',
-                'en_US' => 'A family A'
+                'en_US' => 'A family A1'
             ],
         ];
         $normalizer = $this->get('pim_catalog.normalizer.standard.family');
@@ -489,7 +488,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
+            'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#patch_families__code_'
@@ -517,7 +516,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "labels" expects an array as data, "NULL" given. Check the standard format documentation.',
+            'message' => 'Property "labels" expects an array as data, "NULL" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#patch_families__code_'

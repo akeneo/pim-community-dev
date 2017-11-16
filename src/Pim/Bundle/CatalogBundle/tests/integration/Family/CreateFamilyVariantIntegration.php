@@ -60,7 +60,7 @@ class CreateFamilyVariantIntegration extends TestCase
             'Axis is invalid (level 1)'
         );
         $this->assertEquals(
-            ['color', 'weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color'],
+            ['weather_conditions', 'rating', 'side_view', 'top_view', 'lace_color', 'color'],
             $this->extractAttributeCode($variantAttributeSet->getAttributes()),
             'Variant attribute are invalid (level 1)'
         );
@@ -72,7 +72,7 @@ class CreateFamilyVariantIntegration extends TestCase
             'The axis is invalid (level 2)'
         );
         $this->assertEquals(
-            ['size', 'sku', 'price'],
+            ['sku', 'price', 'size'],
             $this->extractAttributeCode($variantAttributeSet->getAttributes()),
             'Variant attribute are invalid (level 2)'
         );
@@ -127,7 +127,7 @@ class CreateFamilyVariantIntegration extends TestCase
 
         $variantAttributeSet = $familyVariant->getVariantAttributeSet(2);
         $this->assertEquals(
-            ['size', 'price', 'sku', 'unique_attribute'],
+            ['price', 'size', 'sku', 'unique_attribute'],
             $this->extractAttributeCode($variantAttributeSet->getAttributes()),
             'Variant attribute are invalid (level 2)'
         );
@@ -377,6 +377,7 @@ class CreateFamilyVariantIntegration extends TestCase
 
         $this->assertCount(1, $violations);
         $this->assertSame('There should be at least one level defined in the family variant', $violations->get(0)->getMessage());
+        $this->assertSame('variant_attribute_sets', $violations->get(0)->getPropertyPath());
     }
 
     public function testCreateFamilyVariantNoLevel()
@@ -507,6 +508,8 @@ class CreateFamilyVariantIntegration extends TestCase
             'Attributes must be unique, "color" are used several times in variant attributes sets',
             $errors->get(1)->getMessage()
         );
+        $this->assertSame('variant_attribute_sets', $errors->get(0)->getPropertyPath());
+        $this->assertSame('variant_attribute_sets', $errors->get(1)->getPropertyPath());
     }
 
     public function testTheAttributeSetAttributeUniqueness()
@@ -541,6 +544,7 @@ class CreateFamilyVariantIntegration extends TestCase
             'Attributes must be unique, "rating" are used several times in variant attributes sets',
             $errors->get(0)->getMessage()
         );
+        $this->assertSame('variant_attribute_sets', $errors->get(0)->getPropertyPath());
     }
 
     /**
@@ -584,6 +588,8 @@ class CreateFamilyVariantIntegration extends TestCase
             'Variant axes "name" cannot be localizable, not scopable and not locale specific',
             $errors->get(0)->getMessage()
         );
+        $this->assertSame('variant_attribute_sets', $errors->get(0)->getPropertyPath());
+        $this->assertSame('variant_attribute_sets', $errors->get(1)->getPropertyPath());
     }
 
     public function testCreateFamilyVariantWithIdentifierAsAxis()
@@ -620,6 +626,8 @@ class CreateFamilyVariantIntegration extends TestCase
             'Variant axes "sku" must be a boolean, a simple select, a simple reference data or a metric',
             $violations->get(1)->getMessage()
         );
+        $this->assertSame('variant_attribute_sets', $violations->get(0)->getPropertyPath());
+        $this->assertSame('variant_attribute_sets', $violations->get(1)->getPropertyPath());
     }
 
     /**
@@ -651,6 +659,7 @@ class CreateFamilyVariantIntegration extends TestCase
             'A variant attribute set cannot have more than 5 axes',
             $errors->get(2)->getMessage()
         );
+        $this->assertSame('variant_attribute_sets', $errors->get(2)->getPropertyPath());
     }
 
     public function testCreateFamilyVariantWithNoAttributeInAxes()
@@ -679,6 +688,7 @@ class CreateFamilyVariantIntegration extends TestCase
             'There should be at least one attribute defined as axis for the attribute set for level "1"',
             $violations->get(0)->getMessage()
         );
+        $this->assertSame('variant_attribute_sets', $violations->get(0)->getPropertyPath());
     }
 
     /**
@@ -717,6 +727,7 @@ class CreateFamilyVariantIntegration extends TestCase
             'There is no variant attribute set for level "1"',
             $errors->get(0)->getMessage()
         );
+        $this->assertSame('variant_attribute_sets', $errors->get(0)->getPropertyPath());
     }
 
     public function testCreateFamilyVariantTooManyLevels()
@@ -752,6 +763,7 @@ class CreateFamilyVariantIntegration extends TestCase
 
         $this->assertCount(1, $violations);
         $this->assertSame('Family variant cannot have more than "2" level', $violations->get(0)->getMessage());
+        $this->assertSame('variant_attribute_sets', $violations->get(0)->getPropertyPath());
     }
 
     /**
@@ -791,6 +803,7 @@ class CreateFamilyVariantIntegration extends TestCase
             '"heel_color" attribute cannot be added to "family_variant" family variant, as it is not an attribute of the "boots" family',
             $errors->get(0)->getMessage()
         );
+        $this->assertSame('variant_attribute_sets', $errors->get(0)->getPropertyPath());
     }
 
     /**
@@ -834,6 +847,7 @@ class CreateFamilyVariantIntegration extends TestCase
             'Unique attribute "unique_attribute" must be set at the product level',
             $errors->get(0)->getMessage()
         );
+        $this->assertSame('variant_attribute_sets', $errors->get(0)->getPropertyPath());
     }
 
     /**
@@ -869,6 +883,7 @@ class CreateFamilyVariantIntegration extends TestCase
             'Unique attribute "sku" must be set at the product level',
             $errors->get(0)->getMessage()
         );
+        $this->assertSame('variant_attribute_sets', $errors->get(0)->getPropertyPath());
     }
 
     /**
