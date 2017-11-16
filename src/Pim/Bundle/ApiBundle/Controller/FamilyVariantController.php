@@ -10,6 +10,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\ApiBundle\Documentation;
+use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Component\Api\Exception\DocumentedHttpException;
 use Pim\Component\Api\Exception\PaginationParametersException;
 use Pim\Component\Api\Exception\ViolationHttpException;
@@ -65,6 +66,9 @@ class FamilyVariantController
     /** @var RouterInterface */
     protected $router;
 
+    /** @var StreamResourceResponse */
+    protected $partialUpdateStreamResource;
+
     /** @var array */
     protected $apiConfiguration;
 
@@ -79,6 +83,7 @@ class FamilyVariantController
      * @param ObjectUpdaterInterface         $updater
      * @param SaverInterface                 $saver
      * @param RouterInterface                $router
+     * @param StreamResourceResponse         $partialUpdateStreamResource
      * @param array                          $apiConfiguration
      */
     public function __construct(
@@ -92,6 +97,7 @@ class FamilyVariantController
         ObjectUpdaterInterface $updater,
         SaverInterface $saver,
         RouterInterface $router,
+        StreamResourceResponse $partialUpdateStreamResource,
         array $apiConfiguration
     ) {
         $this->familyRepository = $familyRepository;
@@ -104,6 +110,7 @@ class FamilyVariantController
         $this->updater = $updater;
         $this->saver = $saver;
         $this->router = $router;
+        $this->partialUpdateStreamResource = $partialUpdateStreamResource;
         $this->apiConfiguration = $apiConfiguration;
     }
 
@@ -222,6 +229,62 @@ class FamilyVariantController
     }
 
     /**
+     * @param Request $request
+     * @param string  $familyCode
+     * @param string  $code
+     *
+     * @throws BadRequestHttpException
+     * @throws UnprocessableEntityHttpException
+     *
+     * @return Response
+     *
+     * @AclAncestor("pim_api_family_variant_edit")
+     */
+    public function partialUpdateAction(Request $request, string $familyCode, string $code): Response
+    {
+        $data = $this->getDecodedContent($request->getContent());
+
+        $isCreation = false;
+        $familyVariant = $this->familyVariantRepository->findOneByIdentifier($code);
+
+        if (null === $familyVariant) {
+            $isCreation = true;
+            $this->validateCodeConsistency($code, $data);
+            $data['code'] = $code;
+            $familyVariant = $this->factory->create();
+        }
+
+        $this->updateFamilyVariant($familyVariant, $data, $familyCode, 'patch_families__family_code__variants__code__');
+        $this->validateFamilyVariant($familyVariant);
+
+        $this->saver->save($familyVariant);
+
+        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $response = $this->getResponse($familyVariant, $status);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $familyCode
+     *
+     * @throws BadRequestHttpException
+     * @throws UnprocessableEntityHttpException
+     *
+     * @return Response
+     *
+     * @AclAncestor("pim_api_family_variant_edit")
+     */
+    public function partialUpdateListAction(Request $request, string $familyCode): Response
+    {
+        $resource = $request->getContent(true);
+        $response = $this->partialUpdateStreamResource->streamResponse($resource, ['familyCode' => $familyCode]);
+
+        return $response;
+    }
+
+    /**
      * Get a response with a location header to the created or updated resource.
      *
      * @param FamilyVariantInterface $familyVariant
@@ -255,15 +318,15 @@ class FamilyVariantController
     protected function updateFamilyVariant(
         FamilyVariantInterface $familyVariant,
         array $data,
-        $familyCode,
-        $anchor
+        string $familyCode,
+        string $anchor
     ): void {
         try {
             $this->updater->update($familyVariant, $data, ['familyCode' => $familyCode]);
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . $anchor,
-                sprintf('%s Check the standard format documentation.', $exception->getMessage()),
+                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         }
@@ -303,5 +366,29 @@ class FamilyVariantController
         }
 
         return $decodedContent;
+    }
+
+    /**
+     * Throw an exception if the code provided in the url and the code provided in the request body
+     * are not equals when creating a family with a PATCH method.
+     *
+     * The code in the request body is optional when we create a resource with PATCH.
+     *
+     * @param string $familyVariantCode code provided in the url
+     * @param array  $data              body of the request already decoded
+     *
+     * @throws UnprocessableEntityHttpException
+     */
+    protected function validateCodeConsistency($familyVariantCode, array $data)
+    {
+        if (array_key_exists('code', $data) && $familyVariantCode !== $data['code']) {
+            throw new UnprocessableEntityHttpException(
+                sprintf(
+                    'The code "%s" provided in the request body must match the code "%s" provided in the url.',
+                    $data['code'],
+                    $familyVariantCode
+                )
+            );
+        }
     }
 }

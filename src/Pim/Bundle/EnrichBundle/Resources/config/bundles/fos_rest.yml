@@ -14,6 +14,7 @@ fos_rest:
         rules:
             - { path: '^/api/rest/v\d+/media-files', methods: ['POST'], priorities: ['form_data'], fallback_format: json, prefer_extension: true }
             - { path: '^/api/rest/v\d+/(products|families|categories|attributes|attribute-groups|channels|association-types)$', methods: ['PATCH'], priorities: ['akeneo_multi_json'], fallback_format: akeneo_multi_json, prefer_extension: true }
+            - { path: '^/api/rest/v\d+/families/.+/variants$', methods: ['PATCH'], priorities: ['akeneo_multi_json'], fallback_format: akeneo_multi_json, prefer_extension: true }
             - { path: '^/api', priorities: ['json'], fallback_format: json, prefer_extension: true }
             - { path: '', stop: true }
     body_listener:

@@ -218,7 +218,7 @@ JSON;
 <<<JSON
 {
     "code":422,
-    "message": "Property \"group\" does not exist. Check the standard format documentation.",
+    "message": "Property \"group\" does not exist. Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
             "href": "http://api.akeneo.com/api-reference.html#patch_association_types__code_"

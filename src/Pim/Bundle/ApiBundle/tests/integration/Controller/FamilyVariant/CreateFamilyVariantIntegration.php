@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CreateFamilyVariantIntegration extends ApiTestCase
 {
-    public function testFormatStandardWhenAFamilyVariantIsCreated()
+    public function testStandardFormatWhenAFamilyVariantIsCreated()
     {
         $client = $this->createAuthenticatedClient();
 
@@ -148,7 +148,7 @@ JSON;
         $expectedContent = <<<JSON
 {
 	"code": 422,
-	"message": "Property \"variant_attribute_sets\" expects an array of objects as data. Check the standard format documentation.",
+	"message": "Property \"variant_attribute_sets\" expects an array of objects as data. Check the expected format on the API documentation.",
 	"_links": {
 		"documentation": {
 			"href": "http://api.akeneo.com/api-reference.html#post_families__family_code__variants"
@@ -189,7 +189,7 @@ JSON;
         $expectedContent = <<<JSON
 {
     "code": 422,
-    "message": "Property \"family\" does not exist. Check the standard format documentation.",
+    "message": "Property \"family\" does not exist. Check the expected format on the API documentation.",
     "_links": {
         "documentation": {
             "href": "http://api.akeneo.com/api-reference.html#post_families__family_code__variants"

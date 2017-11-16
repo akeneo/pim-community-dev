@@ -1,28 +1,30 @@
 <?php
 
-namespace Pim\Bundle\ApiBundle\tests\integration\Controller\AssociationType;
+declare(strict_types=1);
 
-use Akeneo\Test\Integration\Configuration;
+namespace Pim\Bundle\ApiBundle\tests\integration\Controller\FamilyVariant;
+
 use Pim\Bundle\ApiBundle\Stream\StreamResourceResponse;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class PartialUpdateListAssociationTypeIntegration extends ApiTestCase
+class PartialUpdateListFamilyVariantIntegration extends ApiTestCase
 {
-    public function testCreateAndUpdateAListOfAssociationTypes()
+    public function testCreateAndUpdateAListOfFamilyVariants()
     {
-        $data =
-<<<JSON
-{"code": "X_SELL"}
-{"code": "NEW_SELL"}
+        $data = <<<JSON
+    {"code": "newFamilyVariant", "variant_attribute_sets": [{"level": 1, "axes": ["a_ref_data_simple_select"], "attributes": ["a_ref_data_simple_select"]}]}
+    {"code": "familyVariantA1","labels": {"en_US": "US label"}}
+    {"code": "familyVariantA1","labels": {"fr_FR": "FR label"}}
 JSON;
 
-        $expectedContent =
-<<<JSON
-{"line":1,"code":"X_SELL","status_code":204}
-{"line":2,"code":"NEW_SELL","status_code":201}
+        $expectedContent = <<<JSON
+{"line":1,"code":"newFamilyVariant","status_code":201}
+{"line":2,"code":"familyVariantA1","status_code":204}
+{"line":3,"code":"familyVariantA1","status_code":204}
 JSON;
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/association-types', [], [], [], $data);
+
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/families/familyA/variants', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
@@ -30,54 +32,52 @@ JSON;
         $this->assertArrayHasKey('content-type', $httpResponse->headers->all());
         $this->assertSame(StreamResourceResponse::CONTENT_TYPE, $httpResponse->headers->get('content-type'));
 
-        $expectedAssociationTypes = [
-            'X_SELL'   => [
-                'code'   => 'X_SELL',
-                'labels' => [
-                    'en_US' => 'Cross sell',
-                    'fr_FR' => 'Vente croisée',
+        $expectedFamilies = [
+            'newFamilyVariant' => [
+                'code'                   => 'newFamilyVariant',
+                'labels'                 => [],
+                'family'                 => 'familyA',
+                'variant_attribute_sets' => [
+                    [
+                        'level'      => 1,
+                        'axes'       => ['a_ref_data_simple_select'],
+                        'attributes' => ['a_ref_data_simple_select', 'sku'],
+                    ]
                 ],
             ],
-            'NEW_SELL' => [
-                'code'   => 'NEW_SELL',
-                'labels' => [],
+            'familyVariantA1'    => [
+                'code'                   => 'familyVariantA1',
+                'labels'                 => [
+                    'en_US' => 'US label',
+                    'fr_FR' => 'FR label',
+                ],
+                'family'                 => 'familyA',
+                'variant_attribute_sets' => [
+                    [
+                        'level'      => 1,
+                        'axes'       => ['a_simple_select'],
+                        'attributes' => ['a_simple_select', 'a_text'],
+                    ],
+                    [
+                        'level'      => 2,
+                        'axes'       => ['a_yes_no'],
+                        'attributes' => ['sku', 'a_text_area', 'a_yes_no'],
+                    ],
+                ],
             ],
         ];
 
-        $xSell = $this->getNormalizedAssociationType('X_SELL');
-        $newSell = $this->getNormalizedAssociationType('NEW_SELL');
-
-        $this->assertSame($expectedAssociationTypes['X_SELL'], $xSell);
-        $this->assertSame($expectedAssociationTypes['NEW_SELL'], $newSell);
-    }
-
-    public function testCreateAndUpdateSameAssociationType()
-    {
-        $data =
-<<<JSON
-{"code": "NEW_SELL"}
-{"code": "NEW_SELL"}
-JSON;
-
-        $expectedContent =
-<<<JSON
-{"line":1,"code":"NEW_SELL","status_code":201}
-{"line":2,"code":"NEW_SELL","status_code":204}
-JSON;
-
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/association-types', [], [], [], $data);
-        $httpResponse = $response['http_response'];
-
-        $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
-        $this->assertSame($expectedContent, $response['content']);
+        $this->assertSameFamilyVariants($expectedFamilies['newFamilyVariant'], 'newFamilyVariant');
+        $this->assertSameFamilyVariants($expectedFamilies['familyVariantA1'], 'familyVariantA1');
     }
 
     public function testPartialUpdateListWithMaxNumberOfResourcesAllowed()
     {
         $maxNumberResources = $this->getMaxNumberResources();
 
+        $json = '{"code": "my_code_%s", "variant_attribute_sets": [{"level": 1, "axes": ["a_simple_select"], "attributes": ["a_simple_select"]}]}';
         for ($i = 0; $i < $maxNumberResources; $i++) {
-            $data[] = sprintf('{"code": "my_code_%s"}', $i);
+            $data[] = sprintf($json, $i);
         }
         $data = implode(PHP_EOL, $data);
 
@@ -86,7 +86,7 @@ JSON;
         }
         $expectedContent = implode(PHP_EOL, $expectedContent);
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/association-types', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/families/familyA/variants', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
@@ -101,7 +101,7 @@ JSON;
         $maxNumberResources = $this->getMaxNumberResources();
 
         for ($i = 0; $i < $maxNumberResources + 1; $i++) {
-            $data[] = sprintf('{"identifier": "my_code_%s"}', $i);
+            $data[] = sprintf('{"code": "my_code_%s"}', $i);
         }
         $data = implode(PHP_EOL, $data);
 
@@ -113,7 +113,7 @@ JSON;
     }
 JSON;
 
-        $client->request('PATCH', 'api/rest/v1/association-types', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/families', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
@@ -163,7 +163,7 @@ JSON;
 {"line":10,"status_code":400,"message":"Invalid json message received"}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/association-types', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/families', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
 
@@ -191,33 +191,33 @@ JSON;
 {"line":5,"status_code":422,"message":"Code is missing."}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/association-types', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/families', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    public function testUpdateAssociationTypeWhenUpdaterFailed()
+    public function testUpdateFamilyWhenUpdaterFailed()
     {
         $data =
 <<<JSON
-    {"code": "foo", "type":"bar"}
+    {"code": "foo", "attributes":"bar"}
 JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"code":"foo","status_code":422,"message":"Property \"type\" does not exist. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_association_types__code_"}}}
+{"line":1,"code":"foo","status_code":422,"message":"Property \"attributes\" expects an array as data, \"string\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_families__code_"}}}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/association-types', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/families', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
         $this->assertSame($expectedContent, $response['content']);
     }
 
-    public function testUpdateAssociationTypeWhenValidationFailed()
+    public function testUpdateFamilyWhenValidationFailed()
     {
         $data =
 <<<JSON
@@ -226,10 +226,10 @@ JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"code":"foo,","status_code":422,"message":"Validation failed.","errors":[{"property":"code","message":"Association type code may contain only letters, numbers and underscores"}]}
+{"line":1,"code":"foo,","status_code":422,"message":"Validation failed.","errors":[{"property":"code","message":"Family code may contain only letters, numbers and underscores"}]}
 JSON;
 
-        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/association-types', [], [], [], $data);
+        $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/families', [], [], [], $data);
         $httpResponse = $response['http_response'];
 
         $this->assertSame(Response::HTTP_OK, $httpResponse->getStatusCode());
@@ -253,40 +253,36 @@ JSON;
 
         $client = $this->createAuthenticatedClient();
         $client->setServerParameter('CONTENT_TYPE', 'application/json');
-        $client->request('PATCH', 'api/rest/v1/association-types', [], [], [], $data);
+        $client->request('PATCH', 'api/rest/v1/families', [], [], [], $data);
 
         $response = $client->getResponse();
         $this->assertSame(Response::HTTP_UNSUPPORTED_MEDIA_TYPE, $response->getStatusCode());
         $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
     }
 
-    /**
-     * @return integer
-     */
     protected function getBufferSize()
     {
         return $this->getParameter('api_input_buffer_size');
     }
 
-    /**
-     * @return integer
-     */
     protected function getMaxNumberResources()
     {
         return $this->getParameter('api_input_max_resources_number');
     }
 
     /**
-     * @param $code
-     *
-     * @return array
+     * @param array  $expectedFamily normalized data of the family variant that should be created
+     * @param string $code           code of the family variant that should be created
      */
-    protected function getNormalizedAssociationType($code)
+    protected function assertSameFamilyVariants(array $expectedFamily, $code): void
     {
-        $associationType = $this->get('pim_catalog.repository.association_type')->findOneByIdentifier($code);
+        $familyVariant = $this->get('pim_catalog.repository.family_variant')->findOneByIdentifier($code);
+        $normalizer = $this->get('pim_catalog.normalizer.standard.family_variant');
+        $standardizedFamilyVariant = $normalizer->normalize($familyVariant);
 
-        return $this->get('pim_catalog.normalizer.standard.association_type')->normalize($associationType);
+        $this->assertSame($expectedFamily, $standardizedFamilyVariant);
     }
+
     /**
      * {@inheritdoc}
      */

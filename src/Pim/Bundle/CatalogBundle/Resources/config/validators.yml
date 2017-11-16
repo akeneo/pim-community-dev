@@ -43,6 +43,7 @@ parameters:
     pim_catalog.validator.unique_value_set.class:                          Pim\Component\Catalog\Validator\UniqueValuesSet
     pim_catalog.validator.unique_axes_combination_set.class:               Pim\Component\Catalog\Validator\UniqueAxesCombinationSet
     pim_catalog.validator.constraint.family_variant_axes.class:            Pim\Component\Catalog\Validator\Constraints\FamilyVariantValidator
+    pim_catalog.validator.constraint.immutable_family_variant_axes.class:  Pim\Component\Catalog\Validator\Constraints\ImmutableVariantAxesValidator
     pim_catalog.validator.constraint.only_expected_attributes.class:       Pim\Component\Catalog\Validator\Constraints\OnlyExpectedAttributesValidator
     pim_catalog.validator.constraint.unique_variant_axes.class:            Pim\Component\Catalog\Validator\Constraints\UniqueVariantAxisValidator
     pim_catalog.validator.constraint.not_empty_variant_axes.class:         Pim\Component\Catalog\Validator\Constraints\NotEmptyVariantAxesValidator
@@ -75,6 +76,13 @@ services:
         class: '%pim_catalog.validator.constraint.family_variant_axes.class%'
         tags:
             - { name: validator.constraint_validator, alias: pim_family_variant }
+
+    pim_catalog.validator.constraint.immutable_family_variant_axes:
+        class: '%pim_catalog.validator.constraint.immutable_family_variant_axes.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: validator.constraint_validator, alias: pim_immutable_variant_axes_validator }
 
     pim_catalog.validator.constraint.only_expected_attributes:
         class: '%pim_catalog.validator.constraint.only_expected_attributes.class%'
