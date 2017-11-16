@@ -104,7 +104,7 @@ interface ProductModelRepositoryInterface extends
      */
     public function getFamilyLeafProductModels(
         FamilyVariantInterface $familyVariant,
-        String $search,
+        string $search,
         int $limit,
         int $page = 0
     ): array;

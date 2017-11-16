@@ -1,8 +1,8 @@
 @javascript
-Feature: Apply a add to existing product model to products
-  In order to order my products
+Feature: Apply a add to products to existing product model
+  In order to link my products to product model
   As a product manager
-  I need to be able to select products and assign it to an existing product model
+  I need to be able to select products and link them to an existing product model
 
   Background:
     Given a "catalog_modeling" catalog configuration

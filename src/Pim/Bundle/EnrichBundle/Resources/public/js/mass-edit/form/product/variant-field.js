@@ -1,5 +1,6 @@
 /**
- * This module displays a family with select2
+ * This module displays a variant field as select2
+ * It is adapted for mass edit because it has ability to have readOnly option do disallow edit.
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -9,13 +10,22 @@
 
 define(
     [
-        'pim/form/common/fields/simple-select-async'
+        'pim/product-model/form/creation/variant'
     ],
     function (
-        SimpleSelectAsync,
+        Variant
     ) {
-        return SimpleSelectAsync.extend({
+        return Variant.extend({
             readOnly: false,
+
+            /**
+             * {@inheritdoc}
+             */
+            initialize() {
+                Variant.prototype.initialize.apply(this, arguments);
+
+                this.readOnly = false;
+            },
 
             /**
              * {@inheritdoc}
@@ -27,14 +37,14 @@ define(
                     this.setReadOnly.bind(this)
                 );
 
-                return SimpleSelectAsync.prototype.configure.apply(this, arguments);
+                return Variant.prototype.configure.apply(this, arguments);
             },
 
             /**
              * {@inheritdoc}
              */
             isReadOnly() {
-                return this.readOnly || SimpleSelectAsync.prototype.isReadOnly.apply(this, arguments);
+                return this.readOnly || !this.getFormData().family
             },
 
             /**

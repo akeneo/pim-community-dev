@@ -718,8 +718,6 @@ config:
         pim/product-model-edit-form/complete-variant-product: pimenrich/js/product-model/form/complete-variant-product
         pim/product-model-edit-form/history: pimenrich/js/product/form/history
         pim/product-model/form/creation/variant: pimenrich/js/product-model/form/creation/variant
-        pim/product-model/form/product-model: pimenrich/js/product-model/form/product-model
-        pim/product-model/form/family: pimenrich/js/product-model/form/family
         pim/product-model-edit-form/add-child-form: pimenrich/js/product-model/form/add-child
         pim/product-model-edit-form/add-child-form-header: pimenrich/js/product-model/form/add-child/header
         pim/product-model-edit-form/add-child-form-fields-container: pimenrich/js/product-model/form/add-child/fields-container
@@ -797,6 +795,9 @@ config:
         pim/mass-edit-form/product/change-family:                     pimenrich/js/mass-edit/form/product/change-family
         pim/mass-edit-form/product/add-to-group:                      pimenrich/js/mass-edit/form/product/add-to-group
         pim/mass-edit-form/product/category:                          pimenrich/js/mass-edit/form/product/category
+        pim/mass-edit-form/product/mass-edit-field:                   pimenrich/js/mass-edit/form/product/mass-edit-field
+        pim/mass-edit-form/product/product-model-field:               pimenrich/js/mass-edit/form/product/product-model-field
+        pim/mass-edit-form/product/variant-field:                     pimenrich/js/mass-edit/form/product/variant-field
         pim/mass-edit-form/family/set-requirements:                   pimenrich/js/mass-edit/form/family/set-requirements
 
         # Product edit form

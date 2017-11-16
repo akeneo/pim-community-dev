@@ -47,7 +47,7 @@ define(
 
                 BaseField.prototype.initialize.apply(this, arguments);
 
-                if (this.config.choiceRoute) {
+                if (undefined !== this.config.choiceRoute) {
                     this.setChoiceUrl(Routing.generate(this.config.choiceRoute));
                 }
             },
@@ -91,7 +91,7 @@ define(
                         results: this.select2Results.bind(this)
                     },
                     initSelection: this.select2InitSelection.bind(this),
-                    placeholder: this.config.placeholder ? __(this.config.placeholder) : ' '
+                    placeholder: undefined !== this.config.placeholder ? __(this.config.placeholder) : ' '
                 };
             },
 

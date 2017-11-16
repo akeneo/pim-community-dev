@@ -196,7 +196,7 @@ define([
          * @param {Boolean} readOnly
          */
         setReadOnly(readOnly) {
-            this.readOnly = readOnly;
+            this.readOnly = Boolean(readOnly);
         },
 
         /**

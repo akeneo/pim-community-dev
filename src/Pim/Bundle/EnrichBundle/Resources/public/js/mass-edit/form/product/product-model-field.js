@@ -12,7 +12,7 @@ define(
         'jquery',
         'underscore',
         'oro/translator',
-        'pim/form/common/fields/simple-select-async',
+        'pim/mass-edit-form/product/mass-edit-field',
         'pim/router',
         'pim/user-context',
         'pim/fetcher-registry',
@@ -23,16 +23,15 @@ define(
         $,
         _,
         __,
-        SimpleSelectAsync,
+        MassEditField,
         Routing,
         UserContext,
         FetcherRegistry,
         MediaUrlGenerator,
         templateProductModel
     ) {
-        return SimpleSelectAsync.extend({
+        return MassEditField.extend({
             previousFamilyVariant: null,
-            readOnly: false,
             templateProductModel: _.template(templateProductModel),
 
             /**
@@ -42,22 +41,16 @@ define(
                 this.listenTo(
                     this.getRoot(),
                     'pim_enrich:form:entity:post_update',
-                    this.updateOnFamilyVariantChange.bind(this)
+                    this.onPostUpdate.bind(this)
                 );
 
-                this.listenTo(
-                    this,
-                    'mass-edit:update-read-only',
-                    this.setReadOnly.bind(this)
-                );
-
-                return SimpleSelectAsync.prototype.configure.apply(this, arguments);
+                return MassEditField.prototype.configure.apply(this, arguments);
             },
 
             /**
              * Updates the choice URL when the model change
              */
-            updateOnFamilyVariantChange() {
+            onPostUpdate() {
                 if (this.getFormData().family_variant !== this.previousFamilyVariant) {
                     this.previousFamilyVariant = this.getFormData().family_variant;
                     this.setData({[this.fieldName]: null});
@@ -68,9 +61,12 @@ define(
 
             /**
              * {@inheritdoc}
+             *
+             * This method overrides the previous one to be able to format the result and add an image and set a
+             * custom template.
              */
             getSelect2Options() {
-                let options = SimpleSelectAsync.prototype.getSelect2Options.apply(this, arguments);
+                let options = MassEditField.prototype.getSelect2Options.apply(this, arguments);
 
                 options.dropdownCssClass = 'variant-navigation';
                 options.formatResult = (item, $container) => {
@@ -92,7 +88,7 @@ define(
              * {@inheritdoc}
              */
             select2Data() {
-                let result = SimpleSelectAsync.prototype.select2Data.apply(this, arguments);
+                let result = MassEditField.prototype.select2Data.apply(this, arguments);
                 result.options.family_variant = this.getFormData().family_variant;
 
                 return result;
@@ -113,7 +109,7 @@ define(
              * {@inheritdoc}
              */
             isReadOnly() {
-                return this.readOnly || !this.getFormData().family_variant;
+                return !this.getFormData().family_variant || MassEditField.prototype.isReadOnly.apply(this, arguments);
             },
 
             /**
@@ -129,15 +125,6 @@ define(
                             callback(this.convertBackendItem(productModel));
                         });
                 }
-            },
-
-            /**
-             * Updates the readOnly parameter to avoid edition of the field
-             *
-             * @param {Boolean} readOnly
-             */
-            setReadOnly(readOnly) {
-                this.readOnly = readOnly;
             }
         });
     }

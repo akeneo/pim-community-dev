@@ -1,6 +1,6 @@
 extensions:
     pim-mass-product-edit-configure-add-to-existing-product-model-family:
-        module: pim/product-model/form/family
+        module: pim/mass-edit-form/product/mass-edit-field
         parent: pim-mass-product-edit-configure-add-to-existing-product-model
         targetZone: fields
         position: 20
@@ -12,7 +12,7 @@ extensions:
             placeholder: pim_enrich.entity.product.create_popin.labels.family
 
     pim-mass-product-edit-configure-add-to-existing-product-model-variant:
-        module: pim/product-model/form/creation/variant
+        module: pim/mass-edit-form/product/variant-field
         parent: pim-mass-product-edit-configure-add-to-existing-product-model
         targetZone: fields
         position: 30
@@ -24,7 +24,7 @@ extensions:
             placeholder: pim_enrich.entity.product.create_popin.labels.family_variant
 
     pim-mass-product-edit-configure-add-to-existing-product-model-product-model:
-        module: pim/product-model/form/product-model
+        module: pim/mass-edit-form/product/product-model-field
         parent: pim-mass-product-edit-configure-add-to-existing-product-model
         targetZone: fields
         position: 40
