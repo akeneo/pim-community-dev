@@ -36,7 +36,7 @@ Feature: Create variants of family through XLSX import
     And I wait for the "xlsx_catalog_modeling_family_variant_import" job to finish
     Then there should be the following family variants:
       | code               | family | label-de_DE       | label-en_US   | label-fr_FR           | variant-axes_1 | variant-attributes_1         |
-      | another_shoes_size | shoes  | Schuhe nach Größe | Shoes by size | Chaussures par taille | eu_shoes_size  | weight,ean,sku |
+      | another_shoes_size | shoes  | Schuhe nach Größe | Shoes by size | Chaussures par taille | eu_shoes_size  | eu_shoes_size,weight,ean,sku |
 
   Scenario: I successfully import a variant by color and size with one level of variation for the family clothing
     Given the following XLSX file to import:
@@ -50,8 +50,8 @@ Feature: Create variants of family through XLSX import
     And I launch the import job
     And I wait for the "xlsx_catalog_modeling_family_variant_import" job to finish
     Then there should be the following family variants:
-      | code                        | family   | label-de_DE                   | label-en_US                | label-fr_FR                     | variant-axes_1 | variant-attributes_1                           |
-      | another_clothing_color_size | clothing | Kleidung nach Farbe und Größe | Clothing by color and size | Vêtements par couleur et taille | color,size     | sku,composition,image,name,variation_image,ean |
+      | code                        | family   | label-de_DE                   | label-en_US                | label-fr_FR                     | variant-axes_1 | variant-attributes_1                                      |
+      | another_clothing_color_size | clothing | Kleidung nach Farbe und Größe | Clothing by color and size | Vêtements par couleur et taille | color,size     | sku,color,composition,image,name,size,variation_image,ean |
 
   Scenario: I successfully import a variant by color and size with one level of variation for the family clothing with minimal data
     Given the following XLSX file to import:

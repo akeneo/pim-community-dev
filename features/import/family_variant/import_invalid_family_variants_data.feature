@@ -71,8 +71,8 @@ Feature: Create valid variants of family through CSV import
     And I should see the text "Status: Completed"
     And I should see the text "skipped 2"
     And I should see the text "processed 1"
-    And I should see the text "axes: This property cannot be changed."
-    And I should see the text "Property \"number of attribute sets\" cannot be modified, \"2 attribute sets\" given."
+    And I should see the text "axes: Variant axes cannot be modified for the level \"2\""
+    And I should see the text "The number of variant attribute sets cannot be changed."
     And the invalid data file of "csv_catalog_modeling_family_variant_import" should contain:
       """
       code;family;label-de_DE;label-en_US;label-fr_FR;variant-axes_1;variant-axes_2;variant-attributes_1;variant-attributes_2

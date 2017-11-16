@@ -242,7 +242,7 @@ extensions:
         config:
             fieldName: auto_option_sorting
             label: pim_enrich.form.attribute.tab.properties.label.auto_option_sorting
-            defaultValue: false
+            defaultValue: null
 
     pim-attribute-edit-form-choices-options-grid:
         module: pim/attribute-edit-form/choices/options-grid

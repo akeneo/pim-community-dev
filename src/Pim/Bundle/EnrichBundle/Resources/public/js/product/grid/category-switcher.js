@@ -94,7 +94,10 @@ define(
              * @param {Event} event
              */
             outsideClickListener(event) {
-                if (this.isOpen && !$(event.target).closest('.AknDefault-thirdColumn').length) {
+                const isOpen = $('.AknDefault-thirdColumnContainer--open').length > 0;
+                const clickedFilter = $(event.target).closest('.AknFilterBox-addFilterButton').length > 0;
+
+                if (isOpen && clickedFilter) {
                     Resizable.destroy();
                     this.toggleThirdColumn();
                     document.removeEventListener('mousedown', this.outsideEventListener);

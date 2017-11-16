@@ -1350,7 +1350,7 @@ JSON;
         $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "extra_property" does not exist. Check the standard format documentation.',
+            'message' => 'Property "extra_property" does not exist. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'
@@ -1414,7 +1414,7 @@ JSON;
         $client->request('PATCH', 'api/rest/v1/products/product_categories', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "enabled" expects a boolean as data, "NULL" given. Check the standard format documentation.',
+            'message' => 'Property "enabled" expects a boolean as data, "NULL" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => 'http://api.akeneo.com/api-reference.html#patch_products__code_'
@@ -1452,7 +1452,7 @@ JSON;
         $client->request('PATCH', 'api/rest/v1/products/product_family', [], [], [], $data);
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "unknown_attribute" does not exist. Check the standard format documentation.',
+            'message' => 'Property "unknown_attribute" does not exist. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"
@@ -1480,7 +1480,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "family" expects a string as data, "array" given. Check the standard format documentation.',
+            'message' => 'Property "family" expects a string as data, "array" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"
@@ -1515,7 +1515,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "a_text" expects a scalar as data, "array" given. Check the standard format documentation.',
+            'message' => 'Property "a_text" expects a scalar as data, "array" given. Check the expected format on the API documentation.',
             '_links'  => [
                 'documentation' => [
                     'href' => "http://api.akeneo.com/api-reference.html#patch_products__code_"
