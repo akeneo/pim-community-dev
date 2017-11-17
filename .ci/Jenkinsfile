@@ -184,7 +184,8 @@ stage("Test") {
                         def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src /home/jenkins/pim/tests /home/jenkins/pim/vendor/akeneo/pim-community-dev -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"').tokenize('\n')
                         def messages = new net.sf.json.JSONArray()
 
-                        for (file in files) {
+                        for (line in files) {
+                            def file = line.tokenize(' ') 
                             messages.add([
                                 [container: "php", script: "bin/console --env=test pim:install --force"],
                                 [container: "php", script: "chmod 777 -R var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
@@ -235,10 +236,11 @@ stage("Test") {
             "phpunit-integration-ee": {
                 if (launchIntegrationTests.equals("yes") && editions.contains("ee")) {
                     queue({
-                        def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src /home/jenkins/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"').tokenize('\n').tokenize(' ')
+                        def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src /home/jenkins/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"').tokenize('\n')
                         def messages = new net.sf.json.JSONArray()
 
-                        for (file in files) {
+                        for (line in files) {
+                            def file = line.tokenize(' ') 
                             messages.add([
                                 [container: "php", script: "bin/console --env=test pim:install --force"],
                                 [container: "php", script: "chmod 777 -R var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
