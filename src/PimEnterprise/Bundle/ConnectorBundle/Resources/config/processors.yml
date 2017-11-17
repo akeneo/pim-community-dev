@@ -3,10 +3,17 @@ services:
         class: '%pim_connector.processor.denormalization.product.class%'
         arguments:
             - '@pimee_workflow.repository.delegating_product'
-            - '@pim_catalog.builder.product'
-            - '@pim_catalog.builder.variant_product'
+            - '@pim_connector.processor.denormalization.product_to_import'
+            - '@pim_connector.processor.denormalization.add_parent_to_product'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_catalog.comparator.filter.product'
             - '@pim_connector.processor.attribute_filter.product'
+
+    pim_connector.processor.denormalization.product_to_import:
+        class: '%pim_connector.processor.denormalization.product_to_import.class%'
+        arguments:
+            - '@pimee_workflow.repository.delegating_product'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.builder.variant_product'

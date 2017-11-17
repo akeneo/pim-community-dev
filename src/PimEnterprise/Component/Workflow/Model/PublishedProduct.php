@@ -469,6 +469,14 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
+    public function setCategories(Collection $categories): void
+    {
+        $this->categories = $categories;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function removeCategory(BaseCategoryInterface $category)
     {
         $this->categories->removeElement($category);
@@ -502,6 +510,14 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
         sort($codes);
 
         return $codes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setGroups(Collection $groups): void
+    {
+        $this->groups = $groups;
     }
 
     /**
@@ -663,7 +679,7 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setAssociations(array $associations = [])
+    public function setAssociations(Collection $associations)
     {
         $this->associations = new ArrayCollection($associations);
 
@@ -788,5 +804,13 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
         }
 
         return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUniqueData(Collection $data): void
+    {
+        $this->uniqueData = $data;
     }
 }

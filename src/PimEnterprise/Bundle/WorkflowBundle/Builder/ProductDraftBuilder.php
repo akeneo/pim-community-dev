@@ -96,7 +96,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
                 $comparator = $this->comparatorRegistry->getAttributeComparator($attributeTypes[$code]);
                 $diffAttribute = $comparator->compare(
                     $changes,
-                    $this->getOriginalValue($originalValues, $code, $index)
+                    $this->getOriginalValue($originalValues, $code, $changes['locale'], $changes['scope'])
                 );
 
                 if (null !== $diffAttribute) {
@@ -145,14 +145,25 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     }
 
     /**
-     * @param array  $originalValues
-     * @param string $code
-     * @param int    $index
+     * @param array       $originalValues
+     * @param string      $code
+     * @param null|string $locale
+     * @param null|string $channel
      *
      * @return array
      */
-    protected function getOriginalValue(array $originalValues, $code, $index)
+    protected function getOriginalValue(array $originalValues, string $code, ?string $locale, ?string $channel)
     {
-        return !isset($originalValues[$code][$index]) ? [] : $originalValues[$code][$index];
+        if (!isset($originalValues[$code])) {
+            return [];
+        }
+
+        foreach ($originalValues[$code] as $originalValue) {
+            if ($originalValue['locale'] === $locale && $originalValue['scope'] === $channel) {
+                return $originalValue;
+            }
+        }
+
+        return [];
     }
 }
