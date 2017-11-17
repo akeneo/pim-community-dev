@@ -6,20 +6,36 @@
     margin-top: 50px;
     margin-bottom: @AknFullPagePadding;
 
-    &-title {
-        position: fixed;
-        top: @AknFullPagePadding;
-        width: ~"calc(100% - 2 * 24px - 100px)";
+    &-header {
+        display: flex;
+    }
+
+    &-centerHeader {
+        flex: 1;
+    }
+
+    &-rightHeader, &-leftHeader {
+        width: 200px;
+        margin: 20px;
+        align-items: flex-start;
+    }
+
+    &-rightHeader {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    &-title, &-subTitle {
         text-align: center;
         left: 50px;
     }
 
-    &-subTitle {
-        position: fixed;
-        top: @AknFullPagePadding + 60px;
-        width: ~"calc(100% - 2 * 24px - 100px)";
+    &-description {
+        margin: 0 auto;
+        width: 600px;
+        font-size: 16px;
         text-align: center;
-        left: 50px;
     }
 
     &-level {
@@ -40,16 +56,18 @@
         border: 1px solid @AknBorderColor;
         padding: 5px 20px;
         overflow-y: auto;
+        color: @AknDarkBlue;
+        min-height: 300px;
+
+        &--common {
+            max-height: ~"calc(100vh - 170px)";
+        }
     }
 
     &-axes {
         color: @AknLightPurple;
         background-color: @AknLightGray;
         font-size: @AknFontSizeBig;
-    }
-
-    &-column--common {
-        max-height: ~"calc(100vh - 170px)";
     }
 
     &-column--level2 {
@@ -62,9 +80,10 @@
 
     &-columTitle {
         text-transform: uppercase;
-        border-bottom: 1px solid @AknMediumGrey;
+        border-bottom: 1px solid @AknSlateGrey;
         font-size: @AknFontSizeBig;
         color: @AknGrey;
+        margin: 0;
     }
 
     &-columnList {
@@ -108,6 +127,36 @@
             height: 60px;
             background-image: url("../../images/connector-end.svg");
             display: inline-block;
+        }
+    }
+
+    &-attribute {
+        background-color: white;
+        margin: 0;
+
+        &--common {
+            background-color: @AknLightGray;
+        }
+    }
+
+    &-attribute, &-columTitle {
+        &--movable {
+            background: url("../../images/icon-dragcolumns.svg") no-repeat 0 center;
+            background-size: 13px;
+            padding-left: 20px;
+            cursor: move;
+        }
+    }
+
+    &-attributeGroup {
+        background-color: white;
+
+        &--common {
+            background-color: @AknLightGray;
+        }
+
+        &--empty {
+            min-height: 250px;
         }
     }
 }
