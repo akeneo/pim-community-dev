@@ -73,7 +73,7 @@ pim_enrich:
     limit_exceeded: Si prega di scegliere meno di %limit% elementi da modificare
     product:
       page_title: Articoli
-      page_subtitle: Modifica di massa (1 articolo) | Modifica di massa (%count% articoli)
+      page_subtitle: Modifica di massa (1 prodotto) | Modifica di massa (%count% prodotti)
       title: Scegli l'operazione
       subtitle: Scegliere l'operazione che si desidera eseguire sull'articolo selezionato|Scegliere l'operazione che si desidera eseguire sui %count% articoli selezionati
       confirm: Stai per aggiornare un articolo con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% articoli con le seguenti informazioni, si prega di confermare.
@@ -102,7 +102,7 @@ pim_enrich:
       label: Modificare gli attributi
       description: Gli attributi del prodotto selezionato verranno modificati con i seguenti dati per le impostazioni di localizzazione selezionate.
       empty: Si prega di selezionare l'attributo/gli attributi che si desidera modificare
-      success_flash: È in corso l'aggiornamento dello stato dell'articolo/degli articoli
+      success_flash: È in corso l'aggiornamento dello stato del prodotto/dei prodotti
       launched_flash: L'azione di massa "modifica gli attributi comuni" è stata lanciata. Sarai avvisato quando finisce.
       message:
         warning: Non esiste un attributo in comune per i prodotti selezionati. Si prega di cambiare la selezione.
@@ -163,7 +163,7 @@ pim_enrich:
       index: Elenco valute
       toggle: Conversione valute
     product:
-      index: Elenco articoli
+      index: Elenca prodotti
       create: Crea un articolo
       edit_attributes: Modifica gli attributi dell'articolo
       remove: Rimuovere un articolo
@@ -186,7 +186,7 @@ pim_enrich:
       remove: Rimuovere una categoria
       move: Sposta la categoria
       children: Visualizza categoria bambini
-      products: Visualizza gli articoli della categoria
+      products: Visualizza i prodotti della categoria
       history: Visualizza lo storico della categoria
     channel:
       index: Elenco canali
@@ -203,9 +203,9 @@ pim_enrich:
       history: Visualizza lo storico della famiglia
     attribute_group:
       index: Elenco attributi di gruppo
-      create: Creare un attributo di gruppo
-      edit: Modificare un attributo di gruppo
-      remove: Rimuovere un attributo di gruppo
+      create: Crea un gruppo attributi
+      edit: Modifica un gruppo attributi
+      remove: Rimuovi un gruppo attributi
       sort: Ordina attributi di gruppo
       add_attribute: Aggiungere l'attributo a un gruppo
       remove_attribute: Rimuovere l'attributo da un gruppo
@@ -275,8 +275,8 @@ attribute:
 attribute group:
   title: Attributi di gruppo
   overview: Anteprima attributi di gruppo
-  create: Crea attributo di gruppo
-  edit: Modifica attributo di gruppo
+  create: crea gruppo attributi
+  edit: modifica gruppo attributi
   suggest creation: Seleziona un gruppo di attributi a sinistra
   or: o
   create new: Crea un nuovo gruppo di attributi
@@ -313,8 +313,8 @@ locale:
   create: Crea impostazioni locali
   edit: Modifica impostazioni locali
 product:
-  title: Articoli
-  overview: Anteprima articoli
+  title: prodotto
+  overview: anteprima prodotto
   create: Crea articolo
   edit: Modifica articolo
 group:
@@ -337,11 +337,11 @@ association type:
   overview: Anteprima tipi associazione
   create: Crea tipo associazione
   edit: Modifica tipo associazione
-products: Articoli
+products: prodotti
 btn:
   create:
     attribute: Crea attributo
-    attribute group: Crea attributo di gruppo
+    attribute group: crea gruppo attributi
     category: Crea categoria
     tree: Crea struttura
     channel: crea il canale
@@ -378,7 +378,7 @@ confirmation:
   remove:
     item: Sei sicuro di voler eliminare questo articolo?
     attribute: Sei sicuro di che voler eliminare l'attributo %name%?
-    attribute group: Sei sicuro di voler eliminare l'attributo del gruppo %name%?
+    attribute group: Sei sicuro di voler eliminare il gruppo attributi %name%?
     category: Sei sicuro di voler eliminare la categoria %name%?
     family: Sei sicuro di voler eliminare la famiglia %name%?
     product: Sei sicuro di voler eliminare l'articolo %name%?
@@ -387,7 +387,7 @@ confirmation:
     group type: Sei sicuro di voler eliminare il gruppo %name%?
     user: Sei sicuro di voler eliminare  l'utente %name%?
   attribute group:
-    remove attribute: Sei sicuro di voler rimuovere l'attributo %name% da questo gruppo?
+    remove attribute: Sei sicuro di voler rimuovere l'attributo %name% da questo gruppo attributi?
   family:
     remove attribute: Sei sicuro di voler rimuovere l'attributo %name% da questa famiglia?
   product:
@@ -410,8 +410,8 @@ flash:
     attributes added: Attributi aggiunti con successo al gruppo
     attribute removed: Attributo rimosso con successo dal gruppo
     not removed attributes: Il gruppo di attributi non può essere rimosso in quanto contiene degli attributi
-    not removed default: L'attributo di gruppo predefinito non può essere rimosso
-    not removed default attributes: L'attributo non può essere rimosso dall'attributo di gruppo predefinito
+    not removed default: Il gruppo attributi predefinito non può essere rimosso
+    not removed default attributes: L'attributo non può essere rimosso dal gruppo attributi predefinito
   category:
     created: Categoria creata con successo
     updated: Categoria caricata con successo
@@ -470,7 +470,7 @@ info:
   updated: Ci sono modifiche non salvate.
   category:
     remove children: Verranno eliminate tutte le sottocategorie.
-    keep products: Gli articoli in queste categorie non verranno eliminati.
+    keep products: I prodotti in queste categorie non verranno eliminati.
     products limit exceeded: Questa categoria contiene più prodotti di quelli ammessi per questa operazione (%limit% prodotti al massimo)
   product:
     no available attributes: Non ci sono altri attributi da aggiungere
@@ -479,21 +479,21 @@ info:
     change family to: Cambiare la famiglia in
     merge attributes: Gli attributi correnti verranno uniti a quelli della nuova famiglia.
     keep attributes: Nessun attributo verrà rimosso.
-    number of associations: '%productCount% articoli e %groupCount% gruppi'
+    number of associations: '%productCount% prodotti e %groupCount% gruppi'
     enable: Attiva
     enabled: Attivato
     disable: Disabilita
     disabled: Disabilitato
   group:
     axis: 'Asse di variazione: %attributes%'
-    select products: Seleziona gli articoli che dovrebbero appartenere a questo gruppo.
-    selectable products: I seguenti articoli selezionabili hanno un valore definito per ogni asse.
+    select products: Seleziona i prodotti che dovrebbero appartenere a questo gruppo.
+    selectable products: I seguenti prodotti selezionabili hanno un valore definito per ogni asse.
     no group types: Nessun tipo di gruppo esistente, clicca qui per crearne uno
-    more products: '%count% articoli in più...'
+    more products: '%count% prodotti ancora...'
   association type:
-    show products: Mostra articoli
+    show products: Mostra prodotti
     show groups: Mostra gruppi
-    remove from products: Eliminando questo tipo di associazione, essa verrà rimossa da %count% articoli.
+    remove from products: Eliminando questo tipo di associazione, essa verrà rimossa da %count% prodotti.
     none exist: Nessun tipo di associazione esistente.
     create one: Cliccare qui per crearne una
   attribute:
@@ -508,7 +508,7 @@ Updated: Caricato
 Last update: Ultimo aggiornamento
 by: Da
 N/A: N/A
-Manage products: Gestione articoli
+Manage products: Gestione prodotti
 Manage groups: Gestione gruppi
 Code: Codice
 Name: Nome
@@ -521,7 +521,7 @@ Translatable: Traducibili
 Scopable: Customizzazione per canale
 Localizable: Localizzabile
 Unique value: Valore univoco
-Attribute group: Attributo di gruppo
+Attribute group: Gruppo attributi
 Other: Altri
 Variants behavior when edited: Comportamento della variante quando viene modificata
 Edit: Modifica
@@ -554,7 +554,7 @@ switch_off: "No"
 Close: Chiudi
 Search: Ricerca
 Choose the attribute type: Scegliere il tipo di attributo
-Choose the attribute group: Scegliere l'attributo di gruppo
+Choose the attribute group: Scegliere il gruppo attributi
 Drag and drop a file or click here: Trascina e rilascia qui un file per caricarlo o fai click qui
 Drop an image or click here: Trascina un'immagine oppure clicca qui
 Automatic option sorting: Ordinamento automatico delle opzioni
@@ -618,7 +618,7 @@ pim_title.attribute:
   edit: "Attributi %attribute.label% | Modifica"
 pim_title.product:
   index: "Articoli"
-  edit: "Articoli %product.sku% | Modifica"
+  edit: "Prodotti %product.sku% | Visualizza"
 pim_title.family:
   index: "Famiglie"
   edit: "Famiglie %family.label% | Modifica"
@@ -676,7 +676,7 @@ pim_enrich.mass_edit_action:
   limit_exceeded: Si prega di scegliere meno di %limit% elementi da modificare
   product:
     page_title: Articoli
-    page_subtitle: Modifica di massa (1 articolo) | Modifica di massa (%count% articoli)
+    page_subtitle: Modifica di massa (1 prodotto) | Modifica di massa (%count% prodotti)
     title: Scegli l'operazione
     subtitle: Scegliere l'operazione che si desidera eseguire sull'articolo selezionato|Scegliere l'operazione che si desidera eseguire sui %count% articoli selezionati
     confirm: Stai per aggiornare un articolo con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% articoli con le seguenti informazioni, si prega di confermare.
@@ -911,5 +911,5 @@ pim_enrich_attribute_form:
   unique: Valore univoco
   availableLocales: Impostazioni locali disponibili
   locale_specific: Impostazioni locali specifiche
-  group: Attributo di gruppo
+  group: Gruppo attributi
   useableAsGridFilter: Utilizzabile nella griglia
