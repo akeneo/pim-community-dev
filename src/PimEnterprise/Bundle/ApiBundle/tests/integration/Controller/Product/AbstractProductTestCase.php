@@ -314,7 +314,7 @@ JSON;
         $expected = <<<JSON
 {
   "code": 422,
-  "message": "{$message}. Check the standard format documentation.",
+  "message": "{$message}. Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#{$documentation}"
