@@ -64,6 +64,17 @@ extensions:
         config:
             label: pim_enrich.form.job_instance.button.import.upload_file
 
+    pim-job-instance-xlsx-product-import-show-properties-decimal-separator:
+        module: pim/job/common/edit/field/decimal-separator
+        parent: pim-job-instance-xlsx-product-import-show-properties
+        position: 140
+        targetZone: global-settings
+        config:
+            fieldCode: configuration.decimalSeparator
+            readOnly: true
+            label: pim_enrich.form.job_instance.tab.properties.decimal_separator.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.decimal_separator.help
+
     pim-job-instance-xlsx-product-import-show-upload:
         module: pim/job/common/edit/upload
         parent: pim-job-instance-xlsx-product-import-show-upload-switcher-item
@@ -87,6 +98,17 @@ extensions:
         targetZone: content
         config:
             title: pim_enrich.form.job_instance.subsection.last_executions
+
+    pim-job-instance-xlsx-product-import-show-properties-categories-column:
+        module: pim/job/common/edit/field/text
+        parent: pim-job-instance-xlsx-product-import-show-properties
+        position: 165
+        targetZone: global-settings
+        config:
+            fieldCode: configuration.categoriesColumn
+            readOnly: true
+            label: pim_enrich.form.job_instance.tab.properties.categories_column.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.categories_column.help
 
     pim-job-instance-xlsx-product-import-show-grid:
         module: pim/job/common/grid

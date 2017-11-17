@@ -55,10 +55,10 @@ class AssetsCommand extends ContainerAwareCommand
 
         $this->getEventDispatcher()->dispatch(InstallerEvents::PRE_ASSETS_DUMP);
 
+        $webDir = $this->getWebDir();
+
         if (true === $input->getOption('clean')) {
             try {
-                $webDir = $this->getWebDir();
-
                 $this->cleanDirectories([$webDir.'bundles', $webDir.'css', $webDir.'js']);
             } catch (\Exception $e) {
                 $output->writeln(sprintf('<error>Error during PIM installation. %s</error>', $e->getMessage()));
@@ -69,7 +69,7 @@ class AssetsCommand extends ContainerAwareCommand
         }
 
         $this->commandExecutor
-            ->runCommand('fos:js-routing:dump', ['--target' => 'web/js/routes.js'])
+            ->runCommand('fos:js-routing:dump', ['--target' => $webDir.'js/routes.js'])
             ->runCommand('assets:install')
             ->runCommand('assetic:dump')
             ->runCommand('oro:assetic:dump')

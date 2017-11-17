@@ -1,3 +1,35 @@
+# 1.7.13 (2017-11-09)
+
+## Bug Fixes
+
+- PIM-6904: Product Grid - Horizontal scrollbar should be at the bottom of the screen instead to be at the end of the grid
+- PIM-6960: fix association type deletion when it's the first item of the list
+- API-216: add application/x-www-form-urlencoded as allowed Content-Type when getting a token with the API
+- GITHUB-6414: fix the deletion of a newly created import/export profile, cheers @latenzio!
+
+## Improvements
+
+- PIM-6973: Manage removed association types with `pim:mongodb:clean` command
+
+# 1.7.12 (2017-10-25)
+
+## Bug Fixes
+
+PIM-6939: fix sort order on export
+SDS-1772: Removes query cache use on PQB to avoid memory leak
+
+# 1.7.11 (2017-10-16)
+
+## Bug Fixes
+
+PIM-6901: Fix ACL with a new role when we want to edit users
+
+# 1.7.10 (2017-10-10)
+
+## Bug Fixes
+
+- PIM-6823: Add missing "decimal separator" field on xlsx profil import
+
 # 1.7.9 (2017-09-27)
 
 ## Bug Fixes

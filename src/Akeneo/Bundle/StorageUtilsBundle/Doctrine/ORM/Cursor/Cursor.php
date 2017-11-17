@@ -122,7 +122,10 @@ class Cursor extends AbstractCursor
                 ->from($from->getFrom(), $from->getAlias(), $rootIdExpr)
                 ->distinct(true);
 
-            $results = $this->queryBuilder->getQuery()->getArrayResult();
+            $query = $this->queryBuilder->getQuery();
+            $query->useQueryCache(false);
+
+            $results = $query->getArrayResult();
             $this->entitiesIds = array_keys($results);
         }
 

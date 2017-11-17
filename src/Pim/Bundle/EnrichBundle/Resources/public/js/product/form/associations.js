@@ -140,7 +140,9 @@ define(
                 this.loadAssociationTypes().then(function (associationTypes) {
                     var currentAssociationType = associationTypes.length ? _.first(associationTypes).code : null;
 
-                    if (null === this.getCurrentAssociationType()) {
+                    if (null === this.getCurrentAssociationType() ||
+                        _.isUndefined(_.findWhere(associationTypes, {code: this.getCurrentAssociationType()}))
+                    ) {
                         this.setCurrentAssociationType(currentAssociationType);
                     }
 
