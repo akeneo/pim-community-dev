@@ -225,7 +225,7 @@ JSON;
         $expectedContent = <<<JSON
 {
     "code": 422,
-    "message":"Property \"number of attribute sets\" cannot be modified, \"1 attribute sets\" given. Check the expected format on the API documentation.",
+    "message":"The number of variant attribute sets cannot be changed. Check the expected format on the API documentation.",
     "_links": {
 		"documentation": {
 			"href": "http://api.akeneo.com/api-reference.html#patch_families__family_code__variants__code__"
