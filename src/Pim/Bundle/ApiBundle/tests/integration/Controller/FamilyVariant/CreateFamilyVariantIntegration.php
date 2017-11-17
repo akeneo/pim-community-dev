@@ -121,7 +121,7 @@ JSON;
     "message": "Validation failed.",
     "errors": [
         {
-            "property":"",
+            "property":"variant_attribute_sets",
             "message":"There is no variant attribute set for level \"1\""
         }
     ]

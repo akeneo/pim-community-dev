@@ -201,7 +201,7 @@ class UpdateFamilyVariantIntegration extends TestCase
      * Validation: The number of level of the family variant cannot be changed
      *
      * @expectedException \Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException
-     * @expectedExceptionMessage Property "number of attribute sets" cannot be modified, "2 attribute sets" given.
+     * @expectedExceptionMessage The number of variant attribute sets cannot be changed.
      */
     public function testTheFamilyVariantLevelNumberImmutability()
     {

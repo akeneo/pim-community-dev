@@ -224,7 +224,7 @@ JSON;
         $expectedResponse = <<<JSON
 {
     "code": 403,
-    "message": "Access forbidden. You are not allowed to create or update families variants."
+    "message": "Access forbidden. You are not allowed to create or update family variants."
 }
 JSON;
 
