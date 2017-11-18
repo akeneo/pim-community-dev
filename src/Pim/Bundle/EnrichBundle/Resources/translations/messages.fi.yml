@@ -850,6 +850,7 @@ job_execution.summary:
   skip: Ohitettu
   skipped_products: Ohitetut tuotteet
   skipped_attributes: Ohitetut attribuutit
+  skipped_families: Ohitetut perheet
 pim_mass_edit_execution_show: Massamuokkaa suoritteita | Tiedot
 edit_common_attributes.steps.edit_common_attributes_processor.title: Muokkaa yleisiä attribuutteja
 update_product_value.steps.update_product_value_processor.title: Päivitä tuotteen arvo
