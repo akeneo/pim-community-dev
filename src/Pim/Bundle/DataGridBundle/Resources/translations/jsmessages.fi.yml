@@ -40,8 +40,10 @@ oro_datagrid.select.all: "Kaikki"
 oro_datagrid.select.visible: "Kaikki näkyvillä olevat"
 oro_datagrid.select.none: "Ei yhtään"
 pim.grid.ajax_choice_filter.label_empty: on tyhjä
+pim.grid.ajax_choice_filter.label_not_empty: ei ole tyhjä
 pim.grid.choice_filter:
   label_empty: on tyhjä
+  label_not_empty: ei ole tyhjä
   label_in_list: '-luettelosta'
 Available Columns: Käytettävissä olevat sarakkeet
 Displayed Columns: Valitut sarakkeet

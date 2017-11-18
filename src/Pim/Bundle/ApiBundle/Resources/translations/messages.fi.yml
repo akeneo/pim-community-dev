@@ -1,16 +1,26 @@
 pim_api:
   acl:
+    rights: Web API-käyttöoikeudet
     attribute:
+      edit: Luo ja päivitä attribuutteja
       list: Listaa attribuutit
+    attribute_option:
+      edit: Luo ja päivitä attribuuttien vaihtoehtoja
+      list: Lisää attribuuttien vaihtoehdot
     category:
+      edit: Luo ja päivitä kategorioita
       list: Listaa kategoriat
     family:
+      edit: Luo ja päivitä perheitä
       list: Listaa tuoteperheet
     channel.list: Listaa kanavat
     locale.list: Lista lokaatioista
   acl_group:
+    overall_access: Yleiset Web API-käyttöoikeudet
     attribute: Attribuutit
+    attribute_option: Attribuuttien vaihtoehdot
     category: Kategoriat
     family: Perheet
     channel: Kanavat
     locale: Alueet
+rights.api: Web API-käyttöoikeudet

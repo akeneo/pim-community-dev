@@ -5,7 +5,7 @@ pim_dashboard:
     product: Tuotteiden hallinta
     category: Kategorioiden hallinta
     attribute: Attribuuttien hallinta
-    family: Tuoteryhmien hallinta
+    family: Tuoterperheiden hallinta
   widget:
     error:
       title: Virhe ladatessa widgettiä
@@ -23,5 +23,5 @@ pim_dashboard:
       job_type:
         import: Tuonti
         export: Vienti
-        mass_edit: Massaeditori
+        mass_edit: Massamuokkaus
         quick_export: Nopea vienti
