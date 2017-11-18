@@ -34,6 +34,8 @@ not_available: Ei mitään
 "No": false
 oro.datagrid.entityHint: Entiteetti
 oro.datagrid.noentities: Tuloksia ei löytynyt
+oro.datagrid.noresults: "Valitettavasti tuloksia ei löytynyt."
+oro.datagrid.noresults_subTitle: "Yritä uudelleen uusilla hakuehdoilla."
 oro.datagrid.nocolumns: Sarakkeita ei määritetty tähän ruudukkoon
 oro.datagrid.pagination.label: "Sivu"
 oro.datagrid.pagination.totalPages: "koskien {{ totalPages }}"
@@ -50,6 +52,7 @@ pim:
     choice_filter:
       label_empty: on tyhjä
       label_in_list: '-luettelosta'
+      operator: Operaattori
     price_filter:
       label: Valuutta
     category_filter:
@@ -60,6 +63,7 @@ datagrid_view.columns.min_message: Valitse vähintään yksi näytettävä datag
 pim_datagrid:
   column_configurator:
     label: Sarakkeet
+    title: Muokkaa sarakkeita
     all_groups: Kaikki ryhmät
     search: Etsi
     clear: Tyhjennä
@@ -67,6 +71,7 @@ pim_datagrid:
     apply: Valitse
     cancel: Peruuta
     remove_column: Poista
+    description: Valitse tiedot, jotka haluat näyttää sarakkeina
     attribute_groups: Attribuuttiryhmät
   mass_action:
     delete:
@@ -93,5 +98,8 @@ grid.view_selector:
   placeholder: Uuden näkymän nimi
   choose_label: Valitse näkymälle nimike
   confirmation:
+    remove: Haluatko varmasti poistaa tämän näkymän?
     delete: Vahvista poisto
 grid.view_selector.flash.updated: Datagrid-näkymä päivitetty
+Client ID: Asiakastunnus
+Secret: Asiakassalaisuus

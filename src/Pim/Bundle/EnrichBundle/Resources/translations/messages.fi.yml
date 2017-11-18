@@ -95,18 +95,22 @@ pim_enrich:
         invalid_attribute: Attribuutti koodilla "attribute_code" ei yhdistä valittuja tuotteita, attributti ohitettu.
         no_valid_attribute: Mitään valituista attribuuteista ei voi ottaa käyttöön tällä tuotteella.
     classify-add:
+      label: Lisää kategorioihin
       description: Tuotteet asetetaan seuraaviin kategorioihin, olemassaolevat asetukset pyyvät.
       success_flash: Tuote / tuotteet ovat luokiteltu valittuihin kategorioihin
       launched_flash: Massatoiminto "lisää kategorioihin" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     classify-move:
+      label: Siirrä kategorioihin
       description: Tuotteet asetetaan seuraaviin kategorioihin, aikaisemmat kategorisoinnit menetetään.
       success_flash: Tuote/tuotteet on siirretty valittuihin kategorioihin
       launched_flash: Massatoiminto "siirrä kategorioihin" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     classify-remove:
+      label: Poista kategorioista
       description: Tuotteet poistetaan seuraavista kategorioista.
       success_flash: Tuote/tuotteet on poistettu valituista kategorioista
       launched_flash: Massatoiminto "poista kategorioista" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     change-family:
+      label: Muuta perhe
       description: Valittujen tuotteiden perhe vaihdetaan valittuun tuoteperheeseen
       success_flash: Valittujen tuotteiden perhe on vaihdettu onnistuneesti
       launched_flash: Massatoiminto "Vaihda perhettä" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
@@ -117,6 +121,7 @@ pim_enrich:
       launched_flash: Massatoiminto "Lisää ryhmiin" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
       no_group: Ei ryhmää toistaiseksi, aloita luomalla ryhmä.
     set-attribute-requirements:
+      label: Aseta vaaditut attribuutit
       description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
       success_flash: Määritteen vaatimuksia sovellettiin valittuihin ryhmiin
       launched_flash: Bulkkitoiminto "Aseta määritteen vaatimukset" on käynnistetty. Saat ilmoituksen, kun se on valmis.
@@ -149,6 +154,10 @@ pim_enrich:
       comment: Kommentoi tuotteita
       download: 'Lataa tuote PDF:nä'
       history: Näytä tuotehistoria
+    product_model:
+      edit_attributes: Muokkaa tuotemallin ominaisuuksia
+      categories_view: Tarkastele tuotemallin ryhmiä
+      history: Näyte tuotemallin muutoshistoria
     category:
       list: Listaa kategoriat
       create: Luo kategoria
@@ -206,6 +215,8 @@ pim_enrich:
       history: Näytä määritetyypin historia
     job_tracker:
       index: Näytä prosessien seuraaja
+    api_connection:
+      manage: Hallinnoi API -yhteyksiä
   acl_group:
     association_type: Määritetyypit
     attribute: Attribuutit
@@ -218,6 +229,7 @@ pim_enrich:
     group_type: Ryhmätyypit
     locale: Alueet
     product: Tuotteet
+    product_model: Tuotemallit
   reference_data:
     empty_value:
       reference_data_type:
@@ -496,6 +508,7 @@ No matches found: Vastaavuuksia ei löydy
 Category tree: Kategoriahierarkia
 Completeness: Valmistumisaste
 Attribute used as label: Attribuutti käytössä otsikkona
+Credentials: Tunnistetiedot
 Global: Globaali
 Channel: Kanava
 Expand all channels: Laajenna kaikki kanavat
@@ -543,6 +556,7 @@ pim_title.attribute:
   edit: "Attribuutit %attribute.label% | Muokkaa"
 pim_title.product:
   index: "Tuotteet"
+  edit: "Tuotteet %product.label% | Muokkaa"
 pim_title.family:
   index: "Perheet"
   edit: "Tuoteperheiden %family.label% | Muokkaa"
@@ -629,9 +643,11 @@ pim_enrich.mass_edit_action:
     message.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
     no_attribute.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
   classify:
+    label: Lisää kategorioihin
     description: Tuotteet asetetaan seuraaviin kategorioihin, olemassaolevat asetukset pyyvät.
     success_flash: Tuote / tuotteet ovat luokiteltu valittuihin kategorioihin
   change-family:
+    label: Muuta perhe
     description: Valittujen tuotteiden perhe vaihdetaan valittuun tuoteperheeseen
     success_flash: Valittujen tuotteiden perhe on vaihdettu onnistuneesti
     no_family: Ei perhettä
@@ -640,6 +656,7 @@ pim_enrich.mass_edit_action:
     description: Valitse ryhmät joihin valitut tuotteet lisätään
     success_flash: Tuotteet lisättiin onnistuneesti valittuihin ryhmiin
   set-attribute-requirements:
+    label: Aseta vaaditut attribuutit
     description: Seuraavat attribuuttivaatimukset otetaan käyttöön valituille perheille
     success_flash: Määritteen vaatimuksia sovellettiin valittuihin ryhmiin
 To enable: Ottaa käyttöön
@@ -737,6 +754,7 @@ job_execution.summary:
   skip: Ohitettu
   skipped_products: Ohitetut tuotteet
   skipped_attributes: Ohitetut attribuutit
+  skipped_families: Ohitetut perheet
 pim_mass_edit_execution_show: Massamuokkaa suoritteita | Tiedot
 edit_common_attributes.steps.edit_common_attributes_processor.title: Muokkaa yleisiä attribuutteja
 update_product_value.steps.update_product_value_processor.title: Päivitä tuotteen arvo
@@ -756,6 +774,10 @@ batch_jobs:
       label: Muokkaa yleisiä attribuutteja
     clean:
       label: Puhdista tiedostot yleisille attribuuteille
+  set_attribute_requirements:
+    label: Aseta vaaditut attribuutit
+    perform:
+      label: Aseta vaaditut attribuutit
   csv_product_quick_export:
     quick_export.label: 'Tuotteen nopea vienti CSV:nä'
     perform:
@@ -783,6 +805,8 @@ pim_enrich_attribute_form:
   code: Koodi
   type: Attribuuttityyppi
   reference_data_name: Referenssidatan nimi
+  scopable: Kanavakohtainen arvo
+  localizable: Kielikohtainen arvo
   unique: Yksilöllinen arvo
   availableLocales: Saatavilla olevat alueet
   locale_specific: Aluespesifi

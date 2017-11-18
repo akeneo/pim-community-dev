@@ -19,6 +19,8 @@ flash:
 comment:
   index:
     empty: Ei kommentteja tällä hetkellä
+    header_comment: '{{ user }} kommentoi tuotetta'
+    header_reply: '{{ user }} vastaa kommenttiin'
   placeholder:
     new: Kirjoita uusi kommentti...
     reply: Vastaa tähän kommenttiin...
