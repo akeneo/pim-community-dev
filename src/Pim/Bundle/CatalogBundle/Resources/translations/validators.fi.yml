@@ -14,6 +14,7 @@ Option code may contain only letters (at least one), numbers and underscores: Va
 This value should not be a decimal.: Tämän arvon pitäisi olla desimaalimuodossa.
 'The file extension is not allowed (allowed extensions: %extensions%).': 'Tiedostotunnistetta ei sallita (sallitut: %extensions%).'
 "The value %value% is already set on another product for the unique attribute %attribute%": Arvo %value% on jo määritetty toiseen tuotteeseen ominaisuutena %attribute%
+The same identifier is already set on another product: Sama tunnus on jo toisen tuotteen käytössä
 regex.comma_or_semicolon.message: Tässä kentässä ei saa olla pilkkuja tai puolipisteitä.
 file.extensions.message: 'Tiedostotunnistetta ei sallita (sallitut: %extensions%).'
 "This type of value expects the use of {{ decimal_separator }} to separate decimals.": Tämäntyyppinen arvo vaatii merkin {{ decimal_separator }} käyttämistä desimaalien erottelussa.
@@ -21,8 +22,28 @@ file.extensions.message: 'Tiedostotunnistetta ei sallita (sallitut: %extensions%
 "This type of value expects the use of comma (,) to separate decimals.": Tämäntyyppinen arvo vaatii pilkun (,) käyttöä desimaalien erottelussa.
 "This type of value expects the use of arabic decimal separator (٫) to separate decimals.": Tämäntyyppinen arvo vaatii arabialaisen desimaalierottimen (٫) käyttöä desimaalien erottelussa.
 "This type of value expects the use of the format {{ date_format }} for dates.": Tämäntyyppinen arvo vaatii muodon {{ date_format }} käyttöä päivämäärille.
+"The category \"%category%\" has to be a root category.": Kategorian "%category%" täytyy olla juuritason luokka.
+"The attribute \"%attributeCode%\" does not exist.": Attribuutti "%attributeCode%" ei ole olemassa.
+"The currency \"%currency%\" has to be activated.": Valuutta "%currency%" on aktivoitava.
+product_model.code.not_blank.message: Tuotemallin koodi ei saa olla tyhjä.
+product_model.code.unique.message: Sama tunnus on jo toisen tuotemallin käytössä.
+product_model.family_variant.not_blank.message: Tuotemallin varianttiperhe ei voi saa olla tyhjä.
 pim_catalog:
   constraint:
+    can_have_family_variant_empty_axis_value: 'Attribuutti "%attribute%" ei voi olla tyhjä, koska se on määritetty tämän entiteetin varianttiulottuvuudeksi'
+    can_have_family_variant_duplicate_axis_value: 'Arvoa "%values%" ei voida asettaa attribuutin "%attributes%" varianttiulottuvuudeksi, koska se on jo käytössä rinnakkaisella entiteetillä'
+    cannot_have_product_model_as_parent: 'Tuotemallilla "%product_model%" ei voi olla tuotemalli "%parent_product_model%" ylätason tuotemallina'
+    cannot_have_parent: 'Tuotemallilla "%product_model%" ei voi olla ylätason tuotemallia'
+    attribute_does_not_belong_to_family: 'Attribuutti "%attribute%" ei kuulu perheeseen "%family%"'
+    variant_product_invalid_family: 'Variantin perhe on oltava sama kuin ylätason tuotteella'
+    not_null_family: Perhe ei voi olla "null", koska tuote, jonka tunnus on "%sku%", on variantti.
+    variant_product_has_parent: 'Variantilla "%variant_product%" on oltava ylätason tuote'
+    invalid_variant_product_parent: 'Variantilla "%variant_product%" ei voi olla tuotemallia "%product_model%" ylätason tuotteena, (tähän tuotemalliin voi kuulua vain toisia tuotemalleja)'
+    modified_variant_axis_value: 'Varianttiulottuvuutta "%variant_axis%" ei voi muokata arvolla "%provided_value%"'
+    family_variant_no_axis: Vähintään yksi attribuutti on määritettävä varianttiulottuvuudeksi tasolla "%level%"
+    family_variant_level_do_not_exist: Tasolla "%level%" ei ole määritetty varianttiattribuuttia
+    family_variant_no_level: Vähintään yksi taso on määritettävä varianttiperheelle
+    family_variant_maximum_number_of_level: Varianttiperheellä ei voi olla enemmän kuin "%level%" taso
     product_identifier: Nämä tunnisteet "%s" eivät ole olemassa.
     0: Odottamaton virhe tapahtui.
     100: Odottamaton arvo

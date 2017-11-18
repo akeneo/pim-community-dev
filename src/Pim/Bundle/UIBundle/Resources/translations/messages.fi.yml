@@ -38,3 +38,12 @@ Most Viewed: Katsotuimmat
 "Yes": "Kyllä"
 "No": "Ei"
 required: (vaadittu)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Aktivoi latausviestit
+    loading_message_enabled.tooltip: Näytä käyttäjäystävällisiä viestejä sivun latautuessa
+    loading_messages.label: Käytettävät latausviestit
+    loading_messages.tooltip: Kaikki käytettävät latausviestit rivinvaihdolla eroteltuna
+  group:
+    loading_message.title: Latausviestit
+other_actions: Muut toiminnot

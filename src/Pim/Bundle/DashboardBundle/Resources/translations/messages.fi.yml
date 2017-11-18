@@ -25,3 +25,4 @@ pim_dashboard:
         export: Vienti
         mass_edit: Massaeditori
         quick_export: Nopea vienti
+        compute_product_models_descendants: Lasketaan tuotemallin rakenne

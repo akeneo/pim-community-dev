@@ -18,8 +18,12 @@ pim_connector:
         not_blank: Yksi lokaatio on valittava, valitse vietävä lokaatio.
 page_title:
   pim_importexport_export_profile_index: Profiilien viennin hallinta
+  pim_importexport_export_profile_edit: Vientiprofiili {{ job.label }} | Muokkaa
+  pim_importexport_export_profile_show: Vientiprofiili {{ job.label }} | Näytä
   pim_importexport_export_execution_index: Vientien historia
   pim_importexport_export_execution_show: Vientisuoritukset | Yksityiskohdat
   pim_importexport_import_profile_index: Profiilien tuonnin hallinta
+  pim_importexport_import_profile_edit: Tuontiprofiili {{ job.label }} | Muokkaa
+  pim_importexport_import_profile_show: Tuontiprofiili {{ job.label }} | Näytä
   pim_importexport_import_execution_index: Tuontihistoria
   pim_importexport_import_execution_show: Tuontisuoritukset | Yksityiskohdat
