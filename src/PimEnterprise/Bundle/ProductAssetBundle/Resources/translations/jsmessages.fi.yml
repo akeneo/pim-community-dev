@@ -8,12 +8,12 @@ pimee_product_asset:
             title: Kori
             empty_basket: Kori on tyhjä
         manage_asset:
-          title: Hallinnoi resursseja
+          title: Hallinnoi assetteja
           cancel: Keskeytä
           confirm: Vahvista
   enrich_asset:
     grid:
-      edit: Muokkaa resurssin ominaisuuksia
+      edit: Muokkaa assetin ominaisuuksia
   enrich_variation:
     popin:
       delete:
@@ -29,16 +29,16 @@ pimee_product_asset:
       import: Tuonti
       upload: Tuo
     success:
-      new: Uusi resurssi luodaan
+      new: Uusi assetti luodaan
       canceled: Tuonti onnistuneesti keskeytetty
       deleted: Tuotu tiedosto onnistuneesti poistettu
     error:
       list: Jo tuotuja tiedostoja ei voida lukea
       upload: Virhe tapahtui tuonnin yhteydessä
       delete: Tiedostoa ei voida poistaa palvelimelta
-      filename: Resurssin tiedostonimi ei ole pätevä
-      code: Resurssin koodiformaatti ei ole pätevä
-      locale: Resurssi on olemassa, mutta se ei ole lokalisoitavissa
+      filename: Assetin tiedostonimi ei ole pätevä
+      code: Assetin koodiformaatti ei ole pätevä
+      locale: Aseeti on olemassa, mutta se ei ole lokalisoitavissa
       invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
       conflicts: Tiedostonimissä on konflikti
     grid:
