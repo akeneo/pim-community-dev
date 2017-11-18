@@ -20,6 +20,10 @@ pim_enrich:
     attribute:
       type:
         pim_assets_collection: Resurssien keruu
+pim:
+  grid:
+    mass_action:
+      asset_edit: Assettien massamuokkaus
 pimee_enrich:
   form:
     job_instance:
@@ -71,6 +75,7 @@ pimee_enrich:
           messages:
             approve:
               success: Ehdotus on otettu käyttöön onnistuneesti.
+              error: 'Ehdotusta ei voida ottaa käyttöön seuraavan virheen vuoksi: {{ error }}'
             reject:
               success: Ehdotus on hylätty.
             remove:
@@ -149,36 +154,56 @@ pimee_enrich:
         height: '%value%px korkeus'
   mass_edit:
     next: Seuraava
+    previous: Takaisin
     cancel: Peruuta
     confirm: Vahvista
     product:
       operation:
         publish:
           label: Julkaise
+          label_count: "{1}Julkaise <span class=\"AknFullPage-title--highlight\">1 tuote</span>|] 1, Inf [Julkaise <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotetta</span>"
+          description: Tuotteet julkaistaan
+          warning: '{{ itemsCount }} valittua tuotetta julkaistaan.'
         unpublish:
           label: Peruuta julkaisu
+          description: Tuotteen julkaisu perutaan
+          warning: '{{ itemsCount }} valitun tuotteen julkaisu perutaan.'
     asset:
+      title: Assetti / Massamuokkaus ({{ itemsCount }} assettia)
       step:
+        select:
+          label: Valitse assetit
+        choose:
+          title: Assettien massatoiminnot
+          label_count: "] 0, Inf [Valitse toiminto"
         configure:
           label: Konfiguroi
         confirm:
           label: Vahvista
       operation:
         add_tag:
-          field: Asiasanat
+          label: Lisää tunnisteita assetille
+          description: Tunnisteita lisätään assetille.
+          field: Tunnisteet
         add_to_category:
+          label: Luokittele assetit kategorioihin
+          description: Assetit liitetään seuraaviin kategorioihin. Olemassa olevat liitokset säilytetään.
           field: Kategoriat
 pim_menu:
   tab:
     asset: Resurssit
   item:
-    asset_category: Resurssikategoriat
+    asset_category: Assettikategoriat
     proposal: Ehdotukset
     published_product: Julkaistut tuotteet
     rule: Säännöt
+    upload_asset: Tuo assetteja
 page_title:
   pimee_workflow_proposal_index: Ehdotukset
   pimee_workflow_published_product_index: Julkaistut tuotteet
+  pimee_workflow_published_product_view: Julkaistu tuote {{ product.label }} | Näytä
   pimee_product_asset_index: Resurssit
+  pimee_product_asset_edit: Assetti {{ asset.label }} | Muokkaus
   pimee_asset_categorytree_index: Kategoriat
+  pimee_asset_categorytree_edit: Kategoria {{ category.label }} | Muokkaus
   pimee_catalog_rule_rule_index: Säännöt

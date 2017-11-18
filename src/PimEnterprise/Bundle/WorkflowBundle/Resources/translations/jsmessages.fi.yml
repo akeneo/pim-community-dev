@@ -1,9 +1,15 @@
-View the product: Katso tuotte
+View the product: Katso tuote
 Unpublish the product: Ota tuote pois julkaisusta
 Approve: Hyväksy
 Refuse: Hylkää
 Approve selected: Hyväksy valitut
 Refuse selected: Hylkää valitut
+oro:
+  datagrid:
+    noentities:
+      proposal: Ehdotuksia ei ole tarkistettavaksi.
+    noresults:
+      proposal: Ehdotuksia ei ole tarkistettaksi. Yritä muuttaa hakuehtoja.
 pimee_workflow:
   entity:
     published_product:
@@ -12,6 +18,11 @@ pimee_workflow:
     proposal:
       modal.title: Jätä kommentti (valinnainen - 255 merkkiä max.)
   proposal:
+    overview: "] -Inf, 1] {{ count }} ehdotus|] 1, Inf [{{ count }} ehdotusta"
+    selected: ehdotusta valittu
+    mass_action_group:
+      review:
+        label: Massatoiminnot
     partial_accept:
       modal.title: Hyväksy osittaisia tietoja
       modal.label: Jätä kommentti (valinnainen)
@@ -19,8 +30,13 @@ pimee_workflow:
       modal.success: Ehdotus on osittain vahvistettu onnistuneesti
     partial_approve:
       modal:
+        title: Hyväksy muutokset osittain
         label: Jätä kommentti (valinnainen)
         error: Virhe, ehdotusta ei ole hyväksytty osittain
+        success: Muutokset hyväksytty onnistuneesti
     partial_reject:
       modal:
+        title: Hylkää muutokset osittain
         label: Jätä kommentti (valinnainen)
+        error: Virhe tapahtui. Ehdotusta ei hylätty osittain
+        success: Muutokset hylätty onnistuneesti

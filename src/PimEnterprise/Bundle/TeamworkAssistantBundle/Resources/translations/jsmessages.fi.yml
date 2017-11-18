@@ -1,6 +1,7 @@
 teamwork_assistant:
   common:
     required: Vaadittu
+    warning: Ole huoleti, projektin muodostaminen voi kestää hetken, joten projektisi ei välttämättä näy välittömästi.
   grid:
     view_selector:
       loading: Ladataan...
@@ -19,4 +20,7 @@ teamwork_assistant:
     confirm: Tallenna
     cancel: Peruuta
   widget:
+    no_project_create: luo uusi projekti
     description: Kuvaus
+    completeness:
+      to_start: TUOTTEET TYÖJONOSSA
