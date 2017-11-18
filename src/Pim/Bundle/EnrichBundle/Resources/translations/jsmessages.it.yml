@@ -124,7 +124,7 @@ pim_enrich:
       update_failed: Aggiornamento non riuscito
       update_successful: Aggiornato correttamente
     product:
-      title: Articoli
+      title: prodotto
       btn:
         enable: Attiva
         enabled: Attivato
@@ -243,7 +243,7 @@ pim_enrich:
           title: Associazioni
           info:
             none_exist: Nessun tipo di associazione esistente.
-            show_products: Mostra articoli
+            show_products: Mostra prodotti
             show_groups: Mostra gruppi
             number_of_associations: "{{ productCount }} prodotti e {{ groupCount }} gruppi"
         attributes:
@@ -273,7 +273,7 @@ pim_enrich:
         "yes": "Sì"
       sequential_edit:
         info:
-          products: Articoli
+          products: prodotti
           previous: Torna indietro a {{ product }} senza salvare.
           next: Vai a {{ product }} senza salvare.
         btn:
