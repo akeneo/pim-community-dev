@@ -1,4 +1,14 @@
 pimee_catalog_rule:
+  overview: "] -Inf, 1] {{ count }} sääntö|] 1, Inf [{{ count }} sääntöä"
+  execution_button: Suorita säännöt
+  selected: 'sääntöä valittu'
+  popin:
+    execute_rules:
+      confirm_title: Suorituksen vahvistus
+      confirm_content: Haluatko varmasti suorittaa kaikki säännöt? (tämä voi kestää kauan)
+  notification:
+    fail: Tätä toimintoa ei voida suorittaa
+    launched: Sääntöjen suoritus on käynnistetty. Sinulle ilmoitetaan kun se on valmis.
   attribute:
     list:
       code.label: Koodi
@@ -19,17 +29,36 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         execute:
+          confirm_title: Suorituksen vahvistus
+          confirm_content: Oletko varma, että haluat suorittaa säännön?
           confirm_ok: OK
       mass_edit_action:
         confirm_ok: OK
       mass_action:
         execute:
           confirm_ok: OK
+          confirm_title: Suorituksen vahvistus
+          confirm_content: Oletko varma, että haluat suorittaa valitut säännöt?
+          success: Massatoiminto valittujen sääntöjen suorittamiseksi on käynnistetty. Sinulle ilmoitetaan, kun se on valmis
+          error: Sääntöjen suorituksessa tapahtui virhe.
+          empty_selection: Sääntöjä ei ole valittu.
         delete:
           confirm_ok: OK
           confirm_title: Poista vahvistus
+          confirm_content: Oletko varma, että haluat poistaa valitut säännöt?
+          success: Säännöt poistettu onnistuneesti.
+          error: Sääntöjen poistamisessa tapahtui virhe.
+          empty_selection: Sääntöjä ei ole valittu.
   form:
     attribute:
       tab:
         rules:
           title: Säännöt
+confirmation:
+  remove:
+    rule: Oletko varma, että haluat poistaa tämän säännön? Et voi peruuttaa tätä toimintoa
+flash:
+  rule:
+    removed: Sääntö poistettu onnistuneesti
+    executed: Säännön suoritus käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
+pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Sääntöjen asetukset

@@ -135,12 +135,17 @@ edit_common_attributes_with_permission_and_rules:
   steps.perform: Muokkaa yleisiä attribuutteja
   steps.edit_common_attributes_processor.title: Muokkaa yleisiä attribuutteja
 batch_jobs:
+  add_product_value_with_permission_and_rules:
+    execute_rules.label: Sääntöjen suorittaminen
   update_product_value_with_permission_and_rules:
     perform.label: Päivitä tuotteen arvo
+    execute_rules.label: Sääntöjen suorittaminen
   remove_product_value_with_permission_and_rules:
     perform.label: Poista tuotteen arvo
+    execute_rules.label: Sääntöjen suorittaminen
   edit_common_attributes_with_permission_and_rules:
     perform.label: Muokkaa yleisiä attribuutteja
+    execute_rules.label: Sääntöjen suorittaminen
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Muokkaa yleisiä attribuutteja
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Lisää käyttöoikeudellinen tuotearvo
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Päivitä käyttöoikeudellinen tuotearvo
