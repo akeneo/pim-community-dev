@@ -1,11 +1,25 @@
+project_created: Uusi projekti sinulle
 teamwork_assistant:
+  project:
+    project_locale: Projektin lokaali "{{ locale }}" on oltava käytössä.
   notification:
     project_calculation:
+      success: Projekti <strong>%project_label%</strong> on valmis ja osallistujille ilmoitetaan. Aloitetaan!
       start: Aloitus
     project_finished:
+      owner: '%project_label% määräpäiväksi "%due_date%" on valmis.'
       show: Näytä
     due_date:
       start: Aloitus
   datagrid:
+    project_completeness: Projektin edistyminen
     contributor_in_progress: Toiminto käynnissä
     contributor_done: Valmis
+batch_jobs:
+  project_calculation:
+    clean_contributor_group:
+      label: Tarkista käyttäjien käyttöoikeudet projektin lokaaliin
+  refresh_project_completeness_calculation:
+    label: Päivitä projektin täyttöaste
+    refresh_project_completeness_calculation:
+      label: Päivitä projektin täyttöaste
