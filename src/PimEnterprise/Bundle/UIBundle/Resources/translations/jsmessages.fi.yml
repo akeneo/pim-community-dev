@@ -1,4 +1,4 @@
 jstree:
   asset:
-    all: Kaikki resurssit
-    unclassified: Luokittelemattomat resurssit
+    all: Kaikki assetit
+    unclassified: Luokittelemattomat assetit

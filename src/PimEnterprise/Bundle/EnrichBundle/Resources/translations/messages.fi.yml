@@ -87,6 +87,9 @@ pimee_enrich:
   category:
     tab:
       permission.title: Käyttöoikeudert
+  locale:
+    tab:
+      permission.title: Käyttöoikeudet
   channel:
     tab:
       asset_transformation.title: Resurssien muunnokset
