@@ -38,11 +38,17 @@ job_execution.summary:
     title: 'Tiedoston koodaus:'
     skipped: ohitetaan, laajennus valkolistattu
   product_skipped_no_diff: ohitettu tuote (ei eroavaisuuksia)
+  product_model_skipped_no_diff: ohitettu tuotemalli (ei eroavaisuuksia)
   item_position: lue rivit
+  skipped_in_root_product_model: ohitettu tuotemalli ylätason kanssa
+  skipped_in_sub_product_model: ohitettu tuotemalli ilman ylätasoa
 batch_jobs:
   csv_product_export:
     label: Tuotteiden vienti CSV-muodossa
     export.label: Tuotteiden vienti
+  csv_product_model_export:
+    label: Tuotemallien vienti CSV-muodossa
+    export.label: Tuotemallien vienti
   csv_category_export:
     label: Kategorian vienti CSV-muodossa
     export.label: Kategorian vienti
@@ -61,13 +67,20 @@ batch_jobs:
   csv_family_export:
     label: Ryhmän tuonti CSV-tiedostona
     export.label: Ryhmän vienti
+  csv_family_variant_export:
+    label: Varianttiperheen vienti CSV-muodossa
+    export.label: Varianttiperheen vienti
   csv_product_import:
     label: Tuotteiden tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
     import_associations.label: Liitännäisten tuonti
   csv_product_model_import:
+    label: Tuotemallien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import_root_product_model.label: Juuritason tuotemallin tuonti
+    import_sub_product_model.label: Alatason tuotemallin tuonti
+    import_product_model_descendants.label: Lasketaan tuotemallin rakenne
   csv_category_import:
     label: Kategorioiden tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -89,21 +102,48 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmätuonti
   csv_family_variant_import:
+    label: Varianttiperheen tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Varianttiperheen tuonti
   csv_group_import:
     label: Ryhmien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmien tuonti
+  csv_channel_export:
+    label: Kanavavienti CSV-muodossa
+    export.label: Kanavavienti
+  csv_locale_export:
+    label: Lokaatiovienti CSV-muodossa
+    export.label: Lokaatiovienti
+  csv_attribute_group_export:
+    label: Attribuuttiryhmävienti CSV-muodossa
+    export.label: Attribuuttiryhmävienti
+  csv_currency_export:
+    label: Valuuttavienti CSV-muodossa
+    export.label: Valuuttavienti
+  csv_group_type_export:
+    label: Ryhmätyyppivienti CSV-muodossa
+    export.label: Ryhmätyyppivienti
   csv_channel_import:
+    label: Kanavatuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Kanavatuonti
   csv_locale_import:
+    label: Lokaatiotuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Lokaatiotuonti
   csv_attribute_group_import:
+    label: Attribuuttiryhmätuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttiryhmätuonti
   csv_currency_import:
+    label: Valuuttatuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Valuuttatuonti
   csv_group_type_import:
+    label: Ryhmätyyppituonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmätyyppituonti
   xlsx_category_import:
     label: Kategorioiden tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -125,17 +165,26 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Ryhmätuonti
   xlsx_family_variant_import:
+    label: Varianttiperheen tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Varianttiperheen tuonti
   xlsx_product_export:
     label: Tuotteiden vienti XLSX-muodossa
     export.label: Tuotteiden vienti
+  xlsx_product_model_export:
+    label: Tuotemallien vienti XLSX-muodossa
+    export.label: Tuotemallien vienti
   xlsx_product_import:
     label: Tuotteiden tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
     import_associations.label: Liitännäisten tuonti
   xlsx_product_model_import:
+    label: Tuotemallien tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import_root_product_model.label: Juuritason tuotemallin tuonti
+    import_sub_product_model.label: Alatason tuotemallin tuonti
+    import_product_model_descendants.label: Lasketaan tuotemallin rakenne
   xlsx_group_export:
     label: Ryhmävienti XLSX-muodossa
     export.label: Ryhmän vienti
@@ -146,6 +195,9 @@ batch_jobs:
   xlsx_family_export:
     label: Perhevienti XLSX-muodossa
     export.label: Ryhmän vienti
+  xlsx_family_variant_export:
+    label: Varianttiperheen vienti XLSX-muodossa
+    export.label: Varianttiperheen vienti
   xlsx_category_export:
     label: Kategoriavienti XLSX-muodossa
     export.label: Kategorian vienti
@@ -158,13 +210,38 @@ batch_jobs:
   xlsx_association_type_export:
     label: Liitännäistyyppien vienti XLSX-muodossa
     export.label: Liitännäistyyppien vienti XLSX-muodossa
+  xlsx_channel_export:
+    label: Kanavavienti XLSX-muodossa
+    export.label: Kanavavienti
+  xlsx_locale_export:
+    label: Lokaatiovienti XLSX-muodossa
+    export.label: Lokaatiovienti
+  xlsx_attribute_group_export:
+    label: Attribuuttiryhmävienti XLSX-muodossa
+    export.label: Attribuuttiryhmävienti
+  xlsx_currency_export:
+    label: Valuuttavienti XLSX-muodossa
+    export.label: Valuuttavienti
+  xlsx_group_type_export:
+    label: Ryhmätyyppivienti XLSX-muodossa
+    export.label: Ryhmätyyppivienti
   xlsx_channel_import:
+    label: Kanavatuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Kanavatuonti
   xlsx_locale_import:
+    label: Lokaatiotuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Lokaatiotuonti
   xlsx_attribute_group_import:
+    label: Attribuuttiryhmätuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttiryhmätuonti
   xlsx_currency_import:
+    label: Valuuttatuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Valuuttatuonti
   xlsx_group_type_import:
+    label: Ryhmätyyppituonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmätyyppituonti

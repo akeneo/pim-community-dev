@@ -5,6 +5,15 @@ pim_import_export:
   connector: Liitin
   status:
     - Valmis
+  batch_status:
+    1: Valmis
+    2: Alkaa
+    3: Aloitettu
+    4: Päättyy
+    5: Päättynyt
+    6: Epäonnistunut
+    7: Hylätty
+    8: Tuntematon
   download_archive:
     archive: lataa luotu arkisto|lataa luodut arkistot
     output: lataus loi tiedoston|latauksien luomat tiedostot
@@ -27,9 +36,13 @@ pim_import_export:
       history.title: Historia
       job_content.title: Sisältö
 pim_title.export_profile.index: Profiilien viennin hallinta
+pim_title.export_profile.edit: Vientiprofiili %job.label% | Muokkaa
+pim_title.export_profile.show: Vientiprofiili %job.label% | Näytä
 pim_title.export_execution.index: Vientien historia
 pim_title.export_execution.show: Vientisuoritukset | Yksityiskohdat
 pim_title.import_profile.index: Profiilien tuonnin hallinta
+pim_title.import_profile.edit: Tuontiprofiili %job.label% | Muokkaa
+pim_title.import_profile.show: Tuontiprofiili %job.label% | Näytä
 pim_title.import_execution.index: Tuontihistoria
 pim_title.import_execution.show: Tuontisuoritukset | Yksityiskohdat
 export profile:
@@ -125,7 +138,17 @@ job_execution.summary:
     skipped: ohitetaan, laajennus valkolistattu
 Step: Vaihe
 Status: Status
+Warnings: Varoitus
 Summary: Yhteenveto
 Start: Aloitus
 End: Loppu
+set_attribute_requirements: Aseta vaaditut attribuutit
+COMPLETED: Valmis
+STARTING: Alkaa
+STARTED: Aloitettu
+STOPPING: Päättyy
+STOPPED: Päättynyt
+FAILED: Epäonnistunut
+ABANDONED: Hylätty
+UNKNOWN: Tuntematon
 warning.label: Varoitus
