@@ -13,7 +13,7 @@ pimee_product_asset:
           confirm: Vahvista
   enrich_asset:
     grid:
-      edit: Muokkaa resurssin ominaisuuksia
+      edit: Muokkaa assetin ominaisuuksia
   enrich_variation:
     popin:
       delete:
@@ -23,22 +23,22 @@ pimee_product_asset:
         title: Nollaa variaatiot
         message: Oletko varma että haluat nollata kaikki variaatiot?
   mass_upload:
-    menu: Tuo resursseja
+    menu: Tuo assetteja
     btn:
       delete: Poista
       import: Tuonti
       upload: Tuo
     success:
-      new: Uusi resurssi luodaan
+      new: Uusi assetti luodaan
       canceled: Tuonti onnistuneesti keskeytetty
       deleted: Tuotu tiedosto onnistuneesti poistettu
     error:
       list: Jo tuotuja tiedostoja ei voida lukea
       upload: Tuonnin yhteydessä tapahtui virhe
       delete: Tiedostoa ei voida poistaa palvelimelta
-      filename: Resurssin tiedostonimi ei ole pätevä
-      code: Vääränmuotoinen koodi resurssille
-      locale: Resurssi on olemassa, mutta se ei ole lokalisoitavissa
+      filename: Assetin tiedostonimi ei ole pätevä
+      code: Vääränmuotoinen koodi assetille
+      locale: Aseeti on olemassa, mutta se ei ole lokalisoitavissa
       invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
       conflicts: Tiedostonimissä on konflikti
     grid:
