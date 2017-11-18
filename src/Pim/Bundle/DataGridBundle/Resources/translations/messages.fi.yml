@@ -1,6 +1,6 @@
 "oro_datagrid.no_data_hint %entityHint%": '%entityHint% ei ole olemassa.'
 oro_datagrid.not_found_hint: Tuloksia ei löytynyt. Yritä muuttaa hakuehtoja.
-oro_datagrid.label_add_filter: Hallitse suodattimia
+oro_datagrid.label_add_filter: Suodattimet
 oro_datagrid.label_loading_mask: Ladataan . . .
 oro.grid.mass_action.selected_rows: Valitut rivit
 oro.grid.mass_action.confirm_title: Massatoiminnan vahvistus
@@ -26,4 +26,4 @@ grid.view_selector.flash:
 quick_export: Nopea vienti
 import: Tuonti
 export: Vienti
-mass_edit: Massaedit
+mass_edit: Massamuokkaus

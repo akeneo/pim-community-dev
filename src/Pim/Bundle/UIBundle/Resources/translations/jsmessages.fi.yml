@@ -110,3 +110,8 @@ oro_config:
         notification:
           title: Ilmoitukset
           system_notification: Uuden version päivitykset
+        loading_message:
+          title: Latausviestit
+          label: Aktivoi latausviestit
+        loading_messages:
+          label: Käytettävät latausviestit

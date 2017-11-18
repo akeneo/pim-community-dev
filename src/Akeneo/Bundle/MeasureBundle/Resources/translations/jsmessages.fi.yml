@@ -95,6 +95,9 @@ SECOND: Sekunti
 MINUTE: Minuutti
 HOUR: Tunti
 DAY: Päivä
+WEEK: Viikko
+MONTH: Kuukausi
+YEAR: Vuosi
 Speed: Nopeus
 FOOT_PER_SECOND: Tuuma per sekunti
 FOOT_PER_HOUR: Tuuma per tunti
@@ -146,3 +149,9 @@ ATM: Ilmakehä
 PSI: Paunaa per neliötuuma
 TORR: Torri
 MMHG: Millimetri elohopeaa
+Energy: Energia
+KILOCALORIE: Kilokalori
+KILOJOULE: kilojoule
+CaseBox: Pakkaus
+PIECE: Kappale
+DOZEN: Tusina
