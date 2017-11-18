@@ -12,9 +12,10 @@ pimee_product_asset:
           cancel: Peruuta
           confirm: Vahvista
         title: Hallinnoi resursseja
+        description: Valitse assetit, jotka haluat liittää tuotteelle
   enrich_asset:
     grid:
-      edit: Muokkaa resurssin ominaisuuksia
+      edit: Muokkaa assetin ominaisuuksia
   enrich_variation:
     popin:
       delete:
@@ -24,23 +25,27 @@ pimee_product_asset:
         title: Nollaa variaatiot
         message: Oletko varma että haluat nollata kaikki variaatiot?
   mass_upload:
-    menu: Tuo resursseja
+    menu: Tuo assetteja
     btn:
+      remove_all_files: Poista kaikki tiedostot
       delete: Poista
       import: Tuonti
-      upload: Tuo resursseja
+      upload: Tuo assetteja
     success:
-      new: Uusi resurssi luodaan
+      new: Uusi assetti luodaan
+      imported: Tiedostot tuotu prosessointiin
       canceled: Tuonti onnistuneesti keskeytetty
       deleted: Tuotu tiedosto onnistuneesti poistettu
     error:
       list: Jo tuotuja tiedostoja ei voida lukea
       upload: Tuonnin yhteydessä tapahtui virhe
       delete: Tiedostoa ei voida poistaa palvelimelta
-      filename: Resurssin tiedostonimi ei ole pätevä
-      code: Vääränmuotoinen koodi resurssille
-      locale: Resurssi on olemassa, mutta se ei ole lokalisoitavissa
+      import: Tuonnin yhteydessä tapahtui virhe
+      filename: Assetin tiedostonimi ei ole pätevä
+      code: Vääränmuotoinen koodi assetille
+      locale: Aseeti on olemassa, mutta se ei ole lokalisoitavissa
       invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
+      exists: Samanniminen tiedosto on jo tuotu
       conflicts: Tiedostonimissä on konflikti
     grid:
       medias: mediat
@@ -58,10 +63,18 @@ pimee_product_asset:
       uploading: Tuo
       error: Virhe
       success: Onnistui
+    drag_and_drop: Vedä ja pudota assetti tai klikkaa tästä
+  datagrid:
+    mass_action:
+      delete:
+        confirm_content: Oletko varma, että halut poistaa valitut assetit?
+        success: Valitut assetit poistettu onnistuneesti.
+        error: Valittujen assettien poistamisessa tapahtui virhe. Ole hyvä ja yritä uudelleen.
+        empty_selection: Assetteja ei ole valittu
 pim_dashboard:
   widget:
     last_operations:
       job_type:
         mass_upload: Massatuonti
 page_title:
-  pimee_product_asset_mass_upload: Tuo resursseja
+  pimee_product_asset_mass_upload: Tuo assetteja

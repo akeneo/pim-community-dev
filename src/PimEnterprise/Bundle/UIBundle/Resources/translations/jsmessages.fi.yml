@@ -1,8 +1,10 @@
 jstree:
   asset:
-    all: Kaikki resurssit
-    unclassified: Luokittelemattomat resurssit
+    all: Kaikki assetit
+    unclassified: Luokittelemattomat assetit
 asset_grid:
-  label: Tuoteresurssit
+  title: "] -Inf, 1] {{ count }} tuoteassetti|] 1, Inf [{{ count }} tuoteassettia"
+  selected: valittua assettia
+  label: Tuotteen assetit
 create_asset:
-  title: Luo resurssi
+  title: Luo assetti
