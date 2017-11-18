@@ -4,6 +4,7 @@ namespace Pim\Component\Catalog\Model;
 
 use Akeneo\Component\Localization\Model\TranslatableInterface;
 use Akeneo\Component\Versioning\Model\VersionableInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Family interface

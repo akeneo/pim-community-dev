@@ -50,7 +50,7 @@ class ProductTemplateBuilderSpec extends ObjectBehavior
         $color->isLocalizable()->willReturn(false);
         $color->isScopable()->willReturn(false);
         $colorValue->getAttribute()->willReturn($color);
-        $colorValue->setEntity(Argument::type('Pim\Component\Catalog\Model\Product'))->willReturn($colorValue);
+        $colorValue->setProduct(Argument::type('Pim\Component\Catalog\Model\Product'))->willReturn($colorValue);
 
         $options = ['locale' => 'en_US', 'disable_grouping_separator' => true];
         $template->getValuesData()->willReturn(['color' => 'bar']);

@@ -39,7 +39,7 @@ abstract class AbstractProduct implements ProductInterface
      */
     protected $scope;
 
-    /** @var ArrayCollection */
+    /** @var ArrayCollection|ProductValueInterface[] */
     protected $values;
 
     /** @var array */
@@ -63,7 +63,7 @@ abstract class AbstractProduct implements ProductInterface
     /** @var bool $enabled */
     protected $enabled = true;
 
-    /** @var ArrayCollection $groups */
+    /** @var ArrayCollection|GroupInterface[] */
     protected $groups;
 
     /** @var array */
@@ -77,6 +77,9 @@ abstract class AbstractProduct implements ProductInterface
 
     /** @var array */
     protected $normalizedData;
+
+    /** @var string */
+    protected $identifierAttributeCode;
 
     /**
      * Constructor
@@ -187,7 +190,7 @@ abstract class AbstractProduct implements ProductInterface
     {
         $this->values[] = $value;
         $this->indexedValues[$value->getAttribute()->getCode()][] = $value;
-        $value->setEntity($this);
+        $value->setProduct($this);
 
         return $this;
     }
@@ -394,13 +397,22 @@ abstract class AbstractProduct implements ProductInterface
      */
     public function getIdentifier()
     {
-        foreach ($this->values as $value) {
-            if (AttributeTypes::IDENTIFIER === $value->getAttribute()->getAttributeType()) {
-                return $value;
+        if (null === $this->identifierAttributeCode) {
+            foreach ($this->values as $value) {
+                $attribute = $value->getAttribute();
+                if (AttributeTypes::IDENTIFIER === $attribute->getAttributeType()) {
+                    $this->identifierAttributeCode = $attribute->getCode();
+                }
             }
         }
 
-        throw new MissingIdentifierException($this);
+        $identifier = $this->getValue($this->identifierAttributeCode);
+
+        if (null === $identifier) {
+            throw new MissingIdentifierException($this);
+        }
+
+        return $identifier;
     }
 
     /**
