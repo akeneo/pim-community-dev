@@ -123,11 +123,13 @@ class FamilyVariantUpdater implements ObjectUpdaterInterface
                 $familyVariant->setFamily($family);
                 break;
             case 'variant_attribute_sets':
+                $isNew = null === $familyVariant->getId();
+
                 if (!is_array($value)) {
                     throw InvalidPropertyTypeException::arrayOfObjectsExpected($field, static::class, $value);
                 }
 
-                if (null !== $familyVariant->getId() &&
+                if (!$isNew &&
                     $familyVariant->getNumberOfLevel() < $this->getNumberOfLevel($value)
                 ) {
                     throw new ImmutablePropertyException(

@@ -11,6 +11,8 @@ Selected Rows: Valitut rivit
 "Delete Confirmation": "Poiston vahvistus"
 "Edit": "Muokkaa"
 "Unexpected error occured. Please contact system administrator.": "Odottamaton virhe. Ota yhteyttä järjestelmänvalvojaan."
+"Yes, revoke": "Kyllä, poista"
+"Revoke Confirmation": "Poiston vahvistus"
 Now: Nyt
 Prev: Edellinen
 Next: Seuraava
@@ -110,3 +112,8 @@ oro_config:
         notification:
           title: Ilmoitukset
           system_notification: Uuden version päivitykset
+        loading_message:
+          title: Latausviestit
+          label: Aktivoi latausviestit
+        loading_messages:
+          label: Käytettävät latausviestit

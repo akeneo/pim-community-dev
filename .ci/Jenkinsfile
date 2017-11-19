@@ -181,7 +181,7 @@ stage("Test") {
             "phpunit-integration-ce": {
                 if (launchIntegrationTests.equals("yes") && editions.contains("ce")) {
                     queue({
-                        def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src /home/jenkins/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"').tokenize('\n').tokenize(' ')
+                        def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src /home/jenkins/pim/tests /home/jenkins/pim/vendor/akeneo/pim-community-dev -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"').tokenize('\n')
                         def messages = new net.sf.json.JSONArray()
 
                         for (file in files) {

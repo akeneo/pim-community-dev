@@ -7,11 +7,13 @@ pim_dashboard:
       type: Tyyppi
       profile_name: Profiilinimi
       details: Lisätiedot
+      warning_count: Varoitus
       job_type:
         import: Tuonti
         export: Vienti
         mass_edit: Massaeditori
         quick_export: Nopea vienti
+        compute_product_models_descendants: Lasketaan tuotemallin rakenne
     completeness:
       load_more: 'Lataa lisää...'
     header:

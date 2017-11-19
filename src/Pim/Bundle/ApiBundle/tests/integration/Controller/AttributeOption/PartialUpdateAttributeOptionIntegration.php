@@ -508,7 +508,7 @@ JSON;
     	"message": "Property \"extra_property\" does not exist. Check the expected format on the API documentation.",
     	"_links": {
     		"documentation": {
-    			"href": "http://api.akeneo.com/api-reference.html#post_attributes__attribute_code__options"
+    			"href": "http://api.akeneo.com/api-reference.html#patch_attributes__attribute_code__options__code_"
     		}
     	},
     	"code": 422
@@ -541,7 +541,8 @@ JSON;
         "message": "Property \"labels\" expects an array as data, \"NULL\" given. Check the expected format on the API documentation.",
         "_links": {
             "documentation": {
-                "href": "http://api.akeneo.com/api-reference.html#post_attributes__attribute_code__options"            }
+                "href": "http://api.akeneo.com/api-reference.html#patch_attributes__attribute_code__options__code_"
+            }
         }
     }
 JSON;

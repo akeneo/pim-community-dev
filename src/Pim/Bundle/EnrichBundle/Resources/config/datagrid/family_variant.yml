@@ -24,7 +24,7 @@ datagrid:
         actions:
             edit:
                 launcherOptions:
-                    className: AknIconButton AknIconButton--small AknIconButton--view
+                    className: AknIconButton AknIconButton--small AknIconButton--edit
                 type:         edit-in-modal
                 label:        Edit family variant
                 propertyCode: familyVariantCode

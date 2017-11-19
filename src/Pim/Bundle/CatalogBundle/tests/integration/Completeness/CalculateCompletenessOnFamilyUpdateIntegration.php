@@ -30,7 +30,7 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
         $this->assertCompleteness('watch', 'ecommerce', 'fr_FR', 20);
         $this->assertCompleteness('braided-hat-xxxl', 'ecommerce', 'fr_FR', 80);
         $this->addFamilyRequirement('accessories', 'ecommerce', 'composition');
-        $this->LaunchTimesAndWaitForJobExecutionsToEnd(1, 'compute_completeness_of_products_family');
+        $this->launchTimesAndWaitForJobExecutionsToEnd(1, 'compute_completeness_of_products_family');
         $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 1);
         $this->assertJobWasExecutedWithStatusAndJobParameters(
             'compute_completeness_of_products_family',
@@ -74,7 +74,7 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
         $this->assertCompleteness('tshirt-unique-size-navy-blue', 'ecommerce', 'fr_FR', 54);
         $this->addFamilyRequirement('accessories', 'ecommerce', 'composition');
         $this->updateFamilyPropertiesNotTriggeringCompletenessRecomputation('clothing');
-        $this->LaunchTimesAndWaitForJobExecutionsToEnd(1, 'compute_completeness_of_products_family');
+        $this->launchTimesAndWaitForJobExecutionsToEnd(1, 'compute_completeness_of_products_family');
         $this->assertJobWasExecutedTimes('compute_completeness_of_products_family', 1);
         $this->assertJobWasExecutedWithStatusAndJobParameters(
             'compute_completeness_of_products_family',
@@ -173,17 +173,19 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
         string $familyCode
     ): void {
         $family = $this->get('pim_catalog.repository.family')->findOneByCode($familyCode);
-        $this->get('pim_catalog.updater.family')->update($family, [
-            'labels' => [
-                'fr_FR' => 'New label',
-            ],
-            'attribute_as_image' => 'variation_image',
-            'attribute_as_label' => 'erp_name',
-            'attributes' => [
-                'wash_temperature'
-            ],
-        ]);
-        $this->get('validator')->validate($family);
+        $washAttribute = $this->get('pim_catalog.repository.attribute')->findOneByCode('wash_temperature');
+        $variationImageAttribute = $this->get('pim_catalog.repository.attribute')->findOneByCode('variation_image');
+        $erpNameAttribute = $this->get('pim_catalog.repository.attribute')->findOneByCode('erp_name');
+
+        $family->addAttribute($washAttribute);
+        $family->addAttribute($variationImageAttribute);
+        $family->addAttribute($erpNameAttribute);
+
+        $family->setAttributeAsLabel($erpNameAttribute);
+        $family->setAttributeAsImage($variationImageAttribute);
+
+        $errors = $this->get('validator')->validate($family);
+        static::assertCount(0, $errors);
         $this->get('pim_catalog.saver.family')->save($family);
     }
 
@@ -240,7 +242,7 @@ class CalculateCompletenessOnFamilyUpdateIntegration extends AbstractCompletenes
      * @param int    $times
      * @param string $jobName
      */
-    private function LaunchTimesAndWaitForJobExecutionsToEnd(int $times, string $jobName)
+    private function launchTimesAndWaitForJobExecutionsToEnd(int $times, string $jobName)
     {
         for ($i = 0; $i < $times; $i++) {
             $this->jobLauncher->launchConsumerOnce();
