@@ -14,6 +14,7 @@
 - PIM-6986: Change the image in add variant modal
 - API-400: Update partially a family variant with the API
 - API-401: Update partially a list of family variants with the API
+- PIM-6357: Show the right count when selecting product and product models on mass edit
 
 ## Bug fixes
 
@@ -33,6 +34,7 @@
 
 ## BC breaks
 
+- New data has been indexed in Elasticsearch. Please re-index the products and product models by launching the commands `pim:product:index --all -e prod` and `pim:product-model:index --all -e prod`.
 - Change the constructor of `Pim\Bundle\ApiBundle\Controller\FamilyVariantController` to add `Pim\Bundle\ApiBundle\Stream\StreamResourceResponse`.
 
 # 2.0.6 (2017-11-03)
