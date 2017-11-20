@@ -1,6 +1,5 @@
 # 2.0.x
 
-
 ## Better manage products with variants!
 
 - API-400: Update partially a family variant with the API

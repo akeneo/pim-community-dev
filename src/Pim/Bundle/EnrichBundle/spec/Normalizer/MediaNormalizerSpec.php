@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
-
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer;
