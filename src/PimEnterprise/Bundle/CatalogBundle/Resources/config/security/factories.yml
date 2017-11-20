@@ -1,14 +1,11 @@
 parameters:
-    pimee_catalog.factory.value_collection.class: PimEnterprise\Component\Catalog\Security\Factory\ValueCollectionFactory
+    pimee_catalog.security.factory.filtered_entity.class: PimEnterprise\Component\Catalog\Security\Factory\FilteredEntityFactory
 
 services:
-    pimee_catalog.factory.value_collection_with_permissions:
-        class: '%pimee_catalog.factory.value_collection.class%'
-        decorates: pim_catalog.factory.value_collection
-        decoration_inner_name: pim_catalog.factory.value_collection_without_permission
+    pimee_catalog.security.factory.filtered_product:
+        class: '%pimee_catalog.security.factory.filtered_entity.class%'
         arguments:
-            - '@pim_catalog.factory.value_collection_without_permission'
-            - '@security.authorization_checker'
-            - '@logger'
-            - '@pim_catalog.repository.cached_attribute'
-            - '@pim_catalog.repository.cached_locale'
+            -
+              - '@pimee_catalog.security.filter.not_granted_associated_product'
+              - '@pimee_catalog.security.filter.not_granted_category'
+              - '@pimee_catalog.security.filter.not_granted_values'
