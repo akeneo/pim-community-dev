@@ -81,9 +81,6 @@ class ProductNormalizer implements NormalizerInterface
     /** @var CompletenessCalculatorInterface */
     private $completenessCalculator;
 
-    /** @var FileNormalizer */
-    protected $fileNormalizer;
-
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
@@ -115,7 +112,6 @@ class ProductNormalizer implements NormalizerInterface
      * @param NormalizerInterface                       $completenessCollectionNormalizer
      * @param UserContext                               $userContext
      * @param CompletenessCalculatorInterface           $completenessCalculator
-     * @param FileNormalizer                            $fileNormalizer
      * @param ProductBuilderInterface                   $productBuilder
      * @param EntityWithFamilyValuesFillerInterface     $productValuesFiller
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
@@ -138,7 +134,6 @@ class ProductNormalizer implements NormalizerInterface
         NormalizerInterface $completenessCollectionNormalizer,
         UserContext $userContext,
         CompletenessCalculatorInterface $completenessCalculator,
-        FileNormalizer $fileNormalizer,
         ProductBuilderInterface $productBuilder,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
@@ -160,7 +155,6 @@ class ProductNormalizer implements NormalizerInterface
         $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
         $this->userContext                      = $userContext;
         $this->completenessCalculator           = $completenessCalculator;
-        $this->fileNormalizer                   = $fileNormalizer;
         $this->productBuilder                   = $productBuilder;
         $this->productValuesFiller              = $productValuesFiller;
         $this->attributesProvider               = $attributesProvider;
@@ -278,19 +272,19 @@ class ProductNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param ValueInterface $data
+     * @param ValueInterface $value
      * @param string         $format
      * @param array          $context
      *
      * @return array|null
      */
-    protected function normalizeImage(?ValueInterface $data, $format, $context = [])
+    protected function normalizeImage(?ValueInterface $value, $format, $context = [])
     {
-        if (null === $data || null === $data->getData()) {
+        if (null === $value || null === $value->getData()) {
             return null;
         }
 
-        return $this->fileNormalizer->normalize($data->getData(), $format, $context);
+        return $this->normalizer->normalize($value, $format, $context);
     }
 
     /**
