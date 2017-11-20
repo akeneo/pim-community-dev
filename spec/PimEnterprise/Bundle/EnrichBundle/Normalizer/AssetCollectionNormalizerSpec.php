@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Bundle\EnrichBundle\Normalizer;
 use Akeneo\Component\FileStorage\Model\FileInfo;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue;
 use PimEnterprise\Component\ProductAsset\Model\Asset;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
@@ -21,9 +22,10 @@ class AssetCollectionNormalizerSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\EnrichBundle\Normalizer\AssetCollectionNormalizer');
     }
 
-    function it_supports_asset_collection(ReferenceDataCollectionValue $assetCollection, Asset $asset)
+    function it_supports_asset_collection(ReferenceDataCollectionValue $assetCollection, AttributeInterface $attribute)
     {
-        $assetCollection->getData()->willReturn([$asset]);
+        $assetCollection->getAttribute()->willReturn($attribute);
+        $attribute->getReferenceDataName()->willReturn('assets');
 
         $this->supportsNormalization($assetCollection, 'internal_api')->shouldReturn(true);
     }

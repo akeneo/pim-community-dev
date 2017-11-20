@@ -19,9 +19,14 @@ class AssetCollectionNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($data, $format = null, array $context = [])
+    public function normalize($value, $format = null, array $context = [])
     {
-        $fileInfo = $data->getData()[0]->getReference()->getFileInfo();
+        $data = $value->getData();
+        if (!isset($data[0])) {
+            return null;
+        }
+
+        $fileInfo = $value->getData()[0]->getReference()->getFileInfo();
         $fileData = [
             'originalFilename' => $fileInfo->getOriginalFilename(),
             'filePath'         => $fileInfo->getKey(),
@@ -45,13 +50,6 @@ class AssetCollectionNormalizer implements NormalizerInterface
             return false;
         }
 
-        if (null !== $data->getData() && isset($data->getData()[0])) {
-            $firstData = $data->getData()[0];
-            if (!($firstData instanceof Asset)) {
-                return false;
-            }
-        }
-
-        return true;
+        return $data->getAttribute()->getReferenceDataName() === 'assets';
     }
 }
