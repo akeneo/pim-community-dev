@@ -1,4 +1,3 @@
-/* global define */
 define(
     [
         'jquery',
@@ -14,36 +13,30 @@ define(
         BaseRow,
         template
     ) {
-        'use strict';
-
-        /**
-     * Grid row.
-     *
-     * Triggers events:
-     *  - "clicked" when row is clicked
-     *
-     * @export  oro/datagrid/row
-     * @class   oro.datagrid.Row
-     * @extends Backgrid.Row
-     */
         return BaseRow.extend({
             tagName: 'div',
             template: _.template(template),
-
+            selectedClass: 'AknGrid-bodyRow--checked',
+            setCheckedClass(row) {
+                const isChecked = $('.AknGrid-bodyCell--checkbox input:checked', row).length;
+                row.toggleClass(this.selectedClass, 1 === isChecked);
+            },
             render() {
-                this.$el.empty();
                 const row = $(this.template({}));
 
-                this.$el.append(row);
+                this.$el.empty().html(row);
 
                 for (let i = 0; i < this.cells.length; i++) {
                     const cell = this.cells[i];
                     this.$('.AknGrid-bodyRow').append(cell.render().el);
                 }
 
-                this.delegateEvents();
+                console.log(this.$el);
 
-                return this;
+                this.$(row).on('click', this.onClick.bind(this));
+                this.$(row).on('change', 'input[type="checkbox"]', this.setCheckedClass.bind(this, row));
+
+                return this.delegateEvents();
             }
         });
     });

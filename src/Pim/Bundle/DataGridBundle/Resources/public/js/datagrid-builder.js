@@ -155,7 +155,7 @@ define([
 
                 // columns
                 columns = _.map(metadata.columns, function (cell) {
-                    var cellOptionKeys = ['name', 'label', 'renderable', 'editable', 'sortable', 'display_thumbnail'],
+                    var cellOptionKeys = ['name', 'label', 'renderable', 'editable', 'sortable'],
                         cellOptions = _.extend({}, defaultOptions, _.pick.apply(null, [cell].concat(cellOptionKeys))),
                         extendOptions = _.omit.apply(null, [cell].concat(cellOptionKeys.concat('type'))),
                         cellType = modules[helpers.cellType(cell.type)];
