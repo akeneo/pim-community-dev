@@ -21,7 +21,6 @@ Feature: Enforce no permissions for a locale
     Then I should be on the homepage
     And I should see the text "You don't have access to product data in any activated locale, please contact your administrator"
 
-  @skip
   Scenario: Display only available locales in the locale switcher
     Given the following locale accesses:
       | locale | user group | access |
@@ -29,10 +28,6 @@ Feature: Enforce no permissions for a locale
       | fr_FR  | Manager    | none   |
     And I am logged in as "Julia"
     When I am on the products grid
-    Then the grid locale switcher should contain the following items:
-      | language | locale | flag    |
-      | en       | en_US  | flag-us |
-      | de       | de_DE  | flag-de |
     When I edit the "foo" product
     Then the locale switcher should contain the following items:
       | language | locale | flag    |
@@ -66,4 +61,3 @@ Feature: Enforce no permissions for a locale
     When I visit the "Content" tab
     Then I should see the text "German (Germany) English (United States)"
     And I should not see the text "French (France)"
-
