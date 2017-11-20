@@ -189,6 +189,8 @@ class ProductNormalizer implements NormalizerInterface
         $created = null !== $oldestLog ? $this->versionNormalizer->normalize($oldestLog, 'internal_api') : null;
         $updated = null !== $newestLog ? $this->versionNormalizer->normalize($newestLog, 'internal_api') : null;
 
+        $scopeCode = $context['channel'] ?? null;
+
         $normalizedProduct['meta'] = [
             'form'              => $this->formProvider->getForm($product),
             'id'                => $product->getId(),
@@ -198,7 +200,7 @@ class ProductNormalizer implements NormalizerInterface
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'completenesses'    => $this->getNormalizedCompletenesses($product),
             'image'             => $this->normalizeImage($product->getImage(), $format, $context),
-        ] + $this->getLabels($product) + $this->getAssociationMeta($product);
+        ] + $this->getLabels($product, $scopeCode) + $this->getAssociationMeta($product);
 
         // TODO Refactor this condition in 2.1 to remove default null parameter.
         $normalizedProduct['meta']['ascendant_category_ids'] =
@@ -221,15 +223,16 @@ class ProductNormalizer implements NormalizerInterface
 
     /**
      * @param ProductInterface $product
+     * @param string|null      $scopeCode
      *
      * @return array
      */
-    protected function getLabels(ProductInterface $product)
+    protected function getLabels(ProductInterface $product, string $scopeCode = null)
     {
         $labels = [];
 
         foreach ($this->localeRepository->getActivatedLocaleCodes() as $localeCode) {
-            $labels[$localeCode] = $product->getLabel($localeCode);
+            $labels[$localeCode] = $product->getLabel($localeCode, $scopeCode);
         }
 
         return ['label' => $labels];

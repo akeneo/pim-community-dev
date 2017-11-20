@@ -11,6 +11,7 @@
 
 - PIM-6489: fix the sort of attributes in attribute groups
 - PIM-6997: fixes product model indexing CLI command slowness
+- PIM-6959: fix getting the product label according to the scope if needed
 
 ## Improvements
 

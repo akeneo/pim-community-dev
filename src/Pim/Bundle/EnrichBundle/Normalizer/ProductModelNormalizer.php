@@ -162,6 +162,8 @@ class ProductModelNormalizer implements NormalizerInterface
         $variantProductCompletenesses = $this->variantProductRatioQuery->findComplete($productModel);
         $closestImage = $this->imageAsLabel->value($productModel);
 
+        $scopeCode = $context['channel'] ?? null;
+
         $normalizedProductModel['meta'] = [
                 'variant_product_completenesses' => $variantProductCompletenesses->values(),
                 'family_variant'            => $normalizedFamilyVariant,
@@ -177,7 +179,7 @@ class ProductModelNormalizer implements NormalizerInterface
                 'ascendant_category_ids'    => $this->ascendantCategoriesQuery->getCategoryIds($productModel),
                 'completenesses'            => $this->incompleteValuesNormalizer->normalize($productModel, $format, $context),
                 'level'                     => $productModel->getVariationLevel(),
-            ] + $this->getLabels($productModel);
+            ] + $this->getLabels($productModel, $scopeCode);
 
         return $normalizedProductModel;
     }
@@ -192,15 +194,16 @@ class ProductModelNormalizer implements NormalizerInterface
 
     /**
      * @param ProductModelInterface $productModel
+     * @param string|null           $scopeCode
      *
      * @return array
      */
-    private function getLabels(ProductModelInterface $productModel): array
+    private function getLabels(ProductModelInterface $productModel, string $scopeCode = null): array
     {
         $labels = [];
 
         foreach ($this->localeRepository->getActivatedLocaleCodes() as $localeCode) {
-            $labels[$localeCode] = $productModel->getLabel($localeCode);
+            $labels[$localeCode] = $productModel->getLabel($localeCode, $scopeCode);
         }
 
         return ['label' => $labels];

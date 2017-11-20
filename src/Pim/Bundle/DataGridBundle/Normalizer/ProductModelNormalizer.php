@@ -71,7 +71,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $data['values'] = $this->normalizeValues($productModel->getValues(), $format, $context);
         $data['created'] = $this->normalizer->normalize($productModel->getCreated(), $format, $context);
         $data['updated'] = $this->normalizer->normalize($productModel->getUpdated(), $format, $context);
-        $data['label'] = $productModel->getLabel($locale);
+        $data['label'] = $productModel->getLabel($locale, $channel);
         $data['image'] = $this->normalizeImage($closestImage, $format, $context);
 
         $data['groups'] = null;
