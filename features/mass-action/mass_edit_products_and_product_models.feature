@@ -35,7 +35,7 @@ Feature: Apply a mass action on products only (and not product models)
     And I display the Composition attribute
     And I change the "Composition" to "my composition"
     When I move to the confirm page
-    Then I should see the text "You are about to update 3 products with the following information, please confirm."
+    Then I should see the text "You are about to update 6 products with the following information, please confirm."
 
   Scenario: Mass edits common attributes of only products within a selection of products and product models
     Given I show the filter "color"
