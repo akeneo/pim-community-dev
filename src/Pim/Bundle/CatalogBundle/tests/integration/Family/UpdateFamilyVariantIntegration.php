@@ -38,7 +38,6 @@ class UpdateFamilyVariantIntegration extends TestCase
             'variation_name',
         ];
 
-
         $familyVariant = $this->getFamilyVariant('shoes_size');
 
         $this->get('pim_catalog.updater.family_variant')->update(
@@ -59,6 +58,7 @@ class UpdateFamilyVariantIntegration extends TestCase
                             'erp_name',
                             'image',
                             'weight',
+                            'size',
                         ],
                         'level' => 1,
                     ],
@@ -147,9 +147,9 @@ class UpdateFamilyVariantIntegration extends TestCase
     }
 
     /**
-     * Validation: Family variant axes cannot be updated
+     * Validation: Family variant axes cannot be updated when adding attributes
      */
-    public function testTheFamilyVariantAxesImmutability()
+    public function testTheFamilyVariantAxesImmutabilityByAddingAxes()
     {
         $familyVariant = $this->getFamilyVariant('shoes_size');
 
@@ -168,14 +168,40 @@ class UpdateFamilyVariantIntegration extends TestCase
 
         $errors = $this->validateFamilyVariant($familyVariant);
         $this->assertEquals(1, $errors->count());
-        $this->assertEquals('This property cannot be changed.', $errors->get(0)->getMessage());
+        $this->assertEquals('Variant axes cannot be modified for the level "1"', $errors->get(0)->getMessage());
+        $this->assertEquals('variantAttributeSets[0].axes', $errors->get(0)->getPropertyPath());
+    }
+
+    /**
+     * Validation: Family variant axes cannot be updated when deleting one of the attribute in the axes
+     */
+    public function testTheFamilyVariantAxesImmutabilityByDeletingAxes()
+    {
+        $familyVariant = $this->getFamilyVariant('clothing_colorsize');
+
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'variant_attribute_sets' => [
+                    [
+                        'axes' => ['color'],
+                        'level' => 1,
+                    ],
+                ],
+            ]
+        );
+
+        $errors = $this->validateFamilyVariant($familyVariant);
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals('Variant axes cannot be modified for the level "1"', $errors->get(0)->getMessage());
+        $this->assertEquals('variantAttributeSets[0].axes', $errors->get(0)->getPropertyPath());
     }
 
     /**
      * Validation: The number of level of the family variant cannot be changed
      *
      * @expectedException \Akeneo\Component\StorageUtils\Exception\ImmutablePropertyException
-     * @expectedExceptionMessage Property "number of attribute sets" cannot be modified, "2 attribute sets" given.
+     * @expectedExceptionMessage The number of variant attribute sets cannot be changed.
      */
     public function testTheFamilyVariantLevelNumberImmutability()
     {
@@ -207,17 +233,19 @@ class UpdateFamilyVariantIntegration extends TestCase
     {
         $familyVariant = $this->getFamilyVariant('clothing_color_size');
 
+        // Move "brand" from common to attribute set level 2
+        // Move Collection from from common to attribute set level 1
         $this->get('pim_catalog.updater.family_variant')->update(
             $familyVariant,
             [
                 'variant_attribute_sets' => [
                     [
-                        'attributes' => ['brand'],
-                        'level' => 2,
+                        'attributes' => ['collection', 'color', 'composition', 'material', 'variation_image', 'variation_name'],
+                        'level' => 1,
                     ],
                     [
-                        'attributes' => ['collection'],
-                        'level' => 1,
+                        'attributes' => ['brand', 'ean', 'sku', 'weight', 'size'],
+                        'level' => 2,
                     ],
                 ],
             ]
@@ -287,6 +315,46 @@ class UpdateFamilyVariantIntegration extends TestCase
         $this->assertEquals(
             'Attributes must be unique, "weight" are used several times in variant attributes sets',
             $errors->get(0)->getMessage()
+        );
+    }
+
+    /**
+     * @group do
+     *
+     * Validation: An attribute cannot be moved from a variant attribute set to an upper one
+     */
+    public function testRemovingOfAnAttributeToUpperLevel()
+    {
+        $familyVariant = $this->getFamilyVariant('clothing_color_size');
+
+        $this->get('pim_catalog.updater.family_variant')->update(
+            $familyVariant,
+            [
+                'variant_attribute_sets' => [
+                    [
+                        'attributes' => ['color','composition','material','variation_image','variation_name'],
+                        'level' => 1,
+                    ],
+                    [
+                        'attributes' => ['size','ean','sku'],
+                        'level' => 2,
+                    ],
+                ],
+            ]
+        );
+
+        $variantAttributeSet1 = $familyVariant->getVariantAttributeSet(1);
+        $this->assertEquals(
+            ['color','composition','material','variation_image','variation_name'],
+            $this->extractAttributeCode($variantAttributeSet1->getAttributes()),
+            'Variant attribute are invalid (level 1)'
+        );
+
+        $variantAttributeSet2 = $familyVariant->getVariantAttributeSet(2);
+        $this->assertEquals(
+            ['ean', 'size', 'sku'],
+            $this->extractAttributeCode($variantAttributeSet2->getAttributes()),
+            'Variant attribute are invalid (level 2)'
         );
     }
 

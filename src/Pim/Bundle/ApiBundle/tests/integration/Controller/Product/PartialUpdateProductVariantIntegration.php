@@ -1446,7 +1446,7 @@ JSON;
 
         $expectedContent = [
             'code'    => 422,
-            'message' => 'Property "parent" cannot be modified, "NULL" given. Check the standard format documentation.',
+            'message' => 'Property "parent" cannot be modified, "NULL" given. Check the expected format on the API documentation.',
             '_links'  => ["documentation" => ["href" => "http://api.akeneo.com/api-reference.html#patch_products__code_"]]
         ];
 

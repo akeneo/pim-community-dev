@@ -183,6 +183,7 @@ pim_enrich:
             download: Download the product as PDF
             history: View product history
         product_model:
+            create: Create a product model
             edit_attributes: Edit attributes of a product model
             categories_view: Consult the categories of a product model
             history: View product model history

@@ -14,7 +14,7 @@
             </span>
 
             <% if (navigation[level - 1].selected) { %>
-                <input type="hidden" class="variant-navigation select-field" value="0" />
+                <input type="hidden" class="variant-navigation select-field" value="0" data-level="<%- level %>">
             <% } %>
         <% } else { %>
             <span class="AknVariantNavigation-axisName AknVariantNavigation-axisValue AknVariantNavigation-itemLabel" data-action="navigateToLevel" data-level="<%- level %>"><%- commonLabel %></span>

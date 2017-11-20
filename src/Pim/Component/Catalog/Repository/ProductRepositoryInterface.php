@@ -65,14 +65,6 @@ interface ProductRepositoryInterface extends ObjectRepository
     public function hasAttributeInFamily($productId, $attributeCode);
 
     /**
-     * @param int $offset
-     * @param int $size
-     *
-     * @return array
-     */
-    public function findAllWithOffsetAndSize($offset = 0, $size = 100);
-
-    /**
      * Get all associated products ids
      *
      * @param ProductInterface $product
@@ -80,4 +72,12 @@ interface ProductRepositoryInterface extends ObjectRepository
      * @return string[]
      */
     public function getAssociatedProductIds(ProductInterface $product);
+
+    /**
+     * Get products after the one provided. Mainly used to iterate through
+     * a large collecion.
+     *
+     * The limit parameter defines the number of products to return.
+     */
+    public function searchAfter(?ProductInterface $product, int $limit): array;
 }

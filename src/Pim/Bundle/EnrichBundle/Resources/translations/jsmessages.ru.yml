@@ -136,6 +136,7 @@ pim_enrich:
       title: продукт
       locale: Локаль
       category: Категория
+      create: Создать
       filters: Фильтры
       btn:
         enabled: Включено
@@ -196,6 +197,7 @@ pim_enrich:
       media:
         upload: Перетащите чтобы загрузить, или нажмите здесь
       create_popin:
+        type: Продукт
         title: Создать
         labels:
           family: Выберите семейство
@@ -204,6 +206,13 @@ pim_enrich:
       message:
         created: Продукт успешно создан
       completeness: Завершено
+    product_model:
+      title: продукты
+      add_child:
+        cancel: Отмена
+        confirm: Подтверждение
+        fields:
+          code: Код
     association_type:
       meta:
         created: Создано
@@ -319,6 +328,8 @@ pim_enrich:
     error_occured: Произошла ошибка во время загрузки страницы
   form:
     required: (требуется)
+    product_model:
+      family_variant: Вариант
     product:
       tab:
         associations:

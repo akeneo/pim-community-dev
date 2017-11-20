@@ -9,9 +9,20 @@ services:
             - 'quick_export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_enrich.reader.database.product_and_product_model'
+            - '@pim_enrich.reader.database.product'
             - '@pim_enrich.connector.processor.quick_export.product'
             - '@pim_connector.writer.file.csv_product_quick_export'
+            - 1000
+
+    pim_enrich.step.csv_product_model.quick_export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'quick_export_product_model'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.product_model'
+            - '@pim_enrich.connector.processor.quick_export.product_model'
+            - '@pim_connector.writer.file.csv_product_model_quick_export'
             - 1000
 
     # XLSX Quick Export steps -----------------------------------------------------------------------------------------
@@ -21,9 +32,20 @@ services:
             - 'quick_export'
             - '@event_dispatcher'
             - '@akeneo_batch.job_repository'
-            - '@pim_enrich.reader.database.product_and_product_model'
+            - '@pim_enrich.reader.database.product'
             - '@pim_enrich.connector.processor.quick_export.product'
             - '@pim_connector.writer.file.xlsx_product_quick_export'
+            - 1000
+
+    pim_enrich.step.xlsx_product_model.quick_export:
+        class: '%pim_connector.step.item_step.class%'
+        arguments:
+            - 'quick_export_product_model'
+            - '@event_dispatcher'
+            - '@akeneo_batch.job_repository'
+            - '@pim_enrich.reader.database.product_model'
+            - '@pim_enrich.connector.processor.quick_export.product_model'
+            - '@pim_connector.writer.file.xlsx_product_model_quick_export'
             - 1000
 
     # Mass Edit steps -------------------------------------------------------------------------------------------------

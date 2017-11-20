@@ -413,8 +413,6 @@ Its standard format would be the following:
         array:10 [
           "identifier" => "bar"
           "family" => "familyA"
-          "family_variant" => null,
-          "parent" => null,
           "groups" => array:2 [
             0 => "groupA"
             1 => "groupB"
@@ -514,8 +512,6 @@ Its standard format would be the following:
         array:10 [
           "identifier" => "foo"
           "family" => "familyA"
-          "family_variant" => null
-          "parent" => null
           "groups" => array:2 [
             0 => "groupA"
             1 => "groupB"
@@ -795,8 +791,7 @@ Its standard format would be the following:
         array:10 [
           "identifier" => "baz"
           "family" => "familyA"
-          "family_variant" => "familyVariantA",
-          "parent" => "fooProductModel",
+          "parent" => "fooProductModel"
           "groups" => array:0 []
           "categories" => array:0 []
           "enabled" => false
@@ -838,13 +833,8 @@ Its standard format would be the following:
         
         array:10 [
           "code" => "bar"
-          "family" => "familyA"
           "family_variant" => "familyVariantA1"
           "parent" => "fooProductModel"
-          "groups" => array:2 [
-            0 => "groupA"
-            1 => "groupB"
-          ]
           "categories" => array:2 [
             0 => "categoryA"
             1 => "categoryB"
@@ -880,13 +870,8 @@ Its standard format would be the following:
 
         array:10 [
           "code" => "foo"
-          "family" => "familyA"
           "family_variant" => "familyVariantA1"
           "parent" => null
-          "groups" => array:2 [
-            0 => "groupA"
-            1 => "groupB"
-          ]
           "categories" => array:2 [
             0 => "categoryA1"
             1 => "categoryB"

@@ -298,3 +298,9 @@ extensions:
         config:
             title: pim_menu.item.user_role
             to: oro_user_role_index
+
+    pim-menu-help:
+        module: pim/menu/help
+        parent: pim-menu
+        position: 160
+        targetZone: helpMenu

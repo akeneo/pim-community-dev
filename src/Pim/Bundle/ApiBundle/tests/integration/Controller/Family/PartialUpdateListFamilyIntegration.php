@@ -222,7 +222,7 @@ JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"code":"foo","status_code":422,"message":"Property \"attributes\" expects an array as data, \"string\" given. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_families__code_"}}}
+{"line":1,"code":"foo","status_code":422,"message":"Property \"attributes\" expects an array as data, \"string\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_families__code_"}}}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/families', [], [], [], $data);

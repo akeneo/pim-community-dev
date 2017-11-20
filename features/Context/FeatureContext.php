@@ -13,6 +13,7 @@ use Pim\Behat\Context\AttributeValidationContext;
 use Pim\Behat\Context\Domain\Collect\ImportProfilesContext;
 use Pim\Behat\Context\Domain\Enrich\AttributeTabContext;
 use Pim\Behat\Context\Domain\Enrich\CompletenessContext;
+use Pim\Behat\Context\Domain\Enrich\FamilyVariantConfigurationContext;
 use Pim\Behat\Context\Domain\Enrich\GridPaginationContext;
 use Pim\Behat\Context\Domain\Enrich\ProductGroupContext;
 use Pim\Behat\Context\Domain\SecondaryActionsContext;
@@ -86,6 +87,7 @@ class FeatureContext extends PimContext implements KernelAwareContext
         $environment = $scope->getEnvironment();
         $this->contexts['fixtures'] = $environment->getContext(FixturesContext::class);
         $this->contexts['catalogConfiguration'] = $environment->getContext(CatalogConfigurationContext::class);
+        $this->contexts['domain-family-variants'] = $environment->getContext(FamilyVariantConfigurationContext::class);
         $this->contexts['webUser'] = $environment->getContext(WebUser::class);
         $this->contexts['datagrid'] = $environment->getContext(DataGridContext::class);
         $this->contexts['command'] = $environment->getContext(CommandContext::class);

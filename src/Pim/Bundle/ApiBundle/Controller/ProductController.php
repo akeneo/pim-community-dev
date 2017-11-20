@@ -406,7 +406,7 @@ class ProductController
         } catch (PropertyException $exception) {
             throw new DocumentedHttpException(
                 Documentation::URL . $anchor,
-                sprintf('%s Check the standard format documentation.', $exception->getMessage()),
+                sprintf('%s Check the expected format on the API documentation.', $exception->getMessage()),
                 $exception
             );
         } catch (InvalidArgumentException $exception) {
@@ -442,7 +442,7 @@ class ProductController
             throw new DocumentedHttpException(
                 Documentation::URL . 'patch_products__code_',
                 sprintf(
-                    'Property "%s" does not exist. Check the standard format documentation.',
+                    'Property "%s" does not exist. Check the expected format on the API documentation.',
                     $exception->getPropertyName()
                 ),
                 $exception

@@ -1,0 +1,52 @@
+extensions:
+    pim-product-model-add-child-form:
+        module: pim/product-model-edit-form/add-child-form
+
+    pim-product-model-add-child-form-header:
+        module: pim/product-model-edit-form/add-child-form-header
+        parent: pim-product-model-add-child-form
+        targetZone: header
+
+    pim-product-model-add-child-form-fields-container:
+        module: pim/product-model-edit-form/add-child-form-fields-container
+        parent: pim-product-model-add-child-form
+        targetZone: fields-container
+        config:
+            fieldModules:
+                akeneo-simple-select-field: pim-product-model-add-child-field-simple-select
+                akeneo-metric-field: pim-product-model-add-child-field-metric
+                akeneo-switch-field: pim-product-model-add-child-field-switch
+                akeneo-simple-select-reference-data-field: pim-product-model-add-child-field-simple-select-reference-data
+                akeneo-text-field: pim-product-model-add-child-field-text
+            codeFieldModule: pim-product-model-add-child-field-code
+
+    pim-product-model-add-child-field-simple-select:
+        module: pim/form/common/fields/values/simple-select-async
+        config:
+            required: true
+
+    pim-product-model-add-child-field-metric:
+        module: pim/form/common/fields/values/metric
+        config:
+            required: true
+
+    pim-product-model-add-child-field-switch:
+        module: pim/form/common/fields/values/boolean
+        config:
+            required: true
+
+    pim-product-model-add-child-field-simple-select-reference-data:
+        module: pim/form/common/fields/values/simple-select-async
+        config:
+            required: true
+
+    pim-product-model-add-child-field-text:
+        module: pim/form/common/fields/values/text
+        config:
+            required: true
+
+    pim-product-model-add-child-field-code:
+        module: pim/form/common/fields/text
+        config:
+            required: true
+            label: pim_enrich.entity.product_model.add_child.fields.code

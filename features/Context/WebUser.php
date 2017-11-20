@@ -66,6 +66,30 @@ class WebUser extends PimContext
     /**
      * @param string $type
      *
+     * @Given /^I create a product$/
+     */
+    public function iCreateAProduct()
+    {
+        $this->iCreateANew('Product');
+
+        $this->getCurrentPage()->pressButton('Product');
+    }
+
+    /**
+     * @param string $type
+     *
+     * @Given /^I create a product model$/
+     */
+    public function iCreateAProductModel()
+    {
+        $this->iCreateANew('Product');
+
+        $this->getCurrentPage()->pressButton('Product model');
+    }
+
+    /**
+     * @param string $type
+     *
      * @return Then[]
      *
      * @Given /^I create a(?:n)? "([^"]*)" attribute$/
@@ -1082,6 +1106,17 @@ class WebUser extends PimContext
     }
 
     /**
+     * @param string $groups
+     *
+     * @Then /^the order of groups should be "([^"]*)"$/
+     */
+    public function orderOfGroupsShouldBe($groups)
+    {
+        $actualGroups = $this->getCurrentPage()->getGroups();
+        assertEquals($groups, implode($actualGroups, ', '));
+    }
+
+    /**
      * @param string $group
      *
      * @Then /^I should see available group "([^"]*)"$/
@@ -1417,6 +1452,28 @@ class WebUser extends PimContext
     /**
      * @param TableNode $table
      *
+     * @Given /^I fill in the following child information:$/
+     */
+    public function iFillInTheFollowingChildInformation(TableNode $table)
+    {
+        $element = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.modal:not([class^=note-]), .ui-dialog');
+        }, 'Modal not found.');
+
+        foreach ($table->getRowsHash() as $field => $value) {
+            $this->spin(function () use ($field, $value, $element) {
+                $page = $this->getPage('Base form');
+
+                $page->fillField($field, $value, $element);
+
+                return true;
+            }, sprintf('Cannot fill the field %s', $field));
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
      * @Then /^removing the following permissions? should hide the following buttons?:$/
      *
      * @return Then[]
@@ -1737,10 +1794,28 @@ class WebUser extends PimContext
         $buttonElement = $this->spin(function () use ($buttonLabel) {
             return $this
                 ->getCurrentPage()
-                ->find('css', sprintf('.ui-dialog button:contains("%1$s"), .modal a:contains("%1$s"), .modal button:contains("%1$s")', $buttonLabel));
+                ->find('css', sprintf('.ui-dialog button:contains("%1$s"), .modal a:contains("%1$s"), .modal button:contains("%1$s"), .modal .AknButton:contains("%1$s")', $buttonLabel));
         }, sprintf('Cannot find "%s" button label in modal', $buttonLabel));
 
         $buttonElement->press();
+
+        $this->wait();
+    }
+
+    /**
+     * @param string $buttonLabel
+     *
+     * @Given /^I press the cancel button in the popin$/
+     */
+    public function iPressTheCancelButtonInThePopin()
+    {
+        $buttonElement = $this->spin(function () {
+            return $this
+                ->getCurrentPage()
+                ->find('css', '.modal-full-body .AknButtonList > .AknFullPage-cancel');
+        }, 'Cannot find cancel button label in modal');
+
+        $buttonElement->click();
 
         $this->wait();
     }
@@ -2549,6 +2624,18 @@ class WebUser extends PimContext
 
             return true;
         }, sprintf('Cannot change the product family to %s', $family));
+    }
+
+    /**
+     * @Then /^I clear the family of the product model$/
+     */
+    public function iClearTheFamilyOfTheProductModel()
+    {
+        $this->spin(function () {
+            $this->getCurrentPage()->clearFamily();
+
+            return true;
+        }, sprintf('Cannot clear the product model family'));
     }
 
     /**

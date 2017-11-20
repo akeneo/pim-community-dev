@@ -22,6 +22,7 @@ extensions:
         position: 100
         config:
             fieldName: date_min
+            label: pim_enrich.form.attribute.tab.properties.label.date_min
 
     pim-attribute-form-date-validation-params-date-max:
         module: pim/form/common/fields/date
@@ -30,3 +31,4 @@ extensions:
         position: 110
         config:
             fieldName: date_max
+            label: pim_enrich.form.attribute.tab.properties.label.date_max

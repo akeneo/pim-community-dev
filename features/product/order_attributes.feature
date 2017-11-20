@@ -48,3 +48,10 @@ Feature: Order attributes
     And the attribute "Manufacturer" should be in position 3
     And the attribute "Weather conditions" should be in position 4
     And the attribute "Length" should be in position 5
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6489
+  Scenario: Successfully sort the first attribute of the list
+    Given I am on the "marketing" attribute group page
+    When I visit the "Attributes" tab
+    And I change the attribute "Price" position to 3
+    Then the attribute "Rate of sale" should be in position 1

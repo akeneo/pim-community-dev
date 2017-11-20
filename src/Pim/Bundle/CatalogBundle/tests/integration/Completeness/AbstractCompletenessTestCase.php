@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\tests\integration\Completeness;
 
-use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeRequirementInterface;
 use Pim\Component\Catalog\Model\CompletenessInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\LocaleInterface;
@@ -115,12 +115,12 @@ abstract class AbstractCompletenessTestCase extends TestCase
     }
 
     /**
-     * @param string $familyCode
-     * @param string $channelCode
-     * @param string $attributeCode
-     * @param string $attributeType
-     * @param bool $localisable
-     * @param bool $scopable
+     * @param string            $familyCode
+     * @param string            $channelCode
+     * @param string            $attributeCode
+     * @param string            $attributeType
+     * @param bool              $localisable
+     * @param bool              $scopable
      * @param LocaleInterface[] $localesSpecific
      *
      * @return FamilyInterface
@@ -159,16 +159,25 @@ abstract class AbstractCompletenessTestCase extends TestCase
     {
         $channel = $this->get('pim_catalog.repository.channel')->findOneByIdentifier($channelCode);
         $attribute = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($attributeCode);
-
         $requirement = $this->get('pim_catalog.factory.attribute_requirement')
             ->createAttributeRequirement($attribute, $channel, true);
 
         $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier($familyCode);
-        $family->addAttribute($attribute);
+        if (!$family->hasAttributeCode($attributeCode)) {
+            $family->addAttribute($attribute);
+        }
         $family->addAttributeRequirement($requirement);
         $this->get('pim_catalog.saver.family')->save($family);
 
         return $family;
+    }
+
+    protected function removeFamilyRequirement($familyCode, $channelCode, $attributeCode): void
+    {
+        $family = $this->get('pim_catalog.repository.family')->findOneByIdentifier($familyCode);
+        $attributeRequirementToRemove = $this->getAttributeRequirement($family, $channelCode, $attributeCode);
+        $family->removeAttributeRequirement($attributeRequirementToRemove);
+        $this->get('pim_catalog.saver.family')->save($family);
     }
 
     /**
@@ -185,5 +194,32 @@ abstract class AbstractCompletenessTestCase extends TestCase
         }
 
         return $family;
+    }
+
+    /**
+     * @param FamilyInterface $family
+     * @param string          $channelCode
+     * @param string          $attributeCode
+     *
+     * @return null|AttributeRequirementInterface
+     */
+    private function getAttributeRequirement(
+        FamilyInterface $family,
+        string $channelCode,
+        string $attributeCode
+    ): ?AttributeRequirementInterface {
+        $attributeRequirementToRemove = null;
+
+        $attributeRequirements = $family->getAttributeRequirements();
+        foreach ($attributeRequirements as $attributeRequirement) {
+            if ($channelCode === $attributeRequirement->getChannelCode() &&
+                $attributeCode === $attributeRequirement->getAttributeCode()
+            ) {
+                $attributeRequirementToRemove = $attributeRequirement;
+                break;
+            }
+        }
+
+        return $attributeRequirementToRemove;
     }
 }

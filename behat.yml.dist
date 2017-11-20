@@ -6,7 +6,7 @@ default:
                 - Context\FeatureContext:
                     - 'Context\FeatureContext'
                     -
-                        base_url: http://akeneo-pim-behat.local/
+                        base_url: 'http://akeneo-pim-behat.local/'
                         timeout: 50000
                         window_width: 1280
                         window_height: 1024
@@ -79,6 +79,8 @@ default:
                     - '@pim_catalog.updater.product_model'
                     - '@pim_catalog.validator.product_model'
                     - '@pim_catalog.saver.product_model'
+                - Pim\Behat\Context\Domain\Enrich\FamilyVariantConfigurationContext:
+                    - 'Context\FeatureContext'
     extensions:
         Behat\ChainedStepsExtension: ~
         Behat\MinkExtension:

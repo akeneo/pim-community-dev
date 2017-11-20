@@ -24,7 +24,7 @@ Feature: Sort attribute options
     And I save the attribute
     And I should not see the text "There are unsaved changes"
     And I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | boots |
       | family | Boots |
@@ -42,7 +42,7 @@ Feature: Sort attribute options
     And I save the attribute
     And I should not see the text "There are unsaved changes"
     And I am on the products page
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | boots |
       | family | Boots |

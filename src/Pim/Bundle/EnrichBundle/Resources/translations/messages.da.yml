@@ -155,6 +155,7 @@ pim_enrich:
       download: Download produktet som PDF
       history: Se produkt historik
     product_model:
+      create: Oprette en produktmodel
       edit_attributes: Rediger attributterne for en produktmodel
       categories_view: Konsultere kategorierne af en produktmodel
       history: Se produkt model historik

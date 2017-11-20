@@ -47,7 +47,7 @@ Feature: Edit an attribute group
     And I launch the import job
     And I wait for the "csv_footwear_attribute_group_import" job to finish
     And I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | a_boot |
       | family | Boots  |

@@ -6,7 +6,7 @@ services:
         arguments:
             - '%pim_catalog.query.product_query_builder.class%'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.filter.product_and_product_model_registry'
             - '@pim_catalog.query.sorter.registry'
             - '@pim_enrich.factory.sequential_edit_product_cursor'
             - '@pim_catalog.query.product_query_builder_resolver'

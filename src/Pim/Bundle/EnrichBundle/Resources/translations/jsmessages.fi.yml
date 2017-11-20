@@ -1,7 +1,7 @@
 confirmation:
   remove:
     item: Oletko varma että haluat poistaa tämän kohteen?
-    association_type: Oletko varma, että haluat poistaa tämän liitostyypin?
+    association_type: Oletko varma, että haluat poistaa tämän assosiaatiotyypin?
     attribute: Oletko varma, että haluat poistaa tämän määritteen?
     attribute_group: Oletko varma, että haluat poistaa tämän attribuuttiryhmän?
     family: Oletko varma, että haluat poistaa tämän ryhmän?
@@ -37,7 +37,7 @@ flash:
   item:
     removed: Kohde poistettu
   association_type:
-    removed: Sidostyyppi poistettu onnistuneesti
+    removed: Assosiaatiotyyppi poistettu onnistuneesti
   attribute:
     removed: Attribuutin poistaminen onnistui
   attribute_group:
@@ -70,7 +70,7 @@ error:
     product: Yhtään attribuuttia ei ole määritetty tuotteen tunnisteeksi tai sinulla ei ole muokkausoikeuksia.
   removing:
     item: Kohdetta ei voi poistaa
-    association_type: Liitostyyppiä ei voi poistaa
+    association_type: Assosiaatiotyyppiä ei voi poistaa
     attribute: Attribuuttia ei voi poistaa
     family: Ryhmää ei voi poistaa
     product: Tuotetta ei voi poistaa
@@ -153,6 +153,9 @@ pim_enrich:
       title: tuote
       locale: Lokaatio
       category: Kategoria
+      create: Luo
+      subTitle: Luo tuote
+      modalTitle: Valitse toiminto
       filters: Suodattimet
       selected: valittua
       common: Yleinen
@@ -177,6 +180,7 @@ pim_enrich:
         deletion_failed: Tuotetta ei voi poistaa.
         update_successful: Tuote päivitetty.
         update_failed: Tuotetta ei voitu päivittää.
+        field_not_ready: 'Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}'
         already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
       error:
         upload: Virhe tiedoston lataamisessa
@@ -189,7 +193,7 @@ pim_enrich:
           title: Perhe
           none: Ei yhtään
         family_variant:
-          title: Tuotevariaatio
+          title: Tuotevariantti
           none: Ei yhtään
         groups:
           title: Ryhmät
@@ -217,6 +221,7 @@ pim_enrich:
       media:
         upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
       create_popin:
+        type: Tuote
         title: Luo
         labels:
           family: Valitse perhe
@@ -229,18 +234,32 @@ pim_enrich:
         item_limit: Vain 1000 ensimmäistä näytetään peräkkäisessä muokkauksessa ({{ count }} valittuna)
         empty: Valintasi on tyhjä, muuta hakuehtoja
     product_model:
+      create_popin:
+        type: Tuotemalli
+        title: Luo tuotemalli
+        content: Tuotemalli kokoaa tuotevariantit ja helpottaa niille yhteisten ominaisuuksien rikastamista.
       info:
+        create_successful: Tuotemallin luominen onnistui
         update_successful: Tuotemallin päivittäminen onnistui. Tuotevarianttien täyttöaste lasketaan uudelleen.
         update_failed: Tuotemallia ei voitu päivittää.
         field_not_ready: 'Tuotemallia ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}'
       read_only_parent_attribute_from_common: Tätä attribuuttia voidaan muokata yhteisissä attribuuteissa.
       read_only_parent_attribute_from_model: "Tätä attribuuttia voidaan muokata {{ axes }} attribuuteissa"
       variant_axis: Varianttiulottuvuus
+      title: tuotteet
+      add_child:
+        create: Luo uusi
+        cancel: Peruuta
+        confirm: Vahvista
+        create_label: "Luo uusi {{ axes }}"
+        fields:
+          required_label: (varianttiulottuvuus)
+          code: Koodi
     association_type:
       info:
-        deletion_successful: Assosiaatiotyyppi poistettu.
-        deletion_failed: Assosiaatiotyyppiä ei voitu poistaa.
-        update_successful: Assosiaatiotyyppi päivitetty.
+        deletion_successful: Assosiaatiotyyppi poistettu onnistuneesti.
+        deletion_failed: Assosiaatiotyyppiä ei voida poistaa.
+        update_successful: Assosiaatiotyypin päivittäminen onnistui.
         update_failed: Assosiaatiotyyppiä ei voitu päivittää.
         field_not_ready: 'Assosiaatiotyyppiä ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}'
       meta:
@@ -250,11 +269,11 @@ pim_enrich:
         updated_by: Päivittäjä
       btn:
         save: Tallenna
-      title: sidoksen tyyppi
+      title: assosiaatiotyyppi
       create_popin:
         title: Luo
       message:
-        created: Sidostyyppi luotu onnistuneesti
+        created: Assosiaatiotyyppi luotu onnistuneesti
     group_type:
       info:
         deletion_successful: Ryhmätyyppi poistettu onnistuneesti.
@@ -277,11 +296,11 @@ pim_enrich:
     channel:
       title: kanava
       info:
-        deletion_successful: Kanava poistettu.
-        deletion_failed: Kanavaa ei voitu poistaa.
-        update_successful: Kanava päivitetty.
+        deletion_successful: Kanava poistettu onnistuneesti.
+        deletion_failed: Kanavaa ei voida poistaa.
+        update_successful: Kanavan päivittäminen onnistui.
         update_failed: Kanavaa ei voitu päivittää.
-        create_successful: Kanava luotu.
+        create_successful: Kanavan luominen onnistui.
         create_failed: Kanavaa ei voitu luoda.
         field_not_ready: 'Kanavaa ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}'
       meta:
@@ -296,8 +315,8 @@ pim_enrich:
       selected: valitut perheet
       info:
         update_successful: Perheen päivittäminen onnistui.
-        create_successful: Kanava luotu.
-        update_failed: Tuoteperheen tallennuksessa tapahtui virhe.
+        create_successful: Kanavan luominen onnistui.
+        update_failed: Perheen päivityksen aikana tapahtui virhe.
         cant_remove_attribute_as_label: Otsikkona käytettyä attribuuttia ei voida poistaa
         cant_remove_attribute_as_image: Pääkuvana käytettyä attribuuttia ei voi poistaa
         attribute_edit_permission_is_not_granted: Sinulla ei ole oikeuksia muokata tuoteperheen attribuutteja
@@ -333,9 +352,9 @@ pim_enrich:
     group:
       title: Ryhmä
       info:
-        deletion_successful: Ryhmä poistettu.
-        deletion_failed: Ryhmää ei voitu poistaa.
-        update_successful: Ryhmä päivitetty.
+        deletion_successful: Ryhmä poistettiin onnistuneesti.
+        deletion_failed: Ryhmää ei voida poistaa.
+        update_successful: Ryhmän päivittäminen onnistui.
         update_failed: Ryhmää ei voitu päivittää.
         field_not_ready: 'Ryhmää ei voida tallentaa. Seuraavat kentät eivät ole valmiita: {{ fields }}'
       btn:
@@ -413,14 +432,20 @@ pim_enrich:
   form:
     required: (vaadittu)
     product_model:
+      choose_variant: Valitse variantti
       complete_variant_product: varianttituote
       complete_variant_products: varianttituotteet
+      family_variant: Tuotevariantti
+      flash:
+        product_model_added: Varianttituote lisätty onnistuneesti tuotemalliin
+        variant_product_added: Varianttituote lisätty onnistuneesti tuotemalliin
     product:
       tab:
         associations:
-          title: Määritteet
+          title: Assosiaatiot
           info:
-            none_exist: Sidostyyppiä ei ole olemassa.
+            none_exist: Assosiaatiotyyppejä ei ole olemassa.
+            show_products: Näytä tuotteet
             show_groups: Näytä ryhmät
             number_of_associations: "{{ productCount }} tuotetta ja {{ groupCount }} ryhmää"
           association_type_selector: Assosiaatiotyyppi
@@ -483,7 +508,7 @@ pim_enrich:
           title: Ominaisuudet
           general: Yleiset ominaisuudet
           code: Koodi
-          label_translations: Nimikkeiden käännökset
+          label_translations: Otsikoiden käännökset
         history:
           title: Historia
     group_type:
@@ -600,7 +625,7 @@ pim_enrich:
         warning: Varoitus
         header.step: Vaihe
         header.status: Status
-        header.warnings: Varoitus
+        header.warnings: Varoitukset
         header.summary: Yhteenveto
         header.start: Aloitus
         header.end: Loppu
@@ -689,7 +714,7 @@ pim_enrich:
         created: Luotu
         created_by: tehnyt
         updated: Viimeisin päivitys
-        updated_by: tehnyt
+        updated_by: päivittänyt
       tab:
         properties:
           title: Ominaisuudet
@@ -743,7 +768,7 @@ pim_enrich:
             select_attributes_by_groups: Lisää ryhmittäin
             select_attributes: Lisää attribuutteja
             add: Lisää
-            attributes_groups_selected: '{{ itemsCount }} ryhmä(ä) valittu'
+            attributes_groups_selected: '{{ itemsCount }} ryhmää valittu'
   job:
     upload: Pudota {{ type }}-tiedosto tähän tai klikkaa selataksesi tiedostoja
   export:
@@ -1051,7 +1076,7 @@ page_title:
   pim_enrich_locale_index: Alueet
   pim_enrich_group_index: Ryhmät
   pim_enrich_group_edit: Ryhmä {{ group.label }} | Muokkaa
-  pim_enrich_associationtype_index: Määritetyypit
+  pim_enrich_associationtype_index: Assosiaatiotyypit
   pim_enrich_associationtype_edit: Assosiaatiotyyppi {{ association type.label }} | Muokkaa
   pim_enrich_grouptype_index: Ryhmätyypit
   pim_enrich_grouptype_edit: Ryhmätyyppi {{ group type.label }} | Muokkaa
@@ -1064,6 +1089,10 @@ page_title:
   pim_enrich_api_connection_create: API -yhteydet| Luo
   pim_analytics_system_info_index: Järjestelmätiedot
 batch_jobs:
+  add_product_value:
+    label: Lisää tuotteen arvo
+    perform:
+      label: Lisää tuotteen arvo
   update_product_value:
     label: Päivitä tuotteen arvo
     perform:
@@ -1080,18 +1109,22 @@ batch_jobs:
       label: Aseta vaaditut attribuutit
   csv_product_quick_export:
     quick_export.label: Tuotteen nopea vienti CSV-muodossa
+    quick_export_product_model.label: Tuotemallin nopea vienti CSV-muodossa
     perform:
       label: Tuotteen nopea vienti CSV-muodossa
   csv_product_grid_context_quick_export:
     quick_export.label: Tuoteruudukon kontekstin nopea vienti CSV-muodossa
+    quick_export_product_model.label: Tuotemalliruudukon kontekstin nopea vienti CSV-muodossa
     perform:
       label: Tuoteruudukon kontekstin nopea vienti CSV-muodossa
   xlsx_product_quick_export:
     quick_export.label: Tuotteen nopea vienti XLSX-muodossa
+    quick_export_product_model.label: Tuotemallin nopea vienti XLSX-muodossa
     perform:
       label: Tuotteen nopea vienti XLSX-muodossa
   xlsx_product_grid_context_quick_export:
     quick_export.label: Tuoteruudukon kontekstin nopea vienti XLSX-muodossa
+    quick_export_product_model.label: Tuotemalliruudukon kontekstin nopea vienti XLSX-muodossa
     perform:
       label: Tuoteruudukon kontekstin nopea vienti XLSX-muodossa
   csv_product_export:
@@ -1110,8 +1143,8 @@ batch_jobs:
     label: Attribuuttien määritteiden vienti CSV-muodossa
     export.label: Attribuuttien määritteiden vienti
   csv_association_type_export:
-    label: Liitännäistyyppien vienti CSV-muodossa
-    export.label: Liitännäistyyppien vienti
+    label: Assosiaatiotyyppien vienti CSV-muodossa
+    export.label: Assosiaatiotyyppien vienti
   csv_group_export:
     label: Ryhmän vienti CSV-muodossa
     export.label: Ryhmän vienti
@@ -1125,7 +1158,7 @@ batch_jobs:
     label: Tuotteiden tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
-    import_associations.label: Liitännäisten tuonti
+    import_associations.label: Assosiaatioiden tuonti
   csv_product_model_import:
     label: Tuotemallien tuonti CSV-muodossa
   csv_category_import:
@@ -1141,9 +1174,9 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Attribuuttien määritteiden tuonti
   csv_association_type_import:
-    label: Liitännäistyyppien tuonti CSV-muodossa
+    label: Assosiaatiotyyppien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
-    import.label: Liitännäistyyppien tuonti
+    import.label: Assosiaatiotyyppien tuonti
   csv_family_import:
     label: Ryhmän tuonti CSV-tiedostona
     validation.label: Tiedostojen tarkistaminen
@@ -1196,9 +1229,9 @@ batch_jobs:
     validation.label: Tiedostojen tarkistaminen
     import.label: Kategorioiden tuonti
   xlsx_association_type_import:
-    label: Liitännäistyyppien tuonti CSV-muodossa
+    label: Assosiaatiotyyppien tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
-    import.label: Liitännäistyyppien tuonti
+    import.label: Assosiaatiotyyppien tuonti
   xlsx_attribute_import:
     label: Attribuuttien tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -1225,7 +1258,7 @@ batch_jobs:
     label: Tuotteiden tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
-    import_associations.label: Liitännäisten tuonti
+    import_associations.label: Assosiaatioiden tuonti
   xlsx_product_model_import:
     label: Tuotemallien tuonti XLSX-muodossa
   xlsx_group_export:
@@ -1251,8 +1284,8 @@ batch_jobs:
     label: Attribuuttien määritteiden vienti XLSX-muodossa
     export.label: Attribuuttien määritteiden vienti XLSX-muodossa
   xlsx_association_type_export:
-    label: Liitännäistyyppien vienti XLSX-muodossa
-    export.label: Liitännäistyyppien vienti XLSX-muodossa
+    label: Assosiaatiotyyppien vienti XLSX-muodossa
+    export.label: Assosiaatiotyyppien vienti XLSX-muodossa
   xlsx_channel_export:
     label: Kanavavienti XLSX-muodossa
     export.label: Kanavavienti
@@ -1304,7 +1337,7 @@ pim_menu:
     settings: Asetukset
     system: Järjestelmä
   item:
-    association_type: Määritetyypit
+    association_type: Assosiaatiotyypit
     attribute: Attribuutit
     attribute_group: Attribuuttiryhmät
     category: Kategoriat

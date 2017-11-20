@@ -10,7 +10,7 @@ Feature: Display the product history
     And the following "sole_fabric" attribute reference data: PVC, Nylon, Neoprene
     And I am logged in as "Julia"
     And I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | heels |
       | family | Heels |

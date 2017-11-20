@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Component\Catalog\Model\FamilyInterface;
+use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -92,10 +95,11 @@ class FamilyNormalizer implements NormalizerInterface
             $this->versionNormalizer->normalize($lastVersion, 'internal_api', $context);
 
         $normalizedFamily['meta'] = [
-            'id'      => $family->getId(),
-            'form'    => 'pim-family-edit-form',
-            'created' => $created,
-            'updated' => $updated,
+            'id'                      => $family->getId(),
+            'form'                    => 'pim-family-edit-form',
+            'created'                 => $created,
+            'updated'                 => $updated,
+            'attributes_used_as_axis' => $this->getAllAttributeCodesUsedAsAxis($family),
         ];
 
         return $normalizedFamily;
@@ -170,5 +174,39 @@ class FamilyNormalizer implements NormalizerInterface
         }
 
         return $result;
+    }
+
+    /**
+     * Returns a list of attributes used as axis in the family variants.
+     *
+     * @param FamilyInterface $family
+     *
+     * @return string[]
+     */
+    private function getAllAttributeCodesUsedAsAxis(FamilyInterface $family): array
+    {
+        $attributeCodesUsedAsAxis = [];
+        foreach ($family->getFamilyVariants() as $familyVariant) {
+            $attributesAxisCodes = $this->getAttributeAxisCodesForFamilyVariant($familyVariant);
+            $attributeCodesUsedAsAxis = array_merge($attributeCodesUsedAsAxis, $attributesAxisCodes);
+        }
+
+        return array_values(array_unique($attributeCodesUsedAsAxis));
+    }
+
+    /**
+     * Returns the attributes codes of the given family variant axes.
+     *
+     * @param FamilyVariantInterface $familyVariant
+     *
+     * @return string[]
+     */
+    private function getAttributeAxisCodesForFamilyVariant(FamilyVariantInterface $familyVariant): array
+    {
+        $attributesAxisCodes = array_map(function ($attribute) {
+            return $attribute->getCode();
+        }, $familyVariant->getAxes()->toArray());
+
+        return $attributesAxisCodes;
     }
 }

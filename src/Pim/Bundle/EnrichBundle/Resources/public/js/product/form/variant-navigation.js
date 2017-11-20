@@ -7,7 +7,8 @@
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-define([
+define(
+    [
         'jquery',
         'underscore',
         'oro/translator',
@@ -15,12 +16,16 @@ define([
         'pim/i18n',
         'pim/user-context',
         'pim/form',
+        'pim/security-context',
         'pim/initselect2',
         'pim/fetcher-registry',
         'pim/media-url-generator',
+        'oro/messenger',
+        'pim/form-modal',
         'pim/template/product/form/variant-navigation/navigation',
         'pim/template/product/form/variant-navigation/product-item',
-        'pim/template/product/form/variant-navigation/product-model-item'
+        'pim/template/product/form/variant-navigation/product-model-item',
+        'pim/template/product/form/variant-navigation/add-child-button'
     ],
     function (
         $,
@@ -30,17 +35,22 @@ define([
         i18n,
         UserContext,
         BaseForm,
+        SecurityContext,
         initSelect2,
         FetcherRegistry,
         MediaUrlGenerator,
+        messenger,
+        FormModal,
         template,
         templateProduct,
-        templateProductModel
+        templateProductModel,
+        templateAddChild
     ) {
         return BaseForm.extend({
             template: _.template(template),
             templateProduct: _.template(templateProduct),
             templateProductModel: _.template(templateProductModel),
+            templateAddChild: _.template(templateAddChild),
             dropdowns: {},
             queryTimer: null,
             events: {
@@ -119,17 +129,178 @@ define([
                             this.queryChildrenEntities(
                                 options,
                                 entity.meta.variant_navigation[index].selected.id
-                            )
+                            );
                         }
                     };
 
-                    const dropdown = initSelect2.init($select, options);
-                    dropdown.on('select2-selecting', (event) => {
-                        this.redirectToEntity(event.object)
-                    });
+                    const dropDown = initSelect2.init($select, options);
 
-                    this.dropdowns[index] = dropdown;
+                    dropDown
+                        .on('select2-selecting', (event) => {
+                            this.redirectToEntity(event.object);
+                        })
+                        .on('select2-open', () => {
+                            this.addSelect2Footer(dropDown)
+                        });
+
+                    this.dropdowns[index] = dropDown;
                 });
+            },
+
+            /**
+             * Adds the footer containing the creation button to the select2 dropdown.
+             *
+             * @param {Element} dropDown
+             */
+            addSelect2Footer: function(dropDown) {
+                $('#select2-drop .select2-drop-footer').remove();
+
+                const targetLevel = dropDown[0].dataset.level;
+                this.getEntityParentCode(targetLevel)
+                    .then((parentCode) => {
+                        this.isVariantProduct(parentCode)
+                            .then((isVariantProduct) => {
+                                if (!this.isCreationGranted(isVariantProduct)) {
+                                    return;
+                                }
+
+                                const footer = this.templateAddChild({
+                                    label: __('pim_enrich.entity.product_model.add_child.create')
+                                });
+
+                                $('#select2-drop')
+                                    .append(footer)
+                                    .find('.select2-drop-footer').on('click', '.add-child', () => {
+                                        dropDown.select2('close');
+                                        this.openModal(parentCode);
+                                    });
+                            });
+                    })
+            },
+
+            /**
+             * Tests the creation ACL depending on the entity type the user wants to create.
+             *
+             * @param {boolean} isVariantProduct
+             *
+             * @returns {boolean}
+             */
+            isCreationGranted: function(isVariantProduct) {
+                return (isVariantProduct && SecurityContext.isGranted('pim_enrich_product_create'))
+                    || (!isVariantProduct && SecurityContext.isGranted('pim_enrich_product_model_create'));
+            },
+
+            /**
+             * Get the parent code for the new product model / variant product child.
+             *
+             * @param {Number} targetLevel
+             *
+             * @return {Promise}
+             */
+            getEntityParentCode: function (targetLevel) {
+                const entity = this.getFormData();
+                const entityLevel = entity.meta.level;
+
+                if (targetLevel < entityLevel) {
+                    return FetcherRegistry
+                        .getFetcher('product-model-by-code')
+                        .fetch(entity.parent)
+                        .then((parent) => {
+                            return parent.parent;
+                        })
+                    ;
+                }
+
+                if (targetLevel > entityLevel) {
+                    return $.Deferred().resolve(entity.code).promise();
+                }
+
+                return $.Deferred().resolve(entity.parent).promise();
+            },
+
+            /**
+             * Opens the modal containing the form to create a new family variant.
+             *
+             * @param {String} parentCode
+             */
+            openModal: function (parentCode) {
+                const modalParameters = {
+                    className: 'modal modal--fullPage add-product-model-child',
+                    content: '',
+                    cancelText: __('pim_enrich.entity.product_model.add_child.cancel'),
+                    okText: __('pim_enrich.entity.product_model.add_child.confirm'),
+                    okCloses: false
+                };
+
+                this.isVariantProduct(parentCode)
+                    .then((isVariantProduct) => {
+                        const initialModalState = {
+                            parent: parentCode,
+                            values: {}
+                        };
+
+                        if (isVariantProduct) {
+                            initialModalState.family = this.getFormData().family;
+                        } else {
+                            initialModalState.family_variant = this.getFormData().family_variant;
+                        }
+
+                        const formModal = new FormModal(
+                            'pim-product-model-add-child-form',
+                            this.submitForm.bind(this, isVariantProduct),
+                            modalParameters,
+                            initialModalState
+                        );
+
+                        formModal.open();
+                    });
+            },
+
+            /**
+             * Action made when user submit the modal.
+             *
+             * @param {boolean} isVariantProduct
+             * @param {Object} formModal
+             */
+            submitForm: function (isVariantProduct, formModal) {
+                const message = isVariantProduct
+                    ? __('pim_enrich.form.product_model.flash.variant_product_added')
+                    : __('pim_enrich.form.product_model.flash.product_model_added');
+
+                const route = isVariantProduct
+                    ? 'pim_enrich_product_rest_create'
+                    : 'pim_enrich_product_model_rest_create';
+
+                return formModal
+                    .saveProductModelChild(route)
+                    .done((entity) => {
+                        this.redirectToEntity(entity.meta);
+                        messenger.notify('success', message);
+                    });
+            },
+
+            /**
+             * Returns whether the new entity will be a variant product or a product model
+             * using the parent code.
+             *
+             * @param {string} parentCode
+             *
+             * @returns {Promise}
+             */
+            isVariantProduct: function(parentCode) {
+                return FetcherRegistry
+                    .getFetcher('product-model-by-code')
+                    .fetch(parentCode)
+                    .then((parent) => {
+                        return FetcherRegistry
+                            .getFetcher('family-variant')
+                            .fetch(parent.family_variant)
+                            .then((familyVariant) => {
+                                const currentLevel = parent.meta.level + 1;
+
+                                return currentLevel === familyVariant.variant_attribute_sets.length;
+                            })
+                    });
             },
 
             /**
@@ -243,7 +414,7 @@ define([
             /**
              * Redirect the user to the given entity edit page
              *
-             * @param entity
+             * @param {Object} entity
              */
             redirectToEntity: function (entity) {
                 if (!entity) {

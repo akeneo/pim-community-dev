@@ -148,7 +148,8 @@ pim_enrich:
       title: Produkt
       locale: Gebietsschema
       category: Kategorie
-      create: Produkt anlegen
+      create: Anlegen
+      subTitle: Produkt anlegen
       filters: Filter
       btn:
         enabled: Aktiviert
@@ -212,6 +213,7 @@ pim_enrich:
       media:
         upload: Upload per Drag & Drop oder hier klicken
       create_popin:
+        type: Produkt
         title: Anlegen
         labels:
           family: Wählen Sie eine Produktfamilie
@@ -230,6 +232,12 @@ pim_enrich:
       read_only_parent_attribute_from_common: Dieses Attribut muss als gemeinsames Attribut bearbeitet werden.
       read_only_parent_attribute_from_model: "Dieses Attribut muss als Attribut von {{ axes }} bearbeitet werden"
       variant_axis: Variantenachse(n)
+      title: Produkte
+      add_child:
+        cancel: Abbrechen
+        confirm: Bestätigen
+        fields:
+          code: Code
     association_type:
       info:
         deletion_successful: Verbindungstyp erfolgreich entfernt.
@@ -397,6 +405,7 @@ pim_enrich:
     product_model:
       complete_variant_product: Produktvariante
       complete_variant_products: Produktvarianten
+      family_variant: Variante
     product:
       tab:
         associations:

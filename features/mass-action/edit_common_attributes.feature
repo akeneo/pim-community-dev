@@ -97,7 +97,7 @@ Feature: Edit common attributes of many products at once
   Scenario: Successfully mass edit a price not added to the product
     Given I am on the products grid
     And I collapse the column
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU             | Shoes |
       | Choose a family | Heels |

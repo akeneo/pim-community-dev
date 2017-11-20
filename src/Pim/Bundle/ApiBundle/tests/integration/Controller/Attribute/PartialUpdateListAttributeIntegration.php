@@ -255,7 +255,7 @@ JSON;
 
         $expectedContent =
 <<<JSON
-{"line":1,"code":"foo","status_code":422,"message":"Property \"type\" expects a valid attribute type. The attribute type does not exist, \"bar\" given. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_attributes__code_"}}}
+{"line":1,"code":"foo","status_code":422,"message":"Property \"type\" expects a valid attribute type. The attribute type does not exist, \"bar\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_attributes__code_"}}}
 JSON;
 
         $response = $this->executeStreamRequest('PATCH', 'api/rest/v1/attributes', [], [], [], $data);

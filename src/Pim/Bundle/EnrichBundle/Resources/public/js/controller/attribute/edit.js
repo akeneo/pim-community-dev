@@ -52,7 +52,8 @@ function (
                         'pim-attribute-identifier-edit-form' :
                         'pim-attribute-edit-form';
 
-                    return FormBuilder.buildForm(formName)
+                    return FormBuilder.getFormMeta(formName)
+                        .then(FormBuilder.buildForm)
                         .then((form) => {
                             form.setType(attribute.type);
 

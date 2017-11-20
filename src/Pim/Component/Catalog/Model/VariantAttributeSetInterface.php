@@ -21,7 +21,6 @@ interface VariantAttributeSetInterface
      */
     public function getAttributes(): Collection;
 
-
     /**
      * @param AttributeInterface $attribute
      *

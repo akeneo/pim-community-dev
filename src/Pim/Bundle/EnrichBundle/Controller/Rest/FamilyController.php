@@ -33,6 +33,8 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 class FamilyController
 {
+    const FAMILY_VARIANTS_LIMIT = 20;
+
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
@@ -324,5 +326,28 @@ class FamilyController
             $family,
             'internal_api'
         ));
+    }
+
+
+    /**
+     * Gets families with familyVariants
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function getWithVariantsAction(Request $request): JsonResponse
+    {
+        $search = $request->query->get('search');
+        $options = $request->query->get('options');
+
+        $families = $this->familyRepository->getWithVariants($search, $options, self::FAMILY_VARIANTS_LIMIT);
+
+        $normalizedFamilies = [];
+        foreach ($families as $family) {
+            $normalizedFamilies[$family->getCode()] = $this->normalizer->normalize($family, 'internal_api');
+        }
+
+        return new JsonResponse($normalizedFamilies);
     }
 }
