@@ -3,7 +3,7 @@
 
 ## Better manage products with variants!
 
-- PIM-65671: Add edition capabilities to family variants from the UI (distribution of the attributes)
+- PIM-6567: Add edition capabilities to family variants from the UI (distribution of the attributes)
 - PIM-6460: Preventing from deleting attributes used as axis from the family and remove the deleted attributes from the family variants
 - PIM-6986: Change the image in add variant modal
 - API-400: Update partially a family variant with the API
