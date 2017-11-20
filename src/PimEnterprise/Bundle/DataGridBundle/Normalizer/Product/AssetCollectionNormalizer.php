@@ -1,6 +1,7 @@
 <?php
 
 namespace PimEnterprise\Bundle\DataGridBundle\Normalizer\Product;
+
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue;
 use PimEnterprise\Component\ProductAsset\Model\Asset;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
