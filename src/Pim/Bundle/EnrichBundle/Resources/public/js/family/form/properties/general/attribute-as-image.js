@@ -76,8 +76,8 @@ define([
              * @param event
              */
             updateState: function (event) {
-                var data = this.getFormData();
-                var value = event.currentTarget.value;
+                let data = this.getFormData();
+                const value = event.currentTarget.value;
                 data.attribute_as_image = ('no_attribute_as_image' === value) ? null : event.currentTarget.value;
                 this.setData(data);
             },
@@ -91,12 +91,9 @@ define([
              * @returns {Promise}
              */
             getAvailableAttributes: function () {
-                const imageAttributes = _.filter(
-                    this.getFormData().attributes,
-                    (attribute) => {
-                        return _.contains(this.config.validAttributeTypes, attribute.type);
-                    }
-                );
+                const imageAttributes = this.getFormData().attributes.filter((attribute) => {
+                    return this.config.validAttributeTypes.includes(attribute.type);
+                });
 
                 const imageAttributeCodes = _.pluck(imageAttributes, 'code');
 
