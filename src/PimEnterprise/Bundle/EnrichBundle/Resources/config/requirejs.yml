@@ -98,6 +98,7 @@ config:
         pimee/controller/asset/index:             pimenterpriseenrich/js/controller/asset/index
         pimee/controller/asset/mass-upload:       pimenterpriseenrich/js/controller/asset/mass-upload
         pimee/product-view-form:                  pimenterpriseenrich/js/product/view-form
+        pimee/product-model-view-form:            pimenterpriseenrich/js/product-model/view-form
 
         pimee/manage-permissions:                 pimenterpriseenrich/js/manage-permissions
         pimee/rule-manager:                       pimenterpriseenrich/js/product/rule-manager

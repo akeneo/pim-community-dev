@@ -5,6 +5,8 @@ namespace PimEnterprise\Component\Catalog\tests\integration\Security;
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\ProductModel;
+use Pim\Component\Catalog\Model\ProductModelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class AbstractSecurityTestCase extends TestCase
@@ -42,6 +44,21 @@ class AbstractSecurityTestCase extends TestCase
     }
 
     /**
+     * @param string $code
+     * @param array  $data
+     *
+     * @return ProductModelInterface
+     */
+    protected function createProductModel(string $code, array $data): ProductModelInterface
+    {
+        $productModel = new ProductModel();
+        $productModel->setCode($code);
+        $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
+
+        return $productModel;
+    }
+
+    /**
      * @param ProductInterface $product
      * @param array            $data
      *
@@ -55,6 +72,19 @@ class AbstractSecurityTestCase extends TestCase
     }
 
     /**
+     * @param ProductModelInterface $productModel
+     * @param array $data
+     *
+     * @return ProductModelInterface
+     */
+    protected function updateProductModel(ProductModelInterface $productModel, array $data): ProductModelInterface
+    {
+        $this->get('pim_catalog.updater.product_model')->update($productModel, $data);
+
+        return $productModel;
+    }
+
+    /**
      * @param string $identifier
      *
      * @return ProductInterface
@@ -62,6 +92,16 @@ class AbstractSecurityTestCase extends TestCase
     protected function getProduct(string $identifier): ProductInterface
     {
         return $this->get('pim_catalog.repository.product')->findOneByIdentifier($identifier);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return ProductModelInterface
+     */
+    protected function getProductModel(string $code): ProductModelInterface
+    {
+        return $this->get('pim_catalog.repository.product_model')->findOneByIdentifier($code);
     }
 
     /**
@@ -76,6 +116,20 @@ class AbstractSecurityTestCase extends TestCase
         $this->get('pim_catalog.saver.product')->save($product);
 
         return $product;
+    }
+
+    /**
+     * @param string $code
+     * @param array  $data
+     *
+     * @return ProductModelInterface
+     */
+    protected function saveProductModel(string $code, array $data): ProductModelInterface
+    {
+        $productModel = $this->createProductModel($code, $data);
+        $this->get('pim_catalog.saver.product_model')->save($productModel);
+
+        return $productModel;
     }
 
     /**
@@ -95,6 +149,28 @@ SQL;
 
         $stmt = $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
         $stmt->bindValue('identifier', $identifier);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return array
+     */
+    protected function getCategoriesFromDatabaseForProductModel(string $code): array
+    {
+        $sql = <<<SQL
+SELECT c.code
+FROM pim_catalog_product_model pm
+INNER JOIN pim_catalog_category_product_model cpm ON pm.id = cpm.product_model_id
+INNER JOIN pim_catalog_category c ON c.id = cpm.category_id
+WHERE pm.code = :code
+SQL;
+
+        $stmt = $this->get('doctrine.orm.entity_manager')->getConnection()->prepare($sql);
+        $stmt->bindValue('code', $code);
         $stmt->execute();
 
         return $stmt->fetchAll();
