@@ -20,6 +20,7 @@ Feature: Family creation
       | Variant axis level 2 (required) | Size  |
     And I press the "Create" button in the popin
     Then I should see the text "Family variant successfully created"
+    Then I should see the text "Drag & drop attributes to the selected variant level"
 
   Scenario: Successfully validate a family variant
     Given I visit the "Variants" tab

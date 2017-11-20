@@ -5,6 +5,7 @@
 
 - API-400: Update partially a family variant with the API
 - API-401: Update partially a list of family variants with the API
+- PIM-65671: Add edition capabilities to family variants
 
 ## Bug fixes
 
