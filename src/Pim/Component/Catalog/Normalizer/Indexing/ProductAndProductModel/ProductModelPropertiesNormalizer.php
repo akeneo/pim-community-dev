@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Normalizer\Standard\Product\PropertiesNormalizer as StandardPropertiesNormalizer;
 use Pim\Component\Catalog\ProductAndProductModel\Query\CompleteFilterInterface;
@@ -28,6 +29,7 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
     private const FIELD_PARENT = 'parent';
     private const FIELD_AT_LEAST_COMPLETE = 'at_least_complete';
     private const FIELD_AT_LEAST_INCOMPLETE = 'at_least_incomplete';
+    private const FIELD_ANCESTORS = 'ancestors';
 
     /** @var CompleteFilterInterface */
     private $completenessGridFilterQuery;
@@ -86,6 +88,7 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
         $normalizedData = $this->completenessGridFilterQuery->findCompleteFilterData($productModel);
         $data[self::FIELD_AT_LEAST_COMPLETE] = $normalizedData->atLeastComplete();
         $data[self::FIELD_AT_LEAST_INCOMPLETE] = $normalizedData->atLeastIncomplete();
+        $data[self::FIELD_ANCESTORS] = $this->getAncestors($productModel);
 
         return $data;
     }
@@ -97,5 +100,55 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
     {
         return $data instanceof ProductModelInterface
             && ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX === $format;
+    }
+
+    /**
+     * @param ProductModelInterface $productModel
+     *
+     * @return array
+     */
+    private function getAncestors(ProductModelInterface $productModel): array
+    {
+        $ancestorsIds = $this->getAncestorsIds($productModel);
+        $ancestorsCodes = $this->getAncestorsCodes($productModel);
+
+        $ancestors = [
+            'ids'   => $ancestorsIds,
+            'codes' => $ancestorsCodes,
+        ];
+
+        return $ancestors;
+    }
+
+    /**
+     * @param ProductModelInterface $productModel
+     *
+     * @return array
+     */
+    private function getAncestorsIds(ProductModelInterface $productModel): array
+    {
+        $ancestorsIds = [];
+        while (null !== $parent = $productModel->getParent()) {
+            $ancestorsIds[] = 'product_model_' . $parent->getId();
+            $productModel = $parent;
+        }
+
+        return $ancestorsIds;
+    }
+
+    /**
+     * @param ProductModelInterface $productModel
+     *
+     * @return array
+     */
+    private function getAncestorsCodes(ProductModelInterface $productModel)
+    {
+        $ancestorsCodes = [];
+        while (null !== $parent = $productModel->getParent()) {
+            $ancestorsCodes[] = $parent->getCode();
+            $productModel = $parent;
+        }
+
+        return $ancestorsCodes;
     }
 }
