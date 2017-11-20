@@ -10,5 +10,6 @@ pim_api:
             - { path: '^/api/rest/v\d+/media-files', methods: ['POST'], content_types:['multipart/form-data']}
             - { path: '^/api/rest/v\d+/(products|families|categories|attributes|attribute-groups|channels|association-types|product-models)$', methods: ['PATCH'], content_types:['application/vnd.akeneo.collection+json'] }
             - { path: '^/api/rest/v\d+/families/.+/variants$', methods: ['PATCH'], content_types:['application/vnd.akeneo.collection+json'] }
+            - { path: '^/api/oauth/v\d+/token', content_types:['application/json', 'application/x-www-form-urlencoded'] }
             - { path: '^/api', content_types:['application/json'] }
             - { path: '', stop: true }

@@ -225,3 +225,26 @@ Feature: Associate a product
     When I visit the "Substitution" association type
     Then I should see the text "0 product(s) and 0 group(s)"
     And the row "caterpillar_boots" should not be checked
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6960
+  Scenario: Don't make the pef fail after current association type removal
+    Given I am on the association types page
+    And I create a new association type
+    Then I should see the Code field
+    When I fill in the following information in the popin:
+      | Code | social_sell |
+    And I press the "Save" button
+    And I wait 5 seconds
+    When I edit the "charcoal-boots" product
+    When I visit the "Associations" column tab
+    And I check the row "shoelaces"
+    And I save the product
+    Then I should see the text "1 product(s) and 0 group(s)"
+    When I am on the association types page
+    Then I should see association type social_sell
+    When I click on the "Delete" action of the row which contains "social_sell"
+    And I confirm the deletion
+    Then I should not see association type social_sell
+    When I edit the "charcoal-boots" product
+    And I visit the "Associations" column tab
+    Then I should see the text "black-boots"

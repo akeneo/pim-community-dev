@@ -62,7 +62,7 @@ class ProductColumnSorter extends DefaultColumnSorter implements ColumnSorterInt
             $sortedColumns = [];
             foreach ($rawColumns as $columnCode) {
                 $sortedColumns = array_merge($sortedColumns, array_filter($columns, function ($columnCandidate) use ($columnCode) {
-                    return 0 !== preg_match(sprintf('/^%s(-.*)*/', $columnCode), $columnCandidate);
+                    return 0 !== preg_match(sprintf('/^%s(-.*)*$/', $columnCode), $columnCandidate);
                 }));
             }
 
