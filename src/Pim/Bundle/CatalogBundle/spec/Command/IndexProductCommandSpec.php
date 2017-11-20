@@ -2,9 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Command;
 
+use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Bundle\ElasticsearchBundle\Client;
-use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
@@ -43,29 +44,39 @@ class IndexProductCommandSpec extends ObjectBehavior
         $container,
         ProductRepositoryInterface $productRepository,
         BulkIndexerInterface $productIndexer,
-        BulkObjectDetacherInterface $productDetacher,
+        ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
         Application $application,
         HelperSet $helperSet,
         InputDefinition $definition,
         ProductInterface $product1,
-        ProductInterface $product2
+        ProductInterface $product2,
+        ProductInterface $product3,
+        ProductInterface $product4,
+        ProductInterface $product5
     ) {
         $container->get('pim_catalog.repository.product')->willReturn($productRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
-        $container->get('akeneo_storage_utils.doctrine.object_detacher')->willReturn($productDetacher);
+        $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
 
-        $productRepository->countAll()->willReturn(2);
-        $productRepository->findAllWithOffsetAndSize(0, 100)->willReturn([$product1, $product2]);
+        $productRepository->countAll()->willReturn(5);
+        $productRepository->searchAfter(null, 100)->willReturn([$product1, $product2]);
+        $productRepository->searchAfter($product2, 100)->willReturn([$product3, $product4]);
+        $productRepository->searchAfter($product4, 100)->willReturn([$product5]);
+        $productRepository->searchAfter($product5, 100)->willReturn([]);
 
-        $productIndexer->indexAll([$product1, $product2])->shouldBeCalled();
+        $productIndexer->indexAll([$product1, $product2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $productIndexer->indexAll([$product3, $product4], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $productIndexer->indexAll([$product5], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
 
-        $productDetacher->detachAll([$product1, $product2])->shouldBeCalled();
+        $objectManager->clear()->shouldBeCalledTimes(3);
 
-        $output->writeln('<info>2 products to index</info>')->shouldBeCalled();
+        $output->writeln('<info>5 products to index</info>')->shouldBeCalled();
         $output->writeln('Indexing products 1 to 2')->shouldBeCalled();
-        $output->writeln('<info>2 products indexed</info>')->shouldBeCalled();
+        $output->writeln('Indexing products 3 to 4')->shouldBeCalled();
+        $output->writeln('Indexing products 5 to 5')->shouldBeCalled();
+        $output->writeln('<info>5 products indexed</info>')->shouldBeCalled();
 
         $commandInput = new ArrayInput([
             'command'    => 'pim:product:index',
@@ -94,7 +105,7 @@ class IndexProductCommandSpec extends ObjectBehavior
         $container,
         ProductRepositoryInterface $productRepository,
         BulkIndexerInterface $productIndexer,
-        BulkObjectDetacherInterface $productDetacher,
+        ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
         Application $application,
@@ -104,12 +115,12 @@ class IndexProductCommandSpec extends ObjectBehavior
     ) {
         $container->get('pim_catalog.repository.product')->willReturn($productRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
-        $container->get('akeneo_storage_utils.doctrine.object_detacher')->willReturn($productDetacher);
+        $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
 
         $productRepository->findBy(['identifier' => ['product_identifier_to_index']])->willReturn([$productToIndex]);
 
-        $productIndexer->indexAll([$productToIndex])->shouldBeCalled();
-        $productDetacher->detachAll([$productToIndex])->shouldBeCalled();
+        $productIndexer->indexAll([$productToIndex], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $objectManager->clear()->shouldBeCalled();
 
         $output->writeln('<info>1 products found for indexing</info>')->shouldBeCalled();
         $output->writeln('<info>1 products indexed</info>')->shouldBeCalled();
@@ -142,7 +153,7 @@ class IndexProductCommandSpec extends ObjectBehavior
         $container,
         ProductRepositoryInterface $productRepository,
         BulkIndexerInterface $productIndexer,
-        BulkObjectDetacherInterface $productDetacher,
+        ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
         Application $application,
@@ -153,12 +164,12 @@ class IndexProductCommandSpec extends ObjectBehavior
     ) {
         $container->get('pim_catalog.repository.product')->willReturn($productRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
-        $container->get('akeneo_storage_utils.doctrine.object_detacher')->willReturn($productDetacher);
+        $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
 
         $productRepository->findBy(['identifier' => ['product_1', 'product_2']])->willReturn([$product1, $product2]);
 
-        $productIndexer->indexAll([$product1, $product2])->shouldBeCalled();
-        $productDetacher->detachAll([$product1, $product2])->shouldBeCalled();
+        $productIndexer->indexAll([$product1, $product2], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $objectManager->clear()->shouldBeCalled();
 
         $output->writeln('<info>2 products found for indexing</info>')->shouldBeCalled();
         $output->writeln('<info>2 products indexed</info>')->shouldBeCalled();
@@ -191,7 +202,7 @@ class IndexProductCommandSpec extends ObjectBehavior
         $container,
         ProductRepositoryInterface $productRepository,
         BulkIndexerInterface $productIndexer,
-        BulkObjectDetacherInterface $productDetacher,
+        ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
         Application $application,
@@ -201,14 +212,14 @@ class IndexProductCommandSpec extends ObjectBehavior
     ) {
         $container->get('pim_catalog.repository.product')->willReturn($productRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
-        $container->get('akeneo_storage_utils.doctrine.object_detacher')->willReturn($productDetacher);
+        $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
 
         $productRepository->findBy(['identifier' => ['product_1', 'wrong_product']])->willReturn([$productToIndex]);
 
         $productToIndex->getIdentifier()->willReturn('product_1');
 
-        $productIndexer->indexAll([$productToIndex])->shouldBeCalled();
-        $productDetacher->detachAll([$productToIndex])->shouldBeCalled();
+        $productIndexer->indexAll([$productToIndex], ['index_refresh' => Refresh::disable()])->shouldBeCalled();
+        $objectManager->clear()->shouldBeCalled();
 
         $output->writeln('<error>Some products were not found for the given identifiers: wrong_product</error>')->shouldBeCalled();
         $output->writeln('<info>1 products found for indexing</info>')->shouldBeCalled();
@@ -242,7 +253,7 @@ class IndexProductCommandSpec extends ObjectBehavior
         $container,
         ProductRepositoryInterface $productRepository,
         BulkIndexerInterface $productIndexer,
-        BulkObjectDetacherInterface $productDetacher,
+        ObjectManager $objectManager,
         InputInterface $input,
         OutputInterface $output,
         Application $application,
@@ -251,7 +262,7 @@ class IndexProductCommandSpec extends ObjectBehavior
     ) {
         $container->get('pim_catalog.repository.product')->willReturn($productRepository);
         $container->get('pim_catalog.elasticsearch.indexer.product')->willReturn($productIndexer);
-        $container->get('akeneo_storage_utils.doctrine.object_detacher')->willReturn($productDetacher);
+        $container->get('doctrine.orm.default_entity_manager')->willReturn($objectManager);
 
         $output->writeln('<error>Please specify a list of product identifiers to index or use the flag --all to index all products</error>')
             ->shouldBeCalled();

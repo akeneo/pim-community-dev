@@ -37,11 +37,13 @@ define(
              * {@inheritdoc}
              */
             render() {
-                FormBuilder.buildForm('pim-grid-view-selector').then(form => {
-                    return form.configure(this.config.gridName).then(() => {
-                        form.setElement('.view-selector').render();
+                FormBuilder.getFormMeta('pim-grid-view-selector')
+                    .then(FormBuilder.buildForm)
+                    .then(form => {
+                        return form.configure(this.config.gridName).then(() => {
+                            form.setElement('.view-selector').render();
+                        });
                     });
-                });
             }
         });
     }

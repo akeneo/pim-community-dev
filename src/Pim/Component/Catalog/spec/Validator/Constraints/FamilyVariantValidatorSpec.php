@@ -169,6 +169,8 @@ class FamilyVariantValidatorSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($constraintViolationBuilder);
 
+        $constraintViolationBuilder->atPath('variant_attribute_sets')->willReturn($constraintViolationBuilder);
+
         $context->buildViolation('pim_catalog.constraint.family_variant_axes_wrong_type', ['%axis%' => 'color'])
             ->shouldBeCalled()
             ->willReturn($constraintViolationBuilder);

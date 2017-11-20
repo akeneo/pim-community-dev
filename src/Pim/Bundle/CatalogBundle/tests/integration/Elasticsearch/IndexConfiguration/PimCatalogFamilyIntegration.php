@@ -33,7 +33,7 @@ class PimCatalogFamilyIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['sony-xvz', 'toshiba', 'carley-co', 'nike-flush']);
+        $this->assertDocument($productsFound, ['sony-xvz', 'toshiba', 'carley-co', 'nike-flush']);
     }
 
     public function testNotInList()
@@ -60,7 +60,7 @@ class PimCatalogFamilyIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['sony-xvz', 'toshiba', 'product_3']);
+        $this->assertDocument($productsFound, ['sony-xvz', 'toshiba', 'product_3']);
     }
 
     public function testIsEmptyOperator()
@@ -87,7 +87,7 @@ class PimCatalogFamilyIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['product_3']);
+        $this->assertDocument($productsFound, ['product_3']);
     }
 
     public function testIsNotEmptyOperator()
@@ -114,7 +114,7 @@ class PimCatalogFamilyIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts($productsFound, ['sony-xvz', 'toshiba', 'carley-co', 'nike-flush']);
+        $this->assertDocument($productsFound, ['sony-xvz', 'toshiba', 'carley-co', 'nike-flush']);
     }
 
     public function testSortLabelDescending()
@@ -141,7 +141,7 @@ class PimCatalogFamilyIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['nike-flush', 'carley-co', 'toshiba', 'sony-xvz', 'product_3']
         );
@@ -174,7 +174,7 @@ class PimCatalogFamilyIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['sony-xvz', 'toshiba', 'nike-flush', 'carley-co', 'product_3']
         );
@@ -204,7 +204,7 @@ class PimCatalogFamilyIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['sony-xvz', 'toshiba', 'nike-flush', 'carley-co', 'product_3']
         );
@@ -240,7 +240,7 @@ class PimCatalogFamilyIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['toshiba', 'sony-xvz', 'carley-co', 'nike-flush', 'product_3']
         );
@@ -273,7 +273,7 @@ class PimCatalogFamilyIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['carley-co', 'nike-flush', 'toshiba', 'sony-xvz', 'product_3']
         );
@@ -303,7 +303,7 @@ class PimCatalogFamilyIntegration extends AbstractPimCatalogTestCase
 
         $productsFound = $this->getSearchQueryResults($query);
 
-        $this->assertProducts(
+        $this->assertDocument(
             $productsFound,
             ['sony-xvz', 'toshiba', 'carley-co', 'nike-flush', 'product_3']
         );
@@ -312,7 +312,7 @@ class PimCatalogFamilyIntegration extends AbstractPimCatalogTestCase
     /**
      * {@inheritdoc}
      */
-    protected function addProducts()
+    protected function addDocuments()
     {
         $products = [
             [
@@ -360,6 +360,6 @@ class PimCatalogFamilyIntegration extends AbstractPimCatalogTestCase
             ],
         ];
 
-        $this->indexProductDocuments($products);
+        $this->indexDocuments($products);
     }
 }

@@ -9,10 +9,12 @@
         <% if (fieldErrors.code) { %>
         <div class="AknFieldContainer-footer footer-elements-container error-code">
             <div class="AknFieldContainer-validationErrors validation-errors">
+                <% fieldErrors.code.forEach((error) => { %>
                 <span class="AknFieldContainer-validationError">
                     <i class="icon-warning-sign"></i>
-                    <span class="error-message"><%- fieldErrors.code.message %></span>
+                    <span class="error-message"><%- error.message %></span>
                 </span>
+                <% }); %>
             </div>
         </div>
         <% } %>
@@ -25,6 +27,20 @@
     <div class="AknFieldContainer-inputContainer">
         <input type="text" value="<%- label %>" name="label" class="AknTextField" />
     </div>
+    <footer>
+        <% if (fieldErrors['translations[0].label']) { %>
+        <div class="AknFieldContainer-footer footer-elements-container error-code">
+            <div class="AknFieldContainer-validationErrors validation-errors">
+                <% fieldErrors['translations[0].label'].forEach((error) => { %>
+                <span class="AknFieldContainer-validationError">
+                    <i class="icon-warning-sign"></i>
+                    <span class="error-message"><%- error.message %></span>
+                </span>
+                <% }); %>
+            </div>
+        </div>
+        <% } %>
+    </footer>
 </div>
 <div class="AknFieldContainer">
     <div class="AknFieldContainer-header">

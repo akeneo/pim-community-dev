@@ -81,12 +81,10 @@ define(
                 ;
 
                 const globalErrors = this.validationErrors.filter((error) => {
-                    return true === error.global;
+                    return true === error.global || undefined === error.path || 'variant_attribute_sets' === error.path;
                 });
 
-                const fieldErrors = _.indexBy(this.validationErrors.filter((error) => {
-                    return false === error.global;
-                }), 'path');
+                const fieldErrors = _.groupBy(this.validationErrors, 'path');
 
                 this.$el.html(
                     this.template({

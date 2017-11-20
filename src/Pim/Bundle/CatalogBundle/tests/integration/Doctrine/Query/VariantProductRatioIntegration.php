@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
+namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Query;
 
 use Akeneo\Test\Integration\Configuration;
 use Akeneo\Test\Integration\TestCase;

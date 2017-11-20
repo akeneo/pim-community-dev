@@ -136,6 +136,7 @@ pim_enrich:
       title: producte
       locale: Configuració Regional
       category: Categoria
+      create: Crear
       filters: Filtres
       btn:
         enabled: Habilitat
@@ -196,6 +197,7 @@ pim_enrich:
       media:
         upload: Arrossegueu-lo aquí per carregar o feu-hi clic
       create_popin:
+        type: Producte
         title: Crear
         labels:
           family: Trieu una família
@@ -204,6 +206,13 @@ pim_enrich:
       message:
         created: Producte creat correctament
       completeness: Complet
+    product_model:
+      title: productes
+      add_child:
+        cancel: Cancelar
+        confirm: Confirmar
+        fields:
+          code: Codi
     association_type:
       meta:
         created: Creat
@@ -324,6 +333,8 @@ pim_enrich:
     error_occured: S'ha produït un error durant la càrrega de la pàgina
   form:
     required: (obligatori)
+    product_model:
+      family_variant: Variant
     product:
       tab:
         associations:

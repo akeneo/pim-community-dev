@@ -44,7 +44,7 @@ class UserContextSpec extends ObjectBehavior
 
         $requestStack->getCurrentRequest()->willReturn($request);
         $request->getSession()->willReturn($session);
-        $session->set('dataLocale', Argument::any())->willReturn(null);
+        $request->hasSession()->willReturn(true);
 
         $en->getCode()->willReturn('en_US');
         $fr->getCode()->willReturn('fr_FR');
@@ -73,9 +73,12 @@ class UserContextSpec extends ObjectBehavior
         );
     }
 
-    function it_provides_locale_from_the_request_if_it_has_been_set($request, $fr)
+    function it_provides_locale_from_the_request_if_it_has_been_set($request, $fr, $session)
     {
         $request->get('dataLocale')->willReturn('fr_FR');
+
+        $session->set('dataLocale', 'fr_FR')->shouldBeCalled();
+        $session->save()->shouldBeCalled();
 
         $this->getCurrentLocale()->shouldReturn($fr);
     }
@@ -87,6 +90,9 @@ class UserContextSpec extends ObjectBehavior
     ) {
         $request->get('dataLocale')->willReturn(null);
         $session->get('dataLocale')->willReturn('fr_FR');
+
+        $session->set('dataLocale', 'fr_FR')->shouldBeCalled();
+        $session->save()->shouldBeCalled();
 
         $this->getCurrentLocale()->shouldReturn($fr);
     }
@@ -101,6 +107,9 @@ class UserContextSpec extends ObjectBehavior
         $session->get('dataLocale')->willReturn(null);
         $user->getCatalogLocale()->willReturn($de);
 
+        $session->set('dataLocale', 'de_DE')->shouldBeCalled();
+        $session->save()->shouldBeCalled();
+
         $this->getCurrentLocale()->shouldReturn($de);
     }
 
@@ -112,6 +121,10 @@ class UserContextSpec extends ObjectBehavior
     ) {
         $request->get('dataLocale')->willReturn(null);
         $session->get('dataLocale')->willReturn(null);
+
+        $session->set('dataLocale', 'en_US')->shouldBeCalled();
+        $session->save()->shouldBeCalled();
+
         $user->getCatalogLocale()->willReturn(null);
 
         $this->getCurrentLocale()->shouldReturn($en);
@@ -143,6 +156,10 @@ class UserContextSpec extends ObjectBehavior
         $request->get('dataLocale')->willReturn(null);
         $session->get('dataLocale')->willReturn(null);
         $user->getCatalogLocale()->willReturn(null);
+
+
+        $session->set('dataLocale', 'en_US')->shouldBeCalled();
+        $session->save()->shouldBeCalled();
 
         $this->getCurrentLocaleCode()->shouldReturn('en_US');
     }

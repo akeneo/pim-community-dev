@@ -136,6 +136,7 @@ pim_enrich:
       title: proizvod
       locale: Postavke jezika i regije
       category: Kategorija
+      create: Kreiraj
       filters: Filteri
       btn:
         enabled: Omogućeno
@@ -196,6 +197,7 @@ pim_enrich:
       media:
         upload: Povucite i ispustite za upload ili kliknite ovdje
       create_popin:
+        type: Proizvod
         title: Kreiraj
         labels:
           family: Odaberi obitelj
@@ -204,6 +206,13 @@ pim_enrich:
       message:
         created: Proizvod je uspješno kreiran
       completeness: Kompletan
+    product_model:
+      title: proizvodi
+      add_child:
+        cancel: Poništi
+        confirm: Potvrdi
+        fields:
+          code: Kod
     association_type:
       meta:
         created: Kreirano
@@ -324,6 +333,8 @@ pim_enrich:
     error_occured: Došlo je do pogreške tijekom učitavanja stranice
   form:
     required: (obavezno)
+    product_model:
+      family_variant: Varijanta
     product:
       tab:
         associations:

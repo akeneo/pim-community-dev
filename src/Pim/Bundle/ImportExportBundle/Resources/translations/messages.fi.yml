@@ -138,7 +138,7 @@ job_execution.summary:
     skipped: ohitetaan, laajennus valkolistattu
 Step: Vaihe
 Status: Status
-Warnings: Varoitus
+Warnings: Varoitukset
 Summary: Yhteenveto
 Start: Aloitus
 End: Loppu

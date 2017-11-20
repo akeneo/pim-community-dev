@@ -151,7 +151,8 @@ pim_enrich:
       title: prodotto
       locale: Impostazioni locali
       category: Categoria
-      create: Crea prodotto
+      create: Crea
+      subTitle: Crea prodotto
       filters: Filtri
       common: In comune
       btn:
@@ -216,6 +217,7 @@ pim_enrich:
       media:
         upload: Trascina e rilascia qui un file per caricarlo o fai click qui
       create_popin:
+        type: Prodotto
         title: Crea
         labels:
           family: Scegli una famiglia
@@ -235,6 +237,12 @@ pim_enrich:
       read_only_parent_attribute_from_common: Questo attributo può essere aggiornato con gli attributi in comune.
       read_only_parent_attribute_from_model: "Questo attributo può essere aggiornato con gli attributi per {{ axes }}"
       variant_axis: Asse di variante
+      title: prodotti
+      add_child:
+        cancel: Annulla
+        confirm: Conferma
+        fields:
+          code: Codice
     association_type:
       info:
         deletion_successful: Tipo di associazione rimosso con successo.
@@ -413,6 +421,7 @@ pim_enrich:
     product_model:
       complete_variant_product: prodotto variante
       complete_variant_products: prodotti varianti
+      family_variant: Variante
     product:
       tab:
         associations:

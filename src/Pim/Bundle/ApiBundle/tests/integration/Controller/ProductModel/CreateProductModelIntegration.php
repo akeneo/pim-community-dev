@@ -179,7 +179,7 @@ JSON;
 <<<JSON
 {
   "code": 422,
-  "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the standard format documentation.",
+  "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#post_product_model"
@@ -221,7 +221,7 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "Property \"family_variant\" does not expect an empty value. Check the standard format documentation.",
+  "message": "Property \"family_variant\" does not expect an empty value. Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#post_product_model"
@@ -264,7 +264,7 @@ JSON;
 <<<JSON
 {
   "code": 422,
-  "message": "Property \"family_variant\" does not expect an empty value. Check the standard format documentation.",
+  "message": "Property \"family_variant\" does not expect an empty value. Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#post_product_model"
@@ -473,7 +473,58 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the standard format documentation.",
+  "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the expected format on the API documentation.",
+  "_links": {
+    "documentation": {
+      "href": "http://api.akeneo.com/api-reference.html#post_product_model"
+    }
+  }
+}
+JSON;
+
+        $response = $client->getResponse();
+
+        $this->assertJsonStringEqualsJsonString($expectedContent, $response->getContent());
+        $this->assertSame(Response::HTTP_UNPROCESSABLE_ENTITY, $response->getStatusCode());
+    }
+
+    public function testCreateASubProductModelOfASubProductModelWithNoValuesAndInvalidFamilyVariant()
+    {
+        $this->createProductModel(
+            [
+                'code'           => 'sub_product_model',
+                'family_variant' => 'familyVariantA1',
+                'parent'         => 'sweat',
+                'values'         => [
+                    'a_simple_select' => [
+                        [
+                            'scope'  => null,
+                            'locale' => null,
+                            'data'   => "optionB",
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $client = $this->createAuthenticatedClient();
+
+        $data =
+            <<<JSON
+    {
+        "code": "sub_sub_product_model",
+        "family_variant": "familyVariantA2",
+        "parent": "sub_product_model"
+    }
+JSON;
+
+        $client->request('POST', 'api/rest/v1/product-models', [], [], [], $data);
+
+        $expectedContent =
+            <<<JSON
+{
+  "code": 422,
+  "message": "The parent is not a product model of the family variant \"familyVariantA2\" but belongs to the family \"familyVariantA1\". Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#post_product_model"
@@ -603,7 +654,7 @@ JSON;
             <<<JSON
 {
   "code": 422,
-  "message": "Property \"a_simple_select\" expects an array with the key \"scope\". Check the standard format documentation.",
+  "message": "Property \"a_simple_select\" expects an array with the key \"scope\". Check the expected format on the API documentation.",
   "_links": {
     "documentation": {
       "href": "http://api.akeneo.com/api-reference.html#post_product_model"

@@ -3,7 +3,7 @@ pim_enrich:
     tab:
       attribute.title: Attribuutit
       category.title: Kategoriat
-      association.title: Määritteet
+      association.title: Assosiaatiot
       completeness.title: Valmistumisaste
       history.title: Historia
     no_comparison_locale_available: Muuta lokaatiota ei ole käytettävissä vertailuun
@@ -41,7 +41,7 @@ pim_enrich:
   group:
     axis.help: 'Keskiviiva määrittää määritteet, joiden yli ryhmän tuotteiden tulee vaihdella. Keskiviivat ovat määritteitä joissa on vaihtoehtoja. Niitä ei voi lokalisoida tai scoped. Niitä ei voi muuttaa tuotevariaatioryhmän perustamisen jälkeen.'
     type:
-      VARIANT: Tuotevariaatio
+      VARIANT: Variantti
       X_SELL: X-Sell
       ADDITIONAL: Lisää
       RELATED: Liittyvät
@@ -95,17 +95,17 @@ pim_enrich:
         invalid_attribute: Attribuutti koodilla "attribute_code" ei yhdistä valittuja tuotteita, attributti ohitettu.
         no_valid_attribute: Mitään valituista attribuuteista ei voi ottaa käyttöön tällä tuotteella.
     classify-add:
-      label: Lisää kategorioihin
+      label: Lisää ryhmiin
       description: Tuotteet asetetaan seuraaviin kategorioihin, olemassaolevat asetukset pyyvät.
       success_flash: Tuote / tuotteet ovat luokiteltu valittuihin kategorioihin
       launched_flash: Massatoiminto "lisää kategorioihin" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     classify-move:
-      label: Siirrä kategorioihin
+      label: Siirrä ryhmiin
       description: Tuotteet asetetaan seuraaviin kategorioihin, aikaisemmat kategorisoinnit menetetään.
       success_flash: Tuote/tuotteet on siirretty valittuihin kategorioihin
       launched_flash: Massatoiminto "siirrä kategorioihin" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     classify-remove:
-      label: Poista kategorioista
+      label: Poista ryhmistä
       description: Tuotteet poistetaan seuraavista kategorioista.
       success_flash: Tuote/tuotteet on poistettu valituista kategorioista
       launched_flash: Massatoiminto "poista kategorioista" on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
@@ -146,7 +146,7 @@ pim_enrich:
       add_attribute: Lisää määrite tuotteeseen
       remove_attribute: Poista määrite tuotteesta
       categories_view: Katso tuotteen kategorioita
-      associations_view: Tarkastele tuotteen määritetyyppejä
+      associations_view: Tarkastele tuotteen assosiaatiotyyppejä
       change_family: Vaihda tuoteryhmää
       change_state: Muuta tuotteen tilaa
       add_to_groups: Lisää tuote ryhmiin
@@ -155,6 +155,7 @@ pim_enrich:
       download: 'Lataa tuote PDF:nä'
       history: Näytä tuotehistoria
     product_model:
+      create: Luo tuotemalli
       edit_attributes: Muokkaa tuotemallin ominaisuuksia
       categories_view: Tarkastele tuotemallin ryhmiä
       history: Näyte tuotemallin muutoshistoria
@@ -208,17 +209,17 @@ pim_enrich:
       edit: Editoi ryhmätyyppiä
       remove: Poista ryhmätyyppi
     association_type:
-      index: Listaa määritetyypit
-      create: Luo määritetyyppi
-      edit: Muokkaa määritetyyppiä
-      remove: Poista määritetyyppi
-      history: Näytä määritetyypin historia
+      index: Listaa assosiaatiotyypit
+      create: Luo assosiaatiotyyppi
+      edit: Muokkaa assosiaatiotyyppiä
+      remove: Poista assosiaatiotyyppi
+      history: Näytä assosiaatiotyypin historia
     job_tracker:
       index: Näytä prosessien seuraaja
     api_connection:
       manage: Hallinnoi API -yhteyksiä
   acl_group:
-    association_type: Määritetyypit
+    association_type: Assosiaatiotyypit
     attribute: Attribuutit
     attribute_group: Attribuuttiryhmät
     category: Kategoriat
@@ -286,9 +287,9 @@ group type:
   title: ryhmän tyyppi
   edit: muokkaa ryhmätyyppiä
 association type:
-  title: sidoksen tyyppi
-  create: luo sidostyyppi
-  edit: muokkaa sidostyyppiä
+  title: assosiaatiotyyppi
+  create: luo assosiaatiotyyppi
+  edit: muokkaa assosiaatiotyyppiä
 products: tuotteet
 btn:
   create:
@@ -302,7 +303,7 @@ btn:
     locale: luo lokaatio
     product: luo tuote
     group: luo ryhmä
-    association type: luo sidostyyppi
+    association type: luo assosiaatiotyyppi
     group type: luo ryhmätyyppi
     drag_or_upload: Vedä ja pudota tuodaksesi tai klikkaa tästä
   edit: muokkaa
@@ -397,9 +398,9 @@ flash:
     removed: Ryhmätyyppi poistettu onnistuneesti
     cant remove used: Ryhmätyyppi on käytössä ja sitä ei voida poistaa
   association type:
-    created: Sidostyyppi luotu onnistuneesti
-    updated: Sidostyyppi päivitetty onnistuneesti
-    removed: Sidostyyppi poistettu onnistuneesti
+    created: Assosiaatiotyyppi luotu onnistuneesti
+    updated: Assosiaatiotyyppi päivitetty onnistuneesti
+    removed: Assosiaatiotyyppi poistettu onnistuneesti
   user:
     removed: Käyttäjä poistettu onnistuneesti
   error ocurred: Toiminto epäonnistui. Yritä uudelleen.
@@ -430,8 +431,8 @@ info:
   association type:
     show products: Näytä tuotteet
     show groups: Näytä ryhmät
-    remove from products: Sidostyypin poistaminen poistaa sen myös %count% tuotteelta.
-    none exist: Sidostyyppiä ei ole olemassa.
+    remove from products: Assosiaatiotyypin poistaminen poistaa sen myös %count% tuotteelta.
+    none exist: Assosiaatiotyyppiä ei ole olemassa.
     create one: Klikkaa tästä luodaksesi sellainen
   attribute:
     auto option sorting: Jos käytössä, vaihtoehdot lajitellaan automaattisesti riippuen niiden alueellisesta otsikosta
@@ -460,7 +461,7 @@ Localizable: Lokalisoitavissa
 Unique value: Yksilöllinen arvo
 Attribute group: Attribuuttiryhmä
 Other: Muu
-Variants behavior when edited: Tuotevariaatioiden käytös kun niitä muokataan
+Variants behavior when edited: Varianttien käytös kun niitä muokataan
 Edit: Muokkaa
 Remove: Poista
 Delete: Poista
@@ -475,7 +476,7 @@ Default value: Oletusarvo
 Attributetype: Attribuuttityyppi
 Attribute type: Attribuuttityyppi
 Defaultvalue: Oletusarvo
-Variant: Tuotevariaatio
+Variant: Variantti
 Smart: Älykäs
 Useable as grid column: Käytettävissä ruudukko-sarakkeena
 Useable as grid filter: Käytettävissä ruudukossa
@@ -572,8 +573,8 @@ pim_title.group:
   index: "Ryhmät"
   edit: "Ryhmien %group.label% | Muokkaa"
 pim_title.association_type:
-  index: "Määritetyypit"
-  edit: "Määritetyypit %association type.label% | Muokkaa"
+  index: "Assosiaatiotyypit"
+  edit: "Assosiaatiotyypit %association type.label% | Muokkaa"
 pim_title.group_type:
   index: "Ryhmätyypit"
   edit: "Ryhmätyypit %group type.label% | Muokkaa"
@@ -643,7 +644,7 @@ pim_enrich.mass_edit_action:
     message.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
     no_attribute.warning: Valituille tuotteille ei ole yhteistä attribuuttia. Vaihda valintaasi.
   classify:
-    label: Lisää kategorioihin
+    label: Lisää ryhmiin
     description: Tuotteet asetetaan seuraaviin kategorioihin, olemassaolevat asetukset pyyvät.
     success_flash: Tuote / tuotteet ovat luokiteltu valittuihin kategorioihin
   change-family:
@@ -681,7 +682,7 @@ pane.accordion:
   options: Vaihtoehdot
   group_values: Ryhmän arvot
 popin.create:
-  association_type.title: Luo uusi määritetyyppi
+  association_type.title: Luo uusi assosiaatiotyyppi
   group.title: Luo uusi ryhmä
   product.title: Luo uusi tuote
   option.title: Luo uusi vaihtoehto

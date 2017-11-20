@@ -34,14 +34,14 @@ interface EntityWithFamilyVariantInterface extends EntityWithFamilyInterface
     public function getVariationLevel(): int;
 
     /**
-     * @return EntityWithFamilyVariantInterface|null
+     * @return ProductModelInterface|null
      */
-    public function getParent(): ?EntityWithFamilyVariantInterface;
+    public function getParent(): ?ProductModelInterface;
 
     /**
-     * @param EntityWithFamilyVariantInterface $parent
+     * @param ProductModelInterface $parent
      */
-    public function setParent(EntityWithFamilyVariantInterface $parent = null): void;
+    public function setParent(ProductModelInterface $parent = null): void;
 
     /**
      * @return ValueCollectionInterface

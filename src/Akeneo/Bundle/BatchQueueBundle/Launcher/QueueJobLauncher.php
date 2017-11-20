@@ -13,7 +13,6 @@ use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionMessage;
 use Akeneo\Component\BatchQueue\Queue\JobExecutionQueueInterface;
-use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 

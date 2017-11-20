@@ -29,6 +29,20 @@ define(
                 this.$el.empty().append(this.template());
 
                 return BaseForm.prototype.render.apply(this, arguments);
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            renderExtension: function (extension) {
+                if (!_.isEmpty(extension.options.config) &&
+                    !extension.options.config.to &&
+                    _.isFunction(extension.hasChildren) &&
+                    !extension.hasChildren()) {
+                    return;
+                }
+
+                BaseForm.prototype.renderExtension.apply(this, arguments);
             }
         });
     });

@@ -25,3 +25,4 @@ extensions:
         position: 20
         config:
             identifier: family
+            loadUrl: pim_enrich_family_rest_index

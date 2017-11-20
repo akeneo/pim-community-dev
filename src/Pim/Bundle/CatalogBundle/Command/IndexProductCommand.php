@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
-use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
+use Akeneo\Bundle\ElasticsearchBundle\Refresh;
 use Akeneo\Component\StorageUtils\Indexer\BulkIndexerInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -24,15 +25,16 @@ class IndexProductCommand extends ContainerAwareCommand
 {
     public const NAME = 'pim:product:index';
     private const BULK_SIZE = 100;
+    private const ERROR_CODE_USAGE = 1;
 
     /** @var ProductRepositoryInterface */
     private $productRepository;
 
-    /** @var BulkObjectDetacherInterface */
-    private $bulkProductDetacher;
-
     /** @var BulkIndexerInterface */
     private $bulkProductIndexer;
+
+    /** @var ObjectManager */
+    private $objectManager;
 
     /**
      * {@inheritdoc}
@@ -65,7 +67,7 @@ class IndexProductCommand extends ContainerAwareCommand
 
         $this->productRepository = $this->getContainer()->get('pim_catalog.repository.product');
         $this->bulkProductIndexer = $this->getContainer()->get('pim_catalog.elasticsearch.indexer.product');
-        $this->bulkProductDetacher = $this->getContainer()->get('akeneo_storage_utils.doctrine.object_detacher');
+        $this->objectManager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
 
         $isIndexAll = $input->getOption('all');
         $productIdentifiers = $input->getArgument('identifiers');
@@ -77,7 +79,7 @@ class IndexProductCommand extends ContainerAwareCommand
         } else {
             $output->writeln('<error>Please specify a list of product identifiers to index or use the flag --all to index all products</error>');
 
-            return;
+            return self::ERROR_CODE_USAGE;
         }
 
         $message = sprintf('<info>%d products indexed</info>', $totalIndexedProducts);
@@ -95,22 +97,24 @@ class IndexProductCommand extends ContainerAwareCommand
     private function indexAll(OutputInterface $output): int
     {
         $totalElements = (int) $this->productRepository->countAll();
-        $numberOfPage = ceil($totalElements / self::BULK_SIZE);
 
         $output->writeln(sprintf('<info>%s products to index</info>', $totalElements));
 
-        for ($currentPage = 1; $currentPage <= $numberOfPage; $currentPage++) {
-            $offset = self::BULK_SIZE * ($currentPage - 1);
+        $lastProduct = null;
+        $progress = 0;
+
+        while (!empty($products = $this->productRepository->searchAfter($lastProduct, self::BULK_SIZE))) {
             $output->writeln(sprintf(
                 'Indexing products %d to %d',
-                $offset + 1,
-                ($offset + self::BULK_SIZE) < $totalElements ? ($offset + self::BULK_SIZE) : $totalElements
+                $progress + 1,
+                $progress + count($products)
             ));
 
-            $products = $this->productRepository->findAllWithOffsetAndSize($offset, self::BULK_SIZE);
+            $this->bulkProductIndexer->indexAll($products, ['index_refresh' => Refresh::disable()]);
+            $this->objectManager->clear();
 
-            $this->bulkProductIndexer->indexAll($products);
-            $this->bulkProductDetacher->detachAll($products);
+            $lastProduct = end($products);
+            $progress += count($products);
         }
 
         return $totalElements;
@@ -153,8 +157,8 @@ class IndexProductCommand extends ContainerAwareCommand
             $i++;
 
             if (0 === $i % self::BULK_SIZE) {
-                $this->bulkProductIndexer->indexAll($productBulk);
-                $this->bulkProductDetacher->detachAll($productBulk);
+                $this->bulkProductIndexer->indexAll($productBulk, ['index_refresh' => Refresh::disable()]);
+                $this->objectManager->clear();
 
                 $productBulk = [];
 
@@ -169,8 +173,8 @@ class IndexProductCommand extends ContainerAwareCommand
         }
 
         if (!empty($productBulk)) {
-            $this->bulkProductIndexer->indexAll($productBulk);
-            $this->bulkProductDetacher->detachAll($productBulk);
+            $this->bulkProductIndexer->indexAll($productBulk, ['index_refresh' => Refresh::disable()]);
+            $this->objectManager->clear();
 
             $totalProductsIndexed += count($productBulk);
         }

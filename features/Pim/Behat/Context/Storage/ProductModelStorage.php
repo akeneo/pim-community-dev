@@ -93,7 +93,7 @@ class ProductModelStorage extends RawMinkContext
     }
 
     /**
-     * @Given the product model :identifier should not have the following values :attributesCode
+     * @Given the product model :identifier should not have the following values :attributesCodes
      */
     public function theProductShouldNotHaveTheFollowingValues($code, $attributesCodes)
     {

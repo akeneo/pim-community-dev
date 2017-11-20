@@ -120,6 +120,7 @@ class ProductNormalizer implements NormalizerInterface
      * @param EntityWithFamilyValuesFillerInterface     $productValuesFiller
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      * @param VariantNavigationNormalizer               $navigationNormalizer
+     * @param AscendantCategoriesInterface|null         $ascendantCategoriesQuery
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -309,7 +310,8 @@ class ProductNormalizer implements NormalizerInterface
             'attributes_for_this_level' => [],
             'attributes_axes'           => [],
             'parent_attributes'         => [],
-            'family_variant'            => null
+            'family_variant'            => null,
+            'level'                     => null,
         ];
 
         if (!$product instanceof VariantProductInterface) {
@@ -318,6 +320,7 @@ class ProductNormalizer implements NormalizerInterface
 
         $meta['variant_navigation'] = $this->navigationNormalizer->normalize($product, $format, $context);
         $meta['family_variant'] = $this->normalizer->normalize($product->getFamilyVariant(), 'standard');
+        $meta['level'] = $product->getVariationLevel();
 
         foreach ($this->attributesProvider->getAttributes($product) as $attribute) {
             $meta['attributes_for_this_level'][] = $attribute->getCode();

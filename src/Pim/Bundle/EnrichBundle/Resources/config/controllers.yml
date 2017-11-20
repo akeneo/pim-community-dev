@@ -352,6 +352,7 @@ services:
             - '@pim_catalog.comparator.filter.product'
             - '@pim_enrich.converter.enrich_to_standard.product_value'
             - '@pim_enrich.normalizer.product_violation'
+            - '@pim_catalog.builder.variant_product'
 
     pim_enrich.controller.rest.product_model:
         class: '%pim_enrich.controller.rest.product_model.class%'
@@ -368,6 +369,8 @@ services:
             - '@pim_catalog.saver.product_model'
             - '@pim_enrich.normalizer.product_violation'
             - '@pim_enrich.normalizer.entity_with_family_variant'
+            - '@pim_catalog.factory.product_model'
+            - '@pim_enrich.normalizer.violation'
 
     pim_enrich.controller.rest.product_category:
         class: '%pim_enrich.controller.rest.product_category.class%'

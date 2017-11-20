@@ -39,8 +39,10 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
      */
     public function applyMassActionParameters($queryBuilder, $inset, array $values)
     {
-        $condition = $inset ? Operators::IN_LIST : Operators::NOT_IN_LIST;
-        $queryBuilder->addFilter('id', $condition, $values);
+        if (!empty($values)) {
+            $condition = $inset ? Operators::IN_LIST : Operators::NOT_IN_LIST;
+            $queryBuilder->addFilter('id', $condition, $values);
+        }
     }
 
     /**

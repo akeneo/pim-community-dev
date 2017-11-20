@@ -46,6 +46,7 @@ pim_catalog:
         modified_variant_axis_value: 'Variant axis "%variant_axis%" cannot be modified, "%provided_value%" given'
         family_variant_attributes_unique: Attributes must be unique, "%attributes%" are used several times in variant attributes sets
         family_variant_axes_unique: Variant axes must be unique, "%attributes%" are used several times in variant attributes sets
+        family_variant_axes_immutable: 'Variant axes cannot be modified for the level "%level%"'
         family_variant_axes_attribute_type_unique: Variant axes "%axis%" cannot be unique or an identifier
         family_variant_axes_attribute_type: Variant axes "%axis%" must be a boolean, a simple select, a simple reference data or a metric
         family_variant_axes_wrong_type: Variant axes "%axis%" cannot be localizable, not scopable and not locale specific

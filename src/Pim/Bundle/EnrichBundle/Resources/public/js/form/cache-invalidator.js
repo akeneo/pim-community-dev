@@ -13,7 +13,7 @@ define([
              */
             configure: function () {
                 _.each(__moduleConfig.events, function (event) {
-                    this.listenTo(mediator, event, this.checkStructureVersion);
+                    this.listenTo(this.getRoot(), event, this.checkStructureVersion);
                 }.bind(this));
 
                 this.listenTo(this.getRoot(), 'pim_enrich:form:cache:clear', this.clearCache);

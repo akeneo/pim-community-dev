@@ -42,6 +42,7 @@ class FamilyVariantValidator extends ConstraintValidator
         if (0 === $familyVariant->getNumberOfLevel()) {
             $this->context
                 ->buildViolation(FamilyVariant::FAMILY_VARIANT_NO_LEVEL)
+                ->atPath('variant_attribute_sets')
                 ->addViolation();
             $validateAttributesSets = false;
         }
@@ -77,7 +78,7 @@ class FamilyVariantValidator extends ConstraintValidator
                     '%attribute%' => $attribute->getCode(),
                     '%family%' => $family->getCode(),
                     '%family_variant%' => $familyVariant->getCode(),
-                ])->addViolation();
+                ])->atPath('variant_attribute_sets')->addViolation();
             }
 
             if ($attribute->isUnique() &&
@@ -86,14 +87,14 @@ class FamilyVariantValidator extends ConstraintValidator
             ) {
                 $this->context->buildViolation(FamilyVariant::UNIQUE_ATTRIBUTE_IN_LAST_LEVEL, [
                     '%attribute%' => $attribute->getCode(),
-                ])->addViolation();
+                ])->atPath('variant_attribute_sets')->addViolation();
             }
         }
 
         if (count($attributeCodes) !== count(array_unique($attributeCodes))) {
             $this->context->buildViolation(FamilyVariant::ATTRIBUTES_UNIQUE, [
                 '%attributes%' => implode(',', array_diff_assoc($attributeCodes, array_unique($attributeCodes)))
-            ])->addViolation();
+            ])->atPath('variant_attribute_sets')->addViolation();
         }
     }
 
@@ -112,20 +113,20 @@ class FamilyVariantValidator extends ConstraintValidator
             if ($axis->isLocalizable() || $axis->isScopable() || $axis->isLocaleSpecific()) {
                 $this->context->buildViolation(FamilyVariant::AXES_WRONG_TYPE, [
                     '%axis%' => $axis->getCode(),
-                ])->addViolation();
+                ])->atPath('variant_attribute_sets')->addViolation();
             }
 
             if ($axis->isUnique()) {
                 $this->context->buildViolation(FamilyVariant::AXES_ATTRIBUTE_TYPE_UNIQUE, [
                     '%axis%' => $axis->getCode(),
-                ])->addViolation();
+                ])->atPath('variant_attribute_sets')->addViolation();
             }
 
             $availableTypes = FamilyVariantModel::getAvailableAxesAttributeTypes();
             if (!in_array($axis->getType(), $availableTypes)) {
                 $this->context->buildViolation(FamilyVariant::AXES_ATTRIBUTE_TYPE, [
                     '%axis%' => $axis->getCode(),
-                ])->addViolation();
+                ])->atPath('variant_attribute_sets')->addViolation();
             }
 
             for ($level = 1; $level <= $familyVariant->getNumberOfLevel(); $level++) {
@@ -136,7 +137,7 @@ class FamilyVariantValidator extends ConstraintValidator
                 ) {
                     $this->context->buildViolation(FamilyVariant::AXES_LEVEL, [
                         '%axis%' => $axis->getCode(),
-                    ])->addViolation();
+                    ])->atPath('variant_attribute_sets')->addViolation();
                 }
             }
         }
@@ -144,7 +145,7 @@ class FamilyVariantValidator extends ConstraintValidator
         if (count($axisCodes) !== count(array_unique($axisCodes))) {
             $this->context->buildViolation(FamilyVariant::AXES_UNIQUE, [
                 '%attributes%' => implode(array_diff_assoc($axisCodes, array_unique($axisCodes))),
-            ])->addViolation();
+            ])->atPath('variant_attribute_sets')->addViolation();
         }
     }
 
@@ -161,6 +162,7 @@ class FamilyVariantValidator extends ConstraintValidator
                     FamilyVariant::MAXIMUM_NUMBER_OF_LEVEL,
                     ['%level%' => self::MAXIMUM_LEVEL_NUMBER]
                 )
+                ->atPath('variant_attribute_sets')
                 ->addViolation();
         }
 
@@ -172,7 +174,9 @@ class FamilyVariantValidator extends ConstraintValidator
                 $this->context
                     ->buildViolation(
                         FamilyVariant::LEVEL_DO_NOT_EXIST,
-                        ['%level%' => $i + 1])
+                        ['%level%' => $i + 1]
+                    )
+                    ->atPath('variant_attribute_sets')
                     ->addViolation();
             } elseif (static::MAXIMUM_AXES_NUMBER < $attributeSet->getAxes()->count()) {
                 $this->context
@@ -180,10 +184,12 @@ class FamilyVariantValidator extends ConstraintValidator
                         FamilyVariant::NUMBER_OF_AXES,
                         ['%max_axes_number%' => static::MAXIMUM_AXES_NUMBER]
                     )
+                    ->atPath('variant_attribute_sets')
                     ->addViolation();
             } elseif (0 === $attributeSet->getAxes()->count()) {
                 $this->context
                     ->buildViolation(FamilyVariant::NO_AXIS, ['%level%' => $i + 1])
+                    ->atPath('variant_attribute_sets')
                     ->addViolation();
             }
 

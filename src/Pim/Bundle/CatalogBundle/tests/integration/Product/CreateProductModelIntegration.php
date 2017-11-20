@@ -79,10 +79,13 @@ class CreateProductModelIntegration extends TestCase
         $productModel = $this->createProductModel(
             [
                 'code' => 'product_model_code',
+                'family_variant' => 'clothing_color_size',
             ]
         );
 
-        $this->get('pim_catalog.validator.product_model')->validate($productModel);
+        $errors = $this->get('pim_catalog.validator.product_model')->validate($productModel);
+        $this->assertEquals(0, count($errors));
+
         $this->get('pim_catalog.saver.product_model')->save($productModel);
 
         $productModel = $this->createProductModel(

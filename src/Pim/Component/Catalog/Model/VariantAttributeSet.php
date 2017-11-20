@@ -51,7 +51,7 @@ class VariantAttributeSet implements VariantAttributeSetInterface
      */
     public function hasAttribute(AttributeInterface $attribute): bool
     {
-        return $this->attributes->contains($attribute);
+        return $this->containsAttribute($this->attributes, $attribute);
     }
 
     /**
@@ -69,10 +69,10 @@ class VariantAttributeSet implements VariantAttributeSetInterface
      */
     public function setAttributes(array $attributes): void
     {
-        foreach ($attributes as $attribute) {
-            if (!$this->attributes->contains($attribute)) {
-                $this->attributes->add($attribute);
-            }
+        $this->attributes = new ArrayCollection($attributes);
+
+        foreach ($this->axes as $axis) {
+            $this->addAttribute($axis);
         }
     }
 
@@ -89,13 +89,16 @@ class VariantAttributeSet implements VariantAttributeSetInterface
      */
     public function setAxes(array $axes): void
     {
-        foreach ($axes as $axis) {
-            if (!$this->axes->contains($axis)) {
-                $this->axes->add($axis);
+        foreach ($this->axes as $axis) {
+            if ($this->hasAttribute($axis)) {
+                $this->attributes->removeElement($axis);
             }
-            if (!$this->attributes->contains($axis)) {
-                $this->attributes->add($axis);
-            }
+        }
+
+        $this->axes = new ArrayCollection($axes);
+
+        foreach ($this->axes as $axis) {
+            $this->addAttribute($axis);
         }
     }
 
@@ -128,5 +131,12 @@ class VariantAttributeSet implements VariantAttributeSetInterface
         }
 
         return $labels;
+    }
+
+    private function containsAttribute(Collection $attributes, AttributeInterface $attribute): bool
+    {
+        return $attributes->exists(function ($key, $element) use ($attribute) {
+            return $element->getCode() === $attribute->getCode();
+        });
     }
 }

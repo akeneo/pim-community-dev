@@ -136,6 +136,7 @@ pim_enrich:
       title: 产品
       locale: 本地化语言
       category: 分类
+      create: 创建
       filters: 过滤器
       btn:
         enabled: 已启用
@@ -196,6 +197,7 @@ pim_enrich:
       media:
         upload: 拖放式操作可上传或点击这里
       create_popin:
+        type: 产品
         title: 创建
         labels:
           family: 选择一个品类
@@ -204,6 +206,13 @@ pim_enrich:
       message:
         created: 产品已创建
       completeness: 完成
+    product_model:
+      title: 产品
+      add_child:
+        cancel: 取消
+        confirm: 确认
+        fields:
+          code: 代码
     association_type:
       meta:
         created: 已创建
@@ -317,6 +326,8 @@ pim_enrich:
     error_occured: 在页面加载时出错
   form:
     required: '（必填）'
+    product_model:
+      family_variant: 变量
     product:
       tab:
         associations:

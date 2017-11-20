@@ -26,7 +26,7 @@ define([
         return BaseEdit.extend({
             template: _.template(template),
             events: {
-                'click .cancel': () => {
+                'click .cancel': function () {
                     this.trigger('cancel');
                 }
             },
@@ -42,6 +42,7 @@ define([
 
                 this.$el.html(this.template({
                     familyVariant: this.getFormData(),
+                    __: __,
                     i18n,
                     userContext
                 }));

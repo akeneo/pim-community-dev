@@ -53,6 +53,8 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
+            'at_least_complete' => [],
+            'at_least_incomplete' => [],
             'document_type' => ProductModelInterface::class,
             'attributes_for_this_level' => ['a_text']
         ];
@@ -96,6 +98,8 @@ class ProductAndProductModelIndexingIntegration extends TestCase
                     ],
                 ],
             ],
+            'at_least_complete' => [],
+            'at_least_incomplete' => [],
             'document_type' => ProductModelInterface::class,
             'attributes_for_this_level' => ['a_simple_select']
         ];

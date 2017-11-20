@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
+use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -64,6 +65,12 @@ class ProductModelController
     /** @var EntityWithFamilyVariantNormalizer */
     private $entityWithFamilyVariantNormalizer;
 
+    /** @var SimpleFactoryInterface */
+    private $productModelFactory;
+
+    /** @var NormalizerInterface */
+    private $violationNormalizer;
+
     /**
      * @param ProductModelRepositoryInterface   $productModelRepository
      * @param NormalizerInterface               $normalizer
@@ -77,6 +84,8 @@ class ProductModelController
      * @param SaverInterface                    $productModelSaver
      * @param NormalizerInterface               $constraintViolationNormalizer
      * @param EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer
+     * @param SimpleFactoryInterface            $productModelFactory
+     * @param NormalizerInterface               $violationNormalizer
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
@@ -90,7 +99,9 @@ class ProductModelController
         ValidatorInterface $validator,
         SaverInterface $productModelSaver,
         NormalizerInterface $constraintViolationNormalizer,
-        EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer
+        EntityWithFamilyVariantNormalizer $entityWithFamilyVariantNormalizer,
+        SimpleFactoryInterface $productModelFactory,
+        NormalizerInterface $violationNormalizer
     ) {
         $this->productModelRepository        = $productModelRepository;
         $this->normalizer                    = $normalizer;
@@ -104,6 +115,8 @@ class ProductModelController
         $this->productModelSaver             = $productModelSaver;
         $this->constraintViolationNormalizer = $constraintViolationNormalizer;
         $this->entityWithFamilyVariantNormalizer = $entityWithFamilyVariantNormalizer;
+        $this->productModelFactory           = $productModelFactory;
+        $this->violationNormalizer = $violationNormalizer;
     }
 
     /**
@@ -124,18 +137,73 @@ class ProductModelController
             );
         }
 
-        $normalizationContext = $this->userContext->toArray() + [
-            'filter_types'               => ['pim.internal_api.product_value.view'],
-            'disable_grouping_separator' => true
-        ];
+        $normalizedProductModel = $this->normalizeProductModel($productModel);
 
-        $normalizedProductModel = $this->normalizer->normalize(
+        return new JsonResponse($normalizedProductModel);
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @throws NotFoundHttpException If product model is not found or the user cannot see it
+     *
+     * @return JsonResponse
+     */
+    public function getByCodeAction(string $identifier): JsonResponse
+    {
+        $productModel = $this->productModelRepository->findOneByIdentifier($identifier);
+        $cantView = $this->objectFilter->filterObject($productModel, 'pim.internal_api.product.view');
+
+        if (null === $productModel || true === $cantView) {
+            throw new NotFoundHttpException(
+                sprintf('Product model with identifier "%s" could not be found.', $identifier)
+            );
+        }
+
+        $normalizedProductModel = $this->normalizeProductModel($productModel);
+
+        return new JsonResponse($normalizedProductModel);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @AclAncestor("pim_enrich_product_model_create")
+     *
+     * @return JsonResponse
+     */
+    public function createAction(Request $request): JsonResponse
+    {
+        $productModel = $this->productModelFactory->create();
+        $content = json_decode($request->getContent(), true);
+
+        $this->productModelUpdater->update($productModel, $content);
+
+        $violations = $this->validator->validate($productModel);
+
+        if (count($violations) > 0) {
+            $normalizedViolations = [];
+            foreach ($violations as $violation) {
+                $normalizedViolations[] = $this->violationNormalizer->normalize(
+                    $violation,
+                    'internal_api',
+                    ['product_model' => $productModel]
+                );
+            }
+
+            return new JsonResponse(['values' => $normalizedViolations], 400);
+        }
+
+        $this->productModelSaver->save($productModel);
+
+        $normalizationContext = $this->userContext->toArray() + ['disable_grouping_separator' => true];
+        $normalizedProduct = $this->normalizer->normalize(
             $productModel,
             'internal_api',
             $normalizationContext
         );
 
-        return new JsonResponse($normalizedProductModel);
+        return new JsonResponse($normalizedProduct);
     }
 
     /**
@@ -216,6 +284,25 @@ class ProductModelController
         }
 
         return new JsonResponse($normalizedChildren);
+    }
+
+    /**
+     * @param ProductModelInterface $productModel
+     *
+     * @return array
+     */
+    private function normalizeProductModel(ProductModelInterface $productModel): array
+    {
+        $normalizationContext = $this->userContext->toArray() + [
+                'filter_types'               => ['pim.internal_api.product_value.view'],
+                'disable_grouping_separator' => true
+            ];
+
+        return $this->normalizer->normalize(
+            $productModel,
+            'internal_api',
+            $normalizationContext
+        );
     }
 
     /**

@@ -73,15 +73,8 @@ abstract class AbstractProductTestCase extends ApiTestCase
     }
 
     /**
-     * Each time we create a product model, a batch job is ran to calculate the
+     * Each time we create a product model, a batch job is pushed into the queue to calculate the
      * completeness of its descendants.
-     *
-     * This is done by a batch job, and if several product models are created one
-     * after the other, we can end up with a MySQL error because several jobs run
-     * at the same time.
-     *
-     * Here, we use `akeneo_integration_tests.doctrine.job_execution` to be sure
-     * the batch jobs are done running before continuing the test.
      *
      * @param array $data
      *
@@ -102,13 +95,6 @@ abstract class AbstractProductTestCase extends ApiTestCase
             ));
         }
         $this->get('pim_catalog.saver.product_model')->save($productModel);
-
-        if ($this->testKernel->getContainer()
-            ->get('akeneo_integration_tests.doctrine.job_execution')
-            ->isRunning('compute_product_models_descendants', 8)
-        ) {
-            throw new \RuntimeException('There are still "compute_product_models_descendants" jobs running.');
-        }
 
         $this->get('akeneo_elasticsearch.client.product_model')->refreshIndex();
 

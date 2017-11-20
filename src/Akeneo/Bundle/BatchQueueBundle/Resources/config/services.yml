@@ -43,7 +43,7 @@ services:
             - '@akeneo_batch_queue.queue.database_job_execution_queue'
             - '%kernel.environment%'
 
-    akeneo_batch_queue.launcher.simple_job_launcher:
+    akeneo_batch.launcher.simple_job_launcher:
         class: '%akeneo_batch_queue.launcher.queue_job_launcher.class%'
         arguments:
             - '@akeneo_batch.job_repository'

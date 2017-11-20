@@ -60,6 +60,7 @@ services:
             - '@pim_api.updater.family_variant'
             - '@pim_catalog.saver.family_variant'
             - '@router'
+            - '@pim_api.stream.family_variant_partial_update_stream'
             - '%pim_api.configuration%'
 
     pim_api.controller.attribute:

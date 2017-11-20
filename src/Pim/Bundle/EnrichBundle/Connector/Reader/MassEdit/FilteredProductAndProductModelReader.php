@@ -22,9 +22,10 @@ use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
 /**
  * Product reader that only returns product entities and skips product models.
  *
- * TODO: To remove with PIM-6357 (mass actions on product models)
+ * TODO: This class is unused for now (replaced by both FilteredProductReader and FilteredProductModelReader).
+ * This class has to be used for mass actions PIM-6357 after removing the skip part.
  *
- * @author Samir Boulil <samir.boulil@akeneo.com>
+ * @author    Samir Boulil <samir.boulil@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
@@ -194,6 +195,7 @@ class FilteredProductAndProductModelReader implements
             if ($entity instanceof ProductModelInterface) {
                 if ($this->stepExecution) {
                     $this->stepExecution->incrementSummaryInfo('skip');
+
                     $warning = 'Bulk actions do not support Product models entities yet.';
                     $this->stepExecution->addWarning(
                         $warning,

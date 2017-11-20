@@ -153,7 +153,9 @@ pim_enrich:
       title: produkt
       locale: Landestandard
       category: Kategori
-      create: Opret produkt
+      create: Opret
+      subTitle: Opret produkt
+      modalTitle: Vælg en handling
       filters: Filtre
       selected: udvalgte resultater
       common: Almindelig
@@ -174,7 +176,7 @@ pim_enrich:
         new_value: Ny værdi
         actions: Aktioner
       info:
-        deletion_successful: Produktet blev slettet.
+        deletion_successful: Produkt slettet.
         deletion_failed: Produktet kunne ikke slettes.
         update_successful: Produktet blev opdateret.
         update_failed: Produktet kunne ikke opdateres.
@@ -219,6 +221,7 @@ pim_enrich:
       media:
         upload: Træk og slip for at indlæse eller klik her
       create_popin:
+        type: Produkt
         title: Opret
         labels:
           family: Vælg familie
@@ -231,13 +234,24 @@ pim_enrich:
         item_limit: Kun de første 1000 poster vist i dette sekventiel redigere ({{ count }} udvalgte)
         empty: Dit valg er tom, skal du ændre dine søgekriterier
     product_model:
+      create_popin:
+        type: Produktmodel
+        title: Oprette en produktmodel
+        content: En produktmodel samler variant produkter og letter berigelse af deres fælles egenskaber.
       info:
+        create_successful: Produktmodellen opdateret.
         update_successful: Produktmodellen opdateret. Fuldstændigheden af dens variant produkter vil blive genberegnet.
         update_failed: Produktmodellen kunne ikke opdateres.
         field_not_ready: 'Produktmodellen kan ikke gemmes lige nu. Følgende felter er ikke klar: {{ fields }}'
       read_only_parent_attribute_from_common: Denne attribut kan blive opdateret på de fælles attributter.
       read_only_parent_attribute_from_model: "Denne attribut kan opdateres på attributterne af {{ axes }}"
       variant_axis: Variant akse
+      title: produkter
+      add_child:
+        cancel: Annuller
+        confirm: Bekræft
+        fields:
+          code: Kode
     association_type:
       info:
         deletion_successful: Sammenhængs type slettet.
@@ -415,12 +429,14 @@ pim_enrich:
   form:
     required: (Påkrævet)
     product_model:
+      choose_variant: Vælg en variant
       complete_variant_product: variant produkt
       complete_variant_products: variant produkter
+      family_variant: Variant
     product:
       tab:
         associations:
-          title: Associationer
+          title: Tilknytninger
           info:
             none_exist: Der findes ingen sammenhængstype.
             show_products: Display-produkter
@@ -429,7 +445,7 @@ pim_enrich:
           association_type_selector: Sammenhængstyper
           target: Mål
         attributes:
-          title: Attributter
+          title: Egenskaber
           btn:
             add: Tilføj
             add_attributes: Tilføj egenskab
@@ -453,7 +469,7 @@ pim_enrich:
           title: Fuldstændighed
           info:
             no_family: Ingen familie defineret. Definér venligst en familie for at beregne fuldstændigheden af dette produkt.
-            no_completeness: Du har lige ændret familie på produktet. Gem det først for at beregne fuldstændigheden for den nye familie.
+            no_completeness: Du har lige ændret familie af produktet. Gem det første for at beregne fuldstændighed for den nye familie.
           missing_values: "{1} 1 mangler værdi |] 1, Inf [{{ count }} manglende værdier"
         history:
           title: Historik
@@ -471,7 +487,7 @@ pim_enrich:
       change_family:
         modal:
           title: Ændre produktfamilien
-          merge_attributes: Aktuelle attributter flettes sammen med dem i den nye familie.
+          merge_attributes: Aktuelle attributter flettes med dem i den nye familie.
           keep_attributes: Ingen attributter vil blive fjernet.
           change_family_to: Ændre familien til
           empty_selection: Vælg familie
@@ -524,7 +540,7 @@ pim_enrich:
           empty_attribute_as_image: Ikke valgte
           label_translations: Etiket oversættelser
         attributes:
-          title: Attributter
+          title: Egenskaber
           label_label: Etiket
           toolbox:
             select_attributes_by_groups: Tilføj efter gruppe
@@ -542,7 +558,7 @@ pim_enrich:
     attribute_option:
       flash:
         option_created: Attribut tilvalg oprettet
-        error_creating_option: Der opstod en fejl under oprettelsen af attribut egenskaben
+        error_creating_option: Der opstod en fejl hvor prøver hen til oprette indstillingen attribut
       add_option_modal:
         title: Tilføj attribut tilvalg
         confirm: Tilføj
@@ -571,7 +587,7 @@ pim_enrich:
           code: Kode
           label_translations: Etiket oversættelser
         attribute:
-          title: Attributter
+          title: Egenskaber
           table:
             name: Navn
             type: Type
@@ -647,7 +663,7 @@ pim_enrich:
             title: Afgrænser
             help: Ét tegn bruges til at angive feltafgrænseren
           enclosure:
-            title: Indgrænse
+            title: Beholder
             help: Ét tegn bruges til at angive felt-indgrænsningen
           with_header:
             title: Med hoved
@@ -666,7 +682,7 @@ pim_enrich:
             help: Navnet på kolonnen kategorier
           escape:
             title: Forlad
-            help: One character used to set the field escape
+            help: Ét tegn bruges til at angive felt adskillelse
           family_column:
             title: Familie kolonne
             help: Navnet på kolonnen familie
@@ -756,7 +772,7 @@ pim_enrich:
       structure:
         title: Filtrere data
         attributes:
-          title: Attributter
+          title: Egenskaber
       filter:
         channel:
           title: Kanal
@@ -765,10 +781,10 @@ pim_enrich:
           title: Landestandarder
           help: 'Landestandarderne definerer de lokaliserede produkt værdier at eksportere. Ex: kun produktinformation på fransk.'
         attributes:
-          title: Attributter
+          title: Egenskaber
           edit: Redigér
           label: "{0} alle attributter |{1} én attribut valgt |] 1, Inf [{{ count }} attributter valgt"
-          help: 'Vælg produktinformation til eksport. Eks: kun de tekniske attributter.'
+          help: 'Vælg produktinformation til eksport. Eks: kun de tekniske egenskaber.'
           empty: Alle attributter vil blive eksporteret
           modal:
             apply: Anvend
@@ -1027,9 +1043,9 @@ pim_enrich:
           description: Følgende attribut krav vil blive anvendt til de valgte familier
           label_count: "Sæt attribut kravene for  <span class=\"AknFullPage-title--highlight\">1 familie</span>|] 1, Inf [Sæt attribut kravene for <span class=\"AknFullPage-title--highlight\">{{ itemsCount }} familier</span>"
 pim_enrich.error:
-  exception.title: Beklager! Der opstod en {{ status_code }} fejl...
+  exception.title: Beklager! Der opstod en {{ status_code }}...
   http:
-    403: Du har ikke adgang til denne side
+    403: Forbudt. Du har ikke adgang til denne side
 page_title:
   oro_default: Kontrolpanel
   pim_enrich_attributegroup_index: Attributgrupper
@@ -1039,8 +1055,8 @@ page_title:
   pim_enrich_categorytree_create: Kategori træer | Oprette
   pim_enrich_categorytree_edit: Kategori træ {{ category.label }} | Rediger
   pim_enrich_categorytree_create_tree: Kategori træer | Oprette
-  pim_enrich_attribute_index: Attributter
-  pim_enrich_attribute_create: Attributter | Opret
+  pim_enrich_attribute_index: Egenskaber
+  pim_enrich_attribute_create: Attributter | Oprette
   pim_enrich_attribute_edit: Attribut {{ attribute.label }} | Rediger
   pim_enrich_product_index: Produkter
   pim_enrich_product_edit: Produkt {{ product.label }} | Rediger
@@ -1048,7 +1064,7 @@ page_title:
   pim_enrich_family_index: Familier
   pim_enrich_family_edit: Familie {{ family.label }} | Rediger
   pim_enrich_channel_index: Kanaler
-  pim_enrich_channel_create: Kanaler | Opret
+  pim_enrich_channel_create: Kanaler | Oprette
   pim_enrich_channel_edit: Kanal {{ channel.label }} | Rediger
   pim_enrich_currency_index: Valutaer
   pim_enrich_locale_index: Landestandarder

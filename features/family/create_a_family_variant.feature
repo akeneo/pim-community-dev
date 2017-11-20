@@ -20,17 +20,19 @@ Feature: Family creation
       | Variant axis level 2 (required) | Size  |
     And I press the "Create" button in the popin
     Then I should see the text "Family variant successfully created"
+    Then I should see the text "Drag & drop attributes to the selected variant level"
 
   Scenario: Successfully validate a family variant
     Given I visit the "Variants" tab
     When I open the family variant creation form
     And I fill in "code" with "invalid code?"
-    And I fill in "label" with "Accessories by color and size"
+    And I fill in "label" with "This label is too long. There are are more than 100 characters in this string. It is not a valid label."
     And I fill in "numberOfLevels" with "2"
     And I press the "Create" button in the popin
     Then I should see the text "Family variant code may contain only letters, numbers and underscores"
     And I should see the text "There should be at least one attribute defined as axis for the attribute set for level \"1\""
     And I should see the text "There should be at least one attribute defined as axis for the attribute set for level \"2\""
+    And I should see the text "This value is too long. It should have 100 characters or less."
     When I fill in "code" with "valid_code"
     And I fill in "label" with "Accessories by color and size"
     And I fill in "numberOfLevels" with "2"

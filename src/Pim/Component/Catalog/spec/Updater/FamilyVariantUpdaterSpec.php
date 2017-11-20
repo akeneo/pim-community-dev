@@ -86,24 +86,17 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
 
         $attributeSetFactory->create()->willReturn($attributeSet1, $attributeSet2, $commonAttributeSet);
 
-        $familyVariant->getCommonAttributes()->willReturn($commonAttributes);
-        $commonAttributes->getIterator()->willReturn($commonAttributesIterator);
-        $commonAttributesIterator->rewind()->shouldBeCalled();
-        $commonAttributesIterator->valid()->willReturn(false);
-        $commonAttributesIterator->current()->willReturn();
-        $commonAttributesIterator->next()->shouldNotBeCalled();
-
         $familyVariant->addVariantAttributeSet($attributeSet1)->shouldBeCalled();
-        $attributeSet1->setAxes([$color])->shouldBeCalled();
         $attributeSet1->setAttributes([$description])->shouldBeCalled();
+        $attributeSet1->setAxes([$color])->shouldBeCalled();
         $attributeSet1->setLevel(1)->shouldBeCalled();
         $attributeSet1->getAxes()->willReturn($axes1);
         $axes1->isEmpty()->willReturn(true);
         $axes1->map(Argument::any())->shouldNotBeCalled();
 
         $familyVariant->addVariantAttributeSet($attributeSet2)->shouldBeCalled();
-        $attributeSet2->setAxes([$size, $other])->shouldBeCalled();
         $attributeSet2->setAttributes([$size, $sku])->shouldBeCalled();
+        $attributeSet2->setAxes([$size, $other])->shouldBeCalled();
         $attributeSet2->setLevel(2)->shouldBeCalled();
         $attributeSet2->getAxes()->willReturn($axes2);
         $axes2->isEmpty()->willReturn(true);
@@ -149,9 +142,7 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         Collection $axes2,
         Collection $axisCodes1,
         Collection $axisCodes2,
-        CommonAttributeCollection $commonAttributes,
         Collection $attributes1,
-        \Iterator $commonAttributesIterator,
         \Iterator $attributesIterator1
     ) {
         $familyRepository->findOneByIdentifier('t-shirt')->willReturn($family);
@@ -178,34 +169,22 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
 
         $attributeSetFactory->create()->shouldNotBeCalled();
 
-        $familyVariant->getCommonAttributes()->willReturn($commonAttributes);
-        $commonAttributes->getIterator()->willReturn($commonAttributesIterator);
-        $commonAttributesIterator->rewind()->shouldBeCalled();
-        $commonAttributesIterator->valid()->willReturn(false);
-        $commonAttributesIterator->current()->willReturn();
-        $commonAttributesIterator->next()->shouldNotBeCalled();
-
         $axes1->isEmpty()->willReturn(false);
         $axes1->map(Argument::any())->willReturn($axisCodes1);
         $axisCodes1->toArray()->willReturn(['color']);
 
-        $attributeSet1->setAxes([$color])->shouldBeCalled();
         $attributeSet1->setAttributes([$description])->shouldBeCalled();
+        $attributeSet1->setAxes([$color])->shouldBeCalled();
         $attributeSet1->setLevel(Argument::any())->shouldNotBeCalled();
         $attributeSet1->getAxes()->willReturn($axes1);
         $attributeSet1->getAttributes()->willReturn($attributes1);
-        $attributes1->getIterator()->willReturn($attributesIterator1);
-        $attributesIterator1->rewind()->shouldBeCalled();
-        $attributesIterator1->valid()->willReturn(false);
-        $attributesIterator1->current()->willReturn();
-        $attributesIterator1->next()->shouldNotBeCalled();
 
         $attributeSet2->getAxes()->willReturn($axes2);
         $axes2->isEmpty()->willReturn(false);
         $axes2->map(Argument::any())->willReturn($axisCodes2);
         $axisCodes2->toArray()->willReturn(['size', 'other']);
-
         $attributeSet2->setAxes([$size, $other])->shouldBeCalled();
+
         $attributeSet2->setAttributes([$size, $sku])->shouldBeCalled();
         $attributeSet2->setLevel(Argument::any())->shouldNotBeCalled();
         $familyVariant->addVariantAttributeSet(Argument::any())->shouldNotBeCalled();
@@ -292,12 +271,33 @@ class FamilyVariantUpdaterSpec extends ObjectBehavior
         ]);
     }
 
+    function it_throws_an_exception_if_labels_are_not_an_array_of_array(FamilyVariantInterface $familyVariant)
+    {
+        $this->shouldThrow(InvalidPropertyTypeException::class)->during('update', [
+            $familyVariant,
+            [
+                'labels' => ['fr_FR' => []],
+            ],
+        ]);
+    }
+
     function it_throws_an_exception_if_variant_attribute_sets_are_not_an_array(FamilyVariantInterface $familyVariant)
     {
         $this->shouldThrow(InvalidPropertyTypeException::class)->during('update', [
             $familyVariant,
             [
                 'variant_attribute_sets' => null,
+            ],
+        ]);
+    }
+
+    function it_throws_an_exception_if_variant_attribute_sets_are_not_an_array_of_array(
+        FamilyVariantInterface $familyVariant
+    ) {
+        $this->shouldThrow(InvalidPropertyTypeException::class)->during('update', [
+            $familyVariant,
+            [
+                'variant_attribute_sets' => ['foo'],
             ],
         ]);
     }

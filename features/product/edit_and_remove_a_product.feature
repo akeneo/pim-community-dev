@@ -11,7 +11,7 @@ Feature: Edit and remove a product
       | shoes | sku,name,description,price,rating,size,color,manufacturer,length |
     And I am logged in as "Julia"
     And I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU             | boots |
       | Choose a family | Boots |

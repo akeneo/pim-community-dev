@@ -10,7 +10,8 @@
   &-item {
     margin-right: @marginSpace;
 
-    &--hide {
+    &--hide,
+    &.disabled {
       display: none;
     }
     &--transparent {
@@ -52,5 +53,9 @@
     margin-right: 0;
     flex-basis: ~"calc(50% - 5px)";
     margin-bottom: 10px;
+  }
+
+  &--single {
+    margin-top: @marginSpace;
   }
 }
