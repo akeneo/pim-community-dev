@@ -91,12 +91,9 @@ define([
              * @returns {Promise}
              */
             getAvailableAttributes: function () {
-                const imageAttributes = _.filter(
-                    this.getFormData().attributes,
-                    (attribute) => {
-                        return _.contains(this.config.validAttributeTypes, attribute.type);
-                    }
-                );
+                const imageAttributes = this.getFormData().attributes.filter((attribute) => {
+                    return this.config.validAttributeTypes.includes(attribute.type);
+                });
 
                 const imageAttributeCodes = _.pluck(imageAttributes, 'code');
 
