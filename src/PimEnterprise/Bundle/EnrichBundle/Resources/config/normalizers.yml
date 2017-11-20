@@ -4,6 +4,7 @@ parameters:
     pimee_enrich.normalizer.version.class:                  PimEnterprise\Bundle\EnrichBundle\Normalizer\VersionNormalizer
     pimee_enrich.normalizer.product.class:                  PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductNormalizer
     pimee_enrich.normalizer.attribute.class:                PimEnterprise\Bundle\EnrichBundle\Normalizer\AttributeNormalizer
+    pimee_enrich.normalizer.asset_collection.class:         PimEnterprise\Bundle\EnrichBundle\Normalizer\AssetCollectionNormalizer
 
 services:
     pimee_enrich.serializer.normalizer.granted_family:
@@ -39,6 +40,13 @@ services:
             - '@pim_enrich.converter.standard_to_enrich.product_value'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }
+
+    pimee_enrich.normalizer.asset_collection:
+        class: '%pimee_enrich.normalizer.asset_collection.class%'
+        arguments:
+            - '@pim_enrich.normalizer.file'
+        tags:
+            - { name: pim_serializer.normalizer }
 
     pimee_enrich.normalizer.standard.asset:
         class: '%pimee_enrich.normalizer.standard.asset.class%'

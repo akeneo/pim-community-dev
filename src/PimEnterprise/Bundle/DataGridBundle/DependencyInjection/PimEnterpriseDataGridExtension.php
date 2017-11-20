@@ -41,5 +41,6 @@ class PimEnterpriseDataGridExtension extends Extension
         $loader->load('hydrators.yml');
         $loader->load('managers.yml');
         $loader->load('mass_actions.yml');
+        $loader->load('normalizers.yml');
     }
 }
