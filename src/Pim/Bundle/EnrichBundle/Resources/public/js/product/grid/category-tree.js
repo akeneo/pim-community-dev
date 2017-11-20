@@ -21,7 +21,6 @@ define(
         CategoryFilter
     ) {
         return BaseForm.extend({
-            rendered: false,
             config: {
                 alias: 'product-grid',
                 categoryTreeName: 'pim_enrich_categorytree'
@@ -56,8 +55,6 @@ define(
              * Render the category tree extensions when the datagrid is ready
              */
             setupCategoryTree(urlParams) {
-                if (true === this.rendered) return;
-
                 const categoryFilter = new CategoryFilter(
                     urlParams,
                     this.config.alias,
@@ -75,8 +72,6 @@ define(
                 this.listenTo(categoryFilter, 'update_label', function (value) {
                     this.valueUpdated(value);
                 });
-
-                this.rendered = true;
 
                 return categoryFilter;
             },

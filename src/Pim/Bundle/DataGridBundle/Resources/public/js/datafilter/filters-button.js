@@ -27,7 +27,7 @@ define(
              */
             showFilterManager(options) {
                 const filtersList = new FiltersManager(options);
-                this.$el.empty().append(filtersList.render().$el);
+                this.$el.append(filtersList.render().$el);
 
                 mediator.trigger('datagrid_filters:build.post', filtersList);
             }

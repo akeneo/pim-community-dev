@@ -47,6 +47,7 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'],
                     this.render();
 
                     mediator.trigger('datagrid_filters:loaded', options);
+                    mediator.trigger('datagrid_filters:rendered', this.collection, this.filters);
                 });
             },
 
@@ -90,8 +91,6 @@ define(['underscore', 'pim/form', 'oro/mediator', 'oro/tools'],
              * Render filters
              */
             render() {
-                this.$el.empty();
-
                 _.each(this.filters, function (filter) {
                     if (!filter.enabled) {
                         filter.hide();

@@ -37,6 +37,12 @@ define([
             return BaseForm.prototype.configure.apply(this, arguments);
         },
 
+        dirtyRefresh() {
+            const url = window.location.hash;
+            Backbone.history.fragment = new Date().getTime();
+            Backbone.history.navigate(url, true);
+        },
+
         collectDisplayOptions(collection, gridView) {
             const displayTypes = gridView.options.displayTypes;
 
@@ -56,7 +62,7 @@ define([
 
             localStorage.setItem(`display-selector:${this.gridName}`, type);
 
-            return this.getRoot().trigger('grid:display-selector:change', type);
+            return this.dirtyRefresh();
         },
 
         renderDisplayTypes(types) {

@@ -76,7 +76,7 @@ define(
 
                         var scope = _.findWhere(channels, { code: params.scopeCode });
 
-                        this.$el.empty().html(
+                        this.$el.html(
                             this.template({
                                 channels: channels,
                                 currentScope: i18n.getLabel(

@@ -64,9 +64,7 @@ define(
              * @param {Array} collection
              */
             moveFilter: function (collection) {
-                const parentContainer = $('[data-drop-zone="column-context-switcher"]');
-                $('[data-type="product_scope"]', parentContainer).remove();
-                this.$el.prependTo(parentContainer);
+                this.$el.prependTo($('[data-drop-zone="column-context-switcher"]'));
 
                 let $grid = $('#grid-' + collection.inputName);
 
