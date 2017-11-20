@@ -45,8 +45,6 @@ class MediaNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        error_log('SUPPRPRPRPRR');
-
         return $data instanceof MediaValue && in_array($format, $this->supportedFormats);
     }
 }
