@@ -25,7 +25,8 @@ pimee_product_asset:
             download: Download
             generate_from_reference: Generate from reference
             reset_variations: Reset variations
-        confirmation.remove: Are you sure you want to remove asset "%asset%" ?
+        confirmation.remove: Are you sure you want to remove the asset "%asset%" ?
+        confirmation.subTitle: Assets
         grid:
             edit: Edit properties of the asset
         view:

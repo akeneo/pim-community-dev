@@ -26,7 +26,7 @@ Feature: Quick export products with user permissions applied
     And I select rows blackhoodie and greenhoodie
     And I press "CSV (All attributes)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_quick_export" quick export to finish
-    And exported file of "csv_product_quick_export" should contain:
+    And first exported file of "csv_product_quick_export" should contain:
     """
     sku;categories;description-en_US-mobile;description-fr_FR-mobile;enabled;family;groups;manufacturer;name-en_US;name-fr_FR;price-EUR;price-USD;side_view;size;top_view
     blackhoodie;;;;1;hoodies;;;"Black hoodie";;;;;;
@@ -82,7 +82,7 @@ Feature: Quick export products with user permissions applied
     And I select rows blackhoodie and greenhoodie
     And I press "CSV (All attributes)" on the "Quick Export" dropdown button
     And I wait for the "csv_product_quick_export" quick export to finish
-    And exported file of "csv_product_quick_export" should contain:
+    And first exported file of "csv_product_quick_export" should contain:
     """
     sku;categories;description-en_US-mobile;description-fr_FR-mobile;enabled;family;groups;lace_color;manufacturer;name-en_US;name-fr_FR;price-EUR;price-USD;side_view;size;sleeve_color;sleeve_fabric;top_view
     blackhoodie;;;;1;hoodies;;;;;;;;;;black;;

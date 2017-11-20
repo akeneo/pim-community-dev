@@ -18,7 +18,7 @@ pimee_product_asset:
   enrich_variation:
     popin:
       delete:
-        title: Confirmación de borrado
+        title: Confirmar la eliminación
         message: '¿Está seguro que desea eliminar este elemento?'
       reset:
         title: Reinicializar variaciones
@@ -66,7 +66,6 @@ pimee_product_asset:
   datagrid:
     mass_action:
       delete:
-        confirm_content: Está seguro de que desea eliminar los recursos seleccionados?
         success: Recursos seleccionados eliminados exitosamente.
         error: Se ha producido un error al intentar eliminar los recursos seleccionados, por favor inténtelo de nuevo.
         empty_selection: Ningún recurso seleccionado

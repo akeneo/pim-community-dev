@@ -2,10 +2,8 @@ services:
     pimee_workflow.completeness.calculator:
         class: '%pim_catalog.completeness.calculator.class%'
         arguments:
-            - '@pim_catalog.factory.value'
-            - '@pim_catalog.repository.cached_channel'
-            - '@pim_catalog.repository.cached_locale'
-            - '@pim_catalog.completeness.checker'
+            - '@pim_catalog.entity_with_family.required_value_collection_factory'
+            - '@pim_catalog.entity_with_family.incomplete_value_collection_factory'
             - '%pimee_workflow.entity.published_product_completeness.class%'
 
     pimee_workflow.completeness.generator:

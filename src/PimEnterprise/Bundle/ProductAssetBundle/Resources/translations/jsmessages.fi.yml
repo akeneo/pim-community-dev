@@ -19,7 +19,7 @@ pimee_product_asset:
   enrich_variation:
     popin:
       delete:
-        title: Poista vahvistus
+        title: Vahvista poisto
         message: Oletko varma että haluat poistaa tämän kohteen?
       reset:
         title: Nollaa variaatiot
@@ -63,7 +63,7 @@ pimee_product_asset:
       uploading: Tuo
       error: Virhe
       success: Onnistui
-    drag_and_drop: Vedä ja pudota assetit tai klikkaa tästä
+    drag_and_drop: Vedä ja pudota assetti tai klikkaa tästä
   datagrid:
     mass_action:
       delete:

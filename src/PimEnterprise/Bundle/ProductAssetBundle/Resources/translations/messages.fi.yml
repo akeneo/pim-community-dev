@@ -1,13 +1,13 @@
 pimee_product_asset:
   acl:
     asset:
-      index: Rikasta assetti
+      index: Rikasta assettia
       create: Luo assetti
       remove: Poista assetti
-      categories_view: Katso assetin kategoriaa
+      categories_view: Katso assetin kategorioita
       mass_upload: Assettien massatuonti
     category_asset_picker:
-      list: Listaa assettin kategoriat assettivalitsimessa
+      list: Listaa assetin kategoriat assettivalitsimessa
     category:
       create: Luo assettikategoria
       edit: Muokkaa assettikategoriaa
@@ -26,6 +26,7 @@ pimee_product_asset:
       generate_from_reference: Luo viittauksesta
       reset_variations: Nollaa variaatiot
     confirmation.remove: Oletko varma, että haluat poistaa assetin "%asset%" ?
+    confirmation.subTitle: Resurssit
     grid:
       edit: Muokkaa assetin ominaisuuksia
     view:
@@ -77,13 +78,13 @@ pimee_product_asset:
         success: Variaatiotiedosto on poistettu.
         error: Variaatiotiedostoa ei ole poistettu. Tapahtui virhe.
   popin.create:
-    title: Luo uusi assetti
+    title: Luo uusi resurssi
     is_localized: Lokalisoitavissa
-  menu: Assetit
+  menu: Resurssit
   page_tab:
     title:
-      view: Tuotteen assetti %asset.code% | Näkymä
-      edit: Tuotteen assettii %asset.code% | Muokkaa
+      view: Tuoteresurssi %asset.code% | Näkymä
+      edit: Tuotteen assetti %asset.code% | Muokkaa
       index: Tuotteen assetit
   code:
     label: Koodi
@@ -125,7 +126,7 @@ pimee_product_asset:
     error:
       upload: Tuonnin yhteydessä tapahtui virhe
       code: Vääränmuotoinen koodi assetille
-      localizable: Assetti on olemassa, mutta se ei ole lokalisoitavissa
+      localizable: Aseeti on olemassa, mutta se ei ole lokalisoitavissa
       invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
   category:
     menu: Assettikategoriat
@@ -139,7 +140,7 @@ pimee_product_asset:
       apply_on_children.help: Kopioi käyttöoikeusmuutokset kaikkiin alatason objekteihin, olemassaolevat käyttöoikeudet alatason objekteihin pysyvät muuttumattomina
   mass_edit_action:
     asset:
-      page_title: Assetit
+      page_title: Resurssit
       page_subtitle: Massamuokkaus (1 assetti)|Massamuokkaus (%count% assettia)
       confirm: Olet päivittämässä assetin seuraavilla tiedoilla. Ole hyvä ja vahvista.|Olet päivittämässä %count% assettia seuraavilla tiedoilla. Ole hyvä ja vahvista.
       steps:
@@ -182,12 +183,12 @@ batch_jobs:
     label: Assettien massatuonti
     perform.label: Massatuonti
   yml_asset_channel_configuration_import:
-    label: Assettien kanava-asetusten tuonti Yaml muodossa
+    label: Assettikanavien konfiguraation tuonti Yaml muodossa
     validation.label: Tiedostojen tarkistaminen
-    import_asset.label: Assettien kanava-asetusten tuonti Yaml muodossa
+    import_asset.label: Assettikanavien konfiguraation tuonti Yaml muodossa
   yml_asset_channel_configuration_export:
-    label: Assettien kanava-asetusten vienti Yaml -muodossa
-    export.label: Assettien kanava-asetusten vienti Yaml -muodossa
+    label: Assettikanavien asetusten vienti Yaml -muodossa
+    export.label: Assettikanavien asetusten vienti Yaml -muodossa
   csv_asset_import:
     label: Assettien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -243,4 +244,4 @@ batch_jobs:
 pim_analytics:
   info_type:
     nb_assets: Assettien lukumäärä
-pim_assets_collection: Assettien keruu
+pim_assets_collection: Resurssien keruu

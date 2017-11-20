@@ -11,6 +11,7 @@
   "scripts": {
     "sync": "NODE_PATH=node_modules node $npm_package_config_check --source=$npm_package_config_source",
     "webpack": "yarn run sync && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js --env=prod",
+    "webpack-dev": "yarn run sync && NODE_PATH=node_modules webpack --config $npm_package_config_source/webpack.config.js",
     "webpack-watch": "yarn run sync && NODE_PATH=node_modules webpack --progress --config $npm_package_config_source/webpack.config.js --watch",
     "lint": "eslint 'src/**/*.js' --config $npm_package_config_source/.eslintrc --ignore-path $npm_package_config_source/.eslintignore --quiet",
     "lint-fix": "eslint 'src/**/*.js' --config $npm_package_config_source/.eslintrc --ignore-path $npm_package_config_source/.eslintignore --quiet --fix"

@@ -2,6 +2,7 @@ datagrid:
     rule-grid:
         options:
             manageFilters: false
+            entityHint: rule
         source:
             acl_resource: pimee_catalog_rule_rule_view_permissions
             repository_method: createDatagridQueryBuilder
@@ -107,7 +108,7 @@ datagrid:
                 messages:
                     confirm_title: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.confirm_title
                     confirm_content: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.confirm_content
-                    confirm_ok: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.confirm_ok
+                    confirm_ok: pim_datagrid.mass_action.delete.label
                     success: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.success
                     error: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.error
                     empty_selection: pimee_catalog_rule.datagrid.rule-grid.mass_action.delete.empty_selection

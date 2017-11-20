@@ -66,7 +66,6 @@ pimee_product_asset:
   datagrid:
     mass_action:
       delete:
-        confirm_content: Jeste li sigurni da želite izbrisati odabrane imovine?
         success: Odabrana imovina je uspješno izbrisana.
         error: Dogodila pogreška prilikom pokušaja brisanja odabrane imovine, pokušajte ponovno.
         empty_selection: Nije odabrana niti jedna imovina

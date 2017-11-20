@@ -54,14 +54,16 @@ define(
                 Dialog.confirm(
                     __('pimee_enrich.entity.product.confirmation.publish.content'),
                     __('pimee_enrich.entity.product.confirmation.publish.title'),
-                    this.doPublish.bind(this)
+                    this.doPublish.bind(this),
+                    __('pim_menu.item.product')
                 );
             },
             unpublish: function () {
                 Dialog.confirm(
                     __('pimee_enrich.entity.product.confirmation.unpublish.content'),
                     __('pimee_enrich.entity.product.confirmation.unpublish.title'),
-                    this.doUnpublish.bind(this)
+                    this.doUnpublish.bind(this),
+                    __('pim_menu.item.published_product')
                 );
             },
             doPublish: function () {

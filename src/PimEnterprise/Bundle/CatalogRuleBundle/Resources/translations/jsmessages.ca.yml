@@ -2,7 +2,6 @@ pimee_catalog_rule:
   execution_button: Executar regles
   popin:
     execute_rules:
-      confirm_title: Executar la confirmació
       confirm_content: Esteu segur que voleu executar totes les regles? (podria trigar molt de temps)
   notification:
     launched: S'ha engegat la execució de la regla. Se li notificarà quan finalitzi.
@@ -27,24 +26,21 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         execute:
-          confirm_title: Executar la confirmació
           confirm_content: Esteu segur que voleu executar la regla?
           confirm_ok: OK
       mass_edit_action:
-        confirm_title: Confirmació de càlcul
         confirm_content: Esteu segur que voleu calcular els productes afectats per la regla?
         confirm_ok: OK
       mass_action:
         execute:
           confirm_ok: OK
-          confirm_title: Executar la confirmació
           confirm_content: Esteu segur que voleu executar les regles seleccionades?
           success: L'acció massiva per executar les regles seleccionades s'ha posat en marxa. Se li notificarà quan finalitzi
           error: S'ha produït un error durant l'execució de les regles.
           empty_selection: No hi ha cap regla seleccionada.
         delete:
           confirm_ok: OK
-          confirm_title: Confirmació de l'eliminació
+          confirm_title: Confirmar l'eliminació
           confirm_content: Esteu segur que voleu suprimir les regles seleccionades?
           success: Heu suprimit les regles correctament.
           error: S'ha produït un error durant l'execució de les regles.

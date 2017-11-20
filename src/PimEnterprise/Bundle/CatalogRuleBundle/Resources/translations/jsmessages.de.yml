@@ -4,7 +4,6 @@ pimee_catalog_rule:
   selected: 'Regeln ausgewählt'
   popin:
     execute_rules:
-      confirm_title: Ausführen bestätigen
       confirm_content: Sind Sie sicher, dass Sie alle Regeln anwenden möchten? (Dies kann sehr lange dauern)
   notification:
     fail: Dieser Vorgang konnte nicht ausgeführt werden
@@ -30,24 +29,21 @@ pimee_catalog_rule:
     rule-grid:
       actions:
         execute:
-          confirm_title: Ausführen bestätigen
           confirm_content: Sind Sie sicher, dass Sie die Regel anwenden möchten?
           confirm_ok: OK
       mass_edit_action:
-        confirm_title: Berechnungs-Bestätigung
         confirm_content: Sind Sie sicher, dass Sie die von dieser Regel betroffenen Produkte berechnen möchten?
         confirm_ok: OK
       mass_action:
         execute:
           confirm_ok: OK
-          confirm_title: Ausführen bestätigen
           confirm_content: Sind Sie sicher, dass Sie die ausgewählten Regeln anwenden möchten?
           success: Die Ausführung der ausgewählten Regeln wurde gestartet. Sie werden benachrichtigt, sobald der Vorgang abgeschlossen ist.
           error: Beim Anwenden der Regeln ist ein Fehler aufgetreten.
           empty_selection: Keine Regeln ausgewählt.
         delete:
           confirm_ok: OK
-          confirm_title: Löschbestätigung
+          confirm_title: Löschen bestätigen
           confirm_content: Sind Sie sicher, dass Sie die ausgewählten Regeln löschen möchten?
           success: Die Regeln wurden erfolgreich gelöscht.
           error: Beim Löschen der Regeln ist ein Fehler aufgetreten.

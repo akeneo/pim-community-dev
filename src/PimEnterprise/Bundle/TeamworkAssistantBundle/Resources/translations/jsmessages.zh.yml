@@ -5,7 +5,7 @@ teamwork_assistant:
     view_selector:
       loading: 正在加载...
       confirmation:
-        delete: 删除确认
+        delete: 确定删除
       popin_title: 创建
   project:
     label: 名称

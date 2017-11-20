@@ -9,7 +9,7 @@ Feature: Update product history when rules are executed
     And I add the "french" locale to the "mobile" channel
     And I am logged in as "Julia"
     And I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU             | converse-sneakers |
       | Choose a family | Sneakers          |

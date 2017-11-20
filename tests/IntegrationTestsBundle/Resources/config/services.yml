@@ -1,6 +1,7 @@
 parameters:
     akeneo_ee_integration_tests.loader.fixtures_loader.class: AkeneoEnterprise\Test\IntegrationTestsBundle\Loader\FixturesLoader
     akeneo_ee_integration_tests.loader.permission_cleaner.class: AkeneoEnterprise\Test\IntegrationTestsBundle\Loader\PermissionCleaner
+    akeneo_ee_integration_tests.configuration.catalog.class: AkeneoEnterprise\Test\IntegrationTestsBundle\Configuration\Catalog
 
 services:
     akeneo_integration_tests.loader.reference_data_loader:
@@ -14,8 +15,8 @@ services:
 
     akeneo_ee_integration_tests.loader.fixtures_loader:
         class: '%akeneo_ee_integration_tests.loader.fixtures_loader.class%'
-        decorates: akeneo_integration_tests.loader.fixtures_loader
-        decoration_inner_name: akeneo_integration_tests.loader.fixtures_loader.base
+        decorates: 'akeneo_integration_tests.loader.fixtures_loader'
+        decoration_inner_name: 'akeneo_integration_tests.loader.fixtures_loader.base'
         arguments:
             - '@akeneo_integration_tests.loader.fixtures_loader.base'
             - '@akeneo_ee_integration_tests.loader.permission_cleaner'
@@ -24,3 +25,10 @@ services:
         class: '%akeneo_ee_integration_tests.loader.permission_cleaner.class%'
         arguments:
             - '@kernel'
+
+    akeneo_ee_integration_tests.configuration.catalog:
+        class: '%akeneo_ee_integration_tests.configuration.catalog.class%'
+        decorates: 'akeneo_integration_tests.configuration.catalog'
+        decoration_inner_name: 'akeneo_integration_tests.configuration.catalog.base'
+        arguments:
+            - '@akeneo_integration_tests.configuration.catalog.base'

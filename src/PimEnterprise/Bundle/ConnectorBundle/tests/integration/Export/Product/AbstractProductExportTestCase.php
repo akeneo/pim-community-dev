@@ -70,14 +70,7 @@ abstract class AbstractProductExportTestCase extends TestCase
      */
     protected function getConfiguration()
     {
-        $rootPath = $this->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
-
-        return new Configuration(
-            [
-                Configuration::getTechnicalCatalogPath(),
-                $rootPath . 'tests' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'technical'
-            ]
-        );
+        return $this->catalog->useTechnicalCatalog();
     }
 
     /**

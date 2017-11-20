@@ -10,7 +10,7 @@ Feature: Revert product attributes to a previous version
 
   Scenario: Successfully revert a product number and leave it empty
     Given I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | jeans   |
       | family | Jackets |
@@ -30,7 +30,7 @@ Feature: Revert product attributes to a previous version
 
   Scenario: Successfully revert a number attribute
     Given I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | t-shirt |
       | family | Jackets |

@@ -20,6 +20,12 @@ pim_enrich:
     attribute:
       type:
         pim_assets_collection: Resurssien keruu
+  form:
+    attribute:
+      tab:
+        properties:
+          label:
+            is_read_only: Vain luku
 pim:
   grid:
     mass_action:
@@ -44,6 +50,7 @@ pimee_enrich:
           edit.label: Attribuuttien muokkaaminen sallittu
   entity:
     product:
+      index_title: "] -Inf, 1] {{ count }} tulos|] 1, Inf [{{ count }} tulosta"
       navigation: Julkaistut tuotteet
       history:
         published: Julkaistu
@@ -166,6 +173,7 @@ pimee_enrich:
           warning: '{{ itemsCount }} valittua tuotetta julkaistaan.'
         unpublish:
           label: Peruuta julkaisu
+          label_count: "{1}<span class=\"AknFullPage-title--highlight\">1 tuotteen </span>julkaisu peruttu|] 1, Inf [<span class=\"AknFullPage-title--highlight\">{{ itemsCount }} tuotteen</span>julkaisu peruttu"
           description: Tuotteen julkaisu perutaan
           warning: '{{ itemsCount }} valitun tuotteen julkaisu perutaan.'
     asset:

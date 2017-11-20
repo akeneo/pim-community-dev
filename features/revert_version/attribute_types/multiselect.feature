@@ -10,7 +10,7 @@ Feature: Revert product attributes to a previous version
 
   Scenario: Successfully revert multiselect attribute options of a product
     When I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | jean  |
       | family | Pants |
@@ -45,7 +45,7 @@ Feature: Revert product attributes to a previous version
 
   Scenario: Successfully revert a pim_catalog_multiselect attribute
     When I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | marcel  |
       | family | Jackets |

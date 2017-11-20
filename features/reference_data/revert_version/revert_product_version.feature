@@ -23,7 +23,7 @@ Feature: Revert a product to a previous version
       | high_heels | sku,name,main_color,main_fabric,color |
     And I am logged in as "Julia"
     And I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | red-heels  |
       | family | high_heels |

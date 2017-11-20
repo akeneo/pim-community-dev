@@ -302,7 +302,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             with_media: true
-            filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.csv
+            filePathProduct:      /tmp/1_products_export_%locale%_%scope%_%datetime%.csv
+            filePathProductModel: /tmp/2_product_models_export_%locale%_%scope%_%datetime%.csv
     csv_product_grid_context_quick_export:
         connector: Akeneo CSV Connector
         alias: csv_product_grid_context_quick_export
@@ -313,7 +314,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             with_media: true
-            filePath:   /tmp/products_export_grid_context_%locale%_%scope%_%datetime%.csv
+            filePathProduct:      /tmp/1_products_export_grid_context_%locale%_%scope%_%datetime%.csv
+            filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%_%datetime%.csv
     csv_published_product_quick_export:
         connector: Akeneo CSV Connector
         alias: csv_published_product_quick_export
@@ -528,7 +530,8 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             with_media: true
-            filePath:   /tmp/products_export_%locale%_%scope%_%datetime%.xlsx
+            filePathProduct:      /tmp/1_products_export_%locale%_%scope%_%datetime%.xlsx
+            filePathProductModel: /tmp/2_product_models_export_%locale%_%scope%_%datetime%.xlsx
     xlsx_product_grid_context_quick_export:
         connector: Akeneo XLSX Connector
         alias: xlsx_product_grid_context_quick_export
@@ -538,7 +541,8 @@ jobs:
             withHeader: true
             linesPerFile: 10000
             with_media: true
-            filePath:   /tmp/products_export_grid_context_%locale%_%scope%_%datetime%.xlsx
+            filePathProduct:      /tmp/1_products_export_grid_context_%locale%_%scope%_%datetime%.xlsx
+            filePathProductModel: /tmp/2_product_models_export_grid_context_%locale%_%scope%_%datetime%.xlsx
     xlsx_published_product_quick_export:
         connector: Akeneo XLSX Connector
         alias:     xlsx_published_product_quick_export
@@ -962,3 +966,13 @@ jobs:
         alias:     compute_product_models_descendants
         label:     Compute product models descendants
         type:      compute_product_models_descendants
+    compute_completeness_of_products_family:
+        connector: internal
+        alias:     compute_completeness_of_products_family
+        label:     compute completeness of products family
+        type:      compute_completeness_of_products_family
+    compute_family_variant_structure_changes:
+        connector: internal
+        alias:     compute_family_variant_structure_changes
+        label:     Compute family variant structure changes
+        type:      compute_family_variant_structure_changes

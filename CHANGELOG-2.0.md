@@ -1,8 +1,45 @@
 # 2.0.x
 
+## Improvements
+
+- PIM-6833: Aligns technical requirements with documentation
+
+# 2.0.6 (2017-11-03)
+
+## Bug fixes
+
+- PIM-6948: Command `pim:published-products:index` command has been removed, please use `pimee:published-products:index` command instead.
+
+## New jobs
+
+**IMPORTANT: In order for your PIM to work properly, you will need to run the following commands to add the missing job profile accesses.**
+- Add the permissions for the job instance `compute_family_variant_structure_changes` with `bin/console pim:installer:grant-backend-processes-accesses --env=prod`
+
+## BC breaks
+
+- PÏM-6450: Add service `pim_catalog.builder.variant_product` as new argument to `pim_enrich.controller.rest.product`.
+
+# 2.0.5 (2017-10-26)
+
+## Bug Fixes
+
+- PIM-6870: Fix asset creation.
+- PIM-6935: Fix proposal link to product on proposal grid
+
+## New jobs
+
+**IMPORTANT: In order for your PIM to work properly, you will need to run the following commands to add the missing job profile accesses.**
+- Add the permissions for the job instance `compute_completeness_of_products_family` (`bin/console pim:installer:grant-backend-processes-accesses --env=prod`)
+
+# 2.0.4 (2017-10-19)
+
+# 2.0.3 (2017-10-19)
+
 ## Bug Fixes
 
 - PIM-6896: Do not display restore button on product model versions.
+- PIM-6898: Fixes some data can break ES index and crashes new published products indexing
+- PIM-6930: Do not apply validation on the faked identifier when importing rules
 
 # 2.0.2 (2017-10-12)
 
@@ -10,6 +47,7 @@
 
 - PIM-6814: Fix job profile creation popin validation bug due to permissions
 - PIM-6591: Add default permissions for attribute groups created via the UI
+- PIM-6589: Add new template for confirmation modals
 
 ## Tech improvements
 

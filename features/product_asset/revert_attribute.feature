@@ -9,7 +9,7 @@ Feature: Revert an assets collection in a product
 
   Scenario: Successfully revert an assets collection in a product
     Given I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | jeans   |
       | family | Jackets |

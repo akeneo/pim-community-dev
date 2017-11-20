@@ -48,7 +48,7 @@ JSON;
     {"identifier": "toto"}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"identifier":"not_existing_product","status_code":422,"message":"Property \"a_metric_without_decimal_negative\" does not exist. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"identifier":"not_existing_product","status_code":422,"message":"Property \"a_metric_without_decimal_negative\" does not exist. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 {"line":2,"identifier":"toto","status_code":201}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);
@@ -78,7 +78,7 @@ JSON;
     {"identifier": "toto"}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"identifier":"not_existing_product","status_code":422,"message":"Property \"categories\" expects a valid category code. The category does not exist, \"categoryB\" given. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"identifier":"not_existing_product","status_code":422,"message":"Property \"categories\" expects a valid category code. The category does not exist, \"categoryB\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 {"line":2,"identifier":"toto","status_code":201}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);
@@ -111,7 +111,7 @@ JSON;
     {"identifier": "toto"}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"identifier":"not_existing_product","status_code":422,"message":"Attribute \"a_localized_and_scopable_text_area\" expects an existing and activated locale, \"de_DE\" given. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"identifier":"not_existing_product","status_code":422,"message":"Attribute \"a_localized_and_scopable_text_area\" expects an existing and activated locale, \"de_DE\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 {"line":2,"identifier":"toto","status_code":201}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);
@@ -231,7 +231,7 @@ JSON;
     {"identifier": "toto"}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"identifier":"product_without_category","status_code":422,"message":"Property \"a_metric_without_decimal_negative\" does not exist. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"identifier":"product_without_category","status_code":422,"message":"Property \"a_metric_without_decimal_negative\" does not exist. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 {"line":2,"identifier":"toto","status_code":201}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);
@@ -281,7 +281,7 @@ JSON;
     {"identifier": "toto"}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"identifier":"product_without_category","status_code":422,"message":"Attribute \"a_localized_and_scopable_text_area\" expects an existing and activated locale, \"de_DE\" given. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"identifier":"product_without_category","status_code":422,"message":"Attribute \"a_localized_and_scopable_text_area\" expects an existing and activated locale, \"de_DE\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 {"line":2,"identifier":"toto","status_code":201}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);
@@ -321,7 +321,7 @@ JSON;
     {"identifier": "toto"}
 JSON;
         $expectedContent = <<<JSON
-{"line":1,"identifier":"product_without_category","status_code":422,"message":"Property \"categories\" expects a valid category code. The category does not exist, \"categoryB\" given. Check the standard format documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
+{"line":1,"identifier":"product_without_category","status_code":422,"message":"Property \"categories\" expects a valid category code. The category does not exist, \"categoryB\" given. Check the expected format on the API documentation.","_links":{"documentation":{"href":"http:\/\/api.akeneo.com\/api-reference.html#patch_products__code_"}}}
 {"line":2,"identifier":"toto","status_code":201}
 JSON;
         $response = $this->executeAndCheckStreamRequest($data);
