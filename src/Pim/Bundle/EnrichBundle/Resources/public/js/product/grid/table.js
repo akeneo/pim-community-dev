@@ -30,7 +30,6 @@ define(
         return BaseForm.extend({
             config: {},
             loadingMask: null,
-            displayType: null,
 
             /**
              * @inheritdoc
@@ -42,6 +41,11 @@ define(
                 return BaseForm.prototype.initialize.apply(this, arguments);
             },
 
+            /**
+             * Returns the stored display type for the given grid
+             *
+             * @return {String}
+             */
             getStoredDisplayType() {
                 return localStorage.getItem(`display-selector:${this.config.gridName}`);
             },
@@ -109,10 +113,9 @@ define(
             /**
              * Gets the allowed display types from the datagrid config and applies them
              * The allowed options are:
-             * rowTemplate: The module to display a row
-             * enabledColumns: The columns to display for this view
-             * gridModifier: A CSS class modifier for the grid table
-             * displayHeader: An option to hide or show the column header
+             *
+             * rowView: The module to display a row
+             * label: The name of the display type in the display-selector
              *
              * @param  {Object} gridMetadata
              * @param  {Object} selectedType
@@ -120,20 +123,17 @@ define(
              */
             applyDisplayType(gridMetadata) {
                 const selectedType = this.getStoredDisplayType();
-
-                if (selectedType === 'default') return gridMetadata;
-
+                const gridName = this.config.gridName;
                 const metadata = _.clone(gridMetadata);
-                const displayTypes = metadata.options.displayTypes;
+                const displayTypes = metadata.options.displayTypes || {};
                 const displayType = displayTypes[selectedType];
 
-                metadata.columns = metadata.columns.filter(column => {
-                    return displayType.enabledColumns.includes(column.name);
-                });
+                if (selectedType === 'default' || undefined === displayType) {
+                    return gridMetadata;
+                }
 
-                metadata.options.rowView = displayType.rowTemplate;
-                metadata.options.gridModifier = displayType.gridModifier;
-                metadata.options.displayHeader = displayType.displayHeader;
+                metadata.options.rowView = displayType.rowView;
+                $(`#${gridName}`).addClass(`AknGrid--${selectedType}`);
 
                 return metadata;
             },
@@ -147,6 +147,23 @@ define(
                 const alias = this.config.gridName;
                 const urlParams = { dataLocale, alias };
                 urlParams.params = { dataLocale };
+
+                return urlParams;
+            },
+
+            /**
+             * Set the columns on the datagrid state
+             * @param  {Array} columns   An array of columns
+             * @param  {Object} urlParams Url params
+             * @return {Object}
+             */
+            applyColumns(columns, urlParams) {
+                urlParams = _.clone(urlParams);
+                const { gridName } = this.config;
+                if (_.isArray(columns)) columns = columns.join();
+
+                urlParams[`${gridName}[_parameters][view][columns]`] = columns;
+                DatagridState.set(gridName, { columns: columns });
 
                 return urlParams;
             },
@@ -211,31 +228,6 @@ define(
             },
 
             /**
-             * Set the columns on the datagrid state
-             * @param  {Array} columns   An array of columns
-             * @param  {Object} urlParams Url params
-             * @return {Object}
-             */
-            applyColumns(urlParams, columns, defaultColumns) {
-                urlParams = _.clone(urlParams);
-                const { gridName } = this.config;
-                const displayType = this.getStoredDisplayType();
-
-                if ('default' !== displayType) {
-                    columns = defaultColumns;
-                }
-
-                if (_.isArray(columns)) {
-                    columns = columns.join();
-                }
-
-                urlParams[`${gridName}[_parameters][view][columns]`] = columns;
-                DatagridState.set(gridName, { columns: columns });
-
-                return urlParams;
-            },
-
-            /**
              * Apply filters columns and view for the datagrid
              * @param {Array} defaultColumns
              * @param {String} defaultView
@@ -249,18 +241,16 @@ define(
                 }
 
                 const state = DatagridState.get(gridName, ['view', 'filters', 'columns']);
-                const hasDefaultView = defaultView && ('0' === state.view || null === state.view);
-                const columns = hasDefaultView ? defaultView.columns : state.columns;
 
-                if (hasDefaultView) {
+                if (defaultView && ('0' === state.view || null === state.view)) {
                     params = this.applyView(defaultView.id, params);
                     params = this.applyFilters(defaultView.filters, params);
+                    params = this.applyColumns(defaultView.columns, params);
                 } else {
                     if (state.view) params = this.applyView(state.view, params);
                     if (state.filters) params = this.applyFilters(state.filters, params);
+                    params = this.applyColumns(state.columns || defaultColumns, params);
                 }
-
-                params = this.applyColumns(params, columns, defaultColumns);
 
                 this.getRoot().trigger('datagrid:getParams', params);
 

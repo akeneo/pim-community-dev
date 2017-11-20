@@ -169,6 +169,25 @@
     background: white;
   }
 
+  &--gallery {
+    table {
+      display: block !important;
+    }
+
+    thead,
+    .AknActionButton.configure-columns {
+      display: none;
+    }
+
+    tbody {
+      margin-left: 40px;
+      margin-top: 20px;
+      display: grid;
+      grid-gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr) ) ;
+    }
+  }
+
   & &-bodyRow:first-child &-bodyCell {
     border-top: none;
   }
@@ -248,60 +267,78 @@
     }
   }
 
+  &-fullImage {
+    width: 100%;
+    height: 200px;
+    min-height: 200px;
+    background-size: cover;
+    background-position: 50%;
+    margin-bottom: 16px;
+    position:relative;
+
+    &:before {
+      content: '';
+      width: 100%;
+      height: 200px;
+      background: @AknDarkBlue;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      transition: opacity 0.2s ease-in;
+    }
+  }
+
+  &-title {
+    z-index: 2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    font-style: initial;
+    font-weight: 600;
+    font-size: @AknFontSizeBig;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  &-subTitle {
+    font-size: @AknDefaultFontSize;
+    color: @AknGrey;
+    padding-top: 6px;
+  }
+
+  &-bodyRow--withLayer {
+    &:before,
+    &:after {
+      content: '';
+      border: 1px @AknBorderColor solid;
+      border-radius: 3px;
+      transform: translate(1px, 1px);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      border-color: inherit;
+    }
+
+    &:after {
+      transform: translate(3px, 3px);
+    }
+  }
+
   &-bodyRow--thumbnail {
     border: 1px @AknBorderColor solid;
     height: 280px;
     overflow: hidden;
     border-radius: 3px;
-    display: flex;
-    flex-direction: column;
+    display: block;
     position: relative;
-    align-items: center;
     cursor: pointer;
-    padding-top: 220px;
     text-align: center;
-
-    &:hover {
-      border-color: @AknDarkBlue;
-      background: @AknDarkBlue;
-
-      &:after {
-        z-index:1;
-        content: '';
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background: @AknDarkBlue;
-        opacity: 0.7;
-      }
-
-      .AknGrid-bodyCell {
-        color: white;
-      }
-    }
-
-    td {
-      border-color: white;
-    }
-
-    .AknGrid-image {
-      order: -1;
-      position: absolute;
-      top: 0;
-      left: 0;
-      margin: 0;
-      border: 0;
-      width: 100%;
-      height: 200px;
-      background-size: cover;
-    }
-
-    .AknGrid-imageLayer,
-    .AknGrid-bodyCell--empty {
-      display: none;
-    }
+    background: white;
+    overflow: visible;
 
     .AknBadge {
       position: absolute;
@@ -313,62 +350,59 @@
     }
 
     .AknGrid-bodyCell {
-      line-height: normal;
       padding: 0;
+    }
 
-      &--actions {
-        display: none;
-      }
+    .AknGrid-bodyCell--checkbox {
+      align-self: start;
+      background: none !important;
+      z-index: 2;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
 
-      &--checkbox {
-        align-self: start;
-        background: none !important;
-        z-index: 2;
-        position: absolute;
-        top: 10px;
-        left: 0;
-      }
+    .AknGrid-bodyCell--actions {
+      transition: none;
+      color: white;
+      z-index: 2;
+      max-width: 100%;
+      margin-top: 4px;
+    }
 
-      &--highlight {
-        color: @AknSlateGrey;
-      }
-
-      &[data-column="label"] {
-        order: 1;
-        z-index: 2;
-        padding-bottom: 10px;
-      }
-
-      &[data-column="identifier"] {
-        order: 2;
-        z-index: 2;
-      }
+    .AknButtonList {
+      justify-content: center;
     }
   }
 
-  &-bodyRow--checked {
-    border-width: 2px;
-    border-color: @AknBlue;
+  &-bodyRow--thumbnail:hover {
+    border-color: @AknDarkBlue;
+    background: @AknDarkBlue;
+    color: white;
 
-    .AknGrid-bodyCell--checkbox  {
-      opacity: 1 !important;
-    }
-  }
-
-  &--galleryView {
-    display: block !important;
-
-    thead {
+    .AknGrid-subTitle {
       display: none;
     }
 
-    > tbody {
-      margin-left: 40px;
-      margin-top: 20px;
-      display: grid;
-      grid-gap: 20px;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr) ) ;
+    .AknGrid-bodyCell--actions {
+      width: 100%;
+      display: block;
+    }
+
+    .AknGrid-fullImage:before {
+      opacity: 0.7;
     }
   }
 
+  &-bodyRow--selected {
+    border-color: @AknBlue;
+    background: white;
+    border-width: 2px;
+
+    &:after,
+    &:before {
+      width: ~"calc(100% + 1px)";
+      height: ~"calc(100% + 1px)";
+    }
+  }
 }

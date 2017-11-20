@@ -20,7 +20,6 @@ define(['oro/datagrid/string-cell', 'oro/translator'],
             render: function () {
                 if ('product_model' !== this.model.get('document_type')) {
                     this.$el.empty().html(__('not_available'));
-                    this.$el.addClass('AknGrid-bodyCell--empty');
 
                     return this;
                 }

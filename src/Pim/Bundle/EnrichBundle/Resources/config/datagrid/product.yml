@@ -5,13 +5,10 @@ datagrid:
             filtersAsColumn: true
             displayTypes:
                 default:
-                    label: List
-                thumbnail:
-                    label: Gallery
-                    displayHeader: false
-                    rowTemplate: oro/datagrid/product-row
-                    gridModifier: AknGrid--galleryView
-                    enabledColumns: [ identifier, image, label, completeness, complete_variant_products]
+                    label: grid.display_selector.list
+                gallery:
+                    label: grid.display_selector.gallery
+                    rowView: oro/datagrid/product-row
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_datasource_product

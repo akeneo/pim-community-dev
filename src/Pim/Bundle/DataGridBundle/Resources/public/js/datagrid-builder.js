@@ -12,7 +12,7 @@ define([
     ],
     function ($, _, tools, mediator, PageableCollection, Grid, GridViewsView, requireContext) {
 
-    var gridSelector = '[data-type="datagrid"]',
+    var gridSelector = '[data-type="datagrid"]:not([data-rendered])',
         gridGridViewsSelector = '.page-title > .AknTitleContainer .span10:last',
         cellModuleName = 'oro/datagrid/{{type}}-cell',
         actionModuleName = 'oro/datagrid/{{type}}-action',
@@ -188,8 +188,7 @@ define([
                     multipleSorting: metadata.options.multipleSorting || false,
                     entityHint: metadata.options.entityHint,
                     row: metadata.options.rowView ? requireContext(metadata.options.rowView) : null,
-                    displayTypes: metadata.options.displayTypes,
-                    gridModifier: metadata.options.gridModifier
+                    displayTypes: metadata.options.displayTypes
                 };
             },
 
@@ -213,13 +212,11 @@ define([
     return function (builders) {
         $(gridSelector).each(function (i, el) {
             var $el = $(el);
-
-            $el.empty();
-
             var gridName = (($el.data('metadata') || {}).options || {}).gridName;
             if (!gridName) {
                 return;
             }
+            $el.attr('data-rendered', true);
 
             if (!_.isArray(builders)) {
                 builders = [builders];

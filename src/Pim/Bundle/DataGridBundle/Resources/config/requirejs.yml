@@ -162,6 +162,7 @@ config:
         pim/template/datagrid/row/version:               pimdatagrid/templates/datagrid/row/version.html
         pim/template/datagrid/row/changes:               pimdatagrid/templates/datagrid/row/changes.html
         pim/template/datagrid/row/product:               pimdatagrid/templates/datagrid/row/product.html
+        pim/template/datagrid/row/product-thumbnail:     pimdatagrid/templates/datagrid/row/product-thumbnail.html
         pim/template/datagrid/cell/image-cell:           pimdatagrid/templates/datagrid/cell/image-cell.html
 
         pim/template/datagrid/cell/product-and-product-model-image-cell: pimdatagrid/templates/datagrid/cell/product-and-product-model-image-cell.html
