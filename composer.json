@@ -145,7 +145,8 @@
                 "database_port": "PIM_DATABASE_PORT",
                 "database_name": "PIM_DATABASE_NAME",
                 "database_user": "PIM_DATABASE_USER",
-                "database_password": "PIM_DATABASE_PASSWORD"
+                "database_password": "PIM_DATABASE_PASSWORD",
+                "index_hosts": "PIM_INDEX_HOSTS"
             }
         },
         "branch-alias": {
