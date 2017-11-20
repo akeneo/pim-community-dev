@@ -1,5 +1,9 @@
 # 2.0.x
 
+## Bug fixes
+
+- PIM-6959: fix getting published product label according to the scope if needed
+
 ## Improvements
 
 - PIM-6833: Aligns technical requirements with documentation
