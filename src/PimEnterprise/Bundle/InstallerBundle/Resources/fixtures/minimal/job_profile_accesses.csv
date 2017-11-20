@@ -23,3 +23,5 @@ add_tags_to_assets;All
 project_calculation;All
 refresh_project_completeness_calculation;All
 compute_product_models_descendants;All
+compute_completeness_of_products_family;All
+compute_family_variant_structure_changes;All

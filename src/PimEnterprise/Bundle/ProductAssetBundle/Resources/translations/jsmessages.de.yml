@@ -19,7 +19,7 @@ pimee_product_asset:
   enrich_variation:
     popin:
       delete:
-        title: Löschbestätigung
+        title: Löschen bestätigen
         message: Sind Sie sicher, dass Sie dieses Element löschen möchten?
       reset:
         title: Variationen zurücksetzen
@@ -67,7 +67,6 @@ pimee_product_asset:
   datagrid:
     mass_action:
       delete:
-        confirm_content: Sind Sie sicher, dass Sie die ausgewählten Assets löschen möchten?
         success: Ausgewählte Assets erfolgreich gelöscht.
         error: Es ist ein Fehler beim Löschen der ausgewählten Assets aufgetreten, bitte versuchen Sie es erneut.
         empty_selection: Keine Assets ausgewählt

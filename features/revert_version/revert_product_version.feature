@@ -27,7 +27,7 @@ Feature: Revert a product to a previous version
 
   Scenario: Successfully revert a product
     Given I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | shirt   |
     And I press the "Save" button in the popin
@@ -45,7 +45,7 @@ Feature: Revert a product to a previous version
 
   Scenario: Successfully revert the status of a product (disabled)
     Given I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | shirt   |
     And I press the "Save" button in the popin
@@ -59,7 +59,7 @@ Feature: Revert a product to a previous version
 
   Scenario: Successfully revert the status of a product (enable)
     Given I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | shirt   |
     And I press the "Save" button in the popin
@@ -77,7 +77,7 @@ Feature: Revert a product to a previous version
 
   Scenario: Successfully revert the family of a product
     Given I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | jean  |
       | family | Pants |
@@ -100,7 +100,7 @@ Feature: Revert a product to a previous version
 
   Scenario: Successfully revert the category of a product
     Given I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU | sandals |
     And I press the "Save" button in the popin

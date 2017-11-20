@@ -143,15 +143,15 @@ Feature: List all rules
 
   Scenario: Successfully delete a rule
     When I click on the "Delete" action of the row which contains "copy_description"
-    And I should see the text "Delete Confirmation"
-    And I should see the text "Are you sure you want to delete this item?"
+    And I should see the text "Confirm deletion"
+    And I should see the text "Are you sure you want to delete this rule?"
     And I confirm the deletion
     And the grid should contain 1 elements
 
   Scenario: Successfully delete a set of rules using bulk action
     When I select rows copy_description and update_tees_collection
     And I press the "Delete" bottom button
-    Then I should see the text "Delete confirmation"
+    Then I should see the text "Confirm deletion"
     And I should see the text "Are you sure you want to delete the selected rules?"
     When I confirm the deletion
     Then the grid should contain 0 elements
@@ -204,7 +204,7 @@ Feature: List all rules
     And I am on the rules page
     When I select rows set_name_to_Lorem and copy_en_to_fr
     And I press the "Execute" bottom button
-    Then I should see the text "Execute confirmation"
+    Then I should see the text "Confirm execution"
     And I should see the text "Are you sure you want to execute the selected rules?"
     When I confirm the execution
     Then the product "my-jacket" should have the following values:

@@ -19,7 +19,7 @@ pimee_product_asset:
     enrich_variation:
         popin:
             delete:
-                title:   Delete confirmation
+                title:   Confirm deletion
                 message: Are you sure you want to delete this item ?
             reset:
                 title:   Reset variations
@@ -67,7 +67,7 @@ pimee_product_asset:
     datagrid:
         mass_action:
             delete:
-                confirm_content: Are you sure you want to delete selected assets?
+                confirm_content: Are you sure you want to delete the selected assets?
                 success: Selected assets successfully deleted.
                 error: Error ocurred when trying to delete selected assets, please try again.
                 empty_selection: No asset selected

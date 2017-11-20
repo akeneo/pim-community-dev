@@ -19,7 +19,7 @@ pimee_product_asset:
   enrich_variation:
     popin:
       delete:
-        title: Confirmation de la suppression
+        title: Supprimer l'élément
         message: Êtes-vous certain de vouloir supprimer cet élément ?
       reset:
         title: Réinitialisation les variations

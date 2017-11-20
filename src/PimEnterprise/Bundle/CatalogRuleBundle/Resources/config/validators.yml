@@ -12,7 +12,7 @@ services:
     pimee_catalog_rule.validator.existing_filter_field:
         class: '%pimee_catalog_rule.validator.existing_filter_field.class%'
         arguments:
-            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.filter.product_and_product_model_registry'
         tags:
             - { name: validator.constraint_validator, alias: pimee_filter_field_validator }
 
@@ -40,7 +40,7 @@ services:
     pimee_catalog_rule.validator.non_empty_value:
         class: '%pimee_catalog_rule.validator.non_empty_value.class%'
         arguments:
-            - '@pim_catalog.query.filter.registry'
+            - '@pim_catalog.query.filter.product_and_product_model_registry'
         tags:
             - { name: validator.constraint_validator, alias: pimee_non_empty_value_validator }
 
@@ -57,6 +57,7 @@ services:
             - '@akeneo_rule_engine.action_applier.registry'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.validator.product'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: validator.constraint_validator, alias: pimee_property_action_validator }
 

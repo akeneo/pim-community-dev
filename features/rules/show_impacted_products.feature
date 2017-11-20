@@ -68,7 +68,7 @@ Feature: Browse products selected in rules datagrid
     Given I am on the rules page
     When I select rows rule_sku, rule_weight and rule_size
     And I press the "Calculate the affected products" button
-    Then I should see the text "Calculation confirmation"
+    Then I should see the text "Confirm calculation"
     When I confirm the execution
     And I wait for the "rule_impacted_product_count" quick export to finish
     Then I should see the text "Number of rules 3"

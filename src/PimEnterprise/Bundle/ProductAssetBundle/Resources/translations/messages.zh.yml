@@ -25,7 +25,7 @@ pimee_product_asset:
       download: 下载
       generate_from_reference: 从参考生成
       reset_variations: 重置变化
-    confirmation.remove: 您确定要删除 "%asset%" 吗？
+    confirmation.subTitle: 资产
     grid:
       edit: 编辑资产的属性
     view:

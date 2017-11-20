@@ -64,7 +64,7 @@ Feature: Execute rules from the user interface
     Given I am on the rules page
     When I select rows rule_sku, rule_weight
     And I press the "Calculate the affected products" button
-    Then I should see the text "Calculation confirmation"
+    Then I should see the text "Confirm calculation"
     When I confirm the rules calculation
     And I am on the rules page
     Then I am on the dashboard page

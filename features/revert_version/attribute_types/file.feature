@@ -11,7 +11,7 @@ Feature: Revert product attributes to a previous version
   @jira https://akeneo.atlassian.net/browse/PIM-3760
   Scenario: Successfully revert a file attribute
     Given I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | t-shirt |
       | family | Jackets |

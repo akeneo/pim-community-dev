@@ -18,12 +18,9 @@
 {% endmacro %}
 
 {% macro renderGenerateFromReferenceZone(variationId) %}
-    <a href="{{ path('pimee_product_asset_variation_reset', {'id': variationId}) }}" class="file-uploader span6">
-        <div class="AknMediaField asset-generator media-uploader">
-            <div class="AknMediaField-emptyContainer uploader">
-                <img src="/bundles/pimui/images/icon_gear.png" alt="upload icon" class="AknMediaField-uploadIcon">
-                <span>{{ 'pimee_product_asset.enrich_asset.button.generate_from_reference'|trans }}</span>
-            </div>
-        </div>
+<div class="AknButtonList AknButtonList--single">
+    <a href="{{ path('pimee_product_asset_variation_reset', {'id': variationId}) }}" class="AknButton AknButton--centered AknButton--greyLight">
+        {{ 'pimee_product_asset.enrich_asset.button.generate_from_reference'|trans }}
     </a>
+</div>
 {% endmacro %}

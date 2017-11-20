@@ -67,7 +67,7 @@ pimee_product_asset:
   datagrid:
     mass_action:
       delete:
-        confirm_content: Er du sikker på at du vil slette valgte opgaver?
+        confirm_content: Er du sikker på du vil slette de valgte aktiver?
         success: Valgte aktiver blev slettet.
         error: Der opstod en fejl under forsøget på at slette de valgte produkter, prøv venligst igen.
         empty_selection: Ingen aktiv valgt

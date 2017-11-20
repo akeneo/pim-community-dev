@@ -5,7 +5,7 @@ teamwork_assistant:
     view_selector:
       loading: Carregant...
       confirmation:
-        delete: Confirmació de l'eliminació
+        delete: Confirmar l'eliminació
       popin_title: Crear
   project:
     label: Nom

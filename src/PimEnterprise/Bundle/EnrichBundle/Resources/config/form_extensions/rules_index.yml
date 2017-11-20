@@ -86,3 +86,4 @@ extensions:
             buttonClass: AknButton AknButton--apply execute-all-rules
             message: pimee_catalog_rule.popin.execute_rules.confirm_content
             title: pimee_catalog_rule.popin.execute_rules.confirm_title
+            subTitle: pim_menu.item.rule

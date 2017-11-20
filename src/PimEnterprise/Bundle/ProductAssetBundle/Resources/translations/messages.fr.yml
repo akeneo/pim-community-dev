@@ -25,7 +25,8 @@ pimee_product_asset:
       download: Téléchargement
       generate_from_reference: Générer depuis la référence
       reset_variations: Réinitialisation les variations
-    confirmation.remove: Êtes-vous sûr de que vouloir supprimer la ressource «%asset% » ?
+    confirmation.remove: Êtes-vous sûr de que vouloir supprimer la ressource "%asset%" ?
+    confirmation.subTitle: Ressources
     grid:
       edit: Editer les propriétés de la ressource
     view:

@@ -4,7 +4,7 @@ pimee_catalog_rule:
   selected: 'sääntöä valittu'
   popin:
     execute_rules:
-      confirm_title: Suorituksen vahvistus
+      confirm_title: Vahvista suoritus
       confirm_content: Haluatko varmasti suorittaa kaikki säännöt? (tämä voi kestää kauan)
   notification:
     fail: Tätä toimintoa ei voida suorittaa
@@ -25,26 +25,29 @@ pimee_catalog_rule:
       set.label: on asetettu
       copy.label: on kopioitu
       add.label: on lisätty
+      remove.label: on poistettu
   datagrid:
     rule-grid:
       actions:
         execute:
-          confirm_title: Suorituksen vahvistus
+          confirm_title: Vahvista suoritus
           confirm_content: Oletko varma, että haluat suorittaa säännön?
           confirm_ok: OK
       mass_edit_action:
+        confirm_title: Vahvista laskenta
+        confirm_content: Oletko varma, että haluat päivittää tuotteet, joihin tämä sääntö vaikuttaa?
         confirm_ok: OK
       mass_action:
         execute:
           confirm_ok: OK
-          confirm_title: Suorituksen vahvistus
+          confirm_title: Vahvista suoritus
           confirm_content: Oletko varma, että haluat suorittaa valitut säännöt?
           success: Massatoiminto valittujen sääntöjen suorittamiseksi on käynnistetty. Sinulle ilmoitetaan, kun se on valmis
           error: Sääntöjen suorituksessa tapahtui virhe.
           empty_selection: Sääntöjä ei ole valittu.
         delete:
           confirm_ok: OK
-          confirm_title: Poista vahvistus
+          confirm_title: Vahvista poisto
           confirm_content: Oletko varma, että haluat poistaa valitut säännöt?
           success: Säännöt poistettu onnistuneesti.
           error: Sääntöjen poistamisessa tapahtui virhe.
@@ -56,9 +59,10 @@ pimee_catalog_rule:
           title: Säännöt
 confirmation:
   remove:
-    rule: Oletko varma, että haluat poistaa tämän säännön? Et voi peruuttaa tätä toimintoa
+    rule: Oletko varma, että haluat poistaa tämän säännön? Et voida peruttaa tätä toimintoa
 flash:
   rule:
     removed: Sääntö poistettu onnistuneesti
+    impacted_product_count: Massatoiminto tuotteille, joihin tämä sääntö vaikuttaa on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     executed: Säännön suoritus käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Sääntöjen asetukset

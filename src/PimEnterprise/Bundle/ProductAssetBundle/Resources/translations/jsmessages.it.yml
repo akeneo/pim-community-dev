@@ -67,7 +67,6 @@ pimee_product_asset:
   datagrid:
     mass_action:
       delete:
-        confirm_content: Sei sicuro di che voler eliminare gli asset selezionati?
         success: Gli asset selezionati sono stati eliminati con successo.
         error: Si è verificato un errore cancellando gli asset selezionati, per favore riprova.
         empty_selection: Nessun asset selezionato

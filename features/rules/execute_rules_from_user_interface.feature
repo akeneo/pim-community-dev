@@ -40,7 +40,7 @@ Feature: Execute rules from the user interface
   Scenario: Successfully execute all rules from the user interface
     Given I am on the rules page
     When I press the "Execute rules" button
-    Then I should see the text "Execute Confirmation"
+    Then I should see the text "Confirm execution"
     When I confirm the rules execution
     And I am on the rules page
     Then I should have 1 new notification
@@ -51,9 +51,9 @@ Feature: Execute rules from the user interface
   Scenario: Successfully execute one rule from the rule datagrid
     Given I am on the rules page
     When I click on the "Execute" action of the row which contains "copy_description"
-    Then I should see the text "Execute Confirmation"
+    Then I should see the text "Confirm execution"
     When I confirm the rule execution
-    And I am on the rules page
+    And I refresh current page
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                           |

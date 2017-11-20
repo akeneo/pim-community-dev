@@ -11,7 +11,7 @@ Feature: Revert product attributes to a previous version
   @jira https://akeneo.atlassian.net/browse/PIM-3351
   Scenario: Successfully revert a product with prices and leave them empty
     When I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | jeans |
       | family | Pants |
@@ -32,7 +32,7 @@ Feature: Revert product attributes to a previous version
 
   Scenario: Successfully revert a price attribute
     When I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | t-shirt |
       | family | Tees    |
@@ -55,7 +55,7 @@ Feature: Revert product attributes to a previous version
 
   Scenario: Successfully revert a price attribute with empty value
     When I am on the products grid
-    And I create a new product
+    And I create a product
     And I fill in the following information in the popin:
       | SKU    | marcel |
       | family | Tees   |

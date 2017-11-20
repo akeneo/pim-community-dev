@@ -56,6 +56,6 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
             return $response;
         }
 
-        $this->accessDeniedHandler->handle($request, $accessDeniedException);
+        return $this->accessDeniedHandler->handle($request, $accessDeniedException);
     }
 }

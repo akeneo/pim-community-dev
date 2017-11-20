@@ -88,31 +88,35 @@ class UserContext extends BaseUserContext
      */
     public function getCurrentGrantedLocale()
     {
-        $locale = $this->getSessionLocale();
-        if (null !== $locale && $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
-            return $locale;
-        }
-
         $locale = $this->getRequestLocale();
-        if (null !== $locale && $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
-            return $locale;
+
+        if (null === $locale || !$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
+            $locale = $this->getSessionLocale();
         }
 
-        $locale = $this->getUserLocale();
-        if (null !== $locale && $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
-            return $locale;
+        if (null === $locale || !$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
+            $locale = $this->getUserLocale();
         }
 
-        $locale = $this->getDefaultLocale();
-        if (null !== $locale && $this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
-            return $locale;
+        if (null === $locale || !$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
+            $locale = $this->getDefaultLocale();
         }
 
-        if ($locale = current($this->getGrantedUserLocales())) {
-            return $locale;
+        if (null === $locale || !$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
+            $locale = current($this->getGrantedUserLocales());
+            $locale = (false === $locale) ? null : $locale;
         }
 
-        throw new \LogicException("User doesn't have access to any activated locales");
+        if (null === $locale) {
+            throw new \LogicException("User doesn't have access to any activated locales");
+        }
+
+        if (null !== $this->getCurrentRequest() && $this->getCurrentRequest()->hasSession()) {
+            $this->getCurrentRequest()->getSession()->set('dataLocale', $locale->getCode());
+            $this->getCurrentRequest()->getSession()->save();
+        }
+
+        return $locale;
     }
 
     /**

@@ -5,7 +5,7 @@ teamwork_assistant:
     view_selector:
       loading: Загрузка...
       confirmation:
-        delete: Подтверждение удаления
+        delete: Подтвердить удаление
       popin_title: Создать
   project:
     label: Имя

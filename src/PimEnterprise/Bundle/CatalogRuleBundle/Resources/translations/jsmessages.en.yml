@@ -4,7 +4,7 @@ pimee_catalog_rule:
     selected: 'rules selected'
     popin:
         execute_rules:
-            confirm_title: Execute confirmation
+            confirm_title: Confirm execution
             confirm_content: Are you sure you want to execute all the rules? (this could take a long time)
     notification:
         fail: The action could not be performed
@@ -30,24 +30,24 @@ pimee_catalog_rule:
         rule-grid:
             actions:
                 execute:
-                    confirm_title: Execute confirmation
+                    confirm_title: Confirm execution
                     confirm_content: Are you sure you want to execute the rule?
                     confirm_ok: OK
             mass_edit_action:
-                confirm_title: Calculation confirmation
+                confirm_title: Confirm calculation
                 confirm_content: Are you sure you want to calculate the affected products for the rules?
                 confirm_ok: OK
             mass_action:
                 execute:
                     confirm_ok: OK
-                    confirm_title: Execute confirmation
+                    confirm_title: Confirm execution
                     confirm_content: Are you sure you want to execute the selected rules?
                     success: The bulk action to execute the selected rules has been launched. You will be notified when it is done
                     error: An error occured during the execution of the rules.
                     empty_selection: No rules selected.
                 delete:
                     confirm_ok: OK
-                    confirm_title: Delete confirmation
+                    confirm_title: Confirm deletion
                     confirm_content: Are you sure you want to delete the selected rules?
                     success: You successfuly deleted the rules.
                     error: An error occured during the deletion of the rules.

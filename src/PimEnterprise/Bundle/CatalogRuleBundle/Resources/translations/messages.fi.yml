@@ -10,8 +10,11 @@ pimee_catalog_rule:
         conditions: Ehto
         actions: Toimi
         impacted_product_count:
+          label: Päivitetyt tuotteet
+          count: '{0,1}%count% päivitetty tuote|]1,Inf[%count% päivitettyä tuotetta'
           no_yet_calculated: Ei vielä laskettu
       mass_edit_action:
+        impacted_product_count: Päivitä tuotteet
         execute: Suorita
         delete: Poista
   actions:
@@ -33,6 +36,8 @@ pimee_catalog_rule:
       "NOT EMPTY": ei ole tyhjä
       "IN": on joukossa
       "NOT IN": ei ole joukossa
+      "IN CHILDREN": alatasoilla
+      "NOT IN CHILDREN": ei alatasoilla
       "UNCLASSIFIED": on luokittelematon
       "IN OR UNCLASSIFIED": on luokittelematon tai on joukossa
       "BETWEEN": välillä
@@ -49,6 +54,7 @@ pimee_catalog_rule:
     rule:
       view_permissions: Näytä säännöt
       delete_permissions: Poista säännöt
+      impacted_product_count_permissions: Päivitä tuotteet, joihin sääntö vaikuttaa
       execute_permissions: Suorita säännöt
   attribute:
     tab:
@@ -73,6 +79,9 @@ pimee_catalog_rule:
   notification:
     rule:
       executed: Sääntöjen suorittaminen päättynyt
+    mass_edit_rule:
+      success: Tuotteiden päivitys valmis
+      error: Tapahtui virhe päivitettäessä tuotteita, joihin sääntö vaikuttaa
 btn:
   Execute rules: Suorita säännöt
 rule: Sääntöjen asetukset
@@ -86,13 +95,17 @@ batch_jobs:
     label: Sääntöjen vienti YAML-muodossa
     export.label: Sääntöjen vienti
   rule_impacted_product_count:
+    label: Päivitettävät tuotteet säännölle
+    perform.label: Laske päivitetyt tuotteet
     execute_rules.label: Sääntöjen suorittaminen
   csv_product_import_with_rules:
+    label: Tuotteiden ja sääntöjen tuonti CSV-muodossa
     execute_rules.label: Sääntöjen suorittaminen
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
     import_associations.label: Liitännäisten tuonti
   xlsx_product_import_with_rules:
+    label: Tuotteiden ja sääntöjen tuonti XLSX-muodossa
     execute_rules.label: Sääntöjen suorittaminen
     validation.label: Tiedostojen tarkistaminen
     import.label: Tuotteiden tuonti
