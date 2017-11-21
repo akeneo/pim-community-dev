@@ -82,3 +82,13 @@ services:
             - '@pim_catalog.updater.entity_with_values'
             - ['enabled', 'family', 'categories', 'groups', 'associations', 'parent']
             - ['identifier', 'created', 'updated', 'metadata']
+
+    pim_catalog.updater.setter.association_field:
+        class: '%pim_catalog.updater.setter.association_field.class%'
+        arguments:
+            - '@pim_catalog.repository.product_without_permission'
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.builder.product'
+            - ['associations']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }

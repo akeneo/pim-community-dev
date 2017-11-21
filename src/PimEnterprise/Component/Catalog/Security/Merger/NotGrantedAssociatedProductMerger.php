@@ -16,7 +16,7 @@ namespace PimEnterprise\Component\Catalog\Security\Merger;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
+use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -61,36 +61,61 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
     /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
 
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
+    /** @var FieldSetterInterface */
+    private $associationSetter;
 
     /**
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param ProductRepositoryInterface    $productRepository
+     * @param FieldSetterInterface          $associationSetter
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        ProductRepositoryInterface $productRepository
+        FieldSetterInterface $associationSetter
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->productRepository = $productRepository;
+        $this->associationSetter = $associationSetter;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function merge($product): void
+    public function merge($filteredProduct, $fullProduct):void
     {
-        if (!$product instanceof ProductInterface) {
-            throw InvalidObjectException::objectExpected(ClassUtils::getClass($product), ProductInterface::class);
+        if (!$filteredProduct instanceof ProductInterface) {
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($filteredProduct), ProductInterface::class);
         }
 
-        $associatedProducts = $this->productRepository->getAssociatedProductIds($product);
-        foreach ($associatedProducts as $associatedProductData) {
-            $associatedProduct = $this->productRepository->findOneByIdentifier($associatedProductData['product_identifier']);
-            if (null !== $associatedProduct && !$this->authorizationChecker->isGranted([Attributes::VIEW], $associatedProduct)) {
-                $product->getAssociationForTypeCode($associatedProductData['association_type_code'])->addProduct($associatedProduct);
+        if (!$fullProduct instanceof ProductInterface) {
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($fullProduct), ProductInterface::class);
+        }
+
+        $associationCodes = [];
+        $hasAssociations = false;
+
+        foreach ($fullProduct->getAssociations() as $association) {
+            $associationCodes[$association->getAssociationType()->getCode()]['products'] = [];
+            $hasAssociations = true;
+
+            foreach ($association->getProducts() as $associatedProduct) {
+                if (!$this->authorizationChecker->isGranted([Attributes::VIEW], $associatedProduct)) {
+                    $associationCodes[$association->getAssociationType()->getCode()]['products'][] = $associatedProduct->getIdentifier();
+                }
             }
+        }
+
+        foreach ($filteredProduct->getAssociations() as $association) {
+            $hasAssociations = true;
+            foreach ($association->getProducts() as $associatedProduct) {
+                $associationCodes[$association->getAssociationType()->getCode()]['products'][] = $associatedProduct->getIdentifier();
+            }
+
+            foreach ($association->getGroups() as $associatedGroup) {
+                $associationCodes[$association->getAssociationType()->getCode()]['groups'][] = $associatedGroup->getCode();
+            }
+        }
+
+        if ($hasAssociations || !empty($associationCodes)) {
+            $this->associationSetter->setFieldData($fullProduct, 'associations', $associationCodes);
         }
     }
 }

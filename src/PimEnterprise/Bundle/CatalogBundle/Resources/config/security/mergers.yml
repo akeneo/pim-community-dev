@@ -8,13 +8,13 @@ services:
         class: '%pimee_catalog.security.merger.not_granted_category.class%'
         arguments:
             - '@security.authorization_checker'
-            - '@pim_catalog.repository.product_category'
+            - '@pim_catalog.updater.category_field_without_permission'
 
     pimee_catalog.security.merger.not_granted_associated_product:
         class: '%pimee_catalog.security.merger.not_granted_associated_product.class%'
         arguments:
             - '@security.authorization_checker'
-            - '@pim_catalog.repository.product'
+            - '@pim_catalog.updater.association_field_without_permission'
 
     pimee_catalog.security.merger.not_granted_values:
         class: '%pimee_catalog.security.merger.not_granted_values.class%'

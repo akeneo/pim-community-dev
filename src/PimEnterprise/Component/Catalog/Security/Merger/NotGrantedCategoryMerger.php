@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace PimEnterprise\Component\Catalog\Security\Merger;
 
+use Akeneo\Component\Classification\CategoryAwareInterface;
 use Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -53,39 +55,43 @@ class NotGrantedCategoryMerger implements NotGrantedDataMergerInterface
     /** @var AuthorizationCheckerInterface */
     private $authorizationChecker;
 
-    /** @var ItemCategoryRepositoryInterface */
-    private $itemCategoryRepository;
+    /** @var FieldSetterInterface */
+    private $categorySetter;
 
     /**
-     * @param AuthorizationCheckerInterface         $authorizationChecker
-     * @param ItemCategoryRepositoryInterface       $itemCategoryRepository
+     * @param AuthorizationCheckerInterface   $authorizationChecker
+     * @param FieldSetterInterface            $categorySetter
      */
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
-        ItemCategoryRepositoryInterface $itemCategoryRepository
+        FieldSetterInterface $categorySetter
     ) {
         $this->authorizationChecker = $authorizationChecker;
-        $this->itemCategoryRepository = $itemCategoryRepository;
+        $this->categorySetter = $categorySetter;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function merge($product): void
+    public function merge($filteredEntityWithCategories, $fullEntityWithCategories): void
     {
-        if (!$product instanceof ProductInterface) {
-            throw InvalidObjectException::objectExpected(ClassUtils::getClass($product), ProductInterface::class);
+        if (!$filteredEntityWithCategories instanceof CategoryAwareInterface) {
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($filteredEntityWithCategories), CategoryAwareInterface::class);
         }
 
-        if (null === $product->getId()) {
-            return;
+        if (!$fullEntityWithCategories instanceof CategoryAwareInterface) {
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($fullEntityWithCategories), CategoryAwareInterface::class);
         }
 
-        $categories = $this->itemCategoryRepository->findCategoriesItem($product);
-        foreach ($categories as $category) {
-            if (null !== $category && !$this->authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $category)) {
-                $product->addCategory($category);
+        $notGrantedCategoryCodes = [];
+        foreach ($fullEntityWithCategories->getCategories() as $category) {
+            if (!$this->authorizationChecker->isGranted([Attributes::VIEW_ITEMS], $category)) {
+                $notGrantedCategoryCodes[] = $category->getCode();
             }
         }
+
+        $categoryCodes = array_merge($filteredEntityWithCategories->getCategoryCodes(), $notGrantedCategoryCodes);
+
+        $this->categorySetter->setFieldData($fullEntityWithCategories, 'categories', $categoryCodes);
     }
 }

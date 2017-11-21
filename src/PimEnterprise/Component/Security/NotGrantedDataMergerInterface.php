@@ -27,5 +27,5 @@ interface NotGrantedDataMergerInterface
      *
      * @throws InvalidObjectException
      */
-    public function merge($product): void;
+    public function merge($filteredItem, $fullItem): void;
 }
