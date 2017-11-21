@@ -12,11 +12,12 @@
 namespace PimEnterprise\Component\Catalog\Security\Filter;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use PimEnterprise\Component\Security\Exception\ResourceAccessDeniedException;
+use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Filter not granted associated product from product
@@ -25,15 +26,15 @@ use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
  */
 class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
 {
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
+    /** @var AuthorizationCheckerInterface */
+    private $authorizationChecker;
 
     /**
-     * @param ProductRepositoryInterface $productRepository
+     * @param AuthorizationCheckerInterface $authorizationChecker
      */
-    public function __construct(ProductRepositoryInterface $productRepository)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker)
     {
-        $this->productRepository = $productRepository;
+        $this->authorizationChecker = $authorizationChecker;
     }
 
     /**
@@ -45,19 +46,23 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
             throw InvalidObjectException::objectExpected(ClassUtils::getClass($objectWithCategories), ProductInterface::class);
         }
 
-        $associatedProductIds = $this->productRepository->getAssociatedProductIds($objectWithCategories);
+        $clonedAssos = new ArrayCollection();
 
         foreach ($objectWithCategories->getAssociations() as $association) {
-            foreach ($associatedProductIds as $associatedProductId) {
-                if ($associatedProductId['association_id'] == $association->getId()) {
-                    try {
-                        $this->productRepository->find($associatedProductId['product_id']);
-                    } catch (ResourceAccessDeniedException $e) {
-                        $association->removeProduct($e->getResource());
-                    }
+            $clonedAsso = clone $association;
+            $associatedProducts = clone $clonedAsso->getProducts();
+
+            foreach ($associatedProducts as $associatedProduct) {
+                if (!$this->authorizationChecker->isGranted([Attributes::VIEW], $associatedProduct)) {
+                    $associatedProducts->removeElement($associatedProduct);
                 }
             }
+
+            $clonedAsso->setProducts($associatedProducts);
+            $clonedAssos->add($clonedAsso);
         }
+
+        $objectWithCategories->setAssociations($clonedAssos);
 
         return $objectWithCategories;
     }

@@ -55,14 +55,15 @@ class NotGrantedCategoryFilter implements NotGrantedDataFilterInterface
             return $objectWithCategories;
         }
 
-        $categoriesToRemove = [];
-        foreach ($objectWithCategories->getCategories() as $index => $category) {
+        $categories = clone $objectWithCategories->getCategories();
+
+        foreach ($categories as $index => $category) {
             if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $category)) {
-                $categoriesToRemove[$index] = $category;
+                $categories->remove($index);
             }
         }
 
-        if (count($categoriesToRemove) === $objectWithCategories->getCategories()->count()) {
+        if (0 === $categories->count()) {
             if ($objectWithCategories instanceof ProductModelInterface) {
                 throw new ResourceAccessDeniedException($objectWithCategories, sprintf(
                     'You can neither view, nor update, nor delete the product model "%s", as it is only categorized in categories on which you do not have a view permission.',
@@ -83,9 +84,7 @@ class NotGrantedCategoryFilter implements NotGrantedDataFilterInterface
             );
         }
 
-        foreach ($categoriesToRemove as $index => $category) {
-            $objectWithCategories->getCategories()->remove($index);
-        }
+        $objectWithCategories->setCategories($categories);
 
         return $objectWithCategories;
     }

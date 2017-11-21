@@ -14,6 +14,7 @@ namespace PimEnterprise\Component\Catalog\Security\Filter;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\EntityWithValuesInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataFilterInterface;
@@ -53,9 +54,15 @@ class NotGrantedValuesFilter implements NotGrantedDataFilterInterface
             throw InvalidObjectException::objectExpected(ClassUtils::getClass($entityWithValues), EntityWithValuesInterface::class);
         }
 
-        foreach ($entityWithValues->getValues() as $value) {
+        if ($entityWithValues instanceof EntityWithFamilyVariantInterface) {
+            $values = clone $entityWithValues->getValuesForVariation();
+        } else {
+            $values = clone $entityWithValues->getValues();
+        }
+
+        foreach ($values as $value) {
             if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ATTRIBUTES, $value->getAttribute())) {
-                $entityWithValues->removeValue($value);
+                $values->remove($value);
 
                 continue;
             }
@@ -66,9 +73,11 @@ class NotGrantedValuesFilter implements NotGrantedDataFilterInterface
 
             $locale = $this->localeRepository->findOneByIdentifier($value->getLocale());
             if (!$this->authorizationChecker->isGranted(Attributes::VIEW_ITEMS, $locale)) {
-                $entityWithValues->removeValue($value);
+                $values->remove($value);
             }
         }
+
+        $entityWithValues->setValues($values);
 
         return $entityWithValues;
     }
