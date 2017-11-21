@@ -190,7 +190,8 @@ stage("Test") {
                         def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src /home/jenkins/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"').tokenize('\n')
                         def messages = new net.sf.json.JSONArray()
 
-                        for (file in files) {
+                        for (line in files) {
+                            def file = line.tokenize(' ') 
                             def commands = [
                                 [container: "php", script: "bin/console --env=test pim:install --force"],
                                 [container: "php", script: "chmod 777 -R var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
@@ -209,7 +210,7 @@ stage("Test") {
                         }
 
                         return messages
-                    }, 30, "ce",verboseOutputs, dotsPerLine)
+                    }, 30, "ce", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping integration test"
                 }
@@ -241,7 +242,7 @@ stage("Test") {
                         }
 
                         return messages
-                    }, 100, "ce",verboseOutputs, dotsPerLine)
+                    }, 100, "ce", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping behat test"
                 }
@@ -249,10 +250,11 @@ stage("Test") {
             "phpunit-integration-ee": {
                 if (launchIntegrationTests.equals("yes") && editions.contains("ee")) {
                     queue({
-                        def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src /home/jenkins/pim/tests -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"').tokenize('\n')
+                        def files = sh (returnStdout: true, script: 'find /home/jenkins/pim/src /home/jenkins/pim/tests /home/jenkins/pim/vendor/akeneo/pim-community-dev -name "*Integration.php" -exec sh -c "grep -Ho \'function test\' {} | uniq -c"  \\; | sed "s/:function test//"').tokenize('\n')
                         def messages = new net.sf.json.JSONArray()
 
-                        for (file in files) {
+                        for (line in files) {
+                            def file = line.tokenize(' ')
                             def commands = [
                                 [container: "php", script: "bin/console --env=test pim:install --force"],
                                 [container: "php", script: "chmod 777 -R var/cache var/logs app/archive /tmp/pim app/file_storage app/uploads"],
@@ -270,7 +272,7 @@ stage("Test") {
                         }
 
                         return messages
-                    }, 10, "ee",verboseOutputs, dotsPerLine)
+                    }, 10, "ee", verboseOutputs, dotsPerLine)
                 } else {
                     echo "Skipping integration test"
                 }
@@ -302,7 +304,7 @@ stage("Test") {
                         }
 
                         return messages
-                    }, 150, "ee",verboseOutputs, dotsPerLine)
+                    }, 150, "ee", verboseOutputs, dotsPerLine)
 
                 } else {
                     echo "Skipping behat test"
@@ -387,7 +389,7 @@ def queue(body, scale, edition, verboseOutputs, dotsPerLine) {
     def uuid = UUID.randomUUID().toString()
     podTemplate(label: "pubsub-" + uuid, containers: [
         containerTemplate(name: "php", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/php:7.1-fpm", resourceRequestCpu: '100m', resourceRequestMemory: '200Mi'),
-        containerTemplate(name: "gcloud", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:1.0.19", resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
+        containerTemplate(name: "gcloud", ttyEnabled: true, command: 'cat', image: "eu.gcr.io/akeneo-ci/gcloud:1.0.18", resourceRequestCpu: '100m', resourceRequestMemory: '200Mi', envVars: [envVar(key: "PUBSUB_PROJECT_ID", value: "akeneo-ci")])
     ], annotations: [
         podAnnotation(key: "pod.beta.kubernetes.io/init-containers", value: "[{\"name\": \"pim\", \"imagePullPolicy\": \"Always\", \"image\": \"eu.gcr.io/akeneo-ci/pim-community-dev:pull-request-${env.CHANGE_ID}-build-${env.BUILD_NUMBER}-${edition}\", \"command\": [\"sh\", \"-c\", \"cp -Rp /pim /home/jenkins\"], \"volumeMounts\":[{\"name\":\"workspace-volume\",\"mountPath\":\"/home/jenkins\"}]}]")
     ], volumes: [
