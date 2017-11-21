@@ -46,7 +46,7 @@ services:
         arguments:
             - '@pim_enrich.normalizer.file'
         tags:
-            - { name: pim_serializer.normalizer }
+            - { name: pim_serializer.normalizer, priority: 110 }
 
     pimee_enrich.normalizer.standard.asset:
         class: '%pimee_enrich.normalizer.standard.asset.class%'
