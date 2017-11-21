@@ -7,6 +7,7 @@
 ## Improvements
 
 - PIM-6833: Aligns technical requirements with documentation
+- PIM-6985: Add right management to product edit form on model for attribute groups and locales
 
 # 2.0.6 (2017-11-03)
 
