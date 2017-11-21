@@ -1,3 +1,15 @@
+# 1.7.13 (2017-11-09)
+
+## Bug fixes
+
+- PIM-6961: Do not apply validation on the faked identifier when importing rules (backport of PIM-6930)
+
+# 1.7.12 (2017-10-25)
+
+# 1.7.11 (2017-10-16)
+
+# 1.7.10 (2017-10-10)
+
 # 1.7.9 (2017-09-27)
 
 ## Bug fixes
@@ -18,9 +30,14 @@
 ## Bug fixes
 
 - PIM-6465: Fix loading mask issue on asset creation from UI.
+- PIM-6530: Fix pim:installer:grant-backend-processes-accesses command 
+
+# 1.7.5 (2017-06-02)
+
+## Bug fixes
+
 - PIM-6393: Context kept when creating category tree
 - PIM-6470: Fix issue on Permission filter when added to the user default filters
-- PIM-6530: Fix pim:installer:grant-backend-processes-accesses command 
 
 # 1.7.5 (2017-06-02)
 
@@ -123,9 +140,9 @@
 - Update spec to be independent from actual developer timezone
 - GITHUB-5455: Redo channel's form `Asset transformations` tab to fit new form implementation based on internal REST API
 
-## BC breaks
+## BC breaks
 
-### Bundles
+### Bundles
 
 - Remove `PimEnterprise\Bundle\WebServiceBundle\PimEnterpriseWebServiceBundle`
 
