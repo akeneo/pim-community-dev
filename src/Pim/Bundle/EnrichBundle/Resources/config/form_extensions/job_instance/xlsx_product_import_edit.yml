@@ -108,6 +108,17 @@ extensions:
             label: pim_enrich.form.job_instance.tab.properties.upload_allowed.title
             tooltip: pim_enrich.form.job_instance.tab.properties.upload_allowed.help
 
+    pim-job-instance-xlsx-product-import-edit-properties-decimal-separator:
+        module: pim/job/common/edit/field/decimal-separator
+        parent: pim-job-instance-xlsx-product-import-edit-global
+        position: 135
+        targetZone: properties
+        config:
+            fieldCode: configuration.decimalSeparator
+            readOnly: false
+            label: pim_enrich.form.job_instance.tab.properties.decimal_separator.title
+            tooltip: pim_enrich.form.job_instance.tab.properties.decimal_separator.help
+
     pim-job-instance-xlsx-product-import-edit-properties-date-format:
         module: pim/job/product/edit/field/date-format
         parent: pim-job-instance-xlsx-product-import-edit-global

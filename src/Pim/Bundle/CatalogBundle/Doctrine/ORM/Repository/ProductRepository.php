@@ -38,7 +38,10 @@ class ProductRepository extends EntityRepository implements
             ->where('p.identifier IN (:identifiers)')
             ->setParameter('identifiers', $identifiers);
 
-        return $qb->getQuery()->execute();
+        $query = $qb->getQuery();
+        $query->useQueryCache(false);
+
+        return $query->execute();
     }
 
     /**

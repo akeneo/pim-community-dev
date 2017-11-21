@@ -31,7 +31,7 @@ class CursorFactorySpec extends ObjectBehavior
         $this->shouldImplement(CursorFactoryInterface::class);
     }
 
-    function it_creates_a_cursor($entityManager, QueryBuilder $queryBuilder, AbstractQuery $query, From $from)
+    function it_creates_a_cursor($entityManager, QueryBuilder $queryBuilder, QueryWithCache $query, From $from)
     {
         $queryBuilder->getRootAliases()->willReturn(['a']);
         $queryBuilder->getDQLPart('from')->willReturn([$from]);
@@ -40,10 +40,16 @@ class CursorFactorySpec extends ObjectBehavior
         $queryBuilder->from(Argument::any(), Argument::any(), 'a.id')->willReturn($queryBuilder);
         $queryBuilder->distinct(true)->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
+        $query->useQueryCache(false)->shouldBeCalled();
         $query->getArrayResult()->willReturn([]);
 
         $this->createCursor($queryBuilder)->shouldBeLike(
             new Cursor($queryBuilder->getWrappedObject(), $entityManager->getWrappedObject(), 100)
         );
     }
+}
+
+abstract class QueryWithCache extends AbstractQuery
+{
+    public abstract function useQueryCache($bool);
 }
