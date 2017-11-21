@@ -33,8 +33,8 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
     /** @var string[] */
     private $supportedFormat = ['internal_api'];
 
-    /** @var FileNormalizer */
-    private $fileNormalizer;
+    /** @var NormalizerInterface */
+    private $normalizer;
 
     /** @var LocaleRepositoryInterface */
     private $localeRepository;
@@ -55,7 +55,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
     private $imageAsLabel;
 
     /**
-     * @param FileNormalizer                            $fileNormalizer
+     * @param NormalizerInterface                       $normalizer
      * @param LocaleRepositoryInterface                 $localeRepository
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      * @param NormalizerInterface                       $completenessCollectionNormalizer
@@ -64,7 +64,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
      * @param ImageAsLabel                              $imageAsLabel
      */
     public function __construct(
-        FileNormalizer $fileNormalizer,
+        NormalizerInterface $normalizer,
         LocaleRepositoryInterface $localeRepository,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         NormalizerInterface $completenessCollectionNormalizer,
@@ -72,7 +72,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         VariantProductRatioInterface $variantProductRatioQuery,
         ImageAsLabel $imageAsLabel
     ) {
-        $this->fileNormalizer                   = $fileNormalizer;
+        $this->normalizer                       = $normalizer;
         $this->localeRepository                 = $localeRepository;
         $this->attributesProvider               = $attributesProvider;
         $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
@@ -143,7 +143,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
             return null;
         }
 
-        return $this->fileNormalizer->normalize($data->getData(), $format, $context);
+        return $this->normalizer->normalize($data, $format, $context);
     }
 
     /**

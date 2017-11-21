@@ -34,9 +34,6 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     private $versionNormalizer;
 
-    /** @var NormalizerInterface */
-    private $fileNormalizer;
-
     /** @var VersionManager */
     private $versionManager;
 
@@ -76,7 +73,6 @@ class ProductModelNormalizer implements NormalizerInterface
     /**
      * @param NormalizerInterface                       $normalizer
      * @param NormalizerInterface                       $versionNormalizer
-     * @param NormalizerInterface                       $fileNormalizer
      * @param VersionManager                            $versionManager
      * @param AttributeConverterInterface               $localizedConverter
      * @param ConverterInterface                        $productValueConverter
@@ -93,7 +89,6 @@ class ProductModelNormalizer implements NormalizerInterface
     public function __construct(
         NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
-        NormalizerInterface $fileNormalizer,
         VersionManager $versionManager,
         AttributeConverterInterface $localizedConverter,
         ConverterInterface $productValueConverter,
@@ -109,7 +104,6 @@ class ProductModelNormalizer implements NormalizerInterface
     ) {
         $this->normalizer            = $normalizer;
         $this->versionNormalizer     = $versionNormalizer;
-        $this->fileNormalizer        = $fileNormalizer;
         $this->versionManager        = $versionManager;
         $this->localizedConverter    = $localizedConverter;
         $this->productValueConverter = $productValueConverter;
@@ -219,6 +213,6 @@ class ProductModelNormalizer implements NormalizerInterface
             return null;
         }
 
-        return $this->fileNormalizer->normalize($data->getData(), $format, $context);
+        return $this->normalizer->normalize($data, $format, $context);
     }
 }

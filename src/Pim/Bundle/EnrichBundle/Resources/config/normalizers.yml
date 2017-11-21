@@ -80,7 +80,6 @@ services:
         arguments:
             - '@pim_serializer'
             - '@pim_enrich.normalizer.version'
-            - '@pim_enrich.normalizer.file'
             - '@pim_versioning.manager.version'
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_enrich.converter.standard_to_enrich.product_value'
@@ -197,7 +196,7 @@ services:
     pim_enrich.normalizer.entity_with_family_variant:
         class: '%pim_enrich.normalizer.entity_with_family_variant.class%'
         arguments:
-            - '@pim_enrich.normalizer.file'
+            - '@pim_serializer'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
             - '@pim_enrich.normalizer.completeness_collection'
