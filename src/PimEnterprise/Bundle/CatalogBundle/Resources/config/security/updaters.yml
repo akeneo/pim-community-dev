@@ -15,6 +15,7 @@ services:
             - '@security.authorization_checker'
             - '@pimee_security.repository.category_access'
             - '@security.token_storage'
+            - '@doctrine.orm.entity_manager'
             - ['categories']
         tags:
             - { name: 'pim_catalog.updater.setter' }
@@ -25,6 +26,8 @@ services:
         decoration_inner_name: pim_catalog.updater.association_field_without_permission
         arguments:
             - '@pim_catalog.updater.association_field_without_permission'
+            - '@security.authorization_checker'
+            - '@pim_catalog.repository.product_without_permission'
             - ['associations']
         tags:
             - { name: 'pim_catalog.updater.setter' }
