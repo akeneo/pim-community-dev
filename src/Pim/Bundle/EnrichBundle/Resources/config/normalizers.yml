@@ -84,7 +84,7 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_enrich.converter.standard_to_enrich.product_value'
-            - '@pim_enrich.provider.form.product_model'
+            - '@pim_enrich.provider.form.chained'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.values_filler.entity_with_family_variant'
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
