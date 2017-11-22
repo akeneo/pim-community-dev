@@ -45,6 +45,9 @@ class ProductNormalizer implements NormalizerInterface
     /** @var VersionManager */
     protected $versionManager;
 
+    /** @var ImageNormalizer */
+    protected $imageNormalizer;
+
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
@@ -81,9 +84,6 @@ class ProductNormalizer implements NormalizerInterface
     /** @var CompletenessCalculatorInterface */
     private $completenessCalculator;
 
-    /** @var FileNormalizer */
-    protected $fileNormalizer;
-
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
@@ -103,6 +103,7 @@ class ProductNormalizer implements NormalizerInterface
      * @param NormalizerInterface                       $normalizer
      * @param NormalizerInterface                       $versionNormalizer
      * @param VersionManager                            $versionManager
+     * @param ImageNormalizer                           $imageNormalizer
      * @param LocaleRepositoryInterface                 $localeRepository
      * @param StructureVersionProviderInterface         $structureVersionProvider
      * @param FormProviderInterface                     $formProvider
@@ -115,7 +116,6 @@ class ProductNormalizer implements NormalizerInterface
      * @param NormalizerInterface                       $completenessCollectionNormalizer
      * @param UserContext                               $userContext
      * @param CompletenessCalculatorInterface           $completenessCalculator
-     * @param FileNormalizer                            $fileNormalizer
      * @param ProductBuilderInterface                   $productBuilder
      * @param EntityWithFamilyValuesFillerInterface     $productValuesFiller
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
@@ -126,6 +126,7 @@ class ProductNormalizer implements NormalizerInterface
         NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
         VersionManager $versionManager,
+        ImageNormalizer $imageNormalizer,
         LocaleRepositoryInterface $localeRepository,
         StructureVersionProviderInterface $structureVersionProvider,
         FormProviderInterface $formProvider,
@@ -138,16 +139,16 @@ class ProductNormalizer implements NormalizerInterface
         NormalizerInterface $completenessCollectionNormalizer,
         UserContext $userContext,
         CompletenessCalculatorInterface $completenessCalculator,
-        FileNormalizer $fileNormalizer,
         ProductBuilderInterface $productBuilder,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
-        AscendantCategoriesInterface $ascendantCategoriesQuery = null
+        AscendantCategoriesInterface $ascendantCategoriesQuery
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
         $this->versionManager                   = $versionManager;
+        $this->imageNormalizer                  = $imageNormalizer;
         $this->localeRepository                 = $localeRepository;
         $this->structureVersionProvider         = $structureVersionProvider;
         $this->formProvider                     = $formProvider;
@@ -160,7 +161,6 @@ class ProductNormalizer implements NormalizerInterface
         $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
         $this->userContext                      = $userContext;
         $this->completenessCalculator           = $completenessCalculator;
-        $this->fileNormalizer                   = $fileNormalizer;
         $this->productBuilder                   = $productBuilder;
         $this->productValuesFiller              = $productValuesFiller;
         $this->attributesProvider               = $attributesProvider;
@@ -197,12 +197,11 @@ class ProductNormalizer implements NormalizerInterface
             'model_type'        => 'product',
             'structure_version' => $this->structureVersionProvider->getStructureVersion(),
             'completenesses'    => $this->getNormalizedCompletenesses($product),
-            'image'             => $this->normalizeImage($product->getImage(), $format, $context),
+            'image'             => $this->normalizeImage($product->getImage(), $context),
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
-        // TODO Refactor this condition in 2.1 to remove default null parameter.
         $normalizedProduct['meta']['ascendant_category_ids'] =
-            (null !== $this->ascendantCategoriesQuery) && ($product instanceof EntityWithFamilyVariantInterface)
+            ($product instanceof EntityWithFamilyVariantInterface)
             ? $this->ascendantCategoriesQuery->getCategoryIds($product)
             : [];
 
@@ -278,19 +277,14 @@ class ProductNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param ValueInterface $data
-     * @param string         $format
+     * @param ValueInterface $value
      * @param array          $context
      *
      * @return array|null
      */
-    protected function normalizeImage(?ValueInterface $data, $format, $context = [])
+    protected function normalizeImage(?ValueInterface $value, array $context = []): ?array
     {
-        if (null === $data || null === $data->getData()) {
-            return null;
-        }
-
-        return $this->fileNormalizer->normalize($data->getData(), $format, $context);
+        return $this->imageNormalizer->normalize($value, $context['locale']);
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Pim\Bundle\DataGridBundle\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
+use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
@@ -34,19 +35,25 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
     /** @var ImageAsLabel */
     private $imageAsLabel;
 
+    /** @var ImageNormalizer */
+    private $imageNormalizer;
+
     /**
      * @param CollectionFilterInterface    $filter
      * @param VariantProductRatioInterface $variantProductRatioQuery
      * @param ImageAsLabel                 $imageAsLabel
+     * @param ImageNormalizer              $imageNormalizer
      */
     public function __construct(
         CollectionFilterInterface $filter,
         VariantProductRatioInterface $variantProductRatioQuery,
-        ImageAsLabel $imageAsLabel
+        ImageAsLabel $imageAsLabel,
+        ImageNormalizer $imageNormalizer
     ) {
         $this->filter                   = $filter;
         $this->variantProductRatioQuery = $variantProductRatioQuery;
         $this->imageAsLabel             = $imageAsLabel;
+        $this->imageNormalizer          = $imageNormalizer;
     }
 
     /**
@@ -72,7 +79,7 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
         $data['created'] = $this->normalizer->normalize($productModel->getCreated(), $format, $context);
         $data['updated'] = $this->normalizer->normalize($productModel->getUpdated(), $format, $context);
         $data['label'] = $productModel->getLabel($locale);
-        $data['image'] = $this->normalizeImage($closestImage, $format, $context);
+        $data['image'] = $this->normalizeImage($closestImage, $context);
 
         $data['groups'] = null;
         $data['enabled'] = null;
@@ -124,14 +131,13 @@ class ProductModelNormalizer implements NormalizerInterface, NormalizerAwareInte
 
     /**
      * @param ValueInterface $data
-     * @param string         $format
      * @param array          $context
      *
      * @return array|null
      */
-    private function normalizeImage(?ValueInterface $data, $format, array $context = []) : ?array
+    private function normalizeImage(?ValueInterface $data, array $context = []) : ?array
     {
-        return $this->normalizer->normalize($data, $format, $context)['data'];
+        return $this->imageNormalizer->normalize($data, $context['data_locale']);
     }
 
     /**

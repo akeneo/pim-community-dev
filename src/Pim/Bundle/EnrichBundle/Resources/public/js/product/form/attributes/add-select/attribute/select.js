@@ -29,7 +29,7 @@ define(
         ChoicesFormatter
     ) {
         return BaseAddSelect.extend({
-            className: 'add-attribute',
+            className: 'AknButtonList-item add-attribute',
             lineView: LineView,
             defaultConfig: {
                 select2: {
