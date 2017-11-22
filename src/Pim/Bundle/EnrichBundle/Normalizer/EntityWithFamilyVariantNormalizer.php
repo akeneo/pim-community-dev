@@ -54,6 +54,9 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
     /** @var ImageAsLabel */
     private $imageAsLabel;
 
+    /** @var ImageNormalizer */
+    private $imageNormalizer;
+
     /**
      * @param NormalizerInterface                       $normalizer
      * @param LocaleRepositoryInterface                 $localeRepository
@@ -62,6 +65,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
      * @param CompletenessCalculatorInterface           $completenessCalculator
      * @param VariantProductRatioInterface              $variantProductRatioQuery
      * @param ImageAsLabel                              $imageAsLabel
+     * @oaram ImageNormalizer                           $imageNormalizer
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -70,7 +74,8 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         NormalizerInterface $completenessCollectionNormalizer,
         CompletenessCalculatorInterface $completenessCalculator,
         VariantProductRatioInterface $variantProductRatioQuery,
-        ImageAsLabel $imageAsLabel
+        ImageAsLabel $imageAsLabel,
+        ImageNormalizer $imageNormalizer
     ) {
         $this->normalizer                       = $normalizer;
         $this->localeRepository                 = $localeRepository;
@@ -79,6 +84,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
         $this->completenessCalculator           = $completenessCalculator;
         $this->variantProductRatioQuery         = $variantProductRatioQuery;
         $this->imageAsLabel                     = $imageAsLabel;
+        $this->imageNormalizer                  = $imageNormalizer;
     }
 
     /**
@@ -116,7 +122,7 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
             'axes_values_labels' => $this->getAxesValuesLabelsForLocales($entity, $localeCodes),
             'labels'             => $labels,
             'order_string'       => $this->getOrderString($entity),
-            'image'              => $this->normalizeImage($image, $format, $context),
+            'image'              => $this->normalizeImage($image, $context),
             'model_type'         => $entity instanceof ProductModelInterface ? 'product_model' : 'product',
             'completeness'       => $this->getCompletenessDependingOnEntity($entity)
         ];
@@ -132,18 +138,13 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
 
     /**
      * @param ValueInterface $data
-     * @param string         $format
      * @param array          $context
      *
      * @return array|null
      */
-    private function normalizeImage(?ValueInterface $data, $format, $context = []): ?array
+    private function normalizeImage(?ValueInterface $data, array $context = []): ?array
     {
-        if (null === $data || null === $data->getData()) {
-            return null;
-        }
-
-        return $this->normalizer->normalize($data, $format, $context);
+        return $this->imageNormalizer->normalize($data, $context['locale']);
     }
 
     /**

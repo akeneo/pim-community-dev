@@ -29,6 +29,7 @@ parameters:
     pim_enrich.normalizer.structured.attribute_option.class:       Pim\Bundle\EnrichBundle\Normalizer\StructuredAttributeOptionNormalizer
     pim_enrich.normalizer.entity_with_family_variant.class:        Pim\Bundle\EnrichBundle\Normalizer\EntityWithFamilyVariantNormalizer
     pim_enrich.normalizer.variant_navigation.class:                Pim\Bundle\EnrichBundle\Normalizer\VariantNavigationNormalizer
+    pim_enrich.normalizer.image.class:                             Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer
 
 services:
     pim_enrich.normalizer.attribute_option_value_collection:
@@ -72,6 +73,7 @@ services:
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
             - '@pim_enrich.normalizer.variant_navigation'
             - '@pim_enrich.doctrine.query.ascendant_categories'
+            - '@pim_enrich.normalizer.image'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -92,6 +94,7 @@ services:
             - '@pim_catalog.product_models.image_as_label'
             - '@pim_enrich.doctrine.query.ascendant_categories'
             - '@pim_enrich.normalizer.product_model_incomplete_values'
+            - '@pim_enrich.normalizer.image'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -203,6 +206,7 @@ services:
             - '@pim_catalog.completeness.calculator'
             - '@pim_catalog.doctrine.query.find_variant_product_completeness'
             - '@pim_catalog.product_models.image_as_label'
+            - '@pim_enrich.normalizer.image'
 
     pim_enrich.normalizer.variant_navigation:
         class: '%pim_enrich.normalizer.variant_navigation.class%'
@@ -285,3 +289,8 @@ services:
             - '@pim_catalog.filter.chained'
         tags:
             - { name: pim_internal_api_serializer.normalizer}
+
+    pim_enrich.normalizer.image:
+        class: '%pim_enrich.normalizer.image.class%'
+        arguments:
+            - '@pim_enrich.normalizer.file'
