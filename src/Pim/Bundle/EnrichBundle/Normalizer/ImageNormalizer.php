@@ -34,7 +34,7 @@ class ImageNormalizer
      */
     public function normalize(?ValueInterface $value, ?string $localeCode = null): ?array
     {
-        if (null === $value) {
+        if (null === $value || null === $value->getData()) {
             return null;
         }
 

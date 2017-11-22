@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer;
+use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Pim\Component\Catalog\Completeness\CompletenessCalculatorInterface;
 use Pim\Component\Catalog\FamilyVariant\EntityWithFamilyVariantAttributesProvider;
 use Pim\Component\Catalog\Model\AttributeInterface;
@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
 {
     function let(
-        FileNormalizer $fileNormalizer,
+        ImageNormalizer $imageNormalizer,
         LocaleRepositoryInterface $localeRepository,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         NormalizerInterface $completenessCollectionNormalizer,
@@ -32,7 +32,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         ImageAsLabel $imageAsLabel
     ) {
         $this->beConstructedWith(
-            $fileNormalizer,
+            $imageNormalizer,
             $localeRepository,
             $attributesProvider,
             $completenessCollectionNormalizer,
@@ -66,6 +66,9 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         CompletenessInterface $completeness2,
         Collection $productCompletenesses
     ) {
+        $context = [
+            'locale' => 'en_US'
+        ];
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
 
         $variantProduct->getLabel('fr_FR')->willReturn('Tshirt Blanc S');
@@ -104,7 +107,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $completenessCollectionNormalizer->normalize($productCompletenesses, 'internal_api')
             ->willReturn(['NORMALIZED_COMPLETENESS']);
 
-        $this->normalize($variantProduct, 'internal_api')->shouldReturn([
+        $this->normalize($variantProduct, 'internal_api', $context)->shouldReturn([
             'id'                 => 42,
             'identifier'         => 'tshirt_white_s',
             'axes_values_labels' => [
@@ -133,6 +136,9 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         AttributeOptionValueInterface $colorAttributeOptionValue,
         CompleteVariantProducts $completeVariantProducts
     ) {
+        $context = [
+            'locale' => 'en_US'
+        ];
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
 
         $productModel->getLabel('fr_FR')->willReturn('Tshirt Blanc');
@@ -157,7 +163,7 @@ class EntityWithFamilyVariantNormalizerSpec extends ObjectBehavior
         $variantProductRatioQuery->findComplete($productModel)->willReturn($completeVariantProducts);
         $completeVariantProducts->values()->willReturn(['NORMALIZED COMPLETENESS']);
 
-        $this->normalize($productModel, 'internal_api')->shouldReturn([
+        $this->normalize($productModel, 'internal_api', $context)->shouldReturn([
             'id'                 => 5,
             'identifier'         => 'tshirt_white',
             'axes_values_labels' => [

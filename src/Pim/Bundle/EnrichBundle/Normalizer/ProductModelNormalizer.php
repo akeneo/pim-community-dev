@@ -34,6 +34,9 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     private $versionNormalizer;
 
+    /** @var ImageNormalizer */
+    private $imageNormalizer;
+
     /** @var VersionManager */
     private $versionManager;
 
@@ -70,13 +73,12 @@ class ProductModelNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     private $incompleteValuesNormalizer;
 
-    /** @var ImageNormalizer */
-    private $imageNormalizer;
 
     /**
      * @param NormalizerInterface                       $normalizer
      * @param NormalizerInterface                       $versionNormalizer
      * @param VersionManager                            $versionManager
+     * @param ImageNormalizer                           $imageNormalizer
      * @param AttributeConverterInterface               $localizedConverter
      * @param ConverterInterface                        $productValueConverter
      * @param FormProviderInterface                     $formProvider
@@ -88,12 +90,12 @@ class ProductModelNormalizer implements NormalizerInterface
      * @param ImageAsLabel                              $imageAsLabel
      * @param AscendantCategoriesInterface              $ascendantCategoriesQuery
      * @param NormalizerInterface                       $incompleteValuesNormalizer
-     * @param ImageNormalizer                           $imageNormalizer
      */
     public function __construct(
         NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
         VersionManager $versionManager,
+        ImageNormalizer $imageNormalizer,
         AttributeConverterInterface $localizedConverter,
         ConverterInterface $productValueConverter,
         FormProviderInterface $formProvider,
@@ -104,12 +106,12 @@ class ProductModelNormalizer implements NormalizerInterface
         VariantProductRatioInterface $variantProductRatioQuery,
         ImageAsLabel $imageAsLabel,
         AscendantCategoriesInterface $ascendantCategoriesQuery,
-        NormalizerInterface $incompleteValuesNormalizer,
-        ImageNormalizer $imageNormalizer
+        NormalizerInterface $incompleteValuesNormalizer
     ) {
         $this->normalizer = $normalizer;
         $this->versionNormalizer = $versionNormalizer;
         $this->versionManager = $versionManager;
+        $this->imageNormalizer = $imageNormalizer;
         $this->localizedConverter = $localizedConverter;
         $this->productValueConverter = $productValueConverter;
         $this->formProvider = $formProvider;
@@ -121,7 +123,6 @@ class ProductModelNormalizer implements NormalizerInterface
         $this->imageAsLabel = $imageAsLabel;
         $this->ascendantCategoriesQuery = $ascendantCategoriesQuery;
         $this->incompleteValuesNormalizer = $incompleteValuesNormalizer;
-        $this->imageNormalizer = $imageNormalizer;
     }
 
     /**

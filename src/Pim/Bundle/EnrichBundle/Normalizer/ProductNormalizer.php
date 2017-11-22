@@ -45,6 +45,9 @@ class ProductNormalizer implements NormalizerInterface
     /** @var VersionManager */
     protected $versionManager;
 
+    /** @var ImageNormalizer */
+    protected $imageNormalizer;
+
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
@@ -96,13 +99,11 @@ class ProductNormalizer implements NormalizerInterface
     /** @var AscendantCategoriesInterface */
     protected $ascendantCategoriesQuery;
 
-    /** @var ImageNormalizer */
-    protected $imageNormalizer;
-
     /**
      * @param NormalizerInterface                       $normalizer
      * @param NormalizerInterface                       $versionNormalizer
      * @param VersionManager                            $versionManager
+     * @param ImageNormalizer                           $imageNormalizer
      * @param LocaleRepositoryInterface                 $localeRepository
      * @param StructureVersionProviderInterface         $structureVersionProvider
      * @param FormProviderInterface                     $formProvider
@@ -120,12 +121,12 @@ class ProductNormalizer implements NormalizerInterface
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      * @param VariantNavigationNormalizer               $navigationNormalizer
      * @param AscendantCategoriesInterface|null         $ascendantCategoriesQuery
-     * @param ImageNormalizer                           $imageNormalizer
      */
     public function __construct(
         NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
         VersionManager $versionManager,
+        ImageNormalizer $imageNormalizer,
         LocaleRepositoryInterface $localeRepository,
         StructureVersionProviderInterface $structureVersionProvider,
         FormProviderInterface $formProvider,
@@ -142,12 +143,12 @@ class ProductNormalizer implements NormalizerInterface
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         VariantNavigationNormalizer $navigationNormalizer,
-        AscendantCategoriesInterface $ascendantCategoriesQuery,
-        ImageNormalizer $imageNormalizer
+        AscendantCategoriesInterface $ascendantCategoriesQuery
     ) {
         $this->normalizer                       = $normalizer;
         $this->versionNormalizer                = $versionNormalizer;
         $this->versionManager                   = $versionManager;
+        $this->imageNormalizer                  = $imageNormalizer;
         $this->localeRepository                 = $localeRepository;
         $this->structureVersionProvider         = $structureVersionProvider;
         $this->formProvider                     = $formProvider;
@@ -165,7 +166,6 @@ class ProductNormalizer implements NormalizerInterface
         $this->attributesProvider               = $attributesProvider;
         $this->navigationNormalizer             = $navigationNormalizer;
         $this->ascendantCategoriesQuery         = $ascendantCategoriesQuery;
-        $this->imageNormalizer                  = $imageNormalizer;
     }
 
     /**

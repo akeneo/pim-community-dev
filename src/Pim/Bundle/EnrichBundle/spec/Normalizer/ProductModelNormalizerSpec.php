@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\EnrichBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Pim\Bundle\EnrichBundle\Normalizer\VariantNavigationNormalizer;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
@@ -28,7 +29,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     function let(
         NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
-        NormalizerInterface $fileNormalizer,
+        ImageNormalizer $imageNormalizer,
         VersionManager $versionManager,
         AttributeConverterInterface $localizedConverter,
         ConverterInterface $productValueConverter,
@@ -45,8 +46,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $this->beConstructedWith(
             $normalizer,
             $versionNormalizer,
-            $fileNormalizer,
             $versionManager,
+            $imageNormalizer,
             $localizedConverter,
             $productValueConverter,
             $formProvider,
@@ -69,7 +70,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     function it_normalizes_product_models(
         $normalizer,
         $versionNormalizer,
-        $fileNormalizer,
+        $imageNormalizer,
         $versionManager,
         $localizedConverter,
         $productValueConverter,
@@ -91,6 +92,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $options = [
             'decimal_separator' => ',',
             'date_format'       => 'dd/MM/yyyy',
+            'locale'            => 'en_US',
         ];
 
         $productModelNormalized = [
@@ -150,8 +152,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('fr_FR')->willReturn('Tshirt bleu');
 
         $imageAsLabel->value($productModel)->willReturn($picture);
-        $picture->getData()->willReturn('IMAGE_DATA');
-        $fileNormalizer->normalize('IMAGE_DATA', 'internal_api', $options)->willReturn($fileNormalized);
+        $imageNormalizer->normalize($picture, Argument::any())->willReturn($fileNormalized);
 
         $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
 
@@ -222,7 +223,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     function it_normalizes_product_models_without_image(
         $normalizer,
         $versionNormalizer,
-        $fileNormalizer,
+        $imageNormalizer,
         $versionManager,
         $localizedConverter,
         $productValueConverter,
@@ -243,6 +244,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $options = [
             'decimal_separator' => ',',
             'date_format'       => 'dd/MM/yyyy',
+            'locale'            => 'en_US'
         ];
 
         $productModelNormalized = [
@@ -290,7 +292,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('fr_FR')->willReturn('Tshirt bleu');
 
         $imageAsLabel->value($productModel)->willReturn(null);
-        $fileNormalizer->normalize(Argument::cetera())->shouldNotBeCalled();
+        $imageNormalizer->normalize(null, Argument::any())->willReturn(null);
 
         $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
 
@@ -361,7 +363,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
     function it_normalizes_product_models_without_multiple_levels(
         $normalizer,
         $versionNormalizer,
-        $fileNormalizer,
+        $imageNormalizer,
         $versionManager,
         $localizedConverter,
         $productValueConverter,
@@ -383,6 +385,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $options = [
             'decimal_separator' => ',',
             'date_format'       => 'dd/MM/yyyy',
+            'locale'            => 'en_US'
         ];
 
         $productModelNormalized = [
@@ -442,8 +445,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getLabel('fr_FR')->willReturn('Tshirt bleu');
 
         $imageAsLabel->value($productModel)->willReturn($picture);
-        $picture->getData()->willReturn('IMAGE_DATA');
-        $fileNormalizer->normalize('IMAGE_DATA', 'internal_api', $options)->willReturn($fileNormalized);
+        $imageNormalizer->normalize($picture, Argument::any())->willReturn($fileNormalized);
 
         $productValueConverter->convert($valuesLocalized)->willReturn($valuesConverted);
 

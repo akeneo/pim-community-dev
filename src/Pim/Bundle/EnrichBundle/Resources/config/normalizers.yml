@@ -19,7 +19,6 @@ parameters:
     pim_enrich.normalizer.channel.class:                           Pim\Bundle\EnrichBundle\Normalizer\ChannelNormalizer
     pim_enrich.normalizer.group.class:                             Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer
     pim_enrich.normalizer.file.class:                              Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer
-    pim_enrich.normalizer.media.class:                             Pim\Bundle\EnrichBundle\Normalizer\MediaNormalizer
     pim_enrich.normalizer.product_violation.class:                 Pim\Bundle\EnrichBundle\Normalizer\ProductViolationNormalizer
     pim_enrich.normalizer.group_violation.class:                   Pim\Bundle\EnrichBundle\Normalizer\GroupViolationNormalizer
     pim_enrich.normalizer.violation.class:                         Pim\Bundle\EnrichBundle\Normalizer\ViolationNormalizer
@@ -56,6 +55,7 @@ services:
             - '@pim_serializer'
             - '@pim_enrich.normalizer.version'
             - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.image'
             - '@pim_catalog.repository.locale'
             - '@pim_enrich.provider.structure_version.product'
             - '@pim_enrich.provider.form.chained'
@@ -73,7 +73,6 @@ services:
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
             - '@pim_enrich.normalizer.variant_navigation'
             - '@pim_enrich.doctrine.query.ascendant_categories'
-            - '@pim_enrich.normalizer.image'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -83,6 +82,7 @@ services:
             - '@pim_serializer'
             - '@pim_enrich.normalizer.version'
             - '@pim_versioning.manager.version'
+            - '@pim_enrich.normalizer.image'
             - '@pim_catalog.localization.localizer.converter'
             - '@pim_enrich.converter.standard_to_enrich.product_value'
             - '@pim_enrich.provider.form.product_model'
@@ -94,7 +94,6 @@ services:
             - '@pim_catalog.product_models.image_as_label'
             - '@pim_enrich.doctrine.query.ascendant_categories'
             - '@pim_enrich.normalizer.product_model_incomplete_values'
-            - '@pim_enrich.normalizer.image'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
@@ -199,14 +198,13 @@ services:
     pim_enrich.normalizer.entity_with_family_variant:
         class: '%pim_enrich.normalizer.entity_with_family_variant.class%'
         arguments:
-            - '@pim_serializer'
+            - '@pim_enrich.normalizer.image'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.family_variant.provider.entity_with_family_variant_attributes'
             - '@pim_enrich.normalizer.completeness_collection'
             - '@pim_catalog.completeness.calculator'
             - '@pim_catalog.doctrine.query.find_variant_product_completeness'
             - '@pim_catalog.product_models.image_as_label'
-            - '@pim_enrich.normalizer.image'
 
     pim_enrich.normalizer.variant_navigation:
         class: '%pim_enrich.normalizer.variant_navigation.class%'
@@ -238,13 +236,6 @@ services:
         class: '%pim_enrich.normalizer.file.class%'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
-
-    pim_enrich.normalizer.media:
-        class: '%pim_enrich.normalizer.media.class%'
-        arguments:
-            - '@pim_enrich.normalizer.file'
-        tags:
-            - { name: pim_serializer.normalizer }
 
     pim_enrich.normalizer.product_violation:
         class: '%pim_enrich.normalizer.product_violation.class%'

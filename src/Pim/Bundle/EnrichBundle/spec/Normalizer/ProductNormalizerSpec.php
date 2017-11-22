@@ -9,6 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\EnrichBundle\Doctrine\ORM\Query\AscendantCategories;
 use Pim\Bundle\EnrichBundle\Normalizer\FileNormalizer;
+use Pim\Bundle\EnrichBundle\Normalizer\ImageNormalizer;
 use Pim\Bundle\EnrichBundle\Normalizer\VariantNavigationNormalizer;
 use Pim\Bundle\EnrichBundle\Provider\Form\FormProviderInterface;
 use Pim\Bundle\EnrichBundle\Provider\StructureVersion\StructureVersionProviderInterface;
@@ -42,6 +43,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         NormalizerInterface $normalizer,
         NormalizerInterface $versionNormalizer,
         VersionManager $versionManager,
+        ImageNormalizer $imageNormalizer,
         LocaleRepositoryInterface $localeRepository,
         StructureVersionProviderInterface $structureVersionProvider,
         FormProviderInterface $formProvider,
@@ -64,6 +66,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             $normalizer,
             $versionNormalizer,
             $versionManager,
+            $imageNormalizer,
             $localeRepository,
             $structureVersionProvider,
             $formProvider,
@@ -93,6 +96,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $normalizer,
         $versionNormalizer,
         $versionManager,
+        $imageNormalizer,
         $localeRepository,
         $structureVersionProvider,
         $formProvider,
@@ -108,12 +112,12 @@ class ProductNormalizerSpec extends ObjectBehavior
         AssociationTypeInterface $groupType,
         GroupInterface $group,
         ArrayCollection $groups,
-        ValueInterface $image,
-        FileInfoInterface $dataImage
+        ValueInterface $image
     ) {
         $options = [
             'decimal_separator' => ',',
             'date_format'       => 'dd/MM/yyyy',
+            'locale'            => 'en_US',
         ];
 
         $productNormalized = [
@@ -169,8 +173,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $mug->getLabel('en_US')->willReturn('A nice Mug!');
         $mug->getLabel('fr_FR')->willReturn('Un très beau Mug !');
         $mug->getImage()->willReturn($image);
-        $image->getData()->willReturn($dataImage);
-        $normalizer->normalize($image, Argument::cetera())->willReturn([
+        $imageNormalizer->normalize($image, Argument::any())->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png',
         ]);
@@ -231,6 +234,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $normalizer,
         $versionNormalizer,
         $versionManager,
+        $imageNormalizer,
         $localeRepository,
         $structureVersionProvider,
         $formProvider,
@@ -250,7 +254,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         GroupInterface $group,
         ArrayCollection $groups,
         ValueInterface $image,
-        FileInfoInterface $dataImage,
         FamilyVariantInterface $familyVariant,
         AttributeInterface $color,
         AttributeInterface $size,
@@ -260,6 +263,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $options = [
             'decimal_separator' => ',',
             'date_format'       => 'dd/MM/yyyy',
+            'locale'            => 'en_US',
         ];
 
         $productNormalized = [
@@ -315,8 +319,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $mug->getLabel('en_US')->willReturn('A nice Mug!');
         $mug->getLabel('fr_FR')->willReturn('Un très beau Mug !');
         $mug->getImage()->willReturn($image);
-        $image->getData()->willReturn($dataImage);
-        $normalizer->normalize($image, Argument::cetera())->willReturn([
+        $imageNormalizer->normalize($image, Argument::any())->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png',
         ]);

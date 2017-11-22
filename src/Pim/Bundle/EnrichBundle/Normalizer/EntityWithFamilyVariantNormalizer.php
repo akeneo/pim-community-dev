@@ -33,8 +33,8 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
     /** @var string[] */
     private $supportedFormat = ['internal_api'];
 
-    /** @var NormalizerInterface */
-    private $normalizer;
+    /** @var ImageNormalizer */
+    private $imageNormalizer;
 
     /** @var LocaleRepositoryInterface */
     private $localeRepository;
@@ -54,37 +54,32 @@ class EntityWithFamilyVariantNormalizer implements NormalizerInterface
     /** @var ImageAsLabel */
     private $imageAsLabel;
 
-    /** @var ImageNormalizer */
-    private $imageNormalizer;
 
     /**
-     * @param NormalizerInterface                       $normalizer
+     * @param ImageNormalizer                           $imageNormalizer
      * @param LocaleRepositoryInterface                 $localeRepository
      * @param EntityWithFamilyVariantAttributesProvider $attributesProvider
      * @param NormalizerInterface                       $completenessCollectionNormalizer
      * @param CompletenessCalculatorInterface           $completenessCalculator
      * @param VariantProductRatioInterface              $variantProductRatioQuery
      * @param ImageAsLabel                              $imageAsLabel
-     * @oaram ImageNormalizer                           $imageNormalizer
      */
     public function __construct(
-        NormalizerInterface $normalizer,
+        ImageNormalizer $imageNormalizer,
         LocaleRepositoryInterface $localeRepository,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
         NormalizerInterface $completenessCollectionNormalizer,
         CompletenessCalculatorInterface $completenessCalculator,
         VariantProductRatioInterface $variantProductRatioQuery,
-        ImageAsLabel $imageAsLabel,
-        ImageNormalizer $imageNormalizer
+        ImageAsLabel $imageAsLabel
     ) {
-        $this->normalizer                       = $normalizer;
+        $this->imageNormalizer                  = $imageNormalizer;
         $this->localeRepository                 = $localeRepository;
         $this->attributesProvider               = $attributesProvider;
         $this->completenessCollectionNormalizer = $completenessCollectionNormalizer;
         $this->completenessCalculator           = $completenessCalculator;
         $this->variantProductRatioQuery         = $variantProductRatioQuery;
         $this->imageAsLabel                     = $imageAsLabel;
-        $this->imageNormalizer                  = $imageNormalizer;
     }
 
     /**
