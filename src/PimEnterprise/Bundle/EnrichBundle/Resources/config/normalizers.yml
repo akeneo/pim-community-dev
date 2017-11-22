@@ -4,7 +4,7 @@ parameters:
     pimee_enrich.normalizer.version.class:                  PimEnterprise\Bundle\EnrichBundle\Normalizer\VersionNormalizer
     pimee_enrich.normalizer.product.class:                  PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductNormalizer
     pimee_enrich.normalizer.attribute.class:                PimEnterprise\Bundle\EnrichBundle\Normalizer\AttributeNormalizer
-    pimee_enrich.normalizer.asset_collection.class:         PimEnterprise\Bundle\EnrichBundle\Normalizer\AssetCollectionNormalizer
+    pimee_enrich.normalizer.image.class:                    PimEnterprise\Bundle\EnrichBundle\Normalizer\ImageNormalizer
 
 services:
     pimee_enrich.serializer.normalizer.granted_family:
@@ -41,13 +41,6 @@ services:
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }
 
-    pimee_enrich.normalizer.asset_collection:
-        class: '%pimee_enrich.normalizer.asset_collection.class%'
-        arguments:
-            - '@pim_enrich.normalizer.file'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 110 }
-
     pimee_enrich.normalizer.standard.asset:
         class: '%pimee_enrich.normalizer.standard.asset.class%'
         arguments:
@@ -63,3 +56,9 @@ services:
             - '@pim_enrich.normalizer.attribute.base'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
+
+    pimee_enrich.normalizer.image:
+        class: '%pimee_enrich.normalizer.image.class%'
+        arguments:
+            - '@pim_enrich.normalizer.file'
+            - '@pim_catalog.repository.locale'

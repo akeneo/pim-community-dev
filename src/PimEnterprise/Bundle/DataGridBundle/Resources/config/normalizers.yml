@@ -1,8 +1,0 @@
-parameters:
-    pimee_datagrid.normalizer.product.asset_collection.class: PimEnterprise\Bundle\DataGridBundle\Normalizer\Product\AssetCollectionNormalizer
-
-services:
-    pimee_datagrid.normalizer.product.asset_collection:
-        class: '%pimee_datagrid.normalizer.product.asset_collection.class%'
-        tags:
-            - { name: pim_serializer.normalizer, priority: 130 }

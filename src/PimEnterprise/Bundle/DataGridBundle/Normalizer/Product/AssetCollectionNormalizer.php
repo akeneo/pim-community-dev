@@ -2,8 +2,8 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Normalizer\Product;
 
+use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue;
-use PimEnterprise\Component\ProductAsset\Model\Asset;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -16,17 +16,33 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AssetCollectionNormalizer implements NormalizerInterface
 {
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
+    /**
+     * @param LocaleRepositoryInterface $localeRepository
+     */
+    public function __construct(LocaleRepositoryInterface $localeRepository)
+    {
+        $this->localeRepository = $localeRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function normalize($value, $format = null, array $context = [])
     {
         $data = $value->getData();
-        if (!isset($data[0])) {
+        if (empty($data)) {
             return null;
         }
 
-        $fileInfo = $value->getData()[0]->getReference()->getFileInfo();
+        $locale = $this->localeRepository->findOneByIdentifier($context['data_locale']);
+        $fileInfo = $value->getData()[0]->getReference($locale)->getFileInfo();
+        if (null === $fileInfo) {
+            return null;
+        }
+
         $fileData = [
             'originalFilename' => $fileInfo->getOriginalFilename(),
             'filePath'         => $fileInfo->getKey(),
