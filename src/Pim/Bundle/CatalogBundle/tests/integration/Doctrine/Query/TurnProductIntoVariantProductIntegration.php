@@ -6,10 +6,9 @@ use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
-use Akeneo\Test\IntegrationTestsBundle\Assertion;
 
 /**
- * Test the query function: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\TurnProduct
+ * Test the query function: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\TurnProductIntoVariantProduct
  */
 final class TurnProductIntoVariantProductIntegration extends TestCase
 {
@@ -64,7 +63,7 @@ final class TurnProductIntoVariantProductIntegration extends TestCase
     }
 
     /**
-     * To update product into a variant product in database we need to check that:
+     * To update product __invoke a variant product in database we need to check that:
      *   - the product type is well changed (data managed by doctrine)
      *   - the variant product keeps the product id
      *   - the repository returns the right object type (variant product instead of product)
@@ -75,7 +74,7 @@ final class TurnProductIntoVariantProductIntegration extends TestCase
         $inMemoryVariantProduct = $this->get('pim_catalog.entity_with_family.create_variant_product_from_product')
             ->from($this->product, $this->productModel);
 
-        $this->get('pim_catalog.doctrine.query.turn_product_into_variant_product')->into($inMemoryVariantProduct);
+        ($this->get('pim_catalog.doctrine.query.turn_product_into_variant_product'))($inMemoryVariantProduct);
 
         /** @var VariantProductInterface $variantProduct */
         $variantProduct = $this->get('pim_catalog.repository.variant_product')->findOneByIdentifier('my-product');

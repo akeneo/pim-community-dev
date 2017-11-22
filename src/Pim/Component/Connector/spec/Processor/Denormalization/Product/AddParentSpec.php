@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Connector\Processor\Denormalization\Product;
 
 use Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct;
-use Pim\Component\Catalog\EntityWithFamily\Query;
+use Pim\Component\Catalog\EntityWithFamily\Event\ParentWasAddedToProduct;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
@@ -11,15 +11,16 @@ use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Pim\Component\Connector\Processor\Denormalization\Product\AddParent;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class AddParentSpec extends ObjectBehavior
 {
     function let(
         ProductModelRepositoryInterface $productModelRepository,
         CreateVariantProduct $createVariantProduct,
-        Query\TurnProduct $turnProductQuery
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->beConstructedWith($productModelRepository, $createVariantProduct, $turnProductQuery);
+        $this->beConstructedWith($productModelRepository, $createVariantProduct, $eventDispatcher);
     }
 
     function it is initializable()
@@ -30,7 +31,7 @@ class AddParentSpec extends ObjectBehavior
     function it adds a parent to a product only when we update product(
         $productModelRepository,
         $createVariantProduct,
-        $turnProductQuery,
+        $eventDispatcher,
         ProductInterface $product,
         VariantProductInterface $variantProduct,
         ProductModelInterface $productModel
@@ -40,7 +41,8 @@ class AddParentSpec extends ObjectBehavior
         $productModelRepository->findOneByIdentifier('parent')->willReturn()->willReturn($productModel);
 
         $createVariantProduct->from($product, $productModel)->willReturn($variantProduct);
-        $turnProductQuery->into($variantProduct)->shouldBeCalled();
+        $eventDispatcher->dispatch(ParentWasAddedToProduct::EVENT_NAME, Argument::type(ParentWasAddedToProduct::class))
+            ->shouldBeCalled();
 
         $this->to($product, 'parent')->shouldReturn($variantProduct);
     }
@@ -48,32 +50,19 @@ class AddParentSpec extends ObjectBehavior
     function it does not add any parent to a product when we create a product(
         $productModelRepository,
         $createVariantProduct,
-        $turnProductQuery,
+        $eventDispatcher,
         ProductInterface $product
     ) {
         $product->getId()->willReturn(null);
 
         $productModelRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
         $createVariantProduct->from(Argument::cetera())->shouldNotBeCalled();
-        $turnProductQuery->into(Argument::cetera())->shouldNotBeCalled();
+        $eventDispatcher->dispatch(ParentWasAddedToProduct::EVENT_NAME, Argument::type(ParentWasAddedToProduct::class))
+            ->shouldNotBeCalled();
 
         $this->to($product, '')->shouldReturn($product);
     }
 
-    function it does not add any parent to a product when the parent code is empty(
-        $productModelRepository,
-        $createVariantProduct,
-        $turnProductQuery,
-        ProductInterface $product
-    ) {
-        $product->getId()->willReturn(40);
-
-        $productModelRepository->findOneByIdentifier(Argument::any())->shouldNotBeCalled();
-        $createVariantProduct->from(Argument::cetera())->shouldNotBeCalled();
-        $turnProductQuery->into(Argument::cetera())->shouldNotBeCalled();
-
-        $this->to($product, '')->shouldReturn($product);
-    }
 
     function it does not add any parent to a product when the parent code is invalid(
         $productModelRepository,

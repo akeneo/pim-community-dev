@@ -7,15 +7,14 @@ use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\UnitOfWork;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\TurnProduct;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\TurnProductIntoVariantProduct;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
 use Pim\Component\Catalog\Model\ValueCollectionInterface;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 use Prophecy\Argument;
-use Pim\Component\Catalog\EntityWithFamily\Query;
 
-class TurnProductSpec extends ObjectBehavior
+class TurnProductIntoVariantProductSpec extends ObjectBehavior
 {
     function let(EntityManagerInterface $entityManager)
     {
@@ -24,12 +23,7 @@ class TurnProductSpec extends ObjectBehavior
 
     function it is initializable()
     {
-        $this->shouldHaveType(TurnProduct::class);
-    }
-
-    function it is a query()
-    {
-        $this->shouldImplement(Query\TurnProduct::class);
+        $this->shouldHaveType(TurnProductIntoVariantProduct::class);
     }
 
     function it transforms a product into variant product in database(
@@ -92,6 +86,6 @@ class TurnProductSpec extends ObjectBehavior
             ]
         )->shouldBeCalled();
 
-        $this->into($variantProduct)->shouldReturn(null);
+        $this->__invoke($variantProduct)->shouldReturn(null);
     }
 }

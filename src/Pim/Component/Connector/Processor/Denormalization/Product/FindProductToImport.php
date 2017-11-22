@@ -31,9 +31,6 @@ class FindProductToImport
      * @param IdentifiableObjectRepositoryInterface $productRepository
      * @param ProductBuilderInterface               $productBuilder
      * @param ProductBuilderInterface               $variantProductBuilder
-     *
-     * @internal param CreateVariantProduct $createVariantProduct
-     * @internal param Query\TurnProduct $turnProductQuery
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $productRepository,

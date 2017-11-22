@@ -7,16 +7,15 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Component\Catalog\EntityWithFamily\Query;
 use Pim\Component\Catalog\Model\VariantProductInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Query that turns a product into a variant product
+ * Query that turns a product __invoke a variant product
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TurnProduct implements Query\TurnProduct
+class TurnProductIntoVariantProduct
 {
     private const PRODUCT_VARIANT_TYPE = 'variant_product';
 
@@ -34,7 +33,7 @@ class TurnProduct implements Query\TurnProduct
     /**
      * {@inheritdoc}
      */
-    public function into(VariantProductInterface $variantProduct): void
+    public function __invoke(VariantProductInterface $variantProduct): void
     {
         $sql = <<<SQL
 UPDATE pim_catalog_product AS variant_product

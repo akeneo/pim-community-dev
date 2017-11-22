@@ -34,7 +34,7 @@ final class Collection
      *
      * @throws \Exception
      */
-    public function hasFollowingEntities(string $identifier = 'code'): void
+    public function containsEntities(string $identifier = 'code'): void
     {
         foreach ($this->expectedEntities as $expectedEntity) {
             if (!$this->actualEntities->contains($expectedEntity)) {

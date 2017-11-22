@@ -82,7 +82,7 @@ services:
             - '@validator'
 
     akeneo_integration_tests.fixture.saver.entity_with_value:
-        class: 'Akeneo\Test\IntegrationTestsBundle\Fixture\Saver\EntityWithValue'
+        class: 'Akeneo\Test\IntegrationTestsBundle\Doctrine\Repository\EntityWithValue'
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - '@pim_serializer'

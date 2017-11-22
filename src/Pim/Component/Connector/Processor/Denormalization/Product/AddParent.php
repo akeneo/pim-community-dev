@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace Pim\Component\Connector\Processor\Denormalization\Product;
 
 use Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct;
-use Pim\Component\Catalog\EntityWithFamily\Query;
+use Pim\Component\Catalog\EntityWithFamily\Event\ParentWasAddedToProduct;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * During an import you can add a parent to a product, that means that you transform it into a variant product.
@@ -20,26 +21,26 @@ class AddParent
 {
     /** @var ProductModelRepositoryInterface */
     private $productModelRepository;
-    
+
     /** @var CreateVariantProduct */
     private $createVariantProduct;
-    
-    /** @var Query\TurnProduct */
-    private $turnProduct;
+
+    /** @var EventDispatcherInterface */
+    private $eventDispatcher;
 
     /**
      * @param ProductModelRepositoryInterface $productModelRepository
      * @param CreateVariantProduct            $createVariantProduct
-     * @param Query\TurnProduct               $turnProduct
+     * @param EventDispatcherInterface        $eventDispatcher
      */
     public function __construct(
         ProductModelRepositoryInterface $productModelRepository,
         CreateVariantProduct $createVariantProduct,
-        Query\TurnProduct $turnProduct
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->productModelRepository = $productModelRepository;
         $this->createVariantProduct = $createVariantProduct;
-        $this->turnProduct = $turnProduct;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -57,11 +58,6 @@ class AddParent
             return $product;
         }
 
-        // we do nothing if it is a product
-        if ('' === $parentProductModelCode) {
-            return $product;
-        }
-        
         if (null === $productModel = $this->productModelRepository->findOneByIdentifier($parentProductModelCode)) {
             throw new \InvalidArgumentException(
                 sprintf('The given product model "%s" does not exist', $parentProductModelCode)
@@ -69,7 +65,11 @@ class AddParent
         }
 
         $variantProduct = $this->createVariantProduct->from($product, $productModel);
-        $this->turnProduct->into($variantProduct);
+
+        $this->eventDispatcher->dispatch(
+            ParentWasAddedToProduct::EVENT_NAME,
+            new ParentWasAddedToProduct($variantProduct, $parentProductModelCode)
+        );
 
         return $variantProduct;
     }

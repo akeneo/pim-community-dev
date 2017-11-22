@@ -105,7 +105,7 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setGroups(Collection $groups)
+    public function setGroups(Collection $groups): void
     {
         $this->groups = $groups;
     }
@@ -113,7 +113,7 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setCategories(Collection $categories)
+    public function setCategories(Collection $categories): void
     {
         $this->categories = $categories;
     }
@@ -121,7 +121,7 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
     /**
      * {@inheritdoc}
      */
-    public function setUniqueData(Collection $data)
+    public function setUniqueData(Collection $data): void
     {
         $this->uniqueData = $data;
     }

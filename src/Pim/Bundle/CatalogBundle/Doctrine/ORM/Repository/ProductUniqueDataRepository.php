@@ -24,7 +24,6 @@ class ProductUniqueDataRepository extends EntityRepository implements ProductUni
     {
         $queryBuilder = $this->createQueryBuilder('ud')
             ->select('COUNT(ud)')
-            ->innerJoin('ud.product', 'p')
             ->where('ud.attribute = :attribute')
             ->andWhere('ud.rawData = :data')
         ;
@@ -35,8 +34,8 @@ class ProductUniqueDataRepository extends EntityRepository implements ProductUni
         ];
 
         if (null !== $product->getId()) {
-            $queryBuilder->andWhere('p.id != :product');
-            $parameters['product'] = $product->getId();
+            $queryBuilder->andWhere('ud.product != :product');
+            $parameters['product'] = $product;
         }
 
         $queryBuilder->setParameters($parameters);

@@ -33,7 +33,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ProductProcessor extends AbstractProcessor implements ItemProcessorInterface, StepExecutionAwareInterface
 {
     /** @var FindProductToImport */
-    private $productToImport;
+    private $findProductToImport;
 
     /** @var AddParent */
     private $addParent;
@@ -55,7 +55,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository
-     * @param FindProductToImport                   $productToImport
+     * @param FindProductToImport                   $findProductToImport
      * @param AddParent                             $addParent
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
@@ -65,7 +65,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        FindProductToImport $productToImport,
+        FindProductToImport $findProductToImport,
         AddParent $addParent,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
@@ -75,7 +75,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
     ) {
         parent::__construct($repository);
 
-        $this->productToImport = $productToImport;
+        $this->findProductToImport = $findProductToImport;
         $this->addParent = $addParent;
         $this->updater = $updater;
         $this->validator = $validator;
@@ -108,7 +108,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             $familyCode = $this->getFamilyCode($item);
             $filteredItem = $this->filterItemData($item);
 
-            $product = $this->productToImport->fromFlatData($identifier, $familyCode, $parentProductModelCode);
+            $product = $this->findProductToImport->fromFlatData($identifier, $familyCode, $parentProductModelCode);
         } catch (AccessDeniedException $e) {
             $this->skipItemWithMessage($item, $e->getMessage(), $e);
         }
@@ -130,7 +130,13 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             }
         }
 
-        $product = $this->addParent->to($product, $parentProductModelCode);
+        if ('' !== $parentProductModelCode) {
+            try {
+                $product = $this->addParent->to($product, $parentProductModelCode);
+            } catch (\InvalidArgumentException $e) {
+                $this->skipItemWithMessage($item, $e->getMessage(), $e);
+            }
+        }
 
         try {
             $this->updateProduct($product, $filteredItem);

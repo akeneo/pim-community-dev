@@ -74,7 +74,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product_model'
             - '@pim_catalog.entity_with_family.create_variant_product_from_product'
-            - '@pim_catalog.doctrine.query.turn_product_into_variant_product'
+            - '@event_dispatcher'
 
     pim_connector.processor.denormalization.root_product_model:
         class: '%pim_connector.processor.denormalization.product_model.class%'

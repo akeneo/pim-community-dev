@@ -99,7 +99,7 @@ final class CreateVariantProductFromProductIntegration extends TestCase
         $this->assertSame($this->productModel->getFamilyVariant(), $variantProduct->getFamilyVariant());
 
         $assertCollection = new Assertion\Collection($this->product->getCategories(), $variantProduct->getCategories());
-        $assertCollection->hasFollowingEntities();
+        $assertCollection->containsEntities();
     }
 
     public function test that the variant product have product values without product model values()

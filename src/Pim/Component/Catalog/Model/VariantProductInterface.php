@@ -17,15 +17,15 @@ interface VariantProductInterface extends ProductInterface, EntityWithFamilyVari
     /**
      * @param Collection $groups
      */
-    public function setGroups(Collection $groups);
+    public function setGroups(Collection $groups): void;
 
     /**
      * @param Collection $categories
      */
-    public function setCategories(Collection $categories);
+    public function setCategories(Collection $categories): void;
 
     /**
      * @param $data Collection
      */
-    public function setUniqueData(Collection $data);
+    public function setUniqueData(Collection $data): void;
 }
