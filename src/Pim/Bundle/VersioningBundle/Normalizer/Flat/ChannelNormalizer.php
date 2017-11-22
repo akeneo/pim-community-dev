@@ -74,7 +74,7 @@ class ChannelNormalizer implements NormalizerInterface
     }
 
     /**
-     * Normalizes the conversion units __invoke a flat array
+     * Normalizes the conversion units into a flat array
      *
      * @param array $conversionUnits
      *

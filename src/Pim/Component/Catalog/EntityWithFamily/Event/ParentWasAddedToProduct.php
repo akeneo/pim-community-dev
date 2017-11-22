@@ -8,7 +8,7 @@ use Pim\Component\Catalog\Model\VariantProductInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * This event is raise when a product is turned __invoke a variant product
+ * This event is raise when a product is turned into a variant product
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -37,7 +37,7 @@ class ParentWasAddedToProduct extends Event
     /**
      * @return VariantProductInterface
      */
-    public function turnedProduct(): VariantProductInterface
+    public function convertedProduct(): VariantProductInterface
     {
         return $this->variantProduct;
     }

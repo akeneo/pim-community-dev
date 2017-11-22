@@ -27,7 +27,7 @@ class ParentWasAddedToProductSpec extends ObjectBehavior
 
     function it has a product id($variantProduct)
     {
-        $this->turnedProduct()->shouldReturn($variantProduct);
+        $this->convertedProduct()->shouldReturn($variantProduct);
     }
 
     function it has a variant product id()

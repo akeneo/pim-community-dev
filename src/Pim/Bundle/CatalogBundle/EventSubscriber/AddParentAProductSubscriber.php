@@ -46,6 +46,6 @@ class AddParentAProductSubscriber implements EventSubscriberInterface
      */
     public function turnProductIntoVariantProduct(ParentWasAddedToProduct $event): void
     {
-        ($this->turnProductIntoVariantProduct)($event->turnedProduct());
+        ($this->turnProductIntoVariantProduct)($event->convertedProduct());
     }
 }

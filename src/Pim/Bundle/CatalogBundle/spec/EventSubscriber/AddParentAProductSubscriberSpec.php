@@ -39,7 +39,7 @@ class AddParentAProductSubscriberSpec extends ObjectBehavior
         ParentWasAddedToProduct $event,
         VariantProductInterface $variantProduct
     ) {
-        $event->turnedProduct()->willReturn($variantProduct);
+        $event->convertedProduct()->willReturn($variantProduct);
         $turnProductIntoVariantProduct->__invoke($variantProduct)->shouldBeCalled();
 
         $this->turnProductIntoVariantProduct($event)->shouldReturn(null);
