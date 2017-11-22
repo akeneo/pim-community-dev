@@ -57,7 +57,7 @@ class CreateJobCommand extends ContainerAwareCommand
         $jsonConfig = $input->getArgument('config');
         $rawConfig = null === $jsonConfig ? [] : json_decode($jsonConfig, true);
         $jsonError = json_last_error_msg();
-        if (null !== $jsonConfig && null !== $jsonError) {
+        if (null !== $jsonConfig && 'No error' !== $jsonError) {
             $output->writeln(
                 sprintf(
                     '<error>config JSON decoding error: "%s"</error>',
