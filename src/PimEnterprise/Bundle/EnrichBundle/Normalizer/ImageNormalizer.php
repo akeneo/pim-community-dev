@@ -9,11 +9,12 @@ use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
 use Pim\Component\ReferenceData\Value\ReferenceDataCollectionValue;
 
 /**
- * ImageNormalizer.php
+ * Image Normalizer for Enterprise Edition.
+ *
+ * This Image Normalizer is able to normalize images coming from Asset attributes, to displau the first asset of a
+ * collection.
  *
  * @author    Pierre Allard <pierre.allard@akeneo.com>
- * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ImageNormalizer extends BaseImageNormalizer
 {
@@ -21,6 +22,7 @@ class ImageNormalizer extends BaseImageNormalizer
     protected $localeRepository;
 
     /**
+     * @param FileNormalizer            $fileNormalizer
      * @param LocaleRepositoryInterface $localeRepository
      */
     public function __construct(

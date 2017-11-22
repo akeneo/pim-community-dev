@@ -57,7 +57,7 @@ services:
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
-    pimee_enrich.normalizer.image:
+    pim_enrich.normalizer.image:
         class: '%pimee_enrich.normalizer.image.class%'
         arguments:
             - '@pim_enrich.normalizer.file'

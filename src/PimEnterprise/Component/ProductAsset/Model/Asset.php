@@ -191,9 +191,6 @@ class Asset implements AssetInterface, VersionableInterface
         }
 
         if (null === $locale) {
-            $e = new \Exception();
-            error_log($e->getTraceAsString());
-
             throw new \LogicException(sprintf(
                 'Cannot retrieve the reference of the localizable asset "%s" if no locale is specified',
                 $this->getCode()
