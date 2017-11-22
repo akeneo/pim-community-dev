@@ -114,6 +114,7 @@ define(
              * Gets the allowed display types from the datagrid config and applies them
              * The allowed options are:
              *
+             * manageColumns: Display column selector button or not
              * rowView: The module to display a row
              * label: The name of the display type in the display-selector
              *
@@ -123,8 +124,7 @@ define(
              */
             applyDisplayType(gridMetadata) {
                 const selectedType = this.getStoredDisplayType();
-                const gridName = this.config.gridName;
-                const metadata = _.clone(gridMetadata);
+                const metadata = Object.assign({}, gridMetadata);
                 const displayTypes = metadata.options.displayTypes || {};
                 const displayType = displayTypes[selectedType];
 
@@ -132,8 +132,10 @@ define(
                     return gridMetadata;
                 }
 
+                metadata.options.manageColumns = displayType.manageColumns;
                 metadata.options.rowView = displayType.rowView;
-                $(`#${gridName}`).addClass(`AknGrid--${selectedType}`);
+
+                $('#product-grid').addClass(`AknGrid--${selectedType}`);
 
                 return metadata;
             },

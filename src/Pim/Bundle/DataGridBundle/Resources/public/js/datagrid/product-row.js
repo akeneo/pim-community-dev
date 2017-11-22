@@ -1,5 +1,5 @@
 /*
-* This module renders a custom 'gallery' view for a product in a datagrid.
+* This module is a custom row for a product in the datagrid.
 *
 * @author    Tamara Robichet <tamara.robichet@akeneo.com>
 * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
@@ -22,66 +22,12 @@ define(
         BaseRow,
         rowTemplate,
         thumbnailTemplate,
-        MediaUrlGenerator
+        mediaUrlGenerator
     ) {
         return BaseRow.extend({
             tagName: 'div',
             rowTemplate: _.template(rowTemplate),
             thumbnailTemplate: _.template(thumbnailTemplate),
-
-            /**
-             * Returns true if the model is a product model
-             * @return {Boolean}
-             */
-            isProductModel() {
-                return this.model.get('document_type') === 'product_model';
-            },
-
-            /**
-             * Get the name of the completeness cell based on product type
-             * @return {String}
-             */
-            getCompletenessCellType() {
-                return this.isProductModel() ? 'complete_variant_products' : 'completeness';
-            },
-
-            /**
-             * If the row contains a checked checkbox, set the selected class
-             * @param {HTMLElement} row
-             */
-            setCheckedClass(row) {
-                const isChecked = $('input[type="checkbox"]:checked', row).length;
-                row.toggleClass('AknGrid-bodyRow--selected', 1 === isChecked);
-            },
-
-            /**
-             * Returns the 'thumbnail' size image path for a product OR the dummy image
-             *
-             * @return {String}
-             */
-            getThumbnailImagePath() {
-                const image = this.model.get('image');
-
-                if (null === image) {
-                    return '/media/show/undefined/preview';
-                }
-
-                return MediaUrlGenerator.getMediaShowUrl(image.filePath, 'thumbnail');
-            },
-
-            /**
-             * Renders the completeness, row actions and checkbox cells
-             * @param  {HTMLElement} row
-             */
-            renderCells(row) {
-                const type = this.getCompletenessCellType();
-                const columnNames = [type, 'massAction', ''];
-                const cells = this.cells.filter(cell => {
-                    return columnNames.includes(cell.column.get('name'));
-                });
-
-                cells.forEach(cell => row.append(cell.render().el));
-            },
 
             /**
              * {@inheritdoc}
@@ -103,9 +49,74 @@ define(
                 this.$el.empty().html(row);
 
                 row.on('click', this.onClick.bind(this));
-                row.on('change', 'input[type="checkbox"]', this.setCheckedClass.bind(this, row));
+
+                this.listenTo(this.model, 'backgrid:selected', (model, checked) => {
+                    row.toggleClass('AknGrid-bodyRow--selected', checked);
+                });
 
                 return this.delegateEvents();
+            },
+
+            /**
+             * Returns true if the model is a product model
+             * @return {Boolean}
+             */
+            isProductModel() {
+                return this.model.get('document_type') === 'product_model';
+            },
+
+            /**
+             * Get the name of the completeness cell based on product type
+             * @return {String}
+             */
+            getCompletenessCellType() {
+                return this.isProductModel() ? 'complete_variant_products' : 'completeness';
+            },
+
+            /**
+             * Returns the 'thumbnail' size image path for a product OR the dummy image
+             *
+             * @return {String}
+             */
+            getThumbnailImagePath() {
+                const image = this.model.get('image');
+
+                if (undefined === image || null === image) {
+                    return '/media/show/undefined/preview';
+                }
+
+                return mediaUrlGenerator.getMediaShowUrl(image.filePath, 'thumbnail');
+            },
+
+            /**
+             * Renders the completeness, row actions and checkbox cells
+             *
+             * Adds modifier classes for the completeness cell and the icons
+             * inside the row actions cell.
+             *
+             * @param  {HTMLElement} row
+             */
+            renderCells(row) {
+                const type = this.getCompletenessCellType();
+                const columnsToRender = [type, 'massAction', ''];
+
+                this.cells.forEach(cell => {
+                    const columnName = cell.column.get('name');
+
+                    if (false === columnsToRender.includes(columnName)) {
+                        return;
+                    }
+
+                    const cellElement = cell.render().el;
+
+                    if (columnName === type) {
+                        $(cellElement).addClass('AknBadge--topRight');
+                    } else if (columnName === '') {
+                        $('.AknIconButton', cellElement).addClass('AknIconButton--white');
+                    }
+
+                    row.append(cellElement);
+                });
             }
         });
     });

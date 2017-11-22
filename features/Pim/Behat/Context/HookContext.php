@@ -314,7 +314,7 @@ class HookContext extends PimContext
         if ($event->getTestResult() !== StepResult::UNDEFINED) {
             if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
                 try {
-                    $script = 'sessionStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';
+                    $script = 'sessionStorage.clear(); localStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';
                     $this->getMainContext()->executeScript($script);
                 } catch (\Exception $e) {
                     //

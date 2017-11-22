@@ -24,11 +24,11 @@ define([
     Routing
 ) {
     return BaseForm.extend({
-        className: 'AknGridToolbar-right AknDropdown AknDropdown--toolbar',
+        className: 'AknGridToolbar-right AknDropdown AknDropdown--left AknDisplaySelector',
         gridName: null,
         template: _.template(template),
         events: {
-            'click li': 'setDisplayType'
+            'click .AknDisplaySelector-item': 'setDisplayType'
         },
 
         /**
