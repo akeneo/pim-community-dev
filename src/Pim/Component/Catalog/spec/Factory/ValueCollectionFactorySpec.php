@@ -121,40 +121,6 @@ class ValueCollectionFactorySpec extends ObjectBehavior
         $actualValues->shouldHaveCount(0);
     }
 
-    function it_skips_unknown_options_when_creating_a_values_collection_from_the_storage_format(
-        $valueFactory,
-        $attributeRepository,
-        $logger,
-        AttributeInterface $color
-    ) {
-        $color->getCode()->willReturn('color');
-        $color->isUnique()->willReturn(false);
-
-        $attributeRepository->findOneByIdentifier('color')->willReturn($color);
-        $valueFactory->create($color, null, null, 'red')->willThrow(
-            InvalidOptionException::validEntityCodeExpected(
-                'color',
-                'code',
-                'The option does not exist',
-                static::class,
-                'red'
-            )
-        );
-
-        $logger->warning('Tried to load a product value with the option "color.red" that does not exist.');
-
-        $actualValues = $this->createFromStorageFormat([
-            'color' => [
-                '<all_channels>' => [
-                    '<all_locales>' => 'red'
-                ],
-            ],
-        ]);
-
-        $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
-        $actualValues->shouldHaveCount(0);
-    }
-
     function it_skips_invalid_attributes_when_creating_a_values_collection_from_the_storage_format(
         $valueFactory,
         $attributeRepository,

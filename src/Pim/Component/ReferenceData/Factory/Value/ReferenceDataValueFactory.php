@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\ReferenceData\Factory\Value;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
@@ -48,13 +50,13 @@ class ReferenceDataValueFactory implements ValueFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
+    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data): ValueInterface
     {
         $this->checkData($attribute, $data);
 
         if (null !== $data) {
             $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
-            $data = $this->getReferenceData($attribute, $repository, $data);
+            $data = $this->getReferenceData($repository, $data);
         }
 
         $value = new $this->productValueClass($attribute, $channelCode, $localeCode, $data);
@@ -65,7 +67,7 @@ class ReferenceDataValueFactory implements ValueFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($attributeType)
+    public function supports($attributeType): bool
     {
         return $attributeType === $this->supportedAttributeType;
     }
@@ -78,7 +80,7 @@ class ReferenceDataValueFactory implements ValueFactoryInterface
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkData(AttributeInterface $attribute, $data)
+    protected function checkData(AttributeInterface $attribute, $data): void
     {
         if (null === $data) {
             return;
@@ -96,30 +98,15 @@ class ReferenceDataValueFactory implements ValueFactoryInterface
     /**
      * Finds a reference data by code.
      *
-     * @param AttributeInterface               $attribute
      * @param ReferenceDataRepositoryInterface $repository
      * @param string                           $referenceDataCode
      *
-     * @throws InvalidPropertyException
-     * @return ReferenceDataInterface
+     * @return null|ReferenceDataInterface
      */
     protected function getReferenceData(
-        AttributeInterface $attribute,
         ReferenceDataRepositoryInterface $repository,
-        $referenceDataCode
-    ) {
-        $referenceData = $repository->findOneBy(['code' => $referenceDataCode]);
-
-        if (null === $referenceData) {
-            throw InvalidPropertyException::validEntityCodeExpected(
-                $attribute->getCode(),
-                'reference data code',
-                sprintf('The code of the reference data "%s" does not exist', $attribute->getReferenceDataName()),
-                static::class,
-                $referenceDataCode
-            );
-        }
-
-        return $referenceData;
+        string $referenceDataCode
+    ): ?ReferenceDataInterface {
+        return $repository->findOneBy(['code' => $referenceDataCode]);
     }
 }

@@ -176,8 +176,10 @@ class OptionValueFactorySpec extends ObjectBehavior
             ->during('create', [$attribute, 'ecommerce', 'en_US', []]);
     }
 
-    function it_throws_an_exception_if_option_does_not_exist($attrOptionRepository, AttributeInterface $attribute)
-    {
+    function it_returns_an_empty_product_value_if_option_does_not_exist(
+        $attrOptionRepository,
+        AttributeInterface $attribute
+    ) {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('simple_select_attribute');
@@ -187,17 +189,21 @@ class OptionValueFactorySpec extends ObjectBehavior
 
         $attrOptionRepository->findOneByIdentifier('simple_select_attribute.foobar')->willReturn(null);
 
-        $exception = InvalidPropertyException::validEntityCodeExpected(
-            'simple_select_attribute',
-            'code',
-            'The option does not exist',
-            OptionValueFactory::class,
+        $productValue = $this->create(
+            $attribute,
+            'ecommerce',
+            'en_US',
             'foobar'
         );
 
-        $this
-            ->shouldThrow($exception)
-            ->during('create', [$attribute, 'ecommerce', 'en_US', 'foobar']);
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldHaveAttribute('simple_select_attribute');
+        $productValue->shouldBeLocalizable();
+        $productValue->shouldHaveLocale('en_US');
+        $productValue->shouldBeScopable();
+        $productValue->shouldHaveChannel('ecommerce');
+        $productValue->shouldBeEmpty();
+
     }
 
     public function getMatchers()

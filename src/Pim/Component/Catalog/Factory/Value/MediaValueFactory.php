@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\Catalog\Factory\Value;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
@@ -7,6 +9,7 @@ use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Factory that creates media product values.
@@ -46,7 +49,7 @@ class MediaValueFactory implements ValueFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
+    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data): ValueInterface
     {
         $this->checkData($attribute, $data);
 
@@ -62,7 +65,7 @@ class MediaValueFactory implements ValueFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($attributeType)
+    public function supports($attributeType): bool
     {
         return $attributeType === $this->supportedAttributeType;
     }
@@ -75,7 +78,7 @@ class MediaValueFactory implements ValueFactoryInterface
      *
      * @throws InvalidPropertyException
      */
-    protected function checkData(AttributeInterface $attribute, $data)
+    protected function checkData(AttributeInterface $attribute, $data): void
     {
         if (null === $data) {
             return;
@@ -94,23 +97,10 @@ class MediaValueFactory implements ValueFactoryInterface
      * @param AttributeInterface $attribute
      * @param string             $data
      *
-     * @throws InvalidPropertyException
-     * @return FileInfoInterface
+     * @return FileInfoInterface|null
      */
-    protected function getFileInfo(AttributeInterface $attribute, $data)
+    protected function getFileInfo(AttributeInterface $attribute, $data): ?FileInfoInterface
     {
-        $file = $this->fileInfoRepository->findOneByIdentifier($data);
-
-        if (null === $file) {
-            throw InvalidPropertyException::validEntityCodeExpected(
-                $attribute->getCode(),
-                'fileinfo key',
-                'The media does not exist',
-                static::class,
-                $data
-            );
-        }
-
-        return $file;
+        return $this->fileInfoRepository->findOneByIdentifier($data);
     }
 }

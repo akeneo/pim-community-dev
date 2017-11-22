@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Pim\Component\ReferenceData\Factory\Value;
 
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
@@ -48,7 +50,7 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
+    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data): ValueInterface
     {
         $this->checkData($attribute, $data);
 
@@ -69,7 +71,7 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($attributeType)
+    public function supports($attributeType): bool
     {
         return $attributeType === $this->supportedAttributeType;
     }
@@ -82,7 +84,7 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkData(AttributeInterface $attribute, $data)
+    protected function checkData(AttributeInterface $attribute, $data): void
     {
         if (null === $data || [] === $data) {
             return;
@@ -116,15 +118,15 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
      *
      * @return array
      */
-    protected function getReferenceDataCollection(AttributeInterface $attribute, array $referenceDataCodes)
+    protected function getReferenceDataCollection(AttributeInterface $attribute, array $referenceDataCodes): array
     {
         $collection = [];
 
         $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
 
         foreach ($referenceDataCodes as $referenceDataCode) {
-            $referenceData = $this->getReferenceData($attribute, $repository, $referenceDataCode);
-            if (!in_array($referenceData, $collection)) {
+            $referenceData = $this->getReferenceData($repository, $referenceDataCode);
+            if (null !== $referenceData && !in_array($referenceData, $collection)) {
                 $collection[] = $referenceData;
             }
         }
@@ -135,35 +137,15 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
     /**
      * Finds a reference data by code.
      *
-     * @todo TIP-684: When deleting one element of the collection, we will end up throwing the exception.
-     *       Problem is, when loading a product value from single storage, it will be skipped because of
-     *       one reference data, when the others in the collection could be valid. So the value will not
-     *       be loaded at all, when what we want is the value to be loaded minus the wrong reference data.
-     *
-     * @param AttributeInterface               $attribute
      * @param ReferenceDataRepositoryInterface $repository
      * @param string                           $referenceDataCode
      *
-     * @throws InvalidPropertyException
      * @return ReferenceDataInterface
      */
     protected function getReferenceData(
-        AttributeInterface $attribute,
         ReferenceDataRepositoryInterface $repository,
-        $referenceDataCode
-    ) {
-        $referenceData = $repository->findOneBy(['code' => $referenceDataCode]);
-
-        if (null === $referenceData) {
-            throw InvalidPropertyException::validEntityCodeExpected(
-                $attribute->getCode(),
-                'reference data code',
-                sprintf('The code of the reference data "%s" does not exist', $attribute->getReferenceDataName()),
-                static::class,
-                $referenceDataCode
-            );
-        }
-
-        return $referenceData;
+        string $referenceDataCode
+    ): ?ReferenceDataInterface {
+        return $repository->findOneBy(['code' => $referenceDataCode]);
     }
 }
