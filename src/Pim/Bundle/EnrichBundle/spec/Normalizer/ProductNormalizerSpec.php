@@ -54,7 +54,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         NormalizerInterface $completenessCollectionNormalizer,
         UserContext $userContext,
         CompletenessCalculatorInterface $completenessCalculator,
-        FileNormalizer $fileNormalizer,
         ProductBuilderInterface $productBuilder,
         EntityWithFamilyValuesFillerInterface $productValuesFiller,
         EntityWithFamilyVariantAttributesProvider $attributesProvider,
@@ -77,7 +76,6 @@ class ProductNormalizerSpec extends ObjectBehavior
             $completenessCollectionNormalizer,
             $userContext,
             $completenessCalculator,
-            $fileNormalizer,
             $productBuilder,
             $productValuesFiller,
             $attributesProvider,
@@ -103,7 +101,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         $channelRepository,
         $userContext,
         $collectionFilter,
-        $fileNormalizer,
         $productBuilder,
         $productValuesFiller,
         ProductInterface $mug,
@@ -174,7 +171,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $mug->getLabel('fr_FR', 'mobile')->willReturn('Un très beau Mug !');
         $mug->getImage()->willReturn($image);
         $image->getData()->willReturn($dataImage);
-        $fileNormalizer->normalize($dataImage, Argument::any(), Argument::any())->willReturn([
+        $normalizer->normalize($image, Argument::cetera())->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png',
         ]);
@@ -243,7 +240,6 @@ class ProductNormalizerSpec extends ObjectBehavior
         $channelRepository,
         $userContext,
         $collectionFilter,
-        $fileNormalizer,
         $productBuilder,
         $productValuesFiller,
         $navigationNormalizer,
@@ -322,7 +318,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $mug->getLabel('fr_FR', 'mobile')->willReturn('Un très beau Mug !');
         $mug->getImage()->willReturn($image);
         $image->getData()->willReturn($dataImage);
-        $fileNormalizer->normalize($dataImage, Argument::any(), Argument::any())->willReturn([
+        $normalizer->normalize($image, Argument::cetera())->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
             'originalFileName' => 'all.png',
         ]);
