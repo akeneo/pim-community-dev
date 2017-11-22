@@ -56,7 +56,17 @@ class CreateJobCommand extends ContainerAwareCommand
         $label = $label ? $label : $code;
         $jsonConfig = $input->getArgument('config');
         $rawConfig = null === $jsonConfig ? [] : json_decode($jsonConfig, true);
+        $jsonError = json_last_error_msg();
+        if (null !== $jsonConfig && null !== $jsonError) {
+            $output->writeln(
+                sprintf(
+                    '<error>config JSON decoding error: "%s"</error>',
+                    $jsonError
+                )
+            );
 
+            return self::EXIT_ERROR_CODE;
+        }
         $factory = $this->getJobInstanceFactory();
         $jobInstance = $factory->createJobInstance($type);
         $jobInstance->setConnector($connector);
