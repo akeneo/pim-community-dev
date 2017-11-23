@@ -3,7 +3,7 @@ attribute_fields:
 
 extensions:
     pimee-product-asset-picker-form:
-        module: pimee/picker/asset-grid
+        module: pim/common/item-picker
 
     pimee-product-asset-picker-form-filters-list:
         module: oro/datafilter/filters-list
