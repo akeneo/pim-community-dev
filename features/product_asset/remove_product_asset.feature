@@ -11,7 +11,6 @@ Feature: Remove product assets
       | shirt | tees   |
     And I am logged in as "Pamela"
 
-  @skip @info To be fixed in TIP-684
   Scenario: Successfully delete product asset
     Given I am on the "shirt" product page
     And I visit the "Media" group
@@ -25,9 +24,9 @@ Feature: Remove product assets
     And I confirm the removal
     Then I should be on the assets page
     And I should not see asset chicagoskyline
-    Then I am on the "shirt" product page
-    And I visit the "Media" group
-    And the "Front view" asset gallery should contain akene
+    When I am on the "shirt" product page
+    And I switch the locale to "en_US"
+    Then the "Front view" asset gallery should be empty
 
   Scenario: Remove an asset is forbidden if the asset is used in a published product
     Given I am on the "shirt" product page

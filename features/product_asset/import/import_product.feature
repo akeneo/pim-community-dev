@@ -10,6 +10,7 @@ Feature: Import products with an assets collection
     And I visit the "Attributes" tab
     And I add available attribute gallery
     And I save the family
+
   Scenario: Successfully import a csv file of products with a collection of assets
     Given the following CSV file to import:
       """
