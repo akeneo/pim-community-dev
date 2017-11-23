@@ -13,32 +13,33 @@
 -- Admins: all API rights granted
 -- Managers: overall API access granted but all rights on entities (list and edit) denied
 -- Redactors: overall API access denied
-
+--
+-- We use auto-generated id to allow to add ACL in Enterprise Edition, without any conflict on the primary key.
 --
 -- Dumping data for table `acl_classes`
 --
 
 /*!40000 ALTER TABLE `acl_classes` DISABLE KEYS */;
-INSERT INTO `acl_classes` VALUES
-    (1,'pim_api_overall_access'),
-    (2,'pim_api_attribute_list'),
-    (3,'pim_api_attribute_edit'),
-    (4,'pim_api_attribute_option_list'),
-    (5,'pim_api_attribute_option_edit'),
-    (6,'pim_api_category_list'),
-    (7,'pim_api_category_edit'),
-    (8,'pim_api_channel_list'),
-    (9,'pim_api_family_list'),
-    (10,'pim_api_family_variant_list'),
-    (11,'pim_api_family_edit'),
-    (12,'pim_api_locale_list'),
-    (13,'pim_api_attribute_group_list'),
-    (14,'pim_api_attribute_group_edit'),
-    (15,'pim_api_currency_list'),
-    (16,'pim_api_channel_edit'),
-    (17,'pim_api_association_type_list'),
-    (18,'pim_api_association_type_edit'),
-    (19,'pim_api_family_variant_edit')
+INSERT INTO `acl_classes` (`class_type`) VALUES
+    ('pim_api_overall_access'),
+    ('pim_api_attribute_list'),
+    ('pim_api_attribute_edit'),
+    ('pim_api_attribute_option_list'),
+    ('pim_api_attribute_option_edit'),
+    ('pim_api_category_list'),
+    ('pim_api_category_edit'),
+    ('pim_api_channel_list'),
+    ('pim_api_family_list'),
+    ('pim_api_family_variant_list'),
+    ('pim_api_family_edit'),
+    ('pim_api_locale_list'),
+    ('pim_api_attribute_group_list'),
+    ('pim_api_attribute_group_edit'),
+    ('pim_api_currency_list'),
+    ('pim_api_channel_edit'),
+    ('pim_api_association_type_list'),
+    ('pim_api_association_type_edit'),
+    ('pim_api_family_variant_edit')
 ;
 /*!40000 ALTER TABLE `acl_classes` ENABLE KEYS */;
 
@@ -47,28 +48,35 @@ INSERT INTO `acl_classes` VALUES
 --
 
 /*!40000 ALTER TABLE `acl_entries` DISABLE KEYS */;
-INSERT INTO `acl_entries` VALUES
-    (1,2,NULL,2,NULL,0,0,1,'all',0,0),
-    (2,3,NULL,2,NULL,0,0,1,'all',0,0),
-    (3,4,NULL,2,NULL,0,0,1,'all',0,0),
-    (4,5,NULL,2,NULL,0,0,1,'all',0,0),
-    (5,6,NULL,2,NULL,0,0,1,'all',0,0),
-    (6,7,NULL,2,NULL,0,0,1,'all',0,0),
-    (7,8,NULL,2,NULL,0,0,1,'all',0,0),
-    (8,9,NULL,2,NULL,0,0,1,'all',0,0),
-    (9,10,NULL,2,NULL,0,0,1,'all',0,0),
-    (10,11,NULL,2,NULL,0,0,1,'all',0,0),
-    (11,1,NULL,2,NULL,0,0,1,'all',0,0),
-    (12,12,NULL,2,NULL,0,0,1,'all',0,0),
-    (13,13,NULL,2,NULL,0,0,1,'all',0,0),
-    (14,14,NULL,2,NULL,0,0,1,'all',0,0),
-    (15,15,NULL,2,NULL,0,0,1,'all',0,0),
-    (16,16,NULL,2,NULL,0,0,1,'all',0,0),
-    (17,17,NULL,2,NULL,0,0,1,'all',0,0),
-    (18,1,NULL,4,NULL,0,0,1,'all',0,0),
-    (19,18,NULL,2,NULL,0,0,1,'all',0,0),
-    (20,19,NULL,2,NULL,0,0,1,'all',0,0)
-;
+INSERT INTO `acl_entries`
+(
+    `class_id`,
+    `object_identity_id`,
+    `security_identity_id`,
+    `field_name`,
+    `ace_order`,
+    `mask`,
+    `granting`,
+    `granting_strategy`,
+    `audit_success`,
+    `audit_failure`
+)
+SELECT id, NULL, 2, NULL, 0, 0, 1, 'all', 0, 0 FROM `acl_classes`;
+
+INSERT INTO `acl_entries`
+(
+    `class_id`,
+    `object_identity_id`,
+    `security_identity_id`,
+    `field_name`,
+    `ace_order`,
+    `mask`,
+    `granting`,
+    `granting_strategy`,
+    `audit_success`,
+    `audit_failure`
+)
+SELECT id, NULL, 4, NULL, 0, 0, 1, 'all', 0, 0 FROM `acl_classes` WHERE `class_type` = 'pim_api_overall_access';
 /*!40000 ALTER TABLE `acl_entries` ENABLE KEYS */;
 
 --
@@ -76,27 +84,14 @@ INSERT INTO `acl_entries` VALUES
 --
 
 /*!40000 ALTER TABLE `acl_object_identities` DISABLE KEYS */;
-INSERT INTO `acl_object_identities` VALUES
-    (1,NULL,1,'action',1),
-    (2,NULL,2,'action',1),
-    (3,NULL,3,'action',1),
-    (4,NULL,4,'action',1),
-    (5,NULL,5,'action',1),
-    (6,NULL,6,'action',1),
-    (7,NULL,7,'action',1),
-    (8,NULL,8,'action',1),
-    (9,NULL,9,'action',1),
-    (10,NULL,10,'action',1),
-    (11,NULL,11,'action',1),
-    (12,NULL,12,'action',1),
-    (13,NULL,13,'action',1),
-    (14,NULL,14,'action',1),
-    (15,NULL,15,'action',1),
-    (16,NULL,16,'action',1),
-    (17,NULL,17,'action',1),
-    (18,NULL,18,'action',1),
-    (19,NULL,19,'action',1)
-;
+INSERT INTO `acl_object_identities`
+(
+    `parent_object_identity_id`,
+    `class_id`,
+    `object_identifier`,
+    `entries_inheriting`
+)
+SELECT NULL, id, 'action', 1 FROM `acl_classes`;
 /*!40000 ALTER TABLE `acl_object_identities` ENABLE KEYS */;
 
 --
@@ -104,27 +99,8 @@ INSERT INTO `acl_object_identities` VALUES
 --
 
 /*!40000 ALTER TABLE `acl_object_identity_ancestors` DISABLE KEYS */;
-INSERT INTO `acl_object_identity_ancestors` VALUES
-    (1,1),
-    (2,2),
-    (3,3),
-    (4,4),
-    (5,5),
-    (6,6),
-    (7,7),
-    (8,8),
-    (9,9),
-    (10,10),
-    (11,11),
-    (12,12),
-    (13,13),
-    (14,14),
-    (15,15),
-    (16,16),
-    (17,17),
-    (18,18),
-    (19,19)
-;
+INSERT INTO `acl_object_identity_ancestors` (`object_identity_id`, `ancestor_id`)
+SELECT id, id FROM `acl_object_identities`;
 /*!40000 ALTER TABLE `acl_object_identity_ancestors` ENABLE KEYS */;
 
 

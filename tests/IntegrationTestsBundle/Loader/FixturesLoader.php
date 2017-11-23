@@ -142,10 +142,15 @@ class FixturesLoader implements FixturesLoaderInterface
      */
     protected function loadSqlFiles(array $files): void
     {
-        $db = $this->container->get('doctrine.orm.entity_manager')->getConnection();
-
         foreach ($files as $file) {
-            $db->executeQuery(file_get_contents($file));
+            $this->execCommand([
+                'mysql',
+                '-h '.$this->container->getParameter('database_host'),
+                '-u '.$this->container->getParameter('database_user'),
+                '-p'.$this->container->getParameter('database_password'),
+                $this->container->getParameter('database_name'),
+                sprintf('< %s', $file),
+            ]);
         }
     }
 
