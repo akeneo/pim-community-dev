@@ -46,14 +46,25 @@ define(
             template: _.template(template),
             basketTemplate: _.template(basketTemplate),
             events: {
-                'click .remove-asset': 'removeAssetFromBasket'
+                'click .remove-item': 'removeItemFromBasket'
             },
 
             /**
              * {@inheritdoc}
              */
-            initialize: function () {
+            initialize: function (config) {
                 this.datagridModel = null;
+                this.config = config.config;
+
+                if (undefined === this.config.datagridName) {
+                    throw new Error('You have to add parameter "datagridName" to the configuration of this module.');
+                }
+
+                if (undefined === this.config.categoryTreeRoute) {
+                    throw new Error(
+                        'You have to add parameter "categoryTreeRoute" to the configuration of this module.'
+                    );
+                }
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -63,8 +74,8 @@ define(
              */
             configure: function () {
                 this.datagrid = {
-                    name: 'asset-picker-grid',
-                    paramName: 'assetCodes'
+                    name: this.config.datagridName,
+                    paramName: 'itemCodes'
                 };
 
                 mediator.on('datagrid:selectModel:' + this.datagrid.name, this.selectModel.bind(this));
@@ -76,7 +87,7 @@ define(
                     if (!this.configured) {
                         mediator.trigger(
                             'column_form_listener:set_selectors:' + gridName,
-                            { included: '#asset-appendfield' }
+                            { included: '#item-picker-append-field' }
                         );
                     }
                 }.bind(this));
@@ -93,8 +104,8 @@ define(
                 }
 
                 this.$el.html(this.template({
-                    title: __('pimee_product_asset.form.product.asset.title'),
-                    description: __('pimee_product_asset.form.product.asset.description'),
+                    title: __(this.config.title),
+                    description: __(this.config.description),
                     locale: this.getLocale()
                 }));
 
@@ -116,7 +127,7 @@ define(
                     minWidth: originalColumnWidth,
                     maxWidth: 500,
                     container: this.$('.ui-resizable-container--column-child'),
-                    storageKey: 'asset-grid'
+                    storageKey: 'item-picker'
                 });
             },
 
@@ -130,7 +141,7 @@ define(
             },
 
             /**
-             * Render the asset grid
+             * Render the item grid
              */
             renderGrid: function () {
                 const urlParams = {
@@ -145,7 +156,12 @@ define(
                 };
 
                 /* jshint nonew: false */
-                new CategoryFilter(urlParams, 'asset-grid', 'pimee_asset_picker_categorytree', '#asset-tree');
+                new CategoryFilter(
+                    urlParams,
+                    this.config.datagridName,
+                    this.config.categoryTreeRoute,
+                    '#item-picker-tree'
+                );
 
                 $.get(Routing.generate('pim_datagrid_load', urlParams)).done(function (response) {
                     this.$('#grid-' + this.datagrid.name).data(
@@ -173,75 +189,75 @@ define(
             },
 
             /**
-             * Triggered by the datagrid:selectModel:asset-picker-grid event
+             * Triggered by the datagrid:selectModel:gridName event
              *
              * @param {Object} model
              */
             selectModel: function (model) {
-                this.addAsset(model.get('code'));
+                this.addItem(model.get('code'));
             },
 
             /**
-             * Triggered by the datagrid:unselectModel:asset-picker-grid event
+             * Triggered by the datagrid:unselectModel:gridName event
              *
              * @param {Object} model
              */
             unselectModel: function (model) {
-                this.removeAsset(model.get('code'));
+                this.removeItem(model.get('code'));
             },
 
             /**
-             * Add an asset to the basket
+             * Add an item to the basket
              *
              * @param {string} code
              *
              * @return this
              */
-            addAsset: function (code) {
-                let assets = this.getAssets();
-                assets.push(code);
-                assets = _.uniq(assets);
+            addItem: function (code) {
+                let items = this.getItems();
+                items.push(code);
+                items = _.uniq(items);
 
-                this.setAssets(assets);
+                this.setItems(items);
 
                 return this;
             },
 
             /**
-             * Remove an asset from the collection
+             * Remove an item from the collection
              *
              * @param {string} code
              *
              * @return this
              */
-            removeAsset: function (code) {
-                let assets = _.without(this.getAssets(), code);
+            removeItem: function (code) {
+                let items = _.without(this.getItems(), code);
 
-                this.setAssets(assets);
+                this.setItems(items);
 
                 return this;
             },
 
             /**
-             * Get all assets in the collection
+             * Get all items in the collection
              *
              * @return {Array}
              */
-            getAssets: function () {
-                const assets = $('#asset-appendfield').val();
+            getItems: function () {
+                const items = $('#item-picker-append-field').val();
 
-                return (!_.isUndefined(assets) && '' !== assets) ? assets.split(',') : [];
+                return (!_.isUndefined(items) && '' !== items) ? items.split(',') : [];
             },
 
             /**
-             * Set assets
+             * Set items
              *
-             * @param {Array} assetCodes
+             * @param {Array} itemCodes
              *
              * @return this
              */
-            setAssets: function (assetCodes) {
-                $('#asset-appendfield').val(assetCodes.join(','));
+            setItems: function (itemCodes) {
+                $('#item-picker-append-field').val(itemCodes.join(','));
                 this.updateBasket();
 
                 return this;
@@ -257,42 +273,45 @@ define(
                     return;
                 }
 
-                const assets = this.getAssets();
+                const items = this.getItems();
 
                 _.each(datagrid.models, function (row) {
-                    if (_.contains(assets, row.get('code'))) {
+                    if (_.contains(items, row.get('code'))) {
                         row.set('is_checked', true);
                     } else {
                         row.set('is_checked', null);
                     }
                 }.bind(this));
 
-                this.setAssets(assets);
+                this.setItems(items);
             },
 
             /**
-             * Remove an asset from the basket (triggered by 'click .remove-asset')
+             * Remove an item from the basket (triggered by 'click .remove-item')
              *
              * @param {Event} event
              */
-            removeAssetFromBasket: function (event) {
-                this.removeAsset(event.currentTarget.dataset.asset);
+            removeItemFromBasket: function (event) {
+                this.removeItem(event.currentTarget.dataset.itemCode);
                 if (this.datagridModel) {
                     this.updateChecked(this.datagridModel);
                 }
             },
 
             /**
+             * TODO Render this more abstract with config
              * Render the basket to update its content
              */
             updateBasket: function () {
-                FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.getAssets())
+                FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.getItems())
                     .then(function (assets) {
                         this.$('.basket').html(this.basketTemplate({
-                            assets: assets,
+                            items: assets,
                             thumbnailFilter: 'thumbnail',
                             scope: this.getScope(),
-                            locale: this.getLocale()
+                            locale: this.getLocale(),
+                            title: __('pim_enrich.form.basket.title'),
+                            emptyLabel: __('pim_enrich.form.basket.empty_basket'),
                         }));
 
                         this.delegateEvents();

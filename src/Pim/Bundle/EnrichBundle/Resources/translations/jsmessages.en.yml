@@ -797,7 +797,9 @@ pim_enrich:
                         select_attributes: Add attributes
                         add: Add
                         attributes_groups_selected: '{{ itemsCount }} group(s) selected'
-
+        basket:
+            title: Basket
+            empty_basket: Basket is empty
     job:
         upload: Drop your {{ type }} file here, or click to browse disk
     export:

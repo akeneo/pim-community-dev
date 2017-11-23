@@ -2884,4 +2884,17 @@ class WebUser extends PimContext
 
         return (null === $badge) ? 0 : intval($badge->getText());
     }
+
+    /**
+     * @Given /^I remove "([^"]*)" from the basket$/
+     */
+    public function iRemoveFromTheBasket($entity)
+    {
+        $removeButton = $this->spin(function () use ($entity) {
+            return $this->getSession()->getPage()
+                ->find('css', sprintf('.item-picker-basket li[data-itemCode="%s"] .remove-item', $entity));
+        }, 'Cannot find button to remove from basket');
+
+        $removeButton->click();
+    }
 }
