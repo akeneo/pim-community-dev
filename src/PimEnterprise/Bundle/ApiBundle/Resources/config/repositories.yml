@@ -8,3 +8,10 @@ services:
             - '@doctrine.orm.entity_manager'
             - '%pimee_workflow.entity.published_product.class%'
             - '@pimee_workflow.repository.published_product'
+
+    pimee_api.repository.asset_category:
+        class: '%pim_api.repository.api_resource.class%'
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '%pim_catalog.entity.category.class%'
+            - '@pimee_product_asset.repository.asset_category'

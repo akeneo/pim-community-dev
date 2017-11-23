@@ -1,0 +1,5 @@
+# API
+pim_api_asset_category_list:
+    type: action
+    label: pim_api.acl.asset_category.list
+    group_name: pim_api.acl_group.asset_category

@@ -2,6 +2,7 @@ parameters:
     pimee_api.controller.published_product.class: PimEnterprise\Bundle\ApiBundle\Controller\PublishedProductController
     pimee_api.controller.product_draft.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductDraftController
     pimee_api.controller.product_proposal.class: PimEnterprise\Bundle\ApiBundle\Controller\ProductProposalController
+    pimee_api.controller.category_asset.class: PimEnterprise\Bundle\ApiBundle\Controller\AssetCategoryController
 
 services:
     pimee_api.controller.published_product:
@@ -84,3 +85,9 @@ services:
             - '@pim_catalog.builder.variant_product'
             - '@pim_connector.processor.attribute_filter.product'
             - '%pim_api.configuration%'
+
+    pimee_api.controller.asset_category:
+        class: '%pimee_api.controller.category_asset.class%'
+        arguments:
+            - '@pimee_api.repository.asset_category'
+            - '@pim_serializer'
