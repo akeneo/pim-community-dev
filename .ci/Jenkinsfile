@@ -204,7 +204,7 @@ stage("Test") {
                                 ]
                             ]
                             def message = new net.sf.json.JSONObject()
-                            message.put("name",file)
+                            message.put("name",file[1])
                             message.put("commands",commands)
                             messages.add(message)
                         }
@@ -266,7 +266,7 @@ stage("Test") {
                                 ]
                             ]
                             def message = new net.sf.json.JSONObject()
-                            message.put("name",file)
+                            message.put("name",file[1])
                             message.put("commands",commands)
                             messages.add(message)
                         }
