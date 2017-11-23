@@ -5,7 +5,6 @@ config:
 
         # Templates
         pimee/template/picker/asset-collection: pimenterpriseproductasset/templates/picker/asset-collection.html
-        pimee/template/picker/basket: pimenterpriseproductasset/templates/picker/basket.html
         pimee/template/asset/mass-upload: pimenterpriseproductasset/templates/productAsset/mass-upload.html
         pimee/template/asset/mass-upload-row: pimenterpriseproductasset/templates/productAsset/mass-upload-row.html
 
