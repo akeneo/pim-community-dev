@@ -29,7 +29,7 @@ Feature: Assign assets to a product
     And I check the row "autumn"
     And I check the row "akene"
     And the rows "autumn, akene" should be checked
-    And I remove "chicagoskyline" from the asset basket
+    And I remove "chicagoskyline" from the basket
     Then the asset basket should contain akene, autumn
     And I confirm the asset modification
     Then the "Front view" asset gallery should contain akene, autumn

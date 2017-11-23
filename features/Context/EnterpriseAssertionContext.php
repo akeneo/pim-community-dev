@@ -205,7 +205,7 @@ class EnterpriseAssertionContext extends BaseAssertionContext
     {
         return $this->spin(function () use ($code) {
             return $this->getSession()->getPage()
-                ->find('css', sprintf('.asset-basket li[data-asset="%s"]', $code));
+                ->find('css', sprintf('.item-picker-basket li[data-itemCode="%s"]', $code));
         }, sprintf('Cannot find asset "%s" in basket', $code));
     }
 

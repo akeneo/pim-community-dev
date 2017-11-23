@@ -108,11 +108,11 @@ define(
 
                     form.setElement(modal.$('.modal-body'))
                         .render()
-                        .setAssets(this.data);
+                        .setItems(this.data);
 
                     modal.on('cancel', deferred.reject);
                     modal.on('ok', function () {
-                        var assets = _.sortBy(form.getAssets(), 'code');
+                        var assets = _.sortBy(form.getItems(), 'code');
                         modal.close();
 
                         deferred.resolve(assets);

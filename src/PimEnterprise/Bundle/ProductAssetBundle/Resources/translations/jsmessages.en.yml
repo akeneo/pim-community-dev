@@ -3,10 +3,6 @@ pimee_product_asset:
         product:
             asset:
                 manage: Manage assets
-                panel:
-                    basket:
-                        title: Basket
-                        empty_basket: Basket is empty
                 manage_asset:
                     title: Manage assets
                     cancel: Cancel

@@ -274,19 +274,6 @@ class EnterpriseFeatureContext extends FeatureContext
     }
 
     /**
-     * @Given /^I remove "([^"]*)" from the asset basket$/
-     */
-    public function iRemoveFromTheAssetBasket($entity)
-    {
-        $removeButton = $this->spin(function () use ($entity) {
-            return $this->getSession()->getPage()
-                ->find('css', sprintf('.asset-basket li[data-asset="%s"] .remove-asset', $entity));
-        }, 'Cannot find button to remove asset in basket');
-
-        $removeButton->click();
-    }
-
-    /**
      * @param string $page
      *
      * @When /^I set the current page to "([^"]*)"$/
