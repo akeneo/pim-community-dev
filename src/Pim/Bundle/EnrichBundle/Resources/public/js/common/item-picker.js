@@ -16,7 +16,7 @@ define(
         'routing',
         'pim/form',
         'pim/template/common/item-picker',
-        'pimee/template/picker/basket',
+        'pim/template/common/item-picker-basket',
         'oro/datagrid-builder',
         'oro/mediator',
         'pim/fetcher-registry',

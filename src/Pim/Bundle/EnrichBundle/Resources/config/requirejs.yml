@@ -973,6 +973,7 @@ config:
         pim/template/common/no-data:                              pimenrich/templates/common/no-data.html
         pim/template/common/grid:                                 pimenrich/templates/common/grid.html
         pim/template/common/item-picker:                          pimenrich/templates/common/item-picker.html
+        pim/template/common/item-picker-basket:                   pimenrich/templates/common/item-picker-basket.html
 
         pim/template/form/group-selector:                         pimenrich/templates/form/group-selector.html
         pim/template/form/save:                                   pimenrich/templates/form/save.html
