@@ -81,7 +81,7 @@ final class CreateVariantProductFromProductIntegration extends TestCase
         $this->getFromTestContainer('akeneo_integration_tests.fixture.saver.entity_with_value')->save($this->productModel);
     }
 
-    public function test that the variant product have the same properties than the product()
+    public function test_that_the_variant_product_have_the_same_properties_than_the_product()
     {
         /** @var VariantProductInterface $variantProduct */
         $variantProduct = $this->get('pim_catalog.entity_with_family.create_variant_product_from_product')
@@ -102,7 +102,7 @@ final class CreateVariantProductFromProductIntegration extends TestCase
         $assertCollection->containsEntities();
     }
 
-    public function test that the variant product have product values without product model values()
+    public function test_that_the_variant_product_have_product_values_without_product_model_values()
     {
         /** @var VariantProductInterface $variantProduct */
         $variantProduct = $this->get('pim_catalog.entity_with_family.create_variant_product_from_product')

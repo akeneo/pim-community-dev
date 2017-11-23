@@ -266,6 +266,14 @@ class ProductModel implements ProductModelInterface
     /**
      * {@inheritdoc}
      */
+    public function setCategories(Collection $categories): void
+    {
+        $this->categories = $categories;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getCategoryCodes(): array
     {
         $codes = $this->getCategories()->map(function (CategoryInterface $category) {

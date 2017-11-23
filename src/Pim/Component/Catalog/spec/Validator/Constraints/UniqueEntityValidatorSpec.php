@@ -27,12 +27,12 @@ class UniqueEntityValidatorSpec extends ObjectBehavior
         $this->initialize($context);
     }
 
-    function it is initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(UniqueEntityValidator::class);
     }
 
-    function it adds violation to the context if a product already exist in the database(
+    function it_adds_violation_to_the_context_if_a_product_already_exist_in_the_database(
         $context,
         $objectManager,
         ProductRepositoryInterface $productRepository,
@@ -59,7 +59,7 @@ class UniqueEntityValidatorSpec extends ObjectBehavior
         $this->validate($product, $constraint)->shouldReturn(null);
     }
 
-    function it do nothing if the product does not exist in database(
+    function it_do_nothing_if_the_product_does_not_exist_in_database(
         $objectManager,
         $context,
         ProductRepositoryInterface $productRepository,
@@ -78,7 +78,7 @@ class UniqueEntityValidatorSpec extends ObjectBehavior
         $this->validate($product, $constraint)->shouldReturn(null);
     }
 
-    function it throws an exception if the excepted entity is not a product(
+    function it_throws_an_exception_if_the_excepted_entity_is_not_a_product(
         CategoryInterface $category
     ) {
         $constraint = new UniqueEntity();
@@ -87,14 +87,14 @@ class UniqueEntityValidatorSpec extends ObjectBehavior
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [$category, $constraint]);
     }
 
-    function it throws an exception if the excepted constraint is not a unique product constraint(
+    function it_throws_an_exception_if_the_excepted_constraint_is_not_a_unique_product_constraint(
         ProductInterface $product,
         Constraint $constraint
     ) {
         $this->shouldThrow(UnexpectedTypeException::class)->during('validate', [$product, $constraint]);
     }
 
-    function it throws an exception if the entity name is not given(
+    function it_throws_an_exception_if_the_entity_name_is_not_given(
         ProductInterface $product
     ) {
         $constraint = new UniqueEntity();

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Pim\Component\Connector\Processor\Denormalization\Product;
 
 use Pim\Component\Catalog\EntityWithFamily\CreateVariantProduct;
-use Pim\Component\Catalog\EntityWithFamily\Event\ParentWasAddedToProduct;
+use Pim\Component\Catalog\EntityWithFamily\Event\ParentHasBeenAddedToProduct;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -67,8 +67,8 @@ class AddParent
         $variantProduct = $this->createVariantProduct->from($product, $productModel);
 
         $this->eventDispatcher->dispatch(
-            ParentWasAddedToProduct::EVENT_NAME,
-            new ParentWasAddedToProduct($variantProduct, $parentProductModelCode)
+            ParentHasBeenAddedToProduct::EVENT_NAME,
+            new ParentHasBeenAddedToProduct($variantProduct, $parentProductModelCode)
         );
 
         return $variantProduct;

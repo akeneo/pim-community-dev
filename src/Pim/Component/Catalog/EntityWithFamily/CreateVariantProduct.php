@@ -41,7 +41,7 @@ class CreateVariantProduct
      *
      * @throws \InvalidArgumentException
      */
-    public function from(ProductInterface $product, ProductModelInterface $parent)
+    public function from(ProductInterface $product, ProductModelInterface $parent): VariantProductInterface
     {
         if ($product->getFamily() !== $parent->getFamily()) {
             throw new \InvalidArgumentException('Product and product model families should be the same.');
@@ -77,14 +77,14 @@ class CreateVariantProduct
         /** @var VariantProductInterface $variantProduct */
         $variantProduct = new $this->variantProductClassName();
 
-        $valueIdentifier = $product->getValues()->filter(
+        $identifierValue = $product->getValues()->filter(
             function (ValueInterface $value) {
                 return AttributeTypes::IDENTIFIER === $value->getAttribute()->getType();
             }
         )->first();
 
         $variantProduct->setId($product->getId());
-        $variantProduct->setIdentifier($valueIdentifier);
+        $variantProduct->setIdentifier($identifierValue);
         $variantProduct->setGroups($product->getGroups());
         $variantProduct->setAssociations($product->getAssociations());
         $variantProduct->setEnabled($product->isEnabled());

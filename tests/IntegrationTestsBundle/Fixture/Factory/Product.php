@@ -15,26 +15,26 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 final class Product
 {
     /** @var ProductBuilderInterface */
-    private $productModelFactory;
+    private $productFactory;
 
     /** @var ObjectUpdaterInterface */
-    private $productModelUpdater;
+    private $productUpdater;
 
     /** @var ValidatorInterface */
     private $validator;
 
     /**
-     * @param ProductBuilderInterface $productModelFactory
-     * @param ObjectUpdaterInterface  $productModelUpdater
+     * @param ProductBuilderInterface $productFactory
+     * @param ObjectUpdaterInterface  $productUpdater
      * @param ValidatorInterface      $validator
      */
     public function __construct(
-        ProductBuilderInterface $productModelFactory,
-        ObjectUpdaterInterface $productModelUpdater,
+        ProductBuilderInterface $productFactory,
+        ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $validator
     ) {
-        $this->productModelFactory = $productModelFactory;
-        $this->productModelUpdater = $productModelUpdater;
+        $this->productFactory = $productFactory;
+        $this->productUpdater = $productUpdater;
         $this->validator = $validator;
     }
 
@@ -70,8 +70,8 @@ final class Product
             'enabled' => $status,
         ];
 
-        $product = $this->productModelFactory->createProduct($identifier, $familyCode);
-        $this->productModelUpdater->update($product, $productModelData);
+        $product = $this->productFactory->createProduct($identifier, $familyCode);
+        $this->productUpdater->update($product, $productModelData);
 
         $errors = $this->validator->validate($product);
         if (0 < $errors->count()) {

@@ -24,12 +24,12 @@ class FindProductToImportSpec extends ObjectBehavior
         );
     }
 
-    function it is initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(FindProductToImport::class);
     }
 
-    function it finds product from flat data given by the reader(
+    function it_finds_product_from_flat_data_given_by_the_reader(
         $productRepository,
         ProductInterface $product
     ) {
@@ -38,7 +38,7 @@ class FindProductToImportSpec extends ObjectBehavior
         $this->fromFlatData('product_identifier', 'family', '')->shouldReturn($product);
     }
 
-    function it finds variant product from flat data given by the reader(
+    function it_finds_variant_product_from_flat_data_given_by_the_reader(
         $productRepository,
         VariantProductInterface $variantProduct
     ) {
@@ -47,7 +47,7 @@ class FindProductToImportSpec extends ObjectBehavior
         $this->fromFlatData('product_identifier', 'family', 'parent_code')->shouldReturn($variantProduct);
     }
 
-    function it creates product from flat data given by the reader(
+    function it_creates_product_from_flat_data_given_by_the_reader(
         $productRepository,
         $productBuilder,
         ProductInterface $product
@@ -58,7 +58,7 @@ class FindProductToImportSpec extends ObjectBehavior
         $this->fromFlatData('product_identifier', 'family', '')->shouldReturn($product);
     }
 
-    function it creates variant product from flat data given by the reader(
+    function it_creates_variant_product_from_flat_data_given_by_the_reader(
         $productRepository,
         $variantProductBuilder,
         VariantProductInterface $variantProduct

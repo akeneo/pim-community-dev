@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Query;
 
+use Akeneo\Component\Versioning\Model\Version;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Component\Catalog\EntityWithFamily\Query;
+use Pim\Component\Catalog\Model\VariantProduct;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
- * Query that turns a product __invoke a variant product
+ * Query that converts a product to a variant product
  *
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TurnProductIntoVariantProduct
+class ConvertProductToVariantProduct
 {
     private const PRODUCT_VARIANT_TYPE = 'variant_product';
 
@@ -46,25 +47,16 @@ SQL;
             'id' => $variantProduct->getId()
         ]);
 
-        $this->entityManager->getUnitOfWork()->registerManaged(
-            $variantProduct,
-            ['id' => $variantProduct->getId()],
-            [
-                'id' => $variantProduct->getId(),
-                'parent' => null,
-                'familyVariant' => null,
-                'identifier' => $variantProduct->getIdentifier(),
-                'groups' => $variantProduct->getGroups(),
-                'associations' => $variantProduct->getAssociations(),
-                'enabled' => $variantProduct->isEnabled(),
-                'completenesses' => $variantProduct->getCompletenesses(),
-                'family' => $variantProduct->getFamily(),
-                'categories' => $variantProduct->getCategories(),
-                'created' => $variantProduct->getCreated(),
-                'updated' => $variantProduct->getUpdated(),
-                'rawValues' => [],
-                'uniqueData' => $variantProduct->getUniqueData(),
-            ]
-        );
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $query = $queryBuilder->update(Version::class, 'version')
+            ->set(
+                'version.resourceName',
+                    $queryBuilder->expr()->literal(VariantProduct::class)
+            )
+            ->where('version.resourceId = :resource_id')
+            ->setParameter('resource_id', $variantProduct->getId())
+            ->getQuery();
+
+        $query->execute();
     }
 }

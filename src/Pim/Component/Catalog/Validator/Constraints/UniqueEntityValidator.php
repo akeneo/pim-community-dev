@@ -32,7 +32,7 @@ class UniqueEntityValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($product, Constraint $constraint)
+    public function validate($entity, Constraint $constraint)
     {
         if (!$constraint instanceof UniqueEntity) {
             throw new UnexpectedTypeException($constraint, UniqueEntity::class);
@@ -42,19 +42,19 @@ class UniqueEntityValidator extends ConstraintValidator
             throw new InvalidArgumentException('You need to provide a valid entity class');
         }
 
-        if (!$product instanceof $constraint->entityClass) {
+        if (!$entity instanceof $constraint->entityClass) {
             throw new UnexpectedTypeException($constraint, $constraint->entityClass);
         }
 
         $repository = $this->objectManager->getRepository($constraint->entityClass);
         $getter = sprintf('get%s', ucfirst($constraint->identifier));
 
-        if (null === $productInDatabase = $repository->findOneBy([$constraint->identifier => $product->$getter()])) {
+        if (null === $entityInDatabase = $repository->findOneBy([$constraint->identifier => $entity->$getter()])) {
             return;
         }
 
         // here this is an update, we need to update the same object
-        if ($product->getId() !== $productInDatabase->getId()) {
+        if ($entity->getId() !== $entityInDatabase->getId()) {
             $this->context->buildViolation($constraint->message)
                 ->atPath($constraint->identifier)
                 ->addViolation();

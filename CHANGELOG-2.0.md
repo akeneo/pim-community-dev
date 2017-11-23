@@ -30,7 +30,7 @@
 - PIM-6585: Add help center link in menu
 - PIM-6833: Aligns technical requirements with documentation
 - PIM-6992: Keep category panel open
-- PIM-6791: As Julia I would like to change a product in a variant product by import
+- PIM-6791: Change a product in a variant product by import
 
 ## BC breaks
 

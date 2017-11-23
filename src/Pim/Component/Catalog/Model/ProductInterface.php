@@ -74,6 +74,11 @@ interface ProductInterface extends
     public function addGroup(GroupInterface $group);
 
     /**
+     * @param Collection $groups
+     */
+    public function setGroups(Collection $groups): void;
+
+    /**
      * Remove a group
      *
      * @param GroupInterface $group
@@ -259,4 +264,9 @@ interface ProductInterface extends
      * @return ProductInterface
      */
     public function addUniqueData(ProductUniqueDataInterface $uniqueData);
+
+    /**
+     * @param $data Collection
+     */
+    public function setUniqueData(Collection $data): void;
 }

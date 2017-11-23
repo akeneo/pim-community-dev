@@ -93,6 +93,14 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
     /**
      * {@inheritdoc}
      */
+    public function getCategoriesForVariation(): Collection
+    {
+        return $this->categories;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addCategory(CategoryInterface $category)
     {
         if (!$this->categories->contains($category) && !$this->hasAncestryCategory($category)) {
@@ -100,30 +108,6 @@ class VariantProduct extends AbstractProduct implements VariantProductInterface
         }
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setGroups(Collection $groups): void
-    {
-        $this->groups = $groups;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setCategories(Collection $categories): void
-    {
-        $this->categories = $categories;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setUniqueData(Collection $data): void
-    {
-        $this->uniqueData = $data;
     }
 
     /**

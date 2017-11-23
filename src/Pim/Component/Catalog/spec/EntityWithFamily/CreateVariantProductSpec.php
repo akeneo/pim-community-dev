@@ -33,12 +33,12 @@ class CreateVariantProductSpec extends ObjectBehavior
         $this->beConstructedWith(VariantProduct::class);
     }
 
-    function it is initializable()
+    function it_is_initializable()
     {
         $this->shouldHaveType(CreateVariantProduct::class);
     }
 
-    function it throws an exception when the product has not the same family that its parent(
+    function it_throws_an_exception_when_the_product_has_not_the_same_family_that_its_parent(
         ProductInterface $product,
         FamilyInterface $productFamily,
         ProductModelInterface $parent
@@ -48,7 +48,7 @@ class CreateVariantProductSpec extends ObjectBehavior
         $this->shouldThrow(\InvalidArgumentException::class)->during('from', [$product, $parent]);
     }
 
-    public function it creates a variant product from a product(
+    public function it_creates_a_variant_product_from_a_product(
         ProductModelInterface $parent,
         ValueCollectionInterface $parentValues,
         ProductInterface $product,

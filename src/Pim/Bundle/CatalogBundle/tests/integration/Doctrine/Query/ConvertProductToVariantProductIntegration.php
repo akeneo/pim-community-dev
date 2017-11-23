@@ -5,12 +5,13 @@ namespace tests\integration\Pim\Bundle\CatalogBundle\Doctrine\Query;
 use Akeneo\Test\Integration\TestCase;
 use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
+use Pim\Component\Catalog\Model\VariantProduct;
 use Pim\Component\Catalog\Model\VariantProductInterface;
 
 /**
- * Test the query function: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\TurnProductIntoVariantProduct
+ * Test the query function: Pim\Bundle\CatalogBundle\Doctrine\ORM\Query\ConvertProductToVariantProduct
  */
-final class TurnProductIntoVariantProductIntegration extends TestCase
+final class ConvertProductToVariantProductIntegration extends TestCase
 {
     /** @var ProductInterface */
     private $product;
@@ -63,24 +64,50 @@ final class TurnProductIntoVariantProductIntegration extends TestCase
     }
 
     /**
-     * To update product __invoke a variant product in database we need to check that:
+     * To update product into a variant product in database we need to check that:
      *   - the product type is well changed (data managed by doctrine)
-     *   - the variant product keeps the product id
-     *   - the repository returns the right object type (variant product instead of product)
+     *   - the variant product keeps its versions
      */
-    public function test query that turn product into variant product in database()
+    public function test_query_that_converts_product_to_variant_product_in_database()
     {
         /** @var VariantProductInterface $inMemoryVariantProduct */
-        $inMemoryVariantProduct = $this->get('pim_catalog.entity_with_family.create_variant_product_from_product')
+        $inMemoryVariantProduct = $this->getFromTestContainer('pim_catalog.entity_with_family.create_variant_product_from_product')
             ->from($this->product, $this->productModel);
 
-        ($this->get('pim_catalog.doctrine.query.turn_product_into_variant_product'))($inMemoryVariantProduct);
+        ($this->getFromTestContainer('pim_catalog.doctrine.query.convert_product_to_variant_product'))($inMemoryVariantProduct);
 
-        /** @var VariantProductInterface $variantProduct */
-        $variantProduct = $this->get('pim_catalog.repository.variant_product')->findOneByIdentifier('my-product');
+        $sql = <<<SQL
+SELECT COUNT(id) 
+FROM pim_versioning_version 
+WHERE resource_id = :resource_id
+AND resource_name = :resource_name
+SQL;
+        $numberOfVersion = (int) $this->getFromTestContainer('doctrine.dbal.default_connection')->fetchColumn($sql, [
+            'resource_id' => $this->product->getId(),
+            'resource_name' => VariantProduct::class
+        ]);
 
-        $this->assertInstanceOf(VariantProductInterface::class, $variantProduct);
-        $this->assertSame($inMemoryVariantProduct->getId(), $variantProduct->getId());
+        $this->assertSame(
+            1,
+            $numberOfVersion,
+            'The variant product does not keep the product versions'
+        );
+
+        $sql = <<<SQL
+SELECT product_type 
+FROM pim_catalog_product 
+WHERE id = :resource_id
+SQL;
+        $productType = $this->getFromTestContainer('doctrine.dbal.default_connection')->fetchColumn($sql, [
+            'resource_id' => $this->product->getId(),
+            'resource_name' => str_replace('\\', '\\', VariantProduct::class)
+        ]);
+
+        $this->assertSame(
+            'variant_product',
+            $productType,
+            sprintf('The product does not have the right type, given %s, expected variant_product', $productType)
+        );
     }
 
     /**
