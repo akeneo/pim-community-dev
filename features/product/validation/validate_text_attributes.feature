@@ -10,14 +10,11 @@ Feature: Validate text attributes of a product
       | code                | label-en_US         | type             | scopable | unique | max_characters | validation_rule | validation_regexp | group |
       | barcode             | Barcode             | pim_catalog_text | 0        | 1      | 8              | regexp          | /^0\d*$/          | other |
       | email               | Email               | pim_catalog_text | 0        | 1      |                | email           |                   | other |
-      | link                | Link                | pim_catalog_text | 0        | 0      |                | url             |                   | other |
       | manufacturer_number | Manufacturer number | pim_catalog_text | 1        | 0      | 8              | regexp          | /^0\d*$/          | other |
-      | recipient           | Recipient           | pim_catalog_text | 1        | 0      |                | email           |                   | other |
-      | references          | References          | pim_catalog_text | 1        | 0      |                | url             |                   | other |
       | desc                | Description         | pim_catalog_text | 0        | 0      |                |                 |                   | other |
     And the following family:
-      | code | label-en_US | attributes                                                           | requirements-ecommerce | requirements-mobile |
-      | baz  | Baz         | sku,barcode,email,link,manufacturer_number,recipient,references,desc | sku                    | sku                 |
+      | code | label-en_US | attributes                                 | requirements-ecommerce | requirements-mobile |
+      | baz  | Baz         | sku,barcode,email,manufacturer_number,desc | sku                    | sku                 |
     And the following products:
       | sku | family |
       | foo | baz    |
@@ -45,45 +42,6 @@ Feature: Validate text attributes of a product
     And I change the "Manufacturer number" to "000000000"
     And I save the product
     Then I should see validation tooltip "This value is too long. It should have 8 characters or less."
-    And there should be 1 error in the "Other" tab
-
-  Scenario: Validate the email validation rule constraint of text attribute
-    Given I change the Email to "foo"
-    And I save the product
-    Then I should see validation tooltip "This value is not a valid email address."
-    And there should be 1 error in the "Other" tab
-
-  Scenario: Validate the email validation rule constraint of scopable text attribute
-    Given I switch the scope to "ecommerce"
-    And I change the Recipient to "foo"
-    And I save the product
-    Then I should see validation tooltip "This value is not a valid email address."
-    And there should be 1 error in the "Other" tab
-
-  Scenario: Validate the url validation rule constraint of text attribute
-    Given I change the Link to "bar"
-    And I save the product
-    Then I should see validation tooltip "This value is not a valid URL."
-    And there should be 1 error in the "Other" tab
-
-  Scenario: Validate the url validation rule constraint of scopable text attribute
-    Given I switch the scope to "ecommerce"
-    Given I change the References to "bar"
-    And I save the product
-    Then I should see validation tooltip "This value is not a valid URL."
-    And there should be 1 error in the "Other" tab
-
-  Scenario: Validate the regexp validation rule constraint of text attribute
-    Given I change the Barcode to "111111"
-    And I save the product
-    Then I should see validation tooltip "This value is not valid."
-    And there should be 1 error in the "Other" tab
-
-  Scenario: Validate the regexp validation rule constraint of scopable text attribute
-    Given I switch the scope to "ecommerce"
-    Given I change the "Manufacturer number" to "111111"
-    And I save the product
-    Then I should see validation tooltip "This value is not valid."
     And there should be 1 error in the "Other" tab
 
   @jira https://akeneo.atlassian.net/browse/PIM-3447
