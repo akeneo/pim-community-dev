@@ -66,7 +66,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $this->productClass = $productClass;
         $this->productValueClass = $productValueClass;
         $this->attributeClass = $attributeClass;
-        $this->commitBatchSize = $commitBatchSize;
+        $this->commitBatchSize = (int)$commitBatchSize;
     }
 
     /**
