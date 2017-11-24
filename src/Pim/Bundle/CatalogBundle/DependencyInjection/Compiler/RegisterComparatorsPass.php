@@ -25,7 +25,11 @@ class RegisterComparatorsPass implements CompilerPassInterface
         }
 
         $definition = $container->getDefinition('pim_catalog.comparator.registry');
-        foreach ($container->findTaggedServiceIds('pim_catalog.attribute.comparator') as $id => $attribute) {
+
+        $attributeComparators = $this->sortComparatorsByPriority(
+            $container->findTaggedServiceIds('pim_catalog.attribute.comparator')
+        );
+        foreach ($attributeComparators as $id => $attribute) {
             $container->getDefinition($id)->setPublic(false);
             $definition->addMethodCall(
                 'addAttributeComparator',
@@ -36,7 +40,10 @@ class RegisterComparatorsPass implements CompilerPassInterface
             );
         }
 
-        foreach ($container->findTaggedServiceIds('pim_catalog.field.comparator') as $id => $attribute) {
+        $fieldComparators = $this->sortComparatorsByPriority(
+            $container->findTaggedServiceIds('pim_catalog.field.comparator')
+        );
+        foreach ($fieldComparators as $id => $attribute) {
             $container->getDefinition($id)->setPublic(false);
             $definition->addMethodCall(
                 'addFieldComparator',
@@ -46,5 +53,31 @@ class RegisterComparatorsPass implements CompilerPassInterface
                 ]
             );
         }
+    }
+
+    /**
+     * Sorts comparator services descending by their priority
+     *
+     * @param array $comparatorServices
+     *
+     * @return array
+     */
+    private function sortComparatorsByPriority(array $comparatorServices) {
+        uasort($comparatorServices, function ($a, $b) {
+            $priorityA = isset($a[0]['priority']) ? $a[0]['priority'] : 0;
+            $priorityB = isset($b[0]['priority']) ? $b[0]['priority'] : 0;
+
+            if ($priorityA > $priorityB) {
+                return -1;
+            }
+
+            if ($priorityA < $priorityB) {
+                return 1;
+            }
+
+            return 0;
+        });
+
+        return $comparatorServices;
     }
 }
