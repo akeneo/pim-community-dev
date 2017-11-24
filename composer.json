@@ -22,6 +22,9 @@
         "classmap": [ "app/AppKernel.php", "app/AppCache.php", "tests/AppKernelTest.php" ]
     },
     "autoload-dev": {
+        "psr-4": {
+            "Pim\\Test\\": "tests/"
+        },
         "files": [
             "vendor/phpunit/phpunit/src/Framework/Assert/Functions.php"
         ]
