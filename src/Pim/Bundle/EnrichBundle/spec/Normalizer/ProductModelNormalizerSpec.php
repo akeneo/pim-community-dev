@@ -93,6 +93,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
             'decimal_separator' => ',',
             'date_format'       => 'dd/MM/yyyy',
             'locale'            => 'en_US',
+            'channel'           => 'mobile',
         ];
 
         $productModelNormalized = [
@@ -148,8 +149,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $pictureAttribute->getCode()->willReturn('picture');
 
         $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US', 'fr_FR']);
-        $productModel->getLabel('en_US')->willReturn('Tshirt blue');
-        $productModel->getLabel('fr_FR')->willReturn('Tshirt bleu');
+        $productModel->getLabel('en_US', 'mobile')->willReturn('Tshirt blue');
+        $productModel->getLabel('fr_FR', 'mobile')->willReturn('Tshirt bleu');
 
         $imageAsLabel->value($productModel)->willReturn($picture);
         $imageNormalizer->normalize($picture, Argument::any())->willReturn($fileNormalized);
@@ -244,7 +245,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $options = [
             'decimal_separator' => ',',
             'date_format'       => 'dd/MM/yyyy',
-            'locale'            => 'en_US'
+            'locale'            => 'en_US',
+            'channel'           => 'mobile',
         ];
 
         $productModelNormalized = [
@@ -288,8 +290,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $pictureAttribute->getCode()->willReturn('picture');
 
         $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US', 'fr_FR']);
-        $productModel->getLabel('en_US')->willReturn('Tshirt blue');
-        $productModel->getLabel('fr_FR')->willReturn('Tshirt bleu');
+        $productModel->getLabel('en_US', 'mobile')->willReturn('Tshirt blue');
+        $productModel->getLabel('fr_FR', 'mobile')->willReturn('Tshirt bleu');
 
         $imageAsLabel->value($productModel)->willReturn(null);
         $imageNormalizer->normalize(null, Argument::any())->willReturn(null);
@@ -385,7 +387,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $options = [
             'decimal_separator' => ',',
             'date_format'       => 'dd/MM/yyyy',
-            'locale'            => 'en_US'
+            'locale'            => 'en_US',
+            'channel'           => 'mobile',
         ];
 
         $productModelNormalized = [
@@ -441,8 +444,8 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $pictureAttribute->getCode()->willReturn('picture');
 
         $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US', 'fr_FR']);
-        $productModel->getLabel('en_US')->willReturn('Tshirt blue');
-        $productModel->getLabel('fr_FR')->willReturn('Tshirt bleu');
+        $productModel->getLabel('en_US', 'mobile')->willReturn('Tshirt blue');
+        $productModel->getLabel('fr_FR', 'mobile')->willReturn('Tshirt bleu');
 
         $imageAsLabel->value($productModel)->willReturn($picture);
         $imageNormalizer->normalize($picture, Argument::any())->willReturn($fileNormalized);

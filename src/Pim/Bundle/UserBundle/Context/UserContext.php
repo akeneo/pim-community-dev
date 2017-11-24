@@ -287,7 +287,8 @@ class UserContext
         return [
             'locales'  => $locales,
             'channels' => $channels,
-            'locale'   => $this->getUiLocale()->getCode()
+            'locale'   => $this->getUiLocale()->getCode(),
+            'channel'  => $this->getUserChannelCode()
         ];
     }
 

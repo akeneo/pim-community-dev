@@ -105,7 +105,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $updated = new \DateTime('2017-01-01T01:04:34+01:00');
         $product->getUpdated()->willReturn($updated);
         $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
-        $product->getLabel('en_US')->willReturn('Purple tshirt');
+        $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
         $product->getCompletenesses()->willReturn([$completeness]);
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([
@@ -206,7 +206,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $updated = new \DateTime('2017-01-01T01:04:34+01:00');
         $product->getUpdated()->willReturn($updated);
         $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
-        $product->getLabel('en_US')->willReturn('Purple tshirt');
+        $product->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
         $product->getCompletenesses()->willReturn([$completeness]);
         $product->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([

@@ -35,3 +35,21 @@ Feature: Edit a user
     And I should see the text "2015 Damenkollektion"
     And I should see the filters name, family and sku
     And I should not see the filter enabled
+
+  @jira https://akeneo.atlassian.net/browse/PIM-6901
+  Scenario: Successfully edit a user with a new role
+    Given I am on the role creation page
+    And I fill in the following information:
+      | Role (required) | Tata role |
+    And I visit the "Permissions" tab
+    And I grant rights to resource Edit users
+    Then I save the role
+    When I edit the "mary" user
+    And I visit the "Groups and Roles" tab
+    And I check "Tata role"
+    And I uncheck "User"
+    Then I save the user
+    And I logout
+    When I am logged in as "Mary"
+    And I edit the "admin" user
+    Then I should see the text "Edit user - John Doe"

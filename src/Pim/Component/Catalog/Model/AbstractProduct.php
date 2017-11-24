@@ -375,7 +375,7 @@ abstract class AbstractProduct implements ProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel($locale = null)
+    public function getLabel($locale = null, $scope = null)
     {
         $identifier = (string) $this->getIdentifier();
 
@@ -390,7 +390,8 @@ abstract class AbstractProduct implements ProductInterface
         }
 
         $locale = $attributeAsLabel->isLocalizable() ? $locale : null;
-        $value = $this->getValue($attributeAsLabel->getCode(), $locale);
+        $scope = $attributeAsLabel->isScopable() ? $scope : null;
+        $value = $this->getValue($attributeAsLabel->getCode(), $locale, $scope);
 
         if (null === $value) {
             return $identifier;

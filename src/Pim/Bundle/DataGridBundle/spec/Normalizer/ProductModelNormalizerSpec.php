@@ -114,7 +114,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getUpdated()->willReturn($updated);
         $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
 
-        $productModel->getLabel('en_US')->willReturn('Purple tshirt');
+        $productModel->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
         $imageAsLabel->value($productModel)->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([
@@ -219,7 +219,7 @@ class ProductModelNormalizerSpec extends ObjectBehavior
         $productModel->getUpdated()->willReturn($updated);
         $normalizer->normalize($updated, 'datagrid', $context)->willReturn('2017-01-01T01:04:34+01:00');
 
-        $productModel->getLabel('en_US')->willReturn('Purple tshirt');
+        $productModel->getLabel('en_US', 'ecommerce')->willReturn('Purple tshirt');
 
         $imageAsLabel->value($productModel)->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([

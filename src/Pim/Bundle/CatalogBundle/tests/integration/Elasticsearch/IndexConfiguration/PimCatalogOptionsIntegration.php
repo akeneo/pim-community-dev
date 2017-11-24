@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\tests\integration\ElasticSearch\IndexConfiguration;
+namespace Pim\Bundle\CatalogBundle\tests\integration\Elasticsearch\IndexConfiguration;
 
 /**
  * This integration tests checks that given an index configuration with multi options (string[]) values
