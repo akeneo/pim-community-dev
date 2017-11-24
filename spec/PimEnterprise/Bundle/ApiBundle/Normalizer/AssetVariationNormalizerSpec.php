@@ -50,7 +50,7 @@ class AssetVariationNormalizerSpec extends ObjectBehavior
         $asset->getCode()->willReturn('an_asset');
 
         $router->generate(
-            'pim_api_asset_variation_download',
+            'pimee_api_asset_variation_download',
             [
                 'code' => 'an_asset',
                 'channelCode' => 'ecommerce',
@@ -87,7 +87,7 @@ class AssetVariationNormalizerSpec extends ObjectBehavior
         $asset->getCode()->willReturn('an_asset');
 
         $router->generate(
-            'pim_api_asset_variation_download',
+            'pimee_api_asset_variation_download',
             [
                 'code' => 'an_asset',
                 'channelCode' => 'ecommerce',

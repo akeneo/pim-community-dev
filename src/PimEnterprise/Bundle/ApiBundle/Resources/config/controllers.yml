@@ -5,6 +5,7 @@ parameters:
     pimee_api.controller.category_asset.class: PimEnterprise\Bundle\ApiBundle\Controller\AssetCategoryController
     pimee_api.controller.asset_reference.class: PimEnterprise\Bundle\ApiBundle\Controller\AssetReferenceController
     pimee_api.controller.asset_variation.class: PimEnterprise\Bundle\ApiBundle\Controller\AssetVariationController
+    pimee_api.controller.asset.class: PimEnterprise\Bundle\ApiBundle\Controller\AssetController
 
 services:
     pimee_api.controller.published_product:
@@ -120,4 +121,10 @@ services:
             - '@pim_api.repository.locale'
             - '@akeneo_file_storage.file_storage.filesystem_provider'
             - '@akeneo_file_storage.file_storage.file.streamed_file_fetcher'
+            - '@pim_serializer'
+
+    pimee_api.controller.asset:
+        class : '%pimee_api.controller.asset.class%'
+        arguments:
+            - '@pimee_api.repository.asset'
             - '@pim_serializer'

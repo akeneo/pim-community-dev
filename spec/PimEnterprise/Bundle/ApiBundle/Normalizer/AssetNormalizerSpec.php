@@ -98,7 +98,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $reference->getAsset()->willReturn($asset);
 
         $router->generate(
-            'pim_api_asset_variation_get',
+            'pimee_api_asset_variation_get',
             [
                 'code' => 'ham',
                 'channelCode' => 'ecommerce',
@@ -108,7 +108,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         )->willReturn('http://akeneo.ham.com/rest/v1/assets/ham/variation-files/ecommerce/no_locale');
 
         $router->generate(
-            'pim_api_asset_reference_get',
+            'pimee_api_asset_reference_get',
             [
                 'code' => 'ham',
                 'localeCode' => 'no_locale',
@@ -222,7 +222,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         $reference->getAsset()->willReturn($asset);
 
         $router->generate(
-            'pim_api_asset_variation_get',
+            'pimee_api_asset_variation_get',
             [
                 'code' => 'ham',
                 'channelCode' => 'ecommerce',
@@ -232,7 +232,7 @@ class AssetNormalizerSpec extends ObjectBehavior
         )->willReturn('http://akeneo.ham.com/rest/v1/assets/ham/variation-files/ecommerce/en_US');
 
         $router->generate(
-            'pim_api_asset_reference_get',
+            'pimee_api_asset_reference_get',
             [
                 'code' => 'ham',
                 'localeCode' => 'en_US',

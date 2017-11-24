@@ -21,3 +21,7 @@ asset_reference:
 asset_variation:
     resource: '@PimEnterpriseApiBundle/Resources/config/routing/asset_variation.yml'
     prefix: /rest/v1
+
+asset:
+    resource: '@PimEnterpriseApiBundle/Resources/config/routing/asset.yml'
+    prefix: /rest/v1

@@ -49,7 +49,7 @@ class AssetReferenceNormalizer implements NormalizerInterface
         $normalizedReference = $this->componentNormalizer->normalize($reference, $format, $context);
 
         $route = $this->router->generate(
-            'pim_api_asset_reference_download',
+            'pimee_api_asset_reference_download',
             [
                 'code' => $reference->getAsset()->getCode(),
                 'localeCode' => $normalizedReference['locale'] ?: AssetReferenceController::NON_LOCALIZABLE_REFERENCE,

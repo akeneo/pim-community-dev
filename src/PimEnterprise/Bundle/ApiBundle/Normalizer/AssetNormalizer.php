@@ -114,7 +114,7 @@ class AssetNormalizer implements NormalizerInterface
 
             if (null !== $normalizedVariation['code']) {
                 $route = $this->router->generate(
-                    'pim_api_asset_variation_get',
+                    'pimee_api_asset_variation_get',
                     [
                         'code' => $variation->getAsset()->getCode(),
                         'channelCode' => $normalizedVariation['channel'],
@@ -168,7 +168,7 @@ class AssetNormalizer implements NormalizerInterface
 
             if (null !== $normalizedReference['code']) {
                 $route = $this->router->generate(
-                    'pim_api_asset_reference_get',
+                    'pimee_api_asset_reference_get',
                     [
                         'code'       => $reference->getAsset()->getCode(),
                         'localeCode' => $normalizedReference['locale']
