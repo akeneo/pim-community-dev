@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
@@ -98,6 +99,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                 'family_variant' => null,
                 'parent'         => null,
                 'values'         => [],
+                'label'          => []
             ]
         );
     }
@@ -107,6 +109,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         ProductInterface $product,
         ValueCollectionInterface $valueCollection,
         FamilyInterface $family,
+        AttributeInterface $sku,
         Collection $completenesses
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
@@ -127,6 +130,8 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         )->willReturn($now->format('c'));
 
         $product->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($sku);
+        $sku->getCode()->willReturn('sku');
         $serializer
             ->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
             ->willReturn([
@@ -210,6 +215,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                         ],
                     ],
                 ],
+                'label'          => [],
             ]
         );
     }
@@ -220,6 +226,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         ValueCollectionInterface $valueCollection,
         Collection $completenesses,
         FamilyInterface $family,
+        AttributeInterface $sku,
         FamilyVariantInterface $familyVariant,
         ProductModelInterface $parent
     ) {
@@ -230,6 +237,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $variantProduct->getId()->willReturn(67);
         $variantProduct->getIdentifier()->willReturn('sku-001');
+        $variantProduct->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($sku);
+        $sku->getCode()->willReturn('sku');
 
         $variantProduct->getCreated()->willReturn($now);
         $serializer->normalize(
@@ -286,6 +296,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                 'family_variant' => 'family_variant_A',
                 'parent'        => 'parent_A',
                 'values'        => [],
+                'label'         => [],
             ]
         );
     }
@@ -296,6 +307,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
         ValueCollectionInterface $valueCollection,
         Collection $completenesses,
         FamilyInterface $family,
+        AttributeInterface $sku,
         FamilyVariantInterface $familyVariant,
         ProductModelInterface $parent
     ) {
@@ -306,6 +318,9 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
 
         $variantProduct->getId()->willReturn(67);
         $variantProduct->getIdentifier()->willReturn('sku-001');
+        $variantProduct->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($sku);
+        $sku->getCode()->willReturn('sku');
 
         $variantProduct->getCreated()->willReturn($now);
         $serializer->normalize(
@@ -426,6 +441,7 @@ class ProductPropertiesNormalizerSpec extends ObjectBehavior
                         ],
                     ],
                 ],
+                'label'          => [],
             ]
         );
     }

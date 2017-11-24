@@ -24,6 +24,7 @@ class PropertiesNormalizer implements NormalizerInterface, SerializerAwareInterf
     use SerializerAwareTrait;
 
     const FIELD_IDENTIFIER = 'identifier';
+    const FIELD_LABEL = 'label';
     const FIELD_FAMILY = 'family';
     const FIELD_PARENT = 'parent';
     const FIELD_GROUPS = 'groups';

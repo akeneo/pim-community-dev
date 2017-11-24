@@ -3,6 +3,7 @@
 namespace spec\Pim\Component\Catalog\Normalizer\Indexing\ProductAndProductModel;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\FamilyInterface;
 use Pim\Component\Catalog\Model\FamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductModelInterface;
@@ -62,6 +63,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         ProductModelInterface $productModel,
         ValueCollectionInterface $productValueCollection,
         FamilyInterface $family,
+        AttributeInterface $sku,
         FamilyVariantInterface $familyVariant
     ) {
         $productModel->getId()->willReturn(67);
@@ -70,6 +72,9 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         $productModel->getParent()->willReturn(null);
 
         $productModel->getCode()->willReturn('sku-001');
+        $productModel->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($sku);
+        $sku->getCode()->willReturn('sku');
         $productModel->getCreated()->willReturn($now);
         $serializer
             ->normalize($family, ProductModelNormalizer::INDEXING_FORMAT_PRODUCT_AND_MODEL_INDEX)
@@ -119,6 +124,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                         'fr_FR' => 1
                     ]
                 ],
+                'label' => []
             ]
         );
     }
@@ -130,12 +136,16 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         ProductModelInterface $productModel,
         ValueCollectionInterface $productValueCollection,
         FamilyInterface $family,
+        AttributeInterface $sku,
         FamilyVariantInterface $familyVariant
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $productModel->getId()->willReturn(67);
         $productModel->getCode()->willReturn('sku-001');
+        $productModel->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($sku);
+        $sku->getCode()->willReturn('sku');
 
         $productModel->getParent()->willReturn(null);
 
@@ -216,6 +226,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                         'fr_FR' => 1
                     ]
                 ],
+                'label' => []
             ]
         );
     }
@@ -228,12 +239,16 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
         ProductModelInterface $parent,
         ValueCollectionInterface $valueCollection,
         FamilyInterface $family,
+        AttributeInterface $sku,
         FamilyVariantInterface $familyVariant
     ) {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $productModel->getId()->willReturn(67);
         $productModel->getCode()->willReturn('sku-001');
+        $productModel->getFamily()->willReturn($family);
+        $family->getAttributeAsLabel()->willReturn($sku);
+        $sku->getCode()->willReturn('sku');
 
         $productModel->getParent()->willReturn($parent);
         $parent->getCode()->willReturn('parent_A');
@@ -334,6 +349,7 @@ class ProductModelPropertiesNormalizerSpec extends ObjectBehavior
                         'fr_FR' => 1
                     ]
                 ],
+                'label' => []
             ]
         );
     }

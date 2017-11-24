@@ -72,7 +72,35 @@ class ProductModelPropertiesNormalizer implements NormalizerInterface, Serialize
                 $context
             ) : [];
 
+
+        $data[StandardPropertiesNormalizer::FIELD_LABEL] = $this->getLabel(
+            $data[StandardPropertiesNormalizer::FIELD_VALUES],
+            $productModel
+        );
+
         return $data;
+    }
+
+    /**
+     * Get label of the given product model
+     *
+     * @param array                 $values
+     * @param ProductModelInterface $productModel
+     *
+     * @return array
+     */
+    private function getLabel(array $values, ProductModelInterface $productModel): array
+    {
+        if (null === $productModel->getFamily()) {
+            return [];
+        }
+
+        $valuePath = sprintf('%s-text', $productModel->getFamily()->getAttributeAsLabel()->getCode());
+        if (!isset($values[$valuePath])) {
+            return [];
+        }
+
+        return $values[$valuePath];
     }
 
     /**
