@@ -1,4 +1,12 @@
-# 2.0.x
+# 2.0.7 (2017-11-23)
+
+## Better manage products with variants
+
+- PIM-6985: Add right management to product edit form on model for attribute groups and locales
+
+## Bug fixes
+
+- PIM-6959: fix getting published product label according to the scope if needed
 
 ## Improvements
 
