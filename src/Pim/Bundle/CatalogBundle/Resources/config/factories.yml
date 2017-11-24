@@ -14,9 +14,9 @@ parameters:
     pim_catalog.factory.value.scalar.class:           Pim\Component\Catalog\Factory\Value\ScalarValueFactory
     pim_catalog.factory.value.metric.class:           Pim\Component\Catalog\Factory\Value\MetricValueFactory
     pim_catalog.factory.value.price_collection.class: Pim\Component\Catalog\Factory\Value\PriceCollectionValueFactory
-    pim_catalog.factory.value.option.class:           Pim\Component\Catalog\Factory\Value\OptionValueFactory
-    pim_catalog.factory.value.options.class:          Pim\Component\Catalog\Factory\Value\OptionsValueFactory
-    pim_catalog.factory.value.media.class:            Pim\Component\Catalog\Factory\Value\MediaValueFactory
+    pim_catalog.factory.value.import.option.class:    Pim\Component\Catalog\Factory\Value\Import\OptionValueFactory
+    pim_catalog.factory.value.import.options.class:   Pim\Component\Catalog\Factory\Value\Import\OptionsValueFactory
+    pim_catalog.factory.value.import.media.class:     Pim\Component\Catalog\Factory\Value\Import\MediaValueFactory
     pim_catalog.factory.value.date.class:             Pim\Component\Catalog\Factory\Value\DateValueFactory
 
 services:
@@ -201,8 +201,8 @@ services:
         tags:
             - { name: pim_catalog.factory.value }
 
-    pim_catalog.factory.value.option:
-        class: '%pim_catalog.factory.value.option.class%'
+    pim_catalog.factory.value.import.option:
+        class: '%pim_catalog.factory.value.import.option.class%'
         public: false
         arguments:
             - '@pim_catalog.repository.cached_attribute_option'
@@ -211,8 +211,8 @@ services:
         tags:
             - { name: pim_catalog.factory.value }
 
-    pim_catalog.factory.value.options:
-        class: '%pim_catalog.factory.value.options.class%'
+    pim_catalog.factory.value.import.options:
+        class: '%pim_catalog.factory.value.import.options.class%'
         public: false
         arguments:
             - '@pim_catalog.repository.cached_attribute_option'
@@ -221,8 +221,8 @@ services:
         tags:
             - { name: pim_catalog.factory.value }
 
-    pim_catalog.factory.value.file:
-        class: '%pim_catalog.factory.value.media.class%'
+    pim_catalog.factory.value.import.file:
+        class: '%pim_catalog.factory.value.import.media.class%'
         public: false
         arguments:
             - '@akeneo_file_storage.repository.file_info'
@@ -231,8 +231,8 @@ services:
         tags:
             - { name: pim_catalog.factory.value }
 
-    pim_catalog.factory.value.image:
-        class: '%pim_catalog.factory.value.media.class%'
+    pim_catalog.factory.value.import.image:
+        class: '%pim_catalog.factory.value.import.media.class%'
         public: false
         arguments:
             - '@akeneo_file_storage.repository.file_info'

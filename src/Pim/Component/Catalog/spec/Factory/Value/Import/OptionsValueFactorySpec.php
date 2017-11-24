@@ -1,10 +1,11 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Factory\Value;
+namespace spec\Pim\Component\Catalog\Factory\Value\Import;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\Value\OptionsValueFactory;
+use Pim\Component\Catalog\Factory\Value\Import\OptionsValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
@@ -131,7 +132,7 @@ class OptionsValueFactorySpec extends ObjectBehavior
 
         $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.foo')->willReturn($option1);
 
-        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.bar')->willReturn($option2);
+        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.bar') ->willReturn($option2);
 
         $productValue = $this->create(
             $attribute,
@@ -198,7 +199,7 @@ class OptionsValueFactorySpec extends ObjectBehavior
             ->during('create', [$attribute, 'ecommerce', 'en_US', [42]]);
     }
 
-    function it_returns_an_empty_product_value_if_option_does_not_exist(
+    function it_throws_an_exception_if_option_does_not_exist(
         $attributeOptionRepository,
         AttributeInterface $attribute
     ) {
@@ -211,51 +212,17 @@ class OptionsValueFactorySpec extends ObjectBehavior
 
         $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.foobar')->willReturn(null);
 
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            ['foobar']
+        $exception = InvalidPropertyException::validEntityCodeExpected(
+            'multi_select_attribute',
+            'code',
+            'The option does not exist',
+            OptionsValueFactory::class,
+            'foobar'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
-        $productValue->shouldHaveAttribute('multi_select_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldBeEmpty();
-    }
-
-    function it_gracefully_creates_a_product_value_even_if_one_of_the_code_is_not_found(
-        $attributeOptionRepository,
-        AttributeInterface $attribute,
-        AttributeOptionInterface $option1
-    ) {
-        $attribute->isScopable()->willReturn(true);
-        $attribute->isLocalizable()->willReturn(true);
-        $attribute->getCode()->willReturn('multi_select_attribute');
-        $attribute->getType()->willReturn('pim_catalog_multiselect');
-        $attribute->getBackendType()->willReturn('options');
-        $attribute->isBackendTypeReferenceData()->willReturn(false);
-
-        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.foo')->willReturn($option1);
-        $attributeOptionRepository->findOneByIdentifier('multi_select_attribute.not_found')->willReturn(null);
-
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
-            ['foo', 'not_found']
-        );
-
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
-        $productValue->shouldHaveAttribute('multi_select_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldHaveTheOptions([$option1]);
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', ['foobar']]);
     }
 
     public function getMatchers()

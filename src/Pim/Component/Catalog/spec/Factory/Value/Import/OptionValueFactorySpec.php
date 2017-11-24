@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Factory\Value;
+namespace spec\Pim\Component\Catalog\Factory\Value\Import;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\Value\OptionValueFactory;
+use Pim\Component\Catalog\Factory\Value\Import\OptionValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Value\ScalarValue;
@@ -176,10 +176,8 @@ class OptionValueFactorySpec extends ObjectBehavior
             ->during('create', [$attribute, 'ecommerce', 'en_US', []]);
     }
 
-    function it_returns_an_empty_product_value_if_option_does_not_exist(
-        $attrOptionRepository,
-        AttributeInterface $attribute
-    ) {
+    function it_throws_an_exception_if_option_does_not_exist($attrOptionRepository, AttributeInterface $attribute)
+    {
         $attribute->isScopable()->willReturn(true);
         $attribute->isLocalizable()->willReturn(true);
         $attribute->getCode()->willReturn('simple_select_attribute');
@@ -189,21 +187,17 @@ class OptionValueFactorySpec extends ObjectBehavior
 
         $attrOptionRepository->findOneByIdentifier('simple_select_attribute.foobar')->willReturn(null);
 
-        $productValue = $this->create(
-            $attribute,
-            'ecommerce',
-            'en_US',
+        $exception = InvalidPropertyException::validEntityCodeExpected(
+            'simple_select_attribute',
+            'code',
+            'The option does not exist',
+            OptionValueFactory::class,
             'foobar'
         );
 
-        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
-        $productValue->shouldHaveAttribute('simple_select_attribute');
-        $productValue->shouldBeLocalizable();
-        $productValue->shouldHaveLocale('en_US');
-        $productValue->shouldBeScopable();
-        $productValue->shouldHaveChannel('ecommerce');
-        $productValue->shouldBeEmpty();
-
+        $this
+            ->shouldThrow($exception)
+            ->during('create', [$attribute, 'ecommerce', 'en_US', 'foobar']);
     }
 
     public function getMatchers()

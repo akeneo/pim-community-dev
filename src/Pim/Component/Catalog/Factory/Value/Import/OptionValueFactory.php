@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Factory\Value;
+namespace Pim\Component\Catalog\Factory\Value\Import;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
+use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
@@ -33,8 +34,8 @@ class OptionValueFactory implements ValueFactoryInterface
 
     /**
      * @param IdentifiableObjectRepositoryInterface $attrOptionRepository
-     * @param string                                $productValueClass
-     * @param string                                $supportedAttributeType
+     * @param string                             $productValueClass
+     * @param string                             $supportedAttributeType
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attrOptionRepository,
@@ -100,15 +101,27 @@ class OptionValueFactory implements ValueFactoryInterface
      * @param string|null        $optionCode
      *
      * @throws InvalidOptionException
-     * @return AttributeOptionInterface|null
+     * @return AttributeOptionInterface
      */
-    protected function getOption(AttributeInterface $attribute, $optionCode): ?AttributeOptionInterface
+    protected function getOption(AttributeInterface $attribute, $optionCode): AttributeOptionInterface
     {
         if (null === $optionCode) {
             return null;
         }
 
         $identifier = $attribute->getCode() . '.' . $optionCode;
-        return $this->attrOptionRepository->findOneByIdentifier($identifier);
+        $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
+
+        if (null === $option) {
+            throw InvalidOptionException::validEntityCodeExpected(
+                $attribute->getCode(),
+                'code',
+                'The option does not exist',
+                static::class,
+                $optionCode
+            );
+        }
+
+        return $option;
     }
 }

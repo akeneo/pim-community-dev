@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Factory\Value;
+namespace Pim\Component\Catalog\Factory\Value\Import;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
 
@@ -97,10 +98,23 @@ class MediaValueFactory implements ValueFactoryInterface
      * @param AttributeInterface $attribute
      * @param string             $data
      *
-     * @return FileInfoInterface|null
+     * @throws InvalidPropertyException
+     * @return FileInfoInterface
      */
-    protected function getFileInfo(AttributeInterface $attribute, $data): ?FileInfoInterface
+    protected function getFileInfo(AttributeInterface $attribute, $data): FileInfoInterface
     {
-        return $this->fileInfoRepository->findOneByIdentifier($data);
+        $file = $this->fileInfoRepository->findOneByIdentifier($data);
+
+        if (null === $file) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                $attribute->getCode(),
+                'fileinfo key',
+                'The media does not exist',
+                static::class,
+                $data
+            );
+        }
+
+        return $file;
     }
 }

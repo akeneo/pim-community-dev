@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\Catalog\Factory\Value;
+namespace Pim\Component\Catalog\Factory\Value\Import;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Component\Catalog\Exception\InvalidOptionException;
+use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\Catalog\Value\OptionsValueInterface;
 
 /**
  * Factory that creates options (multi-select) product values.
@@ -33,8 +34,8 @@ class OptionsValueFactory implements ValueFactoryInterface
 
     /**
      * @param IdentifiableObjectRepositoryInterface $attrOptionRepository
-     * @param string                                $productValueClass
-     * @param                                       $supportedAttributeType
+     * @param string $productValueClass
+     * @param $supportedAttributeType
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attrOptionRepository,
@@ -115,7 +116,7 @@ class OptionsValueFactory implements ValueFactoryInterface
      * @param AttributeInterface $attribute
      * @param string[]           $data
      *
-     * @return OptionsValueInterface[]
+     * @return array
      */
     protected function getOptions(AttributeInterface $attribute, array $data): array
     {
@@ -131,17 +132,29 @@ class OptionsValueFactory implements ValueFactoryInterface
     }
 
     /**
-     * Gets an attribute option from its code or returns null if it doesn't exist.
+     * Gets an attribute option from its code.
      *
      * @param AttributeInterface $attribute
      * @param string             $optionCode
      *
-     * @return AttributeOptionInterface|null
+     * @throws InvalidOptionException
+     * @return AttributeOptionInterface
      */
-    protected function getOption(AttributeInterface $attribute, string $optionCode): ?AttributeOptionInterface
+    protected function getOption(AttributeInterface $attribute, $optionCode): AttributeOptionInterface
     {
         $identifier = $attribute->getCode() . '.' . $optionCode;
+        $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
 
-        return $this->attrOptionRepository->findOneByIdentifier($identifier);
+        if (null === $option) {
+            throw InvalidOptionException::validEntityCodeExpected(
+                $attribute->getCode(),
+                'code',
+                'The option does not exist',
+                static::class,
+                $optionCode
+            );
+        }
+
+        return $option;
     }
 }
