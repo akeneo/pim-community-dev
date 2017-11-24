@@ -96,7 +96,7 @@ define([
 
                         return $.when(
                             fetcherRegistry.getFetcher('attribute-group').fetchAll(),
-                            fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes),
+                            fetcherRegistry.getFetcher('attribute').fetchByIdentifiers(attributeCodes, {rights: 0}),
                             axesAttributeCodes,
                             family
                         );

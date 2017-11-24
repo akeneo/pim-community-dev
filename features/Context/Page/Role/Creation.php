@@ -15,4 +15,30 @@ class Creation extends Form
 {
     /** @var string */
     protected $path = '#/user/role/create';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($session, $pageFactory, $parameters = [])
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+
+        $this->elements = array_merge(
+            [
+                'Permission' => [
+                    'css'        => '#rights-action',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\Permission\PermissionDecorator'
+                    ]
+                ],
+                'API permission' => [
+                    'css'        => '#rights-api',
+                    'decorators' => [
+                        'Pim\Behat\Decorator\Permission\PermissionDecorator'
+                    ]
+                ],
+            ],
+            $this->elements
+        );
+    }
 }

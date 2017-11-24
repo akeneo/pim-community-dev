@@ -18,7 +18,7 @@ class CursorSpec extends ObjectBehavior
     function let(
         QueryBuilder $queryBuilder,
         EntityManager $entityManager,
-        AbstractQuery $query,
+        Query $query,
         From $from
     ) {
         $rootIdExpr = 'o.id';
@@ -44,19 +44,20 @@ class CursorSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
     }
 
-    function it_is_countable($entityManager, CursorableRepositoryInterface $repository)
+    function it_is_countable($entityManager, $query, CursorableRepositoryInterface $repository)
     {
+        $query->useQueryCache(false)->shouldBeCalled();
         $entityManager->getRepository(Argument::any())->willReturn($repository);
         $repository->findByIds(Argument::any())->willReturn(Argument::any());
 
         $this->shouldImplement('\Countable');
-        $this->shouldHaveCount(13);
+        $this->count()->shouldReturn(13);
     }
 
     function it_is_iterable(
         $queryBuilder,
+        $query,
         EntityManager $entityManager,
-        AbstractQuery $query,
         From $from,
         CursorableRepositoryInterface $repository
     ) {
@@ -90,6 +91,8 @@ class CursorSpec extends ObjectBehavior
         $queryBuilder->from(Argument::any(), Argument::any(), $rootIdExpr)->willReturn($queryBuilder);
         $queryBuilder->groupBy($rootIdExpr)->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
+
+        $query->useQueryCache(false)->shouldBeCalled();
 
         $query->getArrayResult()->willReturn([
             10 => 10,
@@ -160,6 +163,8 @@ class CursorSpec extends ObjectBehavior
             2 => 12,
             4 => 14
         ];
+
+        $query->useQueryCache(false)->shouldBeCalled();
         $query->getArrayResult()->willReturn($ids);
 
         $entityManager->getRepository($entityClass)->willReturn($repository);
@@ -204,6 +209,8 @@ class CursorSpec extends ObjectBehavior
             2 => 12,
             4 => 14
         ];
+
+        $query->useQueryCache(false)->shouldBeCalled();
         $query->getArrayResult()->willReturn($ids);
 
         $entityManager->getRepository($entityClass)->willReturn($repository);
@@ -238,4 +245,9 @@ class Entity
     {
         return $this->id;
     }
+}
+
+abstract class Query extends AbstractQuery
+{
+    public abstract function useQueryCache($bool);
 }

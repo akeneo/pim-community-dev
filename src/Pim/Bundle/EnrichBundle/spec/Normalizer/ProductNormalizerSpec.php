@@ -118,6 +118,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'decimal_separator' => ',',
             'date_format'       => 'dd/MM/yyyy',
             'locale'            => 'en_US',
+            'channel'           => 'mobile',
         ];
 
         $productNormalized = [
@@ -170,8 +171,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $versionNormalizer->normalize('update_version', 'internal_api')->willReturn('normalized_update_version');
 
         $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US', 'fr_FR']);
-        $mug->getLabel('en_US')->willReturn('A nice Mug!');
-        $mug->getLabel('fr_FR')->willReturn('Un très beau Mug !');
+        $mug->getLabel('en_US', 'mobile')->willReturn('A nice Mug!');
+        $mug->getLabel('fr_FR', 'mobile')->willReturn('Un très beau Mug !');
         $mug->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([
             'filePath'         => '/p/i/m/4/all.png',
@@ -264,6 +265,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'decimal_separator' => ',',
             'date_format'       => 'dd/MM/yyyy',
             'locale'            => 'en_US',
+            'channel'           => 'mobile',
         ];
 
         $productNormalized = [
@@ -316,8 +318,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $versionNormalizer->normalize('update_version', 'internal_api')->willReturn('normalized_update_version');
 
         $localeRepository->getActivatedLocaleCodes()->willReturn(['en_US', 'fr_FR']);
-        $mug->getLabel('en_US')->willReturn('A nice Mug!');
-        $mug->getLabel('fr_FR')->willReturn('Un très beau Mug !');
+        $mug->getLabel('en_US', 'mobile')->willReturn('A nice Mug!');
+        $mug->getLabel('fr_FR', 'mobile')->willReturn('Un très beau Mug !');
         $mug->getImage()->willReturn($image);
         $imageNormalizer->normalize($image, Argument::any())->willReturn([
             'filePath'         => '/p/i/m/4/all.png',

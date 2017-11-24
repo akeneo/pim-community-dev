@@ -30,3 +30,18 @@ Feature: Delete import
     Then I should see the flash message "Job instance successfully removed"
     And the grid should contain 24 elements
     And I should not see import profile "CSV footwear product import"
+
+  @github https://github.com/akeneo/pim-community-dev/issues/6414
+  Scenario: Correctly delete a newly created job profile
+    Given I create a new import
+    Then I should see the Code, Label and Job fields
+    When I fill in the following information in the popin:
+      | Code  | test                  |
+      | Label | Test                  |
+      | Job   | Product import in CSV |
+    And I press the "Save" button
+    And I press the secondary action "Delete"
+    And I confirm the deletion
+    Then I should see the flash message "Import profile successfully removed"
+    When I am on the imports page
+    Then the grid should contain 25 elements
