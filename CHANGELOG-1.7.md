@@ -1,3 +1,7 @@
+# 1.7.X 
+
+- GITHUB-7202: Ensure commit batch size value is always an int, cheers @bghitulescu!
+
 # 1.7.14 (2017-11-21)
 
 ## Bug Fixes
