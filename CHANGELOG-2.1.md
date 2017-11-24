@@ -6,6 +6,7 @@
 - API-441: Update partially an asset category with the API
 - API-488: Get an asset reference file
 - API-496: Get an asset variation file
+- API-427: Get an asset with the web API
 - PIM-7029: Add a search by code on assets grid
 
 ## Bug fixes
