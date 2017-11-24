@@ -6,7 +6,6 @@
 
 # 2.0.7 (2017-11-23)
 
-
 ## Better manage products with variants!
 
 - PIM-6567: Add edition capabilities to family variants from the UI (distribution of the attributes)
@@ -37,6 +36,10 @@
 - Change the constructor of `Pim\Bundle\ApiBundle\Controller\FamilyVariantController` to add `Pim\Bundle\ApiBundle\Stream\StreamResourceResponse`.
 - Replace `Pim\Component\Catalog\Builder\ProductBuilderInterface` by `Pim\Component\Connector\Processor\Denormalization\Product\AddParent` and `Pim\Component\Connector\Processor\Denormalization\Product\FindProductToImport` in `Pim\Component\Connector\Processor\Denormalization\ProductProcessor`
 - Change method signature from `Pim\Component\Catalog\Model\ProductInterface::setAssociations(array $associations)` to `Pim\Component\Catalog\Model\ProductInterface::setAssociations(Collection $associations)`
+
+## New jobs
+IMPORTANT: In order for your PIM to work properly, you will need to run the following commands to add the missing job instances.
+- Add the job instance `compute_family_variant_structure_changes`: `bin/console akeneo:batch:create-job "internal" "compute_family_variant_structure_changes" "compute_family_variant_structure_changes" "compute_family_variant_structure_changes" '{"family_variant_codes":["null"]}' "Compute family variant structure changes" --env=prod`
 
 # 2.0.6 (2017-11-03)
 
