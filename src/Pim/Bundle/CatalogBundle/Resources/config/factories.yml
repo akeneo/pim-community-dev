@@ -14,10 +14,13 @@ parameters:
     pim_catalog.factory.value.scalar.class:           Pim\Component\Catalog\Factory\Value\ScalarValueFactory
     pim_catalog.factory.value.metric.class:           Pim\Component\Catalog\Factory\Value\MetricValueFactory
     pim_catalog.factory.value.price_collection.class: Pim\Component\Catalog\Factory\Value\PriceCollectionValueFactory
+    pim_catalog.factory.value.date.class:             Pim\Component\Catalog\Factory\Value\DateValueFactory
     pim_catalog.factory.value.import.option.class:    Pim\Component\Catalog\Factory\Value\Import\OptionValueFactory
     pim_catalog.factory.value.import.options.class:   Pim\Component\Catalog\Factory\Value\Import\OptionsValueFactory
     pim_catalog.factory.value.import.media.class:     Pim\Component\Catalog\Factory\Value\Import\MediaValueFactory
-    pim_catalog.factory.value.date.class:             Pim\Component\Catalog\Factory\Value\DateValueFactory
+    pim_catalog.factory.value.storage.option.class:   Pim\Component\Catalog\Factory\Value\Storage\OptionValueFactory
+    pim_catalog.factory.value.storage.options.class:  Pim\Component\Catalog\Factory\Value\Storage\OptionsValueFactory
+    pim_catalog.factory.value.storage.media.class:    Pim\Component\Catalog\Factory\Value\Storage\MediaValueFactory
 
 services:
     pim_catalog.factory.family:
@@ -211,8 +214,28 @@ services:
         tags:
             - { name: pim_catalog.factory.value }
 
+    pim_catalog.factory.value.storage.option:
+        class: '%pim_catalog.factory.value.storage.option.class%'
+        public: false
+        arguments:
+            - '@pim_catalog.repository.cached_attribute_option'
+            - '%pim_catalog.entity.value.option.class%'
+            - 'pim_catalog_simpleselect'
+        tags:
+            - { name: pim_catalog.factory.value }
+
     pim_catalog.factory.value.import.options:
         class: '%pim_catalog.factory.value.import.options.class%'
+        public: false
+        arguments:
+            - '@pim_catalog.repository.cached_attribute_option'
+            - '%pim_catalog.entity.value.options.class%'
+            - 'pim_catalog_multiselect'
+        tags:
+            - { name: pim_catalog.factory.value }
+
+    pim_catalog.factory.value.storage.options:
+        class: '%pim_catalog.factory.value.storage.options.class%'
         public: false
         arguments:
             - '@pim_catalog.repository.cached_attribute_option'
@@ -231,8 +254,28 @@ services:
         tags:
             - { name: pim_catalog.factory.value }
 
+    pim_catalog.factory.value.storage.file:
+        class: '%pim_catalog.factory.value.storage.media.class%'
+        public: false
+        arguments:
+            - '@akeneo_file_storage.repository.file_info'
+            - '%pim_catalog.entity.value.media.class%'
+            - 'pim_catalog_file'
+        tags:
+            - { name: pim_catalog.factory.value }
+
     pim_catalog.factory.value.import.image:
         class: '%pim_catalog.factory.value.import.media.class%'
+        public: false
+        arguments:
+            - '@akeneo_file_storage.repository.file_info'
+            - '%pim_catalog.entity.value.media.class%'
+            - 'pim_catalog_image'
+        tags:
+            - { name: pim_catalog.factory.value }
+
+    pim_catalog.factory.value.storage.image:
+        class: '%pim_catalog.factory.value.storage.media.class%'
         public: false
         arguments:
             - '@akeneo_file_storage.repository.file_info'
