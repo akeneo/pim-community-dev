@@ -159,6 +159,7 @@ pim_enrich:
         deletion_failed: El producto no puede ser eliminado.
         update_successful: Producto actualizado con éxito.
         update_failed: El producto no puede ser actualizado.
+        field_not_ready: 'El producto no puede ser guardado en el momento. Los siguientes campos no están listos: {{ fields }}'
         already_in_upload: Un fichero ya está siendo cargado por este atributo en el local "{{ locale }}" y objetivo "{{ scope }}"
       error:
         upload: Ocurrió un error durante la carga del fichero
@@ -334,6 +335,7 @@ pim_enrich:
           info:
             search_attributes: Buscar...
             no_available_attributes: No hay más atributos para agregar
+            attributes_selected: "{{ itemsCount }} atributo(s) seleccionado(s)"
             no_match: No se encuentran coincidencias
             load_more: Cargando más resultados...
         categories:
@@ -541,8 +543,10 @@ pim_enrich:
         attributes:
           label_label: Etiqueta
           toolbox:
+            select_attributes_by_groups: Añadir por grupos
             select_attributes: Agregar atributos
             add: Agregar
+            attributes_groups_selected: '{{ itemsCount }} grupo(s) seleccionado(s)'
   job:
     upload: Arrastrar y soltar un fichero o haga clic aquí
   export:
@@ -572,6 +576,7 @@ pim_enrich:
             title: Selección de atributo
         attributes_selector:
           attribute_group: Grupos de atributos
+          attributes: "Buscar en {{ itemsCount }} atributos"
           selected: "Atributos seleccionados"
           clear: Restablecer
           all_group: Todos los grupos

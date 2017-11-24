@@ -46,7 +46,10 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
         $visited = [];
 
         if ($objectManager instanceof DocumentManager) {
-            $this->doDetach($object, $visited);
+            $this->doDetach($object);
+            if ($object instanceof ProductInterface) {
+                $this->hardcoreDetachForOdmUoW($object);
+            }
         } else {
             $objectManager->detach($object);
             $this->doDetachScheduled($object, $visited);
@@ -165,21 +168,9 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
      * Do detach objects on DocumentManager
      *
      * @param mixed $document
-     * @param array $visited  Prevent infinite recursion
      */
-    protected function doDetach($document, array &$visited)
+    protected function doDetach($document)
     {
-        $oid = spl_object_hash($document);
-        if (isset($visited[$oid])) {
-            return;
-        }
-
-        $documentManager = $this->getObjectManager($document);
-
-        $visited[$oid] = $document;
-
-        $documentManager->detach($document);
-
         if ($document instanceof ProductInterface) {
             foreach ($document->getValues() as $value) {
                 if (null !== $value->getMedia()) {
@@ -188,5 +179,113 @@ class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInter
                 }
             }
         }
+
+        $documentManager = $this->getObjectManager($document);
+        $documentManager->detach($document);
+    }
+
+    /**
+     * There is bug in the Doctrine ODM detach method. Even if it's properly called,
+     * some objects are still not detached and remain in the unit of work.
+     *
+     * This subtle and artistic piece of code aims to remove an object from the private
+     * variables of the unit of work (originalDocumentData, parentAssociations, embeddedDocumentsRegistry and
+     * identityMap).
+     *
+     * This is the worst piece of code I've coded in my whole life. And I know I loose a lot of karma with that...
+     * But, for my defense, the idea of using closures to access and mutate private variables is not mine. It has
+     * already been done in EE with the PublishProductMemoryCleaner.
+     *
+     * @param mixed $object
+     */
+    private function hardcoreDetachForOdmUoW($object)
+    {
+        $objectManager = $this->getObjectManager($object);
+        $uow = $objectManager->getUnitOfWork();
+        $objectIds = [spl_object_hash($object)];
+
+        $originalDocumentData = &$this->getOriginalDocumentData($uow);
+        foreach (array_diff(array_keys($originalDocumentData), $objectIds) as $id) {
+            unset($originalDocumentData[$id]);
+        }
+
+        $parentAssociations = &$this->getParentAssociations($uow);
+        foreach (array_diff(array_keys($parentAssociations), $objectIds) as $id) {
+            unset($parentAssociations[$id]);
+        }
+
+        $embeddedDocumentsRegistry = &$this->getEmbeddedDocumentsRegistry($uow);
+        foreach (array_diff(array_keys($embeddedDocumentsRegistry), $objectIds) as $id) {
+            unset($embeddedDocumentsRegistry[$id]);
+        }
+
+        $identityMap = &$this->getIdentityMap($uow);
+        foreach (array_diff(array_keys($identityMap), $objectIds) as $id) {
+            unset($identityMap[$id]);
+        }
+    }
+
+    /**
+     * Get the private originalDocumentData from UoW
+     *
+     * @param UnitOfWork $uow
+     *
+     * @return array
+     */
+    private function &getOriginalDocumentData($uow)
+    {
+        $closure = \Closure::bind(function &($uow) {
+            return $uow->originalDocumentData;
+        }, null, $uow);
+
+        return $closure($uow);
+    }
+
+    /**
+     * Get the private parentAssociations from UoW
+     *
+     * @param UnitOfWork $uow
+     *
+     * @return array
+     */
+    private function &getParentAssociations($uow)
+    {
+        $closure = \Closure::bind(function &($uow) {
+            return $uow->parentAssociations;
+        }, null, $uow);
+
+        return $closure($uow);
+    }
+
+    /**
+     * Get the private parentAssociations from UoW
+     *
+     * @param UnitOfWork $uow
+     *
+     * @return array
+     */
+    private function &getEmbeddedDocumentsRegistry($uow)
+    {
+        $closure = \Closure::bind(function &($uow) {
+            return $uow->embeddedDocumentsRegistry;
+        }, null, $uow);
+
+        return $closure($uow);
+    }
+
+    /**
+     * Get the private identityMap from UoW
+     *
+     * @param UnitOfWork $uow
+     *
+     * @return array
+     */
+    private function &getIdentityMap($uow)
+    {
+        $closure = \Closure::bind(function &($uow) {
+            return $uow->identityMap;
+        }, null, $uow);
+
+        return $closure($uow);
     }
 }

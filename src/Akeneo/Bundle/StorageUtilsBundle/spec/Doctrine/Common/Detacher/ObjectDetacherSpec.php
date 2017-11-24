@@ -3,7 +3,6 @@
 namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\UnitOfWork;
@@ -54,19 +53,5 @@ class ObjectDetacherSpec extends ObjectBehavior
         $manager->detach($object2)->shouldBeCalled();
 
         $this->detachAll($objects);
-    }
-
-    function it_detaches_an_object_from_document_manager(
-        $registry,
-        DocumentManager $manager,
-        ClassMetadata $classMetadata
-    ) {
-        $object = new \stdClass();
-        $registry->getManagerForClass('stdClass')->willReturn($manager);
-        $manager->getClassMetadata('stdClass')->willReturn($classMetadata);
-
-        $manager->detach($object)->shouldBeCalled();
-
-        $this->detach($object);
     }
 }

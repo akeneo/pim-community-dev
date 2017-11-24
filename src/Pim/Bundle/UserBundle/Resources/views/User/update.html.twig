@@ -5,11 +5,6 @@
 {% set fullname = form.vars.value.fullName|default('N/A') %}
 {% oro_title_set({params : {"%username%": fullname }}) %}
 {% set title = form.vars.value.id ? 'Edit user'|trans ~ ' - ' ~ fullname : 'New user'|trans %}
-{% if editRoute %}
-    {% set formAction = path(editRoute) %}
-{% else %}
-    {% set formAction = form.vars.value.id ? path('oro_user_update', { id: form.vars.value.id}) : path('oro_user_create') %}
-{% endif %}
 
 {% block head_script %}
     <script type="text/javascript">
@@ -53,7 +48,7 @@
 {% block content %}
     {{ JSFV(form) }}
     {{ form_start(form, {
-        'action': formAction,
+        'action': editRoute,
         'attr': {
             'data-updated-title': 'confirmation.leave'|trans,
             'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'user.title'|trans })

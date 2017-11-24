@@ -1,14 +1,14 @@
 User: Käyttäjä
 Run demo: Suorita demo
 Product: Tuote
-Attribute list: Määriteluettelo
-Attribute Group list: Määriteryhmien luettelo
+Attribute list: Attribuuttilista
+Attribute Group list: Attribuuttiryhmälista
 Users: Käyttäjät
 Roles: Roolit
 Groups: Ryhmät
-Configuration: Kokoonpano
+Configuration: Konfiguraatio
 Currency list: Valuuttalista
-Locale list: Lokaatioiden lista
+Locale list: Lokaatiolista
 Logged in as: Kirjautunut nimellä
 Logout: Kirjaudu ulos
 Login: Kirjaudu sisään
@@ -38,3 +38,11 @@ Most Viewed: Katsotuimmat
 "Yes": "Kyllä"
 "No": "Ei"
 required: (vaadittu)
+pim_ui.system_config:
+  form:
+    loading_message_enabled.label: Salli latausviestit
+    loading_message_enabled.tooltip: Näytä käyttäjäystävällisiä viestejä sivun latautuessa
+    loading_messages.label: Käytettävät latausviestit
+    loading_messages.tooltip: Kaikki käytettävät latausviestit rivinvaihdolla eroteltuna
+  group:
+    loading_message.title: Latausviestit

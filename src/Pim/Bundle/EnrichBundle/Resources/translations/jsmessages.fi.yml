@@ -1,7 +1,7 @@
 confirmation:
   remove:
     item: Oletko varma että haluat poistaa tämän kohteen?
-    association_type: Oletko varma, että haluat poistaa tämän liitostyypin?
+    association_type: Oletko varma, että haluat poistaa tämän assosiaatiotyypin?
     attribute: Oletko varma, että haluat poistaa tämän määritteen?
     family: Oletko varma, että haluat poistaa tämän ryhmän?
     product: Oletko varma, että haluat poistaa tämän tuotteen?
@@ -33,7 +33,7 @@ flash:
   item:
     removed: Kohde poistettu
   association_type:
-    removed: Sidostyyppi poistettu onnistuneesti
+    removed: Assosiaatiotyyppi poistettu onnistuneesti
   attribute:
     removed: Attribuutin poistaminen onnistui
   family:
@@ -57,9 +57,11 @@ flash:
   role:
     removed: Roolin poistaminen onnistui
 error:
+  creating:
+    product: Yhtään attribuuttia ei ole määritetty tuotteen tunnisteeksi tai sinulla ei ole muokkausoikeuksia.
   removing:
     item: Kohdetta ei voi poistaa
-    association_type: Liitostyyppiä ei voi poistaa
+    association_type: Assosiaatiotyyppiä ei voi poistaa
     attribute: Attribuuttia ei voi poistaa
     family: Ryhmää ei voi poistaa
     product: Tuotetta ei voi poistaa
@@ -143,7 +145,7 @@ pim_enrich:
       history:
         version: Versio
         author: Tekijä
-        logged_at: Kirjautunut
+        logged_at: Kirjattu
         more: Lisää
         less: Vähemmän
         from: Lähettäjä
@@ -157,6 +159,7 @@ pim_enrich:
         deletion_failed: Tuotetta ei voi poistaa.
         update_successful: Tuote päivitetty.
         update_failed: Tuotetta ei voitu päivittää.
+        field_not_ready: 'Tuotetta ei voida tallentaa. Seuraavat kentät eivät ole vielä valmiina: {{ fields }}'
         already_in_upload: Tiedosto on jo ladattu määritteen lokaatiossa "{{ locale }}" ja laajuudessa "{{ scope }}"
       error:
         upload: Virhe tiedoston lataamisessa
@@ -203,6 +206,10 @@ pim_enrich:
           cancel: Peruuta
     association_type:
       info:
+        deletion_successful: Assosiaatiotyyppi poistettu.
+        deletion_failed: Assosiaatiotyyppiä ei voitu poistaa.
+        update_successful: Assosiaatiotyyppi päivitetty.
+        update_failed: Assosiaatiotyyppiä ei voitu päivittää.
         field_not_ready:
           The association type cannot be saved right now. The following fields are not ready:
             - kentät
@@ -216,6 +223,12 @@ pim_enrich:
     channel:
       title: kanava
       info:
+        deletion_successful: Kanava poistettu.
+        deletion_failed: Kanavaa ei voitu poistaa.
+        update_successful: Kanava päivitetty.
+        update_failed: Kanavaa ei voitu päivittää.
+        create_successful: Kanava luotu.
+        create_failed: Kanavaa ei voitu luoda.
         field_not_ready:
           The channel cannot be saved right now. The following fields are not ready:
             - kentät
@@ -228,6 +241,12 @@ pim_enrich:
         save: Tallenna
     family:
       title: tuoteperhe
+      info:
+        update_successful: Perheen päivittäminen onnistui.
+        create_successful: Tuoteperhe luotu.
+        update_failed: Tuoteperheen tallennuksessa tapahtui virhe.
+        cant_remove_attribute_as_label: Otsikkona käytettyä attribuuttia ei voida poistaa
+        attribute_edit_permission_is_not_granted: Sinulla ei ole oikeuksia muokata tuoteperheen attribuutteja
       meta:
         created: Luotu
         created_by: Luoja
@@ -262,6 +281,10 @@ pim_enrich:
     group:
       title: Ryhmä
       info:
+        deletion_successful: Ryhmä poistettu.
+        deletion_failed: Ryhmää ei voitu poistaa.
+        update_successful: Ryhmä päivitetty.
+        update_failed: Ryhmää ei voitu päivittää.
         field_not_ready:
           The group cannot be saved right now. The following fields are not ready:
             - kentät
@@ -273,6 +296,11 @@ pim_enrich:
         created_by: Luoja
         updated: Päivitetty
         updated_by: Päivittäjä
+    job_instance:
+      title: työprofiili
+      info:
+        update_failed: Työprofiilia ei voitu päivittää.
+        update_successful: Työprofiili päivitetty.
   confirmation:
     leave: Oletko varma että haluat poistua sivulta?
     discard_changes: Menetät muutokset tähän {{ entity }}, jos poistut sivulta.
@@ -293,9 +321,9 @@ pim_enrich:
     product:
       tab:
         associations:
-          title: Määritteet
+          title: Assosiaatiot
           info:
-            none_exist: Sidostyyppiä ei ole olemassa.
+            none_exist: Assosiaatiotyyppiä ei ole olemassa.
             show_products: Näytä tuotteet
             show_groups: Näytä ryhmät
             number_of_associations: "{{ productCount }} ja {{ groupCount }} ryhmistä"
@@ -307,6 +335,7 @@ pim_enrich:
           info:
             search_attributes: Hae...
             no_available_attributes: Ei ole enää attribuutteja lisättäväksi
+            attributes_selected: "{{ itemsCount }} attribuutti(a) valittu"
             no_match: Vastaavuuksia ei löydy
             load_more: Ladataan lisää tuloksia...
         categories:
@@ -379,8 +408,10 @@ pim_enrich:
           title: Attribuutit
           label_label: Nimike
           toolbox:
+            select_attributes_by_groups: Lisää ryhmittäin
             select_attributes: Lisää attribuutteja
             add: Lisää
+            attributes_groups_selected: '{{ itemsCount }} ryhmä(ä) valittu'
           not_required_label: Ei vaadittu
           required_label: Vaadittu
         history:
@@ -434,6 +465,12 @@ pim_enrich:
             search_attributes: Hae...
             no_available_attributes: Ei ole enää attribuutteja lisättäväksi
     job_instance:
+      fail:
+        launch: Profiilin käynnistäminen epäonnistui. Varmista profiilin oikeellisuus ja että sinulla on oikeudet sen käynnistämiseen.
+        save: Profiilin tallentaminen epäonnistui. Varmista että sinulla on oikeudet profiilin muokkaamiseen.
+      title:
+        import: Tuontiprofiili
+        export: Vientiprofiili
       button:
         edit.title: Muokkaa
         export.title: Vie nyt
@@ -483,7 +520,7 @@ pim_enrich:
             help: Kategoriasarakkeen nimi
           escape:
             title: Koodinvaihto
-            help: Yhtä merkkiä käytetään kentän "poistu" määrittämiseen
+            help: Ohjausmerkki
           family_column:
             title: Perhesarake
             help: Perhesarakkeen nimi
@@ -506,8 +543,12 @@ pim_enrich:
         attributes:
           label_label: Nimike
           toolbox:
+            select_attributes_by_groups: Lisää ryhmittäin
             select_attributes: Lisää attribuutteja
             add: Lisää
+            attributes_groups_selected: '{{ itemsCount }} ryhmä(ä) valittu'
+  job:
+    upload: Vedä ja pudota tiedosto tai klikkaa tästä
   export:
     product:
       data:
@@ -535,6 +576,7 @@ pim_enrich:
             title: Attribuuttivalinta
         attributes_selector:
           attribute_group: Attribuuttiryhmät
+          attributes: "Hae {{ attributeCount }} attribuutista"
           selected: "Valitut attribuutit"
           clear: Tyhjennä
           all_group: Kaikki ryhmät
@@ -547,6 +589,7 @@ pim_enrich:
             "NOT IN": Ei luettelossa
             EMPTY: Perheettömät tuotteet
             "NOT EMPTY": Perheelliset tuotteet
+          empty_selection: Ei perhe-ehtoja
         updated:
           title: Aikaehto
           operators:

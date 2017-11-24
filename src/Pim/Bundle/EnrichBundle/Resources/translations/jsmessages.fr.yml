@@ -1,14 +1,14 @@
 confirmation:
   remove:
-    item: Êtes-vous certain(e) de vouloir supprimer cet élément ?
+    item: Êtes-vous sûr(e) de vouloir supprimer cet élément ?
     association_type: Êtes-vous sûr(e) de que vouloir supprimer ce type d'association ?
-    attribute: Êtes-vous sûr(e) de que vouloir supprimer cet attribut ?
+    attribute: Êtes-vous sûr(e) de vouloir supprimer cet attribut ?
     family: Êtes-vous sûr(e) de que vouloir supprimer cette famille ?
     product: Êtes-vous sûr(e) de que vouloir supprimer ce produit ?
     channel: Êtes-vous sûr(e) de que vouloir supprimer ce canal ?
     group: Êtes-vous sûr(e) de vouloir supprimer ce groupe ?
     variant group: Êtes-vous sûr(e) de que vouloir supprimer ce groupe de variantes ?
-    group type: Êtes-vous sûr(e) de que vouloir supprimer ce type de groupe ?
+    group type: Êtes-vous sûr(e) de vouloir supprimer ce type de groupe ?
     import profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'import ?
     export profile: Êtes-vous sûr(e) de que vouloir supprimer ce profil d'export ?
     user: Êtes-vous sûr(e) de vouloir supprimer cet utilisateur ?
@@ -31,9 +31,9 @@ pim_datagrid:
       cancel: Annuler
 flash:
   item:
-    removed: Elément supprimé avec succès
+    removed: Élément supprimé avec succès
   association_type:
-    removed: Le type d'association est supprimé avec succès
+    removed: Le type d'association a été supprimé avec succès
   attribute:
     removed: Attribut supprimé avec succès
   family:
@@ -58,7 +58,7 @@ flash:
     removed: Le rôle a bien été supprimé
 error:
   creating:
-    product: Aucun attribut n'est configuré comme identifiant produit ou vous n'avez pas les droits pour le modifier.
+    product: Aucun attribut n'est configuré comme identifiant produit ou vous ne disposez pas des droits pour le modifier.
   removing:
     item: Impossible de supprimer cet élément
     association_type: Impossible de supprimer ce type d'association
@@ -106,7 +106,7 @@ pim:
         csv_grid_context: CSV (contexte de la grille)
         xlsx_all: Excel (tous les attributs)
         xlsx_grid_context: Excel (contexte de la grille)
-      delete: Supprimer des produits
+      delete: Supprimer
       mass_edit: Modifier les informations du produit
       category_edit: Déplacer des produits vers des catégories
       sequential_edit: Modifier les produits séquentiellement
@@ -119,7 +119,7 @@ pim_enrich:
       delete.label: Supprimer
       delete.error: Erreur lors de la suppression de l'élément
     delete:
-      confirm.content: Êtes-vous sûr(e) de que vouloir supprimer {{ itemName }} ? Il n'est pas possible d'annuler cette action
+      confirm.content: Êtes-vous sûr(e) de vouloir supprimer {{ itemName }} ? Il est impossible d'annuler cette action
       confirm.title: Supprimer l'élément {{ itemName }}
   navigation:
     link:
@@ -138,7 +138,7 @@ pim_enrich:
         disable: Désactiver
         disabled: Désactivé
         download_pdf: PDF
-        compare_translate: Comparer / traduire
+        compare_translate: Comparer / Traduire
         delete: Supprimer
         save: Enregistrer
         save_and_back: Enregistrer et revenir sur la grille
@@ -197,7 +197,7 @@ pim_enrich:
       localizable:
         channel_locale_unavailable: Ce champ traduisible n'est pas disponible pour la locale '{{ locale }}' et le canal '{{ channel }}'
       media:
-        upload: Glisser et déposer pour télécharger ou cliquer ici
+        upload: Glissez et déposez un fichier pour le télécharger ou cliquez ici
       create_popin:
         title: Créer un nouveau produit
         labels:
@@ -226,7 +226,7 @@ pim_enrich:
         deletion_successful: Le canal a bien été supprimé.
         deletion_failed: Le canal ne peut pas être supprimé.
         update_successful: Le canal a bien été mis à jour.
-        update_failed: Le canal ne peut pas être mis à jour.
+        update_failed: Le canal n'a pas pu être mis à jour.
         create_successful: Canal créé avec succès.
         create_failed: Le canal ne peut pas être créé.
         field_not_ready:
@@ -304,9 +304,9 @@ pim_enrich:
   confirmation:
     leave: Êtes-vous sûr(e) de vouloir quitter cette page ?
     discard_changes: Vous perdrez les modifications effectuées sur {{ entity }} si vous quittez la page.
-    delete_item: Supprimer l'élément.
+    delete_item: Supprimer l'élément
     delete:
-      attribute: Êtes-vous sûr de que vouloir supprimer cet attribut du produit ?
+      attribute: Êtes-vous sûr(e) de vouloir supprimer cet attribut du produit ?
   info:
     not_applicable: N/A
     entity:
@@ -466,8 +466,8 @@ pim_enrich:
             no_available_attributes: Il n'y a plus d'attributs disponibles
     job_instance:
       fail:
-        launch: Impossible de lancer le profil. Assurez-vous qu'il est valide et que vous avez les droits pour le lancer.
-        save: Impossible de sauvegarder le profil. Assurez-vous que vous avez les droits pour l'éditer.
+        launch: Impossible de lancer le profil. Assurez-vous qu'il est valide et que vous disposez des droits pour le lancer.
+        save: Impossible de sauvegarder le profil. Assurez-vous que vous disposez des droits pour l'éditer.
       title:
         import: Profil d'import
         export: Profil d'export
@@ -513,7 +513,7 @@ pim_enrich:
             title: Nombre de lignes par fichier
             help: Définit la limite de nombre de lignes par fichier
           upload_allowed:
-            title: Autoriser l'envoi de fichier sur le serveur
+            title: Autoriser l'envoi de fichiers sur le serveur
             help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
           categories_column:
             title: Colonne des catégories
@@ -526,7 +526,7 @@ pim_enrich:
             help: Nom de la colonne qui contient la famille du produit
           groups_column:
             title: Colonne des groupes
-            help: Nom de la colonne qui contient les groupes du produit
+            help: Intitulé de la colonne contenant les groupes de produits
           enabled:
             title: Activer le produit
             help: Activer automatiquement les produits importés
@@ -563,7 +563,7 @@ pim_enrich:
           help: Le canal définit la portée des valeurs des produits, les locales utilisées pour sélectionner les données ainsi que l'arbre de catégories utilisé pour sélectionner les produits.
         locales:
           title: Locales
-          help: 'Les locales définissent les valeurs de produits traduisibles à exporter. Par ex : les informations produits en allemand.'
+          help: 'Les locales définissent les valeurs de produits traduisibles à exporter. Par ex.: les informations des produits en allemand.'
         attributes:
           title: Attributs
           edit: Modifier
@@ -587,8 +587,8 @@ pim_enrich:
           operators:
             IN: Dans la liste
             "NOT IN": Pas dans la liste
-            EMPTY: Produits qui n’ont pas de famille
-            "NOT EMPTY": Produits qui ont une famille
+            EMPTY: Produits ne possédant pas de famille
+            "NOT EMPTY": Produits possédant une famille
           empty_selection: Pas de condition sur les familles
         updated:
           title: Condition sur la date de mise à jour

@@ -5,6 +5,8 @@ pim_connector:
     entity_reader.title: Kohteen poisto
     csv_reader:
       title: CSV-lukija
+    file_reader:
+      invalid_item_columns_count: 'Odotettu %totalColumnsCount% saraketta, saatu %itemColumnsCount% %filePath%:%lineno%'
     csv_product_reader.title: CSV-tuotteen lukija
     csv_category_reader.title: CSV-kategorian lukija
     csv_variant_group .title: CSV-vaihtoehtojen ryhmälukija
@@ -28,7 +30,7 @@ pim_connector:
     writer.title: Yksikön varastointi
     csv_writer.title: CSV-kirjoittaja
 job_execution.summary:
-  read: lue
+  read: luettu
   write: kirjoitettu
   skip: ohitettu
   create: luotu
@@ -41,6 +43,7 @@ job_execution.summary:
     title: 'Tiedoston koodaus:'
     skipped: ohitetaan, laajennus valkolistattu
   product_skipped_no_diff: ohitettu tuote (ei eroavaisuuksia)
+  product_skipped_no_associations: ohitettu tuote (ei havaittuja assosiaatioita)
   item_position: lue rivit
 batch_jobs:
   csv_product_export:
@@ -100,16 +103,41 @@ batch_jobs:
     label: Muuttujaryhmien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
     import.label: Muutujaryhmien tuonti
+  csv_channel_export:
+    label: Kanavavienti CSV-muodossa
+    export.label: Kanavavienti
+  csv_locale_export:
+    label: Lokaatiovienti CSV-muodossa
+    export.label: Lokaatiovienti
+  csv_attribute_group_export:
+    label: Attribuuttiryhmävienti CSV-muodossa
+    export.label: Attribuuttiryhmävienti
+  csv_currency_export:
+    label: Valuuttavienti CSV-muodossa
+    export.label: Valuuttavienti
+  csv_group_type_export:
+    label: Ryhmätyyppivienti CSV-muodossa
+    export.label: Ryhmätyyppivienti
   csv_channel_import:
+    label: Kanavatuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Kanavatuonti
   csv_locale_import:
+    label: Lokaatiotuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Lokaatiotuonti
   csv_attribute_group_import:
+    label: Attribuuttiryhmätuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttiryhmätuonti
   csv_currency_import:
+    label: Valuuttatuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Valuuttatuonti
   csv_group_type_import:
+    label: Ryhmätyyppituonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmätyyppituonti
   xlsx_category_import:
     label: Kategorioiden tuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -167,13 +195,38 @@ batch_jobs:
   xlsx_association_type_export:
     label: Liitännäistyyppien vienti XLSX-muodossa
     export.label: Liitännäistyyppien vienti XLSX-muodossa
+  xlsx_channel_export:
+    label: Kanavavienti XLSX-muodossa
+    export.label: Kanavavienti
+  xlsx_locale_export:
+    label: Lokaatiovienti XLSX-muodossa
+    export.label: Lokaatiovienti
+  xlsx_attribute_group_export:
+    label: Attribuuttiryhmävienti XLSX-muodossa
+    export.label: Attribuuttiryhmävienti
+  xlsx_currency_export:
+    label: Valuuttavienti XLSX-muodossa
+    export.label: Valuuttavienti
+  xlsx_group_type_export:
+    label: Ryhmätyyppivienti XLSX-muodossa
+    export.label: Ryhmätyyppivienti
   xlsx_channel_import:
+    label: Kanavatuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Kanavatuonti
   xlsx_locale_import:
+    label: Lokaatiotuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Lokaatiotuonti
   xlsx_attribute_group_import:
+    label: Attribuuttiryhmätuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Attribuuttiryhmätuonti
   xlsx_currency_import:
+    label: Valuuttatuonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Valuuttatuonti
   xlsx_group_type_import:
+    label: Ryhmätyyppituonti XLSX-muodossa
     validation.label: Tiedostojen tarkistaminen
+    import.label: Ryhmätyyppituonti
