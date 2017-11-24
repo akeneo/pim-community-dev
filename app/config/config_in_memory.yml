@@ -1,0 +1,27 @@
+imports:
+    - { resource: config.yml }
+
+framework:
+    test: ~
+    session:
+        storage_id: session.storage.mock_array
+
+swiftmailer:
+    disable_delivery: true
+
+assetic:
+    use_controller: false
+
+pim_enrich:
+    record_mails: true
+
+services:
+    session.storage.mock_array:
+        class: Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage
+        public: false
+
+    pim_catalog.saver.attribute:
+        class: Pim\Test\Common\Persistence\InMemoryAttributeRepository
+
+    pim_catalog.repository.attribute:
+        alias: pim_catalog.saver.attribute
