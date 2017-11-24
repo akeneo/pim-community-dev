@@ -423,14 +423,18 @@ class PublishedProduct implements ReferableInterface, PublishedProductInterface
     /**
      * {@inheritdoc}
      */
-    public function getLabel($locale = null)
+    public function getLabel($locale = null, $scope = null)
     {
         if ($this->family) {
             if ($attributeAsLabel = $this->family->getAttributeAsLabel()) {
                 if (!$attributeAsLabel->isLocalizable()) {
                     $locale = null;
                 }
-                if ($value = $this->getValue($attributeAsLabel->getCode(), $locale)) {
+                if (!$attributeAsLabel->isScopable()) {
+                    $scope = null;
+                }
+
+                if ($value = $this->getValue($attributeAsLabel->getCode(), $locale, $scope)) {
                     $data = $value->getData();
                     if (!empty($data)) {
                         return (string) $data;
