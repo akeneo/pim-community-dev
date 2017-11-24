@@ -21,7 +21,7 @@ class AssetReferenceNormalizerSpec extends ObjectBehavior
         $this->shouldImplement(NormalizerInterface::class);
     }
 
-    function it_normalizes_a_non_localizable_asset_reference_without_files(
+    function it_normalizes_a_non_localizable_asset_reference_without_file(
         ReferenceInterface $reference
     ) {
         $reference->getLocale()->willReturn(null);
@@ -33,7 +33,7 @@ class AssetReferenceNormalizerSpec extends ObjectBehavior
         $normalizedReference['code']->shouldBe(null);
     }
 
-    function it_normalizes_a_localizable_asset_reference_without_files(
+    function it_normalizes_a_localizable_asset_reference_without_file(
         ReferenceInterface $reference,
         LocaleInterface $locale
     ) {
@@ -47,7 +47,7 @@ class AssetReferenceNormalizerSpec extends ObjectBehavior
         $normalizedReference['code']->shouldBe(null);
     }
 
-    function it_normalizes_a_non_localizable_asset_reference_with_files(
+    function it_normalizes_a_non_localizable_asset_reference_with_file(
         ReferenceInterface $reference,
         FileInfoInterface $fileInfo
     ) {
@@ -61,7 +61,7 @@ class AssetReferenceNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_normalizes_a_localizable_asset_reference_with_files(
+    function it_normalizes_a_localizable_asset_reference_with_file(
         ReferenceInterface $reference,
         LocaleInterface $locale,
         FileInfoInterface $fileInfo
