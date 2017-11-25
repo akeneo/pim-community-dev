@@ -45,6 +45,7 @@ pim_catalog:
     modified_variant_axis_value: 'L''axe de variante "%variant_axis%" ne peut pas être modifié, "%provided_value%" donné'
     family_variant_attributes_unique: Les attributs doivent être uniques, "%attributes%" sont utilisés plusieurs fois dans des ensembles d'attributs de variantes
     family_variant_axes_unique: Les axes de variantes doivent être uniques, "%attributes%" sont utilisés plusieurs fois dans des ensembles d'attributs de variantes
+    family_variant_axes_immutable: 'Les axes de variations ne peuvent pas être modifiés pour le niveau "%level%"'
     family_variant_axes_attribute_type_unique: Les axes de variantes "%axis%" ne doivent pas être unique ou un identifiant
     family_variant_axes_attribute_type: Les axes de variantes "%axis%" doivent être un booléen, une liste à choix unique, une liste à choix unique de données référentielles ou une métrique
     family_variant_axes_wrong_type: L'axe de variante "%axis%" ne peut pas être traduisible, décliné par canal ou spécifique à une locale

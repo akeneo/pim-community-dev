@@ -320,6 +320,7 @@ pim_enrich:
         cant_remove_attribute_as_label: Impossible de supprimer un attribut utilisé comme libellé
         cant_remove_attribute_as_image: Impossible de supprimer un attribut utilisé comme image principale
         attribute_edit_permission_is_not_granted: Vous n'avez pas les permissions pour mettre à jour les attributs de la famille
+        cant_remove_attribute_used_as_axis: Impossible d'enlever cet attribut car il est utilisé comme axe de variation de la variante de famille
       meta:
         created: Créé
         created_by: Créé par
@@ -332,12 +333,16 @@ pim_enrich:
       message:
         created: Famille créée avec succès
       variant:
+        common:
+          title: Attributs communs
+          empty: Il n'y a aucun attribut commun
         axis.label: Axe de variante
         level_1.label: Attributs variants niveau 1
         level_2.label: Attributs variants niveau 2
         add_variant: Ajouter une variante
         create_label: Créer une nouvelle variante de famille
         create_description: Dans une variante de famille, vous pouvez définir la structure de vos produits avec variantes. Choisissez le nombreux de niveaux variants gérés, les attributs utilisés comme axes de variantes pour chaque niveau. Puis, définissez la répartition des attributs de la famille.
+        update_description: Glissez & déposez les attributs au niveau de variante choisi, afin d’avoir ces attributs gérés à ce niveau.
         create: Créer
         cancel: Annuler
         code: Code
@@ -345,6 +350,12 @@ pim_enrich:
         levels: Niveaux variants
         axis_level: Axe de variantes niveau
         required: obligatoire
+        confirm_attribute_removal:
+          title: Confirmer la suppression des attributs
+          message: En supprimant ces attributs, vous allez les replacez dans les attributs communs de la famille variante, et supprimer toutes les valeurs des produits variants
+    family_variant:
+      info:
+        update_successful: Famille variante mise à jour avec succès. Les produits avec variantes vont être mis à jour avec vos changements.
     attribute_option:
       code: Code
       label: Libellé
@@ -1336,6 +1347,9 @@ pim_menu:
     exports: Exports
     settings: Paramètres
     system: Système
+    help:
+      title: Aide
+      helper: Centre d'aide Akeneo
   item:
     association_type: Types d'association
     attribute: Attributs
