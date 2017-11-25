@@ -14,7 +14,7 @@ pimee_workflow:
       in_progress: Toiminto käynnissä
       ready: Odottaa hyväksyntää
       can_be_partially_reviewed: Voidaan tarkistaa osittain
-      can_not_be_approved: Ei voi tarkastella
+      can_not_be_approved: Ei voi tarkistaa
       can_not_be_deleted: Ei voi poistaa
     status_message:
       can_be_partially_reviewed: Voit tarkistaa ehdotuksen vain osittain, koska osa muutoksista koskee arvoja, joita et voi muokata. Ole hyvä ja ota yhteyttä pääkäyttäjään muuttaaksesi käyttöoikeuksia.

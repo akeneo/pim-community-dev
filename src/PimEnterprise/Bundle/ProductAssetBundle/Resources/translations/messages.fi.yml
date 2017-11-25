@@ -1,13 +1,13 @@
 pimee_product_asset:
   acl:
     asset:
-      index: Rikasta assettia
+      index: Rikasta assetti
       create: Luo assetti
       remove: Poista assetti
-      categories_view: Katso assetin kategorioita
+      categories_view: Katso assetin kategoriaa
       mass_upload: Assettien massatuonti
     category_asset_picker:
-      list: Listaa assetin kategoriat assettivalitsimessa
+      list: Listaa assettin kategoriat assettivalitsimessa
     category:
       create: Luo assettikategoria
       edit: Muokkaa assettikategoriaa
@@ -78,13 +78,13 @@ pimee_product_asset:
         success: Variaatiotiedosto on poistettu.
         error: Variaatiotiedostoa ei ole poistettu. Tapahtui virhe.
   popin.create:
-    title: Luo uusi resurssi
+    title: Luo uusi assetti
     is_localized: Lokalisoitavissa
-  menu: Resurssit
+  menu: Assetit
   page_tab:
     title:
-      view: Tuoteresurssi %asset.code% | Näkymä
-      edit: Tuotteen assetti %asset.code% | Muokkaa
+      view: Tuotteen assetti %asset.code% | Näkymä
+      edit: Tuotteen assettii %asset.code% | Muokkaa
       index: Tuotteen assetit
   code:
     label: Koodi
@@ -126,7 +126,7 @@ pimee_product_asset:
     error:
       upload: Tuonnin yhteydessä tapahtui virhe
       code: Vääränmuotoinen koodi assetille
-      localizable: Aseeti on olemassa, mutta se ei ole lokalisoitavissa
+      localizable: Assetti on olemassa, mutta se ei ole lokalisoitavissa
       invalid_locale: Lokaalit asetukset ovat poistettu käytöstä tai ne ovat virheelliset
   category:
     menu: Assettikategoriat
@@ -140,7 +140,7 @@ pimee_product_asset:
       apply_on_children.help: Kopioi käyttöoikeusmuutokset kaikkiin alatason objekteihin, olemassaolevat käyttöoikeudet alatason objekteihin pysyvät muuttumattomina
   mass_edit_action:
     asset:
-      page_title: Resurssit
+      page_title: Assetit
       page_subtitle: Massamuokkaus (1 assetti)|Massamuokkaus (%count% assettia)
       confirm: Olet päivittämässä assetin seuraavilla tiedoilla. Ole hyvä ja vahvista.|Olet päivittämässä %count% assettia seuraavilla tiedoilla. Ole hyvä ja vahvista.
       steps:
@@ -183,12 +183,12 @@ batch_jobs:
     label: Assettien massatuonti
     perform.label: Massatuonti
   yml_asset_channel_configuration_import:
-    label: Assettikanavien konfiguraation tuonti Yaml muodossa
+    label: Assettien kanava-asetusten tuonti Yaml muodossa
     validation.label: Tiedostojen tarkistaminen
-    import_asset.label: Assettikanavien konfiguraation tuonti Yaml muodossa
+    import_asset.label: Assettien kanava-asetusten tuonti Yaml muodossa
   yml_asset_channel_configuration_export:
-    label: Assettikanavien asetusten vienti Yaml -muodossa
-    export.label: Assettikanavien asetusten vienti Yaml -muodossa
+    label: Assettien kanava-asetusten vienti Yaml -muodossa
+    export.label: Assettien kanava-asetusten vienti Yaml -muodossa
   csv_asset_import:
     label: Assettien tuonti CSV-muodossa
     validation.label: Tiedostojen tarkistaminen
@@ -244,4 +244,4 @@ batch_jobs:
 pim_analytics:
   info_type:
     nb_assets: Assettien lukumäärä
-pim_assets_collection: Resurssien keruu
+pim_assets_collection: Assettien keruu

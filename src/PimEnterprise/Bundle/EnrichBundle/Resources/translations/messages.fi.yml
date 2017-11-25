@@ -135,9 +135,6 @@ edit_common_attributes_with_permission_and_rules:
   steps.perform: Muokkaa yleisiä attribuutteja
   steps.edit_common_attributes_processor.title: Muokkaa yleisiä attribuutteja
 batch_jobs:
-  yml_asset_channel_configuration_import:
-    import:
-      label: Assettien kanava-asetusten tuonti
   add_product_value_with_permission_and_rules:
     execute_rules.label: Sääntöjen suorittaminen
   update_product_value_with_permission_and_rules:
@@ -149,15 +146,6 @@ batch_jobs:
   edit_common_attributes_with_permission_and_rules:
     perform.label: Muokkaa yleisiä attribuutteja
     execute_rules.label: Sääntöjen suorittaminen
-    cleaner.label: Poista väliaikaiset tiedostot
-  csv_published_product_quick_export:
-    export.label: Julkaistujen tuotteiden nopea vienti CSV-muodossa
-    perform:
-      label: Julkaistujen tuotteiden nopea vienti CSV-muodossa
-  xlsx_published_product_quick_export:
-    export.label: Julkaistujen tuotteiden nopea vienti XSLX-muodossa
-    perform:
-      label: Julkaistujen tuotteiden nopea vienti XSLX-muodossa
 edit_common_attributes_with_permission_and_rules.steps.edit_common_attributes_processor.title: Muokkaa yleisiä attribuutteja
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Lisää käyttöoikeudellinen tuotearvo
 update_product_value_with_permission.steps.update_product_value_with_permission_processor.title: Päivitä käyttöoikeudellinen tuotearvo
@@ -168,5 +156,3 @@ job_execution.summary:
   mass_unpublished: Tuote julkaisematon
   proposal: Ehdotus luotu
   proposal_deleted: poistettu
-pim_enrich_attribute_form:
-  isReadOnly: Vain luku

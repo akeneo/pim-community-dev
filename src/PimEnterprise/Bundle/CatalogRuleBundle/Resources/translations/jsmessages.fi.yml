@@ -25,7 +25,6 @@ pimee_catalog_rule:
       set.label: on asetettu
       copy.label: on kopioitu
       add.label: on lisätty
-      remove.label: on poistettu
   datagrid:
     rule-grid:
       actions:
@@ -35,7 +34,6 @@ pimee_catalog_rule:
           confirm_ok: OK
       mass_edit_action:
         confirm_title: Vahvista laskenta
-        confirm_content: Oletko varma, että haluat päivittää tuotteet, joihin tämä sääntö vaikuttaa?
         confirm_ok: OK
       mass_action:
         execute:
@@ -59,10 +57,9 @@ pimee_catalog_rule:
           title: Säännöt
 confirmation:
   remove:
-    rule: Oletko varma, että haluat poistaa tämän säännön? Et voida peruttaa tätä toimintoa
+    rule: Oletko varma, että haluat poistaa tämän säännön? Et voi peruuttaa tätä toimintoa
 flash:
   rule:
     removed: Sääntö poistettu onnistuneesti
-    impacted_product_count: Massatoiminto tuotteille, joihin tämä sääntö vaikuttaa on käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
     executed: Säännön suoritus käynnistetty. Sinulle ilmoitetaan, kun se on valmis.
 pim_dashboard.widget.last_operations.job_type.mass_edit_rule: Sääntöjen asetukset
