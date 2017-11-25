@@ -4,58 +4,23 @@ teamwork_assistant:
     warning: Ole huoleti, projektin muodostaminen voi kestää hetken, joten projektisi ei välttämättä näy välittömästi.
   grid:
     view_selector:
-      create: Luo projekti
-      edit: Muokkaa projektia
-      remove: Poista projekti
-      create_from_view: Luo projekti tästä näkymästä
       loading: Ladataan...
-      start_new_project: Aloita uusi projekti
       confirmation:
-        remove: Haluatko varmasti poistaa tämän projektin?
         delete: Vahvista poisto
       popin_title: Luo
-      projects: Projektit
   project:
     label: Nimi
     locale: Lokaatio
     channel: Kanava
-    label_maxlength: Arvo on liian pitkä. Siinä saa olla enintään {{ max }} merkkiä.
     description: Kuvaus
-    due_date: Määräpäivä
-    due_date_past: Et voi valita päivää menneisyydestä.
   edit_project_modal:
-    saved: Projekti tallennettu.
-    title: Muokkaa projektia
     confirm: Tallenna
     cancel: Peruuta
   create_project_modal:
-    saved: Projekti on tallennettu, sinulle ilmoitetaan, kun muodostaminen on valmis.
-    title: Luo projekti
     confirm: Tallenna
     cancel: Peruuta
   widget:
-    no_project: Sinulla ei ole projektia
     no_project_create: luo uusi projekti
     description: Kuvaus
-    due_date: Määräpäivä
-    todo: Työjonossa
-    in_progress: Työnalla
-    done: Valmis
-    all_contributors: Kaikki osallistujat
-    display_products: Näytä tuotteet
-    placeholder:
-      contributor_selector: Etsi osallistujia
-      project_selector: Etsi projektia
     completeness:
       to_start: TUOTTEET TYÖJONOSSA
-      in_progress: TUOTTEET TYÖNALLA
-      done: VALMIIT TUOTTEET
-pim_datagrid:
-  view_selector:
-    project: Projektit
-pim_dashboard:
-  widget:
-    last_operations:
-      job_type:
-        refresh_project_completeness_calculation: Tiimityön avustaja
-        project_calculation: Tiimityön avustaja

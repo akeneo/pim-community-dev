@@ -1,51 +1,25 @@
-project_calculation: Projektin muodostaminen
 project_created: Uusi projekti sinulle
-project_finished: Projekti valmis
 teamwork_assistant:
   project:
-    required: Tämä arvo ei saa olla tyhjä.
-    label_maxlength: Arvo on liian pitkä. Siinä saa olla enintään {{ max }} merkkiä.
-    project_identifier: Projektia "{{ project }}" ei ole olemassa.
     project_locale: Projektin lokaali "{{ locale }}" on oltava käytössä.
-    project_due_date: Et voi valita päivää menneisyydestä.
   notification:
     project_calculation:
-      error: Projektin <strong>%project_label%</strong> muodostaminen epäonnistui
-      warning: Projektin <strong>%project_label%</strong> muodostaminen on päättynyt varoituksin
       success: Projekti <strong>%project_label%</strong> on valmis ja osallistujille ilmoitetaan. Aloitetaan!
       start: Aloitus
-    message: Sinulle on uusia tuotteita rikastettavaksi projektissa ”%project_label%”. Määräpäivä on ”%due_date%”.
     project_finished:
-      contributor: Onneksi olkoon! 100 % tuotteista on valmiina projektissa "%project_label%".
       owner: '%project_label% määräpäiväksi "%due_date%" on valmis.'
       show: Näytä
     due_date:
-      contributor: Projektin "%project_label%" tuottesta on %percent% prosenttia valmiina. Älä unohda rikastaa loppuja tuotteita määräpäivään "%due_date%" mennessä.
-      owner: '%project_label% määräpäiväksi "%due_date%" ei ole 100 % valmis.'
       start: Aloitus
   datagrid:
     project_completeness: Projektin edistyminen
-    contributor_todo: Työjono
     contributor_in_progress: Toiminto käynnissä
     contributor_done: Valmis
-    owner_todo: Työjono (projektin tilanne)
-    owner_in_progress: Työnalla (projektin tilanne)
-    owner_done: Valmis (projektin tilanne)
 batch_jobs:
   project_calculation:
-    project_calculation:
-      label: Projektin muodostaminen
-    prepare_project_calculation:
-      label: Valmistele projektin muodostaminen
     clean_contributor_group:
       label: Tarkista käyttäjien käyttöoikeudet projektin lokaaliin
   refresh_project_completeness_calculation:
     label: Päivitä projektin täyttöaste
     refresh_project_completeness_calculation:
       label: Päivitä projektin täyttöaste
-job_execution:
-  summary:
-    processed_products: Käsitellyt tuotteet
-pim_analytics:
-  info_type:
-    nb_projects: Projektien lukumäärä

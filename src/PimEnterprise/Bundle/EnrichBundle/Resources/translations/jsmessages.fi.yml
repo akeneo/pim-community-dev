@@ -20,12 +20,6 @@ pim_enrich:
     attribute:
       type:
         pim_assets_collection: Resurssien keruu
-  form:
-    attribute:
-      tab:
-        properties:
-          label:
-            is_read_only: Vain luku
 pim:
   grid:
     mass_action:
