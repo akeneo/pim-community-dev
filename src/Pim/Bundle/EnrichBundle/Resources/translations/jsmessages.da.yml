@@ -248,9 +248,12 @@ pim_enrich:
       variant_axis: Variant akse
       title: produkter
       add_child:
+        create: Tilføj ny
         cancel: Annuller
         confirm: Bekræft
+        create_label: "Tilføje en ny {{ axes }}"
         fields:
+          required_label: (variant akse)
           code: Kode
     association_type:
       info:
@@ -317,6 +320,7 @@ pim_enrich:
         cant_remove_attribute_as_label: Kan ikke fjerne en attribut der bruges som etiket
         cant_remove_attribute_as_image: Kan ikke fjerne attributten anvendes som det primære billede
         attribute_edit_permission_is_not_granted: Du har ingen rettigheder til at redigere denne families attributter
+        cant_remove_attribute_used_as_axis: Kan ikke fjerne denne attribut, bruges som en variant akse i en familie variant
       meta:
         created: Oprettet
         created_by: Oprettet af
@@ -433,6 +437,9 @@ pim_enrich:
       complete_variant_product: variant produkt
       complete_variant_products: variant produkter
       family_variant: Variant
+      flash:
+        product_model_added: Produktmodellen føjet til produktmodellen
+        variant_product_added: Variant produkt føjet til produktmodellen
     product:
       tab:
         associations:
@@ -1103,18 +1110,22 @@ batch_jobs:
       label: Indstil attribut krav
   csv_product_quick_export:
     quick_export.label: CSV-produkt hurtig eksport
+    quick_export_product_model.label: CSV-produkt hurtig eksport
     perform:
       label: CSV-produkt hurtig eksport
   csv_product_grid_context_quick_export:
     quick_export.label: CSV-produkt gitter sammenhæng hurtig eksport
+    quick_export_product_model.label: CSV-produkt gitter sammenhæng hurtig eksport
     perform:
       label: CSV-produkt gitter sammenhæng hurtig eksport
   xlsx_product_quick_export:
     quick_export.label: XSLX produkt hurtig eksport
+    quick_export_product_model.label: XSLX produkt model hurtig eksport
     perform:
       label: XSLX produkt hurtig eksport
   xlsx_product_grid_context_quick_export:
     quick_export.label: Xlsx-produkt gitter sammenhæng hurtig eksport
+    quick_export_product_model.label: XSLX produkt model gitter sammenhæng hurtig eksport
     perform:
       label: Xlsx-produkt gitter sammenhæng hurtig eksport
   csv_product_export:
@@ -1326,6 +1337,9 @@ pim_menu:
     exports: Exports
     settings: Indstillinger
     system: System
+    help:
+      title: Hjælp
+      helper: Akeneo hjælp center
   item:
     association_type: Sammenhængstyper
     attribute: Attributter

@@ -45,6 +45,7 @@ pim_catalog:
     modified_variant_axis_value: 'Variant akse "%variant_axis%" kan ikke ændres, "%provided_value%" givet'
     family_variant_attributes_unique: Attributter skal være entydige, "%attributes%" benyttes flere gange i variant attribut sæt
     family_variant_axes_unique: Variant akser skal være entydige, "%attributes%" benyttes flere gange i variant attribut sæt
+    family_variant_axes_immutable: 'Variant akser kan ikke ændres for niveau "%level%"'
     family_variant_axes_attribute_type_unique: Variant akser "%axis%" kan ikke være entydigt eller et id
     family_variant_axes_attribute_type: Variant akser "%axis%" skal være en boolesk værdi, en simpel select, en simpel referencedata eller en metrisk
     family_variant_axes_wrong_type: Variant akser "%axis%" kan ikke være oversættelige, ikke scopable og ikke landestandard specifikke
