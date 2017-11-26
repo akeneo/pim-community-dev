@@ -17,9 +17,9 @@ define(['oro/datagrid/string-cell', 'oro/translator'],
                 const columnValue = this.model.get(this.column.get('name'))
                 const value = this.formatter.fromRaw(columnValue);
                 const valueIsTrue = (value || value === 'true' || value === 1);
-                const label =  valueIsTrue ? '<strong>Yes</strong>' : 'No';
+                const label =  valueIsTrue ? '<strong>' + __('Yes') + '</strong>' : __('No');
                 
-                this.$el.empty().html(__(label));
+                this.$el.empty().html(label);
 
                 return this;
             }
