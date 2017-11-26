@@ -6,7 +6,8 @@
 
 ## Bug fixes
 
-- PIM-6959: fix getting published product label according to the scope if needed
+- PIM-6959: Fix getting published product label according to the scope if needed
+- PIM-7010: Fix asset size on products grid
 
 ## Improvements
 
