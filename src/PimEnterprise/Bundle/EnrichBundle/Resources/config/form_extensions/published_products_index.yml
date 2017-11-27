@@ -117,6 +117,13 @@ extensions:
         parent: pimee-published-product-index-grid-container
         targetZone: toolbar
 
+    pimee-published-product-index-display-selector:
+        module: pim/datagrid/display-selector
+        parent: pimee-published-product-index-grid-container
+        targetZone: toolbar
+        config:
+            gridName: published-product-grid
+
     pimee-published-product-index-grid:
         module: pim/grid/table
         parent: pimee-published-product-index-grid-container
@@ -140,3 +147,4 @@ extensions:
             buttonClass: 'AknDropdown-menuLink'
             route: pim_enrich_product_index
             label: pim_menu.tab.products
+
