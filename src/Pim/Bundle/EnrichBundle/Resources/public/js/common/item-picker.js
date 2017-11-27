@@ -107,7 +107,7 @@ define(
                     title: __(this.config.title),
                     description: __(this.config.description),
                     locale: this.getLocale(),
-                    datagridIdentifier: 'grid-' + this.datagrid.name,
+                    datagridIdentifier: this.datagrid.name,
                 }));
 
                 this.renderGrid(this.datagrid);

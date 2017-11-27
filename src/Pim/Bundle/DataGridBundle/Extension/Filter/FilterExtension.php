@@ -222,6 +222,10 @@ class FilterExtension extends AbstractExtension
             'product-grid' => [
                 'type'      => 'product_category',
                 'data_name' => 'category'
+            ],
+            'association-product-picker-grid' => [
+                'type'      => 'product_category',
+                'data_name' => 'category'
             ]
         ];
 
