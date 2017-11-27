@@ -11,77 +11,58 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Catalog\Security\Applier;
+namespace PimEnterprise\Component\Catalog\Security\Merger;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Component\Catalog\Model\EntityWithFamilyVariantInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Pim\Component\Catalog\Value\ScalarValue;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 
 /**
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class ApplyDataOnProduct implements ApplierInterface
+class MergeDataOnProduct implements NotGrantedDataMergerInterface
 {
-    /** @var NotGrantedDataMergerInterface */
-    private $valuesMerger;
-
-    /** @var NotGrantedDataMergerInterface */
-    private $associationMerger;
-
-    /** @var NotGrantedDataMergerInterface */
-    private $categoryMerger;
-
-    /** @var ProductRepositoryInterface */
-    private $productRepository;
+    /** @var NotGrantedDataMergerInterface[] */
+    private $mergers;
 
     /** @var AttributeRepositoryInterface */
     private $attributeRepository;
 
     /**
-     * @param NotGrantedDataMergerInterface $valuesMerger
-     * @param NotGrantedDataMergerInterface $associationMerger
-     * @param NotGrantedDataMergerInterface $categoryMerger
-     * @param ProductRepositoryInterface    $productRepository
-     * @param AttributeRepositoryInterface  $attributeRepository
+     * @param NotGrantedDataMergerInterface        [] $mergers
+     * @param AttributeRepositoryInterface          $attributeRepository
      */
     public function __construct(
-        NotGrantedDataMergerInterface $valuesMerger,
-        NotGrantedDataMergerInterface $associationMerger,
-        NotGrantedDataMergerInterface $categoryMerger,
-        ProductRepositoryInterface $productRepository,
+        array $mergers,
         AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->valuesMerger = $valuesMerger;
-        $this->associationMerger = $associationMerger;
-        $this->categoryMerger = $categoryMerger;
-        $this->productRepository = $productRepository;
+        $this->mergers = $mergers;
         $this->attributeRepository = $attributeRepository;
     }
 
-    public function apply($filteredProduct)
+    public function merge($filteredProduct, $fullProduct)
     {
         if (!$filteredProduct instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(ClassUtils::getClass($filteredProduct), ProductInterface::class);
         }
 
-        if (null === $filteredProduct->getId()) {
-            return $filteredProduct;
+        if (!$fullProduct instanceof ProductInterface) {
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($fullProduct), ProductInterface::class);
         }
 
-        $fullProduct = $this->productRepository->find($filteredProduct->getId());
-        if (null === $fullProduct) {
+        if (null === $filteredProduct->getId() || null === $fullProduct) {
             return $filteredProduct;
         }
-
 
         $fullProduct->setEnabled($filteredProduct->isEnabled());
         $fullProduct->setFamily($filteredProduct->getFamily());
         $fullProduct->setFamilyId($filteredProduct->getFamilyId());
+        $fullProduct->setGroups($filteredProduct->getGroups());
+        $fullProduct->setUniqueData($filteredProduct->getUniqueData());
 
         $identifierCode = $this->attributeRepository->getIdentifierCode();
         $fullProduct->setIdentifier(new ScalarValue(
@@ -91,14 +72,14 @@ class ApplyDataOnProduct implements ApplierInterface
             $filteredProduct->getIdentifier()
         ));
 
-        if ($filteredProduct instanceof VariantProductInterface) {
+        if ($filteredProduct instanceof EntityWithFamilyVariantInterface) {
             $fullProduct->setParent($filteredProduct->getParent());
             $fullProduct->setFamilyVariant($filteredProduct->getFamilyVariant());
         }
 
-        $this->valuesMerger->merge($filteredProduct, $fullProduct);
-        $this->categoryMerger->merge($filteredProduct, $fullProduct);
-        $this->associationMerger->merge($filteredProduct, $fullProduct);
+        foreach ($this->mergers as $merger) {
+            $fullProduct = $merger->merge($filteredProduct, $fullProduct);
+        }
 
         return $fullProduct;
     }

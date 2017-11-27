@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace PimEnterprise\Component\Catalog\Security\Merger;
 
 use Akeneo\Component\Classification\CategoryAwareInterface;
-use Akeneo\Component\Classification\Repository\ItemCategoryRepositoryInterface;
 use Akeneo\Component\StorageUtils\Exception\InvalidObjectException;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Component\Catalog\Model\ProductInterface;
 use Pim\Component\Catalog\Updater\Setter\FieldSetterInterface;
 use PimEnterprise\Component\Security\Attributes;
 use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
@@ -73,7 +71,7 @@ class NotGrantedCategoryMerger implements NotGrantedDataMergerInterface
     /**
      * {@inheritdoc}
      */
-    public function merge($filteredEntityWithCategories, $fullEntityWithCategories): void
+    public function merge($filteredEntityWithCategories, $fullEntityWithCategories)
     {
         if (!$filteredEntityWithCategories instanceof CategoryAwareInterface) {
             throw InvalidObjectException::objectExpected(ClassUtils::getClass($filteredEntityWithCategories), CategoryAwareInterface::class);
@@ -93,5 +91,7 @@ class NotGrantedCategoryMerger implements NotGrantedDataMergerInterface
         $categoryCodes = array_merge($filteredEntityWithCategories->getCategoryCodes(), $notGrantedCategoryCodes);
 
         $this->categorySetter->setFieldData($fullEntityWithCategories, 'categories', $categoryCodes);
+
+        return $fullEntityWithCategories;
     }
 }

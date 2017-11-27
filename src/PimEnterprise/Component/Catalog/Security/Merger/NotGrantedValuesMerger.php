@@ -118,7 +118,7 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
     /**
      * {@inheritdoc}
      */
-    public function merge($filteredProduct, $fullProduct):void
+    public function merge($filteredProduct, $fullProduct)
     {
         if (!$filteredProduct instanceof EntityWithValuesInterface) {
             throw InvalidObjectException::objectExpected(ClassUtils::getClass($filteredProduct), EntityWithValuesInterface::class);
@@ -157,6 +157,8 @@ class NotGrantedValuesMerger implements NotGrantedDataMergerInterface
                 $fullProduct->addValue($notGrantedValue);
             }
         }
+
+        return $fullProduct;
     }
 
     /**

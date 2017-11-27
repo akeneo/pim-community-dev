@@ -79,7 +79,7 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
     /**
      * {@inheritdoc}
      */
-    public function merge($filteredProduct, $fullProduct):void
+    public function merge($filteredProduct, $fullProduct)
     {
         if (!$filteredProduct instanceof ProductInterface) {
             throw InvalidObjectException::objectExpected(ClassUtils::getClass($filteredProduct), ProductInterface::class);
@@ -117,5 +117,7 @@ class NotGrantedAssociatedProductMerger implements NotGrantedDataMergerInterface
         if ($hasAssociations || !empty($associationCodes)) {
             $this->associationSetter->setFieldData($fullProduct, 'associations', $associationCodes);
         }
+
+        return $fullProduct;
     }
 }

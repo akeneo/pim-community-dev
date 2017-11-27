@@ -20,9 +20,9 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductUniqueDataSynchronizer;
 use Pim\Component\Catalog\Manager\CompletenessManager;
 use Pim\Component\Catalog\Model\ProductInterface;
-use PimEnterprise\Component\Catalog\Security\Applier\ApplierInterface;
-use PimEnterprise\Component\Catalog\Security\Factory\ApplyDataOnProduct;
+use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use PimEnterprise\Component\Security\Attributes;
+use PimEnterprise\Component\Security\NotGrantedDataMergerInterface;
 use PimEnterprise\Component\Workflow\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Component\Workflow\Model\ProductDraftInterface;
 use PimEnterprise\Component\Workflow\Repository\ProductDraftRepositoryInterface;
@@ -66,8 +66,11 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     /** @var ProductUniqueDataSynchronizer */
     private $uniqueDataSynchronizer;
 
-    /** @var ApplierInterface */
-    private $applyDataOnProduct;
+    /** @var NotGrantedDataMergerInterface */
+    private $mergeDataOnProduct;
+
+    /** @var ProductRepositoryInterface */
+    private $productRepository;
 
     /**
      * @param ObjectManager                   $objectManager
@@ -79,7 +82,8 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
      * @param ProductDraftRepositoryInterface $productDraftRepo
      * @param RemoverInterface                $productDraftRemover
      * @param ProductUniqueDataSynchronizer   $uniqueDataSynchronizer
-     * @param ApplierInterface                $applyDataOnProduct
+     * @param NotGrantedDataMergerInterface   $mergeDataOnProduct
+     * @param ProductRepositoryInterface      $productRepository
      */
     public function __construct(
         ObjectManager $objectManager,
@@ -91,7 +95,8 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         ProductDraftRepositoryInterface $productDraftRepo,
         RemoverInterface $productDraftRemover,
         ProductUniqueDataSynchronizer $uniqueDataSynchronizer,
-        ApplierInterface $applyDataOnProduct
+        NotGrantedDataMergerInterface $mergeDataOnProduct,
+        ProductRepositoryInterface $productRepository
     ) {
         $this->objectManager = $objectManager;
         $this->completenessManager = $completenessManager;
@@ -102,7 +107,8 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         $this->productDraftRepo = $productDraftRepo;
         $this->productDraftRemover = $productDraftRemover;
         $this->uniqueDataSynchronizer = $uniqueDataSynchronizer;
-        $this->applyDataOnProduct = $applyDataOnProduct;
+        $this->mergeDataOnProduct = $mergeDataOnProduct;
+        $this->productRepository = $productRepository;
     }
 
     /**
@@ -114,7 +120,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     {
         $this->validateObject($filteredProduct, ProductInterface::class);
 
-        $fullProduct = $this->applyDataOnProduct->apply($filteredProduct);
+        $fullProduct = $this->getFullProduct($filteredProduct);
 
         if ($this->isOwner($fullProduct) || null === $fullProduct->getId()) {
             $this->saveProduct($fullProduct, $options);
@@ -136,7 +142,8 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         $fullProducts = [];
         foreach ($filteredProducts as $filteredProduct) {
             $this->validateObject($filteredProduct, ProductInterface::class);
-            $fullProduct = $this->applyDataOnProduct->apply($filteredProduct);
+
+            $fullProduct = $this->getFullProduct($filteredProduct);
             $fullProducts[] = $fullProduct;
 
             if ($this->isOwner($fullProduct) || null === $fullProduct->getId()) {
@@ -253,5 +260,30 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         } elseif (null !== $draft = $this->productDraftRepo->findUserProductDraft($fullProduct, $this->getUsername())) {
             $this->productDraftRemover->remove($draft);
         }
+    }
+
+    /**
+     * $filteredProduct is the product with only granted data.
+     * To avoid to lose data, we have to send to the save the full product with all data (included not granted).
+     * To do that, we get the product from the DB and merge new data from $filteredProduct into this product.
+     *
+     * @param ProductInterface $filteredProduct
+     *
+     * @return ProductInterface
+     */
+    private function getFullProduct(ProductInterface $filteredProduct): ProductInterface
+    {
+        if (null === $filteredProduct->getId()) {
+            return $filteredProduct;
+        }
+
+        $fullProduct = $this->productRepository->find($filteredProduct->getId());
+        if (null === $fullProduct) {
+            return $filteredProduct;
+        }
+
+        $fullProduct = $this->mergeDataOnProduct->merge($filteredProduct, $fullProduct);
+
+        return $fullProduct;
     }
 }
