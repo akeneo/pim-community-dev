@@ -1,13 +1,12 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Factory\Value;
+namespace spec\Pim\Component\Catalog\Factory\Value\Storage;
 
 use Akeneo\Component\FileStorage\Model\FileInfoInterface;
 use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
-use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\Value\MediaValueFactory;
+use Pim\Component\Catalog\Factory\Value\Storage\MediaValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Value\ScalarValue;
 use Prophecy\Argument;
@@ -318,7 +317,7 @@ class MediaValueFactorySpec extends ObjectBehavior
             ->during('create', [$attribute, 'ecommerce', 'en_US', []]);
     }
 
-    function it_throws_an_exception_if_provided_data_is_not_an_existing_fileinfo_key(
+    function it_returns_an_empty_product_value_if_provided_data_is_not_an_existing_fileinfo_key(
         $fileInfoRepository,
         AttributeInterface $attribute
     ) {
@@ -337,17 +336,18 @@ class MediaValueFactorySpec extends ObjectBehavior
 
         $fileInfoRepository->findOneByIdentifier('foo/bar.txt')->willReturn(null);
 
-        $exception = InvalidPropertyException::validEntityCodeExpected(
-            'image_attribute',
-            'fileinfo key',
-            'The media does not exist',
-            MediaValueFactory::class,
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
             'foo/bar.txt'
         );
 
-        $this
-            ->shouldThrow($exception)
-            ->during('create', [$attribute, 'ecommerce', 'en_US', 'foo/bar.txt']);
+        $productValue->shouldReturnAnInstanceOf(ScalarValue::class);
+        $productValue->shouldHaveAttribute('image_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->shouldBeEmpty();
     }
 
     public function getMatchers()

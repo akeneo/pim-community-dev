@@ -1,12 +1,16 @@
 <?php
 
-namespace Pim\Component\Catalog\Factory\Value;
+declare(strict_types=1);
+
+namespace Pim\Component\Catalog\Factory\Value\Import;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
+use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Factory that creates options (multi-select) product values.
@@ -46,7 +50,7 @@ class OptionsValueFactory implements ValueFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
+    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data): ValueInterface
     {
         $this->checkData($attribute, $data);
 
@@ -67,7 +71,7 @@ class OptionsValueFactory implements ValueFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($attributeType)
+    public function supports($attributeType): bool
     {
         return $attributeType === $this->supportedAttributeType;
     }
@@ -80,7 +84,7 @@ class OptionsValueFactory implements ValueFactoryInterface
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkData(AttributeInterface $attribute, $data)
+    protected function checkData(AttributeInterface $attribute, $data): void
     {
         if (null === $data || [] === $data) {
             return;
@@ -114,7 +118,7 @@ class OptionsValueFactory implements ValueFactoryInterface
      *
      * @return array
      */
-    protected function getOptions(AttributeInterface $attribute, array $data)
+    protected function getOptions(AttributeInterface $attribute, array $data): array
     {
         $options = [];
 
@@ -130,18 +134,13 @@ class OptionsValueFactory implements ValueFactoryInterface
     /**
      * Gets an attribute option from its code.
      *
-     * @todo TIP-684: When deleting one element of the collection, we will end up throwing the exception.
-     *       Problem is, when loading a product value from single storage, it will be skipped because of
-     *       one option, when the others in the collection could be valid. So the value will not be loaded
-     *       at all, when what we want is the value to be loaded minus the wrong option.
-     *
      * @param AttributeInterface $attribute
      * @param string             $optionCode
      *
      * @throws InvalidOptionException
-     * @return AttributeOptionInterface|null
+     * @return AttributeOptionInterface
      */
-    protected function getOption(AttributeInterface $attribute, $optionCode)
+    protected function getOption(AttributeInterface $attribute, $optionCode): AttributeOptionInterface
     {
         $identifier = $attribute->getCode() . '.' . $optionCode;
         $option = $this->attrOptionRepository->findOneByIdentifier($identifier);

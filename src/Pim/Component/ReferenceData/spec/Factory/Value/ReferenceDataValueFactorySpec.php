@@ -178,7 +178,7 @@ class ReferenceDataValueFactorySpec extends ObjectBehavior
         $this->shouldThrow($exception)->during('create', [$attribute, null, null, []]);
     }
 
-    function it_throws_an_exception_when_provided_data_is_not_an_existing_reference_data_code(
+    function it_returns_an_empty_product_value_when_provided_data_is_not_an_existing_reference_data_code(
         $repositoryResolver,
         ReferenceDataRepositoryInterface $referenceDataRepository,
         AttributeInterface $attribute
@@ -194,15 +194,13 @@ class ReferenceDataValueFactorySpec extends ObjectBehavior
         $repositoryResolver->resolve('color')->willReturn($referenceDataRepository);
         $referenceDataRepository->findOneBy(['code' => 'foobar'])->willReturn(null);
 
-        $exception = InvalidPropertyException::validEntityCodeExpected(
-            'reference_data_simple_select_attribute',
-            'reference data code',
-            'The code of the reference data "color" does not exist',
-            ReferenceDataValueFactory::class,
-            'foobar'
-        );
+        $productValue = $this->create($attribute, null, null, 'foobar');
 
-        $this->shouldThrow($exception)->during('create', [$attribute, null, null, 'foobar']);
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataValue::class);
+        $productValue->shouldHaveAttribute('reference_data_simple_select_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->shouldBeEmpty();
     }
 
     public function getMatchers()

@@ -2,29 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\ReferenceData\Factory\Value;
+namespace Pim\Component\Catalog\Factory\Value\Import;
 
+use Akeneo\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
-use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 
 /**
- * Factory that creates simple-select and multi-select product values.
+ * Factory that creates media product values.
  *
- * @internal  Please, do not use this class directly. You must use \Pim\Component\Catalog\Factory\ProductValueFactory.
+ * @internal  Please, do not use this class directly. You must use \Pim\Component\Catalog\Factory\ValueFactory.
  *
  * @author    Damien Carcel (damien.carcel@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ReferenceDataValueFactory implements ValueFactoryInterface
+class MediaValueFactory implements ValueFactoryInterface
 {
-    /** @var ReferenceDataRepositoryResolverInterface */
-    protected $repositoryResolver;
+    /** @var FileInfoRepositoryInterface */
+    protected $fileInfoRepository;
 
     /** @var string */
     protected $productValueClass;
@@ -33,16 +33,16 @@ class ReferenceDataValueFactory implements ValueFactoryInterface
     protected $supportedAttributeType;
 
     /**
-     * @param ReferenceDataRepositoryResolverInterface $repositoryResolver
-     * @param string                                   $productValueClass
-     * @param string                                   $supportedAttributeType
+     * @param FileInfoRepositoryInterface $fileInfoRepository
+     * @param string                      $productValueClass
+     * @param string                      $supportedAttributeType
      */
     public function __construct(
-        ReferenceDataRepositoryResolverInterface $repositoryResolver,
+        FileInfoRepositoryInterface $fileInfoRepository,
         $productValueClass,
         $supportedAttributeType
     ) {
-        $this->repositoryResolver = $repositoryResolver;
+        $this->fileInfoRepository = $fileInfoRepository;
         $this->productValueClass = $productValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
     }
@@ -55,8 +55,7 @@ class ReferenceDataValueFactory implements ValueFactoryInterface
         $this->checkData($attribute, $data);
 
         if (null !== $data) {
-            $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
-            $data = $this->getReferenceData($repository, $data);
+            $data = $this->getFileInfo($attribute, $data);
         }
 
         $value = new $this->productValueClass($attribute, $channelCode, $localeCode, $data);
@@ -73,12 +72,12 @@ class ReferenceDataValueFactory implements ValueFactoryInterface
     }
 
     /**
-     * Check if data is valid
+     * Checks that data is a valid file path.
      *
      * @param AttributeInterface $attribute
-     * @param mixed              $data
+     * @param string             $data
      *
-     * @throws InvalidPropertyTypeException
+     * @throws InvalidPropertyException
      */
     protected function checkData(AttributeInterface $attribute, $data): void
     {
@@ -96,17 +95,26 @@ class ReferenceDataValueFactory implements ValueFactoryInterface
     }
 
     /**
-     * Finds a reference data by code.
+     * @param AttributeInterface $attribute
+     * @param string             $data
      *
-     * @param ReferenceDataRepositoryInterface $repository
-     * @param string                           $referenceDataCode
-     *
-     * @return null|ReferenceDataInterface
+     * @throws InvalidPropertyException
+     * @return FileInfoInterface
      */
-    protected function getReferenceData(
-        ReferenceDataRepositoryInterface $repository,
-        string $referenceDataCode
-    ): ?ReferenceDataInterface {
-        return $repository->findOneBy(['code' => $referenceDataCode]);
+    protected function getFileInfo(AttributeInterface $attribute, $data): FileInfoInterface
+    {
+        $file = $this->fileInfoRepository->findOneByIdentifier($data);
+
+        if (null === $file) {
+            throw InvalidPropertyException::validEntityCodeExpected(
+                $attribute->getCode(),
+                'fileinfo key',
+                'The media does not exist',
+                static::class,
+                $data
+            );
+        }
+
+        return $file;
     }
 }

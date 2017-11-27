@@ -2,29 +2,29 @@
 
 declare(strict_types=1);
 
-namespace Pim\Component\ReferenceData\Factory\Value;
+namespace Pim\Component\Catalog\Factory\Value\Storage;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
+use Pim\Component\Catalog\Model\AttributeOptionInterface;
 use Pim\Component\Catalog\Model\ValueInterface;
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
-use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
+use Pim\Component\Catalog\Value\OptionsValueInterface;
 
 /**
- * Factory that creates simple-select and multi-select product values.
+ * Factory that creates options (multi-select) product values.
  *
- * @internal  Please, do not use this class directly. You must use \Pim\Component\Catalog\Factory\ProductValueFactory.
+ * @internal  Please, do not use this class directly. You must use \Pim\Component\Catalog\Factory\ValueFactory.
  *
  * @author    Damien Carcel (damien.carcel@akeneo.com)
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
+class OptionsValueFactory implements ValueFactoryInterface
 {
-    /** @var ReferenceDataRepositoryResolverInterface */
-    protected $repositoryResolver;
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $attrOptionRepository;
 
     /** @var string */
     protected $productValueClass;
@@ -33,16 +33,16 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
     protected $supportedAttributeType;
 
     /**
-     * @param ReferenceDataRepositoryResolverInterface $repositoryResolver
-     * @param string                                   $productValueClass
-     * @param string                                   $supportedAttributeType
+     * @param IdentifiableObjectRepositoryInterface $attrOptionRepository
+     * @param string                                $productValueClass
+     * @param                                       $supportedAttributeType
      */
     public function __construct(
-        ReferenceDataRepositoryResolverInterface $repositoryResolver,
+        IdentifiableObjectRepositoryInterface $attrOptionRepository,
         $productValueClass,
         $supportedAttributeType
     ) {
-        $this->repositoryResolver = $repositoryResolver;
+        $this->attrOptionRepository = $attrOptionRepository;
         $this->productValueClass = $productValueClass;
         $this->supportedAttributeType = $supportedAttributeType;
     }
@@ -62,7 +62,7 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
             $attribute,
             $channelCode,
             $localeCode,
-            $this->getReferenceDataCollection($attribute, $data)
+            $this->getOptions($attribute, $data)
         );
 
         return $value;
@@ -98,11 +98,11 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
             );
         }
 
-        foreach ($data as $key => $value) {
+        foreach ($data as $value) {
             if (!is_string($value)) {
                 throw InvalidPropertyTypeException::validArrayStructureExpected(
                     $attribute->getCode(),
-                    sprintf('array key "%s" expects a string as value, "%s" given', $key, gettype($value)),
+                    sprintf('one of the options is not a string, "%s" given', gettype($value)),
                     static::class,
                     $data
                 );
@@ -111,41 +111,38 @@ class ReferenceDataCollectionValueFactory implements ValueFactoryInterface
     }
 
     /**
-     * Gets a collection of reference data from an array of codes.
+     * Returns an array of attribute options.
      *
      * @param AttributeInterface $attribute
-     * @param array              $referenceDataCodes
+     * @param string[]           $data
      *
-     * @return array
+     * @return OptionsValueInterface[]
      */
-    protected function getReferenceDataCollection(AttributeInterface $attribute, array $referenceDataCodes): array
+    protected function getOptions(AttributeInterface $attribute, array $data): array
     {
-        $collection = [];
+        $options = [];
 
-        $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
-
-        foreach ($referenceDataCodes as $referenceDataCode) {
-            $referenceData = $this->getReferenceData($repository, $referenceDataCode);
-            if (null !== $referenceData && !in_array($referenceData, $collection)) {
-                $collection[] = $referenceData;
+        foreach ($data as $optionCode) {
+            if (null !== $option = $this->getOption($attribute, $optionCode)) {
+                $options[] = $option;
             }
         }
 
-        return $collection;
+        return $options;
     }
 
     /**
-     * Finds a reference data by code.
+     * Gets an attribute option from its code or returns null if it doesn't exist.
      *
-     * @param ReferenceDataRepositoryInterface $repository
-     * @param string                           $referenceDataCode
+     * @param AttributeInterface $attribute
+     * @param string             $optionCode
      *
-     * @return ReferenceDataInterface
+     * @return AttributeOptionInterface|null
      */
-    protected function getReferenceData(
-        ReferenceDataRepositoryInterface $repository,
-        string $referenceDataCode
-    ): ?ReferenceDataInterface {
-        return $repository->findOneBy(['code' => $referenceDataCode]);
+    protected function getOption(AttributeInterface $attribute, string $optionCode): ?AttributeOptionInterface
+    {
+        $identifier = $attribute->getCode() . '.' . $optionCode;
+
+        return $this->attrOptionRepository->findOneByIdentifier($identifier);
     }
 }

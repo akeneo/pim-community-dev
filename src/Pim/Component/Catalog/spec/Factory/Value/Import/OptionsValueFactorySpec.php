@@ -1,16 +1,15 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Factory\Value;
+namespace spec\Pim\Component\Catalog\Factory\Value\Import;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Catalog\Factory\Value\OptionsValueFactory;
+use Pim\Component\Catalog\Factory\Value\Import\OptionsValueFactory;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
-use Pim\Component\Catalog\Value\ScalarValue;
 use Pim\Component\Catalog\Repository\AttributeOptionRepositoryInterface;
+use Pim\Component\Catalog\Value\ScalarValue;
 use Prophecy\Argument;
 
 class OptionsValueFactorySpec extends ObjectBehavior

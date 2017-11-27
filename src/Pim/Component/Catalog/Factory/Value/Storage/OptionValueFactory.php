@@ -1,12 +1,16 @@
 <?php
 
-namespace Pim\Component\Catalog\Factory\Value;
+declare(strict_types=1);
+
+namespace Pim\Component\Catalog\Factory\Value\Storage;
 
 use Akeneo\Component\StorageUtils\Exception\InvalidPropertyTypeException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
+use Pim\Component\Catalog\Factory\Value\ValueFactoryInterface;
 use Pim\Component\Catalog\Model\AttributeInterface;
 use Pim\Component\Catalog\Model\AttributeOptionInterface;
+use Pim\Component\Catalog\Model\ValueInterface;
 
 /**
  * Factory that creates option (simple-select) product values.
@@ -30,8 +34,8 @@ class OptionValueFactory implements ValueFactoryInterface
 
     /**
      * @param IdentifiableObjectRepositoryInterface $attrOptionRepository
-     * @param string                             $productValueClass
-     * @param string                             $supportedAttributeType
+     * @param string                                $productValueClass
+     * @param string                                $supportedAttributeType
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $attrOptionRepository,
@@ -46,7 +50,7 @@ class OptionValueFactory implements ValueFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data)
+    public function create(AttributeInterface $attribute, $channelCode, $localeCode, $data): ValueInterface
     {
         $this->checkData($attribute, $data);
 
@@ -62,7 +66,7 @@ class OptionValueFactory implements ValueFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($attributeType)
+    public function supports($attributeType): bool
     {
         return $attributeType === $this->supportedAttributeType;
     }
@@ -75,7 +79,7 @@ class OptionValueFactory implements ValueFactoryInterface
      *
      * @throws InvalidPropertyTypeException
      */
-    protected function checkData(AttributeInterface $attribute, $data)
+    protected function checkData(AttributeInterface $attribute, $data): void
     {
         if (null === $data) {
             return;
@@ -99,25 +103,13 @@ class OptionValueFactory implements ValueFactoryInterface
      * @throws InvalidOptionException
      * @return AttributeOptionInterface|null
      */
-    protected function getOption(AttributeInterface $attribute, $optionCode)
+    protected function getOption(AttributeInterface $attribute, $optionCode): ?AttributeOptionInterface
     {
         if (null === $optionCode) {
             return null;
         }
 
         $identifier = $attribute->getCode() . '.' . $optionCode;
-        $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
-
-        if (null === $option) {
-            throw InvalidOptionException::validEntityCodeExpected(
-                $attribute->getCode(),
-                'code',
-                'The option does not exist',
-                static::class,
-                $optionCode
-            );
-        }
-
-        return $option;
+        return $this->attrOptionRepository->findOneByIdentifier($identifier);
     }
 }

@@ -222,15 +222,52 @@ class ReferenceDataCollectionValueFactorySpec extends ObjectBehavior
         $repositoryResolver->resolve('fabrics')->willReturn($referenceDataRepository);
         $referenceDataRepository->findOneBy(['code' => 'foobar'])->willReturn(null);
 
-        $exception = InvalidPropertyException::validEntityCodeExpected(
-            'reference_data_multi_select_attribute',
-            'reference data code',
-            'The code of the reference data "fabrics" does not exist',
-            ReferenceDataCollectionValueFactory::class,
-            'foobar'
+        $productValue = $this->create(
+            $attribute,
+            null,
+            null,
+            ['foobar']
         );
 
-        $this->shouldThrow($exception)->during('create', [$attribute, null, null, ['foobar']]);
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataCollectionValue::class);
+        $productValue->shouldHaveAttribute('reference_data_multi_select_attribute');
+        $productValue->shouldNotBeLocalizable();
+        $productValue->shouldNotBeScopable();
+        $productValue->shouldBeEmpty();
+    }
+
+    function it_gracefully_creates_a_product_value_even_if_one_of_the_reference_data_is_not_found(
+        $repositoryResolver,
+        AttributeInterface $attribute,
+        Fabric $silk,
+        ReferenceDataRepositoryInterface $referenceDataRepository
+    ) {
+        $attribute->isScopable()->willReturn(true);
+        $attribute->isLocalizable()->willReturn(true);
+        $attribute->getCode()->willReturn('reference_data_multi_select_attribute');
+        $attribute->getType()->willReturn('pim_reference_data_catalog_multiselect');
+        $attribute->getBackendType()->willReturn('reference_data_options');
+        $attribute->isBackendTypeReferenceData()->willReturn(true);
+        $attribute->getReferenceDataName()->willReturn('fabrics');
+
+        $repositoryResolver->resolve('fabrics')->willReturn($referenceDataRepository);
+        $referenceDataRepository->findOneBy(['code' => 'silk'])->willReturn($silk);
+        $referenceDataRepository->findOneBy(['code' => 'cotton'])->willReturn(null);
+
+        $productValue = $this->create(
+            $attribute,
+            'ecommerce',
+            'en_US',
+            ['silk', 'cotton']
+        );
+
+        $productValue->shouldReturnAnInstanceOf(ReferenceDataCollectionValue::class);
+        $productValue->shouldHaveAttribute('reference_data_multi_select_attribute');
+        $productValue->shouldBeLocalizable();
+        $productValue->shouldHaveLocale('en_US');
+        $productValue->shouldBeScopable();
+        $productValue->shouldHaveChannel('ecommerce');
+        $productValue->shouldHaveReferenceData([$silk]);
     }
 
     public function getMatchers()
