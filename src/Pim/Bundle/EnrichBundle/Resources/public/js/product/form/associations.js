@@ -24,7 +24,8 @@ define(
         'oro/datagrid-builder',
         'oro/pageable-collection',
         'pim/datagrid/state',
-        'require-context'
+        'require-context',
+        'pim/form-builder'
     ],
     function (
         $,
@@ -42,7 +43,8 @@ define(
         datagridBuilder,
         PageableCollection,
         DatagridState,
-        requireContext
+        requireContext,
+        FormBuilder
     ) {
         let state = {};
 
@@ -592,7 +594,55 @@ define(
              * Opens the panel to select new products
              */
             addProducts: function () {
-                //TODO
+                this.manageAssets().then(function (assets) {
+                    console.log(assets);
+                    this.data = assets;
+
+                    this.trigger('collection:change', assets);
+                    this.render();
+                }.bind(this));
+            },
+
+            /**
+             * Launch the asset picker
+             *
+             * @return {Promise}
+             */
+            manageAssets: function () {
+                let deferred = $.Deferred();
+
+                this.data = [];
+
+                FormBuilder.build('pim-associations-product-picker-form').then(function (form) {
+                    let modal = new Backbone.BootstrapModal({
+                        className: 'modal modal-asset modal--fullPage modal--topButton',
+                        modalOptions: {
+                            backdrop: 'static',
+                            keyboard: false
+                        },
+                        allowCancel: true,
+                        okCloses: false,
+                        title: _.__('pimee_product_asset.form.product.asset.manage_asset.title'),
+                        content: '',
+                        cancelText: _.__('pimee_product_asset.form.product.asset.manage_asset.cancel'),
+                        okText: _.__('pimee_product_asset.form.product.asset.manage_asset.confirm')
+                    });
+                    modal.open();
+
+                    form.setElement(modal.$('.modal-body'))
+                        .render()
+                        .setItems(this.data);
+
+                    modal.on('cancel', deferred.reject);
+                    modal.on('ok', function () {
+                        const assets = _.sortBy(form.getItems(), 'code');
+                        modal.close();
+
+                        deferred.resolve(assets);
+                    }.bind(this));
+                }.bind(this));
+
+                return deferred.promise();
             }
         });
     }

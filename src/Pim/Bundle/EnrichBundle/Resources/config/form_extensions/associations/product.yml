@@ -1,0 +1,18 @@
+extensions:
+    pim-associations-product-picker-form:
+        module: pim/common/item-picker
+        config:
+            datagridName: association-product-picker-grid
+            title: pimee_product_asset.form.product.asset.title
+            description: pimee_product_asset.form.product.asset.description
+            categoryTreeRoute: pimee_asset_picker_categorytree
+
+    pimee-product-asset-picker-form-filters-list:
+        module: oro/datafilter/filters-list
+        parent: pim-associations-product-picker-form
+        targetZone: filters
+
+    pimee-product-asset-picker-form-filters-manage:
+        module: oro/datafilter/filters-button
+        parent: pim-associations-product-picker-form
+        targetZone: filters

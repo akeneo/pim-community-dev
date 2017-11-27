@@ -16,6 +16,16 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-grid, method: buildBefore }
 
+    pim_enrich.event_listener.association_product_picker_grid_before_listener:
+        class: '%pim_datagrid.event_listener.configure_product_grid_listener.class%'
+        arguments:
+            - '@pim_datagrid.datagrid.configuration.product.context_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.columns_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.filters_configurator'
+            - '@pim_datagrid.datagrid.configuration.product.sorters_configurator'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.association-product-picker-grid, method: buildBefore }
+
     pim_enrich.event_listener.product_grid_after_listener:
         class: '%pim_datagrid.event_listener.add_parameters_to_product_grid.class%'
         arguments:
