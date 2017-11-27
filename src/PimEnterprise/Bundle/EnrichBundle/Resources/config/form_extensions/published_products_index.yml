@@ -116,11 +116,14 @@ extensions:
         module: pim/datagrid/configure-columns-action
         parent: pimee-published-product-index-grid-container
         targetZone: toolbar
+        position: 10
+
 
     pimee-published-product-index-display-selector:
         module: pim/datagrid/display-selector
         parent: pimee-published-product-index-grid-container
         targetZone: toolbar
+        position: 20
         config:
             gridName: published-product-grid
 
