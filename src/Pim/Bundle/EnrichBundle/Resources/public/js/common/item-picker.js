@@ -48,6 +48,7 @@ define(
             events: {
                 'click .remove-item': 'removeItemFromBasket'
             },
+            imagePath: null,
 
             /**
              * {@inheritdoc}
@@ -55,6 +56,9 @@ define(
             initialize: function (config) {
                 this.datagridModel = null;
                 this.config = config.config;
+                this.imagePath = () => {
+                    throw new Error('You have to define "imagePath" method using "setImagePath" method.')
+                };
 
                 if (undefined === this.config.datagridName) {
                     throw new Error('You have to add parameter "datagridName" to the configuration of this module.');
@@ -307,15 +311,17 @@ define(
                     .then(function (items) {
                         this.$('.basket').html(this.basketTemplate({
                             items: items,
-                            thumbnailFilter: 'thumbnail',
-                            scope: this.getScope(),
-                            locale: this.getLocale(),
                             title: __('pim_enrich.form.basket.title'),
                             emptyLabel: __('pim_enrich.form.basket.empty_basket'),
+                            imagePath: this.imagePath.bind(this),
                         }));
 
                         this.delegateEvents();
                     }.bind(this));
+            },
+
+            setImagePath: function (f) {
+                this.imagePath = f;
             },
 
             /**

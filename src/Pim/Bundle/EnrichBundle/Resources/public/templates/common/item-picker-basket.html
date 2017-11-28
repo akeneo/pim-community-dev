@@ -9,12 +9,7 @@
                 <% if (!_.isEmpty(items)) { %>
                 <% _.each(items, function (item) { %>
                 <li class="AknAssetCollectionField-listItem" data-itemCode="<%- item.code %>">
-                    <div class="AknAssetCollectionField-assetThumbnail" style="background-image: url('<%- Routing.generate('pimee_product_asset_thumbnail', {
-                                    code: item.code,
-                                    filter: thumbnailFilter,
-                                    channelCode: scope,
-                                    localeCode: locale
-                                }) %>')">
+                    <div class="AknAssetCollectionField-assetThumbnail" style="background-image: url('<%- imagePath(item) %>')">
                     </div>
                     <div>
                         <% if (item.description) { %>

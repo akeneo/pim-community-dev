@@ -25,7 +25,8 @@ define(
         'oro/pageable-collection',
         'pim/datagrid/state',
         'require-context',
-        'pim/form-builder'
+        'pim/form-builder',
+        'pim/media-url-generator'
     ],
     function (
         $,
@@ -44,7 +45,8 @@ define(
         PageableCollection,
         DatagridState,
         requireContext,
-        FormBuilder
+        FormBuilder,
+        MediaUrlGenerator
     ) {
         let state = {};
 
@@ -628,6 +630,15 @@ define(
                         okText: _.__('pimee_product_asset.form.product.asset.manage_asset.confirm')
                     });
                     modal.open();
+
+                    form.setImagePath(function (item) {
+                        let filePath = null;
+                        if (item.meta.image !== null) {
+                            filePath = item.meta.image.filePath;
+                        }
+
+                        return MediaUrlGenerator.getMediaShowUrl(filePath, 'thumbnail_small');
+                    });
 
                     form.setElement(modal.$('.modal-body'))
                         .render()
