@@ -19,6 +19,10 @@ datagrid:
                 label: ID
                 data_name:     identifier
                 type:          field
+            image:
+                label:         Image
+                data_name:     image
+                frontend_type: product-and-product-model-image
             label:
                 label:         Label
                 data_name:     label
