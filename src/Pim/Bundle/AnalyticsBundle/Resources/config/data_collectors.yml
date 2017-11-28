@@ -46,6 +46,9 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.family'
             - '@pim_user.repository.user'
+            - '@pim_catalog.repository.product_model'
+            - '@pim_catalog.repository.variant_product'
+            - '@pim_catalog.repository.family_variant'
         tags:
             - { name: pim_analytics.data_collector, type: update_checker }
             - { name: pim_analytics.data_collector, type: system_info_report }

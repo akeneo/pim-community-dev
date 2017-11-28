@@ -10,6 +10,6 @@ Feature: Show system information
     And I am on the System info page
 
   Scenario: Successfully display product model information
-    Then I should see the text "Product models 12"
-    And I should see the text "Variant product 12"
-    And I should see the text "Family variant 12"
+    Then I should see the text "Product models 80"
+    And I should see the text "Variant products 236"
+    And I should see the text "Family variants 8"

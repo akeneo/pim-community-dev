@@ -22,4 +22,11 @@ interface VariantProductRepositoryInterface
      * @return VariantProductInterface[]
      */
     public function findSiblingsProducts(VariantProductInterface $product): array;
+
+    /**
+     * Return the number of existing variant products
+     *
+     * @return int
+     */
+    public function countAll(): int;
 }

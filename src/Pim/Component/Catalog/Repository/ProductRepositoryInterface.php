@@ -5,7 +5,6 @@ namespace Pim\Component\Catalog\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Component\Catalog\Model\GroupInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
-use Pim\Component\Catalog\Query\ProductQueryBuilderFactoryInterface;
 
 /**
  * Product repository interface
@@ -52,7 +51,7 @@ interface ProductRepositoryInterface extends ObjectRepository
      *
      * @return int
      */
-    public function countAll();
+    public function countAll(): int;
 
     /**
      * Checks if the family has the specified attribute
