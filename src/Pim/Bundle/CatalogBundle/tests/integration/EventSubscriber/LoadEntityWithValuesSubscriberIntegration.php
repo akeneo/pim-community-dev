@@ -45,6 +45,78 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
         $this->assertProductHasValues($expectedValues, $product);
     }
 
+    public function testItDoesNotLoadValuesOfAProductForWhichThereIsARemovedAttribute()
+    {
+        $this->removeAttribute('a_metric');
+        $amputatedStandardValues = $this->removeAttributeFromAllStandardValues('a_metric');
+        $expectedValues = $this->getValuesFromStandardValues(
+            $amputatedStandardValues
+        );
+        $product = $this->findProductByIdentifier('foo');
+        $this->assertProductHasValues($expectedValues, $product);
+    }
+
+    public function testItDoesNotLoadValuesOfAProductForWhichThereIsARemovedAttributeOptionOfSimpleselect()
+    {
+        $this->removeAttributeOptionFromAttribute('a_simple_select', 'optionB');
+        $amputatedStandardValues = $this->removeAttributeFromAllStandardValues('a_simple_select');
+        $expectedValues = $this->getValuesFromStandardValues(
+            $amputatedStandardValues
+        );
+        $product = $this->findProductByIdentifier('foo');
+        $this->assertProductHasValues($expectedValues, $product);
+    }
+
+    public function testItDoesNotLoadValuesOfAProductForWhichThereIsARemovedAttributeOptionOfMultiselect()
+    {
+        $this->removeAttributeOptionFromAttribute('a_multi_select', 'optionA');
+        $amputatedStandardValues = $this->removeAttributeFromAllStandardValues('a_multi_select');
+        $expectedValues = $this->getValuesFromStandardValues(
+            $amputatedStandardValues
+        );
+        $product = $this->findProductByIdentifier('foo');
+        $this->assertProductHasValues($expectedValues, $product);
+    }
+
+    public function testItDoesNotLoadValuesOfAProductForWhichTheFileHasBeenRemoved()
+    {
+        $expectedValues = $this->getValuesFromStandardValues(
+            [
+                'sku'    => [
+                    ['locale' => null, 'scope' => null, 'data' => 'product_invalid_file'],
+                ],
+            ]
+        );
+        $product = $this->findProductByIdentifier('product_invalid_file');
+        $this->assertProductHasValues($expectedValues, $product);
+    }
+
+    public function testItDoesNotLoadValuesOfAProductForWhichTheReferenceDataOptionHasBeenRemoved()
+    {
+        $expectedValues = $this->getValuesFromStandardValues(
+            [
+                'sku'    => [
+                    ['locale' => null, 'scope' => null, 'data' => 'product_invalid_simple_reference_data'],
+                ],
+            ]
+        );
+        $product = $this->findProductByIdentifier('product_invalid_simple_reference_data');
+        $this->assertProductHasValues($expectedValues, $product);
+    }
+
+    public function testItDoesNotLoadValuesAProductForWhichThereIsAReferenceDataCollectionOptionThatHasBeenRemoved()
+    {
+        $expectedValues = $this->getValuesFromStandardValues(
+            [
+                'sku'    => [
+                    ['locale' => null, 'scope' => null, 'data' => 'product_invalid_multi_reference_data'],
+                ],
+            ]
+        );
+        $product = $this->findProductByIdentifier('product_invalid_multi_reference_data');
+        $this->assertProductHasValues($expectedValues, $product);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -345,5 +417,72 @@ class LoadEntityWithValuesSubscriberIntegration extends TestCase
                 ['locale' => null, 'scope' => null, 'data' => true],
             ],
         ];
+    }
+
+    /**
+     * @param string $attributeCode
+     */
+    private function removeAttribute(string $attributeCode): void
+    {
+        $attributeToRemove = $this->get('pim_catalog.repository.attribute')->findOneByIdentifier($attributeCode);
+        if (null === $attributeToRemove) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Attribute not found for code "%s"',
+                    $attributeCode
+                )
+            );
+        }
+        $this->get('pim_catalog.remover.attribute')->remove($attributeToRemove);
+    }
+
+    /**
+     * @param string $attributeCode
+     *
+     * @return array
+     */
+    private function removeAttributeFromAllStandardValues($attributeCode): array
+    {
+        $allStandardValues = $this->getStandardValuesWithAllAttributes();
+        unset($allStandardValues[$attributeCode]);
+        return $allStandardValues;
+    }
+
+    /**
+     * @param string $attributeCode
+     * @param string $attributeOptionValueCode
+     *
+     * @throws \InvalidArgumentException
+     * @throws \LogicException
+     */
+    private function removeAttributeOptionFromAttribute(string $attributeCode, string $attributeOptionValueCode): void
+    {
+        $attributeOptionIdentifier = $attributeCode . '.' . $attributeOptionValueCode;
+        $attributeOptionValue = $this->get('pim_catalog.repository.attribute_option')
+            ->findOneByIdentifier($attributeOptionIdentifier);
+        if (null === $attributeOptionValue) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Attribute option code not found in attribute "%s", "%s" given',
+                    $attributeCode,
+                    $attributeOptionValueCode
+                )
+            );
+        }
+        $this->get('pim_catalog.remover.attribute_option')->remove($attributeOptionValue);
+    }
+
+    /**
+     * @param string $attributeCode
+     *
+     * @param mixed $data
+     *
+     * @return array
+     */
+    private function setDataForAttributeOfAllStandardValues(string $attributeCode, $data): array
+    {
+        $allStandardValues = $this->getStandardValuesWithAllAttributes();
+        $allStandardValues[$attributeCode][0]['data'] = $data;
+        return $allStandardValues;
     }
 }

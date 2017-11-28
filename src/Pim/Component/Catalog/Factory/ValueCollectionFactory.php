@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Catalog\Factory;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use Pim\Component\Catalog\Exception\InvalidAttributeException;
 use Pim\Component\Catalog\Exception\InvalidOptionException;
@@ -87,6 +88,13 @@ class ValueCollectionFactory implements ValueCollectionFactoryInterface
                                     'Tried to load a product value with an invalid attribute "%s". %s',
                                     $attributeCode,
                                     $e->getMessage()
+                                )
+                            );
+                        } catch (InvalidPropertyException $e) {
+                            $this->logger->warning(
+                                sprintf(
+                                    'Tried to load a product value with the property "%s" that does not exist.',
+                                    $e->getPropertyValue()
                                 )
                             );
                         }
