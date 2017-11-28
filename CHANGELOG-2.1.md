@@ -5,6 +5,7 @@
 - PIM-6480: Add gallery view and display selector to the product grid
 - PIM-6621: add search on label and code on products and product models
 - PIM-6966: Add tracker information for product model, product variant and family variant
+- PIM-6990: Add new screen for managing product associations
 
 ## BC breaks
 
