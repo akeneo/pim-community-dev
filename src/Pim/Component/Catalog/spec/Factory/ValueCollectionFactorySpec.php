@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Component\Catalog\Factory;
 
+use Akeneo\Component\StorageUtils\Exception\InvalidPropertyException;
 use Akeneo\Component\StorageUtils\Repository\CachedObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Catalog\Exception\InvalidAttributeException;
@@ -176,6 +177,37 @@ class ValueCollectionFactorySpec extends ObjectBehavior
             'color' => [
                 '<all_channels>' => [
                     '<all_locales>' => 'red'
+                ],
+            ],
+        ]);
+
+        $actualValues->shouldReturnAnInstanceOf(ValueCollection::class);
+        $actualValues->shouldHaveCount(0);
+    }
+
+    function it_skips_unknown_property_when_creating_a_values_collection_from_the_storage_format(
+        $valueFactory,
+        $attributeRepository,
+        $logger,
+        AttributeInterface $referenceData
+    ) {
+        $referenceData->getCode()->willReturn('image');
+        $referenceData->isUnique()->willReturn(false);
+        $referenceData->isLocalizable()->willReturn(true);
+
+        $attributeRepository->findOneByIdentifier('image')->willReturn($referenceData);
+        $valueFactory->create($referenceData, null, null, 'my_image')->willThrow(
+            new InvalidPropertyException('attribute', 'image', static::class)
+        );
+
+        $logger->warning(
+            Argument::containingString('Tried to load a product value with the property "image" that does not exist.')
+        );
+
+        $actualValues = $this->createFromStorageFormat([
+            'image' => [
+                '<all_channels>' => [
+                    '<all_locales>' => 'my_image'
                 ],
             ],
         ]);
