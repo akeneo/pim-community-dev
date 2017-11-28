@@ -13,4 +13,10 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 interface FamilyVariantRepositoryInterface extends ObjectRepository, IdentifiableObjectRepositoryInterface
 {
+    /**
+     * Return the number of existing family variant
+     *
+     * @return int
+     */
+    public function countAll(): int;
 }
