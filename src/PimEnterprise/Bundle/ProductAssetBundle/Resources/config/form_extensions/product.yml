@@ -9,6 +9,8 @@ extensions:
             title: pimee_product_asset.form.product.asset.title
             description: pimee_product_asset.form.product.asset.description
             categoryTreeRoute: pimee_asset_picker_categorytree
+            columnName: code
+            fetcher: asset
 
     pimee-product-asset-picker-form-filters-list:
         module: oro/datafilter/filters-list
