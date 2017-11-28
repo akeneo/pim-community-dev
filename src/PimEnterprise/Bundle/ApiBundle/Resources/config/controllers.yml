@@ -91,3 +91,6 @@ services:
         arguments:
             - '@pimee_api.repository.asset_category'
             - '@pim_serializer'
+            - '@pim_api.pagination.parameter_validator'
+            - '@pim_api.pagination.offset_hal_paginator'
+            - '%pim_api.configuration%'
