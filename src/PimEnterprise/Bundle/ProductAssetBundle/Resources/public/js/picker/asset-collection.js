@@ -92,17 +92,17 @@ define(
 
                 FormBuilder.build('pimee-product-asset-picker-form').then(function (form) {
                     let modal = new Backbone.BootstrapModal({
-                        className: 'modal modal-asset modal--fullPage modal--topButton',
+                        className: 'modal modal--fullPage modal--topButton',
                         modalOptions: {
                             backdrop: 'static',
                             keyboard: false
                         },
                         allowCancel: true,
                         okCloses: false,
-                        title: _.__('pimee_product_asset.form.product.asset.manage_asset.title'),
+                        title: '',
                         content: '',
-                        cancelText: _.__('pimee_product_asset.form.product.asset.manage_asset.cancel'),
-                        okText: _.__('pimee_product_asset.form.product.asset.manage_asset.confirm')
+                        cancelText: '',
+                        okText: __('confirmation.title')
                     });
                     modal.open();
 
