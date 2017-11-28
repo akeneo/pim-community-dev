@@ -103,4 +103,20 @@ default:
                 page: [Context\Page]
             factory:
                 page_parameters:
-                    base_url: http://akeneo-pim-behat.local/
+                    base_url: http://ce-20-behat.pim.local
+
+acceptance:
+    suites:
+        acceptance:
+            paths: ['%paths.base%/tests/Acceptance/']
+            contexts:
+                - Pim\Test\Acceptance\Behat\AcceptanceContext:
+                    - '@pim_catalog.factory.attribute'
+                    - '@pim_catalog.saver.attribute'
+                    - '@pim_catalog.builder.product'
+                    - '@pim_catalog.validator.product'
+    extensions:
+        Behat\Symfony2Extension:
+            kernel:
+                env: in_memory
+                debug: false
