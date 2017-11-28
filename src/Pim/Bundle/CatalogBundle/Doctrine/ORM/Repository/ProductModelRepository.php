@@ -81,12 +81,10 @@ class ProductModelRepository extends EntityRepository implements ProductModelRep
      */
     public function countAll(): int
     {
-        $count = $this->createQueryBuilder('pm')
-            ->select('COUNT(pm.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        $qb = $this->createQueryBuilder('pm')
+            ->select('COUNT(pm.id)');
 
-        return $count;
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
     /**
