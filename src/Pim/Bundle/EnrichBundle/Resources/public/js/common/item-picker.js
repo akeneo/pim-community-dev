@@ -195,7 +195,7 @@ define(
              * @param {Object} model
              */
             selectModel: function (model) {
-                this.addItem(model.get('code'));
+                this.addItem(model.get(this.config.columnName));
             },
 
             /**
@@ -204,7 +204,7 @@ define(
              * @param {Object} model
              */
             unselectModel: function (model) {
-                this.removeItem(model.get('code'));
+                this.removeItem(model.get(this.config.columnName));
             },
 
             /**
@@ -277,7 +277,7 @@ define(
                 const items = this.getItems();
 
                 _.each(datagrid.models, function (row) {
-                    if (_.contains(items, row.get('code'))) {
+                    if (_.contains(items, row.get(this.config.columnName))) {
                         row.set('is_checked', true);
                     } else {
                         row.set('is_checked', null);
@@ -300,14 +300,13 @@ define(
             },
 
             /**
-             * TODO Render this more abstract with config
              * Render the basket to update its content
              */
             updateBasket: function () {
-                FetcherRegistry.getFetcher('asset').fetchByIdentifiers(this.getItems())
-                    .then(function (assets) {
+                FetcherRegistry.getFetcher(this.config.fetcher).fetchByIdentifiers(this.getItems())
+                    .then(function (items) {
                         this.$('.basket').html(this.basketTemplate({
-                            items: assets,
+                            items: items,
                             thumbnailFilter: 'thumbnail',
                             scope: this.getScope(),
                             locale: this.getLocale(),

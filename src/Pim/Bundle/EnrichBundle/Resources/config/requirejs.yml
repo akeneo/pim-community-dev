@@ -183,6 +183,7 @@ config:
                     options:
                         urls:
                             get: pim_enrich_product_rest_get
+                            list: pim_enrich_product_rest_index
                 product-model:
                     module: pim/product-model-fetcher
                     options:

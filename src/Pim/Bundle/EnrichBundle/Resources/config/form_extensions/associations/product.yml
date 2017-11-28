@@ -6,6 +6,8 @@ extensions:
             title: pimee_product_asset.form.product.asset.title
             description: pimee_product_asset.form.product.asset.description
             categoryTreeRoute: pim_enrich_categorytree
+            columnName: identifier
+            fetcher: product
 
     pim-association-product-picker-form-filters-list:
         module: oro/datafilter/filters-list

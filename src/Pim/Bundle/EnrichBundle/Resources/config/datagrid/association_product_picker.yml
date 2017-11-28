@@ -5,7 +5,7 @@ datagrid:
             requireJSModules:
                 - pim/datagrid/column-form-listener
             columnListener:
-                dataField: code
+                dataField: identifier
                 columnName: is_checked
             routerEnabled: false
         source:
