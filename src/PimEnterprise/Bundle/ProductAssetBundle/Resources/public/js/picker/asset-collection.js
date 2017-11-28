@@ -106,6 +106,15 @@ define(
                     });
                     modal.open();
 
+                    form.setImagePath(function (item) {
+                        return Routing.generate('pimee_product_asset_thumbnail', {
+                            code: item.code,
+                            filter: 'thumbnail',
+                            channelCode: this.getScope(),
+                            localeCode: this.getLocale()
+                        });
+                    });
+
                     form.setElement(modal.$('.modal-body'))
                         .render()
                         .setItems(this.data);
