@@ -40,17 +40,18 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function filter($objectWithCategories)
+    public function filter($entityWithAssociations)
     {
-        if (!$objectWithCategories instanceof ProductInterface) {
-            throw InvalidObjectException::objectExpected(ClassUtils::getClass($objectWithCategories), ProductInterface::class);
+        if (!$entityWithAssociations instanceof ProductInterface) {
+            throw InvalidObjectException::objectExpected(ClassUtils::getClass($entityWithAssociations), ProductInterface::class);
         }
 
-        $clonedAssos = new ArrayCollection();
+        $filteredEntityWithAssociations = clone $entityWithAssociations;
+        $clonedAssociations = new ArrayCollection();
 
-        foreach ($objectWithCategories->getAssociations() as $association) {
-            $clonedAsso = clone $association;
-            $associatedProducts = clone $clonedAsso->getProducts();
+        foreach ($filteredEntityWithAssociations->getAssociations() as $association) {
+            $clonedAssociation = clone $association;
+            $associatedProducts = clone $clonedAssociation->getProducts();
 
             foreach ($associatedProducts as $associatedProduct) {
                 if (!$this->authorizationChecker->isGranted([Attributes::VIEW], $associatedProduct)) {
@@ -58,12 +59,12 @@ class NotGrantedAssociatedProductFilter implements NotGrantedDataFilterInterface
                 }
             }
 
-            $clonedAsso->setProducts($associatedProducts);
-            $clonedAssos->add($clonedAsso);
+            $clonedAssociation->setProducts($associatedProducts);
+            $clonedAssociations->add($clonedAssociation);
         }
 
-        $objectWithCategories->setAssociations($clonedAssos);
+        $filteredEntityWithAssociations->setAssociations($clonedAssociations);
 
-        return $objectWithCategories;
+        return $filteredEntityWithAssociations;
     }
 }

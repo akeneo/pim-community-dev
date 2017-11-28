@@ -44,7 +44,7 @@ class FilteredEntityFactory
      */
     public function create($fullEntity)
     {
-        $filteredEntity = clone $fullEntity;
+        $filteredEntity = $fullEntity;
 
         foreach ($this->notGrantedDataFilters as $notGrantedDataFilter) {
             if (!$notGrantedDataFilter instanceof NotGrantedDataFilterInterface) {

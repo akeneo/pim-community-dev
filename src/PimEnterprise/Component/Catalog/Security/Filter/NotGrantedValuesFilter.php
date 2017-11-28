@@ -54,10 +54,12 @@ class NotGrantedValuesFilter implements NotGrantedDataFilterInterface
             throw InvalidObjectException::objectExpected(ClassUtils::getClass($entityWithValues), EntityWithValuesInterface::class);
         }
 
-        if ($entityWithValues instanceof EntityWithFamilyVariantInterface) {
-            $values = clone $entityWithValues->getValuesForVariation();
+        $filteredEntityWithValues = clone $entityWithValues;
+
+        if ($filteredEntityWithValues instanceof EntityWithFamilyVariantInterface) {
+            $values = clone $filteredEntityWithValues->getValuesForVariation();
         } else {
-            $values = clone $entityWithValues->getValues();
+            $values = clone $filteredEntityWithValues->getValues();
         }
 
         foreach ($values as $value) {
@@ -77,8 +79,8 @@ class NotGrantedValuesFilter implements NotGrantedDataFilterInterface
             }
         }
 
-        $entityWithValues->setValues($values);
+        $filteredEntityWithValues->setValues($values);
 
-        return $entityWithValues;
+        return $filteredEntityWithValues;
     }
 }
