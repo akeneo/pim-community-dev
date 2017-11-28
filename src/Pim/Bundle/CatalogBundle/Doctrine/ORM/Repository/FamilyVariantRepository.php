@@ -27,4 +27,16 @@ class FamilyVariantRepository extends EntityRepository implements FamilyVariantR
     {
         return $this->findOneBy(['code' => $identifier]);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countAll(): int
+    {
+        $qb = $this
+            ->createQueryBuilder('fv')
+            ->select('COUNT(fv.id)');
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
 }

@@ -4,6 +4,7 @@
 
 - PIM-6480: Add gallery view and display selector to the product grid
 - PIM-6621: add search on label and code on products and product models
+- PIM-6966: Add tracker information for product model, product variant and family variant
 
 ## Improvements 
 
@@ -26,3 +27,4 @@
 - Add optional parameter `$scopeCode` to the method `getLabel` of `Pim\Component\Catalog\Model\ProductInterface`
 - Remove method `countAll` in `Pim\Component\Catalog\Repository\FamilyInterface`, `Pim\Component\Catalog\Repository\AttributeRepositoryInterface`, `Pim\Component\Catalog\Repository\VariantProductRepositoryInterface` and `Pim\Bundle\UserBundle\Repository\UserRepositoryInterface`
 - Add `Pim\Bundle\AnalyticsBundle\Repository\EntityCountableRepository` with method `countAll`
+
