@@ -1,6 +1,7 @@
 pim_api:
     acl:
         asset_category:
+            edit: Create and update asset categories
             list: List asset categories
     acl_group:
         asset_category: Asset categories
