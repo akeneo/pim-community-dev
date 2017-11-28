@@ -74,7 +74,8 @@ final class ConvertProductToVariantProductIntegration extends TestCase
         $inMemoryVariantProduct = $this->getFromTestContainer('pim_catalog.entity_with_family.create_variant_product_from_product')
             ->from($this->product, $this->productModel);
 
-        ($this->getFromTestContainer('pim_catalog.doctrine.query.convert_product_to_variant_product'))($inMemoryVariantProduct);
+        $this->getFromTestContainer('pim_catalog.doctrine.query.convert_product_to_variant_product')
+            ->execute($inMemoryVariantProduct);
 
         $sql = <<<SQL
 SELECT COUNT(id) 

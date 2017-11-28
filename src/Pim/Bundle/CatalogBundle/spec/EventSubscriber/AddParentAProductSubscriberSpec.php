@@ -143,7 +143,7 @@ class AddParentAProductSubscriberSpec extends ObjectBehavior
 
         $args->getObject()->willReturn($variantProduct);
 
-        $convertProductToVariantProduct->__invoke($variantProduct)->shouldBeCalled();
+        $convertProductToVariantProduct->execute($variantProduct)->shouldBeCalled();
 
         $this->preUpdate($args)->shouldReturn(null);
     }

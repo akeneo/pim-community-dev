@@ -10,6 +10,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Component\Catalog\Comparator\Filter\FilterInterface;
 use Pim\Component\Catalog\Model\ProductInterface;
+use Pim\Component\Catalog\Model\VariantProductInterface;
 use Pim\Component\Catalog\ProductModel\Filter\AttributeFilterInterface;
 use Pim\Component\Connector\Processor\Denormalization\Product\AddParent;
 use Pim\Component\Connector\Processor\Denormalization\Product\FindProductToImport;
@@ -130,7 +131,7 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             }
         }
 
-        if ('' !== $parentProductModelCode) {
+        if ('' !== $parentProductModelCode && !$product instanceof VariantProductInterface) {
             try {
                 $product = $this->addParent->to($product, $parentProductModelCode);
             } catch (\InvalidArgumentException $e) {

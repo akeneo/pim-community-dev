@@ -18,8 +18,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * @author    Arnaud Langlade <arnaud.langlade@akeneo.com>
  * @copyright 2017 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated this class will be removed in the future version
  */
-class AddParentAProductSubscriber implements EventSubscriberInterface
+final class AddParentAProductSubscriber implements EventSubscriberInterface
 {
     /** @var Query\ConvertProductToVariantProduct */
     private $convertProductToVariantProduct;
@@ -106,6 +108,6 @@ class AddParentAProductSubscriber implements EventSubscriberInterface
 
         unset($this->variantProducts[$entity->getId()]);
 
-        ($this->convertProductToVariantProduct)($entity);
+        $this->convertProductToVariantProduct->execute($entity);
     }
 }

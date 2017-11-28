@@ -34,7 +34,7 @@ class ConvertProductToVariantProduct
     /**
      * {@inheritdoc}
      */
-    public function __invoke(VariantProductInterface $variantProduct): void
+    public function execute(VariantProductInterface $variantProduct): void
     {
         $sql = <<<SQL
 UPDATE pim_catalog_product AS variant_product
