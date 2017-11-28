@@ -8,6 +8,7 @@ Feature: Define permissions for a job profile
     Given a "clothing" catalog configuration
     And I am logged in as "Peter"
 
+  @unstable
   Scenario: Successfully revoke access to execute a job
     Given I am on the "csv_clothing_product_export" export job edit page
     And I visit the "Permissions" tab

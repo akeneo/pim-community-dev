@@ -8,7 +8,7 @@ Feature: Revert product attributes to a previous version
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3760
+  @unstable @jira https://akeneo.atlassian.net/browse/PIM-3760
   Scenario: Successfully revert a file attribute
     Given I am on the products page
     And I create a new product

@@ -4,6 +4,7 @@ Feature: Define permissions for a job profile
   As an administrator
   I need to be able to define permissions for job profiles
 
+  @unstable
   Scenario: Successfully display the fields for a csv job profile permissions
     Given a "clothing" catalog configuration
     And I am logged in as "Peter"
