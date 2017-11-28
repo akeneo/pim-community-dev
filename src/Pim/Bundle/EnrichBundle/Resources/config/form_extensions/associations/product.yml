@@ -18,3 +18,5 @@ extensions:
         module: oro/datafilter/filters-button
         parent: pim-associations-product-picker-form
         targetZone: filters
+        config:
+            displayAsPanel: true

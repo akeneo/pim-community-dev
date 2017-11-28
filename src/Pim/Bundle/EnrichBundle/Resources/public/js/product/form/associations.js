@@ -625,7 +625,7 @@ define(
                         okCloses: false,
                         title: '',
                         content: '',
-                        cancelText: '',
+                        cancelText: ' ',
                         okText: __('confirmation.title'),
                     });
                     modal.open();

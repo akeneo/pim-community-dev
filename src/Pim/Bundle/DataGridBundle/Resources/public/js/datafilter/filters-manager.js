@@ -35,6 +35,8 @@ define(
      * @event disableFilter on disable specific filter
      */
     return Backbone.View.extend({
+        displayAsPanel: false,
+
         /**
          * List of filter objects
          *
@@ -102,6 +104,7 @@ define(
             if (options.filters) {
                 this.filters = options.filters;
             }
+            this.displayAsPanel = options.displayAsPanel;
 
             _.each(this.filters, function (filter) {
                 this.listenTo(filter, 'update', this._onFilterUpdated);
@@ -325,41 +328,51 @@ define(
                 return;
             }
 
+            let multiselectParameters = {
+                multiple: true,
+                selectedList: 0,
+                classes: 'AknFilterBox-addFilterButton AknFilterBox-addFilterButton--asPanel filter-list select-filter-widget',
+                position: {
+                    at: 'right top',
+                    my: 'right top',
+                }
+            };
+
+            if (!this.displayAsPanel) {
+                multiselectParameters.classes = 'AknFilterBox-addFilterButton filter-list select-filter-widget';
+                multiselectParameters.beforeopen = () => {
+                    this.selectWidget.getWidget().css({ left: this._getLeftStartPosition() });
+                    this._addDoneButton();
+
+                    return true;
+                };
+                multiselectParameters.open = () => {
+                    if (this.$el.is(':visible')) {
+                        this.selectWidget.onOpenDropdown();
+                        this._updateDropdownPosition();
+                    }
+                };
+                multiselectParameters.beforeclose = () => {
+                    if (null === this.selectWidget.getWidget() ||
+                        0 === this.selectWidget.getWidget().length ||
+                        this.selectWidget.getWidget().position().left <= this._getLeftStartPosition()) {
+                        return true;
+                    }
+
+                    this.selectWidget.getWidget().css({ left: this._getLeftEndPosition() + 'px' });
+                    this.selectWidget.getWidget().css({ left: this._getLeftStartPosition() + 'px' });
+                    setTimeout(() => this.selectWidget.multiselect('close'), 500);
+
+                    return false;
+                };
+                multiselectParameters.position = {
+                    left: this._getLeftStartPosition()
+                };
+            }
+
             this.selectWidget = new MultiselectDecorator({
                 element: this.$(this.filterSelector),
-                parameters: {
-                    multiple: true,
-                    selectedList: 0,
-                    position: {
-                        left: this._getLeftStartPosition()
-                    },
-                    classes: 'AknFilterBox-addFilterButton filter-list select-filter-widget',
-                    beforeopen: () => {
-                        this.selectWidget.getWidget().css({ left: this._getLeftStartPosition() });
-                        this._addDoneButton();
-
-                        return true;
-                    },
-                    open: () => {
-                        if (this.$el.is(':visible')) {
-                            this.selectWidget.onOpenDropdown();
-                            this._updateDropdownPosition();
-                        }
-                    },
-                    beforeclose: () => {
-                        if (null === this.selectWidget.getWidget() ||
-                            0 === this.selectWidget.getWidget().length ||
-                            this.selectWidget.getWidget().position().left <= this._getLeftStartPosition()) {
-                            return true;
-                        }
-
-                        this.selectWidget.getWidget().css({ left: this._getLeftEndPosition() + 'px' });
-                        this.selectWidget.getWidget().css({ left: this._getLeftStartPosition() + 'px' });
-                        setTimeout(() => this.selectWidget.multiselect('close'), 500);
-
-                        return false;
-                    }
-                }
+                parameters: multiselectParameters,
             });
 
             this.selectWidget.setViewDesign(this);
