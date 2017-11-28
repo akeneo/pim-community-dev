@@ -6,10 +6,6 @@
 - PIM-6621: add search on label and code on products and product models
 - PIM-6966: Add tracker information for product model, product variant and family variant
 
-## Improvements 
-
-- PIM-6966: Add tracker information for product model, product variant and family variant
-
 ## BC breaks
 
 ### Constructors
