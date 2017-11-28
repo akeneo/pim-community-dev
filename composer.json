@@ -38,9 +38,11 @@
         "kriswallsmith/buzz": ">=0.5",
         "pdepend/pdepend": "1.1.*",
         "phpmd/phpmd": "1.*",
-        "phpspec/phpspec": "3.0.0",
+        "phpspec/phpspec": "~3.4.2",
         "akeneo/phpspec-skip-example-extension": "2.0.0",
-        "phpunit/phpunit": "3.7.*",
+        "phpunit/phpunit": "~5.7.22",
+        "sebastian/exporter": "~2.0.0",
+        "liuggio/fastest": "~1.4.4",
         "sensiolabs/behat-page-object-extension": "1.0.1",
         "squizlabs/php_codesniffer": "1.*",
         "akeneo/php-coupling-detector": "dev-master"
