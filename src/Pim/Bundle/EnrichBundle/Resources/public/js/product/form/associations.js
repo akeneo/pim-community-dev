@@ -596,11 +596,10 @@ define(
              * Opens the panel to select new products
              */
             addProducts: function () {
-                this.manageAssets().then(function (assets) {
-                    console.log(assets);
-                    this.data = assets;
+                this.manageAssets().then(function (productIdentifiers) {
+                    this.data = productIdentifiers;
 
-                    this.trigger('collection:change', assets);
+                    this.trigger('collection:change', productIdentifiers);
                     this.render();
                 }.bind(this));
             },
@@ -617,17 +616,17 @@ define(
 
                 FormBuilder.build('pim-associations-product-picker-form').then(function (form) {
                     let modal = new Backbone.BootstrapModal({
-                        className: 'modal modal-asset modal--fullPage modal--topButton',
+                        className: 'modal modal--fullPage modal--topButton',
                         modalOptions: {
                             backdrop: 'static',
                             keyboard: false
                         },
                         allowCancel: true,
                         okCloses: false,
-                        title: _.__('pimee_product_asset.form.product.asset.manage_asset.title'),
+                        title: '',
                         content: '',
-                        cancelText: _.__('pimee_product_asset.form.product.asset.manage_asset.cancel'),
-                        okText: _.__('pimee_product_asset.form.product.asset.manage_asset.confirm')
+                        cancelText: '',
+                        okText: __('confirmation.title'),
                     });
                     modal.open();
 
