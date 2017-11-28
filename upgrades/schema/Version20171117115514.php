@@ -4,6 +4,8 @@ namespace Pim\Upgrade\Schema;
 
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
@@ -22,6 +24,22 @@ class Version20171117115514 extends AbstractMigration
         $this->addSql('ALTER TABLE pim_catalog_product_model ADD CONSTRAINT FK_5943911E727ACA70 FOREIGN KEY (parent_id) REFERENCES pim_catalog_product_model (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE pim_catalog_product DROP FOREIGN KEY FK_91CD19C0B2C5DD70');
         $this->addSql('ALTER TABLE pim_catalog_product ADD CONSTRAINT FK_91CD19C0B2C5DD70 FOREIGN KEY (product_model_id) REFERENCES pim_catalog_product_model (id) ON DELETE CASCADE');
+
+    }
+
+    public function postUp(Schema $schema)
+    {
+        $kernel = new \AppKernel(getenv('SYMFONY_ENV') ?: 'prod', (bool)getenv('SYMFONY_DEBUG'));
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+        $application->run(new ArrayInput([
+           'command' => 'pim:product-model:index',
+           '--all' => true,
+        ]));
+        $application->run(new ArrayInput([
+           'command' => 'pim:product:index',
+           '--all' => true,
+        ]));
     }
 
     /**
