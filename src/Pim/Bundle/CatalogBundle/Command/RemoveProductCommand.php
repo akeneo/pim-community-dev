@@ -72,13 +72,23 @@ class RemoveProductCommand extends ContainerAwareCommand
             return;
         }
 
-        $paginator = $this->getPaginatorFactory()->createPaginator($cursor);
+        $paginator = $this->getPaginatorFactory()->createPaginator($cursor, 100);
 
+        $i = 0;
+        $start = microtime(true);
         foreach ($paginator as $productsPage) {
+            $i++;
             $this->getProductRemover()->removeAll($productsPage);
-            $output->write(sprintf("%s products deleted ...\n", count($productsPage)));
             $this->getProductDetacher()->detachAll($productsPage);
+
+            if($i % 10 === 0) {
+                $output->writeln(microtime(true) - $start);
+                $output->writeln(memory_get_usage());
+                $start = microtime(true);
+            }
         }
+        $output->writeln(microtime(true) - $start);
+        $output->writeln(memory_get_usage());
 
         $output->write("Done.");
     }
