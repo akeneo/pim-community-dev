@@ -2897,4 +2897,29 @@ class WebUser extends PimContext
 
         $removeButton->click();
     }
+
+    /**
+     * @Then /^the item picker basket should contain (.*)$/
+     */
+    public function theItemPickerBasketShouldContain($entities)
+    {
+        foreach ($this->getMainContext()->listToArray($entities) as $entity) {
+            $this->getItemPickerBasketItems($entity);
+        }
+    }
+
+    /**
+     * @param string $code
+     *
+     * @throws \Exception
+     *
+     * @return NodeElement
+     */
+    protected function getItemPickerBasketItems($code)
+    {
+        return $this->spin(function () use ($code) {
+            return $this->getSession()->getPage()
+                ->find('css', sprintf('.item-picker-basket *[data-itemCode="%s"]', $code));
+        }, sprintf('Cannot find item "%s" in basket', $code));
+    }
 }

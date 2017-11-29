@@ -50,12 +50,3 @@ datagrid:
                     sorter:    product_completeness
             default:
                 updated: '%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC'
-        filters:
-            columns:
-                groups:
-                    type:      product_groups
-                    label:     Groups
-                    data_name: groups
-                    options:
-                        field_options:
-                            multiple: true
