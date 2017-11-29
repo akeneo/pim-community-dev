@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Bundle\ApiBundle\tests\EndToEnd\Controller\AssetCategory;
 
-use Akeneo\Test\Integration\Configuration;
 use Pim\Bundle\ApiBundle\tests\integration\ApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -51,6 +51,7 @@ PimEnterprise\Component\ProductAsset\Model\Category:
             cascade:
                 - persist
                 - detach
+            orphanRemoval: true
         children:
             targetEntity: PimEnterprise\Component\ProductAsset\Model\CategoryInterface
             mappedBy: parent

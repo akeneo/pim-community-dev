@@ -17,6 +17,7 @@ use Akeneo\Component\StorageUtils\Exception\PropertyException;
 use Akeneo\Component\StorageUtils\Factory\SimpleFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Gedmo\Exception\UnexpectedValueException;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\ApiBundle\Documentation;
 use Pim\Component\Api\Exception\DocumentedHttpException;
@@ -188,13 +189,53 @@ class AssetCategoryController
     {
         $data = $this->getDecodedContent($request->getContent());
 
-        $category = $this->factory->create();
-        $this->updateCategory($category, $data, 'post_asset_categories');
-        $this->validateCategory($category);
+        $assetCategory = $this->factory->create();
+        $this->updateCategory($assetCategory, $data, 'post_asset_categories');
+        $this->validateCategory($assetCategory);
 
-        $this->saver->save($category);
+        $this->saver->save($assetCategory);
 
-        $response = $this->getResponse($category, Response::HTTP_CREATED);
+        $response = $this->getResponse($assetCategory, Response::HTTP_CREATED);
+
+        return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $code
+     *
+     * @throws BadRequestHttpException
+     * @throws UnprocessableEntityHttpException
+     *
+     * @return Response
+     *
+     * @AclAncestor("pim_api_asset_category_edit")
+     */
+    public function partialUpdateAction(Request $request, $code)
+    {
+        $data = $this->getDecodedContent($request->getContent());
+
+        $isCreation = false;
+        $assetCategory = $this->repository->findOneByIdentifier($code);
+
+        if (null === $assetCategory) {
+            $isCreation = true;
+            $this->validateCodeConsistency($code, $data);
+            $data['code'] = $code;
+            $assetCategory = $this->factory->create();
+        }
+
+        $this->updateCategory($assetCategory, $data, 'patch_asset_categories__code_');
+        $this->validateCategory($assetCategory, $data);
+
+        try {
+            $this->saver->save($assetCategory);
+        } catch (UnexpectedValueException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        }
+
+        $status = $isCreation ? Response::HTTP_CREATED : Response::HTTP_NO_CONTENT;
+        $response = $this->getResponse($assetCategory, $status);
 
         return $response;
     }
