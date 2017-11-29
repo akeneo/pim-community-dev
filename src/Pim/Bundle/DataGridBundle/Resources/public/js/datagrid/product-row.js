@@ -9,7 +9,6 @@ define(
     [
         'jquery',
         'underscore',
-        'backgrid',
         'oro/datagrid/row',
         'pim/template/datagrid/row/product',
         'pim/template/datagrid/row/product-thumbnail',
@@ -18,7 +17,6 @@ define(
     function(
         $,
         _,
-        Backgrid,
         BaseRow,
         rowTemplate,
         thumbnailTemplate,
@@ -30,19 +28,40 @@ define(
             thumbnailTemplate: _.template(thumbnailTemplate),
 
             /**
-             * {@inheritdoc}
+             * Return the columns for the cells that should be rendered
+             *
+             * @return {Array} An array of column names
              */
-            render() {
-                const label = this.model.get('label');
-                const isProductModel = this.isProductModel();
-                const row = $(this.rowTemplate({ isProductModel, label }));
+            getRenderableColumns() {
+                const type = this.getCompletenessCellType();
 
-                const thumbnail = this.thumbnailTemplate({
-                    isProductModel,
+                return [type, 'massAction', ''];
+            },
+
+            /**
+             * Return an object containing the template options
+             *
+             * @return {Object}
+             */
+            getTemplateOptions() {
+                const isProductModel = this.isProductModel();
+                const label = this.model.get('label');
+
+                return {
+                    useLayerStyle: isProductModel,
                     label,
                     identifier: this.model.get('identifier'),
                     imagePath: this.getThumbnailImagePath()
-                });
+                };
+            },
+
+            /**
+             * {@inheritdoc}
+             */
+            render() {
+                const templateOptions = this.getTemplateOptions();
+                const row = $(this.rowTemplate(templateOptions));
+                const thumbnail = this.thumbnailTemplate(templateOptions);
 
                 row.empty().append(thumbnail);
                 this.renderCells(row);
@@ -97,8 +116,7 @@ define(
              * @param  {HTMLElement} row
              */
             renderCells(row) {
-                const type = this.getCompletenessCellType();
-                const columnsToRender = [type, 'massAction', ''];
+                const columnsToRender = this.getRenderableColumns();
 
                 this.cells.forEach(cell => {
                     const columnName = cell.column.get('name');
@@ -108,15 +126,26 @@ define(
                     }
 
                     const cellElement = cell.render().el;
-
-                    if (columnName === type) {
-                        $(cellElement).addClass('AknBadge--topRight');
-                    } else if (columnName === '') {
-                        $('.AknIconButton', cellElement).addClass('AknIconButton--white');
-                    }
+                    this.setCellModifiers(columnName, cellElement);
 
                     row.append(cellElement);
                 });
+            },
+
+            /**
+             * Set modifiers on cells within a cell element
+             *
+             * @param {String} columnName  The name of a column e.g. completeness
+             * @param {HTMLElement} cellElement The element for the cell
+             */
+            setCellModifiers(columnName, cellElement) {
+                const type = this.getCompletenessCellType();
+
+                if (columnName === type) {
+                    $(cellElement).addClass('AknBadge--topRight');
+                } else if (columnName === '') {
+                    $('.AknIconButton', cellElement).addClass('AknIconButton--white');
+                }
             }
         });
     });
