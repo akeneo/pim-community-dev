@@ -598,7 +598,9 @@ define(
              */
             addProducts: function () {
                 this.manageProducts().then((productIdentifiers) => {
-                    this.data = productIdentifiers;
+                    const assocType = this.getCurrentAssociationType();
+                    const assocTarget = this.getCurrentAssociationTarget();
+                    this.updateFormDataAssociations(productIdentifiers, assocType, assocTarget);
 
                     this.trigger('collection:change', productIdentifiers);
                     this.render();
@@ -612,8 +614,6 @@ define(
              */
             manageProducts: function () {
                 let deferred = $.Deferred();
-
-                this.data = [];
 
                 FormBuilder.build('pim-associations-product-picker-form').then((form) => {
                     let modal = new Backbone.BootstrapModal({
@@ -640,9 +640,7 @@ define(
                         return MediaUrlGenerator.getMediaShowUrl(filePath, 'thumbnail_small');
                     });
 
-                    form.setElement(modal.$('.modal-body'))
-                        .render()
-                        .setItems(this.data);
+                    form.setElement(modal.$('.modal-body')).render();
 
                     modal.on('cancel', deferred.reject);
                     modal.on('ok', () => {
