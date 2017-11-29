@@ -1,3 +1,9 @@
+# 2.0.x
+
+## Bug fixes
+
+- PIM-6958: fix loading a product with a reference data that is not available (simpleselect or multiselect)
+
 # 2.0.7 (2017-11-23)
 
 
