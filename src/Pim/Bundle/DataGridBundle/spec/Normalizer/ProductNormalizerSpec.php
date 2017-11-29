@@ -144,6 +144,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'document_type' => 'product',
             'technical_id' => 78,
             'search_id' => 'product_78',
+            'is_checked' => false,
             'complete_variant_product' => null,
         ];
 
@@ -245,6 +246,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'document_type' => 'product',
             'technical_id' => 78,
             'search_id' => 'product_78',
+            'is_checked' => false,
             'complete_variant_product' => null,
         ];
 

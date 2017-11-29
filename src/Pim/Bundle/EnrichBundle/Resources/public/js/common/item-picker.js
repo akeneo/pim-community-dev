@@ -113,7 +113,7 @@ define(
                     title: __(this.config.title),
                     description: __(this.config.description),
                     locale: this.getLocale(),
-                    datagridIdentifier: this.datagrid.name,
+                    datagridIdentifier: this.datagrid.name
                 }));
 
                 this.renderGrid(this.datagrid);
@@ -318,7 +318,7 @@ define(
                             imagePathMethod: this.imagePathMethod.bind(this),
                             columnName: this.config.columnName,
                             identifierName: this.config.columnName,
-                            labelMethod: this.labelMethod.bind(this),
+                            labelMethod: this.labelMethod.bind(this)
                         }));
 
                         this.delegateEvents();

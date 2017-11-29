@@ -57,7 +57,7 @@ define(
             events: {
                 'click .associations-list li': 'changeAssociationType',
                 'click .target-button': 'changeAssociationTargets',
-                'click .add-products': 'addProducts',
+                'click .add-products': 'addProducts'
             },
             datagrids: {},
 
@@ -178,7 +178,7 @@ define(
                                 associationTypes,
                                 {code: this.getCurrentAssociationType()}
                             ),
-                            addProductsLabel: __('pim_enrich.form.product.tab.associations.add_products'),
+                            addProductsLabel: __('pim_enrich.form.product.tab.associations.add_products')
                         })
                     );
                     this.renderPanes();
@@ -627,7 +627,7 @@ define(
                         title: '',
                         content: '',
                         cancelText: ' ',
-                        okText: __('confirmation.title'),
+                        okText: __('confirmation.title')
                     });
                     modal.open();
 
