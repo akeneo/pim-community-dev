@@ -177,7 +177,8 @@ define(
                             currentAssociationType: _.findWhere(
                                 associationTypes,
                                 {code: this.getCurrentAssociationType()}
-                            )
+                            ),
+                            addProductsLabel: __('pim_enrich.form.product.tab.associations.add_products'),
                         })
                     );
                     this.renderPanes();
@@ -596,25 +597,25 @@ define(
              * Opens the panel to select new products
              */
             addProducts: function () {
-                this.manageAssets().then(function (productIdentifiers) {
+                this.manageProducts().then((productIdentifiers) => {
                     this.data = productIdentifiers;
 
                     this.trigger('collection:change', productIdentifiers);
                     this.render();
-                }.bind(this));
+                });
             },
 
             /**
-             * Launch the asset picker
+             * Launch the association product picker
              *
              * @return {Promise}
              */
-            manageAssets: function () {
+            manageProducts: function () {
                 let deferred = $.Deferred();
 
                 this.data = [];
 
-                FormBuilder.build('pim-associations-product-picker-form').then(function (form) {
+                FormBuilder.build('pim-associations-product-picker-form').then((form) => {
                     let modal = new Backbone.BootstrapModal({
                         className: 'modal modal--fullPage modal--topButton',
                         modalOptions: {
@@ -644,13 +645,15 @@ define(
                         .setItems(this.data);
 
                     modal.on('cancel', deferred.reject);
-                    modal.on('ok', function () {
-                        const assets = _.sortBy(form.getItems(), 'code');
+                    modal.on('ok', () => {
+                        const products = form.getItems().sort((a, b) => {
+                            return a.code < b.code;
+                        });
                         modal.close();
 
-                        deferred.resolve(assets);
-                    }.bind(this));
-                }.bind(this));
+                        deferred.resolve(products);
+                    });
+                });
 
                 return deferred.promise();
             }

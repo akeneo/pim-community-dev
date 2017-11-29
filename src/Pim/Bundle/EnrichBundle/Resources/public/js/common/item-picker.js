@@ -48,7 +48,9 @@ define(
             events: {
                 'click .remove-item': 'removeItemFromBasket'
             },
-            imagePath: null,
+            imagePath: () => {
+                throw new Error('You have to define "imagePath" method using "setImagePath" method.')
+            },
 
             /**
              * {@inheritdoc}
@@ -56,9 +58,6 @@ define(
             initialize: function (config) {
                 this.datagridModel = null;
                 this.config = config.config;
-                this.imagePath = () => {
-                    throw new Error('You have to define "imagePath" method using "setImagePath" method.')
-                };
 
                 if (undefined === this.config.datagridName) {
                     throw new Error('You have to add parameter "datagridName" to the configuration of this module.');
@@ -280,13 +279,13 @@ define(
 
                 const items = this.getItems();
 
-                _.each(datagrid.models, function (row) {
-                    if (_.contains(items, row.get(this.config.columnName))) {
+                datagrid.models.forEach((row) => {
+                    if (items.includes(row.get(this.config.columnName))) {
                         row.set('is_checked', true);
                     } else {
                         row.set('is_checked', null);
                     }
-                }.bind(this));
+                });
 
                 this.setItems(items);
             },

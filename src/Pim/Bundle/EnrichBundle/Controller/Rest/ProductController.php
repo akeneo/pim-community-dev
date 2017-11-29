@@ -153,12 +153,7 @@ class ProductController
      */
     public function indexAction(Request $request)
     {
-        $identifiers = $request->get(    'identifiers');
-        if (null === $identifiers || '' === $identifiers) {
-            return new JsonResponse([]);
-        }
-
-        $productIdentifiers = preg_split('/,/', $identifiers);
+        $productIdentifiers = explode(',', $request->get('identifiers'));
         $products = $this->cursorableRepository->getItemsFromIdentifiers($productIdentifiers);
 
         $normalizedProducts = $this->normalizer->normalize(

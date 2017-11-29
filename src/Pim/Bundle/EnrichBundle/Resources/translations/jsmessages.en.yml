@@ -480,6 +480,7 @@ pim_enrich:
                     target: Target
                     manage: Add products to association
                     manage_description: Select the products you want to add to the current product
+                    add_products: Add products
                 attributes:
                     title: Attributes
                     btn:
