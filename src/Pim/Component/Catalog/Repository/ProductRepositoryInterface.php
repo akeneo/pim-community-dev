@@ -47,13 +47,6 @@ interface ProductRepositoryInterface extends ObjectRepository
     public function getProductCountByGroup(GroupInterface $group);
 
     /**
-     * Return the number of existing products
-     *
-     * @return int
-     */
-    public function countAll(): int;
-
-    /**
      * Checks if the family has the specified attribute
      *
      * @param mixed  $productId

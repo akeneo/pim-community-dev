@@ -37,13 +37,6 @@ interface ProductModelRepositoryInterface extends
     public function countRootProductModels(): int;
 
     /**
-     * Return the number of existing product models
-     *
-     * @return int
-     */
-    public function countAll(): int;
-
-    /**
      * Find product models which are the direct children of the given $productModel
      *
      * @param ProductModelInterface $productModel

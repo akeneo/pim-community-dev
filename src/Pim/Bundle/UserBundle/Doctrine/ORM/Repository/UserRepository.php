@@ -54,13 +54,11 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function countAll()
+    public function countAll(): int
     {
-        $qb = $this->createQueryBuilder('u');
+        $qb = $this->createQueryBuilder('u')
+            ->select('count(u.id)');
 
-        return $qb
-            ->select('count(u.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
+        return (int) $qb->getQuery()->getSingleScalarResult();
     }
 }

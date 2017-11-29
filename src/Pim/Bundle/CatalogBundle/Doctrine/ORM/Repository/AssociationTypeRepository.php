@@ -42,19 +42,6 @@ class AssociationTypeRepository extends EntityRepository implements AssociationT
     /**
      * {@inheritdoc}
      */
-    public function countAll()
-    {
-        $qb = $this->createQueryBuilder('a');
-
-        return (int) $qb
-            ->select('count(a.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findOneByIdentifier($code)
     {
         return $this->findOneBy(['code' => $code]);

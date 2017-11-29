@@ -116,19 +116,6 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function countAll(): int
-    {
-        $count = $this->createQueryBuilder('p')
-            ->select('COUNT(p.id)')
-            ->getQuery()
-            ->getSingleScalarResult();
-
-        return $count;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function hasAttributeInFamily($productId, $attributeCode)
     {
         $queryBuilder = $this->createQueryBuilder('p')

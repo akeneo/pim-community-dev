@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
+use Akeneo\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use Pim\Bundle\AnalyticsBundle\Doctrine\Query;
-use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
 
 /**
  * Collect data about attributes:
@@ -19,7 +19,7 @@ use Pim\Component\Catalog\Repository\AttributeRepositoryInterface;
  */
 class AttributeDataCollector implements DataCollectorInterface
 {
-    /** @var AttributeRepositoryInterface */
+    /** @var CountableRepositoryInterface */
     private $attributeRepository;
 
     /** @var Query\CountLocalizableAttribute */
@@ -32,13 +32,13 @@ class AttributeDataCollector implements DataCollectorInterface
     private $countScopableAndLocalizableAttribute;
 
     /**
-     * @param AttributeRepositoryInterface               $attributeRepository
+     * @param CountableRepositoryInterface               $attributeRepository
      * @param Query\CountLocalizableAttribute            $countLocalizableAttribute
      * @param Query\CountScopableAttribute               $countScopableAttribute
      * @param Query\CountScopableAndLocalizableAttribute $countScopableAndLocalizableAttribute
      */
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
+        CountableRepositoryInterface $attributeRepository,
         Query\CountLocalizableAttribute $countLocalizableAttribute,
         Query\CountScopableAttribute $countScopableAttribute,
         Query\CountScopableAndLocalizableAttribute $countScopableAndLocalizableAttribute

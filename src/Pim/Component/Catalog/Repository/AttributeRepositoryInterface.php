@@ -126,12 +126,6 @@ interface AttributeRepositoryInterface extends
      */
     public function findAttributesByFamily(FamilyInterface $family);
 
-    /**
-     * Return the number of existing attributes
-     *
-     * @return int
-     */
-    public function countAll();
 
     /**
      * Find axis label for a locale

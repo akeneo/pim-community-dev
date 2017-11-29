@@ -42,13 +42,14 @@ class ChannelRepository extends EntityRepository implements ChannelRepositoryInt
 
     /**
      * {@inheritdoc}
+     * Return the number of existing channels
      */
-    public function countAll()
+    public function countAll(): int
     {
-        $qb = $this->createQueryBuilder('c');
+        $qb = $this->createQueryBuilder('c')
+            ->select('COUNT(c.id)');
 
         return (int) $qb
-            ->select('count(c.id)')
             ->getQuery()
             ->getSingleScalarResult();
     }

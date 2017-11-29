@@ -3,14 +3,8 @@
 namespace Pim\Bundle\AnalyticsBundle\DataCollector;
 
 use Akeneo\Component\Analytics\DataCollectorInterface;
-use Pim\Bundle\UserBundle\Repository\UserRepositoryInterface;
-use Pim\Component\Catalog\Repository\ChannelRepositoryInterface;
-use Pim\Component\Catalog\Repository\FamilyRepositoryInterface;
-use Pim\Component\Catalog\Repository\FamilyVariantRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\CountableRepositoryInterface;
 use Pim\Component\Catalog\Repository\LocaleRepositoryInterface;
-use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
-use Pim\Component\Catalog\Repository\VariantProductRepositoryInterface;
 
 /**
  * Collects the structure of the PIM catalog:
@@ -27,49 +21,49 @@ use Pim\Component\Catalog\Repository\VariantProductRepositoryInterface;
  */
 class DBDataCollector implements DataCollectorInterface
 {
-    /** @var ChannelRepositoryInterface */
+    /** @var CountableRepositoryInterface */
     protected $channelRepository;
 
-    /** @var ProductRepositoryInterface */
+    /** @var CountableRepositoryInterface */
     protected $productRepository;
 
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var FamilyRepositoryInterface */
+    /** @var CountableRepositoryInterface */
     protected $familyRepository;
 
-    /** @var UserRepositoryInterface */
+    /** @var CountableRepositoryInterface */
     protected $userRepository;
 
-    /** @var ProductModelRepositoryInterface */
+    /** @var CountableRepositoryInterface */
     protected $productModelRepository;
 
-    /** @var VariantProductRepositoryInterface */
+    /** @var CountableRepositoryInterface */
     protected $variantProductRepository;
 
-    /** @var FamilyVariantRepositoryInterface */
+    /** @var CountableRepositoryInterface */
     protected $familyVariantRepository;
 
     /**
-     * @param ChannelRepositoryInterface            $channelRepository
-     * @param ProductRepositoryInterface            $productRepository
+     * @param CountableRepositoryInterface            $channelRepository
+     * @param CountableRepositoryInterface            $productRepository
      * @param LocaleRepositoryInterface             $localeRepository
-     * @param FamilyRepositoryInterface             $familyRepository
-     * @param UserRepositoryInterface               $userRepository
-     * @param ProductModelRepositoryInterface       $productModelRepository
-     * @param VariantProductRepositoryInterface     $variantProductRepository
-     * @param FamilyVariantRepositoryInterface      $familyVariantRepository
+     * @param CountableRepositoryInterface             $familyRepository
+     * @param CountableRepositoryInterface               $userRepository
+     * @param CountableRepositoryInterface       $productModelRepository
+     * @param CountableRepositoryInterface     $variantProductRepository
+     * @param CountableRepositoryInterface      $familyVariantRepository
      */
     public function __construct(
-        ChannelRepositoryInterface $channelRepository,
-        ProductRepositoryInterface $productRepository,
+        CountableRepositoryInterface $channelRepository,
+        CountableRepositoryInterface $productRepository,
         LocaleRepositoryInterface $localeRepository,
-        FamilyRepositoryInterface $familyRepository,
-        UserRepositoryInterface $userRepository,
-        ProductModelRepositoryInterface $productModelRepository,
-        VariantProductRepositoryInterface $variantProductRepository,
-        FamilyVariantRepositoryInterface $familyVariantRepository
+        CountableRepositoryInterface $familyRepository,
+        CountableRepositoryInterface $userRepository,
+        CountableRepositoryInterface $productModelRepository,
+        CountableRepositoryInterface $variantProductRepository,
+        CountableRepositoryInterface $familyVariantRepository
     ) {
         $this->channelRepository = $channelRepository;
         $this->productRepository = $productRepository;
