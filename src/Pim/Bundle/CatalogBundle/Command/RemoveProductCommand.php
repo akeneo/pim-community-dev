@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
+use Pim\Component\Catalog\Paginator\ProductPaginator;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -78,17 +78,21 @@ class RemoveProductCommand extends ContainerAwareCommand
         $start = microtime(true);
         foreach ($paginator as $productsPage) {
             $i++;
-            $this->getProductRemover()->removeAll($productsPage);
+            $this->getProductRemover()->removeAll($productsPage, ['flush' => true]);
             $this->getProductDetacher()->detachAll($productsPage);
 
+            echo memory_get_usage() . PHP_EOL;
             if($i % 10 === 0) {
-                $output->writeln(microtime(true) - $start);
-                $output->writeln(memory_get_usage());
+                echo microtime(true) - $start . PHP_EOL;
+                gc_collect_cycles();
+                meminfo_dump(
+                    fopen('/tmp/meminfo/' . 'products-' . $i . '00.json', 'w')
+                );
                 $start = microtime(true);
             }
         }
-        $output->writeln(microtime(true) - $start);
-        $output->writeln(memory_get_usage());
+        echo microtime(true) - $start . PHP_EOL;
+        echo memory_get_usage() . PHP_EOL;
 
         $output->write("Done.");
     }
