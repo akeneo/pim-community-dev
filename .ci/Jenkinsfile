@@ -262,7 +262,7 @@ stage("Test") {
                                 [
                                     container: "php",
                                     junit: [in: "/home/jenkins/pim/", name: "junit_output.xml"],
-                                    script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist " + file[1] + " --log-junit junit_output.xml"
+                                    script: "php -d error_reporting='E_ALL' vendor/bin/phpunit -c app/phpunit.xml.dist --exclude-group ce" + file[1] + " --log-junit junit_output.xml"
                                 ]
                             ]
                             def message = new net.sf.json.JSONObject()
