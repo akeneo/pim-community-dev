@@ -1,5 +1,9 @@
 # 2.1
 
+## Improvements
+
+- PIM-6480: Add gallery view and display selector to the product grid
+
 ## BC breaks
 
 ### Constructors

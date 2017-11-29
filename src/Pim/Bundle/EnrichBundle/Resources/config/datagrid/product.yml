@@ -3,6 +3,13 @@ datagrid:
         options:
             entityHint: product
             filtersAsColumn: true
+            displayTypes:
+                default:
+                    label: grid.display_selector.list
+                gallery:
+                    label: grid.display_selector.gallery
+                    rowView: oro/datagrid/product-row
+                    manageColumns: false
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_datasource_product

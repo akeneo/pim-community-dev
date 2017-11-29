@@ -32,6 +32,7 @@ config:
     paths:
         oro/datagrid/tab-redirect-action:       pimdatagrid/js/datagrid/action/tab-redirect-action
         pim/datagrid/configure-columns-action:  pimdatagrid/js/datagrid/action/configure-columns-action
+        pim/datagrid/display-selector:          pimdatagrid/js/datagrid/display-selector
         oro/export-widget:                      pimdatagrid/js/datagrid/widget/export-widget
         pim/datagrid/state:                     pimdatagrid/js/datagrid/state
         pim/datagrid/state-listener:            pimdatagrid/js/datagrid/state-listener
@@ -86,6 +87,7 @@ config:
         oro/datagrid/pagination:                pimdatagrid/js/datagrid/pagination
         oro/datagrid/row:                       pimdatagrid/js/datagrid/row
         oro/datagrid/history-row:               pimdatagrid/js/datagrid/history-row
+        oro/datagrid/product-row:               pimdatagrid/js/datagrid/product-row
         oro/datagrid-builder:                   pimdatagrid/js/datagrid-builder
         oro/loading-mask:                       pimdatagrid/js/loading-mask
         oro/pageable-collection:                pimdatagrid/js/pageable-collection
@@ -147,6 +149,7 @@ config:
         pim/template/datagrid/done-button:               pimdatagrid/templates/datagrid/done-button.html
         pim/template/datagrid/pagination:                pimdatagrid/templates/datagrid/pagination.html
         pim/template/datagrid/configure-columns-action:  pimdatagrid/templates/configure-columns-action.html
+        pim/template/datagrid/display-selector:          pimdatagrid/templates/datagrid/display-selector.html
         pim/template/datagrid/filter/text-filter:        pimdatagrid/templates/filter/text-filter.html
         pim/template/datagrid/filter/price-filter:       pimdatagrid/templates/filter/price-filter.html
         pim/template/datagrid/filter/date-filter:        pimdatagrid/templates/filter/date-filter.html
@@ -158,6 +161,8 @@ config:
         pim/template/datagrid/filter/scope-filter:       pimdatagrid/templates/filter/scope-filter.html
         pim/template/datagrid/row/version:               pimdatagrid/templates/datagrid/row/version.html
         pim/template/datagrid/row/changes:               pimdatagrid/templates/datagrid/row/changes.html
+        pim/template/datagrid/row/product:               pimdatagrid/templates/datagrid/row/product.html
+        pim/template/datagrid/row/product-thumbnail:     pimdatagrid/templates/datagrid/row/product-thumbnail.html
         pim/template/datagrid/cell/image-cell:           pimdatagrid/templates/datagrid/cell/image-cell.html
 
         pim/template/datagrid/cell/product-and-product-model-image-cell: pimdatagrid/templates/datagrid/cell/product-and-product-model-image-cell.html

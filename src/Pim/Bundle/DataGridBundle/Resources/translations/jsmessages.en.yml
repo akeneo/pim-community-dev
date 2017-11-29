@@ -118,6 +118,12 @@ grid.view_selector:
 # View selector flash messages
 grid.view_selector.flash.updated: Datagrid view successfully updated
 
+# Display selector
+grid.display_selector:
+    label: Display
+    gallery: Gallery
+    list: List
+
 # Credentials cell
 Client ID: Client ID
 Secret: Secret
